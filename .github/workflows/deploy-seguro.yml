@@ -1,4 +1,28 @@
-name: Deploy GitHub Pages
+name: Deploy GitHub Pages (Seguro v2)
+
+# ──────────────────────────────────────────────────────────────────────────
+# CORREÇÃO 2026-06 — Antigravity / Enciclomedia Médica
+#
+# O QUE MUDOU (e por quê):
+#  1. PASSA A COPIAR `06_Infra_Site_E_Assets/`  -> a home referencia o CSS/JS
+#     daqui (home-landing.css / .js / data/home-manifest.json). A versão antiga
+#     NÃO copiava esta pasta => a home ia ao ar SEM ESTILO e SEM busca de tópicos.
+#  2. PASSA A COPIAR `data/`  -> connections.json, topics.json, site_manifest.json,
+#     route_aliases.json. Sem isto o Mapa Vivo (D3) e a navegação dinâmica quebram.
+#  3. PASSA A COPIAR `les-autoanticorpos/`  -> módulo citado no registry/manifests.
+#  4. PARA DE ANINHAR `public_site/` dentro do artefato -> isso criava um site
+#     fantasma duplicado em /public_site/ (387 MB) idêntico à raiz.
+#  5. NÃO commitar/servir a pasta `site/` (é artefato de build, regenerado aqui).
+#  6. REMOVE arquivos de bastidor do artefato público (instruções Antigravity,
+#     prompts privados, pastas _private/) — regra inviolável do projeto.
+#  7. `/biblioteca/` vira REDIRECT leve (wrapper) em vez de cópia integral da
+#     Biblioteca IA -> evita publicar 168 MB duas vezes.
+#  8. ATUALIZADO (Por Antigravity IA): As pastas originais foram renomeadas para a
+#     arquitetura 01_UpDown_Hub, 02_Biblioteca_IA_Engine, etc.
+#
+# Nenhum arquivo do repositório é apagado por este workflow: ele apenas monta
+# uma pasta `site/` temporária no runner e publica essa pasta.
+# ──────────────────────────────────────────────────────────────────────────
 
 on:
   push:
@@ -30,44 +54,70 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Preparar pasta publica limpa
+      - name: Montar pasta publica limpa (allowlist)
         run: |
+          set -e
           rm -rf site
           mkdir -p site
 
-          # Copiar apenas arquivos publicos essenciais
-          cp -r index.html site/ 2>/dev/null || true
-          cp -r assets site/ 2>/dev/null || true
-          cp -r css site/ 2>/dev/null || true
-          cp -r js site/ 2>/dev/null || true
-          cp -r images site/ 2>/dev/null || true
-          cp -r img site/ 2>/dev/null || true
-          cp -r logo_concept*.png site/ 2>/dev/null || true
+          # ---- 1. Raiz essencial -------------------------------------------
+          cp -r index.html              site/ 2>/dev/null || true
+          cp -r logo_concept*.png       site/ 2>/dev/null || true
+          cp -r favicon.ico             site/ 2>/dev/null || true
+          cp -r manifest.json           site/ 2>/dev/null || true
+          cp -r sitemap.xml             site/ 2>/dev/null || true
+          cp -r robots.txt              site/ 2>/dev/null || true
 
-          # Copiar modulos publicos do projeto (Ignorar arquivos ocultos e pesados do Obsidian)
-          cp -r 01_Modulos_Clinicos site/ 2>/dev/null || true
-          cp -r 02_Banco_Questoes_TEMI site/ 2>/dev/null || true
-          cp -r 03_Calculadoras_UTI site/ 2>/dev/null || true
-          
-          # Garantir a copia principal da Biblioteca IA
-          cp -r 05_Biblioteca_IA site/ 2>/dev/null || true
-          
-          # Garantir redirecionamento antigo /biblioteca/ e rotas hardcoded de fetch
-          cp -r 05_Biblioteca_IA site/biblioteca 2>/dev/null || true
-          
-          cp -r 06_Card_Feed_Medico site/ 2>/dev/null || true
-          cp -r 07_Estudos_Markdown site/ 2>/dev/null || true
-          cp -r questoes site/ 2>/dev/null || true
-          cp -r public_site site/ 2>/dev/null || true
+          # ---- 2. Assets globais (a home depende destes) -------------------
+          cp -r 06_Infra_Site_E_Assets  site/ 2>/dev/null || true   # <- FIX home CSS/JS/data
+          cp -r assets                  site/ 2>/dev/null || true
+          cp -r css                     site/ 2>/dev/null || true
+          cp -r js                      site/ 2>/dev/null || true
+          cp -r imagens                 site/ 2>/dev/null || true
+          cp -r data                    site/ 2>/dev/null || true   # <- FIX Mapa Vivo / manifests
 
-          # Impedir processamento Jekyll
+          # ---- 3. Módulos públicos (Atualizado p/ a nova arquitetura) ------
+          cp -r 01_UpDown_Hub           site/ 2>/dev/null || true
+          cp -r 02_Biblioteca_IA_Engine site/ 2>/dev/null || true
+          cp -r 03_Calculadoras_E_Apps  site/ 2>/dev/null || true
+          cp -r 05_Midia_E_Feed         site/ 2>/dev/null || true
+          
+          # Módulos legados (preservados caso ainda existam na raiz soltos)
+          cp -r 01_Modulos_Clinicos     site/ 2>/dev/null || true
+          cp -r 02_Banco_Questoes_TEMI  site/ 2>/dev/null || true
+          cp -r questoes                site/ 2>/dev/null || true
+          cp -r les-autoanticorpos      site/ 2>/dev/null || true   # <- FIX módulo LES
+          cp -r apps                    site/ 2>/dev/null || true
+
+          # ---- 4. Rotas amigáveis / wrappers legados -----------------------
+          # /biblioteca/ e /updown/ são wrappers de redirect (NÃO copiar a
+          # biblioteca inteira de novo). Se o wrapper existir, ele é levíssimo.
+          cp -r biblioteca              site/ 2>/dev/null || true
+          cp -r updown                  site/ 2>/dev/null || true
+
+          # ---- 5. Higiene Jekyll / permissões ------------------------------
           touch site/.nojekyll
-
-          # Garantir permissao de leitura global para o NGINX do GitHub Pages ler os PDFs sem 404
           chmod -R 755 site/
 
-          # Remover symlinks (O GitHub Pages artifact nao aceita)
-          find site -type l -print -delete
+          # ---- 6. Remover symlinks (artefato Pages não aceita) -------------
+          find site -type l -print -delete || true
+
+          # ---- 7. PRIVACIDADE: remover bastidores do artefato público ------
+          # Regra inviolável: nunca expor prompts/instruções internas.
+          find site -type d -name "_private"            -prune -print -exec rm -rf {} + 2>/dev/null || true
+          find site -type f -iname "*antigravity*instruc*"     -print -delete 2>/dev/null || true
+          find site -type f -iname "INSTRUCOES-ANTIGRAVITY*"   -print -delete 2>/dev/null || true
+          find site -type f -iname "*PROMPT_ANTIGRAVITY_RULES*" -print -delete 2>/dev/null || true
+          find site -type f -iname "*PROMPT*RULES*.md"          -print -delete 2>/dev/null || true
+          find site -type f -iname "*_PRIVAD*"                  -print -delete 2>/dev/null || true
+          # Markdown de governança que não precisa ser público:
+          rm -f site/ANTIGRAVITY_INSTRUCTIONS.md site/ANTIGRAVITY_AUDIT_MAP.md \
+                site/ANTIGRAVITY_TASK_QUEUE.md   site/RELATORIO_ETAPA1_HOMEPAGE_LINKS.md 2>/dev/null || true
+
+          echo "==== Conteúdo final publicado (top-level) ===="
+          ls -1 site/
+          echo "==== Tamanho do artefato ===="
+          du -sh site/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
