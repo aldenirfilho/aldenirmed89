@@ -1,0 +1,70 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Preparar pasta publica limpa
+        run: |
+          rm -rf site
+          mkdir -p site
+
+          # Copiar apenas arquivos publicos essenciais
+          cp -r index.html site/ 2>/dev/null || true
+          cp -r assets site/ 2>/dev/null || true
+          cp -r css site/ 2>/dev/null || true
+          cp -r js site/ 2>/dev/null || true
+          cp -r images site/ 2>/dev/null || true
+          cp -r img site/ 2>/dev/null || true
+          cp -r logo_concept*.png site/ 2>/dev/null || true
+
+          # Copiar modulos publicos do projeto (Ignorar arquivos ocultos e pesados do Obsidian)
+          cp -r 01_Modulos_Clinicos site/ 2>/dev/null || true
+          cp -r 02_Banco_Questoes_TEMI site/ 2>/dev/null || true
+          cp -r 03_Calculadoras_UTI site/ 2>/dev/null || true
+          cp -r 05_Biblioteca_IA site/ 2>/dev/null || true
+          cp -r 06_Card_Feed_Medico site/ 2>/dev/null || true
+          cp -r 07_Estudos_Markdown site/ 2>/dev/null || true
+          cp -r questoes site/ 2>/dev/null || true
+          cp -r public_site site/ 2>/dev/null || true
+
+          # Impedir processamento Jekyll
+          touch site/.nojekyll
+
+          # Remover symlinks (O GitHub Pages artifact nao aceita)
+          find site -type l -print -delete
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
