@@ -48,7 +48,13 @@ jobs:
           cp -r 01_Modulos_Clinicos site/ 2>/dev/null || true
           cp -r 02_Banco_Questoes_TEMI site/ 2>/dev/null || true
           cp -r 03_Calculadoras_UTI site/ 2>/dev/null || true
+          
+          # Garantir a copia principal da Biblioteca IA
           cp -r 05_Biblioteca_IA site/ 2>/dev/null || true
+          
+          # Garantir redirecionamento antigo /biblioteca/ e rotas hardcoded de fetch
+          cp -r 05_Biblioteca_IA site/biblioteca 2>/dev/null || true
+          
           cp -r 06_Card_Feed_Medico site/ 2>/dev/null || true
           cp -r 07_Estudos_Markdown site/ 2>/dev/null || true
           cp -r questoes site/ 2>/dev/null || true
