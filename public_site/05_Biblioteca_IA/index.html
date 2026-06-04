@@ -707,6 +707,14 @@ function abrirPreview(encodedPath, titulo) {
   const ext = path.split('.').pop().toLowerCase();
   const frame = document.getElementById('previewFrame');
   
+  // 📱 FIX MOBILE: Dispositivos móveis (especialmente iOS/iPhone) limitam PDFs em iframes à primeira página.
+  // Abrir direto na nova aba ativa o visualizador nativo do celular (com scroll, zoom e marcações).
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 800;
+  if (ext === 'pdf' && isMobile) {
+    window.open(path, '_blank');
+    return;
+  }
+  
   document.getElementById('previewTitle').textContent = titulo || 'Visualizando arquivo';
   document.getElementById('previewDirect').href = path;
   

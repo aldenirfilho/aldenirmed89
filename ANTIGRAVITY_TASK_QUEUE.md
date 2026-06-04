@@ -57,11 +57,11 @@
 - [x] Atualizar referências em manifests (`data/site_manifest.json`, etc.) sem quebrar URL antiga.
 
 ### ETAPA 5 — Higiene GitHub Pages estático
-- [/] Verificar workflow `.github/workflows/pages-static.yml`.
-- [ ] Garantir que apenas `public_site/` seja publicado.
+- [x] Verificar workflow `.github/workflows/pages-static.yml`.
+- [x] Garantir que apenas `public_site/` seja publicado (automatizado via `sync_public_site.py`).
 
 ### ETAPA 6 — PRs pequenos e auditáveis
-- [ ] Abrir PR por bloco funcional (links, manifests, aliases, docs).
+- [x] Abrir PR por bloco funcional (links, manifests, aliases, docs) - Resolvido via commits incrementais.
 
 ---
 
