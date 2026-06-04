@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSA Aneurismática — Projeto de Aprendizagem | Dr. Aldenir</title>
+    <meta name="description" content="Projeto de aprendizagem interativo sobre Hemorragia Subaracnóidea Aneurismática: tratamento e prognóstico. Baseado no UpToDate 2026.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="header-badge">🧠 NEURO-UTI</div>
+            <h1>HSA Aneurismática</h1>
+            <p class="header-subtitle">Tratamento & Prognóstico — UpToDate 2026</p>
+        </div>
+        <nav class="tab-nav" id="tabNav">
+            <button class="tab-btn active" data-tab="resumo">📋 Resumo</button>
+            <button class="tab-btn" data-tab="escalas">📊 Escalas</button>
+            <button class="tab-btn" data-tab="fluxo">🔀 Fluxo</button>
+            <button class="tab-btn" data-tab="flashcards">🃏 Cards</button>
+            <button class="tab-btn" data-tab="quiz">❓ Quiz</button>
+        </nav>
+    </header>
+
+    <!-- AVISO CLÍNICO -->
+    <div class="clinical-disclaimer">
+        ⚠️ Ferramenta educacional/de apoio. Não substitui julgamento clínico, protocolos institucionais ou avaliação médica individual.
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- ==================== ABA: RESUMO ==================== -->
+        <section class="tab-panel active" id="panel-resumo">
+            <div class="section-card hero-card">
+                <div class="card-icon">🩸</div>
+                <h2>Visão Geral</h2>
+                <p>HSA = sangramento no espaço subaracnoide (entre aracnoide e pia-máter). <strong>Causa mais comum:</strong> ruptura de aneurisma sacular intracraniano.</p>
+                <div class="stat-row">
+                    <div class="stat-box stat-danger"><span class="stat-num">~30%</span><span class="stat-label">Letalidade 30d</span></div>
+                    <div class="stat-box stat-warning"><span class="stat-num">4-14%</span><span class="stat-label">Ressangram 24h</span></div>
+                    <div class="stat-box stat-info"><span class="stat-num">~30%</span><span class="stat-label">Vasoespasmo</span></div>
+                </div>
+            </div>
+
+            <!-- TRIAGEM -->
+            <div class="section-card">
+                <h2>🚨 Triagem & Estabilização</h2>
+                <div class="checklist">
+                    <label class="check-item"><input type="checkbox"><span>Via aérea segura (IOT se GCS ≤8, PIC↑, hipoxemia)</span></label>
+                    <label class="check-item"><input type="checkbox"><span>Estabilização cardiovascular</span></label>
+                    <label class="check-item"><input type="checkbox"><span>Tratar convulsões agudas</span></label>
+                    <label class="check-item"><input type="checkbox"><span>Classificar gravidade (Hunt-Hess / WFNS / Fisher)</span></label>
+                    <label class="check-item"><input type="checkbox"><span>Transferir para centro neurocrítico de alto volume</span></label>
+                </div>
+            </div>
+
+            <!-- MANEJO INICIAL -->
+            <div class="section-card">
+                <h2>💊 Manejo Sintomático Inicial</h2>
+                <div class="topic-grid">
+                    <div class="topic-item">
+                        <h3>🩺 Anti-trombóticos</h3>
+                        <ul>
+                            <li><strong>Suspender TODOS</strong> os antitrombóticos</li>
+                            <li>Plaquetas se antiplaquetários ou PLQ &lt;100k</li>
+                            <li>Varfarina → CCP 4 fatores + Vit K IV</li>
+                            <li>Dabigatrana → Idarucizumab 5g</li>
+                            <li>Anti-Xa → CCP 4 fatores</li>
+                            <li>🚫 Antifibrinolíticos NÃO rotina</li>
+                        </ul>
+                    </div>
+                    <div class="topic-item">
+                        <h3>🫀 Pressão Arterial</h3>
+                        <ul>
+                            <li><strong>Meta PAS &lt;160 ou PAM &lt;110</strong></li>
+                            <li>Se alerta: PAS &lt;140 mmHg</li>
+                            <li>Drogas: labetalol, nicardipina, clevidipina</li>
+                            <li>🚫 Evitar nitroprussiato (↑PIC)</li>
+                            <li>🚫 Evitar hipotensão</li>
+                            <li>PPC alvo ≥70 mmHg</li>
+                        </ul>
+                    </div>
+                    <div class="topic-item">
+                        <h3>💧 Volemia</h3>
+                        <ul>
+                            <li><strong>Manter EUVOLEMIA</strong></li>
+                            <li>SF 0,9% — monitorar I/O</li>
+                            <li>Checar Na+ pelo menos 1x/dia</li>
+                            <li>Hipovolemia = risco isquêmico</li>
+                            <li>🚫 NÃO hipervolemia</li>
+                        </ul>
+                    </div>
+                    <div class="topic-item highlight-card">
+                        <h3>💜 Nimodipina</h3>
+                        <ul>
+                            <li><strong>60 mg VO/SNG 4/4h por 21 dias</strong></li>
+                            <li>Iniciar &lt;48h dos sintomas</li>
+                            <li>🚫 NUNCA IV (risco de óbito)</li>
+                            <li>NNT = 13 para desfecho ruim</li>
+                            <li>Monitorar PA (risco hipotensão)</li>
+                            <li>Não reduz vasoespasmo → melhora desfecho</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILAXIAS -->
+            <div class="section-card">
+                <h2>🛡️ Profilaxias & Cuidados Gerais</h2>
+                <div class="topic-grid cols-2">
+                    <div class="topic-item">
+                        <h3>⚡ Convulsões</h3>
+                        <ul>
+                            <li>Profilaxia controversa</li>
+                            <li>Considerar se: grau ruim, aneurisma não tratado, HIC</li>
+                            <li>🚫 EVITAR fenitoína (piora cognitiva)</li>
+                            <li>Preferir levetiracetam</li>
+                            <li>Suspender após reparo do aneurisma</li>
+                        </ul>
+                    </div>
+                    <div class="topic-item">
+                        <h3>🫁 TVP & Geral</h3>
+                        <ul>
+                            <li>CPI antes do reparo</li>
+                            <li>Heparina SC após reparo do aneurisma</li>
+                            <li>Repouso absoluto + laxantes</li>
+                            <li>Dor: morfina curta ação / paracetamol</li>
+                            <li>Ceftriaxona 2g IV dose única (PAV)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPARO DO ANEURISMA -->
+            <div class="section-card urgent-card">
+                <h2>🔧 Reparo do Aneurisma</h2>
+                <p class="urgent-text">⏰ Realizar o mais cedo possível — idealmente &lt;24h (alguns centros: ~7h da admissão)</p>
+                <div class="topic-grid cols-2">
+                    <div class="topic-item">
+                        <h3>✂️ Clipagem Cirúrgica</h3>
+                        <p>Craniotomia + clip metálico no colo do aneurisma</p>
+                    </div>
+                    <div class="topic-item">
+                        <h3>🌀 Embolização Endovascular</h3>
+                        <p>Coils via cateter — menos invasivo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPLICAÇÕES -->
+            <div class="section-card">
+                <h2>🔥 Complicações Precoces</h2>
+                <div class="complication-list">
+                    <details class="complication-item">
+                        <summary>🩸 Ressangramento (4-14% em 24h)</summary>
+                        <div class="detail-content">
+                            <p><strong>Pico:</strong> 2-12h. <strong>Mortalidade:</strong> até 70%</p>
+                            <p><strong>Preditores:</strong> tempo até reparo, pior grau neurológico, aneurisma grande, PAS alta, sangue ICV/ICerebral, hidrocefalia aguda</p>
+                            <p><strong>Conduta:</strong> reparo emergencial do aneurisma</p>
+                        </div>
+                    </details>
+                    <details class="complication-item">
+                        <summary>🧠 Vasoespasmo / ICT (~30%)</summary>
+                        <div class="detail-content">
+                            <p><strong>Período:</strong> 4-14 dias (pico 7-8º dia)</p>
+                            <p><strong>FR:</strong> volume sangue, Fisher alto, idade &lt;50, hiperglicemia</p>
+                            <p><strong>Monitoramento:</strong> DTC diário + angioTC perfusão</p>
+                            <p><strong>Tratamento:</strong></p>
+                            <ol>
+                                <li>↑PAM com vasopressores (NE/fenilefrina)</li>
+                                <li>Angioplastia com balão (vasos grandes)</li>
+                                <li>Vasodilatadores intra-arteriais (nicardipina, milrinona)</li>
+                            </ol>
+                        </div>
+                    </details>
+                    <details class="complication-item">
+                        <summary>💧 Hidrocefalia (20-30%)</summary>
+                        <div class="detail-content">
+                            <p><strong>Aguda:</strong> minutos-horas. <strong>Tardia:</strong> ≥2 semanas</p>
+                            <p><strong>Clínica:</strong> ↓consciência + dilatação ventricular na TC</p>
+                            <p><strong>Tratamento:</strong> DVE (comunicante e não comunicante) ou drenagem lombar (só comunicante)</p>
+                            <p>22% desenvolvem dependência de derivação</p>
+                        </div>
+                    </details>
+                    <details class="complication-item">
+                        <summary>🧪 Hiponatremia (até 30%)</summary>
+                        <div class="detail-content">
+                            <p><strong>Causas:</strong> SIADH (euvolêmico) vs Perda cerebral de sal (hipovolêmico)</p>
+                            <p><strong>Labs similares:</strong> Na &lt;134, Osm sérica baixa, Na urinário alto</p>
+                            <p><strong>Diferença chave:</strong> estado volêmico</p>
+                            <p><strong>Tto:</strong> SF hipertônica 3% ± fludrocortisona. 🚫 NÃO restringir fluidos</p>
+                        </div>
+                    </details>
+                    <details class="complication-item">
+                        <summary>⚡ Convulsões (8-15%)</summary>
+                        <div class="detail-content">
+                            <p>Antes do reparo → pensar em ressangramento</p>
+                            <p><strong>Tto:</strong> Levetiracetam (🚫 fenitoína)</p>
+                            <p>Reduzir MAE após 1 semana se sem crises</p>
+                            <p>EEG contínuo se deterioração inexplicada</p>
+                        </div>
+                    </details>
+                    <details class="complication-item">
+                        <summary>🫀 Complicações Cardiopulmonares</summary>
+                        <div class="detail-content">
+                            <p>Arritmias (35%), edema pulmonar (23%)</p>
+                            <p><strong>ECG:</strong> ↓ST, ↑QT, ondas T invertidas simétricas</p>
+                            <p><strong>Troponina:</strong> ↑ em até 20% (risco de Takotsubo)</p>
+                            <p>Checar troponina + ECG + eco na admissão</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- PROGNÓSTICO -->
+            <div class="section-card">
+                <h2>📈 Prognóstico</h2>
+                <div class="topic-grid cols-2">
+                    <div class="topic-item">
+                        <h3>⚰️ Mortalidade</h3>
+                        <ul>
+                            <li>18-24% morrem antes do hospital</li>
+                            <li>~30% letalidade em 30 dias</li>
+                            <li>Taxa diminuindo (~2%/ano)</li>
+                            <li>RMP sobreviventes: 1,6x pop. geral</li>
+                        </ul>
+                    </div>
+                    <div class="topic-item">
+                        <h3>🧩 Recuperação</h3>
+                        <ul>
+                            <li>Melhora funcional até 4 anos</li>
+                            <li>~20% comprometimento cognitivo</li>
+                            <li>Epilepsia: 5-12%</li>
+                            <li>Depressão/ansiedade comuns</li>
+                            <li>Fatores: GCS, idade, volume sangue</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ABA: ESCALAS ==================== -->
+        <section class="tab-panel" id="panel-escalas">
+            <div class="section-card">
+                <h2>📊 Escalas de Classificação da HSA</h2>
+                <p>Toque em cada escala para expandir os detalhes.</p>
+            </div>
+
+            <div class="section-card">
+                <h2>🏥 Hunt & Hess</h2>
+                <table class="scale-table">
+                    <thead><tr><th>Grau</th><th>Estado Neurológico</th></tr></thead>
+                    <tbody>
+                        <tr class="grade-good"><td>1</td><td>Assintomático, cefaleia leve, rigidez nuca discreta</td></tr>
+                        <tr class="grade-good"><td>2</td><td>Cefaleia intensa, rigidez nuca, sem déficit focal (pode ter par. NC)</td></tr>
+                        <tr class="grade-moderate"><td>3</td><td>Sonolência/confusão, déficit focal leve</td></tr>
+                        <tr class="grade-severe"><td>4</td><td>Estupor, hemiparesia moderada-grave</td></tr>
+                        <tr class="grade-critical"><td>5</td><td>Coma, postura de descerebração</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <h2>🌍 WFNS</h2>
+                <table class="scale-table">
+                    <thead><tr><th>Grau</th><th>GCS</th><th>Déficit Motor</th></tr></thead>
+                    <tbody>
+                        <tr class="grade-good"><td>1</td><td>15</td><td>Ausente</td></tr>
+                        <tr class="grade-good"><td>2</td><td>13-14</td><td>Ausente</td></tr>
+                        <tr class="grade-moderate"><td>3</td><td>13-14</td><td>Presente</td></tr>
+                        <tr class="grade-severe"><td>4</td><td>7-12</td><td>±</td></tr>
+                        <tr class="grade-critical"><td>5</td><td>3-6</td><td>±</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <h2>🔬 Fisher (Risco de Vasoespasmo)</h2>
+                <table class="scale-table">
+                    <thead><tr><th>Grau</th><th>Sangue na TC</th></tr></thead>
+                    <tbody>
+                        <tr class="grade-good"><td>1</td><td>Sem sangue detectado</td></tr>
+                        <tr class="grade-good"><td>2</td><td>Deposição difusa/fina &lt;1mm</td></tr>
+                        <tr class="grade-severe"><td>3</td><td>Coágulo localizado e/ou camadas ≥1mm</td></tr>
+                        <tr class="grade-moderate"><td>4</td><td>Coágulo ICerebral/IVentricular ± HSA difusa</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <h2>📐 Fisher Modificada (Claassen)</h2>
+                <table class="scale-table">
+                    <thead><tr><th>Grau</th><th>Critérios TC</th></tr></thead>
+                    <tbody>
+                        <tr class="grade-good"><td>0</td><td>Sem HSA ou HIV</td></tr>
+                        <tr class="grade-good"><td>1</td><td>HSA mínima, sem HIV</td></tr>
+                        <tr class="grade-moderate"><td>2</td><td>HSA mínima + HIV bilateral</td></tr>
+                        <tr class="grade-severe"><td>3</td><td>HSA espessa, sem HIV bilateral</td></tr>
+                        <tr class="grade-critical"><td>4</td><td>HSA espessa + HIV bilateral</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <h2>📏 Escala de Rankin Modificada (mRS)</h2>
+                <table class="scale-table">
+                    <thead><tr><th>Score</th><th>Descrição</th></tr></thead>
+                    <tbody>
+                        <tr class="grade-good"><td>0</td><td>Sem sintomas</td></tr>
+                        <tr class="grade-good"><td>1</td><td>Sem incapacidade significativa</td></tr>
+                        <tr class="grade-moderate"><td>2</td><td>Incapacidade leve (independente)</td></tr>
+                        <tr class="grade-moderate"><td>3</td><td>Incapacidade moderada (caminha sozinho)</td></tr>
+                        <tr class="grade-severe"><td>4</td><td>Incapacidade moderada-grave (não caminha sem ajuda)</td></tr>
+                        <tr class="grade-critical"><td>5</td><td>Incapacidade grave (acamado)</td></tr>
+                        <tr class="grade-critical"><td>6</td><td>Óbito</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================== ABA: FLUXO ==================== -->
+        <section class="tab-panel" id="panel-fluxo">
+            <div class="section-card">
+                <h2>🔀 Fluxograma de Manejo da HSA</h2>
+                <p>Sequência de decisões desde a admissão.</p>
+            </div>
+
+            <div class="flow-container">
+                <div class="flow-step flow-emergency">
+                    <div class="flow-number">1</div>
+                    <h3>🚨 ADMISSÃO</h3>
+                    <p>ABCDE + IOT se GCS ≤8</p>
+                    <p>Classificar: Hunt-Hess / WFNS / Fisher</p>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-step flow-action">
+                    <div class="flow-number">2</div>
+                    <h3>💊 MEDIDAS INICIAIS</h3>
+                    <p>Suspender antitrombóticos + reverter</p>
+                    <p>PA: PAS &lt;160 / PAM &lt;110</p>
+                    <p>Nimodipina 60mg 4/4h VO</p>
+                    <p>Euvolemia (SF 0,9%)</p>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-step flow-critical">
+                    <div class="flow-number">3</div>
+                    <h3>🔧 REPARO DO ANEURISMA</h3>
+                    <p>⏰ Idealmente &lt;24h</p>
+                    <p>Clipagem vs Embolização</p>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-step flow-monitor">
+                    <div class="flow-number">4</div>
+                    <h3>📡 MONITORAMENTO UTI</h3>
+                    <p>Exame neuro 1-2h</p>
+                    <p>DTC diário (dias 3-14)</p>
+                    <p>TC/angioTC: admissão, D3-5, D7-10</p>
+                    <p>Na+ diário / Troponina + ECG / Eco</p>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-step flow-warning">
+                    <div class="flow-number">5</div>
+                    <h3>⚠️ VIGILÂNCIA COMPLICAÇÕES</h3>
+                    <div class="flow-branches">
+                        <div class="flow-branch">
+                            <strong>Vasoespasmo (D4-14)</strong>
+                            <p>→ ↑PAM + vasopressores</p>
+                            <p>→ Angioplastia / vasodilatador IA</p>
+                        </div>
+                        <div class="flow-branch">
+                            <strong>Hidrocefalia</strong>
+                            <p>→ DVE</p>
+                        </div>
+                        <div class="flow-branch">
+                            <strong>Hiponatremia</strong>
+                            <p>→ SF 3% ± fludrocortisona</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-step flow-recovery">
+                    <div class="flow-number">6</div>
+                    <h3>🏠 PLANEJAMENTO DE ALTA</h3>
+                    <p>Avaliar derivação (desmame DVE)</p>
+                    <p>Suspender MAE se sem crises</p>
+                    <p>Nimodipina 21 dias total</p>
+                    <p>Rastrear familiares 1º grau</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ABA: FLASHCARDS ==================== -->
+        <section class="tab-panel" id="panel-flashcards">
+            <div class="section-card">
+                <h2>🃏 Flashcards — HSA Aneurismática</h2>
+                <p>Toque no card para revelar a resposta. Use os botões para navegar.</p>
+            </div>
+
+            <div class="flashcard-container">
+                <div class="flashcard-progress">
+                    <span id="cardCounter">1 / 20</span>
+                    <div class="progress-bar"><div class="progress-fill" id="cardProgress"></div></div>
+                </div>
+                <div class="flashcard" id="flashcard" onclick="toggleFlashcard()">
+                    <div class="flashcard-inner" id="flashcardInner">
+                        <div class="flashcard-front">
+                            <div class="card-category" id="cardCategory"></div>
+                            <p id="cardQuestion"></p>
+                        </div>
+                        <div class="flashcard-back">
+                            <p id="cardAnswer"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flashcard-controls">
+                    <button class="fc-btn" onclick="prevCard()">◀ Anterior</button>
+                    <button class="fc-btn fc-shuffle" onclick="shuffleCards()">🔀 Embaralhar</button>
+                    <button class="fc-btn" onclick="nextCard()">Próximo ▶</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ABA: QUIZ ==================== -->
+        <section class="tab-panel" id="panel-quiz">
+            <div class="section-card">
+                <h2>❓ Quiz — Teste seus Conhecimentos</h2>
+                <p>20 questões no estilo TEMI/AMIB. Toque na alternativa correta.</p>
+            </div>
+
+            <div class="quiz-container" id="quizContainer">
+                <div class="quiz-progress">
+                    <span id="quizCounter">Questão 1 / 20</span>
+                    <div class="progress-bar"><div class="progress-fill" id="quizProgress"></div></div>
+                </div>
+                <div class="quiz-question" id="quizQuestion"></div>
+                <div class="quiz-options" id="quizOptions"></div>
+                <div class="quiz-feedback" id="quizFeedback"></div>
+                <button class="quiz-next-btn" id="quizNextBtn" onclick="nextQuestion()" style="display:none;">Próxima Questão ▶</button>
+            </div>
+
+            <div class="quiz-result" id="quizResult" style="display:none;">
+                <div class="result-icon" id="resultIcon"></div>
+                <h2 id="resultTitle"></h2>
+                <p id="resultScore"></p>
+                <div class="result-bar"><div class="result-fill" id="resultFill"></div></div>
+                <button class="quiz-restart-btn" onclick="restartQuiz()">🔄 Refazer Quiz</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+        <p>📚 Fonte: UpToDate — Aneurysmal SAH: Treatment and prognosis (Tópico 1127, v52.0)</p>
+        <p>🧠 Projeto de Aprendizagem — Dr. Aldenir Rocha | Antigravity 2026</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

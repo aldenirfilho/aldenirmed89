@@ -1,0 +1,670 @@
+Aldenir, segue um **PROMPT MESTRE pronto para copiar e colar** para gerar um **arquivo XLSX completo de UTI** — estilo planilha interativa, moderna, com abas, calculadoras, fluxogramas e tabelas clínicas 🧠📊🏥
+
+---
+
+# ✅ PROMPT PARA GERAR DOCUMENTO XLSX DE UTI
+
+```text
+Crie um arquivo em formato .XLSX, moderno, visualmente organizado e interativo, chamado:
+
+“PAINEL UTI - MANEJO CLÍNICO, DEVICES, DROGAS, SAPS3 E CALCULADORAS”
+
+Objetivo:
+Construir uma planilha completa para uso diário em UTI adulto, voltada para médico intensivista/plantonista, com foco em organização rápida, segurança assistencial, apoio à decisão clínica, passagem de plantão, priorização de pacientes, dispositivos invasivos, drogas vasoativas, sedação, antibióticos, anticoagulação, função renal e principais algoritmos de manejo.
+
+A planilha deve ter design moderno, com:
+- Cores sóbrias e profissionais.
+- Cabeçalhos destacados.
+- Tabelas com filtros.
+- Congelamento da primeira linha.
+- Validação de dados com listas suspensas quando útil.
+- Fórmulas automáticas.
+- Campos editáveis para uso à beira-leito.
+- Alertas visuais por cores: verde = adequado, amarelo = atenção, vermelho = crítico.
+- Layout compatível com Excel, Google Sheets e LibreOffice.
+- Evitar macros complexas; priorizar fórmulas nativas.
+
+Criar as seguintes abas:
+
+---
+
+## 1. DASHBOARD UTI
+
+Criar uma aba inicial com visão geral dos pacientes internados.
+
+Colunas sugeridas:
+- Leito
+- Nome / iniciais
+- Idade
+- Data de admissão hospitalar
+- Data de admissão na UTI
+- Diagnóstico principal
+- Problemas ativos
+- SAPS 3
+- Mortalidade estimada
+- Prioridade UTI: P1 / P2 / P3 / P4
+- Ventilação: AA / O2 / VNI / CNAF / IOT / TQT
+- DVA: Sim / Não
+- Noradrenalina dose mcg/kg/min
+- Sedação: Sim / Não
+- RASS alvo
+- Delirium CAM-ICU
+- Antibioticoterapia atual
+- Duração do antibiótico
+- Culturas pendentes
+- Função renal: normal / LRA KDIGO 1 / 2 / 3 / HD
+- Anticoagulação
+- Devices presentes
+- Pendências do dia
+- Meta das próximas 24h
+- Critérios de alta da UTI
+- Risco clínico global: baixo / moderado / alto / crítico
+
+Inserir fórmula ou regra de formatação condicional para destacar:
+- DVA em uso
+- SAPS 3 alto
+- LRA KDIGO 3
+- Ventilação invasiva
+- Antibiótico > 7 dias
+- Dispositivo invasivo com troca vencida
+- Paciente P1
+
+---
+
+## 2. SAPS 3 E PRIORIDADE DE UTI
+
+Criar uma aba para cálculo e registro do SAPS 3.
+
+Incluir campos:
+- Idade
+- Comorbidades relevantes
+- Tempo de internação antes da UTI
+- Origem do paciente
+- Motivo de admissão
+- Status cirúrgico
+- Variáveis fisiológicas principais
+- Escore SAPS 3 total
+- Mortalidade estimada global
+- Mortalidade estimada América do Sul, se possível
+- Classificação de gravidade
+
+Adicionar tabela de interpretação:
+- SAPS 3 baixo
+- SAPS 3 intermediário
+- SAPS 3 alto
+- SAPS 3 muito alto
+
+Criar também uma tabela de PRIORIDADE DE ADMISSÃO EM UTI:
+
+P1:
+Paciente criticamente enfermo, instável, com necessidade de suporte intensivo pleno, ventilação mecânica, DVA, choque, sepse grave, pós-operatório crítico, insuficiência respiratória aguda.
+
+P2:
+Paciente que necessita monitorização intensiva e pode precisar de intervenção imediata, com alto risco de deterioração.
+
+P3:
+Paciente com doença crítica, mas com baixa probabilidade de recuperação significativa ou limitação terapêutica parcial.
+
+P4:
+Paciente com baixa prioridade para UTI: muito estável para UTI ou com prognóstico extremamente reservado sem benefício esperado de terapia intensiva.
+
+Adicionar coluna para:
+- Justificativa da prioridade
+- Conduta sugerida
+- Reavaliação em horas
+
+---
+
+## 3. DISPOSITIVOS E TEMPO DE TROCA
+
+Criar aba chamada “DEVICES”.
+
+Tabela com:
+- Leito
+- Paciente
+- Dispositivo
+- Local
+- Data de inserção
+- Dia atual do dispositivo
+- Prazo sugerido de troca
+- Data prevista de troca
+- Indicação atual ainda presente? Sim/Não
+- Sinais de infecção? Sim/Não
+- Necessita retirar hoje? Sim/Não
+- Observações
+
+Incluir dispositivos:
+- CVC
+- PAM / linha arterial
+- Sonda vesical de demora
+- Sonda nasoenteral
+- Sonda nasogástrica
+- Tubo orotraqueal
+- Traqueostomia
+- Dreno torácico
+- Dreno abdominal
+- Cateter de hemodiálise
+- Cateter peritoneal
+- PICC
+- Acesso venoso periférico
+- Curativo cirúrgico
+- Derivação ventricular externa
+- Dreno lombar
+- Cateter epidural
+- Balão intra-aórtico
+- ECMO, se aplicável
+
+Inserir coluna com orientação:
+- Trocar por rotina?
+- Trocar apenas se disfunção/suspeita de infecção?
+- Retirar assim que possível?
+
+Criar alerta visual:
+- Verde: dentro do prazo
+- Amarelo: revisar necessidade
+- Vermelho: dispositivo potencialmente vencido ou sem indicação
+
+---
+
+## 4. DROGAS VASOATIVAS E SEDAÇÃO
+
+Criar aba com tabela de DVA e sedação.
+
+Drogas vasoativas:
+- Noradrenalina
+- Adrenalina
+- Dobutamina
+- Vasopressina
+- Milrinona
+- Dopamina
+- Nitroprussiato
+- Nitroglicerina
+- Esmolol
+- Azul de metileno
+
+Para cada droga:
+- Indicação principal
+- Dose inicial
+- Faixa usual
+- Dose máxima usual
+- Diluição comum
+- Via preferencial
+- Cuidados
+- Efeitos adversos
+- Situações de evitar
+
+Sedação/analgesia:
+- Fentanil
+- Morfina
+- Remifentanil
+- Midazolam
+- Propofol
+- Dexmedetomidina
+- Cetamina
+- Haloperidol
+- Quetiapina
+- Rocurônio
+- Cisatracúrio
+
+Incluir:
+- RASS alvo
+- CPOT / BPS
+- CAM-ICU
+- Estratégia ABCDEF
+- Despertar diário
+- Teste de respiração espontânea
+- Prevenção de delirium
+
+---
+
+## 5. ANTIBIÓTICOS — AJUSTE PARA FUNÇÃO RENAL
+
+Criar aba de ajuste renal de antibióticos.
+
+Colunas:
+- Antibiótico
+- Espectro principal
+- Dose usual função renal normal
+- ClCr > 50 mL/min
+- ClCr 30–50
+- ClCr 10–30
+- ClCr < 10
+- Hemodiálise intermitente
+- CRRT
+- Necessita dose pós-HD?
+- Monitorização terapêutica?
+- Observações clínicas
+
+Incluir antibióticos:
+- Piperacilina-tazobactam
+- Meropenem
+- Imipenem
+- Ertapenem
+- Ceftriaxona
+- Cefepime
+- Ceftazidima
+- Cefazolina
+- Ampicilina
+- Ampicilina-sulbactam
+- Amoxicilina-clavulanato
+- Vancomicina
+- Teicoplanina
+- Linezolida
+- Daptomicina
+- Tigeciclina
+- Polimixina B
+- Colistina
+- Amicacina
+- Gentamicina
+- Ciprofloxacino
+- Levofloxacino
+- Metronidazol
+- Clindamicina
+- Sulfametoxazol-trimetoprim
+- Aciclovir
+- Ganciclovir
+- Fluconazol
+- Anfotericina B
+- Micafungina
+- Voriconazol
+
+Adicionar aviso:
+“Doses devem ser individualizadas conforme peso, função renal, gravidade, MIC, foco infeccioso, diálise e protocolo institucional.”
+
+---
+
+## 6. MEDICAÇÕES NÃO ANTIBIÓTICAS COM AJUSTE RENAL
+
+Criar aba com medicações comuns em UTI que exigem ajuste na disfunção renal.
+
+Incluir:
+- Levetiracetam
+- Gabapentina
+- Pregabalina
+- Enoxaparina
+- Fondaparinux
+- Digoxina
+- Metformina
+- Alopurinol
+- Rivaroxabana
+- Apixabana
+- Dabigatrana
+- Morfina
+- Tramadol
+- Insulina, observação de maior risco de hipoglicemia
+- Tenofovir
+- Oseltamivir
+- Baclofeno
+- Metoclopramida
+- Ranitidina/famotidina se aplicável
+- Colchicina
+
+Colunas:
+- Medicamento
+- Indicação comum na UTI
+- Dose usual
+- Ajuste ClCr 30–50
+- Ajuste ClCr 10–30
+- Ajuste ClCr < 10
+- Hemodiálise
+- Contraindicação relativa/absoluta
+- Toxicidade esperada se acumular
+- Observações
+
+Destacar levetiracetam com doses sugeridas conforme função renal.
+
+---
+
+## 7. ANTICOAGULAÇÃO E REVERSÃO
+
+Criar aba para anticoagulação.
+
+Dividir em:
+1. Profilaxia de TEV
+2. Anticoagulação plena
+3. Ajuste renal
+4. Contraindicações
+5. Reversão
+
+Incluir:
+- Heparina não fracionada profilática
+- Heparina não fracionada plena
+- Enoxaparina profilática
+- Enoxaparina plena
+- Fondaparinux
+- Varfarina
+- Rivaroxabana
+- Apixabana
+- Dabigatrana
+
+Colunas:
+- Indicação
+- Dose
+- Ajuste renal
+- Monitorização
+- Quando suspender
+- Quando evitar
+- Antídoto/reversão
+- Observações
+
+Contraindicações importantes:
+- Sangramento ativo
+- Plaquetopenia grave
+- Suspeita de HIT
+- Neurocirurgia recente
+- HSA/HIC recente
+- Coagulopatia grave
+- Procedimento invasivo iminente
+- Clearance muito reduzido para algumas drogas
+
+Adicionar tabela de reversão:
+- Protamina
+- Vitamina K
+- Complexo protrombínico
+- Plasma fresco
+- Idarucizumabe
+- Andexanet alfa, se disponível
+- Plaquetas
+- Crioprecipitado
+- Fibrinogênio
+
+---
+
+## 8. VENTILAÇÃO MECÂNICA E GASOMETRIA
+
+Criar aba de suporte ventilatório.
+
+Tabelas:
+- Modos ventilatórios: VCV, PCV, PSV, SIMV, APRV, VNI, CNAF
+- Indicações
+- Parâmetros iniciais
+- Cuidados
+- Alarmes comuns
+- Ajustes conforme gasometria
+
+Criar calculadoras:
+- Peso predito por sexo e altura
+- Volume corrente 4–8 mL/kg
+- Driving pressure
+- Complacência estática
+- Relação PaO2/FiO2
+- Gradiente A-a, se possível
+- Anion gap
+- Delta gap
+- HCO3 esperado em distúrbios ácido-base
+- Correção de sódio na hiperglicemia
+
+Criar algoritmo:
+- Hipoxemia
+- Hipercapnia
+- Acidose metabólica
+- Alcalose metabólica
+- Auto-PEEP
+- Broncoespasmo/DPOC
+- SDRA
+
+---
+
+## 9. SEPSE E CHOQUE
+
+Criar aba com bundle de sepse e choque.
+
+Incluir:
+- Suspeita de sepse
+- qSOFA
+- SOFA
+- Lactato
+- Coleta de culturas
+- Antibiótico na primeira hora quando choque/suspeita forte
+- Ressuscitação volêmica
+- Noradrenalina
+- Vasopressina
+- Hidrocortisona
+- Controle de foco
+- Reavaliação hemodinâmica
+- Metas de PAM
+- Diurese
+- Clearance de lactato
+
+Criar fluxograma em texto:
+Suspeita de infecção → disfunção orgânica → coletar lactato/culturas → antibiótico → volume se hipoperfusão → DVA se PAM baixa → controle de foco → reavaliação.
+
+---
+
+## 10. CHECKLIST DIÁRIO UTI
+
+Criar aba checklist diário com:
+- Analgesia adequada?
+- Sedação alvo?
+- RASS
+- CAM-ICU
+- Dor
+- Cabeceira elevada
+- Profilaxia TEV
+- Profilaxia úlcera de estresse
+- Nutrição
+- Glicemia
+- Evacuação
+- Pele/lesão por pressão
+- Cateteres ainda indicados?
+- Antibióticos revisados?
+- Culturas revisadas?
+- Descalonamento possível?
+- Despertar diário?
+- TRE?
+- Fisioterapia?
+- Mobilização?
+- Família atualizada?
+- Metas do dia?
+- Critérios de alta da UTI?
+
+Adicionar escore de completude do checklist em porcentagem.
+
+---
+
+## 11. CALCULADORAS CLÍNICAS
+
+Criar aba com calculadoras úteis:
+- IMC
+- Peso predito
+- Clearance de creatinina Cockcroft-Gault
+- Ânion gap
+- Sódio corrigido
+- Osmolaridade plasmática
+- Relação PaO2/FiO2
+- SOFA simplificado
+- qSOFA
+- CHA2DS2-VASc
+- HAS-BLED
+- Glasgow
+- RASS
+- CAM-ICU checklist
+- Wells TEP/TVP
+- Escore de sangramento
+- Dose de noradrenalina mcg/kg/min
+- Conversão de soluções e mEq quando possível
+
+---
+
+## 12. FLUXOGRAMAS RÁPIDOS
+
+Criar aba com fluxogramas em formato tabela/texto para:
+- Choque séptico
+- Choque cardiogênico
+- Choque obstrutivo
+- Choque hipovolêmico
+- Hipoxemia em VM
+- Hipercapnia em DPOC
+- Oligúria/LRA
+- Hipercalemia
+- Hiponatremia grave
+- Crise convulsiva/status epilepticus
+- Delirium
+- Agitação em UTI
+- Febre na UTI
+- Hipoglicemia
+- Hiperglicemia/cetoacidose
+- Sangramento em anticoagulado
+- Parada cardiorrespiratória
+- AVC agudo
+- HSA
+- Abdome agudo em UTI
+
+---
+
+## 13. CONTRAINDICAÇÕES E ALERTAS
+
+Criar aba de alertas críticos:
+- Drogas contraindicadas na disfunção renal grave
+- Drogas que prolongam QT
+- Drogas que aumentam risco de sangramento
+- Combinações nefrotóxicas
+- Combinações serotoninérgicas
+- Risco de depressão respiratória
+- Risco de delirium
+- Risco de hipotensão
+- Risco de hipoglicemia
+- Ajustes em hepatopatia
+- Cuidados em idosos
+- Cuidados em gestantes, se aplicável
+
+---
+
+## 14. PASSAGEM DE PLANTÃO
+
+Criar aba com modelo de passagem rápida.
+
+Colunas:
+- Leito
+- Diagnóstico principal
+- Eventos das últimas 24h
+- Suporte ventilatório
+- Hemodinâmica
+- Infecção/ATB
+- Rim/diurese/diálise
+- Neuro
+- Nutrição
+- Anticoagulação
+- Devices
+- Pendências
+- Riscos da noite
+- Conduta se piorar
+- Meta das próximas 12–24h
+
+---
+
+## 15. REFERÊNCIAS E AVISOS
+
+Criar aba com referências principais:
+- Surviving Sepsis Campaign
+- KDIGO
+- SCCM
+- ESICM
+- AMIB
+- ARDSNet
+- PADIS
+- Diretrizes de anticoagulação
+- Diretrizes de antibioticoterapia institucional quando disponível
+
+Adicionar aviso:
+“Esta planilha é ferramenta de apoio à decisão clínica. Não substitui julgamento médico, protocolos institucionais, avaliação individual do paciente, bula oficial, farmácia clínica, infectologia, nefrologia ou terapia intensiva.”
+
+---
+
+Requisitos finais:
+1. Entregar o arquivo em .XLSX.
+2. Todas as abas devem estar nomeadas claramente.
+3. Usar formatação condicional.
+4. Usar tabelas filtráveis.
+5. Inserir fórmulas onde possível.
+6. Criar listas suspensas para campos categóricos.
+7. Congelar cabeçalhos.
+8. Ajustar largura das colunas.
+9. Inserir legenda de cores.
+10. Criar uma aba índice com hiperlinks internos para todas as abas.
+11. Manter o conteúdo em português do Brasil.
+12. Priorizar uso prático em UTI adulto, pronto para plantão.
+13. Sempre que houver dose medicamentosa, incluir campo de observação para ajuste conforme peso, função renal, diálise, protocolo local e avaliação especializada.
+```
+
+---
+
+## 🔥 Versão curta do prompt
+
+```text
+Crie um arquivo .XLSX completo e interativo para uso diário em UTI adulto, com design moderno, filtros, fórmulas, validação de dados, tabelas e formatação condicional.
+
+O arquivo deve se chamar “PAINEL UTI - MANEJO CLÍNICO E CALCULADORAS”.
+
+Criar abas:
+1. Índice com hiperlinks internos
+2. Dashboard dos pacientes
+3. SAPS 3 e prioridade de admissão em UTI
+4. Devices e tempo de troca
+5. Drogas vasoativas
+6. Sedação, analgesia e delirium
+7. Antibióticos com ajuste renal
+8. Medicações não antibióticas com ajuste renal, incluindo levetiracetam
+9. Anticoagulação, contraindicações e reversão
+10. Ventilação mecânica e gasometria
+11. Sepse e choque
+12. Checklist diário UTI
+13. Calculadoras clínicas
+14. Fluxogramas rápidos
+15. Passagem de plantão
+16. Referências e avisos
+
+Incluir fórmulas para:
+- Clearance de creatinina
+- Peso predito
+- PaO2/FiO2
+- Ânion gap
+- Sódio corrigido
+- Osmolaridade
+- Driving pressure
+- Dose de noradrenalina mcg/kg/min
+- SOFA/qSOFA simplificado
+- Escore de completude do checklist
+
+Usar alerta visual:
+verde = adequado, amarelo = atenção, vermelho = crítico.
+
+Incluir tabelas práticas para:
+- Ajuste renal de antibióticos
+- Ajuste renal de medicações comuns
+- Anticoagulação
+- Contraindicações
+- Devices e retirada diária
+- Prioridade UTI P1/P2/P3/P4
+- Bundle de sepse
+- Ventilação mecânica
+- Passagem de plantão
+
+Conteúdo em português do Brasil, voltado para médico intensivista/plantonista, com linguagem objetiva, segura e aplicável à beira-leito.
+```
+
+---
+
+## 🧠 Sugestão nerd de uso
+
+Esse prompt funciona melhor se pedir para a IA gerar em **etapas**:
+
+1. **Primeiro:** estrutura das abas.
+2. **Segundo:** conteúdo das tabelas.
+3. **Terceiro:** fórmulas.
+4. **Quarto:** layout moderno.
+5. **Quinto:** revisão clínica de segurança.
+
+Melhor comando complementar:
+
+```text
+Antes de gerar o XLSX, crie um mapa das abas, campos, fórmulas e regras de formatação condicional para eu revisar.
+```
+
+Ou, para gerar direto:
+
+```text
+Gere diretamente o arquivo .XLSX final com todas as abas, fórmulas, filtros, validação de dados, formatação condicional e layout profissional.
+```
+
+✨ Posso também montar uma **versão ainda mais poderosa**, específica para sua UTI, com **SAPS 3, prioridade P1–P4, antibióticos renais, anticoagulação, DVA, sedação, VM, devices e passagem de plantão estilo HRN/Santa Casa**.
