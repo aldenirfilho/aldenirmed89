@@ -934,11 +934,36 @@ function abrirPreview(encodedPath, titulo) {
   if (ext === 'pdf') {
     frame.src = encodedRelative;
   } else if (['docx', 'doc', 'xlsx', 'xls', 'pptx', 'ppt'].includes(ext)) {
-    frame.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(fullUrl) + '&embedded=true';
-  } else if (['txt', 'md', 'markdown', 'csv', 'tsv', 'html', 'htm'].includes(ext)) {
+    if (fullUrl.includes('localhost') || fullUrl.includes('127.0.0.1')) {
+      frame.srcdoc = `<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center;">
+        <h2 style="color:#f59e0b">Ambiente Local (Localhost)</h2>
+        <p>Visualizadores de nuvem (como o do Office) não conseguem ler arquivos direto do seu <code>localhost</code>.</p>
+        <p>Por favor, <strong>baixe</strong> o arquivo para abri-lo no seu computador, ou faça o Push para o GitHub Pages para a visualização nativa funcionar.</p>
+        <p><a href="${encodedRelative}" download style="display:inline-block;margin-top:1rem;padding:10px 20px;background:#00d4ff;color:#0a1628;text-decoration:none;border-radius:8px;font-weight:bold;">Baixar Arquivo</a></p>
+      </body></html>`;
+    } else {
+      frame.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(fullUrl);
+    }
+  } else if (['txt', 'md', 'markdown', 'html', 'htm'].includes(ext)) {
     frame.src = encodedRelative;
+  } else if (['csv', 'tsv'].includes(ext)) {
+    frame.srcdoc = `<html><body style="font-family:system-ui;padding:1rem;background:#0f172a;color:#e2e8f0;">
+      <h2 style="color:#00d4ff;margin-top:0;">Visualização Rápida de Dados</h2>
+      <pre id="csv-content" style="white-space:pre-wrap;word-break:break-all;background:#0a1628;padding:1rem;border-radius:8px;font-family:'JetBrains Mono',monospace;">Carregando dados da tabela...</pre>
+      <script>
+        fetch('${encodedRelative}').then(r => r.text()).then(t => {
+          document.getElementById('csv-content').textContent = t;
+        }).catch(e => {
+          document.getElementById('csv-content').textContent = 'Erro ao ler arquivo. Use o botão Baixar no topo.';
+        });
+      </script>
+    </body></html>`;
   } else if (['apkg'].includes(ext)) {
-    frame.srcdoc = `<html><body style="font-family:system-ui;padding:2rem;background:#f8fafc;color:#0f172a"><h2>Arquivo Anki</h2><p>Este formato deve ser baixado e importado no Anki.</p><p><a href="${encodedRelative}" download>Baixar arquivo</a></p></body></html>`;
+    frame.srcdoc = `<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center;">
+      <h2 style="color:#7c3aed">Arquivo Anki Deck</h2>
+      <p>Este formato é exclusivo para importação direta no software Anki.</p>
+      <p><a href="${encodedRelative}" download style="display:inline-block;margin-top:1rem;padding:10px 20px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">Baixar para Importar</a></p>
+    </body></html>`;
   } else {
     frame.src = encodedRelative;
   }
