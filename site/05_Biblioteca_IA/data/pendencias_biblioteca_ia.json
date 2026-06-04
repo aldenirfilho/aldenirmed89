@@ -1,0 +1,290 @@
+{
+  "updatedAt": "2026-05-08",
+  "project": "Biblioteca IA — Pendências pós-classificação",
+  "tasks": [
+    {
+      "id": "revisar-duplicados",
+      "title": "Revisar duplicados prováveis",
+      "status": "pendente",
+      "priority": "alta",
+      "filesToUse": [
+        "05_Biblioteca_IA/data/biblioteca_catalogo.json",
+        "05_Biblioteca_IA/data/biblioteca_inbox_manifest_186.json"
+      ],
+      "output": [
+        "08_Documentacao_Projeto/RELATORIO_DUPLICADOS_BIBLIOTECA.md",
+        "05_Biblioteca_IA/data/biblioteca_duplicados.json"
+      ]
+    },
+    {
+      "id": "gerar-cards-alto-rendimento",
+      "title": "Transformar materiais de alto rendimento em cards",
+      "status": "pendente",
+      "priority": "alta",
+      "filesToUse": [
+        "05_Biblioteca_IA/data/biblioteca_catalogo.json",
+        "06_Card_Feed_Medico/data/cards.json"
+      ],
+      "output": [
+        "05_Biblioteca_IA/data/biblioteca_card_candidates.json",
+        "06_Card_Feed_Medico/data/cards_patch_biblioteca.json"
+      ]
+    },
+    {
+      "id": "gerar-questoes-temi",
+      "title": "Transformar materiais TEMI em questões",
+      "status": "pendente",
+      "priority": "alta",
+      "filesToUse": [
+        "05_Biblioteca_IA/data/biblioteca_catalogo.json",
+        "02_Banco_Questoes_TEMI/data/hub_qbanks.js"
+      ],
+      "output": [
+        "05_Biblioteca_IA/data/biblioteca_temi_question_candidates.json",
+        "02_Banco_Questoes_TEMI/data/qbank_patch_biblioteca.js"
+      ]
+    },
+    {
+      "id": "conectar-arquivos-criticos-modulos",
+      "title": "Conectar arquivos críticos aos módulos clínicos",
+      "status": "pendente",
+      "priority": "alta",
+      "filesToUse": [
+        "05_Biblioteca_IA/data/biblioteca_catalogo.json",
+        "data/topics.json",
+        "data/connections.json",
+        "05_Biblioteca_IA/data/biblioteca_brain_connections.json"
+      ],
+      "output": [
+        "data/topics_patch_biblioteca.json",
+        "data/connections_patch_biblioteca.json",
+        "05_Biblioteca_IA/data/biblioteca_brain_connections_patch.json"
+      ]
+    },
+    {
+      "id": "validar-publicar",
+      "title": "Validar JSON, links, preview e publicação",
+      "status": "pendente",
+      "priority": "alta",
+      "filesToUse": [
+        "05_Biblioteca_IA/data/biblioteca_catalogo.json",
+        "05_Biblioteca_IA/index.html"
+      ],
+      "output": [
+        "08_Documentacao_Projeto/RELATORIO_VALIDACAO_BIBLIOTECA.md"
+      ]
+    }
+  ],
+  "futureSuggestions": [
+    {
+      "id": 1,
+      "title": "Dashboard de status da Biblioteca IA",
+      "category": "Interface",
+      "priority": "alta",
+      "description": "Criar painel com total de arquivos, catalogados, revisar, duplicados, temas dominantes e produção semanal."
+    },
+    {
+      "id": 2,
+      "title": "Detecção automática de duplicados",
+      "category": "Qualidade",
+      "priority": "alta",
+      "description": "Comparar nomes, tamanhos e títulos para marcar duplicados prováveis antes da curadoria manual."
+    },
+    {
+      "id": 3,
+      "title": "Fila de revisão por lote",
+      "category": "Workflow",
+      "priority": "alta",
+      "description": "Criar interface para revisar 20 arquivos por vez com barra de progresso e salvamento incremental."
+    },
+    {
+      "id": 4,
+      "title": "Gerador de cards a partir de documentos",
+      "category": "Card Feed",
+      "priority": "alta",
+      "description": "Todo arquivo de alto rendimento deve poder gerar 1–5 cards para o Card Feed Médico."
+    },
+    {
+      "id": 5,
+      "title": "Gerador de questões TEMI por documento",
+      "category": "TEMI",
+      "priority": "alta",
+      "description": "Documentos classificados como TEMI/alta relevância geram questões comentadas em JSON."
+    },
+    {
+      "id": 6,
+      "title": "Mapa cerebral visual da Biblioteca",
+      "category": "Grafo",
+      "priority": "alta",
+      "description": "Renderizar conexões entre arquivos, temas, módulos, Banco TEMI, Card Feed e Calculadoras."
+    },
+    {
+      "id": 7,
+      "title": "Página individual para cada arquivo",
+      "category": "Navegação",
+      "priority": "média",
+      "description": "Cada item catalogado pode ganhar uma página com resumo, tags, conexões e links."
+    },
+    {
+      "id": 8,
+      "title": "Busca semântica local",
+      "category": "Busca",
+      "priority": "média",
+      "description": "Adicionar busca por tags, sinônimos e palavras-chave clínicas."
+    },
+    {
+      "id": 9,
+      "title": "Ranking de alto rendimento TEMI",
+      "category": "TEMI",
+      "priority": "alta",
+      "description": "Pontuar documentos por relevância para prova, frequência em UTI e potencial de questão."
+    },
+    {
+      "id": 10,
+      "title": "Botão “Gerar protocolo”",
+      "category": "Produtividade",
+      "priority": "média",
+      "description": "A partir de um documento, gerar prompt para criar protocolo institucional."
+    },
+    {
+      "id": 11,
+      "title": "Botão “Gerar wallpaper 1080x1920”",
+      "category": "Card Feed",
+      "priority": "média",
+      "description": "Transformar resumo de documento em briefing para imagem vertical."
+    },
+    {
+      "id": 12,
+      "title": "Integração com data/topics.json",
+      "category": "Grafo",
+      "priority": "alta",
+      "description": "Todo tema da Biblioteca deve poder aparecer no mapa vivo da home."
+    },
+    {
+      "id": 13,
+      "title": "Normalização de nomes de arquivos",
+      "category": "Organização",
+      "priority": "alta",
+      "description": "Renomear usando padrão tema_subtema_titulo_ano.ext sem acentos."
+    },
+    {
+      "id": 14,
+      "title": "Sistema de versão editorial",
+      "category": "Governança",
+      "priority": "média",
+      "description": "Marcar v1, v2, revisado, obsoleto, substituído, precisa atualização."
+    },
+    {
+      "id": 15,
+      "title": "Controle de validade científica",
+      "category": "Segurança",
+      "priority": "alta",
+      "description": "Campo para ano, diretriz-fonte, necessidade de atualização e alerta de evidência antiga."
+    },
+    {
+      "id": 16,
+      "title": "Conector Biblioteca → Calculadoras",
+      "category": "Ferramentas",
+      "priority": "média",
+      "description": "Arquivos com dose/cálculo alimentam backlog da Central de Calculadoras UTI."
+    },
+    {
+      "id": 17,
+      "title": "Conector Biblioteca → Módulos Clínicos",
+      "category": "Módulos",
+      "priority": "alta",
+      "description": "Arquivos críticos alimentam módulos como Sepse, VM/SDRA, AKI/TRS e Neuro UTI."
+    },
+    {
+      "id": 18,
+      "title": "Conector Biblioteca → Banco TEMI",
+      "category": "TEMI",
+      "priority": "alta",
+      "description": "Arquivos de prova geram questões e flashcards conectados ao tema."
+    },
+    {
+      "id": 19,
+      "title": "Conector Biblioteca → Card Feed",
+      "category": "Card Feed",
+      "priority": "alta",
+      "description": "Documentos visuais ou algoritmos geram cards para revisão rápida."
+    },
+    {
+      "id": 20,
+      "title": "Modo plantão",
+      "category": "Interface",
+      "priority": "média",
+      "description": "Filtro para exibir apenas documentos acionáveis à beira-leito."
+    },
+    {
+      "id": 21,
+      "title": "Modo estudo TEMI",
+      "category": "TEMI",
+      "priority": "média",
+      "description": "Filtro para documentos com questões, flashcards e provas."
+    },
+    {
+      "id": 22,
+      "title": "Modo revisão semanal",
+      "category": "Workflow",
+      "priority": "média",
+      "description": "Lista automática do que revisar, atualizar ou transformar em card."
+    },
+    {
+      "id": 23,
+      "title": "Sistema de badges",
+      "category": "Gamificação",
+      "priority": "baixa",
+      "description": "Badges por tema: Vent Master, Sepsis Slayer, Nefro AKI, Neuro ICU."
+    },
+    {
+      "id": 24,
+      "title": "Gerador de resumos em 3 níveis",
+      "category": "Síntese",
+      "priority": "média",
+      "description": "Resumo rápido, resumo plantão, resumo TEMI para cada arquivo."
+    },
+    {
+      "id": 25,
+      "title": "Checklist de segurança por tema",
+      "category": "Segurança",
+      "priority": "alta",
+      "description": "Cada documento crítico deve ter campo de riscos, contraindicações e dupla checagem."
+    },
+    {
+      "id": 26,
+      "title": "Índice por síndromes",
+      "category": "Navegação",
+      "priority": "média",
+      "description": "Classificar também por síndrome: choque, dispneia, coma, IRA, acidose, sangramento."
+    },
+    {
+      "id": 27,
+      "title": "Índice por cenário",
+      "category": "Navegação",
+      "priority": "média",
+      "description": "UTI, PS, enfermaria, ambulatório, pré-prova, discussão de caso."
+    },
+    {
+      "id": 28,
+      "title": "Exportação para Obsidian",
+      "category": "Obsidian",
+      "priority": "média",
+      "description": "Gerar Markdown com frontmatter para importar no vault."
+    },
+    {
+      "id": 29,
+      "title": "Pacote de atualização mensal",
+      "category": "Governança",
+      "priority": "média",
+      "description": "Rotina para revisar novos arquivos, obsoletos e temas prioritários."
+    },
+    {
+      "id": 30,
+      "title": "Score de utilidade clínica",
+      "category": "Priorização",
+      "priority": "alta",
+      "description": "Score 0–10 por impacto em plantão, risco clínico, frequência e utilidade TEMI."
+    }
+  ]
+}
