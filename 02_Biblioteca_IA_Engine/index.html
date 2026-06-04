@@ -47,6 +47,17 @@
   .filtros{display:flex;gap:.5rem;flex-wrap:wrap;max-width:900px;margin:.5rem auto 1.5rem;padding:0 1rem}
   .filtro{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:.35rem .9rem;font-size:.8rem;cursor:pointer;transition:.2s;color:var(--muted)}
   .filtro.ativo,.filtro:hover{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+  .filter-panel{max-width:900px;margin:.7rem auto 1.2rem;padding:0 1rem;display:grid;grid-template-columns:1fr 1fr auto;gap:.7rem;align-items:end}
+  .filter-panel label{font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
+  .filter-panel select{width:100%;margin-top:.35rem;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.7rem .8rem;color:var(--text);outline:none}
+  .filter-panel select:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,212,255,.12)}
+  .partition-grid{max-width:1100px;margin:0 auto 1.5rem;padding:0 1rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.8rem}
+  .partition-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.9rem;cursor:pointer;transition:.2s;display:grid;grid-template-columns:auto 1fr auto;gap:.7rem;align-items:center}
+  .partition-card:hover,.partition-card.ativo{border-color:var(--accent);background:rgba(0,212,255,.08)}
+  .partition-card .pc-icon{font-size:1.55rem}
+  .partition-card strong{display:block;font-size:.86rem;color:var(--text);line-height:1.2}
+  .partition-card small{display:block;font-size:.68rem;color:var(--muted);margin-top:.2rem}
+  .partition-card .pc-count{font-family:'Syne',sans-serif;font-weight:800;color:var(--accent);font-size:1.15rem}
 
   /* ── GRID DE ARQUIVOS ── */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;max-width:1100px;margin:0 auto;padding:0 1rem 3rem}
@@ -57,10 +68,18 @@
   .card.pdf::before{background:linear-gradient(90deg,var(--red),#f97316)}
   .card.word::before{background:linear-gradient(90deg,#2563eb,#3b82f6)}
   .card.html::before{background:linear-gradient(90deg,var(--accent3),#059669)}
+  .card.spreadsheet::before,.card.csv::before{background:linear-gradient(90deg,#10b981,#84cc16)}
+  .card.markdown::before,.card.text::before{background:linear-gradient(90deg,#64748b,#94a3b8)}
+  .card.presentation::before{background:linear-gradient(90deg,#f97316,#f59e0b)}
+  .card.anki::before{background:linear-gradient(90deg,#a855f7,#ec4899)}
 
   .card-icon{font-size:2rem;margin-bottom:.6rem;display:block}
   .card-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.3}
   .card-meta{font-size:.75rem;color:var(--muted);margin-bottom:.8rem;font-family:'JetBrains Mono',monospace}
+  .meta-pills{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.8rem}
+  .meta-pill{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:999px;padding:.18rem .55rem;font-size:.66rem;color:var(--muted);font-family:'JetBrains Mono',monospace}
+  .meta-pill.format{color:var(--accent)}
+  .meta-pill.origin{color:var(--gold)}
   .card-desc{font-size:.82rem;color:var(--muted);margin-bottom:1rem;line-height:1.5;flex:1}
   .card-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.8rem}
   .tag{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.2rem .6rem;font-size:.68rem;color:var(--accent);font-family:'JetBrains Mono',monospace}
@@ -143,6 +162,10 @@
     border-radius: 4px;
     font-weight: bold;
   }
+  @media(max-width:760px){
+    .filter-panel{grid-template-columns:1fr}
+    .partition-grid{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
@@ -168,13 +191,15 @@
     <div class="stats">
       <div class="stat"><span id="stats-total">0</span><small>📦 Arquivos</small></div>
       <div class="stat"><span id="stats-temas">0</span><small>📂 Temas</small></div>
+      <div class="stat"><span id="stats-formatos">0</span><small>🧩 Formatos</small></div>
+      <div class="stat"><span id="stats-origens">0</span><small>🔎 Origens</small></div>
       <div class="stat"><span id="stats-brain">0</span><small>🧠 Conexões</small></div>
     </div>
   </div>
 
   <!-- BUSCA -->
   <div class="search-bar">
-    <input type="text" id="busca" placeholder="🔍 Buscar por tema, palavra-chave ou título..." oninput="renderGrid()"/>
+    <input type="text" id="busca" placeholder="🔍 Buscar por tema, formato, origem, palavra-chave ou título..." oninput="renderGrid()"/>
   </div>
 
   <!-- FILTROS POR TEMA -->
@@ -182,6 +207,25 @@
     <span class="filtro ativo" data-filter="todos" onclick="setFilter('todos')">📦 Todos</span>
     <span class="filtro" onclick="abrirNovoTema()" style="border-style:dashed; opacity:0.7">➕ Novo Tema</span>
     <!-- Populado via JSON -->
+  </div>
+
+  <!-- FILTROS POR FORMATO E ORIGEM -->
+  <div class="filter-panel">
+    <label>Formato do documento
+      <select id="filtro-formato" onchange="setFormatFilter(this.value)">
+        <option value="todos">Todos os formatos</option>
+      </select>
+    </label>
+    <label>Origem
+      <select id="filtro-origem" onchange="setOriginFilter(this.value)">
+        <option value="todos">Todas as origens</option>
+      </select>
+    </label>
+    <button class="btn btn-secondary" onclick="limparFiltros()">Limpar filtros</button>
+  </div>
+
+  <div class="partition-grid" id="particoes-formatos">
+    <!-- Populado via JS -->
   </div>
 
   <section class="section-title">
@@ -284,13 +328,26 @@
         <select id="clTipo">
           <option value="pdf">📄 PDF</option>
           <option value="word">📝 Word/DOCX</option>
+          <option value="spreadsheet">📊 XLS/XLSX</option>
+          <option value="markdown">⬇️ Markdown/MD</option>
+          <option value="csv">📈 CSV/TSV</option>
+          <option value="presentation">📽️ PPT/PPTX</option>
+          <option value="text">📃 TXT</option>
+          <option value="anki">🃏 Flashcards Anki</option>
           <option value="html">🌐 HTML</option>
           <option value="image">🖼️ Imagem</option>
-          <option value="text">📄 Texto/MD</option>
-          <option value="data">📊 Dados/Planilha</option>
         </select>
       </label>
     </div>
+
+    <label>Origem do documento
+      <select id="clOrigem">
+        <option value="gerada-por-ia">🤖 Gerada por IA / curadoria própria</option>
+        <option value="artigo-cientifico-original">🔬 Artigo científico original</option>
+        <option value="dados-planilha">📊 Dados / planilha</option>
+        <option value="flashcards-anki">🃏 Flashcards Anki</option>
+      </select>
+    </label>
 
     <label>IA de Origem
       <input id="clIA" placeholder="Claude, Gemini, GPT..." />
@@ -317,6 +374,7 @@
     <h3 id="previewTitle">Visualizando arquivo</h3>
     <div style="display:flex;gap:.5rem">
       <a id="previewDirect" href="#" target="_blank" class="btn btn-secondary" style="font-size:.75rem">🔗 Abrir direto</a>
+      <a id="previewDownload" href="#" download class="btn btn-secondary" style="font-size:.75rem">⬇️ Baixar</a>
       <button class="btn btn-primary" onclick="fecharPreview()" style="font-size:.75rem">✕ Fechar</button>
     </div>
   </div>
@@ -331,7 +389,10 @@ let taxonomy = { themes: [] };
 let catalog = { items: [] };
 let brain = { nodes: [], edges: [] };
 let roadmap = [];
+let documentManifest = { files: [], partitions: [], origins: [] };
 let currentFilter = 'todos';
+let currentFormatFilter = 'todos';
+let currentOriginFilter = 'todos';
 let currentView = 'catalogo';
 
 // Lógica de URL base dinâmica
@@ -373,12 +434,13 @@ function marcarParaExcluir(id, event) {
 // Carregar Dados
 async function init() {
   try {
-    const [resTax, resCat, resBrain, resRoad, resAuto] = await Promise.all([
+    const [resTax, resCat, resBrain, resRoad, resAuto, resDocs] = await Promise.all([
       fetch('data/biblioteca_taxonomia_temas.json').then(r => r.ok ? r.json() : {themes:[]}),
       fetch('data/biblioteca_catalogo.json').then(r => r.ok ? r.json() : {items:[]}),
       fetch('data/biblioteca_brain_connections.json').then(r => r.ok ? r.json() : {nodes:[], edges:[]}),
       fetch('../data/roadmap_30_melhorias_biblioteca_ia.json').then(r => r.ok ? r.json() : {roadmap:[]}).catch(() => ({roadmap:[]})),
-      fetch('data/biblioteca_inbox_manifest_auto.json').then(r => r.ok ? r.json() : {files:[]}).catch(() => ({files:[]}))
+      fetch('data/biblioteca_inbox_manifest_auto.json').then(r => r.ok ? r.json() : {files:[]}).catch(() => ({files:[]})),
+      fetch('data/biblioteca_documentos_manifest.json').then(r => r.ok ? r.json() : {files:[], partitions:[], origins:[]}).catch(() => ({files:[], partitions:[], origins:[]}))
     ]);
     
     taxonomy = resTax;
@@ -391,32 +453,55 @@ async function init() {
     catalog = resCat;
     brain = resBrain;
     roadmap = resRoad.roadmap || [];
-    const autoManifest = resAuto.files || [];
+    documentManifest = resDocs && resDocs.files && resDocs.files.length ? resDocs : { ...resAuto, partitions: [], origins: [] };
+    const autoManifest = documentManifest.files || [];
     
     // Resolver caminhos quebrados do catálogo usando o manifesto real do inbox (GitHub Pages)
-    const inboxByName = new Map(autoManifest.map(f => [f.name, normalizePath(f.path)]));
+    const manifestByName = new Map(autoManifest.map(f => [f.name || f.filename, { ...f, path: normalizePath(f.path) }]));
+    const manifestByPath = new Map(autoManifest.map(f => [normalizePath(f.path), { ...f, path: normalizePath(f.path) }]));
     (catalog.items || []).forEach(item => {
       const fileName = item.filename || (item.path || '').split('/').pop();
-      if (fileName && inboxByName.has(fileName) && (item.path || '').startsWith('acervo/')) {
-        item.path = inboxByName.get(fileName);
+      const meta = manifestByName.get(fileName) || manifestByPath.get(normalizePath(item.path));
+      if (meta) {
+        item.path = meta.path;
+        item.filename = item.filename || meta.name || meta.filename;
+        item.tipo = meta.tipo || item.tipo;
+        item.extension = meta.extension || item.extension;
+        item.formato = meta.format || item.formato;
+        item.formatoLabel = meta.formatLabel || item.formatoLabel;
+        item.formatEmoji = meta.formatEmoji || item.formatEmoji;
+        item.origem = meta.origin || item.origem;
+        item.origemLabel = meta.originLabel || item.origemLabel;
+        item.originEmoji = meta.originEmoji || item.originEmoji;
+        item.sizeBytes = meta.sizeBytes || item.sizeBytes;
+        item.tags = Array.from(new Set([...(item.tags || []), meta.extension, meta.format, meta.origin].filter(Boolean)));
       }
     });
     
     // Sincronizar arquivos do manifesto automático que não estão no catálogo
     autoManifest.forEach(autoFile => {
-        const exists = catalog.items.find(i => i.path === autoFile.path || i.filename === autoFile.name);
+        const normalizedPath = normalizePath(autoFile.path);
+        const exists = catalog.items.find(i => normalizePath(i.path) === normalizedPath || i.filename === (autoFile.name || autoFile.filename));
         if (!exists) {
             catalog.items.push({
-                id: 'auto-' + Math.random().toString(36).substr(2, 9),
-                title: autoFile.name.replace(/\.[^/.]+$/, "").replace(/_/g, " "),
-                filename: autoFile.name,
-                theme: 'inbox-revisar',
-                tipo: autoFile.extension === 'pdf' ? 'pdf' : (['docx', 'doc'].includes(autoFile.extension) ? 'word' : 'text'),
-                tags: ['auto-detectado', autoFile.extension],
+                id: autoFile.id || 'auto-' + Math.random().toString(36).substr(2, 9),
+                title: autoFile.title || (autoFile.name || autoFile.filename || 'Arquivo').replace(/\.[^/.]+$/, "").replace(/_/g, " "),
+                filename: autoFile.name || autoFile.filename,
+                theme: autoFile.theme || 'inbox-revisar',
+                tipo: autoFile.tipo || (autoFile.extension === 'pdf' ? 'pdf' : (['docx', 'doc'].includes(autoFile.extension) ? 'word' : 'text')),
+                extension: autoFile.extension,
+                formato: autoFile.format,
+                formatoLabel: autoFile.formatLabel,
+                formatEmoji: autoFile.formatEmoji,
+                origem: autoFile.origin,
+                origemLabel: autoFile.originLabel,
+                originEmoji: autoFile.originEmoji,
+                sizeBytes: autoFile.sizeBytes,
+                tags: ['auto-detectado', autoFile.extension, autoFile.format, autoFile.origin].filter(Boolean),
                 status: 'revisar',
-                path: normalizePath(autoFile.path),
+                path: normalizedPath,
                 resumo: 'Arquivo detectado automaticamente no inbox. Aguardando classificação.',
-                data: autoFile.addedAt.substring(0, 7),
+                data: (autoFile.addedAt || '').substring(0, 7) || '2026',
                 createdAt: new Date().toISOString()
             });
         }
@@ -431,8 +516,10 @@ async function init() {
     });
 
     popularFiltros();
+    popularFormatos();
     popularSelects();
     renderStats();
+    renderParticoes();
     renderGrid();
     renderTriagem();
     renderRoadmap();
@@ -487,11 +574,75 @@ function popularFiltros() {
   sel.innerHTML = taxonomy.themes.map(t => `<option value="${t.id}">${t.emoji || '📂'} ${t.label}</option>`).join('');
 }
 
+function popularFormatos() {
+  const formatoSelect = document.getElementById('filtro-formato');
+  const origemSelect = document.getElementById('filtro-origem');
+  if (!formatoSelect || !origemSelect) return;
+
+  const partitions = documentManifest.partitions || [];
+  const origins = documentManifest.origins || [];
+
+  formatoSelect.innerHTML = '<option value="todos">Todos os formatos</option>' +
+    partitions.map(p => `<option value="${p.id}">${p.emoji || '📦'} ${p.label} (${p.count})</option>`).join('');
+
+  origemSelect.innerHTML = '<option value="todos">Todas as origens</option>' +
+    origins.map(o => `<option value="${o.id}">${o.emoji || '🔎'} ${o.label} (${o.count})</option>`).join('');
+}
+
+function renderParticoes() {
+  const container = document.getElementById('particoes-formatos');
+  if (!container) return;
+  const partitions = documentManifest.partitions || [];
+  container.innerHTML = partitions.map(p => `
+    <div class="partition-card ${currentFormatFilter === p.id ? 'ativo' : ''}" onclick="setFormatFilter('${p.id}')">
+      <div class="pc-icon">${p.emoji || '📦'}</div>
+      <div>
+        <strong>${p.shortLabel || p.label}</strong>
+        <small>${p.description || p.label}</small>
+      </div>
+      <div class="pc-count">${p.count}</div>
+    </div>
+  `).join('');
+}
+
+function setFormatFilter(f) {
+  currentFormatFilter = f;
+  const select = document.getElementById('filtro-formato');
+  if (select) select.value = f;
+  renderParticoes();
+  renderGrid();
+}
+
+function setOriginFilter(f) {
+  currentOriginFilter = f;
+  const select = document.getElementById('filtro-origem');
+  if (select) select.value = f;
+  renderGrid();
+}
+
+function limparFiltros() {
+  currentFilter = 'todos';
+  currentFormatFilter = 'todos';
+  currentOriginFilter = 'todos';
+  document.getElementById('busca').value = '';
+  const formatoSelect = document.getElementById('filtro-formato');
+  const origemSelect = document.getElementById('filtro-origem');
+  if (formatoSelect) formatoSelect.value = 'todos';
+  if (origemSelect) origemSelect.value = 'todos';
+  popularFiltros();
+  renderParticoes();
+  renderGrid();
+}
+
 // Renderizar Stats
 function renderStats() {
   if (!catalog.items) return;
   document.getElementById('stats-total').textContent = catalog.items.filter(i => i.theme !== 'inbox-revisar').length;
   document.getElementById('stats-temas').textContent = (taxonomy.themes ? taxonomy.themes.length : 0) - 1;
+  const formatsCount = new Set((catalog.items || []).map(i => i.formato || i.format || i.tipo).filter(Boolean)).size;
+  const originsCount = new Set((catalog.items || []).map(i => i.origem || i.origin).filter(Boolean)).size;
+  document.getElementById('stats-formatos').textContent = formatsCount;
+  document.getElementById('stats-origens').textContent = originsCount;
   document.getElementById('stats-brain').textContent = brain.edges ? brain.edges.length : 0;
   document.getElementById('count-nodes').textContent = brain.nodes ? brain.nodes.length : 0;
   document.getElementById('count-edges').textContent = brain.edges ? brain.edges.length : 0;
@@ -509,25 +660,55 @@ function renderGrid() {
     // Se o filtro for 'todos', esconde o inbox. Se o filtro for 'inbox-revisar', mostra só o inbox.
     if (currentFilter === 'todos' && i.theme === 'inbox-revisar') return false;
     const matchTheme = currentFilter === 'todos' || i.theme === currentFilter;
-    const matchBusca = !busca || i.title.toLowerCase().includes(busca) || (i.tags && i.tags.some(t => t.toLowerCase().includes(busca)));
-    return matchTheme && matchBusca;
+    const formatId = i.formato || i.format || i.tipo || 'outros';
+    const originId = i.origem || i.origin || 'gerada-por-ia';
+    const matchFormat = currentFormatFilter === 'todos' || formatId === currentFormatFilter;
+    const matchOrigin = currentOriginFilter === 'todos' || originId === currentOriginFilter;
+    const haystack = [
+      i.title,
+      i.filename,
+      i.theme,
+      i.tipo,
+      formatId,
+      i.formatoLabel,
+      i.formatLabel,
+      originId,
+      i.origemLabel,
+      i.originLabel,
+      i.resumo,
+      ...(i.tags || [])
+    ].filter(Boolean).join(' ').toLowerCase();
+    const matchBusca = !busca || haystack.includes(busca);
+    return matchTheme && matchFormat && matchOrigin && matchBusca;
   });
 
   grid.innerHTML = items.map(i => {
     const theme = (taxonomy.themes || []).find(t => t.id === i.theme) || { emoji: '📄' };
+    const formatId = i.formato || i.format || i.tipo || 'outros';
+    const originId = i.origem || i.origin || 'gerada-por-ia';
+    const formatLabel = i.formatoLabel || i.formatLabel || formatId;
+    const originLabel = i.origemLabel || i.originLabel || originId;
+    const formatEmoji = i.formatEmoji || getIcon(i.tipo);
+    const originEmoji = i.originEmoji || (originId === 'artigo-cientifico-original' ? '🔬' : '🤖');
+    const safeTitle = (i.title || 'Arquivo').replace(/'/g,"\\'");
+    const downloadPath = safeEncodePath(i.path);
     return `
-      <div class="card ${i.tipo}" onclick="abrirPreview('${encodeURIComponent(i.path)}', '${i.title.replace(/'/g,"\\'")}')">
+      <div class="card ${i.tipo}" onclick="abrirPreview('${encodeURIComponent(i.path)}', '${safeTitle}')">
         <span class="card-icon">${getIcon(i.tipo)}</span>
         <div class="card-title">${i.title}</div>
-        <div class="card-meta">📅 ${i.data} · ${theme.emoji || '📂'} ${i.theme}</div>
+        <div class="card-meta">📅 ${i.data || '2026'} · ${theme.emoji || '📂'} ${i.theme}</div>
+        <div class="meta-pills">
+          <span class="meta-pill format">${formatEmoji} ${formatLabel}</span>
+          <span class="meta-pill origin">${originEmoji} ${originLabel}</span>
+        </div>
         <div class="card-desc">${i.resumo || 'Clique para visualizar este material médico.'}</div>
         <div class="card-tags">
           ${(i.tags || []).map(t => `<span class="tag">#${t}</span>`).join('')}
         </div>
         <div class="card-actions">
-          <button class="btn btn-primary" onclick="event.stopPropagation(); abrirPreview('${encodeURIComponent(i.path)}', '${i.title.replace(/'/g,"\\'")}')">👁️</button>
+          <button class="btn btn-primary" onclick="event.stopPropagation(); abrirPreview('${encodeURIComponent(i.path)}', '${safeTitle}')">👁️ Ver</button>
           <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirClassify('${i.id}')">📂</button>
-          <a href="${i.path}" download class="btn btn-secondary" onclick="event.stopPropagation()">⬇️</a>
+          <a href="${downloadPath}" download class="btn btn-secondary" onclick="event.stopPropagation()">⬇️ Baixar</a>
           <button class="btn btn-delete" onclick="marcarParaExcluir('${i.id}', event)">🗑️</button>
         </div>
       </div>
@@ -535,6 +716,8 @@ function renderGrid() {
   }).join('');
   
   document.getElementById('empty-state').style.display = items.length === 0 ? 'block' : 'none';
+  document.getElementById('grid-title').textContent = currentFormatFilter === 'todos' ? '📂 Acervo Catalogado' : '🧩 Repartição por formato';
+  document.getElementById('grid-subtitle').textContent = `${items.length} documento(s) encontrados com os filtros atuais.`;
 }
 
 // Renderizar Triagem
@@ -543,25 +726,41 @@ function renderTriagem() {
   if (!catalog.items) return;
   const items = catalog.items.filter(i => i.theme === 'inbox-revisar');
   
-  grid.innerHTML = items.map(i => `
-    <div class="card" style="border-style:dashed; border-width:2px">
+  grid.innerHTML = items.map(i => {
+    const safeTitle = (i.title || 'Arquivo').replace(/'/g,"\\'");
+    const formatLabel = i.formatoLabel || i.formatLabel || i.formato || i.tipo || 'Formato';
+    const originLabel = i.origemLabel || i.originLabel || i.origem || i.origin || 'Origem';
+    const downloadPath = safeEncodePath(i.path);
+    return `
+    <div class="card ${i.tipo}" style="border-style:dashed; border-width:2px">
       <span class="inbox-badge">📥 INBOX</span>
-      <span class="card-icon">📂</span>
+      <span class="card-icon">${getIcon(i.tipo)}</span>
       <div class="card-title">${i.title}</div>
       <div class="card-meta" style="word-break:break-all">${i.filename || i.path}</div>
+      <div class="meta-pills">
+        <span class="meta-pill format">${i.formatEmoji || getIcon(i.tipo)} ${formatLabel}</span>
+        <span class="meta-pill origin">${i.originEmoji || '🔎'} ${originLabel}</span>
+      </div>
       <div class="card-actions" style="margin-top:auto; display:flex; gap:5px">
         <button class="btn btn-triagem" style="flex:1" onclick="event.stopPropagation(); abrirClassify('${i.id}')">📂 Classificar</button>
-        <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirPreview('${encodeURIComponent(i.path)}', '${i.title}')">👁️</button>
+        <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirPreview('${encodeURIComponent(i.path)}', '${safeTitle}')">👁️</button>
+        <a href="${downloadPath}" download class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation()">⬇️</a>
         <button class="btn btn-delete" style="padding:0.5rem" onclick="marcarParaExcluir('${i.id}', event)">🗑️</button>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 // Utils
 function getIcon(tipo) {
   if (tipo === 'pdf') return '📄';
   if (tipo === 'word') return '📝';
+  if (tipo === 'spreadsheet') return '📊';
+  if (tipo === 'markdown') return '⬇️';
+  if (tipo === 'csv') return '📈';
+  if (tipo === 'presentation') return '📽️';
+  if (tipo === 'text') return '📃';
+  if (tipo === 'anki') return '🃏';
   if (tipo === 'html') return '🌐';
   if (tipo === 'image') return '🖼️';
   if (tipo === 'data') return '📊';
@@ -597,6 +796,7 @@ function abrirClassify(id) {
   document.getElementById('clResumo').value = i.resumo || '';
   document.getElementById('clTheme').value = i.theme === 'inbox-revisar' ? 'uti-geral' : i.theme;
   document.getElementById('clTipo').value = i.tipo;
+  document.getElementById('clOrigem').value = i.origem || i.origin || 'gerada-por-ia';
   document.getElementById('clIA').value = i.ia_origem || 'IA';
   document.getElementById('clTags').value = (i.tags || []).join(', ');
   
@@ -618,6 +818,8 @@ function salvarClassificacao() {
     resumo: document.getElementById('clResumo').value.trim(),
     theme: document.getElementById('clTheme').value,
     tipo: document.getElementById('clTipo').value,
+    origem: document.getElementById('clOrigem').value,
+    origin: document.getElementById('clOrigem').value,
     ia_origem: document.getElementById('clIA').value.trim(),
     tags: document.getElementById('clTags').value.split(',').map(t => t.trim()).filter(Boolean),
     status: 'catalogado',
@@ -714,6 +916,7 @@ function abrirPreview(encodedPath, titulo) {
   const fullUrl = path.startsWith('http') ? path : baseUrl + encodedRelative;
   const ext = path.split('.').pop().toLowerCase();
   const frame = document.getElementById('previewFrame');
+  frame.removeAttribute('srcdoc');
   
   // 📱 FIX MOBILE: Dispositivos móveis (especialmente iOS/iPhone) limitam PDFs em iframes à primeira página.
   // Abrir direto na nova aba ativa o visualizador nativo do celular (com scroll, zoom e marcações).
@@ -726,11 +929,16 @@ function abrirPreview(encodedPath, titulo) {
   
   document.getElementById('previewTitle').textContent = titulo || 'Visualizando arquivo';
   document.getElementById('previewDirect').href = encodedRelative;
+  document.getElementById('previewDownload').href = encodedRelative;
   
   if (ext === 'pdf') {
     frame.src = encodedRelative;
-  } else if (['docx', 'doc', 'xlsx', 'pptx'].includes(ext)) {
+  } else if (['docx', 'doc', 'xlsx', 'xls', 'pptx', 'ppt'].includes(ext)) {
     frame.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(fullUrl) + '&embedded=true';
+  } else if (['txt', 'md', 'markdown', 'csv', 'tsv', 'html', 'htm'].includes(ext)) {
+    frame.src = encodedRelative;
+  } else if (['apkg'].includes(ext)) {
+    frame.srcdoc = `<html><body style="font-family:system-ui;padding:2rem;background:#f8fafc;color:#0f172a"><h2>Arquivo Anki</h2><p>Este formato deve ser baixado e importado no Anki.</p><p><a href="${encodedRelative}" download>Baixar arquivo</a></p></body></html>`;
   } else {
     frame.src = encodedRelative;
   }
