@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LES — Fluxograma Diagnóstico EULAR/ACR 2019 | Antigravity</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Outfit:wght@400;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #f0f4f8;
+    --white: #ffffff;
+    --dark: #0f172a;
+    --mid: #334155;
+    --muted: #94a3b8;
+    --border: #e2e8f0;
+    --blue: #2563eb;
+    --blue-light: #dbeafe;
+    --blue-mid: #93c5fd;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --yellow: #d97706;
+    --yellow-light: #fef3c7;
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
+    --orange: #ea580c;
+    --orange-light: #ffedd5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    min-height: 1920px;
+    background: var(--bg);
+    font-family: 'Outfit', sans-serif;
+    color: var(--dark);
+    position: relative;
+  }
+
+  /* Decorative top bar */
+  .top-bar {
+    height: 12px;
+    background: linear-gradient(90deg, #2563eb, #7c3aed, #dc2626, #16a34a, #d97706);
+  }
+
+  .wrapper {
+    padding: 56px 64px 72px;
+    display: flex; flex-direction: column; gap: 0;
+  }
+
+  /* HEADER */
+  .header {
+    margin-bottom: 48px;
+  }
+  .header .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .header h1 {
+    font-size: 52px; font-weight: 900; line-height: 1.05;
+    color: var(--dark);
+  }
+  .header h1 em { font-style: normal; color: var(--blue); }
+  .header .subtitle {
+    margin-top: 12px; font-size: 19px; color: var(--mid);
+    line-height: 1.5; max-width: 700px;
+  }
+
+  /* FLOW CONTAINER */
+  .flow { display: flex; flex-direction: column; align-items: center; }
+
+  /* STEP */
+  .step {
+    width: 100%;
+    border-radius: 20px;
+    padding: 28px 32px;
+    position: relative;
+  }
+
+  .step-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 8px;
+    opacity: 0.6;
+  }
+
+  .step-title {
+    font-size: 24px; font-weight: 800; margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .step-body {
+    font-size: 16px; line-height: 1.6; color: var(--mid);
+  }
+
+  .step-body strong { color: var(--dark); }
+
+  /* Step colors */
+  .step-start { background: var(--dark); color: var(--white); }
+  .step-start .step-num { opacity: 0.4; color: var(--white); }
+  .step-start .step-title { color: var(--white); }
+  .step-start .step-body { color: #94a3b8; }
+
+  .step-gate { background: var(--blue-light); border: 2px solid var(--blue-mid); }
+  .step-gate .step-num { color: var(--blue); }
+  .step-gate .step-title { color: var(--blue); }
+
+  .step-action { background: var(--white); border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+  .step-action .step-num { color: var(--muted); }
+  .step-action .step-title { color: var(--dark); }
+
+  .step-score { background: var(--purple-light); border: 2px solid #c4b5fd; }
+  .step-score .step-num { color: var(--purple); }
+  .step-score .step-title { color: var(--purple); }
+
+  .step-result-yes { background: var(--green-light); border: 2px solid #86efac; }
+  .step-result-yes .step-num { color: var(--green); }
+  .step-result-yes .step-title { color: var(--green); }
+
+  .step-result-maybe { background: var(--yellow-light); border: 2px solid #fcd34d; }
+  .step-result-maybe .step-num { color: var(--yellow); }
+  .step-result-maybe .step-title { color: var(--yellow); }
+
+  .step-result-no { background: var(--red-light); border: 2px solid #fca5a5; }
+  .step-result-no .step-num { color: var(--red); }
+  .step-result-no .step-title { color: var(--red); }
+
+  .step-monitor { background: var(--orange-light); border: 2px solid #fed7aa; }
+  .step-monitor .step-num { color: var(--orange); }
+  .step-monitor .step-title { color: var(--orange); }
+
+  /* CONNECTOR */
+  .connector {
+    display: flex; flex-direction: column; align-items: center;
+    margin: 4px 0;
+  }
+  .connector-line {
+    width: 3px; height: 32px;
+    background: linear-gradient(180deg, var(--border), var(--blue-mid));
+  }
+  .connector-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; font-weight: 600;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 20px; padding: 4px 16px;
+    color: var(--mid);
+  }
+  .connector-line2 {
+    width: 3px; height: 24px;
+    background: linear-gradient(180deg, var(--blue-mid), var(--border));
+  }
+  .connector.red .connector-line { background: linear-gradient(180deg, var(--border), #fca5a5); }
+  .connector.red .connector-label { color: var(--red); border-color: #fca5a5; }
+  .connector.red .connector-line2 { background: linear-gradient(180deg, #fca5a5, var(--border)); }
+  .connector.green .connector-line { background: linear-gradient(180deg, var(--border), #86efac); }
+  .connector.green .connector-label { color: var(--green); border-color: #86efac; }
+  .connector.green .connector-line2 { background: linear-gradient(180deg, #86efac, var(--border)); }
+
+  /* SCORE TABLE */
+  .score-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 14px;
+  }
+  .score-table th {
+    background: rgba(124,58,237,0.08);
+    color: var(--purple);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 10px 14px; text-align: left;
+  }
+  .score-table tr:not(:last-child) td { border-bottom: 1px solid rgba(124,58,237,0.1); }
+  .score-table td { padding: 10px 14px; color: var(--mid); vertical-align: top; }
+  .score-table td:first-child { color: var(--dark); font-weight: 600; }
+  .pts-badge {
+    display: inline-block;
+    background: var(--purple-light);
+    color: var(--purple);
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700; font-size: 13px;
+    padding: 2px 10px; border-radius: 20px;
+    border: 1px solid #c4b5fd;
+    white-space: nowrap;
+  }
+
+  /* RESULT BOXES */
+  .result-row {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px; width: 100%; margin: 4px 0;
+  }
+  .result-mini {
+    border-radius: 16px; padding: 20px;
+    text-align: center;
+  }
+  .result-mini.yes { background: var(--green-light); border: 2px solid #86efac; }
+  .result-mini.maybe { background: var(--yellow-light); border: 2px solid #fcd34d; }
+  .result-mini.no { background: var(--red-light); border: 2px solid #fca5a5; }
+  .result-mini .r-icon { font-size: 28px; margin-bottom: 8px; }
+  .result-mini .r-label {
+    font-size: 13px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .result-mini.yes .r-label { color: var(--green); }
+  .result-mini.maybe .r-label { color: var(--yellow); }
+  .result-mini.no .r-label { color: var(--red); }
+  .result-mini .r-desc { font-size: 13px; color: var(--mid); line-height: 1.4; }
+  .result-mini .r-score {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px; font-weight: 700; margin-bottom: 4px;
+  }
+  .result-mini.yes .r-score { color: var(--green); }
+  .result-mini.maybe .r-score { color: var(--yellow); }
+  .result-mini.no .r-score { color: var(--red); }
+
+  /* MONITORING GRID */
+  .monitor-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-top: 16px;
+  }
+  .monitor-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: rgba(234,88,12,0.05);
+    border: 1px solid #fed7aa;
+    border-radius: 12px; padding: 12px 14px;
+  }
+  .monitor-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .monitor-text { font-size: 14px; color: var(--mid); line-height: 1.4; }
+  .monitor-text strong { color: var(--dark); font-size: 15px; display: block; }
+
+  /* ALERT PANEL */
+  .alert-panel {
+    background: var(--red-light);
+    border: 2px solid #fca5a5;
+    border-radius: 16px; padding: 20px 24px;
+    margin-top: 12px;
+  }
+  .alert-panel h4 {
+    font-size: 15px; font-weight: 800; color: var(--red);
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .alert-list { display: flex; flex-direction: column; gap: 6px; }
+  .alert-item { font-size: 14px; color: var(--mid); display: flex; gap: 8px; }
+
+  /* FOOTER */
+  .footer-strip {
+    margin-top: 56px;
+    background: var(--dark);
+    border-radius: 20px;
+    padding: 28px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-strip .brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px; color: #94a3b8;
+    letter-spacing: 2px;
+  }
+  .footer-strip .brand strong { color: var(--white); }
+  .footer-strip .tag-row { display: flex; gap: 8px; }
+  .footer-strip .ftag {
+    font-size: 12px; padding: 4px 12px; border-radius: 20px;
+    border: 1px solid #334155; color: #64748b;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* INTEGRATION NOTE */
+  .integration-box {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 16px; padding: 20px 24px;
+    margin-top: 32px;
+  }
+  .integration-box h5 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  .integration-box p { font-size: 13px; color: var(--mid); line-height: 1.6; }
+  .integration-box code {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--border); padding: 1px 6px; border-radius: 4px;
+    font-size: 12px; color: var(--blue);
+  }
+</style>
+</head>
+<body>
+<div class="top-bar"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="eyebrow">🔁 Fluxograma diagnóstico · Antigravity</div>
+    <h1>Diagnóstico de <em>LES</em><br>Critérios EULAR/ACR 2019</h1>
+    <p class="subtitle">Algoritmo passo a passo para classificação do Lúpus Eritematoso Sistêmico — pronto para plantão, UTI e TEMI</p>
+  </div>
+
+  <div class="flow">
+
+    <!-- PASSO 0 -->
+    <div class="step step-start" style="width:100%">
+      <div class="step-num">// Início</div>
+      <div class="step-title">🩺 Suspeita clínica de LES</div>
+      <div class="step-body">
+        Mulher jovem (20–40 anos) com ≥2 dos seguintes: <strong>artrite simétrica · erupção malar · úlceras orais indolores · serosite · leucopenia · Raynaud · proteinúria inexplicada</strong>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line"></div>
+      <div class="connector-label">Solicitar exame</div>
+      <div class="connector-line2"></div>
+    </div>
+
+    <!-- PASSO 1 -->
+    <div class="step step-gate" style="width:100%">
+      <div class="step-num">// Passo 01 · Critério de Entrada</div>
+      <div class="step-title">🧪 ANA ≥ 1:80 em HEp-2?</div>
+      <div class="step-body">
+        Preferencialmente por <strong>imunofluorescência indireta (IFI)</strong> em células HEp-2.<br>
+        Ensaios em fase sólida também são aceitos com desempenho equivalente.<br><br>
+        ⚠️ <strong>Se ANA negativo por fase sólida:</strong> repetir por IFI antes de excluir LES.<br>
+        ⚠️ <strong>~5% dos LES são ANA-negativos</strong> — especialmente anti-Ro/SSA isolado.
+      </div>
+    </div>
+
+    <!-- SPLIT: SIM / NÃO -->
+    <div style="display:flex; width:100%; gap:16px; margin:4px 0">
+
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:0">
+        <div style="width:3px; height:28px; background:linear-gradient(180deg,#93c5fd,#86efac)"></div>
+        <div style="background:#dcfce7; border:1px solid #86efac; border-radius:20px; padding:4px 20px;
+                    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; color:#16a34a">
+          ✅ SIM → Continuar
+        </div>
+        <div style="width:3px; height:28px; background:linear-gradient(180deg,#86efac,#93c5fd)"></div>
+      </div>
+
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:0">
+        <div style="width:3px; height:28px; background:linear-gradient(180deg,#93c5fd,#fca5a5)"></div>
+        <div style="background:#fee2e2; border:1px solid #fca5a5; border-radius:20px; padding:4px 20px;
+                    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; color:#dc2626">
+          ❌ NÃO → Não classificar como LES
+        </div>
+        <div style="width:3px; height:28px; background:linear-gradient(180deg,#fca5a5,#93c5fd)"></div>
+      </div>
+    </div>
+
+    <!-- PASSO 2 -->
+    <div class="step step-action" style="width:100%">
+      <div class="step-num">// Passo 02 · Workup completo</div>
+      <div class="step-title">📋 Solicitar painel completo</div>
+      <div class="step-body">
+        <strong>Hemograma</strong> (leucopenia, trombocitopenia, hemólise) ·
+        <strong>Creatinina + EAS com sedimento + proteína/creatinina</strong> ·
+        <strong>C3, C4</strong> ·
+        <strong>Anti-dsDNA</strong> ·
+        <strong>Painel ENA</strong> (anti-Sm, anti-RNP, anti-Ro/SSA, anti-La/SSB) ·
+        <strong>Antifosfolipídios</strong> (ACL IgG/M, anti-β2GP1, anticoagulante lúpico) ·
+        <strong>VHS + PCR · TSH + anti-TPO</strong>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line"></div>
+      <div class="connector-label">Calcular pontuação</div>
+      <div class="connector-line2"></div>
+    </div>
+
+    <!-- PASSO 3 — TABELA DE PONTUAÇÃO -->
+    <div class="step step-score" style="width:100%">
+      <div class="step-num">// Passo 03 · Pontuação aditiva</div>
+      <div class="step-title">🧮 Somar pontos por domínio</div>
+      <div class="step-body">Contar apenas o critério de maior peso dentro de cada domínio.</div>
+
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>Domínio</th>
+            <th>Critério</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Constitucional</td><td>Febre &gt;38,3°C</td><td><span class="pts-badge">+2</span></td></tr>
+          <tr><td rowspan="3">Hematológico</td><td>Leucopenia &lt;4.000/mm³</td><td><span class="pts-badge">+3</span></td></tr>
+          <tr><td>Trombocitopenia &lt;100.000/mm³</td><td><span class="pts-badge">+4</span></td></tr>
+          <tr><td>Hemólise autoimune (Coombs+)</td><td><span class="pts-badge">+4</span></td></tr>
+          <tr><td rowspan="3">Neuropsiquiátrico</td><td>Delírio</td><td><span class="pts-badge">+2</span></td></tr>
+          <tr><td>Psicose</td><td><span class="pts-badge">+3</span></td></tr>
+          <tr><td>Convulsão</td><td><span class="pts-badge">+5</span></td></tr>
+          <tr><td rowspan="3">Mucocutâneo</td><td>Alopecia não cicatricial / úlceras orais</td><td><span class="pts-badge">+2</span></td></tr>
+          <tr><td>Lúpus cutâneo subagudo ou discoide</td><td><span class="pts-badge">+4</span></td></tr>
+          <tr><td>Lúpus cutâneo agudo (eritema malar)</td><td><span class="pts-badge">+6</span></td></tr>
+          <tr><td rowspan="2">Serosa</td><td>Derrame pleural ou pericárdico</td><td><span class="pts-badge">+5</span></td></tr>
+          <tr><td>Pericardite aguda</td><td><span class="pts-badge">+6</span></td></tr>
+          <tr><td>Musculoesquelético</td><td>≥2 articulações com sinovite ou rigidez mat.</td><td><span class="pts-badge">+6</span></td></tr>
+          <tr><td rowspan="3">Renal</td><td>Proteinúria &gt;0,5 g/24h</td><td><span class="pts-badge">+4</span></td></tr>
+          <tr><td>Biópsia renal: nefrite classe II ou V</td><td><span class="pts-badge">+8</span></td></tr>
+          <tr><td>Biópsia renal: nefrite classe III ou IV</td><td><span class="pts-badge">+10</span></td></tr>
+          <tr><td>Antifosfolipídios</td><td>ACL / anti-β2GP1 / anticoagulante lúpico</td><td><span class="pts-badge">+2</span></td></tr>
+          <tr><td rowspan="2">Complemento</td><td>C3 baixo OU C4 baixo</td><td><span class="pts-badge">+3</span></td></tr>
+          <tr><td>C3 baixo E C4 baixo</td><td><span class="pts-badge">+4</span></td></tr>
+          <tr><td>Anticorpos específicos</td><td>Anti-dsDNA OU Anti-Sm positivos</td><td><span class="pts-badge">+6</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line"></div>
+      <div class="connector-label">Interpretar resultado</div>
+      <div class="connector-line2"></div>
+    </div>
+
+    <!-- PASSO 4 — RESULTADOS -->
+    <div class="result-row">
+      <div class="result-mini yes">
+        <div class="r-icon">✅</div>
+        <div class="r-score">≥ 10 pts</div>
+        <div class="r-label">LES Definitivo</div>
+        <div class="r-desc">Com ANA positivo e ao menos 1 critério clínico. Iniciar tratamento.</div>
+      </div>
+      <div class="result-mini maybe">
+        <div class="r-icon">⚠️</div>
+        <div class="r-score">6–9 pts</div>
+        <div class="r-label">LES Provável</div>
+        <div class="r-desc">Tratar conforme manifestações. Acompanhar com reumatologia.</div>
+      </div>
+      <div class="result-mini no">
+        <div class="r-icon">🔍</div>
+        <div class="r-score">&lt; 6 pts</div>
+        <div class="r-label">Diagnóstico incerto</div>
+        <div class="r-desc">DITC ou outro diagnóstico diferencial. Investigar alternativas.</div>
+      </div>
+    </div>
+
+    <div class="connector green">
+      <div class="connector-line"></div>
+      <div class="connector-label">✅ Se LES confirmado</div>
+      <div class="connector-line2"></div>
+    </div>
+
+    <!-- PASSO 5 — TRATAMENTO IMEDIATO -->
+    <div class="step step-result-yes" style="width:100%">
+      <div class="step-num">// Passo 05 · Conduta imediata</div>
+      <div class="step-title">💊 Iniciar Hidroxicloroquina AGORA</div>
+      <div class="step-body">
+        <strong>Todos os pacientes com LES</strong> devem receber hidroxicloroquina independente da gravidade.<br>
+        <strong>Dose:</strong> 5 mg/kg/dia de peso real (máx. 400 mg/dia) · início do efeito em ~3 meses.<br>
+        Escalonar terapia conforme gravidade: leve → AINE/prednisona baixa dose | moderada → imunossupressor | grave → pulso + ciclofosfamida/micofenolato.
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line"></div>
+      <div class="connector-label">Monitoramento contínuo</div>
+      <div class="connector-line2"></div>
+    </div>
+
+    <!-- PASSO 6 — MONITORAMENTO -->
+    <div class="step step-monitor" style="width:100%">
+      <div class="step-num">// Passo 06 · Acompanhamento</div>
+      <div class="step-title">📊 Monitorar a cada 3–4 meses</div>
+      <div class="monitor-grid">
+        <div class="monitor-item">
+          <div class="monitor-icon">🧪</div>
+          <div class="monitor-text"><strong>Anti-dsDNA</strong>Sobe nos surtos — mede atividade da doença</div>
+        </div>
+        <div class="monitor-item">
+          <div class="monitor-icon">🔬</div>
+          <div class="monitor-text"><strong>C3 e C4</strong>Caem na atividade — especialmente nefrite</div>
+        </div>
+        <div class="monitor-item">
+          <div class="monitor-icon">🫁</div>
+          <div class="monitor-text"><strong>EAS + Prot/Crea</strong>Rastreio de nefrite lúpica silenciosa</div>
+        </div>
+        <div class="monitor-item">
+          <div class="monitor-icon">🩸</div>
+          <div class="monitor-text"><strong>Hemograma</strong>Leucopenia, trombocitopenia, anemia hemolítica</div>
+        </div>
+        <div class="monitor-item">
+          <div class="monitor-icon">👁️</div>
+          <div class="monitor-text"><strong>Oftalmologia</strong>Retinopatia por hidroxicloroquina (anual)</div>
+        </div>
+        <div class="monitor-item">
+          <div class="monitor-icon">💉</div>
+          <div class="monitor-text"><strong>Vacinação</strong>Antes de imunossupressores — sem vacinas vivas</div>
+        </div>
+      </div>
+
+      <div class="alert-panel" style="margin-top:16px;">
+        <h4>⚠️ Sinais de alarme → UTI / especialista urgente</h4>
+        <div class="alert-list">
+          <div class="alert-item">🔴 Hemorragia alveolar — hemoptise + infiltrado bilateral + queda de Hb</div>
+          <div class="alert-item">🔴 Nefrite lúpica com IRA rapidamente progressiva</div>
+          <div class="alert-item">🔴 Psicose / convulsão / AVC sem outra causa clara</div>
+          <div class="alert-item">🔴 Febre + PCR muito elevada em imunossuprimido = infecção primeiro!</div>
+          <div class="alert-item">🔴 Tamponamento cardíaco</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /flow -->
+
+  <!-- INTEGRATION NOTE -->
+  <div class="integration-box">
+    <h5>// Instrução de integração — Antigravity/Gemini</h5>
+    <p>
+      Depositar na pasta <code>00_INBOX_ATUALIZACAO/04_Assets_Visuais/</code> com nome
+      <code>les-fluxograma-eular-acr-2019.html</code>.<br>
+      Linkar na página canônica <code>lupus-eritematoso-sistemico-diagnostico-manejo.md</code>
+      na seção "Fluxograma Prático".<br>
+      <strong>Não alterar arquivos antigos sem autorização. Não mover PDFs/JSONs/MDs sem atualizar manifestos.</strong>
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-strip">
+    <div class="brand"><strong>ANTIGRAVITY</strong> · Enciclomedia Médica</div>
+    <div class="tag-row">
+      <span class="ftag">LES</span>
+      <span class="ftag">EULAR/ACR 2019</span>
+      <span class="ftag">TEMI</span>
+      <span class="ftag">v1.0 · 2026</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

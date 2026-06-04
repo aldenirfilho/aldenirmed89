@@ -1,0 +1,175 @@
+Você é o agente Antigravity trabalhando no repositório GitHub:
+
+aldenirfilho/antigravity-consultas
+
+Objetivo:
+Integrar o novo módulo "Card Feed Médico" à Enciclopédia Médica Intensiva & Medicina Interna, já publicada em GitHub Pages.
+
+IMPORTANTE:
+- Não apague arquivos existentes.
+- Não quebre links atuais da home.
+- Não reestruture o projeto inteiro.
+- Trabalhe de forma incremental.
+- Preserve o estilo visual escuro, médico, Apple-like e modular da Enciclopédia.
+- Evite dependências externas.
+- Não suba dados identificáveis de pacientes.
+
+Tarefas:
+
+1. Criar uma branch:
+feature/card-feed-medico
+
+2. Inserir a pasta completa na raiz do repositório:
+06_Card_Feed_Medico/
+
+Estrutura esperada:
+06_Card_Feed_Medico/
+├── index.html
+├── manifest.webmanifest
+├── sw.js
+├── data/
+│   ├── cards.json
+│   └── themes.json
+└── assets/
+    └── cards/
+        ├── uti-geral/
+        ├── temi/
+        ├── vm-sdra/
+        ├── sepse-choque/
+        ├── nefro-aki-trs/
+        ├── endocrino-diabetes/
+        ├── neuro-uti/
+        ├── cardio-hemodinamica/
+        ├── infectologia/
+        ├── farmaco-doses/
+        ├── pocus/
+        ├── familia-paciente/
+        ├── ia-produtividade/
+        └── juridico-financeiro/
+
+3. Atualizar o arquivo index.html da raiz.
+
+Dentro de <nav class="nav">, adicionar:
+<a href="06_Card_Feed_Medico/index.html" style="color: #38bdf8;">🖼️ Card Feed</a>
+
+Dentro da área <div class="actions"> do hero, adicionar:
+<a class="btn" href="06_Card_Feed_Medico/index.html">🖼️ Abrir Card Feed</a>
+
+Adicionar também um card de módulo próximo aos blocos de Biblioteca IA / TEMI / Calculadoras:
+
+<article class="path-card card" style="border-color: rgba(56,189,248,0.42); background: linear-gradient(145deg, rgba(56,189,248,0.10), rgba(0,0,0,0.20));">
+  <h3>🖼️ Card Feed Médico</h3>
+  <p>
+    Feed visual de cards, wallpapers e imagens médicas geradas por IA. Organiza por temas,
+    permite revisão rápida no iPhone/iPad/Mac e conecta o acervo visual aos módulos da Enciclopédia.
+  </p>
+  <ul>
+    <li>Banco de imagens por tema.</li>
+    <li>Comentários, tags e status de revisão.</li>
+    <li>Entrada rápida para cards TEMI, UTI, família e produtividade.</li>
+    <li>Preparado para expansão contínua via GitHub Pages.</li>
+  </ul>
+  <div style="margin-top: 14px;">
+    <a class="btn primary" href="06_Card_Feed_Medico/index.html" style="background: linear-gradient(135deg, #38bdf8, #a78bfa); box-shadow: 0 8px 24px rgba(56,189,248,0.25);">Abrir Card Feed →</a>
+  </div>
+</article>
+
+4. Validar os caminhos relativos:
+- De 06_Card_Feed_Medico/index.html para home: ../index.html
+- Para Banco TEMI: ../02_Banco_Questoes_TEMI/index.html
+- Para Calculadoras UTI: ../03_Calculadoras_UTI/index.html
+- Para Biblioteca IA: ../05_Biblioteca_IA/index.html
+- Imagens dos cards: assets/cards/<tema>/<arquivo>.png
+
+5. Conferir data/cards.json.
+O arquivo deve seguir este padrão:
+
+{
+  "app": "GPT Card Feed Médico",
+  "version": "2.0-github-pages",
+  "updatedAt": "YYYY-MM-DD",
+  "cards": [
+    {
+      "id": "slug-unico",
+      "title": "Título do card",
+      "theme": "nefro-aki-trs",
+      "tags": ["AKI", "KDIGO", "UTI", "TEMI"],
+      "explanation": "Resumo prático do card.",
+      "source": "Origem do conteúdo",
+      "status": "novo",
+      "imageUrl": "assets/cards/nefro-aki-trs/nome_da_imagem.png",
+      "createdAt": "YYYY-MM-DD",
+      "related": ["Tema 1", "Tema 2"]
+    }
+  ]
+}
+
+6. Organização de imagens:
+Quando eu fornecer imagens geradas pelo GPT, salve-as em:
+06_Card_Feed_Medico/assets/cards/<tema>/
+
+Use nomes sem espaços, sem acentos e com padrão:
+tema_assunto_subassunto_1080x1920.png
+
+Exemplos:
+kdigo_2026_aki_uti_10_passos_1080x1920.png
+diabetes_orientacoes_mae_1080x1920.png
+vm_sdra_ventilacao_protetora_1080x1920.png
+sepse_choque_refratario_dva_1080x1920.png
+pocus_lung_blines_1080x1920.png
+
+7. Atualizar cards.json para cada imagem adicionada.
+Classifique por tema:
+- uti-geral
+- temi
+- vm-sdra
+- sepse-choque
+- nefro-aki-trs
+- endocrino-diabetes
+- neuro-uti
+- cardio-hemodinamica
+- infectologia
+- farmaco-doses
+- pocus
+- familia-paciente
+- ia-produtividade
+- juridico-financeiro
+
+8. Validações finais:
+- Abrir a home e confirmar que o botão Card Feed aparece.
+- Abrir /06_Card_Feed_Medico/index.html.
+- Verificar se filtros por tema funcionam.
+- Verificar se busca funciona.
+- Verificar se cards sem imagem exibem placeholder.
+- Verificar se a página funciona no celular.
+- Verificar console do navegador e corrigir erros.
+
+9. Commit sugerido:
+feat: add medical card feed module
+
+10. Pull request:
+Título:
+feat: integrate Card Feed Médico with Enciclopédia
+
+Descrição:
+Adiciona o módulo Card Feed Médico para organizar cards/imagens médicas geradas por IA, com temas, busca, filtros, revisão, camada local via IndexedDB e integração à home da Enciclopédia.
+
+NOVA EXIGÊNCIA — MODO FEED CONTÍNUO:
+
+O app deve manter dois modos de visualização:
+
+1. Modo Grade:
+- layout em colunas/masonry;
+- útil para visão panorâmica.
+
+2. Modo Feed Contínuo:
+- botão "📲 Feed contínuo";
+- imagens/cards em coluna única;
+- um card abaixo do outro;
+- rolagem vertical contínua estilo Instagram/X;
+- largura centralizada ideal para celular;
+- comentários e explicações abaixo da imagem;
+- preferência salva em localStorage com chave "cardFeedViewMode".
+
+Não remover o modo grade. O usuário deve alternar entre os dois modos.
+Testar no desktop e no celular.

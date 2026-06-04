@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LES — Escada Terapêutica | Antigravity</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --bg:       #fafaf9;
+    --white:    #ffffff;
+    --ink:      #1c1917;
+    --mid:      #44403c;
+    --soft:     #78716c;
+    --line:     #e7e5e4;
+
+    --step1-bg: #fff7ed;
+    --step1-border: #fdba74;
+    --step1-accent: #ea580c;
+
+    --step2-bg: #fefce8;
+    --step2-border: #fde047;
+    --step2-accent: #ca8a04;
+
+    --step3-bg: #fef2f2;
+    --step3-border: #fca5a5;
+    --step3-accent: #dc2626;
+
+    --step4-bg: #4a1942;
+    --step4-accent: #e879f9;
+    --step4-text: #fdf4ff;
+
+    --always-bg: #f0fdf4;
+    --always-border: #86efac;
+    --always-accent: #16a34a;
+
+    --alert-bg: #0f172a;
+    --alert-text: #f1f5f9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    background: var(--bg);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--ink);
+  }
+
+  .wrapper { padding: 64px 64px 72px; }
+
+  /* ── HEADER ── */
+  .header { margin-bottom: 52px; }
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--soft); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .eyebrow span {
+    display: inline-block; width: 32px; height: 2px;
+    background: var(--step1-accent); border-radius: 2px;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 64px; font-weight: 900; line-height: 1.0;
+    color: var(--ink); letter-spacing: -2px;
+  }
+  h1 em { font-style: italic; color: var(--step1-accent); }
+  .subtitle {
+    margin-top: 16px; font-size: 18px; color: var(--soft);
+    line-height: 1.6; max-width: 680px;
+  }
+
+  /* ── ALWAYS BOX ── */
+  .always-box {
+    background: var(--always-bg);
+    border: 2px solid var(--always-border);
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    display: flex; gap: 24px; align-items: flex-start;
+  }
+  .always-icon {
+    width: 56px; height: 56px; border-radius: 16px;
+    background: var(--always-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; flex-shrink: 0;
+  }
+  .always-content { flex: 1; }
+  .always-content h3 {
+    font-size: 20px; font-weight: 800; color: var(--always-accent);
+    margin-bottom: 6px; display: flex; align-items: center; gap: 10px;
+  }
+  .always-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    background: var(--always-accent); color: white;
+    padding: 2px 10px; border-radius: 20px;
+  }
+  .always-content p { font-size: 15px; color: var(--mid); line-height: 1.5; }
+  .hcq-pills {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+  }
+  .hcq-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; background: white;
+    border: 1px solid var(--always-border);
+    border-radius: 20px; padding: 4px 14px; color: var(--mid);
+  }
+  .hcq-pill strong { color: var(--always-accent); }
+
+  /* ── LADDER TITLE ── */
+  .ladder-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--soft); margin-bottom: 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ladder-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+
+  .step-block {
+    display: flex; gap: 0; position: relative;
+  }
+
+  /* Vertical timeline line */
+  .step-block:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 43px; top: 88px; bottom: -20px;
+    width: 2px;
+    background: var(--line);
+    z-index: 0;
+  }
+
+  .step-connector {
+    display: flex; flex-direction: column; align-items: center;
+    width: 88px; flex-shrink: 0; padding-top: 28px;
+    position: relative; z-index: 1;
+  }
+
+  .step-num-circle {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 18px; font-weight: 700;
+    border: 2px solid; flex-shrink: 0;
+    background: var(--white);
+  }
+
+  .step1 .step-num-circle { color: var(--step1-accent); border-color: var(--step1-border); }
+  .step2 .step-num-circle { color: var(--step2-accent); border-color: var(--step2-border); }
+  .step3 .step-num-circle { color: var(--step3-accent); border-color: var(--step3-border); }
+  .step4 .step-num-circle {
+    color: var(--step4-accent); border-color: var(--step4-accent);
+    background: var(--step4-bg);
+  }
+
+  .step-arrow {
+    font-size: 20px; margin: 8px 0 4px;
+    color: var(--line);
+  }
+
+  /* CARD */
+  .step-card {
+    flex: 1; border-radius: 20px; padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .step1 .step-card { background: var(--step1-bg); border: 1.5px solid var(--step1-border); }
+  .step2 .step-card { background: var(--step2-bg); border: 1.5px solid var(--step2-border); }
+  .step3 .step-card { background: var(--step3-bg); border: 1.5px solid var(--step3-border); }
+  .step4 .step-card {
+    background: var(--step4-bg);
+    border: 1.5px solid var(--step4-accent);
+    color: var(--step4-text);
+  }
+
+  .step-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 14px; gap: 16px;
+  }
+
+  .step-label-row {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+
+  .step-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 3px 12px; border-radius: 20px; font-weight: 600;
+  }
+  .step1 .step-badge { background: var(--step1-accent); color: white; }
+  .step2 .step-badge { background: var(--step2-accent); color: white; }
+  .step3 .step-badge { background: var(--step3-accent); color: white; }
+  .step4 .step-badge { background: var(--step4-accent); color: var(--step4-bg); }
+
+  .step-card h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 30px; font-weight: 900; line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .step1 .step-card h2 { color: var(--step1-accent); }
+  .step2 .step-card h2 { color: var(--step2-accent); }
+  .step3 .step-card h2 { color: var(--step3-accent); }
+  .step4 .step-card h2 { color: var(--step4-accent); }
+
+  .step-card .desc {
+    font-size: 15px; line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .step1 .desc, .step2 .desc, .step3 .desc { color: var(--mid); }
+  .step4 .desc { color: #d8b4fe; }
+
+  /* DRUG LIST */
+  .drug-list {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+
+  .drug-item {
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px; align-items: start;
+  }
+
+  .step1 .drug-item { background: rgba(234,88,12,0.06); border: 1px solid rgba(234,88,12,0.12); }
+  .step2 .drug-item { background: rgba(202,138,4,0.06); border: 1px solid rgba(202,138,4,0.12); }
+  .step3 .drug-item { background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.12); }
+  .step4 .drug-item { background: rgba(232,121,249,0.08); border: 1px solid rgba(232,121,249,0.2); }
+
+  .drug-icon { font-size: 20px; margin-top: 1px; }
+
+  .drug-info {}
+  .drug-name { font-weight: 700; font-size: 16px; margin-bottom: 3px; }
+  .step4 .drug-name { color: var(--step4-text); }
+  .drug-dose {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--soft); line-height: 1.5;
+  }
+  .step4 .drug-dose { color: #d8b4fe; }
+
+  .drug-when {
+    font-size: 12px; color: var(--soft);
+    text-align: right; white-space: nowrap; padding-top: 2px;
+    font-style: italic;
+  }
+  .step4 .drug-when { color: #d8b4fe; }
+
+  /* ESCALATION ARROW */
+  .escalation {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 20px;
+    border-radius: 12px; margin-top: 12px;
+  }
+  .step1 .escalation { background: rgba(234,88,12,0.04); border: 1px dashed var(--step1-border); }
+  .step2 .escalation { background: rgba(202,138,4,0.04); border: 1px dashed var(--step2-border); }
+  .step3 .escalation { background: rgba(220,38,38,0.04); border: 1px dashed var(--step3-border); }
+  .step4 .escalation { background: rgba(232,121,249,0.06); border: 1px dashed rgba(232,121,249,0.3); }
+
+  .escalation-icon { font-size: 18px; }
+  .escalation-text { font-size: 14px; color: var(--mid); font-style: italic; flex: 1; }
+  .step4 .escalation-text { color: #d8b4fe; }
+
+  /* MONITORING STRIP */
+  .monitor-strip {
+    background: var(--alert-bg);
+    border-radius: 20px;
+    padding: 32px;
+    margin-top: 40px;
+  }
+  .monitor-strip h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px; font-weight: 900;
+    color: var(--alert-text);
+    margin-bottom: 20px;
+  }
+  .monitor-strip h3 span { color: #fbbf24; }
+  .monitor-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  .m-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 16px;
+  }
+  .m-item .m-icon { font-size: 22px; margin-bottom: 8px; }
+  .m-item .m-label {
+    font-size: 13px; font-weight: 700; color: var(--alert-text);
+    margin-bottom: 4px;
+  }
+  .m-item .m-desc {
+    font-size: 12px; color: #64748b; line-height: 1.4;
+  }
+
+  /* KEY MESSAGES */
+  .keys {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; margin-top: 40px;
+  }
+  .key-item {
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: 16px; padding: 20px 22px;
+    display: flex; gap: 14px; align-items: flex-start;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .key-item .k-icon {
+    font-size: 24px; flex-shrink: 0; margin-top: 2px;
+  }
+  .key-item .k-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .key-item .k-desc { font-size: 13px; color: var(--soft); line-height: 1.5; }
+
+  /* FOOTER */
+  .footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 48px; padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .footer .brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; color: var(--soft); letter-spacing: 2px;
+  }
+  .footer .brand strong { color: var(--ink); }
+  .footer .slug {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--line);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="eyebrow"><span></span>Antigravity · Enciclomedia Médica · Reumatologia/UTI</div>
+    <h1>Escada<br><em>Terapêutica</em><br>do LES</h1>
+    <p class="subtitle">Do leve ao grave — tratamento escalonado do lúpus eritematoso sistêmico com foco em conduta prática para plantão, enfermaria e UTI.</p>
+  </div>
+
+  <!-- SEMPRE: HIDROXICLOROQUINA -->
+  <div class="always-box">
+    <div class="always-icon">💊</div>
+    <div class="always-content">
+      <h3>Hidroxicloroquina — para TODOS os pacientes <span class="always-badge">Base universal</span></h3>
+      <p>Independente do grau de atividade. Reduz mortalidade (RR 0,46 em metanálise), surtos, trombose e dano orgânico. Deve ser mantida indefinidamente — suspender aumenta risco de surto em 2,5×.</p>
+      <div class="hcq-pills">
+        <span class="hcq-pill"><strong>Dose:</strong> 5 mg/kg/dia (peso real)</span>
+        <span class="hcq-pill"><strong>Máx.:</strong> 400 mg/dia</span>
+        <span class="hcq-pill"><strong>Efeito:</strong> ~3 meses</span>
+        <span class="hcq-pill"><strong>Monitorar:</strong> Retina + ECG (QTc)</span>
+        <span class="hcq-pill">⚠️ Tabagismo reduz eficácia</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LADDER TITLE -->
+  <div class="ladder-title">Escalonamento terapêutico conforme gravidade</div>
+
+  <!-- STEPS -->
+  <div class="steps">
+
+    <!-- DEGRAU 1 — LEVE -->
+    <div class="step-block step1">
+      <div class="step-connector">
+        <div class="step-num-circle">1</div>
+      </div>
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-label-row">
+            <span class="step-badge">Degrau 1</span>
+          </div>
+        </div>
+        <h2>Doença Leve</h2>
+        <p class="desc">Envolvimento predominantemente <strong>cutâneo e articular</strong> (eritema malar, artralgias). Leucopenia leve. Sem comprometimento de órgão nobre. Avaliação laboratorial pode ser normal ou com alterações mínimas.</p>
+        <div class="drug-list">
+          <div class="drug-item">
+            <div class="drug-icon">💊</div>
+            <div class="drug-info">
+              <div class="drug-name">Hidroxicloroquina (já prescrita)</div>
+              <div class="drug-dose">5 mg/kg/dia · máx 400 mg/dia · manter indefinidamente</div>
+            </div>
+            <div class="drug-when">1ª linha sempre</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💊</div>
+            <div class="drug-info">
+              <div class="drug-name">AINEs (se necessário)</div>
+              <div class="drug-dose">Ibuprofeno 400–600 mg 8/8h ou naproxeno 250–500 mg 12/12h · curto prazo</div>
+            </div>
+            <div class="drug-when">Artralgia / febre</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💊</div>
+            <div class="drug-info">
+              <div class="drug-name">Prednisona baixa dose</div>
+              <div class="drug-dose">≤ 7,5 mg/dia · curto prazo até HCQ fazer efeito (~3 meses)</div>
+            </div>
+            <div class="drug-when">Se AINEs insuficientes</div>
+          </div>
+        </div>
+        <div class="escalation">
+          <div class="escalation-icon">⬆️</div>
+          <div class="escalation-text">Escalar para degrau 2 se: persistência de sintomas, envolvimento cutâneo extenso, citopenia progressiva ou início de comprometimento sistêmico</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEGRAU 2 — MODERADA -->
+    <div class="step-block step2">
+      <div class="step-connector">
+        <div class="step-num-circle">2</div>
+        <div class="step-arrow">▼</div>
+      </div>
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-label-row">
+            <span class="step-badge">Degrau 2</span>
+          </div>
+        </div>
+        <h2>Doença Moderada</h2>
+        <p class="desc">Manifestações significativas mas <strong>sem ameaça imediata a órgão</strong>: constitucional intensa (febre, perda de peso), cutânea grave, musculoesquelética, hematológica ou serosite. Responde à HCQ + corticoide em dose moderada. HCQ demora 3 meses — é necessário preencher a janela com corticoide.</p>
+        <div class="drug-list">
+          <div class="drug-item">
+            <div class="drug-icon">💊</div>
+            <div class="drug-info">
+              <div class="drug-name">Prednisona</div>
+              <div class="drug-dose">5–15 mg/dia · reduzir progressivamente após HCQ fazer efeito</div>
+            </div>
+            <div class="drug-when">Curto prazo</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💊</div>
+            <div class="drug-info">
+              <div class="drug-name">Azatioprina</div>
+              <div class="drug-dose">1,5–2,5 mg/kg/dia VO · poupador de corticoide · monitorar hemograma</div>
+            </div>
+            <div class="drug-when">Poupador de GC</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💊</div>
+            <div class="drug-info">
+              <div class="drug-name">Metotrexato</div>
+              <div class="drug-dose">7,5–25 mg/semana VO ou SC · suplementar ácido fólico 5 mg/semana</div>
+            </div>
+            <div class="drug-when">Artrite / pele</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💉</div>
+            <div class="drug-info">
+              <div class="drug-name">Belimumabe</div>
+              <div class="drug-dose">10 mg/kg IV a cada 4 sem ou 200 mg SC/semana · efeito pleno em 3–6 meses</div>
+            </div>
+            <div class="drug-when">Moderado-grave</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💉</div>
+            <div class="drug-info">
+              <div class="drug-name">Anifrolumabe</div>
+              <div class="drug-dose">300 mg IV a cada 4 sem · anti-receptor de IFN tipo I · sem nefrite grave</div>
+            </div>
+            <div class="drug-when">Pele/artrite</div>
+          </div>
+        </div>
+        <div class="escalation">
+          <div class="escalation-icon">⬆️</div>
+          <div class="escalation-text">Escalar para degrau 3 se: envolvimento renal, neurológico, hemólise grave, incapacidade de reduzir prednisona para ≤5 mg/dia após 3–6 meses</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEGRAU 3 — GRAVE -->
+    <div class="step-block step3">
+      <div class="step-connector">
+        <div class="step-num-circle">3</div>
+        <div class="step-arrow">▼</div>
+      </div>
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-label-row">
+            <span class="step-badge">Degrau 3</span>
+          </div>
+        </div>
+        <h2>Doença Grave</h2>
+        <p class="desc">Manifestações que <strong>ameaçam função de órgão</strong>: nefrite lúpica classes III/IV, envolvimento do SNC (psicose, convulsão, mielite), anemia hemolítica grave, trombocitopenia intensa, pneumonite. Requer terapia de indução intensa seguida de manutenção.</p>
+        <div class="drug-list">
+          <div class="drug-item">
+            <div class="drug-icon">💉</div>
+            <div class="drug-info">
+              <div class="drug-name">Pulso de metilprednisolona IV</div>
+              <div class="drug-dose">0,5–1 g/dia × 3 dias (pacientes graves) ou prednisona oral 1–2 mg/kg/dia · reduzir progressivamente após controle</div>
+            </div>
+            <div class="drug-when">Indução</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💊</div>
+            <div class="drug-info">
+              <div class="drug-name">Micofenolato de mofetila</div>
+              <div class="drug-dose">2–3 g/dia VO · preferido para nefrite lúpica focal/difusa · manutenção 1,5–2 g/dia</div>
+            </div>
+            <div class="drug-when">Nefrite / indução</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💉</div>
+            <div class="drug-info">
+              <div class="drug-name">Ciclofosfamida IV</div>
+              <div class="drug-dose">Euro-Lupus: 500 mg a cada 2 sem × 6 doses · ou NIH: pulsos mensais · cistite hemorrágica: MESNA</div>
+            </div>
+            <div class="drug-when">Nefrite grave / SNC</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💉</div>
+            <div class="drug-info">
+              <div class="drug-name">Obinutuzumabe + micofenolato</div>
+              <div class="drug-dose">1000 mg IV × 2 doses (intervalo 2 sem), repetir em 24 sem · anti-CD20 humanizado</div>
+            </div>
+            <div class="drug-when">Nefrite — 1ª linha</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💉</div>
+            <div class="drug-info">
+              <div class="drug-name">Belimumabe + micofenolato</div>
+              <div class="drug-dose">Associação aprovada para nefrite lúpica ativa · iniciar após indução com corticoide</div>
+            </div>
+            <div class="drug-when">Nefrite / manutenção</div>
+          </div>
+        </div>
+        <div class="escalation">
+          <div class="escalation-icon">⬆️</div>
+          <div class="escalation-text">Escalar para degrau 4 se: doença refratária a ≥2 imunossupressores, hemorragia alveolar, falência renal rapidamente progressiva → UTI + rituximabe/resgate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEGRAU 4 — REFRATÁRIO / UTI -->
+    <div class="step-block step4">
+      <div class="step-connector">
+        <div class="step-num-circle">4</div>
+        <div class="step-arrow">▼</div>
+      </div>
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-label-row">
+            <span class="step-badge">Degrau 4</span>
+          </div>
+        </div>
+        <h2>Refratário / UTI</h2>
+        <p class="desc">Doença não controlada com terapia convencional. Emergências: hemorragia alveolar, CAPS (SAF catastrófica), nefrite rapidamente progressiva, SNC grave. Considerar terapias avançadas e internação em UTI.</p>
+        <div class="drug-list">
+          <div class="drug-item">
+            <div class="drug-icon">💉</div>
+            <div class="drug-info">
+              <div class="drug-name">Rituximabe (off-label)</div>
+              <div class="drug-dose">1000 mg IV × 2 doses (intervalo 2 sem) · anti-CD20 quimérico · eficaz em LES refratário e manifestações não renais</div>
+            </div>
+            <div class="drug-when">Refratário</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">🔬</div>
+            <div class="drug-info">
+              <div class="drug-name">Células CAR-T CD19 autólogas</div>
+              <div class="drug-dose">Terapia emergente — resultados preliminares com remissão profunda em LES refratário grave (estudos em andamento)</div>
+            </div>
+            <div class="drug-when">Investigacional</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">💉</div>
+            <div class="drug-info">
+              <div class="drug-name">Imunoglobulina IV (IVIG)</div>
+              <div class="drug-dose">1–2 g/kg em 2–5 dias · trombocitopenia grave, hemólise refratária, manifestações neuropsiquiátricas</div>
+            </div>
+            <div class="drug-when">Emergência hematol.</div>
+          </div>
+          <div class="drug-item">
+            <div class="drug-icon">🔄</div>
+            <div class="drug-info">
+              <div class="drug-name">Plasmaférese</div>
+              <div class="drug-dose">Séries de 5–7 sessões · CAPS, PTT-like, síndrome pulmão-rim · adjuvante à imunossupressão</div>
+            </div>
+            <div class="drug-when">CAPS / urgência</div>
+          </div>
+        </div>
+        <div class="escalation">
+          <div class="escalation-icon">🏥</div>
+          <div class="escalation-text" style="color:#d8b4fe">Internação em UTI. Consultar reumatologia, nefrologia e intensivista. Verificar e tratar infecção antes de escalar IS adicional.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /steps -->
+
+  <!-- MONITORING STRIP -->
+  <div class="monitor-strip">
+    <h3>📊 Monitoramento <span>obrigatório</span> em todos os degraus</h3>
+    <div class="monitor-grid">
+      <div class="m-item">
+        <div class="m-icon">🧪</div>
+        <div class="m-label">Anti-dsDNA</div>
+        <div class="m-desc">Sobe nos surtos. Monitorar atividade e nefrite. Não usar anti-Sm para isso.</div>
+      </div>
+      <div class="m-item">
+        <div class="m-icon">🔬</div>
+        <div class="m-label">C3 e C4</div>
+        <div class="m-desc">Caem na atividade da doença. Junto com ↑dsDNA = nefrite chegando.</div>
+      </div>
+      <div class="m-item">
+        <div class="m-icon">🫁</div>
+        <div class="m-label">EAS + Prot/Creat</div>
+        <div class="m-desc">Rastreio de nefrite silenciosa. A cada 3 meses em todos.</div>
+      </div>
+      <div class="m-item">
+        <div class="m-icon">🩸</div>
+        <div class="m-label">Hemograma</div>
+        <div class="m-desc">Leucopenia, trombocitopenia, anemia hemolítica — citopenia pode ser tox. medicamentosa.</div>
+      </div>
+      <div class="m-item">
+        <div class="m-icon">👁️</div>
+        <div class="m-label">Oftalmologia</div>
+        <div class="m-desc">Anual após 5 anos de HCQ. Retinopatia é irreversível se detectada tarde.</div>
+      </div>
+      <div class="m-item">
+        <div class="m-icon">🦴</div>
+        <div class="m-label">Densitometria</div>
+        <div class="m-desc">Corticoide crônico → osteoporose. Suplementar Ca + Vit D. Bisfosfonatos se indicado.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY MESSAGES -->
+  <div class="keys">
+    <div class="key-item">
+      <div class="k-icon">🔺</div>
+      <div>
+        <div class="k-title">Anti-dsDNA sobe com surtos</div>
+        <div class="k-desc">Anti-Sm fica positivo mesmo em remissão — não usar para monitorar atividade.</div>
+      </div>
+    </div>
+    <div class="key-item">
+      <div class="k-icon">⚠️</div>
+      <div>
+        <div class="k-title">Febre + PCR alta = infecção primeiro</div>
+        <div class="k-desc">Nunca escalar IS em paciente febril sem excluir infecção oportunista.</div>
+      </div>
+    </div>
+    <div class="key-item">
+      <div class="k-icon">✅</div>
+      <div>
+        <div class="k-title">Hidroxicloroquina nunca para</div>
+        <div class="k-desc">Suspender em remissão = risco de surto 2,5× maior. Manter indefinidamente.</div>
+      </div>
+    </div>
+    <div class="key-item">
+      <div class="k-icon">🫀</div>
+      <div>
+        <div class="k-title">Minimizar corticoides</div>
+        <div class="k-desc">Prednisona &lt;5 mg/dia é o alvo. Efeitos adversos cumulativos são significativos em dose ≥10 mg/dia crônica.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="brand"><strong>ANTIGRAVITY</strong> · Enciclomedia Médica</div>
+    <div class="slug" style="font-family:'DM Mono',monospace; font-size:11px; color:#d1d5db">les-escada-terapeutica.html · v1.0 · 2026</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>GPT Card Feed Médico • Aldenir</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(15, 23, 42, 0.86);
+      --panel2: rgba(30, 41, 59, 0.92);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --line: rgba(148, 163, 184, 0.2);
+      --accent: #38bdf8;
+      --accent2: #a78bfa;
+      --good: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --card: rgba(15, 23, 42, 0.78);
+      --shadow: 0 22px 55px rgba(0,0,0,.35);
+      --radius: 24px;
+      --radius2: 18px;
+      --max: 1180px;
+      --safe-bottom: env(safe-area-inset-bottom);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,.22), transparent 34rem),
+        radial-gradient(circle at top right, rgba(167,139,250,.20), transparent 32rem),
+        linear-gradient(180deg, #020617 0%, #0b1020 52%, #111827 100%);
+      min-height: 100vh;
+      padding-bottom: calc(90px + var(--safe-bottom));
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    .app-shell {
+      width: min(var(--max), calc(100% - 24px));
+      margin: 0 auto;
+      padding: 16px 0 28px;
+    }
+
+    .hero {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: linear-gradient(180deg, rgba(2, 6, 23, .92), rgba(2, 6, 23, .70));
+      border-bottom: 1px solid var(--line);
+      margin: 0 -12px 14px;
+      padding: 12px;
+    }
+
+    .hero-inner {
+      width: min(var(--max), 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 12px;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 30px rgba(56, 189, 248, .22);
+      flex: 0 0 auto;
+      font-size: 24px;
+    }
+
+    h1 {
+      font-size: clamp(1.1rem, 4vw, 1.75rem);
+      margin: 0;
+      letter-spacing: -.03em;
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: .88rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mini-stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,.68);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: .82rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .toolbar {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+    }
+
+    .search-line {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: minmax(0, 1.6fr) minmax(130px, .7fr) minmax(122px, .7fr);
+    }
+
+    @media (max-width: 760px) {
+      .brand-row { align-items: flex-start; }
+      .mini-stats { justify-content: flex-start; }
+      .search-line { grid-template-columns: 1fr; }
+      .subtitle { white-space: normal; }
+    }
+
+    .field, .select {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(15, 23, 42, .75);
+      color: var(--text);
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    .field:focus, .select:focus, textarea:focus {
+      border-color: rgba(56, 189, 248, .65);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, .13);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,.8);
+      color: var(--text);
+      border-radius: 14px;
+      min-height: 42px;
+      padding: 9px 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      cursor: pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .btn:hover { transform: translateY(-1px); border-color: rgba(56,189,248,.55); }
+    .btn:active { transform: translateY(0); }
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(56,189,248,.95), rgba(167,139,250,.95));
+      color: #020617;
+      border-color: transparent;
+      font-weight: 750;
+    }
+    .btn.good { border-color: rgba(34,197,94,.35); color: #bbf7d0; }
+    .btn.warn { border-color: rgba(245,158,11,.35); color: #fde68a; }
+    .btn.danger { border-color: rgba(239,68,68,.4); color: #fecaca; }
+    .btn.small { min-height: 34px; padding: 7px 9px; border-radius: 12px; font-size: .82rem; }
+
+    .notice {
+      margin: 14px 0;
+      padding: 12px;
+      border: 1px solid rgba(56,189,248,.22);
+      border-radius: 18px;
+      background: rgba(8, 47, 73, .28);
+      color: #dbeafe;
+      line-height: 1.45;
+      font-size: .94rem;
+    }
+
+    .feed {
+      columns: 1;
+      column-gap: 14px;
+    }
+
+    @media (min-width: 700px) { .feed { columns: 2; } }
+    @media (min-width: 1040px) { .feed { columns: 3; } }
+
+    .card {
+      break-inside: avoid;
+      margin: 0 0 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-image-wrap {
+      background: rgba(2,6,23,.75);
+      min-height: 110px;
+      display: grid;
+      place-items: center;
+      cursor: zoom-in;
+      position: relative;
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 13px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .card-topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.02rem;
+      line-height: 1.18;
+      letter-spacing: -.02em;
+      word-break: break-word;
+    }
+
+    .theme {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 5px 8px;
+      border: 1px solid rgba(56,189,248,.24);
+      background: rgba(56,189,248,.10);
+      color: #bae6fd;
+      font-size: .76rem;
+      white-space: nowrap;
+    }
+
+    .tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      border-radius: 999px;
+      padding: 4px 7px;
+      background: rgba(148,163,184,.12);
+      color: #cbd5e1;
+      font-size: .72rem;
+      border: 1px solid rgba(148,163,184,.18);
+    }
+
+    .explanation {
+      color: #d1d5db;
+      font-size: .92rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      max-height: 9.2rem;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: .75rem;
+      border-top: 1px solid var(--line);
+      padding-top: 9px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .empty {
+      border: 1px dashed rgba(148,163,184,.35);
+      border-radius: 24px;
+      padding: 28px 18px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(15,23,42,.42);
+      margin-top: 16px;
+    }
+
+    .empty strong { color: var(--text); }
+
+    .floating-add {
+      position: fixed;
+      right: 18px;
+      bottom: calc(18px + var(--safe-bottom));
+      z-index: 30;
+      border-radius: 999px;
+      box-shadow: 0 18px 45px rgba(56,189,248,.28);
+    }
+
+    dialog {
+      border: 1px solid var(--line);
+      background: rgba(2, 6, 23, .96);
+      color: var(--text);
+      border-radius: 26px;
+      width: min(720px, calc(100% - 20px));
+      box-shadow: 0 30px 90px rgba(0,0,0,.65);
+      padding: 0;
+      overflow: hidden;
+    }
+
+    dialog::backdrop {
+      background: rgba(2,6,23,.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .modal-head {
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(15,23,42,.75);
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: -.02em;
+    }
+
+    .modal-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+      max-height: min(76vh, 780px);
+      overflow: auto;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 650px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: #cbd5e1;
+      font-size: .86rem;
+      font-weight: 650;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(15,23,42,.75);
+      color: var(--text);
+      padding: 11px 12px;
+      outline: none;
+      line-height: 1.45;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      padding: 14px 16px;
+      border-top: 1px solid var(--line);
+      background: rgba(15,23,42,.55);
+    }
+
+    .viewer-img {
+      max-width: 100%;
+      max-height: 76vh;
+      border-radius: 16px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .help-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .help-box {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(15,23,42,.64);
+      color: #d1d5db;
+      line-height: 1.45;
+      font-size: .92rem;
+    }
+
+    .help-box code {
+      background: rgba(15,23,42,.9);
+      padding: 2px 5px;
+      border-radius: 8px;
+      color: #bae6fd;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(78px + var(--safe-bottom));
+      z-index: 100;
+      background: rgba(15,23,42,.96);
+      border: 1px solid rgba(56,189,248,.35);
+      color: #e0f2fe;
+      border-radius: 999px;
+      padding: 10px 14px;
+      box-shadow: var(--shadow);
+      display: none;
+      max-width: min(92vw, 700px);
+      text-align: center;
+      font-size: .9rem;
+    }
+
+    .kbd {
+      border: 1px solid var(--line);
+      background: rgba(2,6,23,.8);
+      border-bottom-width: 2px;
+      border-radius: 8px;
+      padding: 1px 6px;
+      font-size: .8rem;
+    }
+
+    .hidden { display: none !important; }
+
+    @media print {
+      body { background: #fff; color: #111; padding: 0; }
+      .hero, .floating-add, .btn, dialog, .notice { display: none !important; }
+      .app-shell { width: 100%; padding: 0; }
+      .feed { columns: 2; }
+      .card { box-shadow: none; border: 1px solid #ddd; background: #fff; color: #111; }
+      .explanation, .meta, .card-title { color: #111; }
+      .tag, .theme { color: #111; border-color: #ddd; background: #f4f4f5; }
+    }
+  </style>
+</head>
+<body>
+  <input id="imageInput" type="file" accept="image/*" multiple class="hidden" />
+  <input id="backupInput" type="file" accept="application/json,.json" class="hidden" />
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="brand-row">
+        <div class="brand">
+          <div class="logo">🧠</div>
+          <div>
+            <h1>GPT Card Feed Médico</h1>
+            <p class="subtitle">Banco visual de cards • UTI • Clínica Médica • TEMI • revisão por feed</p>
+          </div>
+        </div>
+        <div class="mini-stats">
+          <span class="pill">🖼️ <b id="statTotal">0</b> cards</span>
+          <span class="pill">⭐ <b id="statFav">0</b> favoritos</span>
+          <span class="pill">🔁 <b id="statReview">0</b> revisão</span>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-line">
+          <input id="search" class="field" placeholder="🔎 Buscar tema, tag, título, comentário..." />
+          <select id="themeFilter" class="select">
+            <option value="">Todos os temas</option>
+          </select>
+          <select id="sortMode" class="select">
+            <option value="newest">Mais recentes</option>
+            <option value="oldest">Mais antigos</option>
+            <option value="title">Título A-Z</option>
+            <option value="theme">Tema A-Z</option>
+            <option value="review">Revisão primeiro</option>
+          </select>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="btnImport">➕ Importar imagens</button>
+          <button class="btn" id="btnBackup">📥 Importar backup</button>
+          <button class="btn" id="btnExport">📤 Exportar backup</button>
+          <button class="btn" id="btnHelp">📘 Como usar</button>
+          <button class="btn warn" id="btnReviewOnly">🔁 Modo revisão</button>
+          <button class="btn" id="btnPrint">🖨️ Imprimir/PDF</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="notice">
+      <b>Fluxo recomendado:</b> baixe as imagens geradas pelo GPT → salve em uma pasta do iCloud Drive → toque em
+      <span class="kbd">Importar imagens</span> → adicione tema, tags, comentários e explicação → exporte backup JSON periodicamente. ✨
+    </section>
+
+    <section id="feed" class="feed" aria-live="polite"></section>
+
+    <section id="emptyState" class="empty">
+      <strong>Seu feed ainda está vazio.</strong><br />
+      Comece importando os cards/imagens da galeria do GPT ou do iCloud Drive. Depois você pode revisar como Instagram/Anki visual. 📲
+    </section>
+  </main>
+
+  <button class="btn primary floating-add" id="btnImportFloating">➕ Card</button>
+
+  <dialog id="editDialog">
+    <form method="dialog" id="editForm">
+      <div class="modal-head">
+        <h2>Editar card</h2>
+        <button class="btn small" value="cancel">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editId" />
+        <div class="form-grid">
+          <label>Título
+            <input id="editTitle" class="field" placeholder="Ex.: KDIGO 2026 AKI em 10 passos" />
+          </label>
+          <label>Tema
+            <select id="editTheme" class="select">
+              <option>UTI Geral</option>
+              <option>TEMI</option>
+              <option>Ventilação Mecânica</option>
+              <option>Sepse/Choque</option>
+              <option>Nefro/AKI/TRS</option>
+              <option>Endocrino/Diabetes</option>
+              <option>Neurologia Intensiva</option>
+              <option>Cardio/Hemodinâmica</option>
+              <option>Infectologia</option>
+              <option>Farmacologia/Doses</option>
+              <option>POCUS</option>
+              <option>Obsidian/IA/Produtividade</option>
+              <option>Jurídico/Financeiro</option>
+              <option>Família/Cuidados</option>
+              <option>Outros</option>
+            </select>
+          </label>
+        </div>
+        <label>Tags, separadas por vírgula
+          <input id="editTags" class="field" placeholder="ex.: AKI, KDIGO, TRS, plantão, TEMI" />
+        </label>
+        <label>Explicação / comentário principal
+          <textarea id="editExplanation" placeholder="Cole aqui uma explicação didática, passos de uso, alerta de prova TEMI, conduta prática..."></textarea>
+        </label>
+        <label>Notas pessoais / revisão
+          <textarea id="editNotes" placeholder="Ex.: revisar antes do plantão; dúvida para checar; melhorar imagem depois..."></textarea>
+        </label>
+        <div class="form-grid">
+          <label>Fonte / origem
+            <input id="editSource" class="field" placeholder="Ex.: ChatGPT, artigo, KDIGO, aula, protocolo local" />
+          </label>
+          <label>Status de estudo
+            <select id="editStatus" class="select">
+              <option value="novo">Novo</option>
+              <option value="revisar">Revisar</option>
+              <option value="aprendendo">Aprendendo</option>
+              <option value="dominado">Dominado</option>
+              <option value="arquivado">Arquivado</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn danger" id="btnDelete">🗑️ Apagar</button>
+        <button type="button" class="btn good" id="btnFavorite">⭐ Favoritar</button>
+        <button type="button" class="btn warn" id="btnMarkReview">🔁 Revisar depois</button>
+        <button type="submit" class="btn primary">💾 Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="viewerDialog">
+    <div class="modal-head">
+      <h2 id="viewerTitle">Imagem</h2>
+      <button class="btn small" onclick="document.getElementById('viewerDialog').close()">✕</button>
+    </div>
+    <div class="modal-body">
+      <img id="viewerImg" class="viewer-img" alt="Imagem ampliada" />
+    </div>
+  </dialog>
+
+  <dialog id="helpDialog">
+    <div class="modal-head">
+      <h2>Como usar e alimentar continuamente</h2>
+      <button class="btn small" onclick="document.getElementById('helpDialog').close()">✕</button>
+    </div>
+    <div class="modal-body help-grid">
+      <div class="help-box">
+        <b>1) Entrada pelo iCloud</b><br />
+        Crie no iCloud Drive uma pasta chamada <code>GPT_Card_Feed_Medico</code>. Dentro dela, salve as imagens baixadas do ChatGPT.
+        No iPhone/iPad/Mac, abra este app e toque em <code>Importar imagens</code>.
+      </div>
+      <div class="help-box">
+        <b>2) Organização automática inicial</b><br />
+        O app tenta sugerir tema por nome do arquivo. Exemplos: <code>AKI</code>, <code>KDIGO</code>, <code>diabetes</code>,
+        <code>VM</code>, <code>sepse</code>, <code>choque</code>, <code>POCUS</code>. Depois você pode editar manualmente.
+      </div>
+      <div class="help-box">
+        <b>3) Comentários e explicações</b><br />
+        Em cada card, toque em <code>Editar</code>. Você pode acrescentar resumo, conduta prática, alerta TEMI, origem, tags e status.
+      </div>
+      <div class="help-box">
+        <b>4) Backup e atualização contínua</b><br />
+        Use <code>Exportar backup</code> ao final de cada sessão e salve o JSON no iCloud. Para restaurar em outro aparelho,
+        abra este app e use <code>Importar backup</code>.
+      </div>
+      <div class="help-box">
+        <b>5) Instrução para outras IAs</b><br />
+        Peça para gerarem imagens 1080×1920 ou 1440×1920 em PNG/JPG e um JSON compatível com campos:
+        <code>title</code>, <code>theme</code>, <code>tags</code>, <code>explanation</code>, <code>source</code>, <code>imageData</code> ou <code>imageUrl</code>.
+      </div>
+      <div class="help-box">
+        <b>Limitação importante</b><br />
+        Um HTML comum não consegue “vigiar” automaticamente uma pasta privada do iCloud e puxar tudo sozinho em todos os dispositivos.
+        A versão segura é importar/exportar manualmente. Para sincronização automática real, evolua para GitHub Pages + pasta <code>/assets/cards</code> + <code>/data/cards.json</code> ou app nativo.
+      </div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const DB_NAME = "GPTCardFeedMedicoDB";
+    const DB_VERSION = 1;
+    const STORE = "cards";
+    let db;
+    let cards = [];
+    let reviewOnly = false;
+
+    const $ = (id) => document.getElementById(id);
+
+    function nowISO() { return new Date().toISOString(); }
+    function uid() {
+      return "card_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
+    }
+
+    function toast(msg) {
+      const el = $("toast");
+      el.textContent = msg;
+      el.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => el.style.display = "none", 3200);
+    }
+
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (event) => {
+          const database = event.target.result;
+          if (!database.objectStoreNames.contains(STORE)) {
+            database.createObjectStore(STORE, { keyPath: "id" });
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function tx(mode = "readonly") {
+      return db.transaction(STORE, mode).objectStore(STORE);
+    }
+
+    function getAllCards() {
+      return new Promise((resolve, reject) => {
+        const req = tx().getAll();
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function putCard(card) {
+      return new Promise((resolve, reject) => {
+        const req = tx("readwrite").put(card);
+        req.onsuccess = () => resolve(card);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function deleteCard(id) {
+      return new Promise((resolve, reject) => {
+        const req = tx("readwrite").delete(id);
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function loadCards() {
+      cards = await getAllCards();
+      render();
+    }
+
+    function fileToDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function cleanTitle(name) {
+      return name
+        .replace(/\.[^.]+$/, "")
+        .replace(/[_-]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function inferTheme(name = "") {
+      const n = name.toLowerCase();
+      if (/(kdigo|aki|ira|renal|rim|hemodial|dialise|diálise|trs|crrt|sled|pirrt)/.test(n)) return "Nefro/AKI/TRS";
+      if (/(temi|prova|quest|flashcard|memory)/.test(n)) return "TEMI";
+      if (/(vm|ventil|sara|ards|pav|pneumonia associada)/.test(n)) return "Ventilação Mecânica";
+      if (/(sepse|septic|choque|vasopressor|noradrenalina|hemodin)/.test(n)) return "Sepse/Choque";
+      if (/(diabetes|cad|cetoacid|hipoglic|hiperglic|hhs|ehh|insulina)/.test(n)) return "Endocrino/Diabetes";
+      if (/(avc|tce|convuls|neuro|coma|delirium|sedação|sedacao)/.test(n)) return "Neurologia Intensiva";
+      if (/(ecg|cardio|iam|arrit|bradi|taqui|tridil|niprid)/.test(n)) return "Cardio/Hemodinâmica";
+      if (/(antibi|pav|infect|pneumo|aspirat|mening|cdc|idSA|anvisa)/.test(n)) return "Infectologia";
+      if (/(dose|dilui|farmaco|droga|medic|bomba|mlh|ml\/h)/.test(n)) return "Farmacologia/Doses";
+      if (/(pocus|ultrassom|usg|eco|lung|fast)/.test(n)) return "POCUS";
+      if (/(obsidian|ia|gpt|claude|antigravity|github|token|produtiv)/.test(n)) return "Obsidian/IA/Produtividade";
+      if (/(jurid|finance|banco|divor|irpf|serasa|divida|dívida)/.test(n)) return "Jurídico/Financeiro";
+      if (/(mae|mãe|familia|família|cuidado|idos)/.test(n)) return "Família/Cuidados";
+      return "UTI Geral";
+    }
+
+    function inferTags(name = "", theme = "") {
+      const raw = name.toLowerCase();
+      const tags = new Set();
+      theme.split(/[\/ ]+/).filter(Boolean).forEach(t => tags.add(t));
+      const map = {
+        "KDIGO": /kdigo/,
+        "AKI": /aki|ira|renal|rim/,
+        "TRS": /trs|crrt|sled|pirrt|hemodial|dialise|diálise/,
+        "TEMI": /temi/,
+        "VM": /\bvm\b|ventil/,
+        "SDRA": /sara|ards|sdra/,
+        "Diabetes": /diabetes|insulina|cetoacid|hipoglic|hiperglic|hhs|ehh/,
+        "Choque": /choque|shock|vasopressor|noradrenalina/,
+        "POCUS": /pocus|usg|ultrassom/,
+        "Plantão": /plantao|plantão|uti|emerg/
+      };
+      Object.entries(map).forEach(([tag, re]) => { if (re.test(raw)) tags.add(tag); });
+      return Array.from(tags).slice(0, 8);
+    }
+
+    function themeEmoji(theme) {
+      const m = {
+        "UTI Geral": "🏥", "TEMI": "🏆", "Ventilação Mecânica": "🫁", "Sepse/Choque": "🩸",
+        "Nefro/AKI/TRS": "🧪", "Endocrino/Diabetes": "🍬", "Neurologia Intensiva": "🧠",
+        "Cardio/Hemodinâmica": "❤️", "Infectologia": "🦠", "Farmacologia/Doses": "💊",
+        "POCUS": "🔊", "Obsidian/IA/Produtividade": "⚙️", "Jurídico/Financeiro": "⚖️",
+        "Família/Cuidados": "👨‍👩‍👧", "Outros": "🗂️"
+      };
+      return m[theme] || "🗂️";
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "";
+      try {
+        return new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit" });
+      } catch { return ""; }
+    }
+
+    async function importImages(files) {
+      if (!files || !files.length) return;
+      let count = 0;
+      for (const file of files) {
+        if (!file.type.startsWith("image/")) continue;
+        const imageData = await fileToDataURL(file);
+        const title = cleanTitle(file.name);
+        const theme = inferTheme(file.name);
+        const card = {
+          id: uid(),
+          title,
+          theme,
+          tags: inferTags(file.name, theme),
+          explanation: "",
+          notes: "",
+          source: "Imagem importada do dispositivo/iCloud",
+          status: "novo",
+          favorite: false,
+          imageData,
+          imageName: file.name,
+          createdAt: nowISO(),
+          updatedAt: nowISO(),
+          nextReview: null
+        };
+        await putCard(card);
+        count++;
+      }
+      await loadCards();
+      toast(`✅ ${count} imagem(ns) importada(s) para o feed.`);
+    }
+
+    async function importBackup(file) {
+      if (!file) return;
+      const text = await file.text();
+      let data;
+      try { data = JSON.parse(text); }
+      catch (e) { toast("❌ JSON inválido."); return; }
+
+      const incoming = Array.isArray(data) ? data : (data.cards || []);
+      if (!Array.isArray(incoming)) {
+        toast("❌ Backup sem campo cards.");
+        return;
+      }
+
+      let count = 0;
+      for (const raw of incoming) {
+        const id = raw.id || uid();
+        const theme = raw.theme || inferTheme(raw.title || raw.imageName || "");
+        const card = {
+          id,
+          title: raw.title || cleanTitle(raw.imageName || "Card sem título"),
+          theme,
+          tags: Array.isArray(raw.tags) ? raw.tags : String(raw.tags || "").split(",").map(s => s.trim()).filter(Boolean),
+          explanation: raw.explanation || raw.comment || raw.description || "",
+          notes: raw.notes || "",
+          source: raw.source || raw.reference || "Backup/IA",
+          status: raw.status || "novo",
+          favorite: Boolean(raw.favorite),
+          imageData: raw.imageData || raw.dataUrl || raw.image || "",
+          imageUrl: raw.imageUrl || raw.url || "",
+          imageName: raw.imageName || "",
+          createdAt: raw.createdAt || nowISO(),
+          updatedAt: nowISO(),
+          nextReview: raw.nextReview || null
+        };
+        await putCard(card);
+        count++;
+      }
+      await loadCards();
+      toast(`✅ Backup importado: ${count} card(s).`);
+    }
+
+    function filteredCards() {
+      const q = $("search").value.trim().toLowerCase();
+      const theme = $("themeFilter").value;
+      const today = new Date();
+      today.setHours(23,59,59,999);
+
+      let list = [...cards].filter(c => {
+        if (theme && c.theme !== theme) return false;
+        if (reviewOnly) {
+          const due = c.status === "revisar" || c.status === "aprendendo" ||
+            (c.nextReview && new Date(c.nextReview) <= today);
+          if (!due) return false;
+        }
+        if (!q) return true;
+        const blob = [
+          c.title, c.theme, (c.tags || []).join(" "), c.explanation, c.notes, c.source, c.status
+        ].join(" ").toLowerCase();
+        return blob.includes(q);
+      });
+
+      const sort = $("sortMode").value;
+      list.sort((a,b) => {
+        if (sort === "oldest") return new Date(a.createdAt) - new Date(b.createdAt);
+        if (sort === "title") return (a.title || "").localeCompare(b.title || "");
+        if (sort === "theme") return (a.theme || "").localeCompare(b.theme || "");
+        if (sort === "review") {
+          const ar = a.nextReview ? new Date(a.nextReview).getTime() : Infinity;
+          const br = b.nextReview ? new Date(b.nextReview).getTime() : Infinity;
+          return ar - br;
+        }
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+
+      return list;
+    }
+
+    function updateFilters() {
+      const select = $("themeFilter");
+      const current = select.value;
+      const themes = Array.from(new Set(cards.map(c => c.theme || "Outros"))).sort();
+      select.innerHTML = '<option value="">Todos os temas</option>' + themes.map(t =>
+        `<option value="${escapeHTML(t)}">${themeEmoji(t)} ${escapeHTML(t)}</option>`
+      ).join("");
+      if (themes.includes(current)) select.value = current;
+    }
+
+    function updateStats() {
+      $("statTotal").textContent = cards.length;
+      $("statFav").textContent = cards.filter(c => c.favorite).length;
+      const dueCount = cards.filter(c => c.status === "revisar" || c.status === "aprendendo" || (c.nextReview && new Date(c.nextReview) <= new Date())).length;
+      $("statReview").textContent = dueCount;
+    }
+
+    function escapeHTML(s = "") {
+      return String(s).replace(/[&<>"']/g, m => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      }[m]));
+    }
+
+    function render() {
+      updateFilters();
+      updateStats();
+      const list = filteredCards();
+      $("emptyState").style.display = list.length ? "none" : "block";
+      $("feed").innerHTML = list.map(cardHTML).join("");
+      document.querySelectorAll("[data-edit]").forEach(btn => btn.addEventListener("click", () => openEdit(btn.dataset.edit)));
+      document.querySelectorAll("[data-view]").forEach(el => el.addEventListener("click", () => openViewer(el.dataset.view)));
+      document.querySelectorAll("[data-fav]").forEach(btn => btn.addEventListener("click", () => toggleFavorite(btn.dataset.fav)));
+      document.querySelectorAll("[data-status]").forEach(btn => btn.addEventListener("click", () => quickStatus(btn.dataset.status, btn.dataset.value)));
+    }
+
+    function cardHTML(c) {
+      const img = c.imageData || c.imageUrl || "";
+      const tags = (c.tags || []).slice(0, 7).map(t => `<span class="tag">#${escapeHTML(t)}</span>`).join("");
+      const explanation = c.explanation ? escapeHTML(c.explanation) : "<span style='color:#94a3b8'>Sem explicação ainda. Toque em editar e adicione o resumo/conduta.</span>";
+      const fav = c.favorite ? "⭐" : "☆";
+      return `
+        <article class="card">
+          <div class="card-image-wrap" data-view="${escapeHTML(c.id)}">
+            ${img ? `<img src="${escapeHTML(img)}" alt="${escapeHTML(c.title)}" loading="lazy" />` : `<div style="padding:28px;color:#94a3b8">Sem imagem</div>`}
+          </div>
+          <div class="card-body">
+            <div class="card-topline">
+              <h3 class="card-title">${escapeHTML(c.title || "Card sem título")}</h3>
+              <span class="theme">${themeEmoji(c.theme)} ${escapeHTML(c.theme || "Outros")}</span>
+            </div>
+            <div class="tags">${tags}</div>
+            <div class="explanation">${explanation}</div>
+            <div class="card-actions">
+              <button class="btn small" data-edit="${escapeHTML(c.id)}">✍️ Editar</button>
+              <button class="btn small" data-fav="${escapeHTML(c.id)}">${fav}</button>
+              <button class="btn small warn" data-status="${escapeHTML(c.id)}" data-value="revisar">🔁 Revisar</button>
+              <button class="btn small good" data-status="${escapeHTML(c.id)}" data-value="dominado">✅ Dominei</button>
+            </div>
+            <div class="meta">
+              <span>${escapeHTML(c.status || "novo")} • ${formatDate(c.createdAt)}</span>
+              <span>${c.nextReview ? "Próx.: " + formatDate(c.nextReview) : escapeHTML(c.source || "")}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function getCard(id) {
+      return cards.find(c => c.id === id);
+    }
+
+    function openViewer(id) {
+      const c = getCard(id);
+      if (!c) return;
+      $("viewerTitle").textContent = c.title || "Imagem";
+      $("viewerImg").src = c.imageData || c.imageUrl || "";
+      $("viewerDialog").showModal();
+    }
+
+    function openEdit(id) {
+      const c = getCard(id);
+      if (!c) return;
+      $("editId").value = c.id;
+      $("editTitle").value = c.title || "";
+      $("editTheme").value = c.theme || "Outros";
+      $("editTags").value = (c.tags || []).join(", ");
+      $("editExplanation").value = c.explanation || "";
+      $("editNotes").value = c.notes || "";
+      $("editSource").value = c.source || "";
+      $("editStatus").value = c.status || "novo";
+      $("btnFavorite").textContent = c.favorite ? "⭐ Remover favorito" : "⭐ Favoritar";
+      $("editDialog").showModal();
+    }
+
+    async function saveEdit() {
+      const id = $("editId").value;
+      const c = getCard(id);
+      if (!c) return;
+      c.title = $("editTitle").value.trim() || c.title;
+      c.theme = $("editTheme").value || "Outros";
+      c.tags = $("editTags").value.split(",").map(s => s.trim()).filter(Boolean);
+      c.explanation = $("editExplanation").value.trim();
+      c.notes = $("editNotes").value.trim();
+      c.source = $("editSource").value.trim();
+      c.status = $("editStatus").value;
+      c.updatedAt = nowISO();
+      await putCard(c);
+      await loadCards();
+      toast("💾 Card salvo.");
+    }
+
+    async function toggleFavorite(id) {
+      const c = getCard(id);
+      if (!c) return;
+      c.favorite = !c.favorite;
+      c.updatedAt = nowISO();
+      await putCard(c);
+      await loadCards();
+    }
+
+    function addDays(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString();
+    }
+
+    async function quickStatus(id, status) {
+      const c = getCard(id);
+      if (!c) return;
+      c.status = status;
+      if (status === "revisar") c.nextReview = addDays(1);
+      if (status === "aprendendo") c.nextReview = addDays(3);
+      if (status === "dominado") c.nextReview = addDays(14);
+      c.updatedAt = nowISO();
+      await putCard(c);
+      await loadCards();
+      toast(status === "dominado" ? "✅ Marcado como dominado." : "🔁 Card enviado para revisão.");
+    }
+
+    function exportBackup() {
+      const payload = {
+        app: "GPT Card Feed Médico",
+        version: "1.0",
+        exportedAt: nowISO(),
+        total: cards.length,
+        cards
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const date = new Date().toISOString().slice(0,10);
+      a.href = url;
+      a.download = `gpt-card-feed-backup-${date}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast("📤 Backup JSON exportado. Salve no iCloud Drive.");
+    }
+
+    async function deleteCurrent() {
+      const id = $("editId").value;
+      if (!id) return;
+      const ok = confirm("Apagar este card? Esta ação remove o card deste navegador. Se você tiver backup JSON, poderá restaurar depois.");
+      if (!ok) return;
+      await deleteCard(id);
+      $("editDialog").close();
+      await loadCards();
+      toast("🗑️ Card apagado.");
+    }
+
+    function wireEvents() {
+      $("btnImport").addEventListener("click", () => $("imageInput").click());
+      $("btnImportFloating").addEventListener("click", () => $("imageInput").click());
+      $("imageInput").addEventListener("change", e => importImages(e.target.files));
+      $("btnBackup").addEventListener("click", () => $("backupInput").click());
+      $("backupInput").addEventListener("change", e => importBackup(e.target.files[0]));
+      $("btnExport").addEventListener("click", exportBackup);
+      $("btnHelp").addEventListener("click", () => $("helpDialog").showModal());
+      $("btnPrint").addEventListener("click", () => window.print());
+
+      $("btnReviewOnly").addEventListener("click", () => {
+        reviewOnly = !reviewOnly;
+        $("btnReviewOnly").textContent = reviewOnly ? "🗂️ Ver todos" : "🔁 Modo revisão";
+        render();
+      });
+
+      ["search", "themeFilter", "sortMode"].forEach(id => {
+        $(id).addEventListener("input", render);
+        $(id).addEventListener("change", render);
+      });
+
+      $("editForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        await saveEdit();
+        $("editDialog").close();
+      });
+
+      $("btnDelete").addEventListener("click", deleteCurrent);
+      $("btnFavorite").addEventListener("click", async () => {
+        await toggleFavorite($("editId").value);
+        $("editDialog").close();
+      });
+      $("btnMarkReview").addEventListener("click", async () => {
+        await quickStatus($("editId").value, "revisar");
+        $("editDialog").close();
+      });
+
+      window.addEventListener("keydown", (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "i") {
+          e.preventDefault(); $("imageInput").click();
+        }
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "e") {
+          e.preventDefault(); exportBackup();
+        }
+      });
+    }
+
+    async function main() {
+      db = await openDB();
+      wireEvents();
+      await loadCards();
+      toast("🧠 GPT Card Feed pronto para receber seus cards.");
+    }
+
+    main().catch(err => {
+      console.error(err);
+      alert("Erro ao iniciar o app: " + err.message);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeria de Imagens | UpDown Hub</title>
+  <link rel="stylesheet" href="../assets/estudos.css" />
+  <style>
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+    .img-card { cursor: pointer; }
+    .img-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">🖼️ <span>Galeria Clínica</span></a>
+    <nav>
+      <a href="../index.html">⬅️ UpDown Hub</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div>
+        <span class="eyebrow">🎨 Visual Think • Mapas • Fluxogramas • Pocket Cards</span>
+        <h1>Memória Visual</h1>
+        <p>Infográficos, algoritmos visuais e cards de bolso otimizados para memorização e consulta rápida.</p>
+      </div>
+    </section>
+    
+    <section class="block">
+      <div class="gallery">
+        <article class="card img-card">
+          <div style="background: var(--bg2); height: 200px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--muted);">
+            🖼️ Imagem LES #001
+          </div>
+          <h3>Fluxograma Diagnóstico LES</h3>
+          <p>Algoritmo EULAR/ACR 2019 simplificado.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

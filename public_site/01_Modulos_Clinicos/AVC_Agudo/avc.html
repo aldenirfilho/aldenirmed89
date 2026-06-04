@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 AVC Agudo — Enciclopédia Médica Intensiva</title>
+    <meta name="description" content="Módulo interativo AVC Agudo: emergência, reperfusão, neuroimagem, UTI, TEMI e preparação para prova de título.">
+    <!-- Tailwind mantido temporariamente para compatibilidade com avc.js -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <!-- CSS institucional -->
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="avc-theme.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .adhd-highlight { background: linear-gradient(120deg, #fef08a 0%, #fde047 100%); padding: 0.1em 0.4em; border-radius: 0.4rem; font-weight: 700; color: #422006; }
+        .dark .adhd-highlight { background: linear-gradient(120deg, #eab308 0%, #ca8a04 100%); color: #fefce8; }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-4px); }
+        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .flipped .flash-inner { transform: rotateY(180deg); }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+    </style>
+</head>
+<body class="avc-page dark">
+
+    <!-- TOPBAR INSTITUCIONAL -->
+    <header class="topbar avc-topbar" style="display:flex;align-items:center;justify-content:space-between;padding:0 22px;height:72px;background:linear-gradient(135deg,rgba(10,22,40,.92),rgba(15,31,56,.92));backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08)">
+        <div style="display:flex;align-items:center;gap:12px">
+            <button id="menuBtn" class="avc-mobile-menu" style="padding:8px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#e2e8f0;cursor:pointer">
+                <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <a href="../../index.html" style="display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#7c3aed,#a855f7);font-size:1.5rem;text-decoration:none;box-shadow:0 8px 28px rgba(124,58,237,.25)">🏠</a>
+            <div>
+                <h1 style="font-size:1.15rem;font-weight:900;letter-spacing:-.04em;color:#fff;margin:0">🧠 AVC Agudo</h1>
+                <p style="font-size:.78rem;color:#94a3b8;margin:0">Enciclopédia Médica Intensiva</p>
+            </div>
+        </div>
+        <div class="avc-topbar-actions">
+            <a href="avc_31_blocos.html" class="btn" style="font-size:.82rem;padding:8px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#e9d5ff;border-radius:14px;text-decoration:none;font-weight:700">📄 Material Extenso</a>
+            <a href="avc_31_blocos.html#bloco-18" class="btn" style="font-size:.82rem;padding:8px 14px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);color:#6ee7b7;border-radius:14px;text-decoration:none;font-weight:700">📸 Galeria</a>
+            <a href="codigo_avc_10_minutos_dashboard_html.html" class="btn" style="font-size:.82rem;padding:8px 14px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:#fcd34d;border-radius:14px;text-decoration:none;font-weight:700">⏱️ Dashboard</a>
+            <a href="../../02_Banco_Questoes_TEMI/avc_agudo_questoes.html" class="btn" style="font-size:.82rem;padding:8px 14px;background:rgba(62,232,255,.08);border:1px solid rgba(62,232,255,.2);color:#d9fbff;border-radius:14px;text-decoration:none;font-weight:700">🏆 Banco TEMI</a>
+            <a href="../../03_Calculadoras_UTI/index.html" class="btn" style="font-size:.82rem;padding:8px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#cbd5e1;border-radius:14px;text-decoration:none;font-weight:700">🧮 Calculadoras</a>
+            <a href="../../06_Card_Feed_Medico/index.html" class="btn" style="font-size:.82rem;padding:8px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#cbd5e1;border-radius:14px;text-decoration:none;font-weight:700">🖼️ Card Feed</a>
+            <button id="themeToggle" style="padding:8px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#e2e8f0;cursor:pointer">🌗</button>
+        </div>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <nav class="avc-breadcrumb" aria-label="breadcrumb">
+        <div class="avc-breadcrumb-inner">
+            <a href="../../index.html">🏠 Início</a> ›
+            <span>📁 Módulos Clínicos</span> ›
+            <span style="color:var(--accent);font-weight:700">🧠 AVC Agudo</span>
+        </div>
+    </nav>
+
+    <!-- OVERLAY MOBILE -->
+    <div id="overlay" class="avc-overlay hidden"></div>
+
+    <!-- LAYOUT PRINCIPAL -->
+    <div class="avc-layout">
+
+        <!-- SIDEBAR -->
+        <aside id="sidebar" class="avc-sidebar">
+            <nav>
+                <p class="avc-sidebar-title">Navegação rápida</p>
+                <ul id="sidebar-nav">
+                    <!-- PREENCHIDO PELO AVC.JS -->
+                </ul>
+                <div class="avc-tip">
+                    <strong>⚡ Dica TDAH</strong>
+                    <p style="font-size:.82rem;margin:5px 0 0">Use ⌘+F para buscar. Clique nos acordeões à direita para expandir o conteúdo.</p>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="avc-main">
+
+            <!-- HERO -->
+            <section class="avc-hero glass" style="border-radius:28px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.04));box-shadow:0 24px 80px rgba(0,0,0,.28);backdrop-filter:blur(18px)">
+                <div class="avc-hero-grid">
+                    <div>
+                        <div class="avc-eyebrow">🔬 ATUALIZADO 2026 • TEMI FOCADO</div>
+                        <h1>AVC Agudo</h1>
+                        <p>Visual. Rápido. Beira-leito. Sem enrolação. <strong>Tempo é cérebro.</strong></p>
+                        <div class="avc-chip-row">
+                            <span class="avc-chip">⏱️ Porta-agulha &lt;25min</span>
+                            <span class="avc-chip">🧪 TNK &gt; tPA</span>
+                            <span class="avc-chip">🎯 Metas claras</span>
+                            <span class="avc-chip">🧠 AHA/ASA 2026</span>
+                        </div>
+                    </div>
+                    <div class="avc-metrics">
+                        <div class="avc-metric"><b>⏱️ &lt;4.5h</b><span>Janela trombólise IV</span></div>
+                        <div class="avc-metric"><b>🧲 &lt;24h</b><span>Janela trombectomia</span></div>
+                        <div class="avc-metric"><b>🎚️ &lt;185/110</b><span>PA pré-trombólise</span></div>
+                        <div class="avc-metric"><b>📊 5 eixos</b><span>Fundamentos → Cross IA</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAINEL DE AÇÕES -->
+            <section class="avc-actions-panel glass" style="border-radius:22px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.03));backdrop-filter:blur(12px)">
+                <div class="avc-section-title">
+                    <div>
+                        <h2>📂 Conteúdo Interativo</h2>
+                        <p>5 eixos temáticos com acordeões, escalas, flashcards e quiz.</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <a href="avc_31_blocos.html" class="btn" style="background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:#d8b4fe;border-radius:14px;padding:10px 16px;text-decoration:none;font-weight:800;font-size:.85rem">📄 Material Extenso (31 blocos)</a>
+                    <a href="avc_31_blocos.html#bloco-18" class="btn" style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);color:#6ee7b7;border-radius:14px;padding:10px 16px;text-decoration:none;font-weight:800;font-size:.85rem">📸 Galeria Neuroimagem</a>
+                    <a href="codigo_avc_10_minutos_dashboard_html.html" class="btn" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:#fcd34d;border-radius:14px;padding:10px 16px;text-decoration:none;font-weight:800;font-size:.85rem">⏱️ Dashboard AVC 10 min</a>
+                </div>
+            </section>
+
+            <!-- CONTEÚDO DINÂMICO -->
+            <div id="dynamic-content" class="avc-dynamic-content">
+                <!-- PREENCHIDO PELO AVC.JS COM AS TAGS <details> -->
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="avc-footer" style="margin-top:40px;color:#64748b;font-size:.82rem">
+                <p>🧠 Enciclopédia Médica Intensiva & Medicina Interna • Módulo AVC Agudo • v2026</p>
+                <p style="margin-top:4px;font-size:.75rem">⚠️ Ferramenta educacional/de apoio. Não substitui julgamento clínico.</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- INJEÇÃO DA MATRIZ DE DADOS -->
+    <script src="db_fundamentos.js"></script>
+    <script src="db_pratica.js"></script>
+    <script src="db_interativo.js"></script>
+    <script src="db_pesquisa.js"></script>
+    <script src="db_cross_ia.js"></script>
+    <!-- MOTOR UNIVERSAL V7 -->
+    <script src="avc.js"></script>
+
+    <script>
+        // Theme — forçar dark por padrão (padrão institucional)
+        const html = document.documentElement;
+        html.classList.add('dark');
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+        });
+
+        // Sidebar mobile — compatível com avc-theme.css
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        function toggleSidebar() {
+            sidebar.classList.toggle('is-open');
+            overlay.classList.toggle('hidden');
+        }
+        menuBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+    </script>
+</body>
+</html>

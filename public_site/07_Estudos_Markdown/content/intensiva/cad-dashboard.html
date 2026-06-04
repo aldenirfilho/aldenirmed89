@@ -1,0 +1,2184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAD · Dashboard UTI | Antigravity</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Literata:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+/* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
+:root {
+  --ink:      #040810;
+  --ink2:     #080F1C;
+  --ink3:     #0B1525;
+  --surface:  #0F1E30;
+  --panel:    #122033;
+  --card:     #162540;
+  --raised:   #1B2D4F;
+  --border:   #1E3454;
+  --border2:  #0D2040;
+
+  --cyan:     #00C8E0;
+  --cyan2:    #0099B0;
+  --lime:     #00E5A0;
+  --lime2:    #00B878;
+  --amber:    #FFB020;
+  --amber2:   #CC8A00;
+  --rose:     #FF4060;
+  --rose2:    #CC1030;
+  --violet:   #9B6DFF;
+  --violet2:  #7040E0;
+
+  --text:     #DDE8F5;
+  --text2:    #7A9BBF;
+  --text3:    #3A5A7F;
+  --ghost:    #0A182A;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Syne', sans-serif;
+  --serif: 'Literata', Georgia, serif;
+}
+
+/* ─ reset ─ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  font-family: var(--sans);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════
+   BACKGROUND GRID
+═══════════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(var(--border2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border2) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 20%, #00C8E010 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 80%, #9B6DFF08 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════ */
+.hdr {
+  position: relative; z-index: 10;
+  background: linear-gradient(180deg, var(--ink2) 0%, transparent 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+
+.hdr-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hdr-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+
+.hdr-logo-mark {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  box-shadow: 0 0 20px #00C8E030;
+}
+
+.hdr-logo-text {
+  font-size: 0.8rem; font-weight: 800;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text);
+}
+
+.hdr-logo-sub {
+  font-size: 0.55rem; color: var(--text3);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.hdr-sep { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
+
+.hdr-title {
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.hdr-pills { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+.pill {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.pill-danger { background: var(--rose)18; color: var(--rose); border: 1px solid var(--rose)40; }
+.pill-info   { background: var(--cyan)15;  color: var(--cyan);  border: 1px solid var(--cyan)35; }
+.pill-ok     { background: var(--lime)15;  color: var(--lime);  border: 1px solid var(--lime)35; }
+
+/* ═══════════════════════════════════════════════
+   NAVIGATION TABS
+═══════════════════════════════════════════════ */
+.nav {
+  position: relative; z-index: 10;
+  background: var(--ink2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  overflow-x: auto;
+}
+
+.nav::-webkit-scrollbar { display: none; }
+
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  gap: 2px;
+  padding: 8px 0;
+}
+
+.nav-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  padding: 7px 16px;
+  font-family: var(--sans);
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--text3);
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex; align-items: center; gap: 7px;
+  white-space: nowrap;
+}
+
+.nav-btn:hover { color: var(--text2); background: var(--surface); }
+
+.nav-btn.active {
+  color: var(--cyan);
+  background: var(--cyan)12;
+  border-color: var(--cyan)35;
+}
+
+.nav-btn .nav-icon { font-size: 0.85rem; }
+
+/* ═══════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════ */
+.wrap {
+  position: relative; z-index: 5;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px 48px;
+}
+
+.section { display: none; }
+.section.active { display: block; }
+
+/* ─ grid ─ */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+.g21 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+.g12 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; }
+.mb { margin-bottom: 16px; }
+.mt { margin-top: 16px; }
+
+/* ─ card ─ */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+
+.card-hd {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 9px;
+  font-size: 0.62rem; font-weight: 800;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.card-hd.cyan   { color: var(--cyan);   background: var(--cyan)0C; }
+.card-hd.lime   { color: var(--lime);   background: var(--lime)0C; }
+.card-hd.amber  { color: var(--amber);  background: var(--amber)0C; }
+.card-hd.rose   { color: var(--rose);   background: var(--rose)0C; }
+.card-hd.violet { color: var(--violet); background: var(--violet)0C; }
+.card-hd.muted  { color: var(--text3);  background: var(--ghost); }
+
+.card-hd-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cyan .card-hd-dot   { background: var(--cyan);   box-shadow: 0 0 8px var(--cyan); }
+.lime .card-hd-dot   { background: var(--lime);   box-shadow: 0 0 8px var(--lime); }
+.amber .card-hd-dot  { background: var(--amber);  box-shadow: 0 0 8px var(--amber); }
+.rose .card-hd-dot   { background: var(--rose);   box-shadow: 0 0 8px var(--rose); }
+.violet .card-hd-dot { background: var(--violet); box-shadow: 0 0 8px var(--violet); }
+.muted .card-hd-dot  { background: var(--text3); }
+
+.card-body { padding: 18px; }
+.card-body-sm { padding: 14px 18px; }
+
+/* ═══════════════════════════════════════════════
+   FORM ELEMENTS
+═══════════════════════════════════════════════ */
+.field { margin-bottom: 14px; }
+.field:last-child { margin-bottom: 0; }
+
+.field-label {
+  display: block;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--text3);
+  font-family: var(--mono);
+  margin-bottom: 6px;
+}
+
+.field-row { display: flex; align-items: center; gap: 8px; }
+
+.inp {
+  background: var(--ink3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--text);
+  padding: 9px 13px;
+  font-family: var(--mono);
+  font-size: 1.05rem; font-weight: 600;
+  width: 130px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.inp::-webkit-outer-spin-button,
+.inp::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.inp:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px var(--cyan)18;
+}
+
+.inp.warn { border-color: var(--rose); color: var(--rose); }
+.inp.warn:focus { box-shadow: 0 0 0 3px var(--rose)15; }
+
+.unit {
+  font-family: var(--mono);
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--text3);
+}
+
+.hint {
+  font-size: 0.62rem; color: var(--text3);
+  font-family: var(--mono);
+  margin-top: 4px; line-height: 1.4;
+}
+
+.field-warn {
+  font-size: 0.62rem; font-weight: 700;
+  color: var(--rose);
+  font-family: var(--mono);
+  margin-top: 4px;
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* ═══════════════════════════════════════════════
+   RESULT DISPLAYS
+═══════════════════════════════════════════════ */
+.result-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.result-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.result-block.cyan::before   { background: linear-gradient(90deg, var(--cyan), transparent); }
+.result-block.lime::before   { background: linear-gradient(90deg, var(--lime), transparent); }
+.result-block.amber::before  { background: linear-gradient(90deg, var(--amber), transparent); }
+.result-block.rose::before   { background: linear-gradient(90deg, var(--rose), transparent); }
+.result-block.violet::before { background: linear-gradient(90deg, var(--violet), transparent); }
+
+.result-block.alert-rose {
+  background: var(--rose)0A;
+  border-color: var(--rose)40;
+}
+
+.result-label {
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text3);
+  font-family: var(--mono);
+  margin-bottom: 6px;
+}
+
+.result-val {
+  font-family: var(--mono);
+  font-size: 2rem; font-weight: 700;
+  line-height: 1;
+}
+
+.result-val .result-unit {
+  font-size: 0.8rem; font-weight: 400;
+  color: var(--text3);
+  margin-left: 4px;
+}
+
+.result-desc {
+  font-size: 0.72rem; color: var(--text2);
+  margin-top: 8px; line-height: 1.5;
+  font-family: var(--serif);
+  font-style: italic;
+}
+
+/* big number display */
+.big-num {
+  font-family: var(--mono);
+  font-size: 3.5rem; font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-align: center;
+  padding: 20px 0 8px;
+}
+
+.big-label {
+  text-align: center;
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text3);
+  font-family: var(--mono);
+  padding-bottom: 16px;
+}
+
+/* badge */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.6rem; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.badge-cyan   { background: var(--cyan)18;   color: var(--cyan);   border: 1px solid var(--cyan)35; }
+.badge-lime   { background: var(--lime)18;   color: var(--lime);   border: 1px solid var(--lime)35; }
+.badge-amber  { background: var(--amber)18;  color: var(--amber);  border: 1px solid var(--amber)35; }
+.badge-rose   { background: var(--rose)18;   color: var(--rose);   border: 1px solid var(--rose)40; }
+.badge-violet { background: var(--violet)18; color: var(--violet); border: 1px solid var(--violet)35; }
+.badge-muted  { background: var(--surface);  color: var(--text3);  border: 1px solid var(--border); }
+
+/* ═══════════════════════════════════════════════
+   ALERT BOXES
+═══════════════════════════════════════════════ */
+.alert-box {
+  border-radius: var(--r-lg);
+  padding: 12px 16px;
+  font-size: 0.78rem;
+  font-family: var(--serif);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.alert-box strong { font-family: var(--sans); font-size: 0.78rem; }
+
+.ab-rose   { background: var(--rose)12;   border: 1px solid var(--rose)40;   color: var(--rose); }
+.ab-lime   { background: var(--lime)10;   border: 1px solid var(--lime)35;   color: var(--lime); }
+.ab-amber  { background: var(--amber)10;  border: 1px solid var(--amber)30;  color: var(--amber); }
+.ab-cyan   { background: var(--cyan)10;   border: 1px solid var(--cyan)30;   color: var(--text2); }
+.ab-violet { background: var(--violet)10; border: 1px solid var(--violet)30; color: var(--violet); }
+
+/* ═══════════════════════════════════════════════
+   TABLES
+═══════════════════════════════════════════════ */
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+}
+
+.tbl th {
+  background: var(--ghost);
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--text3);
+  font-family: var(--mono);
+}
+
+.tbl td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border2);
+  vertical-align: middle;
+  font-family: var(--serif);
+  font-size: 0.78rem;
+  color: var(--text2);
+  line-height: 1.4;
+}
+
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: var(--surface); }
+
+.tbl .mono-td { font-family: var(--mono); font-weight: 700; font-size: 0.82rem; }
+
+/* ═══════════════════════════════════════════════
+   CHECKLIST
+═══════════════════════════════════════════════ */
+.cl-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border2);
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  transition: background 0.12s;
+  padding-left: 6px;
+}
+
+.cl-item:last-child { border-bottom: none; }
+.cl-item:hover { background: var(--surface); }
+
+.cl-box {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem;
+  color: transparent;
+  transition: all 0.15s;
+  margin-top: 2px;
+  font-weight: 900;
+}
+
+.cl-item.done .cl-box {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: var(--ink);
+}
+
+.cl-item.urgent .cl-box { border-color: var(--rose)70; }
+.cl-item.done.urgent .cl-box {
+  background: var(--lime);
+  border-color: var(--lime);
+}
+
+.cl-text {
+  font-size: 0.78rem; line-height: 1.45;
+  color: var(--text);
+  font-family: var(--serif);
+  flex: 1;
+}
+
+.cl-text small {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--text3);
+  font-family: var(--mono);
+  margin-top: 2px;
+}
+
+.cl-item.done .cl-text {
+  color: var(--text3);
+  text-decoration: line-through;
+  text-decoration-color: var(--text3);
+}
+
+/* ═══════════════════════════════════════════════
+   SEVERITY METER
+═══════════════════════════════════════════════ */
+.severity-block {
+  border-radius: var(--r-xl);
+  padding: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 14px;
+  border: 2px solid var(--border);
+  transition: border-color 0.3s;
+}
+
+.sev-icon { font-size: 3rem; margin-bottom: 8px; }
+.sev-label {
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text3);
+  font-family: var(--mono);
+}
+.sev-val {
+  font-size: 1.8rem; font-weight: 800;
+  letter-spacing: 0.05em;
+  margin: 6px 0;
+}
+.sev-uti {
+  font-size: 0.78rem; font-weight: 700;
+  color: var(--rose);
+  font-family: var(--mono);
+}
+
+/* ═══════════════════════════════════════════════
+   PROGRESS
+═══════════════════════════════════════════════ */
+.progress-track {
+  background: var(--ghost);
+  border-radius: 10px;
+  height: 6px;
+  overflow: hidden;
+  margin: 12px 0 6px;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--lime), var(--cyan));
+  transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+.progress-info {
+  display: flex; justify-content: space-between;
+  font-size: 0.6rem; font-weight: 700;
+  color: var(--text3);
+  font-family: var(--mono);
+}
+
+/* ═══════════════════════════════════════════════
+   TIMELINE
+═══════════════════════════════════════════════ */
+.timeline { position: relative; }
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 16px; top: 8px; bottom: 8px;
+  width: 1.5px;
+  background: linear-gradient(180deg, var(--lime), var(--cyan), var(--violet));
+}
+
+.tl-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.tl-dot {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 800;
+  position: relative; z-index: 1;
+  font-family: var(--mono);
+}
+
+.tl-time {
+  font-family: var(--mono);
+  font-size: 0.6rem; font-weight: 700;
+  color: var(--text3);
+  white-space: nowrap;
+  margin-top: 7px;
+  min-width: 60px;
+}
+
+.tl-card {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 10px 14px;
+}
+
+.tl-card.red-hl {
+  background: var(--rose)08;
+  border-color: var(--rose)40;
+}
+
+.tl-ttl {
+  font-size: 0.8rem; font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.tl-desc {
+  font-size: 0.72rem; color: var(--text2);
+  font-family: var(--serif);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════
+   OVERVIEW GRID
+═══════════════════════════════════════════════ */
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: -30px; right: -30px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  opacity: 0.06;
+}
+
+.stat-card.cyan::after  { background: var(--cyan);   }
+.stat-card.lime::after  { background: var(--lime);   }
+.stat-card.amber::after { background: var(--amber);  }
+.stat-card.rose::after  { background: var(--rose);   }
+
+.stat-icon { font-size: 1.5rem; margin-bottom: 10px; }
+.stat-num {
+  font-family: var(--mono);
+  font-size: 1.6rem; font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.stat-lbl {
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text3);
+  font-family: var(--mono);
+}
+
+/* ═══════════════════════════════════════════════
+   FLASHCARD SECTION
+═══════════════════════════════════════════════ */
+.flashcard-wrap {
+  perspective: 1000px;
+  height: 200px;
+  cursor: pointer;
+  margin-bottom: 14px;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+.flashcard-wrap.flipped .flashcard-inner { transform: rotateY(180deg); }
+
+.fc-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--r-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.fc-front {
+  background: var(--card);
+  border: 1px solid var(--cyan)35;
+}
+
+.fc-back {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--card) 100%);
+  border: 1px solid var(--lime)35;
+  transform: rotateY(180deg);
+}
+
+.fc-tag {
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text3);
+  font-family: var(--mono);
+  margin-bottom: 12px;
+}
+
+.fc-q {
+  font-size: 0.95rem; font-weight: 600;
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.4;
+}
+
+.fc-a {
+  font-size: 0.88rem;
+  color: var(--lime);
+  font-family: var(--serif);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.fc-hint {
+  font-size: 0.6rem; color: var(--text3);
+  font-family: var(--mono);
+  margin-top: 12px;
+}
+
+.fc-nav {
+  display: flex; align-items: center; gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.fc-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--text2);
+  padding: 7px 16px;
+  font-family: var(--mono);
+  font-size: 0.68rem; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.fc-btn:hover { background: var(--raised); color: var(--text); }
+.fc-counter { font-family: var(--mono); font-size: 0.65rem; color: var(--text3); }
+
+/* ═══════════════════════════════════════════════
+   QUIZ
+═══════════════════════════════════════════════ */
+.quiz-q-text {
+  font-size: 0.88rem; line-height: 1.6;
+  font-family: var(--serif);
+  color: var(--text);
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.quiz-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+
+.quiz-opt {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 11px 15px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-lg);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--serif);
+  font-size: 0.82rem;
+  color: var(--text2);
+  line-height: 1.45;
+}
+
+.quiz-opt:hover { border-color: var(--cyan)50; color: var(--text); }
+
+.quiz-opt.correct {
+  border-color: var(--lime);
+  background: var(--lime)0C;
+  color: var(--lime);
+}
+
+.quiz-opt.wrong {
+  border-color: var(--rose);
+  background: var(--rose)0C;
+  color: var(--rose);
+}
+
+.quiz-opt-letter {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: var(--ghost);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--text3);
+  margin-top: 1px;
+}
+
+.quiz-opt.correct .quiz-opt-letter { background: var(--lime); color: var(--ink); }
+.quiz-opt.wrong .quiz-opt-letter { background: var(--rose); color: var(--ink); }
+
+.quiz-feedback {
+  display: none;
+  padding: 14px 16px;
+  border-radius: var(--r-lg);
+  font-family: var(--serif);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.quiz-feedback.visible { display: block; }
+.quiz-feedback.correct { background: var(--lime)0C; border: 1px solid var(--lime)35; color: var(--lime); }
+.quiz-feedback.wrong   { background: var(--rose)0C; border: 1px solid var(--rose)35; color: var(--text2); }
+
+.quiz-nav-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  color: var(--text2);
+  padding: 9px 20px;
+  font-family: var(--mono);
+  font-size: 0.7rem; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.05em;
+}
+
+.quiz-nav-btn:hover { background: var(--raised); color: var(--text); border-color: var(--cyan)35; }
+.quiz-nav-btn.primary { background: var(--cyan)18; color: var(--cyan); border-color: var(--cyan)40; }
+.quiz-nav-btn.primary:hover { background: var(--cyan)28; }
+
+.quiz-score {
+  display: none;
+  text-align: center;
+  padding: 32px;
+}
+.quiz-score.visible { display: block; }
+.quiz-score-num {
+  font-family: var(--mono);
+  font-size: 4rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+
+/* ═══════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════ */
+.btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--text2);
+  padding: 8px 16px;
+  font-family: var(--mono);
+  font-size: 0.68rem; font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.15s;
+}
+
+.btn:hover { background: var(--raised); color: var(--text); }
+.btn-rose { background: var(--rose)15; color: var(--rose); border-color: var(--rose)40; }
+.btn-lime { background: var(--lime)15; color: var(--lime); border-color: var(--lime)40; }
+.btn-cyan { background: var(--cyan)15; color: var(--cyan); border-color: var(--cyan)40; }
+
+/* ─ divider ─ */
+.hr { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+
+/* ─ formula chip ─ */
+.formula {
+  background: var(--ghost);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--cyan);
+  margin-bottom: 10px;
+  overflow-x: auto;
+}
+
+/* ─ k table ─ */
+.k-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border2);
+}
+.k-row:last-child { border-bottom: none; }
+.k-row > div { padding: 10px 14px; font-size: 0.75rem; display: flex; align-items: center; }
+
+/* ─ scrollable ─ */
+.scroll-y { overflow-y: auto; }
+.scroll-y::-webkit-scrollbar { width: 4px; }
+.scroll-y::-webkit-scrollbar-track { background: transparent; }
+.scroll-y::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ─ print button ─ */
+.print-btn {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--ink2);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  z-index: 100;
+  box-shadow: 0 4px 20px var(--ink);
+  transition: all 0.2s;
+}
+.print-btn:hover { border-color: var(--cyan); box-shadow: 0 0 16px var(--cyan)25; }
+
+/* ─ responsive ─ */
+@media (max-width: 768px) {
+  .g2, .g3, .g4, .g21, .g12 { grid-template-columns: 1fr; }
+  .wrap { padding: 14px 16px 60px; }
+  .hdr-inner { gap: 12px; }
+}
+
+@media print {
+  .hdr, .nav, .print-btn { display: none; }
+  .section { display: block !important; }
+  body { background: white; color: black; }
+}
+
+/* ─ anim ─ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section.active { animation: fadeUp 0.25s ease-out; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header class="hdr">
+  <div class="hdr-inner">
+    <a class="hdr-logo" href="#">
+      <div class="hdr-logo-mark">🧪</div>
+      <div>
+        <div class="hdr-logo-text">Antigravity</div>
+        <div class="hdr-logo-sub">Enciclomedia Médica</div>
+      </div>
+    </a>
+    <div class="hdr-sep"></div>
+    <div class="hdr-title">CAD · Dashboard UTI</div>
+    <div class="hdr-pills">
+      <span class="pill pill-danger">🔴 Emergência</span>
+      <span class="pill pill-info">TEMI</span>
+      <span class="pill pill-ok" id="liveTime"></span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     NAV
+══════════════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" data-tab="overview" onclick="switchTab('overview')">
+      <span class="nav-icon">📊</span> Visão Geral
+    </button>
+    <button class="nav-btn" data-tab="calc" onclick="switchTab('calc')">
+      <span class="nav-icon">🔬</span> Calculadoras
+    </button>
+    <button class="nav-btn" data-tab="potassio" onclick="switchTab('potassio')">
+      <span class="nav-icon">⚡</span> Potássio
+    </button>
+    <button class="nav-btn" data-tab="insulina" onclick="switchTab('insulina')">
+      <span class="nav-icon">💉</span> Insulina
+    </button>
+    <button class="nav-btn" data-tab="transicao" onclick="switchTab('transicao')">
+      <span class="nav-icon">🔄</span> Transição SC
+    </button>
+    <button class="nav-btn" data-tab="checklist" onclick="switchTab('checklist')">
+      <span class="nav-icon">✅</span> Checklist
+    </button>
+    <button class="nav-btn" data-tab="flashcards" onclick="switchTab('flashcards')">
+      <span class="nav-icon">🃏</span> Flashcards
+    </button>
+    <button class="nav-btn" data-tab="quiz" onclick="switchTab('quiz')">
+      <span class="nav-icon">❓</span> Quiz TEMI
+    </button>
+    <button class="nav-btn" data-tab="protocolo" onclick="switchTab('protocolo')">
+      <span class="nav-icon">📋</span> Protocolo
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     CONTENT
+══════════════════════════════════════════ -->
+<main class="wrap">
+
+<!-- ─────────────────────────────────────────
+     TAB: VISÃO GERAL
+───────────────────────────────────────── -->
+<section class="section active" id="tab-overview">
+
+  <div class="alert-box ab-rose mb">
+    <strong>⚡ REGRA DE OURO:</strong> Nunca inicie insulina sem checar K⁺. Se K⁺ &lt; 3,3 → repor KCl primeiro.
+    A acidose resolve mais devagar que a hiperglicemia — não suspenda insulina EV só porque a glicemia normalizou.
+  </div>
+
+  <!-- stat strip -->
+  <div class="g4 mb">
+    <div class="stat-card cyan">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-num" style="color:var(--cyan)">50–75</div>
+      <div class="stat-lbl">mg/dL/h · queda glicêmica ideal</div>
+    </div>
+    <div class="stat-card lime">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-num" style="color:var(--lime)">4,0–5,0</div>
+      <div class="stat-lbl">mEq/L · meta de K⁺</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-icon">💧</div>
+      <div class="stat-num" style="color:var(--amber)">1 L/h</div>
+      <div class="stat-lbl">SF 0,9% na 1ª hora</div>
+    </div>
+    <div class="stat-card rose">
+      <div class="stat-icon">🕐</div>
+      <div class="stat-num" style="color:var(--rose)">1–2h</div>
+      <div class="stat-lbl">sobreposição EV→SC obrigatória</div>
+    </div>
+  </div>
+
+  <div class="g21 mb">
+    <!-- RICE -->
+    <div class="card">
+      <div class="card-hd cyan"><div class="card-hd-dot"></div> Protocolo RICE — Pilares do Tratamento</div>
+      <div class="card-body">
+        <div class="g2">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--cyan)18;border:1.5px solid var(--cyan)35;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.4rem;font-weight:900;color:var(--cyan)">R</div>
+              <div>
+                <div style="font-weight:700;font-size:0.85rem;color:var(--cyan)">Reidratação Vigorosa</div>
+                <div style="font-size:0.72rem;color:var(--text2);font-family:var(--serif);font-style:italic">SF 0,9% · 1 L na 1ª hora</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--amber)18;border:1.5px solid var(--amber)35;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.4rem;font-weight:900;color:var(--amber)">I</div>
+              <div>
+                <div style="font-weight:700;font-size:0.85rem;color:var(--amber)">Insulina EV</div>
+                <div style="font-size:0.72rem;color:var(--text2);font-family:var(--serif);font-style:italic">0,1 U/kg/h · após K⁺ ≥ 3,5</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--rose)18;border:1.5px solid var(--rose)40;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.4rem;font-weight:900;color:var(--rose)">C</div>
+              <div>
+                <div style="font-weight:700;font-size:0.85rem;color:var(--rose)">Correção do K⁺</div>
+                <div style="font-size:0.72rem;color:var(--text2);font-family:var(--serif);font-style:italic">Meta 4,0–5,0 · monitorar 1–2h</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--violet)18;border:1.5px solid var(--violet)35;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.4rem;font-weight:900;color:var(--violet)">E</div>
+              <div>
+                <div style="font-weight:700;font-size:0.85rem;color:var(--violet)">Eliminar Precipitante</div>
+                <div style="font-size:0.72rem;color:var(--text2);font-family:var(--serif);font-style:italic">Infecção, IAM, omissão de insulina</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- gravidade resumo -->
+    <div class="card">
+      <div class="card-hd amber"><div class="card-hd-dot"></div> Critérios ADA de Gravidade</div>
+      <div style="overflow:hidden">
+        <table class="tbl">
+          <thead><tr>
+            <th>Parâmetro</th>
+            <th style="color:var(--lime)">Leve</th>
+            <th style="color:var(--amber)">Moderada</th>
+            <th style="color:var(--rose)">Grave</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td class="mono-td" style="color:var(--text2)">pH</td>
+              <td style="color:var(--lime)">7,25–7,30</td>
+              <td style="color:var(--amber)">7,00–7,24</td>
+              <td style="color:var(--rose)">&lt; 7,00</td>
+            </tr>
+            <tr>
+              <td class="mono-td" style="color:var(--text2)">HCO₃⁻</td>
+              <td style="color:var(--lime)">15–18</td>
+              <td style="color:var(--amber)">10–14</td>
+              <td style="color:var(--rose)">&lt; 10</td>
+            </tr>
+            <tr>
+              <td class="mono-td" style="color:var(--text2)">Local</td>
+              <td style="color:var(--lime)">PS/Enf.</td>
+              <td style="color:var(--amber)">Internação</td>
+              <td style="color:var(--rose)">UTI 🔴</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- erros comuns -->
+  <div class="card mb">
+    <div class="card-hd rose"><div class="card-hd-dot"></div> Top 5 Erros Fatais — Memorizar</div>
+    <div class="card-body">
+      <div class="g2">
+        <div>
+          <div class="alert-box ab-rose" style="margin-bottom:8px"><strong>1.</strong> Iniciar insulina com K⁺ &lt; 3,3 → arritmia fatal</div>
+          <div class="alert-box ab-rose" style="margin-bottom:8px"><strong>2.</strong> Suspender insulina EV porque a glicemia normalizou (acidose ainda ativa)</div>
+          <div class="alert-box ab-rose"><strong>3.</strong> Suspender EV antes de aplicar SC → gap de insulina → recidiva de CAD</div>
+        </div>
+        <div>
+          <div class="alert-box ab-amber" style="margin-bottom:8px"><strong>4.</strong> Usar bicarbonato rotineiramente (só se pH &lt; 6,9 com instabilidade)</div>
+          <div class="alert-box ab-amber" style="margin-bottom:8px"><strong>5.</strong> Não investigar precipitante → CAD recidiva</div>
+          <div class="alert-box ab-cyan"><strong>⚠️</strong> CAD euglicêmica existe! iSGLT2, gestação, jejum — checar cetonúria mesmo com glicemia &lt; 250</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ─────────────────────────────────────────
+     TAB: CALCULADORAS
+───────────────────────────────────────── -->
+<section class="section" id="tab-calc">
+  <div class="g2">
+
+    <!-- anion gap -->
+    <div>
+      <div class="card mb">
+        <div class="card-hd cyan"><div class="card-hd-dot"></div> Calculadora de Ânion Gap</div>
+        <div class="card-body">
+          <div class="formula">AG = Na⁺ − (Cl⁻ + HCO₃⁻) · normal 8–12 mEq/L</div>
+
+          <div class="field">
+            <label class="field-label">Sódio (Na⁺)</label>
+            <div class="field-row"><input class="inp" id="ag_na" type="number" placeholder="140" oninput="calcAll()"><span class="unit">mEq/L</span></div>
+          </div>
+          <div class="field">
+            <label class="field-label">Cloreto (Cl⁻)</label>
+            <div class="field-row"><input class="inp" id="ag_cl" type="number" placeholder="105" oninput="calcAll()"><span class="unit">mEq/L</span></div>
+          </div>
+          <div class="field">
+            <label class="field-label">Bicarbonato (HCO₃⁻)</label>
+            <div class="field-row"><input class="inp" id="ag_hco3" type="number" placeholder="18" oninput="calcAll()"><span class="unit">mEq/L</span></div>
+          </div>
+          <div class="hr"></div>
+          <div class="field">
+            <label class="field-label">Albumina (opcional — corr. AG)</label>
+            <div class="field-row"><input class="inp" id="ag_alb" type="number" placeholder="4.0" step="0.1" oninput="calcAll()"><span class="unit">g/dL</span></div>
+          </div>
+          <div class="field">
+            <label class="field-label">Glicemia (opcional — corr. Na⁺)</label>
+            <div class="field-row"><input class="inp" id="ag_glic" type="number" placeholder="350" oninput="calcAll()"><span class="unit">mg/dL</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- results -->
+    <div>
+      <div id="ag_results">
+        <div class="result-block cyan" id="ag_res_block">
+          <div class="result-label">Ânion Gap</div>
+          <div class="result-val" id="ag_val" style="color:var(--text3)">— <span class="result-unit">mEq/L</span></div>
+          <div class="result-desc" id="ag_desc">Preencha Na⁺, Cl⁻ e HCO₃⁻ para calcular.</div>
+        </div>
+        <div class="result-block violet" id="ag_corr_block" style="display:none">
+          <div class="result-label">AG Corrigido pela Albumina</div>
+          <div class="result-val" id="ag_corr_val" style="color:var(--violet)">—</div>
+          <div class="result-desc" id="ag_corr_desc"></div>
+        </div>
+        <div class="result-block cyan" id="na_corr_block" style="display:none">
+          <div class="result-label">Na⁺ Corrigido pela Glicemia</div>
+          <div class="result-val" id="na_corr_val" style="color:var(--cyan)">—</div>
+          <div class="result-desc" id="na_corr_desc"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-hd muted"><div class="card-hd-dot"></div> Referências Rápidas</div>
+          <div style="overflow:hidden">
+            <table class="tbl">
+              <thead><tr><th>Parâmetro</th><th>Valor Normal</th><th>Alerta CAD</th></tr></thead>
+              <tbody>
+                <tr><td class="mono-td">Ânion Gap</td><td>8–12 mEq/L</td><td style="color:var(--rose)">&gt; 12 ↑ AG</td></tr>
+                <tr><td class="mono-td">pH</td><td>7,35–7,45</td><td style="color:var(--rose)">&lt; 7,30 grave</td></tr>
+                <tr><td class="mono-td">HCO₃⁻</td><td>22–26 mEq/L</td><td style="color:var(--rose)">&lt; 15 grave</td></tr>
+                <tr><td class="mono-td">K⁺</td><td>3,5–5,0 mEq/L</td><td style="color:var(--rose)">&lt; 3,3 = ⛔ insulina</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────
+     TAB: POTÁSSIO
+───────────────────────────────────────── -->
+<section class="section" id="tab-potassio">
+  <div class="alert-box ab-rose mb">
+    <strong>🔴 CRÍTICO:</strong> K⁺ &lt; 3,3 mEq/L = CONTRAINDICAÇÃO ABSOLUTA à insulina EV.
+    Repor KCl 20–40 mEq/h em acesso calibroso com ECG contínuo. Reavalie K⁺ a cada hora.
+  </div>
+  <div class="g2">
+    <div>
+      <div class="card mb">
+        <div class="card-hd rose"><div class="card-hd-dot"></div> Valor do K⁺ Sérico</div>
+        <div class="card-body">
+          <div class="field">
+            <label class="field-label">K⁺ sérico atual</label>
+            <div class="field-row">
+              <input class="inp" id="k_val" type="number" placeholder="4.0" step="0.1" min="1" max="9" oninput="calcK()">
+              <span class="unit">mEq/L</span>
+            </div>
+          </div>
+          <div class="hr"></div>
+          <!-- K table reference -->
+          <div class="card-hd muted" style="margin:-18px -18px 0;padding:10px 14px"><div class="card-hd-dot"></div> Protocolo KCl × K⁺</div>
+          <div style="margin:0 -18px -18px">
+            <div class="k-row" style="background:var(--rose)0A">
+              <div><span style="font-family:var(--mono);font-weight:700;color:var(--rose)">&lt; 3,3</span></div>
+              <div style="color:var(--rose)">⛔ Sem insulina</div>
+              <div style="color:var(--text2);font-size:0.72rem">KCl 20–40 mEq/h EV</div>
+            </div>
+            <div class="k-row" style="background:var(--lime)06">
+              <div><span style="font-family:var(--mono);font-weight:700;color:var(--lime)">3,3–5,0</span></div>
+              <div style="color:var(--lime)">✅ Insulina ok</div>
+              <div style="color:var(--text2);font-size:0.72rem">KCl 20–30 mEq/L hidr.</div>
+            </div>
+            <div class="k-row" style="background:var(--amber)06">
+              <div><span style="font-family:var(--mono);font-weight:700;color:var(--amber)">&gt; 5,0</span></div>
+              <div style="color:var(--amber)">✅ Insulina ok</div>
+              <div style="color:var(--text2);font-size:0.72rem">Sem KCl · ECG contínuo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- decision output -->
+      <div id="k_decision_block" class="card mb">
+        <div class="card-hd muted" id="k_dec_hd"><div class="card-hd-dot"></div> Aguardando Valor...</div>
+        <div class="card-body" id="k_dec_body">
+          <div style="text-align:center;padding:20px 0;color:var(--text3);font-family:var(--mono);font-size:0.75rem">
+            Insira o K⁺ sérico ao lado →
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd amber"><div class="card-hd-dot"></div> Por que o K⁺ está "normal" na entrada?</div>
+        <div class="card-body-sm">
+          <p style="font-size:0.8rem;font-family:var(--serif);font-style:italic;color:var(--text2);line-height:1.6;margin-bottom:10px">
+            Na acidose, H⁺ entra na célula trocando K⁺ para fora → K⁺ sérico pode aparecer normal ou até alto,
+            mesmo com depleção corporal total de K⁺. Com a insulina, K⁺ volta para dentro da célula → hipocalemia grave e rápida.
+          </p>
+          <div class="badge badge-amber">📌 Ponto de prova TEMI clássico</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────
+     TAB: INSULINA
+───────────────────────────────────────── -->
+<section class="section" id="tab-insulina">
+  <div class="g2">
+    <div>
+      <div class="card mb">
+        <div class="card-hd amber"><div class="card-hd-dot"></div> Calculadora de Dose EV</div>
+        <div class="card-body">
+          <div class="formula">100 U insulina regular em 100 mL SF 0,9% = 1 U/mL</div>
+          <div class="field">
+            <label class="field-label">Peso do paciente</label>
+            <div class="field-row"><input class="inp" id="ins_peso" type="number" placeholder="70" oninput="calcIns()"><span class="unit">kg</span></div>
+          </div>
+          <div class="hr"></div>
+          <div class="field">
+            <label class="field-label">Glicemia ATUAL (horária)</label>
+            <div class="field-row"><input class="inp" id="ins_glic_now" type="number" placeholder="320" oninput="calcIns()"><span class="unit">mg/dL</span></div>
+          </div>
+          <div class="field">
+            <label class="field-label">Glicemia ANTERIOR (1h atrás)</label>
+            <div class="field-row"><input class="inp" id="ins_glic_prev" type="number" placeholder="400" oninput="calcIns()"><span class="unit">mg/dL</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div id="ins_results">
+        <div class="result-block amber">
+          <div class="result-label">Dose de Infusão Inicial</div>
+          <div class="result-val" id="ins_dose_val" style="color:var(--amber)">— <span class="result-unit">U/h</span></div>
+          <div class="result-desc" id="ins_dose_desc">Preencha o peso do paciente.</div>
+        </div>
+        <div class="result-block lime" id="ins_fall_block" style="display:none">
+          <div class="result-label">Queda Glicêmica na Última Hora</div>
+          <div class="result-val" id="ins_fall_val" style="color:var(--lime)">—</div>
+          <div class="result-desc" id="ins_fall_desc"></div>
+        </div>
+        <div class="card">
+          <div class="card-hd muted"><div class="card-hd-dot"></div> Metas de Tratamento</div>
+          <div style="overflow:hidden">
+            <table class="tbl">
+              <thead><tr><th>Meta</th><th>Alvo</th></tr></thead>
+              <tbody>
+                <tr><td>Queda glicêmica</td><td class="mono-td" style="color:var(--cyan)">50–75 mg/dL/h</td></tr>
+                <tr><td>Glicemia durante tto</td><td class="mono-td" style="color:var(--lime)">150–200 mg/dL</td></tr>
+                <tr><td>K⁺ durante tto</td><td class="mono-td" style="color:var(--lime)">4,0–5,0 mEq/L</td></tr>
+                <tr><td>pH resolução</td><td class="mono-td" style="color:var(--cyan)">&gt; 7,30</td></tr>
+                <tr><td>HCO₃⁻ resolução</td><td class="mono-td" style="color:var(--cyan)">&gt; 18 mEq/L</td></tr>
+                <tr><td>AG resolução</td><td class="mono-td" style="color:var(--cyan)">&lt; 12 mEq/L</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────
+     TAB: TRANSIÇÃO SC
+───────────────────────────────────────── -->
+<section class="section" id="tab-transicao">
+
+  <div class="alert-box ab-rose mb">
+    <strong>🔴 ERRO FATAL:</strong> Suspender EV → (horas depois) → aplicar SC = gap de insulina = recidiva de CAD.
+    A sobreposição de <strong>1–2h</strong> é obrigatória e inegociável.
+  </div>
+
+  <div class="g2 mb">
+    <div>
+      <div class="card">
+        <div class="card-hd violet"><div class="card-hd-dot"></div> Critérios de Resolução da CAD</div>
+        <div class="card-body">
+          <div class="field">
+            <label class="field-label">pH Arterial Atual</label>
+            <div class="field-row"><input class="inp" id="tr_ph" type="number" placeholder="7.32" step="0.01" oninput="calcTransicao()"><span class="unit"></span></div>
+          </div>
+          <div class="field">
+            <label class="field-label">HCO₃⁻ Atual</label>
+            <div class="field-row"><input class="inp" id="tr_hco3" type="number" placeholder="19" oninput="calcTransicao()"><span class="unit">mEq/L</span></div>
+          </div>
+          <div class="field">
+            <label class="field-label">Ânion Gap Atual</label>
+            <div class="field-row"><input class="inp" id="tr_ag" type="number" placeholder="11" oninput="calcTransicao()"><span class="unit">mEq/L</span></div>
+          </div>
+          <div class="hr"></div>
+          <div class="field">
+            <label class="field-label">Taxa EV atual</label>
+            <div class="field-row"><input class="inp" id="tr_taxa" type="number" placeholder="4.5" step="0.1" oninput="calcTransicao()"><span class="unit">U/h</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tr_results">
+      <!-- criteria check -->
+      <div class="card mb" id="tr_crit_card">
+        <div class="card-hd muted" id="tr_crit_hd"><div class="card-hd-dot"></div> Checklist de Resolução</div>
+        <div class="card-body">
+          <div id="tr_crit_list">
+            <div class="cl-item" id="tr_c1" style="cursor:default"><div class="cl-box" id="tr_b1"></div><div class="cl-text">pH &gt; 7,30 <small id="tr_v1">—</small></div></div>
+            <div class="cl-item" id="tr_c2" style="cursor:default"><div class="cl-box" id="tr_b2"></div><div class="cl-text">HCO₃⁻ &gt; 18 mEq/L <small id="tr_v2">—</small></div></div>
+            <div class="cl-item" id="tr_c3" style="cursor:default"><div class="cl-box" id="tr_b3"></div><div class="cl-text">AG &lt; 12 mEq/L <small id="tr_v3">—</small></div></div>
+          </div>
+          <div id="tr_verdict" class="alert-box ab-cyan mt" style="margin-bottom:0">Preencha os critérios para avaliação.</div>
+        </div>
+      </div>
+      <!-- dose calc -->
+      <div class="card" id="tr_dose_card" style="display:none">
+        <div class="card-hd lime"><div class="card-hd-dot"></div> Cálculo da Dose SC</div>
+        <div class="card-body">
+          <div class="result-block lime">
+            <div class="result-label">Dose Diária Total (DDT)</div>
+            <div class="result-val" id="tr_ddt" style="color:var(--cyan)">—</div>
+            <div class="result-desc" id="tr_ddt_desc"></div>
+          </div>
+          <div class="result-block lime">
+            <div class="result-label">Insulina Basal SC (50% DDT)</div>
+            <div class="result-val" id="tr_basal" style="color:var(--lime)">—</div>
+            <div class="result-desc">NPH: dividir em 2/3 manhã + 1/3 noite. Análogo lento: dose única.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- timeline -->
+  <div class="card">
+    <div class="card-hd violet"><div class="card-hd-dot"></div> Timeline — Protocolo de Transição Segura</div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-row">
+          <div class="tl-dot" style="background:var(--lime)18;color:var(--lime);border:1.5px solid var(--lime)35">T0</div>
+          <div class="tl-time">T = 0h</div>
+          <div class="tl-card"><div class="tl-ttl" style="color:var(--lime)">Confirmar critérios de resolução</div><div class="tl-desc">pH &gt; 7,30 + HCO₃⁻ &gt; 18 + AG &lt; 12 + acordado + tolerando VO</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot" style="background:var(--cyan)18;color:var(--cyan);border:1.5px solid var(--cyan)35">1</div>
+          <div class="tl-time">T + 15min</div>
+          <div class="tl-card"><div class="tl-ttl" style="color:var(--cyan)">Calcular DDT e dose SC</div><div class="tl-desc">Taxa EV × 24h = DDT. 50% como basal + 50% como prandial.</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot" style="background:var(--amber)18;color:var(--amber);border:1.5px solid var(--amber)35">2</div>
+          <div class="tl-time">T + 30min</div>
+          <div class="tl-card"><div class="tl-ttl" style="color:var(--amber)">Aplicar insulina SC basal</div><div class="tl-desc">NPH ou análogo lento SC. <strong style="color:var(--rose)">Bomba EV permanece LIGADA.</strong></div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot" style="background:var(--rose)18;color:var(--rose);border:1.5px solid var(--rose)40">⏰</div>
+          <div class="tl-time">T + 1h a 2h</div>
+          <div class="tl-card red-hl"><div class="tl-ttl" style="color:var(--rose)">⚡ JANELA DE SOBREPOSIÇÃO</div><div class="tl-desc">SC e EV funcionando simultaneamente. Aguardar absorção da SC antes de desligar a EV.</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot" style="background:var(--lime)18;color:var(--lime);border:1.5px solid var(--lime)35">✓</div>
+          <div class="tl-time">T + 2h</div>
+          <div class="tl-card" style="border-color:var(--lime)35"><div class="tl-ttl" style="color:var(--lime)">Suspender bomba EV</div><div class="tl-desc">Somente após sobreposição. Monitorar glicemia 4/4h por 24h.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────
+     TAB: CHECKLIST
+───────────────────────────────────────── -->
+<section class="section" id="tab-checklist">
+  <div class="g21 mb">
+    <div>
+      <!-- progress -->
+      <div class="card mb">
+        <div class="card-hd lime"><div class="card-hd-dot"></div> Progresso do Checklist</div>
+        <div class="card-body-sm">
+          <div class="progress-track"><div class="progress-bar" id="cl_progress" style="width:0%"></div></div>
+          <div class="progress-info"><span id="cl_done">0 / 0 itens</span><span id="cl_pct">0%</span></div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn btn-rose" onclick="resetChecklist()">↺ Resetar</button>
+            <button class="btn btn-lime" onclick="markAll()">✓ Marcar todos</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="alert-box ab-cyan">
+        🖨️ Use o botão de impressão para salvar o checklist em PDF. Marque os itens durante o plantão clicando em cada linha.
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div>
+      <!-- 0-15 min -->
+      <div class="card mb">
+        <div class="card-hd cyan"><div class="card-hd-dot"></div> ⚡ 0–15 min · Admissão</div>
+        <div class="card-body" id="cl_group_1">
+          <div class="cl-item urgent" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Acesso venoso calibroso 16G+ (2 acessos se grave)<small>Coletar sangue para exames ao puncionar</small></div></div>
+          <div class="cl-item urgent" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Gasometria arterial urgente<small>pH · HCO₃⁻ · PCO₂ · lactato</small></div></div>
+          <div class="cl-item urgent" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Eletrólitos (K⁺, Na⁺, Cl⁻) ANTES da insulina</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Glicemia sérica + cetonúria (fita)</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">ECG 12 derivações</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Monitor cardíaco contínuo + oximetria</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Sonda vesical se comatoso ou grave</div></div>
+        </div>
+      </div>
+
+      <!-- hidratação -->
+      <div class="card mb">
+        <div class="card-hd cyan"><div class="card-hd-dot"></div> 💧 Hidratação</div>
+        <div class="card-body">
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">SF 0,9% · 1 L na 1ª hora (15–20 mL/kg)</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">2ª–4ª h: 500 mL/h SF 0,9% ou 0,45%<small>SF 0,45% se Na⁺ corrigido elevado</small></div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Glicemia &lt; 250 → adicionar SG 5%<small>Manter glicemia 150–200 mg/dL</small></div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Balanço hídrico horário · diurese ≥ 0,5 mL/kg/h</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- potassio + insulina -->
+      <div class="card mb">
+        <div class="card-hd rose"><div class="card-hd-dot"></div> ⚡ K⁺ + Insulina (CRÍTICO)</div>
+        <div class="card-body">
+          <div class="cl-item urgent" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text"><strong>K⁺ &lt; 3,3: KCl 20–40 mEq/h · SEM insulina</strong></div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">K⁺ 3,3–5,0: insulina + KCl 20–30 mEq/L hidr.</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">K⁺ &gt; 5,0: insulina sem KCl · ECG contínuo</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Preparar bomba: 100 U reg em 100 mL SF (1 U/mL)</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Iniciar: 0,1 U/kg/h · glicemia capilar 1/1h</div></div>
+          <div class="cl-item urgent" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text"><strong>Queda &lt; 50 mg/dL/h → dobrar taxa</strong></div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">K⁺ a cada 1–2h nas primeiras 6h</div></div>
+        </div>
+      </div>
+
+      <!-- resolução + transição -->
+      <div class="card mb">
+        <div class="card-hd lime"><div class="card-hd-dot"></div> ✅ Resolução + Transição</div>
+        <div class="card-body">
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">pH &gt; 7,30 + HCO₃⁻ &gt; 18 + AG &lt; 12 confirmados</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Calcular DDT: taxa EV (U/h) × 24h</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Aplicar insulina basal SC (50% DDT)</div></div>
+          <div class="cl-item urgent" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text"><strong>⏰ Aguardar 1–2h → SÓ ENTÃO suspender EV</strong></div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Insulina prandial (ultrarrápida) nas refeições</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Educação em diabetes antes da alta</div></div>
+        </div>
+      </div>
+
+      <!-- precipitante -->
+      <div class="card">
+        <div class="card-hd violet"><div class="card-hd-dot"></div> 🔍 Investigar Precipitante</div>
+        <div class="card-body">
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">ECG → IAM silencioso?</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">RX tórax → pneumonia?</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Urocultura + hemocultura (se febre)</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Uso de iSGLT2? → CAD euglicêmica!</div></div>
+          <div class="cl-item" onclick="toggleCl(this)"><div class="cl-box">✓</div><div class="cl-text">Omissão de insulina? → Educação</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────
+     TAB: FLASHCARDS
+───────────────────────────────────────── -->
+<section class="section" id="tab-flashcards">
+  <div class="g2">
+    <div>
+      <div class="flashcard-wrap" id="fc_wrap" onclick="flipCard()">
+        <div class="flashcard-inner" id="fc_inner">
+          <div class="fc-face fc-front">
+            <div class="fc-tag" id="fc_side_tag">Frente · Clique para revelar</div>
+            <div class="fc-q" id="fc_question">Qual é a tríade diagnóstica da CAD?</div>
+            <div class="fc-hint">🖱️ clique para virar</div>
+          </div>
+          <div class="fc-face fc-back">
+            <div class="fc-tag" style="color:var(--lime)">Resposta</div>
+            <div class="fc-a" id="fc_answer">Hiperglicemia (&gt;250) + Acidose metabólica com AG elevado + Cetonúria / cetonemia</div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-nav">
+        <button class="fc-btn" onclick="prevCard()">← Anterior</button>
+        <span class="fc-counter" id="fc_counter">1 / 12</span>
+        <button class="fc-btn" onclick="nextCard()">Próximo →</button>
+      </div>
+    </div>
+
+    <div>
+      <!-- mini index -->
+      <div class="card" style="max-height:350px;overflow-y:auto">
+        <div class="card-hd muted"><div class="card-hd-dot"></div> Índice de Flashcards</div>
+        <div id="fc_index" style="padding:4px 0"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────
+     TAB: QUIZ TEMI
+───────────────────────────────────────── -->
+<section class="section" id="tab-quiz">
+  <div style="max-width:680px;margin:0 auto">
+    <div id="quiz_container">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────
+     TAB: PROTOCOLO
+───────────────────────────────────────── -->
+<section class="section" id="tab-protocolo">
+  <div class="g2">
+    <div>
+      <div class="card mb">
+        <div class="card-hd cyan"><div class="card-hd-dot"></div> Fluxograma de Manejo</div>
+        <div class="card-body">
+          <div style="font-family:var(--mono);font-size:0.72rem;color:var(--text2);line-height:2;background:var(--ghost);padding:16px;border-radius:var(--r-lg);border:1px solid var(--border)">
+<span style="color:var(--cyan)">SUSPEITA DE CAD</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+<span style="color:var(--text2)">Gasometria + Glicemia + K⁺ + Cetonúria</span><br>
+<span style="color:var(--text3)">(15 minutos)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+<span style="color:var(--amber)">ESTRATIFICAR GRAVIDADE</span><br>
+<span style="color:var(--rose)">pH &lt; 7,0 ou consciência ↓ → UTI</span><br>
+<span style="color:var(--amber)">pH 7,0–7,3 → Internação</span><br>
+<span style="color:var(--lime)">pH &gt; 7,3 leve → PS/HC</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+<span style="color:var(--cyan)">SF 0,9% 1 L/h imediato</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+<span style="color:var(--rose)">CHECAR K⁺ ANTES DA INSULINA</span><br>
+<span style="color:var(--rose)">K⁺ &lt; 3,3 → KCl primeiro, sem insulina</span><br>
+<span style="color:var(--lime)">K⁺ 3,3–5,0 → KCl + insulina</span><br>
+<span style="color:var(--amber)">K⁺ &gt; 5,0 → insulina sem KCl</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+<span style="color:var(--amber)">INSULINA EV 0,1 U/kg/h</span><br>
+<span style="color:var(--text3)">Glicemia capilar 1/1h</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+<span style="color:var(--cyan)">Glicemia &lt; 250 → adicionar SG5%</span><br>
+<span style="color:var(--text3)">(manter 150–200 · manter insulina EV)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+<span style="color:var(--lime)">pH &gt; 7,30 + HCO₃⁻ &gt; 18 + AG &lt; 12?</span><br>
+<span style="color:var(--lime)">→ Transição EV→SC com sobreposição</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+<span style="color:var(--violet)">TRATAR PRECIPITANTE</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+<span style="color:var(--lime)">ALTA + EDUCAÇÃO DIABETOLÓGICA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card mb">
+        <div class="card-hd amber"><div class="card-hd-dot"></div> Pontos de Prova TEMI</div>
+        <div class="card-body">
+          <table class="tbl">
+            <tbody>
+              <tr><td>📌</td><td>K⁺ &lt; 3,3 = contraindicação absoluta à insulina</td></tr>
+              <tr><td>📌</td><td>Acidose resolve mais devagar que a hiperglicemia</td></tr>
+              <tr><td>📌</td><td>CAD euglicêmica: iSGLT2, gestação, jejum</td></tr>
+              <tr><td>📌</td><td>Bicarbonato só se pH &lt; 6,9 com instabilidade</td></tr>
+              <tr><td>📌</td><td>Transição EV→SC exige sobreposição 1–2h</td></tr>
+              <tr><td>🎯</td><td>Leucocitose ≠ infecção (pode ser estresse metabólico)</td></tr>
+              <tr><td>🎯</td><td>Lipase elevada ≠ pancreatite (pode ser da cetose)</td></tr>
+              <tr><td>🎯</td><td>Fosfato: repor só se &lt; 1 mg/dL com sintomas</td></tr>
+              <tr><td>🆚</td><td>EHH: sem cetose, glicemia &gt; 600, osmol &gt; 320, DM2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card mb">
+        <div class="card-hd lime"><div class="card-hd-dot"></div> Mnemônicos</div>
+        <div class="card-body-sm">
+          <div style="margin-bottom:12px">
+            <div style="font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--lime);margin-bottom:4px">RICE</div>
+            <div style="font-size:0.78rem;color:var(--text2);font-family:var(--serif);font-style:italic">Reidratação · Insulina EV · Correção K⁺ · Eliminar precipitante</div>
+          </div>
+          <div class="hr"></div>
+          <div style="margin-bottom:12px">
+            <div style="font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:4px">KID (para K⁺)</div>
+            <div style="font-size:0.78rem;color:var(--text2);font-family:var(--serif);font-style:italic">K &lt; 3,3 = K primeiro · I nsulina entre 3,3–5 · D ê só insulina se &gt; 5</div>
+          </div>
+          <div class="hr"></div>
+          <div>
+            <div style="font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--amber);margin-bottom:4px">CAUSA (precipitantes)</div>
+            <div style="font-size:0.78rem;color:var(--text2);font-family:var(--serif);font-style:italic">Cirurgia · Abstenção de insulina · Uso de corticoide · Sepse · AVC/IAM</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd violet"><div class="card-hd-dot"></div> Mensagem Final</div>
+        <div class="card-body-sm">
+          <p style="font-family:var(--serif);font-style:italic;font-size:0.88rem;color:var(--text);line-height:1.7;border-left:2px solid var(--violet);padding-left:14px">
+            "Se eu tiver que lembrar de uma coisa sobre CAD, é: nunca dê insulina sem checar K⁺ primeiro,
+            e nunca suspenda insulina EV até o AG normalizar — não até a glicemia baixar."
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- print button -->
+<button class="print-btn" onclick="window.print()" title="Imprimir / Salvar PDF">🖨️</button>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+
+// ─── TAB SWITCH ──────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelector('[data-tab="' + id + '"]').classList.add('active');
+}
+
+// ─── LIVE TIME ───────────────────────────
+function updateTime() {
+  const el = document.getElementById('liveTime');
+  if (el) {
+    const n = new Date();
+    el.textContent = n.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+  }
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+// ─── AG CALCULATOR ───────────────────────
+function calcAll() {
+  const na   = parseFloat(document.getElementById('ag_na').value);
+  const cl   = parseFloat(document.getElementById('ag_cl').value);
+  const hco3 = parseFloat(document.getElementById('ag_hco3').value);
+  const alb  = parseFloat(document.getElementById('ag_alb').value);
+  const glic = parseFloat(document.getElementById('ag_glic').value);
+
+  if (isNaN(na) || isNaN(cl) || isNaN(hco3)) return;
+
+  const ag = na - (cl + hco3);
+  const isHigh = ag > 12;
+
+  const valEl  = document.getElementById('ag_val');
+  const descEl = document.getElementById('ag_desc');
+  const block  = document.getElementById('ag_res_block');
+
+  valEl.innerHTML = ag.toFixed(1) + ' <span class="result-unit">mEq/L</span>';
+  valEl.style.color = isHigh ? 'var(--rose)' : 'var(--lime)';
+  block.className = 'result-block ' + (isHigh ? 'rose' : 'lime');
+  descEl.textContent = isHigh
+    ? '⬆️ AG ELEVADO — compatível com acidose de alto ânion gap (CAD, acidose lática, uremia, intoxicações)'
+    : '✅ AG normal — considerar acidose hiperclorêmica ou sem acidose de alto AG';
+
+  if (!isNaN(alb)) {
+    const agCorr = ag + 2.5 * (4.0 - alb);
+    document.getElementById('ag_corr_val').innerHTML = agCorr.toFixed(1) + ' <span class="result-unit">mEq/L</span>';
+    document.getElementById('ag_corr_val').style.color = agCorr > 12 ? 'var(--rose)' : 'var(--lime)';
+    document.getElementById('ag_corr_desc').textContent =
+      `Albumina = ${alb} g/dL. Diferença de ${(agCorr - ag).toFixed(1)} mEq/L pelo efeito da hipoalbuminemia.`;
+    document.getElementById('ag_corr_block').style.display = 'block';
+  } else {
+    document.getElementById('ag_corr_block').style.display = 'none';
+  }
+
+  if (!isNaN(glic) && !isNaN(na)) {
+    const naCorr = na + 1.6 * ((glic - 100) / 100);
+    document.getElementById('na_corr_val').innerHTML = naCorr.toFixed(1) + ' <span class="result-unit">mEq/L</span>';
+    let naDesc = '';
+    if (naCorr < 135) naDesc = 'Hiponatremia verdadeira presente.';
+    else if (naCorr > 145) naDesc = 'Hipernatremia corrigida → preferir SF 0,45%.';
+    else naDesc = 'Sódio corrigido normal — SF 0,9% seguro.';
+    document.getElementById('na_corr_desc').textContent = `Na⁺ corrigido = ${na} + 1,6 × [(${glic}−100)/100]. ${naDesc}`;
+    document.getElementById('na_corr_block').style.display = 'block';
+  } else {
+    document.getElementById('na_corr_block').style.display = 'none';
+  }
+}
+
+// ─── K+ DECISION ─────────────────────────
+function calcK() {
+  const k = parseFloat(document.getElementById('k_val').value);
+  const hd = document.getElementById('k_dec_hd');
+  const body = document.getElementById('k_dec_body');
+
+  if (isNaN(k)) {
+    hd.innerHTML = '<div class="card-hd-dot"></div> Aguardando Valor...';
+    hd.className = 'card-hd muted';
+    body.innerHTML = '<div style="text-align:center;padding:20px 0;color:var(--text3);font-family:var(--mono);font-size:0.75rem">Insira o K⁺ sérico</div>';
+    return;
+  }
+
+  let color, hdClass, status, action, rep, urgent;
+
+  if (k < 3.3) {
+    color = 'var(--rose)'; hdClass = 'rose'; status = 'CRÍTICO';
+    action = '⛔ NÃO iniciar insulina! Repor KCl 20–40 mEq/h até K⁺ > 3,5';
+    rep = 'KCl 10% (1 mEq/mL) diluído — máximo 40 mEq/h em acesso calibroso com ECG contínuo. Reavalie K⁺ a cada hora.';
+    urgent = true;
+  } else if (k <= 5.0) {
+    color = 'var(--lime)'; hdClass = 'lime'; status = 'SEGURO';
+    action = '✅ Iniciar insulina EV. Repor KCl 20–30 mEq/L de hidratação.';
+    rep = 'Adicionar KCl em cada litro de soro. Monitorar K⁺ a cada 2h nas primeiras 6h.';
+    urgent = false;
+  } else {
+    color = 'var(--amber)'; hdClass = 'amber'; status = 'ELEVADO';
+    action = '⚠️ Iniciar insulina EV. NÃO repor KCl. Monitorar ECG a cada 2h.';
+    rep = 'Sem KCl. Risco de hipercalemia persistente. ECG: checar ondas T apiculadas, QRS alargado.';
+    urgent = false;
+  }
+
+  hd.innerHTML = `<div class="card-hd-dot"></div> K⁺ = ${k} mEq/L — ${status}`;
+  hd.className = 'card-hd ' + hdClass;
+
+  body.innerHTML = `
+    <div style="text-align:center;padding:16px 0 10px">
+      <div style="font-family:var(--mono);font-size:3rem;font-weight:700;color:${color};line-height:1">${k}</div>
+      <div style="font-family:var(--mono);font-size:0.6rem;color:var(--text3);margin-top:2px">mEq/L</div>
+    </div>
+    <div class="result-block ${hdClass}" style="margin-bottom:10px">
+      <div class="result-label">Decisão sobre Insulina</div>
+      <div style="font-size:0.88rem;font-weight:700;color:${color};margin-top:4px">${action}</div>
+    </div>
+    <div class="result-block" style="background:var(--surface)">
+      <div class="result-label">Reposição de KCl</div>
+      <div style="font-size:0.78rem;color:var(--text2);font-family:var(--serif);font-style:italic;margin-top:4px;line-height:1.5">${rep}</div>
+    </div>
+    ${urgent ? '<div class="alert-box ab-rose" style="margin:0">⚡ Monitorização cardíaca contínua obrigatória durante reposição de KCl.</div>' : ''}
+  `;
+}
+
+// ─── INSULINA ─────────────────────────────
+function calcIns() {
+  const peso = parseFloat(document.getElementById('ins_peso').value);
+  const now  = parseFloat(document.getElementById('ins_glic_now').value);
+  const prev = parseFloat(document.getElementById('ins_glic_prev').value);
+
+  const valEl  = document.getElementById('ins_dose_val');
+  const descEl = document.getElementById('ins_dose_desc');
+
+  if (!isNaN(peso)) {
+    const dose = (peso * 0.1).toFixed(1);
+    const low  = (peso * 0.03).toFixed(1);
+    valEl.innerHTML = dose + ' <span class="result-unit">U/h</span>';
+    valEl.style.color = 'var(--amber)';
+    descEl.textContent = `0,1 U/kg/h para ${peso} kg. Dose mínima (glicemia <250): ${low} U/h + SG5%.`;
+  }
+
+  if (!isNaN(now) && !isNaN(prev)) {
+    const fall = prev - now;
+    const fb = document.getElementById('ins_fall_block');
+    const fv = document.getElementById('ins_fall_val');
+    const fd = document.getElementById('ins_fall_desc');
+    fb.style.display = 'block';
+
+    const sign = fall > 0 ? '−' : '+';
+    fv.innerHTML = sign + Math.abs(fall).toFixed(0) + ' <span class="result-unit">mg/dL/h</span>';
+
+    if (fall >= 50 && fall <= 75) {
+      fv.style.color = 'var(--lime)';
+      fb.className = 'result-block lime';
+      fd.textContent = '✅ Queda ideal (50–75 mg/dL/h). Manter taxa atual.';
+    } else if (fall > 75) {
+      fv.style.color = 'var(--amber)';
+      fb.className = 'result-block amber';
+      fd.textContent = '⚠️ Queda muito rápida (>75 mg/dL/h). Reduzir taxa em 30–50%.';
+    } else if (fall > 0) {
+      fv.style.color = 'var(--rose)';
+      fb.className = 'result-block rose';
+      fd.textContent = '⚠️ Queda insuficiente (<50 mg/dL/h). Dobrar a taxa de infusão.';
+    } else {
+      fv.style.color = 'var(--rose)';
+      fb.className = 'result-block rose';
+      fd.textContent = '🔴 Glicemia subindo ou estável. Verificar acesso, concentração da solução e checar K⁺.';
+    }
+  }
+}
+
+// ─── TRANSIÇÃO ────────────────────────────
+function calcTransicao() {
+  const ph   = parseFloat(document.getElementById('tr_ph').value);
+  const hco3 = parseFloat(document.getElementById('tr_hco3').value);
+  const ag   = parseFloat(document.getElementById('tr_ag').value);
+  const taxa = parseFloat(document.getElementById('tr_taxa').value);
+
+  const c = {
+    ph:   !isNaN(ph)   ? ph   > 7.3  : null,
+    hco3: !isNaN(hco3) ? hco3 > 18   : null,
+    ag:   !isNaN(ag)   ? ag   < 12   : null,
+  };
+
+  const labels = { ph: `pH > 7,30 (atual: ${ph||'—'})`, hco3: `HCO₃⁻ > 18 (atual: ${hco3||'—'})`, ag: `AG < 12 (atual: ${ag||'—'})` };
+
+  ['ph','hco3','ag'].forEach((k,i) => {
+    const ci = document.getElementById('tr_c' + (i+1));
+    const cb = document.getElementById('tr_b' + (i+1));
+    const vl = document.getElementById('tr_v' + (i+1));
+    const vals = {ph, hco3, ag};
+    const v = vals[k];
+    vl.textContent = isNaN(v) ? '—' : v + (k==='ph'?'':' mEq/L');
+    if (c[k] === true)  { ci.classList.add('done'); cb.textContent = '✓'; }
+    else                { ci.classList.remove('done'); cb.textContent = ''; }
+  });
+
+  const allMet  = c.ph === true && c.hco3 === true && c.ag === true;
+  const anyFail = c.ph === false || c.hco3 === false || c.ag === false;
+  const verdict = document.getElementById('tr_verdict');
+
+  if (allMet) {
+    verdict.className = 'alert-box ab-lime mt';
+    verdict.style.marginBottom = '0';
+    verdict.innerHTML = '<strong>✅ CAD RESOLVIDA</strong> — Todos os critérios atingidos. Pode iniciar transição EV→SC.';
+  } else if (anyFail) {
+    verdict.className = 'alert-box ab-rose mt';
+    verdict.style.marginBottom = '0';
+    verdict.innerHTML = '<strong>🔴 CAD NÃO RESOLVIDA</strong> — Manter insulina EV. Não iniciar transição ainda.';
+  } else {
+    verdict.className = 'alert-box ab-cyan mt';
+    verdict.style.marginBottom = '0';
+    verdict.innerHTML = 'Preencha pH, HCO₃⁻ e AG para avaliação completa.';
+  }
+
+  if (!isNaN(taxa)) {
+    const ddt   = (taxa * 24).toFixed(0);
+    const basal = (ddt * 0.5).toFixed(0);
+    document.getElementById('tr_dose_card').style.display = 'block';
+    document.getElementById('tr_ddt').innerHTML = ddt + ' <span class="result-unit">U/dia</span>';
+    document.getElementById('tr_ddt_desc').textContent = `${taxa} U/h × 24h = ${ddt} U/dia (DDT). Base para cálculo da dose SC.`;
+    document.getElementById('tr_basal').innerHTML = basal + ' <span class="result-unit">U</span>';
+  }
+}
+
+// ─── CHECKLIST ───────────────────────────
+function toggleCl(el) {
+  el.classList.toggle('done');
+  updateClProgress();
+}
+
+function updateClProgress() {
+  const all  = document.querySelectorAll('#tab-checklist .cl-item');
+  const done = document.querySelectorAll('#tab-checklist .cl-item.done');
+  const pct  = all.length > 0 ? Math.round((done.length / all.length) * 100) : 0;
+  document.getElementById('cl_progress').style.width = pct + '%';
+  document.getElementById('cl_done').textContent = `${done.length} / ${all.length} itens`;
+  document.getElementById('cl_pct').textContent  = pct + '%';
+}
+
+function resetChecklist() {
+  document.querySelectorAll('#tab-checklist .cl-item.done').forEach(el => el.classList.remove('done'));
+  updateClProgress();
+}
+
+function markAll() {
+  document.querySelectorAll('#tab-checklist .cl-item').forEach(el => el.classList.add('done'));
+  updateClProgress();
+}
+
+updateClProgress();
+
+// ─── FLASHCARDS ───────────────────────────
+const cards = [
+  { q: 'Qual é a tríade diagnóstica da CAD?', a: 'Hiperglicemia (>250) + Acidose metabólica com AG elevado + Cetonúria/cetonemia' },
+  { q: 'Com K⁺ = 3,0 mEq/L, o que fazer antes de insulina?', a: 'Repor KCl 20–40 mEq/h até K⁺ > 3,5 mEq/L. NÃO iniciar insulina antes.' },
+  { q: 'Quando suspender insulina EV na CAD?', a: 'pH > 7,30 + HCO₃⁻ > 18 + AG < 12 — e apenas após 1–2h de sobreposição com SC.' },
+  { q: 'Quais as causas de CAD euglicêmica?', a: 'iSGLT2 (flozinas), gestação, jejum prolongado, insuficiência hepática.' },
+  { q: 'Meta de queda glicêmica na insulinização EV?', a: '50–75 mg/dL por hora. Menos → dobrar taxa. Mais → reduzir 30–50%.' },
+  { q: 'Quando usar bicarbonato na CAD?', a: 'Apenas se pH < 6,9 com instabilidade hemodinâmica. Não usar rotineiramente.' },
+  { q: 'Fórmula do Ânion Gap?', a: 'AG = Na⁺ − (Cl⁻ + HCO₃⁻). Normal: 8–12 mEq/L.' },
+  { q: 'Como corrigir o sódio pela glicemia?', a: 'Na⁺ corrigido = Na⁺ medido + 1,6 × [(Glicemia − 100) / 100]' },
+  { q: 'Por que o K⁺ pode estar normal na entrada da CAD?', a: 'Acidose desloca K⁺ para fora da célula (troca H⁺/K⁺). Com insulina, K⁺ volta e há hipocalemia grave.' },
+  { q: 'Erro mais perigoso na transição EV→SC?', a: 'Suspender EV antes de aplicar SC → gap de insulina → recidiva de CAD.' },
+  { q: 'Diferença principal CAD × EHH?', a: 'CAD: cetose + acidose + DM1. EHH: sem cetose, glicemia >600, osmol >320, DM2, maior mortalidade.' },
+  { q: 'Precipitante de CAD que NÃO pode ser perdido por risco de morte?', a: 'IAM silencioso — fazer ECG em todo paciente com CAD.' },
+];
+
+let fcCurrent = 0;
+let fcFlipped  = false;
+
+function renderFC() {
+  const c = cards[fcCurrent];
+  document.getElementById('fc_question').textContent = c.q;
+  document.getElementById('fc_answer').textContent   = c.a;
+  document.getElementById('fc_counter').textContent  = `${fcCurrent + 1} / ${cards.length}`;
+  fcFlipped = false;
+  document.getElementById('fc_wrap').classList.remove('flipped');
+  renderFCIndex();
+}
+
+function flipCard() {
+  fcFlipped = !fcFlipped;
+  document.getElementById('fc_wrap').classList.toggle('flipped', fcFlipped);
+}
+
+function nextCard() {
+  fcCurrent = (fcCurrent + 1) % cards.length;
+  renderFC();
+}
+
+function prevCard() {
+  fcCurrent = (fcCurrent - 1 + cards.length) % cards.length;
+  renderFC();
+}
+
+function renderFCIndex() {
+  const el = document.getElementById('fc_index');
+  el.innerHTML = cards.map((c, i) => `
+    <div onclick="fcCurrent=${i};renderFC()" style="
+      padding:9px 16px;
+      border-bottom:1px solid var(--border2);
+      cursor:pointer;
+      font-size:0.72rem;
+      color:${i === fcCurrent ? 'var(--cyan)' : 'var(--text3)'};
+      background:${i === fcCurrent ? 'var(--surface)' : 'transparent'};
+      font-family:var(--serif);
+      font-style:italic;
+      transition:all 0.1s;
+    " onmouseenter="this.style.background='var(--surface)'" onmouseleave="this.style.background='${i===fcCurrent?'var(--surface)':'transparent'}'">
+      <span style="font-family:var(--mono);font-size:0.6rem;color:var(--text3);margin-right:8px">${i+1}.</span>${c.q.substring(0,50)}${c.q.length>50?'…':''}
+    </div>
+  `).join('');
+}
+
+renderFC();
+
+// ─── QUIZ ─────────────────────────────────
+const questions = [
+  {
+    q: 'Paciente, 28 anos, DM1, vômitos há 2 dias, dor abdominal. pH 7,12 · HCO₃⁻ 8 · K⁺ 3,0 mEq/L · Glicemia 420 mg/dL · Cetonúria 3+. Conduta mais adequada?',
+    opts: ['Iniciar insulina regular EV 0,1 U/kg/h imediatamente','Administrar bicarbonato de sódio pelo pH < 7,20','Repor KCl até K⁺ > 3,5 antes de iniciar insulina EV','Iniciar insulina NPH SC e hidratação oral','Aguardar hemocultura para antibioticoterapia'],
+    ans: 2,
+    exp: 'K⁺ = 3,0 está abaixo de 3,3 mEq/L — limiar para reposição obrigatória antes de insulina. Hipocalemia grave com insulina = arritmia fatal.',
+    trap: 'O pH de 7,12 assusta, mas não indica bicarbonato (pH < 6,9 com instabilidade). A alteração decisiva é o K⁺.'
+  },
+  {
+    q: 'CAD em tratamento há 8h. Glicemia: 195 mg/dL · pH: 7,18 · HCO₃⁻: 12 · AG: 18. O plantonista decide suspender a insulina EV. Essa conduta é:',
+    opts: ['Correta — a glicemia normalizou','Correta — são 8h de tratamento','Incorreta — resolução exige pH>7,30, HCO₃⁻>18 e AG normal','Incorreta — insulina só pode ser suspensa após 24h','Correta se o paciente estiver assintomático'],
+    ans: 2,
+    exp: 'A glicemia normaliza antes da acidose. A resolução da CAD é definida por critérios metabólicos (pH, HCO₃⁻ e AG), não pela glicemia.',
+    trap: 'Este é o erro mais cobrado em prova: suspender insulina EV pela glicemia em vez de pelos critérios de resolução.'
+  },
+  {
+    q: 'Mulher, 34 anos, DM2, iniciou dapagliflozina há 3 semanas. Fraqueza, náuseas. Glicemia = 190 mg/dL · pH 7,15 · HCO₃⁻ 9 · AG = 22 · Cetonúria 3+. Diagnóstico?',
+    opts: ['Estado hiperosmolar hiperglicêmico','Acidose lática por metformina','Cetoacidose diabética euglicêmica por iSGLT2','Acidose metabólica por insuficiência renal','Intoxicação por salicilatos'],
+    ans: 2,
+    exp: 'CAD euglicêmica em usuária de iSGLT2 (dapagliflozina/flozina). As flozinas aumentam excreção renal de glicose e promovem cetogênese.',
+    trap: 'Glicemia "apenas" 190 mg/dL faz o médico descartar CAD — mas AG elevado + cetonúria confirmam a cetoacidose.'
+  },
+  {
+    q: 'Na transição EV→SC em CAD resolvida, qual é o procedimento CORRETO?',
+    opts: ['Suspender EV, aguardar 4h, então aplicar SC','Aplicar SC e suspender EV imediatamente','Aplicar SC basal 1–2h ANTES de suspender EV','Usar só insulina rápida SC sem basal no 1º dia','Reduzir gradualmente EV sem aplicar SC'],
+    ans: 2,
+    exp: 'A sobreposição de 1–2h é essencial para evitar o gap de insulina. SC e EV funcionam juntas neste intervalo.',
+    trap: 'O erro clássico de plantão: suspender EV, anotar que "vai dar SC depois" — e a equipe esquece ou demora. Resultado: recidiva de CAD.'
+  },
+  {
+    q: 'Homem, 55 anos, DM2. Glicemia 780 · pH 7,36 · HCO₃⁻ 24 · AG 10 · Osmolaridade 368 · Cetonúria negativa. O que diferencia do CAD na conduta?',
+    opts: ['Bolus de insulina 0,2 U/kg imediatamente','Reidratação agressiva é o pilar; insulina é coadjuvante','Bicarbonato indicado pela osmolaridade alta','Usar insulina NPH SC ao invés de EV','Mortalidade do EHH é menor que a da CAD'],
+    ans: 1,
+    exp: 'Estado hiperosmolar hiperglicêmico (EHH): sem acidose, sem cetose, DM2. Reidratação vigorosa é o pilar. Insulina em doses menores e coadjuvante. Mortalidade: 5–20% vs <5% na CAD.',
+    trap: 'Insulina em bolus agressivo no EHH → queda glicêmica rápida → edema cerebral osmótico → piora neurológica.'
+  },
+];
+
+let qCurrent = 0, qAnswered = false, qScore = 0;
+
+function renderQuiz() {
+  const c = document.getElementById('quiz_container');
+  const q = questions[qCurrent];
+
+  c.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="badge badge-cyan">TEMI</span>
+        <span style="font-family:var(--mono);font-size:0.65rem;color:var(--text3)">Questão ${qCurrent+1} de ${questions.length}</span>
+      </div>
+      <span style="font-family:var(--mono);font-size:0.65rem;color:var(--lime)">Acertos: ${qScore}</span>
+    </div>
+    <div class="quiz-q-text">${q.q}</div>
+    <div class="quiz-options" id="q_opts">
+      ${q.opts.map((o,i) => `
+        <div class="quiz-opt" onclick="answerQuiz(${i})" id="qo_${i}">
+          <div class="quiz-opt-letter">${String.fromCharCode(65+i)}</div>
+          <span>${o}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="quiz-feedback" id="q_feedback"></div>
+    <div style="display:flex;gap:10px;justify-content:space-between;align-items:center">
+      <span style="font-family:var(--mono);font-size:0.65rem;color:var(--text3)">${'●'.repeat(qCurrent+1)}${'○'.repeat(questions.length-qCurrent-1)}</span>
+      <button class="quiz-nav-btn primary" id="q_next" onclick="nextQuestion()" style="display:none">Próxima →</button>
+    </div>
+  `;
+}
+
+function answerQuiz(idx) {
+  if (qAnswered) return;
+  qAnswered = true;
+  const q = questions[qCurrent];
+  const opts = document.querySelectorAll('.quiz-opt');
+  const fb = document.getElementById('q_feedback');
+
+  opts.forEach((o, i) => {
+    o.style.pointerEvents = 'none';
+    if (i === q.ans) o.classList.add('correct');
+    if (i === idx && idx !== q.ans) o.classList.add('wrong');
+  });
+
+  const correct = idx === q.ans;
+  if (correct) qScore++;
+
+  fb.className = 'quiz-feedback visible ' + (correct ? 'correct' : 'wrong');
+  fb.innerHTML = `
+    <strong>${correct ? '✅ Correto!' : `❌ Incorreto. Gabarito: ${String.fromCharCode(65+q.ans)}`}</strong><br>
+    ${q.exp}<br><br>
+    <strong style="font-family:var(--mono);font-size:0.7rem">⚠️ Pegadinha:</strong> ${q.trap}
+  `;
+
+  document.getElementById('q_next').style.display = 'inline-flex';
+}
+
+function nextQuestion() {
+  qAnswered = false;
+  qCurrent++;
+  if (qCurrent >= questions.length) {
+    showScore();
+  } else {
+    renderQuiz();
+  }
+}
+
+function showScore() {
+  const c = document.getElementById('quiz_container');
+  const pct = Math.round((qScore / questions.length) * 100);
+  const color = pct >= 80 ? 'var(--lime)' : pct >= 60 ? 'var(--amber)' : 'var(--rose)';
+  c.innerHTML = `
+    <div class="card">
+      <div class="card-hd lime"><div class="card-hd-dot"></div> Resultado do Quiz</div>
+      <div class="card-body" style="text-align:center">
+        <div class="big-num" style="color:${color}">${qScore}/${questions.length}</div>
+        <div class="big-label">${pct}% de acerto</div>
+        <div class="badge ${pct>=80?'badge-lime':pct>=60?'badge-amber':'badge-rose'}" style="margin-bottom:20px">
+          ${pct>=80?'🏆 Excelente — nível TEMI':'pct>=60?'📚 Bom — revisar pontos fracos':'⚠️ Rever protocolo'}
+        </div>
+        <br>
+        <button class="quiz-nav-btn primary" onclick="qCurrent=0;qScore=0;qAnswered=false;renderQuiz()">↺ Refazer Quiz</button>
+      </div>
+    </div>
+  `;
+}
+
+renderQuiz();
+
+</script>
+</body>
+</html>

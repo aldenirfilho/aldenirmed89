@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSA Aneurismática — Projeto de Aprendizagem | Dr. Aldenir</title>
+    <meta name="description" content="Projeto de aprendizagem interativo sobre Hemorragia Subaracnóidea Aneurismática: tratamento e prognóstico. Baseado no UpToDate 2026.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+/* ===========================
+   HSA Projeto de Aprendizagem
+   Dark Theme — Mobile First
+   =========================== */
+
+:root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2236;
+    --bg-card-hover: #1f2a42;
+    --text-primary: #e8eaf0;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --accent-blue: #3b82f6;
+    --accent-purple: #8b5cf6;
+    --accent-pink: #ec4899;
+    --accent-cyan: #06b6d4;
+    --accent-green: #10b981;
+    --accent-yellow: #f59e0b;
+    --accent-red: #ef4444;
+    --accent-orange: #f97316;
+    --border-color: rgba(255,255,255,0.08);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --gradient-header: linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4c1d95 60%, #581c87 100%);
+    --gradient-danger: linear-gradient(135deg, #7f1d1d, #991b1b);
+    --gradient-warning: linear-gradient(135deg, #78350f, #92400e);
+    --gradient-success: linear-gradient(135deg, #064e3b, #065f46);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===== HEADER ===== */
+.app-header {
+    background: var(--gradient-header);
+    padding: 24px 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    box-shadow: var(--shadow-lg);
+}
+
+.header-content {
+    text-align: center;
+    padding-bottom: 16px;
+}
+
+.header-badge {
+    display: inline-block;
+    background: rgba(139,92,246,0.3);
+    border: 1px solid rgba(139,92,246,0.5);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    color: #c4b5fd;
+}
+
+.app-header h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #e0e7ff, #c4b5fd, #f0abfc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.header-subtitle {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+    font-weight: 400;
+}
+
+/* ===== TAB NAV ===== */
+.tab-nav {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 0 0;
+}
+
+.tab-nav::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+    flex: 0 0 auto;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    font-family: inherit;
+}
+
+.tab-btn.active {
+    color: #fff;
+    border-bottom-color: var(--accent-purple);
+    background: rgba(139,92,246,0.15);
+}
+
+.tab-btn:hover { color: rgba(255,255,255,0.8); }
+
+/* ===== DISCLAIMER ===== */
+.clinical-disclaimer {
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.3);
+    color: #fbbf24;
+    font-size: 0.7rem;
+    padding: 8px 16px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+    padding: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.tab-panel { display: none; animation: fadeIn 0.3s ease; }
+.tab-panel.active { display: block; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== CARDS ===== */
+.section-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease;
+}
+
+.section-card h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.section-card p {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+}
+
+.hero-card {
+    background: linear-gradient(135deg, #1a1a3e, #252560);
+    border: 1px solid rgba(139,92,246,0.3);
+    text-align: center;
+}
+
+.card-icon { font-size: 2.5rem; margin-bottom: 8px; }
+
+.urgent-card {
+    border: 2px solid rgba(239,68,68,0.4);
+    background: linear-gradient(135deg, #1a1520, #2d1a24);
+}
+
+.urgent-text {
+    color: #fca5a5 !important;
+    font-weight: 700;
+    font-size: 0.95rem !important;
+    text-align: center;
+    padding: 8px;
+    background: rgba(239,68,68,0.1);
+    border-radius: var(--radius-sm);
+    margin-bottom: 12px;
+}
+
+/* ===== STAT ROW ===== */
+.stat-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.stat-box {
+    flex: 1;
+    padding: 12px 8px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-num {
+    font-size: 1.3rem;
+    font-weight: 800;
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+    opacity: 0.8;
+}
+
+.stat-danger { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+.stat-warning { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+.stat-info { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+
+/* ===== CHECKLIST ===== */
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.85rem;
+}
+
+.check-item:hover { background: rgba(255,255,255,0.06); }
+
+.check-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent-green);
+    flex-shrink: 0;
+}
+
+.check-item input:checked + span {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+/* ===== TOPIC GRID ===== */
+.topic-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.topic-grid.cols-2 { grid-template-columns: 1fr; }
+
+@media (min-width: 640px) {
+    .topic-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.topic-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 14px;
+}
+
+.topic-item h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--accent-cyan);
+}
+
+.topic-item ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.topic-item li {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    padding-left: 12px;
+    position: relative;
+}
+
+.topic-item li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--accent-purple);
+    font-weight: bold;
+}
+
+.highlight-card {
+    border-color: rgba(139,92,246,0.4) !important;
+    background: rgba(139,92,246,0.08) !important;
+}
+
+.highlight-card h3 { color: #c4b5fd !important; }
+
+/* ===== COMPLICATIONS ===== */
+.complication-list { display: flex; flex-direction: column; gap: 8px; }
+
+.complication-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.complication-item summary {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.complication-item summary:hover { background: rgba(255,255,255,0.04); }
+
+.complication-item summary::after {
+    content: '▸';
+    margin-left: auto;
+    transition: transform 0.2s;
+    color: var(--text-muted);
+}
+
+.complication-item[open] summary::after { transform: rotate(90deg); }
+
+.detail-content {
+    padding: 0 14px 14px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.detail-content p { margin-bottom: 6px; }
+.detail-content ol { padding-left: 20px; }
+.detail-content li { margin-bottom: 4px; }
+
+/* ===== TABLES (ESCALAS) ===== */
+.scale-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.scale-table th {
+    background: rgba(139,92,246,0.2);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 700;
+    color: #c4b5fd;
+    border-bottom: 2px solid rgba(139,92,246,0.3);
+}
+
+.scale-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.scale-table tr:last-child td { border-bottom: none; }
+
+.grade-good td:first-child { color: var(--accent-green); font-weight: 700; }
+.grade-moderate td:first-child { color: var(--accent-yellow); font-weight: 700; }
+.grade-severe td:first-child { color: var(--accent-orange); font-weight: 700; }
+.grade-critical td:first-child { color: var(--accent-red); font-weight: 700; }
+
+.grade-good { border-left: 3px solid var(--accent-green); }
+.grade-moderate { border-left: 3px solid var(--accent-yellow); }
+.grade-severe { border-left: 3px solid var(--accent-orange); }
+.grade-critical { border-left: 3px solid var(--accent-red); }
+
+/* ===== FLUXOGRAMA ===== */
+.flow-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 8px;
+}
+
+.flow-step {
+    width: 100%;
+    max-width: 500px;
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.flow-number {
+    position: absolute;
+    top: -12px;
+    left: 16px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    background: var(--accent-purple);
+    color: #fff;
+}
+
+.flow-step h3 { font-size: 0.95rem; margin-bottom: 6px; }
+.flow-step p { font-size: 0.8rem; color: var(--text-secondary); margin: 2px 0; }
+
+.flow-emergency { background: linear-gradient(135deg, #2d1a24, #1a1520); border-color: rgba(239,68,68,0.4); }
+.flow-emergency h3 { color: #fca5a5; }
+
+.flow-action { background: linear-gradient(135deg, #1a2236, #1a1a3e); border-color: rgba(59,130,246,0.4); }
+.flow-action h3 { color: #93c5fd; }
+
+.flow-critical { background: linear-gradient(135deg, #2d1520, #3d1a20); border-color: rgba(249,115,22,0.4); }
+.flow-critical h3 { color: #fdba74; }
+
+.flow-monitor { background: linear-gradient(135deg, #1a2530, #1a3040); border-color: rgba(6,182,212,0.4); }
+.flow-monitor h3 { color: #67e8f9; }
+
+.flow-warning { background: linear-gradient(135deg, #2a2510, #302a14); border-color: rgba(245,158,11,0.4); }
+.flow-warning h3 { color: #fcd34d; }
+
+.flow-recovery { background: linear-gradient(135deg, #1a2a20, #143020); border-color: rgba(16,185,129,0.4); }
+.flow-recovery h3 { color: #6ee7b7; }
+
+.flow-arrow {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    padding: 4px 0;
+}
+
+.flow-branches {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+@media (min-width: 480px) {
+    .flow-branches { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+.flow-branch {
+    background: rgba(0,0,0,0.2);
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+}
+
+.flow-branch strong {
+    display: block;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    color: #fcd34d;
+}
+
+.flow-branch p { font-size: 0.75rem; margin: 2px 0; }
+
+/* ===== FLASHCARDS ===== */
+.flashcard-container { padding: 8px; }
+
+.flashcard-progress {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.flashcard-progress span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.flashcard {
+    perspective: 1000px;
+    cursor: pointer;
+    height: 280px;
+    margin-bottom: 16px;
+}
+
+.flashcard-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+
+.flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+}
+
+.flashcard-front {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    border: 1px solid rgba(139,92,246,0.4);
+    box-shadow: var(--shadow-md);
+}
+
+.flashcard-front p { font-size: 1rem; font-weight: 600; line-height: 1.5; }
+
+.card-category {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #c4b5fd;
+    background: rgba(139,92,246,0.2);
+    padding: 4px 12px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.flashcard-back {
+    background: linear-gradient(135deg, #064e3b, #065f46);
+    border: 1px solid rgba(16,185,129,0.4);
+    box-shadow: var(--shadow-md);
+    transform: rotateY(180deg);
+}
+
+.flashcard-back p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #d1fae5;
+}
+
+.flashcard-controls {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.fc-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.fc-btn:hover { background: var(--bg-card-hover); border-color: var(--accent-purple); }
+.fc-shuffle { color: var(--accent-yellow); }
+
+/* ===== QUIZ ===== */
+.quiz-container { padding: 8px; }
+
+.quiz-progress {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.quiz-progress span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.quiz-question {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.quiz-option {
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+.quiz-option:hover:not(.selected):not(.disabled) {
+    border-color: var(--accent-purple);
+    background: var(--bg-card-hover);
+}
+
+.quiz-option.correct {
+    border-color: var(--accent-green) !important;
+    background: rgba(16,185,129,0.15) !important;
+    color: #6ee7b7;
+}
+
+.quiz-option.incorrect {
+    border-color: var(--accent-red) !important;
+    background: rgba(239,68,68,0.1) !important;
+    color: #fca5a5;
+}
+
+.quiz-option.disabled { pointer-events: none; opacity: 0.6; }
+
+.quiz-feedback {
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    display: none;
+}
+
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #a7f3d0; }
+.quiz-feedback.incorrect-fb { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fecaca; }
+
+.quiz-next-btn, .quiz-restart-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+    border: none;
+    border-radius: var(--radius-md);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.quiz-next-btn:hover, .quiz-restart-btn:hover { transform: scale(1.02); opacity: 0.9; }
+
+.quiz-result {
+    text-align: center;
+    padding: 32px 16px;
+}
+
+.result-icon { font-size: 4rem; margin-bottom: 16px; }
+.quiz-result h2 { font-size: 1.4rem; margin-bottom: 8px; }
+.quiz-result p { color: var(--text-secondary); margin-bottom: 16px; }
+
+.result-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.result-fill {
+    height: 100%;
+    border-radius: 8px;
+    transition: width 1s ease;
+}
+
+/* ===== FOOTER ===== */
+.app-footer {
+    text-align: center;
+    padding: 24px 16px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 24px;
+}
+
+.app-footer p {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 768px) {
+    .app-header h1 { font-size: 2rem; }
+    .main-content { padding: 24px; }
+    .section-card { padding: 24px; }
+    .tab-btn { font-size: 0.85rem; padding: 12px 20px; }
+}
+
+</style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="header-badge">🧠 NEURO-UTI</div>
+            <h1>HSA Aneurismática</h1>
+            <p class="header-subtitle">Tratamento & Prognóstico — UpToDate 2026</p>
+        </div>
+        <nav class="tab-nav" id="tabNav">
+            <button class="tab-btn active" data-tab="resumo">📋 Resumo</button>
+            <button class="tab-btn" data-tab="escalas">📊 Escalas</button>
+            <button class="tab-btn" data-tab="fluxo">🔀 Fluxo</button>
+            <button class="tab-btn" data-tab="flashcards">🃏 Cards</button>
+            <button class="tab-btn" data-tab="quiz">❓ Quiz</button>
+        </nav>
+    </header>
+
+    <!-- AVISO CLÍNICO -->
+    <div class="clinical-disclaimer">
+        ⚠️ Ferramenta educacional/de apoio. Não substitui julgamento clínico, protocolos institucionais ou avaliação médica individual.
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- ==================== ABA: RESUMO ==================== -->
+        <section class="tab-panel active" id="panel-resumo">
+            <div class="section-card hero-card">
+                <div class="card-icon">🩸</div>
+                <h2>Visão Geral</h2>
+                <p>HSA = sangramento no espaço subaracnoide (entre aracnoide e pia-máter). <strong>Causa mais comum:</strong> ruptura de aneurisma sacular intracraniano.</p>
+                <div class="stat-row">
+                    <div class="stat-box stat-danger"><span class="stat-num">~30%</span><span class="stat-label">Letalidade 30d</span></div>
+                    <div class="stat-box stat-warning"><span class="stat-num">4-14%</span><span class="stat-label">Ressangram 24h</span></div>
+                    <div class="stat-box stat-info"><span class="stat-num">~30%</span><span class="stat-label">Vasoespasmo</span></div>
+                </div>
+            </div>
+
+            <!-- TRIAGEM -->
+            <div class="section-card">
+                <h2>🚨 Triagem & Estabilização</h2>
+                <div class="checklist">
+                    <label class="check-item"><input type="checkbox"><span>Via aérea segura (IOT se GCS ≤8, PIC↑, hipoxemia)</span></label>
+                    <label class="check-item"><input type="checkbox"><span>Estabilização cardiovascular</span></label>
+                    <label class="check-item"><input type="checkbox"><span>Tratar convulsões agudas</span></label>
+                    <label class="check-item"><input type="checkbox"><span>Classificar gravidade (Hunt-Hess / WFNS / Fisher)</span></label>
+                    <label class="check-item"><input type="checkbox"><span>Transferir para centro neurocrítico de alto volume</span></label>
+                </div>
+            </div>
+
+            <!-- MANEJO INICIAL -->
+            <div class="section-card">
+                <h2>💊 Manejo Sintomático Inicial</h2>
+                <div class="topic-grid">
+                    <div class="topic-item">
+                        <h3>🩺 Anti-trombóticos</h3>
+                        <ul>
+                            <li><strong>Suspender TODOS</strong> os antitrombóticos</li>
+                            <li>Plaquetas se antiplaquetários ou PLQ &lt;100k</li>
+                            <li>Varfarina → CCP 4 fatores + Vit K IV</li>
+                            <li>Dabigatrana → Idarucizumab 5g</li>
+                            <li>Anti-Xa → CCP 4 fatores</li>
+                            <li>🚫 Antifibrinolíticos NÃO rotina</li>
+                        </ul>
+                    </div>
+                    <div class="topic-item">
+                        <h3>🫀 Pressão Arterial</h3>
+                        <ul>
+                            <li><strong>Meta PAS &lt;160 ou PAM &lt;110</strong></li>
+                            <li>Se alerta: PAS &lt;140 mmHg</li>
+                            <li>Drogas: labetalol, nicardipina, clevidipina</li>
+                            <li>🚫 Evitar nitroprussiato (↑PIC)</li>
+                            <li>🚫 Evitar hipotensão</li>
+                            <li>PPC alvo ≥70 mmHg</li>
+                        </ul>
+                    </div>
+                    <div class="topic-item">
+                        <h3>💧 Volemia</h3>
+                        <ul>
+                            <li><strong>Manter EUVOLEMIA</strong></li>
+                            <li>SF 0,9% — monitorar I/O</li>
+                            <li>Checar Na+ pelo menos 1x/dia</li>
+                            <li>Hipovolemia = risco isquêmico</li>
+                            <li>🚫 NÃO hipervolemia</li>
+                        </ul>
+                    </div>
+                    <div class="topic-item highlight-card">
+                        <h3>💜 Nimodipina</h3>
+                        <ul>
+                            <li><strong>60 mg VO/SNG 4/4h por 21 dias</strong></li>
+                            <li>Iniciar &lt;48h dos sintomas</li>
+                            <li>🚫 NUNCA IV (risco de óbito)</li>
+                            <li>NNT = 13 para desfecho ruim</li>
+                            <li>Monitorar PA (risco hipotensão)</li>
+                            <li>Não reduz vasoespasmo → melhora desfecho</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILAXIAS -->
+            <div class="section-card">
+                <h2>🛡️ Profilaxias & Cuidados Gerais</h2>
+                <div class="topic-grid cols-2">
+                    <div class="topic-item">
+                        <h3>⚡ Convulsões</h3>
+                        <ul>
+                            <li>Profilaxia controversa</li>
+                            <li>Considerar se: grau ruim, aneurisma não tratado, HIC</li>
+                            <li>🚫 EVITAR fenitoína (piora cognitiva)</li>
+                            <li>Preferir levetiracetam</li>
+                            <li>Suspender após reparo do aneurisma</li>
+                        </ul>
+                    </div>
+                    <div class="topic-item">
+                        <h3>🫁 TVP & Geral</h3>
+                        <ul>
+                            <li>CPI antes do reparo</li>
+                            <li>Heparina SC após reparo do aneurisma</li>
+                            <li>Repouso absoluto + laxantes</li>
+                            <li>Dor: morfina curta ação / paracetamol</li>
+                            <li>Ceftriaxona 2g IV dose única (PAV)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPARO DO ANEURISMA -->
+            <div class="section-card urgent-card">
+                <h2>🔧 Reparo do Aneurisma</h2>
+                <p class="urgent-text">⏰ Realizar o mais cedo possível — idealmente &lt;24h (alguns centros: ~7h da admissão)</p>
+                <div class="topic-grid cols-2">
+                    <div class="topic-item">
+                        <h3>✂️ Clipagem Cirúrgica</h3>
+                        <p>Craniotomia + clip metálico no colo do aneurisma</p>
+                    </div>
+                    <div class="topic-item">
+                        <h3>🌀 Embolização Endovascular</h3>
+                        <p>Coils via cateter — menos invasivo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPLICAÇÕES -->
+            <div class="section-card">
+                <h2>🔥 Complicações Precoces</h2>
+                <div class="complication-list">
+                    <details class="complication-item">
+                        <summary>🩸 Ressangramento (4-14% em 24h)</summary>
+                        <div class="detail-content">
+                            <p><strong>Pico:</strong> 2-12h. <strong>Mortalidade:</strong> até 70%</p>
+                            <p><strong>Preditores:</strong> tempo até reparo, pior grau neurológico, aneurisma grande, PAS alta, sangue ICV/ICerebral, hidrocefalia aguda</p>
+                            <p><strong>Conduta:</strong> reparo emergencial do aneurisma</p>
+                        </div>
+                    </details>
+                    <details class="complication-item">
+                        <summary>🧠 Vasoespasmo / ICT (~30%)</summary>
+                        <div class="detail-content">
+                            <p><strong>Período:</strong> 4-14 dias (pico 7-8º dia)</p>
+                            <p><strong>FR:</strong> volume sangue, Fisher alto, idade &lt;50, hiperglicemia</p>
+                            <p><strong>Monitoramento:</strong> DTC diário + angioTC perfusão</p>
+                            <p><strong>Tratamento:</strong></p>
+                            <ol>
+                                <li>↑PAM com vasopressores (NE/fenilefrina)</li>
+                                <li>Angioplastia com balão (vasos grandes)</li>
+                                <li>Vasodilatadores intra-arteriais (nicardipina, milrinona)</li>
+                            </ol>
+                        </div>
+                    </details>
+                    <details class="complication-item">
+                        <summary>💧 Hidrocefalia (20-30%)</summary>
+                        <div class="detail-content">
+                            <p><strong>Aguda:</strong> minutos-horas. <strong>Tardia:</strong> ≥2 semanas</p>
+                            <p><strong>Clínica:</strong> ↓consciência + dilatação ventricular na TC</p>
+                            <p><strong>Tratamento:</strong> DVE (comunicante e não comunicante) ou drenagem lombar (só comunicante)</p>
+                            <p>22% desenvolvem dependência de derivação</p>
+                        </div>
+                    </details>
+                    <details class="complication-item">
+                        <summary>🧪 Hiponatremia (até 30%)</summary>
+                        <div class="detail-content">
+                            <p><strong>Causas:</strong> SIADH (euvolêmico) vs Perda cerebral de sal (hipovolêmico)</p>
+                            <p><strong>Labs similares:</strong> Na &lt;134, Osm sérica baixa, Na urinário alto</p>
+                            <p><strong>Diferença chave:</strong> estado volêmico</p>
+                            <p><strong>Tto:</strong> SF hipertônica 3% ± fludrocortisona. 🚫 NÃO restringir fluidos</p>
+                        </div>
+                    </details>
+                    <details class="complication-item">
+                        <summary>⚡ Convulsões (8-15%)</summary>
+                        <div class="detail-content">
+                            <p>Antes do reparo → pensar em ressangramento</p>
+                            <p><strong>Tto:</strong> Levetiracetam (🚫 fenitoína)</p>
+                            <p>Reduzir MAE após 1 semana se sem crises</p>
+                            <p>EEG contínuo se deterioração inexplicada</p>
+                        </div>
+                    </details>
+                    <details class="complication-item">
+                        <summary>🫀 Complicações Cardiopulmonares</summary>
+                        <div class="detail-content">
+                            <p>Arritmias (35%), edema pulmonar (23%)</p>
+                            <p><strong>ECG:</strong> ↓ST, ↑QT, ondas T invertidas simétricas</p>
+                            <p><strong>Troponina:</strong> ↑ em até 20% (risco de Takotsubo)</p>
+                            <p>Checar troponina + ECG + eco na admissão</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- PROGNÓSTICO -->
+            <div class="section-card">
+                <h2>📈 Prognóstico</h2>
+                <div class="topic-grid cols-2">
+                    <div class="topic-item">
+                        <h3>⚰️ Mortalidade</h3>
+                        <ul>
+                            <li>18-24% morrem antes do hospital</li>
+                            <li>~30% letalidade em 30 dias</li>
+                            <li>Taxa diminuindo (~2%/ano)</li>
+                            <li>RMP sobreviventes: 1,6x pop. geral</li>
+                        </ul>
+                    </div>
+                    <div class="topic-item">
+                        <h3>🧩 Recuperação</h3>
+                        <ul>
+                            <li>Melhora funcional até 4 anos</li>
+                            <li>~20% comprometimento cognitivo</li>
+                            <li>Epilepsia: 5-12%</li>
+                            <li>Depressão/ansiedade comuns</li>
+                            <li>Fatores: GCS, idade, volume sangue</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ABA: ESCALAS ==================== -->
+        <section class="tab-panel" id="panel-escalas">
+            <div class="section-card">
+                <h2>📊 Escalas de Classificação da HSA</h2>
+                <p>Toque em cada escala para expandir os detalhes.</p>
+            </div>
+
+            <div class="section-card">
+                <h2>🏥 Hunt & Hess</h2>
+                <table class="scale-table">
+                    <thead><tr><th>Grau</th><th>Estado Neurológico</th></tr></thead>
+                    <tbody>
+                        <tr class="grade-good"><td>1</td><td>Assintomático, cefaleia leve, rigidez nuca discreta</td></tr>
+                        <tr class="grade-good"><td>2</td><td>Cefaleia intensa, rigidez nuca, sem déficit focal (pode ter par. NC)</td></tr>
+                        <tr class="grade-moderate"><td>3</td><td>Sonolência/confusão, déficit focal leve</td></tr>
+                        <tr class="grade-severe"><td>4</td><td>Estupor, hemiparesia moderada-grave</td></tr>
+                        <tr class="grade-critical"><td>5</td><td>Coma, postura de descerebração</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <h2>🌍 WFNS</h2>
+                <table class="scale-table">
+                    <thead><tr><th>Grau</th><th>GCS</th><th>Déficit Motor</th></tr></thead>
+                    <tbody>
+                        <tr class="grade-good"><td>1</td><td>15</td><td>Ausente</td></tr>
+                        <tr class="grade-good"><td>2</td><td>13-14</td><td>Ausente</td></tr>
+                        <tr class="grade-moderate"><td>3</td><td>13-14</td><td>Presente</td></tr>
+                        <tr class="grade-severe"><td>4</td><td>7-12</td><td>±</td></tr>
+                        <tr class="grade-critical"><td>5</td><td>3-6</td><td>±</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <h2>🔬 Fisher (Risco de Vasoespasmo)</h2>
+                <table class="scale-table">
+                    <thead><tr><th>Grau</th><th>Sangue na TC</th></tr></thead>
+                    <tbody>
+                        <tr class="grade-good"><td>1</td><td>Sem sangue detectado</td></tr>
+                        <tr class="grade-good"><td>2</td><td>Deposição difusa/fina &lt;1mm</td></tr>
+                        <tr class="grade-severe"><td>3</td><td>Coágulo localizado e/ou camadas ≥1mm</td></tr>
+                        <tr class="grade-moderate"><td>4</td><td>Coágulo ICerebral/IVentricular ± HSA difusa</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <h2>📐 Fisher Modificada (Claassen)</h2>
+                <table class="scale-table">
+                    <thead><tr><th>Grau</th><th>Critérios TC</th></tr></thead>
+                    <tbody>
+                        <tr class="grade-good"><td>0</td><td>Sem HSA ou HIV</td></tr>
+                        <tr class="grade-good"><td>1</td><td>HSA mínima, sem HIV</td></tr>
+                        <tr class="grade-moderate"><td>2</td><td>HSA mínima + HIV bilateral</td></tr>
+                        <tr class="grade-severe"><td>3</td><td>HSA espessa, sem HIV bilateral</td></tr>
+                        <tr class="grade-critical"><td>4</td><td>HSA espessa + HIV bilateral</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <h2>📏 Escala de Rankin Modificada (mRS)</h2>
+                <table class="scale-table">
+                    <thead><tr><th>Score</th><th>Descrição</th></tr></thead>
+                    <tbody>
+                        <tr class="grade-good"><td>0</td><td>Sem sintomas</td></tr>
+                        <tr class="grade-good"><td>1</td><td>Sem incapacidade significativa</td></tr>
+                        <tr class="grade-moderate"><td>2</td><td>Incapacidade leve (independente)</td></tr>
+                        <tr class="grade-moderate"><td>3</td><td>Incapacidade moderada (caminha sozinho)</td></tr>
+                        <tr class="grade-severe"><td>4</td><td>Incapacidade moderada-grave (não caminha sem ajuda)</td></tr>
+                        <tr class="grade-critical"><td>5</td><td>Incapacidade grave (acamado)</td></tr>
+                        <tr class="grade-critical"><td>6</td><td>Óbito</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================== ABA: FLUXO ==================== -->
+        <section class="tab-panel" id="panel-fluxo">
+            <div class="section-card">
+                <h2>🔀 Fluxograma de Manejo da HSA</h2>
+                <p>Sequência de decisões desde a admissão.</p>
+            </div>
+
+            <div class="flow-container">
+                <div class="flow-step flow-emergency">
+                    <div class="flow-number">1</div>
+                    <h3>🚨 ADMISSÃO</h3>
+                    <p>ABCDE + IOT se GCS ≤8</p>
+                    <p>Classificar: Hunt-Hess / WFNS / Fisher</p>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-step flow-action">
+                    <div class="flow-number">2</div>
+                    <h3>💊 MEDIDAS INICIAIS</h3>
+                    <p>Suspender antitrombóticos + reverter</p>
+                    <p>PA: PAS &lt;160 / PAM &lt;110</p>
+                    <p>Nimodipina 60mg 4/4h VO</p>
+                    <p>Euvolemia (SF 0,9%)</p>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-step flow-critical">
+                    <div class="flow-number">3</div>
+                    <h3>🔧 REPARO DO ANEURISMA</h3>
+                    <p>⏰ Idealmente &lt;24h</p>
+                    <p>Clipagem vs Embolização</p>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-step flow-monitor">
+                    <div class="flow-number">4</div>
+                    <h3>📡 MONITORAMENTO UTI</h3>
+                    <p>Exame neuro 1-2h</p>
+                    <p>DTC diário (dias 3-14)</p>
+                    <p>TC/angioTC: admissão, D3-5, D7-10</p>
+                    <p>Na+ diário / Troponina + ECG / Eco</p>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-step flow-warning">
+                    <div class="flow-number">5</div>
+                    <h3>⚠️ VIGILÂNCIA COMPLICAÇÕES</h3>
+                    <div class="flow-branches">
+                        <div class="flow-branch">
+                            <strong>Vasoespasmo (D4-14)</strong>
+                            <p>→ ↑PAM + vasopressores</p>
+                            <p>→ Angioplastia / vasodilatador IA</p>
+                        </div>
+                        <div class="flow-branch">
+                            <strong>Hidrocefalia</strong>
+                            <p>→ DVE</p>
+                        </div>
+                        <div class="flow-branch">
+                            <strong>Hiponatremia</strong>
+                            <p>→ SF 3% ± fludrocortisona</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flow-arrow">▼</div>
+                <div class="flow-step flow-recovery">
+                    <div class="flow-number">6</div>
+                    <h3>🏠 PLANEJAMENTO DE ALTA</h3>
+                    <p>Avaliar derivação (desmame DVE)</p>
+                    <p>Suspender MAE se sem crises</p>
+                    <p>Nimodipina 21 dias total</p>
+                    <p>Rastrear familiares 1º grau</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ABA: FLASHCARDS ==================== -->
+        <section class="tab-panel" id="panel-flashcards">
+            <div class="section-card">
+                <h2>🃏 Flashcards — HSA Aneurismática</h2>
+                <p>Toque no card para revelar a resposta. Use os botões para navegar.</p>
+            </div>
+
+            <div class="flashcard-container">
+                <div class="flashcard-progress">
+                    <span id="cardCounter">1 / 20</span>
+                    <div class="progress-bar"><div class="progress-fill" id="cardProgress"></div></div>
+                </div>
+                <div class="flashcard" id="flashcard" onclick="toggleFlashcard()">
+                    <div class="flashcard-inner" id="flashcardInner">
+                        <div class="flashcard-front">
+                            <div class="card-category" id="cardCategory"></div>
+                            <p id="cardQuestion"></p>
+                        </div>
+                        <div class="flashcard-back">
+                            <p id="cardAnswer"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flashcard-controls">
+                    <button class="fc-btn" onclick="prevCard()">◀ Anterior</button>
+                    <button class="fc-btn fc-shuffle" onclick="shuffleCards()">🔀 Embaralhar</button>
+                    <button class="fc-btn" onclick="nextCard()">Próximo ▶</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ABA: QUIZ ==================== -->
+        <section class="tab-panel" id="panel-quiz">
+            <div class="section-card">
+                <h2>❓ Quiz — Teste seus Conhecimentos</h2>
+                <p>20 questões no estilo TEMI/AMIB. Toque na alternativa correta.</p>
+            </div>
+
+            <div class="quiz-container" id="quizContainer">
+                <div class="quiz-progress">
+                    <span id="quizCounter">Questão 1 / 20</span>
+                    <div class="progress-bar"><div class="progress-fill" id="quizProgress"></div></div>
+                </div>
+                <div class="quiz-question" id="quizQuestion"></div>
+                <div class="quiz-options" id="quizOptions"></div>
+                <div class="quiz-feedback" id="quizFeedback"></div>
+                <button class="quiz-next-btn" id="quizNextBtn" onclick="nextQuestion()" style="display:none;">Próxima Questão ▶</button>
+            </div>
+
+            <div class="quiz-result" id="quizResult" style="display:none;">
+                <div class="result-icon" id="resultIcon"></div>
+                <h2 id="resultTitle"></h2>
+                <p id="resultScore"></p>
+                <div class="result-bar"><div class="result-fill" id="resultFill"></div></div>
+                <button class="quiz-restart-btn" onclick="restartQuiz()">🔄 Refazer Quiz</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+        <p>📚 Fonte: UpToDate — Aneurysmal SAH: Treatment and prognosis (Tópico 1127, v52.0)</p>
+        <p>🧠 Projeto de Aprendizagem — Dr. Aldenir Rocha | Antigravity 2026</p>
+    </footer>
+
+    <script>
+// ===========================
+// HSA Projeto de Aprendizagem
+// App.js — Lógica interativa
+// ===========================
+
+// ==================== NAVEGAÇÃO POR ABAS ====================
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+});
+
+// ==================== FLASHCARDS ====================
+const flashcardsData = [
+    { cat: "Epidemiologia", q: "Qual a taxa de letalidade da HSA aneurismática em 30 dias?", a: "Aproximadamente 30%. Historicamente era ~50%, mas vem caindo ~2% ao ano. 18-24% morrem antes de chegar ao hospital." },
+    { cat: "Triagem", q: "Quais as indicações de IOT na HSA?", a: "GCS ≤8, PIC elevada, oxigenação inadequada, hipoventilação, instabilidade hemodinâmica, necessidade de sedação profunda ou paralisia." },
+    { cat: "Classificação", q: "O que avalia a escala de Hunt & Hess?", a: "Estado neurológico na admissão: Grau 1 (assintomático) a Grau 5 (coma/descerebração). Baseada no exame neurológico inicial." },
+    { cat: "Classificação", q: "A escala de Fisher avalia qual risco?", a: "Risco de VASOESPASMO CEREBRAL baseado no padrão de sangue na TC. Fisher 3 (coágulo ≥1mm) = maior risco de vasoespasmo." },
+    { cat: "Tratamento", q: "Qual a dose e via de administração da nimodipina na HSA?", a: "60 mg VO ou SNG a cada 4 horas, por 21 dias. Iniciar em até 48h. NUNCA administrar IV (risco de óbito!)." },
+    { cat: "Tratamento", q: "Qual a meta de PA na HSA aguda com aneurisma não tratado?", a: "PAS < 160 mmHg ou PAM < 110 mmHg. Se paciente alerta: PAS < 140 mmHg. Evitar hipotensão! PPC alvo ≥ 70 mmHg." },
+    { cat: "Tratamento", q: "Quais anti-hipertensivos são preferidos na HSA?", a: "Labetalol, nicardipina, clevidipina ou enalapril IV. EVITAR nitroprussiato e nitroglicerina (aumentam volume sanguíneo cerebral e PIC)." },
+    { cat: "Tratamento", q: "Como reverter varfarina na HSA?", a: "CCP de 4 fatores + Vitamina K IV. Se CCP indisponível: PFC ou plasma descongelado." },
+    { cat: "Tratamento", q: "Como reverter dabigatrana na HSA?", a: "Idarucizumab (Praxbind) 5g IV. Se indisponível: FEIBA 50-80 U/kg IV." },
+    { cat: "Vasoespasmo", q: "Quando ocorre o vasoespasmo após HSA?", a: "Entre o 4º e 14º dia, com pico no 7-8º dia. Pode ocorrer mais cedo, mesmo na admissão. Afeta ~30% dos pacientes." },
+    { cat: "Vasoespasmo", q: "Qual o tratamento de 1ª linha para ICT (isquemia cerebral tardia)?", a: "Aumento hemodinâmico: elevar PAM com vasopressores (norepinefrina ou fenilefrina) + manter euvolemia. NÃO usar hipervolemia!" },
+    { cat: "Vasoespasmo", q: "A nimodipina reduz o vasoespasmo angiográfico?", a: "NÃO! A nimodipina não reduz a incidência de vasoespasmo, mas MELHORA os desfechos. O mecanismo é desconhecido (neuroproteção?)." },
+    { cat: "Complicações", q: "Qual a incidência de ressangramento nas primeiras 24h?", a: "4-14%, com risco máximo nas primeiras 2-12 horas. Mortalidade do ressangramento: até 70%." },
+    { cat: "Complicações", q: "Qual o tratamento da hidrocefalia aguda na HSA?", a: "DVE (dreno ventricular externo). Permite medir PIC e drenar LCR. Drenagem lombar é alternativa apenas na hidrocefalia COMUNICANTE." },
+    { cat: "Complicações", q: "Como diferenciar SIADH de Perda Cerebral de Sal na HSA?", a: "Labs similares (Na↓, Osm sérica↓, Na urinário↑). Diferença: SIADH = euvolêmico/hipervolêmico. Perda cerebral de sal = HIPOVOLÊMICO." },
+    { cat: "Complicações", q: "Por que evitar fenitoína na HSA?", a: "Associada a PIORES desfechos neurológicos e cognitivos. Preferir levetiracetam quando anticonvulsivante for necessário." },
+    { cat: "Monitoramento", q: "Qual a frequência ideal de exames neurológicos na HSA?", a: "A cada 1-2 horas, especialmente durante o período de risco de ICT (dias 4-14)." },
+    { cat: "Profilaxia", q: "Qual antibiótico usar para profilaxia de PAV na HSA?", a: "Ceftriaxona 2g IV dose única. Reduziu PAV de 32% para 14% em 7 dias. Também reduziu mortalidade em 28 dias." },
+    { cat: "Prognóstico", q: "Quais são os 3 principais preditores de desfecho na HSA?", a: "1) Nível de consciência/classificação neurológica na admissão. 2) Idade (correlação inversa). 3) Volume de sangue na TC inicial." },
+    { cat: "Prognóstico", q: "Qual a incidência de epilepsia após HSA?", a: "5-12%. Latência mediana de 207 dias. Fatores de risco: grau ruim, AVC isquêmico associado, clipagem cirúrgica, crises precoces." },
+];
+
+let currentCard = 0;
+let cards = [...flashcardsData];
+
+function renderCard() {
+    const card = cards[currentCard];
+    document.getElementById('cardQuestion').textContent = card.q;
+    document.getElementById('cardAnswer').textContent = card.a;
+    document.getElementById('cardCategory').textContent = card.cat;
+    document.getElementById('cardCounter').textContent = `${currentCard + 1} / ${cards.length}`;
+    document.getElementById('cardProgress').style.width = `${((currentCard + 1) / cards.length) * 100}%`;
+    // Remover flip
+    document.getElementById('flashcard').classList.remove('flipped');
+}
+
+function toggleFlashcard() {
+    document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function nextCard() {
+    currentCard = (currentCard + 1) % cards.length;
+    renderCard();
+}
+
+function prevCard() {
+    currentCard = (currentCard - 1 + cards.length) % cards.length;
+    renderCard();
+}
+
+function shuffleCards() {
+    for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+    }
+    currentCard = 0;
+    renderCard();
+}
+
+// ==================== QUIZ ====================
+const quizData = [
+    {
+        q: "Qual a dose correta de nimodipina na HSA aneurismática?",
+        opts: ["30 mg VO 6/6h por 14 dias", "60 mg VO 4/4h por 21 dias", "60 mg IV contínuo por 14 dias", "120 mg VO 12/12h por 7 dias"],
+        correct: 1,
+        explain: "Nimodipina 60 mg a cada 4 horas, via oral ou SNG, por 21 dias. NUNCA administrar IV (risco de eventos adversos graves, incluindo óbito)."
+    },
+    {
+        q: "Paciente com HSA e PAS de 190 mmHg. Qual a meta de PA antes do reparo do aneurisma?",
+        opts: ["PAS < 120 mmHg", "PAS < 140 mmHg para todos os pacientes", "PAS < 160 mmHg ou PAM < 110 mmHg", "Não tratar a PA até após o reparo"],
+        correct: 2,
+        explain: "Meta: PAS < 160 ou PAM < 110 mmHg. Se alerta, PAS < 140. Evitar hipotensão. PPC alvo ≥ 70 mmHg."
+    },
+    {
+        q: "Qual anti-hipertensivo deve ser EVITADO na HSA aguda?",
+        opts: ["Labetalol", "Nicardipina", "Nitroprussiato", "Clevidipina"],
+        correct: 2,
+        explain: "Nitroprussiato e nitroglicerina devem ser evitados — aumentam o volume sanguíneo cerebral e, consequentemente, a PIC."
+    },
+    {
+        q: "Qual o período de maior risco para vasoespasmo após HSA?",
+        opts: ["Primeiras 24 horas", "Dias 4-14, pico no 7-8º dia", "Dias 21-30", "Após 6 semanas"],
+        correct: 1,
+        explain: "O vasoespasmo geralmente ocorre entre os dias 4-14, com pico no 7-8º dia. Pode ocorrer mais cedo, mesmo na admissão."
+    },
+    {
+        q: "Qual o tratamento de primeira linha para isquemia cerebral tardia na HSA?",
+        opts: ["Hipervolemia com cristaloides", "Hemicraniectomia descompressiva", "Aumento hemodinâmico com vasopressores", "Nimodipina em dose dobrada"],
+        correct: 2,
+        explain: "Tratamento de 1ª linha: elevar PAM com vasopressores (norepinefrina ou fenilefrina) + manter euvolemia. Hipervolemia NÃO é recomendada."
+    },
+    {
+        q: "Qual o NNT (número necessário para tratar) da nimodipina na HSA?",
+        opts: ["3", "7", "13", "25"],
+        correct: 2,
+        explain: "NNT = 13 (IC 95% 8-30) para prevenir um desfecho ruim. A nimodipina é o padrão de tratamento apesar de não reduzir o vasoespasmo angiográfico."
+    },
+    {
+        q: "Paciente com HSA em uso de dabigatrana. Qual o agente de reversão específico?",
+        opts: ["Vitamina K IV", "CCP de 4 fatores", "Idarucizumab 5g IV", "Andexanet alfa"],
+        correct: 2,
+        explain: "Idarucizumab (Praxbind) 5g IV é o antídoto específico para dabigatrana. Se indisponível: FEIBA 50-80 U/kg."
+    },
+    {
+        q: "Qual anticonvulsivante deve ser EVITADO na HSA?",
+        opts: ["Levetiracetam", "Valproato", "Fenitoína", "Lacosamida"],
+        correct: 2,
+        explain: "A fenitoína está associada a piores desfechos neurológicos e cognitivos na HSA. Preferir levetiracetam."
+    },
+    {
+        q: "Qual a incidência de hidrocefalia na HSA?",
+        opts: ["5-10%", "20-30%", "50-60%", "70-80%"],
+        correct: 1,
+        explain: "A hidrocefalia afeta 20-30% dos pacientes com HSA. 22% desenvolvem dependência de derivação."
+    },
+    {
+        q: "Como diferenciar SIADH de Perda Cerebral de Sal na HSA?",
+        opts: ["Pelo nível de sódio sérico", "Pelo nível de sódio urinário", "Pelo estado volêmico do paciente", "Pela osmolalidade urinária"],
+        correct: 2,
+        explain: "Labs são similares. Diferença: SIADH = euvolêmico/hipervolêmico. Perda cerebral de sal = HIPOVOLÊMICO."
+    },
+    {
+        q: "Por que NÃO se deve restringir fluidos na hiponatremia por SIADH na HSA?",
+        opts: ["Porque piora a hiponatremia", "Porque aumenta risco de contração volêmica e isquemia", "Porque causa hipercalemia", "Porque interfere com a nimodipina"],
+        correct: 1,
+        explain: "A restrição hídrica aumenta o risco de contração do volume intravascular e, consequentemente, lesão isquêmica relacionada ao vasoespasmo."
+    },
+    {
+        q: "Qual o limiar de transfusão de hemoglobina recomendado na HSA?",
+        opts: ["< 7 g/dL (restritivo)", "< 9 g/dL (liberal)", "< 10 g/dL", "< 8 g/dL"],
+        correct: 0,
+        explain: "Limiar restritivo de 7 g/dL, conforme diretrizes. Estudo com 742 pacientes não mostrou benefício significativo com limiar mais alto (10 vs 8 g/dL)."
+    },
+    {
+        q: "Qual antibiótico profilático reduz PAV na HSA?",
+        opts: ["Vancomicina 1g IV", "Piperacilina-tazobactam 4,5g IV", "Ceftriaxona 2g IV dose única", "Meropenem 1g IV"],
+        correct: 2,
+        explain: "Ceftriaxona 2g IV dose única. Reduziu PAV de 32% para 14% em 7 dias e mortalidade em 28 dias (15% vs 25%)."
+    },
+    {
+        q: "Em quanto tempo idealmente o aneurisma deve ser reparado após HSA?",
+        opts: ["Em até 72 horas", "Em até 24 horas", "Em até 7 dias", "Somente após resolução do vasoespasmo"],
+        correct: 1,
+        explain: "O reparo deve ser realizado o mais cedo possível, idealmente em < 24 horas. Alguns centros: ~7h da admissão."
+    },
+    {
+        q: "Qual a mortalidade associada ao ressangramento na HSA?",
+        opts: ["Até 20%", "Até 40%", "Até 70%", "Até 90%"],
+        correct: 2,
+        explain: "A mortalidade associada ao ressangramento é de até 70%. Ocorre em 4-14% nas primeiras 24h, com pico nas 2-12h."
+    },
+    {
+        q: "O que a escala WFNS incorpora além da GCS?",
+        opts: ["Idade do paciente", "Volume de sangue na TC", "Presença de déficit motor", "Tamanho do aneurisma"],
+        correct: 2,
+        explain: "A WFNS combina a GCS com a presença ou ausência de déficit motor para classificar a gravidade da HSA."
+    },
+    {
+        q: "Na HSA, qual complicação cardíaca pode mimetizar IAM?",
+        opts: ["Fibrilação atrial", "Cardiomiopatia de Takotsubo", "Pericardite constritiva", "Endocardite"],
+        correct: 1,
+        explain: "Cardiomiopatia de Takotsubo (balonamento apical transitório) — disfunção VE apical sem DAC significativa. Tipicamente reversível."
+    },
+    {
+        q: "Qual a frequência ideal de exames neurológicos na HSA aguda?",
+        opts: ["A cada 6 horas", "A cada 4 horas", "A cada 1-2 horas", "A cada 12 horas"],
+        correct: 2,
+        explain: "Exames neurológicos a cada 1-2 horas, especialmente durante o período de alto risco de ICT (dias 4-14)."
+    },
+    {
+        q: "Qual a principal causa de hiponatremia na HSA?",
+        opts: ["Uso excessivo de manitol", "SIADH ou Perda Cerebral de Sal", "Insuficiência adrenal aguda", "Nefropatia perdedora de sal"],
+        correct: 1,
+        explain: "SIADH (euvolêmica) ou Perda Cerebral de Sal (hipovolêmica). Até 30% dos pacientes com HSA desenvolvem hiponatremia."
+    },
+    {
+        q: "Qual a incidência de epilepsia tardia após HSA aneurismática?",
+        opts: ["1-2%", "5-12%", "25-30%", "40-50%"],
+        correct: 1,
+        explain: "5-12%, com latência mediana de 207 dias. FR: grau ruim, AVC isquêmico associado, clipagem, crises precoces."
+    },
+];
+
+let currentQuestion = 0;
+let score = 0;
+let quizAnswered = false;
+
+function renderQuestion() {
+    const q = quizData[currentQuestion];
+    document.getElementById('quizQuestion').textContent = q.q;
+    document.getElementById('quizCounter').textContent = `Questão ${currentQuestion + 1} / ${quizData.length}`;
+    document.getElementById('quizProgress').style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`;
+
+    const optContainer = document.getElementById('quizOptions');
+    optContainer.innerHTML = '';
+    q.opts.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = `${String.fromCharCode(65 + i)}) ${opt}`;
+        btn.onclick = () => selectAnswer(i);
+        optContainer.appendChild(btn);
+    });
+
+    document.getElementById('quizFeedback').className = 'quiz-feedback';
+    document.getElementById('quizFeedback').style.display = 'none';
+    document.getElementById('quizNextBtn').style.display = 'none';
+    quizAnswered = false;
+}
+
+function selectAnswer(index) {
+    if (quizAnswered) return;
+    quizAnswered = true;
+
+    const q = quizData[currentQuestion];
+    const options = document.querySelectorAll('.quiz-option');
+
+    options.forEach((opt, i) => {
+        opt.classList.add('disabled');
+        if (i === q.correct) opt.classList.add('correct');
+        if (i === index && i !== q.correct) opt.classList.add('incorrect');
+    });
+
+    const feedback = document.getElementById('quizFeedback');
+    if (index === q.correct) {
+        score++;
+        feedback.className = 'quiz-feedback show correct-fb';
+        feedback.innerHTML = `✅ <strong>Correto!</strong> ${q.explain}`;
+    } else {
+        feedback.className = 'quiz-feedback show incorrect-fb';
+        feedback.innerHTML = `❌ <strong>Incorreto.</strong> ${q.explain}`;
+    }
+    feedback.style.display = 'block';
+
+    if (currentQuestion < quizData.length - 1) {
+        document.getElementById('quizNextBtn').style.display = 'block';
+    } else {
+        setTimeout(showResult, 1500);
+    }
+}
+
+function nextQuestion() {
+    currentQuestion++;
+    renderQuestion();
+}
+
+function showResult() {
+    document.getElementById('quizContainer').style.display = 'none';
+    const result = document.getElementById('quizResult');
+    result.style.display = 'block';
+
+    const pct = Math.round((score / quizData.length) * 100);
+    let icon, title, color;
+
+    if (pct >= 80) { icon = '🏆'; title = 'Excelente!'; color = 'var(--accent-green)'; }
+    else if (pct >= 60) { icon = '👍'; title = 'Bom trabalho!'; color = 'var(--accent-yellow)'; }
+    else if (pct >= 40) { icon = '📚'; title = 'Continue estudando!'; color = 'var(--accent-orange)'; }
+    else { icon = '💪'; title = 'Revise o conteúdo!'; color = 'var(--accent-red)'; }
+
+    document.getElementById('resultIcon').textContent = icon;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultScore').textContent = `Você acertou ${score} de ${quizData.length} questões (${pct}%)`;
+    const fill = document.getElementById('resultFill');
+    fill.style.background = color;
+    setTimeout(() => { fill.style.width = pct + '%'; }, 100);
+}
+
+function restartQuiz() {
+    currentQuestion = 0;
+    score = 0;
+    document.getElementById('quizContainer').style.display = 'block';
+    document.getElementById('quizResult').style.display = 'none';
+    document.getElementById('resultFill').style.width = '0%';
+    renderQuestion();
+}
+
+// ==================== INICIALIZAÇÃO ====================
+document.addEventListener('DOMContentLoaded', () => {
+    renderCard();
+    renderQuestion();
+});
+
+</script>
+</body>
+</html>

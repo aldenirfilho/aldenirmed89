@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LES — Mapa de Anticorpos | Antigravity</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --card: #111827;
+    --border: #1e293b;
+    --accent1: #00d4ff;
+    --accent2: #ff4d6d;
+    --accent3: #ffd60a;
+    --accent4: #06d6a0;
+    --accent5: #c77dff;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: var(--bg);
+    font-family: 'Syne', sans-serif;
+    color: var(--text);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Background grid */
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* Glow orbs */
+  .orb1 {
+    position: absolute; top: -200px; left: -200px;
+    width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,255,0.08), transparent 70%);
+    pointer-events: none;
+  }
+  .orb2 {
+    position: absolute; bottom: -100px; right: -100px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,77,109,0.07), transparent 70%);
+    pointer-events: none;
+  }
+
+  .wrapper {
+    position: relative; z-index: 1;
+    padding: 60px 64px;
+    height: 100%;
+    display: flex; flex-direction: column; gap: 32px;
+  }
+
+  /* HEADER */
+  .header {
+    border-left: 5px solid var(--accent1);
+    padding-left: 24px;
+  }
+  .header .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px; letter-spacing: 3px;
+    color: var(--accent1); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .header h1 {
+    font-size: 56px; font-weight: 800; line-height: 1.05;
+    color: var(--white);
+  }
+  .header h1 span { color: var(--accent1); }
+  .header p {
+    margin-top: 12px; font-size: 20px; color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* LEGENDA AXES */
+  .axes-row {
+    display: flex; gap: 16px;
+  }
+  .axis-pill {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 40px; padding: 8px 20px;
+    font-size: 14px; color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+  .axis-pill .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  /* ANTIBODY CARDS */
+  .cards-grid {
+    display: flex; flex-direction: column; gap: 18px;
+    flex: 1;
+  }
+
+  .ab-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+
+  .ab-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 5px;
+    border-radius: 20px 0 0 20px;
+  }
+
+  .ab-card.alta::before { background: var(--accent2); }
+  .ab-card.alta2::before { background: var(--accent1); }
+  .ab-card.mod::before { background: var(--accent3); }
+  .ab-card.baixa::before { background: var(--muted); }
+
+  .ab-card .glow {
+    position: absolute; right: -40px; top: -40px;
+    width: 160px; height: 160px; border-radius: 50%;
+    opacity: 0.06; pointer-events: none;
+  }
+  .ab-card.alta .glow { background: var(--accent2); }
+  .ab-card.alta2 .glow { background: var(--accent1); }
+  .ab-card.mod .glow { background: var(--accent3); }
+  .ab-card.baixa .glow { background: var(--muted); }
+
+  .ab-name {
+    font-size: 28px; font-weight: 800; color: var(--white);
+    margin-bottom: 6px;
+  }
+  .ab-card.alta .ab-name { color: var(--accent2); }
+  .ab-card.alta2 .ab-name { color: var(--accent1); }
+  .ab-card.mod .ab-name { color: var(--accent3); }
+  .ab-card.baixa .ab-name { color: var(--muted); }
+
+  .ab-desc {
+    font-size: 15px; color: var(--muted); line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .ab-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .ab-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 1px;
+    padding: 4px 12px; border-radius: 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .ab-tag.special {
+    background: rgba(0,212,255,0.08);
+    border-color: rgba(0,212,255,0.2);
+    color: var(--accent1);
+  }
+  .ab-tag.warn {
+    background: rgba(255,77,109,0.08);
+    border-color: rgba(255,77,109,0.2);
+    color: var(--accent2);
+  }
+  .ab-tag.gold {
+    background: rgba(255,214,10,0.08);
+    border-color: rgba(255,214,10,0.2);
+    color: var(--accent3);
+  }
+  .ab-tag.green {
+    background: rgba(6,214,160,0.08);
+    border-color: rgba(6,214,160,0.2);
+    color: var(--accent4);
+  }
+
+  /* BARS */
+  .bars-col {
+    display: flex; flex-direction: column; gap: 10px;
+    min-width: 200px; justify-content: center;
+  }
+  .bar-row { display: flex; flex-direction: column; gap: 4px; }
+  .bar-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
+    display: flex; justify-content: space-between;
+  }
+  .bar-label span { color: var(--white); font-weight: 700; }
+  .bar-track {
+    height: 8px; background: rgba(255,255,255,0.06);
+    border-radius: 4px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 4px;
+  }
+  .sensib { background: var(--accent4); }
+  .specif { background: var(--accent2); }
+
+  /* KEY RULES */
+  .rules-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 32px;
+  }
+  .rules-box h3 {
+    font-size: 16px; font-weight: 700; color: var(--accent1);
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .rules-list { display: flex; flex-direction: column; gap: 12px; }
+  .rule-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    font-size: 16px; color: var(--text); line-height: 1.5;
+  }
+  .rule-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .rule-icon.red { background: rgba(255,77,109,0.15); }
+  .rule-icon.blue { background: rgba(0,212,255,0.15); }
+  .rule-icon.yellow { background: rgba(255,214,10,0.15); }
+  .rule-icon.green { background: rgba(6,214,160,0.15); }
+
+  /* FOOTER */
+  .footer {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .footer .brand {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px; color: var(--muted);
+    letter-spacing: 2px;
+  }
+  .footer .brand strong { color: var(--accent1); }
+  .footer .date {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px; color: var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="orb1"></div>
+<div class="orb2"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="tag">🧬 Enciclomedia Médica · Antigravity</div>
+    <h1>Anticorpos<br>no <span>LES</span></h1>
+    <p>Sensibilidade, especificidade e uso clínico no diagnóstico e monitoramento do lúpus eritematoso sistêmico</p>
+  </div>
+
+  <!-- AXES LEGEND -->
+  <div class="axes-row">
+    <div class="axis-pill"><div class="dot" style="background:#06d6a0"></div> Sensibilidade = detecta quem TEM a doença</div>
+    <div class="axis-pill"><div class="dot" style="background:#ff4d6d"></div> Especificidade = descarta quem NÃO tem</div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards-grid">
+
+    <!-- ANA -->
+    <div class="ab-card baixa">
+      <div class="glow"></div>
+      <div>
+        <div class="ab-name">ANA (FAN)</div>
+        <div class="ab-desc">Anticorpo antinuclear. Triagem universal para LES. Alta sensibilidade, mas positivo em outras doenças autoimunes e até em pessoas saudáveis.</div>
+        <div class="ab-tags">
+          <span class="ab-tag special">Triagem inicial</span>
+          <span class="ab-tag">HEp-2 (IFI)</span>
+          <span class="ab-tag warn">Baixa especificidade</span>
+          <span class="ab-tag">Critério de entrada EULAR 2019</span>
+        </div>
+      </div>
+      <div class="bars-col">
+        <div class="bar-row">
+          <div class="bar-label">Sensibilidade <span>~99%</span></div>
+          <div class="bar-track"><div class="bar-fill sensib" style="width:99%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Especificidade <span>Baixa</span></div>
+          <div class="bar-track"><div class="bar-fill specif" style="width:25%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- anti-dsDNA -->
+    <div class="ab-card alta">
+      <div class="glow"></div>
+      <div>
+        <div class="ab-name">Anti-dsDNA</div>
+        <div class="ab-desc">Anticorpo anti-DNA nativo de fita dupla. Alta especificidade para LES. Título oscila com atividade da doença — sobe nos surtos, especialmente nefrite lúpica. Método importa: Crithidia luciliae tem esp. ~99%.</div>
+        <div class="ab-tags">
+          <span class="ab-tag warn">Diagnóstico</span>
+          <span class="ab-tag warn">Monitorar atividade</span>
+          <span class="ab-tag warn">Prediz nefrite</span>
+          <span class="ab-tag">+6 pts EULAR</span>
+        </div>
+      </div>
+      <div class="bars-col">
+        <div class="bar-row">
+          <div class="bar-label">Sensibilidade <span>50–70%</span></div>
+          <div class="bar-track"><div class="bar-fill sensib" style="width:60%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Especificidade <span>ALTA</span></div>
+          <div class="bar-track"><div class="bar-fill specif" style="width:92%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- anti-Sm -->
+    <div class="ab-card alta">
+      <div class="glow"></div>
+      <div>
+        <div class="ab-name">Anti-Sm</div>
+        <div class="ab-desc">Anticorpo contra proteínas do anel heptamérico snRNP. Altíssima especificidade — quase exclusivo do LES. Permanece positivo mesmo em remissão. NÃO monitora atividade. Útil quando doença está inativa.</div>
+        <div class="ab-tags">
+          <span class="ab-tag warn">Só diagnóstico</span>
+          <span class="ab-tag green">Positivo em remissão</span>
+          <span class="ab-tag">+6 pts EULAR</span>
+          <span class="ab-tag warn">NÃO monitora atividade</span>
+        </div>
+      </div>
+      <div class="bars-col">
+        <div class="bar-row">
+          <div class="bar-label">Sensibilidade <span>10–50%</span></div>
+          <div class="bar-track"><div class="bar-fill sensib" style="width:30%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Especificidade <span>ALTÍSSIMA</span></div>
+          <div class="bar-track"><div class="bar-fill specif" style="width:98%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- anti-U1 RNP -->
+    <div class="ab-card mod">
+      <div class="glow"></div>
+      <div>
+        <div class="ab-name">Anti-U1 RNP</div>
+        <div class="ab-desc">Presente em subgrupo do LES, mas baixa especificidade. Altos títulos estão SEMPRE presentes na DMTC (Doença Mista do Tecido Conjuntivo). Pensar em DMTC quando título muito elevado.</div>
+        <div class="ab-tags">
+          <span class="ab-tag gold">Pensar em DMTC se título alto</span>
+          <span class="ab-tag">LES + esclerodermia + polimiosite</span>
+        </div>
+      </div>
+      <div class="bars-col">
+        <div class="bar-row">
+          <div class="bar-label">Sensibilidade <span>3–69%</span></div>
+          <div class="bar-track"><div class="bar-fill sensib" style="width:40%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Especificidade <span>BAIXA</span></div>
+          <div class="bar-track"><div class="bar-fill specif" style="width:30%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- anti-Ro/La -->
+    <div class="ab-card mod">
+      <div class="glow"></div>
+      <div>
+        <div class="ab-name">Anti-Ro/SSA · Anti-La/SSB</div>
+        <div class="ab-desc">Mais associados à Síndrome de Sjögren, mas presentes em ~30% e ~20% do LES. Críticos na gestante: risco de lúpus neonatal e bloqueio cardíaco congênito AV. Presente no LES ANA-negativo.</div>
+        <div class="ab-tags">
+          <span class="ab-tag green">LES ANA-negativo</span>
+          <span class="ab-tag warn">Gestação: bloqueio cardíaco neonatal</span>
+          <span class="ab-tag">Sjögren associado</span>
+        </div>
+      </div>
+      <div class="bars-col">
+        <div class="bar-row">
+          <div class="bar-label">Sensibilidade <span>~30%</span></div>
+          <div class="bar-track"><div class="bar-fill sensib" style="width:30%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Especificidade <span>BAIXA</span></div>
+          <div class="bar-track"><div class="bar-fill specif" style="width:28%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Antifosfolipídios -->
+    <div class="ab-card alta2">
+      <div class="glow"></div>
+      <div>
+        <div class="ab-name">Anticorpos Antifosfolipídios</div>
+        <div class="ab-desc">Anticardiolipina IgG/IgM, anti-beta2GP1, anticoagulante lúpico. Presentes em ~40% do LES. Risco de trombose arterial e venosa, abortamento recorrente. Definem a SAF (Síndrome Antifosfolipídica).</div>
+        <div class="ab-tags">
+          <span class="ab-tag special">Trombose arterial e venosa</span>
+          <span class="ab-tag special">SAF associada</span>
+          <span class="ab-tag">+2 pts EULAR</span>
+          <span class="ab-tag">Abortos recorrentes</span>
+        </div>
+      </div>
+      <div class="bars-col">
+        <div class="bar-row">
+          <div class="bar-label">Prevalência LES <span>~40%</span></div>
+          <div class="bar-track"><div class="bar-fill sensib" style="width:40%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Impacto clínico <span>ALTO</span></div>
+          <div class="bar-track"><div class="bar-fill specif" style="width:85%"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- REGRAS DE OURO -->
+  <div class="rules-box">
+    <h3>⚡ Regras de ouro</h3>
+    <div class="rules-list">
+      <div class="rule-item">
+        <div class="rule-icon red">🔺</div>
+        <div><strong style="color:#ff4d6d">Anti-dsDNA sobe com surtos</strong> — monitorar atividade e nefrite lúpica</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon blue">🔵</div>
+        <div><strong style="color:#00d4ff">Anti-Sm fica positivo em remissão</strong> — útil para diagnóstico quando doença inativa</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon yellow">⚠️</div>
+        <div><strong style="color:#ffd60a">Anti-RNP alto + sobreposição clínica</strong> → pensar em DMTC, não apenas LES</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon green">✅</div>
+        <div><strong style="color:#06d6a0">ANA negativo não exclui LES</strong> — ~5% são ANA-negativos (anti-Ro isolado)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="brand"><strong>ANTIGRAVITY</strong> · Enciclomedia Médica</div>
+    <div class="date">les-anticorpos-mapa-visual · v1.0 · 2026</div>
+  </div>
+
+</div>
+</body>
+</html>

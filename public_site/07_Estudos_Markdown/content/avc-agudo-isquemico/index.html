@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPDOWN #004 — AVC Agudo | Antigravity</title>
+    <link rel="stylesheet" href="../../assets/estudos.css">
+    <style>
+        :root {
+            --accent: #3ee8ff;
+            --accent-bg: rgba(62, 232, 255, 0.1);
+        }
+        body {
+            background: radial-gradient(circle at top right, rgba(62, 232, 255, 0.05), transparent 400px), #0b1020;
+            color: #e5e7eb;
+            font-family: Inter, system-ui, -apple-system, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .badge {
+            display: inline-block;
+            background: var(--accent-bg);
+            color: var(--accent);
+            border: 1px solid rgba(62, 232, 255, 0.3);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: -0.04em;
+            margin: 0 0 16px;
+            background: linear-gradient(to right, #fff, #3ee8ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .intro {
+            color: #9ca3af;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(62, 232, 255, 0.1);
+        }
+        .card-icon {
+            font-size: 2rem;
+        }
+        .card h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+        .card p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+        .card-tag {
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 40px;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #fff;
+        }
+        .warning-box {
+            background: rgba(255, 107, 107, 0.05);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 40px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        .warning-icon { font-size: 1.5rem; }
+        .warning-text { font-size: 0.9rem; color: #ff8e8e; line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html" class="back-link">← Voltar ao Hub</a>
+        
+        <header>
+            <span class="badge">UpDown #004 • Neurointensivismo</span>
+            <h1>Módulo de AVC Agudo</h1>
+            <p class="intro">Guia operacional e didático para a fase hiperaguda e manejo em UTI. Baseado nas diretrizes 2022-2026.</p>
+        </header>
+
+        <div class="grid">
+            <a href="../../viewer.html?doc=content/avc-agudo-isquemico/00_HOME.md" class="card">
+                <div class="card-icon">🏠</div>
+                <div class="card-tag">Dashboard</div>
+                <h3>Mapa do Módulo</h3>
+                <p>Visão geral, ideia central e plano de estudos do AVC.</p>
+            </a>
+
+            <a href="../../viewer.html?doc=content/avc-agudo-isquemico/01_AVC_AGUDO_UTI.md" class="card">
+                <div class="card-icon">🧠</div>
+                <div class="card-tag">Conteúdo PRO</div>
+                <h3>Diretrizes & Conduta</h3>
+                <p>O "corpo" do estudo: fisiopatologia, janelas e decisões críticas.</p>
+            </a>
+
+            <a href="../../viewer.html?doc=content/avc-agudo-isquemico/02_CHECKLISTS.md" class="card">
+                <div class="card-icon">📋</div>
+                <div class="card-tag">Beira-leito</div>
+                <h3>Checklists de Plantão</h3>
+                <p>Segurança na trombólise e reconhecimento de Código AVC.</p>
+            </a>
+
+            <a href="../../viewer.html?doc=content/avc-agudo-isquemico/03_PRESCRICAO_BUNDLE.md" class="card">
+                <div class="card-icon">💊</div>
+                <div class="card-tag">Operacional</div>
+                <h3>Prescrição & Bundle</h3>
+                <p>Modelos de prescrição segura e bundle de neuroproteção.</p>
+            </a>
+
+            <a href="../../viewer.html?doc=content/avc-agudo-isquemico/04_FLASHCARDS.md" class="card">
+                <div class="card-icon">🎴</div>
+                <div class="card-tag">Memorização</div>
+                <h3>Flashcards</h3>
+                <p>Fixação de doses, contraindicações e tempos de janela.</p>
+            </a>
+
+            <a href="../../viewer.html?doc=content/avc-agudo-isquemico/05_QUESTOES_TEMI.md" class="card">
+                <div class="card-icon">🏆</div>
+                <div class="card-tag">Simulado</div>
+                <h3>Questões TEMI/R3</h3>
+                <p>Teste seus conhecimentos com questões de alto nível.</p>
+            </a>
+
+            <a href="../../viewer.html?doc=content/avc-agudo-isquemico/06_ESCALAS_ALGORITMOS.md" class="card">
+                <div class="card-icon">📐</div>
+                <div class="card-tag">Ferramentas</div>
+                <h3>Escalas & Algoritmos</h3>
+                <p>NIHSS, mRS, ASPECT e fluxogramas de decisão.</p>
+            </a>
+
+            <a href="../../viewer.html?doc=content/avc-agudo-isquemico/07_REFERENCIAS.md" class="card">
+                <div class="card-icon">📚</div>
+                <div class="card-tag">Evidência</div>
+                <h3>Referências</h3>
+                <p>Fontes originais (AHA/ASA, MS, Canadian Stroke).</p>
+            </a>
+        </div>
+
+        <div class="warning-box">
+            <div class="warning-icon">⚠️</div>
+            <div class="warning-text">
+                <strong>Nota Clínica:</strong> Este material é uma ferramenta de apoio. Nunca substitui o julgamento clínico individualizado e os protocolos da sua instituição.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

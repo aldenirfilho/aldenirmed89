@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UPDOWN #002 — LES: manejo, monitoramento e prognóstico</title>
+<meta name="description" content="UPDOWN #002 — Lúpus eritematoso sistêmico em adultos: manejo, monitoramento e prognóstico.">
+<style>
+:root {
+  --bg:#f6f7fb; --paper:#ffffff; --ink:#172033; --muted:#5f6b7a; --accent:#5266ff; --accent2:#0ea5e9; --line:#e5e7eb; --soft:#eef2ff; --code:#0f172a;
+  --font-size: 18px;
+}
+[data-theme="dark"] { --bg:#0b1020; --paper:#111827; --ink:#e5e7eb; --muted:#aab4c0; --accent:#8ea2ff; --accent2:#38bdf8; --line:#263244; --soft:#18213a; --code:#0b1020; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; font-size:var(--font-size); line-height:1.75; }
+a { color:var(--accent); text-decoration:none; }
+a:hover { text-decoration:underline; }
+.app { display:grid; grid-template-columns: 310px minmax(0, 1fr); gap:24px; max-width:1440px; margin:0 auto; padding:24px; }
+aside { position:sticky; top:24px; align-self:start; max-height:calc(100vh - 48px); overflow:auto; background:var(--paper); border:1px solid var(--line); border-radius:24px; padding:18px; box-shadow:0 10px 30px rgba(15,23,42,.08); }
+.brand { font-weight:800; font-size:1rem; margin-bottom:8px; }
+.subtitle { color:var(--muted); font-size:.86rem; margin-bottom:16px; }
+.toc a { display:block; padding:7px 9px; border-radius:10px; font-size:.88rem; color:var(--muted); }
+.toc a:hover { background:var(--soft); color:var(--ink); text-decoration:none; }
+.toc-h1 { font-weight:700; margin-top:6px; }
+.toc-h2 { padding-left:18px !important; }
+.controls { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 16px; }
+button { border:1px solid var(--line); background:var(--paper); color:var(--ink); border-radius:999px; padding:8px 11px; cursor:pointer; font-weight:650; }
+button:hover { background:var(--soft); }
+main { min-width:0; }
+article { background:var(--paper); border:1px solid var(--line); border-radius:28px; padding:46px; box-shadow:0 10px 35px rgba(15,23,42,.08); }
+h1,h2,h3 { line-height:1.22; letter-spacing:-.02em; }
+h1 { font-size:2.35rem; margin:0 0 12px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+h2 { font-size:1.55rem; margin-top:2.2rem; color:var(--ink); }
+h3 { font-size:1.18rem; margin-top:1.6rem; color:var(--ink); }
+blockquote { margin:22px 0; border-left:5px solid var(--accent); background:var(--soft); padding:14px 18px; border-radius:16px; color:var(--ink); }
+hr { border:0; border-top:1px solid var(--line); margin:32px 0; }
+table { width:100%; border-collapse:collapse; margin:18px 0 26px; overflow:hidden; border-radius:16px; font-size:.95rem; }
+th,td { border:1px solid var(--line); padding:10px 12px; vertical-align:top; }
+th { background:var(--soft); text-align:left; }
+tr:nth-child(even) td { background:color-mix(in srgb, var(--soft) 28%, transparent); }
+code { background:var(--soft); padding:.15em .35em; border-radius:6px; }
+pre { background:var(--code); color:#e5e7eb; padding:18px; border-radius:18px; overflow:auto; font-size:.9rem; line-height:1.55; }
+pre code { background:transparent; color:inherit; padding:0; }
+ul,ol { padding-left:1.35rem; }
+li { margin:.25rem 0; }
+.badge { display:inline-block; background:var(--soft); color:var(--accent); border:1px solid var(--line); border-radius:999px; padding:4px 10px; font-size:.78rem; font-weight:800; margin-bottom:12px; }
+.topbar { display:none; position:sticky; top:0; z-index:5; background:var(--paper); border-bottom:1px solid var(--line); padding:10px 14px; }
+@media (max-width: 980px) {
+  .app { display:block; padding:12px; } aside { position:relative; top:0; max-height:none; margin-bottom:14px; } article { padding:24px; border-radius:22px; } h1 { font-size:1.9rem; }
+}
+@media print {
+  body { background:white; } aside,.controls,.topbar { display:none !important; } .app { display:block; padding:0; } article { box-shadow:none; border:0; padding:0; } a { color:inherit; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">🧬 UPDOWN #002</div>
+    <div class="subtitle">LES — manejo, monitoramento e prognóstico</div>
+    <div class="controls">
+      <button onclick="toggleTheme()">🌙/☀️ Tema</button>
+      <button onclick="fontSize(1)">A+</button>
+      <button onclick="fontSize(-1)">A−</button>
+      <button onclick="window.print()">🖨️ PDF</button>
+    </div>
+    <nav class="toc"><a class="toc-h1" href="#updown-002-lúpus-eritematoso-sistêmico-em-adultos">UPDOWN #002 — Lúpus Eritematoso Sistêmico em Adultos</a>
+<a class="toc-h2" href="#visão-geral-do-manejo-monitoramento-e-prognóstico">Visão geral do manejo, monitoramento e prognóstico</a>
+<a class="toc-h1" href="#1-ideia-central">1. Ideia central 🧠</a>
+<a class="toc-h1" href="#2-atualizações-práticas-incorporadas-nesta-versão">2. Atualizações práticas incorporadas nesta versão 🔄</a>
+<a class="toc-h2" href="#2-1-tratamento-orientado-por-alvo">2.1 Tratamento orientado por alvo</a>
+<a class="toc-h2" href="#2-2-hidroxicloroquina-como-eixo-basal">2.2 Hidroxicloroquina como eixo basal</a>
+<a class="toc-h2" href="#2-3-corticoide-como-ponte-não-como-moradia">2.3 Corticoide como ponte, não como moradia</a>
+<a class="toc-h2" href="#2-4-biológicos-e-terapias-alvo-ganharam-espaço">2.4 Biológicos e terapias-alvo ganharam espaço</a>
+<a class="toc-h2" href="#2-5-prevenção-virou-tratamento">2.5 Prevenção virou tratamento</a>
+<a class="toc-h1" href="#3-avaliação-da-atividade-da-doença">3. Avaliação da atividade da doença 🔎</a>
+<a class="toc-h1" href="#5-definições-úteis-surto-remissão-e-baixa-atividade">5. Definições úteis: surto, remissão e baixa atividade 🎯</a>
+<a class="toc-h2" href="#5-1-surto-exacerbação">5.1 Surto/exacerbação</a>
+<a class="toc-h2" href="#5-2-remissão">5.2 Remissão</a>
+<a class="toc-h2" href="#5-3-baixa-atividade-da-doença">5.3 Baixa atividade da doença</a>
+<a class="toc-h1" href="#6-laboratório-de-monitoramento">6. Laboratório de monitoramento 🧪</a>
+<a class="toc-h2" href="#6-1-painel-mínimo-de-seguimento">6.1 Painel mínimo de seguimento</a>
+<a class="toc-h2" href="#6-2-o-que-não-repetir-sem-necessidade">6.2 O que não repetir sem necessidade</a>
+<a class="toc-h2" href="#6-3-complemento-e-anti-dsdna-úteis-mas-não-soberanos">6.3 Complemento e anti-dsDNA: úteis, mas não soberanos</a>
+<a class="toc-h1" href="#7-frequência-de-acompanhamento">7. Frequência de acompanhamento 🗓️</a>
+<a class="toc-h1" href="#8-medidas-gerais-para-todos-os-pacientes">8. Medidas gerais para todos os pacientes ☀️🚭💉</a>
+<a class="toc-h2" href="#8-1-fotoproteção">8.1 Fotoproteção</a>
+<a class="toc-h2" href="#8-2-tabagismo">8.2 Tabagismo</a>
+<a class="toc-h2" href="#8-3-vacinação">8.3 Vacinação</a>
+<a class="toc-h2" href="#8-4-risco-cardiovascular">8.4 Risco cardiovascular</a>
+<a class="toc-h2" href="#8-5-osteoporose">8.5 Osteoporose</a>
+<a class="toc-h2" href="#8-6-câncer-e-rastreio">8.6 Câncer e rastreio</a>
+<a class="toc-h2" href="#8-7-dieta-vitamina-d-e-exercício">8.7 Dieta, vitamina D e exercício</a>
+<a class="toc-h1" href="#9-hidroxicloroquina-o-tratamento-de-base">9. Hidroxicloroquina: o tratamento de base 💊</a>
+<a class="toc-h2" href="#9-1-por-que-usar">9.1 Por que usar?</a>
+<a class="toc-h2" href="#9-2-dose-prática">9.2 Dose prática</a>
+<a class="toc-h2" href="#9-3-segurança">9.3 Segurança</a>
+<a class="toc-h1" href="#10-escalonamento-por-gravidade">10. Escalonamento por gravidade ⚖️</a>
+<a class="toc-h2" href="#10-1-doença-leve">10.1 Doença leve</a>
+<a class="toc-h2" href="#10-2-doença-moderada">10.2 Doença moderada</a>
+<a class="toc-h2" href="#10-3-doença-grave-ameaça-a-órgão">10.3 Doença grave/ameaça a órgão</a>
+<a class="toc-h1" href="#11-glicocorticoides-benefício-rápido-dano-cumulativo">11. Glicocorticoides: benefício rápido, dano cumulativo 🔥</a>
+<a class="toc-h2" href="#regra-prática">Regra prática</a>
+<a class="toc-h1" href="#12-biológicos-e-terapias-alvo">12. Biológicos e terapias-alvo 🧬</a>
+<a class="toc-h2" href="#12-1-belimumabe">12.1 Belimumabe</a>
+<a class="toc-h2" href="#12-2-anifrolumabe">12.2 Anifrolumabe</a>
+<a class="toc-h2" href="#12-3-rituximabe">12.3 Rituximabe</a>
+<a class="toc-h2" href="#12-4-obinutuzumabe">12.4 Obinutuzumabe</a>
+<a class="toc-h2" href="#12-5-fronteira-terapêutica">12.5 Fronteira terapêutica</a>
+<a class="toc-h1" href="#13-comorbidades-e-situações-especiais">13. Comorbidades e situações especiais 🧭</a>
+<a class="toc-h2" href="#13-1-gravidez-e-contracepção">13.1 Gravidez e contracepção</a>
+<a class="toc-h2" href="#13-2-síndrome-antifosfolipídica">13.2 Síndrome antifosfolipídica</a>
+<a class="toc-h2" href="#13-3-fenômeno-de-raynaud">13.3 Fenômeno de Raynaud</a>
+<a class="toc-h2" href="#13-4-sjögren-associado">13.4 Sjögren associado</a>
+<a class="toc-h2" href="#13-5-fibromialgia">13.5 Fibromialgia</a>
+<a class="toc-h2" href="#13-6-sulfonamidas">13.6 Sulfonamidas</a>
+<a class="toc-h2" href="#13-7-resposta-inadequada-à-prednisona">13.7 Resposta inadequada à prednisona</a>
+<a class="toc-h1" href="#14-fluxograma-do-manejo-em-mermaid">14. Fluxograma do manejo em Mermaid 🔁</a>
+<a class="toc-h1" href="#15-checklist-prático-de-consulta">15. Checklist prático de consulta 📝</a>
+<a class="toc-h2" href="#15-1-perguntas-rápidas">15.1 Perguntas rápidas</a>
+<a class="toc-h2" href="#15-2-exame-físico-mínimo">15.2 Exame físico mínimo</a>
+<a class="toc-h2" href="#15-3-exames-mínimos-frequentes">15.3 Exames mínimos frequentes</a>
+<a class="toc-h1" href="#16-erros-comuns-que-custam-caro">16. Erros comuns que custam caro ⚠️</a>
+<a class="toc-h1" href="#17-prognóstico">17. Prognóstico 📈</a>
+<a class="toc-h2" href="#17-1-causas-de-morte-por-fase">17.1 Causas de morte por fase</a>
+<a class="toc-h2" href="#17-2-fatores-de-pior-prognóstico">17.2 Fatores de pior prognóstico</a>
+<a class="toc-h2" href="#17-3-remissão-sustentada">17.3 Remissão sustentada</a>
+<a class="toc-h1" href="#18-resumo-final-objetivo">18. Resumo final objetivo 🧠📌</a>
+<a class="toc-h1" href="#19-mnemônicos-úteis">19. Mnemônicos úteis 🧩</a>
+<a class="toc-h1" href="#20-flashcards">20. Flashcards 🧠✨</a>
+<a class="toc-h2" href="#card-1">Card 1</a>
+<a class="toc-h2" href="#card-2">Card 2</a>
+<a class="toc-h2" href="#card-3">Card 3</a>
+<a class="toc-h2" href="#card-4">Card 4</a>
+<a class="toc-h2" href="#card-5">Card 5</a>
+<a class="toc-h2" href="#card-6">Card 6</a>
+<a class="toc-h2" href="#card-7">Card 7</a>
+<a class="toc-h2" href="#card-8">Card 8</a>
+<a class="toc-h2" href="#card-9">Card 9</a>
+<a class="toc-h2" href="#card-10">Card 10</a>
+<a class="toc-h1" href="#21-questões-estilo-temi-r3">21. Questões estilo TEMI/R3 🏆</a>
+<a class="toc-h2" href="#questão-1">Questão 1</a>
+<a class="toc-h2" href="#questão-2">Questão 2</a>
+<a class="toc-h2" href="#questão-3">Questão 3</a>
+<a class="toc-h2" href="#questão-4">Questão 4</a>
+<a class="toc-h2" href="#questão-5">Questão 5</a>
+<a class="toc-h2" href="#questão-6">Questão 6</a>
+<a class="toc-h2" href="#questão-7">Questão 7</a>
+<a class="toc-h2" href="#questão-8">Questão 8</a>
+<a class="toc-h2" href="#questão-9">Questão 9</a>
+<a class="toc-h2" href="#questão-10">Questão 10</a>
+<a class="toc-h2" href="#fim-do-updown-002">Fim do UPDOWN #002</a></nav>
+  </aside>
+  <main>
+    <article>
+      <span class="badge">Modo leitor público • Markdown renderizado</span>
+      <h1 id="updown-002-lúpus-eritematoso-sistêmico-em-adultos">UPDOWN #002 — Lúpus Eritematoso Sistêmico em Adultos</h1>
+<h2 id="visão-geral-do-manejo-monitoramento-e-prognóstico">Visão geral do manejo, monitoramento e prognóstico</h2>
+<blockquote>
+<p>Versão autoral, didática e publicável em modo leitor. Conteúdo estruturado para estudo médico, prática clínica, enfermaria, ambulatório, UTI e preparação TEMI/R3.</p>
+</blockquote>
+<hr />
+<h1 id="1-ideia-central">1. Ideia central 🧠</h1>
+<p>O manejo do <strong>lúpus eritematoso sistêmico (LES)</strong> não é simplesmente “escolher um imunossupressor”. É um plano longitudinal de controle de uma doença multissistêmica que alterna períodos de baixa atividade, remissão incompleta, recaídas e dano acumulado.</p>
+<p>A estratégia moderna pode ser resumida em quatro grandes objetivos:</p>
+<ol>
+<li><strong>Alcançar remissão ou baixa atividade de doença</strong>.</li>
+<li><strong>Prevenir dano orgânico irreversível</strong>.</li>
+<li><strong>Reduzir toxicidade terapêutica</strong>, principalmente exposição cumulativa a glicocorticoides.</li>
+<li><strong>Melhorar qualidade de vida</strong>, incluindo fadiga, dor, sono, saúde mental, fertilidade, vacinação, exercício e prevenção cardiovascular.</li>
+</ol>
+<p>A visão prática é: <strong>tratar a inflamação sem trocar atividade lúpica por dano medicamentoso</strong>.</p>
+<hr />
+<h1 id="2-atualizações-práticas-incorporadas-nesta-versão">2. Atualizações práticas incorporadas nesta versão 🔄</h1>
+<h2 id="2-1-tratamento-orientado-por-alvo">2.1 Tratamento orientado por alvo</h2>
+<p>O cuidado atual enfatiza alvo terapêutico: <strong>remissão clínica ou baixa atividade sustentada</strong>, evitando surtos, dano acumulado e dependência crônica de corticoide.</p>
+<h2 id="2-2-hidroxicloroquina-como-eixo-basal">2.2 Hidroxicloroquina como eixo basal</h2>
+<p>A hidroxicloroquina permanece como base para praticamente todos os pacientes com LES, salvo contraindicação. A dose prática de referência é <strong>até 5 mg/kg/dia pelo peso real</strong>, respeitando limite usual de 400 mg/dia e risco de toxicidade retiniana.</p>
+<h2 id="2-3-corticoide-como-ponte-não-como-moradia">2.3 Corticoide como ponte, não como moradia</h2>
+<p>O glicocorticoide é útil para controle rápido, mas deve ser usado com estratégia de redução. Incapacidade de reduzir prednisona para doses baixas deve acionar raciocínio de agente poupador.</p>
+<h2 id="2-4-biológicos-e-terapias-alvo-ganharam-espaço">2.4 Biológicos e terapias-alvo ganharam espaço</h2>
+<ul>
+<li><strong>Belimumabe</strong>: opção poupadora de corticoide e útil em doença extrarrenal; também integra esquemas de nefrite lúpica em contextos específicos.</li>
+<li><strong>Anifrolumabe</strong>: bloqueio da via do interferon tipo I; destaque em doença cutânea/articular moderada a grave sem nefrite ativa grave ou neuro-lúpus grave.</li>
+<li><strong>Obinutuzumabe</strong>: anti-CD20 humanizado com papel emergente/atualizado especialmente na nefrite lúpica ativa em combinação com terapia padrão.</li>
+<li><strong>Rituximabe</strong>: muito usado em cenários refratários, embora estudos randomizados clássicos tenham resultados inconsistentes.</li>
+</ul>
+<h2 id="2-5-prevenção-virou-tratamento">2.5 Prevenção virou tratamento</h2>
+<p>Vacinação, fotoproteção, cessação tabágica, rastreio cardiovascular, osteoporose, câncer, vitamina D, exercício e adesão terapêutica são parte do tratamento, não “extras”.</p>
+<hr />
+<h1 id="3-avaliação-da-atividade-da-doença">3. Avaliação da atividade da doença 🔎</h1>
+<p>O LES exige reavaliação contínua porque uma alteração pode representar:</p>
+<ol>
+<li><strong>Doença ativa</strong>.</li>
+<li><strong>Dano crônico já estabelecido</strong>.</li>
+<li><strong>Toxicidade medicamentosa</strong>.</li>
+<li><strong>Infecção</strong>.</li>
+<li><strong>Comorbidade não inflamatória</strong>, como fibromialgia, distúrbio do sono ou depressão.</li>
+</ol>
+<h3 id="exemplo-prático">Exemplo prático</h3>
+<p>Proteinúria e queda de TFG podem significar nefrite ativa, mas também podem refletir cicatriz glomerular crônica. No primeiro caso, pode ser necessário intensificar imunossupressão; no segundo, aumentar imunossupressão pode trazer dano sem benefício.</p>
+<hr />
+<h1 id="5-definições-úteis-surto-remissão-e-baixa-atividade">5. Definições úteis: surto, remissão e baixa atividade 🎯</h1>
+<h2 id="5-1-surto-exacerbação">5.1 Surto/exacerbação</h2>
+<p>Surto é aumento clinicamente significativo da atividade do LES, suficiente para justificar mudança terapêutica. Pode ser leve, moderado ou grave.</p>
+<h2 id="5-2-remissão">5.2 Remissão</h2>
+<p>Remissão completa sem terapia é incomum. Na prática, aceita-se remissão clínica com ausência de atividade mensurável, permitindo hidroxicloroquina, baixa dose de corticoide e/ou manutenção imunossupressora em algumas definições.</p>
+<h2 id="5-3-baixa-atividade-da-doença">5.3 Baixa atividade da doença</h2>
+<p>O conceito de baixa atividade é muito útil porque é mais alcançável que remissão completa. Em geral, significa pouca atividade clínica, ausência de atividade em órgãos maiores, dose baixa de prednisona e tratamento de manutenção estável.</p>
+<h3 id="tradução-clínica">Tradução clínica</h3>
+<p>Não é necessário “zerar todos os anticorpos” para tratar bem o paciente. O objetivo é evitar dano, surto e corticoide crônico alto, mantendo função orgânica e qualidade de vida.</p>
+<hr />
+<h1 id="6-laboratório-de-monitoramento">6. Laboratório de monitoramento 🧪</h1>
+<h2 id="6-1-painel-mínimo-de-seguimento">6.1 Painel mínimo de seguimento</h2>
+<table>
+<thead>
+<tr>
+  <th>Exame</th>
+  <th>Por que importa?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Hemograma com diferencial</td>
+  <td>leucopenia, linfopenia, anemia, trombocitopenia; atividade versus toxicidade</td>
+</tr>
+<tr>
+  <td>VHS e PCR</td>
+  <td>inflamação; PCR muito elevada deve lembrar infecção, embora não seja absoluta</td>
+</tr>
+<tr>
+  <td>Urina tipo 1 com sedimento</td>
+  <td>hematúria, cilindros, piúria, proteinúria</td>
+</tr>
+<tr>
+  <td>Relação proteína/creatinina urinária</td>
+  <td>quantifica proteinúria de forma prática</td>
+</tr>
+<tr>
+  <td>Creatinina e TFGe</td>
+  <td>monitora função renal</td>
+</tr>
+<tr>
+  <td>Anti-dsDNA</td>
+  <td>pode acompanhar atividade, especialmente renal</td>
+</tr>
+<tr>
+  <td>C3 e C4</td>
+  <td>consumo sugere atividade, especialmente nefrite</td>
+</tr>
+<tr>
+  <td>Função hepática/metabólica conforme terapia</td>
+  <td>segurança medicamentosa</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-2-o-que-não-repetir-sem-necessidade">6.2 O que não repetir sem necessidade</h2>
+<p>FAN e autoanticorpos como anti-Sm, Ro/SSA, La/SSB e RNP geralmente não precisam ser repetidos rotineiramente para monitorar atividade. Exceções incluem planejamento gestacional, gravidez ou mudança clínica específica.</p>
+<h2 id="6-3-complemento-e-anti-dsdna-úteis-mas-não-soberanos">6.3 Complemento e anti-dsDNA: úteis, mas não soberanos</h2>
+<p>A combinação de <strong>anti-dsDNA subindo + C3/C4 caindo</strong> aumenta suspeita de atividade, sobretudo renal. Porém, alguns pacientes têm sorologia ativa sem doença clinicamente ativa. Portanto, laboratório sem clínica pode enganar.</p>
+<hr />
+<h1 id="7-frequência-de-acompanhamento">7. Frequência de acompanhamento 🗓️</h1>
+<p>A frequência deve ser individualizada.</p>
+<table>
+<thead>
+<tr>
+  <th>Cenário</th>
+  <th>Frequência prática</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>LES estável/inativo</td>
+  <td>geralmente a cada 3–6 meses</td>
+</tr>
+<tr>
+  <td>LES leve com ajustes terapêuticos</td>
+  <td>a cada 1–3 meses até estabilizar</td>
+</tr>
+<tr>
+  <td>Nefrite ativa ou órgão ameaçado</td>
+  <td>pode exigir avaliação semanal/quinzenal inicialmente</td>
+</tr>
+<tr>
+  <td>Pós-alta de surto grave</td>
+  <td>reavaliação precoce, com plano laboratorial claro</td>
+</tr>
+<tr>
+  <td>Gestação ou planejamento gestacional</td>
+  <td>seguimento conjunto e mais frequente</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ponto-de-segurança">Ponto de segurança</h3>
+<p>Mesmo paciente “bem” pode desenvolver alteração laboratorial silenciosa, especialmente urinária. Por isso, urina e função renal são quase sempre obrigatórias no seguimento.</p>
+<hr />
+<h1 id="8-medidas-gerais-para-todos-os-pacientes">8. Medidas gerais para todos os pacientes ☀️🚭💉</h1>
+<h2 id="8-1-fotoproteção">8.1 Fotoproteção</h2>
+<p>A luz ultravioleta pode induzir ou agravar manifestações cutâneas e sistêmicas. Orientar:</p>
+<ul>
+<li>evitar sol direto e fontes intensas de UV;</li>
+<li>protetor amplo espectro UVA/UVB, alto FPS;</li>
+<li>roupas, chapéus, barreiras físicas;</li>
+<li>atenção a medicamentos fotossensibilizantes.</li>
+</ul>
+<h2 id="8-2-tabagismo">8.2 Tabagismo</h2>
+<p>Fumar está associado a maior atividade, maior risco cardiovascular e possível menor resposta a terapias como hidroxicloroquina e belimumabe. Cessar tabagismo é intervenção imunológica, cardiovascular e terapêutica.</p>
+<h2 id="8-3-vacinação">8.3 Vacinação</h2>
+<p>Vacinas devem ser revisadas preferencialmente antes de imunossupressão. Em geral, vacinas inativadas/recombinantes são preferidas e seguras em doença estável. Vacinas vivas costumam ser contraindicadas sob imunossupressão moderada/grave.</p>
+<h3 id="vacinas-frequentemente-relevantes">Vacinas frequentemente relevantes</h3>
+<ul>
+<li>influenza anual;</li>
+<li>pneumocócica conforme esquema atualizado;</li>
+<li>hepatite B quando indicado;</li>
+<li>HPV em faixa etária/risco apropriado;</li>
+<li>COVID-19 conforme recomendações para imunocomprometidos;</li>
+<li>herpes-zóster recombinante;</li>
+<li>VSR em adultos imunocomprometidos ou com fatores de risco conforme idade/contexto.</li>
+</ul>
+<h2 id="8-4-risco-cardiovascular">8.4 Risco cardiovascular</h2>
+<p>LES acelera aterosclerose. Controlar agressivamente:</p>
+<ul>
+<li>pressão arterial;</li>
+<li>dislipidemia;</li>
+<li>diabetes;</li>
+<li>tabagismo;</li>
+<li>sedentarismo;</li>
+<li>obesidade;</li>
+<li>doença renal;</li>
+<li>exposição crônica a corticoide.</li>
+</ul>
+<h2 id="8-5-osteoporose">8.5 Osteoporose</h2>
+<p>Risco aumentado por inflamação, fotoproteção, deficiência de vitamina D, baixa atividade física e glicocorticoide. Avaliar:</p>
+<ul>
+<li>vitamina D;</li>
+<li>cálcio dietético;</li>
+<li>exercício com carga/isométrico;</li>
+<li>densitometria conforme risco;</li>
+<li>prevenção/tratamento de osteoporose induzida por glicocorticoide.</li>
+</ul>
+<h2 id="8-6-câncer-e-rastreio">8.6 Câncer e rastreio</h2>
+<p>Pacientes com LES devem realizar rastreios por idade e risco. Atenção especial para:</p>
+<ul>
+<li>câncer cervical e HPV;</li>
+<li>linfoma, se linfonodomegalia persistente/sintomas B;</li>
+<li>câncer de pele em pacientes com imunossupressão;</li>
+<li>rastreios populacionais habituais.</li>
+</ul>
+<h2 id="8-7-dieta-vitamina-d-e-exercício">8.7 Dieta, vitamina D e exercício</h2>
+<p>Não há uma “dieta do lúpus” comprovada para todos. Recomenda-se dieta equilibrada, controle de sal em hipertensão/nefrite e correção de deficiência de vitamina D. Exercício deve ser progressivo e adaptado à artrite, fadiga, osteopenia e condição cardiovascular.</p>
+<hr />
+<h1 id="9-hidroxicloroquina-o-tratamento-de-base">9. Hidroxicloroquina: o tratamento de base 💊</h1>
+<h2 id="9-1-por-que-usar">9.1 Por que usar?</h2>
+<p>A hidroxicloroquina é associada a múltiplos benefícios:</p>
+<ul>
+<li>reduz surtos;</li>
+<li>ajuda em pele, articulações e sintomas constitucionais;</li>
+<li>pode reduzir dano acumulado;</li>
+<li>pode reduzir eventos trombóticos;</li>
+<li>pode melhorar sobrevida;</li>
+<li>ajuda como base poupadora de corticoide.</li>
+</ul>
+<h2 id="9-2-dose-prática">9.2 Dose prática</h2>
+<ul>
+<li>Dose alvo: até <strong>5 mg/kg/dia pelo peso real</strong>.</li>
+<li>Limite usual: <strong>400 mg/dia</strong>.</li>
+<li>Pode ser dose única diária ou dividida se houver intolerância gastrointestinal.</li>
+</ul>
+<h2 id="9-3-segurança">9.3 Segurança</h2>
+<p>Monitorar:</p>
+<ul>
+<li>retina com oftalmologia;</li>
+<li>risco de QT em pacientes selecionados;</li>
+<li>interações com outros fármacos que prolongam QT;</li>
+<li>função renal/hepática conforme contexto;</li>
+<li>adesão, inclusive com nível sérico quando disponível.</li>
+</ul>
+<h3 id="pérola-de-prova">Pérola de prova</h3>
+<p>Suspender hidroxicloroquina sem motivo forte pode aumentar risco de surto.</p>
+<hr />
+<h1 id="10-escalonamento-por-gravidade">10. Escalonamento por gravidade ⚖️</h1>
+<h2 id="10-1-doença-leve">10.1 Doença leve</h2>
+<p>Exemplos:</p>
+<ul>
+<li>artralgia leve;</li>
+<li>rash discreto;</li>
+<li>fadiga sem órgão-alvo;</li>
+<li>leucopenia leve estável;</li>
+<li>sem nefrite, SNC, citopenia grave ou serosite importante.</li>
+</ul>
+<p>Conduta típica:</p>
+<ul>
+<li>hidroxicloroquina;</li>
+<li>fotoproteção;</li>
+<li>AINE por curto período se seguro;</li>
+<li>baixa dose de prednisona por curto prazo se necessário;</li>
+<li>tratar dor não inflamatória, sono, humor e condicionamento.</li>
+</ul>
+<h2 id="10-2-doença-moderada">10.2 Doença moderada</h2>
+<p>Exemplos:</p>
+<ul>
+<li>doença cutânea extensa;</li>
+<li>artrite persistente;</li>
+<li>citopenia não ameaçadora;</li>
+<li>sintomas constitucionais com impacto;</li>
+<li>serosite leve/moderada sem instabilidade.</li>
+</ul>
+<p>Conduta típica:</p>
+<ul>
+<li>hidroxicloroquina;</li>
+<li>prednisona em dose baixa a moderada por curto prazo;</li>
+<li>introduzir poupador se persistente ou se dependente de corticoide.</li>
+</ul>
+<p>Opções poupadoras conforme fenótipo:</p>
+<ul>
+<li>azatioprina;</li>
+<li>metotrexato;</li>
+<li>micofenolato;</li>
+<li>belimumabe;</li>
+<li>anifrolumabe.</li>
+</ul>
+<h2 id="10-3-doença-grave-ameaça-a-órgão">10.3 Doença grave/ameaça a órgão</h2>
+<p>Exemplos:</p>
+<ul>
+<li>nefrite proliferativa;</li>
+<li>neuro-lúpus grave;</li>
+<li>hemorragia alveolar;</li>
+<li>miocardite;</li>
+<li>citopenias graves;</li>
+<li>vasculite visceral;</li>
+<li>microangiopatia/trombose grave.</li>
+</ul>
+<p>Conduta típica:</p>
+<ul>
+<li>internação conforme gravidade;</li>
+<li>excluir infecção e mimetizadores;</li>
+<li>glicocorticoide sistêmico em dose alta/pulsoterapia em cenários selecionados;</li>
+<li>imunossupressor de indução: micofenolato, ciclofosfamida ou outros conforme órgão;</li>
+<li>terapia de manutenção menos tóxica;</li>
+<li>redução planejada do corticoide;</li>
+<li>equipe multidisciplinar.</li>
+</ul>
+<hr />
+<h1 id="11-glicocorticoides-benefício-rápido-dano-cumulativo">11. Glicocorticoides: benefício rápido, dano cumulativo 🔥</h1>
+<p>Os glicocorticoides controlam inflamação rapidamente, mas aumentam risco de:</p>
+<ul>
+<li>infecção;</li>
+<li>diabetes/hiperglicemia;</li>
+<li>hipertensão;</li>
+<li>ganho de peso;</li>
+<li>osteoporose;</li>
+<li>osteonecrose;</li>
+<li>catarata/glaucoma;</li>
+<li>transtornos de humor/insônia;</li>
+<li>doença cardiovascular;</li>
+<li>miopatia;</li>
+<li>dano acumulado.</li>
+</ul>
+<h2 id="regra-prática">Regra prática</h2>
+<p>Use a menor dose eficaz pelo menor tempo possível. Se o paciente não consegue reduzir para dose baixa, pense em atividade persistente, diagnóstico alternativo, dano crônico, adesão inadequada ou necessidade de poupador.</p>
+<hr />
+<h1 id="12-biológicos-e-terapias-alvo">12. Biológicos e terapias-alvo 🧬</h1>
+<h2 id="12-1-belimumabe">12.1 Belimumabe</h2>
+<p>Bloqueia BLyS/BAFF, reduzindo sobrevivência de células B autorreativas.</p>
+<p>Uso prático:</p>
+<ul>
+<li>doença extrarrenal ativa apesar de terapia padrão;</li>
+<li>efeito poupador de corticoide;</li>
+<li>resposta não imediata: pode levar meses;</li>
+<li>pode integrar esquemas de nefrite lúpica em contextos específicos.</li>
+</ul>
+<h2 id="12-2-anifrolumabe">12.2 Anifrolumabe</h2>
+<p>Bloqueia receptor de interferon tipo I.</p>
+<p>Uso prático:</p>
+<ul>
+<li>LES moderado a grave extrarrenal;</li>
+<li>destaque em pele e articulações;</li>
+<li>evitar extrapolar para nefrite ativa grave ou neuro-lúpus grave quando não há indicação/estudo robusto;</li>
+<li>atenção a infecções virais, especialmente herpes-zóster.</li>
+</ul>
+<h2 id="12-3-rituximabe">12.3 Rituximabe</h2>
+<p>Anti-CD20 depletor de células B.</p>
+<p>Uso prático:</p>
+<ul>
+<li>frequentemente considerado em doença refratária;</li>
+<li>evidência randomizada clássica não foi claramente positiva;</li>
+<li>pode ser usado em contextos selecionados, especialmente quando outras opções falham ou em fenótipos específicos.</li>
+</ul>
+<h2 id="12-4-obinutuzumabe">12.4 Obinutuzumabe</h2>
+<p>Anti-CD20 humanizado com depleção B potente.</p>
+<p>Uso prático:</p>
+<ul>
+<li>papel mais forte em nefrite lúpica ativa em combinação com terapia padrão;</li>
+<li>pode representar uma das atualizações mais importantes no campo renal;</li>
+<li>exige atenção a infusão, infecções, HBV, imunoglobulinas e vacinação prévia quando possível.</li>
+</ul>
+<h2 id="12-5-fronteira-terapêutica">12.5 Fronteira terapêutica</h2>
+<p>Áreas em investigação incluem CAR-T anti-CD19, inibidores de JAK, terapias anti-CD38, moduladores de células B/plasmócitos, anti-CD40, anti-BDCA2 e outras estratégias imunes.</p>
+<hr />
+<h1 id="13-comorbidades-e-situações-especiais">13. Comorbidades e situações especiais 🧭</h1>
+<h2 id="13-1-gravidez-e-contracepção">13.1 Gravidez e contracepção</h2>
+<p>Gravidez deve ser planejada idealmente após pelo menos seis meses de doença em remissão/baixa atividade, especialmente sem órgão maior ativo. Revisar medicações teratogênicas, anti-Ro/SSA, anti-La/SSB e anticorpos antifosfolipídios.</p>
+<h2 id="13-2-síndrome-antifosfolipídica">13.2 Síndrome antifosfolipídica</h2>
+<p>Trombose arterial/venosa ou morbidade obstétrica em LES exige avaliação de SAF. O manejo segue princípios da SAF, com anticoagulação conforme indicação.</p>
+<h2 id="13-3-fenômeno-de-raynaud">13.3 Fenômeno de Raynaud</h2>
+<p>Tratamento inclui proteção contra frio, cessação tabágica, evitar vasoconstritores e considerar bloqueadores de canal de cálcio ou terapias avançadas se grave.</p>
+<h2 id="13-4-sjögren-associado">13.4 Sjögren associado</h2>
+<p>Pesquisar olho seco, boca seca, cáries, parotidomegalia e sintomas extraglandulares.</p>
+<h2 id="13-5-fibromialgia">13.5 Fibromialgia</h2>
+<p>Pode coexistir em proporção relevante de pacientes. Dor difusa, fadiga, sono ruim e hipersensibilidade sem evidência inflamatória devem evitar escalada imunossupressora indevida.</p>
+<h2 id="13-6-sulfonamidas">13.6 Sulfonamidas</h2>
+<p>Alergia a antimicrobianos sulfonamídicos é mais comum no LES. TMP-SMX pode desencadear rash e, em alguns pacientes, exacerbação. Sulfonamidas não antimicrobianas têm menor risco de reação cruzada, mas devem ser analisadas caso a caso.</p>
+<h2 id="13-7-resposta-inadequada-à-prednisona">13.7 Resposta inadequada à prednisona</h2>
+<p>Se resposta clínica é inesperadamente pobre, considerar adesão, diagnóstico errado, infecção, dano crônico e, em situações específicas, conversão inadequada de prednisona para prednisolona ativa, especialmente em doença hepática. Alguns clínicos preferem metilprednisolona nesses cenários.</p>
+<hr />
+<h1 id="14-fluxograma-do-manejo-em-mermaid">14. Fluxograma do manejo em Mermaid 🔁</h1>
+<pre><code class="language-mermaid">flowchart TD
+A[Paciente com LES] --&gt; B[Avaliar atividade em cada consulta]
+B --&gt; C{Atividade ou dano/toxicidade/comorbidade?}
+C -- Dano/toxicidade/fibromialgia --&gt; D[Evitar escalar imunossupressão; tratar causa específica]
+C -- Atividade provável --&gt; E[Definir gravidade e órgão-alvo]
+E --&gt; F{Leve, moderado ou grave?}
+F -- Leve --&gt; G[HCQ + medidas gerais + AINE/baixo corticoide curto se necessário]
+F -- Moderado --&gt; H[HCQ + corticoide curto + poupador se persistente]
+F -- Grave --&gt; I[Internar se necessário + excluir infecção + indução imunossupressora]
+I --&gt; J[Manutenção menos tóxica + reduzir corticoide]
+G --&gt; K[Monitorar 3-6 meses]
+H --&gt; K
+J --&gt; L[Monitorar conforme órgão: renal pode exigir 1-2 semanas inicialmente]
+K --&gt; M[Alvo: remissão ou baixa atividade sustentada]
+L --&gt; M
+M --&gt; N[Prevenir dano: vacinação, CV, osteoporose, câncer, adesão, qualidade de vida]
+</code></pre>
+<hr />
+<h1 id="15-checklist-prático-de-consulta">15. Checklist prático de consulta 📝</h1>
+<h2 id="15-1-perguntas-rápidas">15.1 Perguntas rápidas</h2>
+<ul>
+<li>Teve febre, perda de peso, fadiga nova ou piora?</li>
+<li>Teve rash após sol, úlceras, alopecia?</li>
+<li>Dor ou inchaço articular com rigidez matinal?</li>
+<li>Dispneia, dor pleurítica, dor torácica?</li>
+<li>Edema, urina espumosa, alteração de pressão?</li>
+<li>Sintomas neurológicos ou psiquiátricos novos?</li>
+<li>Trombose, abortos, cefaleia incomum?</li>
+<li>Está tomando hidroxicloroquina e demais medicações corretamente?</li>
+<li>Teve infecção recente ou vacina recente?</li>
+<li>Algum efeito colateral do corticoide/imunossupressor?</li>
+</ul>
+<h2 id="15-2-exame-físico-mínimo">15.2 Exame físico mínimo</h2>
+<ul>
+<li>PA, peso, edema;</li>
+<li>pele e couro cabeludo;</li>
+<li>mucosas;</li>
+<li>articulações;</li>
+<li>ausculta cardíaca e pulmonar;</li>
+<li>linfonodos;</li>
+<li>exame neurológico se sintomas.</li>
+</ul>
+<h2 id="15-3-exames-mínimos-frequentes">15.3 Exames mínimos frequentes</h2>
+<ul>
+<li>hemograma;</li>
+<li>creatinina/TFGe;</li>
+<li>urina tipo 1;</li>
+<li>relação proteína/creatinina;</li>
+<li>C3/C4;</li>
+<li>anti-dsDNA;</li>
+<li>VHS/PCR conforme contexto;</li>
+<li>exames de segurança da medicação em uso.</li>
+</ul>
+<hr />
+<h1 id="16-erros-comuns-que-custam-caro">16. Erros comuns que custam caro ⚠️</h1>
+<ol>
+<li><strong>Tratar FAN, não o paciente.</strong></li>
+<li><strong>Atribuir toda fadiga a LES ativo.</strong></li>
+<li><strong>Aumentar corticoide para dor de fibromialgia ou osteonecrose.</strong></li>
+<li><strong>Esquecer urina em paciente aparentemente estável.</strong></li>
+<li><strong>Ignorar vacinação antes de imunossupressão.</strong></li>
+<li><strong>Manter prednisona crônica sem plano de desmame.</strong></li>
+<li><strong>Não avaliar adesão antes de chamar de refratário.</strong></li>
+<li><strong>Atribuir febre ao LES sem excluir infecção.</strong></li>
+<li><strong>Não rastrear risco cardiovascular.</strong></li>
+<li><strong>Planejar gravidez durante atividade de doença.</strong></li>
+</ol>
+<hr />
+<h1 id="17-prognóstico">17. Prognóstico 📈</h1>
+<p>O prognóstico do LES melhorou muito nas últimas décadas, mas a doença ainda apresenta mortalidade superior à população geral.</p>
+<h2 id="17-1-causas-de-morte-por-fase">17.1 Causas de morte por fase</h2>
+<table>
+<thead>
+<tr>
+  <th>Fase</th>
+  <th>Principais ameaças</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Primeiros anos</td>
+  <td>atividade grave: rim, SNC, pulmão, hematológico; infecções associadas à imunossupressão</td>
+</tr>
+<tr>
+  <td>Longo prazo</td>
+  <td>doença cardiovascular, doença renal crônica/terminal, complicações do tratamento, neoplasias, dano acumulado</td>
+</tr>
+</tbody>
+</table>
+<h2 id="17-2-fatores-de-pior-prognóstico">17.2 Fatores de pior prognóstico</h2>
+<ul>
+<li>nefrite lúpica, especialmente proliferativa;</li>
+<li>hipertensão;</li>
+<li>alta atividade de doença;</li>
+<li>síndrome antifosfolipídica ou anticorpos antifosfolipídios;</li>
+<li>sexo masculino;</li>
+<li>extremos de idade no diagnóstico;</li>
+<li>baixo acesso a cuidado especializado;</li>
+<li>maior carga cumulativa de glicocorticoide;</li>
+<li>doença cardiovascular;</li>
+<li>infecções graves.</li>
+</ul>
+<h2 id="17-3-remissão-sustentada">17.3 Remissão sustentada</h2>
+<p>Remissão prolongada é possível, mas não é a regra. Muitos pacientes atingem baixa atividade com tratamento, mas poucos permanecem anos em remissão completa sem medicação.</p>
+<h3 id="mensagem-chave">Mensagem-chave</h3>
+<p>O objetivo realista e de alto valor é manter o paciente com <strong>baixa atividade sustentada, sem surtos graves, com função orgânica preservada e mínima exposição a corticoide</strong>.</p>
+<hr />
+<h1 id="18-resumo-final-objetivo">18. Resumo final objetivo 🧠📌</h1>
+<table>
+<thead>
+<tr>
+  <th>Nº</th>
+  <th>Tópico-chave</th>
+  <th>Essência prática</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td>Objetivo central</td>
+  <td>Alcançar remissão ou baixa atividade, evitando surtos, dano orgânico e toxicidade terapêutica.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>Manejo individualizado</td>
+  <td>A terapia depende de órgão acometido, gravidade, comorbidades, preferências e planejamento gestacional.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>Avaliação contínua</td>
+  <td>Em toda consulta, diferenciar atividade lúpica de dano crônico, infecção, toxicidade, fibromialgia e comorbidades.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>Alvo realista</td>
+  <td>Remissão completa é incomum; baixa atividade sustentada é meta prática e clinicamente valiosa.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td>Monitoramento básico</td>
+  <td>Hemograma, urina/sedimento, proteinúria, creatinina/TFGe, C3/C4 e anti-dsDNA formam o núcleo do seguimento.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td>Rim silencioso</td>
+  <td>Mesmo paciente assintomático precisa rastreio renal periódico, pois nefrite pode surgir com pouca clínica.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td>Interpretação laboratorial</td>
+  <td>Anti-dsDNA alto e complemento baixo ajudam, mas nunca substituem contexto clínico e avaliação de órgão-alvo.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td>Hidroxicloroquina</td>
+  <td>Deve ser mantida para quase todos, salvo contraindicação; reduz surtos, dano e pode melhorar sobrevida.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td>Dose da hidroxicloroquina</td>
+  <td>Usar até 5 mg/kg/dia pelo peso real, geralmente máximo 400 mg/dia, com vigilância oftalmológica.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td>Corticoide</td>
+  <td>É ponte para controle rápido, não tratamento crônico ideal; reduzir exposição cumulativa é prioridade.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td>Doença leve</td>
+  <td>Geralmente: hidroxicloroquina, fotoproteção, medidas gerais e sintomáticos curtos se necessário.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td>Doença moderada</td>
+  <td>Pode exigir corticoide curto e poupadores como azatioprina, metotrexato, micofenolato, belimumabe ou anifrolumabe.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td>Doença grave</td>
+  <td>Ameaça renal, SNC, pulmonar, cardíaca ou hematológica exige indução imunossupressora e equipe multidisciplinar.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td>Biológicos</td>
+  <td>Belimumabe, anifrolumabe, rituximabe e obinutuzumabe têm papéis distintos conforme fenótipo e refratariedade.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td>Prevenção</td>
+  <td>Fotoproteção, cessação tabágica, vacinação, exercício e rastreios são parte do tratamento, não acessórios.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td>Infecção</td>
+  <td>Febre em paciente imunossuprimido exige excluir infecção antes de atribuir a atividade lúpica.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td>Comorbidades</td>
+  <td>Rastrear risco cardiovascular, osteoporose, câncer, vitamina D, SAF, Sjögren, fibromialgia e saúde mental.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td>Gravidez</td>
+  <td>Idealmente planejar após pelo menos 6 meses de doença controlada e revisar drogas/autoanticorpos relevantes.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td>Prognóstico precoce</td>
+  <td>Nos primeiros anos, mortes se relacionam mais a doença ativa grave e infecção.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td>Prognóstico tardio</td>
+  <td>No longo prazo, predominam doença cardiovascular, DRC/DRT, toxicidade terapêutica, neoplasias e dano acumulado.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="19-mnemônicos-úteis">19. Mnemônicos úteis 🧩</h1>
+<table>
+<thead>
+<tr>
+  <th>Mnemônico</th>
+  <th>Como memorizar</th>
+  <th>Aplicação prática</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>ALVO</strong></td>
+  <td><strong>A</strong>liviar sintomas; <strong>L</strong>imitar dano; <strong>V</strong>igiar toxicidade/adesão; <strong>O</strong>timizar qualidade de vida</td>
+  <td>Lembra os objetivos globais do tratamento do LES.</td>
+</tr>
+<tr>
+  <td><strong>FAROL</strong></td>
+  <td><strong>F</strong>lares; <strong>A</strong>desão; <strong>R</strong>im; <strong>O</strong>rgãos; <strong>L</strong>aboratório</td>
+  <td>Checklist mental para cada consulta de seguimento.</td>
+</tr>
+<tr>
+  <td><strong>HIDROX</strong></td>
+  <td><strong>H</strong>CQ para quase todos; <strong>I</strong>mpacta surtos/sobrevida; <strong>D</strong>ose por peso; <strong>R</strong>etina; <strong>O</strong>bservar QT; <strong>X</strong>erife da adesão</td>
+  <td>Evita esquecer dose, benefício e segurança da hidroxicloroquina.</td>
+</tr>
+<tr>
+  <td><strong>PONTE, não CASA</strong></td>
+  <td>Corticoide é <strong>P</strong>otente, <strong>O</strong>rganiza resgate, mas <strong>N</strong>ão deve cronificar; exige <strong>T</strong>aper e <strong>E</strong>stratégia poupadora</td>
+  <td>Ajuda a evitar dependência crônica de prednisona.</td>
+</tr>
+<tr>
+  <td><strong>RINS-CeP</strong></td>
+  <td><strong>R</strong>enal; <strong>I</strong>nfiltrado/hemorragia alveolar; <strong>N</strong>euro; <strong>S</strong>angue; <strong>Ce</strong>ração/coração-serosas; <strong>P</strong>rotrombose/SAF</td>
+  <td>Lembra ameaças graves/UTI no LES.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="20-flashcards">20. Flashcards 🧠✨</h1>
+<h2 id="card-1">Card 1</h2>
+<p><strong>Pergunta:</strong> Qual é o alvo moderno do tratamento do LES?<br />
+<strong>Resposta:</strong> Remissão ou baixa atividade sustentada, com prevenção de dano e mínima toxicidade medicamentosa.</p>
+<h2 id="card-2">Card 2</h2>
+<p><strong>Pergunta:</strong> Qual medicação deve ser considerada para quase todos os pacientes com LES?<br />
+<strong>Resposta:</strong> Hidroxicloroquina, salvo contraindicação.</p>
+<h2 id="card-3">Card 3</h2>
+<p><strong>Pergunta:</strong> Qual dose de referência da hidroxicloroquina reduz risco de toxicidade retiniana?<br />
+<strong>Resposta:</strong> Até 5 mg/kg/dia pelo peso real, respeitando limite usual de 400 mg/dia.</p>
+<h2 id="card-4">Card 4</h2>
+<p><strong>Pergunta:</strong> Quais exames ajudam a monitorar atividade renal no LES?<br />
+<strong>Resposta:</strong> Urina tipo 1, sedimento, relação proteína/creatinina, creatinina/TFGe, C3/C4 e anti-dsDNA.</p>
+<h2 id="card-5">Card 5</h2>
+<p><strong>Pergunta:</strong> Por que PCR muito elevada em LES febril preocupa?<br />
+<strong>Resposta:</strong> Deve levantar suspeita de infecção, embora não seja critério absoluto.</p>
+<h2 id="card-6">Card 6</h2>
+<p><strong>Pergunta:</strong> O que significa não conseguir reduzir prednisona para dose baixa?<br />
+<strong>Resposta:</strong> Reavaliar atividade, adesão, dano, diagnóstico diferencial e necessidade de agente poupador.</p>
+<h2 id="card-7">Card 7</h2>
+<p><strong>Pergunta:</strong> Qual biológico bloqueia a via do interferon tipo I?<br />
+<strong>Resposta:</strong> Anifrolumabe.</p>
+<h2 id="card-8">Card 8</h2>
+<p><strong>Pergunta:</strong> Qual biológico bloqueia BLyS/BAFF?<br />
+<strong>Resposta:</strong> Belimumabe.</p>
+<h2 id="card-9">Card 9</h2>
+<p><strong>Pergunta:</strong> Qual anti-CD20 humanizado ganhou destaque em nefrite lúpica ativa?<br />
+<strong>Resposta:</strong> Obinutuzumabe.</p>
+<h2 id="card-10">Card 10</h2>
+<p><strong>Pergunta:</strong> Quais são causas tardias importantes de morte no LES?<br />
+<strong>Resposta:</strong> Doença cardiovascular, doença renal crônica/terminal, complicações terapêuticas, neoplasias e dano acumulado.</p>
+<hr />
+<h1 id="21-questões-estilo-temi-r3">21. Questões estilo TEMI/R3 🏆</h1>
+<h2 id="questão-1">Questão 1</h2>
+<p>Paciente com LES estável pergunta se pode suspender hidroxicloroquina porque está assintomática. Qual orientação é mais adequada?</p>
+<p>A. Suspender sempre após seis meses sem sintomas<br />
+B. Manter, salvo contraindicação, pois reduz surtos e dano<br />
+C. Trocar automaticamente por ciclofosfamida<br />
+D. Usar apenas se houver nefrite classe IV<br />
+E. Suspender se FAN negativar</p>
+<p><strong>Resposta:</strong> B.<br />
+<strong>Comentário:</strong> Hidroxicloroquina é base terapêutica no LES e não deve ser suspensa apenas por estabilidade clínica.</p>
+<hr />
+<h2 id="questão-2">Questão 2</h2>
+<p>Qual painel é mais adequado para monitorar atividade de LES em seguimento ambulatorial?</p>
+<p>A. FAN mensal, anti-Sm mensal e radiografia de tórax mensal<br />
+B. Hemograma, urina/sedimento, proteinúria, creatinina/TFGe, C3/C4, anti-dsDNA e marcadores inflamatórios conforme contexto<br />
+C. Apenas VHS<br />
+D. Apenas PCR<br />
+E. Anti-CCP e fator reumatoide seriados</p>
+<p><strong>Resposta:</strong> B.<br />
+<strong>Comentário:</strong> Atividade do LES exige combinação clínica e laboratorial, com atenção especial ao rim.</p>
+<hr />
+<h2 id="questão-3">Questão 3</h2>
+<p>Em paciente com LES e dor difusa, sono ruim, fadiga e exames sem evidência de atividade, qual erro deve ser evitado?</p>
+<p>A. Considerar fibromialgia associada<br />
+B. Avaliar depressão e sono<br />
+C. Aumentar imunossupressão automaticamente<br />
+D. Revisar adesão e medicações<br />
+E. Estimular recondicionamento progressivo</p>
+<p><strong>Resposta:</strong> C.<br />
+<strong>Comentário:</strong> Dor/fadiga tipo 2 ou fibromialgia não devem levar automaticamente à escalada imunossupressora.</p>
+<hr />
+<h2 id="questão-4">Questão 4</h2>
+<p>Qual conduta é mais alinhada ao conceito “corticoide é ponte, não casa”?</p>
+<p>A. Manter prednisona alta indefinidamente se houver melhora<br />
+B. Usar corticoide para controle rápido e planejar desmame com poupador quando necessário<br />
+C. Nunca usar corticoide em LES grave<br />
+D. Usar apenas AINE em nefrite proliferativa<br />
+E. Suspender abruptamente após pulsoterapia</p>
+<p><strong>Resposta:</strong> B.<br />
+<strong>Comentário:</strong> Corticoide é útil, mas a exposição cumulativa aumenta dano. O desmame deve ser parte do plano.</p>
+<hr />
+<h2 id="questão-5">Questão 5</h2>
+<p>Mulher com LES, nefrite ativa e hipertensão. Qual medida não farmacológica é especialmente relevante?</p>
+<p>A. Aumentar sal para compensar proteinúria<br />
+B. Restrição de sal e controle pressórico rigoroso<br />
+C. Evitar qualquer exercício para sempre<br />
+D. Suspender fotoproteção<br />
+E. Não vacinar por ter LES</p>
+<p><strong>Resposta:</strong> B.<br />
+<strong>Comentário:</strong> Hipertensão e nefrite pioram prognóstico; dieta com controle de sal e controle pressórico são essenciais.</p>
+<hr />
+<h2 id="questão-6">Questão 6</h2>
+<p>Qual afirmação sobre vacinação em LES é mais correta?</p>
+<p>A. Todas as vacinas são contraindicadas<br />
+B. Vacinas vivas são sempre preferidas durante imunossupressão intensa<br />
+C. Revisar vacinação antes de imunossupressão é parte do cuidado preventivo<br />
+D. Influenza anual é contraindicada em LES estável<br />
+E. Rituximabe melhora resposta humoral vacinal</p>
+<p><strong>Resposta:</strong> C.<br />
+<strong>Comentário:</strong> Vacinas devem ser planejadas antes da imunossupressão quando possível; anti-CD20 reduz resposta humoral.</p>
+<hr />
+<h2 id="questão-7">Questão 7</h2>
+<p>Qual biológico tem mecanismo relacionado ao bloqueio de BLyS/BAFF?</p>
+<p>A. Anifrolumabe<br />
+B. Belimumabe<br />
+C. Tocilizumabe<br />
+D. Secuquinumabe<br />
+E. Adalimumabe</p>
+<p><strong>Resposta:</strong> B.<br />
+<strong>Comentário:</strong> Belimumabe bloqueia BLyS/BAFF, interferindo na sobrevivência de células B.</p>
+<hr />
+<h2 id="questão-8">Questão 8</h2>
+<p>Qual biológico bloqueia receptor de interferon tipo I e tem destaque em doença cutânea/articular moderada a grave?</p>
+<p>A. Anifrolumabe<br />
+B. Obinutuzumabe<br />
+C. Infliximabe<br />
+D. Abatacepte<br />
+E. Ustequinumabe</p>
+<p><strong>Resposta:</strong> A.<br />
+<strong>Comentário:</strong> Anifrolumabe bloqueia o receptor de IFN tipo I e é opção em LES moderado a grave extrarrenal.</p>
+<hr />
+<h2 id="questão-9">Questão 9</h2>
+<p>No prognóstico do LES, qual combinação é particularmente preocupante?</p>
+<p>A. Fotossensibilidade isolada e FAN baixo<br />
+B. Nefrite, hipertensão, alta atividade e anticorpos antifosfolipídios<br />
+C. Alopecia isolada sem exames alterados<br />
+D. Artralgia sem sinovite e exames normais<br />
+E. Rash leve responsivo a fotoproteção</p>
+<p><strong>Resposta:</strong> B.<br />
+<strong>Comentário:</strong> Nefrite, hipertensão, alta atividade e SAF/aPL estão entre fatores de pior prognóstico.</p>
+<hr />
+<h2 id="questão-10">Questão 10</h2>
+<p>Paciente com LES em prednisona crônica evolui com dor intensa no quadril, sem sinovite periférica importante. Qual diagnóstico deve ser lembrado antes de aumentar corticoide?</p>
+<p>A. Osteonecrose/necrose avascular<br />
+B. Urticária colinérgica<br />
+C. Síndrome nefrótica pura<br />
+D. Febre maculosa obrigatória<br />
+E. Hipervitaminose C</p>
+<p><strong>Resposta:</strong> A.<br />
+<strong>Comentário:</strong> Osteonecrose é complicação relevante em LES e glicocorticoide; aumentar corticoide pode piorar dano.</p>
+<hr />
+<h2 id="fim-do-updown-002">Fim do UPDOWN #002</h2>
+
+    </article>
+  </main>
+</div>
+<script>
+function toggleTheme() {
+  const root=document.documentElement;
+  const current=root.getAttribute('data-theme')==='dark'?'light':'dark';
+  if(current==='dark') root.setAttribute('data-theme','dark'); else root.removeAttribute('data-theme');
+  localStorage.setItem('updown-theme', current);
+}
+function fontSize(delta) {
+  const root=document.documentElement;
+  const current=parseInt(getComputedStyle(root).getPropertyValue('--font-size')) || 18;
+  const next=Math.max(15, Math.min(24, current + delta));
+  root.style.setProperty('--font-size', next+'px');
+  localStorage.setItem('updown-font-size', next);
+}
+(function() {
+  if(localStorage.getItem('updown-theme')==='dark') document.documentElement.setAttribute('data-theme','dark');
+  const fs=localStorage.getItem('updown-font-size'); if(fs) document.documentElement.style.setProperty('--font-size', fs+'px');
+})();
+</script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'default' });
+</script>
+</body>
+</html>

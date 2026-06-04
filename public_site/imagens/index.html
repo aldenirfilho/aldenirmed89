@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeria Visual | Antigravity</title>
+  <link rel="stylesheet" href="../07_Estudos_Markdown/assets/estudos.css" />
+  <style>
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .img-card-premium {
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .img-card-premium:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+    }
+    .img-box {
+      height: 180px;
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    .img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .img-card-premium h3 { font-size: 1.1rem; margin: 0; color: var(--text); }
+    .img-card-premium p { font-size: 0.85rem; color: var(--muted); margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">🖼️ <span>Galeria Visual</span></a>
+    <nav>
+      <a href="../index.html">🏠 Home</a>
+      <a href="../updown/index.html">↕️ UpDown</a>
+      <a href="../biblioteca/index.html">📚 Biblioteca</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <span class="eyebrow">🎨 Visual Think & Algoritmos</span>
+        <h1>Memória Visual</h1>
+        <p>Infográficos, mapas mentais e fluxogramas recuperados para consulta rápida.</p>
+      </div>
+    </section>
+
+    <div class="gallery-grid">
+      <article class="card img-card-premium" onclick="window.open('../01_Modulos_Clinicos/AVC_Agudo/Imagens/Trombólise.png')">
+        <div class="img-box"><img src="../01_Modulos_Clinicos/AVC_Agudo/Imagens/Trombólise.png"></div>
+        <h3>Fluxo Trombólise AVC</h3>
+        <p>Protocolo temporal de 0 a 60 min.</p>
+      </article>
+
+      <article class="card img-card-premium" onclick="window.open('../01_Modulos_Clinicos/AVC_Agudo/Imagens/Código 10 minutos.png')">
+        <div class="img-box"><img src="../01_Modulos_Clinicos/AVC_Agudo/Imagens/Código 10 minutos.png"></div>
+        <h3>Código 10 minutos</h3>
+        <p>Prioridades na chegada do AVC.</p>
+      </article>
+
+      <article class="card img-card-premium" onclick="window.open('../01_Modulos_Clinicos/AVC_Agudo/Imagens/Hipertensão Intracraniana.png')">
+        <div class="img-box"><img src="../01_Modulos_Clinicos/AVC_Agudo/Imagens/Hipertensão Intracraniana.png"></div>
+        <h3>Manejo HIC</h3>
+        <p>Medidas de 1ª e 2ª linha.</p>
+      </article>
+
+      <article class="card img-card-premium" onclick="window.open('../01_Modulos_Clinicos/AVC_Agudo/Imagens/Trombectomia.png')">
+        <div class="img-box"><img src="../01_Modulos_Clinicos/AVC_Agudo/Imagens/Trombectomia.png"></div>
+        <h3>Critérios Trombectomia</h3>
+        <p>Indicações de acordo com DAWN/DEFUSE.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <p>🧠 <strong>Enciclomedia Antigravity</strong> — Dr. Aldenir Rocha</p>
+  </footer>
+</body>
+</html>

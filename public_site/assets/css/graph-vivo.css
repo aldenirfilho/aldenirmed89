@@ -1,0 +1,223 @@
+/* ── MAPA VIVO 4.0 PRO — ANTIGRAVITY ENGINE ── */
+:root {
+  --node-hub: #ffad4d;
+  --node-library: #00d4ff;
+  --node-feed: #38bdf8;
+  --node-qbank: #ffc107;
+  --node-tool: #4ef0a1;
+  --node-module: #7c3aed;
+  --node-topic: #64748b;
+  --node-theme: #1e3a5f;
+  --node-file: #94a3b8;
+  --edge-direct: #3ee8ff;
+  --edge-suggested: #ff9f43;
+}
+
+#mapa {
+  position: relative;
+  overflow: visible;
+  margin-top: 2rem;
+  background: transparent;
+}
+
+#graph {
+  min-height: 760px;
+  background: radial-gradient(circle at center, #0a1628 0%, #050d1a 100%);
+  border-radius: 32px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+}
+
+/* Toolbar de Curadoria */
+.graph-toolbar {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 320px;
+  pointer-events: none;
+}
+
+.graph-search-wrap {
+  position: relative;
+  pointer-events: auto;
+}
+
+.graph-search {
+  width: 100%;
+  padding: 12px 18px;
+  background: rgba(15, 31, 56, 0.92);
+  border: 1px solid rgba(62, 232, 255, 0.3);
+  border-radius: 14px;
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.graph-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  pointer-events: auto;
+}
+
+/* 🧬 CONEXÕES (Paths Curvos v4.0) */
+.edge {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  pointer-events: stroke;
+  transition: stroke-width 0.2s, stroke-opacity 0.2s;
+}
+
+.edge--direct {
+  stroke: var(--edge-direct);
+  stroke-width: 3.5;
+  stroke-opacity: 0.65;
+  filter: drop-shadow(0 0 5px rgba(62, 232, 255, 0.4));
+}
+
+.edge--suggested {
+  stroke: var(--edge-suggested);
+  stroke-width: 4;
+  stroke-opacity: 0.9;
+  stroke-dasharray: 12, 8;
+  filter: drop-shadow(0 0 8px rgba(255, 159, 67, 0.6));
+}
+
+.edge:hover {
+  stroke-opacity: 1 !important;
+  stroke-width: 6 !important;
+}
+
+/* 🛠️ MODO CURADORIA & PAINEL ADICIONAR */
+#curatorshipPanel {
+  position: absolute;
+  top: 180px;
+  left: 24px;
+  width: 320px;
+  background: rgba(15, 31, 56, 0.95);
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+#curatorshipPanel input, #curatorshipPanel select {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 12px;
+}
+
+#curatorshipPanel label {
+  font-size: 10px;
+  color: var(--node-feed);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* 🛠️ MODO CURADORIA */
+.is-editing #graph {
+  border: 2px solid var(--node-feed);
+  box-shadow: 0 0 40px rgba(56, 189, 248, 0.15);
+}
+
+.node-group { cursor: pointer; }
+.node-card {
+  fill: rgba(15, 31, 56, 0.96);
+  stroke-width: 2.5;
+  transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.node-group:hover .node-card {
+  stroke: #fff;
+  stroke-width: 4;
+  filter: brightness(1.2) drop-shadow(0 0 12px currentColor);
+}
+
+.node-group.is-selected .node-card {
+  stroke: #fff;
+  stroke-width: 5px;
+  filter: drop-shadow(0 0 20px var(--node-feed));
+}
+
+.node-group.is-match .node-card {
+  fill: rgba(62, 232, 255, 0.2);
+  stroke: #fff;
+  stroke-width: 5;
+}
+
+.node-group.is-new .node-card {
+  animation: pulse-new 2s infinite;
+}
+
+@keyframes pulse-new {
+  0% { stroke: #4ef0a1; stroke-width: 2; }
+  50% { stroke: #4ef0a1; stroke-width: 8; }
+  100% { stroke: #4ef0a1; stroke-width: 2; }
+}
+
+.node-label {
+  fill: #fff;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  pointer-events: none;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.node-sub {
+  fill: rgba(255, 255, 255, 0.45);
+  font-size: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  pointer-events: none;
+  font-weight: bold;
+}
+
+/* 📟 PAINEL DEBUG */
+.debug-panel {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(20px);
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #4ef0a1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+/* Drawer v4.0 */
+#drawer {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: min(480px, calc(100vw - 48px));
+  max-height: calc(100vh - 48px);
+  background: rgba(10, 22, 40, 0.98);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 28px;
+  padding: 3rem 2.5rem;
+  z-index: 2000;
+  box-shadow: 0 30px 100px rgba(0,0,0,1);
+  overflow-y: auto;
+}

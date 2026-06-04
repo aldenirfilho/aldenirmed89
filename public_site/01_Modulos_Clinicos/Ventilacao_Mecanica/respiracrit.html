@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RespiraCrit — Suporte Respiratório Inteligente | Dr. Aldenir Rocha</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap');
+:root {
+  --bg:#060a0f;--s1:#0b1018;--s2:#111820;--s3:#18222e;--border:#1e2d3d;
+  --border2:#2a3f55;--text:#c8d8e8;--muted:#5a7a95;--dim:#3a5570;
+  --acc:#00d4ff;--acc2:#00ff88;--acc3:#ff6b35;--acc4:#b44fff;--warn:#ffc107;--danger:#ff4757;
+  --font:'JetBrains Mono',monospace;--syne:'Syne',sans-serif;
+  --r:6px;--r2:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:var(--s1)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* HEADER */
+.hdr{background:var(--s1);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:200}
+.hdr-logo{font-family:var(--syne);font-size:18px;font-weight:800;color:var(--acc);letter-spacing:-0.02em;white-space:nowrap}
+.hdr-logo span{color:var(--acc2)}
+.hdr-sub{font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase}
+.hdr-spacer{flex:1}
+.hdr-badge{font-size:10px;padding:3px 10px;border-radius:20px;border:1px solid;letter-spacing:0.05em}
+.badge-live{border-color:var(--acc2);color:var(--acc2);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.badge-temi{border-color:var(--acc4);color:var(--acc4)}
+
+/* NAV TABS */
+.nav{background:var(--s1);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;gap:0;padding:0 20px}
+.nav-tab{padding:10px 18px;font-family:var(--font);font-size:11px;color:var(--muted);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;letter-spacing:0.05em;transition:all 0.15s}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--acc);border-bottom-color:var(--acc)}
+
+/* PANELS */
+.panel{display:none;padding:16px 20px;min-height:calc(100vh - 100px)}
+.panel.active{display:block}
+
+/* GRID LAYOUTS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.gcols{display:grid;grid-template-columns:340px 1fr;gap:14px}
+.gcols3{display:grid;grid-template-columns:280px 1fr 320px;gap:12px}
+
+/* CARDS */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.card-head{padding:10px 14px;background:var(--s2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.card-head .icon{font-size:13px}
+.card-head .htitle{color:var(--text);font-size:11px;font-weight:500}
+.card-body{padding:14px}
+
+/* INPUTS */
+.inp-group{margin-bottom:10px}
+.inp-label{font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.inp-label .unit{color:var(--dim);font-size:9px}
+.inp{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:7px 10px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border-color 0.15s}
+.inp:focus{border-color:var(--acc)}
+.inp-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.inp-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+select.inp{cursor:pointer}
+select.inp option{background:var(--s2)}
+
+/* METRIC CARDS */
+.metric{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;text-align:center}
+.metric-val{font-size:22px;font-weight:600;font-family:var(--syne)}
+.metric-lbl{font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px}
+.metric-status{font-size:9px;margin-top:3px;padding:1px 8px;border-radius:20px;display:inline-block}
+.ok{color:var(--acc2);background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2)}
+.warn{color:var(--warn);background:rgba(255,193,7,0.08);border:1px solid rgba(255,193,7,0.2)}
+.danger{color:var(--danger);background:rgba(255,71,87,0.08);border:1px solid rgba(255,71,87,0.2)}
+.info{color:var(--acc);background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2)}
+.purple{color:var(--acc4);background:rgba(180,79,255,0.08);border:1px solid rgba(180,79,255,0.2)}
+
+/* CONDUCT BOX */
+.conduct-box{border-radius:var(--r2);padding:14px 16px;margin-bottom:10px;border-left:3px solid}
+.conduct-escalate{background:rgba(255,71,87,0.06);border-color:var(--danger)}
+.conduct-maintain{background:rgba(255,193,7,0.06);border-color:var(--warn)}
+.conduct-deescalate{background:rgba(0,255,136,0.06);border-color:var(--acc2)}
+.conduct-action{background:rgba(0,212,255,0.06);border-color:var(--acc)}
+.conduct-title{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px}
+.conduct-items{list-style:none}
+.conduct-items li{padding:3px 0;font-size:12px;display:flex;align-items:flex-start;gap:8px}
+.conduct-items li::before{content:'→';color:var(--acc);flex-shrink:0;margin-top:1px}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:var(--r);border:1px solid;font-family:var(--font);font-size:11px;cursor:pointer;letter-spacing:0.05em;transition:all 0.15s}
+.btn-acc{background:rgba(0,212,255,0.1);border-color:var(--acc);color:var(--acc)}
+.btn-acc:hover{background:rgba(0,212,255,0.2)}
+.btn-green{background:rgba(0,255,136,0.1);border-color:var(--acc2);color:var(--acc2)}
+.btn-green:hover{background:rgba(0,255,136,0.2)}
+.btn-danger{background:rgba(255,71,87,0.1);border-color:var(--danger);color:var(--danger)}
+.btn-danger:hover{background:rgba(255,71,87,0.2)}
+.btn-purple{background:rgba(180,79,255,0.1);border-color:var(--acc4);color:var(--acc4)}
+.btn-purple:hover{background:rgba(180,79,255,0.2)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+/* ALERT BOXES */
+.alert{border-radius:var(--r);padding:10px 12px;font-size:12px;line-height:1.6;margin-bottom:8px}
+.alert-danger{background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.3);color:#ff8a94}
+.alert-warn{background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);color:#ffd54f}
+.alert-ok{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);color:#66ffb2}
+.alert-info{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);color:#66e8ff}
+.alert-purple{background:rgba(180,79,255,0.08);border:1px solid rgba(180,79,255,0.25);color:#cf9fff}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{background:var(--s2);padding:7px 10px;text-align:left;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--s2)}
+
+/* SCALE BARS */
+.scalebar{height:8px;border-radius:4px;background:var(--s3);overflow:hidden;margin-top:4px}
+.scalefill{height:100%;border-radius:4px;transition:width 0.5s}
+
+/* WAVEFORM SVG */
+.waveform-container{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:8px;overflow:hidden}
+canvas{display:block;width:100%}
+
+/* FORMULA CARDS */
+.formula-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:8px}
+.formula-name{font-size:11px;color:var(--acc);font-weight:600;margin-bottom:4px}
+.formula-eq{font-family:var(--font);font-size:12px;color:var(--text);background:var(--s3);padding:6px 10px;border-radius:var(--r);border-left:2px solid var(--acc);margin:4px 0}
+.formula-note{font-size:10px;color:var(--muted);margin-top:3px}
+
+/* BERLIN STAGES */
+.berlin-bar{display:flex;border-radius:var(--r);overflow:hidden;margin:8px 0;height:28px}
+.berlin-mild{background:rgba(255,193,7,0.3);flex:1;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--warn)}
+.berlin-mod{background:rgba(255,107,53,0.3);flex:1;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--acc3)}
+.berlin-sev{background:rgba(255,71,87,0.3);flex:1;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--danger)}
+.berlin-marker{position:absolute;width:2px;background:white;height:28px;transition:left 0.5s}
+
+/* SUPPORT LADDER */
+.ladder{display:flex;flex-direction:column;gap:4px}
+.ladder-item{padding:7px 12px;border-radius:var(--r);border:1px solid var(--border);font-size:11px;display:flex;align-items:center;gap:8px;transition:all 0.2s}
+.ladder-item.active{border-color:var(--acc);background:rgba(0,212,255,0.08);color:var(--acc)}
+.ladder-item.past{border-color:var(--acc2);background:rgba(0,255,136,0.05);color:var(--acc2);opacity:0.7}
+.ladder-item.future{opacity:0.4}
+.ladder-dot{width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0}
+.ladder-item.active .ladder-dot{background:var(--acc)}
+.ladder-item.past .ladder-dot{background:var(--acc2)}
+
+/* ASSINCRONIA DIAGNOSE */
+.async-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r2);padding:14px;margin-bottom:8px}
+.async-name{font-size:12px;font-weight:600;color:var(--acc3);margin-bottom:4px}
+.async-criteria{font-size:11px;color:var(--muted);margin-bottom:6px}
+.async-action{font-size:11px;color:var(--acc2)}
+
+.section-title{font-family:var(--syne);font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.sep{height:1px;background:var(--border);margin:14px 0}
+
+.tag{font-size:9px;padding:1px 7px;border-radius:20px;border:1px solid;display:inline-block;margin-right:4px}
+.tag-mode{border-color:var(--acc4);color:var(--acc4)}
+.tag-invasive{border-color:var(--danger);color:var(--danger)}
+.tag-noninv{border-color:var(--warn);color:var(--warn)}
+.tag-ok{border-color:var(--acc2);color:var(--acc2)}
+
+.gaso-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+
+.support-level{font-family:var(--syne);font-size:24px;font-weight:800}
+.support-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+
+.ai-box{background:var(--s2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-top:12px}
+.ai-box-head{padding:8px 14px;background:rgba(0,212,255,0.06);border-bottom:1px solid var(--border);font-size:10px;color:var(--acc);letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.ai-box-body{padding:14px}
+.ai-out{font-size:12px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:40px}
+.ai-typing{color:var(--muted);font-size:11px}
+.cursor{display:inline-block;width:7px;height:13px;background:var(--acc);animation:pulse 0.8s infinite;vertical-align:middle;margin-left:2px}
+
+@media(max-width:900px){.gcols,.gcols3,.g3,.g4{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div style="display:flex; align-items:center; gap:10px;">
+    <img src="../../assets/img/logo.png" alt="Logo" style="width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border); object-fit: cover;">
+    <div>
+      <div class="hdr-logo">Respira<span>Crit</span></div>
+      <div class="hdr-sub">Suporte Respiratório Inteligente · UTI</div>
+    </div>
+  </div>
+  <div class="hdr-spacer"></div>
+  <a href="../../index.html" style="font-size:11px; font-family:var(--font); color:var(--text); text-decoration:none; padding:6px 12px; background:var(--s2); border:1px solid var(--border); border-radius:16px; transition:0.2s;">← Voltar ao Hub</a>
+</div>
+
+<div class="nav">
+  <button class="nav-tab active" onclick="showPanel('gasometria')">📊 Gasometria</button>
+  <button class="nav-tab" onclick="showPanel('suporte')">🎚️ Escada de Suporte</button>
+  <button class="nav-tab" onclick="showPanel('vm')">🫁 VM Protetora</button>
+  <button class="nav-tab" onclick="showPanel('assincronias')">⚡ Assincronias</button>
+  <button class="nav-tab" onclick="showPanel('sara')">🔴 SARA/SDRA</button>
+  <button class="nav-tab" onclick="showPanel('formulas')">📐 Fórmulas</button>
+  <button class="nav-tab" onclick="showPanel('referencia')">📋 Referência Rápida</button>
+  <a href="respirasense/index.html" class="nav-tab" style="text-decoration:none; color:var(--acc4); font-weight:bold; border-left: 1px solid var(--border); padding-left: 15px; display:inline-flex; align-items:center;">🔌 Plugin RespiraSense ↗</a>
+</div>
+
+<!-- ======= PANEL 1: GASOMETRIA ======= -->
+<div class="panel active" id="panel-gasometria">
+  <div class="gcols">
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-head"><span class="icon">🩸</span><span class="htitle">Dados Gasométricos</span></div>
+        <div class="card-body">
+          <div class="inp-row3">
+            <div class="inp-group"><div class="inp-label">pH <span class="unit">7.35–7.45</span></div><input class="inp" id="g-ph" type="number" step="0.01" value="7.35" oninput="analyzeGas()"/></div>
+            <div class="inp-group"><div class="inp-label">PaCO₂ <span class="unit">mmHg</span></div><input class="inp" id="g-pco2" type="number" value="45" oninput="analyzeGas()"/></div>
+            <div class="inp-group"><div class="inp-label">PaO₂ <span class="unit">mmHg</span></div><input class="inp" id="g-po2" type="number" value="75" oninput="analyzeGas()"/></div>
+          </div>
+          <div class="inp-row3">
+            <div class="inp-group"><div class="inp-label">HCO₃ <span class="unit">mEq/L</span></div><input class="inp" id="g-hco3" type="number" value="24" oninput="analyzeGas()"/></div>
+            <div class="inp-group"><div class="inp-label">BE <span class="unit">mEq/L</span></div><input class="inp" id="g-be" type="number" value="0" step="0.1" oninput="analyzeGas()"/></div>
+            <div class="inp-group"><div class="inp-label">Lactato <span class="unit">mmol/L</span></div><input class="inp" id="g-lac" type="number" value="1.2" step="0.1" oninput="analyzeGas()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">SaO₂ <span class="unit">%</span></div><input class="inp" id="g-sao2" type="number" value="97" oninput="analyzeGas()"/></div>
+            <div class="inp-group"><div class="inp-label">FiO₂ <span class="unit">fração</span></div><input class="inp" id="g-fio2" type="number" value="0.21" step="0.01" min="0.21" max="1.0" oninput="analyzeGas()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">Hgb <span class="unit">g/dL</span></div><input class="inp" id="g-hgb" type="number" value="13" step="0.1" oninput="analyzeGas()"/></div>
+            <div class="inp-group"><div class="inp-label">Temp <span class="unit">°C</span></div><input class="inp" id="g-temp" type="number" value="37" step="0.1" oninput="analyzeGas()"/></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="icon">⚙️</span><span class="htitle">Dados Ventilatórios Atuais</span></div>
+        <div class="card-body">
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">Suporte atual</div>
+              <select class="inp" id="g-modo" onchange="analyzeGas()">
+                <option value="aa">Ar ambiente</option>
+                <option value="cn">Cateter nasal O₂</option>
+                <option value="mn">Máscara simples</option>
+                <option value="mr">Máscara Venturi</option>
+                <option value="mnr">Máscara NRB</option>
+                <option value="cnaf">CNAF/Oxigênio AF</option>
+                <option value="vni">VNI (BiPAP/CPAP)</option>
+                <option value="vm">VM invasiva</option>
+              </select>
+            </div>
+            <div class="inp-group"><div class="inp-label">Peso ideal <span class="unit">kg</span></div><input class="inp" id="g-peso" type="number" value="70" oninput="analyzeGas()"/></div>
+          </div>
+          <div class="inp-row" id="vm-params-mini" style="display:none">
+            <div class="inp-group"><div class="inp-label">PEEP <span class="unit">cmH₂O</span></div><input class="inp" id="g-peep" type="number" value="5" oninput="analyzeGas()"/></div>
+            <div class="inp-group"><div class="inp-label">VC <span class="unit">mL</span></div><input class="inp" id="g-vc" type="number" value="420" oninput="analyzeGas()"/></div>
+          </div>
+          <div class="inp-row" id="vm-params-mini2" style="display:none">
+            <div class="inp-group"><div class="inp-label">P Platô <span class="unit">cmH₂O</span></div><input class="inp" id="g-pplat" type="number" value="26" oninput="analyzeGas()"/></div>
+            <div class="inp-group"><div class="inp-label">P Pico <span class="unit">cmH₂O</span></div><input class="inp" id="g-ppico" type="number" value="30" oninput="analyzeGas()"/></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- DERIVED METRICS -->
+      <div class="gaso-grid" id="gaso-metrics"></div>
+
+      <!-- INTERPRETATION -->
+      <div id="gas-interpretation"></div>
+
+      <!-- CONDUCT -->
+      <div id="gas-conduct"></div>
+
+      <!-- AI -->
+      <div class="ai-box">
+        <div class="ai-box-head">🤖 Análise IA — Raciocínio Clínico</div>
+        <div class="ai-box-body">
+          <div class="ai-out ai-typing" id="gas-ai-out">Insira os dados gasométricos para obter análise detalhada...</div>
+          <div class="btn-row" style="margin-top:10px">
+            <button class="btn btn-acc" onclick="runGasAI()">Analisar com IA ↗</button>
+            <button class="btn btn-purple" onclick="runGasAIConduct()">Conduta detalhada ↗</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= PANEL 2: ESCADA DE SUPORTE ======= -->
+<div class="panel" id="panel-suporte">
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-head"><span class="icon">📊</span><span class="htitle">Parâmetros do Paciente</span></div>
+        <div class="card-body">
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">SpO₂ / SaO₂ <span class="unit">%</span></div><input class="inp" id="s-spo2" type="number" value="94" oninput="evalSupport()"/></div>
+            <div class="inp-group"><div class="inp-label">FiO₂ atual <span class="unit">%</span></div><input class="inp" id="s-fio2p" type="number" value="21" oninput="evalSupport()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">FR <span class="unit">rpm</span></div><input class="inp" id="s-fr" type="number" value="20" oninput="evalSupport()"/></div>
+            <div class="inp-group"><div class="inp-label">Uso musculatura acess.</div>
+              <select class="inp" id="s-umacc" onchange="evalSupport()">
+                <option value="0">Ausente</option>
+                <option value="1">Leve</option>
+                <option value="2">Moderado</option>
+                <option value="3">Intenso</option>
+              </select>
+            </div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-label" style="margin-bottom:4px">Nível de consciência</div>
+          </div>
+          <select class="inp" id="s-cons" onchange="evalSupport()" style="margin-bottom:10px">
+            <option value="4">Acordado e orientado</option>
+            <option value="3">Confuso / desorientado</option>
+            <option value="2">Sonolento / rebaixado</option>
+            <option value="1">Não responsivo</option>
+          </select>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">PaO₂/FiO₂ (P/F)</div><input class="inp" id="s-pf" type="number" value="300" oninput="evalSupport()"/></div>
+            <div class="inp-group"><div class="inp-label">pH</div><input class="inp" id="s-ph2" type="number" value="7.38" step="0.01" oninput="evalSupport()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">PaCO₂</div><input class="inp" id="s-pco22" type="number" value="42" oninput="evalSupport()"/></div>
+            <div class="inp-group"><div class="inp-label">Lactato</div><input class="inp" id="s-lac2" type="number" value="1.2" step="0.1" oninput="evalSupport()"/></div>
+          </div>
+          <div class="inp-group">
+            <div class="inp-label">Proteção de via aérea</div>
+            <select class="inp" id="s-va" onchange="evalSupport()">
+              <option value="1">Preservada (tossindo, engolindo)</option>
+              <option value="0">Comprometida / ausente</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="card-head"><span class="icon">🎯</span><span class="htitle">Suporte Atual</span></div>
+        <div class="card-body" id="support-current-detail"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-head"><span class="icon">🎚️</span><span class="htitle">Escada de Suporte Respiratório</span></div>
+        <div class="card-body">
+          <div class="ladder" id="support-ladder"></div>
+        </div>
+      </div>
+
+      <div id="support-decision"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= PANEL 3: VM PROTETORA ======= -->
+<div class="panel" id="panel-vm">
+  <div class="gcols3">
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-head"><span class="icon">⚙️</span><span class="htitle">Parâmetros Ventilatórios</span></div>
+        <div class="card-body">
+          <div class="inp-group"><div class="inp-label">Modo ventilatório</div>
+            <select class="inp" id="vm-modo" onchange="calcVM()">
+              <option value="VCV">VCV — Volume Controlado</option>
+              <option value="PCV">PCV — Pressão Controlada</option>
+              <option value="PSV">PSV — Pressão de Suporte</option>
+              <option value="SIMV">SIMV + PS</option>
+              <option value="APRV">APRV / Bi-Level</option>
+              <option value="HFOV">HFOV (Alta freq. oscilatória)</option>
+            </select>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">Altura <span class="unit">cm</span></div><input class="inp" id="vm-alt" type="number" value="170" oninput="calcVM()"/></div>
+            <div class="inp-group"><div class="inp-label">Sexo</div>
+              <select class="inp" id="vm-sex" onchange="calcVM()"><option value="M">M</option><option value="F">F</option></select>
+            </div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">VC definido <span class="unit">mL</span></div><input class="inp" id="vm-vc" type="number" value="420" oninput="calcVM()"/></div>
+            <div class="inp-group"><div class="inp-label">FR <span class="unit">rpm</span></div><input class="inp" id="vm-fr" type="number" value="16" oninput="calcVM()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">PEEP <span class="unit">cmH₂O</span></div><input class="inp" id="vm-peep" type="number" value="8" oninput="calcVM()"/></div>
+            <div class="inp-group"><div class="inp-label">FiO₂ <span class="unit">0.21–1.0</span></div><input class="inp" id="vm-fio2" type="number" value="0.5" step="0.01" oninput="calcVM()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">P Platô <span class="unit">cmH₂O</span></div><input class="inp" id="vm-pplat" type="number" value="26" oninput="calcVM()"/></div>
+            <div class="inp-group"><div class="inp-label">P Pico <span class="unit">cmH₂O</span></div><input class="inp" id="vm-ppico" type="number" value="30" oninput="calcVM()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">Ti <span class="unit">s</span></div><input class="inp" id="vm-ti" type="number" value="1.0" step="0.1" oninput="calcVM()"/></div>
+            <div class="inp-group"><div class="inp-label">P Suporte <span class="unit">cmH₂O</span></div><input class="inp" id="vm-ps" type="number" value="10" oninput="calcVM()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">P Platô real <span class="unit">cmH₂O</span></div><input class="inp" id="vm-pexp" type="number" value="24" oninput="calcVM()"/></div>
+            <div class="inp-group"><div class="inp-label">P Insp Total <span class="unit">cmH₂O</span></div><input class="inp" id="vm-pinsp" type="number" value="28" oninput="calcVM()"/></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">📊 Métricas de Segurança Ventilatória</div>
+      <div class="g4" id="vm-metrics" style="margin-bottom:14px"></div>
+
+      <div id="vm-safety-alerts" style="margin-bottom:14px"></div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-head"><span class="icon">🎯</span><span class="htitle">Tabela PEEP/FiO₂ — ARDSNet</span></div>
+        <div class="card-body" style="overflow-x:auto">
+          <table id="peep-fio2-table">
+            <thead><tr><th>FiO₂</th><th>PEEP (Low)</th><th>PEEP (High)</th><th>Status</th></tr></thead>
+            <tbody id="peep-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="vm-conduct"></div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-head"><span class="icon">📈</span><span class="htitle">Curvas Ventilatórias</span></div>
+        <div class="card-body">
+          <div style="margin-bottom:6px;font-size:10px;color:var(--muted);display:flex;gap:8px">
+            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" onclick="drawCurve('pressao')">P × t</button>
+            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" onclick="drawCurve('fluxo')">F × t</button>
+            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" onclick="drawCurve('volume')">V × t</button>
+            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" onclick="drawCurve('pvloop')">P-V loop</button>
+          </div>
+          <canvas id="wave-canvas" width="600" height="220" style="width:100%;border-radius:var(--r);background:var(--s3)"></canvas>
+          <div style="text-align:center;font-size:9px;color:var(--muted);margin-top:4px" id="wave-label">Curva Pressão × Tempo</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="icon">🔢</span><span class="htitle">Peso Predito + Metas</span></div>
+        <div class="card-body" id="vm-targets"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= PANEL 4: ASSINCRONIAS ======= -->
+<div class="panel" id="panel-assincronias">
+  <div class="g2">
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-head"><span class="icon">🔍</span><span class="htitle">Identificar Assincronia — Inserir Parâmetros</span></div>
+        <div class="card-body">
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">Modo ventilatório</div>
+              <select class="inp" id="a-modo" onchange="diagAsync()">
+                <option>VCV</option><option>PCV</option><option>PSV</option><option>SIMV</option>
+              </select>
+            </div>
+            <div class="inp-group"><div class="inp-label">FR máquina <span class="unit">rpm</span></div><input class="inp" id="a-frmaq" type="number" value="16" oninput="diagAsync()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">FR total (c/ esforço)</div><input class="inp" id="a-frtot" type="number" value="20" oninput="diagAsync()"/></div>
+            <div class="inp-group"><div class="inp-label">Ti máquina <span class="unit">s</span></div><input class="inp" id="a-timaq" type="number" value="1.0" step="0.1" oninput="diagAsync()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">Ti neural estimado <span class="unit">s</span></div><input class="inp" id="a-tineural" type="number" value="0.8" step="0.1" oninput="diagAsync()"/></div>
+            <div class="inp-group"><div class="inp-label">PEEP <span class="unit">cmH₂O</span></div><input class="inp" id="a-peep" type="number" value="5" oninput="diagAsync()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">Sensib. gatilho</div>
+              <select class="inp" id="a-trig" onchange="diagAsync()">
+                <option value="flow">Fluxo (padrão)</option>
+                <option value="press">Pressão</option>
+              </select>
+            </div>
+            <div class="inp-group"><div class="inp-label">Pico fluxo <span class="unit">L/min</span></div><input class="inp" id="a-pflow" type="number" value="60" oninput="diagAsync()"/></div>
+          </div>
+          <div>
+            <div class="inp-label" style="margin-bottom:6px">Achados observados na curva</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+              <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-duplo" onchange="diagAsync()"> Duplo disparo</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-reverso" onchange="diagAsync()"> Fluxo reverso exp</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-tardio" onchange="diagAsync()"> Ciclagem tardia</label>
+              <label style="display:flex;align-items:center;gap=6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-precoce" onchange="diagAsync()"> Ciclagem precoce</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-falha" onchange="diagAsync()"> Falha de gatilho</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-autop" onchange="diagAsync()"> Auto-PEEP suspeito</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="icon">📸</span><span class="htitle">Análise por Foto de Curva</span></div>
+        <div class="card-body">
+          <div style="border:1px dashed var(--border2);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer" onclick="document.getElementById('curve-img').click()">
+            <div style="font-size:24px;margin-bottom:6px">📷</div>
+            <div style="font-size:11px;color:var(--muted)">Clique para anexar foto da curva do ventilador</div>
+            <input type="file" id="curve-img" accept="image/*" style="display:none" onchange="analyzeCurvePhoto(this)"/>
+          </div>
+          <div id="curve-photo-result" style="margin-top:10px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">⚡ Diagnóstico de Assincronias</div>
+      <div id="async-results"></div>
+
+      <div class="sep"></div>
+      <div class="section-title">📚 Guia de Assincronias</div>
+      <div id="async-guide"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= PANEL 5: SARA ======= -->
+<div class="panel" id="panel-sara">
+  <div class="gcols">
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-head"><span class="icon">🔴</span><span class="htitle">Critérios de Berlim — SARA/SDRA</span></div>
+        <div class="card-body">
+          <div class="inp-group">
+            <div class="inp-label">Instalação</div>
+            <select class="inp" id="b-inst">
+              <option value="1">Aguda (&lt;7 dias de evento clínico)</option>
+              <option value="0">Crônica / incerta</option>
+            </select>
+          </div>
+          <div class="inp-group">
+            <div class="inp-label">Radiografia / TC</div>
+            <select class="inp" id="b-rx">
+              <option value="1">Infiltrado bilateral não explicado</option>
+              <option value="0">Unilateral ou explicável</option>
+            </select>
+          </div>
+          <div class="inp-group">
+            <div class="inp-label">Origem</div>
+            <select class="inp" id="b-orig">
+              <option value="1">Não cardiogênica (sem IC / PAWP &lt;18)</option>
+              <option value="0">Cardiogênica / causa hídrica</option>
+            </select>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">PaO₂ <span class="unit">mmHg</span></div><input class="inp" id="b-po2" type="number" value="75" oninput="evalSARA()"/></div>
+            <div class="inp-group"><div class="inp-label">FiO₂ <span class="unit">fração</span></div><input class="inp" id="b-fio2" type="number" value="0.5" step="0.01" oninput="evalSARA()"/></div>
+          </div>
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">PEEP atual <span class="unit">cmH₂O</span></div><input class="inp" id="b-peep" type="number" value="8" oninput="evalSARA()"/></div>
+            <div class="inp-group"><div class="inp-label">P/F Calculado</div><input class="inp" id="b-pf" readonly style="color:var(--acc)"/></div>
+          </div>
+          <div class="btn-row"><button class="btn btn-acc" onclick="evalSARA()">Avaliar SARA</button></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="icon">🎯</span><span class="htitle">Intervenções de Resgate</span></div>
+        <div class="card-body">
+          <div class="inp-row">
+            <div class="inp-group"><div class="inp-label">P/F atual</div><input class="inp" id="r-pf" type="number" value="150" oninput="evalRescue()"/></div>
+            <div class="inp-group"><div class="inp-label">Horas em decúbito</div><input class="inp" id="r-hrs" type="number" value="0" oninput="evalRescue()"/></div>
+          </div>
+          <div class="inp-group">
+            <div class="inp-label">Dose de vasopressor</div>
+            <select class="inp" id="r-vasp" onchange="evalRescue()">
+              <option value="0">Sem vasopressor</option>
+              <option value="1">Baixa dose (&lt;0.25 mcg/kg/min)</option>
+              <option value="2">Alta dose (≥0.25 mcg/kg/min)</option>
+            </select>
+          </div>
+          <div id="rescue-recommendations" style="margin-top:10px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div id="sara-result" style="margin-bottom:14px"></div>
+      <div id="sara-protocol"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= PANEL 6: FÓRMULAS ======= -->
+<div class="panel" id="panel-formulas">
+  <div class="g3" id="formulas-content"></div>
+</div>
+
+<!-- ======= PANEL 7: REFERÊNCIA RÁPIDA ======= -->
+<div class="panel" id="panel-referencia">
+  <div class="g2" id="ref-content"></div>
+</div>
+
+<script>
+// ============ UTILITIES ============
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if(id==='vm') calcVM();
+  if(id==='assincronias') {diagAsync(); buildAsyncGuide();}
+  if(id==='formulas') buildFormulas();
+  if(id==='referencia') buildRef();
+  if(id==='suporte') evalSupport();
+  if(id==='sara') evalSARA();
+}
+
+function statusClass(val, ok_low, ok_high, warn_low, warn_high) {
+  if(val>=ok_low && val<=ok_high) return 'ok';
+  if(val>=warn_low && val<=warn_high) return 'warn';
+  return 'danger';
+}
+
+function metricCard(val, lbl, status, unit) {
+  return `<div class="metric"><div class="metric-val" style="color:${status==='ok'?'var(--acc2)':status==='warn'?'var(--warn)':'var(--danger)'}">${val}<span style="font-size:11px;color:var(--muted);margin-left:3px">${unit||''}</span></div><div class="metric-lbl">${lbl}</div><span class="metric-status ${status}">${status==='ok'?'Normal':status==='warn'?'Atenção':'Crítico'}</span></div>`;
+}
+
+// ============ GASOMETRIA ============
+function analyzeGas() {
+  const pH = parseFloat(document.getElementById('g-ph').value)||7.4;
+  const pco2 = parseFloat(document.getElementById('g-pco2').value)||40;
+  const po2 = parseFloat(document.getElementById('g-po2').value)||95;
+  const hco3 = parseFloat(document.getElementById('g-hco3').value)||24;
+  const be = parseFloat(document.getElementById('g-be').value)||0;
+  const lac = parseFloat(document.getElementById('g-lac').value)||1.0;
+  const sao2 = parseFloat(document.getElementById('g-sao2').value)||97;
+  const fio2 = parseFloat(document.getElementById('g-fio2').value)||0.21;
+  const hgb = parseFloat(document.getElementById('g-hgb').value)||13;
+  const modo = document.getElementById('g-modo').value;
+  const peso = parseFloat(document.getElementById('g-peso').value)||70;
+
+  // Show/hide VM mini params
+  const showVM = modo==='vm';
+  document.getElementById('vm-params-mini').style.display = showVM?'grid':'none';
+  document.getElementById('vm-params-mini2').style.display = showVM?'grid':'none';
+
+  // CALCULATED VALUES
+  const pf = Math.round(po2 / fio2);
+  const pao2_expected = (713 * fio2) - (pco2 / 0.8);
+  const aa_grad = Math.round(pao2_expected - po2);
+  const do2 = Math.round((1.34 * hgb * (sao2/100) + 0.003 * po2) * 5 * 10); // approx
+  const cao2 = ((1.34 * hgb * (sao2/100)) + (0.003 * po2)).toFixed(2);
+
+  // ACID-BASE
+  let ab_diag = '';
+  let ab_color = 'var(--acc2)';
+  if(pH<7.35) {
+    ab_color='var(--danger)';
+    if(pco2>45) ab_diag = 'Acidose Respiratória';
+    else if(hco3<22) ab_diag = 'Acidose Metabólica';
+    else ab_diag = 'Acidose Mista';
+  } else if(pH>7.45) {
+    ab_color='var(--warn)';
+    if(pco2<35) ab_diag = 'Alcalose Respiratória';
+    else if(hco3>26) ab_diag = 'Alcalose Metabólica';
+    else ab_diag = 'Alcalose Mista';
+  } else {
+    ab_diag = 'Equilíbrio Ácido-Base Normal';
+  }
+
+  // COMPENSATION CHECK
+  let comp_note = '';
+  if(pH<7.35 && pco2>45) {
+    const expected_hco3 = 24 + 0.1*(pco2-40);
+    comp_note = hco3 >= expected_hco3-2 ? 'Com compensação metabólica adequada' : 'Sem compensação metabólica adequada';
+  }
+  if(pH<7.35 && hco3<22) {
+    const expected_pco2 = 1.5*hco3 + 8;
+    comp_note = Math.abs(pco2-expected_pco2)<2 ? 'Com compensação respiratória (Winter)' : 'Compensação respiratória inadequada';
+  }
+
+  // P/F CLASSIFICATION
+  let pf_class='';
+  if(pf>=300) pf_class='<span class="ok metric-status">Normal ≥300</span>';
+  else if(pf>=200) pf_class='<span class="warn metric-status">SARA Leve 200-300</span>';
+  else if(pf>=100) pf_class='<span class="metric-status" style="color:var(--acc3);background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.3)">SARA Moderada 100-200</span>';
+  else pf_class='<span class="danger metric-status">SARA Grave &lt;100</span>';
+
+  // LACTATO
+  let lac_class='ok';
+  if(lac>2) lac_class='warn';
+  if(lac>4) lac_class='danger';
+
+  // METRICS RENDER
+  const metrics = document.getElementById('gaso-metrics');
+  metrics.innerHTML =
+    metricCard(pH.toFixed(2), 'pH', pH>=7.35&&pH<=7.45?'ok':pH<7.25||pH>7.55?'danger':'warn', '') +
+    metricCard(pco2, 'PaCO₂', pco2>=35&&pco2<=45?'ok':pco2<30||pco2>55?'danger':'warn', 'mmHg') +
+    metricCard(po2, 'PaO₂', po2>=80?'ok':po2>=60?'warn':'danger', 'mmHg') +
+    metricCard(hco3, 'HCO₃', hco3>=22&&hco3<=26?'ok':hco3<16||hco3>30?'danger':'warn', 'mEq/L') +
+    metricCard(pf, 'P/F ratio', pf>=300?'ok':pf>=200?'warn':'danger', '') +
+    metricCard(lac.toFixed(1), 'Lactato', lac_class, 'mmol/L') +
+    metricCard(aa_grad, 'A-a gradiente', aa_grad<=20?'ok':aa_grad<=35?'warn':'danger', 'mmHg') +
+    metricCard(cao2, 'CaO₂', parseFloat(cao2)>=17?'ok':parseFloat(cao2)>=14?'warn':'danger', 'mL/dL');
+
+  // INTERPRETATION
+  const interp = document.getElementById('gas-interpretation');
+  interp.innerHTML = `
+    <div class="card" style="margin-bottom:10px">
+      <div class="card-head"><span class="icon">🧪</span><span class="htitle">Interpretação</span></div>
+      <div class="card-body">
+        <div style="font-size:14px;font-weight:600;color:${ab_color};margin-bottom:4px">${ab_diag}</div>
+        ${comp_note?`<div style="font-size:11px;color:var(--muted);margin-bottom:6px">${comp_note}</div>`:''}
+        <div style="margin-bottom:4px">P/F: <b>${pf}</b> ${pf_class}</div>
+        <div style="font-size:11px;color:var(--muted)">Gradiente A-a: ${aa_grad} mmHg (normal 0–20) · CaO₂: ${cao2} mL/dL</div>
+        ${be<-4?`<div class="alert alert-warn" style="margin-top:8px">⚠️ Base Excess ${be}: déficit significativo de bases — investigar causa metabólica</div>`:''}
+        ${lac>2?`<div class="alert alert-danger" style="margin-top:8px">🔴 Lactato elevado (${lac}) — hipoperfusão tecidual? Choque? Sepse?</div>`:''}
+        ${ph<7.20?`<div class="alert alert-danger" style="margin-top:8px">🚨 pH CRÍTICO &lt;7.20 — ação imediata necessária!</div>`:''}
+      </div>
+    </div>`;
+
+  // CONDUCT
+  const conduct = document.getElementById('gas-conduct');
+  let actions = [];
+  let level = 'maintain';
+
+  if(pf<100 || (ph<7.25 && pco2>55) || po2<55) {
+    level='escalate';
+    if(pf<100) actions.push('P/F <100: considerar PRONA se em VM (≥16h/dia, PROSEVA)');
+    if(ph<7.25 && pco2>55) actions.push('Acidose respiratória grave: aumentar FR ou VC (cuidado com Pplat)');
+    if(po2<55) actions.push('Hipoxemia grave: aumentar FiO₂ e/ou PEEP (tabela ARDSNet)');
+    if(pf<150) actions.push('Considerar bloqueio neuromuscular (cisatracúrio 48h)');
+    if(pf<80) actions.push('Avaliar critérios para VV-ECMO (Murray score, pH)');
+  } else if(pf>=300 && ph>=7.35 && ph<=7.45 && lac<2) {
+    level='deescalate';
+    actions.push('Gasometria dentro dos alvos — considerar desmame/redução de suporte');
+    actions.push('Avaliar ventilação espontânea: protocolo SAT + SBT');
+    actions.push('Se em VM: avaliar PS trial / TRE (peça T ou PS baixo)');
+  } else {
+    actions.push('Manter parâmetros atuais — monitorar tendência');
+    if(pco2>50) actions.push('Hipercapnia leve: tolerar se pH >7.25 (hipercapnia permissiva)');
+    if(po2<75) actions.push('Hipoxemia leve: otimizar PEEP e FiO₂');
+  }
+
+  const boxClass = level==='escalate'?'conduct-escalate':level==='deescalate'?'conduct-deescalate':'conduct-maintain';
+  const boxTitle = level==='escalate'?'🔴 ESCALONAR SUPORTE':level==='deescalate'?'🟢 REDUZIR SUPORTE / DESMAME':'🟡 MANTER — MONITORAR';
+
+  conduct.innerHTML = `<div class="conduct-box ${boxClass}">
+    <div class="conduct-title">${boxTitle}</div>
+    <ul class="conduct-items">${actions.map(a=>`<li>${a}</li>`).join('')}</ul>
+  </div>`;
+}
+
+// ============ SUPPORT LADDER ============
+const SUPPORT_LEVELS = [
+  {id:'aa', label:'Ar ambiente', fio2:'21%', desc:'SpO₂ alvo 94–98%', tags:[]},
+  {id:'cn', label:'Cateter Nasal O₂', fio2:'24–44%', desc:'1–6 L/min → FiO₂ ≈ 21%+(4×L/min)', tags:['noninv']},
+  {id:'mn', label:'Máscara Simples', fio2:'40–60%', desc:'5–10 L/min', tags:['noninv']},
+  {id:'mr', label:'Máscara Venturi', fio2:'24–60%', desc:'Precisa FiO₂, ajuste por cor', tags:['noninv']},
+  {id:'mnr', label:'Máscara NRB', fio2:'60–95%', desc:'10–15 L/min com reservatório', tags:['noninv']},
+  {id:'cnaf', label:'CNAF / Oxigenoterapia AF', fio2:'21–100%', desc:'Fluxo 30–60 L/min, PEEP funcional ~1 cmH₂O/10L', tags:['noninv']},
+  {id:'vni', label:'VNI — BiPAP/CPAP', fio2:'21–100%', desc:'IPAP/EPAP, melhor tolerância, menos intubação', tags:['noninv']},
+  {id:'vm', label:'VM Invasiva — IOT', fio2:'21–100%', desc:'Controle total da via aérea + VM protetora', tags:['invasive']},
+];
+
+function evalSupport() {
+  const spo2 = parseFloat(document.getElementById('s-spo2').value)||94;
+  const fio2p = parseFloat(document.getElementById('s-fio2p').value)||21;
+  const fr = parseFloat(document.getElementById('s-fr').value)||18;
+  const umacc = parseInt(document.getElementById('s-umacc').value)||0;
+  const cons = parseInt(document.getElementById('s-cons').value)||4;
+  const pf = parseFloat(document.getElementById('s-pf').value)||300;
+  const ph = parseFloat(document.getElementById('s-ph2').value)||7.38;
+  const pco2 = parseFloat(document.getElementById('s-pco22').value)||42;
+  const lac = parseFloat(document.getElementById('s-lac2').value)||1.2;
+  const va = parseInt(document.getElementById('s-va').value)||1;
+
+  // DETERMINE CURRENT LEVEL
+  let currentIdx = 0;
+  if(fio2p<=21 && spo2>=94) currentIdx=0;
+  else if(fio2p<=44) currentIdx=1;
+  else if(fio2p<=60) currentIdx=3;
+  else if(fio2p<=95) currentIdx=4;
+  else currentIdx=5;
+
+  // SCORING
+  let score = 0;
+  if(spo2<90) score+=3;
+  else if(spo2<94) score+=1;
+  if(fr>30) score+=2;
+  else if(fr>25) score+=1;
+  if(umacc>=2) score+=2;
+  else if(umacc===1) score+=1;
+  if(cons<=2) score+=3;
+  if(pf<100) score+=3;
+  else if(pf<200) score+=2;
+  else if(pf<300) score+=1;
+  if(ph<7.25) score+=3;
+  else if(ph<7.35) score+=1;
+  if(pco2>55) score+=2;
+  if(lac>4) score+=2;
+  else if(lac>2) score+=1;
+  if(va===0) score+=3;
+
+  // RECOMMEND
+  let recIdx = currentIdx;
+  let action = 'maintain';
+  if(score>=8 || va===0 || (ph<7.25&&pco2>55)) { recIdx=7; action='escalate-vm'; }
+  else if(score>=5) { recIdx=Math.min(currentIdx+2,6); action='escalate'; }
+  else if(score>=3) { recIdx=Math.min(currentIdx+1,6); action='escalate-mild'; }
+  else if(score<=1 && currentIdx>0) { recIdx=currentIdx-1; action='deescalate'; }
+
+  // RENDER LADDER
+  const ladder = document.getElementById('support-ladder');
+  ladder.innerHTML = SUPPORT_LEVELS.map((s,i) => {
+    let cls = 'future';
+    if(i===recIdx) cls='active';
+    else if(i<recIdx) cls='past';
+    const tagHtml = s.tags.map(t=>`<span class="tag tag-${t}">${t==='invasive'?'Invasivo':'Não-Invasivo'}</span>`).join('');
+    return `<div class="ladder-item ${cls}">
+      <div class="ladder-dot"></div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:500">${s.label} <span style="color:var(--muted);font-size:10px">${s.fio2}</span></div>
+        <div style="font-size:10px;color:var(--muted)">${s.desc}</div>
+      </div>
+      ${tagHtml}
+      ${i===recIdx?'<span style="color:var(--acc);font-size:11px">← RECOMENDADO</span>':''}
+    </div>`;
+  }).join('');
+
+  // DECISION BOX
+  const dec = document.getElementById('support-decision');
+  let msg='', cls='conduct-maintain';
+  if(action==='escalate-vm') {
+    cls='conduct-escalate';
+    msg=`<div class="conduct-box ${cls}"><div class="conduct-title">🚨 INTUBAÇÃO OROTRAQUEAL INDICADA</div>
+    <ul class="conduct-items">
+    ${va===0?'<li>Via aérea sem proteção → indicação absoluta de IOT</li>':''}
+    ${ph<7.25&&pco2>55?'<li>Acidose respiratória grave não responsiva → IOT</li>':''}
+    ${pf<100?'<li>P/F &lt;100 após otimização de VNI/CNAF → IOT + VM protetora</li>':''}
+    ${spo2<85?'<li>Hipoxemia refratária → IOT urgente</li>':''}
+    <li>Preparar ISR: Etomidato 0.3 mg/kg + Succinilcolina 1.5 mg/kg (ou Rocurônio 1.2 mg/kg)</li>
+    <li>Pré-oxigenação: CNAF 60L/min por 3 min OU VNI 3 min</li>
+    </ul></div>`;
+  } else if(action==='escalate') {
+    cls='conduct-escalate';
+    msg=`<div class="conduct-box ${cls}"><div class="conduct-title">🔴 ESCALONAR SUPORTE → ${SUPPORT_LEVELS[recIdx].label}</div>
+    <ul class="conduct-items">
+    <li>Score de deterioração respiratória: ${score}/14 pontos</li>
+    <li>Aumentar FiO₂ para alvo SpO₂ 94–98%</li>
+    ${fr>25?'<li>FR elevada: avaliar drive respiratório e conforto</li>':''}
+    ${pf<200?'<li>P/F <200: monitorar progressão para critérios de VM</li>':''}
+    <li>Reavaliar resposta em 1–2 horas</li>
+    </ul></div>`;
+  } else if(action==='deescalate') {
+    cls='conduct-deescalate';
+    msg=`<div class="conduct-box ${cls}"><div class="conduct-title">🟢 REDUZIR SUPORTE → ${SUPPORT_LEVELS[recIdx].label}</div>
+    <ul class="conduct-items">
+    <li>Parâmetros estáveis — candidato a desmame de suporte</li>
+    <li>Reduzir FiO₂/fluxo gradualmente</li>
+    <li>Reavaliar SpO₂ após 30 min de redução</li>
+    ${currentIdx>=7?'<li>Se em VM: iniciar protocolo SAT + SBT diário</li>':''}
+    </ul></div>`;
+  } else {
+    msg=`<div class="conduct-box conduct-maintain"><div class="conduct-title">🟡 MANTER SUPORTE ATUAL</div>
+    <ul class="conduct-items"><li>Score: ${score}/14 — estável</li><li>Monitorar SpO₂, FR e estado clínico</li><li>Reavaliar em 4–6h</li></ul></div>`;
+  }
+  dec.innerHTML=msg;
+
+  // CURRENT DETAIL
+  document.getElementById('support-current-detail').innerHTML=`
+    <div class="g2">
+      <div class="metric"><div class="metric-val" style="color:${spo2>=94?'var(--acc2)':spo2>=88?'var(--warn)':'var(--danger)'}">${spo2}%</div><div class="metric-lbl">SpO₂</div></div>
+      <div class="metric"><div class="metric-val" style="color:${fr<=20?'var(--acc2)':fr<=25?'var(--warn)':'var(--danger)'}">${fr}</div><div class="metric-lbl">FR rpm</div></div>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--muted)">Score deterioração: <b style="color:${score<=2?'var(--acc2)':score<=5?'var(--warn)':'var(--danger)'}">${score}/14</b></div>`;
+}
+
+// ============ VM PROTETORA ============
+const PEEP_FIO2 = [
+  {fio2:0.3, peep_low:5, peep_high:12},
+  {fio2:0.4, peep_low:5, peep_high:14},
+  {fio2:0.5, peep_low:8, peep_high:14},
+  {fio2:0.6, peep_low:10, peep_high:16},
+  {fio2:0.7, peep_low:10, peep_high:16},
+  {fio2:0.8, peep_low:14, peep_high:18},
+  {fio2:0.9, peep_low:14, peep_high:18},
+  {fio2:1.0, peep_low:18, peep_high:24},
+];
+
+function calcVM() {
+  const alt = parseFloat(document.getElementById('vm-alt').value)||170;
+  const sex = document.getElementById('vm-sex').value;
+  const vc = parseFloat(document.getElementById('vm-vc').value)||420;
+  const fr = parseFloat(document.getElementById('vm-fr').value)||16;
+  const peep = parseFloat(document.getElementById('vm-peep').value)||8;
+  const fio2 = parseFloat(document.getElementById('vm-fio2').value)||0.5;
+  const pplat = parseFloat(document.getElementById('vm-pplat').value)||26;
+  const ppico = parseFloat(document.getElementById('vm-ppico').value)||30;
+  const ti = parseFloat(document.getElementById('vm-ti').value)||1.0;
+  const ps = parseFloat(document.getElementById('vm-ps').value)||10;
+
+  // PESO PREDITO
+  const ibw = sex==='M' ? 50 + 0.91*(alt-152.4) : 45.5 + 0.91*(alt-152.4);
+  const ibw_r = Math.round(ibw*10)/10;
+  const vc_ideal_low = Math.round(ibw*4);
+  const vc_ideal_high = Math.round(ibw*6);
+  const vc_mkg = (vc/ibw).toFixed(1);
+
+  // DERIVED
+  const dp = pplat - peep; // driving pressure
+  const te = (60/fr) - ti;
+  const ier = Math.round((ti/te)*10)/10;
+  const mv = Math.round((vc*fr)/1000*10)/10;
+  const crs = vc/(pplat-peep); // compliance respiratória estática
+  const crs_r = Math.round(crs);
+  const mp = 0.098 * fr * (dp + peep + 1) * vc/1000; // Mechanical power approx
+  const mp_r = Math.round(mp*10)/10;
+
+  // SAFETY CHECKS
+  const alerts = [];
+  if(vc/ibw>6.5) alerts.push({cls:'danger', msg:`VC/Peso predito: ${vc_mkg} mL/kg — ACIMA DO LIMITE PROTETOR (máx 6 mL/kg). Reduzir VC!`});
+  if(pplat>30) alerts.push({cls:'danger', msg:`Pplat ${pplat} cmH₂O > 30 — risco de baro/volutrauma! Reduzir VC ou FR.`});
+  if(dp>15) alerts.push({cls:'danger', msg:`Driving Pressure ${dp} cmH₂O > 15 — preditor independente de mortalidade! Otimizar PEEP ou reduzir VC.`});
+  if(ppico-pplat>10) alerts.push({cls:'warn', msg:`ΔP pico-platô (${ppico-pplat} cmH₂O) elevado — resistência aumentada? Verificar secreções, broncospasmo.`});
+  if(mp_r>17) alerts.push({cls:'warn', msg:`Potência mecânica ${mp_r} J/min > 17 — risco de P-SILI/lesão induzida por ventilador.`});
+  if(ti>1.5) alerts.push({cls:'warn', msg:`Ti longo (${ti}s) — risco de assincronia (ciclagem tardia). Verificar paciente.`});
+  if(te<0.8) alerts.push({cls:'danger', msg:`Te muito curto (${te.toFixed(1)}s) — risco de auto-PEEP e aprisionamento aéreo!`});
+
+  // METRICS
+  const vmm = document.getElementById('vm-metrics');
+  vmm.innerHTML =
+    metricCard(vc_mkg,'VC/PBW mL/kg', parseFloat(vc_mkg)<=6?'ok':parseFloat(vc_mkg)<=7?'warn':'danger','mL/kg') +
+    metricCard(pplat,'P Platô', pplat<=28?'ok':pplat<=30?'warn':'danger','cmH₂O') +
+    metricCard(dp,'Driving P', dp<=13?'ok':dp<=15?'warn':'danger','cmH₂O') +
+    metricCard(crs_r,'Compliance', crs_r>=50?'ok':crs_r>=30?'warn':'danger','mL/cmH₂O') +
+    metricCard(mv,'VM', mv>=5&&mv<=10?'ok':mv>12?'danger':'warn','L/min') +
+    metricCard(mp_r,'Pot. Mecânica', mp_r<=12?'ok':mp_r<=17?'warn':'danger','J/min') +
+    metricCard(te.toFixed(1),'Te', parseFloat(te)>=1?'ok':parseFloat(te)>=0.5?'warn':'danger','s') +
+    metricCard(ier,'Rel. I:E', ier<=0.5?'ok':ier<=1?'warn':'danger','');
+
+  // ALERTS
+  const sal = document.getElementById('vm-safety-alerts');
+  sal.innerHTML = alerts.map(a=>`<div class="alert alert-${a.cls}">${a.cls==='danger'?'🚨':'⚠️'} ${a.msg}</div>`).join('');
+
+  // PEEP TABLE
+  const tbody = document.getElementById('peep-table-body');
+  tbody.innerHTML = PEEP_FIO2.map(row => {
+    const isCurrent = Math.abs(row.fio2-fio2)<0.05;
+    const inRange = peep>=row.peep_low-1 && peep<=row.peep_high+1;
+    return `<tr style="${isCurrent?'background:rgba(0,212,255,0.08)':''}">
+      <td>${(row.fio2*100).toFixed(0)}%${isCurrent?` <span class="tag tag-ok">ATUAL</span>`:''}</td>
+      <td>${row.peep_low} cmH₂O</td>
+      <td>${row.peep_high} cmH₂O</td>
+      <td><span class="metric-status ${isCurrent&&!inRange?'danger':isCurrent?'ok':'info'}">${isCurrent&&!inRange?'Fora do alvo':isCurrent?'OK':'-'}</span></td>
+    </tr>`;
+  }).join('');
+
+  // TARGETS
+  document.getElementById('vm-targets').innerHTML=`
+    <div class="g2">
+      <div><div style="font-size:10px;color:var(--muted)">Peso Predito (IBW)</div><div style="font-size:20px;font-weight:700;color:var(--acc)">${ibw_r} kg</div></div>
+      <div><div style="font-size:10px;color:var(--muted)">VC alvo protetor</div><div style="font-size:16px;font-weight:600;color:var(--acc2)">${vc_ideal_low}–${vc_ideal_high} mL</div></div>
+    </div>
+    <div class="sep"></div>
+    <div style="font-size:11px;color:var(--muted);line-height:2">
+      <div>VC atual: <b style="color:${parseFloat(vc_mkg)<=6?'var(--acc2)':'var(--danger)'}">${vc} mL (${vc_mkg} mL/kg)</b></div>
+      <div>I:E ratio: <b style="color:var(--text)">${ti.toFixed(1)} : ${te.toFixed(1)}</b></div>
+      <div>Compliance: <b style="color:var(--text)">${crs_r} mL/cmH₂O</b></div>
+    </div>`;
+
+  // VM CONDUCT
+  const vmc = document.getElementById('vm-conduct');
+  let vm_actions = [];
+  if(dp>15) vm_actions.push('🔴 Driving Pressure crítica: otimizar PEEP (teste PEEP incremental) e/ou reduzir VC');
+  if(pplat>30) vm_actions.push('🔴 Pplat >30: reduzir VC em passos de 1 mL/kg até limite 4 mL/kg');
+  if(crs_r<25) vm_actions.push('⚠️ Compliance muito reduzida: considerar recrutamento alveolar + PEEP ótimo');
+  if(mp_r>17) vm_actions.push('⚠️ Potência mecânica elevada: reduzir FR e/ou DP');
+  if(vm_actions.length===0) vm_actions.push('✅ Parâmetros dentro dos alvos protetores (ARDSNet / Berlim)');
+  vmc.innerHTML=`<div class="conduct-box ${vm_actions[0].startsWith('🔴')?'conduct-escalate':vm_actions[0].startsWith('✅')?'conduct-deescalate':'conduct-maintain'}">
+    <div class="conduct-title">VM — Ajustes Recomendados</div>
+    <ul class="conduct-items">${vm_actions.map(a=>`<li>${a}</li>`).join('')}</ul>
+  </div>`;
+
+  drawCurve('pressao');
+}
+
+// ============ WAVEFORM DRAWING ============
+function drawCurve(type) {
+  const canvas = document.getElementById('wave-canvas');
+  const ctx = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#18222e';
+  ctx.fillRect(0,0,W,H);
+
+  // Grid
+  ctx.strokeStyle='#1e2d3d'; ctx.lineWidth=0.5;
+  for(let i=0;i<W;i+=40){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,H);ctx.stroke();}
+  for(let i=0;i<H;i+=30){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(W,i);ctx.stroke();}
+
+  const pplat = parseFloat(document.getElementById('vm-pplat').value)||26;
+  const ppico = parseFloat(document.getElementById('vm-ppico').value)||30;
+  const peep = parseFloat(document.getElementById('vm-peep').value)||8;
+  const vc = parseFloat(document.getElementById('vm-vc').value)||420;
+  const ti = parseFloat(document.getElementById('vm-ti').value)||1.0;
+  const fr = parseFloat(document.getElementById('vm-fr').value)||16;
+  const te = (60/fr)-ti;
+  const cycles = 3;
+  const cycleW = W/cycles;
+  const tiW = cycleW*(ti/(ti+te));
+  const teW = cycleW-tiW;
+
+  if(type==='pressao') {
+    document.getElementById('wave-label').textContent='Curva Pressão × Tempo (VCV)';
+    ctx.strokeStyle='#00d4ff'; ctx.lineWidth=2;
+    const baseline = H*0.8;
+    const scale = (H*0.65)/(ppico+5);
+    for(let c=0;c<cycles;c++) {
+      const x0=c*cycleW;
+      ctx.beginPath();
+      ctx.moveTo(x0, baseline-peep*scale);
+      ctx.lineTo(x0+2, baseline-ppico*scale);
+      ctx.lineTo(x0+tiW-2, baseline-pplat*scale);
+      ctx.lineTo(x0+tiW, baseline-peep*scale);
+      ctx.lineTo(x0+cycleW, baseline-peep*scale);
+      ctx.stroke();
+    }
+    // Labels
+    ctx.fillStyle='#00d4ff'; ctx.font='10px JetBrains Mono';
+    ctx.fillText(`Ppico: ${ppico}`, 10, baseline-ppico*scale-5);
+    ctx.fillText(`Pplat: ${pplat}`, 10, baseline-pplat*scale-5);
+    ctx.fillStyle='#5a7a95';
+    ctx.fillText(`PEEP: ${peep}`, 10, baseline-peep*scale-5);
+  } else if(type==='fluxo') {
+    document.getElementById('wave-label').textContent='Curva Fluxo × Tempo';
+    const pflow=parseFloat(document.getElementById('vm-pinsp')||{value:60}).value||60;
+    const mid=H/2;
+    ctx.strokeStyle='#00ff88'; ctx.lineWidth=2;
+    for(let c=0;c<cycles;c++){
+      const x0=c*cycleW;
+      ctx.beginPath();
+      ctx.moveTo(x0,mid);
+      ctx.lineTo(x0+2,mid-60);
+      ctx.lineTo(x0+tiW-2,mid-60);
+      ctx.lineTo(x0+tiW,mid);
+      ctx.lineTo(x0+tiW+2,mid+40);
+      const decay=tiW*1.5;
+      for(let dx=0;dx<teW;dx++){
+        const y=mid+40*Math.exp(-dx/decay*3);
+        ctx.lineTo(x0+tiW+dx,y);
+      }
+      ctx.stroke();
+    }
+    ctx.fillStyle='#00ff88'; ctx.font='10px JetBrains Mono';
+    ctx.fillText('Fluxo inspiratório', 10, mid-65);
+    ctx.fillText('Fluxo expiratório', 10, mid+55);
+  } else if(type==='volume') {
+    document.getElementById('wave-label').textContent='Curva Volume × Tempo';
+    const baseline=H*0.85;
+    const scale=(H*0.65)/(vc+50);
+    ctx.strokeStyle='#b44fff'; ctx.lineWidth=2;
+    for(let c=0;c<cycles;c++){
+      const x0=c*cycleW;
+      ctx.beginPath();
+      ctx.moveTo(x0,baseline);
+      for(let dx=0;dx<tiW;dx++){ctx.lineTo(x0+dx,baseline-vc*scale*(dx/tiW));}
+      ctx.lineTo(x0+tiW,baseline-vc*scale);
+      for(let dx=0;dx<teW;dx++){ctx.lineTo(x0+tiW+dx,baseline-vc*scale*(1-dx/teW));}
+      ctx.stroke();
+    }
+    ctx.fillStyle='#b44fff'; ctx.font='10px JetBrains Mono';
+    ctx.fillText(`VC: ${vc} mL`, 10, baseline-vc*scale-5);
+  } else if(type==='pvloop') {
+    document.getElementById('wave-label').textContent='Loop Pressão-Volume (P-V)';
+    ctx.strokeStyle='#ffc107'; ctx.lineWidth=2;
+    const cx=W*0.35, cy=H*0.5;
+    const sx=(W*0.55)/(ppico+5), sy=(H*0.75)/(vc+50);
+    ctx.beginPath();
+    let pts=[];
+    for(let i=0;i<=50;i++){
+      const t=i/50;
+      const p=peep+(ppico-peep)*t;
+      const v=vc*Math.pow(t,0.7);
+      pts.push([cx+p*sx, cy-v*sy]);
+    }
+    for(let i=50;i>=0;i--){
+      const t=i/50;
+      const p=peep+(pplat-peep)*t;
+      const v=vc*Math.pow(t,0.85)*0.95;
+      pts.push([cx+p*sx, cy-v*sy]);
+    }
+    ctx.moveTo(pts[0][0],pts[0][1]);
+    pts.forEach(p=>ctx.lineTo(p[0],p[1]));
+    ctx.stroke();
+    ctx.fillStyle='#ffc107'; ctx.font='10px JetBrains Mono';
+    ctx.fillText('LIP',cx+peep*sx-15,cy-10);
+    ctx.fillText('UIP',cx+(ppico-5)*sx,cy-vc*0.9*sy-10);
+    ctx.strokeStyle='rgba(255,193,7,0.2)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(cx,cy-H*0.4); ctx.lineTo(cx,cy+H*0.1); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx-10,cy); ctx.lineTo(cx+W*0.6,cy); ctx.stroke();
+  }
+}
+
+// ============ ASSINCRONIAS ============
+function diagAsync() {
+  const modo = document.getElementById('a-modo').value;
+  const frmaq = parseFloat(document.getElementById('a-frmaq').value)||16;
+  const frtot = parseFloat(document.getElementById('a-frtot').value)||20;
+  const timaq = parseFloat(document.getElementById('a-timaq').value)||1.0;
+  const tineural = parseFloat(document.getElementById('a-tineural').value)||0.8;
+  const peep = parseFloat(document.getElementById('a-peep').value)||5;
+  const duplo = document.getElementById('a-duplo').checked;
+  const reverso = document.getElementById('a-reverso').checked;
+  const tardio = document.getElementById('a-tardio').checked;
+  const precoce = document.getElementById('a-precoce').checked;
+  const falha = document.getElementById('a-falha').checked;
+  const autop = document.getElementById('a-autop').checked;
+
+  const results = [];
+
+  if(duplo) results.push({
+    name:'Duplo Disparo (Double triggering)',
+    severity:'danger',
+    mech:'Ti neural > Ti ventilador → paciente inicia 2º ciclo imediatamente',
+    action:'Aumentar Ti, aumentar PS, reduzir FR, analgesia/sedação, BNM se grave',
+    consequence:'VT efetivo 2x → volutrauma, SARA induzida por P-SILI'
+  });
+  if(falha) results.push({
+    name:'Falha de Gatilho (Missed trigger)',
+    severity:'warn',
+    mech:'Esforço do paciente não detectado → Auto-PEEP, sensibilidade baixa, fraqueza muscular',
+    action:'Verificar auto-PEEP, aumentar sensibilidade do gatilho, reduzir PEEP, fisioterapia',
+    consequence:'Trabalho respiratório aumentado, desconforto, fadiga muscular'
+  });
+  if(tardio) results.push({
+    name:'Ciclagem Tardia (Late cycling)',
+    severity:'warn',
+    mech:'Ti ventilador > Ti neural → expira contra pressão positiva',
+    action:'Reduzir Ti ou aumentar % ciclagem de fluxo (PSV: 50→25%), sedação leve',
+    consequence:'Auto-PEEP, duplo disparo, assincronia Ti-Te'
+  });
+  if(precoce) results.push({
+    name:'Ciclagem Precoce (Early cycling)',
+    severity:'info',
+    mech:'Ti ventilador < Ti neural → paciente ativa expiração com Ti da máquina ainda ativo',
+    action:'Aumentar Ti, reduzir % ciclagem de fluxo (PSV: 25→50%), verificar vazamento',
+    consequence:'VT reduzido, drive respiratório aumentado, disforia'
+  });
+  if(reverso) results.push({
+    name:'Fluxo Reverso na Expiração (Expiratory flow reversal)',
+    severity:'warn',
+    mech:'Auto-PEEP → aprisionamento aéreo → hiperinsuflação dinâmica',
+    action:'Reduzir FR, aumentar Te, reduzir VC, verificar broncoespasmo, PEEP extrínseco ≤ auto-PEEP intrínseco',
+    consequence:'Hiperinsuflação, pneumotórax, hipotensão, falha de gatilho'
+  });
+  if(autop) results.push({
+    name:'Auto-PEEP / Hiperinsuflação Dinâmica',
+    severity:'danger',
+    mech:'Te insuficiente para expiração completa → aumento VEF residual',
+    action:'Medir auto-PEEP (pausa expiratória 0,5–1s), reduzir FR, aumentar Te (I:E 1:3-4), broncodilatadores',
+    consequence:'Barotrauma, falha de gatilho, instabilidade hemodinâmica grave'
+  });
+  if(frtot-frmaq>=5) results.push({
+    name:`Aumento Drive Respiratório (FR espontânea: +${frtot-frmaq} rpm)`,
+    severity:'warn',
+    mech:'FR total muito maior que FR mandatória → drive aumentado → P-SILI',
+    action:'Analgesia otimizada, sedação leve, considerar BNM 48h se P/F <150',
+    consequence:'P-SILI, SARA autossustentada, dificuldade de desmame'
+  });
+  if(Math.abs(timaq-tineural)>0.4) results.push({
+    name:`Incompatibilidade Ti máquina vs neural (Δ ${Math.abs(timaq-tineural).toFixed(1)}s)`,
+    severity:'warn',
+    mech:`Ti máquina (${timaq}s) muito ${timaq>tineural?'maior':'menor'} que Ti neural (~${tineural}s)`,
+    action: timaq>tineural?'Reduzir Ti ou aumentar % ciclagem':'Aumentar Ti para corresponder ao Ti neural',
+    consequence:'Duplo disparo ou ciclagem precoce com desconforto'
+  });
+
+  const res = document.getElementById('async-results');
+  if(results.length===0) {
+    res.innerHTML=`<div class="alert alert-ok">✅ Nenhuma assincronia detectada com os parâmetros inseridos. Monitorar clinicamente.</div>`;
+    return;
+  }
+  res.innerHTML = results.map(r=>`
+    <div class="async-card">
+      <div class="async-name">${r.name}</div>
+      <div class="async-criteria" style="color:var(--muted);font-size:10px;margin-bottom:4px">Mecanismo: ${r.mech}</div>
+      <div class="async-action">→ Ação: ${r.action}</div>
+      <div style="font-size:10px;color:var(--acc3);margin-top:3px">⚠️ Consequência: ${r.consequence}</div>
+    </div>`).join('');
+}
+
+function buildAsyncGuide() {
+  const guide = document.getElementById('async-guide');
+  const asyncTypes = [
+    {name:'Duplo Disparo',key:'Ti neural > Ti ventilador',curve:'Pico de pressão duplo / 2 VTs consecutivos',action:'↑ Ti, ↑ PS, BNM'},
+    {name:'Falha de Gatilho',key:'Auto-PEEP / Sensibilidade baixa',curve:'Esforço visível sem ciclo gerado',action:'↑ Sens, ↓ PEEP, PEEP extrínseco'},
+    {name:'Ciclagem Tardia',key:'Ti maq > Ti neural',curve:'Desvio negativo fluxo ao fim de Ti',action:'↓ Ti ou ↑ % ciclagem PSV'},
+    {name:'Ciclagem Precoce',key:'Ti maq < Ti neural',curve:'Esforço após ciclagem (inflexão)',action:'↑ Ti ou ↓ % ciclagem PSV'},
+    {name:'Auto-PEEP',key:'Te insuficiente',curve:'Fluxo não retorna a zero na expiração',action:'↑ Te, ↓ FR, broncodilatador'},
+    {name:'P-SILI',key:'Drive neural excessivo',curve:'Oscilações de pressão no ciclo',action:'Sedação, BNM 48h (P/F <150)'},
+  ];
+  guide.innerHTML=`<table><thead><tr><th>Assincronia</th><th>Mecanismo</th><th>Na curva</th><th>Ação</th></tr></thead><tbody>${
+    asyncTypes.map(a=>`<tr><td style="color:var(--acc3);font-weight:500">${a.name}</td><td style="color:var(--muted)">${a.key}</td><td>${a.curve}</td><td style="color:var(--acc2)">${a.action}</td></tr>`).join('')
+  }</tbody></table>`;
+}
+
+function analyzeCurvePhoto(input) {
+  if(!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('curve-photo-result').innerHTML = `
+      <div style="margin-bottom:8px"><img src="${e.target.result}" style="max-width:100%;border-radius:var(--r);border:1px solid var(--border)"/></div>
+      <div class="ai-box"><div class="ai-box-head">🤖 Analisando curva com IA</div>
+      <div class="ai-box-body"><div class="ai-out" id="curve-ai-out">Analisando...</div></div></div>`;
+    analyzeCurveWithAI(e.target.result);
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function analyzeCurveWithAI(imgData) {
+  const out = document.getElementById('curve-ai-out');
+  out.innerHTML='<span class="ai-typing">Analisando curva ventilatória...</span><span class="cursor"></span>';
+  const base64 = imgData.split(',')[1];
+  const mtype = imgData.split(';')[0].split(':')[1];
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1000,
+      messages:[{role:'user',content:[
+        {type:'image',source:{type:'base64',media_type:mtype,data:base64}},
+        {type:'text',text:'Você é um especialista em ventilação mecânica e medicina intensiva. Analise esta imagem de curva ventilatória. Identifique: 1) Qual tipo de curva (pressão, fluxo, volume, P-V loop); 2) Modo ventilatório aparente; 3) Presença de assincronias (duplo disparo, falha de gatilho, ciclagem tardia/precoce, auto-PEEP, fluxo reverso); 4) Anomalias de forma; 5) Condutas recomendadas. Seja direto e clínico.'}
+      ]}]
+    })
+  }).then(r=>r.json()).then(d=>{
+    out.innerHTML=(d.content&&d.content[0]&&d.content[0].text)?d.content[0].text.replace(/\n/g,'<br>'):'Sem resposta da IA.';
+  }).catch(()=>{ out.innerHTML='<span style="color:var(--danger)">Erro na análise. Verifique conexão.</span>'; });
+}
+
+// ============ SARA ============
+function evalSARA() {
+  const inst = document.getElementById('b-inst').value;
+  const rx = document.getElementById('b-rx').value;
+  const orig = document.getElementById('b-orig').value;
+  const po2 = parseFloat(document.getElementById('b-po2').value)||75;
+  const fio2 = parseFloat(document.getElementById('b-fio2').value)||0.5;
+  const peep = parseFloat(document.getElementById('b-peep').value)||8;
+  const pf = Math.round(po2/fio2);
+  document.getElementById('b-pf').value = pf;
+
+  const allCriteria = inst==='1'&&rx==='1'&&orig==='1';
+  let stage='', stageColor='', mort='';
+  if(!allCriteria) { stage='Critérios incompletos'; stageColor='var(--muted)'; }
+  else if(pf>300) { stage='Sem SARA'; stageColor='var(--acc2)'; mort='—'; }
+  else if(pf>=200) { stage='SARA LEVE'; stageColor='var(--warn)'; mort='~27%'; }
+  else if(pf>=100) { stage='SARA MODERADA'; stageColor='var(--acc3)'; mort='~32%'; }
+  else { stage='SARA GRAVE'; stageColor='var(--danger)'; mort='~45%'; }
+
+  const res = document.getElementById('sara-result');
+  res.innerHTML = `
+    <div class="card">
+      <div class="card-head"><span class="icon">🔴</span><span class="htitle">Classificação de Berlim 2012</span></div>
+      <div class="card-body">
+        <div style="font-family:var(--syne);font-size:26px;font-weight:800;color:${stageColor};margin-bottom:8px">${stage}</div>
+        <div class="berlin-bar">
+          <div class="berlin-mild">LEVE (P/F 200-300)</div>
+          <div class="berlin-mod">MODERADA (100-200)</div>
+          <div class="berlin-sev">GRAVE (&lt;100)</div>
+        </div>
+        <div style="font-size:12px;margin-top:8px">
+          <span style="color:var(--muted)">P/F atual: </span><b style="color:${stageColor}">${pf} mmHg</b>
+          ${mort?`<span style="color:var(--muted);margin-left:12px">Mortalidade esperada: </span><b style="color:${stageColor}">${mort}</b>`:''}
+        </div>
+        ${!allCriteria?`<div class="alert alert-warn" style="margin-top:8px">⚠️ Critérios de Berlim incompletos: verificar instalação aguda, RX bilateral e origem não cardiogênica</div>`:''}
+      </div>
+    </div>`;
+
+  const proto = document.getElementById('sara-protocol');
+  if(stage.includes('SARA')) {
+    proto.innerHTML=`
+    <div class="conduct-box conduct-escalate">
+      <div class="conduct-title">📋 PROTOCOLO SARA — ARDSNet / SBTI 2023</div>
+      <ul class="conduct-items">
+        <li>VM invasiva obrigatória com estratégia protetora</li>
+        <li>VC 4–6 mL/kg peso predito (IBW)</li>
+        <li>Pplat ≤ 30 cmH₂O (alvo ≤28)</li>
+        <li>Driving Pressure ≤ 15 cmH₂O (alvo ≤13)</li>
+        <li>PEEP pela tabela ARDSNet (FiO₂/PEEP)</li>
+        <li>SaO₂ alvo 88–95% — hipoxemia permissiva</li>
+        <li>Hipercapnia permissiva (pH ≥ 7.20 tolerável)</li>
+        ${pf<200?'<li>P/F &lt;200: iniciar protocolo de PRONA se sem contraindicação</li>':''}
+        ${pf<150?'<li>P/F &lt;150: BNM (cisatracúrio 37,5 mg/h por 48h) — reavaliado pós-ROSE</li>':''}
+        ${pf<100?'<li>P/F &lt;100: avaliar VV-ECMO (Murray Score, pH, reversibilidade)</li>':''}
+      </ul>
+    </div>`;
+  }
+
+  evalRescue();
+}
+
+function evalRescue() {
+  const pf = parseFloat(document.getElementById('r-pf').value)||150;
+  const hrs = parseFloat(document.getElementById('r-hrs').value)||0;
+  const vasp = parseInt(document.getElementById('r-vasp').value)||0;
+  const rec = document.getElementById('rescue-recommendations');
+
+  let items = [];
+  if(pf<200) items.push({ok:true,text:'✅ PRONA indicada (P/F <200): posicionar 16h/dia, mínimo 1 ciclo — PROSEVA 2013'});
+  if(pf<200 && hrs<16) items.push({ok:false,text:`⏱ Completar ciclo de prona: ${(16-hrs).toFixed(0)}h restantes (total ≥16h/ciclo)`});
+  if(pf<150) items.push({ok:false,text:'⚠️ BNM 48h: Cisatracúrio 37,5 mg/h — indicado se P/F <150 (reavaliado pós-ROSE trial)'});
+  if(vasp===2) items.push({ok:false,text:'⚠️ Vasopressor em alta dose: corticoide (Hidrocortisona 200 mg/dia) — Sepse+SARA'});
+  if(pf<100) items.push({ok:false,text:'🔴 P/F <100 refratário: avaliar critérios VV-ECMO (Murray Score ≥3 OU pH <7.20 refratário)'});
+  if(pf>=200) items.push({ok:true,text:'✅ P/F ≥200: sem indicação atual de resgate agressivo'});
+  if(items.length===0) items.push({ok:true,text:'Inserir P/F para recomendações'});
+
+  rec.innerHTML = items.map(i=>`<div class="alert ${i.ok?'alert-ok':'alert-warn'}" style="margin-bottom:6px">${i.text}</div>`).join('');
+}
+
+// ============ FÓRMULAS ============
+function buildFormulas() {
+  const content = document.getElementById('formulas-content');
+  const formulas = [
+    {cat:'Gasometria & Oxigenação', items:[
+      {name:'P/F Ratio',eq:'PaO₂ / FiO₂',note:'Normal >300 | SARA: L:200-300 | M:100-200 | G:<100'},
+      {name:'Gradiente A-a',eq:'(FiO₂ × 713) − (PaCO₂/0.8) − PaO₂',note:'Normal: 4–12 mmHg (jovem) | Aumenta com idade'},
+      {name:'CaO₂ (Conteúdo arterial O₂)',eq:'(1.34 × Hgb × SaO₂) + (0.003 × PaO₂)',note:'Normal: 18–21 mL/dL'},
+      {name:'DO₂ (Oferta de O₂)',eq:'CaO₂ × DC × 10',note:'Normal: 900–1100 mL/min | DC = Débito cardíaco'},
+      {name:'VO₂ (Consumo de O₂)',eq:'(CaO₂ − CvO₂) × DC × 10',note:'Normal: 250–350 mL/min'},
+      {name:'Equação de Winter (Comp. resp.)',eq:'PaCO₂ esperado = 1.5 × HCO₃ + 8 (±2)',note:'Se PaCO₂ > esperado: acidose mista'},
+    ]},
+    {cat:'Ventilação Mecânica', items:[
+      {name:'Peso Predito — Homem',eq:'IBW = 50 + 0.91 × (altura − 152.4)',note:'Usar para calcular VC protetor (4–6 mL/kg)'},
+      {name:'Peso Predito — Mulher',eq:'IBW = 45.5 + 0.91 × (altura − 152.4)',note:''},
+      {name:'Driving Pressure (DP)',eq:'DP = Pplat − PEEP',note:'Alvo ≤15 cmH₂O | ≤13 ideal | Preditor mortalidade'},
+      {name:'Compliance Estática (Crs)',eq:'Crs = VC / (Pplat − PEEP)',note:'Normal: 50–100 mL/cmH₂O | SARA: <40'},
+      {name:'Compliance Dinâmica',eq:'Cdyn = VC / (Ppico − PEEP)',note:'Menor que Cest → resistência aumentada'},
+      {name:'Potência Mecânica',eq:'MP = 0.098 × FR × DP × VC/1000',note:'Alvo <12 J/min | >17 J/min = risco P-SILI'},
+      {name:'Volume Minuto',eq:'VM = VC × FR',note:'Normal: 5–8 L/min | SARA: permitir ↑ FR para compensar ↓ VC'},
+      {name:'Relação I:E',eq:'I:E = Ti : Te',note:'Padrão 1:2 | DPOC: 1:3–1:4 | SARA: pode variar'},
+      {name:'Auto-PEEP',eq:'Medir por pausa expiratória ≥0.5s',note:'PEEP extrínseco ≤ 80% Auto-PEEP intrínseco'},
+    ]},
+    {cat:'FiO₂ por Dispositivo', items:[
+      {name:'Cateter Nasal (CN)',eq:'FiO₂ = 0.21 + (0.04 × L/min)',note:'1L=24% | 2L=28% | 4L=36% | 6L=44%'},
+      {name:'Máscara Venturi',eq:'FiO₂ por cor: azul24% | branco28% | amarelo35% | vermelho40% | verde60%',note:'Entrega precisa de FiO₂'},
+      {name:'Máscara NRB',eq:'FiO₂ ≈ 60–95%',note:'Fluxo 10–15 L/min | Reservatório inflado'},
+      {name:'CNAF',eq:'FiO₂ 21–100% | PEEP funcional = fluxo/10 cmH₂O',note:'Fluxo 30–60 L/min | ROX index = (SpO₂/FiO₂)/FR'},
+      {name:'VNI BiPAP',eq:'IPAP−EPAP = pressão de suporte efetiva',note:'IPAP 8–20 | EPAP (PEEP) 4–8 | FiO₂ 21–100%'},
+    ]},
+    {cat:'Escores e Critérios', items:[
+      {name:'ROX Index (CNAF)',eq:'(SpO₂/FiO₂) / FR',note:'>4.88 às 12h → baixo risco de IOT | <3.85 → alta chance IOT'},
+      {name:'HACOR Score (VNI)',eq:'FC+pH+GCS+FR+PaO₂/FiO₂ → pontuação',note:'>5 pontos = falha de VNI em 48h'},
+      {name:'Murray Score (ECMO)',eq:'(Pplat+PEEP+PF+infiltrado)/4',note:'≥3 = considerar ECMO | pH <7.20 refratário'},
+      {name:'Regra 20-30 (NMD)',eq:'CVF <20mL/kg OU PImax <-20 OU PEmax <30',note:'Qualquer critério = IOT em doença neuromuscular'},
+    ]}
+  ];
+
+  content.innerHTML = formulas.map(cat=>`
+    <div>
+      <div class="section-title">${cat.cat}</div>
+      ${cat.items.map(f=>`
+        <div class="formula-card">
+          <div class="formula-name">${f.name}</div>
+          <div class="formula-eq">${f.eq}</div>
+          ${f.note?`<div class="formula-note">ℹ ${f.note}</div>`:''}
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+// ============ REFERÊNCIA RÁPIDA ============
+function buildRef() {
+  const content = document.getElementById('ref-content');
+  content.innerHTML=`
+  <div>
+    <div class="section-title">⚡ Parâmetros Padrão — VM Protetora SARA</div>
+    <table>
+      <thead><tr><th>Parâmetro</th><th>Alvo</th><th>Limite máximo</th></tr></thead>
+      <tbody>
+        <tr><td>VC</td><td>4–6 mL/kg IBW</td><td>≤ 6 mL/kg</td></tr>
+        <tr><td>Pplat</td><td>≤ 28 cmH₂O</td><td>≤ 30 cmH₂O</td></tr>
+        <tr><td>Driving Pressure</td><td>≤ 13 cmH₂O</td><td>≤ 15 cmH₂O</td></tr>
+        <tr><td>PEEP</td><td>Tabela ARDSNet</td><td>Individualizar</td></tr>
+        <tr><td>SaO₂</td><td>88–95%</td><td>Hipox. permissiva</td></tr>
+        <tr><td>pH</td><td>≥ 7.20</td><td>Hipercapnia perm.</td></tr>
+        <tr><td>FR</td><td>16–35 rpm</td><td>Monitorar auto-PEEP</td></tr>
+        <tr><td>Potência mecânica</td><td>< 12 J/min</td><td>< 17 J/min</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sep"></div>
+    <div class="section-title">🎚️ FiO₂ por Dispositivo</div>
+    <table>
+      <thead><tr><th>Dispositivo</th><th>Fluxo</th><th>FiO₂</th></tr></thead>
+      <tbody>
+        <tr><td>Cateter nasal</td><td>1–6 L/min</td><td>24–44%</td></tr>
+        <tr><td>Máscara simples</td><td>5–10 L/min</td><td>40–60%</td></tr>
+        <tr><td>Venturi azul</td><td>4 L/min</td><td>24%</td></tr>
+        <tr><td>Venturi branco</td><td>4 L/min</td><td>28%</td></tr>
+        <tr><td>Venturi amarelo</td><td>8 L/min</td><td>35%</td></tr>
+        <tr><td>Venturi vermelho</td><td>10 L/min</td><td>40%</td></tr>
+        <tr><td>Venturi verde</td><td>15 L/min</td><td>60%</td></tr>
+        <tr><td>Máscara NRB</td><td>10–15 L/min</td><td>60–95%</td></tr>
+        <tr><td>CNAF</td><td>20–60 L/min</td><td>21–100%</td></tr>
+        <tr><td>VNI BiPAP/CPAP</td><td>—</td><td>21–100%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <div class="section-title">🔴 Critérios de IOT de Emergência</div>
+    <div class="alert alert-danger">
+      ● SpO₂ &lt;90% refratária a O₂ suplementar<br>
+      ● FR &gt;35 rpm com fadiga muscular<br>
+      ● pH &lt;7.25 com PaCO₂ progressivo<br>
+      ● Rebaixamento de consciência / GCS &lt;8<br>
+      ● Falha de VNI ou CNAF (ROX &lt;3.85)<br>
+      ● Perda de proteção de via aérea<br>
+      ● P/F &lt;100 após otimização de suporte<br>
+      ● Instabilidade hemodinâmica refratária
+    </div>
+
+    <div class="sep"></div>
+    <div class="section-title">🩺 Protocolo PRONA</div>
+    <table>
+      <thead><tr><th>Item</th><th>Critério/Valor</th></tr></thead>
+      <tbody>
+        <tr><td>Indicação</td><td>P/F &lt;150 com PEEP ≥5</td></tr>
+        <tr><td>Duração</td><td>≥16h/ciclo</td></tr>
+        <tr><td>Revertimento</td><td>P/F &gt;150 por 4h em 2 ciclos</td></tr>
+        <tr><td>Mortalidade</td><td>↓28% (PROSEVA 2013)</td></tr>
+        <tr><td>Contraindicações</td><td>Instab. espinhal, hemoptise, PCR recente</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sep"></div>
+    <div class="section-title">⚙️ Sequência Rápida de Intubação (ISR)</div>
+    <table>
+      <thead><tr><th>Droga</th><th>Dose</th><th>Observação</th></tr></thead>
+      <tbody>
+        <tr><td>Etomidato</td><td>0.3 mg/kg IV</td><td>Preferido (estável hemo.)</td></tr>
+        <tr><td>Ketamina</td><td>1–2 mg/kg IV</td><td>Broncoespasmo / instável</td></tr>
+        <tr><td>Propofol</td><td>1–2 mg/kg IV</td><td>Evitar se hipotensão</td></tr>
+        <tr><td>Succinilcolina</td><td>1.5 mg/kg IV</td><td>Cuidado: K+, LM, queimado</td></tr>
+        <tr><td>Rocurônio</td><td>1.2 mg/kg IV</td><td>Sugamadex disponível?</td></tr>
+        <tr><td>Vecurônio</td><td>0.1 mg/kg IV</td><td>Efeito prolongado MG</td></tr>
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ============ AI FUNCTIONS ============
+function runGasAI() {
+  const ph=document.getElementById('g-ph').value;
+  const pco2=document.getElementById('g-pco2').value;
+  const po2=document.getElementById('g-po2').value;
+  const hco3=document.getElementById('g-hco3').value;
+  const be=document.getElementById('g-be').value;
+  const lac=document.getElementById('g-lac').value;
+  const fio2=document.getElementById('g-fio2').value;
+  const sao2=document.getElementById('g-sao2').value;
+  const modo=document.getElementById('g-modo').value;
+  const peso=document.getElementById('g-peso').value;
+  const out=document.getElementById('gas-ai-out');
+  out.innerHTML='<span class="ai-typing">Analisando gasometria...</span><span class="cursor"></span>';
+  const prompt=`Você é especialista em medicina intensiva. Analise esta gasometria arterial de forma clínica e didática:
+pH: ${ph} | PaCO₂: ${pco2} | PaO₂: ${po2} | HCO₃: ${hco3} | BE: ${be} | Lactato: ${lac} | SaO₂: ${sao2}% | FiO₂: ${fio2} | Suporte atual: ${modo} | Peso: ${peso}kg
+
+Responda em tópicos: 1) Distúrbio ácido-base principal; 2) Compensação (adequada?); 3) Status de oxigenação (P/F, gradiente A-a); 4) Significado clínico; 5) Próxima conduta imediata. Seja direto, use linguagem de UTI.`;
+  callAI(prompt, out);
+}
+
+function runGasAIConduct() {
+  const ph=document.getElementById('g-ph').value;
+  const pco2=document.getElementById('g-pco2').value;
+  const po2=document.getElementById('g-po2').value;
+  const fio2=document.getElementById('g-fio2').value;
+  const lac=document.getElementById('g-lac').value;
+  const modo=document.getElementById('g-modo').value;
+  const out=document.getElementById('gas-ai-out');
+  out.innerHTML='<span class="ai-typing">Elaborando conduta...</span><span class="cursor"></span>';
+  const pf=Math.round(po2/fio2);
+  const prompt=`Especialista UTI — elabore conduta clínica detalhada: pH ${ph}, PaCO₂ ${pco2}, PaO₂ ${po2}, FiO₂ ${fio2} (P/F=${pf}), Lactato ${lac}, suporte atual: ${modo}. Inclua: ajustes ventilatórios específicos (PEEP, FiO₂, FR, VC se em VM), necessidade de escalonamento, indicação de prona/BNM/ECMO se aplicável, alvos gasométricos.`;
+  callAI(prompt, out);
+}
+
+function callAI(prompt, el) {
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+  }).then(r=>r.json()).then(d=>{
+    el.innerHTML=(d.content&&d.content[0]&&d.content[0].text)?d.content[0].text.replace(/\n/g,'<br>'):'Sem resposta.';
+  }).catch(()=>{ el.innerHTML='<span style="color:var(--danger)">Erro de conexão com IA.</span>'; });
+}
+
+// ============ INIT ============
+analyzeGas();
+evalSupport();
+calcVM();
+drawCurve('pressao');
+buildAsyncGuide();
+evalSARA();
+
+// Auto-recalc on modo change
+document.getElementById('g-modo').addEventListener('change', analyzeGas);
+</script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="RespiraSense ICU — calculadora respiratória e dashboard de ventilação mecânica para Enciclopédia Médica Intensiva." />
+  <title>RespiraSense ICU | Enciclopédia Médica Intensiva</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <meta name="theme-color" content="#07111f" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../respiracrit.html" title="Voltar ao RespiraCrit">
+      <span class="brand-icon">🫁</span>
+      <span>
+        <strong>RespiraSense ICU</strong>
+        <small>Calculadora respiratória • UTI • TEMI</small>
+      </span>
+    </a>
+    <nav class="top-actions">
+      <a class="ghost" href="../../../index.html">🏠 Página principal Enciclopédia</a>
+      <span id="offlineStatus" class="status-pill online">🟢 online</span>
+      <button id="btnInstallPWA" class="ghost" type="button">📲 Instalar</button>
+      <button id="btnPrint" class="ghost" type="button">🖨️ Imprimir</button>
+      <button id="btnExport" class="primary" type="button">⬇️ Exportar JSON</button>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">🧠 Motor didático de apoio à decisão — versão HTML estática • upgrade Antigravity v3</p>
+        <h1>RespiraSense ICU 🫁</h1>
+        <p class="hero-subtitle">Dashboard plugável para oxigenoterapia, CBAF/HFNC, VNI, ventilação mecânica, SARA/ARDS, gasometria, mecânica respiratória, assincronias e simulação simplificada de curvas.</p>
+        <div class="hero-badges">
+          <span>⚡ GitHub Pages ready</span>
+          <span>📦 PWA/offline v3</span>
+          <span>📱 iPhone friendly</span>
+          <span>💾 localStorage anônimo</span>
+          <span>🏆 TEMI mode</span>
+        </div>
+      </div>
+      <aside class="warning-box">
+        <strong>⚠️ Segurança clínica</strong>
+        <p>Ferramenta educacional/pesquisa. Não é dispositivo médico aprovado. Não substitui julgamento clínico, avaliação à beira-leito, protocolo institucional, validação clínica ou decisão médica.</p>
+      </aside>
+    </section>
+
+    <section class="quick-grid" id="metricGrid" aria-live="polite"></section>
+
+    <section id="criticalBanner" class="banner"></section>
+
+    <div class="layout">
+      <aside class="panel input-panel">
+        <div class="panel-title">
+          <h2>Entrada clínica</h2>
+          <small>Preencha e os cálculos atualizam automaticamente ⚙️</small>
+        </div>
+
+        <label class="field full">
+          <span>Carregar caso de demonstração</span>
+          <select id="demoCase"></select>
+        </label>
+
+        <details open>
+          <summary>👤 Paciente</summary>
+          <div class="form-grid">
+            <label class="field"><span>Idade</span><input id="age" type="number" min="18" max="110" step="1" value="60"></label>
+            <label class="field"><span>Sexo p/ PBW</span><select id="sex"><option>Masculino</option><option>Feminino</option></select></label>
+            <label class="field"><span>Altura (cm)</span><input id="height_cm" type="number" min="120" max="230" step="1" value="170"></label>
+            <label class="field"><span>Peso real (kg)</span><input id="weight_kg" type="number" min="25" max="250" step="1" value="75"></label>
+            <label class="field full"><span>Suporte atual</span><select id="support"></select></label>
+            <label class="field full"><span>Modo ventilatório/respiratório</span><select id="vent_mode"></select></label>
+            <label class="check full"><input id="hypercapnia_risk" type="checkbox"> <span>Risco de hipercapnia/DPOC</span></label>
+          </div>
+        </details>
+
+        <details>
+          <summary>🫁 Critérios clínicos SARA/ARDS</summary>
+          <div class="form-grid check-list">
+            <label class="check"><input id="ards_suspected" type="checkbox" checked> Suspeita de SARA/ARDS</label>
+            <label class="check"><input id="acute_onset" type="checkbox" checked> Início agudo / ≤ 1 semana</label>
+            <label class="check"><input id="bilateral_opacities" type="checkbox" checked> Opacidades bilaterais</label>
+            <label class="check"><input id="noncardiogenic_edema" type="checkbox" checked> Não explicado por IC/sobrecarga</label>
+          </div>
+        </details>
+
+        <details open>
+          <summary>🚑 Beira-leito</summary>
+          <div class="form-grid">
+            <label class="field"><span>SpO₂ (%)</span><input id="spo2" type="number" min="40" max="100" step="1" value="92"></label>
+            <label class="field"><span>FR (/min)</span><input id="rr" type="number" min="4" max="70" step="1" value="28"></label>
+            <label class="field"><span>FC (/min)</span><input id="hr" type="number" min="20" max="220" step="1" value="105"></label>
+            <label class="field"><span>PAS (mmHg)</span><input id="sbp" type="number" min="40" max="260" step="1" value="110"></label>
+            <label class="check"><input id="high_wob" type="checkbox" checked> Trabalho respiratório ↑</label>
+            <label class="check"><input id="shock" type="checkbox"> Choque/vasopressor</label>
+            <label class="check"><input id="altered_mental_status" type="checkbox"> Rebaixamento/agitação impeditiva</label>
+            <label class="check"><input id="airway_unprotected" type="checkbox"> Via aérea não protegida/aspiração</label>
+            <label class="check full"><input id="niv_contraindication" type="checkbox"> Contraindicação/intolerância à VNI</label>
+          </div>
+        </details>
+
+        <details open>
+          <summary>🧪 Gasometria</summary>
+          <div class="form-grid">
+            <label class="field"><span>pH</span><input id="ph" type="number" min="6.80" max="7.80" step="0.01" value="7.30"></label>
+            <label class="field"><span>PaCO₂</span><input id="paco2" type="number" min="10" max="150" step="1" value="48"></label>
+            <label class="field"><span>PaO₂</span><input id="pao2" type="number" min="20" max="700" step="1" value="70"></label>
+            <label class="field"><span>HCO₃⁻</span><input id="hco3" type="number" min="2" max="60" step="1" value="23"></label>
+            <label class="field"><span>BE</span><input id="be" type="number" min="-30" max="30" step="1" value="-3"></label>
+            <label class="field"><span>Lactato</span><input id="lactate" type="number" min="0" max="25" step="0.1" value="2.2"></label>
+            <label class="field"><span>SaO₂ (%)</span><input id="sao2" type="number" min="40" max="100" step="1" value="92"></label>
+            <label class="field"><span>FiO₂ decimal</span><input id="fio2" type="number" min="0.21" max="1" step="0.01" value="0.60"></label>
+          </div>
+        </details>
+
+        <details open>
+          <summary>⚙️ Ventilador / suporte</summary>
+          <div class="form-grid">
+            <label class="field"><span>VT (mL)</span><input id="vt_ml" type="number" min="0" max="1500" step="10" value="420"></label>
+            <label class="field"><span>PEEP/EPAP/CPAP</span><input id="peep" type="number" min="0" max="30" step="1" value="10"></label>
+            <label class="field"><span>Pplat</span><input id="pplat" type="number" min="0" max="80" step="1" value="25"></label>
+            <label class="field"><span>Ppico</span><input id="ppeak" type="number" min="0" max="90" step="1" value="32"></label>
+            <label class="field"><span>Pinsp/PS acima PEEP</span><input id="pinsp" type="number" min="0" max="60" step="1" value="15"></label>
+            <label class="field"><span>Pexp total</span><input id="pexp" type="number" min="0" max="40" step="1" value="10"></label>
+            <label class="field"><span>Ti (s)</span><input id="ti" type="number" min="0.1" max="5" step="0.1" value="0.9"></label>
+            <label class="field"><span>Te (s)</span><input id="te" type="number" min="0.1" max="10" step="0.1" value="1.1"></label>
+            <label class="field"><span>Fluxo (L/min)</span><input id="flow_l_min" type="number" min="0" max="120" step="1" value="55"></label>
+            <label class="field"><span>Paw média/MAP</span><input id="map_cmH2O" type="number" min="0" max="60" step="1" value="15"></label>
+          </div>
+        </details>
+
+        <details>
+          <summary>🧬 Eletrólitos e oxigenação avançada</summary>
+          <div class="form-grid">
+            <label class="field"><span>Na⁺</span><input id="na" type="number" min="0" max="180" step="1" placeholder="opcional"></label>
+            <label class="field"><span>Cl⁻</span><input id="cl" type="number" min="0" max="150" step="1" placeholder="opcional"></label>
+            <label class="field"><span>Albumina g/dL</span><input id="albumin" type="number" min="0" max="8" step="0.1" placeholder="opcional"></label>
+            <label class="field"><span>Hb g/dL</span><input id="hb" type="number" min="0" max="25" step="0.1" placeholder="opcional"></label>
+            <label class="field"><span>Pressão barométrica</span><input id="patm" type="number" min="500" max="800" step="1" value="760"></label>
+            <label class="field"><span>RQ</span><input id="rq" type="number" min="0.6" max="1.2" step="0.05" value="0.8"></label>
+          </div>
+        </details>
+      </aside>
+
+      <section class="workspace">
+        <div class="tabs" role="tablist" aria-label="Módulos do RespiraSense ICU">
+          <button class="tab active" data-tab="conduct">🧭 Conduta</button>
+          <button class="tab" data-tab="gas">🧪 Gasometria</button>
+          <button class="tab" data-tab="protective">🫁 VM protetora</button>
+          <button class="tab" data-tab="sim">📈 Simulador VM</button>
+          <button class="tab" data-tab="async">🌊 Assincronias</button>
+          <button class="tab" data-tab="quick">⚡ Painel rápido</button>
+          <button class="tab" data-tab="db">💾 Snapshots</button>
+          <button class="tab" data-tab="validation">🧬 Validação</button>
+        </div>
+
+        <section class="tabpage active" id="tab-conduct">
+          <div class="section-head">
+            <h2>Conduta sugerida pelo motor clínico</h2>
+            <p>Recomendações ordenadas por risco. Interprete com tendências, exame físico, imagem, recursos locais e protocolo institucional.</p>
+          </div>
+          <div id="recommendations"></div>
+          <div class="save-card">
+            <h3>💾 Salvar snapshot anônimo</h3>
+            <p>Salva apenas no navegador atual usando <code>localStorage</code>. Não grave nome, CPF, CNS, prontuário, telefone, leito ou foto identificável.</p>
+            <div class="form-grid four">
+              <label class="field"><span>Código anônimo</span><input id="snapCode" value="CASO-UTI-001"></label>
+              <label class="field"><span>Cenário</span><select id="snapSetting"><option>UTI</option><option>Emergência</option><option>Enfermaria</option><option>Sala vermelha</option><option>Simulação/Treinamento</option></select></label>
+              <label class="field"><span>Diagnóstico/hipótese</span><input id="snapDiagnosis" value="Insuficiência respiratória / SARA"></label>
+              <label class="field"><span>Feedback</span><select id="snapFeedback"><option>não avaliado</option><option>concordo</option><option>parcialmente</option><option>discordo</option><option>alerta útil</option><option>falso positivo</option><option>falso negativo</option></select></label>
+              <label class="field full"><span>Conduta final da equipe</span><textarea id="snapConduct" placeholder="Ex.: aumentar PEEP, pronar, manter CBAF, intubar, iniciar TRE/SBT..."></textarea></label>
+              <label class="field full"><span>Tags</span><input id="snapTags" placeholder="SARA, CBAF, VNI, prona, TEMI"></label>
+            </div>
+            <button id="btnSaveSnapshot" class="primary" type="button">Salvar snapshot</button>
+          </div>
+        </section>
+
+        <section class="tabpage" id="tab-gas">
+          <div class="section-head"><h2>Análise gasométrica e metabólica</h2><p>Inclui oxigenação, distúrbio ácido-base, ânion gap, delta ratio e conteúdo arterial de oxigênio.</p></div>
+          <div id="gasPanel"></div>
+        </section>
+
+        <section class="tabpage" id="tab-protective">
+          <div class="section-head"><h2>Ventilação protetora e SARA/ARDS</h2><p>PBW, VT alvo, mecânica respiratória, PEEP/FiO₂ e checklist protetor.</p></div>
+          <div id="protectivePanel"></div>
+        </section>
+
+        <section class="tabpage" id="tab-sim">
+          <div class="section-head"><h2>Simulador de ventilação mecânica — 1 compartimento</h2><p>Modelo educacional: paciente passivo, sem esforço, sem vazamento, sem recrutamento não linear.</p></div>
+          <div class="panel soft">
+            <div class="form-grid four">
+              <label class="field"><span>Modo simulado</span><select id="sim_mode"><option>VCV</option><option>PCV</option><option>PRVC</option><option>PSV/PC</option></select></label>
+              <label class="field"><span>FR sim</span><input id="sim_rr" type="number" min="4" max="60" step="1" value="20"></label>
+              <label class="field"><span>VT sim (mL)</span><input id="sim_vt" type="number" min="100" max="1000" step="10" value="420"></label>
+              <label class="field"><span>PEEP sim</span><input id="sim_peep" type="number" min="0" max="25" step="1" value="8"></label>
+              <label class="field"><span>Complacência</span><input id="sim_c" type="number" min="5" max="150" step="1" value="35"></label>
+              <label class="field"><span>Resistência</span><input id="sim_r" type="number" min="1" max="80" step="1" value="12"></label>
+              <label class="field"><span>Ti sim (s)</span><input id="sim_ti" type="number" min="0.2" max="3" step="0.1" value="0.9"></label>
+              <label class="field"><span>Pinsp acima PEEP</span><input id="sim_pinsp" type="number" min="1" max="50" step="1" value="15"></label>
+            </div>
+          </div>
+          <div id="simMetrics" class="quick-grid mini"></div>
+          <canvas id="pressureChart" height="180"></canvas>
+          <canvas id="flowChart" height="180"></canvas>
+          <canvas id="volumeChart" height="180"></canvas>
+        </section>
+
+        <section class="tabpage" id="tab-async">
+          <div class="section-head"><h2>Curvas e diagnóstico de assincronias</h2><p>Selecione achados observados na curva/foto/parâmetros. O app gera hipóteses e ações corretivas.</p></div>
+          <div id="asyncChecklist" class="check-grid"></div>
+          <div id="asyncResults"></div>
+          <h3>📚 Biblioteca de assincronias</h3>
+          <div id="asyncLibrary" class="table-wrap"></div>
+        </section>
+
+        <section class="tabpage" id="tab-quick">
+          <div class="section-head"><h2>Painel rápido</h2><p>Dispositivos de oxigênio, modos ventilatórios, fórmulas, tabelas PEEP/FiO₂ e metas protetoras.</p></div>
+          <div id="quickTables"></div>
+        </section>
+
+        <section class="tabpage" id="tab-db">
+          <div class="section-head"><h2>Banco local de snapshots</h2><p>Histórico anônimo no navegador atual. Para produção hospitalar, usar backend com autenticação, PostgreSQL, logs e LGPD.</p></div>
+          <div class="toolbar">
+            <button id="btnDownloadSnapshots" class="primary">⬇️ Baixar snapshots JSON</button>
+            <button id="btnClearSnapshots" class="danger">🗑️ Limpar snapshots locais</button>
+          </div>
+          <div id="snapshotSummary" class="quick-grid mini"></div>
+          <div id="snapshotTable" class="table-wrap"></div>
+        </section>
+
+        <section class="tabpage" id="tab-validation">
+          <div class="section-head"><h2>Validação, creditação e uso real</h2><p>Caminho seguro para transformar protótipo em CDS/SaMD validado.</p></div>
+          <div class="validation-grid">
+            <article class="info-card"><h3>0️⃣ Técnica</h3><p>Testes unitários de fórmulas, limites fisiológicos, cenários extremos, erros de unidade e revisão médica/fisioterapia.</p></article>
+            <article class="info-card"><h3>1️⃣ Retrospectiva</h3><p>Dados anonimizados de gasometria, ventilador, suporte e desfechos. Comparar concordância com especialistas.</p></article>
+            <article class="info-card"><h3>2️⃣ Prospectiva silenciosa</h3><p>Motor roda sem influenciar a conduta; mede concordância, falsos positivos, falsos negativos e usabilidade.</p></article>
+            <article class="info-card"><h3>3️⃣ Impacto</h3><p>Após segurança: avaliar tempo até pronação, falha CBAF/VNI, aderência à VM protetora e dias livres de ventilação.</p></article>
+            <article class="info-card"><h3>🔐 Produção</h3><p>HTTPS, autenticação, RBAC, logs, backup, política de retenção, LGPD, versionamento e plano de rollback.</p></article>
+            <article class="info-card"><h3>⚖️ Regulatório</h3><p>Classificar como CDS/SaMD conforme ANVISA/FDA/MDR/IMDRF; limitar claims ao que foi validado.</p></article>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>🫁 RespiraSense ICU HTML • Módulo da Enciclopédia Médica Intensiva • Uso educacional/pesquisa • Human-in-the-loop obrigatório.</p>
+  </footer>
+
+  <script src="pwa.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

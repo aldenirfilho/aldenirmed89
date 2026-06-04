@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#08111f" />
+  <title>Card Feed Médico | Enciclopédia Aldenir</title>
+  <meta name="description" content="Feed visual de cards médicos gerados por IA para UTI, Clínica Médica, TEMI e revisão contínua." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <style>
+    :root {
+      --bg: #06101f;
+      --bg2: #0f172a;
+      --card: rgba(15, 23, 42, 0.86);
+      --card2: rgba(30, 41, 59, 0.92);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --line: rgba(148, 163, 184, .22);
+      --accent: #38bdf8;
+      --accent2: #a78bfa;
+      --gold: #fbbf24;
+      --green: #4ade80;
+      --danger: #fb7185;
+      --radius: 24px;
+      --shadow: 0 20px 55px rgba(0,0,0,.35);
+      --safe-bottom: env(safe-area-inset-bottom);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56,189,248,.22), transparent 34rem),
+        radial-gradient(circle at 90% 10%, rgba(167,139,250,.20), transparent 30rem),
+        linear-gradient(180deg, #020617 0%, var(--bg) 55%, #111827 100%);
+      padding-bottom: calc(84px + var(--safe-bottom));
+    }
+    a { color: inherit; }
+    button, input, select, textarea { font: inherit; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(2,6,23,.82);
+      border-bottom: 1px solid var(--line);
+      padding: 12px max(14px, env(safe-area-inset-left)) 12px max(14px, env(safe-area-inset-left));
+    }
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      min-width: 0;
+    }
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 14px 32px rgba(56,189,248,.24);
+      flex: 0 0 auto;
+      font-size: 24px;
+    }
+    .brand strong {
+      display: block;
+      letter-spacing: -.03em;
+      line-height: 1.05;
+    }
+    .brand small {
+      color: var(--muted);
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 56vw;
+    }
+    .nav-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(15,23,42,.72);
+      color: var(--text);
+      text-decoration: none;
+      padding: 9px 12px;
+      min-height: 40px;
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      white-space: nowrap;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: rgba(56,189,248,.58); }
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #020617;
+      border-color: transparent;
+      font-weight: 800;
+    }
+    .btn.small { min-height: 34px; padding: 7px 9px; font-size: .84rem; border-radius: 12px; }
+    .btn.gold { border-color: rgba(251,191,36,.35); color: #fde68a; }
+    .btn.green { border-color: rgba(74,222,128,.35); color: #bbf7d0; }
+    .btn.danger { border-color: rgba(251,113,133,.35); color: #fecdd3; }
+    .wrap {
+      width: min(1200px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 18px 0 30px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .75fr);
+      gap: 14px;
+      align-items: stretch;
+      margin-bottom: 14px;
+    }
+    .glass {
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,.62);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .eyebrow { color: #bae6fd; font-weight: 800; font-size: .88rem; }
+    h1 {
+      margin: 8px 0 8px;
+      font-size: clamp(1.7rem, 5vw, 3.2rem);
+      letter-spacing: -.06em;
+      line-height: .98;
+    }
+    .hero p { color: #cbd5e1; line-height: 1.55; margin: 0 0 14px; }
+    .metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; }
+    .metric {
+      border: 1px solid var(--line);
+      background: rgba(2,6,23,.42);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .metric b { font-size: 1.35rem; display: block; }
+    .metric span { color: var(--muted); font-size: .82rem; }
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr .7fr;
+      gap: 9px;
+      margin-bottom: 12px;
+    }
+    .field, .select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: rgba(15,23,42,.78);
+      color: var(--text);
+      outline: none;
+      padding: 10px 12px;
+      min-height: 44px;
+    }
+    textarea { min-height: 120px; resize: vertical; line-height: 1.45; }
+    .field:focus, .select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(56,189,248,.12); border-color: rgba(56,189,248,.62); }
+    .theme-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 0 12px;
+      margin-bottom: 4px;
+      scrollbar-width: thin;
+    }
+    .chip {
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,.76);
+      border-radius: 999px;
+      padding: 8px 10px;
+      color: #dbeafe;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .9rem;
+    }
+    .chip.active {
+      border-color: rgba(56,189,248,.7);
+      background: rgba(56,189,248,.16);
+      color: #e0f2fe;
+    }
+    .feed {
+      columns: 1;
+      column-gap: 14px;
+    }
+    @media (min-width: 740px) { .feed { columns: 2; } }
+    @media (min-width: 1080px) { .feed { columns: 3; } }
+    .card {
+      break-inside: avoid;
+      margin: 0 0 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(15,23,42,.75);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .imgbox {
+      background: rgba(2,6,23,.82);
+      min-height: 190px;
+      display: grid;
+      place-items: center;
+      cursor: zoom-in;
+      position: relative;
+    }
+    .imgbox img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      height: auto;
+    }
+    .missing {
+      padding: 30px 18px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .body { padding: 13px; display: grid; gap: 10px; }
+    .topline { display: flex; gap: 8px; justify-content: space-between; align-items: flex-start; }
+    h3 { margin: 0; line-height: 1.18; letter-spacing: -.025em; }
+    .theme-label {
+      font-size: .75rem;
+      color: #e0f2fe;
+      background: rgba(56,189,248,.12);
+      border: 1px solid rgba(56,189,248,.25);
+      border-radius: 999px;
+      padding: 5px 8px;
+      white-space: nowrap;
+    }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { font-size: .74rem; border: 1px solid rgba(148,163,184,.18); background: rgba(148,163,184,.11); border-radius: 999px; padding: 4px 7px; color: #cbd5e1; }
+    .explain { color: #d1d5db; font-size: .93rem; line-height: 1.45; white-space: pre-wrap; }
+    .meta {
+      display: flex;
+      gap: 8px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+      padding-top: 9px;
+      font-size: .76rem;
+      color: var(--muted);
+    }
+    .actions { display: flex; gap: 7px; flex-wrap: wrap; }
+    .empty {
+      display: none;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed rgba(148,163,184,.32);
+      border-radius: var(--radius);
+      padding: 28px 16px;
+      background: rgba(15,23,42,.45);
+      margin-top: 12px;
+    }
+    dialog {
+      border: 1px solid var(--line);
+      background: rgba(2,6,23,.96);
+      color: var(--text);
+      border-radius: 24px;
+      width: min(760px, calc(100% - 18px));
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 30px 90px rgba(0,0,0,.65);
+    }
+    dialog::backdrop { background: rgba(2,6,23,.72); backdrop-filter: blur(8px); }
+    .modal-head {
+      padding: 15px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15,23,42,.72);
+    }
+    .modal-body { padding: 15px; display: grid; gap: 11px; max-height: 76vh; overflow: auto; }
+    .modal-actions { padding: 13px 15px; border-top: 1px solid var(--line); display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+    .viewer-img { max-width: 100%; max-height: 78vh; display: block; margin: 0 auto; border-radius: 16px; }
+    .hidden { display: none !important; }
+    .floating {
+      position: fixed;
+      right: 18px;
+      bottom: calc(18px + var(--safe-bottom));
+      z-index: 40;
+      border-radius: 999px;
+      box-shadow: 0 18px 45px rgba(56,189,248,.28);
+    }
+    .toast {
+      display: none;
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(78px + var(--safe-bottom));
+      z-index: 90;
+      border: 1px solid rgba(56,189,248,.35);
+      background: rgba(15,23,42,.96);
+      color: #e0f2fe;
+      border-radius: 999px;
+      padding: 10px 14px;
+      box-shadow: var(--shadow);
+      max-width: min(92vw, 700px);
+      text-align: center;
+    }
+    .install-hint {
+      border: 1px solid rgba(251,191,36,.24);
+      background: rgba(251,191,36,.08);
+      border-radius: 18px;
+      padding: 12px;
+      color: #fde68a;
+      line-height: 1.45;
+      margin-bottom: 12px;
+      font-size: .94rem;
+    }
+    @media (max-width: 820px) {
+      .topbar-inner { align-items: flex-start; }
+      .nav-actions { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .toolbar { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+    }
+    /* ===== MODO FEED CONTÍNUO: Instagram/X style ===== */
+    body.feed-continuous .wrap {
+      width: min(760px, calc(100% - 18px));
+    }
+    body.feed-continuous .feed {
+      columns: unset;
+      column-gap: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: min(680px, 100%);
+      margin: 0 auto;
+    }
+    body.feed-continuous .card {
+      width: 100%;
+      margin: 0 0 16px;
+      break-inside: auto;
+      border-radius: 26px;
+    }
+    body.feed-continuous .imgbox {
+      min-height: unset;
+      background: #020617;
+    }
+    body.feed-continuous .imgbox img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+      object-fit: contain;
+    }
+    .view-mode-indicator {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      color: #bae6fd;
+      font-size: .86rem;
+      border: 1px solid rgba(56,189,248,.28);
+      background: rgba(56,189,248,.10);
+      padding: 7px 10px;
+      border-radius: 999px;
+    }
+    .help-box {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(15,23,42,.64);
+      color: #d1d5db;
+      line-height: 1.45;
+      font-size: .92rem;
+      margin-bottom: 10px;
+    }
+    .help-box code {
+      background: rgba(15,23,42,.9);
+      padding: 2px 5px;
+      border-radius: 8px;
+      color: #bae6fd;
+    }
+    @media print {
+      .topbar, .toolbar, .theme-strip, .floating, dialog, .install-hint { display: none !important; }
+      body { background: #fff; color: #111; padding: 0; }
+      .wrap { width: 100%; padding: 0; }
+      .feed { columns: 2; }
+      .card { box-shadow: none; border: 1px solid #ddd; background: #fff; color: #111; }
+      .explain, .meta, .tag, .theme-label { color: #111; }
+    }
+  </style>
+</head>
+
+<body>
+  <input id="imageInput" type="file" accept="image/*" multiple class="hidden" />
+  <input id="backupInput" type="file" accept=".json,application/json" class="hidden" />
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html">
+        <div class="logo">🖼️</div>
+        <span>
+          <strong>Card Feed Médico</strong>
+          <small>Enciclopédia • UTI • TEMI • IA</small>
+        </span>
+      </a>
+      <nav class="nav-actions">
+        <a class="btn" href="../index.html">🏠 Enciclopédia</a>
+        <a class="btn" href="../02_Banco_Questoes_TEMI/index.html">🏆 TEMI</a>
+        <a class="btn" href="../03_Calculadoras_UTI/index.html">🧮 Calculadoras</a>
+        <a class="btn" href="../05_Biblioteca_IA/index.html">📚 Biblioteca IA</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="glass">
+        <span class="eyebrow">📲 Feed visual de revisão contínua</span>
+        <h1>Seu banco de cards médicos gerados por IA.</h1>
+        <p>
+          Organize imagens/wallpapers do GPT, Claude, Gemini ou Antigravity por tema, com comentários,
+          tags, status de revisão e conexão direta com a Enciclopédia Médica Intensiva.
+        </p>
+        <div class="actions">
+          <button class="btn primary" id="btnImport">➕ Importar imagens locais</button>
+          <button class="btn" id="btnBackup">📥 Importar backup</button>
+          <button class="btn" id="btnExport">📤 Exportar backup</button>
+          <button class="btn gold" id="btnReview">🔁 Modo revisão</button>
+          <button class="btn" id="btnFeedMode">📲 Feed contínuo</button>
+          <span class="view-mode-indicator" id="viewModeIndicator">▦ Grade</span>
+          <button class="btn" id="btnHelp">📘 Como usar</button>
+          <button class="btn" id="btnPrint">🖨️ Imprimir/PDF</button>
+        </div>
+      </div>
+      <aside class="glass">
+        <div class="metrics">
+          <div class="metric"><b id="statTotal">0</b><span>cards totais</span></div>
+          <div class="metric"><b id="statRepo">0</b><span>cards do repo</span></div>
+          <div class="metric"><b id="statLocal">0</b><span>cards locais</span></div>
+          <div class="metric"><b id="statFav">0</b><span>favoritos</span></div>
+          <div class="metric"><b id="statReview">0</b><span>em revisão</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="install-hint">
+      <b>Como virar “app” no iPhone/iPad:</b> hospede esta pasta no GitHub Pages → abra no Safari →
+      Compartilhar → <b>Adicionar à Tela de Início</b>. No Mac, salve como favorito ou fixe na Dock. ✨
+    </div>
+
+    <section class="toolbar">
+      <input id="search" class="field" placeholder="🔎 Buscar por tema, título, tag, comentário..." />
+      <select id="themeFilter" class="select"></select>
+      <select id="sortMode" class="select">
+        <option value="newest">Mais recentes</option>
+        <option value="oldest">Mais antigos</option>
+        <option value="inbox">📥 Inbox primeiro</option>
+        <option value="theme">Tema A-Z</option>
+        <option value="title">Título A-Z</option>
+        <option value="review">Revisão primeiro</option>
+      </select>
+    </section>
+
+    <section id="themeStrip" class="theme-strip"></section>
+    <section id="feed" class="feed" aria-live="polite"></section>
+    <section id="empty" class="empty">Nenhum card encontrado. Importe imagens ou ajuste o filtro. 🧠</section>
+  </main>
+
+  <button class="btn primary floating" id="btnFloating">➕ Card</button>
+
+  <dialog id="editDialog">
+    <form method="dialog" id="editForm">
+      <div class="modal-head">
+        <strong>Editar card</strong>
+        <button class="btn small" value="cancel">✕</button>
+      </div>
+      <div class="modal-body">
+        <input id="editId" type="hidden" />
+        <label>Título <input id="editTitle" class="field" /></label>
+        <label>Tema <select id="editTheme" class="select"></select></label>
+        <label>Tags, separadas por vírgula <input id="editTags" class="field" /></label>
+        <label>Explicação / comentário <textarea id="editExplanation"></textarea></label>
+        <label>Notas pessoais <textarea id="editNotes"></textarea></label>
+        <label>Fonte / origem <input id="editSource" class="field" /></label>
+        <label>Status
+          <select id="editStatus" class="select">
+            <option value="novo">Novo</option>
+            <option value="inbox">📥 Inbox</option>
+            <option value="revisar">Revisar</option>
+            <option value="aprendendo">Aprendendo</option>
+            <option value="dominado">Dominado</option>
+            <option value="pendente-imagem">Pendente imagem</option>
+            <option value="arquivado">Arquivado</option>
+          </select>
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn danger" id="btnDelete">🗑️ Apagar local</button>
+        <button type="button" class="btn gold" id="btnFavorite">⭐ Favorito</button>
+        <button type="button" class="btn" id="btnMarkReview">🔁 Revisar</button>
+        <button type="submit" class="btn primary">💾 Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="classifyDialog">
+    <form method="dialog" id="classifyForm">
+      <div class="modal-head">
+        <strong>📂 Classificar card do Inbox</strong>
+        <button class="btn small" value="cancel">✕</button>
+      </div>
+      <div class="modal-body">
+        <input id="classifyId" type="hidden" />
+        <p style="color:#cbd5e1;margin:0 0 8px">Escolha o tema correto para este card:</p>
+        <label>Tema <select id="classifyTheme" class="select"></select></label>
+        <label>Título <input id="classifyTitle" class="field" /></label>
+        <label>Tags <input id="classifyTags" class="field" placeholder="separadas por vírgula" /></label>
+        <label>Explicação <textarea id="classifyExplanation" placeholder="Resumo, conduta, nota TEMI..."></textarea></label>
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="btn primary">📂 Classificar e salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="viewerDialog">
+    <div class="modal-head">
+      <strong id="viewerTitle">Imagem</strong>
+      <button class="btn small" onclick="document.getElementById('viewerDialog').close()">✕</button>
+    </div>
+    <div class="modal-body">
+      <img id="viewerImg" class="viewer-img" />
+    </div>
+  </dialog>
+
+  <dialog id="helpDialog">
+    <div class="modal-head">
+      <strong>📘 Como usar e alimentar continuamente</strong>
+      <button class="btn small" onclick="document.getElementById('helpDialog').close()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="help-box"><b>1) Entrada pelo iCloud</b><br/>Crie no iCloud Drive uma pasta <code>GPT_Card_Feed_Medico</code>. Salve imagens do ChatGPT/Claude lá. Depois toque em <code>Importar imagens</code>.</div>
+      <div class="help-box"><b>2) Organização automática</b><br/>O app sugere tema pelo nome do arquivo: <code>AKI</code>, <code>KDIGO</code>, <code>VM</code>, <code>sepse</code>. Depois edite manualmente.</div>
+      <div class="help-box"><b>3) Comentários</b><br/>Em cada card, toque em <code>Editar</code>. Acrescente resumo, conduta, alerta TEMI, tags e status.</div>
+      <div class="help-box"><b>4) Backup e migração</b><br/>Use <code>Exportar backup</code> e salve no iCloud. Para restaurar, use <code>Importar backup</code>.</div>
+      <div class="help-box"><b>5) Modo Feed Contínuo</b><br/>Clique em <code>📲 Feed contínuo</code> para ver cards um abaixo do outro, estilo Instagram. Ideal para celular.</div>
+      <div class="help-box" style="border-color:rgba(251,191,36,.24);background:rgba(251,191,36,.08);color:#fde68a"><b>⚠️ Limitação</b><br/>Cards locais ficam neste navegador (IndexedDB). Para sincronizar, exporte backup JSON ou envie imagens para <code>assets/cards/</code> + cadastre em <code>data/cards.json</code>.</div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const DB_NAME = "CardFeedMedicoLocalDB_v2";
+    const STORE = "cards";
+    let db;
+    let repoCards = [];
+    let localCards = [];
+    let themes = [];
+    let reviewOnly = false;
+    let activeTheme = "";
+    let viewMode = localStorage.getItem('cardFeedViewMode') || 'grid';
+    let hiddenCards = JSON.parse(localStorage.getItem('cardFeedHidden') || '[]');
+
+    const $ = id => document.getElementById(id);
+    const nowISO = () => new Date().toISOString();
+    const uid = () => "local_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,8);
+
+    function toast(msg) {
+      const el = $("toast");
+      el.textContent = msg;
+      el.style.display = "block";
+      clearTimeout(window.__toast);
+      window.__toast = setTimeout(() => el.style.display = "none", 3200);
+    }
+
+    function esc(s = "") {
+      return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "";
+      try { return new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit" }); }
+      catch { return ""; }
+    }
+
+    function addDays(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      return d.toISOString();
+    }
+
+    function applyViewMode() {
+      const isContinuous = viewMode === "continuous";
+      document.body.classList.toggle("feed-continuous", isContinuous);
+      const btn = $("btnFeedMode");
+      const indicator = $("viewModeIndicator");
+      if (btn) btn.textContent = isContinuous ? "▦ Modo grade" : "📲 Feed contínuo";
+      if (indicator) indicator.textContent = isContinuous ? "📲 Feed contínuo" : "▦ Grade";
+      localStorage.setItem("cardFeedViewMode", viewMode);
+    }
+
+    function toggleViewMode() {
+      viewMode = viewMode === "continuous" ? "grid" : "continuous";
+      applyViewMode();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      toast(viewMode === "continuous" ? "📲 Modo Feed Contínuo ativado." : "▦ Modo Grade ativado.");
+    }
+
+    async function quickStatus(id, status) {
+      const c = getCard(id);
+      if (!c) return;
+      c.status = status;
+      if (status === "revisar") c.nextReview = addDays(1);
+      if (status === "aprendendo") c.nextReview = addDays(3);
+      if (status === "dominado") c.nextReview = addDays(14);
+      await saveCardAsLocal(c);
+      toast(status === "dominado" ? "✅ Marcado como dominado." : "🔁 Card enviado para revisão.");
+    }
+
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = e => {
+          const database = e.target.result;
+          if (!database.objectStoreNames.contains(STORE)) database.createObjectStore(STORE, { keyPath: "id" });
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    function store(mode = "readonly") { return db.transaction(STORE, mode).objectStore(STORE); }
+    function getAllLocal() {
+      return new Promise((resolve, reject) => {
+        const req = store().getAll();
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    function putLocal(card) {
+      return new Promise((resolve, reject) => {
+        const req = store("readwrite").put(card);
+        req.onsuccess = () => resolve(card);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    function deleteLocal(id) {
+      return new Promise((resolve, reject) => {
+        const req = store("readwrite").delete(id);
+        req.onsuccess = resolve;
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function fetchJSON(path, fallback) {
+      try {
+        const res = await fetch(path, { cache: "no-store" });
+        if (!res.ok) throw new Error(path);
+        return await res.json();
+      } catch (e) {
+        console.warn("Não foi possível carregar", path, e);
+        return fallback;
+      }
+    }
+
+    async function loadRepoData() {
+      const themeData = await fetchJSON("data/themes.json", { themes: [] });
+      themes = themeData.themes || [];
+      const cardData = await fetchJSON("data/cards.json", { cards: [] });
+      repoCards = (cardData.cards || []).map(c => ({ ...c, origin: "repo" }));
+      // Auto-scan inbox
+      const inboxData = await fetchJSON("data/inbox.json", { files: [] });
+      const inboxFiles = inboxData.files || [];
+      const existingIds = new Set(repoCards.map(c => c.id));
+      for (const file of inboxFiles) {
+        const id = "inbox-" + file.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
+        if (existingIds.has(id)) continue;
+        const theme = inferTheme(file);
+        repoCards.push({
+          id,
+          title: cleanTitle(file),
+          theme: theme === "uti-geral" ? "inbox" : theme,
+          tags: inferTags(file, theme),
+          explanation: "",
+          source: "Inbox — aguardando classificação",
+          status: "novo",
+          imageUrl: "assets/cards/inbox/" + file,
+          createdAt: nowISO(),
+          origin: "repo"
+        });
+      }
+    }
+
+    async function loadLocalData() {
+      localCards = (await getAllLocal()).map(c => ({ ...c, origin: "local" }));
+    }
+
+    function allCards() {
+      const repoIds = new Set(repoCards.map(c => c.id));
+      const locals = localCards.filter(c => !repoIds.has(c.id));
+      return [...repoCards, ...locals];
+    }
+
+    function themeById(id) {
+      return themes.find(t => t.id === id) || { id, label: id || "Outros", emoji: "🗂️", folder: "" };
+    }
+
+    function cleanTitle(name) {
+      return name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim().replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function inferTheme(name = "") {
+      const n = name.toLowerCase();
+      if (/(kdigo|aki|ira|renal|rim|hemodial|dialise|diálise|trs|crrt|sled|pirrt)/.test(n)) return "nefro-aki-trs";
+      if (/(temi|prova|quest|flashcard|memory)/.test(n)) return "temi";
+      if (/(vm|ventil|sara|ards|sdra|pav)/.test(n)) return "vm-sdra";
+      if (/(sepse|septic|choque|vasopressor|noradrenalina|lactato)/.test(n)) return "sepse-choque";
+      if (/(diabetes|cad|cetoacid|hipoglic|hiperglic|hhs|ehh|insulina)/.test(n)) return "endocrino-diabetes";
+      if (/(avc|tce|convuls|neuro|coma|delirium|sedacao|sedação)/.test(n)) return "neuro-uti";
+      if (/(ecg|cardio|iam|arrit|bradi|taqui|hemodin)/.test(n)) return "cardio-hemodinamica";
+      if (/(antibi|infect|pneumo|aspirat|mening|cdc|idSA|anvisa)/.test(n)) return "infectologia";
+      if (/(dose|dilui|farmaco|droga|bomba|mlh|ml\/h)/.test(n)) return "farmaco-doses";
+      if (/(pocus|ultrassom|usg|eco|lung|fast)/.test(n)) return "pocus";
+      if (/(mae|mãe|familia|família|cuidado|idos|paciente)/.test(n)) return "familia-paciente";
+      if (/(obsidian|ia|gpt|claude|antigravity|github|token)/.test(n)) return "ia-produtividade";
+      if (/(jurid|finance|banco|divor|irpf|serasa|divida|dívida)/.test(n)) return "juridico-financeiro";
+      return "uti-geral";
+    }
+
+    function inferTags(name = "", theme = "") {
+      const raw = name.toLowerCase();
+      const out = new Set([theme]);
+      const map = {
+        "AKI": /aki|ira|renal|rim/,
+        "TRS": /trs|crrt|sled|pirrt|hemodial|dialise|diálise/,
+        "TEMI": /temi/,
+        "VM": /\bvm\b|ventil/,
+        "SDRA": /sara|ards|sdra/,
+        "Diabetes": /diabetes|insulina|cetoacid|hipoglic|hiperglic/,
+        "Choque": /choque|shock|vasopressor|noradrenalina/,
+        "POCUS": /pocus|usg|ultrassom/,
+        "Plantão": /plantao|plantão|uti/
+      };
+      Object.entries(map).forEach(([tag, re]) => { if (re.test(raw)) out.add(tag); });
+      return Array.from(out).slice(0, 8);
+    }
+
+    function fileToDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result);
+        r.onerror = () => reject(r.error);
+        r.readAsDataURL(file);
+      });
+    }
+
+    async function importImages(files) {
+      if (!files?.length) return;
+      let count = 0;
+      for (const file of files) {
+        if (!file.type.startsWith("image/")) continue;
+        const theme = inferTheme(file.name);
+        const card = {
+          id: uid(),
+          title: cleanTitle(file.name),
+          theme,
+          tags: inferTags(file.name, theme),
+          explanation: "",
+          notes: "",
+          source: "Importado localmente pelo usuário",
+          status: "novo",
+          favorite: false,
+          imageData: await fileToDataURL(file),
+          imageName: file.name,
+          createdAt: nowISO(),
+          updatedAt: nowISO(),
+          origin: "local"
+        };
+        await putLocal(card);
+        count++;
+      }
+      await refresh();
+      toast(`✅ ${count} imagem(ns) importada(s) localmente.`);
+    }
+
+    async function importBackup(file) {
+      if (!file) return;
+      let data;
+      try { data = JSON.parse(await file.text()); } catch { toast("❌ JSON inválido."); return; }
+      const incoming = Array.isArray(data) ? data : (data.cards || []);
+      let count = 0;
+      for (const raw of incoming) {
+        const theme = raw.theme || inferTheme(raw.title || raw.imageName || "");
+        const card = {
+          id: raw.id || uid(),
+          title: raw.title || cleanTitle(raw.imageName || "Card sem título"),
+          theme,
+          tags: Array.isArray(raw.tags) ? raw.tags : String(raw.tags || "").split(",").map(x => x.trim()).filter(Boolean),
+          explanation: raw.explanation || raw.description || raw.comment || "",
+          notes: raw.notes || "",
+          source: raw.source || "Backup importado",
+          status: raw.status || "novo",
+          favorite: Boolean(raw.favorite),
+          imageData: raw.imageData || raw.dataUrl || "",
+          imageUrl: raw.imageUrl || "",
+          imageName: raw.imageName || "",
+          createdAt: raw.createdAt || nowISO(),
+          updatedAt: nowISO(),
+          origin: "local"
+        };
+        await putLocal(card);
+        count++;
+      }
+      await refresh();
+      toast(`✅ Backup importado: ${count} card(s).`);
+    }
+
+    function getFiltered() {
+      const q = $("search").value.trim().toLowerCase();
+      const theme = activeTheme || $("themeFilter").value;
+      let list = allCards().filter(c => {
+        if (theme && c.theme !== theme) return false;
+        if (reviewOnly && !["revisar", "aprendendo", "pendente-imagem"].includes(c.status)) return false;
+        if (hiddenCards.includes(c.id) && activeTheme !== '__hidden__') return false;
+        if (activeTheme === '__hidden__') return hiddenCards.includes(c.id);
+        if (!q) return true;
+        const blob = [c.title, c.theme, (c.tags || []).join(" "), c.explanation, c.notes, c.source, c.status, (c.related || []).join(" ")].join(" ").toLowerCase();
+        return blob.includes(q);
+      });
+      const sort = $("sortMode").value;
+      list.sort((a,b) => {
+        if (sort === "oldest") return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+        if (sort === "inbox") {
+          const ai = a.theme === "inbox" ? 0 : 1;
+          const bi = b.theme === "inbox" ? 0 : 1;
+          return ai - bi || new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+        }
+        if (sort === "theme") return String(a.theme).localeCompare(String(b.theme));
+        if (sort === "title") return String(a.title).localeCompare(String(b.title));
+        if (sort === "review") {
+          const ar = a.nextReview ? new Date(a.nextReview).getTime() : Infinity;
+          const br = b.nextReview ? new Date(b.nextReview).getTime() : Infinity;
+          return ar - br;
+        }
+        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+      });
+      return list;
+    }
+
+    function updateControls() {
+      const opts = ['<option value="">Todos os temas</option>'].concat(themes.map(t => `<option value="${esc(t.id)}">${t.emoji} ${esc(t.label)}</option>`));
+      $("themeFilter").innerHTML = opts.join("");
+      $("themeFilter").value = activeTheme || "";
+      $("editTheme").innerHTML = themes.map(t => `<option value="${esc(t.id)}">${t.emoji} ${esc(t.label)}</option>`).join("");
+      $("themeStrip").innerHTML = [
+        `<button class="chip ${!activeTheme ? "active" : ""}" data-theme="">🌐 Todos</button>`,
+        ...themes.map(t => `<button class="chip ${activeTheme === t.id ? "active" : ""}" data-theme="${esc(t.id)}">${t.emoji} ${esc(t.label)}</button>`),
+        `<button class="chip ${activeTheme === '__hidden__' ? "active" : ""}" data-theme="__hidden__" style="border-color:rgba(239,68,68,.4);color:#fca5a5">🚫 Ocultos (${hiddenCards.length})</button>`
+      ].join("");
+      document.querySelectorAll("[data-theme]").forEach(el => el.onclick = () => {
+        activeTheme = el.dataset.theme;
+        $("themeFilter").value = activeTheme;
+        render();
+      });
+    }
+
+    function updateStats() {
+      const list = allCards();
+      $("statTotal").textContent = list.length;
+      $("statRepo").textContent = repoCards.length;
+      $("statLocal").textContent = localCards.length;
+      $("statFav").textContent = list.filter(c => c.favorite).length;
+      const reviewCount = list.filter(c => c.status === "revisar" || c.status === "aprendendo" || (c.nextReview && new Date(c.nextReview) <= new Date())).length;
+      $("statReview").textContent = reviewCount;
+    }
+
+    function cardHTML(c) {
+      const theme = themeById(c.theme);
+      const tags = (c.tags || []).slice(0, 7).map(t => `<span class="tag">#${esc(t)}</span>`).join("");
+      const sourceBadge = c.origin === "repo" ? "GitHub Pages" : "Local";
+      const image = c.imageData || c.imageUrl || "";
+      return `
+        <article class="card">
+          <div class="imgbox" data-view="${esc(c.id)}">
+            ${image ? `<img src="${esc(image)}" alt="${esc(c.title || "Card")}" loading="lazy" onerror="this.remove(); this.parentElement.innerHTML='<div class=&quot;missing&quot;>🖼️ Imagem ainda não enviada ao repositório.<br><small>Confira o caminho em data/cards.json</small></div>';" />`
+              : `<div class="missing">🖼️ Sem imagem associada</div>`}
+          </div>
+          <div class="body">
+            <div class="topline">
+              <h3>${esc(c.title || "Card sem título")}</h3>
+              <span class="theme-label">${theme.emoji} ${esc(theme.label)}</span>
+            </div>
+            <div class="tags">${tags}</div>
+            <div class="explain">${esc(c.explanation || "Sem comentário ainda. Edite este card para adicionar explicação clínica ou nota TEMI.")}</div>
+            <div class="actions">
+              ${c.theme === "inbox" ? `<button class="btn small primary" data-classify="${esc(c.id)}" style="background:linear-gradient(135deg,#f59e0b,#ef4444);border:none">📂 Classificar</button>` : ""}
+              <button class="btn small" data-edit="${esc(c.id)}">✍️ Editar local</button>
+              <button class="btn small gold" data-fav="${esc(c.id)}">${c.favorite ? "⭐" : "☆"}</button>
+              <button class="btn small" data-review="${esc(c.id)}">🔁 Revisar</button>
+              <button class="btn small green" data-status="${esc(c.id)}" data-value="dominado">✅ Dominei</button>
+              ${hiddenCards.includes(c.id)
+                ? `<button class="btn small" data-restore="${esc(c.id)}" style="border-color:#10b981;color:#6ee7b7">♻️ Restaurar</button>`
+                : `<button class="btn small" data-hide="${esc(c.id)}" style="border-color:#ef4444;color:#fca5a5">🚫 Ocultar</button>`}
+              <a class="btn small" href="../index.html">🔗 Enciclopédia</a>
+            </div>
+            <div class="meta"><span>${esc(c.status || "novo")} • ${esc(sourceBadge)} • ${formatDate(c.createdAt)}</span><span>${c.nextReview ? "Próx.: " + formatDate(c.nextReview) : esc(c.source || "")}</span></div>
+          </div>
+        </article>
+      `;
+    }
+
+    function render() {
+      applyViewMode();
+      updateControls();
+      updateStats();
+      const list = getFiltered();
+      $("feed").innerHTML = list.map(cardHTML).join("");
+      $("empty").style.display = list.length ? "none" : "block";
+      document.querySelectorAll("[data-edit]").forEach(b => b.onclick = () => openEdit(b.dataset.edit));
+      document.querySelectorAll("[data-view]").forEach(b => b.onclick = () => openViewer(b.dataset.view));
+      document.querySelectorAll("[data-fav]").forEach(b => b.onclick = () => toggleFavorite(b.dataset.fav));
+      document.querySelectorAll("[data-review]").forEach(b => b.onclick = () => markReview(b.dataset.review));
+      document.querySelectorAll("[data-status]").forEach(b => b.onclick = () => quickStatus(b.dataset.status, b.dataset.value));
+      document.querySelectorAll("[data-classify]").forEach(b => b.onclick = () => openClassify(b.dataset.classify));
+      document.querySelectorAll("[data-hide]").forEach(b => b.onclick = () => hideCard(b.dataset.hide));
+      document.querySelectorAll("[data-restore]").forEach(b => b.onclick = () => restoreCard(b.dataset.restore));
+    }
+
+    function hideCard(id) {
+      if (!confirm('🚫 Ocultar este card?\n\nVocê pode restaurar depois em 🚫 Ocultos.')) return;
+      hiddenCards.push(id);
+      localStorage.setItem('cardFeedHidden', JSON.stringify(hiddenCards));
+      render();
+      toast('🚫 Card ocultado. Veja em 🚫 Ocultos para restaurar.');
+    }
+
+    function restoreCard(id) {
+      hiddenCards = hiddenCards.filter(h => h !== id);
+      localStorage.setItem('cardFeedHidden', JSON.stringify(hiddenCards));
+      render();
+      toast('♻️ Card restaurado!');
+    }
+
+    function openClassify(id) {
+      const c = getCard(id);
+      if (!c) return;
+      $("classifyId").value = c.id;
+      $("classifyTitle").value = c.title || "";
+      $("classifyTags").value = (c.tags || []).join(", ");
+      $("classifyExplanation").value = c.explanation || "";
+      // Populate theme select excluding inbox
+      $("classifyTheme").innerHTML = themes.filter(t => t.id !== "inbox").map(t => `<option value="${esc(t.id)}">${t.emoji} ${esc(t.label)}</option>`).join("");
+      $("classifyTheme").value = inferTheme(c.title || "") !== "uti-geral" ? inferTheme(c.title || "") : "uti-geral";
+      $("classifyDialog").showModal();
+    }
+
+    async function saveClassify() {
+      const id = $("classifyId").value;
+      const c = getCard(id);
+      if (!c) return;
+      const updated = {
+        ...c,
+        title: $("classifyTitle").value.trim() || c.title,
+        theme: $("classifyTheme").value,
+        tags: $("classifyTags").value.split(",").map(x => x.trim()).filter(Boolean),
+        explanation: $("classifyExplanation").value.trim(),
+        status: "novo",
+        updatedAt: nowISO(),
+        origin: "local"
+      };
+      await putLocal(updated);
+      $("classifyDialog").close();
+      await refresh();
+      toast("📂 Card classificado como: " + $("classifyTheme").value);
+    }
+
+    function getCard(id) {
+      return allCards().find(c => c.id === id);
+    }
+
+    async function saveCardAsLocal(c) {
+      const local = { ...c, origin: "local", updatedAt: nowISO() };
+      await putLocal(local);
+      await refresh();
+    }
+
+    function openViewer(id) {
+      const c = getCard(id);
+      if (!c) return;
+      $("viewerTitle").textContent = c.title || "Imagem";
+      $("viewerImg").src = c.imageData || c.imageUrl || "";
+      $("viewerDialog").showModal();
+    }
+
+    function openEdit(id) {
+      const c = getCard(id);
+      if (!c) return;
+      $("editId").value = c.id;
+      $("editTitle").value = c.title || "";
+      $("editTheme").value = c.theme || "uti-geral";
+      $("editTags").value = (c.tags || []).join(", ");
+      $("editExplanation").value = c.explanation || "";
+      $("editNotes").value = c.notes || "";
+      $("editSource").value = c.source || "";
+      $("editStatus").value = c.status || "novo";
+      $("editDialog").showModal();
+    }
+
+    async function saveEdit() {
+      const original = getCard($("editId").value);
+      if (!original) return;
+      const c = {
+        ...original,
+        title: $("editTitle").value.trim() || original.title,
+        theme: $("editTheme").value || "uti-geral",
+        tags: $("editTags").value.split(",").map(x => x.trim()).filter(Boolean),
+        explanation: $("editExplanation").value.trim(),
+        notes: $("editNotes").value.trim(),
+        source: $("editSource").value.trim(),
+        status: $("editStatus").value,
+        updatedAt: nowISO(),
+        origin: "local"
+      };
+      await putLocal(c);
+      await refresh();
+      toast("💾 Edição salva localmente.");
+    }
+
+    async function toggleFavorite(id) {
+      const c = getCard(id);
+      if (!c) return;
+      c.favorite = !c.favorite;
+      await saveCardAsLocal(c);
+    }
+
+    async function markReview(id) {
+      const c = getCard(id);
+      if (!c) return;
+      c.status = "revisar";
+      c.nextReview = addDays(1);
+      await saveCardAsLocal(c);
+      toast("🔁 Card marcado para revisão.");
+    }
+
+    async function deleteCurrent() {
+      const id = $("editId").value;
+      const local = localCards.find(c => c.id === id);
+      if (!local) { toast("⚠️ Cards do repositório não são apagados pelo navegador. Edite data/cards.json no GitHub."); return; }
+      if (!confirm("Apagar este card local?")) return;
+      await deleteLocal(id);
+      $("editDialog").close();
+      await refresh();
+      toast("🗑️ Card local apagado.");
+    }
+
+    function exportBackup() {
+      const payload = {
+        app: "GPT Card Feed Médico",
+        version: "2.0",
+        exportedAt: nowISO(),
+        cards: allCards()
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `card-feed-medico-backup-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast("📤 Backup exportado. Salve no iCloud/GitHub.");
+    }
+
+    async function refresh() {
+      await loadLocalData();
+      render();
+    }
+
+    function wire() {
+      $("btnImport").onclick = () => $("imageInput").click();
+      $("btnFloating").onclick = () => $("imageInput").click();
+      $("imageInput").onchange = e => importImages(e.target.files);
+      $("btnBackup").onclick = () => $("backupInput").click();
+      $("backupInput").onchange = e => importBackup(e.target.files[0]);
+      $("btnExport").onclick = exportBackup;
+      $("btnReview").onclick = () => { reviewOnly = !reviewOnly; $("btnReview").textContent = reviewOnly ? "🗂️ Ver todos" : "🔁 Modo revisão"; render(); };
+      $("btnFeedMode").onclick = toggleViewMode;
+      $("btnHelp").onclick = () => $("helpDialog").showModal();
+      $("btnPrint").onclick = () => window.print();
+      $("classifyForm").onsubmit = async e => { e.preventDefault(); await saveClassify(); };
+      ["search", "sortMode"].forEach(id => { $(id).oninput = render; $(id).onchange = render; });
+      $("themeFilter").onchange = () => { activeTheme = $("themeFilter").value; render(); };
+      $("editForm").onsubmit = async e => { e.preventDefault(); await saveEdit(); $("editDialog").close(); };
+      $("btnDelete").onclick = deleteCurrent;
+      $("btnFavorite").onclick = async () => { await toggleFavorite($("editId").value); $("editDialog").close(); };
+      $("btnMarkReview").onclick = async () => { await markReview($("editId").value); $("editDialog").close(); };
+      if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      }
+    }
+
+    async function main() {
+      db = await openDB();
+      await loadRepoData();
+      await loadLocalData();
+      wire();
+      render();
+      toast("🧠 Card Feed Médico carregado.");
+    }
+
+    main().catch(err => {
+      console.error(err);
+      alert("Erro ao iniciar Card Feed Médico: " + err.message);
+    });
+  </script>
+</body>
+</html>

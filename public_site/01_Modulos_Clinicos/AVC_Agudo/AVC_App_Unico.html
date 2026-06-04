@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enciclopédia Médica: AVC Isquêmico 🧠</title>
+    <style>
+:root {
+    --bg-dark: #0d1117;
+    --bg-card: #161b22;
+    --bg-header: #010409;
+    --text-primary: #e6edf3;
+    --text-secondary: #848d97;
+    --accent: #58a6ff;
+    --accent-hover: #3182ce;
+    --danger: #f85149;
+    --warning: #d29922;
+    --success: #2ea043;
+    --border-color: #30363d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Header Principal */
+.app-header {
+    background-color: var(--bg-header);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 0.85em;
+    margin-top: 5px;
+}
+
+/* Navegação de Telas */
+.page {
+    display: none;
+    padding: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+    animation: slideIn 0.3s ease forwards;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Botão Voltar */
+.top-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.btn-back {
+    background: transparent;
+    color: var(--accent);
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.page-title {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    text-align: center;
+    flex: 1;
+}
+
+/* Dashboard Grid e Categorias */
+.dash-category-title {
+    grid-column: 1 / -1; /* Ocupa as duas colunas */
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-top: 25px;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--border-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding-bottom: 30px;
+}
+
+.dash-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+}
+
+.dash-card:active {
+    transform: scale(0.95);
+    background-color: var(--border-color);
+}
+
+.dash-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.dash-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Cards Gerais de Conteúdo */
+.content-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+h3 {
+    color: var(--accent);
+    margin-bottom: 15px;
+}
+
+ul.bullet-list {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+ul.bullet-list li {
+    margin-bottom: 8px;
+}
+
+/* Accordion (Textos Colapsáveis) */
+.accordion {
+    background-color: #21262d;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 15px;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    outline: none;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: 0.3s;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.accordion:after {
+    content: '\002B';
+    color: var(--accent);
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.accordion.active:after {
+    content: "\2212";
+}
+
+.panel {
+    padding: 0 15px;
+    background-color: var(--bg-card);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    border-left: 2px solid var(--accent);
+    margin-bottom: 15px;
+    border-bottom-right-radius: 8px;
+}
+
+/* Questionário (Múltipla Escolha) */
+.quiz-container {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: var(--text-secondary);
+}
+
+.question-text {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.option-btn {
+    background-color: #21262d;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.option-btn:hover {
+    background-color: #30363d;
+}
+
+.option-btn.correct {
+    background-color: rgba(46, 160, 67, 0.2);
+    border-color: var(--success);
+}
+
+.option-btn.wrong {
+    background-color: rgba(248, 81, 73, 0.2);
+    border-color: var(--danger);
+}
+
+.feedback-box {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #1c2128;
+    display: none;
+    border-left: 4px solid var(--accent);
+}
+
+.quiz-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-nav {
+    padding: 12px 20px;
+    background: var(--border-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-nav.primary {
+    background: var(--accent);
+    color: #000;
+}
+
+/* Flashcards */
+.flashcard-container {
+    perspective: 1000px;
+    height: 300px;
+    margin-bottom: 20px;
+}
+
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flashcard-inner.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    border: 1px solid var(--border-color);
+}
+
+.flashcard-front {
+    background-color: #21262d;
+    color: white;
+}
+
+.flashcard-back {
+    background-color: #1f2e4d;
+    color: white;
+    transform: rotateY(180deg);
+}
+
+/* Elementos Visuais Úteis */
+.badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.badge.new { background: var(--success); color: #fff; }
+.badge.alert { background: var(--danger); color: #fff; }
+.badge.info { background: var(--accent); color: #000; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+th {
+    background: #21262d;
+}
+
+</style>
+</head>
+<body>
+    <header class="app-header">
+        <h1>AVC Isquêmico: Neurointensivismo 🧠</h1>
+        <p class="subtitle">Matriz de 23 Tópicos (UpToDate / AMIB / AHA)</p>
+    </header>
+
+    <!-- DASHBOARD CENTRAL -->
+    <main id="dashboard" class="page active">
+        <div class="dashboard-grid">
+            
+            <div class="dash-category-title">I. Base Fisiopatológica</div>
+            <div class="dash-card" data-target="sec-fisiopato">
+                <div class="dash-icon">🔬</div><div class="dash-title">2. Fisiopatologia e Risco</div>
+            </div>
+            <div class="dash-card" data-target="sec-dirimida">
+                <div class="dash-icon">📖</div><div class="dash-title">3. Análise Dirimida (UpToDate)</div>
+            </div>
+            <div class="dash-card" data-target="sec-peculiaridades">
+                <div class="dash-icon">⚠️</div><div class="dash-title">12. Peculiaridades & Mimics</div>
+            </div>
+            <div class="dash-card" data-target="sec-atualizacoes">
+                <div class="dash-icon">📊</div><div class="dash-title">5. Principais Atualizações</div>
+            </div>
+
+            <div class="dash-category-title">II. Abordagem Clínica</div>
+            <div class="dash-card" data-target="sec-pratica" style="border-color: var(--danger);">
+                <div class="dash-icon">⚡</div><div class="dash-title" style="color: var(--danger);">6. Prática Direta (Emergência)</div>
+            </div>
+            <div class="dash-card" data-target="sec-uti">
+                <div class="dash-icon">🏥</div><div class="dash-title">8. Condutas em UTI</div>
+            </div>
+            <div class="dash-card" data-target="sec-enfermaria">
+                <div class="dash-icon">🛏️</div><div class="dash-title">7. Abordagem em Enfermaria</div>
+            </div>
+            <div class="dash-card" data-target="sec-prescricao" style="border-color: var(--success);">
+                <div class="dash-icon">💊</div><div class="dash-title" style="color: var(--success);">9. Prescrição Sugerida</div>
+            </div>
+            <div class="dash-card" data-target="sec-escalas">
+                <div class="dash-icon">🧮</div><div class="dash-title">10. Escalas Interativas</div>
+            </div>
+            <div class="dash-card" data-target="sec-imagens">
+                <div class="dash-icon">🖼️</div><div class="dash-title">11. Imagens Radiológicas</div>
+            </div>
+
+            <div class="dash-category-title">III. Memorização & TEMI</div>
+            <div class="dash-card" data-target="sec-memorizar">
+                <div class="dash-icon">✅</div><div class="dash-title">4. Tópicos a Memorizar</div>
+            </div>
+            <div class="dash-card" data-target="sec-mnemonicos">
+                <div class="dash-icon">🧩</div><div class="dash-title">13. Mnemônicos</div>
+            </div>
+            <div class="dash-card" data-target="sec-flashcards">
+                <div class="dash-icon">📚</div><div class="dash-title">14. Flashcards</div>
+            </div>
+            <div class="dash-card" data-target="sec-questoes" style="border-color: var(--warning);">
+                <div class="dash-icon">📝</div><div class="dash-title" style="color: var(--warning);">15. Questões Comentadas (30)</div>
+            </div>
+
+            <div class="dash-category-title">IV. Aprofundamento & Ciência</div>
+            <div class="dash-card" data-target="sec-curiosidades">
+                <div class="dash-icon">🤓</div><div class="dash-title">16. Curiosidades Nerds</div>
+            </div>
+            <div class="dash-card" data-target="sec-insights">
+                <div class="dash-icon">💡</div><div class="dash-title">17. Insights Sênior</div>
+            </div>
+            <div class="dash-card" data-target="sec-futuro">
+                <div class="dash-icon">🚀</div><div class="dash-title">18. Perspectivas Futuras</div>
+            </div>
+            <div class="dash-card" data-target="sec-aprofundamento">
+                <div class="dash-icon">🔗</div><div class="dash-title">19. Aprofundamento (Links)</div>
+            </div>
+            <div class="dash-card" data-target="sec-correlacionados">
+                <div class="dash-icon">🤝</div><div class="dash-title">20. Assuntos Correlacionados</div>
+            </div>
+            <div class="dash-card" data-target="sec-duvidas">
+                <div class="dash-icon">❓</div><div class="dash-title">21. Dúvidas Não Elucidadas</div>
+            </div>
+            <div class="dash-card" data-target="sec-pesquisa">
+                <div class="dash-icon">🔬</div><div class="dash-title">22. Pesquisas em Andamento</div>
+            </div>
+            <div class="dash-card" data-target="sec-referencias">
+                <div class="dash-icon">📋</div><div class="dash-title">23. Referências</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- TELA 2. Fisiopatologia -->
+    <section id="sec-fisiopato" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">2. Fisiopatologia Profunda</span></div>
+        <div class="content-card">
+            <button class="accordion">Epidemiologia e Etiologias (TOAST)</button>
+            <div class="panel">
+                <br>
+                <p>O AVC é a segunda causa de morte no Brasil. A classificação <strong>TOAST</strong> divide a etiologia em:</p>
+                <ul class="bullet-list">
+                    <li><strong>Aterosclerose de grandes vasos:</strong> Placas em carótidas ou vertebrais (Trombo branco/plaquetário).</li>
+                    <li><strong>Cardioembolismo:</strong> Fibrilação Atrial é a principal vilã. Forma trombos vermelhos (estase).</li>
+                    <li><strong>Oclusão de pequenos vasos (Lacunar):</strong> Infartos em gânglios da base, coroa radiada. Associado à lipohialinose crônica pela hipertensão e diabetes.</li>
+                    <li><strong>Outras causas:</strong> Dissecção arterial (jovens), vasculites, trombofilias.</li>
+                </ul>
+                <br>
+            </div>
+            <button class="accordion">A Cascata Excitotóxica</button>
+            <div class="panel"><br><p>Na oclusão vascular, a falta de ATP desativa a bomba Na+/K+ no <strong>Core Isquêmico</strong>. O neurônio despolariza passivamente e libera quantidades massivas e letais de <strong>Glutamato</strong>. O Glutamato hiperativa os receptores NMDA dos neurônios vizinhos saudáveis (a Penumbra), forçando um <strong>influxo massivo de Cálcio Livre (Ca++)</strong>, o que ativa endonucleases que destroem a célula de dentro para fora.</p><br></div>
+            <button class="accordion">A Vasoparalisia da Penumbra</button>
+            <div class="panel"><br><p>A Área de Penumbra perde a capacidade de autorregulação. Seus vasos ficam totalmente dilatados devido à acidose local máxima. Portanto, o fluxo sanguíneo nessa região passa a depender puramente da Pressão Arterial Sistêmica. <strong>Reduzir excessivamente a pressão arterial de um paciente com AVC aniquila a área de penumbra.</strong></p><br></div>
+        </div>
+    </section>
+
+    <!-- TELA 3. Análise Dirimida -->
+    <section id="sec-dirimida" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">3. Análise Dirimida (UpToDate)</span></div>
+        <div class="content-card">
+            <h3>Substituição de Leitura do UpToDate</h3>
+            <button class="accordion">O Tripé da Proteção de Penumbra</button>
+            <div class="panel">
+                <br>
+                <ul class="bullet-list">
+                    <li><strong>Pressão Arterial:</strong> Se vai trombolisar, reduzir para ≤ 185/110. Se não for, aceitar hipertensão permissiva até 220/120. Não use Nifedipino SL.</li>
+                    <li><strong>Glicemia:</strong> Tratar apenas se > 180 mg/dL. Hipoglicemia simula AVC. Controle glicêmico estrito (<130) causou mal no estudo SHINE.</li>
+                    <li><strong>Oxigênio e Temperatura:</strong> O2 só se Sat < 94%. Tratar febre imediatamente (febre eleva a demanda metabólica neuronal).</li>
+                </ul>
+                <br>
+            </div>
+            <button class="accordion">A Janela Terapêutica</button>
+            <div class="panel">
+                <br>
+                <ul class="bullet-list">
+                    <li><strong>Trombólise (Alteplase):</strong> < 4,5h do Last Seen Normal.</li>
+                    <li><strong>Trombectomia (LVO):</strong> Idealmente < 6h. Pode ser estendida até 24h se houver Mismatch na imagem.</li>
+                    <li><strong>Wake-up Stroke:</strong> Trombólise se RM mostrar lesão em DWI sem hiperintensidade em FLAIR.</li>
+                </ul>
+                <br>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 4. Tópicos a Memorizar -->
+    <section id="sec-memorizar" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">4. Tópicos a Memorizar</span></div>
+        <div class="content-card">
+            <ul class="bullet-list">
+                <li>🎯 <strong>Meta PA (Alteplase):</strong> ≤ 185/110 antes, < 180/105 pós (24h).</li>
+                <li>🎯 <strong>Meta PA (Conservador):</strong> Tolerar até 220/120. Reduzir só 15% em 24h se ultrapassar.</li>
+                <li>🩸 <strong>Trombólise:</strong> Alteplase 0,9 mg/kg (Max 90mg). 10% bolus, resto bomba 1h.</li>
+                <li>🚫 <strong>Antitrombóticos:</strong> PROIBIDOS nas primeiras 24h pós trombolítico.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- TELA 5. Atualizações -->
+    <section id="sec-atualizacoes" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">5. Atualizações AHA</span></div>
+        <div class="content-card">
+            <button class="accordion">Tenecteplase (TNK)</button>
+            <div class="panel"><br><p>TNK foi elevado em recomendação nas diretrizes recentes (AHA 2023). Vantagens: Bolus único, maior afinidade à fibrina e meia-vida longa. Ideal para "Drip and Ship" (trombolisar na UPA e transferir para hemodinâmica).</p><br></div>
+            <button class="accordion">Expansão de Janela (Até 24h)</button>
+            <div class="panel"><br><p>Estudos DAWN e DEFUSE-3: Oclusão de circulação anterior pode sofrer Trombectomia Mecânica até 24h SE provado mismatch (grande tecido viável) via Perfusion CT ou RM.</p><br></div>
+        </div>
+    </section>
+
+    <!-- TELA 6. Abordagem Prática (Fluxograma Door to Needle) -->
+    <section id="sec-pratica" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">6. Prática Direta (Emergência)</span></div>
+        <div class="content-card">
+            <h3 style="color: var(--danger);">⚡ Door-to-Needle (Meta < 60 min)</h3>
+            <table style="font-size: 0.9em;">
+                <tr><th>Tempo</th><th>Ação do Plantonista</th></tr>
+                <tr><td>0 a 10m</td><td>Triagem FAST. HGT imediato. Envia p/ Tomografia.</td></tr>
+                <tr><td>15m</td><td>Intensivista ou Neuro calcula NIHSS. Check exclusões absolutas (Uso de DOACs, Cirurgia recente).</td></tr>
+                <tr><td>25m</td><td>TC Crânio realizada. Avaliação por ausência de sangue.</td></tr>
+                <tr><td>45m</td><td>Decisão Alteplase. Labetalol em bolus (10-20mg IV) se PA > 185x110.</td></tr>
+                <tr><td>60m</td><td>Infusão de Alteplase em andamento.</td></tr>
+            </table>
+            
+            <h3 style="margin-top:20px;">Árvore de Decisão Interativa</h3>
+            <ul class="bullet-list" style="list-style: none; padding:0;">
+                <li><label><input type="checkbox" id="fluxo-janela" style="width:20px;height:20px;"> ⏰ Dentro da janela (< 4,5h)</label></li>
+                <li><label><input type="checkbox" id="fluxo-sangue" style="width:20px;height:20px;"> 🧠 TC sem sangue</label></li>
+            </ul>
+            <div id="fluxo-resultado" class="feedback-box"></div>
+        </div>
+    </section>
+
+    <!-- TELA 7. Enfermaria -->
+    <section id="sec-enfermaria" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">7. Abordagem em Enfermaria</span></div>
+        <div class="content-card">
+            <h3>Pós-Fase Hiperaguda (Dia 2 a Dia 7)</h3>
+            <ul class="bullet-list">
+                <li><strong>Investigação Etiológica (TOAST):</strong> OBRIGATÓRIO iniciar Holter 24h, Ecocardiograma Transtorácico/Transesofágico, e Doppler de Carótidas e Vertebrais para definir se o AVC foi Aterotrombótico ou Cardioembólico.</li>
+                <li><strong>Estatinas:</strong> Atorvastatina 80mg iniciada precocemente tem efeito pleiotrópico (anti-inflamatório).</li>
+                <li><strong>Avaliação Fonoaudiológica:</strong> NPO até rastreio de deglutição à beira-leito. Metade das pneumonias aspirativas pode ser evitada se a dieta só for liberada após avaliação fono.</li>
+                <li><strong>Reabilitação Precoce:</strong> Mobilização motora deve iniciar com cautela entre 24-48h (estudo AVERT mostrou que a mobilização <em>muito</em> precoce e agressiva < 24h em AVCs graves foi maléfica, mas ficar acamado > 48h causa sarcopenia).</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- TELA 8. Condutas UTI -->
+    <section id="sec-uti" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">8. Condutas em UTI</span></div>
+        <div class="content-card">
+            <h3>Neurointensivismo Estruturado</h3>
+            <p><strong>A Equação Sagrada: PPC = PAM - PIC</strong>. No infarto extenso, a PIC sobe devido ao edema. O foco do plantonista da UTI é garantir que a PAM não caia para não zerar a PPC.</p>
+            <br>
+            <button class="accordion">Manejo de Via Aérea e Ventilação</button>
+            <div class="panel">
+                <br>
+                <p>Intubação apenas se incapacidade de proteger via aérea ou GCS < 8. NUNCA hiperventile profilaticamente. Manter PaCO2 rigorosamente entre 35-40 mmHg. Hipocapnia severa causa vasoconstrição que destrói a área de penumbra isquêmica residual.</p>
+                <br>
+            </div>
+            <button class="accordion">O AVC Maligno (Craniectomia)</button>
+            <div class="panel">
+                <br>
+                <p>Ocorre na oclusão total da Artéria Cerebral Média com isquemia de mais de 50% do território. O edema vasogênico atinge o pico em 72h, causando desvio de linha média e herniação uncal (anisocoria). A Craniectomia Descompressiva salva vidas se feita precocemente (dentro das primeiras 48h) em pacientes com ≤ 60 anos (Estudos DECIMAL, DESTINY).</p>
+                <br>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 9. Prescrição Sugerida -->
+    <section id="sec-prescricao" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">9. Prescrição Sugerida</span></div>
+        <div class="content-card">
+            <h3 style="color:var(--success);">Modelo de UTI (Fase Hiperaguda < 24h Pós-Trombólise)</h3>
+            <div style="background:#21262d; padding:15px; border-radius:8px; font-family:monospace; font-size:0.9em; white-space:pre-wrap;">
+1. DIETA ZERO (NPO) - Aguardar avaliação de fonoaudiologia.
+2. Cabeceira a 0 graus se hipotensão/flutuação (fluxo dependente), senão a 30 graus (risco de broncoaspiração).
+3. Monitorização Contínua, Oximetria, Acesso Venoso Periférico Calibroso (x2).
+4. SF 0,9% IV 1000 mL, Correr a 60 mL/h (EVITAR soro glicosado ou ringer lactato excessivo).
+5. O2 Cateter Nasal se SatO2 < 94%.
+6. Controle Glicêmico: Glicemia Capilar de 4/4h. Insulina Regular SC SN esquema se > 180 mg/dL (Manter entre 140-180).
+7. Profilaxia TVP: Compressão Pneumática Intermitente OBRIGATÓRIA.
+   (⚠️ SUSPENSO: Enoxaparina ou Heparina nas primeiras 24h pós trombolítico).
+8. Controle de Febre: Dipirona 1g IV 6/6h + Se Temp > 37.5ºC: Paracetamol.
+9. SOS Hipertensão: Labetalol 10 a 20mg IV lento (1-2 min). Repetir 1x se PA > 180x105 mmHg.
+10. Proteção Gástrica: Pantoprazol 40mg IV 1x/dia.
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 10. Escalas Interativas -->
+    <section id="sec-escalas" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">10. Escalas Interativas</span></div>
+        <div class="content-card">
+            <h3>Calculadora NIHSS Completa (11 Itens)</h3>
+            <div style="background:var(--bg-dark); padding:15px; border-radius:8px;">
+                <div class="calc-item"><label>1a. Nível de Consciência:</label><select class="nihss-item"><option value="0">0 - Alerta</option><option value="1">1 - Desperta c/ estímulo leve</option><option value="2">2 - Desperta c/ dor</option><option value="3">3 - Coma</option></select></div>
+                <div class="calc-item"><label>1b. Perguntas (Mês/Idade):</label><select class="nihss-item"><option value="0">0 - Acerta duas</option><option value="1">1 - Acerta uma</option><option value="2">2 - Erra ambas</option></select></div>
+                <div class="calc-item"><label>1c. Comandos (Olhos/Mãos):</label><select class="nihss-item"><option value="0">0 - Acerta dois</option><option value="1">1 - Acerta um</option><option value="2">2 - Erra ambos</option></select></div>
+                <div class="calc-item"><label>2. Olhar Conjugado:</label><select class="nihss-item"><option value="0">0 - Normal</option><option value="1">1 - Desvio parcial</option><option value="2">2 - Desvio forçado (olha pra lesão)</option></select></div>
+                <div class="calc-item"><label>3. Campo Visual:</label><select class="nihss-item"><option value="0">0 - Normal</option><option value="1">1 - Hemianopsia parcial</option><option value="2">2 - Hemianopsia completa</option><option value="3">3 - Cegueira bilateral</option></select></div>
+                <div class="calc-item"><label>4. Paralisia Facial:</label><select class="nihss-item"><option value="0">0 - Normal</option><option value="1">1 - Paresia leve</option><option value="2">2 - Paralisia inferior parcial</option><option value="3">3 - Paralisia completa</option></select></div>
+                <div class="calc-item"><label>5. Braço (D/E somados):</label><select class="nihss-item"><option value="0">0 - Mantém 10s</option><option value="1">1 - Cai antes de 10s, não toca leito</option><option value="2">2 - Toca leito logo, resiste gravidade</option><option value="3">3 - Sem resistência, cai pesado</option><option value="4">4 - Sem movimento nenhum</option></select></div>
+                <div class="calc-item"><label>6. Perna (D/E somados):</label><select class="nihss-item"><option value="0">0 - Mantém 5s</option><option value="1">1 - Cai antes de 5s, não toca leito</option><option value="2">2 - Toca leito, resiste gravidade</option><option value="3">3 - Queda pesada</option><option value="4">4 - Sem movimento</option></select></div>
+                <div class="calc-item"><label>7. Ataxia Apendicular:</label><select class="nihss-item"><option value="0">0 - Ausente</option><option value="1">1 - 1 membro</option><option value="2">2 - 2 membros</option></select></div>
+                <div class="calc-item"><label>8. Sensibilidade:</label><select class="nihss-item"><option value="0">0 - Normal</option><option value="1">1 - Perda leve</option><option value="2">2 - Perda profunda</option></select></div>
+                <div class="calc-item"><label>9. Linguagem (Afasia):</label><select class="nihss-item"><option value="0">0 - Normal</option><option value="1">1 - Leve/Moderada</option><option value="2">2 - Grave (ininteligível)</option><option value="3">3 - Mutismo/Global</option></select></div>
+                <div class="calc-item"><label>10. Disartria:</label><select class="nihss-item"><option value="0">0 - Normal</option><option value="1">1 - Leve</option><option value="2">2 - Grave/Anartria</option></select></div>
+                <div class="calc-item"><label>11. Extinção/Inatenção:</label><select class="nihss-item"><option value="0">0 - Nenhuma</option><option value="1">1 - Leve visual/tátil</option><option value="2">2 - Heminegligência grave</option></select></div>
+            </div>
+            <div id="nihss-result-text" class="feedback-box" style="display:block; text-align:center;">Selecione os itens...</div>
+        </div>
+    </section>
+
+    <!-- TELA 11. Imagens -->
+    <section id="sec-imagens" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">11. Imagens Radiológicas</span></div>
+        <div class="content-card">
+            <h3>Dense MCA Sign (Sinal da Cerebral Média Hiperdensa)</h3>
+            <p>O 1º sinal na TC sem contraste. O que você está vendo brilhar (hiperdenso) não é hemorragia, é literalmente o **trombo impactado** dentro do cano da artéria, cheio de hemácias. Indica oclusão grossa aguda.</p>
+            <br>
+            <h3>Sinal da Fita Insular (Insular Ribbon Sign)</h3>
+            <p>Perda da diferenciação entre substância branca e cinzenta no córtex da ínsula. Como a ínsula é pobre em colaterais distantes, ela edemacia e sofre infarto antes das outras regiões da Cerebral Média.</p>
+            <br>
+            <h3>Escore ASPECTS</h3>
+            <p>Divide o território da cerebral média em 10 regiões. AVC extenso perde 1 ponto por região afetada na TC aguda. ASPECTS &le; 5 indica um infarto gigantesco (mais risco de sangrar ao trombolisar, e controverso para Trombectomia na literatura anterior, embora trials recentes como RESCUE-Japan e SELECT2 tenham expandido Trombectomia para ASPECTS baixos).</p>
+        </div>
+    </section>
+
+    <!-- TELA 12. Peculiaridades -->
+    <section id="sec-peculiaridades" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">12. Peculiaridades & Mimics</span></div>
+        <div class="content-card">
+            <button class="accordion">Paralisia de Todd</button>
+            <div class="panel"><br><p>A crise convulsiva pode gerar exaustão do córtex motor, deixando uma hemiparesia temporária (que dura até 48h). A chave é histórico de crise tônico-clônica ou alteração na RM.</p><br></div>
+            <button class="accordion">Enxaqueca Hemiplégica</button>
+            <div class="panel"><br><p>Geralmente jovens com aura prolongada. Pode simular a pior das oclusões de LVO na apresentação, acompanhada de forte cefaleia unilateral.</p><br></div>
+            <button class="accordion">Trombose Venosa Cerebral</button>
+            <div class="panel"><br><p>Peculiar: Jovens, usuárias de anticoncepcional, cefaleia refratária + déficit. O infarto provocado por Trombose Venosa <strong>não respeita territórios arteriais</strong> e é muito propenso a virar infarto hemorrágico bilateral (Ex: seios sagitais).</p><br></div>
+        </div>
+    </section>
+
+    <!-- TELA 13. Mnemônicos -->
+    <section id="sec-mnemonicos" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">13. Mnemônicos</span></div>
+        <div class="content-card">
+            <h3>FAST HUG BID (Extensão UTI)</h3>
+            <ul class="bullet-list">
+                <li><strong>F</strong>eeding / <strong>A</strong>nalgesia / <strong>S</strong>edation (Evitar contínua se possível).</li>
+                <li><strong>T</strong>hromboembolic / <strong>H</strong>ead of bed (30 graus ou 0 se hipoperfusão).</li>
+                <li><strong>U</strong>lcer / <strong>G</strong>lucose / <strong>B</strong>owel / <strong>I</strong>nfection / <strong>D</strong>elirium.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- TELA 14. Flashcards -->
+    <section id="sec-flashcards" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">14. Flashcards</span></div>
+        <div class="content-card">
+            <div class="flashcard-container" id="flashcard-container">
+                <div class="flashcard-inner" id="flashcard-inner">
+                    <div class="flashcard-front"><p id="fc-question">Carregando...</p></div>
+                    <div class="flashcard-back"><p id="fc-answer">Carregando...</p></div>
+                </div>
+            </div>
+            <div class="quiz-controls">
+                <button class="btn-nav" id="btn-prev-fc">⬅️ Anterior</button>
+                <button class="btn-nav primary" id="btn-flip-fc">🔄 Virar</button>
+                <button class="btn-nav" id="btn-next-fc">Próximo ➡️</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 15. Questões -->
+    <section id="sec-questoes" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">15. Banco TEMI (30 Questões)</span></div>
+        <div class="quiz-container">
+            <div class="quiz-header"><span>Treinamento AMIB</span><span id="quiz-counter">Q 1 de 30</span></div>
+            <div class="question-text" id="quiz-question">Carregando...</div>
+            <div class="options-list" id="quiz-options"></div>
+            <div class="feedback-box" id="quiz-feedback"></div>
+            <div class="quiz-controls">
+                <button class="btn-nav" id="btn-prev-quiz">Anterior</button>
+                <button class="btn-nav primary" id="btn-next-quiz">Próxima</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 16. Curiosidades -->
+    <section id="sec-curiosidades" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">16. Curiosidades Nerds</span></div>
+        <div class="content-card">
+            <p><strong>Efeito Fogging (Nevoeiro) da Tomografia:</strong> Entre a 2ª e a 3ª semana de um infarto isquêmico severo, se você fizer uma TC de crânio, a lesão (que deveria estar escura) aparece da mesma cor do cérebro sadio (isodensa). Isso ocorre por uma invasão maciça de macrófagos e vasos neoformados cheios de sangue, que compensam a densidade d'água do edema. Já enganou muitos residentes que deram alta dizendo "O AVC desapareceu!".</p>
+        </div>
+    </section>
+
+    <!-- TELA 17. Insights -->
+    <section id="sec-insights" class="page">
+        <div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">17. Insights Sênior</span></div>
+        <div class="content-card">
+            <p>A "Isquemia Transitória" (AIT) agora é tissue-based, não mais time-based (24h). Se o paciente melhorou o déficit em 1 hora, mas a Ressonância Magnética (DWI) mostra um buraco branco (infarto), não foi AIT, foi um AVC isquêmico com resolução clínica.</p>
+        </div>
+    </section>
+
+    <!-- TELA 18. Perspectivas Futuras -->
+    <section id="sec-futuro" class="page"><div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">18. Perspectivas Futuras</span></div><div class="content-card"><p>Fármacos Citoprotetores puros (Ex: Nerinetida NA-1), inibidores do domínio PDZ que descolam o receptor NMDA da maquinaria do óxido nítrico, com a intenção de ser administrados pelas equipes de resgate no SAMU para estabilizar a área isquêmica antes do paciente chegar no hospital para a Trombectomia.</p></div></section>
+
+    <!-- TELA 19. Aprofundamento -->
+    <section id="sec-aprofundamento" class="page"><div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">19. Aprofundamento (Links)</span></div><div class="content-card"><ul class="bullet-list">
+        <li><a href="https://www.uptodate.com/contents/acute-ischemic-stroke-management-of-blood-pressure" target="_blank" style="color:var(--accent);">UpToDate: Management of Blood Pressure in AIS</a></li>
+        <li><a href="https://www.ahajournals.org/doi/10.1161/STR.0000000000000211" target="_blank" style="color:var(--accent);">Guideline AHA/ASA: Early Management</a></li>
+        <li><a href="https://radiopaedia.org/articles/ischemic-stroke" target="_blank" style="color:var(--accent);">Radiopaedia: Ischemic Stroke Imaging Patterns</a></li>
+        <li><a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1706442" target="_blank" style="color:var(--accent);">The DAWN Trial (NEJM)</a></li>
+    </ul></div></section>
+
+    <!-- TELA 20. Correlacionados -->
+    <section id="sec-correlacionados" class="page"><div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">20. Assuntos Correlacionados</span></div><div class="content-card"><ul class="bullet-list">
+        <li>Dissecção Arterial Cervical (Carótida e Vertebral) em traumas jovens.</li>
+        <li>Hemorragia Subaracnóide (Diagnóstico Diferencial Clássico).</li>
+        <li>Trombose Venosa Cerebral.</li>
+        <li>AVC Hemorrágico Intraparenquimatoso (Hipertensivo e Angiopatia Amiloide).</li>
+    </ul></div></section>
+
+    <!-- TELA 21. Dúvidas -->
+    <section id="sec-duvidas" class="page"><div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">21. Dúvidas Não Elucidadas</span></div><div class="content-card"><p>Qual a meta ótima de pressão arterial <strong>após uma trombectomia altamente bem sucedida (TICI 2b/3)?</strong>. Baixar agressivamente previne reperfusão hemorrágica, mas o Trial BP-TARGET (2021) mostrou que baixar a PA sistólica < 130 não reduziu as taxas de hemorragia cerebral se comparado ao controle < 180, e pode inclusive piorar penumbra residual.</p></div></section>
+    
+    <!-- TELA 22. Pesquisa em Andamento -->
+    <section id="sec-pesquisa" class="page"><div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">22. Pesquisa em Andamento</span></div><div class="content-card"><p>A expansão da Trombectomia Mecânica para territórios de fossa posterior (Artéria Basilar). Ensaios como BAOCHE e ATTENTION recentemente provaram benefícios tardios (até 24h) nesses pacientes, mas a logística de indicação fora da circulação anterior ainda está sendo ajustada nos grandes guidelines mundiais.</p></div></section>
+
+    <!-- TELA 23. Referências -->
+    <section id="sec-referencias" class="page"><div class="top-bar"><button class="btn-back">⬅️ Voltar</button><span class="page-title">23. Referências Bibliográficas</span></div><div class="content-card"><ul class="bullet-list">
+        <li><em>Initial assessment and management of acute stroke</em>. UpToDate (Revisão Contínua).</li>
+        <li><em>AHA/ASA Guidelines for the Early Management of Patients With Acute Ischemic Stroke</em> (2019/Update 2023).</li>
+        <li>The DAWN and DEFUSE-3 Investigators (N Engl J Med 2018).</li>
+        <li>The WAKE-UP Investigators (N Engl J Med 2018).</li>
+        <li>Manual de Neurointensivismo da Associação de Medicina Intensiva Brasileira (AMIB).</li>
+    </ul></div></section>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- ROTEAMENTO E NAVEGAÇÃO DE PÁGINAS ---
+    const dashboardCards = document.querySelectorAll('.dash-card');
+    const pages = document.querySelectorAll('.page');
+    const backBtns = document.querySelectorAll('.btn-back');
+
+    dashboardCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const targetId = card.getAttribute('data-target');
+            pages.forEach(p => p.classList.remove('active'));
+            document.getElementById(targetId).classList.add('active');
+            window.scrollTo(0, 0);
+        });
+    });
+
+    backBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            pages.forEach(p => p.classList.remove('active'));
+            document.getElementById('dashboard').classList.add('active');
+            window.scrollTo(0, 0);
+        });
+    });
+
+    // --- ACCORDIONS ---
+    const accordions = document.querySelectorAll('.accordion');
+    accordions.forEach(acc => {
+        acc.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        });
+    });
+
+    // --- CALCULADORA NIHSS ---
+    const nihssSelects = document.querySelectorAll('.nihss-item');
+    const nihssResult = document.getElementById('nihss-result-text');
+    
+    function calcNIHSS() {
+        if(!nihssResult) return;
+        let total = 0;
+        nihssSelects.forEach(select => {
+            total += parseInt(select.value) || 0;
+        });
+        
+        let gravidade = "";
+        let cor = "var(--success)";
+        if(total === 0) { gravidade = "Sem déficits"; }
+        else if (total >= 1 && total <= 4) { gravidade = "AVC Menor"; }
+        else if (total >= 5 && total <= 15) { gravidade = "AVC Moderado"; cor = "var(--warning)"; }
+        else if (total >= 16 && total <= 20) { gravidade = "AVC Moderado a Grave"; cor = "var(--danger)"; }
+        else { gravidade = "AVC Grave"; cor = "var(--danger)"; }
+        
+        nihssResult.innerHTML = `<span style="color:${cor}; font-weight:bold; font-size:1.2em;">Total: ${total} pontos</span><br>Classificação: ${gravidade}`;
+    }
+    
+    nihssSelects.forEach(s => s.addEventListener('change', calcNIHSS));
+
+    // --- FLUXOGRAMA DE TROMBÓLISE (INTERATIVO) ---
+    const checkJanela = document.getElementById('fluxo-janela');
+    const checkSangue = document.getElementById('fluxo-sangue');
+    const resFluxo = document.getElementById('fluxo-resultado');
+
+    function updateFluxo() {
+        if(!resFluxo) return;
+        if(checkJanela.checked && checkSangue.checked) {
+            resFluxo.style.display = 'block';
+            resFluxo.innerHTML = `<span style="color:var(--success); font-weight:bold;">✅ Elegível para Trombólise!</span><br>
+            <strong>Droga:</strong> Alteplase 0,9 mg/kg (Max 90mg).<br>
+            <strong>Ação:</strong> 10% em bolus (1min), 90% em bomba (1h).<br>
+            <strong>Meta PA:</strong> Manter ≤ 180/105 mmHg.`;
+        } else if (!checkJanela.checked || !checkSangue.checked) {
+            resFluxo.style.display = 'block';
+            resFluxo.innerHTML = `<span style="color:var(--danger); font-weight:bold;">🚨 Trombólise EV Contraindicada neste cenário básico.</span><br>
+            Se fora da janela, avaliar <strong>Mismatch DWI-FLAIR</strong> (Ressonância) ou Perfusão para <strong>Trombectomia (até 24h)</strong>.`;
+        }
+    }
+    
+    if(checkJanela) checkJanela.addEventListener('change', updateFluxo);
+    if(checkSangue) checkSangue.addEventListener('change', updateFluxo);
+
+
+    // --- BASE DE DADOS DE FLASHCARDS ---
+    const flashcards = [
+        { q: "Qual o alvo da Pressão Arterial ANTES da trombólise?", a: "PA ≤ 185/110 mmHg." },
+        { q: "Estudo SHINE e meta glicêmica?", a: "Controle estrito (<130) causou mais dano por hipoglicemia. A meta atual é 140-180 mg/dL (tratar se > 180)." },
+        { q: "Janela clássica para Trombectomia Mecânica (LVO)?", a: "Até 6h. Estendida até 24h pelos estudos DAWN e DEFUSE-3 se houver penumbra viável em imagem de perfusão." },
+        { q: "O que é o estudo WAKE-UP?", a: "Permitiu trombólise em AVC do despertar se RM mostrar lesão em difusão (DWI) mas sem hiperintensidade em FLAIR (isquemia < 4,5h)." },
+        { q: "Qual o mecanismo da Paralisia de Todd?", a: "Paresia transitória após uma crise epiléptica (exaustão neuronal temporária), é o maior mimic na emergência." }
+    ];
+
+    let currentCardIndex = 0;
+    const fcQuestion = document.getElementById('fc-question');
+    const fcAnswer = document.getElementById('fc-answer');
+    const fcCounter = document.getElementById('fc-counter');
+    const fcInner = document.getElementById('flashcard-inner');
+
+    function loadCard(index) {
+        if(!fcInner) return;
+        fcInner.classList.remove('is-flipped');
+        setTimeout(() => {
+            fcQuestion.textContent = flashcards[index].q;
+            fcAnswer.textContent = flashcards[index].a;
+            fcCounter.textContent = `${index + 1} / ${flashcards.length}`;
+        }, 200);
+    }
+
+    if(document.getElementById('btn-flip-fc')) {
+        document.getElementById('btn-flip-fc').addEventListener('click', () => fcInner.classList.toggle('is-flipped'));
+        document.getElementById('btn-next-fc').addEventListener('click', () => {
+            currentCardIndex = (currentCardIndex < flashcards.length - 1) ? currentCardIndex + 1 : 0;
+            loadCard(currentCardIndex);
+        });
+        document.getElementById('btn-prev-fc').addEventListener('click', () => {
+            currentCardIndex = (currentCardIndex > 0) ? currentCardIndex - 1 : flashcards.length - 1;
+            loadCard(currentCardIndex);
+        });
+        loadCard(0);
+    }
+
+    // --- BASE DE DADOS DE QUESTÕES TEMI (30 QUESTÕES) ---
+    const quizData = [
+        { q: "1. Paciente de 65 anos com hemiparesia à direita iniciada há 3 horas. PA na admissão: 200/115 mmHg. TC crânio s/ sangramento. A conduta em relação à pressão arterial antes de administrar alteplase é:",
+          opts: ["Reduzir PA para ≤ 185/110 mmHg", "Reduzir PA para ≤ 140/90 mmHg", "Não tratar, a hipertensão é permissiva", "Aguardar PA chegar a 220/120 para tratar"],
+          ans: 0,
+          feed: "AHA/ASA: Antes da trombólise EV, a PA deve ser ≤ 185/110 mmHg para minimizar risco de transformação hemorrágica." },
+        { q: "2. Paciente de 70 anos apresenta AVC isquêmico agudo há 5 horas (fora da janela para alteplase). Qual a meta pressórica nas primeiras 24h caso não seja candidato a trombectomia?",
+          opts: ["Manter < 180/105 mmHg", "Tratar se > 220/120 mmHg e reduzir apenas 15%", "Manter normotensão estrita (120/80)", "Tolerar até 240/130 mmHg"],
+          ans: 1,
+          feed: "Sem reperfusão, a hipertensão permissiva é tolerada até 220/120. Reduzir excessivamente lesa a área de penumbra devido à falha da autorregulação." },
+        { q: "3. Na avaliação pré-hospitalar, uma pontuação alta na escala LAMS (Los Angeles Motor Scale) sugere qual achado?",
+          opts: ["Hipoglicemia grave", "Hemorragia subaracnóidea", "Oclusão de grande vaso (LVO)", "Crise epiléptica focal"],
+          ans: 2,
+          feed: "Escalas como LAMS e RACE são usadas para triar Oclusão de Grande Vaso (Large Vessel Occlusion), indicando necessidade primária de centro com hemodinâmica (trombectomia)." },
+        { q: "4. No AVC agudo, o uso de soluções de soro hipotônico (ex: NaCl 0,45%) deve ser evitado devido ao risco de:",
+          opts: ["Hipernatremia", "Edema cerebral piorado", "Hipocalcemia aguda", "Redução da diurese"],
+          ans: 1,
+          feed: "Fluidos hipotônicos podem exacerbar o edema no AVC isquêmico. Prefere-se sempre SF 0,9% (isotônico) ou Ringer Simples." },
+        { q: "5. O estudo clínico DAWN estabeleceu qual premissa na Trombectomia Mecânica?",
+          opts: ["Uso obrigatório de Alteplase junto ao cateterismo", "Expansão da janela de Trombectomia de 6h para até 24h baseado no Mismatch Clínico/Core de infarto (RM ou TC perfusão)", "Restrição da Trombectomia apenas para menores de 65 anos", "Substituição total da trombólise venosa"],
+          ans: 1,
+          feed: "DAWN e DEFUSE-3 revolucionaram as diretrizes AHA 2018/2019 ao estender a janela de reperfusão endovascular para até 24 horas caso exista grande área de penumbra (mismatch volumétrico)." },
+        { q: "6. Dentre os 'mimics' (simuladores) de AVC, qual deve ser descartado IMEDIATAMENTE (primeiro exame na emergência)?",
+          opts: ["Enxaqueca", "Epilepsia", "Hipoglicemia", "Transtorno conversivo"],
+          ans: 2,
+          feed: "A hipoglicemia é o simulador metabólico mais clássico e grave, e requer descarte na triagem primária (HGT rápido)." },
+        { q: "7. Estudo WAKE-UP avaliou o AVC do despertar baseando-se em qual achado de imagem para indicar trombolítico?",
+          opts: ["Sangramento leve na TC", "Mismatch na Ressonância: Lesão brilhante na Difusão (DWI) mas não visível ainda em FLAIR", "Sinal da Artéria Cerebral Média densa", "Hipoatenuação extensa em TC"],
+          ans: 1,
+          feed: "O estudo Wake-Up mostrou que lesões agudas brilham na DWI quase imediatamente, mas demoram de 3 a 4 horas para aparecer no FLAIR. Se há DWI positivo e FLAIR negativo, a lesão tem menos de 4,5h." },
+        { q: "8. Após a administração de alteplase, o paciente deve ser monitorado numa UTI/Unidade de AVC. Quando pode ser iniciado o AAS?",
+          opts: ["Junto com o alteplase", "Imediatamente após a infusão", "Apenas 24 horas após a infusão, seguida de TC de controle", "Após 7 dias"],
+          ans: 2,
+          feed: "Aspirina (e outros antitrombóticos/anticoagulantes) NUNCA devem ser iniciados nas primeiras 24h após a trombólise até que uma nova neuroimagem exclua sangramento." },
+        { q: "9. Para avaliação da via aérea, recomenda-se a intubação profilática no AVC isquêmico grave?",
+          opts: ["Sim, protege broncoaspiração em todos os casos", "Não, intubação apenas se perda de reflexos bulbares, rebaixamento grave (GCS < 8) ou insuficiência respiratória iminente", "Sim, para controlar o CO2 e fazer hiperventilação", "Não, apenas se o AVC for hemorrágico"],
+          ans: 1,
+          feed: "A via aérea no neurocrítico deve ser protegida apenas perante falha clínica objetiva (incapacidade de proteger a via ou oxigenar)." },
+        { q: "10. Qual a temperatura-alvo nos primeiros dias de AVC isquêmico na UTI?",
+          opts: ["Hipotermia terapêutica (32-34ºC)", "Normotermia (evitar febre rigorosamente > 37.8ºC a 38ºC)", "Tolerar até 39ºC", "Hipertermia terapêutica para aumentar fluxo"],
+          ans: 1,
+          feed: "A febre aumenta a demanda metabólica em uma área que já está sofrendo hipóxia (penumbra). Deve ser combatida agressivamente com antitérmicos e resfriamento de superfície se refratária." },
+        { q: "11. Fisiopatologia da Isquemia: Qual íon invade a célula rapidamente causando edema celular citotóxico (morte neuronal hiperaguda)?",
+          opts: ["Potássio", "Sódio", "Cálcio livre extracelular", "Magnésio"],
+          ans: 1,
+          feed: "Com a falta de ATP, a bomba Na+/K+ falha, o sódio entra maciçamente, puxando água para dentro da célula (Edema Citotóxico)." },
+        { q: "12. Qual droga anti-hipertensiva IV é considerada de primeira linha para controle pressórico hiperagudo no AVC (conforme disponibilidade UpToDate/AHA)?",
+          opts: ["Nitroprussiato de Sódio", "Labetalol ou Nicardipina", "Nifedipino sublingual", "Clonidina oral"],
+          ans: 1,
+          feed: "Labetalol e Nicardipina/Clevidipina são preferenciais por serem tituláveis e não induzirem vasodilatação cerebral intensa imediata (ao contrário do nitroprussiato, que pode aumentar a PIC)." },
+        { q: "13. Uso de Nifedipino sublingual no controle da PA aguda do AVC é:",
+          opts: ["Altamente recomendado", "Contraindicado", "Opção de segunda linha", "Depende do peso"],
+          ans: 1,
+          feed: "Contraindicado! Causa quedas imprevisíveis e abruptas da PA, prejudicando drasticamente a perfusão da área de penumbra isquêmica." },
+        { q: "14. Em relação à cascata excitotóxica do AVC isquêmico, qual o principal neurotransmissor envolvido na morte neuronal?",
+          opts: ["GABA", "Acetilcolina", "Glutamato", "Dopamina"],
+          ans: 2,
+          feed: "A hipóxia leva à liberação maciça de Glutamato, que ativa receptores NMDA, causando um influxo letal de Cálcio para o neurônio." },
+        { q: "15. De acordo com as diretrizes, oxigenoterapia suplementar rotineira em todos os AVCs não-hipoxêmicos (SatO2 98% em ar ambiente):",
+          opts: ["Aumenta área de penumbra", "Não é recomendada e pode gerar radicais livres", "É recomendada (O2 100%)", "Previne morte neuronal"],
+          ans: 1,
+          feed: "Oxigênio suplementar em normóxicos não traz benefícios provados em desfecho funcional e a hiperóxia pode gerar EROs (espécies reativas de oxigênio)." },
+        { q: "16. Edema Cerebral Vasogênico no AVC ocorre caracteristicamente:",
+          opts: ["Nos primeiros minutos", "Apenas após 1 mês", "Sua expressão máxima ocorre tipicamente entre o 3º e 5º dia pós-evento", "Não ocorre no AVC isquêmico"],
+          ans: 2,
+          feed: "O edema citotóxico é celular e imediato. O edema vasogênico (quebra da barreira hematoencefálica) atinge o pico entre 72 a 96 horas, sendo a fase de maior risco de herniação (AVC Maligno)." },
+        { q: "17. Como iniciar a prevenção de Trombose Venosa Profunda (TVP) em AVC com trombolítico recém administrado (< 24h)?",
+          opts: ["Heparina em bomba", "Enoxaparina plena na primeira hora", "Compressão pneumática intermitente nas primeiras 24h", "AAS alta dose associado a Clopidogrel"],
+          ans: 2,
+          feed: "Anticoagulantes são proscritos nas primeiras 24h pós-alteplase pelo altíssimo risco de transformação hemorrágica. Profilaxia mecânica é o padrão." },
+        { q: "18. Sinal da Artéria Cerebral Média (ACM) hiperdensa na TC sem contraste indica:",
+          opts: ["Calcificação venosa idiopática", "Hemorragia ativa pontina", "Trombo agudo intra-arterial na topografia da ACM", "Envelhecimento normal"],
+          ans: 2,
+          feed: "O sinal da ACM hiperdensa reflete o coágulo real (tromboembólico agudo) dentro do vaso, muitas vezes sendo o único achado nas primeiras horas do AVC." },
+        { q: "19. Sobre o uso de Estatinas após um AVC Isquêmico agudo não-cardioembólico:",
+          opts: ["Estão contraindicadas", "Suspender por 1 semana", "Iniciar ou continuar precocemente Atorvastatina alta potência", "Usar apenas se LDL > 200"],
+          ans: 2,
+          feed: "Diretrizes recomendam estatinas de alta intensidade (Atorvastatina 80mg) para redução do risco aterotrombótico (pleiotropia e estabilização de placa)." },
+        { q: "20. Na oclusão da Artéria Basilar (circulação posterior), os achados podem incluir:",
+          opts: ["Afasia e hemiparesia direita proporcionada", "Quadriparesia, rebaixamento de consciência e diplopia", "Amaurose fugaz unilateral isolada", "Hemianopsia homônima isolada"],
+          ans: 1,
+          feed: "AVC de tronco encefálico pode cursar com déficit motor cruzado ou bilateral, alterações severas de pares cranianos, vertigem refratária e coma rápido." },
+        { q: "21. Paciente de 45 anos na UTI, 72h após AVC Isquêmico extenso de Cerebral Média, evolui com anisocoria e Glasgow 6. Suspeita clínica:",
+          opts: ["Convulsão sutil", "Edema cerebral vasogênico maligno com herniação uncal", "Re-trombose em outra artéria", "Conversão hemorrágica petequial benigna"],
+          ans: 1,
+          feed: "O pico do edema ocorre no 3º ao 5º dia. O AVC 'Maligno' da ACM leva a shift de linha média e herniação uncal (anisocoria ipsilateral pela compressão do 3º par craniano)." },
+        { q: "22. Qual é o tratamento definitivo sugerido pelos trials (ex: DECIMAL, DESTINY, HAMLET) para o AVC Maligno da Artéria Cerebral Média em pacientes jovens (≤60a)?",
+          opts: ["Barbitúricos em alta dose", "Craniectomia Descompressiva precoce (dentro de 48h)", "Hipotermia 32 graus", "Trombectomia de resgate no 3º dia"],
+          ans: 1,
+          feed: "A craniectomia descompressiva hemisférica antes que ocorra herniação irreversível salva vidas (reduz mortalidade massivamente, apesar da morbidade funcional residual)." },
+        { q: "23. Uso de Tenecteplase (TNK) no lugar da Alteplase (rt-PA). Qual a grande vantagem que fundamenta o Guideline 2023?",
+          opts: ["Administração em bolus único (5-10 segundos) facilitando o transfer 'Drip-and-Ship'", "Não causa conversão hemorrágica em nenhuma dose", "Não possui janela terapêutica", "Pode ser dado sem TC prévia se paciente for jovem"],
+          ans: 0,
+          feed: "O TNK (0,25 mg/kg) é muito prático por ser aplicado em bolus único, sendo ótimo especialmente antes da transferência primária para trombectomia mecânica (bridging therapy)." },
+        { q: "24. Fisiopatologia: Qual o comportamento da Autorregulação Cerebral em territórios de Penumbra Isquêmica?",
+          opts: ["Permanece inalterada e funcional", "Passa a funcionar de forma exponencial", "É perdida (Vasoparalisia); o Fluxo Sanguíneo Cerebral torna-se passivamente dependente da Pressão Arterial Média", "Causa vasoconstrição extrema de defesa"],
+          ans: 2,
+          feed: "Com a acidose e isquemia, os vasos da penumbra perdem a capacidade de contrair ou dilatar, dilatando-se ao máximo. Portanto, quedas na PAM reduzem catastroficamente o fluxo ali (PPC = PAM - PIC)." },
+        { q: "25. Controle de PCO2 na Ventilação Mecânica de um neurocrítico com AVC Agudo. O que hiperventilação intensa (PaCO2 < 30 mmHg) gera?",
+          opts: ["Vasodilatação cerebral, aumentando a área de penumbra", "Vasoconstrição cerebral reativa, podendo aprofundar gravemente a isquemia local", "Aumento da oferta capilar de oxigênio", "Redução do edema citotóxico sem efeito vascular"],
+          ans: 1,
+          feed: "Hipocapnia induz vasoconstrição severa das artérias saudáveis. Embora reduza a PIC rapidamente, ela piora o fluxo da área isquêmica e pode aumentar o infarto." },
+        { q: "26. Qual o limiar clássico do escore NIHSS que, na prática, levanta forte suspeita clínica de Oclusão de Grande Vaso (LVO) e dispara indicação de angio-TC imediata?",
+          opts: ["NIHSS ≥ 1", "NIHSS ≥ 6", "NIHSS 0 (apenas com vertigem)", "NIHSS ≥ 35"],
+          ans: 1,
+          feed: "Déficits de NIHSS maiores que 6 sugerem fortemente a presença de uma LVO (circulação anterior), tornando a Trombectomia Mecânica altamente factível." },
+        { q: "27. Se houver conversão hemorrágica sintomática intra-hospitalar durante ou logo após a infusão de alteplase, a conduta primária imediata é:",
+          opts: ["Manter infusão do trombolítico mas iniciar plasma fresco", "Suspender alteplase, solicitar TC urgente e solicitar Crioprecipitado/Ácido Tranexâmico", "Heparinização para estabilizar o vaso", "Apenas observar e fazer RM de controle"],
+          ans: 1,
+          feed: "Qualquer piora neurológica requer stop na medicação. A reversão empírica da Alteplase é feita com Crioprecipitado (fator VIII e Fibrinogênio) ou antifibrinolíticos (Tranexâmico)." },
+        { q: "28. Conceitualmente, a Isquemia Cerebral Transitória (AIT) atual (tissue-based definition) diferencia-se do AVC isquêmico por:",
+          opts: ["Duração puramente baseada no relógio (exatamente menor que 24 horas independentemente de imagem)", "Resolução clínica com AUSÊNCIA de infarto cerebral agudo na neuroimagem (RM DWI)", "Pelo NIHSS, sendo AIT sempre pontuação 0 no momento do ataque", "Ser originário apenas de fontes cardioembólicas"],
+          ans: 1,
+          feed: "O conceito antigo (tempo < 24h) caiu. Hoje, se houve sintoma transitório mas a Ressonância (DWI) mostrar lesão isquêmica permanente, o diagnóstico é de AVC isquêmico, e não AIT." },
+        { q: "29. Quando solicitar Eletroencefalograma (EEG) contínuo no AVC isquêmico agudo na UTI?",
+          opts: ["Rotina para todos nas primeiras 48h", "Em pacientes com rebaixamento de consciência não explicado pela gravidade da imagem, para descartar status epilepticus não-convulsivo", "Para guiar Trombólise em coma", "Nunca se o AVC for focal e leve"],
+          ans: 1,
+          feed: "O EEG é indicado quando o exame neurológico e o coma parecem desproporcionais aos achados estruturais da TC/RM, sugerindo crises de estado de mal não convulsivo associadas à lesão." },
+        { q: "30. Estudo clínico recente (Ex: ESCAPE-NA1) testou uma droga inibidora do PSD-95 (Nerinetida) para proteger o tecido cerebral. Qual é o mecanismo teórico-base desta classe de drogas?",
+          opts: ["Destruir o coágulo no nível microvascular", "Neuroproteção: bloquear a cascata de excitotoxicidade induzida pelo glutamato antes da morte neuronal irreversível", "Aumentar a glicólise anaeróbica nas áreas perfundidas", "Agir como um novo tipo de heparina purificada"],
+          ans: 1,
+          feed: "O futuro do tratamento tenta unir reperfusão mecânica com neuroproteção citoprotetora (impedindo o cálcio de induzir a produção letal de óxido nítrico no nível neuronal)." }
+    ];
+
+    let currentQuizIndex = 0;
+    const qText = document.getElementById('quiz-question');
+    const optList = document.getElementById('quiz-options');
+    const feedbackBox = document.getElementById('quiz-feedback');
+    const qCounter = document.getElementById('quiz-counter');
+
+    function loadQuiz(index) {
+        if(!qText) return;
+        const data = quizData[index];
+        qText.textContent = data.q;
+        optList.innerHTML = '';
+        feedbackBox.style.display = 'none';
+        qCounter.textContent = `Questão ${index + 1} de ${quizData.length}`;
+
+        data.opts.forEach((opt, idx) => {
+            let btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(idx, data.ans, data.feed, btn);
+            optList.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, correct, feedback, btnElement) {
+        const buttons = optList.querySelectorAll('.option-btn');
+        buttons.forEach(b => b.disabled = true);
+
+        if(selected === correct) {
+            btnElement.classList.add('correct');
+        } else {
+            btnElement.classList.add('wrong');
+            buttons[correct].classList.add('correct');
+        }
+
+        feedbackBox.innerHTML = `<strong>Análise TEMI:</strong> ${feedback}`;
+        feedbackBox.style.display = 'block';
+    }
+
+    if(document.getElementById('btn-next-quiz')) {
+        document.getElementById('btn-next-quiz').addEventListener('click', () => {
+            if(currentQuizIndex < quizData.length - 1) {
+                currentQuizIndex++;
+                loadQuiz(currentQuizIndex);
+            }
+        });
+
+        document.getElementById('btn-prev-quiz').addEventListener('click', () => {
+            if(currentQuizIndex > 0) {
+                currentQuizIndex--;
+                loadQuiz(currentQuizIndex);
+            }
+        });
+        
+        loadQuiz(0);
+    }
+});
+
+</script>
+</body>
+</html>

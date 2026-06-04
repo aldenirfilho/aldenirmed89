@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LES Dashboard — SLEDAI-2K + EULAR/ACR 2019 | Antigravity</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Manrope:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --border: #30363d;
+    --border2: #21262d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --blue: #58a6ff;
+    --blue-dim: #1f3a5f;
+    --green: #3fb950;
+    --green-dim: #1a3a1e;
+    --yellow: #d29922;
+    --yellow-dim: #3d2f00;
+    --red: #f85149;
+    --red-dim: #3d1a1a;
+    --purple: #bc8cff;
+    --purple-dim: #2d1f4a;
+    --orange: #ff7b72;
+    --teal: #39d353;
+    --accent: #58a6ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Manrope', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ─── LAYOUT ─── */
+  .app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* ─── HEADER ─── */
+  .app-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 32px;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .header-left {}
+  .header-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .header-eyebrow::before {
+    content: '//'; opacity: 0.5;
+  }
+  .header-title {
+    font-size: 32px; font-weight: 900;
+    color: var(--text); line-height: 1.1;
+  }
+  .header-title span { color: var(--blue); }
+  .header-sub {
+    font-size: 14px; color: var(--muted); margin-top: 6px;
+    line-height: 1.5;
+  }
+  .header-badge {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px 18px;
+    text-align: center; min-width: 140px;
+  }
+  .header-badge .hb-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .header-badge .hb-val {
+    font-size: 28px; font-weight: 900; color: var(--blue);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .header-badge .hb-unit {
+    font-size: 11px; color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── TABS ─── */
+  .tabs {
+    display: flex; gap: 0; margin-bottom: 28px;
+    background: var(--surface); border-radius: 12px;
+    border: 1px solid var(--border); padding: 4px;
+    width: fit-content;
+  }
+  .tab {
+    padding: 8px 20px; border-radius: 9px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    color: var(--muted); transition: all 0.2s;
+    border: 1px solid transparent;
+    background: none;
+    font-family: 'Manrope', sans-serif;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    background: var(--surface2);
+    border-color: var(--border);
+    color: var(--text);
+  }
+
+  /* ─── PANELS ─── */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ─── GRID LAYOUTS ─── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  @media (max-width: 768px) {
+    .two-col, .three-col { grid-template-columns: 1fr; }
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px 24px;
+  }
+  .card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-title .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+
+  /* ─── SCORE DISPLAY ─── */
+  .score-display {
+    text-align: center; padding: 28px 20px;
+    background: var(--surface2); border-radius: 14px;
+    border: 1px solid var(--border2); margin-bottom: 20px;
+  }
+  .score-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 72px; font-weight: 700; line-height: 1;
+    transition: all 0.3s;
+  }
+  .score-label {
+    font-size: 13px; color: var(--muted); margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .score-interpret {
+    margin-top: 12px;
+    padding: 10px 16px; border-radius: 8px;
+    font-size: 14px; font-weight: 700;
+    text-align: center; transition: all 0.3s;
+  }
+
+  /* ─── SCORE COLORS ─── */
+  .score-inactive { color: var(--muted); }
+  .score-low { color: var(--green); }
+  .score-moderate { color: var(--yellow); }
+  .score-high { color: var(--orange); }
+  .score-very-high { color: var(--red); }
+
+  .interpret-inactive { background: rgba(139,148,158,0.08); color: var(--muted); border: 1px solid var(--border); }
+  .interpret-low { background: var(--green-dim); color: var(--green); border: 1px solid #2ea043; }
+  .interpret-moderate { background: var(--yellow-dim); color: var(--yellow); border: 1px solid #bb8009; }
+  .interpret-high { background: rgba(255,123,114,0.1); color: var(--orange); border: 1px solid #d05a52; }
+  .interpret-very-high { background: var(--red-dim); color: var(--red); border: 1px solid #da3633; }
+
+  /* ─── CHECKLIST ─── */
+  .check-section { margin-bottom: 20px; }
+  .check-section-title {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted);
+    margin-bottom: 10px; padding: 6px 0;
+    border-bottom: 1px solid var(--border2);
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .check-section-title .sect-pts {
+    color: var(--blue);
+  }
+
+  .check-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 12px; border-radius: 10px;
+    cursor: pointer; transition: background 0.15s;
+    border: 1px solid transparent;
+    margin-bottom: 4px;
+    user-select: none;
+  }
+  .check-item:hover { background: var(--surface2); border-color: var(--border2); }
+  .check-item.checked {
+    background: var(--blue-dim);
+    border-color: rgba(88,166,255,0.3);
+  }
+
+  .check-box {
+    width: 18px; height: 18px; border-radius: 5px;
+    border: 2px solid var(--border);
+    flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; transition: all 0.15s;
+  }
+  .check-item.checked .check-box {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+  }
+
+  .check-text { flex: 1; }
+  .check-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .check-desc { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+  .check-item.checked .check-name { color: var(--blue); }
+
+  .check-pts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 700;
+    color: var(--muted); white-space: nowrap; padding-top: 2px;
+    transition: color 0.15s;
+  }
+  .check-item.checked .check-pts { color: var(--blue); }
+
+  /* ─── SLEDAI BARS ─── */
+  .sledai-bar {
+    margin-top: 14px;
+  }
+  .sledai-bar-track {
+    height: 8px; background: var(--border2);
+    border-radius: 4px; overflow: hidden; margin-bottom: 6px;
+  }
+  .sledai-bar-fill {
+    height: 100%; border-radius: 4px;
+    transition: width 0.4s ease, background 0.4s;
+  }
+  .sledai-bar-labels {
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+  }
+
+  /* ─── EULAR TABLE ─── */
+  .eular-domain {
+    margin-bottom: 4px;
+  }
+  .eular-domain-header {
+    display: flex; align-items: center;
+    padding: 8px 12px; cursor: pointer;
+    border-radius: 8px; transition: background 0.15s;
+    font-size: 13px; font-weight: 700;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 1px; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .eular-domain-header:hover { background: var(--surface2); }
+  .eular-domain-pts {
+    margin-left: auto;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 2px 10px;
+    font-size: 12px; font-weight: 700; color: var(--blue);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .eular-domain-pts.active { background: var(--blue-dim); border-color: rgba(88,166,255,0.4); }
+  .eular-chevron { font-size: 10px; transition: transform 0.2s; color: var(--border); }
+  .eular-domain.open .eular-chevron { transform: rotate(90deg); }
+  .eular-items { display: none; padding: 0 4px 8px; }
+  .eular-domain.open .eular-items { display: block; }
+
+  /* ─── RESULTS SECTION ─── */
+  .results-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 14px; margin-top: 20px;
+  }
+  .result-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px;
+    text-align: center;
+  }
+  .result-card .r-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px; font-weight: 700;
+  }
+  .result-card .r-label {
+    font-size: 11px; color: var(--muted); margin-top: 4px;
+    text-transform: uppercase; letter-spacing: 1px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .result-card .r-desc {
+    font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.4;
+  }
+
+  /* ─── ALERT BANNER ─── */
+  .alert-banner {
+    border-radius: 12px; padding: 16px 20px;
+    margin-top: 16px; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .alert-banner.green { background: var(--green-dim); border: 1px solid #2ea043; }
+  .alert-banner.yellow { background: var(--yellow-dim); border: 1px solid #bb8009; }
+  .alert-banner.red { background: var(--red-dim); border: 1px solid #da3633; }
+  .alert-banner.blue { background: var(--blue-dim); border: 1px solid rgba(88,166,255,0.3); }
+  .alert-icon { font-size: 20px; flex-shrink: 0; }
+  .alert-content h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .alert-content p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .alert-banner.green h4 { color: var(--green); }
+  .alert-banner.yellow h4 { color: var(--yellow); }
+  .alert-banner.red h4 { color: var(--red); }
+  .alert-banner.blue h4 { color: var(--blue); }
+
+  /* ─── QUICK REFERENCE ─── */
+  .ref-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .ref-table th {
+    padding: 10px 14px; text-align: left;
+    background: var(--surface2);
+    color: var(--muted); font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ref-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border2);
+    color: var(--text); vertical-align: top; line-height: 1.5;
+  }
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:hover td { background: var(--surface2); }
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 6px;
+    white-space: nowrap;
+  }
+  .badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+  .badge-green { background: var(--green-dim); color: var(--green); border: 1px solid #2ea043; }
+  .badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid #bb8009; }
+  .badge-red { background: var(--red-dim); color: var(--red); border: 1px solid #da3633; }
+  .badge-purple { background: var(--purple-dim); color: var(--purple); border: 1px solid #6e40c9; }
+
+  /* ─── RESET BTN ─── */
+  .btn-reset {
+    background: none; border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 16px;
+    color: var(--muted); font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: 'Manrope', sans-serif;
+    transition: all 0.15s;
+  }
+  .btn-reset:hover { border-color: var(--red); color: var(--red); background: var(--red-dim); }
+
+  /* ─── FOOTER ─── */
+  .app-footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .app-footer .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted); letter-spacing: 2px;
+  }
+  .app-footer .brand strong { color: var(--blue); }
+  .app-footer .disclaimer {
+    font-size: 11px; color: var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    max-width: 500px; text-align: right; line-height: 1.4;
+  }
+
+  /* ─── UTIL ─── */
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .mt-4 { margin-top: 16px; }
+  .mt-3 { margin-top: 12px; }
+  .gap-y { display: flex; flex-direction: column; gap: 12px; }
+  .mb-4 { margin-bottom: 16px; }
+
+  .separator { height: 1px; background: var(--border2); margin: 16px 0; }
+
+  /* Domain note */
+  .domain-note {
+    font-size: 11px; color: var(--muted); padding: 6px 12px;
+    font-style: italic; background: rgba(139,148,158,0.05);
+    border-radius: 6px; margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="app-header">
+    <div class="header-left">
+      <div class="header-eyebrow">Antigravity · Enciclomedia Médica · Reumatologia</div>
+      <div class="header-title">LES <span>Dashboard</span></div>
+      <div class="header-sub">Calculadora SLEDAI-2K + Critérios EULAR/ACR 2019 · Ferramenta educacional para plantão e TEMI</div>
+    </div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <div class="header-badge">
+        <div class="hb-label">SLEDAI-2K</div>
+        <div class="hb-val" id="hdr-sledai">0</div>
+        <div class="hb-unit">pontos</div>
+      </div>
+      <div class="header-badge">
+        <div class="hb-label">EULAR/ACR</div>
+        <div class="hb-val" id="hdr-eular">0</div>
+        <div class="hb-unit">pontos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('sledai')">SLEDAI-2K</button>
+    <button class="tab" onclick="switchTab('eular')">EULAR/ACR 2019</button>
+    <button class="tab" onclick="switchTab('reference')">Referência Rápida</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 1 — SLEDAI-2K
+  ═══════════════════════════════════════════ -->
+  <div class="panel active" id="panel-sledai">
+    <div class="two-col">
+
+      <!-- LEFT: Checklist -->
+      <div>
+        <div class="card">
+          <div class="card-title flex-between">
+            <span><span class="dot" style="background:var(--blue)"></span> Critérios SLEDAI-2K</span>
+            <button class="btn-reset" onclick="resetSledai()">↺ Limpar</button>
+          </div>
+          <div class="domain-note">Marque apenas os achados presentes nas últimas 10 dias e atribuídos ao LES ativo.</div>
+          <div id="sledai-checklist"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Score + Interpretation -->
+      <div class="gap-y">
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--blue)"></span> Pontuação total</div>
+          <div class="score-display">
+            <div class="score-num" id="sledai-score-num">0</div>
+            <div class="score-label">SLEDAI-2K Score</div>
+            <div class="score-interpret" id="sledai-interpret">Sem atividade</div>
+          </div>
+          <div class="sledai-bar">
+            <div class="sledai-bar-track">
+              <div class="sledai-bar-fill" id="sledai-bar" style="width:0%; background:var(--muted)"></div>
+            </div>
+            <div class="sledai-bar-labels">
+              <span>0 — Inativo</span>
+              <span>5 — Mod</span>
+              <span>12 — Alto</span>
+              <span>20+ — Grave</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--green)"></span> Interpretação clínica</div>
+          <div id="sledai-interp-detail"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--yellow)"></span> Critérios por domínio</div>
+          <div id="sledai-domain-summary"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 2 — EULAR/ACR 2019
+  ═══════════════════════════════════════════ -->
+  <div class="panel" id="panel-eular">
+    <div class="two-col">
+
+      <!-- LEFT: Checklist -->
+      <div>
+        <div class="card">
+          <div class="card-title flex-between">
+            <span><span class="dot" style="background:var(--purple)"></span> Critérios EULAR/ACR 2019</span>
+            <button class="btn-reset" onclick="resetEular()">↺ Limpar</button>
+          </div>
+          <div class="domain-note" id="eular-gate-note">⚠️ Critério de entrada: ANA ≥ 1:80. Selecione abaixo se presente.</div>
+          <div id="eular-checklist"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Score + Interpretation -->
+      <div class="gap-y">
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--purple)"></span> Pontuação total</div>
+          <div class="score-display">
+            <div class="score-num" id="eular-score-num" style="color:var(--purple)">0</div>
+            <div class="score-label">EULAR/ACR Score</div>
+            <div class="score-interpret" id="eular-interpret">Aguardando dados</div>
+          </div>
+          <div class="sledai-bar">
+            <div class="sledai-bar-track">
+              <div class="sledai-bar-fill" id="eular-bar" style="width:0%; background:var(--muted)"></div>
+            </div>
+            <div class="sledai-bar-labels">
+              <span>0</span>
+              <span>10 — LES</span>
+              <span>20 — Pior prog.</span>
+              <span>40+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--purple)"></span> Classificação e conduta</div>
+          <div id="eular-interp-detail"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--orange)"></span> Pontos por domínio</div>
+          <div id="eular-domain-summary"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 3 — REFERENCE
+  ═══════════════════════════════════════════ -->
+  <div class="panel" id="panel-reference">
+    <div class="gap-y">
+
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:var(--blue)"></span> Anticorpos no LES — Referência rápida</div>
+        <table class="ref-table">
+          <thead>
+            <tr><th>Anticorpo</th><th>Sensib.</th><th>Especif.</th><th>Uso clínico</th><th>Pts EULAR</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>ANA (IFI)</strong></td>
+              <td><span class="badge badge-green">~99%</span></td>
+              <td><span class="badge badge-red">Baixa</span></td>
+              <td>Triagem — critério de entrada EULAR 2019</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><strong>Anti-dsDNA</strong></td>
+              <td><span class="badge badge-yellow">50–70%</span></td>
+              <td><span class="badge badge-green">Alta</span></td>
+              <td>Diagnóstico + monitorar atividade + nefrite</td>
+              <td><span class="badge badge-blue">+6</span></td>
+            </tr>
+            <tr>
+              <td><strong>Anti-Sm</strong></td>
+              <td><span class="badge badge-red">10–50%</span></td>
+              <td><span class="badge badge-green">Altíssima</span></td>
+              <td>Só diagnóstico — positivo em remissão</td>
+              <td><span class="badge badge-blue">+6</span></td>
+            </tr>
+            <tr>
+              <td><strong>Anti-U1 RNP</strong></td>
+              <td><span class="badge badge-yellow">3–69%</span></td>
+              <td><span class="badge badge-red">Baixa</span></td>
+              <td>Alto título → pensar DMTC</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><strong>Anti-Ro/SSA</strong></td>
+              <td><span class="badge badge-yellow">~30%</span></td>
+              <td><span class="badge badge-red">Baixa</span></td>
+              <td>LES ANA-neg; bloqueio cardíaco neonatal</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><strong>Anti-La/SSB</strong></td>
+              <td><span class="badge badge-yellow">~20%</span></td>
+              <td><span class="badge badge-red">Baixa</span></td>
+              <td>Sjögren + LES; gestação</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><strong>Anticardiolipina / anti-β2GP1</strong></td>
+              <td><span class="badge badge-yellow">~40% LES</span></td>
+              <td><span class="badge badge-yellow">Moderada</span></td>
+              <td>SAF — trombose, abortos recorrentes</td>
+              <td><span class="badge badge-blue">+2</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--green)"></span> Monitoramento laboratorial — frequência</div>
+          <table class="ref-table">
+            <thead><tr><th>Exame</th><th>Frequência</th><th>Por quê</th></tr></thead>
+            <tbody>
+              <tr><td>Hemograma completo</td><td><span class="badge badge-blue">3–4 meses</span></td><td>Citopenia por atividade ou tox. medicamentosa</td></tr>
+              <tr><td>Creatinina + TFGe</td><td><span class="badge badge-blue">3–4 meses</span></td><td>Nefrite lúpica</td></tr>
+              <tr><td>EAS + prot/creat</td><td><span class="badge badge-blue">3 meses</span></td><td>Nefrite silenciosa</td></tr>
+              <tr><td>Anti-dsDNA + C3/C4</td><td><span class="badge badge-blue">3–6 meses</span></td><td>Prediz surtos e nefrite</td></tr>
+              <tr><td>VHS + PCR</td><td><span class="badge badge-blue">Conforme clínica</span></td><td>PCR alta = suspeitar infecção</td></tr>
+              <tr><td>Oftalmologia (HCQ)</td><td><span class="badge badge-yellow">Anual (&gt;5 anos)</span></td><td>Retinopatia por hidroxicloroquina</td></tr>
+              <tr><td>Densitometria óssea</td><td><span class="badge badge-yellow">1–2 anos</span></td><td>Corticoide crônico → osteoporose</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--red)"></span> Armadilhas clínicas — não esquecer</div>
+          <div class="gap-y">
+            <div class="alert-banner red">
+              <div class="alert-icon">🔴</div>
+              <div class="alert-content">
+                <h4>Febre + PCR muito alta = infecção primeiro</h4>
+                <p>No LES ativo, VHS &gt;&gt; PCR. PCR muito elevada em imunossuprimido = excluir infecção antes de aumentar IS.</p>
+              </div>
+            </div>
+            <div class="alert-banner yellow">
+              <div class="alert-icon">⚠️</div>
+              <div class="alert-content">
+                <h4>Anti-Sm não monitora atividade</h4>
+                <p>Permanece positivo em remissão. Usar anti-dsDNA + C3/C4 para monitoramento.</p>
+              </div>
+            </div>
+            <div class="alert-banner blue">
+              <div class="alert-icon">💊</div>
+              <div class="alert-content">
+                <h4>Hidroxicloroquina nunca suspender</h4>
+                <p>Suspender em remissão aumenta risco de surto em 2,5×. Manter indefinidamente em todos.</p>
+              </div>
+            </div>
+            <div class="alert-banner green">
+              <div class="alert-icon">✅</div>
+              <div class="alert-content">
+                <h4>ANA negativo não exclui LES</h4>
+                <p>~5% dos casos são ANA-negativos (anti-Ro/SSA isolado). Se suspeita forte, pedir painel ENA mesmo sem ANA.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="app-footer">
+    <div class="brand"><strong>ANTIGRAVITY</strong> · Enciclomedia Médica · les-dashboard.html · v1.0 · 2026</div>
+    <div class="disclaimer">Ferramenta educacional — não substitui julgamento clínico. Decisões terapêuticas devem considerar contexto clínico individual, protocolos institucionais e especialista.</div>
+  </div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA DEFINITIONS
+// ─────────────────────────────────────────────
+
+const SLEDAI_ITEMS = [
+  { id:'s01', pts:8, name:'Convulsão', domain:'Neurológico', desc:'Início recente. Excluir causas metabólicas, infecciosas ou medicamentosas.' },
+  { id:'s02', pts:8, name:'Psicose', domain:'Neurológico', desc:'Percepção alterada, pensamento desorganizado, sem insight. Excluir outras causas.' },
+  { id:'s03', pts:8, name:'Síndrome cerebral orgânica', domain:'Neurológico', desc:'Disfunção cognitiva aguda com alteração de consciência, atenção ou orientação.' },
+  { id:'s04', pts:8, name:'Distúrbio visual', domain:'Neurológico', desc:'Alterações retinianas por LES: corpos citoides, hemorragias, exsudatos, neurite óptica.' },
+  { id:'s05', pts:8, name:'Neuropatia craniana', domain:'Neurológico', desc:'Neuropatia de nervo craniano nova, incluindo neuropatia sensitiva ou motora.' },
+  { id:'s06', pts:8, name:'Cefaleia lúpica', domain:'Neurológico', desc:'Cefaleia grave, persistente — pode ser enxaqueca — não responsiva a analgésicos comuns.' },
+  { id:'s07', pts:8, name:'AVC', domain:'Neurológico', desc:'Novo. Excluir aterosclerose ou hipertensão.' },
+  { id:'s08', pts:8, name:'Vasculite', domain:'Neurológico', desc:'Ulceração, gangrena, nódulos dolorosos nos dedos, infartos periungueais, hemorragias subungueais ou biópsia.' },
+  { id:'s09', pts:4, name:'Artrite', domain:'Musculoesquelético', desc:'Mais de duas articulações com sinais inflamatórios: dor, inchaço, calor, derrame.' },
+  { id:'s10', pts:4, name:'Miosite', domain:'Musculoesquelético', desc:'Dor e fraqueza proximal com CK elevado ou EMG anormal ou biópsia compatível.' },
+  { id:'s11', pts:4, name:'Cilindros urinários', domain:'Renal', desc:'Cilindros hemáticos, granulosos, tubulares ou mistos.' },
+  { id:'s12', pts:4, name:'Hematúria', domain:'Renal', desc:'>5 hemácias/campo. Excluir cálculo, infecção, outras causas.' },
+  { id:'s13', pts:4, name:'Proteinúria', domain:'Renal', desc:'> 0,5 g/24h — novo ou aumento recente.' },
+  { id:'s14', pts:4, name:'Piúria', domain:'Renal', desc:'>5 leucócitos/campo sem infecção.' },
+  { id:'s15', pts:2, name:'Erupção cutânea nova', domain:'Cutâneo', desc:'Inflamatória nova ou recorrente: eritema malar, eritema discóide, erupção fotossensível, úlceras mucosas.' },
+  { id:'s16', pts:2, name:'Alopecia', domain:'Cutâneo', desc:'Perda anormal e difusa de cabelo — nova ou recorrente.' },
+  { id:'s17', pts:2, name:'Úlceras mucosas', domain:'Cutâneo', desc:'Úlceras orais ou nasais — novas ou recorrentes.' },
+  { id:'s18', pts:2, name:'Pleurite', domain:'Serosa', desc:'Dor pleurítica com atrito, derrame ou espessamento.' },
+  { id:'s19', pts:2, name:'Pericardite', domain:'Serosa', desc:'Dor pericárdica com pelo menos 1: atrito, ECG alterado, derrame.' },
+  { id:'s20', pts:2, name:'Complemento baixo', domain:'Imunológico', desc:'CH50, C3 ou C4 abaixo do limite inferior da normalidade.' },
+  { id:'s21', pts:2, name:'Anti-dsDNA elevado', domain:'Imunológico', desc:'Acima dos limites do laboratório (Farr >25% de ligação ou Crithidia positivo).' },
+  { id:'s22', pts:1, name:'Febre', domain:'Constitucional', desc:'> 38°C. Excluir infecção.' },
+  { id:'s23', pts:1, name:'Trombocitopenia', domain:'Hematológico', desc:'< 100.000/mm³. Excluir causas medicamentosas.' },
+  { id:'s24', pts:1, name:'Leucopenia', domain:'Hematológico', desc:'< 3.000/mm³. Excluir causas medicamentosas.' },
+];
+
+const EULAR_ITEMS = [
+  // Gate
+  { id:'e_gate', pts:0, name:'ANA ≥ 1:80 (critério de entrada)', domain:'ENTRADA', desc:'Em células HEp-2 ou ensaio equivalente. OBRIGATÓRIO — sem isso não classificar como LES.', required:true },
+  // Clínicos
+  { id:'e01', pts:2, name:'Febre > 38,3°C', domain:'Constitucional', desc:'Atribuída ao LES. Excluir infecção.' },
+  { id:'e02', pts:3, name:'Leucopenia < 4.000/mm³', domain:'Hematológico', desc:'Atribuída ao LES.' },
+  { id:'e03', pts:4, name:'Trombocitopenia < 100.000/mm³', domain:'Hematológico', desc:'Atribuída ao LES.' },
+  { id:'e04', pts:4, name:'Hemólise autoimune', domain:'Hematológico', desc:'Evidência de hemólise + Coombs direto positivo.' },
+  { id:'e05', pts:2, name:'Delírio', domain:'Neuropsiquiátrico', desc:'Início em horas a < 2 dias, flutuante, alteração de consciência ou cognição.' },
+  { id:'e06', pts:3, name:'Psicose', domain:'Neuropsiquiátrico', desc:'Delírios e/ou alucinações sem insight, sem delírio.' },
+  { id:'e07', pts:5, name:'Convulsão', domain:'Neuropsiquiátrico', desc:'Crise generalizada primária ou focal.' },
+  { id:'e08', pts:2, name:'Alopecia não cicatricial / úlceras orais', domain:'Mucocutâneo', desc:'Observada por médico. Afinamento difuso ou fragilidade capilar, ou úlceras orais indolores.' },
+  { id:'e09', pts:4, name:'Lúpus cutâneo subagudo ou discoide', domain:'Mucocutâneo', desc:'Confirmado clinicamente ou por biópsia: dermatite vacuolar de interface.' },
+  { id:'e10', pts:6, name:'Lúpus cutâneo agudo (eritema malar)', domain:'Mucocutâneo', desc:'Erupção malar ou maculopapular generalizada observada por médico.' },
+  { id:'e11', pts:5, name:'Derrame pleural ou pericárdico', domain:'Serosa', desc:'Evidência por imagem (US, RX, TC, RM).' },
+  { id:'e12', pts:6, name:'Pericardite aguda', domain:'Serosa', desc:'≥2 de: dor pericárdica típica, atrito, ECG com elevação ST ou dep. PR, derrame novo.' },
+  { id:'e13', pts:6, name:'Envolvimento articular (≥2 articulações)', domain:'Musculoesquelético', desc:'Sinovite com inchaço/derrame OU sensibilidade + ≥30 min rigidez matinal.' },
+  { id:'e14', pts:4, name:'Proteinúria > 0,5 g/24h', domain:'Renal', desc:'Ou relação proteína/creatinina equivalente.' },
+  { id:'e15', pts:8, name:'Biópsia renal: nefrite classe II ou V', domain:'Renal', desc:'Conforme classificação ISN/RPS 2003.' },
+  { id:'e16', pts:10, name:'Biópsia renal: nefrite classe III ou IV', domain:'Renal', desc:'Glomerulonefrite proliferativa focal ou difusa — maior peso no escore.' },
+  // Imunológicos
+  { id:'e17', pts:2, name:'Antifosfolipídios positivos', domain:'Antifosfolipídios', desc:'ACL (IgA/G/M) títulos médios/altos OU anti-β2GP1 positivo OU anticoagulante lúpico.' },
+  { id:'e18', pts:3, name:'C3 baixo OU C4 baixo', domain:'Complemento', desc:'Abaixo do limite inferior da normalidade.' },
+  { id:'e19', pts:4, name:'C3 baixo E C4 baixo', domain:'Complemento', desc:'Ambos abaixo — contar apenas este se ambos positivos (maior peso).', exclusive:'e18' },
+  { id:'e20', pts:6, name:'Anti-dsDNA OU Anti-Sm positivos', domain:'Anticorpos específicos LES', desc:'Anti-dsDNA com especificidade ≥90% para LES OU anti-Sm.' },
+];
+
+// Domain colors
+const domainColors = {
+  'ENTRADA': '#f85149',
+  'Neurológico': '#bc8cff',
+  'Musculoesquelético': '#58a6ff',
+  'Renal': '#3fb950',
+  'Cutâneo': '#ff7b72',
+  'Serosa': '#ffa657',
+  'Imunológico': '#79c0ff',
+  'Hematológico': '#d29922',
+  'Constitucional': '#8b949e',
+  'Antifosfolipídios': '#ffa657',
+  'Complemento': '#3fb950',
+  'Anticorpos específicos LES': '#f85149',
+  'Neuropsiquiátrico': '#bc8cff',
+  'Mucocutâneo': '#ff7b72',
+};
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let sledaiChecked = new Set();
+let eularChecked = new Set();
+
+// ─────────────────────────────────────────────
+// RENDER SLEDAI
+// ─────────────────────────────────────────────
+function renderSledai() {
+  const domains = [...new Set(SLEDAI_ITEMS.map(i => i.domain))];
+  const container = document.getElementById('sledai-checklist');
+  container.innerHTML = '';
+
+  domains.forEach(domain => {
+    const items = SLEDAI_ITEMS.filter(i => i.domain === domain);
+    const domScore = items.filter(i => sledaiChecked.has(i.id)).reduce((a,b) => a + b.pts, 0);
+
+    const sec = document.createElement('div');
+    sec.className = 'check-section';
+
+    const title = document.createElement('div');
+    title.className = 'check-section-title';
+    title.innerHTML = `<span>${domain}</span><span class="sect-pts">${domScore > 0 ? '+'+domScore+' pts' : ''}</span>`;
+    sec.appendChild(title);
+
+    items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'check-item' + (sledaiChecked.has(item.id) ? ' checked' : '');
+      div.onclick = () => toggleSledai(item.id);
+      div.innerHTML = `
+        <div class="check-box">${sledaiChecked.has(item.id) ? '✓' : ''}</div>
+        <div class="check-text">
+          <div class="check-name">${item.name}</div>
+          <div class="check-desc">${item.desc}</div>
+        </div>
+        <div class="check-pts">+${item.pts}</div>
+      `;
+      sec.appendChild(div);
+    });
+    container.appendChild(sec);
+  });
+
+  updateSledaiScore();
+}
+
+function toggleSledai(id) {
+  if (sledaiChecked.has(id)) sledaiChecked.delete(id);
+  else sledaiChecked.add(id);
+  renderSledai();
+}
+
+function resetSledai() {
+  sledaiChecked.clear();
+  renderSledai();
+}
+
+function updateSledaiScore() {
+  const total = SLEDAI_ITEMS.filter(i => sledaiChecked.has(i.id)).reduce((a,b) => a + b.pts, 0);
+  document.getElementById('sledai-score-num').textContent = total;
+  document.getElementById('hdr-sledai').textContent = total;
+
+  const maxScore = 105;
+  const pct = Math.min((total / 30) * 100, 100);
+  const bar = document.getElementById('sledai-bar');
+  bar.style.width = pct + '%';
+
+  const numEl = document.getElementById('sledai-score-num');
+  const interpEl = document.getElementById('sledai-interpret');
+  const detailEl = document.getElementById('sledai-interp-detail');
+  const domSumEl = document.getElementById('sledai-domain-summary');
+
+  let scoreClass, interpClass, interpText, detailHTML, barColor;
+
+  if (total === 0) {
+    scoreClass = 'score-inactive'; interpClass = 'interpret-inactive';
+    interpText = 'Sem atividade detectada'; barColor = 'var(--muted)';
+    detailHTML = `<div class="alert-banner green"><div class="alert-icon">✅</div><div class="alert-content"><h4>Inativo / Remissão</h4><p>SLEDAI-2K = 0. Manter hidroxicloroquina e monitoramento regular a cada 3–4 meses.</p></div></div>`;
+  } else if (total <= 5) {
+    scoreClass = 'score-low'; interpClass = 'interpret-low';
+    interpText = 'Atividade baixa'; barColor = 'var(--green)';
+    detailHTML = `<div class="alert-banner green"><div class="alert-icon">🟢</div><div class="alert-content"><h4>Baixa Atividade</h4><p>SLEDAI-2K 1–5. Geralmente manejável com hidroxicloroquina ± baixa dose de prednisona. Avaliar ajuste terapêutico conforme manifestações.</p></div></div>`;
+  } else if (total <= 11) {
+    scoreClass = 'score-moderate'; interpClass = 'interpret-moderate';
+    interpText = 'Atividade moderada'; barColor = 'var(--yellow)';
+    detailHTML = `<div class="alert-banner yellow"><div class="alert-icon">🟡</div><div class="alert-content"><h4>Atividade Moderada</h4><p>SLEDAI-2K 6–11. Considerar incremento terapêutico: prednisona 5–15 mg/dia + poupador de corticoide (azatioprina, metotrexato, micofenolato). Pontuação >5 está associada a >50% de probabilidade de mudança na terapia.</p></div></div>`;
+  } else if (total <= 19) {
+    scoreClass = 'score-high'; interpClass = 'interpret-high';
+    interpText = 'Atividade alta'; barColor = 'var(--orange)';
+    detailHTML = `<div class="alert-banner red"><div class="alert-icon">🔴</div><div class="alert-content"><h4>Atividade Alta</h4><p>SLEDAI-2K 12–19. Terapia de indução necessária. Pulso de metilprednisolona + imunossupressor potente (micofenolato ou ciclofosfamida). Avaliar envolvimento orgânico grave.</p></div></div>`;
+  } else {
+    scoreClass = 'score-very-high'; interpClass = 'interpret-very-high';
+    interpText = 'Atividade muito alta / grave'; barColor = 'var(--red)';
+    detailHTML = `<div class="alert-banner red"><div class="alert-icon">🆘</div><div class="alert-content"><h4>Atividade Muito Alta — Considerar UTI</h4><p>SLEDAI-2K ≥20. Doença grave com risco de vida. Imunossupressão intensiva. Excluir infecção ANTES de escalar IS. Considerar internação e avaliação por reumatologia e especialistas de órgão afetado.</p></div></div>`;
+  }
+
+  numEl.className = 'score-num ' + scoreClass;
+  interpEl.className = 'score-interpret ' + interpClass;
+  interpEl.textContent = interpText;
+  bar.style.background = barColor;
+  detailEl.innerHTML = detailHTML;
+
+  // Domain summary
+  const domains = [...new Set(SLEDAI_ITEMS.map(i => i.domain))];
+  let domHTML = '';
+  domains.forEach(d => {
+    const items = SLEDAI_ITEMS.filter(i => i.domain === d && sledaiChecked.has(i.id));
+    if (items.length > 0) {
+      const pts = items.reduce((a,b) => a + b.pts, 0);
+      const col = domainColors[d] || '#8b949e';
+      domHTML += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--surface2);border-radius:8px;margin-bottom:6px;border-left:3px solid ${col}">
+        <span style="font-size:13px;color:var(--text)">${d}: ${items.map(i=>i.name).join(', ')}</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:${col}">+${pts}</span>
+      </div>`;
+    }
+  });
+  domSumEl.innerHTML = domHTML || '<div style="font-size:13px;color:var(--muted);padding:8px">Nenhum critério selecionado</div>';
+}
+
+// ─────────────────────────────────────────────
+// RENDER EULAR
+// ─────────────────────────────────────────────
+function renderEular() {
+  const domains = [...new Set(EULAR_ITEMS.map(i => i.domain))];
+  const container = document.getElementById('eular-checklist');
+  container.innerHTML = '';
+
+  const hasGate = eularChecked.has('e_gate');
+
+  domains.forEach(domain => {
+    const items = EULAR_ITEMS.filter(i => i.domain === domain);
+    const color = domainColors[domain] || '#8b949e';
+
+    const domEl = document.createElement('div');
+    domEl.className = 'eular-domain open';
+    domEl.id = 'dom_' + domain.replace(/\s/g,'_');
+
+    // Calculate effective pts for this domain (max only)
+    let domPts = 0;
+    items.forEach(it => {
+      if (eularChecked.has(it.id) && it.pts > 0) {
+        // For complemento: e19 supersedes e18
+        if (it.id === 'e18' && eularChecked.has('e19')) return;
+        domPts += it.pts;
+      }
+    });
+
+    const hdr = document.createElement('div');
+    hdr.className = 'eular-domain-header';
+    hdr.onclick = () => domEl.classList.toggle('open');
+    hdr.innerHTML = `
+      <span class="eular-chevron">▶</span>
+      <span style="color:${color}">${domain}</span>
+      <span class="eular-domain-pts ${domPts > 0 ? 'active' : ''}">${domPts > 0 ? '+'+domPts+' pts' : '—'}</span>
+    `;
+    domEl.appendChild(hdr);
+
+    const itemsEl = document.createElement('div');
+    itemsEl.className = 'eular-items';
+
+    if (domain !== 'ENTRADA') {
+      itemsEl.innerHTML = `<div class="domain-note">Contar apenas critério de maior peso por domínio (quando exclusivos).</div>`;
+    }
+
+    items.forEach(item => {
+      const isChecked = eularChecked.has(item.id);
+      const div = document.createElement('div');
+      div.className = 'check-item' + (isChecked ? ' checked' : '');
+      div.onclick = () => toggleEular(item.id, item.exclusive);
+      div.innerHTML = `
+        <div class="check-box">${isChecked ? '✓' : ''}</div>
+        <div class="check-text">
+          <div class="check-name">${item.name}</div>
+          <div class="check-desc">${item.desc}</div>
+        </div>
+        <div class="check-pts">${item.pts > 0 ? '+'+item.pts : 'OBRIG.'}</div>
+      `;
+      itemsEl.appendChild(div);
+    });
+
+    domEl.appendChild(itemsEl);
+    container.appendChild(domEl);
+  });
+
+  updateEularScore();
+}
+
+function toggleEular(id, exclusive) {
+  if (eularChecked.has(id)) {
+    eularChecked.delete(id);
+  } else {
+    eularChecked.add(id);
+    // Handle exclusivity (C3/C4: selecting e19 deselects e18 for scoring)
+    if (id === 'e19') eularChecked.delete('e18');
+    if (id === 'e18') eularChecked.delete('e19');
+  }
+  renderEular();
+}
+
+function resetEular() {
+  eularChecked.clear();
+  renderEular();
+}
+
+function updateEularScore() {
+  const hasGate = eularChecked.has('e_gate');
+  let total = 0;
+
+  EULAR_ITEMS.forEach(item => {
+    if (!eularChecked.has(item.id) || item.pts === 0) return;
+    // Skip e18 if e19 is also checked
+    if (item.id === 'e18' && eularChecked.has('e19')) return;
+    total += item.pts;
+  });
+
+  document.getElementById('eular-score-num').textContent = total;
+  document.getElementById('hdr-eular').textContent = total;
+
+  const pct = Math.min((total / 40) * 100, 100);
+  const bar = document.getElementById('eular-bar');
+  bar.style.width = pct + '%';
+
+  const interpEl = document.getElementById('eular-interpret');
+  const detailEl = document.getElementById('eular-interp-detail');
+  const domSumEl = document.getElementById('eular-domain-summary');
+  const numEl = document.getElementById('eular-score-num');
+
+  let interp, detailHTML, barColor;
+
+  if (!hasGate) {
+    interp = '⚠️ ANA não marcado — critério de entrada necessário';
+    barColor = 'var(--muted)';
+    interpEl.className = 'score-interpret interpret-inactive';
+    numEl.style.color = 'var(--muted)';
+    detailHTML = `<div class="alert-banner yellow"><div class="alert-icon">⚠️</div><div class="alert-content"><h4>ANA obrigatório</h4><p>Os critérios EULAR/ACR 2019 exigem ANA ≥ 1:80 como critério de entrada. Sem ANA positivo, o paciente não pode ser classificado como LES por estes critérios.</p></div></div>`;
+  } else if (total >= 10) {
+    interp = '✅ LES Definitivo — Pontuação ≥10';
+    barColor = 'var(--green)';
+    interpEl.className = 'score-interpret interpret-low';
+    numEl.style.color = 'var(--green)';
+    detailHTML = `
+      <div class="alert-banner green"><div class="alert-icon">✅</div><div class="alert-content">
+        <h4>LES Definitivo — Classificação confirmada</h4>
+        <p>ANA positivo + ≥1 critério clínico + pontuação total ≥10 pontos. Iniciar hidroxicloroquina e escalonar terapia conforme gravidade e órgãos acometidos.</p>
+      </div></div>
+      ${total >= 20 ? '<div class="alert-banner red" style="margin-top:8px"><div class="alert-icon">🔴</div><div class="alert-content"><h4>Pontuação ≥20 — Prognóstico mais reservado</h4><p>Estudos demonstram que pontuação ≥20 está associada a maior atividade persistente da doença e acúmulo de danos. Seguimento intensivo recomendado.</p></div></div>' : ''}
+    `;
+  } else if (total >= 6) {
+    interp = '⚠️ LES Provável — Pontuação 6–9';
+    barColor = 'var(--yellow)';
+    interpEl.className = 'score-interpret interpret-moderate';
+    numEl.style.color = 'var(--yellow)';
+    detailHTML = `<div class="alert-banner yellow"><div class="alert-icon">⚠️</div><div class="alert-content"><h4>LES Provável</h4><p>Pontuação 6–9. Não atinge critérios formais de classificação mas suspeita clínica relevante. Encaminhar para reumatologia. Tratar manifestações predominantes. Reavaliação com evolução clínica.</p></div></div>`;
+  } else {
+    interp = total === 0 ? 'Aguardando seleção' : '🔍 Insuficiente para classificar';
+    barColor = 'var(--muted)';
+    interpEl.className = 'score-interpret interpret-inactive';
+    numEl.style.color = 'var(--purple)';
+    detailHTML = `<div class="alert-banner blue"><div class="alert-icon">🔍</div><div class="alert-content"><h4>${total === 0 ? 'Selecione os critérios presentes' : 'Pontuação insuficiente para LES'}</h4><p>${total === 0 ? 'Marque os critérios encontrados no paciente. Lembre que o ANA é o critério de entrada obrigatório.' : 'Pontuação < 6. Considerar DITC (Doença Indiferenciada do Tecido Conjuntivo) ou diagnóstico alternativo. Investigar AR, Sjögren, DMTC, vasculites.'}</p></div></div>`;
+  }
+
+  interpEl.textContent = interp;
+  bar.style.background = barColor;
+  detailEl.innerHTML = detailHTML;
+
+  // Domain summary
+  const domains = [...new Set(EULAR_ITEMS.map(i => i.domain))];
+  let domHTML = '';
+  domains.forEach(d => {
+    const items = EULAR_ITEMS.filter(i => i.domain === d && eularChecked.has(i.id) && i.pts > 0);
+    if (items.length > 0) {
+      let pts = 0;
+      items.forEach(it => {
+        if (it.id === 'e18' && eularChecked.has('e19')) return;
+        pts += it.pts;
+      });
+      if (pts > 0) {
+        const col = domainColors[d] || '#8b949e';
+        domHTML += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--surface2);border-radius:8px;margin-bottom:6px;border-left:3px solid ${col}">
+          <span style="font-size:13px;color:var(--text)">${d}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:${col}">+${pts}</span>
+        </div>`;
+      }
+    }
+  });
+  domSumEl.innerHTML = domHTML || '<div style="font-size:13px;color:var(--muted);padding:8px">Nenhum critério selecionado</div>';
+}
+
+// ─────────────────────────────────────────────
+// TABS
+// ─────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const names = ['sledai','eular','reference'];
+    t.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'panel-' + name);
+  });
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+renderSledai();
+renderEular();
+</script>
+</body>
+</html>

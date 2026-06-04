@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Banco de Questões Padrão TEMI | Enciclopédia Médica Intensiva</title>
+  <meta name="description" content="Página inicial do Banco de Questões Padrão TEMI, com blocos temáticos interconectados e preparação para Medicina Intensiva." />
+
+  <style>
+    :root {
+      --bg: #06101d;
+      --bg2: #0b1828;
+      --panel: rgba(255,255,255,.075);
+      --panel-strong: rgba(255,255,255,.12);
+      --border: rgba(255,255,255,.15);
+      --text: #f7f9fc;
+      --soft: #dbe6f5;
+      --muted: #aab7cb;
+      --cyan: #43e8ff;
+      --blue: #6aa9ff;
+      --violet: #a78bfa;
+      --green: #54f0a2;
+      --yellow: #ffd166;
+      --orange: #ffad4f;
+      --red: #ff6464;
+      --radius: 28px;
+      --shadow: 0 26px 80px rgba(0,0,0,.36);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 6%, rgba(67,232,255,.18), transparent 31rem),
+        radial-gradient(circle at 88% 8%, rgba(167,139,250,.18), transparent 34rem),
+        radial-gradient(circle at 52% 100%, rgba(84,240,162,.12), transparent 36rem),
+        linear-gradient(140deg, #030913 0%, #071421 50%, #0b1828 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      opacity: .35;
+      z-index: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 18px 22px 48px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 12px;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,.13);
+      background: rgba(5,12,22,.74);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 16px 52px rgba(0,0,0,.28);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 280px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(67,232,255,.22), rgba(167,139,250,.20));
+      border: 1px solid rgba(255,255,255,.18);
+      font-size: 1.55rem;
+    }
+
+    .brand strong { display: block; font-size: .98rem; letter-spacing: -.02em; }
+    .brand small { display: block; color: var(--muted); margin-top: 2px; }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a, .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.13);
+      background: rgba(255,255,255,.065);
+      color: var(--soft);
+      font-weight: 780;
+      font-size: .88rem;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .nav a:hover, .btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.11);
+      border-color: rgba(67,232,255,.30);
+    }
+
+    .btn.primary {
+      color: #03131e;
+      border: 0;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      box-shadow: 0 16px 44px rgba(67,232,255,.18);
+    }
+
+    .btn.disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      margin-bottom: 22px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .breadcrumb b { color: var(--cyan); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(330px, .85fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .glass {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255,255,255,.105), rgba(255,255,255,.045));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main {
+      min-height: 410px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(67,232,255,.24);
+      background: rgba(67,232,255,.08);
+      color: #dffcff;
+      font-weight: 860;
+      font-size: .84rem;
+    }
+
+    h1 {
+      margin: 20px 0 12px;
+      max-width: 860px;
+      font-size: clamp(2.35rem, 7vw, 5.25rem);
+      line-height: .9;
+      letter-spacing: -.085em;
+    }
+
+    .gradient {
+      background: linear-gradient(90deg, #fff, #e9fbff 28%, #51e8ff 58%, #d6c9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      color: var(--soft);
+      font-size: clamp(1.02rem, 1.7vw, 1.23rem);
+      line-height: 1.72;
+      max-width: 900px;
+      margin: 0;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .hero-side {
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .score-panel {
+      padding: 22px;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(circle at 16% 12%, rgba(255,209,102,.16), transparent 24rem),
+        rgba(255,255,255,.055);
+    }
+
+    .score-panel h2 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      letter-spacing: -.04em;
+    }
+
+    .score-panel p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .metric {
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+    }
+
+    .metric b {
+      display: block;
+      font-size: 1.48rem;
+      letter-spacing: -.055em;
+      color: var(--cyan);
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: .84rem;
+      margin-top: 3px;
+    }
+
+    .section { margin: 22px 0; }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.55rem, 3vw, 2.55rem);
+      letter-spacing: -.06em;
+    }
+
+    .section-head p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 850px;
+    }
+
+    .tools {
+      display: grid;
+      grid-template-columns: 1.2fr .38fr .38fr .38fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .tools input, .tools select {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.13);
+      outline: none;
+      color: var(--text);
+      background: rgba(0,0,0,.18);
+    }
+
+    .tools input:focus, .tools select:focus {
+      border-color: rgba(67,232,255,.45);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 16px;
+    }
+
+    .qbank-card {
+      position: relative;
+      min-height: 360px;
+      padding: 20px;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(145deg, rgba(255,255,255,.082), rgba(255,255,255,.038));
+      box-shadow: 0 18px 48px rgba(0,0,0,.22);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: .18s ease;
+    }
+
+    .qbank-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(67,232,255,.32);
+    }
+
+    .qbank-card::after {
+      content: "";
+      position: absolute;
+      right: -72px;
+      top: -72px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: rgba(67,232,255,.075);
+      pointer-events: none;
+    }
+
+    .qbank-card.locked { opacity: .68; }
+    .qbank-card.locked:hover { transform: none; border-color: rgba(255,255,255,.12); }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .icon {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
+      font-size: 1.9rem;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--soft);
+      font-size: .76rem;
+      font-weight: 820;
+      white-space: nowrap;
+    }
+
+    .status.active {
+      color: #dfffea;
+      background: rgba(84,240,162,.10);
+      border-color: rgba(84,240,162,.24);
+    }
+
+    .status.soon {
+      color: #fff2cf;
+      background: rgba(255,209,102,.10);
+      border-color: rgba(255,209,102,.24);
+    }
+
+    .qbank-card h3 {
+      position: relative;
+      z-index: 1;
+      margin: 16px 0 8px;
+      font-size: 1.34rem;
+      letter-spacing: -.04em;
+    }
+
+    .qbank-card p {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .card-stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .stat {
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .stat b { display:block; color: #fff; font-size: 1rem; }
+    .stat small { color: var(--muted); font-size: .72rem; }
+
+    .tags {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin: 14px 0;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.055);
+      color: var(--soft);
+      font-size: .78rem;
+      font-weight: 740;
+    }
+
+    .card-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: auto;
+    }
+
+    .relationship-panel {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .graph-box {
+      min-height: 430px;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+        rgba(255,255,255,.045);
+      background-size: 36px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .node {
+      position: absolute;
+      min-width: 142px;
+      padding: 12px 13px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(5,12,22,.88);
+      box-shadow: 0 16px 42px rgba(0,0,0,.28);
+      font-weight: 820;
+    }
+
+    .node small { display:block; margin-top:4px; color: var(--muted); font-weight: 650; }
+    .node.main { background: linear-gradient(135deg, rgba(67,232,255,.23), rgba(84,240,162,.10)); }
+    .node.future { border-style: dashed; opacity: .78; }
+
+    .line {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(67,232,255,.42), transparent);
+      transform-origin: left center;
+    }
+
+    .code-box {
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.11);
+      background: rgba(0,0,0,.22);
+      padding: 16px;
+      overflow: auto;
+      color: #eaf7ff;
+      line-height: 1.55;
+      font-size: .88rem;
+    }
+
+    pre { margin: 0; white-space: pre-wrap; }
+
+    .footer {
+      margin-top: 28px;
+      padding: 22px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1060px) {
+      .hero, .relationship-panel { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .tools { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      .page { padding: 12px 12px 34px; }
+      .topbar { position: relative; top: 0; flex-direction: column; align-items: flex-start; }
+      .brand { min-width: 0; }
+      .nav { justify-content: flex-start; }
+      .hero-main { padding: 22px; min-height: auto; }
+      .grid, .metrics, .card-stats, .tools { grid-template-columns: 1fr; }
+      .section-head { display: block; }
+      .graph-box { min-height: 560px; }
+      .node { min-width: 122px; max-width: 168px; font-size: .88rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="topbar">
+      <a class="brand" href="../index.html" aria-label="Voltar ao hub principal">
+        <div class="logo">🏆</div>
+        <div>
+          <strong>Banco de Questões Padrão TEMI</strong>
+          <small>Enciclopédia Médica Intensiva & Medicina Interna</small>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Navegação do banco de questões">
+        <a href="../index.html">⌂ Hub principal</a>
+        <a href="#modulos">📚 Módulos</a>
+        <a href="#relacionamentos">🕸️ Relações</a>
+      </nav>
+    </header>
+
+    <div class="breadcrumb">
+      ⌂ Início <span>›</span> Banco de Questões <span>›</span> <b>Padrão TEMI</b>
+    </div>
+
+    <section class="hero">
+      <article class="glass hero-main">
+        <div>
+          <div class="eyebrow">🧠 Prova TEMI • UTI real • aprendizado interconectado</div>
+          <h1><span class="gradient">Banco de Questões</span><br />Padrão TEMI</h1>
+          <p class="lead">
+            Página inicial para reunir todos os bancos de questões temáticos da Enciclopédia. Cada bloco se conecta automaticamente aos temas clínicos correlacionados por meio de <strong>tags semânticas</strong>, <strong>IDs de tópicos</strong> e <strong>relações questão → assunto</strong>. O primeiro módulo ativo é <strong>AVC Agudo</strong> 🧠⚡.
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="avc_agudo_questoes.html">🧠 Abrir AVC Agudo</a>
+          <a class="btn" href="#modulos">📚 Ver todos os blocos</a>
+        </div>
+      </article>
+
+      <aside class="glass hero-side">
+        <div class="score-panel">
+          <h2>📊 Status do banco</h2>
+          <p>O banco foi desenhado para crescer por módulos, mantendo relacionamento automático com os temas do hub principal.</p>
+          <div class="metrics">
+            <div class="metric"><b>01</b><span>módulo ativo</span></div>
+            <div class="metric"><b>30</b><span>questões AVC</span></div>
+            <div class="metric"><b>14+</b><span>temas ligados</span></div>
+            <div class="metric"><b>∞</b><span>expansível</span></div>
+          </div>
+        </div>
+
+        <div class="score-panel">
+          <h2>🧩 Lógica de relacionamento</h2>
+          <p>Cada questão contém <code>relatedTopics</code>, <code>domain</code>, <code>difficulty</code> e <code>clinicalTags</code>. Quando um tema correlato existir no hub, o chip vira link automaticamente.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="modulos">
+      <div class="section-head">
+        <div>
+          <h2>Módulos do Banco TEMI 📚</h2>
+          <p>Busque, filtre e abra os bancos temáticos. O bloco de AVC Agudo já está inserido como módulo ativo.</p>
+        </div>
+      </div>
+
+      <div class="tools">
+        <input id="searchInput" type="search" placeholder="Buscar: AVC, sepse, ventilação, choque, neuroimagem..." />
+        <select id="statusFilter" aria-label="Filtrar por status">
+          <option value="todos">Todos os status</option>
+          <option value="ativo">Ativos</option>
+          <option value="planejado">Planejados</option>
+        </select>
+        <select id="domainFilter" aria-label="Filtrar por domínio">
+          <option value="todos">Todos os domínios</option>
+          <option value="neuro">Neuro UTI</option>
+          <option value="hemodinamica">Hemodinâmica</option>
+          <option value="respiratorio">Respiratório</option>
+          <option value="infectologia">Infectologia</option>
+          <option value="nefro">Nefro/Metabólico</option>
+        </select>
+        <button class="btn" id="resetFilters">↻ Limpar</button>
+      </div>
+
+      <div class="grid" id="qbankGrid"></div>
+    </section>
+
+    <section class="section" id="relacionamentos">
+      <div class="section-head">
+        <div>
+          <h2>Mapa de relacionamento automático 🕸️</h2>
+          <p>O banco de questões conversa com os temas do hub. Quando novos módulos forem adicionados, os chips passam a apontar para páginas reais.</p>
+        </div>
+      </div>
+
+      <div class="relationship-panel">
+        <article class="glass" style="padding:20px;">
+          <h3>🧠 AVC Agudo já conectado a:</h3>
+          <div class="tags" id="avcTags"></div>
+          <p style="color:var(--muted);line-height:1.65;margin-top:14px;">
+            No arquivo de dados, cada tema tem um <strong>id único</strong>. Exemplo: <code>hipertensao-emergencia</code>. Quando a página existir, basta atualizar o campo <code>status: "ativo"</code> e <code>url</code>. A interface transforma o chip em link clicável.
+          </p>
+        </article>
+
+        <div class="graph-box" aria-label="Grafo conceitual do banco de questões">
+          <div class="line" style="left:24%;top:28%;width:26%;transform:rotate(12deg);"></div>
+          <div class="line" style="left:48%;top:32%;width:25%;transform:rotate(-18deg);"></div>
+          <div class="line" style="left:34%;top:56%;width:28%;transform:rotate(-8deg);"></div>
+          <div class="line" style="left:56%;top:58%;width:24%;transform:rotate(22deg);"></div>
+
+          <div class="node main" style="left:39%;top:38%;">🏆 Banco TEMI<small>Questões comentadas</small></div>
+          <div class="node" style="left:8%;top:18%;">🧠 AVC Agudo<small>30 questões</small></div>
+          <div class="node future" style="left:68%;top:18%;">🦠 Sepse<small>planejado</small></div>
+          <div class="node future" style="left:10%;top:66%;">🫁 VM/SDRA<small>planejado</small></div>
+          <div class="node future" style="left:68%;top:64%;">🫀 Choque<small>planejado</small></div>
+          <div class="node" style="left:36%;top:10%;">🖥️ Neuroimagem<small>relacionado</small></div>
+          <div class="node" style="left:42%;top:75%;">🎚️ PA no AVC<small>relacionado</small></div>
+        </div>
+      </div>
+    </section>
+
+
+    <footer class="footer">
+      <strong>🛡️ Nota de segurança:</strong> este banco é material educacional para médicos e preparação TEMI. Deve ser interpretado conforme diretrizes atuais, contexto institucional, julgamento clínico e segurança do paciente crítico.
+    </footer>
+  </main>
+
+  <script src="data/hub_qbanks.js"></script>
+  <script>
+    let topicRegistry = HUB_DATA.topicRegistry;
+    let qbanks = HUB_DATA.qbanks;
+
+    const grid = document.getElementById("qbankGrid");
+    const searchInput = document.getElementById("searchInput");
+    const statusFilter = document.getElementById("statusFilter");
+    const domainFilter = document.getElementById("domainFilter");
+    const avcTags = document.getElementById("avcTags");
+
+    function topicChip(topicId) {
+      const topic = topicRegistry[topicId] || { label: topicId, url: "#", status: "planejado" };
+      if (topic.status === "ativo") {
+        return `<a class="tag" href="${topic.url}" title="Abrir ${topic.label}">🔗 ${topic.label}</a>`;
+      }
+      return `<span class="tag" title="Tema planejado: ${topic.label}">🧩 ${topic.label}</span>`;
+    }
+
+    function renderCards() {
+      const q = searchInput.value.trim().toLowerCase();
+      const status = statusFilter.value;
+      const domain = domainFilter.value;
+
+      const filtered = qbanks.filter(item => {
+        const searchable = [
+          item.title,
+          item.description,
+          item.domain,
+          item.status,
+          ...(item.keywords || []),
+          ...(item.relatedTopics || []).map(id => topicRegistry[id]?.label || id)
+        ].join(" ").toLowerCase();
+
+        const matchesText = !q || searchable.includes(q);
+        const matchesStatus = status === "todos" || item.status === status;
+        const matchesDomain = domain === "todos" || item.domain === domain;
+        return matchesText && matchesStatus && matchesDomain;
+      });
+
+      grid.innerHTML = filtered.map(item => {
+        const isActive = item.status === "ativo";
+        const statusLabel = isActive ? "Ativo" : "Planejado";
+        const cardClass = isActive ? "qbank-card" : "qbank-card locked";
+        const button = isActive
+          ? `<a class="btn primary" href="${item.url}">Abrir banco →</a>`
+          : `<span class="btn disabled">Em construção</span>`;
+
+        return `
+          <article class="${cardClass}" data-id="${item.id}">
+            <div>
+              <div class="card-top">
+                <div class="icon">${item.icon}</div>
+                <span class="status ${isActive ? "active" : "soon"}">${isActive ? "✅" : "🧱"} ${statusLabel}</span>
+              </div>
+
+              <h3>${item.title}</h3>
+              <p>${item.description}</p>
+
+              <div class="card-stats">
+                <div class="stat"><b>${item.questions}</b><small>questões</small></div>
+                <div class="stat"><b>${item.comments}</b><small>comentários</small></div>
+                <div class="stat"><b>${item.difficultyProfile}</b><small>dificuldade</small></div>
+              </div>
+
+              <div class="tags">
+                ${(item.relatedTopics || []).slice(0, 7).map(topicChip).join("")}
+              </div>
+            </div>
+
+            <div class="card-actions">
+              ${button}
+              <button class="btn" onclick="copyModuleId('${item.id}')">Copiar ID</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      if (!filtered.length) {
+        grid.innerHTML = `<article class="qbank-card"><h3>Nenhum módulo encontrado 🔎</h3><p>Tente limpar os filtros ou buscar por outro termo.</p></article>`;
+      }
+    }
+
+    function renderAvcTags() {
+      const avc = qbanks.find(item => item.id === "qbank-temi-avc-agudo");
+      avcTags.innerHTML = avc.relatedTopics.map(topicChip).join("");
+    }
+
+    function copyModuleId(id) {
+      navigator.clipboard?.writeText(id).then(() => alert(`ID copiado: ${id}`));
+    }
+
+    function copyTextFromElement(id) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard?.writeText(text).then(() => alert("Copiado ✅"));
+    }
+
+    searchInput.addEventListener("input", renderCards);
+    statusFilter.addEventListener("change", renderCards);
+    domainFilter.addEventListener("change", renderCards);
+    document.getElementById("resetFilters").addEventListener("click", () => {
+      searchInput.value = "";
+      statusFilter.value = "todos";
+      domainFilter.value = "todos";
+      renderCards();
+    });
+    renderCards();
+    renderAvcTags();
+  </script>
+</body>
+</html>

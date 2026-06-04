@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAD · Checklist Beira-Leito | Antigravity UTI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #0A1020;
+    --card: #111827;
+    --border: #1F3A5C;
+    --accent: #38BDF8;
+    --green: #34D399;
+    --yellow: #FBBF24;
+    --red: #F87171;
+    --purple: #A78BFA;
+    --text: #F1F5F9;
+    --muted: #64748B;
+    --dim: #1E293B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+    font-size: 14px;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0F172A, #162032);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::after {
+    content: 'CHECKLIST CAD';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-size: 0.5rem;
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    color: var(--border);
+  }
+
+  .badge-pill {
+    background: var(--red)22;
+    color: var(--red);
+    border: 1px solid var(--red)55;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* GRID LAYOUT */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .grid-1 { margin-bottom: 14px; }
+
+  /* PANEL */
+  .panel {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 9px 14px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .panel-header.accent { background: var(--accent)15; color: var(--accent); }
+  .panel-header.green { background: var(--green)15; color: var(--green); }
+  .panel-header.yellow { background: var(--yellow)15; color: var(--yellow); }
+  .panel-header.red { background: var(--red)15; color: var(--red); }
+  .panel-header.purple { background: var(--purple)15; color: var(--purple); }
+  .panel-header.muted { background: var(--dim); color: var(--muted); }
+
+  /* CHECK ITEM */
+  .check-list { padding: 8px 14px; }
+
+  .ci {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border)77;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 6px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .ci:last-child { border-bottom: none; }
+  .ci:hover { background: var(--dim); }
+
+  .cb {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    font-size: 0.7rem;
+    color: transparent;
+  }
+
+  .ci.done .cb {
+    background: var(--green);
+    border-color: var(--green);
+    color: #0A1020;
+    font-weight: 900;
+  }
+
+  .ci.urgent .cb { border-color: var(--red); }
+  .ci.done.urgent .cb { background: var(--red); border-color: var(--red); }
+
+  .ci-text {
+    font-size: 0.79rem;
+    line-height: 1.45;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .ci-text small {
+    display: block;
+    color: var(--muted);
+    font-size: 0.68rem;
+    margin-top: 1px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .ci.done .ci-text { color: var(--muted); text-decoration: line-through; }
+
+  /* ALERT */
+  .alert {
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin: 8px 0 0;
+    font-size: 0.77rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .alert.red { background: var(--red)18; border: 1px solid var(--red)55; color: var(--red); }
+  .alert.yellow { background: var(--yellow)18; border: 1px solid var(--yellow)44; color: var(--yellow); }
+  .alert.green { background: var(--green)18; border: 1px solid var(--green)44; color: var(--green); }
+
+  /* TABLE */
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.74rem;
+  }
+
+  .mini-table th {
+    background: var(--dim);
+    padding: 6px 10px;
+    text-align: left;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .mini-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--border)55;
+    vertical-align: middle;
+  }
+
+  .mini-table tr:last-child td { border-bottom: none; }
+
+  .mono { font-family: 'DM Mono', monospace; font-weight: 700; }
+  .text-red { color: var(--red); }
+  .text-yellow { color: var(--yellow); }
+  .text-green { color: var(--green); }
+  .text-accent { color: var(--accent); }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+    color: var(--muted);
+    padding: 12px 4px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    background: var(--dim);
+    border-radius: 10px;
+    height: 6px;
+    overflow: hidden;
+    margin: 10px 14px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--green), var(--accent));
+    transition: width 0.3s;
+  }
+
+  .progress-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    padding: 0 14px 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .btn-reset {
+    background: var(--dim);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.2s;
+  }
+
+  .btn-reset:hover { color: var(--text); }
+
+  .btn-print {
+    background: var(--accent)20;
+    color: var(--accent);
+    border: 1px solid var(--accent)44;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  @media print {
+    body { background: white; color: black; padding: 10px; }
+    .panel { border: 1px solid #ccc; }
+    .panel-header { background: #f0f0f0 !important; color: black !important; }
+    .ci { color: black; }
+    .ci-text { color: black; }
+    .ci-text small { color: #666; }
+    .btn-reset, .btn-print { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+        <span style="font-size:1.3rem">🧪</span>
+        <span style="font-size:1.1rem;font-weight:900;letter-spacing:-0.01em">Cetoacidose Diabética · Beira-Leito</span>
+      </div>
+      <div style="font-size:0.7rem;color:var(--muted)">Checklist interativo de conduta · Projeto Antigravity · UTI</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+      <div class="badge-pill">🔴 Emergência Endócrina</div>
+      <div style="font-size:0.65rem;color:var(--muted);font-family:'DM Mono',monospace">v1.0 · cad-checklist</div>
+    </div>
+  </div>
+
+  <!-- ALERT PRINCIPAL -->
+  <div class="alert red" style="margin-bottom:14px;border-radius:12px;padding:12px 16px">
+    ⚡ <strong>REGRA DE OURO:</strong> Nunca inicie insulina sem checar K⁺. Se K⁺ &lt; 3,3 → repor KCl primeiro. A acidose resolve mais devagar que a hiperglicemia — não suspenda insulina EV só porque a glicemia normalizou.
+  </div>
+
+  <!-- ROW 1: ADMISSÃO + ACESSO -->
+  <div class="grid-2">
+
+    <!-- ADMISSÃO 0-15min -->
+    <div class="panel">
+      <div class="panel-header accent">⚡ 0–15 min · Admissão</div>
+      <div class="check-list" id="cl-admissao">
+        <div class="ci urgent" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Acesso venoso calibroso (16G+) <small>2 acessos se grave</small></div></div>
+        <div class="ci urgent" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Gasometria arterial urgente <small>pH, HCO₃⁻, PCO₂, lactato</small></div></div>
+        <div class="ci urgent" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Coleta de K⁺, Na⁺, Cl⁻, glicemia <small>Antes de qualquer insulina</small></div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Cetonúria (fita) ou beta-OH-butirato</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">ECG (12 derivações)</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Monitor cardíaco contínuo</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Oximetria de pulso</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Sonda vesical (se grave/comatoso)</div></div>
+      </div>
+    </div>
+
+    <!-- HIDRATAÇÃO -->
+    <div class="panel">
+      <div class="panel-header accent">💧 Hidratação EV</div>
+      <div class="check-list">
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">SF 0,9% — 1 L na 1ª hora <small>15–20 mL/kg/h (hipovolemia)</small></div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">2ª–4ª hora: 500 mL/h SF 0,9% ou 0,45%</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Se Na⁺ corrigido alto → SF 0,45%</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Glicemia &lt; 250: adicionar SG 5% <small>Manter glicemia 150–200 mg/dL</small></div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Balanço hídrico horário</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Diurese alvo ≥ 0,5 mL/kg/h</div></div>
+      </div>
+      <div class="alert yellow" style="margin:0 14px 10px;">
+        ⚠️ Não reidratar rápido demais → risco de edema cerebral (especialmente pediátrico)
+      </div>
+    </div>
+  </div>
+
+  <!-- TABELA K+ -->
+  <div class="panel grid-1">
+    <div class="panel-header red">⚡ Protocolo de Potássio — CRÍTICO</div>
+    <div style="padding:12px 14px">
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th>K⁺ sérico</th>
+            <th>Insulina EV</th>
+            <th>Reposição KCl</th>
+            <th>Monitoração</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="mono text-red">&lt; 3,3 mEq/L</span></td>
+            <td><span class="text-red font-bold">⛔ NÃO iniciar</span></td>
+            <td><span class="text-red">KCl 20–40 mEq/h EV</span></td>
+            <td>K⁺ a cada 1h</td>
+          </tr>
+          <tr>
+            <td><span class="mono text-yellow">3,3–5,0 mEq/L</span></td>
+            <td><span class="text-green">✅ Iniciar</span></td>
+            <td>KCl 20–30 mEq/L hidratação</td>
+            <td>K⁺ a cada 2h</td>
+          </tr>
+          <tr>
+            <td><span class="mono text-green">&gt; 5,0 mEq/L</span></td>
+            <td><span class="text-green">✅ Iniciar</span></td>
+            <td><span class="text-yellow">Sem KCl</span></td>
+            <td>ECG contínuo · K⁺ 2/2h</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INSULINA + EXAMES -->
+  <div class="grid-2">
+
+    <!-- INSULINA EV -->
+    <div class="panel">
+      <div class="panel-header yellow">💉 Insulina EV</div>
+      <div class="check-list">
+        <div class="ci urgent" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text"><strong>K⁺ ≥ 3,5 confirmado antes de iniciar</strong></div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Preparar: 100 U insulina regular em 100 mL SF 0,9% <small>(1 U/mL)</small></div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Infusão: 0,1 U/kg/h <small>Em bomba de seringa</small></div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Glicemia capilar horária <small>Meta: queda 50–75 mg/dL/h</small></div></div>
+        <div class="ci urgent" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Queda &lt; 50 mg/dL/h → dobrar taxa</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Glicemia &lt; 250: reduzir para 0,02–0,05 U/kg/h + SG5%</div></div>
+        <div class="ci urgent" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text"><strong>Não suspender EV até pH &gt; 7,30 + HCO₃⁻ &gt; 18 + AG &lt; 12</strong></div></div>
+      </div>
+    </div>
+
+    <!-- MONITORAÇÃO -->
+    <div class="panel">
+      <div class="panel-header green">📊 Monitoração Contínua</div>
+      <div class="check-list">
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Glicemia capilar: 1/1h</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">K⁺ sérico: 1–2/2h (primeiras 6h)</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Gasometria + eletrólitos: 2–4/4h</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Ânion gap seriado até normalizar</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">ECG: admissão + se K⁺ alterado</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Diurese horária</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">PA, FC, FR, SpO₂ a cada 2h</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Nível de consciência / Glasgow</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESOLUÇÃO + BICARBONATO -->
+  <div class="grid-2">
+
+    <!-- CRITÉRIOS DE RESOLUÇÃO -->
+    <div class="panel">
+      <div class="panel-header green">✅ Critérios de Resolução CAD</div>
+      <div class="check-list">
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">pH arterial &gt; 7,30</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">HCO₃⁻ &gt; 18 mEq/L</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Ânion Gap &lt; 12 mEq/L</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Paciente acordado e orientado</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Tolerando via oral</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">K⁺ estável 4,0–5,0 mEq/L</div></div>
+      </div>
+      <div class="alert green" style="margin:0 14px 10px;">
+        🟢 Todos ✅? → Iniciar transição EV→SC com sobreposição de 1–2h
+      </div>
+    </div>
+
+    <!-- BICARBONATO + PRECIPITANTE -->
+    <div class="panel">
+      <div class="panel-header red">🧫 Bicarbonato &amp; Precipitante</div>
+      <div class="check-list">
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Bicarbonato APENAS se pH &lt; 6,9 + instabilidade <small>100 mEq em 400 mL AD + 20 mEq KCl · 2h</small></div></div>
+        <div class="ci urgent" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text"><strong>Investigar precipitante OBRIGATÓRIO</strong></div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Hemograma + VHS/PCR → infecção?</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">ECG → IAM silencioso?</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">RX tórax → pneumonia?</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Urocultura / hemocultura</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Uso de iSGLT2? → CAD euglicêmica!</div></div>
+        <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Omissão de insulina?</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSIÇÃO EV→SC -->
+  <div class="panel grid-1">
+    <div class="panel-header purple">🔄 Transição EV → SC (somente após resolução)</div>
+    <div class="check-list">
+      <div class="ci urgent" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text"><strong>CONFIRMAR TODOS os critérios de resolução antes</strong></div></div>
+      <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Calcular DDT: taxa EV atual (U/h) × 24h</div></div>
+      <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Insulina basal SC = 50% da DDT (NPH 2×/dia ou análogo lento 1×/dia)</div></div>
+      <div class="ci urgent" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text"><strong>⏰ Aplicar SC → aguardar 1–2h → ENTÃO suspender EV</strong><small>Sobreposição obrigatória! Nunca o contrário!</small></div></div>
+      <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Insulina prandial (ultrarrápida) nas refeições = 50% DDT ÷ 3</div></div>
+      <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Glicemia capilar 4/4h por 24h após transição</div></div>
+      <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div class="ci-text">Educação em diabetes antes da alta</div></div>
+    </div>
+  </div>
+
+  <!-- PROGRESS / CONTROLS -->
+  <div class="panel grid-1" style="margin-top:14px">
+    <div class="panel-header muted">📈 Progresso do Checklist</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-label">
+      <span id="progressText">0 / 0 itens concluídos</span>
+      <span id="progressPct">0%</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>
+      <span style="color:var(--accent);font-weight:700">🧬 Projeto Antigravity · Enciclomedia Médica</span><br>
+      Slug: cad-checklist-beira-leito · cad-cetoacidose-diabetica-uti
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn-reset" onclick="resetAll()">↺ Resetar</button>
+      <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+    </div>
+    <div style="text-align:right;max-width:260px;line-height:1.4">
+      ⚠️ Material educacional. Adaptar ao protocolo institucional. Não substitui julgamento clínico.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleCheck(el) {
+    el.classList.toggle('done');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.ci');
+    const done = document.querySelectorAll('.ci.done');
+    const total = all.length;
+    const completed = done.length;
+    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${completed} / ${total} itens concluídos`;
+    document.getElementById('progressPct').textContent = pct + '%';
+  }
+
+  function resetAll() {
+    document.querySelectorAll('.ci.done').forEach(el => el.classList.remove('done'));
+    updateProgress();
+  }
+
+  // Initialize
+  updateProgress();
+</script>
+
+</body>
+</html>

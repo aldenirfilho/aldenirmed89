@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Vasoativas v2 | UpDown Hub</title>
+  <link rel="stylesheet" href="../../assets/estudos.css" />
+  <style>
+    :root { --p: #38bdf8; --s: #4ef0a1; --warn: #fb7185; }
+    .calc-container { max-width: 800px; margin: 0 auto; padding: 1rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    label { display: block; font-size: 0.85rem; font-weight: 800; color: var(--muted); text-transform: uppercase; margin-bottom: 0.4rem; }
+    input, select { width: 100%; padding: 0.8rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 1rem; }
+    .result-panel { background: linear-gradient(135deg, rgba(56,189,248,0.1), rgba(78,240,161,0.05)); border: 1px solid var(--accent); border-radius: 20px; padding: 1.5rem; margin-top: 2rem; }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center; }
+    .result-val { font-size: 2.2rem; font-weight: 900; color: var(--accent2); display: block; }
+    .prescription-box { background: #000; color: #fff; padding: 1rem; border-radius: 12px; font-family: monospace; font-size: 0.85rem; margin-top: 1rem; white-space: pre-wrap; position: relative; }
+    .copy-btn { position: absolute; top: 10px; right: 10px; background: var(--accent); border: none; padding: 5px 10px; border-radius: 5px; color: #000; cursor: pointer; font-size: 0.7rem; font-weight: 800; }
+    .warning-box { background: rgba(251,113,133,0.1); border: 1px solid var(--danger); color: var(--danger); padding: 1rem; border-radius: 12px; font-size: 0.8rem; margin-top: 1rem; }
+    .tabs { display: flex; gap: 5px; margin-bottom: 1.5rem; }
+    .tab { flex: 1; padding: 0.8rem; text-align: center; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 0.8rem; }
+    .tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+    .manual-dilution { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../../index.html">💊 <span>Vasoativas v2</span></a>
+    <nav><a href="../index.html">⬅️ Apps</a></nav>
+  </header>
+
+  <main class="calc-container">
+    <section class="panel">
+      <div class="form-group">
+        <label>1. Peso do Paciente (kg)</label>
+        <input type="number" id="weight" value="70" step="0.1" oninput="calc()">
+      </div>
+
+      <div class="form-group">
+        <label>2. Droga Vasoativa</label>
+        <select id="drugSelect" onchange="onDrugChange()"></select>
+      </div>
+
+      <div class="form-group">
+        <label>3. Preparo da Solução</label>
+        <select id="presetSelect" onchange="onPresetChange()"></select>
+        <div class="manual-dilution" id="manualDilution" style="display:none">
+          <div><label>Total (mg ou UI)</label><input type="number" id="manualTotal" oninput="calc()"></div>
+          <div><label>Volume Final (mL)</label><input type="number" id="manualVol" oninput="calc()"></div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" id="tabDose" onclick="setMode('dose')">Dose → mL/h</div>
+        <div class="tab" id="tabFlow" onclick="setMode('flow')">mL/h → Dose</div>
+      </div>
+
+      <div class="form-group" id="inputDoseGroup">
+        <label id="doseLabel">Dose Alvo (mcg/kg/min)</label>
+        <input type="number" id="inputDose" step="0.01" oninput="calc()">
+      </div>
+
+      <div class="form-group" id="inputFlowGroup" style="display:none">
+        <label>Vazão Atual (mL/h)</label>
+        <input type="number" id="inputFlow" step="0.1" oninput="calc()">
+      </div>
+    </section>
+
+    <section class="result-panel">
+      <div class="result-grid">
+        <div>
+          <span class="muted" id="resLabel1">Vazão Sugerida</span>
+          <strong class="result-val" id="resVal1">0.0</strong>
+          <span class="muted" id="resUnit1">mL/h</span>
+        </div>
+        <div>
+          <span class="muted">Concentração</span>
+          <strong class="result-val" id="resVal2" style="font-size: 1.2rem; color: var(--accent);">0</strong>
+          <span class="muted" id="resUnit2">mcg/mL</span>
+        </div>
+      </div>
+
+      <div class="prescription-box" id="presc">
+        <!-- Prescrição será gerada aqui -->
+      </div>
+      <button class="copy-btn" onclick="copyPresc()">Copiar</button>
+    </section>
+
+    <div class="warning-box" id="warning">
+      Conferir apresentação da ampola e protocolo institucional.
+    </div>
+
+    <footer style="margin-top: 3rem; font-size: 0.7rem; text-align: center; opacity: 0.6;">
+      UpDown Hub Clinical Tool • v2.0 • Antigravity Engine
+    </footer>
+  </main>
+
+  <script>
+    let drugs = [];
+    let mode = 'dose';
+
+    async function init() {
+      // Tentativa de carregar do JSON se estiver no servidor, senão fallback
+      try {
+        const res = await fetch('../../data/vasoactive_drugs_brasil_presets.json');
+        const data = await res.json();
+        drugs = data.drugs;
+      } catch(e) {
+        // Fallback básico se o fetch falhar
+        drugs = [
+          {id:'noradrenalina', name:'Noradrenalina', unit:'mcg/kg/min', requires_weight:true, presets:[{label:'16 mg em 100 mL', mg_total:16, final_volume_ml:100, concentration_mcg_ml:160}]}
+        ];
+      }
+      populateDrugs();
+      onDrugChange();
+    }
+
+    function populateDrugs() {
+      const select = document.getElementById('drugSelect');
+      select.innerHTML = drugs.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+    }
+
+    function onDrugChange() {
+      const drug = drugs.find(d => d.id === document.getElementById('drugSelect').value);
+      const presetSelect = document.getElementById('presetSelect');
+      
+      let html = drug.presets.map((p, i) => `<option value="${i}">${p.label}</option>`).join('');
+      html += `<option value="manual">Outro preparo (manual)</option>`;
+      presetSelect.innerHTML = html;
+      
+      document.getElementById('doseLabel').textContent = `Dose Alvo (${drug.unit})`;
+      document.getElementById('resUnit2').textContent = drug.unit.split('/')[0] + '/mL';
+      
+      onPresetChange();
+    }
+
+    function onPresetChange() {
+      const val = document.getElementById('presetSelect').value;
+      document.getElementById('manualDilution').style.display = (val === 'manual') ? 'grid' : 'none';
+      calc();
+    }
+
+    function setMode(m) {
+      mode = m;
+      document.getElementById('tabDose').className = (m === 'dose') ? 'tab active' : 'tab';
+      document.getElementById('tabFlow').className = (m === 'flow') ? 'tab active' : 'tab';
+      document.getElementById('inputDoseGroup').style.display = (m === 'dose') ? 'block' : 'none';
+      document.getElementById('inputFlowGroup').style.display = (m === 'flow') ? 'block' : 'none';
+      document.getElementById('resLabel1').textContent = (m === 'dose') ? 'Vazão Sugerida' : 'Dose Calculada';
+      document.getElementById('resUnit1').textContent = (m === 'dose') ? 'mL/h' : drugs.find(d => d.id === document.getElementById('drugSelect').value).unit;
+      calc();
+    }
+
+    function calc() {
+      const drug = drugs.find(d => d.id === document.getElementById('drugSelect').value);
+      const weight = parseFloat(document.getElementById('weight').value) || 0;
+      const presetIdx = document.getElementById('presetSelect').value;
+      
+      let totalMass, finalVol;
+      if (presetIdx === 'manual') {
+        totalMass = parseFloat(document.getElementById('manualTotal').value) || 0;
+        finalVol = parseFloat(document.getElementById('manualVol').value) || 1;
+      } else {
+        const p = drug.presets[presetIdx];
+        totalMass = p.mg_total || p.ui_total;
+        finalVol = p.final_volume_ml;
+      }
+
+      const concentration = (totalMass * (drug.unit.includes('mcg') ? 1000 : 1)) / finalVol;
+      document.getElementById('resVal2').textContent = concentration.toFixed(concentration < 1 ? 2 : 1);
+
+      let result = 0;
+      if (mode === 'dose') {
+        const dose = parseFloat(document.getElementById('inputDose').value) || 0;
+        if (drug.unit === 'mcg/kg/min') {
+          result = (dose * weight * 60) / concentration;
+        } else {
+          result = (dose * 60) / concentration;
+        }
+        document.getElementById('resVal1').textContent = result.toFixed(1);
+      } else {
+        const flow = parseFloat(document.getElementById('inputFlow').value) || 0;
+        if (drug.unit === 'mcg/kg/min') {
+          result = (flow * concentration) / (weight * 60);
+        } else {
+          result = (flow * concentration) / 60;
+        }
+        document.getElementById('resVal1').textContent = result.toFixed(2);
+      }
+
+      generatePrescription(drug, totalMass, finalVol, concentration, weight);
+    }
+
+    function generatePrescription(drug, mass, vol, conc, weight) {
+      const unit = drug.unit.split('/')[0].toUpperCase();
+      const dose = mode === 'dose' ? (parseFloat(document.getElementById('inputDose').value) || 0) : document.getElementById('resVal1').textContent;
+      const flow = mode === 'dose' ? document.getElementById('resVal1').textContent : (parseFloat(document.getElementById('inputFlow').value) || 0);
+      
+      const massUnit = drug.unit.includes('mcg') ? 'mg' : 'UI';
+      
+      let txt = `${drug.name.toUpperCase()} ${mass} ${massUnit} + Solvente q.s.p. ${vol} mL.\n`;
+      txt += `Concentração: ${conc.toFixed(1)} ${unit}/mL.\n`;
+      txt += `Administrar em BIC a ${flow} mL/h, equivalente a ${dose} ${drug.unit}`;
+      if(drug.requires_weight) txt += ` para ${weight} kg.`;
+      txt += `\nTitular conforme metas hemodinâmicas.`;
+      
+      document.getElementById('presc').innerText = txt;
+      
+      let warn = drug.critical_note || "Conferir compatibilidade e estabilidade da solução.";
+      if (flow > 100) warn = "⚠️ VAZÃO ALTA (> 100 mL/h). Considere concentrar a solução.";
+      if (dose > 2) warn = "⚠️ DOSE MUITO ALTA. Avalie teto terapêutico e drogas adjuvantes.";
+      document.getElementById('warning').innerText = warn;
+    }
+
+    function copyPresc() {
+      const txt = document.getElementById('presc').innerText;
+      navigator.clipboard.writeText(txt);
+      alert("Prescrição copiada para o clipboard!");
+    }
+
+    init();
+  </script>
+</body>
+</html>
