@@ -1,1276 +1,1320 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Enciclopédia Médica Intensiva & Medicina Interna</title>
-  <meta name="description" content="Projeto de enciclopédia médica interativa, contínua e didática para Medicina Intensiva, Medicina Interna, prática clínica, UTI e preparação TEMI." />
-  <style>
-    :root {
-      --bg: #08111f;
-      --bg-2: #0d1b2f;
-      --panel: rgba(255,255,255,0.075);
-      --panel-strong: rgba(255,255,255,0.12);
-      --border: rgba(255,255,255,0.16);
-      --text: #f4f7fb;
-      --muted: #aab8cc;
-      --soft: #dce6f5;
-      --cyan: #3ee8ff;
-      --blue: #6aa9ff;
-      --violet: #a98cff;
-      --green: #4ef0a1;
-      --yellow: #ffd166;
-      --red: #ff6b6b;
-      --shadow: 0 24px 80px rgba(0,0,0,0.35);
-      --radius: 28px;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(62,232,255,0.18), transparent 32rem),
-        radial-gradient(circle at 82% 14%, rgba(169,140,255,0.18), transparent 30rem),
-        radial-gradient(circle at 50% 95%, rgba(78,240,161,0.12), transparent 34rem),
-        linear-gradient(140deg, #06101d 0%, #0a1322 45%, #0d1728 100%);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    .noise {
-      pointer-events: none;
-      position: fixed;
-      inset: 0;
-      opacity: .065;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      z-index: 0;
-    }
-
-    .shell {
-      position: relative;
-      z-index: 1;
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(18px);
-      background: rgba(8, 17, 31, 0.72);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .nav {
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 230px;
-    }
-
-    .logo {
-      width: 44px;
-      height: 44px;
-      display: grid;
-      place-items: center;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(62,232,255,0.28), rgba(169,140,255,0.22));
-      border: 1px solid rgba(255,255,255,0.18);
-      box-shadow: 0 10px 32px rgba(62,232,255,0.12);
-    }
-
-    .brand-title {
-      line-height: 1.05;
-      font-weight: 860;
-      letter-spacing: -0.035em;
-      font-size: 1rem;
-    }
-
-    .brand-subtitle {
-      color: var(--muted);
-      font-size: .76rem;
-      margin-top: 3px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a, .nav-cta {
-      padding: 9px 12px;
-      border-radius: 999px;
-      color: var(--soft);
-      font-weight: 650;
-      font-size: .86rem;
-      border: 1px solid transparent;
-      transition: .18s ease;
-    }
-
-    .nav-links a:hover, .nav-cta:hover {
-      background: rgba(255,255,255,0.09);
-      border-color: rgba(255,255,255,0.12);
-      transform: translateY(-1px);
-    }
-
-    .nav-cta {
-      background: linear-gradient(135deg, rgba(62,232,255,0.16), rgba(78,240,161,0.12));
-      border-color: rgba(62,232,255,0.22);
-      white-space: nowrap;
-    }
-
-    .hero {
-      padding: 74px 0 34px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.18fr) minmax(320px, .82fr);
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .hero-card, .glass {
-      border: 1px solid var(--border);
-      background: linear-gradient(145deg, rgba(255,255,255,0.105), rgba(255,255,255,0.045));
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      backdrop-filter: blur(18px);
-      overflow: hidden;
-    }
-
-    .hero-card {
-      padding: 34px;
-      position: relative;
-    }
-
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: -1px;
-      background: radial-gradient(circle at 14% 4%, rgba(62,232,255,0.22), transparent 32%), radial-gradient(circle at 90% 80%, rgba(169,140,255,0.16), transparent 30%);
-      pointer-events: none;
-    }
-
-    .hero-content { position: relative; z-index: 1; }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(62,232,255,0.25);
-      background: rgba(62,232,255,0.08);
-      color: #d9fbff;
-      font-size: .84rem;
-      font-weight: 760;
-      margin-bottom: 18px;
-    }
-
-    h1 {
-      font-size: clamp(2.55rem, 7vw, 5.7rem);
-      line-height: .9;
-      letter-spacing: -0.08em;
-      margin: 0 0 20px;
-    }
-
-    .gradient-text {
-      background: linear-gradient(90deg, #fff, #aeefff 36%, #d7caff 68%, #c9ffe5);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero-lead {
-      max-width: 860px;
-      color: var(--soft);
-      font-size: clamp(1.05rem, 2vw, 1.28rem);
-      line-height: 1.72;
-      margin: 0 0 24px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 28px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      padding: 13px 16px;
-      border-radius: 17px;
-      font-weight: 820;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.08);
-      color: var(--text);
-      transition: .18s ease;
-      cursor: pointer;
-    }
-
-    .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.12); }
-
-    .btn.primary {
-      color: #04131f;
-      background: linear-gradient(135deg, #3ee8ff, #4ef0a1);
-      border: none;
-      box-shadow: 0 18px 45px rgba(62,232,255,0.18);
-    }
-
-    .btn.violet {
-      background: linear-gradient(135deg, rgba(169,140,255,0.22), rgba(106,169,255,0.14));
-      border-color: rgba(169,140,255,0.22);
-    }
-
-    .dashboard {
-      padding: 22px;
-      display: grid;
-      gap: 14px;
-    }
-
-    .dash-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(78,240,161,0.1);
-      color: #caffdf;
-      border: 1px solid rgba(78,240,161,0.22);
-      font-weight: 780;
-      font-size: .78rem;
-    }
-
-    .pulse-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 0 7px rgba(78,240,161,0.11);
-    }
-
-    .mini-title {
-      margin: 0;
-      font-size: 1.25rem;
-      letter-spacing: -0.035em;
-    }
-
-    .mini-muted { color: var(--muted); font-size: .9rem; line-height: 1.55; }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .metric {
-      padding: 14px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.055);
-    }
-
-    .metric strong { display: block; font-size: 1.38rem; letter-spacing: -0.045em; }
-    .metric span { color: var(--muted); font-size: .78rem; }
-
-    .signal {
-      height: 92px;
-      border-radius: 22px;
-      background:
-        linear-gradient(90deg, rgba(62,232,255,0.14), rgba(169,140,255,0.1)),
-        repeating-linear-gradient(90deg, transparent 0 18px, rgba(255,255,255,0.045) 18px 19px),
-        linear-gradient(180deg, transparent, rgba(255,255,255,0.035));
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .signal svg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .section {
-      padding: 34px 0;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .section h2 {
-      margin: 0;
-      font-size: clamp(1.72rem, 4vw, 3.2rem);
-      line-height: .98;
-      letter-spacing: -0.06em;
-    }
-
-    .section p.section-sub {
-      color: var(--muted);
-      max-width: 760px;
-      line-height: 1.65;
-      margin: 8px 0 0;
-      font-size: 1.02rem;
-    }
-
-    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-
-    .card {
-      border-radius: 24px;
-      padding: 22px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: linear-gradient(145deg, rgba(255,255,255,0.082), rgba(255,255,255,0.038));
-      box-shadow: 0 14px 38px rgba(0,0,0,0.18);
-      transition: .18s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card:hover { transform: translateY(-3px); border-color: rgba(62,232,255,0.28); }
-
-    .card::after {
-      content: "";
-      position: absolute;
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      right: -80px;
-      top: -80px;
-      background: rgba(62,232,255,0.07);
-      pointer-events: none;
-    }
-
-    .card h3 {
-      margin: 0 0 10px;
-      letter-spacing: -0.035em;
-      font-size: 1.32rem;
-    }
-
-    .card p { color: var(--muted); line-height: 1.62; margin: 0 0 14px; }
-
-    .card ul { margin: 12px 0 0; padding-left: 19px; color: var(--soft); line-height: 1.72; }
-
-    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-
-    .tag, .topic-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.13);
-      background: rgba(255,255,255,0.06);
-      padding: 7px 10px;
-      color: var(--soft);
-      font-size: .8rem;
-      font-weight: 720;
-    }
-
-    .topic-chip {
-      cursor: pointer;
-      transition: .16s ease;
-      user-select: none;
-    }
-
-    .topic-chip:hover, .topic-chip.active {
-      background: rgba(62,232,255,0.14);
-      border-color: rgba(62,232,255,0.36);
-      color: #e8fdff;
-      transform: translateY(-1px);
-    }
-
-    .path-card {
-      min-height: 430px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .path-card.intensiva {
-      background:
-        radial-gradient(circle at top right, rgba(255,107,107,0.13), transparent 24rem),
-        linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));
-    }
-
-    .path-card.interna {
-      background:
-        radial-gradient(circle at top right, rgba(106,169,255,0.15), transparent 24rem),
-        linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));
-    }
-
-    .path-icon {
-      width: 58px;
-      height: 58px;
-      border-radius: 22px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 18px;
-      font-size: 1.7rem;
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.14);
-    }
-
-    .module {
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .feature-card {
-      padding: 28px;
-      border-radius: 30px;
-      background:
-        radial-gradient(circle at 16% 10%, rgba(255,209,102,0.16), transparent 22rem),
-        radial-gradient(circle at 90% 86%, rgba(62,232,255,0.13), transparent 26rem),
-        linear-gradient(145deg, rgba(255,255,255,0.11), rgba(255,255,255,0.045));
-      border: 1px solid rgba(255,255,255,0.14);
-      box-shadow: var(--shadow);
-    }
-
-    .feature-card h3 {
-      margin: 0 0 14px;
-      font-size: clamp(1.55rem, 3vw, 2.35rem);
-      letter-spacing: -0.055em;
-    }
-
-    .feature-card p { color: var(--soft); line-height: 1.72; font-size: 1.04rem; }
-
-    .kpi-line {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .kpi {
-      border-radius: 18px;
-      padding: 14px;
-      background: rgba(0,0,0,0.18);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .kpi b { display: block; font-size: 1.1rem; }
-    .kpi small { color: var(--muted); }
-
-    .link-panel {
-      padding: 22px;
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.06);
-    }
-
-    .search-box {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.13);
-      background: rgba(0,0,0,0.16);
-      color: var(--text);
-      outline: none;
-      font-size: .95rem;
-    }
-
-    .search-box input:focus { border-color: rgba(62,232,255,0.45); }
-
-    .topic-list {
-      display: grid;
-      gap: 10px;
-      max-height: 520px;
-      overflow: auto;
-      padding-right: 4px;
-    }
-
-    .topic-item {
-      padding: 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.105);
-      background: rgba(255,255,255,0.045);
-      cursor: pointer;
-      transition: .16s ease;
-    }
-
-    .topic-item:hover { background: rgba(62,232,255,0.09); border-color: rgba(62,232,255,0.24); }
-    .topic-item strong { display: block; margin-bottom: 5px; }
-    .topic-item span { display: block; color: var(--muted); font-size: .83rem; line-height: 1.45; }
-
-    .timeline {
-      position: relative;
-      display: grid;
-      gap: 14px;
-    }
-
-    .phase {
-      display: grid;
-      grid-template-columns: 74px minmax(0, 1fr);
-      gap: 14px;
-      align-items: start;
-    }
-
-    .phase-number {
-      width: 58px;
-      height: 58px;
-      display: grid;
-      place-items: center;
-      border-radius: 20px;
-      font-weight: 900;
-      background: linear-gradient(135deg, rgba(62,232,255,0.16), rgba(169,140,255,0.14));
-      border: 1px solid rgba(255,255,255,0.14);
-    }
-
-    .phase-body {
-      padding: 18px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.055);
-      border: 1px solid rgba(255,255,255,0.105);
-    }
-
-    .phase-body h3 { margin: 0 0 8px; letter-spacing: -0.035em; }
-    .phase-body p { margin: 0; color: var(--muted); line-height: 1.62; }
-
-    .graph {
-      min-height: 520px;
-      position: relative;
-      border-radius: 30px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12);
-      background:
-        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
-        radial-gradient(circle at center, rgba(62,232,255,0.1), transparent 32rem),
-        rgba(255,255,255,0.04);
-      background-size: 38px 38px, 38px 38px, auto, auto;
-    }
-
-    .node {
-      position: absolute;
-      min-width: 132px;
-      max-width: 200px;
-      padding: 12px 14px;
-      border-radius: 18px;
-      background: rgba(8,17,31,0.82);
-      border: 1px solid rgba(255,255,255,0.16);
-      box-shadow: 0 14px 36px rgba(0,0,0,0.28);
-      cursor: pointer;
-      transition: .18s ease;
-    }
-
-    .node:hover { transform: scale(1.035); border-color: rgba(62,232,255,0.45); }
-    .node b { display: block; font-size: .93rem; }
-    .node small { display: block; color: var(--muted); margin-top: 4px; line-height: 1.3; }
-
-    .node.main { background: linear-gradient(135deg, rgba(62,232,255,0.22), rgba(78,240,161,0.11)); }
-    .node.alert { background: linear-gradient(135deg, rgba(255,107,107,0.18), rgba(255,209,102,0.08)); }
-    .node.exam { background: linear-gradient(135deg, rgba(169,140,255,0.2), rgba(106,169,255,0.1)); }
-
-    .line {
-      position: absolute;
-      height: 2px;
-      background: linear-gradient(90deg, rgba(62,232,255,0.0), rgba(62,232,255,0.36), rgba(169,140,255,0.0));
-      transform-origin: left center;
-      pointer-events: none;
-    }
-
-    .editorial {
-      font-size: 1.06rem;
-      line-height: 1.82;
-      color: var(--soft);
-    }
-
-    .editorial p { margin-top: 0; }
-    .editorial strong { color: #fff; }
-
-    .footer {
-      margin-top: 40px;
-      padding: 32px 0 48px;
-      color: var(--muted);
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.25fr .75fr .75fr;
-      gap: 18px;
-    }
-
-    .footer h3 { margin-top: 0; color: var(--text); }
-    .footer a { color: var(--soft); display: block; margin: 8px 0; }
-
-    .drawer {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 100;
-      width: min(440px, calc(100vw - 36px));
-      max-height: 72vh;
-      overflow: auto;
-      border-radius: 26px;
-      border: 1px solid rgba(255,255,255,0.17);
-      background: rgba(8,17,31,0.94);
-      box-shadow: 0 30px 90px rgba(0,0,0,0.5);
-      backdrop-filter: blur(18px);
-      padding: 20px;
-      transform: translateY(18px) scale(.98);
-      opacity: 0;
-      pointer-events: none;
-      transition: .18s ease;
-    }
-
-    .drawer.open {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .drawer h3 { margin: 0 0 8px; letter-spacing: -0.035em; }
-    .drawer p { color: var(--muted); line-height: 1.62; }
-    .drawer .close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      border: 0;
-      width: 32px;
-      height: 32px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.08);
-      color: white;
-      cursor: pointer;
-    }
-
-    .mini-table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 16px;
-      margin: 14px 0;
-      font-size: .9rem;
-    }
-
-    .mini-table th, .mini-table td {
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding: 10px;
-      text-align: left;
-    }
-
-    .mini-table th { color: #fff; background: rgba(255,255,255,0.07); }
-    .mini-table td { color: var(--soft); }
-
-    .accessibility {
-      position: fixed;
-      left: 18px;
-      bottom: 18px;
-      z-index: 80;
-      display: flex;
-      gap: 8px;
-      flex-direction: column;
-    }
-
-    .float-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: rgba(8,17,31,0.85);
-      color: white;
-      cursor: pointer;
-      backdrop-filter: blur(12px);
-      font-size: 1.1rem;
-    }
-
-    body.focus-mode .decorative { display: none; }
-    body.focus-mode .card, body.focus-mode .hero-card, body.focus-mode .glass, body.focus-mode .feature-card { box-shadow: none; }
-    body.focus-mode { background: #08111f; }
-
-    @media (max-width: 980px) {
-      .hero, .grid-2, .module, .footer-grid { grid-template-columns: 1fr; }
-      .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .nav { align-items: flex-start; }
-      .nav-links { display: none; }
-      .hero { padding-top: 38px; }
-    }
-
-    @media (max-width: 640px) {
-      .shell, .nav { padding-left: 16px; padding-right: 16px; }
-      .hero-card { padding: 24px; }
-      .grid-3, .grid-4, .metric-grid, .kpi-line { grid-template-columns: 1fr; }
-      .section-head { display: block; }
-      .phase { grid-template-columns: 1fr; }
-      .graph { min-height: 620px; }
-      .node { min-width: 120px; max-width: 156px; font-size: .9rem; }
-      .footer { padding-bottom: 90px; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Enciclopédia Médica Intensiva & Medicina Interna</title>
+<meta name="description" content="Plataforma médica interativa para Medicina Intensiva, UTI, emergência, Clínica Médica avançada e preparação TEMI/R3. Conteúdo autoral, didático e continuamente atualizado."/>
+<meta property="og:title" content="Enciclopédia Médica Intensiva & Medicina Interna"/>
+<meta property="og:description" content="Central de comando clínica: UpDowns, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo de conhecimento."/>
+<meta property="og:url" content="https://aldenirfilho.github.io/antigravity-consultas/"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANTIGRAVITY · ENCICLOMEDIA MÉDICA                          ║
+  ║  Homepage v2.0 — "Clinical Command Center"                  ║
+  ║  ARQUIVO AUTO-CONTIDO: todo CSS e JS inline.                ║
+  ║  Não depende de 06_Infra_Site_E_Assets/ — deploy-safe.      ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<style>
+/* ── DESIGN SYSTEM ─────────────────────────────────── */
+:root{
+  --bg:#040d1a;--bg2:#071422;--bg3:#0b1a2e;
+  --surf:rgba(255,255,255,.055);--surf-h:rgba(255,255,255,.09);
+  --brd:rgba(255,255,255,.09);--brd-h:rgba(255,255,255,.18);
+  --text:#e4edf8;--muted:#5c7a9a;--soft:#93b0cc;
+  --cyan:#3ee8ff;--cyan-d:rgba(62,232,255,.14);
+  --violet:#a98cff;--vio-d:rgba(169,140,255,.14);
+  --green:#4ef0a1;--grn-d:rgba(78,240,161,.12);
+  --yellow:#ffd166;--yel-d:rgba(255,209,102,.13);
+  --red:#ff6060;
+  --font-head:'Syne',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-body:'Outfit',sans-serif;
+  --r:14px;--r-lg:22px;--r-xl:32px;
+  --shadow:0 24px 80px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ── BACKGROUND: dot grid + animated orbs ─────────── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:32px 32px;
+  pointer-events:none;z-index:0;
+}
+.orbs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{
+  position:absolute;border-radius:50%;
+  animation:orbdrift 24s ease-in-out infinite alternate;
+}
+.orb:nth-child(1){width:600px;height:600px;top:-180px;left:-140px;
+  background:radial-gradient(circle,rgba(62,232,255,.11) 0%,transparent 70%);animation-delay:0s}
+.orb:nth-child(2){width:500px;height:500px;top:10%;right:-100px;
+  background:radial-gradient(circle,rgba(169,140,255,.11) 0%,transparent 70%);animation-delay:-9s}
+.orb:nth-child(3){width:450px;height:450px;bottom:-120px;left:35%;
+  background:radial-gradient(circle,rgba(78,240,161,.08) 0%,transparent 70%);animation-delay:-17s}
+@keyframes orbdrift{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(28px,18px) scale(1.06)}
+  100%{transform:translate(-18px,32px) scale(0.96)}
+}
+
+/* ── SHELL & LAYOUT ───────────────────────────────── */
+.shell{position:relative;z-index:1;max-width:1260px;margin:0 auto;padding:0 28px}
+section{padding:96px 0}
+.section-label{
+  font-family:var(--font-mono);font-size:.72rem;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cyan);opacity:.8;margin-bottom:12px
+}
+.section-title{
+  font-family:var(--font-head);font-size:clamp(1.7rem,3.5vw,2.5rem);
+  font-weight:800;line-height:1.1;letter-spacing:-.02em;
+  color:var(--text);margin-bottom:16px
+}
+.section-sub{font-size:1rem;color:var(--soft);max-width:560px;line-height:1.65}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+/* ── NAVIGATION ───────────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(4,13,26,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.nav{
+  max-width:1260px;margin:0 auto;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  height:64px;
+}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.brand-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(62,232,255,.2),rgba(169,140,255,.18));
+  border:1px solid rgba(62,232,255,.25);
+  display:grid;place-items:center;font-size:1.2rem;
+}
+.brand-text strong{
+  display:block;font-family:var(--font-head);font-size:.92rem;
+  font-weight:700;letter-spacing:-.02em;line-height:1.1
+}
+.brand-text span{
+  font-family:var(--font-mono);font-size:.66rem;color:var(--muted);
+}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{
+  padding:7px 13px;border-radius:8px;font-size:.83rem;font-weight:500;
+  color:var(--soft);border:1px solid transparent;
+  transition:.15s ease;white-space:nowrap;
+}
+.nav-links a:hover{color:var(--text);background:var(--surf);border-color:var(--brd)}
+.nav-links a.accent{color:var(--green)}
+.nav-status{
+  display:flex;align-items:center;gap:8px;flex-shrink:0;
+  font-family:var(--font-mono);font-size:.72rem;color:var(--green);
+}
+.pulse{
+  width:7px;height:7px;border-radius:50%;background:var(--green);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(78,240,161,.5)}50%{box-shadow:0 0 0 6px rgba(78,240,161,0)}}
+
+/* ── GLASS CARD BASE ──────────────────────────────── */
+.card{
+  background:var(--surf);
+  border:1px solid var(--brd);
+  border-radius:var(--r-lg);
+  padding:28px;
+  transition:all .2s ease;
+}
+.card:hover{background:var(--surf-h);border-color:var(--brd-h)}
+
+/* ── HERO ─────────────────────────────────────────── */
+.hero{
+  padding:80px 0 72px;
+  display:grid;grid-template-columns:1fr 480px;
+  gap:40px;align-items:center;
+}
+.hero-eyebrow{
+  font-family:var(--font-mono);font-size:.75rem;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);
+  margin-bottom:20px;display:flex;align-items:center;gap:8px;
+}
+.hero-eyebrow::before{content:'//';opacity:.5}
+.hero h1{
+  font-family:var(--font-head);font-size:clamp(2.4rem,5vw,3.8rem);
+  font-weight:800;line-height:1.0;letter-spacing:-.03em;
+  margin-bottom:20px;
+}
+.hero h1 .hl{
+  background:linear-gradient(110deg,var(--cyan) 0%,var(--violet) 55%,var(--green) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.hero-lead{
+  font-size:1.05rem;color:var(--soft);line-height:1.7;
+  max-width:520px;margin-bottom:32px;
+}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 22px;border-radius:10px;
+  font-family:var(--font-body);font-size:.9rem;font-weight:600;
+  border:1px solid;cursor:pointer;transition:all .18s ease;
+  text-decoration:none;
+}
+.btn-primary{
+  background:var(--cyan);color:#030c18;border-color:var(--cyan);
+}
+.btn-primary:hover{background:#72f0ff;transform:translateY(-1px);box-shadow:0 8px 30px rgba(62,232,255,.35)}
+.btn-ghost{
+  background:transparent;color:var(--text);border-color:var(--brd-h);
+}
+.btn-ghost:hover{background:var(--surf-h);border-color:var(--cyan);color:var(--cyan)}
+.btn-violet{
+  background:var(--vio-d);color:var(--violet);border-color:rgba(169,140,255,.3);
+}
+.btn-violet:hover{background:rgba(169,140,255,.22);transform:translateY(-1px)}
+
+/* Hero panel (right side) */
+.hero-panel{
+  background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-xl);
+  overflow:hidden;
+}
+.panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 24px;border-bottom:1px solid var(--brd);
+}
+.panel-title{font-family:var(--font-mono);font-size:.75rem;font-weight:500;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.panel-badge{
+  font-family:var(--font-mono);font-size:.68rem;font-weight:600;
+  padding:4px 10px;border-radius:6px;background:var(--grn-d);color:var(--green);
+  border:1px solid rgba(78,240,161,.2);display:flex;align-items:center;gap:5px;
+}
+.metrics-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:var(--brd);
+}
+.metric-cell{
+  background:var(--bg2);padding:20px 24px;
+}
+.metric-cell .val{
+  font-family:var(--font-head);font-size:2rem;font-weight:800;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;margin-bottom:4px;
+}
+.metric-cell .lbl{font-family:var(--font-mono);font-size:.68rem;color:var(--muted);letter-spacing:.08em}
+.panel-topics{padding:16px 24px;border-top:1px solid var(--brd)}
+.panel-topics-title{font-family:var(--font-mono);font-size:.67rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.topic-pills{display:flex;flex-wrap:wrap;gap:7px}
+.topic-pill{
+  font-family:var(--font-mono);font-size:.68rem;font-weight:500;
+  padding:5px 12px;border-radius:20px;border:1px solid;
+  cursor:default;transition:.15s;
+}
+.topic-pill.cyan{color:var(--cyan);background:var(--cyan-d);border-color:rgba(62,232,255,.2)}
+.topic-pill.violet{color:var(--violet);background:var(--vio-d);border-color:rgba(169,140,255,.2)}
+.topic-pill.green{color:var(--green);background:var(--grn-d);border-color:rgba(78,240,161,.2)}
+.topic-pill.yellow{color:var(--yellow);background:var(--yel-d);border-color:rgba(255,209,102,.22)}
+.topic-pill:hover{transform:translateY(-1px);filter:brightness(1.15)}
+.panel-ecg{padding:10px 24px 20px;position:relative}
+.ecg-svg{width:100%;height:52px;display:block}
+.ecg-path{
+  stroke:var(--cyan);stroke-width:1.5;fill:none;
+  stroke-dasharray:480;stroke-dashoffset:480;
+  animation:drawecg 2.2s ease forwards .6s;
+}
+.ecg-path2{
+  stroke:rgba(169,140,255,.4);stroke-width:1;fill:none;
+  stroke-dasharray:480;stroke-dashoffset:480;
+  animation:drawecg 2.8s ease forwards 1.2s;
+}
+@keyframes drawecg{to{stroke-dashoffset:0}}
+
+/* ── MODULES SECTION ──────────────────────────────── */
+.modules-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;margin-top:40px;
+}
+.module-card{
+  background:var(--surf);
+  border:1px solid var(--brd);
+  border-radius:var(--r-lg);
+  padding:26px 24px 22px;
+  cursor:pointer;
+  transition:all .22s ease;
+  position:relative;
+  overflow:hidden;
+  text-decoration:none;
+  display:block;
+}
+.module-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--accent-d,rgba(255,255,255,.04)),transparent 60%);
+  opacity:0;transition:.22s;pointer-events:none;
+}
+.module-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--accent,var(--cyan));
+  box-shadow:0 16px 50px rgba(0,0,0,.3),0 0 0 1px var(--accent,var(--cyan));
+}
+.module-card:hover::before{opacity:1}
+.module-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:grid;place-items:center;font-size:1.3rem;
+  margin-bottom:16px;border:1px solid;
+  transition:.22s;
+}
+.module-card h3{
+  font-family:var(--font-head);font-size:1rem;font-weight:700;
+  letter-spacing:-.01em;margin-bottom:8px;line-height:1.2;
+}
+.module-card p{font-size:.85rem;color:var(--soft);line-height:1.55;margin-bottom:16px}
+.module-tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.module-tag{
+  font-family:var(--font-mono);font-size:.62rem;font-weight:500;
+  padding:3px 9px;border-radius:20px;
+  background:var(--surf-h);border:1px solid var(--brd);color:var(--muted);
+}
+.module-link{
+  font-family:var(--font-mono);font-size:.72rem;font-weight:600;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:.15s;
+}
+.module-link::after{content:'→';transition:.15s}
+.module-card:hover .module-link::after{transform:translateX(3px)}
+
+/* color variants */
+.mod-cyan{--accent:var(--cyan);--accent-d:var(--cyan-d)}
+.mod-cyan .module-icon{background:var(--cyan-d);border-color:rgba(62,232,255,.25);color:var(--cyan)}
+.mod-cyan .module-link{color:var(--cyan)}
+.mod-violet{--accent:var(--violet);--accent-d:var(--vio-d)}
+.mod-violet .module-icon{background:var(--vio-d);border-color:rgba(169,140,255,.25);color:var(--violet)}
+.mod-violet .module-link{color:var(--violet)}
+.mod-green{--accent:var(--green);--accent-d:var(--grn-d)}
+.mod-green .module-icon{background:var(--grn-d);border-color:rgba(78,240,161,.25);color:var(--green)}
+.mod-green .module-link{color:var(--green)}
+.mod-yellow{--accent:var(--yellow);--accent-d:var(--yel-d)}
+.mod-yellow .module-icon{background:var(--yel-d);border-color:rgba(255,209,102,.25);color:var(--yellow)}
+.mod-yellow .module-link{color:var(--yellow)}
+.mod-blue{--accent:#6aa9ff;--accent-d:rgba(106,169,255,.13)}
+.mod-blue .module-icon{background:rgba(106,169,255,.13);border-color:rgba(106,169,255,.25);color:#6aa9ff}
+.mod-blue .module-link{color:#6aa9ff}
+.mod-muted{--accent:var(--soft);--accent-d:rgba(147,176,204,.08)}
+.mod-muted .module-icon{background:rgba(147,176,204,.1);border-color:rgba(147,176,204,.2);color:var(--soft)}
+.mod-muted .module-link{color:var(--soft)}
+
+/* ── PIPELINE ─────────────────────────────────────── */
+.pipeline-section{background:var(--bg2);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd)}
+.pipeline-flow{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:0;margin-top:48px;position:relative;
+}
+.pipeline-step{
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:0 12px;position:relative;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.pipeline-step.visible{opacity:1;transform:none}
+.pipeline-step:not(:last-child)::after{
+  content:'';
+  position:absolute;right:0;top:28px;
+  width:1px;height:100%;
+  /* arrow indicator */
+}
+.pipe-arrow{
+  position:absolute;left:50%;top:28px;
+  width:calc(100% - 64px);height:2px;
+  background:linear-gradient(90deg,var(--brd),var(--brd));
+  pointer-events:none;
+}
+.pipe-num{
+  font-family:var(--font-mono);font-size:.68rem;font-weight:600;
+  color:var(--muted);letter-spacing:.1em;margin-bottom:8px;
+}
+.pipe-icon{
+  width:56px;height:56px;border-radius:16px;
+  display:grid;place-items:center;font-size:1.5rem;
+  margin-bottom:14px;position:relative;z-index:1;
+  transition:transform .2s;
+}
+.pipeline-step:hover .pipe-icon{transform:scale(1.08)}
+.pipe-label{font-family:var(--font-head);font-size:.9rem;font-weight:700;margin-bottom:6px}
+.pipe-desc{font-size:.8rem;color:var(--muted);line-height:1.5}
+.pipeline-connector{
+  position:absolute;top:55px;left:calc(10% + 32px);
+  width:80%;height:2px;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    var(--brd) 5%,
+    var(--cyan-d) 30%,
+    var(--vio-d) 60%,
+    var(--brd) 95%,
+    transparent 100%);
+  pointer-events:none;z-index:0;
+}
+/* animated scanning light on connector */
+.pipeline-connector::after{
+  content:'';position:absolute;top:-1px;
+  width:60px;height:4px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  animation:scan 3s linear infinite;
+}
+@keyframes scan{0%{left:-60px}100%{left:calc(100% + 60px)}}
+
+/* ── KNOWLEDGE MAP ────────────────────────────────── */
+.map-section{background:var(--bg)}
+.map-container{
+  position:relative;height:380px;margin-top:40px;
+  background:rgba(255,255,255,.025);
+  border:1px solid var(--brd);border-radius:var(--r-xl);overflow:hidden;
+}
+/* SVG lines */
+.map-lines{position:absolute;inset:0;pointer-events:none;z-index:0}
+.map-node{
+  position:absolute;z-index:2;
+  transform:translate(-50%,-50%);
+}
+.node-btn{
+  background:var(--surf);border:1px solid var(--brd);
+  border-radius:var(--r);padding:10px 16px;cursor:pointer;
+  font-family:var(--font-body);font-size:.8rem;font-weight:600;
+  color:var(--text);transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  white-space:nowrap;
+}
+.node-btn small{font-family:var(--font-mono);font-size:.6rem;color:var(--muted);font-weight:400}
+.node-btn:hover{transform:scale(1.08);border-color:var(--node-color,var(--cyan));color:var(--node-color,var(--cyan));box-shadow:0 0 20px rgba(62,232,255,.15)}
+.node-btn.main-node{
+  background:linear-gradient(135deg,rgba(62,232,255,.12),rgba(169,140,255,.1));
+  border-color:rgba(62,232,255,.3);font-size:.9rem;padding:14px 20px;
+}
+.node-tooltip{
+  position:absolute;bottom:calc(100% + 10px);left:50%;
+  transform:translateX(-50%);background:var(--bg3);
+  border:1px solid var(--brd);border-radius:var(--r);
+  padding:10px 14px;font-size:.78rem;color:var(--soft);
+  white-space:normal;width:180px;line-height:1.5;
+  pointer-events:none;opacity:0;transition:.2s;z-index:10;
+  text-align:center;
+}
+.map-node:hover .node-tooltip{opacity:1;transform:translateX(-50%) translateY(-3px)}
+
+/* ── DUAS VIAS ────────────────────────────────────── */
+.vias-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.via-card{
+  background:var(--surf);border:1px solid var(--brd);
+  border-radius:var(--r-xl);padding:36px 32px;
+  position:relative;overflow:hidden;transition:.22s;
+}
+.via-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--via-c1),var(--via-c2));
+}
+.via-card:hover{border-color:var(--brd-h);transform:translateY(-2px)}
+.via-icon{font-size:2.2rem;margin-bottom:16px}
+.via-card h3{font-family:var(--font-head);font-size:1.25rem;font-weight:800;margin-bottom:10px}
+.via-card p{font-size:.88rem;color:var(--soft);line-height:1.65;margin-bottom:18px}
+.via-card ul{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:20px}
+.via-card li{font-size:.83rem;color:var(--soft);display:flex;align-items:flex-start;gap:8px}
+.via-card li::before{content:'▸';color:var(--via-c1,var(--cyan));flex-shrink:0;margin-top:1px}
+.chip-row{display:flex;flex-wrap:wrap;gap:7px}
+.chip{
+  font-family:var(--font-mono);font-size:.65rem;font-weight:500;
+  padding:5px 11px;border-radius:20px;border:1px solid rgba(255,255,255,.1);
+  color:var(--soft);background:rgba(255,255,255,.05);cursor:default;
+  transition:.15s;
+}
+.chip:hover{border-color:var(--via-c1,var(--cyan));color:var(--via-c1,var(--cyan));background:rgba(62,232,255,.07)}
+.via-intensiva{--via-c1:var(--cyan);--via-c2:var(--violet)}
+.via-interna{--via-c1:var(--green);--via-c2:var(--yellow)}
+
+/* ── TEMI SECTION ─────────────────────────────────── */
+.temi-section{
+  background:radial-gradient(ellipse at 30% 50%,rgba(255,209,102,.06) 0%,transparent 60%),
+             radial-gradient(ellipse at 70% 50%,rgba(255,96,96,.05) 0%,transparent 60%),
+             var(--bg2);
+  border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);
+}
+.temi-inner{
+  display:grid;grid-template-columns:1fr 320px;gap:40px;align-items:center;
+}
+.temi-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:.7rem;font-weight:600;
+  padding:6px 14px;border-radius:20px;
+  background:var(--yel-d);color:var(--yellow);
+  border:1px solid rgba(255,209,102,.25);margin-bottom:16px;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.temi-features{display:flex;flex-direction:column;gap:10px;margin-top:24px;margin-bottom:28px}
+.temi-feature{
+  display:flex;align-items:center;gap:10px;
+  font-size:.88rem;color:var(--soft);
+}
+.temi-feature::before{
+  content:'';width:7px;height:7px;border-radius:50%;
+  background:var(--yellow);flex-shrink:0;
+}
+.temi-card{
+  background:var(--surf);border:1px solid var(--brd);
+  border-radius:var(--r-xl);padding:28px;text-align:center;
+}
+.temi-stat-big{
+  font-family:var(--font-head);font-size:4rem;font-weight:800;
+  background:linear-gradient(135deg,var(--yellow),#ff9a3c);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;line-height:1;margin-bottom:6px;
+}
+.temi-stat-lbl{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+.temi-topics{display:flex;flex-direction:column;gap:7px}
+.temi-topic-row{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:.8rem;padding:8px 12px;
+  background:rgba(255,255,255,.04);border-radius:8px;
+}
+.temi-topic-bar{
+  width:80px;height:4px;background:rgba(255,255,255,.1);
+  border-radius:2px;overflow:hidden;
+}
+.temi-topic-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--yellow),#ff9a3c)}
+
+/* ── ROADMAP ──────────────────────────────────────── */
+.timeline{display:flex;flex-direction:column;gap:0;margin-top:40px;position:relative}
+.timeline::before{
+  content:'';position:absolute;left:28px;top:0;bottom:0;
+  width:2px;background:linear-gradient(180deg,var(--cyan),var(--violet),var(--green),rgba(255,255,255,.08));
+}
+.phase{
+  display:flex;gap:24px;padding:0 0 32px 68px;
+  position:relative;
+  opacity:0;transform:translateX(-16px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.phase.visible{opacity:1;transform:none}
+.phase-dot{
+  position:absolute;left:18px;top:4px;
+  width:22px;height:22px;border-radius:50%;
+  border:2px solid;display:grid;place-items:center;
+  font-family:var(--font-mono);font-size:.62rem;font-weight:600;
+  background:var(--bg);
+}
+.phase-body h3{font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:5px}
+.phase-body p{font-size:.85rem;color:var(--soft);line-height:1.55}
+.phase-status{
+  font-family:var(--font-mono);font-size:.66rem;font-weight:500;
+  padding:3px 9px;border-radius:6px;display:inline-flex;align-items:center;gap:5px;
+  margin-top:8px;
+}
+.status-done{background:var(--grn-d);color:var(--green);border:1px solid rgba(78,240,161,.2)}
+.status-active{background:var(--cyan-d);color:var(--cyan);border:1px solid rgba(62,232,255,.2)}
+.status-next{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--brd)}
+
+/* ── SAFETY BANNER ────────────────────────────────── */
+.safety-banner{
+  background:rgba(255,209,102,.06);border:1px solid rgba(255,209,102,.18);
+  border-radius:var(--r-lg);padding:24px 28px;
+  display:flex;align-items:flex-start;gap:16px;margin-top:48px;
+}
+.safety-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.safety-text h4{font-family:var(--font-head);font-size:.95rem;font-weight:700;color:var(--yellow);margin-bottom:6px}
+.safety-text p{font-size:.83rem;color:var(--soft);line-height:1.6}
+
+/* ── FOOTER ───────────────────────────────────────── */
+.site-footer{
+  background:var(--bg2);border-top:1px solid var(--brd);
+  padding:48px 0 32px;
+}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;margin-bottom:40px;
+}
+.footer-brand strong{
+  font-family:var(--font-head);font-size:1rem;font-weight:700;display:block;margin-bottom:8px
+}
+.footer-brand p{font-size:.83rem;color:var(--muted);line-height:1.6;max-width:240px}
+.footer-col h4{
+  font-family:var(--font-mono);font-size:.7rem;font-weight:500;
+  color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;
+}
+.footer-col a{
+  display:block;font-size:.85rem;color:var(--soft);
+  padding:4px 0;transition:.15s;
+}
+.footer-col a:hover{color:var(--cyan)}
+.footer-bottom{
+  border-top:1px solid var(--brd);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--font-mono);font-size:.68rem;color:var(--muted);flex-wrap:wrap;gap:8px;
+}
+
+/* ── DRAWER ───────────────────────────────────────── */
+#drawer{
+  position:fixed;right:-400px;top:0;bottom:0;width:380px;
+  background:var(--bg3);border-left:1px solid var(--brd);
+  z-index:200;padding:32px 28px;overflow-y:auto;
+  transition:right .28s cubic-bezier(.4,0,.2,1);
+}
+#drawer.open{right:0}
+.drawer-close{
+  position:absolute;top:20px;right:20px;
+  background:var(--surf);border:1px solid var(--brd);
+  border-radius:8px;width:36px;height:36px;
+  display:grid;place-items:center;cursor:pointer;font-size:1.1rem;
+  transition:.15s;color:var(--soft);
+}
+.drawer-close:hover{background:var(--surf-h);color:var(--text)}
+#drawerTitle{font-family:var(--font-head);font-size:1.25rem;font-weight:800;margin-bottom:10px;padding-right:40px}
+#drawerText{font-size:.88rem;color:var(--soft);line-height:1.7;margin-bottom:16px}
+.drawer-tags{display:flex;flex-wrap:wrap;gap:6px}
+.dtag{font-family:var(--font-mono);font-size:.65rem;padding:4px 10px;border-radius:20px;background:var(--cyan-d);color:var(--cyan);border:1px solid rgba(62,232,255,.2)}
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199;
+  opacity:0;pointer-events:none;transition:.28s;
+}
+.overlay.show{opacity:1;pointer-events:auto}
+
+/* ── SCROLL REVEAL ────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal-l{opacity:0;transform:translateX(-24px);transition:opacity .6s ease,transform .6s ease}
+.reveal-l.visible{opacity:1;transform:none}
+
+/* ── FLOATING BUTTONS ─────────────────────────────── */
+.floaters{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:90}
+.float-btn{
+  width:42px;height:42px;border-radius:10px;
+  background:var(--bg3);border:1px solid var(--brd);
+  display:grid;place-items:center;cursor:pointer;font-size:1rem;
+  transition:.18s;color:var(--soft);
+}
+.float-btn:hover{background:var(--surf-h);border-color:var(--cyan);color:var(--cyan)}
+
+/* ── RESPONSIVE ───────────────────────────────────── */
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr;gap:40px}
+  .hero-panel{max-width:520px}
+  .metrics-grid{grid-template-columns:repeat(4,1fr)}
+  .modules-grid{grid-template-columns:repeat(2,1fr)}
+  .pipeline-flow{grid-template-columns:repeat(3,1fr);gap:20px}
+  .pipeline-connector{display:none}
+  .temi-inner{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-status span{display:none}
+  .hero h1{font-size:2.2rem}
+  .modules-grid,.vias-grid,.g2,.g3,.g4{grid-template-columns:1fr}
+  .pipeline-flow{grid-template-columns:1fr;max-width:300px;margin-left:auto;margin-right:auto}
+  .pipeline-step:not(:last-child){padding-bottom:24px}
+  section{padding:64px 0}
+  .shell{padding:0 18px}
+  #drawer{width:100%;right:-100%}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;align-items:flex-start}
+}
+</style>
 </head>
 <body>
-  <div class="noise decorative"></div>
 
-  <header>
-    <nav class="nav" aria-label="Navegação principal">
-      <a class="brand" href="#top" aria-label="Ir para o início">
-        <div class="logo">🧠</div>
-        <div>
-          <div class="brand-title">Enciclopédia Médica<br />Intensiva & Interna</div>
-          <div class="brand-subtitle">UTI • Enfermaria • TEMI • Clínica Avançada</div>
+<!-- Animated background orbs -->
+<div class="orbs" aria-hidden="true">
+  <div class="orb"></div><div class="orb"></div><div class="orb"></div>
+</div>
+
+<!-- ── NAVIGATION ─────────────────────────────────── -->
+<header>
+  <nav class="nav">
+    <a class="brand" href="#top" aria-label="Início">
+      <div class="brand-icon" aria-hidden="true">🧠</div>
+      <div class="brand-text">
+        <strong>Enciclopédia Médica</strong>
+        <span>Intensiva &amp; Medicina Interna</span>
+      </div>
+    </a>
+    <div class="nav-links" role="navigation" aria-label="Módulos principais">
+      <a href="07_Estudos_Markdown/index.html" class="accent">↕️ UpDown Hub</a>
+      <a href="03_Calculadoras_UTI/index.html">🧮 Calculadoras</a>
+      <a href="06_Card_Feed_Medico/index.html">🖼️ Card Feed</a>
+      <a href="questoes/index.html">🏆 Simulador TEMI</a>
+      <a href="05_Biblioteca_IA/index.html">📚 Biblioteca</a>
+    </div>
+    <div class="nav-status" aria-label="Status do sistema">
+      <div class="pulse" aria-hidden="true"></div>
+      <span>Sistema ativo</span>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- ── HERO ───────────────────────────────────────── -->
+<div class="shell">
+  <section class="hero" aria-labelledby="hero-heading">
+
+    <div class="hero-left">
+      <div class="hero-eyebrow" aria-hidden="true">Central clínica — Plantão + Prova + UTI</div>
+      <h1 id="hero-heading">
+        A <span class="hl">central de comando</span><br/>
+        para medicina de alta performance.
+      </h1>
+      <p class="hero-lead">
+        Plataforma médica interativa, continuamente atualizada e pensada para decisão real — da beira-leito da UTI à prova de título TEMI. Conteúdo autoral, didático e rastreável por raciocínio clínico.
+      </p>
+      <div class="hero-btns">
+        <a class="btn btn-primary" href="07_Estudos_Markdown/index.html">↕️ Abrir UpDown Hub</a>
+        <a class="btn btn-ghost" href="#modulos">⬛ Ver todos os módulos</a>
+        <a class="btn btn-violet" href="#mapa">🕸️ Mapa de conexões</a>
+      </div>
+    </div>
+
+    <aside class="hero-panel card" aria-label="Painel operacional do projeto">
+      <div class="panel-header">
+        <div class="panel-title">// painel operacional</div>
+        <div class="panel-badge"><span>●</span> Em expansão</div>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-cell">
+          <div class="val" data-count="10">10</div>
+          <div class="lbl">UpDowns ativos</div>
         </div>
+        <div class="metric-cell">
+          <div class="val" data-count="5">5</div>
+          <div class="lbl">Temas clínicos</div>
+        </div>
+        <div class="metric-cell">
+          <div class="val" data-count="4">4</div>
+          <div class="lbl">Apps interativos</div>
+        </div>
+        <div class="metric-cell">
+          <div class="val" data-count="18">18</div>
+          <div class="lbl">Acervos biblioteca</div>
+        </div>
+      </div>
+      <div class="panel-topics">
+        <div class="panel-topics-title">// temas no repositório</div>
+        <div class="topic-pills">
+          <a class="topic-pill cyan" href="01_Modulos_Clinicos/AVC_Agudo/avc.html">🧠 AVC Agudo</a>
+          <a class="topic-pill cyan" href="07_Estudos_Markdown/content/intensiva/cetoacidose-diabetica-uti.md">🧪 CAD / UTI</a>
+          <a class="topic-pill violet" href="07_Estudos_Markdown/index.html">🔵 LES — Manifestações</a>
+          <a class="topic-pill violet" href="07_Estudos_Markdown/index.html">💊 LES — Manejo</a>
+          <a class="topic-pill violet" href="les-autoanticorpos/index.html">🧬 LES — Autoanticorpos</a>
+          <span class="topic-pill green">🫁 VM + SDRA <sup style="font-size:.5rem;vertical-align:top;opacity:.6">em breve</sup></span>
+          <span class="topic-pill yellow">🦠 Sepse <sup style="font-size:.5rem;vertical-align:top;opacity:.6">em breve</sup></span>
+        </div>
+      </div>
+      <div class="panel-ecg" aria-hidden="true">
+        <svg class="ecg-svg" viewBox="0 0 460 52" preserveAspectRatio="none">
+          <path class="ecg-path" d="M0 30 L50 30 L70 30 L80 5 L90 48 L100 5 L110 30 L160 30 L180 24 L200 36 L220 24 L240 30 L320 30 L340 10 L360 48 L370 10 L380 30 L460 30"/>
+          <path class="ecg-path2" d="M0 40 L60 40 L80 34 L110 44 L140 40 L200 38 L240 42 L300 40 L320 36 L350 44 L380 40 L460 40"/>
+        </svg>
+      </div>
+    </aside>
+
+  </section>
+</div><!-- /shell -->
+
+<!-- ── PIPELINE ────────────────────────────────────── -->
+<section class="pipeline-section" id="pipeline" aria-labelledby="pipe-heading">
+  <div class="shell">
+    <div class="reveal">
+      <div class="section-label">// fluxo editorial</div>
+      <h2 class="section-title" id="pipe-heading">Como funciona a máquina ⚙️</h2>
+      <p class="section-sub">Cada tema percorre 5 etapas antes de virar uma página clínica pública e conectada.</p>
+    </div>
+    <div style="position:relative;margin-top:48px">
+      <div class="pipeline-connector" aria-hidden="true"></div>
+      <div class="pipeline-flow" role="list">
+
+        <div class="pipeline-step" role="listitem">
+          <div class="pipe-num">01</div>
+          <div class="pipe-icon" style="background:rgba(106,169,255,.13);border:1px solid rgba(106,169,255,.25)">📥</div>
+          <div class="pipe-label">Entrada bruta</div>
+          <div class="pipe-desc">Artigos, PDFs, diretrizes, aulas, análises de IA chegam na Biblioteca.</div>
+        </div>
+
+        <div class="pipeline-step" role="listitem">
+          <div class="pipe-num">02</div>
+          <div class="pipe-icon" style="background:var(--vio-d);border:1px solid rgba(169,140,255,.25)">📚</div>
+          <div class="pipe-label">Biblioteca IA</div>
+          <div class="pipe-desc">Documentos indexados com metadados, disponíveis para busca e leitura profunda.</div>
+        </div>
+
+        <div class="pipeline-step" role="listitem">
+          <div class="pipe-num">03</div>
+          <div class="pipe-icon" style="background:var(--grn-d);border:1px solid rgba(78,240,161,.25)">↕️</div>
+          <div class="pipe-label">UpDown Markdown</div>
+          <div class="pipe-desc">Reescrita autoral didática: flashcards, mnemônicos, questões TEMI, fluxogramas.</div>
+        </div>
+
+        <div class="pipeline-step" role="listitem">
+          <div class="pipe-num">04</div>
+          <div class="pipe-icon" style="background:rgba(255,96,96,.1);border:1px solid rgba(255,96,96,.22)">🛡️</div>
+          <div class="pipe-label">Revisão Médica</div>
+          <div class="pipe-desc">Verificação clínica obrigatória — nenhum conteúdo vai ao ar sem aprovação.</div>
+        </div>
+
+        <div class="pipeline-step" role="listitem">
+          <div class="pipe-num">05</div>
+          <div class="pipe-icon" style="background:var(--cyan-d);border:1px solid rgba(62,232,255,.25)">🌐</div>
+          <div class="pipe-label">Publicação</div>
+          <div class="pipe-desc">HTML interativo no ar, linkado ao Mapa Vivo e aos módulos relacionados.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MÓDULOS ─────────────────────────────────────── -->
+<section id="modulos" aria-labelledby="mod-heading">
+  <div class="shell">
+    <div class="reveal">
+      <div class="section-label">// módulos do projeto</div>
+      <h2 class="section-title" id="mod-heading">O ecossistema Antigravity 🧬</h2>
+      <p class="section-sub">Seis módulos interconectados — do acervo bruto ao simulado de prova.</p>
+    </div>
+    <div class="modules-grid" role="list">
+
+      <a class="module-card mod-green reveal" href="07_Estudos_Markdown/index.html" role="listitem" aria-label="Abrir UpDown Hub">
+        <div class="module-icon">↕️</div>
+        <h3>UpDown Hub</h3>
+        <p>O coração do sistema. Artigos e diretrizes transformados em hipertexto médico com flashcards, mnemônicos e questões TEMI.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">10 documentos</span>
+          <span class="module-tag">AVC · CAD · LES</span>
+          <span class="module-tag">Markdown canônico</span>
+        </div>
+        <span class="module-link" style="color:var(--green)">Abrir hub</span>
       </a>
 
-      <div class="nav-links">
-        <a href="#manifesto">Manifesto</a>
-        <a href="#vias">Duas vias</a>
-        <a href="#avc">AVC Agudo</a>
-        <a href="#mapa">Mapa vivo</a>
-        <a href="#seguranca">Segurança</a>
-        <a href="#futuro">Futuro</a>
+      <a class="module-card mod-violet reveal" href="05_Biblioteca_IA/index.html" role="listitem" aria-label="Abrir Biblioteca IA">
+        <div class="module-icon">📚</div>
+        <h3>Biblioteca IA</h3>
+        <p>Acervo de referências (PDF, DOCX) com busca por especialidade — o insumo bruto para produção de conteúdo.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">18 acervos</span>
+          <span class="module-tag">Sepse · VM · Cardio</span>
+          <span class="module-tag">Motor de busca</span>
+        </div>
+        <span class="module-link" style="color:var(--violet)">Explorar acervo</span>
+      </a>
+
+      <a class="module-card mod-cyan reveal" href="03_Calculadoras_UTI/index.html" role="listitem" aria-label="Abrir Calculadoras UTI">
+        <div class="module-icon">🧮</div>
+        <h3>Calculadoras UTI</h3>
+        <p>Ferramentas de decisão rápida para plantão: SOFA, Glasgow, Ânion Gap, Osmolaridade, Drogas vasoativas e mais.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">SOFA · qSOFA</span>
+          <span class="module-tag">Glasgow · Wells</span>
+          <span class="module-tag">Drogas vasoativas</span>
+        </div>
+        <span class="module-link" style="color:var(--cyan)">Usar calculadoras</span>
+      </a>
+
+      <a class="module-card mod-yellow reveal" href="questoes/index.html" role="listitem" aria-label="Abrir Simulador TEMI">
+        <div class="module-icon">🏆</div>
+        <h3>Simulador TEMI</h3>
+        <p>Banco de questões comentadas estilo TEMI/R3. Pegadinhas, diferenciais, condutas de prova e correlação com a prática.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">TEMI · AMIB</span>
+          <span class="module-tag">R3 Clínica Médica</span>
+          <span class="module-tag">Questões comentadas</span>
+        </div>
+        <span class="module-link" style="color:var(--yellow)">Iniciar simulado</span>
+      </a>
+
+      <a class="module-card mod-blue reveal" href="06_Card_Feed_Medico/index.html" role="listitem" aria-label="Abrir Card Feed">
+        <div class="module-icon">🖼️</div>
+        <h3>Card Feed Médico</h3>
+        <p>Feed visual de cards 1080×1920, infográficos, algoritmos e resumos para celular. PWA — funciona offline.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">PWA offline</span>
+          <span class="module-tag">Cards 1080×1920</span>
+          <span class="module-tag">Infográficos</span>
+        </div>
+        <span class="module-link" style="color:#6aa9ff">Ver cards</span>
+      </a>
+
+      <div class="module-card mod-muted reveal" role="listitem" aria-label="Mapa Vivo de Conexões">
+        <div class="module-icon">🕸️</div>
+        <h3>Mapa Vivo</h3>
+        <p>Grafo interativo (D3.js) conectando todos os temas por raciocínio clínico. Cada nó é uma página, cada aresta é uma decisão.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">D3.js</span>
+          <span class="module-tag">connections.json</span>
+          <span class="module-tag">Raciocínio cruzado</span>
+        </div>
+        <a href="#mapa" class="module-link" style="color:var(--soft)">Ver mapa abaixo</a>
       </div>
 
-      <a class="nav-cta" href="#sugestoes">💬 Comentários</a>
-    </nav>
-  </header>
+    </div>
+  </div>
+</section>
 
-  <main id="top" class="shell">
-    <section class="hero">
-      <article class="hero-card">
-        <div class="hero-content">
-          <div class="eyebrow">🚀 Projeto vivo • Medicina crítica • Aprendizagem interconectada</div>
-          <h1><span class="gradient-text">A central de comando</span><br />para estudar, decidir e evoluir na medicina.</h1>
-          <p class="hero-lead">
-            Uma plataforma médica interativa, didática e continuamente atualizável, criada para transformar artigos, diretrizes, protocolos, casos reais, aulas, PDFs e análises de IA em uma <strong>enciclopédia clínica conectada por raciocínio</strong> — da beira-leito da UTI à prova de título, da enfermaria à medicina interna avançada.
-          </p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#vias">🧭 Explorar as duas vias</a>
-            <a class="btn violet" href="#avc">🧠 Abrir módulo AVC Agudo</a>
-            <a class="btn" href="#mapa">🕸️ Ver mapa de conexões</a>
-          </div>
+<!-- ── DUAS GRANDES VIAS ───────────────────────────── -->
+<section id="vias" aria-labelledby="vias-heading">
+  <div class="shell">
+    <div class="reveal">
+      <div class="section-label">// trilhas principais</div>
+      <h2 class="section-title" id="vias-heading">As duas grandes vias 🛣️</h2>
+      <p class="section-sub">A plataforma se organiza em duas trilhas-mãe que se conversam, sem virar silos.</p>
+    </div>
+    <div class="vias-grid">
+
+      <article class="via-card via-intensiva reveal-l" aria-label="Via Medicina Intensiva">
+        <div class="via-icon">🚑</div>
+        <h3>Via 1 — Medicina Intensiva</h3>
+        <p>O eixo do paciente crítico: choque, sepse, ventilação mecânica, neurointensivismo, sedação, IRA, TRS, ECMO e POCUS.</p>
+        <ul>
+          <li>Protocolos beira-leito e checklists de round</li>
+          <li>Mapas de decisão para instabilidade clínica</li>
+          <li>Preparação direcionada para TEMI e flashcards</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip">🫀 Choque</span>
+          <span class="chip">🫁 VM</span>
+          <span class="chip">🦠 Sepse</span>
+          <span class="chip">🧠 Neuro UTI</span>
+          <span class="chip">💧 IRA / TRS</span>
+          <span class="chip">📡 POCUS</span>
         </div>
       </article>
 
-      <aside class="glass dashboard" aria-label="Painel de status do projeto">
-        <div class="dash-top">
-          <div>
-            <h2 class="mini-title">Painel operacional</h2>
-            <div class="mini-muted">Visão rápida da arquitetura inicial do projeto.</div>
-          </div>
-          <div class="status-pill"><span class="pulse-dot"></span>Em expansão</div>
+      <article class="via-card via-interna reveal" aria-label="Via Medicina Interna">
+        <div class="via-icon">🏥</div>
+        <h3>Via 2 — Medicina Interna Avançada</h3>
+        <p>O eixo do internista resolutivo: diagnóstico diferencial, enfermaria, pronto-socorro clínico, multimorbidade e raciocínio longitudinal.</p>
+        <ul>
+          <li>Síndromes clínicas e diagnósticos diferenciais complexos</li>
+          <li>Doenças crônicas, raras e sobreposições clínicas</li>
+          <li>Preparação para R3 e prática de alto desempenho</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip">❤️ Cardio</span>
+          <span class="chip">🧂 Nefro</span>
+          <span class="chip">🩸 Hemato</span>
+          <span class="chip">🦠 Infecto</span>
+          <span class="chip">🔵 Reumato</span>
+          <span class="chip">🫁 Pneumo</span>
         </div>
+      </article>
 
-        <div class="metric-grid">
-          <div class="metric"><strong>02</strong><span>vias principais</span></div>
-          <div class="metric"><strong>31+</strong><span>blocos por tema</span></div>
-          <div class="metric"><strong>∞</strong><span>links cruzados</span></div>
-          <div class="metric"><strong>01</strong><span>módulo inicial: AVC</span></div>
-        </div>
-
-        <div class="signal decorative" aria-hidden="true">
-          <svg viewBox="0 0 560 160" preserveAspectRatio="none">
-            <path d="M0 92 C40 80, 64 40, 94 60 C132 86, 144 132, 188 86 C226 46, 250 78, 282 68 C332 52, 334 104, 384 88 C432 72, 442 22, 494 58 C526 80, 540 84, 560 76" fill="none" stroke="rgba(62,232,255,.86)" stroke-width="4" />
-            <path d="M0 110 C38 98, 76 118, 114 102 C154 84, 190 118, 230 96 C270 74, 302 92, 342 84 C392 74, 430 104, 468 92 C512 78, 532 100, 560 90" fill="none" stroke="rgba(169,140,255,.58)" stroke-width="3" />
-          </svg>
-        </div>
-
-        <div class="card" style="box-shadow:none; padding:16px;">
-          <h3>🎯 Ideia central</h3>
-          <p>Todo tópico vira uma página viva: resumo, fisiopatologia, conduta, prescrição, checklist, TEMI, flashcards, questões, imagens, escalas, links e atualização contínua.</p>
-        </div>
-      </aside>
-    </section>
-
-    <section id="manifesto" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Manifesto editorial 🧬</h2>
-          <p class="section-sub">O projeto nasce com a missão de organizar conhecimento médico complexo em uma experiência visual, acionável, revisável e conectada.</p>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <article class="glass card editorial">
-          <h3>📜 Descrição inicial do projeto</h3>
-          <p>
-            A <strong>Enciclopédia Médica Intensiva & Medicina Interna</strong> é uma arquitetura de conhecimento clínico feita para médicos que vivem a pressão real da decisão: plantão, UTI, enfermaria, emergência, parecer, discussão de caso, atualização científica e prova de título.
-          </p>
-          <p>
-            Em vez de páginas isoladas, cada assunto será uma peça de uma rede: <strong>AVC Agudo</strong> se conecta com hipertensão, anticoagulação, fibrilação atrial, neuroimagem, trombólise, trombectomia, ventilação mecânica, delirium, glicemia, metas hemodinâmicas, prevenção secundária e reabilitação.
-          </p>
-          <p>
-            O objetivo é que a navegação imite o pensamento clínico: você entra por um tema, mas sai com um mapa de decisões, riscos, diferenciais e próximos estudos.
-          </p>
-        </article>
-
-        <article class="glass card editorial">
-          <h3>🧭 Objetivos editoriais</h3>
-          <ul>
-            <li><strong>Transformar conteúdo bruto</strong> em material clínico pronto para uso.</li>
-            <li><strong>Conectar diretrizes, artigos, aulas, casos e prescrições</strong> em páginas vivas.</li>
-            <li><strong>Reduzir carga cognitiva</strong> com checklists, mapas visuais, algoritmos e flashcards.</li>
-            <li><strong>Preparar para TEMI</strong> com pegadinhas, questões e pontos de prova.</li>
-            <li><strong>Construir memória clínica longitudinal</strong> para revisão contínua e tomada de decisão segura.</li>
-            <li><strong>Permitir assimilação por IA</strong> de novos PDFs, Word, HTML, diretrizes e análises externas.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section id="vias" class="section">
-      <div class="section-head">
-        <div>
-          <h2>As duas grandes vias 🛣️</h2>
-          <p class="section-sub">A plataforma será organizada em duas trilhas-mãe que conversam entre si, sem virar silos: Medicina Intensiva e Medicina Interna Avançada.</p>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <article class="card path-card intensiva">
-          <div>
-            <div class="path-icon">🚑</div>
-            <h3>Via 1 — Medicina Intensiva</h3>
-            <p>
-              O eixo do paciente crítico: choque, sepse, ventilação mecânica, neurointensivismo, sedação, analgesia, delirium, VMNI, IRA, TRS, ECMO, POCUS, nutrição, bundles e segurança em UTI.
-            </p>
-            <ul>
-              <li>Protocolos beira-leito e checklists de round.</li>
-              <li>Prescrição sugerida e bundles de segurança.</li>
-              <li>Mapas de decisão para instabilidade clínica.</li>
-              <li>Preparação direcionada para TEMI.</li>
-            </ul>
-          </div>
-          <div class="tag-row">
-            <button class="topic-chip" data-filter="choque">🫀 Choque</button>
-            <button class="topic-chip" data-filter="vm">🫁 VM</button>
-            <button class="topic-chip" data-filter="sepse">🦠 Sepse</button>
-            <button class="topic-chip" data-filter="neuro">🧠 Neuro UTI</button>
-          </div>
-        </article>
-
-        <article class="card path-card interna">
-          <div>
-            <div class="path-icon">🏥</div>
-            <h3>Via 2 — Medicina Interna Avançada</h3>
-            <p>
-              O eixo do internista resolutivo: diagnóstico diferencial, enfermaria, pronto-socorro clínico, ambulatório complexo, multimorbidade, farmacologia, interpretação de exames e raciocínio longitudinal.
-            </p>
-            <ul>
-              <li>Síndromes clínicas e diagnósticos diferenciais.</li>
-              <li>Condutas em enfermaria e emergência.</li>
-              <li>Doenças crônicas, raras e sobreposições clínicas.</li>
-              <li>Preparação para R3 e prática de alto desempenho.</li>
-            </ul>
-          </div>
-          <div class="tag-row">
-            <button class="topic-chip" data-filter="cardio">❤️ Cardio</button>
-            <button class="topic-chip" data-filter="nefro">🧂 Nefro</button>
-            <button class="topic-chip" data-filter="hemato">🩸 Hemato</button>
-            <button class="topic-chip" data-filter="infecto">🦠 Infecto</button>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="avc" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Módulo inaugural: AVC Agudo 🧠⚡</h2>
-          <p class="section-sub">O primeiro tema conectado ao portal: uma página-mãe que servirá como modelo de integração entre fisiopatologia, tempo-dependência, emergência, UTI, prova e prevenção secundária.</p>
-        </div>
-        <a class="btn primary" href="temas/avc-agudo/index.html">Abrir página do AVC →</a>
-      </div>
-
-      <div class="module">
-        <article class="feature-card">
-          <h3>🧠 AVC Agudo como protótipo de página viva</h3>
-          <p>
-            O AVC Agudo será estruturado como um hub clínico: reconhecimento rápido, escala NIHSS, janela terapêutica, neuroimagem, trombólise, trombectomia, controle pressórico, glicemia, temperatura, anticoagulação, antiagregação, disfagia, prevenção de complicações, UTI neurológica e reabilitação.
-          </p>
-          <p>
-            A lógica é simples: cada ponto clicável abre uma conexão. Ao estudar trombólise, o leitor poderá ir para hipertensão na emergência, anticoagulantes, sangramento intracraniano, reversão de anticoagulação, delirium, metas de UTI e prevenção secundária.
-          </p>
-          <div class="kpi-line">
-            <div class="kpi"><b>⏱️ Tempo</b><small>porta-imagem, porta-agulha, porta-punção</small></div>
-            <div class="kpi"><b>🎯 Decisão</b><small>elegibilidade, contraindicações, risco-benefício</small></div>
-            <div class="kpi"><b>🛡️ Segurança</b><small>hemorragia, aspiração, edema, monitorização</small></div>
-          </div>
-        </article>
-
-        <aside class="link-panel">
-          <h3>🔗 Conexões iniciais do AVC</h3>
-          <div class="search-box">
-            <input id="topicSearch" type="search" placeholder="Buscar conexão: trombólise, FA, PA, delirium..." />
-          </div>
-          <div class="topic-list" id="topicList">
-            <div class="topic-item" data-topic="trombolise neuro emergencia avc">
-              <strong>💉 Trombólise endovenosa</strong>
-              <span>Critérios, contraindicações, metas pressóricas e complicações hemorrágicas.</span>
-            </div>
-            <div class="topic-item" data-topic="trombectomia neuro imagem avc">
-              <strong>🧲 Trombectomia mecânica</strong>
-              <span>Oclusão de grande vaso, perfusão, janela estendida e fluxo de transferência.</span>
-            </div>
-            <div class="topic-item" data-topic="pressao hipertensao emergencia avc choque">
-              <strong>🎚️ Controle pressórico no AVC</strong>
-              <span>Metas antes/depois de reperfusão e diferenças entre AVCi e AVCh.</span>
-            </div>
-            <div class="topic-item" data-topic="fibrilacao atrial anticoagulacao cardio avc">
-              <strong>❤️ Fibrilação atrial e prevenção secundária</strong>
-              <span>Tempo de reinício de anticoagulação, risco embólico e risco hemorrágico.</span>
-            </div>
-            <div class="topic-item" data-topic="disfagia aspiracao pneumonia infecto avc">
-              <strong>🥤 Disfagia e broncoaspiração</strong>
-              <span>Triagem de deglutição, dieta segura, pneumonia aspirativa e bundle de cuidado.</span>
-            </div>
-            <div class="topic-item" data-topic="edema cerebral neuro uti avc">
-              <strong>🌊 Edema cerebral maligno</strong>
-              <span>Neuro UTI, osmoterapia, craniectomia descompressiva e sinais de herniação.</span>
-            </div>
-            <div class="topic-item" data-topic="delirium sedacao neuro uti geriatria avc">
-              <strong>🌀 Delirium pós-AVC</strong>
-              <span>Prevenção, rastreio, sono, dor, mobilização e segurança no paciente neurológico.</span>
-            </div>
-            <div class="topic-item" data-topic="glicemia endocrino emergencia avc">
-              <strong>🍬 Glicemia no AVC</strong>
-              <span>Hiperglicemia de estresse, hipoglicemia mimetizadora e metas seguras.</span>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="arquitetura" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Arquitetura de cada tema 🧱</h2>
-          <p class="section-sub">Todo módulo poderá seguir a mesma espinha dorsal, permitindo expansão padronizada, mas com liberdade visual e interatividade conforme o assunto.</p>
-        </div>
-      </div>
-
-      <div class="grid-4">
-        <article class="card"><h3>1️⃣ Essência clínica</h3><p>Definição, epidemiologia, etiologias, fatores de risco, fisiopatologia e quadro clínico.</p></article>
-        <article class="card"><h3>2️⃣ Diagnóstico</h3><p>Critérios, exames, armadilhas, fluxos decisórios, imagem, laboratório e diferenciais.</p></article>
-        <article class="card"><h3>3️⃣ Conduta prática</h3><p>Emergência, enfermaria, UTI, prescrição sugerida, bundles e checklist de plantão.</p></article>
-        <article class="card"><h3>4️⃣ Prova & memória</h3><p>Pontos TEMI, pegadinhas, mnemônicos, flashcards, questões e mapas mentais.</p></article>
-        <article class="card"><h3>5️⃣ Atualização contínua</h3><p>Diretrizes, estudos, trials, PubMed, pesquisas em andamento e perspectivas futuras.</p></article>
-        <article class="card"><h3>6️⃣ Multimídia</h3><p>Imagens, esquemas, wallpapers, tabelas, algoritmos, fluxogramas e materiais para celular.</p></article>
-        <article class="card"><h3>7️⃣ IA integrada</h3><p>Assimilação de conteúdos gerados por GPT, Claude, Gemini, Qwen, Grok e outras ferramentas.</p></article>
-        <article class="card"><h3>8️⃣ Links semânticos</h3><p>Conexões entre temas por fisiopatologia, decisão clínica, farmacologia, exame e cenário.</p></article>
-      </div>
-    </section>
-
-    <section id="mapa" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Mapa vivo de conexões 🕸️</h2>
-          <p class="section-sub">Protótipo visual: cada nó representa uma página ou subpágina. O clique abre um painel explicando a conexão e apontando os próximos módulos.</p>
-        </div>
-      </div>
-
-      <div class="graph" id="knowledgeGraph" aria-label="Mapa visual de conexões do conhecimento">
-        <div class="line decorative" style="left:18%; top:26%; width:28%; transform:rotate(14deg);"></div>
-        <div class="line decorative" style="left:38%; top:37%; width:24%; transform:rotate(-18deg);"></div>
-        <div class="line decorative" style="left:26%; top:58%; width:26%; transform:rotate(-8deg);"></div>
-        <div class="line decorative" style="left:54%; top:55%; width:26%; transform:rotate(19deg);"></div>
-        <div class="line decorative" style="left:51%; top:31%; width:20%; transform:rotate(38deg);"></div>
-
-        <button class="node main" style="left:41%; top:38%;" data-node="avc"><b>🧠 AVC Agudo</b><small>Hub inicial do projeto</small></button>
-        <button class="node alert" style="left:8%; top:18%;" data-node="trombolise"><b>💉 Trombólise</b><small>janela, PA, risco</small></button>
-        <button class="node" style="left:68%; top:18%;" data-node="trombectomia"><b>🧲 Trombectomia</b><small>OGV, perfusão, fluxo</small></button>
-        <button class="node" style="left:14%; top:62%;" data-node="pa"><b>🎚️ PA no AVC</b><small>metas e segurança</small></button>
-        <button class="node exam" style="left:45%; top:72%;" data-node="temi"><b>🏆 TEMI</b><small>pegadinhas e questões</small></button>
-        <button class="node" style="left:72%; top:60%;" data-node="fa"><b>❤️ FA</b><small>anticoagulação</small></button>
-        <button class="node" style="left:30%; top:8%;" data-node="imagem"><b>🖥️ Neuroimagem</b><small>TC, ASPECTS, angioTC</small></button>
-        <button class="node alert" style="left:62%; top:39%;" data-node="edema"><b>🌊 Edema maligno</b><small>Neuro UTI</small></button>
-      </div>
-    </section>
-
-    <section id="seguranca" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Segurança, curadoria e responsabilidade 🛡️</h2>
-          <p class="section-sub">A plataforma deve ser útil, mas jamais substituir julgamento clínico, diretrizes locais, avaliação presencial, regulação ou decisão compartilhada em equipe.</p>
-        </div>
-      </div>
-
-      <div class="grid-3">
-        <article class="card">
-          <h3>✅ Camada de segurança clínica</h3>
-          <p>Todo conteúdo deve separar conceito, recomendação prática, nível de certeza, risco de dano, contraindicações e necessidade de individualização.</p>
-          <div class="tag-row"><span class="tag">beira-leito</span><span class="tag">risco-benefício</span><span class="tag">conduta segura</span></div>
-        </article>
-        <article class="card">
-          <h3>🔎 Transparência de fonte</h3>
-          <p>Cada módulo terá referências, data de atualização, origem do material analisado, informações extras e marcação do que vem de diretriz, artigo ou síntese autoral.</p>
-          <div class="tag-row"><span class="tag">diretrizes</span><span class="tag">trials</span><span class="tag">referências</span></div>
-        </article>
-        <article class="card">
-          <h3>🧑‍⚕️ Responsabilidade profissional</h3>
-          <p>O conteúdo será estruturado como apoio cognitivo para médicos, não como prescrição automática cega. A decisão final permanece clínica, contextual e institucional.</p>
-          <div class="tag-row"><span class="tag">ética</span><span class="tag">institucional</span><span class="tag">medicina real</span></div>
-        </article>
-      </div>
-    </section>
-
-    <section id="roteiro" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Esboço geral do projeto galgado 🧗</h2>
-          <p class="section-sub">Uma evolução em fases: primeiro a base, depois os módulos, depois a automação de atualização, depois a experiência completa de aprendizado.</p>
-        </div>
-      </div>
-
-      <div class="timeline">
-        <div class="phase">
-          <div class="phase-number">01</div>
-          <div class="phase-body"><h3>Fundação do portal</h3><p>Homepage, identidade visual, navegação, duas vias principais, modelo de página de tema e estrutura de links cruzados.</p></div>
-        </div>
-        <div class="phase">
-          <div class="phase-number">02</div>
-          <div class="phase-body"><h3>Módulo AVC Agudo</h3><p>Primeiro conteúdo completo: emergência, UTI, prevenção secundária, escalas, prescrição, TEMI, flashcards e mapa de conexões.</p></div>
-        </div>
-        <div class="phase">
-          <div class="phase-number">03</div>
-          <div class="phase-body"><h3>Expansão por clusters</h3><p>Neuro UTI, choque, sepse, ventilação mecânica, emergência clínica, nefrologia, cardiologia e infectologia.</p></div>
-        </div>
-        <div class="phase">
-          <div class="phase-number">04</div>
-          <div class="phase-body"><h3>Motor de assimilação por IA</h3><p>Entrada de PDF, Word, HTML e análises de outras IAs; extração dos pontos úteis; criação de páginas e atualização de links.</p></div>
-        </div>
-        <div class="phase">
-          <div class="phase-number">05</div>
-          <div class="phase-body"><h3>Modo estudo e modo plantão</h3><p>Alternância entre aprofundamento completo e versão ultrarrápida de beira-leito, com checklist, conduta e prescrição.</p></div>
-        </div>
-        <div class="phase">
-          <div class="phase-number">06</div>
-          <div class="phase-body"><h3>Publicação e atualização contínua</h3><p>Integração com Antigravity, GitHub, Obsidian, banco de referências, feedback de usuários e rotina de revisão editorial.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="futuro" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Perspectivas futuras 🔮</h2>
-          <p class="section-sub">O projeto pode evoluir de uma enciclopédia estática para um ecossistema médico interativo, modular, pesquisável e continuamente atualizado.</p>
-        </div>
-      </div>
-
-      <div class="grid-3">
-        <article class="card"><h3>🧠 Grafo semântico médico</h3><p>Cada tema conectado por fisiopatologia, síndrome, exame, droga, complicação, escore, imagem e decisão crítica.</p></article>
-        <article class="card"><h3>📱 Modo celular/plantão</h3><p>Wallpapers, cartões rápidos e algoritmos 1080×1920 para consulta durante o plantão.</p></article>
-        <article class="card"><h3>🏆 Trilha TEMI</h3><p>Questões, pegadinhas, flashcards, trials clássicos, revisão espaçada e simulados por domínio.</p></article>
-        <article class="card"><h3>🤖 Núcleo multi-IA</h3><p>Integração de análises geradas por diferentes IAs, com curadoria humana e rastreabilidade.</p></article>
-        <article class="card"><h3>📚 Obsidian/GitHub</h3><p>Exportação em Markdown, HTML e estrutura de pastas para versionamento e navegação local.</p></article>
-        <article class="card"><h3>🧪 Radar científico</h3><p>Páginas atualizadas com diretrizes, trials, pesquisas em andamento e pontos controversos.</p></article>
-      </div>
-    </section>
-
-    <section id="sugestoes" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Comentários, sugestões e colaboração 💬</h2>
-          <p class="section-sub">A enciclopédia deve nascer aberta ao refinamento: médicos, residentes, intensivistas, internistas e estudantes podem sugerir correções, temas e melhorias.</p>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <article class="card">
-          <h3>📩 Canais sugeridos</h3>
-          <p>Substitua os links abaixo pelos canais reais do projeto quando forem definidos.</p>
-          <div class="tag-row">
-            <a class="btn" href="mailto:contato@enciclopedia-medica.local?subject=Sugestão%20para%20a%20Enciclopédia%20Médica">Enviar sugestão por e-mail</a>
-            <a class="btn" href="https://forms.gle/substituir-pelo-formulario" target="_blank" rel="noopener">Formulário de comentários</a>
-            <a class="btn" href="https://github.com/substituir/repositorio/issues" target="_blank" rel="noopener">Abrir issue no GitHub</a>
-          </div>
-        </article>
-
-        <article class="card">
-          <h3>🧾 Modelo de feedback ideal</h3>
-          <table class="mini-table">
-            <thead><tr><th>Campo</th><th>Exemplo</th></tr></thead>
-            <tbody>
-              <tr><td>Tema</td><td>AVC Agudo / trombólise</td></tr>
-              <tr><td>Tipo</td><td>Correção, atualização, sugestão visual, questão TEMI</td></tr>
-              <tr><td>Fonte</td><td>Diretriz, artigo, protocolo local ou experiência prática</td></tr>
-              <tr><td>Impacto</td><td>Baixo, moderado, alto, segurança crítica</td></tr>
-            </tbody>
-          </table>
-        </article>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="footer-grid">
-        <div>
-          <h3>Enciclopédia Médica Intensiva & Medicina Interna</h3>
-          <p>Um projeto vivo para organizar, conectar e transformar conhecimento médico em decisão clínica segura, estudo eficiente e preparação de alto nível.</p>
-        </div>
-        <div>
-          <h3>Vias</h3>
-          <a href="#vias">Medicina Intensiva</a>
-          <a href="#vias">Medicina Interna</a>
-          <a href="#avc">AVC Agudo</a>
-        </div>
-        <div>
-          <h3>Projeto</h3>
-          <a href="#manifesto">Manifesto</a>
-          <a href="#seguranca">Segurança</a>
-          <a href="#futuro">Perspectivas futuras</a>
-          <a href="#sugestoes">Comentários</a>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <aside id="drawer" class="drawer" aria-live="polite" aria-label="Painel de detalhes do tema">
-    <button class="close" id="drawerClose" aria-label="Fechar painel">×</button>
-    <h3 id="drawerTitle">Tema</h3>
-    <p id="drawerText">Detalhes do tema selecionado.</p>
-    <div class="tag-row" id="drawerTags"></div>
-  </aside>
-
-  <div class="accessibility" aria-label="Ferramentas rápidas">
-    <button class="float-btn" id="focusToggle" title="Ativar modo foco">🎯</button>
-    <button class="float-btn" id="topButton" title="Voltar ao topo">⬆️</button>
+    </div>
   </div>
+</section>
 
-  <script>
-    const topicData = {
-      avc: {
-        title: "🧠 AVC Agudo",
-        text: "Hub inaugural do projeto. Conecta emergência tempo-dependente, neuroimagem, reperfusão, metas hemodinâmicas, prevenção de complicações, UTI neurológica, prevenção secundária e reabilitação.",
-        tags: ["Neuro", "Emergência", "UTI", "TEMI"]
-      },
-      trombolise: {
-        title: "💉 Trombólise endovenosa",
-        text: "Nó crítico de decisão: janela terapêutica, elegibilidade, contraindicações, controle pressórico, risco de transformação hemorrágica e monitorização pós-trombólise.",
-        tags: ["Alteplase/Tenecteplase", "PA", "Hemorragia", "Checklist"]
-      },
-      trombectomia: {
-        title: "🧲 Trombectomia mecânica",
-        text: "Conecta neurologia vascular, radiologia, regulação, centro de AVC, oclusão de grande vaso, perfusão cerebral e logística porta-punção.",
-        tags: ["OGV", "AngioTC", "Perfusão", "Fluxo"]
-      },
-      pa: {
-        title: "🎚️ Pressão arterial no AVC",
-        text: "Nó de segurança: metas diferentes conforme AVC isquêmico sem reperfusão, AVC isquêmico com trombólise/trombectomia e hemorragia intracraniana.",
-        tags: ["Hipertensão", "Emergência", "Metas", "Risco"]
-      },
-      temi: {
-        title: "🏆 Conexões com TEMI",
-        text: "Pontos de prova: janela, contraindicações, controle de PA, NIHSS, ASPECTS, transformação hemorrágica, edema maligno, disfagia e prevenção de complicações.",
-        tags: ["Prova", "Pegadinhas", "Flashcards", "Questões"]
-      },
-      fa: {
-        title: "❤️ Fibrilação atrial e anticoagulação",
-        text: "Conecta AVC cardioembólico, prevenção secundária, DOACs, varfarina, risco hemorrágico, reinício de anticoagulação e avaliação de causa embólica.",
-        tags: ["Cardio", "Anticoagulação", "DOAC", "Prevenção"]
-      },
-      imagem: {
-        title: "🖥️ Neuroimagem",
-        text: "Base decisória para excluir hemorragia, avaliar sinais precoces, estimar ASPECTS, detectar oclusão de grande vaso e selecionar pacientes para reperfusão.",
-        tags: ["TC", "AngioTC", "ASPECTS", "Perfusão"]
-      },
-      edema: {
-        title: "🌊 Edema cerebral maligno",
-        text: "Conecta Neuro UTI, monitorização neurológica, osmoterapia, neurocirurgia, craniectomia descompressiva, ventilação e prevenção de lesão secundária.",
-        tags: ["Neuro UTI", "Osmoterapia", "Herniação", "Craniectomia"]
+<!-- ── KNOWLEDGE MAP ───────────────────────────────── -->
+<section id="mapa" class="map-section" aria-labelledby="map-heading">
+  <div class="shell">
+    <div class="reveal">
+      <div class="section-label">// mapa semântico</div>
+      <h2 class="section-title" id="map-heading">Mapa vivo de conexões 🕸️</h2>
+      <p class="section-sub">Cada nó é uma página. Hover para ver a conexão. Clique para abrir detalhes.</p>
+    </div>
+
+    <div class="map-container" role="img" aria-label="Mapa visual de conexões do conhecimento médico">
+
+      <!-- SVG connection lines -->
+      <svg class="map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <circle cx="3" cy="3" r="1.5" fill="rgba(62,232,255,0.4)"/>
+          </marker>
+        </defs>
+        <!-- AVC → Trombólise -->
+        <line x1="50" y1="42" x2="18" y2="20" stroke="rgba(62,232,255,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
+        <!-- AVC → Trombectomia -->
+        <line x1="50" y1="42" x2="80" y2="20" stroke="rgba(62,232,255,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
+        <!-- AVC → PA -->
+        <line x1="50" y1="42" x2="16" y2="70" stroke="rgba(169,140,255,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
+        <!-- AVC → TEMI -->
+        <line x1="50" y1="42" x2="50" y2="78" stroke="rgba(255,209,102,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
+        <!-- AVC → FA -->
+        <line x1="50" y1="42" x2="80" y2="64" stroke="rgba(169,140,255,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
+        <!-- AVC → Neuroimagem -->
+        <line x1="50" y1="42" x2="32" y2="10" stroke="rgba(62,232,255,.15)" stroke-width=".6" stroke-dasharray="3,3"/>
+        <!-- AVC → Edema -->
+        <line x1="50" y1="42" x2="68" y2="42" stroke="rgba(255,96,96,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
+        <!-- CAD → UTI connection -->
+        <line x1="50" y1="42" x2="86" y2="34" stroke="rgba(78,240,161,.15)" stroke-width=".6" stroke-dasharray="3,3"/>
+      </svg>
+
+      <!-- Nodes (positioned as % of container) -->
+      <div class="map-node" style="left:50%;top:42%" data-topic="avc">
+        <button class="node-btn main-node" data-node="avc" aria-label="Nó: AVC Agudo">
+          🧠 <strong>AVC Agudo</strong>
+          <small>Hub central</small>
+        </button>
+        <div class="node-tooltip" role="tooltip">AVC isquêmico: janela terapêutica, TC, trombólise, trombectomia, UTI neuro.</div>
+      </div>
+
+      <div class="map-node" style="left:18%;top:20%" data-topic="trombolise">
+        <button class="node-btn" data-node="trombolise" style="--node-color:var(--red)" aria-label="Nó: Trombólise">
+          💉 Trombólise
+          <small>janela, PA, risco</small>
+        </button>
+        <div class="node-tooltip" role="tooltip">Alteplase IV: janela 4.5h, PA ≤185/110, sem hemorragia. Contraindicações críticas.</div>
+      </div>
+
+      <div class="map-node" style="left:80%;top:20%" data-topic="trombectomia">
+        <button class="node-btn" data-node="trombectomia" style="--node-color:var(--cyan)" aria-label="Nó: Trombectomia">
+          🧲 Trombectomia
+          <small>OGV, perfusão</small>
+        </button>
+        <div class="node-tooltip" role="tooltip">Oclusão de grande vaso: ASPECTS ≥6, NIHSS ≥6, janela 6–24h com perfusão.</div>
+      </div>
+
+      <div class="map-node" style="left:16%;top:70%" data-topic="pa">
+        <button class="node-btn" data-node="pa" style="--node-color:var(--violet)" aria-label="Nó: PA no AVC">
+          🎚️ PA no AVC
+          <small>metas de segurança</small>
+        </button>
+        <div class="node-tooltip" role="tooltip">Pós-trombólise: ≤180/105. Sem trombólise: não tratar se &lt;220/120. Hipotensão = risco.</div>
+      </div>
+
+      <div class="map-node" style="left:50%;top:78%" data-topic="temi">
+        <button class="node-btn" data-node="temi" style="--node-color:var(--yellow)" aria-label="Nó: Simulado TEMI">
+          🏆 TEMI/R3
+          <small>pegadinhas de prova</small>
+        </button>
+        <div class="node-tooltip" role="tooltip">Questões comentadas, pegadinhas, condutas de prova. Banco TEMI em expansão.</div>
+      </div>
+
+      <div class="map-node" style="left:80%;top:64%" data-topic="fa">
+        <button class="node-btn" data-node="fa" style="--node-color:var(--violet)" aria-label="Nó: Fibrilação Atrial">
+          ❤️ FA
+          <small>anticoagulação</small>
+        </button>
+        <div class="node-tooltip" role="tooltip">FA como causa de AVC cardioembólico. Anticoagulação: janela 2-4-7-14 dias (NIHSS).</div>
+      </div>
+
+      <div class="map-node" style="left:32%;top:10%" data-topic="imagem">
+        <button class="node-btn" data-node="imagem" style="--node-color:var(--cyan)" aria-label="Nó: Neuroimagem">
+          🖥️ Neuroimagem
+          <small>TC, RM, ASPECTS</small>
+        </button>
+        <div class="node-tooltip" role="tooltip">TC sem contraste: excluir hemorragia. ASPECTS: prever área de infarto. RM DWI: gold standard.</div>
+      </div>
+
+      <div class="map-node" style="left:68%;top:42%" data-topic="edema">
+        <button class="node-btn" data-node="edema" style="--node-color:var(--red)" aria-label="Nó: Edema Maligno">
+          🌊 Edema maligno
+          <small>Neuro UTI</small>
+        </button>
+        <div class="node-tooltip" role="tooltip">Infarto hemisférico maligno: craniectomia descompressiva &lt;48h em &lt;60 anos.</div>
+      </div>
+
+      <div class="map-node" style="left:86%;top:34%" data-topic="cad">
+        <button class="node-btn" data-node="cad" style="--node-color:var(--green)" aria-label="Nó: CAD na UTI">
+          🧪 CAD / UTI
+          <small>cetoacidose, K+, insulina</small>
+        </button>
+        <div class="node-tooltip" role="tooltip">Cetoacidose Diabética na UTI: reposição de K+, insulina IV, transição SC. Dashboard disponível.</div>
+      </div>
+
+    </div><!-- /map-container -->
+  </div>
+</section>
+
+<!-- ── TEMI ────────────────────────────────────────── -->
+<section class="temi-section" id="temi" aria-labelledby="temi-heading">
+  <div class="shell">
+    <div class="temi-inner">
+
+      <div class="reveal-l">
+        <div class="temi-badge">🏆 Preparação TEMI</div>
+        <h2 class="section-title" id="temi-heading">Prova de Título — da UTI para o gabarito</h2>
+        <p class="section-sub">Banco de questões comentadas com pegadinhas, raciocínio diagnóstico e condutas que mudam gabarito.</p>
+        <div class="temi-features">
+          <div class="temi-feature">Questões estilo TEMI/AMIB com enunciado clínico realista</div>
+          <div class="temi-feature">Gabarito comentado com fisiopatologia e armadilhas</div>
+          <div class="temi-feature">Pegadinhas identificadas e conceitos correlatos</div>
+          <div class="temi-feature">Flashcards de revisão rápida por tema</div>
+          <div class="temi-feature">Mnemônicos e resumos memoráveis</div>
+        </div>
+        <a class="btn btn-primary" href="questoes/index.html" style="background:var(--yellow);color:#1a0d00;border-color:var(--yellow)">
+          🏆 Abrir Simulador TEMI
+        </a>
+      </div>
+
+      <div class="temi-card reveal" aria-label="Estatísticas do banco TEMI">
+        <div class="temi-stat-big" data-count="35">35+</div>
+        <div class="temi-stat-lbl">// questões comentadas</div>
+        <div class="temi-topics">
+          <div class="temi-topic-row">
+            <span>🧠 AVC Isquêmico</span>
+            <div class="temi-topic-bar"><div class="temi-topic-fill" style="width:85%"></div></div>
+          </div>
+          <div class="temi-topic-row">
+            <span>🧪 CAD na UTI</span>
+            <div class="temi-topic-bar"><div class="temi-topic-fill" style="width:60%"></div></div>
+          </div>
+          <div class="temi-topic-row">
+            <span>🔵 LES / Reumatologia</span>
+            <div class="temi-topic-bar"><div class="temi-topic-fill" style="width:70%"></div></div>
+          </div>
+          <div class="temi-topic-row">
+            <span>🫁 VM / SDRA</span>
+            <div class="temi-topic-bar"><div class="temi-topic-fill" style="width:30%"></div></div>
+          </div>
+          <div class="temi-topic-row">
+            <span>🦠 Sepse</span>
+            <div class="temi-topic-bar"><div class="temi-topic-fill" style="width:20%"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ROADMAP ─────────────────────────────────────── -->
+<section id="roadmap" aria-labelledby="road-heading">
+  <div class="shell">
+    <div class="reveal">
+      <div class="section-label">// evolução do projeto</div>
+      <h2 class="section-title" id="road-heading">Roadmap 🧗</h2>
+      <p class="section-sub">Construção incremental — primeiro a base sólida, depois escala e inteligência.</p>
+    </div>
+    <div class="timeline" role="list">
+
+      <div class="phase" role="listitem">
+        <div class="phase-dot" style="border-color:var(--green);color:var(--green)">✓</div>
+        <div class="phase-body">
+          <h3>Fase 1 — Fundação visual e infraestrutura</h3>
+          <p>Homepage, Biblioteca IA indexada, UpDown Hub, Calculadoras e Card Feed no ar.</p>
+          <span class="phase-status status-done">● Concluído</span>
+        </div>
+      </div>
+
+      <div class="phase" role="listitem">
+        <div class="phase-dot" style="border-color:var(--cyan);color:var(--cyan)">2</div>
+        <div class="phase-body">
+          <h3>Fase 2 — Conteúdo clínico profundo</h3>
+          <p>AVC Agudo, CAD na UTI, LES (3 facetas) publicados. Pipeline editorial ativo. Mapa Vivo com conexões reais.</p>
+          <span class="phase-status status-active">◉ Em andamento</span>
+        </div>
+      </div>
+
+      <div class="phase" role="listitem">
+        <div class="phase-dot" style="border-color:var(--violet);color:var(--violet)">3</div>
+        <div class="phase-body">
+          <h3>Fase 3 — Banco TEMI expandido e simulações</h3>
+          <p>50+ questões comentadas, simulados cronometrados, flashcards com SRS, módulos de Sepse e Ventilação Mecânica.</p>
+          <span class="phase-status status-next">○ Próxima fase</span>
+        </div>
+      </div>
+
+      <div class="phase" role="listitem">
+        <div class="phase-dot" style="border-color:var(--yellow);color:var(--yellow)">4</div>
+        <div class="phase-body">
+          <h3>Fase 4 — Busca semântica global e monetização</h3>
+          <p>Motor de busca full-text em todos os módulos. Conteúdo premium para residentes e acesso institucional.</p>
+          <span class="phase-status status-next">○ Planejada</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Safety banner -->
+    <div class="safety-banner reveal" role="note" aria-label="Aviso de segurança clínica">
+      <div class="safety-icon" aria-hidden="true">⚠️</div>
+      <div class="safety-text">
+        <h4>Segurança Clínica — Aviso Obrigatório</h4>
+        <p>Este conteúdo é apoio cognitivo e educacional. <strong>Não substitui</strong> o julgamento clínico individual à beira-leito. Toda dose, diluição e conduta medicamentosa exige checagem dupla no protocolo institucional local. As diretrizes de referência incluem AMIB, Surviving Sepsis Campaign, AHA/ASA, EULAR/ACR e ADA — verifique sempre a versão vigente.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main><!-- /main -->
+
+<!-- ── FOOTER ──────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <strong>Enciclopédia Médica Intensiva &amp; Medicina Interna</strong>
+        <p>Um projeto vivo para organizar, conectar e transformar conhecimento médico em decisão clínica segura. Dr. Aldenir Rocha — CRM-CE 16587.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Módulos</h4>
+        <a href="07_Estudos_Markdown/index.html">↕️ UpDown Hub</a>
+        <a href="05_Biblioteca_IA/index.html">📚 Biblioteca IA</a>
+        <a href="03_Calculadoras_UTI/index.html">🧮 Calculadoras UTI</a>
+        <a href="questoes/index.html">🏆 Simulador TEMI</a>
+        <a href="06_Card_Feed_Medico/index.html">🖼️ Card Feed</a>
+      </div>
+      <div class="footer-col">
+        <h4>Conteúdo</h4>
+        <a href="01_Modulos_Clinicos/AVC_Agudo/avc.html">🧠 AVC Agudo</a>
+        <a href="07_Estudos_Markdown/index.html">🧪 CAD na UTI</a>
+        <a href="les-autoanticorpos/index.html">🔵 LES Autoanticorpos</a>
+        <a href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html">🫁 Ventilação Mecânica</a>
+      </div>
+      <div class="footer-col">
+        <h4>Projeto</h4>
+        <a href="https://github.com/aldenirfilho/antigravity-consultas">GitHub Repository</a>
+        <a href="README.md">Documentação</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#pipeline">Como funciona</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Enciclopédia Médica Intensiva · Projeto Antigravity</span>
+      <span style="font-family:var(--font-mono)">Conteúdo autoral · Uso educacional · Não substitui raciocínio clínico individual</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── DRAWER ──────────────────────────────────────── -->
+<div id="overlay" class="overlay" aria-hidden="true"></div>
+<aside id="drawer" aria-label="Detalhes do tema" aria-hidden="true" tabindex="-1">
+  <button class="drawer-close" id="drawerClose" aria-label="Fechar painel">✕</button>
+  <h3 id="drawerTitle">Tema</h3>
+  <p id="drawerText"></p>
+  <div class="drawer-tags" id="drawerTags"></div>
+</aside>
+
+<!-- ── FLOATING BUTTONS ───────────────────────────── -->
+<div class="floaters" role="complementary" aria-label="Atalhos rápidos">
+  <button class="float-btn" id="topBtn" title="Voltar ao topo" aria-label="Voltar ao topo">⬆</button>
+</div>
+
+<!-- ── JAVASCRIPT ─────────────────────────────────── -->
+<script>
+(function(){
+
+/* ── DATA: topic drawer content ─────────────────── */
+const TOPICS = {
+  avc:{title:"🧠 AVC Agudo — Hub Central",text:"Manejo completo do AVC isquêmico: da janela terapêutica à UTI neurointensiva. Inclui critérios de trombólise, trombectomia, metas de PA, profilaxia de TVP, controle glicêmico e cuidados de UTI.",tags:["NIHSS","ASPECTS","Alteplase","UTI Neuro","Prevenção 2ª"]},
+  trombolise:{title:"💉 Trombólise IV — Alteplase",text:"Janela 4,5h. PA ≤185/110 antes e ≤180/105 após. Dose 0,9 mg/kg (máx 90 mg), 10% em bolus, 90% em 60 min. Monitorar em UTI. Principais contraindicações: cirurgia recente, anticoagulante com INR>1,7, plaquetas <100k.",tags:["Alteplase","0,9 mg/kg","janela 4,5h","PA-alvo","UTI pós"]},
+  trombectomia:{title:"🧲 Trombectomia Mecânica",text:"OGV: oclusão ICA ou ACM M1/M2. ASPECTS ≥6. NIHSS ≥6. Janela até 6h (sem perfusão) ou 6–24h com mismatch em DEFUSE-3/DAWN. Acesso femoral, stent retriever ou aspiração a vácuo.",tags:["OGV","ASPECTS","DEFUSE-3","DAWN","stent retriever"]},
+  pa:{title:"🎚️ PA no AVC",text:"Pós-trombólise: manter <180/105 por 24h. Sem trombólise: só tratar se >220/120 (HAS) ou >185/110 se candidato a trombólise. Hipotensão é danosa — evitar agressivamente.",tags:["meta PA","pós-trombólise","não-tratar","hipotensão","labetolol"]},
+  temi:{title:"🏆 Banco de Questões TEMI/R3",text:"Questões estilo TEMI com enunciado clínico realista, gabarito comentado, identificação de pegadinhas e correlação com a prática de UTI. Em expansão contínua.",tags:["TEMI","AMIB","R3","Clínica Médica","pegadinhas"]},
+  fa:{title:"❤️ FA e AVC Cardioembólico",text:"FA é a causa mais comum de AVC cardioembólico. Anticoagulação após AVC isquêmico: regra 2-4-7-14 dias por NIHSS. Estratificar HAS-BLED vs CHA₂DS₂-VASc.",tags:["anticoagulação","CHA2DS2","2-4-7-14","NOAC","reversão"]},
+  imagem:{title:"🖥️ Neuroimagem no AVC",text:"TC sem contraste: exame de escolha imediato (excluir hemorragia). ASPECTS: pontuação 0-10 por segmentos ACM. RM DWI: gold standard para isquemia precoce. Angiotomografia: avalia OGV.",tags:["TC","RM DWI","ASPECTS","angiotomografia","perfusão"]},
+  edema:{title:"🌊 Edema Cerebral Maligno",text:"Infarto hemisférico maligno: 50–80% de mortalidade sem tratamento. Craniectomia descompressiva em <60 anos (DESTINY II), dentro de 48h. Manitol e hiperventilação como ponte.",tags:["craniectomia","DESTINY","<60 anos","48h","herniação"]},
+  cad:{title:"🧪 Cetoacidose Diabética na UTI",text:"Repor K+ antes de insulina se K<3,5. Insulina cristalina IV 0,1 UI/kg/h. Hidratar com SF 0,9% — 1L/h na 1ª hora. Fechar GAP antes de transição SC. Dashboard interativo disponível.",tags:["K+","insulina IV","Ânion Gap","transição SC","CAD Dashboard"]}
+};
+
+/* ── DRAWER ─────────────────────────────────────── */
+const drawer=document.getElementById('drawer');
+const overlay=document.getElementById('overlay');
+const drawerClose=document.getElementById('drawerClose');
+
+function openDrawer(key){
+  const d=TOPICS[key];if(!d)return;
+  document.getElementById('drawerTitle').textContent=d.title;
+  document.getElementById('drawerText').textContent=d.text;
+  const tags=document.getElementById('drawerTags');
+  tags.innerHTML=d.tags.map(t=>`<span class="dtag">${t}</span>`).join('');
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden','false');
+  overlay.classList.add('show');
+  drawer.focus();
+}
+function closeDrawer(){
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden','true');
+  overlay.classList.remove('show');
+}
+drawerClose.addEventListener('click',closeDrawer);
+overlay.addEventListener('click',closeDrawer);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+
+document.querySelectorAll('[data-node]').forEach(btn=>{
+  btn.addEventListener('click',()=>openDrawer(btn.dataset.node));
+});
+
+/* ── SCROLL REVEAL ───────────────────────────────── */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // stagger pipeline steps
+      if(e.target.classList.contains('pipeline-step')){
+        const idx=Array.from(e.target.parentElement.children).indexOf(e.target);
+        e.target.style.transitionDelay=(idx*0.12)+'s';
       }
-    };
-
-    const drawer = document.getElementById('drawer');
-    const drawerTitle = document.getElementById('drawerTitle');
-    const drawerText = document.getElementById('drawerText');
-    const drawerTags = document.getElementById('drawerTags');
-    const drawerClose = document.getElementById('drawerClose');
-
-    function openDrawer(data) {
-      drawerTitle.textContent = data.title;
-      drawerText.textContent = data.text;
-      drawerTags.innerHTML = data.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-      drawer.classList.add('open');
+      observer.unobserve(e.target);
     }
+  });
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
 
-    document.querySelectorAll('[data-node]').forEach(node => {
-      node.addEventListener('click', () => openDrawer(topicData[node.dataset.node]));
-    });
+document.querySelectorAll('.reveal,.reveal-l,.phase,.pipeline-step')
+  .forEach(el=>observer.observe(el));
 
-    document.querySelectorAll('.topic-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const title = item.querySelector('strong').textContent;
-        const text = item.querySelector('span').textContent;
-        openDrawer({ title, text: `${text} Este item deve virar uma subpágina interligada ao hub de AVC Agudo e aos módulos de Medicina Intensiva/Interna.`, tags: item.dataset.topic.split(' ').slice(0, 5) });
-      });
-    });
+/* ── COUNTER ANIMATION ───────────────────────────── */
+function animateCount(el){
+  const target=parseInt(el.dataset.count||el.textContent)||0;
+  const suffix=el.textContent.replace(/[\d]/g,'');
+  let start=null;
+  const dur=1200;
+  function step(ts){
+    if(!start)start=ts;
+    const p=Math.min((ts-start)/dur,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*ease)+suffix;
+    if(p<1)requestAnimationFrame(step);
+    else el.textContent=target+suffix;
+  }
+  requestAnimationFrame(step);
+}
+const cntObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){animateCount(e.target);cntObserver.unobserve(e.target);}
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cntObserver.observe(el));
 
-    drawerClose.addEventListener('click', () => drawer.classList.remove('open'));
+/* ── TOP BUTTON ──────────────────────────────────── */
+const topBtn=document.getElementById('topBtn');
+window.addEventListener('scroll',()=>{
+  topBtn.style.opacity=window.scrollY>400?'1':'0';
+  topBtn.style.pointerEvents=window.scrollY>400?'auto':'none';
+},{ passive:true });
+topBtn.style.opacity='0';topBtn.style.transition='opacity .3s';
+topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-    const topicSearch = document.getElementById('topicSearch');
-    const topicList = document.getElementById('topicList');
-    topicSearch.addEventListener('input', () => {
-      const q = topicSearch.value.trim().toLowerCase();
-      topicList.querySelectorAll('.topic-item').forEach(item => {
-        const text = item.textContent.toLowerCase() + ' ' + item.dataset.topic.toLowerCase();
-        item.style.display = text.includes(q) ? 'block' : 'none';
-      });
-    });
+/* ── ORBS PARALLAX (subtle) ──────────────────────── */
+let raf;
+window.addEventListener('scroll',()=>{
+  if(raf)return;
+  raf=requestAnimationFrame(()=>{
+    const y=window.scrollY;
+    const orbs=document.querySelectorAll('.orb');
+    orbs[0]&&(orbs[0].style.transform=`translateY(${y*.04}px)`);
+    orbs[1]&&(orbs[1].style.transform=`translateY(${-y*.03}px)`);
+    raf=null;
+  });
+},{passive:true});
 
-    document.querySelectorAll('[data-filter]').forEach(chip => {
-      chip.addEventListener('click', () => {
-        document.querySelectorAll('[data-filter]').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        const filter = chip.dataset.filter.toLowerCase();
-        topicSearch.value = filter;
-        topicSearch.dispatchEvent(new Event('input'));
-        document.getElementById('avc').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-
-    document.getElementById('focusToggle').addEventListener('click', () => {
-      document.body.classList.toggle('focus-mode');
-    });
-
-    document.getElementById('topButton').addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  </script>
+})();
+</script>
 </body>
 </html>
