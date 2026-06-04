@@ -170,14 +170,12 @@
         <div class="ag-line" style="left:54%; top:55%; width:26%; transform:rotate(19deg);"></div>
         <div class="ag-line" style="left:51%; top:31%; width:20%; transform:rotate(38deg);"></div>
 
-        <button class="ag-node main" style="left:41%; top:38%;" data-node="avc"><b>🧠 AVC Agudo</b><small>Hub inicial</small></button>
-        <button class="ag-node alert" style="left:8%; top:18%;" data-node="trombolise"><b>💉 Trombólise</b><small>janela, PA, risco</small></button>
-        <button class="ag-node" style="left:68%; top:18%;" data-node="trombectomia"><b>🧲 Trombectomia</b><small>OGV, perfusão</small></button>
-        <button class="ag-node" style="left:14%; top:62%;" data-node="pa"><b>🎚️ PA no AVC</b><small>metas de segurança</small></button>
-        <button class="ag-node exam" style="left:45%; top:72%;" data-node="temi"><b>🏆 TEMI</b><small>pegadinhas de prova</small></button>
-        <button class="ag-node" style="left:72%; top:60%;" data-node="fa"><b>❤️ FA</b><small>anticoagulação</small></button>
-        <button class="ag-node" style="left:30%; top:8%;" data-node="imagem"><b>🖥️ Neuroimagem</b><small>TC, ASPECTS</small></button>
-        <button class="ag-node alert" style="left:62%; top:39%;" data-node="edema"><b>🌊 Edema maligno</b><small>Neuro UTI</small></button>
+        <button class="ag-node main" style="left:41%; top:38%;" data-ag-node="updown"><b>↕️ UpDown Hub</b><small>Revisões Clínicas</small></button>
+        <button class="ag-node alert" style="left:8%; top:18%;" data-ag-node="biblioteca"><b>📚 Biblioteca IA</b><small>PDFs Originais</small></button>
+        <button class="ag-node" style="left:68%; top:18%;" data-ag-node="imagens"><b>🖼️ Feed Visual</b><small>Cards & Plantão</small></button>
+        <button class="ag-node" style="left:14%; top:62%;" data-ag-node="apps"><b>🧮 Apps UTI</b><small>Escores & Condutas</small></button>
+        <button class="ag-node exam" style="left:45%; top:72%;" data-ag-node="temi"><b>🏆 TEMI</b><small>Simulado Intensiva</small></button>
+        <button class="ag-node" style="left:72%; top:60%;" data-ag-node="r3"><b>🧠 Trilha R3</b><small>Clínica Avançada</small></button>
       </div>
     </section>
 
@@ -225,11 +223,11 @@
     </footer>
   </main>
 
-  <aside id="drawer" class="ag-drawer" aria-live="polite" aria-label="Painel de detalhes do tema">
-    <button class="ag-close" id="drawerClose" aria-label="Fechar painel">×</button>
-    <h3 id="drawerTitle">Tema</h3>
-    <p id="drawerText">Detalhes do tema selecionado.</p>
-    <div class="ag-tags" id="drawerTags"></div>
+  <aside id="ag-drawer" class="ag-drawer" aria-live="polite" aria-label="Painel de detalhes do tema">
+    <button class="ag-close" id="ag-drawer-close" aria-label="Fechar painel">×</button>
+    <h3 id="ag-drawer-title">Tema</h3>
+    <p id="ag-drawer-text">Detalhes do tema selecionado.</p>
+    <div class="ag-tags" id="ag-drawer-tags"></div>
   </aside>
 
   <script src="06_Infra_Site_E_Assets/js/home-landing.js"></script>

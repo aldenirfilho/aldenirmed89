@@ -1,102 +1,67 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  // Fetch manifest data
-  let topicData = {};
-  
-  try {
-    const response = await fetch("06_Infra_Site_E_Assets/data/home-manifest.json");
-    if (response.ok) {
-      const data = await response.json();
-      topicData = data.topicData;
-    } else {
-      console.warn("Failed to load home-manifest.json");
-    }
-  } catch (err) {
-    console.warn("CORS or network error fetching home-manifest.json. Are you running locally via file://? Use Live Server.", err);
+const antigravityNodes = {
+  updown: {
+    title: "↕️ UpDown Hub",
+    text: "Transforma artigos, diretrizes, PDFs e aulas em revisões didáticas, sem cópia literal, com resumo, fluxos, flashcards, questões, mnemônicos e modo leitor.",
+    tags: ["Markdown", "Revisão", "TEMI", "R3"]
+  },
+  biblioteca: {
+    title: "📚 Biblioteca IA",
+    text: "Acervo de documentos originais: PDFs, DOCX, protocolos, diretrizes e materiais de referência organizados para consulta e integração.",
+    tags: ["PDF", "DOCX", "Protocolos", "Fontes"]
+  },
+  imagens: {
+    title: "🖼️ Imagens e Feed",
+    text: "Central de cards, infográficos, mapas visuais, fluxogramas e imagens 1080x1920 para revisão rápida e uso no plantão.",
+    tags: ["Cards", "Infográficos", "POCUS", "Plantão"]
+  },
+  apps: {
+    title: "🧮 Apps e Calculadoras",
+    text: "Ferramentas práticas para UTI, enfermaria e emergência: escores, drogas vasoativas, ventilação, eletrólitos e algoritmos clínicos.",
+    tags: ["Calculadoras", "UTI", "Emergência", "Escores"]
+  },
+  temi: {
+    title: "🏆 Trilha TEMI",
+    text: "Módulo de preparação para título em Terapia Intensiva, com questões, pegadinhas, casos, trials clássicos e revisão espaçada.",
+    tags: ["TEMI", "AMIB", "UTI", "Prova"]
+  },
+  r3: {
+    title: "🧠 Trilha R3 Clínica Médica",
+    text: "Preparação para R3 e prática de Medicina Interna avançada, com diagnóstico diferencial, síndromes, casos e raciocínio clínico.",
+    tags: ["R3", "Clínica Médica", "DDx", "Enfermaria"]
   }
+};
 
-  const drawer = document.getElementById('drawer');
-  const drawerTitle = document.getElementById('drawerTitle');
-  const drawerText = document.getElementById('drawerText');
-  const drawerTags = document.getElementById('drawerTags');
-  const drawerClose = document.getElementById('drawerClose');
+function openAgDrawer(key) {
+  const data = antigravityNodes[key];
+  if (!data) return;
 
-  function openDrawer(data) {
-    if (!data) return;
-    drawerTitle.textContent = data.title || "Tema";
-    drawerText.textContent = data.text || "Detalhes do tema.";
-    drawerTags.innerHTML = (data.tags || []).map(tag => `<span class="ag-tag">${tag}</span>`).join('');
-    drawer.classList.add('open');
-  }
+  const drawer = document.querySelector("#ag-drawer");
+  const title = document.querySelector("#ag-drawer-title");
+  const text = document.querySelector("#ag-drawer-text");
+  const tags = document.querySelector("#ag-drawer-tags");
 
-  // Interactivity for Knowledge Graph Nodes
-  document.querySelectorAll('[data-node]').forEach(node => {
-    node.addEventListener('click', () => {
-      if(topicData[node.dataset.node]) {
-        openDrawer(topicData[node.dataset.node]);
-      }
-    });
+  title.textContent = data.title;
+  text.textContent = data.text;
+  tags.innerHTML = data.tags.map(tag => `<span class="ag-tag">${tag}</span>`).join("");
+  drawer.classList.add("open");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-ag-node]").forEach(button => {
+    button.addEventListener("click", () => openAgDrawer(button.dataset.agNode));
   });
 
-  // Interactivity for Topic Items (Search Box)
-  document.querySelectorAll('.topic-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const title = item.querySelector('strong').textContent;
-      const text = item.querySelector('span').textContent;
-      const tags = (item.dataset.topic || "").split(' ').slice(0, 5);
-      openDrawer({ 
-        title, 
-        text: `${text} Este item deve virar uma subpágina interligada ao hub de AVC Agudo e aos módulos de Medicina Intensiva/Interna.`, 
-        tags 
-      });
-    });
-  });
-
-  if(drawerClose) {
-    drawerClose.addEventListener('click', () => drawer.classList.remove('open'));
-  }
-
-  // Search filter
-  const topicSearch = document.getElementById('topicSearch');
-  const topicList = document.getElementById('topicList');
-  if(topicSearch && topicList) {
-    topicSearch.addEventListener('input', () => {
-      const q = topicSearch.value.trim().toLowerCase();
-      topicList.querySelectorAll('.topic-item').forEach(item => {
-        const text = item.textContent.toLowerCase() + ' ' + (item.dataset.topic || '').toLowerCase();
-        item.style.display = text.includes(q) ? 'block' : 'none';
-      });
+  const close = document.querySelector("#ag-drawer-close");
+  if (close) {
+    close.addEventListener("click", () => {
+      document.querySelector("#ag-drawer").classList.remove("open");
     });
   }
 
-  // Filters for via sections
-  document.querySelectorAll('[data-filter]').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('[data-filter]').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      const filter = chip.dataset.filter.toLowerCase();
-      if(topicSearch) {
-        topicSearch.value = filter;
-        topicSearch.dispatchEvent(new Event('input'));
-      }
-      const avcSection = document.getElementById('avc');
-      if(avcSection) {
-        avcSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-
-  // Floating Accessibility Buttons
-  const focusBtn = document.getElementById('focusToggle');
-  if(focusBtn) {
-    focusBtn.addEventListener('click', () => {
-      document.body.classList.toggle('focus-mode');
-    });
-  }
-
-  const topBtn = document.getElementById('topButton');
-  if(topBtn) {
-    topBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  const topButton = document.querySelector("#ag-top");
+  if (topButton) {
+    topButton.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 });
