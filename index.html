@@ -4,130 +4,191 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Enciclopédia Médica Intensiva & Medicina Interna</title>
-  <meta name="description" content="Portal médico interativo para Medicina Intensiva, Medicina Interna, UTI, TEMI e prática clínica avançada." />
-  <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/home.css" />
-  <link rel="stylesheet" href="assets/css/graph-vivo.css" />
-  <meta property="og:title" content="Enciclopédia Médica Intensiva & Medicina Interna">
-  <meta property="og:description" content="Portal interativo UTI, TEMI, Clínica Médica — Dr. Aldenir Rocha">
-  <meta property="og:url" content="https://aldenirfilho.github.io/antigravity-consultas/">
-  <meta property="og:type" content="website">
+  <meta name="description" content="Portal médico interativo para Medicina Intensiva, Medicina Interna, UTI, TEMI, prática clínica avançada, UpDown, Biblioteca IA e apoio beira-leito." />
+  
+  <link rel="stylesheet" href="assets/css/home-robusto.css" />
+  
+  <!-- Fontes do Google para um visual premium -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  
+  <!-- D3.js para o Mapa Vivo -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-  <header class="topbar">
+  
+  <!-- HEADER STICKY -->
+  <header class="sticky-header">
     <a class="brand" href="index.html">
-      <img src="logo_concept_3_book_1778036997285.png" alt="Logo Enciclopédia" style="width: 44px; height: 44px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 14px rgba(255, 173, 77, 0.25);" />
+      <img src="logo_concept_3_book_1778036997285.png" alt="Logo Enciclopédia" onerror="this.src='https://via.placeholder.com/44?text=AM'" />
       <span>
-        <strong>Enciclopédia Médica 🚀</strong>
-        <small>Intensiva & Medicina Interna</small>
+        <strong style="font-family: 'Syne', sans-serif;">Antigravity 🚀</strong>
+        <small>Intensiva & Interna</small>
       </span>
     </a>
-
-    <nav class="nav">
-      <a href="07_Estudos_Markdown/index.html" style="color: #4ef0a1; font-weight: 800;">↕️ UpDown Hub</a>
-      <a href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html" style="color: #4ef0a1;">🫁 VM</a>
-      <a href="06_Card_Feed_Medico/index.html" style="color: #38bdf8;">🖼️ Card Feed</a>
-      <a href="questoes/index.html" style="color: #ffc107;">🏆 Simulador TEMI</a>
-      <a href="03_Calculadoras_UTI/index.html" style="color: #4ef0a1;">🧮 Calculadoras UTI</a>
-      <a href="05_Biblioteca_IA/index.html">📚 Biblioteca IA</a>
-      <a href="#mapa">Mapa vivo</a>
+    <nav class="nav-links">
+      <a href="07_Estudos_Markdown/index.html">UpDown Hub</a>
+      <a href="05_Biblioteca_IA/index.html">Biblioteca IA</a>
+      <a href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html">Ventilação</a>
+      <a href="questoes/index.html">TEMI</a>
+      <a href="#mapa-vivo">Mapa Vivo</a>
     </nav>
   </header>
 
-  <main>
-    <section class="hero section-shell">
-      <div class="hero-copy glass">
-        <span class="eyebrow">🚀 Projeto vivo • UTI • Clínica Médica • TEMI</span>
-        <h1>Uma central de comando para estudar, decidir e evoluir na medicina.</h1>
+  <main class="container">
+    
+    <!-- HERO DASHBOARD -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>Decisões clínicas guiadas por raciocínio limpo.</h1>
         <p>
-          Plataforma médica interativa, continuamente atualizável e conectada por raciocínio clínico.
-          Agora com o novo sistema <strong>UpDown Hub</strong> para módulos dirimidos.
+          Portal médico interativo para Medicina Intensiva, Medicina Interna, UTI, TEMI, prática clínica avançada, UpDown, Biblioteca IA e apoio beira-leito.
         </p>
-        <div class="actions">
-          <a class="btn primary" href="07_Estudos_Markdown/index.html">↕️ UpDown Hub</a>
-          <a class="btn" href="05_Biblioteca_IA/index.html">📚 Biblioteca IA</a>
-          <a class="btn" href="03_Calculadoras_UTI/index.html">🧮 Calculadoras UTI</a>
-          <a class="btn" href="06_Card_Feed_Medico/index.html">🖼️ Card Feed</a>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="07_Estudos_Markdown/index.html" class="btn btn-primary">↕️ Explorar UpDown Hub</a>
+          <a href="05_Biblioteca_IA/index.html" class="btn btn-purple">📚 Biblioteca IA</a>
         </div>
       </div>
-
-      <aside class="status-card glass">
-        <h2>📊 Painel de Controle</h2>
+      
+      <div class="hero-dashboard">
+        <h3>📊 Painel de Controle UTI</h3>
         <div class="metric-grid">
-          <div><strong>190+</strong><span>Protocolos IA</span></div>
-          <div><strong>v3.5</strong><span>Engine Hub</span></div>
-          <div><strong>08</strong><span>Sistemas ativos</span></div>
-          <div><strong>24/7</strong><span>Beira-leito</span></div>
-        </div>
-        <p class="muted">Acesse a <strong>Biblioteca IA</strong> para fontes originais ou o <strong>UpDown Hub</strong> para revisões de alto rendimento.</p>
-      </aside>
-    </section>
-
-    <section id="mapa" class="section-shell section-block">
-      <h2>🕸️ Mapa vivo de conexões</h2>
-      <p class="muted">Cérebro visual interativo do projeto Antigravity.</p>
-      <div class="graph" id="graph" style="height: 600px; background: rgba(0,0,0,0.2); border-radius: 20px; border: 1px solid var(--border);"></div>
-    </section>
-
-    <section id="ventilacao" class="section-shell section-block highlight">
-      <div class="section-title-row">
-        <div>
-          <h2>🫁 Ventilação Mecânica</h2>
-          <p class="muted">Motores de cálculo e monitorização respiratória.</p>
-        </div>
-      </div>
-      <div class="grid two" style="margin-top: 18px;">
-        <article class="card" style="border-color: #4ef0a1;">
-          <h3>🫁 RespiraCrit</h3>
-          <p>Calculadora avançada para SARA, ventilação protetora e mecânica respiratória.</p>
-          <a class="btn primary" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html">Abrir RespiraCrit →</a>
-        </article>
-        <article class="card" style="border-color: #38bdf8;">
-          <h3>📟 RespiraSense</h3>
-          <p>Interface de monitorização rápida e parâmetros ideais beira-leito.</p>
-          <a class="btn primary" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html" style="background: linear-gradient(135deg, #38bdf8, #a78bfa);">Abrir RespiraSense →</a>
-        </article>
-      </div>
-    </section>
-    <section id="biblioteca-promo" style="padding:2rem 0; margin-top:20px;">
-      <div style="max-width:900px;margin:0 auto;padding:0 1.5rem">
-        <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
-          <span style="font-size:2rem">📚</span>
-          <div>
-            <h2 style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Nova Biblioteca IA v2</h2>
-            <p style="font-size:.82rem;color:var(--muted)">Acesso direto a 186+ protocolos, PDFs e materiais originais Santa Casa.</p>
+          <div class="metric-card">
+            <strong>190+</strong>
+            <span>Protocolos</span>
           </div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
-          <div>
-            <p style="font-size:.85rem;color:var(--muted);line-height:1.7;margin-bottom:.8rem">
-              📄 Acesse todos os seus arquivos originais mapeados dinamicamente na nova camada de resgate.
-            </p>
+          <div class="metric-card">
+            <strong>v4.0</strong>
+            <span>Engine AGY</span>
           </div>
-          <div style="display:flex;flex-direction:column;gap:.5rem;justify-content:center">
-            <a href="05_Biblioteca_IA/index.html" class="btn primary">📚 Abrir Biblioteca IA →</a>
+          <div class="metric-card">
+            <strong>24/7</strong>
+            <span>Beira-leito</span>
+          </div>
+          <div class="metric-card">
+            <strong>100%</strong>
+            <span>Offline Ready</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="seguranca" class="section-shell section-block">
-      <h2>🛡️ Segurança e Curadoria</h2>
-      <div class="grid three">
-        <article class="card"><h3>✅ Segurança</h3><p>Protocolos revisados para plantão e round.</p></article>
-        <article class="card"><h3>🔎 Rastreabilidade</h3><p>Links diretos para fontes UpToDate e AMIB.</p></article>
-        <article class="card"><h3>🧑‍⚕️ Juízo Clínico</h3><p>Ferramenta de apoio, não substituta.</p></article>
-      </div>
-    </section>
+    <!-- CARDS PRINCIPAIS (8 Cards) -->
+    <div class="section-header">
+      <h2>🏥 Arsenal Antigravity</h2>
+      <p>Ferramentas de alta performance para plantão, enfermaria e estudos.</p>
+    </div>
+
+    <div class="grid-4" style="margin-bottom: 4rem;">
+      <!-- UpDown -->
+      <article class="glass-card green">
+        <h3>↕️ UpDown Hub</h3>
+        <p>Resumos e mapas mentais progressivos. Metodologia ativa para retenção máxima.</p>
+        <a href="07_Estudos_Markdown/index.html" class="btn btn-green">Acessar Hub →</a>
+      </article>
+
+      <!-- Biblioteca IA -->
+      <article class="glass-card purple">
+        <h3>📚 Biblioteca IA</h3>
+        <p>Acesso direto a diretrizes originais, PDFs e materiais curados para referência rápida.</p>
+        <a href="05_Biblioteca_IA/index.html" class="btn btn-purple">Consultar Biblioteca →</a>
+      </article>
+
+      <!-- Calculadoras -->
+      <article class="glass-card cyan">
+        <h3>🧮 Calculadoras UTI</h3>
+        <p>Scores e ferramentas preditivas validadas: SAPS 3, SOFA, KDIGO e mais.</p>
+        <a href="03_Calculadoras_UTI/index.html" class="btn btn-primary">Abrir Calculadoras →</a>
+      </article>
+
+      <!-- TEMI -->
+      <article class="glass-card gold">
+        <h3>🏆 Simulador TEMI</h3>
+        <p>Banco de questões focado na prova de Título de Especialista em Medicina Intensiva.</p>
+        <a href="questoes/index.html" class="btn btn-gold">Iniciar Simulado →</a>
+      </article>
+
+      <!-- AVC Agudo -->
+      <article class="glass-card red">
+        <h3>🧠 AVC Agudo</h3>
+        <p>Protocolo beira-leito: Trombolise, controle pressórico e neurointensivismo focado.</p>
+        <a href="01_Modulos_Clinicos/AVC_Agudo/avc.html" class="btn btn-primary" style="border-color: rgba(239, 68, 68, 0.3); color: var(--accent-red); background: rgba(239, 68, 68, 0.1);">Protocolo AVC →</a>
+      </article>
+
+      <!-- Ventilação -->
+      <article class="glass-card cyan">
+        <h3>🫁 Ventilação Mecânica</h3>
+        <p>Motores de cálculo RespiraCrit e monitorização RespiraSense para SARA e desmame.</p>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <a href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html" class="btn btn-primary" style="flex: 1; padding: 0.4rem;">RespiraCrit</a>
+          <a href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html" class="btn btn-primary" style="flex: 1; padding: 0.4rem; background: linear-gradient(135deg, rgba(56,189,248,0.2), rgba(167,139,250,0.2));">RespiraSense</a>
+        </div>
+      </article>
+
+      <!-- Imagens / Feed -->
+      <article class="glass-card purple">
+        <h3>🖼️ Card Feed</h3>
+        <p>Pérolas em formato feed, imagens clínicas essenciais e pílulas do conhecimento.</p>
+        <a href="06_Card_Feed_Medico/index.html" class="btn btn-purple">Ver Feed →</a>
+      </article>
+
+      <!-- Banco Extra TEMI -->
+      <article class="glass-card gold">
+        <h3>🔥 Banco TEMI Rápido</h3>
+        <p>Revisões curtas, mnemônicos e casos direcionados para fixação.</p>
+        <a href="02_Banco_Questoes_TEMI/index.html" class="btn btn-gold">Revisar Agora →</a>
+      </article>
+    </div>
+
+    <!-- MAPA VIVO -->
+    <div id="mapa-vivo" class="section-header">
+      <h2>🕸️ Mapa Vivo</h2>
+      <p>Navegação visual interativa pelo conhecimento do ecossistema Antigravity.</p>
+    </div>
+    <div id="graph" class="graph-container"></div>
+
+    <!-- AVISO DE SEGURANÇA -->
+    <div class="security-notice">
+      <strong>⚠️ Aviso de Segurança</strong>
+      Ferramenta educacional e de apoio cognitivo para médicos. Não substitui julgamento clínico, diretrizes locais, protocolos institucionais ou avaliação individualizada. Use com responsabilidade.
+    </div>
+
   </main>
 
-  <footer class="footer section-shell">
-    <p>🧠 Enciclopédia Médica Antigravity — Dr. Aldenir Rocha • 2026</p>
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <p>🚀 Desenvolvido por Antigravity Systems | Dr. Aldenir Rocha • 2026</p>
+    <a href="https://github.com/aldenirfilho/antigravity-consultas/issues" target="_blank" style="color: var(--text-muted); text-decoration: none; margin-top: 1rem; display: inline-block;">🐞 Reportar Issue / Sugestões no GitHub</a>
   </footer>
 
-  <script src="assets/js/app.js"></script>
-  <script src="assets/js/search.js"></script>
-  <script src="assets/js/graph.js"></script>
+  <!-- FLOATING BUTTONS -->
+  <div class="floating-actions">
+    <button class="fab" id="btn-focus" title="Modo Foco">🧘</button>
+    <button class="fab" id="btn-drawer" title="Arquitetura do Projeto">📂</button>
+  </div>
+
+  <!-- DRAWER INTERATIVO -->
+  <aside id="arquitetura-drawer" class="arquitetura-drawer">
+    <div class="drawer-header">
+      <h3 style="margin: 0;">Arquitetura Antigravity</h3>
+      <button id="drawer-close" class="drawer-close">&times;</button>
+    </div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Índice do repositório:</p>
+    <ul class="folder-list">
+      <li><span class="folder-icon">📥</span> <span class="folder-name">00_INBOX_ATUALIZACAO</span></li>
+      <li><span class="folder-icon">🏥</span> <span class="folder-name">01_Modulos_Clinicos</span></li>
+      <li><span class="folder-icon">📝</span> <span class="folder-name">02_Banco_Questoes_TEMI</span></li>
+      <li><span class="folder-icon">🧮</span> <span class="folder-name">03_Calculadoras_UTI</span></li>
+      <li><span class="folder-icon">📚</span> <span class="folder-name">05_Biblioteca_IA</span></li>
+      <li><span class="folder-icon">🖼️</span> <span class="folder-name">06_Card_Feed_Medico</span></li>
+      <li><span class="folder-icon">↕️</span> <span class="folder-name">07_Estudos_Markdown</span></li>
+      <li><span class="folder-icon">🏆</span> <span class="folder-name">questoes</span></li>
+      <li><span class="folder-icon">📸</span> <span class="folder-name">imagens</span></li>
+      <li><span class="folder-icon">⬆️</span> <span class="folder-name">updown</span></li>
+    </ul>
+  </aside>
+
+  <script src="assets/js/home-robusto.js"></script>
 </body>
 </html>
