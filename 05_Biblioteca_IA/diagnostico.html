@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Diagnóstico Biblioteca IA</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background:#0f172a; color:#e5e7eb; padding:32px; }
+    code { background:#111827; padding:2px 6px; border-radius:6px; }
+    .ok { color:#22c55e; }
+    .bad { color:#ef4444; }
+  </style>
+</head>
+<body>
+  <h1>📚 Diagnóstico Biblioteca IA</h1>
+  <div id="out">Carregando...</div>
+
+  <script>
+    const tests = [
+      "index.html",
+      "data/biblioteca_catalogo.json",
+      "data/biblioteca_taxonomia_temas.json",
+      "data/biblioteca_brain_connections.json",
+      "acervo/artigos-cientificos/s13054-025-05817-6%202.pdf"
+    ];
+
+    async function run() {
+      const out = document.getElementById("out");
+      out.innerHTML = "";
+
+      for (const url of tests) {
+        try {
+          const r = await fetch(url, { method: "HEAD" });
+          out.innerHTML += `<p class="${r.ok ? "ok" : "bad"}">${r.ok ? "✅" : "❌"} <code>${url}</code> — HTTP ${r.status}</p>`;
+        } catch (e) {
+          out.innerHTML += `<p class="bad">❌ <code>${url}</code> — erro de fetch</p>`;
+        }
+      }
+    }
+
+    run();
+  </script>
+</body>
+</html>
