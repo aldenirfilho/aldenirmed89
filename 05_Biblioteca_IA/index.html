@@ -699,29 +699,41 @@ function sincronizarConexoesBrain(docId, tags) {
   console.log("Conexões sugeridas para o Brain:", tags);
 }
 
+function safeEncodePath(path) {
+  return path
+    .split('/')
+    .map(part => encodeURIComponent(part))
+    .join('/');
+}
+
 // Preview
 function abrirPreview(encodedPath, titulo) {
   const path = decodeURIComponent(encodedPath);
   const baseUrl = getBaseUrl();
-  const fullUrl = path.startsWith('http') ? path : baseUrl + path;
+  const encodedRelative = safeEncodePath(path);
+  const fullUrl = path.startsWith('http') ? path : baseUrl + encodedRelative;
   const ext = path.split('.').pop().toLowerCase();
   const frame = document.getElementById('previewFrame');
   
   // 📱 FIX MOBILE: Dispositivos móveis (especialmente iOS/iPhone) limitam PDFs em iframes à primeira página.
   // Abrir direto na nova aba ativa o visualizador nativo do celular (com scroll, zoom e marcações).
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 800;
+  
   if (ext === 'pdf' && isMobile) {
-    window.open(path, '_blank');
+    window.open(encodedRelative, '_blank');
     return;
   }
   
   document.getElementById('previewTitle').textContent = titulo || 'Visualizando arquivo';
-  document.getElementById('previewDirect').href = path;
+  document.getElementById('previewDirect').href = encodedRelative;
   
-  if (ext === 'pdf') frame.src = encodeURI(path);
-  else if (['docx', 'doc', 'xlsx', 'pptx'].includes(ext)) {
+  if (ext === 'pdf') {
+    frame.src = encodedRelative;
+  } else if (['docx', 'doc', 'xlsx', 'pptx'].includes(ext)) {
     frame.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(fullUrl) + '&embedded=true';
-  } else frame.src = encodeURI(path);
+  } else {
+    frame.src = encodedRelative;
+  }
   
   document.getElementById('previewOverlay').classList.add('open');
 }
