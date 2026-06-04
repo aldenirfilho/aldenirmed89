@@ -248,7 +248,7 @@
     <h3>🧠 Conexões Cerebrais</h3>
     <p>Cada arquivo nesta biblioteca está conectado a temas, módulos e calculadoras.</p>
     <div class="nodes-count"><span id="count-nodes">0</span> nós e <span id="count-edges">0</span> conexões ativas</div>
-    <button class="btn btn-secondary" style="margin-top:1rem" onclick="window.location.href='../assets/graph/index.html'">🔍 Ver Mapa Completo</button>
+    <button class="btn btn-secondary" style="margin-top:1rem" onclick="window.location.href='../index.html#mapa'">🔍 Ver Mapa Completo</button>
   </div>
 
   <!-- ROADMAP FUTURO -->
@@ -657,8 +657,8 @@ function renderGrid() {
   if (!catalog.items) return;
 
   const items = catalog.items.filter(i => {
-    // Se o filtro for 'todos', esconde o inbox. Se o filtro for 'inbox-revisar', mostra só o inbox.
-    if (currentFilter === 'todos' && i.theme === 'inbox-revisar') return false;
+    // Esconde o inbox na visualização 'todos' a menos que um filtro de formato ou origem específico seja acionado.
+    if (currentFilter === 'todos' && currentFormatFilter === 'todos' && currentOriginFilter === 'todos' && i.theme === 'inbox-revisar') return false;
     const matchTheme = currentFilter === 'todos' || i.theme === currentFilter;
     const formatId = i.formato || i.format || i.tipo || 'outros';
     const originId = i.origem || i.origin || 'gerada-por-ia';
