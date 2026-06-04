@@ -1,269 +1,115 @@
-# 🏥 Enciclopédia Médica Intensiva e Medicina Interna
+# 🏥 Enciclopédia Médica Intensiva & Medicina Interna
 
-> Plataforma médica educacional, interativa e continuamente atualizável, focada em **Medicina Intensiva**, **Medicina Interna**, **Clínica Médica Avançada**, **POCUS**, **plantão**, **raciocínio clínico** e **preparação para provas de título**, especialmente TEMI/AMIB e provas de R3 em Clínica Médica.
+> Plataforma médica educacional, interativa e **continuamente alimentada**, focada em **Medicina Intensiva**, **Clínica Médica avançada**, **emergência**, **enfermaria**, **POCUS** e **preparação para provas de título (TEMI/AMIB e R3)**.
 
-🌐 **Acesso ao projeto:**  
-https://aldenirfilho.github.io/antigravity-consultas/
-
----
-
-## 🎯 Objetivo do projeto
-
-A **Enciclopédia Médica Intensiva e Medicina Interna** foi criada para funcionar como uma base de consulta rápida, estudo aprofundado e revisão prática para médicos, residentes, estudantes avançados e profissionais que atuam em:
-
-- 🏥 Unidade de Terapia Intensiva;
-- 🚨 Emergência e sala vermelha;
-- 🩺 Enfermaria de Clínica Médica;
-- 🧠 Discussão diagnóstica complexa;
-- 🫀 Hemodinâmica e choque;
-- 🌬️ Ventilação mecânica;
-- 🔬 Sepse, infectologia e antibioticoterapia;
-- 🧪 Distúrbios hidroeletrolíticos e ácido-base;
-- 🖥️ POCUS / ultrassom à beira-leito;
-- 📚 Preparação para provas médicas.
-
-A proposta é unir **conteúdo médico confiável**, **organização visual**, **interatividade**, **ferramentas de plantão** e **métodos de aprendizagem adaptados para alta carga cognitiva**.
+🌐 **Site público:** https://aldenirfilho.github.io/antigravity-consultas/
+👤 **Autoria/curadoria médica:** Dr. Aldenir Rocha — CRM-CE 16587 · RQE Clínica Médica 11846 · Mestre em Ciências da Saúde (UFC)
 
 ---
 
-## 🧠 Filosofia do projeto
+## 🎯 O que é este projeto
 
-Este projeto foi pensado para ser:
+Um **acervo clínico vivo** que transforma material bruto (artigos, diretrizes, PDFs, DOCX, aulas, análises de IA) em **páginas didáticas, originais e seguras para publicação**, conectadas entre si por raciocínio clínico — não em capítulos isolados, mas em uma **rede de decisões**.
 
-### ✅ Prático
-Conteúdo voltado para tomada de decisão à beira-leito, prescrição, diagnóstico diferencial, fluxos de emergência e condutas de UTI.
+Serve a **três públicos** ao mesmo tempo:
 
-### ✅ Didático
-Uso de linguagem clara, tópicos, tabelas, algoritmos, flashcards, checklists, mnemônicos e questões comentadas.
+| Público | Uso |
+|---|---|
+| 🩺 **O autor (plantão/UTI)** | Consulta rápida à beira-leito, condutas, doses, checklists |
+| 🎓 **Estudantes e residentes** | Estudo estruturado, flashcards, questões TEMI/R3, mnemônicos |
+| 🌍 **Comunidade médica** | Fonte de pesquisa aberta com potencial de monetização futura |
 
-### ✅ TDAH-friendly
-Organização em blocos curtos, leitura visual, navegação simples, hierarquia clara de informação e foco em recuperação rápida do conteúdo.
-
-### ✅ Atualizável
-Estrutura preparada para receber novos artigos, diretrizes, resumos, calculadoras, imagens, dashboards e bancos de questões.
-
-### ✅ Integrável com IA
-Pensado para funcionar junto com ferramentas como ChatGPT, Claude, Perplexity, NotebookLM, Obsidian, GitHub Pages e Google Antigravity.
-
----
-
-## 📚 Principais módulos
-
-### 🏥 1. Medicina Intensiva
-
-Conteúdos focados em:
-
-- Choque;
-- Sepse;
-- Ventilação mecânica;
-- SDRA;
-- Injúria renal aguda;
-- Terapia renal substitutiva;
-- Delirium;
-- Analgesia e sedação;
-- ACLS;
-- Hipotermia;
-- Distúrbios hidroeletrolíticos;
-- Antibioticoterapia na UTI;
-- POCUS em paciente crítico.
+### Princípios editoriais
+- **Prático** — feito para decisão real (prescrição, diferencial, fluxo de emergência).
+- **Didático** — tabelas, algoritmos, flashcards, checklists, mnemônicos, questões comentadas.
+- **TDAH-friendly** — blocos curtos, leitura visual, hierarquia clara, recuperação rápida.
+- **Original e seguro** — sem cópia literal de fonte protegida; reescrita autoral.
+- **Atualizável** — estrutura preparada para receber conteúdo de forma contínua.
 
 ---
 
-### 🩺 2. Medicina Interna / Clínica Médica Avançada
+## 🧱 Arquitetura real (modelo de 2 camadas)
 
-Conteúdos voltados para:
+O projeto é **estático puro** (HTML/CSS/JS), publicado no GitHub Pages. Não exige Node nem build obrigatório.
 
-- Diagnóstico diferencial;
-- Enfermaria;
-- Pronto-socorro clínico;
-- Doenças sistêmicas;
-- Raciocínio sindrômico;
-- Condutas práticas;
-- Provas de R3;
-- Medicina baseada em evidências.
+```
+┌──────────────────────────────────────────────────────────────┐
+│  CAMADA 1 — FONTE CANÔNICA (Markdown-first)                    │
+│  Conteúdo clínico em .md com frontmatter YAML.                 │
+│  É a "verdade" de cada tema. Vive em 01_UpDown_Hub/.           │
+└──────────────────────────────────────────────────────────────┘
+                          │  (revisão médica obrigatória)
+                          ▼
+┌──────────────────────────────────────────────────────────────┐
+│  CAMADA 2 — SITE ESTÁTICO PÚBLICO                              │
+│  HTML/CSS/JS + apps interativos + dashboards + calculadoras.   │
+│  Montado e publicado pelo workflow .github/workflows/.         │
+└──────────────────────────────────────────────────────────────┘
+```
 
----
+> ⚠️ **O deploy é montado a partir da RAIZ do repositório** por
+> `.github/workflows/deploy-seguro.yml`, que copia uma *allowlist* de pastas
+> públicas para uma pasta temporária `site/` e a publica. A pasta `site/` **não
+> deve ser versionada** (é regenerada a cada push).
 
-### 🚨 3. Protocolos de emergência
+### Fluxo de produção (pipeline oficial)
 
-Dashboards e fluxos rápidos para situações críticas:
-
-- Código AVC;
-- Choque indiferenciado;
-- Hipercalemia;
-- Sepse;
-- Rebaixamento do nível de consciência;
-- Hipoglicemia;
-- Crise convulsiva;
-- Intoxicações;
-- Parada cardiorrespiratória;
-- Insuficiência respiratória aguda.
-
----
-
-### 🫀 4. POCUS / Ultrassom à beira-leito
-
-Módulo dedicado ao uso do ultrassom point-of-care em:
-
-- Pulmão;
-- Coração;
-- VCI;
-- FAST;
-- Acesso vascular;
-- Protocolo BLUE;
-- Protocolo RUSH;
-- Avaliação de congestão;
-- Choque;
-- Dispneia;
-- Procedimentos guiados.
+```
+Material bruto (PDF/DOCX/aula/IA)
+      └─▶ Biblioteca IA Engine        ← acervo indexado
+            └─▶ Prompt UpDown          ← transformação autoral
+                  └─▶ .md canônico     ← fonte da verdade
+                        └─▶ REVISÃO MÉDICA (obrigatória)  🛡️
+                              └─▶ HTML público + apps + cards
+                                    └─▶ linkagem no hub + Mapa Vivo
+```
 
 ---
 
-### 🧮 5. Calculadoras médicas
+## 🗂️ Mapa de pastas (o que é cada coisa)
 
-Ferramentas para plantão e UTI, incluindo:
-
-- SOFA;
-- qSOFA;
-- Glasgow;
-- Wells;
-- CAM-ICU;
-- SAPS 3;
-- Correção de sódio;
-- Osmolaridade;
-- Ânion gap;
-- Delta ratio;
-- Drogas vasoativas;
-- Ventilação mecânica;
-- Preparo de soluções;
-- Doses renais.
-
----
-
-### 🏆 6. Banco de questões TEMI / R3
-
-Banco progressivo de questões comentadas, com foco em:
-
-- Medicina Intensiva;
-- Clínica Médica;
-- Emergências;
-- Fisiopatologia;
-- Pegadinhas de prova;
-- Condutas práticas;
-- Diretrizes;
-- Estudos clássicos.
-
-Cada questão pode ser conectada a temas correlacionados, permitindo navegação cruzada entre assuntos.
+| Pasta | Função | Público? |
+|---|---|---|
+| `index.html` | Homepage / central de comando | ✅ |
+| `06_Infra_Site_E_Assets/` | **CSS, JS e data da homepage** (home-landing.*) | ✅ (assets) |
+| `assets/` · `css/` · `js/` | Assets globais compartilhados | ✅ (assets) |
+| `data/` | Manifests que dirigem o site: `connections.json` (Mapa Vivo D3), `topics.json`, `route_aliases.json`, `site_manifest.json` | ✅ (dados) |
+| `01_UpDown_Hub/` | **UpDown Hub** — conteúdo .md canônico + leitores | ✅ |
+| `02_Biblioteca_IA_Engine/` | Acervo de documentos (PDF/DOCX) com busca | ✅ |
+| `03_Calculadoras_E_Apps/` | Hub de calculadoras de plantão | ✅ |
+| `05_Midia_E_Feed/` | Feed de cards visuais (PWA, service worker) | ✅ |
+| `01_Modulos_Clinicos/` | Módulos clínicos em HTML (legados/originais) | ✅ |
+| `02_Banco_Questoes_TEMI/` | Banco de questões TEMI/R3 (motor) | ✅ |
+| `questoes/` | Wrapper público de questões (redireciona p/ banco TEMI) | ✅ |
+| `les-autoanticorpos/` | Módulo LES — autoanticorpos | ✅ |
+| `apps/` · `biblioteca/` · `updown/` | Wrappers de rota amigável/legado (redirects) | ✅ |
+| `imagens/` | Galeria visual / infográficos | ✅ |
+| — | — | — |
+| `00_INBOX_ATUALIZACAO/` | **Bastidor**: entradas de IA, rascunhos, kits | 🔒 NÃO |
+| `99_ARQUIVO_HISTORICO/` | Backups e histórico | 🔒 NÃO (gitignored) |
+| `_SUPORTE_PROJETO/` · `docs_projeto/` | Documentação interna | 🔒 NÃO |
+| `scripts_admin/` | Scripts utilitários (sync, validação) | 🔒 NÃO |
+| `ANTIGRAVITY_INSTRUCTIONS.md` | **Manual operacional único do agente** | 🔒 NÃO |
 
 ---
 
-### 🧩 7. UpDowns
+## 🛡️ Regras de segurança INVIOLÁVEIS
 
-Os **UpDowns** são documentos educacionais derivados de artigos, aulas, diretrizes ou materiais extensos, transformados em:
-
-- Resumo estruturado;
-- Conduta prática;
-- Pontos de prova;
-- Pegadinhas;
-- Flashcards;
-- Questões;
-- Mnemônicos;
-- Fluxogramas;
-- Checklists;
-- Tabela de decisão;
-- Resumo final.
-
-O objetivo é substituir a leitura dispersa por uma versão organizada, original, segura e didática.
+1. **Nunca expor dados de pacientes.** Todo conteúdo é anonimizado.
+2. **Nunca publicar bastidores** — prompts internos, instruções do agente, pastas `_private/`. O workflow já remove esses arquivos do artefato público.
+3. **Nunca apagar/mover** PDF, DOCX, MD, HTML, PNG, JSON ou ZIP sem autorização explícita do autor.
+4. **Nenhum HTML clínico vai ao ar sem revisão médica** do Dr. Aldenir.
+5. **Apoio cognitivo, não prescrição.** Toda dose/diluição exige checagem dupla no protocolo institucional local.
+6. **Sem cópia literal** de fonte protegida por direitos autorais — reescrita autoral sempre.
 
 ---
 
-### 🖼️ 8. Imagens, infográficos e wallpapers médicos
+## 🤖 Para o agente Antigravity / Gemini
 
-Banco visual com:
-
-- Cards 1080×1920;
-- Infográficos;
-- Dashboards;
-- Algoritmos visuais;
-- Mapas mentais;
-- Resumos para celular;
-- Imagens médicas comentadas;
-- Wallpapers de revisão rápida.
+Antes de qualquer alteração no repositório, **leia `ANTIGRAVITY_INSTRUCTIONS.md`** (manual operacional único, com o plano de manutenção em etapas, portões de autorização e regras de segurança). Esse arquivo substitui e consolida os antigos `ANTIGRAVITY_AUDIT_MAP.md` e `ANTIGRAVITY_TASK_QUEUE.md`.
 
 ---
 
-## 🧱 Estrutura sugerida do repositório
+## 📜 Licença e aviso
 
-```text
-antigravity-consultas/
-│
-├── index.html
-├── README.md
-├── manifest.json
-├── sitemap.xml
-│
-├── assets/
-│   ├── css/
-│   ├── js/
-│   ├── img/
-│   └── icons/
-│
-├── biblioteca/
-│   ├── index.html
-│   ├── artigos/
-│   ├── diretrizes/
-│   └── referencias/
-│
-├── updowns/
-│   ├── index.html
-│   ├── avc-agudo/
-│   ├── choque/
-│   ├── sepse/
-│   └── ventilacao-mecanica/
-│
-├── uti/
-│   ├── index.html
-│   ├── sepse/
-│   ├── choque/
-│   ├── ventilacao/
-│   ├── hemodinamica/
-│   └── neurointensivismo/
-│
-├── medicina-interna/
-│   ├── index.html
-│   ├── diagnostico-diferencial/
-│   ├── enfermaria/
-│   └── emergencia-clinica/
-│
-├── pocus/
-│   ├── index.html
-│   ├── pulmao/
-│   ├── coracao/
-│   ├── vascular/
-│   └── protocolos/
-│
-├── calculadoras/
-│   ├── index.html
-│   ├── sofa/
-│   ├── glasgow/
-│   ├── sodio/
-│   ├── drogas-vasoativas/
-│   └── ventilacao-mecanica/
-│
-├── questoes/
-│   ├── index.html
-│   ├── temi/
-│   ├── r3-clinica-medica/
-│   └── banco-avc-agudo/
-│
-├── imagens/
-│   ├── index.html
-│   ├── wallpapers/
-│   ├── dashboards/
-│   └── infograficos/
-│
-└── docs/
-    ├── instrucoes-antigravity.md
-    ├── workflow-ia.md
-    ├── padrao-artigos.md
-    └── contribuicao.md
+Conteúdo educacional autoral. **Não substitui julgamento clínico individual.** Os autores não se responsabilizam por eventos adversos decorrentes do uso. Diretrizes de referência: AMIB, Surviving Sepsis Campaign, AHA/ASA, EULAR/ACR, ADA (sempre verificar a versão vigente).
