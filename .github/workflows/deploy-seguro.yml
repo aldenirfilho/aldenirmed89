@@ -63,6 +63,9 @@ jobs:
           # Impedir processamento Jekyll
           touch site/.nojekyll
 
+          # Garantir permissao de leitura global para o NGINX do GitHub Pages ler os PDFs sem 404
+          chmod -R 755 site/
+
           # Remover symlinks (O GitHub Pages artifact nao aceita)
           find site -type l -print -delete
 
