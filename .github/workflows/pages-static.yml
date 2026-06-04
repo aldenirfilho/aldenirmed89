@@ -25,16 +25,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Ensure .nojekyll
-        run: touch public_site/.nojekyll
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-      - name: Add deploy stamp
-        run: date -u +"%Y-%m-%dT%H:%M:%SZ" > public_site/_deploy_stamp.txt
+      - name: Ensure .nojekyll
+        run: touch .nojekyll
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: public_site
+          path: .
 
       - name: Deploy to GitHub Pages
         id: deployment
