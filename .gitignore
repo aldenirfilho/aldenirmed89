@@ -1,6 +1,25 @@
+# ── Sistema operacional / editores ────────────────────────────
 .DS_Store
+Thumbs.db
 .obsidian/
+.vscode/
+.idea/
+*.bak
+*.tmp
+*~
+
+# ── Bastidores / privado (NUNCA versionar nem publicar) ────────
 04_Historico_Chats/
 .Trash/
-*.bak
 99_ARQUIVO_HISTORICO/
+**/_private/
+*_PRIVADO*
+*.local
+
+# ── Artefatos de build (regenerados no CI a cada push) ─────────
+# A pasta `site/` é montada pelo workflow deploy-seguro.yml no runner.
+# Versioná-la incha o repo (168 MB) e nunca é usada (o CI faz rm -rf site).
+site/
+
+# ── Carimbos de sincronização (ruído, não é fonte) ─────────────
+**/_last_sync.txt
