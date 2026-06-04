@@ -1,9 +1,61 @@
 {
+  "updatedAt": "2026-06-04",
+  "version": "route-aliases-manifest-first-2026-06-04",
+  "policy": "Rotas publicas e legadas devem apontar para destinos canonicos existentes, sem mover ou apagar arquivos originais.",
   "aliases": [
-    {"from": "questoes/index.html", "to": "07_Estudos_Markdown/index.html"},
-    {"from": "updown/index.html", "to": "07_Estudos_Markdown/index.html"},
-    {"from": "biblioteca/index.html", "to": "05_Biblioteca_IA/index.html"},
-    {"from": "imagens/index.html", "to": "07_Estudos_Markdown/imagens/index.html"},
-    {"from": "apps/index.html", "to": "07_Estudos_Markdown/apps/index.html"}
+    {
+      "from": "index.html",
+      "to": "index.html",
+      "status": "canonical",
+      "note": "Home publica principal."
+    },
+    {
+      "from": "updown/index.html",
+      "to": "07_Estudos_Markdown/index.html",
+      "status": "wrapper-confirmed",
+      "note": "Wrapper legado ja redireciona para o Hub UpDown canonico."
+    },
+    {
+      "from": "biblioteca/index.html",
+      "to": "05_Biblioteca_IA/index.html",
+      "status": "wrapper-confirmed",
+      "note": "Wrapper publico da Biblioteca IA."
+    },
+    {
+      "from": "questoes/index.html",
+      "to": "02_Banco_Questoes_TEMI/index.html",
+      "status": "wrapper-confirmed",
+      "note": "Corrigido: antes apontava para UpDown, mas o wrapper real aponta para Banco TEMI."
+    },
+    {
+      "from": "imagens/index.html",
+      "to": "imagens/index.html",
+      "status": "public-hub-active",
+      "note": "Galeria visual publica ativa; nao redirecionar para caminho inexistente."
+    },
+    {
+      "from": "apps/index.html",
+      "to": "apps/index.html",
+      "status": "public-hub-active",
+      "note": "Hub publico de apps ativo; manter como rota publica estavel."
+    },
+    {
+      "from": "calculadoras/index.html",
+      "to": "03_Calculadoras_UTI/index.html",
+      "status": "canonical-module",
+      "note": "Rota amigavel futura para calculadoras UTI."
+    },
+    {
+      "from": "card-feed/index.html",
+      "to": "06_Card_Feed_Medico/index.html",
+      "status": "canonical-module",
+      "note": "Rota amigavel futura para Card Feed Medico."
+    },
+    {
+      "from": "mapa",
+      "to": "data/connections.json",
+      "status": "data-canonical",
+      "note": "JSON canonico do Mapa Vivo."
+    }
   ]
 }
