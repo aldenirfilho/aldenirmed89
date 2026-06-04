@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!data) return;
     drawerTitle.textContent = data.title || "Tema";
     drawerText.textContent = data.text || "Detalhes do tema.";
-    drawerTags.innerHTML = (data.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
+    drawerTags.innerHTML = (data.tags || []).map(tag => `<span class="ag-tag">${tag}</span>`).join('');
     drawer.classList.add('open');
   }
 

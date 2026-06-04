@@ -6,351 +6,213 @@
   <title>Enciclopédia Médica Intensiva & Medicina Interna</title>
   <meta name="description" content="Projeto de enciclopédia médica interativa, contínua e didática para Medicina Intensiva, Medicina Interna, prática clínica, UTI e preparação TEMI." />
   
-  <!-- CSS Modularizado -->
   <link rel="stylesheet" href="06_Infra_Site_E_Assets/css/home-landing.css">
 </head>
-<body>
-  <div class="noise decorative"></div>
+<body class="antigravity-home">
 
-  <header>
-    <nav class="nav" aria-label="Navegação principal">
-      <a class="brand" href="#top" aria-label="Ir para o início">
-        <div class="logo">🧠</div>
+  <header class="ag-header">
+    <nav class="ag-nav" aria-label="Navegação principal">
+      <a class="ag-brand" href="#top" aria-label="Ir para o início">
+        <div class="ag-logo">🧠</div>
         <div>
-          <div class="brand-title">Enciclopédia Médica<br />Intensiva & Interna</div>
-          <div class="brand-subtitle">UTI • Enfermaria • TEMI • Clínica Avançada</div>
+          <div style="line-height: 1.05; letter-spacing: -0.035em; font-size: 1rem;">Enciclopédia Médica<br />Intensiva & Interna</div>
         </div>
       </a>
 
       <!-- ROTAS OFICIAIS BASEADAS NO MANIFESTO -->
-      <div class="nav-links">
-        <a href="01_UpDown_Hub/" style="color: #4ef0a1; font-weight: 800;">↕️ UpDown Hub</a>
+      <div class="ag-navlinks">
+        <a href="01_UpDown_Hub/" style="color: #4ef0a1;">↕️ UpDown Hub</a>
         <a href="02_Biblioteca_IA_Engine/" style="color: #a98cff;">📚 Biblioteca IA</a>
         <a href="05_Midia_E_Feed/" style="color: #38bdf8;">🖼️ Imagens e Feed</a>
-        <a href="03_Calculadoras_E_Apps/" style="color: #4ef0a1;">🧮 Apps e Calculadoras</a>
-        <a href="questoes/index.html" style="color: #ffc107;">🏆 Simulador TEMI</a>
+        <a href="03_Calculadoras_E_Apps/" style="color: #4ef0a1;">🧮 Apps</a>
+        <a href="questoes/index.html" style="color: #ffc107;">🏆 TEMI</a>
       </div>
-
-      <a class="nav-cta" href="#sugestoes">💬 Comentários</a>
     </nav>
   </header>
 
-  <main id="top" class="shell">
-    <section class="hero">
-      <article class="hero-card">
-        <div class="hero-content">
-          <div class="eyebrow">🚀 Projeto vivo • Medicina crítica • Aprendizagem interconectada</div>
-          <h1><span class="gradient-text">A central de comando</span><br />para estudar, decidir e evoluir na medicina.</h1>
-          <p class="hero-lead">
-            Uma plataforma médica interativa, didática e continuamente atualizável, criada para transformar artigos, diretrizes, protocolos, casos reais, aulas, PDFs e análises de IA em uma <strong>enciclopédia clínica conectada por raciocínio</strong> — da beira-leito da UTI à prova de título, da enfermaria à medicina interna avançada.
+  <main id="top" class="ag-shell">
+    <section class="ag-hero">
+      <article class="ag-hero-card">
+        <div>
+          <div class="ag-eyebrow">🚀 Projeto vivo • Medicina crítica • Aprendizagem interconectada</div>
+          <h1 class="ag-title"><span class="ag-gradient">A central de comando</span><br />para estudar, decidir e evoluir na medicina.</h1>
+          <p class="ag-lead">
+            Uma plataforma médica interativa, didática e continuamente atualizável, criada para transformar artigos, diretrizes, protocolos, casos reais, aulas, PDFs e análises de IA em uma <strong>enciclopédia clínica conectada por raciocínio</strong> — da beira-leito da UTI à prova de título.
           </p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#vias">🧭 Explorar as duas vias</a>
-            <!-- Linkando para um hub hipotético ou existente -->
-            <a class="btn violet" href="01_Modulos_Clinicos/AVC_Agudo/avc.html">🧠 Abrir módulo AVC Agudo</a>
-            <a class="btn" href="#mapa">🕸️ Ver mapa de conexões</a>
+          <div class="ag-actions">
+            <a class="ag-btn primary" href="#vias">🧭 Explorar as duas vias</a>
+            <a class="ag-btn" href="#mapa">🕸️ Ver mapa de conexões</a>
           </div>
         </div>
       </article>
 
-      <aside class="glass dashboard" aria-label="Painel de status do projeto">
-        <div class="dash-top">
+      <aside class="ag-glass ag-dashboard" aria-label="Painel de status do projeto">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
           <div>
-            <h2 class="mini-title">Painel operacional</h2>
-            <div class="mini-muted">Visão rápida da arquitetura inicial do projeto.</div>
+            <h2 style="margin: 0; font-size: 1.25rem; letter-spacing: -0.035em;">Painel operacional</h2>
+            <div style="color: var(--muted); font-size: .9rem;">Visão rápida da arquitetura.</div>
           </div>
-          <div class="status-pill"><span class="pulse-dot"></span>Em expansão</div>
+          <div class="ag-status"><span class="ag-dot"></span>Em expansão</div>
         </div>
 
-        <div class="metric-grid">
-          <div class="metric"><strong>02</strong><span>vias principais</span></div>
-          <div class="metric"><strong>31+</strong><span>blocos por tema</span></div>
-          <div class="metric"><strong>∞</strong><span>links cruzados</span></div>
-          <div class="metric"><strong>01</strong><span>módulo inicial: AVC</span></div>
-        </div>
-
-        <div class="signal decorative" aria-hidden="true">
-          <svg viewBox="0 0 560 160" preserveAspectRatio="none">
-            <path d="M0 92 C40 80, 64 40, 94 60 C132 86, 144 132, 188 86 C226 46, 250 78, 282 68 C332 52, 334 104, 384 88 C432 72, 442 22, 494 58 C526 80, 540 84, 560 76" fill="none" stroke="rgba(62,232,255,.86)" stroke-width="4" />
-            <path d="M0 110 C38 98, 76 118, 114 102 C154 84, 190 118, 230 96 C270 74, 302 92, 342 84 C392 74, 430 104, 468 92 C512 78, 532 100, 560 90" fill="none" stroke="rgba(169,140,255,.58)" stroke-width="3" />
-          </svg>
-        </div>
-
-        <div class="card" style="box-shadow:none; padding:16px;">
-          <h3>🎯 Ideia central</h3>
-          <p>Todo tópico vira uma página viva: resumo, fisiopatologia, conduta, prescrição, checklist, TEMI, flashcards, questões, imagens, escalas, links e atualização contínua.</p>
+        <div class="ag-metrics">
+          <div class="ag-metric"><strong>02</strong><span>vias principais</span></div>
+          <div class="ag-metric"><strong>31+</strong><span>blocos por tema</span></div>
+          <div class="ag-metric"><strong>∞</strong><span>links cruzados</span></div>
+          <div class="ag-metric"><strong>01</strong><span>módulo inicial</span></div>
         </div>
       </aside>
     </section>
 
     <!-- Manifesto e Editorial -->
-    <section id="manifesto" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Manifesto editorial 🧬</h2>
-          <p class="section-sub">O projeto nasce com a missão de organizar conhecimento médico complexo em uma experiência visual, acionável, revisável e conectada.</p>
-        </div>
+    <section id="manifesto" class="ag-section">
+      <div>
+        <h2>Manifesto editorial 🧬</h2>
+        <p class="ag-section-sub">O projeto nasce com a missão de organizar conhecimento médico complexo em uma experiência visual, acionável, revisável e conectada.</p>
       </div>
 
-      <div class="grid-2">
-        <article class="glass card editorial">
+      <div class="ag-grid-2" style="margin-top:24px;">
+        <article class="ag-glass ag-card">
           <h3>📜 Descrição inicial do projeto</h3>
           <p>
-            A <strong>Enciclopédia Médica Intensiva & Medicina Interna</strong> é uma arquitetura de conhecimento clínica feita para médicos que vivem a pressão real da decisão: plantão, UTI, enfermaria, emergência, parecer, discussão de caso, atualização científica e prova de título.
-          </p>
-          <p>
-            Em vez de páginas isoladas, cada assunto será uma peça de uma rede: <strong>AVC Agudo</strong> se conecta com hipertensão, anticoagulação, fibrilação atrial, neuroimagem, trombólise, trombectomia, ventilação mecânica, delirium, glicemia, metas hemodinâmicas, prevenção secundária e reabilitação.
+            A <strong>Enciclopédia Médica Intensiva & Medicina Interna</strong> é uma arquitetura de conhecimento clínica feita para médicos que vivem a pressão real da decisão: plantão, UTI, enfermaria, emergência.
           </p>
           <p>
             O objetivo é que a navegação imite o pensamento clínico: você entra por um tema, mas sai com um mapa de decisões, riscos, diferenciais e próximos estudos.
           </p>
         </article>
 
-        <article class="glass card editorial">
+        <article class="ag-glass ag-card">
           <h3>🧭 Objetivos editoriais</h3>
-          <ul>
+          <ul style="padding-left:18px;">
             <li><strong>Transformar conteúdo bruto</strong> em material clínico pronto para uso.</li>
-            <li><strong>Conectar diretrizes, artigos, aulas, casos e prescrições</strong> em páginas vivas.</li>
-            <li><strong>Reduzir carga cognitiva</strong> com checklists, mapas visuais, algoritmos e flashcards.</li>
+            <li><strong>Conectar diretrizes, artigos, aulas</strong> em páginas vivas.</li>
             <li><strong>Preparar para TEMI</strong> com pegadinhas, questões e pontos de prova.</li>
             <li><strong>Construir memória clínica longitudinal</strong> para revisão contínua e tomada de decisão segura.</li>
-            <li><strong>Permitir assimilação por IA</strong> de novos PDFs, Word, HTML, diretrizes e análises externas.</li>
           </ul>
         </article>
       </div>
     </section>
 
-    <!-- Como Funciona o fluxo -->
-    <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>Como funciona a máquina ⚙️</h2>
-          <p class="section-sub">O fluxo da Biblioteca ↔ UpDown ↔ Imagens ↔ Apps ↔ IA.</p>
-        </div>
-      </div>
-      <div class="grid-4">
-        <article class="card">
-          <h3>📥 1. Inbox / Entrada</h3>
-          <p>Artigos, guidelines e PDFs são jogados na <strong>Biblioteca IA</strong> bruta.</p>
-        </article>
-        <article class="card">
-          <h3>🤖 2. Processamento IA</h3>
-          <p>Extração automática de pontos-chave, doses, regras de conduta e questões TEMI.</p>
-        </article>
-        <article class="card">
-          <h3>↕️ 3. UpDown Hub</h3>
-          <p>O conhecimento é filtrado, curado por revisão clínica e convertido em Markdown interativo.</p>
-        </article>
-        <article class="card">
-          <h3>📱 4. Multi-formato</h3>
-          <p>O conteúdo é injetado como Cards visuais, Flashcards TEMI ou Calculadoras UTI no site.</p>
-        </article>
-      </div>
-    </section>
-
     <!-- Triangulo Central -->
-    <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>O Triângulo Central do Conhecimento 📐</h2>
-          <p class="section-sub">Como o ecossistema Antigravity se interconecta modularmente.</p>
-        </div>
+    <section class="ag-section">
+      <div>
+        <h2>O Triângulo Central do Conhecimento 📐</h2>
+        <p class="ag-section-sub">Como o ecossistema Antigravity se interconecta modularmente.</p>
       </div>
-      <div class="grid-3">
-        <article class="card" style="border-color: rgba(169,140,255,0.4);">
+      <div class="ag-grid-3" style="margin-top:24px;">
+        <article class="ag-card" style="border-color: rgba(169,140,255,0.4);">
           <div style="font-size: 2rem; margin-bottom:10px;">📚</div>
           <h3>Biblioteca IA</h3>
           <p>Acervo de PDFs, DOCX, protocolos, artigos e materiais originais organizados para consulta.</p>
-          <a href="02_Biblioteca_IA_Engine/" class="btn violet" style="margin-top:10px; font-size:0.8rem;">Acessar</a>
+          <a href="02_Biblioteca_IA_Engine/" class="ag-btn" style="border-color: rgba(169,140,255,0.4); margin-top:10px; font-size:0.8rem;">Acessar</a>
         </article>
-        <article class="card" style="border-color: rgba(78,240,161,0.4);">
+        <article class="ag-card" style="border-color: rgba(78,240,161,0.4);">
           <div style="font-size: 2rem; margin-bottom:10px;">↕️</div>
           <h3>UpDown Hub</h3>
           <p>Revisões médicas didáticas em Markdown e HTML, com fluxos, flashcards, questões e mnemônicos.</p>
-          <a href="01_UpDown_Hub/" class="btn primary" style="margin-top:10px; font-size:0.8rem;">Acessar</a>
+          <a href="01_UpDown_Hub/" class="ag-btn primary" style="margin-top:10px; font-size:0.8rem;">Acessar</a>
         </article>
-        <article class="card" style="border-color: rgba(62,232,255,0.4);">
+        <article class="ag-card" style="border-color: rgba(62,232,255,0.4);">
           <div style="font-size: 2rem; margin-bottom:10px;">🧮</div>
           <h3>Apps e Calculadoras</h3>
           <p>Ferramentas práticas para plantão, UTI, prescrição, ventilação, hemodinâmica e escores.</p>
-          <a href="03_Calculadoras_E_Apps/" class="btn" style="background:#1c3d5a; margin-top:10px; font-size:0.8rem;">Acessar</a>
+          <a href="03_Calculadoras_E_Apps/" class="ag-btn" style="background:#1c3d5a; margin-top:10px; font-size:0.8rem;">Acessar</a>
         </article>
       </div>
     </section>
 
     <!-- Duas Grandes Vias -->
-    <section id="vias" class="section">
-      <div class="section-head">
-        <div>
-          <h2>As duas grandes vias 🛣️</h2>
-          <p class="section-sub">A plataforma será organizada em duas trilhas-mãe que conversam entre si, sem virar silos.</p>
-        </div>
+    <section id="vias" class="ag-section">
+      <div>
+        <h2>As duas grandes vias 🛣️</h2>
+        <p class="ag-section-sub">A plataforma será organizada em duas trilhas-mãe que conversam entre si.</p>
       </div>
 
-      <div class="grid-2">
-        <article class="card path-card intensiva">
-          <div>
-            <div class="path-icon">🚑</div>
-            <h3>Via 1 — Medicina Intensiva</h3>
-            <p>
-              O eixo do paciente crítico: choque, sepse, ventilação mecânica, neurointensivismo, sedação, analgesia, delirium, VMNI, IRA, TRS, ECMO, POCUS, nutrição e bundles.
-            </p>
-            <ul>
-              <li>Protocolos beira-leito e checklists de round.</li>
-              <li>Mapas de decisão para instabilidade clínica.</li>
-              <li>Preparação direcionada para TEMI (Simuladores e Flashcards).</li>
-            </ul>
-          </div>
-          <div class="tag-row">
-            <button class="topic-chip" data-filter="choque">🫀 Choque</button>
-            <button class="topic-chip" data-filter="vm">🫁 VM</button>
-            <button class="topic-chip" data-filter="sepse">🦠 Sepse</button>
-            <button class="topic-chip" data-filter="neuro">🧠 Neuro UTI</button>
+      <div class="ag-grid-2" style="margin-top:24px;">
+        <article class="ag-card" style="background: radial-gradient(circle at top right, rgba(255,107,107,0.13), transparent 24rem), linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));">
+          <div class="ag-path-icon">🚑</div>
+          <h3>Via 1 — Medicina Intensiva</h3>
+          <p>O eixo do paciente crítico: choque, sepse, ventilação mecânica, neurointensivismo, sedação, analgesia, delirium, VMNI, IRA.</p>
+          <div class="ag-tags">
+            <span class="ag-tag">🫀 Choque</span>
+            <span class="ag-tag">🫁 VM</span>
+            <span class="ag-tag">🦠 Sepse</span>
+            <span class="ag-tag">🧠 Neuro UTI</span>
           </div>
         </article>
 
-        <article class="card path-card interna">
-          <div>
-            <div class="path-icon">🏥</div>
-            <h3>Via 2 — Medicina Interna Avançada</h3>
-            <p>
-              O eixo do internista resolutivo: diagnóstico diferencial, enfermaria, pronto-socorro clínico, ambulatório complexo, multimorbidade, farmacologia e raciocínio longitudinal.
-            </p>
-            <ul>
-              <li>Síndromes clínicas e diagnósticos diferenciais complexos.</li>
-              <li>Doenças crônicas, raras e sobreposições clínicas.</li>
-              <li>Preparação para R3 e prática de alto desempenho.</li>
-            </ul>
+        <article class="ag-card" style="background: radial-gradient(circle at top right, rgba(106,169,255,0.15), transparent 24rem), linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));">
+          <div class="ag-path-icon">🏥</div>
+          <h3>Via 2 — Medicina Interna Avançada</h3>
+          <p>O eixo do internista resolutivo: diagnóstico diferencial, enfermaria, pronto-socorro clínico, ambulatório complexo.</p>
+          <div class="ag-tags">
+            <span class="ag-tag">❤️ Cardio</span>
+            <span class="ag-tag">🧂 Nefro</span>
+            <span class="ag-tag">🩸 Hemato</span>
+            <span class="ag-tag">🦠 Infecto</span>
           </div>
-          <div class="tag-row">
-            <button class="topic-chip" data-filter="cardio">❤️ Cardio</button>
-            <button class="topic-chip" data-filter="nefro">🧂 Nefro</button>
-            <button class="topic-chip" data-filter="hemato">🩸 Hemato</button>
-            <button class="topic-chip" data-filter="infecto">🦠 Infecto</button>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- Hub Modular e links oficiais -->
-    <section id="arquitetura" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Módulos do Projeto e Arquitetura 🧱</h2>
-          <p class="section-sub">Como cada tema é digerido, e os acessos diretos aos módulos do repositório Antigravity.</p>
-        </div>
-      </div>
-
-      <div class="grid-4">
-        <article class="card"><h3>1️⃣ Essência clínica</h3><p>Definição, etiologia, risco, fisiopatologia.</p></article>
-        <article class="card"><h3>2️⃣ Diagnóstico</h3><p>Critérios, exames, fluxos decisórios.</p></article>
-        <article class="card"><h3>3️⃣ Conduta UTI</h3><p>Emergência, UTI, prescrição, bundles.</p></article>
-        <article class="card">
-          <h3><a href="questoes/index.html" style="text-decoration:underline;">4️⃣ Simulados TEMI</a></h3>
-          <p>Pontos de prova, flashcards, questões abertas.</p>
-        </article>
-        <article class="card"><h3>5️⃣ Atualização</h3><p>Diretrizes, trials, PubMed, revisões.</p></article>
-        <article class="card">
-          <h3><a href="05_Midia_E_Feed/" style="text-decoration:underline;">6️⃣ Feed de Imagens</a></h3>
-          <p>Imagens, algoritmos, cartões mobile.</p>
-        </article>
-        <article class="card">
-          <h3><a href="02_Biblioteca_IA_Engine/" style="text-decoration:underline;">7️⃣ Biblioteca IA</a></h3>
-          <p>O repositório base indexado de PDFs.</p>
-        </article>
-        <article class="card">
-          <h3><a href="01_UpDown_Hub/" style="text-decoration:underline;">8️⃣ UpDown Hub</a></h3>
-          <p>A interface central de hipertexto médico.</p>
         </article>
       </div>
     </section>
 
     <!-- Mapa de conexoes -->
-    <section id="mapa" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Mapa vivo de conexões 🕸️</h2>
-          <p class="section-sub">Protótipo visual: cada nó representa uma página. O clique abre um painel explicando a conexão e apontando para módulos.</p>
-        </div>
+    <section id="mapa" class="ag-section">
+      <div>
+        <h2>Mapa vivo de conexões 🕸️</h2>
+        <p class="ag-section-sub">Protótipo visual: cada nó representa uma página. O clique abre um painel explicando a conexão e apontando para módulos.</p>
       </div>
 
-      <div class="graph" id="knowledgeGraph" aria-label="Mapa visual de conexões do conhecimento">
-        <div class="line decorative" style="left:18%; top:26%; width:28%; transform:rotate(14deg);"></div>
-        <div class="line decorative" style="left:38%; top:37%; width:24%; transform:rotate(-18deg);"></div>
-        <div class="line decorative" style="left:26%; top:58%; width:26%; transform:rotate(-8deg);"></div>
-        <div class="line decorative" style="left:54%; top:55%; width:26%; transform:rotate(19deg);"></div>
-        <div class="line decorative" style="left:51%; top:31%; width:20%; transform:rotate(38deg);"></div>
+      <div class="ag-graph" id="knowledgeGraph" aria-label="Mapa visual de conexões do conhecimento" style="margin-top:24px;">
+        <div class="ag-line" style="left:18%; top:26%; width:28%; transform:rotate(14deg);"></div>
+        <div class="ag-line" style="left:38%; top:37%; width:24%; transform:rotate(-18deg);"></div>
+        <div class="ag-line" style="left:26%; top:58%; width:26%; transform:rotate(-8deg);"></div>
+        <div class="ag-line" style="left:54%; top:55%; width:26%; transform:rotate(19deg);"></div>
+        <div class="ag-line" style="left:51%; top:31%; width:20%; transform:rotate(38deg);"></div>
 
-        <button class="node main" style="left:41%; top:38%;" data-node="avc"><b>🧠 AVC Agudo</b><small>Hub inicial</small></button>
-        <button class="node alert" style="left:8%; top:18%;" data-node="trombolise"><b>💉 Trombólise</b><small>janela, PA, risco</small></button>
-        <button class="node" style="left:68%; top:18%;" data-node="trombectomia"><b>🧲 Trombectomia</b><small>OGV, perfusão</small></button>
-        <button class="node" style="left:14%; top:62%;" data-node="pa"><b>🎚️ PA no AVC</b><small>metas de segurança</small></button>
-        <button class="node exam" style="left:45%; top:72%;" data-node="temi"><b>🏆 TEMI</b><small>pegadinhas de prova</small></button>
-        <button class="node" style="left:72%; top:60%;" data-node="fa"><b>❤️ FA</b><small>anticoagulação</small></button>
-        <button class="node" style="left:30%; top:8%;" data-node="imagem"><b>🖥️ Neuroimagem</b><small>TC, ASPECTS</small></button>
-        <button class="node alert" style="left:62%; top:39%;" data-node="edema"><b>🌊 Edema maligno</b><small>Neuro UTI</small></button>
+        <button class="ag-node main" style="left:41%; top:38%;" data-node="avc"><b>🧠 AVC Agudo</b><small>Hub inicial</small></button>
+        <button class="ag-node alert" style="left:8%; top:18%;" data-node="trombolise"><b>💉 Trombólise</b><small>janela, PA, risco</small></button>
+        <button class="ag-node" style="left:68%; top:18%;" data-node="trombectomia"><b>🧲 Trombectomia</b><small>OGV, perfusão</small></button>
+        <button class="ag-node" style="left:14%; top:62%;" data-node="pa"><b>🎚️ PA no AVC</b><small>metas de segurança</small></button>
+        <button class="ag-node exam" style="left:45%; top:72%;" data-node="temi"><b>🏆 TEMI</b><small>pegadinhas de prova</small></button>
+        <button class="ag-node" style="left:72%; top:60%;" data-node="fa"><b>❤️ FA</b><small>anticoagulação</small></button>
+        <button class="ag-node" style="left:30%; top:8%;" data-node="imagem"><b>🖥️ Neuroimagem</b><small>TC, ASPECTS</small></button>
+        <button class="ag-node alert" style="left:62%; top:39%;" data-node="edema"><b>🌊 Edema maligno</b><small>Neuro UTI</small></button>
       </div>
     </section>
 
     <!-- Roadmap -->
-    <section id="roteiro" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Roadmap do Projeto 🧗</h2>
-          <p class="section-sub">Uma evolução em fases: primeiro a base, depois os módulos, e enfim a autonomia inteligente.</p>
-        </div>
+    <section id="roteiro" class="ag-section">
+      <div>
+        <h2>Roadmap do Projeto 🧗</h2>
+        <p class="ag-section-sub">Uma evolução em fases: primeiro a base, depois os módulos, e enfim a autonomia inteligente.</p>
       </div>
 
-      <div class="timeline">
-        <div class="phase">
-          <div class="phase-number">01</div>
-          <div class="phase-body"><h3>Fundação visual</h3><p>Homepage, infraestrutura modular, e criação da Biblioteca IA indexada.</p></div>
+      <div class="ag-timeline" style="margin-top:24px;">
+        <div class="ag-phase">
+          <div class="ag-phase-num">01</div>
+          <div class="ag-phase-body"><h3>Fundação visual</h3><p>Homepage, infraestrutura modular, e criação da Biblioteca IA indexada.</p></div>
         </div>
-        <div class="phase">
-          <div class="phase-number">02</div>
-          <div class="phase-body"><h3>Integração UpDown & Card Feed</h3><p>Criação das vias de leitura médica e os flashcards em HTML responsivos.</p></div>
+        <div class="ag-phase">
+          <div class="ag-phase-num">02</div>
+          <div class="ag-phase-body"><h3>Integração UpDown & Card Feed</h3><p>Criação das vias de leitura médica e os flashcards em HTML responsivos.</p></div>
         </div>
-        <div class="phase">
-          <div class="phase-number">03</div>
-          <div class="phase-body"><h3>Apps e Simulados</h3><p>Criação das ferramentas ativas: Simulador TEMI e Calculadoras UTI dinâmicas.</p></div>
+        <div class="ag-phase">
+          <div class="ag-phase-num">03</div>
+          <div class="ag-phase-body"><h3>Apps e Simulados</h3><p>Criação das ferramentas ativas: Simulador TEMI e Calculadoras UTI dinâmicas.</p></div>
         </div>
-        <div class="phase">
-          <div class="phase-number">04</div>
-          <div class="phase-body"><h3>Busca Global e Mapa Semântico</h3><p>Unificação definitiva de todos os módulos através de um motor de busca semântica em tempo real para o plantão.</p></div>
+        <div class="ag-phase">
+          <div class="ag-phase-num">04</div>
+          <div class="ag-phase-body"><h3>Busca Global e Mapa Semântico</h3><p>Unificação definitiva de todos os módulos através de um motor de busca semântica em tempo real.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- Segurança -->
-    <section id="seguranca" class="section">
-      <div class="section-head">
-        <div>
-          <h2>Segurança Clínica 🛡️</h2>
-          <p class="section-sub">Aviso mandatório de uso e responsabilidade profissional médica.</p>
-        </div>
-      </div>
-
-      <div class="grid-3">
-        <article class="card">
-          <h3>✅ Camada de Segurança</h3>
-          <p>O conteúdo serve de apoio cognitivo. Jamais substitui o raciocínio médico individual beira-leito.</p>
-        </article>
-        <article class="card">
-          <h3>🔎 Transparência</h3>
-          <p>As páginas apontam para as diretrizes (AMIB, Surviving Sepsis, AHA) e bibliografias em PDF contidas na Biblioteca.</p>
-        </article>
-        <article class="card">
-          <h3>🧑‍⚕️ Responsabilidade</h3>
-          <p>Não somos responsáveis por eventos adversos. Toda conduta medicamentosa (doses, diluições) requer checagem dupla em protocolo institucional local.</p>
-        </article>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="footer-grid">
+    <footer class="ag-footer">
+      <div class="ag-footer-grid">
         <div>
           <h3>Enciclopédia Médica Intensiva & Interna</h3>
-          <p>Um projeto vivo para organizar, conectar e transformar conhecimento médico em decisão clínica segura.</p>
+          <p style="color:var(--muted); line-height:1.6;">Um projeto vivo para organizar, conectar e transformar conhecimento médico em decisão clínica segura.</p>
         </div>
         <div>
           <h3>Atalhos Rápidos</h3>
@@ -363,19 +225,13 @@
     </footer>
   </main>
 
-  <aside id="drawer" class="drawer" aria-live="polite" aria-label="Painel de detalhes do tema">
-    <button class="close" id="drawerClose" aria-label="Fechar painel">×</button>
+  <aside id="drawer" class="ag-drawer" aria-live="polite" aria-label="Painel de detalhes do tema">
+    <button class="ag-close" id="drawerClose" aria-label="Fechar painel">×</button>
     <h3 id="drawerTitle">Tema</h3>
     <p id="drawerText">Detalhes do tema selecionado.</p>
-    <div class="tag-row" id="drawerTags"></div>
+    <div class="ag-tags" id="drawerTags"></div>
   </aside>
 
-  <div class="accessibility" aria-label="Ferramentas rápidas">
-    <button class="float-btn" id="focusToggle" title="Ativar modo foco">🎯</button>
-    <button class="float-btn" id="topButton" title="Voltar ao topo">⬆️</button>
-  </div>
-
-  <!-- JS Modularizado -->
   <script src="06_Infra_Site_E_Assets/js/home-landing.js"></script>
 </body>
 </html>
