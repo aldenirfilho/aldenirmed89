@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roadmap Biblioteca IA | Antigravity</title>
+  <meta name="description" content="Roadmap publico de melhorias da Biblioteca IA Antigravity." />
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: #0f1f38;
+      --panel-2: #122844;
+      --line: #1e3a5f;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --violet: #a78bfa;
+      --ok: #10b981;
+      --warn: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, .18), transparent 34rem),
+        linear-gradient(180deg, #020617 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(2, 6, 23, .82);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .bar, main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    .bar {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0;
+    }
+    .brand { color: inherit; text-decoration: none; }
+    .brand strong { display: block; font-size: 1.05rem; }
+    .brand small { color: var(--muted); }
+    .btn {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: rgba(15, 31, 56, .72);
+      white-space: nowrap;
+    }
+    .hero { padding: 44px 0 24px; }
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: .78rem;
+      font-weight: 800;
+    }
+    h1 { margin: 8px 0 12px; font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.05; }
+    .lead { color: var(--muted); max-width: 760px; font-size: 1.05rem; }
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 22px 0 10px;
+    }
+    input, select {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(15, 31, 56, .9);
+      color: var(--text);
+      padding: 0 12px;
+    }
+    input { flex: 1 1 280px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+      padding: 20px 0 56px;
+    }
+    article {
+      background: linear-gradient(180deg, rgba(18, 40, 68, .96), rgba(15, 31, 56, .88));
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+    .badge {
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-weight: 800;
+      font-size: .72rem;
+      color: #04111f;
+      background: var(--accent);
+      white-space: nowrap;
+    }
+    .badge.alta { background: var(--warn); }
+    .badge.media, .badge.média { background: var(--violet); color: #fff; }
+    .badge.baixa { background: var(--ok); }
+    h2 { font-size: 1rem; margin: 0; line-height: 1.25; }
+    p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .empty {
+      border: 1px dashed var(--line);
+      color: var(--muted);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      display: none;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 720px) {
+      .bar { align-items: flex-start; flex-direction: column; }
+      .btn { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <a class="brand" href="index.html">
+        <strong>📚 Biblioteca IA</strong>
+        <small>Roadmap publico de melhorias</small>
+      </a>
+      <a class="btn" href="index.html">Voltar para Biblioteca</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">Roadmap 30</div>
+      <h1>Melhorias planejadas para a Biblioteca IA</h1>
+      <p class="lead">Lista publica alimentada por <code>data/roadmap_30_melhorias_biblioteca_ia.json</code>, com foco em curadoria, segurança, conexoes entre módulos e fluxo continuo de conteúdo.</p>
+      <div class="toolbar">
+        <input id="q" type="search" placeholder="Buscar por titulo, categoria ou descricao..." />
+        <select id="priority">
+          <option value="">Todas as prioridades</option>
+          <option value="alta">Alta</option>
+          <option value="média">Média</option>
+          <option value="media">Media</option>
+          <option value="baixa">Baixa</option>
+        </select>
+        <select id="category">
+          <option value="">Todas as categorias</option>
+        </select>
+      </div>
+    </section>
+
+    <section id="grid" class="grid" aria-live="polite"></section>
+    <div id="empty" class="empty">Nenhuma melhoria encontrada para os filtros atuais.</div>
+  </main>
+
+  <script>
+    const state = { items: [], q: "", priority: "", category: "" };
+    const grid = document.getElementById("grid");
+    const empty = document.getElementById("empty");
+    const q = document.getElementById("q");
+    const priority = document.getElementById("priority");
+    const category = document.getElementById("category");
+
+    function esc(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function norm(value) {
+      return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+
+    function renderCategories() {
+      const categories = [...new Set(state.items.map(item => item.category).filter(Boolean))].sort();
+      category.innerHTML = '<option value="">Todas as categorias</option>' +
+        categories.map(value => `<option value="${esc(value)}">${esc(value)}</option>`).join("");
+    }
+
+    function filtered() {
+      const term = norm(state.q);
+      return state.items.filter(item => {
+        const haystack = norm([item.title, item.category, item.priority, item.description].join(" "));
+        const okTerm = !term || haystack.includes(term);
+        const okPriority = !state.priority || norm(item.priority) === norm(state.priority);
+        const okCategory = !state.category || item.category === state.category;
+        return okTerm && okPriority && okCategory;
+      });
+    }
+
+    function render() {
+      const items = filtered();
+      empty.style.display = items.length ? "none" : "block";
+      grid.innerHTML = items.map(item => `
+        <article>
+          <div class="meta">
+            <span>#${esc(item.id)}</span>
+            <span class="badge ${esc(norm(item.priority))}">${esc(item.priority || "sem prioridade")}</span>
+          </div>
+          <h2>${esc(item.title)}</h2>
+          <p><strong>${esc(item.category)}</strong></p>
+          <p>${esc(item.description)}</p>
+        </article>
+      `).join("");
+    }
+
+    fetch("../data/roadmap_30_melhorias_biblioteca_ia.json", { cache: "no-store" })
+      .then(r => r.ok ? r.json() : Promise.reject(new Error("HTTP " + r.status)))
+      .then(data => {
+        state.items = data.suggestions || [];
+        renderCategories();
+        render();
+      })
+      .catch(err => {
+        grid.innerHTML = "";
+        empty.textContent = "Nao foi possivel carregar o roadmap: " + err.message;
+        empty.style.display = "block";
+      });
+
+    q.addEventListener("input", () => { state.q = q.value; render(); });
+    priority.addEventListener("change", () => { state.priority = priority.value; render(); });
+    category.addEventListener("change", () => { state.category = category.value; render(); });
+  </script>
+</body>
+</html>

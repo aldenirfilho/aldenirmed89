@@ -8,4 +8,4 @@ python3 scan_biblioteca.py
 
 echo ""
 echo "Próximo passo:"
-echo "  git add . && git commit -m 'Atualiza Biblioteca IA por formato e origem' && git push origin main"
+echo "  Revise git diff, valide e publique pela branch de trabalho/PR."
