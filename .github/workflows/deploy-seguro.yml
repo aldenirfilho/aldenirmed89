@@ -94,6 +94,7 @@ jobs:
           cp -r imagens                 site/ 2>/dev/null || true
           cp -r data                    site/ 2>/dev/null || true   # <- FIX Mapa Vivo / manifests
           cp -r admin                   site/ 2>/dev/null || true   # <- FIX editor público de desafios
+          cp -r desafios                site/ 2>/dev/null || true   # <- leitor full-page de desafios
 
           # ---- 3. Módulos públicos (Atualizado p/ a nova arquitetura) ------
           cp -r 01_UpDown_Hub           site/ 2>/dev/null || true
@@ -154,6 +155,7 @@ jobs:
           echo "==== Checagens essenciais do artefato ===="
           test -f site/admin/desafios.html
           test -f site/data/desafios.json
+          test -f site/desafios/index.html
           test -f site/02_Biblioteca_IA_Engine/index.html
           echo "==== Tamanho do artefato ===="
           du -sh site/
