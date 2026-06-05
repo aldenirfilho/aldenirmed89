@@ -146,21 +146,32 @@ def validate_target(target: Target, fix: bool) -> tuple[int, int, int, int]:
 
     base = ROOT / target.base_path
     all_paths, by_dir_name = build_index(base, target.kind)
-    ok = fixable = missing = errors = 0
+    ok = fixable = missing = errors = pruned = 0
     changed = False
+    kept = []
 
     for item in items:
         if not isinstance(item, dict):
+            kept.append(item)
             continue
         raw = item.get(target.path_field)
         if not raw or is_external(str(raw)):
             ok += 1
+            kept.append(item)
             continue
         resolved = resolve_path(str(raw), base, target.kind, all_paths, by_dir_name)
         if resolved is None:
-            missing += 1
             label = item.get("title") or item.get("name") or item.get("id") or "item"
+            if fix:
+                # Self-healing: arquivo nao existe (ex.: gitignored/removido) ->
+                # remove a entrada do manifesto para nao quebrar o deploy.
+                pruned += 1
+                changed = True
+                print(f"[prune] {target.json_path}: {label} -> {raw} (arquivo ausente, removido)")
+                continue
+            missing += 1
             print(f"[404] {target.json_path}: {label} -> {raw}")
+            kept.append(item)
             continue
         if os.path.normpath(resolved) != os.path.normpath(str(raw)):
             fixable += 1
@@ -170,12 +181,19 @@ def validate_target(target: Target, fix: bool) -> tuple[int, int, int, int]:
                 changed = True
         else:
             ok += 1
+        kept.append(item)
 
     if fix and changed:
+        data[target.list_key] = kept
         write_json(json_file, data)
 
     status = "OK" if missing == 0 else "ATENCAO"
-    action = "corrigido" if fix and changed else "sem escrita"
+    bits = []
+    if fix and changed:
+        bits.append("corrigido")
+    if pruned:
+        bits.append(f"{pruned} removido(s)")
+    action = ", ".join(bits) if bits else "sem escrita"
     print(f"[{status}] {target.json_path}: {ok} ok, {fixable} corrigiveis, {missing} 404 ({action})")
     return (ok, fixable, missing, errors)
 
