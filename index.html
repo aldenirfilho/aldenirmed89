@@ -482,12 +482,14 @@ header{
 .dsf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
 .dsf-card{
   background:var(--surf);border:1px solid var(--brd);
-  border-radius:var(--r-lg);padding:22px 20px;
-  cursor:pointer;transition:all .22s;position:relative;
+  border-left:3px solid var(--dsf-c, var(--cyan));
+  border-radius:var(--r-lg);padding:22px 20px 22px 17px;
+  cursor:pointer;transition:all .25s cubic-bezier(0.4, 0, 0.2, 1);position:relative;
 }
 .dsf-card:hover{
-  border-color:var(--dsf-c,var(--cyan));transform:translateY(-2px);
-  box-shadow:0 12px 36px rgba(0,0,0,.25);
+  border-color:var(--dsf-c,var(--cyan));transform:translateY(-4px);
+  box-shadow:0 12px 36px rgba(0,0,0,0.3);
+  background:linear-gradient(145deg, var(--surf), rgba(255,255,255,0.01));
 }
 .dsf-card-meta{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .dsf-badge{font-family:var(--font-mono);font-size:.6rem;padding:3px 9px;border-radius:20px;font-weight:600}
@@ -683,6 +685,19 @@ header{
 .drawer-close:hover{background:var(--surf-h);color:var(--text)}
 #drawerTitle{font-family:var(--font-head);font-size:1.25rem;font-weight:800;margin-bottom:10px;padding-right:40px}
 #drawerText{font-size:.88rem;color:var(--soft);line-height:1.7;margin-bottom:16px}
+#drawerText h1,#drawerText h2{font-family:var(--font-head);color:var(--text);margin:18px 0 6px;font-size:1rem}
+#drawerText h3{font-family:var(--font-head);color:var(--cyan);margin:14px 0 4px;font-size:.9rem}
+#drawerText strong{color:var(--text)}
+#drawerText code{font-family:var(--font-mono);font-size:.78rem;background:rgba(62,232,255,.08);color:var(--cyan);padding:1px 5px;border-radius:4px}
+#drawerText pre{background:rgba(255,255,255,.04);border:1px solid var(--brd);border-radius:8px;padding:12px;overflow-x:auto;margin:10px 0}
+#drawerText pre code{background:none;color:var(--soft);padding:0}
+#drawerText table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.8rem}
+#drawerText th,#drawerText td{border:1px solid var(--brd);padding:5px 8px;text-align:left}
+#drawerText th{background:var(--surf);color:var(--text)}
+#drawerText blockquote{border-left:3px solid var(--cyan);padding:4px 12px;margin:8px 0;color:var(--soft)}
+#drawerText ul,#drawerText ol{padding-left:20px;margin:6px 0}
+#drawerText li{margin:3px 0}
+#drawerText hr{border:none;border-top:1px solid var(--brd);margin:12px 0}
 .drawer-tags{display:flex;flex-wrap:wrap;gap:6px}
 .dtag{font-family:var(--font-mono);font-size:.65rem;padding:4px 10px;border-radius:20px;background:var(--cyan-d);color:var(--cyan);border:1px solid rgba(62,232,255,.2)}
 .overlay{
@@ -1504,7 +1519,7 @@ header{
 <aside id="drawer" aria-label="Detalhes do tema" aria-hidden="true" tabindex="-1">
   <button class="drawer-close" id="drawerClose" aria-label="Fechar painel">✕</button>
   <h3 id="drawerTitle">Tema</h3>
-  <p id="drawerText"></p>
+  <div id="drawerText"></div>
   <div class="drawer-tags" id="drawerTags"></div>
 </aside>
 
@@ -1607,6 +1622,54 @@ const cntObserver=new IntersectionObserver(entries=>{
 },{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cntObserver.observe(el));
 
+/* ── MARKDOWN RENDERER (drawer de desafios) ──────── */
+function mdToHtml(md){
+  if(!md) return '';
+  let h = md
+    // code blocks
+    .replace(/```[\w]*\n?([\s\S]*?)```/g,(_,c)=>`<pre><code>${escHtml(c.trim())}</code></pre>`)
+    // headings
+    .replace(/^#{3}\s+(.+)$/gm,'<h3>$1</h3>')
+    .replace(/^#{2}\s+(.+)$/gm,'<h2>$1</h2>')
+    .replace(/^#{1}\s+(.+)$/gm,'<h1>$1</h1>')
+    // bold + italic
+    .replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/_(.+?)_/g,'<em>$1</em>')
+    .replace(/\*([^*]+)\*/g,'<em>$1</em>')
+    // inline code
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    // hr
+    .replace(/^---+$/gm,'<hr>')
+    // blockquote
+    .replace(/^>\s+(.+)$/gm,'<blockquote>$1</blockquote>')
+    // tables
+    .replace(/(\|.+\|\n)((?:\|[-: ]+\|\n))(\|[\s\S]+?)(?=\n\n|\n#|$)/g,(_,head,_sep,body)=>{
+      const th=head.trim().split('|').filter(Boolean).map(c=>`<th>${c.trim()}</th>`).join('');
+      const rows=body.trim().split('\n').map(r=>{
+        const cells=r.trim().split('|').filter(Boolean).map(c=>`<td>${c.trim()}</td>`).join('');
+        return `<tr>${cells}</tr>`;
+      }).join('');
+      return `<table><thead><tr>${th}</tr></thead><tbody>${rows}</tbody></table>`;
+    })
+    // unordered list
+    .replace(/((?:^[-*+]\s.+\n?)+)/gm,block=>{
+      const items=block.trim().split('\n').map(l=>`<li>${l.replace(/^[-*+]\s/,'').trim()}</li>`).join('');
+      return `<ul>${items}</ul>`;
+    })
+    // ordered list
+    .replace(/((?:^\d+\.\s.+\n?)+)/gm,block=>{
+      const items=block.trim().split('\n').map(l=>`<li>${l.replace(/^\d+\.\s/,'').trim()}</li>`).join('');
+      return `<ol>${items}</ol>`;
+    })
+    // paragraphs (blank-line separated blocks not already tagged)
+    .replace(/^(?!<[a-z]|\s*$)(.+)$/gm,'<p>$1</p>');
+  return h;
+}
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 /* ── DESAFIOS CLÍNICOS — loader ──────────────────── */
 (async function(){
   let dsfData={temi:[],r3:[]};
@@ -1675,7 +1738,7 @@ document.querySelectorAll('[data-count]').forEach(el=>cntObserver.observe(el));
           <span class="dsf-date">${escH(d.date||'')}</span>
         </div>
         <h3>${escH(d.title||'Sem título')}</h3>
-        <p class="dsf-excerpt">${escH(d.content||'')}</p>
+        <p class="dsf-excerpt">${escH(d.excerpt||String(d.content||'').slice(0,200))}</p>
         <div class="dsf-tags">${
           (d.tags||[]).map(t=>`<span class="dsf-tag">${escH(t)}</span>`).join('')
         }</div>
@@ -1689,7 +1752,7 @@ document.querySelectorAll('[data-count]').forEach(el=>cntObserver.observe(el));
         const d=(dsfData[b]||[]).find(x=>x.id===id);
         if(!d)return;
         document.getElementById('drawerTitle').textContent=d.title||'Sem título';
-        document.getElementById('drawerText').textContent=d.content||'';
+        document.getElementById('drawerText').innerHTML=mdToHtml(d.content||'');
         const tagsEl=document.getElementById('drawerTags');
         tagsEl.innerHTML=(d.tags||[]).map(t=>`<span class="dtag">${escH(t)}</span>`).join('');
         drawer.classList.add('open');

@@ -29,6 +29,10 @@ if [ -n "$MODE" ]; then
   exit 2
 fi
 
+echo "0/4 Desafios Clinicos (10_DESAFIOS -> data/desafios.json)..."
+python3 scripts_admin/build_desafios.py
+echo ""
+
 echo "1/4 Biblioteca IA..."
 if [ -f "02_Biblioteca_IA_Engine/scan_biblioteca.py" ]; then
   (cd 02_Biblioteca_IA_Engine && python3 scan_biblioteca.py)

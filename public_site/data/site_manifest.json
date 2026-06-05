@@ -3,7 +3,6 @@
   "project": "Enciclopédia Médica Intensiva & Medicina Interna",
   "version": "manifest-canonico-v2",
   "stack": "html-css-js-json-static",
-  "note": "Espelho de data/site_manifest.json — fonte canonica esta na raiz.",
   "hubs": {
     "home": "index.html",
     "updown": "01_UpDown_Hub/index.html",
@@ -34,6 +33,12 @@
     { "from": "03_Calculadoras_UTI/index.html", "to": "03_Calculadoras_E_Apps/index.html", "status": "wrapper-redirect" },
     { "from": "06_Card_Feed_Medico/index.html", "to": "05_Midia_E_Feed/index.html", "status": "wrapper-redirect" }
   ],
+  "dataSources": {
+    "updownRegistry": "01_UpDown_Hub/registry.json",
+    "bibliotecaManifest": "02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json",
+    "feedCards": "05_Midia_E_Feed/data/cards.json",
+    "homeManifest": "06_Infra_Site_E_Assets/data/home-manifest.json"
+  },
   "modules": [
     { "id": "updown", "path": "01_UpDown_Hub/index.html", "label": "UpDown Hub" },
     { "id": "biblioteca", "path": "02_Biblioteca_IA_Engine/index.html", "label": "Biblioteca IA" },

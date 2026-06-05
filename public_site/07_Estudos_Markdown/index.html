@@ -3,215 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UpDown Hub | Enciclomedia Antigravity</title>
-  <meta name="description" content="Hub médico para conteúdos transformados: UpDown, Biblioteca, Imagens e Aplicações Clínicas." />
-  <link rel="stylesheet" href="assets/estudos.css" />
+  <title>UpDown Hub | Redirecionando</title>
+  <link rel="canonical" href="../01_UpDown_Hub/index.html" />
+  <meta http-equiv="refresh" content="0; url=../01_UpDown_Hub/index.html" />
+  <script>
+    window.location.replace("../01_UpDown_Hub/index.html");
+  </script>
   <style>
-    /* Estilos Adicionais para o Redesign Hub */
-    .hub-nav {
+    body {
+      margin: 0;
+      min-height: 100vh;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
+      place-items: center;
+      background: #07111f;
+      color: #f6f8fc;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    .hub-card {
-      padding: 2rem;
+    main {
+      width: min(92vw, 520px);
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
       text-align: center;
-      transition: transform 0.3s ease, border-color 0.3s ease;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
     }
-    .hub-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent);
-    }
-    .hub-card i { font-size: 3rem; display: block; margin-bottom: 1rem; }
-    .hub-card h2 { margin: 0.5rem 0; font-size: 1.5rem; }
-    .hub-card p { font-size: 0.9rem; color: var(--muted); }
-    
-    .triangle-viz {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 3rem 1rem;
-      background: rgba(255,255,255,0.02);
-      border-radius: 30px;
-      margin-bottom: 3rem;
-      border: 1px dashed var(--border);
-    }
-    .triangle-node {
-      padding: 1rem 1.5rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      z-index: 2;
-    }
-    .triangle-line {
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      width: 60px;
-      margin: 0 -10px;
-      opacity: 0.5;
-    }
-
-    .app-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      background: rgba(0,0,0,0.2);
-      border-radius: 15px;
-      overflow: hidden;
-    }
-    .app-table th, .app-table td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    .app-table th { background: rgba(255,255,255,0.05); font-size: 0.8rem; text-transform: uppercase; color: var(--muted); }
-    .app-table tr:last-child td { border-bottom: none; }
-    .app-table tr:hover td { background: rgba(56,189,248,0.05); }
-
-    .nav-links-hub { display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: center; }
+    a { color: #4ef0a1; font-weight: 800; text-decoration: none; }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="../index.html">🧠 <span>Enciclomedia Antigravity</span></a>
-    <nav>
-      <a href="../index.html">🏠 Home</a>
-      <a href="../biblioteca/index.html">📚 Biblioteca</a>
-      <a href="../imagens/index.html">🖼️ Imagens</a>
-      <a href="../apps/index.html">📱 Apps</a>
-    </nav>
-  </header>
-
   <main>
-    <!-- HERO -->
-    <section class="hero">
-      <div>
-        <span class="eyebrow">🚀 Modo Leitor • Hub Interconectado • Medicina de Precisão</span>
-        <h1>UpDown Hub</h1>
-        <p>
-          Transformamos conhecimento complexo em páginas didáticas, originais e interconectadas. 
-          Cada estudo é uma porta para fontes originais, materiais visuais e ferramentas práticas de beira-leito.
-        </p>
-        <div class="nav-links-hub">
-          <a class="btn primary" href="#catalogo">📚 Explorar UpDowns</a>
-          <a class="btn" href="../apps/index.html">📱 Clinical Apps</a>
-        </div>
-      </div>
-      <aside class="panel">
-        <h2>📊 Painel Hub</h2>
-        <div class="metrics">
-          <div><strong id="metricDocs">0</strong><span>UpDowns</span></div>
-          <div><strong id="metricThemes">0</strong><span>Especialidades</span></div>
-          <div><strong>v3.2</strong><span>Hub Engine</span></div>
-          <div><strong>Live</strong><span>Status</span></div>
-        </div>
-      </aside>
-    </section>
-
-    <!-- TRIANGULO DE NAVEGAÇÃO -->
-    <div class="triangle-viz">
-      <div class="triangle-node" style="border-color: var(--accent2)">Biblioteca</div>
-      <div class="triangle-line"></div>
-      <div class="triangle-node" style="border-color: var(--accent); transform: scale(1.1); box-shadow: 0 0 20px rgba(56,189,248,0.2)">UpDown</div>
-      <div class="triangle-line"></div>
-      <div class="triangle-node" style="border-color: var(--gold)">Imagens</div>
-    </div>
-
-    <!-- CARDS DE ACESSO RÁPIDO -->
-    <section class="hub-nav">
-      <div class="card hub-card" onclick="location.href='#catalogo'">
-        <i>↕️</i>
-        <h2>UpDowns</h2>
-        <p>Conteúdo didático transformado, flashcards e questões para estudo.</p>
-      </div>
-      <div class="card hub-card" onclick="location.href='../biblioteca/index.html'">
-        <i>📚</i>
-        <h2>Biblioteca</h2>
-        <p>Fontes originais, PDFs, diretrizes e artigos de referência rastreáveis.</p>
-      </div>
-      <div class="card hub-card" onclick="location.href='../imagens/index.html'">
-        <i>🖼️</i>
-        <h2>Galeria</h2>
-        <p>Mapas mentais, fluxogramas, cards de bolso e infográficos de alta resolução.</p>
-      </div>
-    </section>
-
-    <!-- CATÁLOGO DIPLICADO -->
-    <section id="catalogo" class="section block highlight">
-      <div class="section-title-row">
-        <div>
-          <h2>📚 Módulos Publicados</h2>
-          <p class="muted">Lista oficial de estudos transformados pelo fluxo UPDOWN.</p>
-        </div>
-        <div class="searchbox">
-          <input id="searchInput" placeholder="🔍 buscar tema ou tag..." />
-          <select id="themeFilter"><option value="">Todos os temas</option></select>
-          <select id="statusFilter"><option value="">Status (Todos)</option></select>
-        </div>
-      </div>
-      <div id="docsGrid" class="grid three"></div>
-    </section>
-
-    <!-- APLICAÇÕES EXTRAS -->
-    <section id="apps" class="section block">
-      <h2>📱 Aplicações Clínicas & Ferramentas</h2>
-      <p class="muted">Ferramentas de apoio à decisão prática, calculadoras e fluxos estruturados.</p>
-      
-      <table class="app-table">
-        <thead>
-          <tr>
-            <th>Aplicação</th>
-            <th>Função Principal</th>
-            <th>Status</th>
-            <th>Ação</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Calculadora de Vasoativas</strong></td>
-            <td>mL/h, dose, concentração e prescrição padronizada</td>
-            <td><span class="pill status">Atualizado v2</span></td>
-            <td><a href="apps/vasoativas/index.html" class="btn primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Abrir</a></td>
-          </tr>
-          <tr>
-            <td><strong>Mapa de FAN</strong></td>
-            <td>Interpretação de padrões e anticorpos</td>
-            <td><span class="pill">Planejado</span></td>
-            <td><button class="btn ghost" disabled style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Breve</button></td>
-          </tr>
-          <tr>
-            <td><strong>Delirium / CAM-ICU</strong></td>
-            <td>Rastreio estruturado na UTI</td>
-            <td><span class="pill">Planejado</span></td>
-            <td><button class="btn ghost" disabled style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Breve</button></td>
-          </tr>
-          <tr>
-            <td><strong>SAPS 3 / SOFA</strong></td>
-            <td>Gravidade e prognóstico</td>
-            <td><span class="pill">Planejado</span></td>
-            <td><button class="btn ghost" disabled style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Breve</button></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
+    <p>Redirecionando para o <a href="../01_UpDown_Hub/index.html">UpDown Hub</a>.</p>
   </main>
-
-  <footer>
-    <p>🧠 <strong>Enciclomedia Antigravity</strong> — Modo Leitor, Versão e Didática.</p>
-    <p class="muted" style="font-size: 0.8rem; margin-top: 1rem;">
-      Ferramenta de apoio educacional. Não substitui julgamento clínico ou protocolos institucionais. 
-      Sempre confira doses e diluições conforme a padronização do seu serviço.
-    </p>
-  </footer>
-
-  <script src="assets/estudos.js"></script>
 </body>
 </html>
