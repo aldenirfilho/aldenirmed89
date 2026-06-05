@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ebooks Intensiva & Clínica Médica Interna | Antigravity</title>
+  <link rel="stylesheet" href="../assets/css/content-hub.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">
+      <span class="brand-icon">📘</span>
+      <span><strong>Ebooks Intensiva & Clínica Médica Interna</strong><small>Guias longos, compêndios e livros práticos</small></span>
+    </a>
+    <nav class="nav-actions"><a class="btn" href="../index.html">← Home</a><a class="btn" href="inbox/">📥 Inbox</a></nav>
+  </header>
+  <main class="shell">
+    <section class="hero">
+      <div class="panel"><span class="eyebrow">Biblioteca longitudinal</span><h1>Ebooks para UTI e Medicina Interna</h1><p class="lead">Diretório para reunir ebooks, manuais, guias longos e compêndios de consulta rápida ou estudo profundo em Terapia Intensiva e Clínica Médica.</p></div>
+      <aside class="panel stats"><div class="stat"><strong id="stat-total">0</strong><span>Itens</span></div><div class="stat"><strong id="stat-files">0</strong><span>Arquivos</span></div><div class="stat"><strong id="stat-links">0</strong><span>Links</span></div><div class="stat"><strong id="stat-formats">0</strong><span>Formatos</span></div></aside>
+    </section>
+    <section class="panel instructions"><strong>Alimentação contínua:</strong> adicione arquivos em <code>04_Ebooks_Intensiva_Clinica/inbox/</code>, links em <code>links/links.json</code> e rode <code>bash scan_inbox.sh</code>.</section>
+    <section class="controls"><input id="search" class="control" placeholder="Buscar ebook, tema, formato ou tag..." oninput="setQuery(this.value)"/><select id="format-filter" class="control" onchange="setFormat(this.value)"></select><select id="source-filter" class="control" onchange="setSource(this.value)"></select><button class="btn" onclick="clearFilters()">Limpar</button></section>
+    <div id="format-tabs" class="format-tabs"></div>
+    <section class="section-title"><div><h2>Acervo</h2><p id="result-count">0 item(ns)</p></div></section>
+    <div id="empty-state" class="empty" style="display:none">Nenhum item encontrado. Adicione arquivos ao inbox e rode o scanner.</div>
+    <div id="items-grid" class="grid"></div>
+  </main>
+  <div id="preview" class="preview"><div class="preview-bar"><h3 id="preview-title">Visualização</h3><div class="actions"><a id="preview-direct" class="btn" target="_blank" rel="noopener">Abrir</a><a id="preview-download" class="btn" download>Baixar</a><button class="btn primary" onclick="closePreview()">Fechar</button></div></div><iframe id="preview-frame" class="preview-frame"></iframe><div id="preview-body" class="preview-body"></div></div>
+  <script src="../assets/js/content-hub.js"></script>
+</body>
+</html>
