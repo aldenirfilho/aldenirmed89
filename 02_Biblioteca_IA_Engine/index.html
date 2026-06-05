@@ -397,12 +397,11 @@ let currentView = 'catalogo';
 
 // Lógica de URL base dinâmica
 function getBaseUrl() {
-  const origin = window.location.origin;
-  const path = window.location.pathname;
-  if (path.includes('/antigravity-consultas/')) {
-    return origin + '/antigravity-consultas/05_Biblioteca_IA/';
+  try {
+    return new URL('.', window.location.href).href;
+  } catch (e) {
+    return window.location.href.replace(/index\.html.*$/, '').replace(/[^/]*$/, '');
   }
-  return window.location.href.replace(/index\.html.*$/, '').replace(/[^/]*$/, '');
 }
 
 // Normalização de caminhos para evitar redundância de pasta pai (Fix 404)
@@ -1036,8 +1035,9 @@ function abrirPreview(encodedPath, titulo) {
   }
   const path = decodeURIComponent(encodedPath);
   const baseUrl = getBaseUrl();
-  const encodedRelative = safeEncodePath(path);
-  const fullUrl = path.startsWith('http') ? path : baseUrl + encodedRelative;
+  const isRemoteUrl = /^https?:\/\//i.test(path);
+  const encodedRelative = isRemoteUrl ? path : safeEncodePath(path);
+  const fullUrl = isRemoteUrl ? path : new URL(encodedRelative, baseUrl).href;
   const ext = path.split('.').pop().toLowerCase();
   const frame = document.getElementById('previewFrame');
   frame.removeAttribute('srcdoc');

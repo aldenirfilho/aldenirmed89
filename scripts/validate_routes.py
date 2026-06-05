@@ -110,6 +110,19 @@ def validate_aliases(aliases_data: dict, base_dir: str) -> List[Tuple[str, str, 
     return results
 
 
+def validate_required_public_files(base_dir: str) -> List[Tuple[str, str, bool]]:
+    """Valida arquivos públicos essenciais não listados nos manifests legados."""
+    required = {
+        "Editor de Desafios": "admin/desafios.html",
+        "Dados dos Desafios": "data/desafios.json",
+    }
+    results: List[Tuple[str, str, bool]] = []
+    for label, relative_path in required.items():
+        full_path = os.path.join(base_dir, relative_path)
+        results.append((f"Essencial: {label}", relative_path, os.path.exists(full_path)))
+    return results
+
+
 def main() -> None:
     """Função principal do script de auditoria."""
     parser = argparse.ArgumentParser(description="Audita rotas e manifests do projeto.")
@@ -132,9 +145,10 @@ def main() -> None:
 
     manifest_results = validate_manifest(manifest, project_root)
     aliases_results = validate_aliases(aliases_data, project_root)
+    required_results = validate_required_public_files(project_root)
 
     # Agrupar resultados
-    all_results = manifest_results + aliases_results
+    all_results = manifest_results + aliases_results + required_results
     broken_links = [r for r in all_results if not r[2]]
     valid_links = [r for r in all_results if r[2]]
 

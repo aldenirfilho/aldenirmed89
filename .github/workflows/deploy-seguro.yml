@@ -59,6 +59,7 @@ jobs:
           set -e
           python3 scripts_admin/check_static_manifests.py
           python3 scripts_admin/validar_paths.py --check
+          python3 scripts/validate_routes.py
 
       - name: Montar pasta publica limpa (allowlist)
         run: |
@@ -81,6 +82,7 @@ jobs:
           cp -r js                      site/ 2>/dev/null || true
           cp -r imagens                 site/ 2>/dev/null || true
           cp -r data                    site/ 2>/dev/null || true   # <- FIX Mapa Vivo / manifests
+          cp -r admin                   site/ 2>/dev/null || true   # <- FIX editor público de desafios
 
           # ---- 3. Módulos públicos (Atualizado p/ a nova arquitetura) ------
           cp -r 01_UpDown_Hub           site/ 2>/dev/null || true
@@ -138,6 +140,10 @@ jobs:
 
           echo "==== Conteúdo final publicado (top-level) ===="
           ls -1 site/
+          echo "==== Checagens essenciais do artefato ===="
+          test -f site/admin/desafios.html
+          test -f site/data/desafios.json
+          test -f site/02_Biblioteca_IA_Engine/index.html
           echo "==== Tamanho do artefato ===="
           du -sh site/
 

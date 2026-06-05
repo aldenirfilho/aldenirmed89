@@ -346,6 +346,10 @@ let editingId = null;
 
 /* ── FILE SYSTEM API ─────────────────────────────── */
 document.getElementById('btnLinkFile').addEventListener('click', async () => {
+  if (!window.showOpenFilePicker) {
+    showToast('Use Chrome ou Edge no computador para vincular data/desafios.json.', 'error');
+    return;
+  }
   try {
     [fileHandle] = await window.showOpenFilePicker({
       types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }],
@@ -367,7 +371,11 @@ document.getElementById('btnLinkFile').addEventListener('click', async () => {
     document.getElementById('btnSave').disabled = false;
     renderList();
     renderSuggestions();
-  } catch(e) { /* user cancelled */ }
+  } catch(e) {
+    if (e && e.name !== 'AbortError') {
+      showToast('Erro ao vincular arquivo: ' + e.message, 'error');
+    }
+  }
 });
 
 function setFileLinked(linked, name) {
