@@ -24,6 +24,7 @@ SYNC_TARGETS = [
     "08_Transcricoes",
     "09_POCUS_Hub",
     "10_DESAFIOS",
+    "11_MNEMONICOS",
     "admin",
     "desafios",
     "les-autoanticorpos",

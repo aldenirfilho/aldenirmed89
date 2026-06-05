@@ -54,10 +54,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Compilar desafios e indexar hubs de conteúdo (POCUS, Ebooks, etc.)
+      - name: Compilar desafios, mnemônicos e indexar hubs de conteúdo
         run: |
           set -e
           python3 scripts_admin/build_desafios.py
+          python3 scripts_admin/build_mnemonicos.py
           for hub in 04_Ebooks_Intensiva_Clinica 07_Questoes_Comentadas 08_Transcricoes 09_POCUS_Hub; do
             if [ -d "$hub" ]; then
               python3 scripts_admin/scan_content_module.py "$hub"
@@ -109,6 +110,8 @@ jobs:
           cp -r 07_Questoes_Comentadas  site/ 2>/dev/null || true
           cp -r 08_Transcricoes         site/ 2>/dev/null || true
           cp -r 09_POCUS_Hub            site/ 2>/dev/null || true
+          cp -r 10_DESAFIOS             site/ 2>/dev/null || true
+          cp -r 11_MNEMONICOS           site/ 2>/dev/null || true
           
           # Módulos legados (preservados caso ainda existam na raiz soltos)
           cp -r 01_Modulos_Clinicos     site/ 2>/dev/null || true

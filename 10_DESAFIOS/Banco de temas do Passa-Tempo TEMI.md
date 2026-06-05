@@ -1,4 +1,4 @@
-# Banco de temas do Passa-Tempo TEMI
+# TEMAS
 
 O jogo vai rodar em cima destes blocos:
 

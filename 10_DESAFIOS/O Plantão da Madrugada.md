@@ -1,4 +1,4 @@
-## 🏥 CASO CLÍNICO INAUGURAL — "O Plantão da Madrugada"
+# O Plantão da Madrugada
 
 > **Cenário:** São 03h47 da manhã. Você está de plantão na UTI da Santa Casa de Sobral. A enfermeira te chama: "Doutor, o leito 7 piorou."
 

@@ -11,8 +11,9 @@ echo "🚀 INICIANDO PIPELINE DE ATUALIZAÇÃO DO ANTIGRAVITY"
 echo "=========================================================="
 echo ""
 
-echo "🏋️  Passo 1/3: Compilando Desafios Clínicos..."
+echo "🏋️  Passo 1/3: Compilando Desafios e Mnemônicos Clínicos..."
 python3 scripts_admin/build_desafios.py
+python3 scripts_admin/build_mnemonicos.py
 echo ""
 
 echo "📦 Passo 2/3: Reindexando hubs e validando rotas..."
