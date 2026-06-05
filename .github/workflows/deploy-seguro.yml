@@ -54,6 +54,17 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Compilar desafios e indexar hubs de conteúdo (POCUS, Ebooks, etc.)
+        run: |
+          set -e
+          python3 scripts_admin/build_desafios.py
+          for hub in 04_Ebooks_Intensiva_Clinica 07_Questoes_Comentadas 08_Transcricoes 09_POCUS_Hub; do
+            if [ -d "$hub" ]; then
+              python3 scripts_admin/scan_content_module.py "$hub"
+            fi
+          done
+          python3 scripts_admin/validar_paths.py --fix
+
       - name: Validar manifests e paths antes do deploy
         run: |
           set -e
