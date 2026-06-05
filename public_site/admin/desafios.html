@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Editor de Desafios — Antigravity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#040d1a;--bg2:#071422;--bg3:#0b1a2e;
+  --surf:rgba(255,255,255,.055);--surf-h:rgba(255,255,255,.09);
+  --brd:rgba(255,255,255,.09);--brd-h:rgba(255,255,255,.18);
+  --text:#e4edf8;--muted:#5c7a9a;--soft:#93b0cc;
+  --cyan:#3ee8ff;--cyan-d:rgba(62,232,255,.14);
+  --violet:#a98cff;--vio-d:rgba(169,140,255,.14);
+  --green:#4ef0a1;--grn-d:rgba(78,240,161,.12);
+  --yellow:#ffd166;--yel-d:rgba(255,209,102,.13);
+  --red:#ff6060;
+  --font-head:'Syne',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-body:'Outfit',sans-serif;
+  --r:14px;--r-lg:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh}
+
+/* ── HEADER ── */
+.header{
+  background:var(--bg2);border-bottom:1px solid var(--brd);
+  padding:16px 32px;display:flex;align-items:center;
+  justify-content:space-between;gap:16px;position:sticky;top:0;z-index:50;
+}
+.header-brand{font-family:var(--font-head);font-size:1rem;font-weight:700}
+.header-brand span{color:var(--cyan)}
+.back-link{
+  font-family:var(--font-mono);font-size:.72rem;
+  color:var(--muted);text-decoration:none;transition:color .15s;
+}
+.back-link:hover{color:var(--cyan)}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:440px 1fr;min-height:calc(100vh - 57px)}
+.form-panel{
+  background:var(--bg2);border-right:1px solid var(--brd);
+  padding:28px;overflow-y:auto;height:calc(100vh - 57px);position:sticky;top:57px;
+}
+.list-panel{padding:28px 32px;overflow-y:auto}
+
+/* ── FILE LINK ── */
+.file-section{
+  background:var(--bg3);border:1px solid var(--brd);
+  border-radius:var(--r-lg);padding:14px 16px;margin-bottom:24px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.file-status{font-family:var(--font-mono);font-size:.72rem;display:flex;align-items:center;gap:7px}
+.file-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--muted)}
+.file-dot.linked{background:var(--green)}
+.btn-link-file{
+  font-family:var(--font-mono);font-size:.72rem;font-weight:600;
+  padding:8px 14px;border-radius:10px;background:var(--cyan-d);
+  border:1px solid rgba(62,232,255,.3);color:var(--cyan);
+  cursor:pointer;transition:.15s;white-space:nowrap;flex-shrink:0;
+}
+.btn-link-file:hover{background:rgba(62,232,255,.22)}
+
+/* ── SECTION LABEL ── */
+.form-heading{
+  font-family:var(--font-mono);font-size:.65rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;
+}
+
+/* ── BRANCH SELECTOR ── */
+.branch-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.branch-btn{
+  padding:10px 12px;border-radius:10px;border:1px solid var(--brd);
+  background:var(--surf);color:var(--soft);font-family:var(--font-mono);
+  font-size:.72rem;font-weight:600;cursor:pointer;transition:.18s;text-align:center;
+}
+.branch-btn.active[data-branch="temi"]{background:var(--cyan-d);border-color:rgba(62,232,255,.3);color:var(--cyan)}
+.branch-btn.active[data-branch="r3"]{background:var(--grn-d);border-color:rgba(78,240,161,.3);color:var(--green)}
+
+/* ── EDIT INDICATOR ── */
+.edit-indicator{
+  background:var(--yel-d);border:1px solid rgba(255,209,102,.25);
+  border-radius:8px;padding:8px 12px;font-family:var(--font-mono);
+  font-size:.72rem;color:var(--yellow);display:none;
+  align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;
+}
+.edit-indicator.show{display:flex}
+.btn-cancel-edit{background:none;border:none;color:var(--yellow);cursor:pointer;font-size:.9rem;opacity:.7}
+.btn-cancel-edit:hover{opacity:1}
+
+/* ── FIELDS ── */
+.field{margin-bottom:18px}
+.field label{
+  display:block;font-family:var(--font-mono);font-size:.68rem;
+  color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;
+}
+.field label .hint{opacity:.5;font-size:.6rem;text-transform:none;letter-spacing:0}
+.field input,.field textarea{
+  width:100%;background:var(--bg3);border:1px solid var(--brd);
+  border-radius:var(--r);padding:11px 14px;color:var(--text);
+  font-family:var(--font-body);font-size:.88rem;outline:none;
+  transition:border-color .15s;resize:vertical;
+}
+.field input:focus,.field textarea:focus{border-color:rgba(62,232,255,.4)}
+.field textarea{min-height:200px;line-height:1.6}
+
+/* ── TAGS ── */
+.tags-input-wrap{
+  background:var(--bg3);border:1px solid var(--brd);border-radius:var(--r);
+  padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;
+  align-items:center;min-height:44px;cursor:text;transition:border-color .15s;
+}
+.tags-input-wrap:focus-within{border-color:rgba(62,232,255,.4)}
+.tag-chip{
+  font-family:var(--font-mono);font-size:.65rem;font-weight:600;
+  padding:3px 8px 3px 10px;border-radius:20px;background:var(--cyan-d);
+  color:var(--cyan);border:1px solid rgba(62,232,255,.2);
+  display:flex;align-items:center;gap:5px;
+}
+.tag-chip.r3-chip{background:var(--grn-d);color:var(--green);border-color:rgba(78,240,161,.2)}
+.tag-chip-remove{
+  background:none;border:none;cursor:pointer;color:inherit;
+  font-size:.85rem;line-height:1;padding:0 1px;opacity:.6;transition:opacity .1s;
+}
+.tag-chip-remove:hover{opacity:1}
+.tags-raw-input{
+  border:none !important;background:none !important;padding:4px !important;
+  flex:1;min-width:80px;outline:none;color:var(--text);
+  font-family:var(--font-mono);font-size:.72rem;
+}
+.tag-suggestions{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.tag-sug{
+  font-family:var(--font-mono);font-size:.62rem;padding:3px 9px;
+  border-radius:20px;background:var(--surf);border:1px solid var(--brd);
+  color:var(--muted);cursor:pointer;transition:.12s;
+}
+.tag-sug:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* ── DIFFICULTY ── */
+.diff-row{display:flex;gap:8px}
+.diff-opt{
+  flex:1;text-align:center;padding:9px 8px;border-radius:10px;
+  border:1px solid var(--brd);background:var(--surf);color:var(--muted);
+  font-family:var(--font-mono);font-size:.7rem;font-weight:600;
+  cursor:pointer;transition:.15s;
+}
+.diff-opt.active[data-diff="basica"]{background:var(--grn-d);border-color:rgba(78,240,161,.3);color:var(--green)}
+.diff-opt.active[data-diff="media"]{background:var(--yel-d);border-color:rgba(255,209,102,.3);color:var(--yellow)}
+.diff-opt.active[data-diff="alta"]{background:rgba(255,96,96,.1);border-color:rgba(255,96,96,.25);color:var(--red)}
+
+/* ── FEATURED TOGGLE ── */
+.featured-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.toggle-wrap{position:relative;width:38px;height:21px;flex-shrink:0}
+.toggle-wrap input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{
+  position:absolute;inset:0;border-radius:21px;
+  background:var(--surf-h);border:1px solid var(--brd);
+  cursor:pointer;transition:.2s;
+}
+.toggle-slider::before{
+  content:'';position:absolute;width:15px;height:15px;
+  left:2px;top:2px;border-radius:50%;background:var(--muted);transition:.2s;
+}
+input:checked + .toggle-slider{background:var(--yel-d);border-color:rgba(255,209,102,.3)}
+input:checked + .toggle-slider::before{transform:translateX(17px);background:var(--yellow)}
+.featured-label{font-size:.82rem;color:var(--soft)}
+
+/* ── SAVE BUTTON ── */
+.btn-save{
+  width:100%;padding:13px;border-radius:var(--r);background:var(--cyan);
+  border:none;color:#010d1a;font-family:var(--font-head);font-size:.9rem;
+  font-weight:700;cursor:pointer;transition:.18s;letter-spacing:.02em;
+}
+.btn-save:hover{background:#7cf2ff}
+.btn-save:disabled{opacity:.4;cursor:not-allowed}
+.btn-save.r3{background:var(--green)}
+.btn-save.r3:hover{background:#9affc8}
+
+/* ── LIST PANEL ── */
+.list-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.list-heading{font-family:var(--font-head);font-size:1.1rem;font-weight:700}
+.list-count{font-family:var(--font-mono);font-size:.72rem;color:var(--muted)}
+.list-tabs{display:flex;gap:0;border-bottom:1px solid var(--brd);margin-bottom:20px}
+.list-tab{
+  font-family:var(--font-mono);font-size:.75rem;padding:8px 18px;
+  background:none;border:none;border-bottom:2px solid transparent;
+  color:var(--muted);cursor:pointer;transition:.15s;
+}
+.list-tab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+.list-tab.active.r3-tab{color:var(--green);border-bottom-color:var(--green)}
+
+/* ── CHALLENGE ITEM ── */
+.dsf-item{
+  background:var(--surf);border:1px solid var(--brd);
+  border-radius:var(--r-lg);padding:16px 18px;margin-bottom:10px;
+  transition:border-color .15s;
+}
+.dsf-item:hover{border-color:var(--brd-h)}
+.dsf-item-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.dsf-item-title{font-family:var(--font-head);font-size:.9rem;font-weight:700;flex:1;line-height:1.3}
+.dsf-item-actions{display:flex;gap:6px;flex-shrink:0}
+.btn-edit,.btn-del{
+  font-family:var(--font-mono);font-size:.65rem;padding:4px 9px;
+  border-radius:8px;border:1px solid var(--brd);cursor:pointer;
+  transition:.12s;background:none;
+}
+.btn-edit{color:var(--cyan);border-color:rgba(62,232,255,.2)}
+.btn-edit:hover{background:var(--cyan-d)}
+.btn-del{color:var(--red);border-color:rgba(255,96,96,.2)}
+.btn-del:hover{background:rgba(255,96,96,.1)}
+.dsf-item-meta{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.dsf-item-date{font-family:var(--font-mono);font-size:.62rem;color:var(--muted)}
+.dsf-item-diff{font-family:var(--font-mono);font-size:.6rem;font-weight:600;padding:2px 8px;border-radius:20px}
+.diff-basica{background:var(--grn-d);color:var(--green)}
+.diff-media{background:var(--yel-d);color:var(--yellow)}
+.diff-alta{background:rgba(255,96,96,.1);color:var(--red)}
+.dsf-item-tag{
+  font-family:var(--font-mono);font-size:.6rem;padding:2px 8px;
+  border-radius:20px;background:var(--surf-h);border:1px solid var(--brd);color:var(--muted);
+}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:.9rem}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:28px;right:28px;background:var(--bg3);
+  border:1px solid var(--green);border-radius:var(--r);
+  padding:12px 18px;font-family:var(--font-mono);font-size:.78rem;
+  color:var(--green);opacity:0;transform:translateY(10px);
+  transition:.28s;z-index:999;pointer-events:none;
+}
+.toast.show{opacity:1;transform:none}
+.toast.error{border-color:var(--red);color:var(--red)}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .form-panel{border-right:none;border-bottom:1px solid var(--brd);height:auto;position:static}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-brand">Antigravity · <span>Editor de Desafios Clínicos</span></div>
+  <a class="back-link" href="../index.html#desafios">← Voltar à homepage</a>
+</div>
+
+<div class="layout">
+
+  <!-- ── FORM PANEL ── -->
+  <div class="form-panel">
+
+    <div class="file-section">
+      <div class="file-status">
+        <div class="file-dot" id="fileDot"></div>
+        <span id="fileStatusText">Nenhum arquivo vinculado</span>
+      </div>
+      <button class="btn-link-file" id="btnLinkFile">📁 Vincular data/desafios.json</button>
+    </div>
+
+    <div class="form-heading">// novo desafio</div>
+
+    <div class="edit-indicator" id="editIndicator">
+      <span>✎ Modo de edição ativo</span>
+      <button class="btn-cancel-edit" id="btnCancelEdit" title="Cancelar edição">✕ cancelar</button>
+    </div>
+
+    <div class="branch-selector" id="branchSelector">
+      <button class="branch-btn active" data-branch="temi">🏥 TEMI — Intensiva</button>
+      <button class="branch-btn" data-branch="r3">🩺 R3 — Clínica Médica</button>
+    </div>
+
+    <div class="field">
+      <label>Título <span class="hint">(deixe vazio para extrair da 1ª linha)</span></label>
+      <input type="text" id="fTitle" placeholder="Ex: AVC — Janela Estendida, SDRA Berlin..."/>
+    </div>
+
+    <div class="field">
+      <label>Conteúdo — cole o desafio do chat aqui</label>
+      <textarea id="fContent" placeholder="Cole o caso clínico, questão, raciocínio, dúvida ou desafio direto do chat. Pode incluir formatação simples com quebras de linha."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Tags <span class="hint">(Enter ou vírgula para adicionar)</span></label>
+      <div class="tags-input-wrap" id="tagsWrap">
+        <input class="tags-raw-input" id="tagsRaw" placeholder="AVC, trombólise, NIHSS..."/>
+      </div>
+      <div class="tag-suggestions" id="tagSuggestions"></div>
+    </div>
+
+    <div class="field">
+      <label>Dificuldade</label>
+      <div class="diff-row" id="diffRow">
+        <button class="diff-opt" data-diff="basica">Básica</button>
+        <button class="diff-opt active" data-diff="media">Média</button>
+        <button class="diff-opt" data-diff="alta">Alta</button>
+      </div>
+    </div>
+
+    <div class="featured-row">
+      <label class="toggle-wrap">
+        <input type="checkbox" id="fFeatured"/>
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="featured-label">★ Destacar — aparece primeiro na homepage</span>
+    </div>
+
+    <button class="btn-save" id="btnSave" disabled>💾 Salvar Desafio</button>
+    <input type="hidden" id="editingId"/>
+
+  </div><!-- /form-panel -->
+
+  <!-- ── LIST PANEL ── -->
+  <div class="list-panel">
+    <div class="list-head">
+      <div class="list-heading">Desafios Salvos</div>
+      <div class="list-count" id="listCount">0 TEMI · 0 R3</div>
+    </div>
+    <div class="list-tabs">
+      <button class="list-tab active" data-list-branch="temi">🏥 TEMI — Medicina Intensiva</button>
+      <button class="list-tab r3-tab" data-list-branch="r3">🩺 R3 — Clínica Médica</button>
+    </div>
+    <div id="listContent">
+      <div class="empty-state">Vincule o arquivo <code>data/desafios.json</code> para começar.</div>
+    </div>
+  </div>
+
+</div><!-- /layout -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+let fileHandle = null;
+let data = { version:'1.0', updated:'', temi:[], r3:[] };
+let activeBranch = 'temi';
+let activeDiff = 'media';
+let currentTags = [];
+let listBranch = 'temi';
+let editingId = null;
+
+/* ── FILE SYSTEM API ─────────────────────────────── */
+document.getElementById('btnLinkFile').addEventListener('click', async () => {
+  if (!window.showOpenFilePicker) {
+    showToast('Use Chrome ou Edge no computador para vincular data/desafios.json.', 'error');
+    return;
+  }
+  try {
+    [fileHandle] = await window.showOpenFilePicker({
+      types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }],
+      multiple: false
+    });
+    const file = await fileHandle.getFile();
+    const text = await file.text();
+    try {
+      const parsed = JSON.parse(text);
+      data = parsed;
+    } catch(e) {
+      showToast('Arquivo JSON inválido', 'error');
+      fileHandle = null;
+      return;
+    }
+    if (!data.temi) data.temi = [];
+    if (!data.r3) data.r3 = [];
+    setFileLinked(true, fileHandle.name || 'desafios.json');
+    document.getElementById('btnSave').disabled = false;
+    renderList();
+    renderSuggestions();
+  } catch(e) {
+    if (e && e.name !== 'AbortError') {
+      showToast('Erro ao vincular arquivo: ' + e.message, 'error');
+    }
+  }
+});
+
+function setFileLinked(linked, name) {
+  document.getElementById('fileDot').className = 'file-dot' + (linked ? ' linked' : '');
+  document.getElementById('fileStatusText').textContent = linked
+    ? '● ' + name + ' vinculado'
+    : 'Nenhum arquivo vinculado';
+}
+
+async function writeFile() {
+  if (!fileHandle) { showToast('Nenhum arquivo vinculado', 'error'); return false; }
+  try {
+    data.updated = new Date().toISOString().slice(0, 10);
+    const writable = await fileHandle.createWritable();
+    await writable.write(JSON.stringify(data, null, 2));
+    await writable.close();
+    return true;
+  } catch(e) {
+    showToast('Erro ao salvar: ' + e.message, 'error');
+    return false;
+  }
+}
+
+/* ── BRANCH SELECTOR ─────────────────────────────── */
+document.getElementById('branchSelector').addEventListener('click', e => {
+  const btn = e.target.closest('.branch-btn');
+  if (!btn) return;
+  document.querySelectorAll('.branch-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeBranch = btn.dataset.branch;
+  updateSaveBtn();
+  renderSuggestions();
+  renderTagChips();
+});
+
+function updateSaveBtn() {
+  const btn = document.getElementById('btnSave');
+  btn.className = 'btn-save' + (activeBranch === 'r3' ? ' r3' : '');
+}
+
+/* ── DIFFICULTY ──────────────────────────────────── */
+document.getElementById('diffRow').addEventListener('click', e => {
+  const btn = e.target.closest('.diff-opt');
+  if (!btn) return;
+  document.querySelectorAll('.diff-opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeDiff = btn.dataset.diff;
+});
+
+/* ── TAGS ────────────────────────────────────────── */
+const tagsWrap = document.getElementById('tagsWrap');
+const tagsRaw = document.getElementById('tagsRaw');
+
+tagsWrap.addEventListener('click', () => tagsRaw.focus());
+
+tagsRaw.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = tagsRaw.value.replace(/,/g, '').trim();
+    if (val) { addTag(val); tagsRaw.value = ''; }
+  }
+  if (e.key === 'Backspace' && !tagsRaw.value && currentTags.length) {
+    removeTag(currentTags[currentTags.length - 1]);
+  }
+});
+tagsRaw.addEventListener('blur', () => {
+  const val = tagsRaw.value.replace(/,/g, '').trim();
+  if (val) { addTag(val); tagsRaw.value = ''; }
+});
+
+function addTag(tag) {
+  if (!tag || currentTags.includes(tag)) return;
+  currentTags.push(tag);
+  renderTagChips();
+  renderSuggestions();
+}
+function removeTag(tag) {
+  currentTags = currentTags.filter(t => t !== tag);
+  renderTagChips();
+  renderSuggestions();
+}
+function renderTagChips() {
+  const chips = currentTags.map(t =>
+    `<span class="tag-chip ${activeBranch === 'r3' ? 'r3-chip' : ''}">
+      ${escHtml(t)}
+      <button class="tag-chip-remove" data-remove="${escAttr(t)}" aria-label="Remover ${escAttr(t)}">×</button>
+    </span>`
+  ).join('');
+  tagsWrap.innerHTML = chips;
+  tagsWrap.appendChild(tagsRaw);
+  tagsWrap.querySelectorAll('.tag-chip-remove').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      removeTag(btn.dataset.remove);
+    });
+  });
+}
+
+function renderSuggestions() {
+  const branch = data[activeBranch] || [];
+  const existing = [...new Set(branch.flatMap(d => d.tags || []))];
+  const el = document.getElementById('tagSuggestions');
+  const available = existing.filter(t => !currentTags.includes(t));
+  el.innerHTML = available.map(t =>
+    `<button class="tag-sug" data-sug="${escAttr(t)}">${escHtml(t)}</button>`
+  ).join('');
+  el.querySelectorAll('.tag-sug').forEach(btn => {
+    btn.addEventListener('click', () => {
+      addTag(btn.dataset.sug);
+    });
+  });
+}
+
+/* ── SAVE ────────────────────────────────────────── */
+document.getElementById('btnSave').addEventListener('click', async () => {
+  const content = document.getElementById('fContent').value.trim();
+  if (!content) { showToast('Conteúdo não pode estar vazio', 'error'); return; }
+
+  let title = document.getElementById('fTitle').value.trim();
+  if (!title) {
+    const firstLine = content.split('\n').find(l => l.trim());
+    title = firstLine ? firstLine.trim().slice(0, 80) : 'Sem título';
+  }
+
+  const date = new Date().toISOString().slice(0, 10);
+  const tags = [...currentTags];
+  const difficulty = activeDiff;
+  const featured = document.getElementById('fFeatured').checked;
+
+  if (editingId) {
+    // find in temi or r3
+    let found = false;
+    ['temi', 'r3'].forEach(branch => {
+      const idx = (data[branch] || []).findIndex(d => d.id === editingId);
+      if (idx >= 0) {
+        data[branch][idx] = {
+          ...data[branch][idx],
+          title, content, tags, difficulty, featured,
+          updatedAt: date
+        };
+        found = true;
+      }
+    });
+    if (!found) { showToast('Item não encontrado', 'error'); return; }
+  } else {
+    const branch = data[activeBranch] || [];
+    const seq = String(branch.length + 1).padStart(3, '0');
+    const id = `${activeBranch}-${date.replace(/-/g, '')}-${seq}`;
+    const newItem = { id, date, title, content, tags, difficulty, featured };
+    data[activeBranch] = [...branch, newItem];
+  }
+
+  const ok = await writeFile();
+  if (ok) {
+    showToast(editingId ? '✎ Desafio atualizado!' : '✓ Desafio salvo!');
+    resetForm();
+    renderList();
+    renderSuggestions();
+  }
+});
+
+function resetForm() {
+  document.getElementById('fTitle').value = '';
+  document.getElementById('fContent').value = '';
+  document.getElementById('fFeatured').checked = false;
+  currentTags = [];
+  renderTagChips();
+  activeDiff = 'media';
+  document.querySelectorAll('.diff-opt').forEach(b => b.classList.remove('active'));
+  document.querySelector('.diff-opt[data-diff="media"]').classList.add('active');
+  editingId = null;
+  document.getElementById('editingId').value = '';
+  document.getElementById('editIndicator').classList.remove('show');
+  document.getElementById('fTitle').placeholder = 'Ex: AVC — Janela Estendida, SDRA Berlin...';
+}
+
+document.getElementById('btnCancelEdit').addEventListener('click', resetForm);
+
+/* ── LIST ────────────────────────────────────────── */
+document.querySelectorAll('[data-list-branch]').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('[data-list-branch]').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    listBranch = tab.dataset.listBranch;
+    renderList();
+  });
+});
+
+function renderList() {
+  const temi = data.temi || [];
+  const r3 = data.r3 || [];
+  document.getElementById('listCount').textContent = `${temi.length} TEMI · ${r3.length} R3`;
+
+  const items = (data[listBranch] || []).slice().reverse();
+  const el = document.getElementById('listContent');
+
+  if (!items.length) {
+    el.innerHTML = '<div class="empty-state">Nenhum desafio neste ramo ainda.<br>Use o formulário ao lado para adicionar.</div>';
+    return;
+  }
+
+  const diffLabel = { basica: 'Básica', media: 'Média', alta: 'Alta' };
+  el.innerHTML = items.map(d => `
+    <div class="dsf-item">
+      <div class="dsf-item-head">
+        <div class="dsf-item-title">
+          ${d.featured ? '<span style="color:var(--yellow)">★ </span>' : ''}${escHtml(d.title || 'Sem título')}
+        </div>
+        <div class="dsf-item-actions">
+          <button class="btn-edit" data-id="${escAttr(d.id)}">✎ Editar</button>
+          <button class="btn-del" data-id="${escAttr(d.id)}">✕</button>
+        </div>
+      </div>
+      <div class="dsf-item-meta">
+        <span class="dsf-item-date">${d.date || ''}</span>
+        <span class="dsf-item-diff diff-${d.difficulty || 'media'}">${diffLabel[d.difficulty] || 'Média'}</span>
+        ${(d.tags || []).map(t => `<span class="dsf-item-tag">${escHtml(t)}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('.btn-edit').forEach(btn => {
+    btn.addEventListener('click', () => startEdit(btn.dataset.id));
+  });
+  el.querySelectorAll('.btn-del').forEach(btn => {
+    btn.addEventListener('click', () => deleteItem(btn.dataset.id));
+  });
+}
+
+function startEdit(id) {
+  const allItems = [...(data.temi || []), ...(data.r3 || [])];
+  const item = allItems.find(d => d.id === id);
+  if (!item) return;
+
+  const branch = (data.temi || []).find(d => d.id === id) ? 'temi' : 'r3';
+  activeBranch = branch;
+  document.querySelectorAll('.branch-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.branch === branch);
+  });
+  updateSaveBtn();
+
+  document.getElementById('fTitle').value = item.title || '';
+  document.getElementById('fContent').value = item.content || '';
+  document.getElementById('fFeatured').checked = !!item.featured;
+
+  currentTags = [...(item.tags || [])];
+  renderTagChips();
+
+  activeDiff = item.difficulty || 'media';
+  document.querySelectorAll('.diff-opt').forEach(b => {
+    b.classList.toggle('active', b.dataset.diff === activeDiff);
+  });
+
+  editingId = id;
+  document.getElementById('editingId').value = id;
+  document.getElementById('editIndicator').classList.add('show');
+  document.querySelector('.form-panel').scrollTop = 0;
+  renderSuggestions();
+}
+
+async function deleteItem(id) {
+  if (!confirm('Excluir este desafio? Esta ação não pode ser desfeita.')) return;
+  data.temi = (data.temi || []).filter(d => d.id !== id);
+  data.r3 = (data.r3 || []).filter(d => d.id !== id);
+  if (editingId === id) resetForm();
+  const ok = await writeFile();
+  if (ok) { showToast('✓ Desafio excluído'); renderList(); }
+}
+
+/* ── CONTENT → AUTO TITLE PLACEHOLDER ───────────── */
+document.getElementById('fContent').addEventListener('input', () => {
+  const titleField = document.getElementById('fTitle');
+  if (titleField.value) return;
+  const content = document.getElementById('fContent').value;
+  const first = content.split('\n').find(l => l.trim());
+  if (first) titleField.placeholder = first.trim().slice(0, 60) + (first.length > 60 ? '...' : '');
+});
+
+/* ── TOAST ───────────────────────────────────────── */
+let toastTimer = null;
+function showToast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type === 'error' ? ' error' : '');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+/* ── HELPERS ─────────────────────────────────────── */
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) { return String(s).replace(/"/g,'&quot;'); }
+
+})();
+</script>
+</body>
+</html>

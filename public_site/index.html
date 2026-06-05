@@ -1348,7 +1348,10 @@ header{
       <div id="dsf-filters" class="dsf-filters"
         role="group" aria-label="Filtrar por tag"></div>
       <div id="dsf-grid" class="dsf-grid" role="list"></div>
-      <div style="text-align:right;margin-top:16px">
+      <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px">
+        <a class="dsf-admin-link" href="desafios/">
+          📖 Abrir desafios em tela cheia →
+        </a>
         <a class="dsf-admin-link" href="admin/desafios.html">
           ✎ Gerenciar desafios →
         </a>
@@ -1746,19 +1749,12 @@ function escHtml(s){
     `).join('');
 
     grid.querySelectorAll('.dsf-card').forEach(card=>{
+      // Abre a página full-page de leitura contínua do desafio
+      card.style.cursor='pointer';
       card.addEventListener('click',()=>{
         const id=card.dataset.dsfId;
         const b=card.dataset.dsfBranch;
-        const d=(dsfData[b]||[]).find(x=>x.id===id);
-        if(!d)return;
-        document.getElementById('drawerTitle').textContent=d.title||'Sem título';
-        document.getElementById('drawerText').innerHTML=mdToHtml(d.content||'');
-        const tagsEl=document.getElementById('drawerTags');
-        tagsEl.innerHTML=(d.tags||[]).map(t=>`<span class="dtag">${escH(t)}</span>`).join('');
-        drawer.classList.add('open');
-        drawer.setAttribute('aria-hidden','false');
-        overlay.classList.add('show');
-        drawer.focus();
+        location.href='desafios/?b='+encodeURIComponent(b)+'&id='+encodeURIComponent(id);
       });
     });
 
