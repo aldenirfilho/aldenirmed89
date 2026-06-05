@@ -388,7 +388,7 @@ header{
 .map-container{
   position:relative;height:380px;margin-top:40px;
   background:rgba(255,255,255,.025);
-  border:1px solid var(--brd);border-radius:var(--r-xl);overflow:hidden;
+  border:1px solid var(--brd);border-radius:var(--r-xl);
 }
 /* SVG lines */
 .map-lines{position:absolute;inset:0;pointer-events:none;z-index:0}
@@ -634,6 +634,9 @@ header{
   #drawer{width:100%;right:-100%}
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;align-items:flex-start}
+  .map-container{height:320px}
+  .node-btn{font-size:.7rem;padding:8px 10px;white-space:normal;text-align:center}
+  .node-btn small{font-size:.55rem}
 }
 </style>
 </head>
@@ -717,7 +720,7 @@ header{
         <div class="panel-topics-title">// temas no repositório</div>
         <div class="topic-pills">
           <a class="topic-pill cyan" href="01_Modulos_Clinicos/AVC_Agudo/avc.html">🧠 AVC Agudo</a>
-          <a class="topic-pill cyan" href="01_UpDown_Hub/content/intensiva/cetoacidose-diabetica-uti.md">🧪 CAD / UTI</a>
+          <a class="topic-pill cyan" href="01_UpDown_Hub/index.html">🧪 CAD / UTI</a>
           <a class="topic-pill violet" href="01_UpDown_Hub/index.html">🔵 LES — Manifestações</a>
           <a class="topic-pill violet" href="01_UpDown_Hub/index.html">💊 LES — Manejo</a>
           <a class="topic-pill violet" href="les-autoanticorpos/index.html">🧬 LES — Autoanticorpos</a>
@@ -1007,7 +1010,7 @@ header{
       <p class="section-sub">Cada nó é uma página. Hover para ver a conexão. Clique para abrir detalhes.</p>
     </div>
 
-    <div class="map-container" role="img" aria-label="Mapa visual de conexões do conhecimento médico">
+    <div class="map-container" role="region" aria-label="Mapa visual de conexões do conhecimento médico">
 
       <!-- SVG connection lines -->
       <svg class="map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -1237,7 +1240,7 @@ header{
         <h4>Módulos</h4>
         <a href="01_UpDown_Hub/index.html">↕️ UpDown Hub</a>
         <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca IA</a>
-        <a href="03_Calculadoras_UTI/index.html">🧮 Calculadoras UTI</a>
+        <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras UTI</a>
         <a href="02_Banco_Questoes_TEMI/index.html">🏆 Simulador TEMI</a>
         <a href="05_Midia_E_Feed/index.html">🖼️ Card Feed</a>
         <a href="04_Ebooks_Intensiva_Clinica/index.html">📘 Ebooks Intensiva &amp; Clínica</a>
