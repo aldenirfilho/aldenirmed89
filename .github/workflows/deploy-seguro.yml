@@ -59,6 +59,7 @@ jobs:
           set -e
           python3 scripts_admin/build_desafios.py
           python3 scripts_admin/build_mnemonicos.py
+          python3 scripts_admin/build_connections.py
           for hub in 04_Ebooks_Intensiva_Clinica 07_Questoes_Comentadas 08_Transcricoes 09_POCUS_Hub; do
             if [ -d "$hub" ]; then
               python3 scripts_admin/scan_content_module.py "$hub"

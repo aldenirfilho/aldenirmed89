@@ -29,8 +29,10 @@ if [ -n "$MODE" ]; then
   exit 2
 fi
 
-echo "0/4 Desafios Clinicos (10_DESAFIOS -> data/desafios.json)..."
+echo "0/4 Desafios + Mnemonicos + Mapa Vivo..."
 python3 scripts_admin/build_desafios.py
+python3 scripts_admin/build_mnemonicos.py
+python3 scripts_admin/build_connections.py
 echo ""
 
 echo "1/4 Biblioteca IA..."

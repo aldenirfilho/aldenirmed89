@@ -421,6 +421,41 @@ header{
 }
 .map-node:hover .node-tooltip{opacity:1;transform:translateX(-50%) translateY(-3px)}
 
+/* ── MAPA VIVO: toolbar + grafo data-driven ──────── */
+.map-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:30px 0 12px}
+.map-search{flex:1;min-width:200px;max-width:340px;background:var(--surf);
+  border:1px solid var(--brd);border-radius:12px;padding:10px 14px;color:var(--text);
+  font-family:var(--font-body);font-size:.86rem;outline:none;transition:border-color .15s}
+.map-search:focus{border-color:rgba(62,232,255,.45)}
+.map-filters{display:flex;gap:7px;flex-wrap:wrap}
+.map-chip{font-family:var(--font-mono);font-size:.68rem;padding:6px 12px;border-radius:20px;
+  border:1px solid var(--brd);background:transparent;color:var(--muted);cursor:pointer;transition:.15s}
+.map-chip:hover{color:var(--text);border-color:var(--brd-h)}
+.map-chip.active{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-d)}
+#mapa-graph{height:560px;overflow:hidden}
+.map-nodes{position:absolute;inset:0;z-index:2}
+.graph-loading{position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--font-mono);color:var(--muted);font-size:.85rem}
+.map-line{stroke:rgba(147,176,204,.15);stroke-width:.32;transition:stroke .2s,stroke-width .2s}
+.map-line.hl{stroke:var(--cyan);stroke-width:.7;stroke-opacity:.95}
+#mapa-graph.dim .map-node{opacity:.25;transition:opacity .2s}
+#mapa-graph.dim .map-node.hl{opacity:1}
+.map-node .node-btn{font-size:.74rem;padding:7px 11px;max-width:170px}
+.map-node .node-btn strong{font-weight:700}
+.map-node .node-btn.main-node{font-size:.88rem}
+.map-node .node-btn small{max-width:140px;white-space:normal;text-align:center;line-height:1.25}
+.map-legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:18px;
+  font-family:var(--font-mono);font-size:.64rem;color:var(--muted)}
+.map-legend span{display:inline-flex;align-items:center;gap:6px}
+.map-legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.map-howto{text-align:center;font-family:var(--font-mono);font-size:.64rem;
+  color:var(--muted);margin-top:10px}
+.map-howto code{color:var(--soft);background:var(--surf);padding:1px 6px;border-radius:5px}
+.drawer-open-link{display:inline-block;margin-top:18px;font-family:var(--font-mono);
+  font-size:.78rem;color:var(--cyan);border:1px solid rgba(62,232,255,.3);
+  background:var(--cyan-d);padding:9px 15px;border-radius:10px;transition:.15s}
+.drawer-open-link:hover{background:rgba(62,232,255,.22)}
+
 /* ── MNEMÔNICOS UTI ───────────────────────────────── */
 .mnem-section{background:var(--bg2)}
 .mnem-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:40px}
@@ -1170,110 +1205,22 @@ header{
     <div class="reveal">
       <div class="section-label">// mapa semântico</div>
       <h2 class="section-title" id="map-heading">Mapa vivo de conexões 🕸️</h2>
-      <p class="section-sub">Cada nó é uma página. Hover para ver a conexão. Clique para abrir detalhes.</p>
+      <p class="section-sub">Cada nó é uma página real do projeto; cada aresta, uma decisão clínica. Gerado de <code>data/connections.json</code> e atualizado automaticamente a cada publicação. Filtre por ramo, passe o mouse para destacar conexões e clique para abrir.</p>
     </div>
 
-    <div class="map-container" role="region" aria-label="Mapa visual de conexões do conhecimento médico">
+    <div class="map-toolbar reveal">
+      <input id="mapSearch" class="map-search" type="search" placeholder="🔎 Buscar nó no mapa…" aria-label="Buscar no mapa"/>
+      <div class="map-filters" id="mapFilters" role="group" aria-label="Filtrar ramos do mapa"></div>
+    </div>
 
-      <!-- SVG connection lines -->
-      <svg class="map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-            <circle cx="3" cy="3" r="1.5" fill="rgba(62,232,255,0.4)"/>
-          </marker>
-        </defs>
-        <!-- AVC → Trombólise -->
-        <line x1="50" y1="42" x2="18" y2="20" stroke="rgba(62,232,255,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
-        <!-- AVC → Trombectomia -->
-        <line x1="50" y1="42" x2="80" y2="20" stroke="rgba(62,232,255,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
-        <!-- AVC → PA -->
-        <line x1="50" y1="42" x2="16" y2="70" stroke="rgba(169,140,255,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
-        <!-- AVC → TEMI -->
-        <line x1="50" y1="42" x2="50" y2="78" stroke="rgba(255,209,102,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
-        <!-- AVC → FA -->
-        <line x1="50" y1="42" x2="80" y2="64" stroke="rgba(169,140,255,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
-        <!-- AVC → Neuroimagem -->
-        <line x1="50" y1="42" x2="32" y2="10" stroke="rgba(62,232,255,.15)" stroke-width=".6" stroke-dasharray="3,3"/>
-        <!-- AVC → Edema -->
-        <line x1="50" y1="42" x2="68" y2="42" stroke="rgba(255,96,96,.2)" stroke-width=".6" stroke-dasharray="3,3"/>
-        <!-- CAD → UTI connection -->
-        <line x1="50" y1="42" x2="86" y2="34" stroke="rgba(78,240,161,.15)" stroke-width=".6" stroke-dasharray="3,3"/>
-      </svg>
+    <div id="mapa-graph" class="map-container" role="region" aria-label="Mapa visual de conexões do conhecimento médico">
+      <svg class="map-lines" id="mapLines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="map-nodes" id="mapNodes"></div>
+      <div class="graph-loading" id="mapLoading">🧠 Carregando Mapa Vivo…</div>
+    </div>
 
-      <!-- Nodes (positioned as % of container) -->
-      <div class="map-node" style="left:50%;top:42%" data-topic="avc">
-        <button class="node-btn main-node" data-node="avc" aria-label="Nó: AVC Agudo">
-          🧠 <strong>AVC Agudo</strong>
-          <small>Hub central</small>
-        </button>
-        <div class="node-tooltip" role="tooltip">AVC isquêmico: janela terapêutica, TC, trombólise, trombectomia, UTI neuro.</div>
-      </div>
-
-      <div class="map-node" style="left:18%;top:20%" data-topic="trombolise">
-        <button class="node-btn" data-node="trombolise" style="--node-color:var(--red)" aria-label="Nó: Trombólise">
-          💉 Trombólise
-          <small>janela, PA, risco</small>
-        </button>
-        <div class="node-tooltip" role="tooltip">Alteplase IV: janela 4.5h, PA ≤185/110, sem hemorragia. Contraindicações críticas.</div>
-      </div>
-
-      <div class="map-node" style="left:80%;top:20%" data-topic="trombectomia">
-        <button class="node-btn" data-node="trombectomia" style="--node-color:var(--cyan)" aria-label="Nó: Trombectomia">
-          🧲 Trombectomia
-          <small>OGV, perfusão</small>
-        </button>
-        <div class="node-tooltip" role="tooltip">Oclusão de grande vaso: ASPECTS ≥6, NIHSS ≥6, janela 6–24h com perfusão.</div>
-      </div>
-
-      <div class="map-node" style="left:16%;top:70%" data-topic="pa">
-        <button class="node-btn" data-node="pa" style="--node-color:var(--violet)" aria-label="Nó: PA no AVC">
-          🎚️ PA no AVC
-          <small>metas de segurança</small>
-        </button>
-        <div class="node-tooltip" role="tooltip">Pós-trombólise: ≤180/105. Sem trombólise: não tratar se &lt;220/120. Hipotensão = risco.</div>
-      </div>
-
-      <div class="map-node" style="left:50%;top:78%" data-topic="temi">
-        <button class="node-btn" data-node="temi" style="--node-color:var(--yellow)" aria-label="Nó: Simulado TEMI">
-          🏆 TEMI/R3
-          <small>pegadinhas de prova</small>
-        </button>
-        <div class="node-tooltip" role="tooltip">Questões comentadas, pegadinhas, condutas de prova. Banco TEMI em expansão.</div>
-      </div>
-
-      <div class="map-node" style="left:80%;top:64%" data-topic="fa">
-        <button class="node-btn" data-node="fa" style="--node-color:var(--violet)" aria-label="Nó: Fibrilação Atrial">
-          ❤️ FA
-          <small>anticoagulação</small>
-        </button>
-        <div class="node-tooltip" role="tooltip">FA como causa de AVC cardioembólico. Anticoagulação: janela 2-4-7-14 dias (NIHSS).</div>
-      </div>
-
-      <div class="map-node" style="left:32%;top:10%" data-topic="imagem">
-        <button class="node-btn" data-node="imagem" style="--node-color:var(--cyan)" aria-label="Nó: Neuroimagem">
-          🖥️ Neuroimagem
-          <small>TC, RM, ASPECTS</small>
-        </button>
-        <div class="node-tooltip" role="tooltip">TC sem contraste: excluir hemorragia. ASPECTS: prever área de infarto. RM DWI: gold standard.</div>
-      </div>
-
-      <div class="map-node" style="left:68%;top:42%" data-topic="edema">
-        <button class="node-btn" data-node="edema" style="--node-color:var(--red)" aria-label="Nó: Edema Maligno">
-          🌊 Edema maligno
-          <small>Neuro UTI</small>
-        </button>
-        <div class="node-tooltip" role="tooltip">Infarto hemisférico maligno: craniectomia descompressiva &lt;48h em &lt;60 anos.</div>
-      </div>
-
-      <div class="map-node" style="left:86%;top:34%" data-topic="cad">
-        <button class="node-btn" data-node="cad" style="--node-color:var(--green)" aria-label="Nó: CAD na UTI">
-          🧪 CAD / UTI
-          <small>cetoacidose, K+, insulina</small>
-        </button>
-        <div class="node-tooltip" role="tooltip">Cetoacidose Diabética na UTI: reposição de K+, insulina IV, transição SC. Dashboard disponível.</div>
-      </div>
-
-    </div><!-- /map-container -->
+    <div class="map-legend" id="mapLegend"></div>
+    <div class="map-howto">➕ O mapa se atualiza sozinho: novos módulos, desafios e mnemônicos entram via <code>build_connections.py</code> a cada publicação.</div>
   </div>
 </section>
 
@@ -1300,92 +1247,6 @@ header{
       <span class="mnem-howto">➕ Para adicionar: solte um <code>.md</code> em <code>11_MNEMONICOS/</code> e dê push — aparece aqui automaticamente.</span>
     </div>
 
-    <!-- grid legado removido: a seção agora é gerada de data/mnemonicos.json -->
-    <div class="mnem-grid-legacy-removed" style="display:none">
-
-      <!-- FAST HUG BID -->
-      <div class="mnem-card reveal" style="--mc1:var(--green);--mc2:var(--cyan)" data-mnem="fasthugbid">
-        <div class="mnem-head">
-          <div class="mnem-icon" style="background:var(--grn-d);border-color:rgba(78,240,161,.25)">🏥</div>
-          <div>
-            <div class="mnem-tag">// checklist diário UTI</div>
-            <div class="mnem-title">FAST HUG BID</div>
-          </div>
-        </div>
-        <div class="mnem-letters">
-          <div class="mnem-row"><span class="mnem-key">F</span><span class="mnem-val"><strong>Feeding</strong> — nutrição enteral/parenteral</span></div>
-          <div class="mnem-row"><span class="mnem-key">A</span><span class="mnem-val"><strong>Analgesia</strong> — NRS/BPS, analgesia first</span></div>
-          <div class="mnem-row"><span class="mnem-key">S</span><span class="mnem-val"><strong>Sedação</strong> — RASS −2 a 0, despertar diário</span></div>
-          <div class="mnem-row"><span class="mnem-key">T</span><span class="mnem-val"><strong>Trombose</strong> — profilaxia TVP/TEP</span></div>
-          <div class="mnem-row"><span class="mnem-key">H</span><span class="mnem-val"><strong>Head of bed</strong> — cabeceira 30–45°</span></div>
-          <div class="mnem-row"><span class="mnem-key">U</span><span class="mnem-val"><strong>Úlcera</strong> — profilaxia de estresse</span></div>
-          <div class="mnem-row"><span class="mnem-key">G</span><span class="mnem-val"><strong>Glicemia</strong> — meta 140–180 mg/dL</span></div>
-          <div class="mnem-row"><span class="mnem-key">B</span><span class="mnem-val"><strong>Bowel</strong> — prevenção de constipação</span></div>
-          <div class="mnem-row"><span class="mnem-key">I</span><span class="mnem-val"><strong>Indwelling catheters</strong> — rever diariamente</span></div>
-          <div class="mnem-row"><span class="mnem-key">D</span><span class="mnem-val"><strong>Delirium</strong> — CAM-ICU, mobilização precoce</span></div>
-        </div>
-        <button class="mnem-cta">Ver detalhes clínicos ↗</button>
-      </div>
-
-      <!-- ABCDE DO CHOQUE -->
-      <div class="mnem-card reveal" style="--mc1:var(--red);--mc2:var(--violet)" data-mnem="abcdechoque">
-        <div class="mnem-head">
-          <div class="mnem-icon" style="background:rgba(255,96,96,.1);border-color:rgba(255,96,96,.25)">⚡</div>
-          <div>
-            <div class="mnem-tag">// abordagem sistematizada</div>
-            <div class="mnem-title">ABCDE do Choque</div>
-          </div>
-        </div>
-        <div class="mnem-letters">
-          <div class="mnem-row"><span class="mnem-key">A</span><span class="mnem-val"><strong>Airway</strong> — via aérea pérvia, indicação de IOT</span></div>
-          <div class="mnem-row"><span class="mnem-key">B</span><span class="mnem-val"><strong>Breathing</strong> — FR, SpO₂, mecânica ventilatória</span></div>
-          <div class="mnem-row"><span class="mnem-key">C</span><span class="mnem-val"><strong>Circulation</strong> — PA ≥ 65 mmHg, volume, vasopressor</span></div>
-          <div class="mnem-row"><span class="mnem-key">D</span><span class="mnem-val"><strong>Disability</strong> — Glasgow, pupilas, glicemia</span></div>
-          <div class="mnem-row"><span class="mnem-key">E</span><span class="mnem-val"><strong>Etiology</strong> — hipo/distributivo/cardiogênico/obstrutivo</span></div>
-        </div>
-        <button class="mnem-cta">Ver detalhes clínicos ↗</button>
-      </div>
-
-      <!-- qSOFA -->
-      <div class="mnem-card reveal" style="--mc1:var(--yellow);--mc2:var(--green)" data-mnem="qsofa">
-        <div class="mnem-head">
-          <div class="mnem-icon" style="background:var(--yel-d);border-color:rgba(255,209,102,.25)">🦠</div>
-          <div>
-            <div class="mnem-tag">// triagem de sepse · Sepsis-3</div>
-            <div class="mnem-title">qSOFA</div>
-          </div>
-        </div>
-        <div class="mnem-letters">
-          <div class="mnem-row"><span class="mnem-key">R</span><span class="mnem-val"><strong>Respiração</strong> — FR ≥ 22 irpm</span></div>
-          <div class="mnem-row"><span class="mnem-key">A</span><span class="mnem-val"><strong>Alteração mental</strong> — Glasgow &lt; 15</span></div>
-          <div class="mnem-row"><span class="mnem-key">P</span><span class="mnem-val"><strong>Pressão</strong> — PAS ≤ 100 mmHg</span></div>
-          <div class="mnem-row mnem-sep">
-            <span class="mnem-key" style="color:var(--yellow);font-size:.7rem">≥2</span>
-            <span class="mnem-val">pontos → avaliar admissão em UTI</span>
-          </div>
-        </div>
-        <button class="mnem-cta">Ver detalhes clínicos ↗</button>
-      </div>
-
-      <!-- SBAR -->
-      <div class="mnem-card reveal" style="--mc1:var(--violet);--mc2:var(--cyan)" data-mnem="sbar">
-        <div class="mnem-head">
-          <div class="mnem-icon" style="background:var(--vio-d);border-color:rgba(169,140,255,.25)">🗣️</div>
-          <div>
-            <div class="mnem-tag">// comunicação clínica segura</div>
-            <div class="mnem-title">SBAR</div>
-          </div>
-        </div>
-        <div class="mnem-letters">
-          <div class="mnem-row"><span class="mnem-key">S</span><span class="mnem-val"><strong>Situation</strong> — qual é o problema atual</span></div>
-          <div class="mnem-row"><span class="mnem-key">B</span><span class="mnem-val"><strong>Background</strong> — contexto clínico relevante</span></div>
-          <div class="mnem-row"><span class="mnem-key">A</span><span class="mnem-val"><strong>Assessment</strong> — sua hipótese/avaliação</span></div>
-          <div class="mnem-row"><span class="mnem-key">R</span><span class="mnem-val"><strong>Recommendation</strong> — o que você propõe</span></div>
-        </div>
-        <button class="mnem-cta">Ver detalhes clínicos ↗</button>
-      </div>
-
-    </div>
   </div>
 </section>
 
@@ -1628,9 +1489,17 @@ function openDrawer(key, isMnem = false){
   } else {
     drawerText.textContent = d.text || d.content || '';
   }
-  
+  // Link "Abrir página" quando o tópico aponta para uma rota real
+  if (d.url && d.url !== '#') {
+    const a = document.createElement('a');
+    a.href = d.url;
+    a.className = 'drawer-open-link';
+    a.textContent = 'Abrir página →';
+    drawerText.appendChild(a);
+  }
+
   const tags=document.getElementById('drawerTags');
-  tags.innerHTML=d.tags.map(t=>`<span class="dtag">${t}</span>`).join('');
+  tags.innerHTML=(d.tags||[]).map(t=>`<span class="dtag">${t}</span>`).join('');
   drawer.classList.add('open');
   drawer.setAttribute('aria-hidden','false');
   overlay.classList.add('show');
@@ -1843,75 +1712,290 @@ function escHtml(s){
   renderDesafios();
 })();
 
-/* ── MNEMÔNICOS CLÍNICOS — loader dinâmico ────────── */
+/* ── MNEMÔNICOS CLÍNICOS — loader interativo ──────── */
 (async function(){
+  const grid = document.getElementById('mnem-grid');
+  if (!grid) return;
+
+  let list = [];
   try {
     const res = await fetch('data/mnemonicos.json?t=' + Date.now());
-    if (!res.ok) return;
-    const data = await res.json();
-    const list = data.mnemonicos || [];
-    
-    const grid = document.getElementById('mnem-grid');
-    if (!grid) return;
-    
-    function escH(s){
-      return String(s)
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
-    
-    grid.innerHTML = list.map(m => {
-      // Registrar no objeto global TOPICS
-      TOPICS[m.id] = {
-        title: m.emoji + " " + m.title,
-        text: m.content || '',
-        htmlContent: mdToHtml(m.content || ''),
-        tags: m.tags || []
-      };
-      
-      // Renderizar as letras
-      let lettersHtml = '';
-      if (m.letters) {
-        lettersHtml = Object.entries(m.letters).map(([letra, desc]) => {
-          if (letra === 'letterSep') return '';
-          if (letra === 'sepText') return `<div class="mnem-sep">${desc}</div>`;
-          return `<div class="mnem-line"><span class="letter">${escH(letra)}</span> ${desc}</div>`;
-        }).join('');
-      }
-      
-      return `
-        <div class="mnem-card reveal" data-mnem="${escH(m.id)}" style="--mc:${m.color || 'var(--cyan)'}" role="listitem" tabindex="0">
-          <div class="mnem-card-header">
-            <span class="mnem-emoji">${escH(m.emoji || '🏥')}</span>
-            <h3>${escH(m.title)}</h3>
-          </div>
-          <div class="mnem-letters">
-            ${lettersHtml}
-          </div>
-          <div class="mnem-hover-hint">Clique para ver detalhes clínicos →</div>
-        </div>
-      `;
+    if (res.ok) list = (await res.json()).mnemonicos || [];
+  } catch(e){ console.error('Erro ao carregar mnemônicos:', e); }
+
+  const searchEl  = document.getElementById('mnemSearch');
+  const filtersEl = document.getElementById('mnemFilters');
+  const countEl   = document.getElementById('mnemCount');
+  const emptyEl   = document.getElementById('mnemEmpty');
+  const trainBtn  = document.getElementById('mnemTrainToggle');
+
+  let query = '';
+  let activeCat = 'all';
+  let trainMode = false;
+
+  function escH(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  const stripTags = s => String(s||'').replace(/<[^>]+>/g,'');
+
+  // Registrar todos no drawer (TOPICS) uma única vez
+  list.forEach(m => {
+    TOPICS[m.id] = {
+      title: (m.emoji||'🏥') + ' ' + m.title,
+      htmlContent: mdToHtml(m.content || ''),
+      text: m.content || '',
+      tags: m.tags || []
+    };
+  });
+
+  // Texto puro p/ busca e cópia
+  function plainLetters(m){
+    if(!m.letters) return '';
+    return Object.entries(m.letters)
+      .filter(([k])=>k!=='letterSep')
+      .map(([k,v])=> k==='sepText' ? stripTags(v) : `${k} — ${stripTags(v)}`)
+      .join('\n');
+  }
+  function copyText(m){
+    return `${m.emoji||''} ${m.title}\n${'─'.repeat(Math.min(m.title.length+3,40))}\n${plainLetters(m)}`.trim();
+  }
+
+  // ── Filtros de categoria ────────────────────────────
+  const cats = [...new Set(list.map(m => m.category).filter(Boolean))];
+  filtersEl.innerHTML =
+    `<button class="mnem-chip active" data-cat="all">Todos (${list.length})</button>` +
+    cats.map(c => `<button class="mnem-chip" data-cat="${escH(c)}">${escH(c)}</button>`).join('');
+  filtersEl.querySelectorAll('.mnem-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      activeCat = chip.dataset.cat;
+      filtersEl.querySelectorAll('.mnem-chip').forEach(c => c.classList.toggle('active', c===chip));
+      render();
+    });
+  });
+
+  // ── Letras de um card ───────────────────────────────
+  function lettersHtml(m){
+    if(!m.letters) return '';
+    return Object.entries(m.letters).map(([k,v]) => {
+      if (k === 'letterSep') return '';
+      if (k === 'sepText')  return `<div class="mnem-sep">⮕ ${v}</div>`;
+      return `<div class="mnem-line"><span class="letter">${escH(k)}</span><span class="ltxt">${v}</span></div>`;
     }).join('');
-    
-    // Adicionar eventos de clique
-    grid.querySelectorAll('.mnem-card').forEach(card => {
-      card.addEventListener('click', () => {
-        openDrawer(card.dataset.mnem, true);
+  }
+
+  // ── Render ──────────────────────────────────────────
+  function render(){
+    const q = query.toLowerCase();
+    const items = list.filter(m => {
+      const okCat = activeCat === 'all' || m.category === activeCat;
+      const hay = (m.title + ' ' + (m.category||'') + ' ' + (m.tags||[]).join(' ') + ' ' + plainLetters(m)).toLowerCase();
+      return okCat && (!q || hay.includes(q));
+    });
+
+    countEl.textContent = `${items.length} de ${list.length} mnemônico(s)` + (trainMode ? ' · 🧠 modo treino ativo' : '');
+    emptyEl.style.display = items.length ? 'none' : 'block';
+
+    grid.innerHTML = items.map(m => `
+      <article class="mnem-card reveal${trainMode?' train-mode':''}" data-mnem="${escH(m.id)}"
+        style="--mc:${m.color || 'var(--cyan)'}" role="listitem" tabindex="0"
+        aria-label="${escH(m.title)}">
+        <button class="mnem-copy" title="Copiar mnemônico" aria-label="Copiar">⧉</button>
+        <div class="mnem-card-header">
+          <span class="mnem-emoji">${escH(m.emoji || '🏥')}</span>
+          <h3>${escH(m.title)}</h3>
+        </div>
+        <div class="mnem-cat">// ${escH(m.category || 'UTI')}</div>
+        <div class="mnem-letters">${lettersHtml(m)}</div>
+        <div class="mnem-hover-hint">${trainMode ? 'Clique nas letras para revelar · card para detalhes' : 'Clique para ver detalhes clínicos →'}</div>
+      </article>
+    `).join('');
+
+    grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+
+  // ── Interações (event delegation) ──────────────────
+  grid.addEventListener('click', e => {
+    const copyBtn = e.target.closest('.mnem-copy');
+    const card = e.target.closest('.mnem-card');
+    if (!card) return;
+    const m = list.find(x => x.id === card.dataset.mnem);
+
+    if (copyBtn) {
+      e.stopPropagation();
+      if (m) navigator.clipboard?.writeText(copyText(m)).then(() => {
+        copyBtn.textContent = '✓';
+        setTimeout(() => { copyBtn.textContent = '⧉'; }, 1200);
       });
-      card.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openDrawer(card.dataset.mnem, true);
-        }
+      return;
+    }
+    if (trainMode) {
+      const line = e.target.closest('.mnem-line');
+      if (line) { line.classList.toggle('revealed'); return; }
+    }
+    openDrawer(card.dataset.mnem, true);
+  });
+  grid.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('mnem-card')) {
+      e.preventDefault();
+      openDrawer(e.target.dataset.mnem, true);
+    }
+  });
+
+  // ── Busca + Modo treino ─────────────────────────────
+  searchEl?.addEventListener('input', () => { query = searchEl.value; render(); });
+  trainBtn?.addEventListener('click', () => {
+    trainMode = !trainMode;
+    trainBtn.setAttribute('aria-pressed', String(trainMode));
+    render();
+  });
+
+  render();
+})();
+
+/* ── MAPA VIVO — grafo data-driven (connections.json) ─ */
+(async function(){
+  const host = document.getElementById('mapa-graph');
+  if(!host) return;
+  const nodesEl   = document.getElementById('mapNodes');
+  const linesEl   = document.getElementById('mapLines');
+  const loadingEl = document.getElementById('mapLoading');
+  const filtersEl = document.getElementById('mapFilters');
+  const legendEl  = document.getElementById('mapLegend');
+  const searchEl  = document.getElementById('mapSearch');
+
+  let raw = { nodes:[], edges:[] };
+  try{
+    const res = await fetch('data/connections.json?t='+Date.now());
+    if(res.ok) raw = await res.json();
+  }catch(e){ console.error('Mapa Vivo:', e); }
+  if(loadingEl) loadingEl.style.display='none';
+
+  const allNodes = (raw.nodes||[]).filter(n=>n&&n.id);
+  const allEdges = (raw.edges||[]).filter(e=>e&&e.from&&e.to);
+
+  function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+  const TYPE_COLOR = {
+    hub:'var(--cyan)', module:'var(--cyan)', biblioteca:'var(--violet)',
+    feed:'var(--violet)', qbank:'var(--yellow)', tool:'var(--green)',
+    topic:'var(--violet)', theme:'var(--green)', desafio:'var(--yellow)',
+    mnemonico:'var(--violet)'
+  };
+  const GROUPS = [
+    {id:'estrutura', label:'🏛️ Estrutura', types:['hub','module','biblioteca','feed','qbank','tool'], color:'var(--cyan)'},
+    {id:'topicos',   label:'🎯 Tópicos',    types:['topic'],      color:'var(--violet)'},
+    {id:'desafios',  label:'🏋️ Desafios',   types:['desafio'],    color:'var(--yellow)'},
+    {id:'mnemonicos',label:'🧩 Mnemônicos', types:['mnemonico'],  color:'var(--violet)'},
+    {id:'temas',     label:'🗂️ Temas',      types:['theme'],      color:'var(--green)'}
+  ];
+  const typeToGroup = {};
+  GROUPS.forEach(g=>g.types.forEach(t=>typeToGroup[t]=g.id));
+  const active = new Set(['estrutura','topicos','desafios','mnemonicos']);
+  let query = '';
+
+  // registra todos os nós no drawer (com link p/ a página real)
+  allNodes.forEach(n=>{
+    TOPICS[n.id] = { title:n.label||n.id, text:n.body||'', tags:[n.type||'nó'], url:n.url||'' };
+  });
+
+  const colorOf = n => TYPE_COLOR[n.type] || 'var(--cyan)';
+  const groupOf = n => typeToGroup[n.type] || 'estrutura';
+
+  function visibleSet(){
+    let vis = allNodes.filter(n=> active.has(groupOf(n)));
+    if(query){
+      const q = query.toLowerCase();
+      const match = new Set(vis.filter(n=>String(n.label||n.id).toLowerCase().includes(q)).map(n=>n.id));
+      if(match.size){
+        allEdges.forEach(e=>{ if(match.has(e.from)) match.add(e.to); if(match.has(e.to)) match.add(e.from); });
+        vis = vis.filter(n=>match.has(n.id));
+      }
+    }
+    return vis;
+  }
+
+  function layout(vis){
+    const ids = new Set(vis.map(n=>n.id));
+    const adj = {}; ids.forEach(id=>adj[id]=[]);
+    allEdges.forEach(e=>{ if(ids.has(e.from)&&ids.has(e.to)){ adj[e.from].push(e.to); adj[e.to].push(e.from); } });
+    const depth = {};
+    const root = ids.has('home') ? 'home' : (vis[0] && vis[0].id);
+    if(root){ depth[root]=0; const q=[root]; while(q.length){ const c=q.shift(); adj[c].forEach(nb=>{ if(depth[nb]===undefined){ depth[nb]=depth[c]+1; q.push(nb);} }); } }
+    let maxD=0; vis.forEach(n=>{ if(depth[n.id]!==undefined) maxD=Math.max(maxD,depth[n.id]); });
+    let hasUn=false; vis.forEach(n=>{ if(depth[n.id]===undefined){ depth[n.id]=maxD+1; hasUn=true; } });
+    const ringMax = Math.max(maxD + (hasUn?1:0), 1);
+    const rings={}; vis.forEach(n=>{ (rings[depth[n.id]]=rings[depth[n.id]]||[]).push(n); });
+    const pos={}, RX=44, RY=40;
+    Object.keys(rings).map(Number).sort((a,b)=>a-b).forEach(d=>{
+      const arr=rings[d];
+      if(d===0){ arr.forEach(n=>pos[n.id]={x:50,y:50}); return; }
+      const r = 0.30 + 0.70*(d/ringMax);
+      arr.forEach((n,i)=>{
+        const ang = (i/arr.length)*Math.PI*2 + d*0.7;
+        pos[n.id]={
+          x: Math.max(7, Math.min(93, 50+Math.cos(ang)*r*RX)),
+          y: Math.max(9, Math.min(91, 50+Math.sin(ang)*r*RY))
+        };
       });
     });
-    
-    // Registrar os novos elementos no intersection observer
-    grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    
-  } catch(e) {
-    console.error("Erro ao carregar mnemônicos dinâmicos:", e);
+    return pos;
   }
+
+  function render(){
+    const vis = visibleSet();
+    const pos = layout(vis);
+    const visIds = new Set(vis.map(n=>n.id));
+
+    linesEl.innerHTML = allEdges.filter(e=>visIds.has(e.from)&&visIds.has(e.to)).map(e=>{
+      const a=pos[e.from], b=pos[e.to];
+      return `<line class="map-line" data-from="${escAttr(e.from)}" data-to="${escAttr(e.to)}" x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}"/>`;
+    }).join('');
+
+    nodesEl.innerHTML = vis.map(n=>{
+      const p=pos[n.id];
+      return `<div class="map-node" style="left:${p.x.toFixed(1)}%;top:${p.y.toFixed(1)}%" data-id="${escAttr(n.id)}">
+        <button class="node-btn${n.type==='hub'?' main-node':''}" style="--node-color:${colorOf(n)}" data-id="${escAttr(n.id)}" aria-label="Nó: ${escAttr(n.label||n.id)}">${escH(n.label||n.id)}</button>
+      </div>`;
+    }).join('');
+
+    nodesEl.querySelectorAll('.map-node').forEach(node=>{
+      const id=node.dataset.id;
+      node.addEventListener('mouseenter',()=>highlight(id,true));
+      node.addEventListener('mouseleave',()=>highlight(id,false));
+      node.querySelector('.node-btn').addEventListener('click',()=>openDrawer(id));
+    });
+  }
+
+  function highlight(id,on){
+    if(!on){
+      host.classList.remove('dim');
+      nodesEl.querySelectorAll('.map-node.hl').forEach(n=>n.classList.remove('hl'));
+      linesEl.querySelectorAll('.map-line.hl').forEach(l=>l.classList.remove('hl'));
+      return;
+    }
+    const near = new Set([id]);
+    linesEl.querySelectorAll('.map-line').forEach(l=>{
+      if(l.dataset.from===id || l.dataset.to===id){ l.classList.add('hl'); near.add(l.dataset.from); near.add(l.dataset.to); }
+    });
+    host.classList.add('dim');
+    nodesEl.querySelectorAll('.map-node').forEach(n=>n.classList.toggle('hl', near.has(n.dataset.id)));
+  }
+
+  filtersEl.innerHTML = GROUPS.map(g=>`<button class="map-chip${active.has(g.id)?' active':''}" data-g="${g.id}">${g.label}</button>`).join('');
+  filtersEl.querySelectorAll('.map-chip').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      const g=chip.dataset.g;
+      active.has(g) ? active.delete(g) : active.add(g);
+      chip.classList.toggle('active');
+      render();
+    });
+  });
+  legendEl.innerHTML = GROUPS.map(g=>`<span><i style="background:${g.color}"></i>${g.label.replace(/^[^ ]+ /,'')}</span>`).join('');
+  searchEl && searchEl.addEventListener('input',()=>{ query=searchEl.value.trim(); render(); });
+
+  render();
 })();
 
 /* ── TOP BUTTON ──────────────────────────────────── */
