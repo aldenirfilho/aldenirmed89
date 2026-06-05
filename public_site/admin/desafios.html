@@ -169,6 +169,23 @@ input:checked + .toggle-slider{background:var(--yel-d);border-color:rgba(255,209
 input:checked + .toggle-slider::before{transform:translateX(17px);background:var(--yellow)}
 .featured-label{font-size:.82rem;color:var(--soft)}
 
+/* ── SOURCE BANNER (desafio vindo de .md) ── */
+.source-banner{
+  display:none;gap:9px;align-items:flex-start;
+  background:var(--vio-d);border:1px solid rgba(169,140,255,.28);
+  border-radius:var(--r);padding:11px 14px;margin-bottom:18px;
+  font-size:.74rem;line-height:1.5;color:#cdbcf5;
+}
+.source-banner.show{display:flex}
+.source-banner code{font-family:var(--font-mono);font-size:.7rem;color:var(--violet)}
+.source-banner b{color:#e6dcff}
+
+/* campos travados (conteúdo do .md) */
+.field input:read-only,.field textarea:read-only{
+  opacity:.6;cursor:not-allowed;border-style:dashed;
+}
+.obs-area{min-height:90px !important}
+
 /* ── SAVE BUTTON ── */
 .btn-save{
   width:100%;padding:13px;border-radius:var(--r);background:var(--cyan);
@@ -179,6 +196,16 @@ input:checked + .toggle-slider::before{transform:translateX(17px);background:var
 .btn-save:disabled{opacity:.4;cursor:not-allowed}
 .btn-save.r3{background:var(--green)}
 .btn-save.r3:hover{background:#9affc8}
+.btn-download{
+  width:100%;margin-top:9px;padding:11px;border-radius:var(--r);
+  background:var(--surf);border:1px solid var(--brd);color:var(--soft);
+  font-family:var(--font-mono);font-size:.78rem;font-weight:600;
+  cursor:pointer;transition:.15s;
+}
+.btn-download:hover{background:var(--surf-h);color:var(--text);border-color:var(--brd-h)}
+.save-hint{margin-top:10px;font-family:var(--font-mono);font-size:.64rem;
+  line-height:1.5;color:var(--muted)}
+.save-hint code{color:var(--soft)}
 
 /* ── LIST PANEL ── */
 .list-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
@@ -222,7 +249,15 @@ input:checked + .toggle-slider::before{transform:translateX(17px);background:var
   font-family:var(--font-mono);font-size:.6rem;padding:2px 8px;
   border-radius:20px;background:var(--surf-h);border:1px solid var(--brd);color:var(--muted);
 }
+.dsf-item-src{font-family:var(--font-mono);font-size:.58rem;padding:2px 8px;border-radius:20px}
+.src-md{background:var(--vio-d);color:var(--violet);border:1px solid rgba(169,140,255,.22)}
+.src-manual{background:var(--cyan-d);color:var(--cyan);border:1px solid rgba(62,232,255,.2)}
+.dsf-item-tema{font-family:var(--font-mono);font-size:.6rem;padding:2px 8px;border-radius:20px;
+  background:rgba(169,140,255,.1);color:var(--violet);border:1px solid rgba(169,140,255,.2)}
+.dsf-item-obs{font-size:.62rem;color:var(--soft);margin-top:7px;line-height:1.45;
+  border-left:2px solid rgba(255,209,102,.4);padding-left:9px}
 .empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:.9rem}
+.empty-state code{color:var(--soft)}
 
 /* ── TOAST ── */
 .toast{
@@ -273,6 +308,12 @@ input:checked + .toggle-slider::before{transform:translateX(17px);background:var
       <button class="branch-btn" data-branch="r3">🩺 R3 — Clínica Médica</button>
     </div>
 
+    <div class="source-banner" id="sourceBanner">
+      📄 <span>Desafio vindo de um arquivo <code id="sourceFile">.md</code>.
+      O <b>título e o conteúdo</b> são editados no próprio <code>.md</code> (offline).
+      Aqui você caracteriza: <b>tema, tags, dificuldade e observações</b>.</span>
+    </div>
+
     <div class="field">
       <label>Título <span class="hint">(deixe vazio para extrair da 1ª linha)</span></label>
       <input type="text" id="fTitle" placeholder="Ex: AVC — Janela Estendida, SDRA Berlin..."/>
@@ -281,6 +322,12 @@ input:checked + .toggle-slider::before{transform:translateX(17px);background:var
     <div class="field">
       <label>Conteúdo — cole o desafio do chat aqui</label>
       <textarea id="fContent" placeholder="Cole o caso clínico, questão, raciocínio, dúvida ou desafio direto do chat. Pode incluir formatação simples com quebras de linha."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Tema <span class="hint">(categoria principal — opcional)</span></label>
+      <input type="text" id="fTema" placeholder="Ex: Ventilação Mecânica, Choque, Neurointensivismo..." list="temaSuggestions"/>
+      <datalist id="temaSuggestions"></datalist>
     </div>
 
     <div class="field">
@@ -300,6 +347,11 @@ input:checked + .toggle-slider::before{transform:translateX(17px);background:var
       </div>
     </div>
 
+    <div class="field">
+      <label>Observações <span class="hint">(notas pessoais, pontos a revisar)</span></label>
+      <textarea id="fObs" class="obs-area" placeholder="Ex: revisar tabela PEEP/FiO₂; pegadinha sobre driving pressure; conectar com sepse."></textarea>
+    </div>
+
     <div class="featured-row">
       <label class="toggle-wrap">
         <input type="checkbox" id="fFeatured"/>
@@ -309,6 +361,8 @@ input:checked + .toggle-slider::before{transform:translateX(17px);background:var
     </div>
 
     <button class="btn-save" id="btnSave" disabled>💾 Salvar Desafio</button>
+    <button class="btn-download" id="btnDownload">⬇️ Baixar desafios.json</button>
+    <p class="save-hint" id="saveHint">Vincule o arquivo para salvar direto. Sem vínculo, use “Baixar” e substitua <code>data/desafios.json</code>.</p>
     <input type="hidden" id="editingId"/>
 
   </div><!-- /form-panel -->
@@ -367,10 +421,14 @@ document.getElementById('btnLinkFile').addEventListener('click', async () => {
     }
     if (!data.temi) data.temi = [];
     if (!data.r3) data.r3 = [];
+    if (!data.temi) data.temi = [];
+    if (!data.r3) data.r3 = [];
     setFileLinked(true, fileHandle.name || 'desafios.json');
     document.getElementById('btnSave').disabled = false;
+    document.getElementById('saveHint').textContent = 'Arquivo vinculado — “Salvar” grava direto no data/desafios.json.';
     renderList();
     renderSuggestions();
+    renderTemaSuggestions();
   } catch(e) {
     if (e && e.name !== 'AbortError') {
       showToast('Erro ao vincular arquivo: ' + e.message, 'error');
@@ -504,6 +562,8 @@ document.getElementById('btnSave').addEventListener('click', async () => {
   const tags = [...currentTags];
   const difficulty = activeDiff;
   const featured = document.getElementById('fFeatured').checked;
+  const tema = document.getElementById('fTema').value.trim();
+  const observacoes = document.getElementById('fObs').value.trim();
 
   if (editingId) {
     // find in temi or r3
@@ -511,11 +571,17 @@ document.getElementById('btnSave').addEventListener('click', async () => {
     ['temi', 'r3'].forEach(branch => {
       const idx = (data[branch] || []).findIndex(d => d.id === editingId);
       if (idx >= 0) {
-        data[branch][idx] = {
-          ...data[branch][idx],
-          title, content, tags, difficulty, featured,
-          updatedAt: date
-        };
+        const cur = data[branch][idx];
+        if (isFileSourced(cur)) {
+          // .md é dono de title/content — aqui só curadoria
+          data[branch][idx] = { ...cur, tags, difficulty, featured, tema, observacoes };
+        } else {
+          data[branch][idx] = {
+            ...cur,
+            title, content, tags, difficulty, featured, tema, observacoes,
+            updatedAt: date
+          };
+        }
         found = true;
       }
     });
@@ -524,22 +590,27 @@ document.getElementById('btnSave').addEventListener('click', async () => {
     const branch = data[activeBranch] || [];
     const seq = String(branch.length + 1).padStart(3, '0');
     const id = `${activeBranch}-${date.replace(/-/g, '')}-${seq}`;
-    const newItem = { id, date, title, content, tags, difficulty, featured };
+    const newItem = { id, date, title, content, tags, difficulty, featured, tema, observacoes };
     data[activeBranch] = [...branch, newItem];
   }
 
-  const ok = await writeFile();
+  const ok = fileHandle ? await writeFile() : downloadJSON();
   if (ok) {
-    showToast(editingId ? '✎ Desafio atualizado!' : '✓ Desafio salvo!');
+    showToast(fileHandle
+      ? (editingId ? '✎ Desafio atualizado!' : '✓ Desafio salvo!')
+      : '⬇️ desafios.json baixado — substitua o arquivo e dê push.');
     resetForm();
     renderList();
     renderSuggestions();
+    renderTemaSuggestions();
   }
 });
 
 function resetForm() {
   document.getElementById('fTitle').value = '';
   document.getElementById('fContent').value = '';
+  document.getElementById('fTema').value = '';
+  document.getElementById('fObs').value = '';
   document.getElementById('fFeatured').checked = false;
   currentTags = [];
   renderTagChips();
@@ -550,6 +621,7 @@ function resetForm() {
   document.getElementById('editingId').value = '';
   document.getElementById('editIndicator').classList.remove('show');
   document.getElementById('fTitle').placeholder = 'Ex: AVC — Janela Estendida, SDRA Berlin...';
+  lockSourceFields(false);
 }
 
 document.getElementById('btnCancelEdit').addEventListener('click', resetForm);
@@ -578,24 +650,29 @@ function renderList() {
   }
 
   const diffLabel = { basica: 'Básica', media: 'Média', alta: 'Alta' };
-  el.innerHTML = items.map(d => `
+  el.innerHTML = items.map(d => {
+    const fromMd = isFileSourced(d);
+    return `
     <div class="dsf-item">
       <div class="dsf-item-head">
         <div class="dsf-item-title">
           ${d.featured ? '<span style="color:var(--yellow)">★ </span>' : ''}${escHtml(d.title || 'Sem título')}
         </div>
         <div class="dsf-item-actions">
-          <button class="btn-edit" data-id="${escAttr(d.id)}">✎ Editar</button>
+          <button class="btn-edit" data-id="${escAttr(d.id)}">✎ ${fromMd ? 'Caracterizar' : 'Editar'}</button>
           <button class="btn-del" data-id="${escAttr(d.id)}">✕</button>
         </div>
       </div>
       <div class="dsf-item-meta">
+        <span class="dsf-item-src ${fromMd ? 'src-md' : 'src-manual'}">${fromMd ? '📄 .md' : '✎ manual'}</span>
         <span class="dsf-item-date">${d.date || ''}</span>
         <span class="dsf-item-diff diff-${d.difficulty || 'media'}">${diffLabel[d.difficulty] || 'Média'}</span>
+        ${d.tema ? `<span class="dsf-item-tema">◆ ${escHtml(d.tema)}</span>` : ''}
         ${(d.tags || []).map(t => `<span class="dsf-item-tag">${escHtml(t)}</span>`).join('')}
       </div>
-    </div>
-  `).join('');
+      ${d.observacoes ? `<div class="dsf-item-obs">📝 ${escHtml(d.observacoes)}</div>` : ''}
+    </div>`;
+  }).join('');
 
   el.querySelectorAll('.btn-edit').forEach(btn => {
     btn.addEventListener('click', () => startEdit(btn.dataset.id));
@@ -619,6 +696,8 @@ function startEdit(id) {
 
   document.getElementById('fTitle').value = item.title || '';
   document.getElementById('fContent').value = item.content || '';
+  document.getElementById('fTema').value = item.tema || '';
+  document.getElementById('fObs').value = item.observacoes || '';
   document.getElementById('fFeatured').checked = !!item.featured;
 
   currentTags = [...(item.tags || [])];
@@ -629,6 +708,8 @@ function startEdit(id) {
     b.classList.toggle('active', b.dataset.diff === activeDiff);
   });
 
+  lockSourceFields(isFileSourced(item), item.source);
+
   editingId = id;
   document.getElementById('editingId').value = id;
   document.getElementById('editIndicator').classList.add('show');
@@ -637,12 +718,18 @@ function startEdit(id) {
 }
 
 async function deleteItem(id) {
+  const all = [...(data.temi || []), ...(data.r3 || [])];
+  const item = all.find(d => d.id === id);
+  if (item && isFileSourced(item)) {
+    showToast('Desafio vem de um .md — apague o arquivo em 10_DESAFIOS/ para removê-lo.', 'error');
+    return;
+  }
   if (!confirm('Excluir este desafio? Esta ação não pode ser desfeita.')) return;
   data.temi = (data.temi || []).filter(d => d.id !== id);
   data.r3 = (data.r3 || []).filter(d => d.id !== id);
   if (editingId === id) resetForm();
-  const ok = await writeFile();
-  if (ok) { showToast('✓ Desafio excluído'); renderList(); }
+  const ok = fileHandle ? await writeFile() : downloadJSON();
+  if (ok) { showToast(fileHandle ? '✓ Desafio excluído' : '⬇️ desafios.json baixado'); renderList(); }
 }
 
 /* ── CONTENT → AUTO TITLE PLACEHOLDER ───────────── */
@@ -664,6 +751,71 @@ function showToast(msg, type = 'success') {
   toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
 }
 
+/* ── SOURCE (.md vs manual) ──────────────────────── */
+function isFileSourced(item) {
+  return String((item && item.source) || '').replace(/\\/g, '/').startsWith('10_DESAFIOS');
+}
+function lockSourceFields(locked, source) {
+  const t = document.getElementById('fTitle');
+  const c = document.getElementById('fContent');
+  t.readOnly = locked;
+  c.readOnly = locked;
+  const banner = document.getElementById('sourceBanner');
+  if (locked) {
+    document.getElementById('sourceFile').textContent = String(source || '.md').split('/').pop();
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+/* ── TEMA SUGGESTIONS (datalist) ─────────────────── */
+function renderTemaSuggestions() {
+  const all = [...(data.temi || []), ...(data.r3 || [])];
+  const temas = [...new Set(all.map(d => d.tema).filter(Boolean))].sort();
+  document.getElementById('temaSuggestions').innerHTML =
+    temas.map(t => `<option value="${escAttr(t)}"></option>`).join('');
+}
+
+/* ── DOWNLOAD FALLBACK ───────────────────────────── */
+function downloadJSON() {
+  try {
+    data.updated = new Date().toISOString().slice(0, 10);
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'desafios.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    return true;
+  } catch (e) {
+    showToast('Erro ao gerar download: ' + e.message, 'error');
+    return false;
+  }
+}
+document.getElementById('btnDownload').addEventListener('click', () => {
+  if (downloadJSON()) {
+    showToast('⬇️ desafios.json baixado — coloque em data/ e dê push.');
+  }
+});
+
+/* ── AUTO-LOAD ───────────────────────────────────── */
+async function loadInitial() {
+  try {
+    const res = await fetch('../data/desafios.json?t=' + Date.now());
+    if (res.ok) {
+      const parsed = await res.json();
+      if (parsed && typeof parsed === 'object') data = parsed;
+    }
+  } catch (e) { /* offline / file:// — segue vazio até vincular */ }
+  if (!data.temi) data.temi = [];
+  if (!data.r3) data.r3 = [];
+  document.getElementById('btnSave').disabled = false;
+  renderList();
+  renderSuggestions();
+  renderTemaSuggestions();
+}
+
 /* ── HELPERS ─────────────────────────────────────── */
 function escHtml(s) {
   return String(s)
@@ -671,6 +823,8 @@ function escHtml(s) {
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function escAttr(s) { return String(s).replace(/"/g,'&quot;'); }
+
+loadInitial();
 
 })();
 </script>

@@ -116,6 +116,13 @@ h1.page-title{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.2rem);font
 .art-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
 .branch-chip{font-family:var(--font-mono);font-size:.72rem;padding:5px 12px;border-radius:20px;
   border:1px solid var(--dsf-c);color:var(--dsf-c);background:color-mix(in srgb,var(--dsf-c) 10%,transparent)}
+.tema-chip{font-family:var(--font-mono);font-size:.72rem;padding:5px 12px;border-radius:20px;
+  border:1px solid rgba(169,140,255,.4);color:var(--violet);background:var(--vio-d)}
+.obs-box{margin:0 0 30px;padding:16px 20px;border-radius:var(--r);
+  background:var(--yel-d);border:1px solid rgba(255,209,102,.28);border-left:3px solid var(--yellow)}
+.obs-box .obs-lab{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--yellow);margin-bottom:6px}
+.obs-box .obs-txt{color:#f0e6cf;font-size:.96rem;line-height:1.6;white-space:pre-wrap}
 h1.art-title{font-family:var(--font-head);font-size:clamp(1.9rem,4.6vw,2.9rem);font-weight:800;
   line-height:1.08;letter-spacing:-.02em;margin-bottom:14px}
 .art-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:30px}
@@ -336,6 +343,7 @@ function cardHtml(d,color){
     <div class="card-meta">
       ${d.featured?'<span style="color:var(--yellow)">★</span>':''}
       <span class="badge ${esc(diff)}">${esc(DIFF[diff]||'Média')}</span>
+      ${d.tema?`<span class="tag" style="background:var(--vio-d);color:var(--violet);border-color:rgba(169,140,255,.2)">◆ ${esc(d.tema)}</span>`:''}
       <span class="date">${esc(d.date||'')}</span>
     </div>
     <h3>${esc(d.title||'Sem título')}</h3>
@@ -370,12 +378,14 @@ function renderReader(branch,id){
     <article class="article" style="--dsf-c:${color}">
       <div class="art-meta">
         <span class="branch-chip">${esc(BRANCH_LABEL[branch]||branch)}</span>
+        ${d.tema?`<span class="tema-chip">◆ ${esc(d.tema)}</span>`:''}
         <span class="badge ${esc(diff)}">${esc(DIFF[diff]||'Média')}</span>
         <span class="date">${esc(d.date||'')}</span>
       </div>
       <h1 class="art-title">${esc(d.title||'Sem título')}</h1>
       <div class="art-tags">${(d.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
       <hr class="art-divider"/>
+      ${d.observacoes?`<div class="obs-box"><div class="obs-lab">📝 Observações</div><div class="obs-txt">${esc(d.observacoes)}</div></div>`:''}
       <div class="prose">${renderMarkdown(d.content||'')}</div>
     </article>
     <nav class="art-nav" style="--dsf-c:${color}">
