@@ -5,6 +5,8 @@ Verifica a integridade física de todos os arquivos apontados nos manifests do s
 
 import json
 import os
+import argparse
+from datetime import datetime
 from typing import Dict, List, Tuple
 
 
@@ -110,6 +112,14 @@ def validate_aliases(aliases_data: dict, base_dir: str) -> List[Tuple[str, str, 
 
 def main() -> None:
     """Função principal do script de auditoria."""
+    parser = argparse.ArgumentParser(description="Audita rotas e manifests do projeto.")
+    parser.add_argument(
+        "--write-report",
+        action="store_true",
+        help="Escreve 08_Documentacao_Projeto/RELATORIO_VALIDACAO_ROTAS.md.",
+    )
+    args = parser.parse_args()
+
     # Obter diretório do script e encontrar a raiz do projeto
     current_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.abspath(os.path.join(current_dir, ".."))
@@ -128,6 +138,20 @@ def main() -> None:
     broken_links = [r for r in all_results if not r[2]]
     valid_links = [r for r in all_results if r[2]]
 
+    print("Auditoria de rotas e manifests")
+    print(f"Raiz do Repositório: {project_root}")
+    print(f"Rotas / Fontes Auditadas: {len(all_results)}")
+    print(f"Links Íntegros: {len(valid_links)}")
+    print(f"Links Quebrados (404): {len(broken_links)}")
+    if broken_links:
+        print("")
+        print("Links quebrados:")
+        for desc, path, _ in broken_links:
+            print(f"- {desc}: {path}")
+
+    if not args.write_report:
+        return
+
     # Gerar Relatório em Markdown
     report_path = os.path.join(project_root, "08_Documentacao_Projeto", "RELATORIO_VALIDACAO_ROTAS.md")
     
@@ -136,7 +160,7 @@ def main() -> None:
 
     with open(report_path, "w", encoding="utf-8") as f:
         f.write("# 🚦 Relatório de Validação de Rotas e Manifests\n\n")
-        f.write(f"**Data da Auditoria:** 2026-06-04  \n")
+        f.write(f"**Data da Auditoria:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  \n")
         f.write(f"**Raiz do Repositório:** `{project_root}`  \n\n")
         
         f.write("## 1. Resumo Geral\n\n")

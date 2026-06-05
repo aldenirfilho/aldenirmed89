@@ -388,7 +388,7 @@ header{
 .map-container{
   position:relative;height:380px;margin-top:40px;
   background:rgba(255,255,255,.025);
-  border:1px solid var(--brd);border-radius:var(--r-xl);overflow:hidden;
+  border:1px solid var(--brd);border-radius:var(--r-xl);
 }
 /* SVG lines */
 .map-lines{position:absolute;inset:0;pointer-events:none;z-index:0}
@@ -420,6 +420,45 @@ header{
   text-align:center;
 }
 .map-node:hover .node-tooltip{opacity:1;transform:translateX(-50%) translateY(-3px)}
+
+/* ── MNEMÔNICOS UTI ───────────────────────────────── */
+.mnem-section{background:var(--bg2)}
+.mnem-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:40px}
+.mnem-card{
+  background:var(--surf);border:1px solid var(--brd);
+  border-radius:var(--r-xl);padding:28px 26px;
+  cursor:pointer;transition:all .22s;
+  position:relative;
+}
+.mnem-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  border-radius:var(--r-xl) var(--r-xl) 0 0;
+  background:linear-gradient(90deg,var(--mc1,var(--cyan)),var(--mc2,var(--violet)));
+}
+.mnem-card:hover{border-color:var(--mc1,var(--cyan));transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,.28)}
+.mnem-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
+.mnem-icon{
+  width:46px;height:46px;border-radius:13px;display:grid;place-items:center;
+  font-size:1.35rem;flex-shrink:0;border:1px solid;
+}
+.mnem-tag{font-family:var(--font-mono);font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.mnem-title{font-family:var(--font-head);font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:.01em}
+.mnem-letters{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+.mnem-row{display:flex;align-items:baseline;gap:10px}
+.mnem-key{
+  font-family:var(--font-mono);font-size:.88rem;font-weight:700;
+  color:var(--mc1,var(--cyan));min-width:18px;line-height:1.3;flex-shrink:0;
+}
+.mnem-val{font-size:.8rem;color:var(--soft);line-height:1.4}
+.mnem-val strong{color:var(--text);font-weight:600}
+.mnem-sep{margin-top:10px;padding-top:10px;border-top:1px solid var(--brd)}
+.mnem-cta{
+  font-family:var(--font-mono);font-size:.68rem;color:var(--muted);
+  background:none;border:none;cursor:pointer;padding:0;
+  display:flex;align-items:center;gap:5px;transition:color .2s;
+  pointer-events:none;
+}
+.mnem-card:hover .mnem-cta{color:var(--mc1,var(--cyan))}
 
 /* ── DUAS VIAS ────────────────────────────────────── */
 .vias-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
@@ -634,6 +673,10 @@ header{
   #drawer{width:100%;right:-100%}
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;align-items:flex-start}
+  .map-container{height:320px}
+  .node-btn{font-size:.7rem;padding:8px 10px;white-space:normal;text-align:center}
+  .node-btn small{font-size:.55rem}
+  .mnem-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -717,7 +760,7 @@ header{
         <div class="panel-topics-title">// temas no repositório</div>
         <div class="topic-pills">
           <a class="topic-pill cyan" href="01_Modulos_Clinicos/AVC_Agudo/avc.html">🧠 AVC Agudo</a>
-          <a class="topic-pill cyan" href="01_UpDown_Hub/content/intensiva/cetoacidose-diabetica-uti.md">🧪 CAD / UTI</a>
+          <a class="topic-pill cyan" href="01_UpDown_Hub/index.html">🧪 CAD / UTI</a>
           <a class="topic-pill violet" href="01_UpDown_Hub/index.html">🔵 LES — Manifestações</a>
           <a class="topic-pill violet" href="01_UpDown_Hub/index.html">💊 LES — Manejo</a>
           <a class="topic-pill violet" href="les-autoanticorpos/index.html">🧬 LES — Autoanticorpos</a>
@@ -1007,7 +1050,7 @@ header{
       <p class="section-sub">Cada nó é uma página. Hover para ver a conexão. Clique para abrir detalhes.</p>
     </div>
 
-    <div class="map-container" role="img" aria-label="Mapa visual de conexões do conhecimento médico">
+    <div class="map-container" role="region" aria-label="Mapa visual de conexões do conhecimento médico">
 
       <!-- SVG connection lines -->
       <svg class="map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -1108,6 +1151,102 @@ header{
       </div>
 
     </div><!-- /map-container -->
+  </div>
+</section>
+
+<!-- ── MNEMÔNICOS UTI ──────────────────────────────── -->
+<section id="mnemonicos" class="mnem-section" aria-labelledby="mnem-heading">
+  <div class="shell">
+    <div class="reveal">
+      <div class="section-label">// técnicas cognitivas</div>
+      <h2 class="section-title" id="mnem-heading">Mnemônicos Clínicos Rápidos 🧩</h2>
+      <p class="section-sub">Ferramentas cognitivas para UTI e beira-leito. Clique em qualquer card para detalhes clínicos completos.</p>
+    </div>
+    <div class="mnem-grid">
+
+      <!-- FAST HUG BID -->
+      <div class="mnem-card reveal" style="--mc1:var(--green);--mc2:var(--cyan)" data-mnem="fasthugbid">
+        <div class="mnem-head">
+          <div class="mnem-icon" style="background:var(--grn-d);border-color:rgba(78,240,161,.25)">🏥</div>
+          <div>
+            <div class="mnem-tag">// checklist diário UTI</div>
+            <div class="mnem-title">FAST HUG BID</div>
+          </div>
+        </div>
+        <div class="mnem-letters">
+          <div class="mnem-row"><span class="mnem-key">F</span><span class="mnem-val"><strong>Feeding</strong> — nutrição enteral/parenteral</span></div>
+          <div class="mnem-row"><span class="mnem-key">A</span><span class="mnem-val"><strong>Analgesia</strong> — NRS/BPS, analgesia first</span></div>
+          <div class="mnem-row"><span class="mnem-key">S</span><span class="mnem-val"><strong>Sedação</strong> — RASS −2 a 0, despertar diário</span></div>
+          <div class="mnem-row"><span class="mnem-key">T</span><span class="mnem-val"><strong>Trombose</strong> — profilaxia TVP/TEP</span></div>
+          <div class="mnem-row"><span class="mnem-key">H</span><span class="mnem-val"><strong>Head of bed</strong> — cabeceira 30–45°</span></div>
+          <div class="mnem-row"><span class="mnem-key">U</span><span class="mnem-val"><strong>Úlcera</strong> — profilaxia de estresse</span></div>
+          <div class="mnem-row"><span class="mnem-key">G</span><span class="mnem-val"><strong>Glicemia</strong> — meta 140–180 mg/dL</span></div>
+          <div class="mnem-row"><span class="mnem-key">B</span><span class="mnem-val"><strong>Bowel</strong> — prevenção de constipação</span></div>
+          <div class="mnem-row"><span class="mnem-key">I</span><span class="mnem-val"><strong>Indwelling catheters</strong> — rever diariamente</span></div>
+          <div class="mnem-row"><span class="mnem-key">D</span><span class="mnem-val"><strong>Delirium</strong> — CAM-ICU, mobilização precoce</span></div>
+        </div>
+        <button class="mnem-cta">Ver detalhes clínicos ↗</button>
+      </div>
+
+      <!-- ABCDE DO CHOQUE -->
+      <div class="mnem-card reveal" style="--mc1:var(--red);--mc2:var(--violet)" data-mnem="abcdechoque">
+        <div class="mnem-head">
+          <div class="mnem-icon" style="background:rgba(255,96,96,.1);border-color:rgba(255,96,96,.25)">⚡</div>
+          <div>
+            <div class="mnem-tag">// abordagem sistematizada</div>
+            <div class="mnem-title">ABCDE do Choque</div>
+          </div>
+        </div>
+        <div class="mnem-letters">
+          <div class="mnem-row"><span class="mnem-key">A</span><span class="mnem-val"><strong>Airway</strong> — via aérea pérvia, indicação de IOT</span></div>
+          <div class="mnem-row"><span class="mnem-key">B</span><span class="mnem-val"><strong>Breathing</strong> — FR, SpO₂, mecânica ventilatória</span></div>
+          <div class="mnem-row"><span class="mnem-key">C</span><span class="mnem-val"><strong>Circulation</strong> — PA ≥ 65 mmHg, volume, vasopressor</span></div>
+          <div class="mnem-row"><span class="mnem-key">D</span><span class="mnem-val"><strong>Disability</strong> — Glasgow, pupilas, glicemia</span></div>
+          <div class="mnem-row"><span class="mnem-key">E</span><span class="mnem-val"><strong>Etiology</strong> — hipo/distributivo/cardiogênico/obstrutivo</span></div>
+        </div>
+        <button class="mnem-cta">Ver detalhes clínicos ↗</button>
+      </div>
+
+      <!-- qSOFA -->
+      <div class="mnem-card reveal" style="--mc1:var(--yellow);--mc2:var(--green)" data-mnem="qsofa">
+        <div class="mnem-head">
+          <div class="mnem-icon" style="background:var(--yel-d);border-color:rgba(255,209,102,.25)">🦠</div>
+          <div>
+            <div class="mnem-tag">// triagem de sepse · Sepsis-3</div>
+            <div class="mnem-title">qSOFA</div>
+          </div>
+        </div>
+        <div class="mnem-letters">
+          <div class="mnem-row"><span class="mnem-key">R</span><span class="mnem-val"><strong>Respiração</strong> — FR ≥ 22 irpm</span></div>
+          <div class="mnem-row"><span class="mnem-key">A</span><span class="mnem-val"><strong>Alteração mental</strong> — Glasgow &lt; 15</span></div>
+          <div class="mnem-row"><span class="mnem-key">P</span><span class="mnem-val"><strong>Pressão</strong> — PAS ≤ 100 mmHg</span></div>
+          <div class="mnem-row mnem-sep">
+            <span class="mnem-key" style="color:var(--yellow);font-size:.7rem">≥2</span>
+            <span class="mnem-val">pontos → avaliar admissão em UTI</span>
+          </div>
+        </div>
+        <button class="mnem-cta">Ver detalhes clínicos ↗</button>
+      </div>
+
+      <!-- SBAR -->
+      <div class="mnem-card reveal" style="--mc1:var(--violet);--mc2:var(--cyan)" data-mnem="sbar">
+        <div class="mnem-head">
+          <div class="mnem-icon" style="background:var(--vio-d);border-color:rgba(169,140,255,.25)">🗣️</div>
+          <div>
+            <div class="mnem-tag">// comunicação clínica segura</div>
+            <div class="mnem-title">SBAR</div>
+          </div>
+        </div>
+        <div class="mnem-letters">
+          <div class="mnem-row"><span class="mnem-key">S</span><span class="mnem-val"><strong>Situation</strong> — qual é o problema atual</span></div>
+          <div class="mnem-row"><span class="mnem-key">B</span><span class="mnem-val"><strong>Background</strong> — contexto clínico relevante</span></div>
+          <div class="mnem-row"><span class="mnem-key">A</span><span class="mnem-val"><strong>Assessment</strong> — sua hipótese/avaliação</span></div>
+          <div class="mnem-row"><span class="mnem-key">R</span><span class="mnem-val"><strong>Recommendation</strong> — o que você propõe</span></div>
+        </div>
+        <button class="mnem-cta">Ver detalhes clínicos ↗</button>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -1237,7 +1376,7 @@ header{
         <h4>Módulos</h4>
         <a href="01_UpDown_Hub/index.html">↕️ UpDown Hub</a>
         <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca IA</a>
-        <a href="03_Calculadoras_UTI/index.html">🧮 Calculadoras UTI</a>
+        <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras UTI</a>
         <a href="02_Banco_Questoes_TEMI/index.html">🏆 Simulador TEMI</a>
         <a href="05_Midia_E_Feed/index.html">🖼️ Card Feed</a>
         <a href="04_Ebooks_Intensiva_Clinica/index.html">📘 Ebooks Intensiva &amp; Clínica</a>
@@ -1296,7 +1435,11 @@ const TOPICS = {
   fa:{title:"❤️ FA e AVC Cardioembólico",text:"FA é a causa mais comum de AVC cardioembólico. Anticoagulação após AVC isquêmico: regra 2-4-7-14 dias por NIHSS. Estratificar HAS-BLED vs CHA₂DS₂-VASc.",tags:["anticoagulação","CHA2DS2","2-4-7-14","NOAC","reversão"]},
   imagem:{title:"🖥️ Neuroimagem no AVC",text:"TC sem contraste: exame de escolha imediato (excluir hemorragia). ASPECTS: pontuação 0-10 por segmentos ACM. RM DWI: gold standard para isquemia precoce. Angiotomografia: avalia OGV.",tags:["TC","RM DWI","ASPECTS","angiotomografia","perfusão"]},
   edema:{title:"🌊 Edema Cerebral Maligno",text:"Infarto hemisférico maligno: 50–80% de mortalidade sem tratamento. Craniectomia descompressiva em <60 anos (DESTINY II), dentro de 48h. Manitol e hiperventilação como ponte.",tags:["craniectomia","DESTINY","<60 anos","48h","herniação"]},
-  cad:{title:"🧪 Cetoacidose Diabética na UTI",text:"Repor K+ antes de insulina se K<3,5. Insulina cristalina IV 0,1 UI/kg/h. Hidratar com SF 0,9% — 1L/h na 1ª hora. Fechar GAP antes de transição SC. Dashboard interativo disponível.",tags:["K+","insulina IV","Ânion Gap","transição SC","CAD Dashboard"]}
+  cad:{title:"🧪 Cetoacidose Diabética na UTI",text:"Repor K+ antes de insulina se K<3,5. Insulina cristalina IV 0,1 UI/kg/h. Hidratar com SF 0,9% — 1L/h na 1ª hora. Fechar GAP antes de transição SC. Dashboard interativo disponível.",tags:["K+","insulina IV","Ânion Gap","transição SC","CAD Dashboard"]},
+  fasthugbid:{title:"🏥 FAST HUG BID — Checklist Diário UTI",text:"Checklist de sobrevivência criado por JC Marshall (1995, rev. 2010). F: Feeding — nutrição enteral em ≤48h, meta 1,2–2g/kg proteína. A: Analgesia — avaliar NRS/BPS a cada 4h; priorizar analgesia antes de sedação (PAD guidelines). S: Sedação — RASS target −2 a 0; SAT (spontaneous awakening trial) diário para reduzir delirium. T: Trombose — enoxaparina 40mg SC/dia ou HNF 5000UI 8/8h; compressão pneumática se anticoagulação contraindicada. H: Head of bed — cabeceira 30–45° em VM para prevenção de PAV. U: Úlcera — IBP ou anti-H2 em alto risco (NPO, corticoide, coagulopatia, VM >48h). G: Glicemia — meta 140–180 mg/dL (NICE-SUGAR); insulina contínua se >180. B: Bowel — laxativos se ≥3 dias sem evacuação; nutrição enteral facilita o trânsito. I: Indwelling catheters — rever indicação de CVD, CVC e drenos diariamente; remover se desnecessário. D: Delirium/De-escalation — CAM-ICU diário; mobilização precoce; revisar antibióticos e simplificar esquema.",tags:["FAST HUG BID","PAV","RASS","CAM-ICU","glicemia","TVP","analgesia","sedação"]},
+  abcdechoque:{title:"⚡ ABCDE do Choque",text:"Abordagem sistematizada para qualquer choque em UTI ou emergência. A: Airway — via aérea pérvia? SpO₂ < 92% com O₂ máximo → indicar IOT; considerar VNI como ponte no choque cardiogênico. B: Breathing — avaliar FR, mecânica ventilatória; se intubado usar VM protetora (6 mL/kg peso predito, PEEP titulada). C: Circulation — meta PA média ≥ 65 mmHg; 2 acessos venosos calibrosos; volume 30 mL/kg SF em 30 min (sepse); noradrenalina 1ª linha se PA refratária ao volume; POCUS beira-leito para avaliar função cardíaca e volemia. D: Disability — Glasgow, pupilas, glicemia capilar (excluir hipoglicemia como causa reversível!). E: Exposure/Etiology — temperatura completa, exposição total. Diagnóstico diferencial: hipovolêmico (sangramento, desidratação), distributivo (sepse, anafilaxia, neurogenico), cardiogênico (IAM, miocardite — eco urgência), obstrutivo (TEP, tamponamento cardíaco — POCUS).",tags:["choque","ABCDE","IOT","noradrenalina","PA média","POCUS","TEP","tamponamento"]},
+  qsofa:{title:"🦠 qSOFA — Triagem Rápida de Sepse (Sepsis-3)",text:"Score de triagem para sepse fora da UTI (Sepsis-3, JAMA 2016). Cada critério = 1 ponto. R: Frequência respiratória ≥ 22 irpm. A: Alteração do estado mental (Glasgow < 15 — qualquer). P: Pressão arterial sistólica ≤ 100 mmHg. Interpretação: ≥ 2 pontos = alta probabilidade de disfunção orgânica e mortalidade elevada → avaliar internação em UTI. Limitações: sensibilidade apenas 63% — score < 2 NÃO exclui sepse. Diagnóstico formal de sepse (Sepsis-3): infecção suspeita ou confirmada + SOFA ≥ 2. Choque séptico: vasopressor necessário + lactato > 2 mmol/L após ressuscitação adequada.",tags:["qSOFA","Sepsis-3","sepse","SOFA","lactato","UTI","triagem","mortalidade"]},
+  sbar:{title:"🗣️ SBAR — Comunicação Clínica Segura",text:"Ferramenta estruturada para passagem de caso, solicitação de UTI e situações de urgência. S: Situation — identifique-se e descreva o problema ('Sou Dr. João. Paciente Maria, 65a, 3° PO, com piora hemodinâmica há 30 min'). B: Background — contexto clínico relevante: diagnóstico principal, antecedentes, medicações em uso, exames das últimas 24h. A: Assessment — sua avaliação e hipótese diagnóstica ('Suspeito de sepse com foco pulmonar; SOFA subindo de 2 para 5 em 24h'). R: Recommendation — o que você propõe ou precisa ('Solicito avaliação imediata + autorização para CVC + iniciar antibióticos em ≤1h'). Padrão adotado pela OMS, Joint Commission e ISMP para comunicação segura em handoff clínico. Reduz erros de comunicação em UTI em até 60%.",tags:["SBAR","comunicação","handoff","segurança","passagem de caso","OMS","UTI"]}
 };
 
 /* ── DRAWER ─────────────────────────────────────── */
@@ -1326,6 +1469,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
 
 document.querySelectorAll('[data-node]').forEach(btn=>{
   btn.addEventListener('click',()=>openDrawer(btn.dataset.node));
+});
+document.querySelectorAll('.mnem-card[data-mnem]').forEach(card=>{
+  card.addEventListener('click',()=>openDrawer(card.dataset.mnem));
 });
 
 /* ── SCROLL REVEAL ───────────────────────────────── */

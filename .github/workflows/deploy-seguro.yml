@@ -54,6 +54,12 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Validar manifests e paths antes do deploy
+        run: |
+          set -e
+          python3 scripts_admin/check_static_manifests.py
+          python3 scripts_admin/validar_paths.py --check
+
       - name: Montar pasta publica limpa (allowlist)
         run: |
           set -e
@@ -115,10 +121,16 @@ jobs:
           # ---- 7. PRIVACIDADE: remover bastidores do artefato público ------
           # Regra inviolável: nunca expor prompts/instruções internas.
           find site -type d -name "_private"            -prune -print -exec rm -rf {} + 2>/dev/null || true
+          find site -type d -iname "*Antigravity_Repo_Pack*" -prune -print -exec rm -rf {} + 2>/dev/null || true
           find site -type f -iname "*antigravity*instruc*"     -print -delete 2>/dev/null || true
           find site -type f -iname "INSTRUCOES-ANTIGRAVITY*"   -print -delete 2>/dev/null || true
           find site -type f -iname "*PROMPT_ANTIGRAVITY_RULES*" -print -delete 2>/dev/null || true
           find site -type f -iname "*PROMPT*RULES*.md"          -print -delete 2>/dev/null || true
+          find site -type f -iname "*PROMPT_ANTIGRAVITY*"       -print -delete 2>/dev/null || true
+          find site -type f -iname "*PROMPT*ANTIGRAVITY*"       -print -delete 2>/dev/null || true
+          find site -type f -iname "PATCH_*.md"                 -print -delete 2>/dev/null || true
+          find site -type f -iname "*.bak"                      -print -delete 2>/dev/null || true
+          find site -type f -iname "*.tmp"                      -print -delete 2>/dev/null || true
           find site -type f -iname "*_PRIVAD*"                  -print -delete 2>/dev/null || true
           # Markdown de governança que não precisa ser público:
           rm -f site/ANTIGRAVITY_INSTRUCTIONS.md site/ANTIGRAVITY_AUDIT_MAP.md \

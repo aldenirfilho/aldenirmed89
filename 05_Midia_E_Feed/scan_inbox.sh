@@ -1,6 +1,6 @@
 #!/bin/bash
 # 📥 Scan Inbox — Gera o manifesto inbox.json a partir das imagens na pasta inbox
-# Uso: cd 06_Card_Feed_Medico && bash scan_inbox.sh
+# Uso: cd 05_Midia_E_Feed && bash scan_inbox.sh
 
 INBOX_DIR="assets/cards/inbox"
 OUTPUT="data/inbox.json"
@@ -31,4 +31,4 @@ echo "✅ Escaneado $TOTAL imagem(ns) no inbox."
 echo "📄 Manifesto salvo em: $OUTPUT"
 echo ""
 echo "Próximo passo:"
-echo "  git add . && git commit -m 'feat: add inbox images' && git push origin main"
+echo "  Revise git diff, valide e publique pela branch de trabalho/PR."
