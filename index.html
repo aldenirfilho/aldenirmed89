@@ -460,6 +460,63 @@ header{
 }
 .mnem-card:hover .mnem-cta{color:var(--mc1,var(--cyan))}
 
+/* ── DESAFIOS CLÍNICOS ───────────────────────────── */
+.dsf-section{background:var(--bg)}
+.dsf-tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--brd)}
+.dsf-tab{
+  font-family:var(--font-mono);font-size:.8rem;padding:10px 22px;
+  cursor:pointer;background:none;border:none;color:var(--muted);
+  border-bottom:2px solid transparent;transition:.18s;
+}
+.dsf-tab.active{color:var(--dsf-c,var(--cyan));border-bottom-color:var(--dsf-c,var(--cyan))}
+.dsf-filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:28px;min-height:28px}
+.dsf-chip{
+  font-family:var(--font-mono);font-size:.65rem;padding:4px 11px;
+  border-radius:20px;border:1px solid var(--brd);background:var(--surf);
+  color:var(--muted);cursor:pointer;transition:.15s;
+}
+.dsf-chip.active,.dsf-chip:hover{
+  border-color:var(--dsf-c,var(--cyan));color:var(--dsf-c,var(--cyan));
+  background:rgba(62,232,255,.07);
+}
+.dsf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+.dsf-card{
+  background:var(--surf);border:1px solid var(--brd);
+  border-radius:var(--r-lg);padding:22px 20px;
+  cursor:pointer;transition:all .22s;position:relative;
+}
+.dsf-card:hover{
+  border-color:var(--dsf-c,var(--cyan));transform:translateY(-2px);
+  box-shadow:0 12px 36px rgba(0,0,0,.25);
+}
+.dsf-card-meta{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.dsf-badge{font-family:var(--font-mono);font-size:.6rem;padding:3px 9px;border-radius:20px;font-weight:600}
+.dsf-badge.media{background:var(--yel-d);color:var(--yellow);border:1px solid rgba(255,209,102,.25)}
+.dsf-badge.alta{background:rgba(255,96,96,.1);color:var(--red);border:1px solid rgba(255,96,96,.25)}
+.dsf-badge.basica{background:var(--grn-d);color:var(--green);border:1px solid rgba(78,240,161,.25)}
+.dsf-date{font-family:var(--font-mono);font-size:.62rem;color:var(--muted);margin-left:auto}
+.dsf-card h3{font-family:var(--font-head);font-size:.95rem;font-weight:700;margin-bottom:8px;line-height:1.3}
+.dsf-excerpt{
+  font-size:.8rem;color:var(--soft);line-height:1.55;margin-bottom:14px;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;line-clamp:3;overflow:hidden;
+}
+.dsf-tags{display:flex;flex-wrap:wrap;gap:5px}
+.dsf-tag{
+  font-family:var(--font-mono);font-size:.6rem;padding:2px 8px;
+  border-radius:20px;background:var(--surf-h);border:1px solid var(--brd);color:var(--muted);
+}
+.dsf-empty{
+  text-align:center;padding:60px 20px;color:var(--muted);
+  font-size:.9rem;grid-column:1/-1;
+}
+.dsf-empty a{color:var(--cyan);text-decoration:none}
+.dsf-admin-link{
+  font-family:var(--font-mono);font-size:.7rem;color:var(--muted);
+  display:inline-flex;align-items:center;gap:6px;margin-top:24px;
+  text-decoration:none;transition:color .15s;
+}
+.dsf-admin-link:hover{color:var(--cyan)}
+
 /* ── DUAS VIAS ────────────────────────────────────── */
 .vias-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
 .via-card{
@@ -677,6 +734,8 @@ header{
   .node-btn{font-size:.7rem;padding:8px 10px;white-space:normal;text-align:center}
   .node-btn small{font-size:.55rem}
   .mnem-grid{grid-template-columns:1fr}
+  .dsf-grid{grid-template-columns:1fr}
+  .dsf-tabs{flex-wrap:wrap}
 }
 </style>
 </head>
@@ -1250,6 +1309,39 @@ header{
   </div>
 </section>
 
+<!-- ── DESAFIOS CLÍNICOS ──────────────────────────── -->
+<section id="desafios" class="dsf-section" aria-labelledby="dsf-heading">
+  <div class="shell">
+    <div class="reveal">
+      <div class="section-label">// banco de desafios</div>
+      <h2 class="section-title" id="dsf-heading">Desafios Clínicos 🏋️</h2>
+      <p class="section-sub">Casos, questões e dúvidas do dia a dia — colados direto dos chats e eternizados aqui. Dois ramos: Medicina Intensiva (TEMI) e Clínica Médica Avançada (R3).</p>
+    </div>
+    <div style="margin-top:40px">
+      <div class="dsf-tabs" role="tablist" aria-label="Selecionar ramo clínico">
+        <button class="dsf-tab active" data-branch="temi"
+          style="--dsf-c:var(--cyan)" role="tab"
+          aria-selected="true" aria-controls="dsf-grid">
+          🏥 TEMI — Medicina Intensiva
+        </button>
+        <button class="dsf-tab" data-branch="r3"
+          style="--dsf-c:var(--green)" role="tab"
+          aria-selected="false" aria-controls="dsf-grid">
+          🩺 R3 — Clínica Médica Avançada
+        </button>
+      </div>
+      <div id="dsf-filters" class="dsf-filters"
+        role="group" aria-label="Filtrar por tag"></div>
+      <div id="dsf-grid" class="dsf-grid" role="list"></div>
+      <div style="text-align:right;margin-top:16px">
+        <a class="dsf-admin-link" href="admin/desafios.html">
+          ✎ Gerenciar desafios →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── TEMI ────────────────────────────────────────── -->
 <section class="temi-section" id="temi" aria-labelledby="temi-heading">
   <div class="shell">
@@ -1514,6 +1606,118 @@ const cntObserver=new IntersectionObserver(entries=>{
   });
 },{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cntObserver.observe(el));
+
+/* ── DESAFIOS CLÍNICOS — loader ──────────────────── */
+(async function(){
+  let dsfData={temi:[],r3:[]};
+  let activeTab='temi';
+  let activeTag=null;
+
+  try{
+    const res=await fetch('data/desafios.json?t='+Date.now());
+    if(res.ok) dsfData=await res.json();
+  }catch(e){}
+
+  function escH(s){
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function renderDesafios(){
+    const branch=dsfData[activeTab]||[];
+    const items=activeTag
+      ?branch.filter(d=>d.tags&&d.tags.includes(activeTag))
+      :branch;
+    const color=activeTab==='temi'?'var(--cyan)':'var(--green)';
+
+    const allTags=[...new Set(branch.flatMap(d=>d.tags||[]))];
+    const filtersEl=document.getElementById('dsf-filters');
+    if(allTags.length){
+      filtersEl.innerHTML=allTags.map(t=>
+        `<button class="dsf-chip${activeTag===t?' active':''}"
+          data-tag="${escH(t)}" style="--dsf-c:${color}">${escH(t)}</button>`
+      ).join('');
+      filtersEl.querySelectorAll('.dsf-chip').forEach(c=>{
+        c.addEventListener('click',()=>{
+          activeTag=activeTag===c.dataset.tag?null:c.dataset.tag;
+          renderDesafios();
+        });
+      });
+    } else {
+      filtersEl.innerHTML='';
+    }
+
+    const grid=document.getElementById('dsf-grid');
+    if(!items.length){
+      grid.innerHTML=`<div class="dsf-empty">
+        <p>Nenhum desafio neste ramo ainda.</p>
+        <a href="admin/desafios.html">✎ Abrir editor e adicionar →</a>
+      </div>`;
+      return;
+    }
+
+    const sorted=[...items].sort((a,b)=>
+      (b.featured?1:0)-(a.featured?1:0)||b.date.localeCompare(a.date)
+    );
+    const diffLabel={basica:'Básica',media:'Média',alta:'Alta'};
+
+    grid.innerHTML=sorted.map(d=>`
+      <div class="dsf-card reveal" role="listitem"
+        data-dsf-id="${escH(d.id)}" data-dsf-branch="${activeTab}"
+        style="--dsf-c:${color}"
+        aria-label="${escH(d.title||'Desafio')}">
+        <div class="dsf-card-meta">
+          ${d.featured?`<span style="color:var(--yellow);font-size:.8rem" aria-label="Destacado">★</span>`:''}
+          <span class="dsf-badge ${escH(d.difficulty||'media')}">${
+            escH(diffLabel[d.difficulty]||'Média')
+          }</span>
+          <span class="dsf-date">${escH(d.date||'')}</span>
+        </div>
+        <h3>${escH(d.title||'Sem título')}</h3>
+        <p class="dsf-excerpt">${escH(d.content||'')}</p>
+        <div class="dsf-tags">${
+          (d.tags||[]).map(t=>`<span class="dsf-tag">${escH(t)}</span>`).join('')
+        }</div>
+      </div>
+    `).join('');
+
+    grid.querySelectorAll('.dsf-card').forEach(card=>{
+      card.addEventListener('click',()=>{
+        const id=card.dataset.dsfId;
+        const b=card.dataset.dsfBranch;
+        const d=(dsfData[b]||[]).find(x=>x.id===id);
+        if(!d)return;
+        document.getElementById('drawerTitle').textContent=d.title||'Sem título';
+        document.getElementById('drawerText').textContent=d.content||'';
+        const tagsEl=document.getElementById('drawerTags');
+        tagsEl.innerHTML=(d.tags||[]).map(t=>`<span class="dtag">${escH(t)}</span>`).join('');
+        drawer.classList.add('open');
+        drawer.setAttribute('aria-hidden','false');
+        overlay.classList.add('show');
+        drawer.focus();
+      });
+    });
+
+    grid.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  }
+
+  document.querySelectorAll('.dsf-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      document.querySelectorAll('.dsf-tab').forEach(t=>{
+        t.classList.remove('active');
+        t.setAttribute('aria-selected','false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      activeTab=tab.dataset.branch;
+      activeTag=null;
+      renderDesafios();
+    });
+  });
+
+  renderDesafios();
+})();
 
 /* ── TOP BUTTON ──────────────────────────────────── */
 const topBtn=document.getElementById('topBtn');
