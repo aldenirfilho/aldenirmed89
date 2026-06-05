@@ -79,8 +79,16 @@ jobs:
           # ---- 3. Módulos públicos (Atualizado p/ a nova arquitetura) ------
           cp -r 01_UpDown_Hub           site/ 2>/dev/null || true
           cp -r 02_Biblioteca_IA_Engine site/ 2>/dev/null || true
-          cp -r 03_Calculadoras_E_Apps  site/ 2>/dev/null || true
+          cp -r 03_Calculadoras_UTI     site/ 2>/dev/null || true
+          cp -r 03_Calculadoras_E_Apps  site/ 2>/dev/null || true   # alias legado
+          cp -r 04_Ebooks_Intensiva_Clinica site/ 2>/dev/null || true
           cp -r 05_Midia_E_Feed         site/ 2>/dev/null || true
+          cp -r 05_Biblioteca_IA         site/ 2>/dev/null || true   # alias legado -> 02_Biblioteca_IA_Engine
+          cp -r 06_Card_Feed_Medico      site/ 2>/dev/null || true   # alias legado -> 05_Midia_E_Feed
+          cp -r 07_Estudos_Markdown      site/ 2>/dev/null || true   # alias legado -> 01_UpDown_Hub
+          cp -r 07_Questoes_Comentadas  site/ 2>/dev/null || true
+          cp -r 08_Transcricoes         site/ 2>/dev/null || true
+          cp -r 09_POCUS_Hub            site/ 2>/dev/null || true
           
           # Módulos legados (preservados caso ainda existam na raiz soltos)
           cp -r 01_Modulos_Clinicos     site/ 2>/dev/null || true
@@ -88,6 +96,7 @@ jobs:
           cp -r questoes                site/ 2>/dev/null || true
           cp -r les-autoanticorpos      site/ 2>/dev/null || true   # <- FIX módulo LES
           cp -r apps                    site/ 2>/dev/null || true
+          cp -r respirasense-icu        site/ 2>/dev/null || true   # alias legado -> RespiraSense atual
 
           # ---- 4. Rotas amigáveis / wrappers legados -----------------------
           # /biblioteca/ e /updown/ são wrappers de redirect (NÃO copiar a
@@ -101,6 +110,7 @@ jobs:
 
           # ---- 6. Remover symlinks (artefato Pages não aceita) -------------
           find site -type l -print -delete || true
+          find site -name ".DS_Store" -print -delete || true
 
           # ---- 7. PRIVACIDADE: remover bastidores do artefato público ------
           # Regra inviolável: nunca expor prompts/instruções internas.
