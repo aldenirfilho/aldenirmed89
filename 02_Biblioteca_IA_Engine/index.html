@@ -649,10 +649,19 @@ function renderStats() {
   document.getElementById('triagem-count').textContent = catalog.items.filter(i => i.theme === 'inbox-revisar').length;
 }
 
+let currentRenderLimit = 50;
+let lastRenderState = '';
+
 // Renderizar Grid
 function renderGrid() {
   const grid = document.getElementById('grid-arquivos');
   const busca = document.getElementById('busca').value.toLowerCase();
+  
+  const currentState = `${currentFilter}|${currentFormatFilter}|${currentOriginFilter}|${busca}`;
+  if (currentState !== lastRenderState) {
+      currentRenderLimit = 50;
+      lastRenderState = currentState;
+  }
   
   if (!catalog.items) return;
 
@@ -682,7 +691,9 @@ function renderGrid() {
     return matchTheme && matchFormat && matchOrigin && matchBusca;
   });
 
-  grid.innerHTML = items.map(i => {
+  const visibleItems = items.slice(0, currentRenderLimit);
+
+  grid.innerHTML = visibleItems.map(i => {
     const theme = (taxonomy.themes || []).find(t => t.id === i.theme) || { emoji: '📄' };
     const formatId = i.formato || i.format || i.tipo || 'outros';
     const originId = i.origem || i.origin || 'gerada-por-ia';
@@ -715,6 +726,32 @@ function renderGrid() {
     `;
   }).join('');
   
+  // Botão Carregar Mais
+  let loadMoreBtn = document.getElementById('btn-load-more');
+  if (!loadMoreBtn) {
+    const container = document.createElement('div');
+    container.style.textAlign = 'center';
+    container.style.margin = '2rem auto 4rem';
+    
+    loadMoreBtn = document.createElement('button');
+    loadMoreBtn.id = 'btn-load-more';
+    loadMoreBtn.className = 'btn btn-secondary';
+    loadMoreBtn.style.width = '100%';
+    loadMoreBtn.style.maxWidth = '400px';
+    loadMoreBtn.style.padding = '1rem';
+    loadMoreBtn.onclick = () => { currentRenderLimit += 50; renderGrid(); };
+    
+    container.appendChild(loadMoreBtn);
+    grid.parentNode.insertBefore(container, grid.nextSibling);
+  }
+  
+  if (items.length > currentRenderLimit) {
+    loadMoreBtn.parentNode.style.display = 'block';
+    loadMoreBtn.innerHTML = `⬇️ Ver mais resultados (${items.length - currentRenderLimit} restantes)`;
+  } else {
+    loadMoreBtn.parentNode.style.display = 'none';
+  }
+
   document.getElementById('empty-state').style.display = items.length === 0 ? 'block' : 'none';
   document.getElementById('grid-title').textContent = currentFormatFilter === 'todos' ? '📂 Acervo Catalogado' : '🧩 Repartição por formato';
   document.getElementById('grid-subtitle').textContent = `${items.length} documento(s) encontrados com os filtros atuais.`;
