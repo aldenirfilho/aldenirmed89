@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-08T18:51:47.201141",
+  "updatedAt": "2026-06-05T05:57:51",
   "version": "4.2-unified",
   "description": "Mapa vivo organizado da Enciclopédia: portal, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, AVC e macrotemas de UTI.",
   "legend": {
@@ -16,7 +16,7 @@
     {
       "id": "home",
       "label": "🏠 Portal",
-      "body": "Página-mãe da Enciclopédia: entrada para módulos, Biblioteca, TEMI, Calculadoras e Card Feed.",
+      "body": "Página-mãe da Enciclopédia Médica.",
       "x": 50,
       "y": 50,
       "type": "hub",
@@ -2461,6 +2461,94 @@
       "body": "Arquivo da Biblioteca: 📥 Inbox / Revisar Manualmente",
       "url": "05_Biblioteca_IA/index.html",
       "status": "ativo"
+    },
+    {
+      "id": "desafios-hub",
+      "label": "🏋️ Desafios Clínicos",
+      "type": "module",
+      "url": "desafios/",
+      "status": "ativo",
+      "body": "Casos, questões e raciocínio de plantão (TEMI e R3)."
+    },
+    {
+      "id": "mnemonicos-hub",
+      "label": "🧩 Mnemônicos",
+      "type": "module",
+      "url": "index.html#mnemonicos",
+      "status": "ativo",
+      "body": "Ferramentas cognitivas de beira-leito."
+    },
+    {
+      "id": "dsf-banco-de-temas-do-passa-tempo-temi",
+      "label": "TEMAS",
+      "type": "desafio",
+      "url": "desafios/?b=temi&id=banco-de-temas-do-passa-tempo-temi",
+      "status": "ativo",
+      "body": "O jogo vai rodar em cima destes blocos:"
+    },
+    {
+      "id": "dsf-o-plantao-da-madrugada",
+      "label": "O Plantão da Madrugada",
+      "type": "desafio",
+      "url": "desafios/?b=temi&id=o-plantao-da-madrugada",
+      "status": "ativo",
+      "body": "❓ PERGUNTA 1 (de 4 deste caso)"
+    },
+    {
+      "id": "dsf-sdra",
+      "label": "SÍNDROME DO DESCONFORTO RESPIRATÓRIO AGUDO (SDRA",
+      "type": "desafio",
+      "url": "desafios/?b=temi&id=sdra",
+      "status": "ativo",
+      "body": "Diagnóstico, ventilação protetora, prona e além — o que a prova ama e o plantão exige"
+    },
+    {
+      "id": "dsf-sepse-hemodinamica-inicial",
+      "label": "Sepse + hemodinâmica inicial 🦠",
+      "type": "desafio",
+      "url": "desafios/?b=temi&id=sepse-hemodinamica-inicial",
+      "status": "ativo",
+      "body": "Explicação de prova"
+    },
+    {
+      "id": "mnem-abcdechoque",
+      "label": "⚡ ABCDE do Choque",
+      "type": "mnemonico",
+      "url": "index.html#mnemonicos",
+      "status": "ativo",
+      "body": "# ⚡ ABCDE do Choque — Abordagem Inicial Sistematizada O manejo do choque em ambiente crítico exige velocidade e priorização. O protocolo **ABCDE do Choque** organiza o atendimento…"
+    },
+    {
+      "id": "mnem-fasthugbid",
+      "label": "🏥 FAST HUG BID — Checklist Diário UTI",
+      "type": "mnemonico",
+      "url": "index.html#mnemonicos",
+      "status": "ativo",
+      "body": "# 🏥 FAST HUG BID — Checklist Diário da UTI O **FAST HUG BID** é uma ferramenta de segurança do paciente recomendada pela AMIB e pela ESICM. É um mnemônico estruturado para garanti…"
+    },
+    {
+      "id": "mnem-ressuscitacaosepse",
+      "label": "🦠 L.E.T.S. G.O. — Ressuscitação na Sepse",
+      "type": "mnemonico",
+      "url": "index.html#mnemonicos",
+      "status": "ativo",
+      "body": "# 🦠 L.E.T.S. G.O. — Ressuscitação Hemodinâmica na Sepse A ressuscitação hemodinâmica precoce e guiada por metas reduz a mortalidade no Choque Séptico. O mnemônico **L.E.T.S. G.O.*…"
+    },
+    {
+      "id": "mnem-sbar",
+      "label": "🗣️ SBAR — Comunicação Segura",
+      "type": "mnemonico",
+      "url": "index.html#mnemonicos",
+      "status": "ativo",
+      "body": "# 🗣️ SBAR — Comunicação Clínica Estruturada e Segura A falha de comunicação é a principal causa de eventos adversos graves e evitáveis em ambientes de terapia intensiva (UTI) e pr…"
+    },
+    {
+      "id": "mnem-qsofa",
+      "label": "🦠 qSOFA — Triagem Rápida de Sepse",
+      "type": "mnemonico",
+      "url": "index.html#mnemonicos",
+      "status": "ativo",
+      "body": "# 🦠 qSOFA — Triagem Rápida de Sepse (Sepsis-3) O **qSOFA** (quick SOFA) é um escore simplificado de triagem clínica introduzido pelo consenso **Sepsis-3** (JAMA, 2016). Ele foi de…"
     }
   ],
   "edges": [
@@ -5431,6 +5519,61 @@
       "from": "nejmra2312086",
       "to": "inbox-revisar",
       "relation": "classificado-em"
+    },
+    {
+      "from": "home",
+      "to": "desafios-hub",
+      "relation": "modulo-ativo"
+    },
+    {
+      "from": "home",
+      "to": "mnemonicos-hub",
+      "relation": "modulo-ativo"
+    },
+    {
+      "from": "desafios-hub",
+      "to": "dsf-banco-de-temas-do-passa-tempo-temi",
+      "relation": "desafio"
+    },
+    {
+      "from": "desafios-hub",
+      "to": "dsf-o-plantao-da-madrugada",
+      "relation": "desafio"
+    },
+    {
+      "from": "desafios-hub",
+      "to": "dsf-sdra",
+      "relation": "desafio"
+    },
+    {
+      "from": "desafios-hub",
+      "to": "dsf-sepse-hemodinamica-inicial",
+      "relation": "desafio"
+    },
+    {
+      "from": "mnemonicos-hub",
+      "to": "mnem-abcdechoque",
+      "relation": "mnemonico"
+    },
+    {
+      "from": "mnemonicos-hub",
+      "to": "mnem-fasthugbid",
+      "relation": "mnemonico"
+    },
+    {
+      "from": "mnemonicos-hub",
+      "to": "mnem-ressuscitacaosepse",
+      "relation": "mnemonico"
+    },
+    {
+      "from": "mnemonicos-hub",
+      "to": "mnem-sbar",
+      "relation": "mnemonico"
+    },
+    {
+      "from": "mnemonicos-hub",
+      "to": "mnem-qsofa",
+      "relation": "mnemonico"
     }
   ],
   "links": []

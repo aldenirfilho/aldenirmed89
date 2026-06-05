@@ -460,6 +460,55 @@ header{
 }
 .mnem-card:hover .mnem-cta{color:var(--mc1,var(--cyan))}
 
+/* ── MNEMÔNICOS: controles + interatividade ──────── */
+.mnem-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:36px 0 10px}
+.mnem-search{flex:1;min-width:240px;background:var(--surf);border:1px solid var(--brd);
+  border-radius:12px;padding:12px 16px;color:var(--text);font-family:var(--font-body);
+  font-size:.9rem;outline:none;transition:border-color .15s}
+.mnem-search:focus{border-color:rgba(62,232,255,.45)}
+.mnem-filters{display:flex;gap:7px;flex-wrap:wrap}
+.mnem-chip{font-family:var(--font-mono);font-size:.7rem;padding:7px 13px;border-radius:20px;
+  border:1px solid var(--brd);background:transparent;color:var(--muted);cursor:pointer;transition:.15s}
+.mnem-chip:hover{color:var(--text);border-color:var(--brd-h)}
+.mnem-chip.active{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-d)}
+.mnem-train-toggle{font-family:var(--font-mono);font-size:.74rem;font-weight:600;padding:10px 16px;
+  border-radius:12px;border:1px solid rgba(169,140,255,.3);background:var(--vio-d);
+  color:var(--violet);cursor:pointer;transition:.15s;white-space:nowrap}
+.mnem-train-toggle[aria-pressed="true"]{background:var(--violet);color:#0c0820;border-color:var(--violet)}
+.mnem-count{font-family:var(--font-mono);font-size:.7rem;color:var(--muted);margin:6px 0 20px}
+.mnem-empty{text-align:center;padding:50px 20px;color:var(--muted);
+  border:1px dashed var(--brd);border-radius:var(--r-lg)}
+.mnem-howto{font-family:var(--font-mono);font-size:.66rem;color:var(--muted)}
+.mnem-howto code{color:var(--soft);background:var(--surf);padding:1px 6px;border-radius:5px}
+
+/* card data-driven */
+.mnem-card{--mc:var(--cyan)}
+.mnem-card.train-mode .mnem-cta{display:none}
+.mnem-copy{position:absolute;top:16px;right:16px;background:var(--surf);border:1px solid var(--brd);
+  border-radius:9px;width:32px;height:32px;display:grid;place-items:center;cursor:pointer;
+  color:var(--muted);font-size:.85rem;transition:.15s;z-index:3}
+.mnem-copy:hover{color:var(--cyan);border-color:rgba(62,232,255,.35);background:var(--cyan-d)}
+.mnem-card-header{display:flex;align-items:center;gap:13px;margin-bottom:8px;padding-right:40px}
+.mnem-emoji{font-size:1.7rem;line-height:1}
+.mnem-card-header h3{font-family:var(--font-head);font-size:1.05rem;font-weight:800;color:var(--text)}
+.mnem-card .mnem-cat{font-family:var(--font-mono);font-size:.6rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px}
+.mnem-line{display:flex;gap:11px;align-items:baseline;padding:3px 6px;margin:0 -6px;border-radius:8px}
+.mnem-line .letter{font-family:var(--font-mono);font-weight:700;font-size:.9rem;
+  color:var(--mc);min-width:22px;flex-shrink:0}
+.mnem-line .ltxt{font-size:.82rem;color:var(--soft);line-height:1.45}
+.mnem-line .ltxt strong{color:var(--text);font-weight:600}
+.mnem-card.train-mode .mnem-line{cursor:pointer;transition:background .15s}
+.mnem-card.train-mode .mnem-line:hover{background:var(--surf)}
+.mnem-card.train-mode .mnem-line .ltxt{filter:blur(5px);user-select:none;opacity:.45;transition:.2s}
+.mnem-card.train-mode .mnem-line.revealed .ltxt{filter:none;opacity:1}
+.mnem-line.revealed{background:var(--surf)}
+.mnem-sep{margin-top:12px;padding-top:12px;border-top:1px solid var(--brd);
+  font-size:.78rem;color:var(--soft)}
+.mnem-hover-hint{font-family:var(--font-mono);font-size:.66rem;color:var(--muted);
+  margin-top:16px;transition:color .2s}
+.mnem-card:hover .mnem-hover-hint{color:var(--mc)}
+
 /* ── DESAFIOS CLÍNICOS ───────────────────────────── */
 .dsf-section{background:var(--bg)}
 .dsf-tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--brd)}
@@ -1234,9 +1283,25 @@ header{
     <div class="reveal">
       <div class="section-label">// técnicas cognitivas</div>
       <h2 class="section-title" id="mnem-heading">Mnemônicos Clínicos Rápidos 🧩</h2>
-      <p class="section-sub">Ferramentas cognitivas para UTI e beira-leito. Clique em qualquer card para detalhes clínicos completos.</p>
+      <p class="section-sub">Ferramentas cognitivas para UTI e beira-leito. Pesquise, filtre por tema, ative o <strong>Modo Treino</strong> para memorizar por recordação ativa e clique em qualquer card para os detalhes clínicos completos.</p>
     </div>
-    <div class="mnem-grid">
+
+    <div class="mnem-controls reveal">
+      <input id="mnemSearch" class="mnem-search" type="search" placeholder="🔎 Buscar mnemônico, tema ou tag…" aria-label="Buscar mnemônicos"/>
+      <button class="mnem-train-toggle" id="mnemTrainToggle" aria-pressed="false" title="Esconde os significados — clique em cada letra para revelar (recordação ativa)">🧠 Modo Treino</button>
+    </div>
+    <div class="mnem-filters" id="mnemFilters" role="group" aria-label="Filtrar por categoria"></div>
+    <div class="mnem-count" id="mnemCount" aria-live="polite"></div>
+
+    <div id="mnem-grid" class="mnem-grid" role="list"></div>
+    <div class="mnem-empty" id="mnemEmpty" style="display:none">Nenhum mnemônico encontrado para este filtro.</div>
+
+    <div style="text-align:right;margin-top:18px">
+      <span class="mnem-howto">➕ Para adicionar: solte um <code>.md</code> em <code>11_MNEMONICOS/</code> e dê push — aparece aqui automaticamente.</span>
+    </div>
+
+    <!-- grid legado removido: a seção agora é gerada de data/mnemonicos.json -->
+    <div class="mnem-grid-legacy-removed" style="display:none">
 
       <!-- FAST HUG BID -->
       <div class="mnem-card reveal" style="--mc1:var(--green);--mc2:var(--cyan)" data-mnem="fasthugbid">
