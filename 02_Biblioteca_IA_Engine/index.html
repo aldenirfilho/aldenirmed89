@@ -637,7 +637,7 @@ function limparFiltros() {
 // Renderizar Stats
 function renderStats() {
   if (!catalog.items) return;
-  document.getElementById('stats-total').textContent = catalog.items.filter(i => i.theme !== 'inbox-revisar').length;
+  document.getElementById('stats-total').textContent = catalog.items.length;
   document.getElementById('stats-temas').textContent = (taxonomy.themes ? taxonomy.themes.length : 0) - 1;
   const formatsCount = new Set((catalog.items || []).map(i => i.formato || i.format || i.tipo).filter(Boolean)).size;
   const originsCount = new Set((catalog.items || []).map(i => i.origem || i.origin).filter(Boolean)).size;
@@ -666,8 +666,7 @@ function renderGrid() {
   if (!catalog.items) return;
 
   const items = catalog.items.filter(i => {
-    // Esconde o inbox na visualização 'todos' a menos que um filtro de formato ou origem específico seja acionado.
-    if (currentFilter === 'todos' && currentFormatFilter === 'todos' && currentOriginFilter === 'todos' && i.theme === 'inbox-revisar') return false;
+    // Mostra todos os documentos inclusive inbox-revisar
     const matchTheme = currentFilter === 'todos' || i.theme === currentFilter;
     const formatId = i.formato || i.format || i.tipo || 'outros';
     const originId = i.origem || i.origin || 'gerada-por-ia';
@@ -938,6 +937,67 @@ function sincronizarConexoesBrain(docId, tags) {
   console.log("Conexões sugeridas para o Brain:", tags);
 }
 
+function renderMarkdownToHtml(raw) {
+  // Escapar HTML perigoso
+  function esc(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  var h = esc(raw);
+  // Blocos de código
+  h = h.replace(/```([\s\S]*?)```/g, function(m,c){ return '<pre><code>'+c.trim()+'</code></pre>'; });
+  // Código inline
+  h = h.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Headings
+  h = h.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+  h = h.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  h = h.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  h = h.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  // Bold + Italic
+  h = h.replace(/\*\*\*(.+?)\*\*\*/g, '<b><i>$1</i></b>');
+  h = h.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+  h = h.replace(/\*(.+?)\*/g, '<i>$1</i>');
+  // Imagens
+  h = h.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+  // Links
+  h = h.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+  // Blockquotes
+  h = h.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+  // HR
+  h = h.replace(/^---$/gm, '<hr>');
+  // Listas
+  h = h.replace(/^[\-\*] (.+)$/gm, '<li>$1</li>');
+  h = h.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+  // Tabelas simples
+  h = h.replace(/^\|(.+)\|$/gm, function(m, row) {
+    var cells = row.split('|').map(function(c){ return c.trim(); });
+    return '<tr>'+cells.map(function(c){ return '<td>'+c+'</td>'; }).join('')+'</tr>';
+  });
+  // Parágrafos
+  h = h.replace(/\n\n/g, '</p><p>');
+  h = '<p>'+h+'</p>';
+  // Limpar tags vazias
+  h = h.replace(/<p><(h[1-4]|pre|blockquote|ul|ol|table|hr)/g, '<$1');
+  h = h.replace(/<\/(h[1-4]|pre|blockquote|ul|ol|table)><\/p>/g, '</$1>');
+  // Montar página completa
+  return '<!DOCTYPE html><html><head><style>' +
+    'body{font-family:system-ui,-apple-system,sans-serif;padding:2rem;background:#0f172a;color:#e2e8f0;line-height:1.7;max-width:800px;margin:0 auto}' +
+    'h1,h2,h3,h4{color:#00d4ff;margin:1.5rem 0 .5rem;font-weight:700}' +
+    'h1{font-size:1.8rem;border-bottom:2px solid #1e3a5f;padding-bottom:.5rem}' +
+    'h2{font-size:1.4rem;border-bottom:1px solid #1e3a5f;padding-bottom:.3rem}' +
+    'h3{font-size:1.15rem;color:#7c3aed}' +
+    'a{color:#00d4ff}' +
+    'code{background:#1e293b;padding:.15rem .4rem;border-radius:4px;font-family:monospace;font-size:.85em;color:#10b981}' +
+    'pre{background:#1e293b;padding:1rem;border-radius:8px;overflow-x:auto;border:1px solid #334155}' +
+    'pre code{background:none;padding:0}' +
+    'blockquote{border-left:3px solid #7c3aed;padding:.5rem 1rem;margin:1rem 0;background:rgba(124,58,237,.1);border-radius:0 8px 8px 0}' +
+    'ul,ol{padding-left:1.5rem}li{margin:.3rem 0}' +
+    'table{border-collapse:collapse;width:100%;margin:1rem 0}' +
+    'th,td{border:1px solid #334155;padding:.5rem .8rem;text-align:left}' +
+    'th{background:#1e293b;color:#00d4ff}' +
+    'tr:nth-child(even){background:rgba(255,255,255,.03)}' +
+    'hr{border:none;border-top:1px solid #334155;margin:1.5rem 0}' +
+    'img{max-width:100%;border-radius:8px}' +
+    '</style></head><body>' + h + '</body></html>';
+}
+
 function safeEncodePath(path) {
   return path
     .split('/')
@@ -981,20 +1041,30 @@ function abrirPreview(encodedPath, titulo) {
     } else {
       frame.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(fullUrl);
     }
-  } else if (['txt', 'md', 'markdown', 'html', 'htm'].includes(ext)) {
+  } else if (['md', 'markdown'].includes(ext)) {
+    // Renderizar Markdown como HTML formatado via Blob URL (evita problema de </scr ipt> em srcdoc)
+    fetch(encodedRelative).then(r => r.ok ? r.text() : Promise.reject(r.status)).then(raw => {
+      const rendered = renderMarkdownToHtml(raw);
+      const blob = new Blob([rendered], {type: 'text/html'});
+      frame.src = URL.createObjectURL(blob);
+    }).catch(e => {
+      frame.srcdoc = '<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center"><h2 style="color:#f59e0b">Erro ao carregar Markdown</h2><p>' + e + '</p><a href="' + encodedRelative + '" download style="color:#00d4ff">Baixar arquivo</a></body></html>';
+    });
+  } else if (['txt', 'html', 'htm'].includes(ext)) {
     frame.src = encodedRelative;
   } else if (['csv', 'tsv'].includes(ext)) {
-    frame.srcdoc = `<html><body style="font-family:system-ui;padding:1rem;background:#0f172a;color:#e2e8f0;">
-      <h2 style="color:#00d4ff;margin-top:0;">Visualização Rápida de Dados</h2>
-      <pre id="csv-content" style="white-space:pre-wrap;word-break:break-all;background:#0a1628;padding:1rem;border-radius:8px;font-family:'JetBrains Mono',monospace;">Carregando dados da tabela...</pre>
-      <script>
-        fetch('${encodedRelative}').then(r => r.text()).then(t => {
-          document.getElementById('csv-content').textContent = t;
-        }).catch(e => {
-          document.getElementById('csv-content').textContent = 'Erro ao ler arquivo. Use o botão Baixar no topo.';
-        });
-      </script>
-    </body></html>`;
+    // CSV: Blob URL para evitar </scr ipt> dentro de srcdoc
+    fetch(encodedRelative).then(r => r.ok ? r.text() : Promise.reject(r.status)).then(csvText => {
+      const csvHtml = '<!DOCTYPE html><html><body style="font-family:system-ui;padding:1rem;background:#0f172a;color:#e2e8f0;">' +
+        '<h2 style="color:#00d4ff;margin-top:0;">Visualização Rápida de Dados</h2>' +
+        '<pre style="white-space:pre-wrap;word-break:break-all;background:#0a1628;padding:1rem;border-radius:8px;font-family:monospace;">' +
+        csvText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
+        '</pre></body></html>';
+      const blob = new Blob([csvHtml], {type: 'text/html'});
+      frame.src = URL.createObjectURL(blob);
+    }).catch(e => {
+      frame.srcdoc = '<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center"><p>Erro ao ler arquivo. Use o botão Baixar no topo.</p></body></html>';
+    });
   } else if (['apkg'].includes(ext)) {
     frame.srcdoc = `<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center;">
       <h2 style="color:#7c3aed">Arquivo Anki Deck</h2>

@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>404 — Página não encontrada | Enciclopédia Médica Intensiva</title>
+  <meta name="description" content="Página não encontrada. Retorne à homepage da Enciclopédia Médica Intensiva ou busque um módulo."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ═══════ RESET + DARK-ONLY TOKENS ═══════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #07111f;
+      --surface:   #0d1b2e;
+      --card:      #122140;
+      --border:    #1e3a5f;
+      --text:      #e2e8f0;
+      --muted:     #94a3b8;
+      --cyan:      #38bdf8;
+      --violet:    #a78bfa;
+      --green:     #34d399;
+      --yellow:    #fbbf24;
+      --red:       #f87171;
+      --blue:      #60a5fa;
+      --radius:    12px;
+      --font:      'Outfit', system-ui, sans-serif;
+      --mono:      'IBM Plex Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+    }
+
+    /* ═══════ ANIMAÇÃO DE FUNDO ═══════ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 600px 400px at 20% 30%, rgba(56,189,248,.07), transparent),
+        radial-gradient(ellipse 500px 500px at 80% 70%, rgba(167,139,250,.06), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ═══════ CONTAINER ═══════ */
+    .container-404 {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* ═══════ GLITCH 404 ═══════ */
+    .error-code {
+      font-size: clamp(5rem, 15vw, 9rem);
+      font-weight: 800;
+      letter-spacing: .08em;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: .25rem;
+      animation: pulse404 3s ease-in-out infinite;
+    }
+    @keyframes pulse404 {
+      0%, 100% { opacity: 1; filter: drop-shadow(0 0 12px rgba(56,189,248,.3)); }
+      50%      { opacity: .85; filter: drop-shadow(0 0 20px rgba(167,139,250,.4)); }
+    }
+
+    .error-subtitle {
+      font-size: 1.15rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .error-msg {
+      font-size: .95rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .error-msg code {
+      font-family: var(--mono);
+      color: var(--yellow);
+      background: rgba(251,191,36,.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* ═══════ BUSCA ═══════ */
+    .search-box {
+      display: flex;
+      gap: .5rem;
+      margin-bottom: 2rem;
+    }
+    .search-box input {
+      flex: 1;
+      padding: .75rem 1rem;
+      font-family: var(--font);
+      font-size: .95rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s;
+    }
+    .search-box input:focus {
+      border-color: var(--cyan);
+    }
+    .search-box button {
+      padding: .75rem 1.25rem;
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: .9rem;
+      border: none;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      color: #fff;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .2s;
+    }
+    .search-box button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(56,189,248,.25);
+    }
+
+    /* ═══════ BOTÕES ═══════ */
+    .btn-row {
+      display: flex;
+      gap: .75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .btn-404 {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .7rem 1.4rem;
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: .9rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      text-decoration: none;
+      transition: all .2s;
+    }
+    .btn-404:hover {
+      border-color: var(--cyan);
+      background: var(--card);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(56,189,248,.12);
+    }
+    .btn-404.primary {
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      border-color: transparent;
+      color: #fff;
+    }
+    .btn-404.primary:hover {
+      box-shadow: 0 4px 24px rgba(56,189,248,.3);
+    }
+
+    /* ═══════ LINKS ÚTEIS ═══════ */
+    .useful-links h3 {
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: .6rem;
+    }
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .65rem .9rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      text-decoration: none;
+      color: var(--text);
+      font-size: .85rem;
+      transition: all .2s;
+    }
+    .link-card:hover {
+      border-color: var(--cyan);
+      background: var(--card);
+      transform: translateY(-2px);
+      box-shadow: 0 2px 12px rgba(56,189,248,.1);
+    }
+    .link-card .lc-icon { font-size: 1.15rem; }
+
+    /* ═══════ FOOTER ═══════ */
+    .footer-404 {
+      margin-top: 3rem;
+      font-size: .78rem;
+      color: var(--muted);
+      opacity: .7;
+    }
+
+    /* ═══════ RESPONSIVO ═══════ */
+    @media (max-width: 480px) {
+      .link-grid { grid-template-columns: 1fr 1fr; }
+      .btn-row { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container-404">
+    <div class="error-code">404</div>
+    <p class="error-subtitle">Página não encontrada</p>
+    <p class="error-msg">
+      O endereço que você tentou acessar não existe ou foi movido.<br>
+      Verifique a URL ou use a busca abaixo para encontrar o conteúdo.
+    </p>
+
+    <!-- Busca simples -->
+    <form class="search-box" id="searchForm" onsubmit="return doSearch(event)">
+      <input type="text" id="searchInput" placeholder="Buscar módulo, calculadora, protocolo…" autocomplete="off"/>
+      <button type="submit">🔍 Buscar</button>
+    </form>
+
+    <!-- Botões principais -->
+    <div class="btn-row">
+      <a class="btn-404 primary" href="index.html">🏠 Página Inicial</a>
+      <a class="btn-404" href="01_UpDown_Hub/index.html">↕️ UpDown Hub</a>
+      <a class="btn-404" href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca IA</a>
+    </div>
+
+    <!-- Links úteis -->
+    <section class="useful-links">
+      <h3>🧭 Acesso rápido</h3>
+      <div class="link-grid">
+        <a class="link-card" href="01_Modulos_Clinicos/AVC_Agudo/avc.html">
+          <span class="lc-icon">🧠</span> AVC Agudo
+        </a>
+        <a class="link-card" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html">
+          <span class="lc-icon">🫁</span> RespiraSense
+        </a>
+        <a class="link-card" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html">
+          <span class="lc-icon">📟</span> RespiraCrit
+        </a>
+        <a class="link-card" href="03_Calculadoras_E_Apps/index.html">
+          <span class="lc-icon">🧮</span> Calculadoras
+        </a>
+        <a class="link-card" href="02_Banco_Questoes_TEMI/index.html">
+          <span class="lc-icon">🏆</span> Simulador TEMI
+        </a>
+        <a class="link-card" href="05_Midia_E_Feed/index.html">
+          <span class="lc-icon">🖼️</span> Card Feed
+        </a>
+        <a class="link-card" href="04_Ebooks_Intensiva_Clinica/index.html">
+          <span class="lc-icon">📘</span> Ebooks
+        </a>
+        <a class="link-card" href="09_POCUS_Hub/index.html">
+          <span class="lc-icon">🔊</span> POCUS Hub
+        </a>
+      </div>
+    </section>
+
+    <p class="footer-404">
+      Enciclopédia Médica Intensiva &amp; Medicina Interna — ferramenta educacional.<br>
+      Não substitui julgamento clínico, protocolos institucionais ou avaliação médica.
+    </p>
+  </div>
+
+  <script>
+    // Busca simples: filtra na própria página ou redireciona
+    const modules = [
+      { name: 'AVC Agudo',     url: '01_Modulos_Clinicos/AVC_Agudo/avc.html',       keywords: 'avc stroke cerebral neurologico' },
+      { name: 'RespiraSense',  url: '01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html', keywords: 'ventilacao mecanica vm sdra ards respiratorio pulmao' },
+      { name: 'RespiraCrit',   url: '01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html', keywords: 'ventilacao protetora gasometria respiratorio' },
+      { name: 'Calculadoras',  url: '03_Calculadoras_E_Apps/index.html',             keywords: 'calculadora score escala sofa apache' },
+      { name: 'Simulador TEMI',url: '02_Banco_Questoes_TEMI/index.html',             keywords: 'temi questao prova titulo amib' },
+      { name: 'Biblioteca IA', url: '02_Biblioteca_IA_Engine/index.html',            keywords: 'biblioteca documento pdf artigo ia' },
+      { name: 'UpDown Hub',    url: '01_UpDown_Hub/index.html',                      keywords: 'updown hub estudo markdown' },
+      { name: 'Card Feed',     url: '05_Midia_E_Feed/index.html',                   keywords: 'feed cards midia noticias' },
+      { name: 'Ebooks',        url: '04_Ebooks_Intensiva_Clinica/index.html',        keywords: 'ebook livro intensiva clinica' },
+      { name: 'POCUS Hub',     url: '09_POCUS_Hub/index.html',                      keywords: 'pocus usg ultrassom ecografia' },
+    ];
+
+    function doSearch(e) {
+      e.preventDefault();
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      if (!q) return false;
+      const match = modules.find(m =>
+        m.name.toLowerCase().includes(q) || m.keywords.includes(q)
+      );
+      if (match) {
+        window.location.href = match.url;
+      } else {
+        // fallback: vai pra homepage
+        window.location.href = 'index.html';
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>

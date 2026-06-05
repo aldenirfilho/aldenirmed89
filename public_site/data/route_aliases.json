@@ -1,9 +1,38 @@
 {
+  "updatedAt": "2026-06-05",
+  "version": "route-aliases-canonico-v2",
+  "note": "Espelho de data/route_aliases.json — fonte canonica esta na raiz.",
+  "policy": "Rotas publicas e legadas devem apontar para destinos canonicos existentes na nova arquitetura.",
   "aliases": [
-    {"from": "questoes/index.html", "to": "07_Estudos_Markdown/index.html"},
-    {"from": "updown/index.html", "to": "07_Estudos_Markdown/index.html"},
-    {"from": "biblioteca/index.html", "to": "05_Biblioteca_IA/index.html"},
-    {"from": "imagens/index.html", "to": "07_Estudos_Markdown/imagens/index.html"},
-    {"from": "apps/index.html", "to": "07_Estudos_Markdown/apps/index.html"}
+    {
+      "from": "questoes/index.html",
+      "to": "02_Banco_Questoes_TEMI/index.html",
+      "status": "wrapper-confirmed",
+      "note": "Corrigido: antes apontava para UpDown, agora aponta para Banco TEMI."
+    },
+    {
+      "from": "updown/index.html",
+      "to": "01_UpDown_Hub/index.html",
+      "status": "wrapper-confirmed",
+      "note": "Wrapper redireciona para UpDown Hub canonico."
+    },
+    {
+      "from": "biblioteca/index.html",
+      "to": "02_Biblioteca_IA_Engine/index.html",
+      "status": "wrapper-confirmed",
+      "note": "Wrapper redireciona para Biblioteca IA Engine canonica."
+    },
+    {
+      "from": "imagens/index.html",
+      "to": "imagens/index.html",
+      "status": "public-hub-active",
+      "note": "Galeria visual publica ativa."
+    },
+    {
+      "from": "apps/index.html",
+      "to": "apps/index.html",
+      "status": "public-hub-active",
+      "note": "Hub publico de apps ativo."
+    }
   ]
 }
