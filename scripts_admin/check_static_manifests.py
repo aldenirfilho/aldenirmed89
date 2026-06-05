@@ -110,6 +110,7 @@ def check_unicode_nfc(text, context):
 
 # ── Checagem 1: JSON válido em todos os manifests ────────────────────────
 
+
 def check_json_validity():
     print("\n📋 1. Validação de JSON")
     print("─" * 60)
@@ -122,6 +123,7 @@ def check_json_validity():
 
 
 # ── Checagem 2: Rotas canônicas existem ──────────────────────────────────
+
 
 def check_canonical_routes():
     print("\n🗺️  2. Rotas canônicas do site_manifest")
@@ -145,6 +147,7 @@ def check_canonical_routes():
 
 
 # ── Checagem 3: Aliases apontam para destinos existentes ─────────────────
+
 
 def check_route_aliases():
     print("\n🔀 3. Route aliases")
@@ -176,6 +179,7 @@ def check_route_aliases():
 
 
 # ── Checagem 4: Módulos do site_manifest existem ─────────────────────────
+
 
 def check_modules():
     print("\n📦 4. Módulos do site_manifest")
@@ -210,6 +214,7 @@ def check_modules():
 
 # ── Checagem 5: Legacy routes existem ────────────────────────────────────
 
+
 def check_legacy_routes():
     print("\n🏚️  5. Legacy routes do site_manifest")
     print("─" * 60)
@@ -242,6 +247,7 @@ def check_legacy_routes():
 
 # ── Checagem 6: mainLinks do home-manifest existem ───────────────────────
 
+
 def check_home_manifest():
     print("\n🏠 6. mainLinks do home-manifest")
     print("─" * 60)
@@ -267,6 +273,7 @@ def check_home_manifest():
 
 # ── Checagem 7: Consistência entre raiz e public_site ────────────────────
 
+
 def check_public_site_consistency():
     print("\n🔄 7. Consistência raiz vs public_site")
     print("─" * 60)
@@ -288,7 +295,9 @@ def check_public_site_consistency():
     if root_version == pub_version:
         log_ok(f"site_manifest versão consistente: {root_version}")
     else:
-        log_err(f"site_manifest versão diverge: raiz={root_version} vs public={pub_version}")
+        log_err(
+            f"site_manifest versão diverge: raiz={root_version} vs public={pub_version}"
+        )
 
     root_routes = root_data.get("canonicalRoutes", {})
     pub_routes = pub_data.get("canonicalRoutes", {})
@@ -307,6 +316,7 @@ def check_public_site_consistency():
 
 
 # ── Checagem 8: dataSources existem ──────────────────────────────────────
+
 
 def check_data_sources():
     print("\n💾 8. dataSources do site_manifest")
@@ -329,6 +339,7 @@ def check_data_sources():
 
 
 # ── MAIN ─────────────────────────────────────────────────────────────────
+
 
 def main():
     print("=" * 60)
