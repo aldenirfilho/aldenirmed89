@@ -231,6 +231,8 @@ def parse_unit(forced_branch, base_path, md_files):
         "excerpt": excerpt,
         "content": content,
         "tags": tags,
+        "tema": "",
+        "observacoes": "",
         "date": most_recent_date(md_files),
         "difficulty": difficulty,
         "parts": len(md_files),
@@ -242,6 +244,25 @@ def parse_unit(forced_branch, base_path, md_files):
 def is_file_sourced(entry):
     src = str(entry.get("source", "")).replace("\\", "/")
     return src.startswith("10_DESAFIOS")
+
+
+# Campos de CURADORIA: definidos no editor admin (ou direto no JSON) e
+# PRESERVADOS a cada rebuild. O .md continua dono de title/content/excerpt/date.
+CURATED_FIELDS = ("difficulty", "tags", "tema", "observacoes", "featured")
+
+
+def apply_curation(entry, prev):
+    """Sobrepõe ao entry recém-gerado os campos curados da versão anterior."""
+    if not prev:
+        return entry
+    for key in CURATED_FIELDS:
+        if key not in prev:
+            continue
+        val = prev[key]
+        if key in ("tags", "tema", "observacoes") and not val:
+            continue  # vazio = não sobrescreve o auto-detectado
+        entry[key] = val
+    return entry
 
 
 def build():
@@ -256,6 +277,13 @@ def build():
     manual_temi = [e for e in existing.get("temi", []) if not is_file_sourced(e)]
     manual_r3 = [e for e in existing.get("r3", []) if not is_file_sourced(e)]
 
+    # Índice das entradas anteriores (por id) p/ preservar a curadoria.
+    prev_by_id = {}
+    for br in ("temi", "r3"):
+        for e in existing.get(br, []):
+            if e.get("id"):
+                prev_by_id[e["id"]] = e
+
     units = collect_units()
     if not units:
         print("   Nenhum arquivo .md encontrado em 10_DESAFIOS/.")
@@ -267,6 +295,7 @@ def build():
         except Exception as e:
             print(f"   ⚠️  Erro ao processar {base}: {e}")
             continue
+        entry = apply_curation(entry, prev_by_id.get(entry["id"]))
         (file_temi if branch == "temi" else file_r3).append(entry)
         extra = f" ({entry['parts']} partes)" if entry["parts"] > 1 else ""
         print(f"   ✅  [{branch.upper()}] {entry['title'][:60]}{extra}")
