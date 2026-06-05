@@ -335,22 +335,26 @@ let currentFilter = 'todos';
 let currentView = 'catalogo';
 
 // Lógica de URL base dinâmica
-const getBaseUrl = () => {
-    const loc = window.location;
-    return loc.origin + loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
-};
+function getBaseUrl() {
+  const origin = window.location.origin;
+  const path = window.location.pathname;
+  if (path.includes('/antigravity-consultas/')) {
+    return origin + '/antigravity-consultas/05_Biblioteca_IA/';
+  }
+  return window.location.href.replace(/index\.html.*$/, '').replace(/[^/]*$/, '');
+}
 
 // Normalização de caminhos para evitar redundância de pasta pai (Fix 404)
-const normalizePath = (p) => {
-    if (!p) return p;
-    return p.startsWith('05_Biblioteca_IA/') ? p.replace('05_Biblioteca_IA/', '') : p;
-};
+function normalizePath(p) {
+  if (!p) return '';
+  return String(p).replace(/^\.\//, '').replace(/^05_Biblioteca_IA\//, '');
+}
 
 
 // Lógica de Exclusão
 function marcarParaExcluir(id, event) {
   if (event) event.stopPropagation();
-  if (!confirm("Deseja marcar este arquivo para exclusão definitiva?")) return;
+  if (!confirm("Deseja ocultar este arquivo da visualização? Ele continuará no disco local, mas não aparecerá mais no catálogo.")) return;
   
   const item = catalog.items.find(i => i.id === id);
   if (!item) return;
@@ -367,7 +371,7 @@ function marcarParaExcluir(id, event) {
   renderStats();
   renderTriagem();
 
-  alert("Arquivo removido da visualização. \nPara apagar fisicamente do HD, você precisará rodar o comando de limpeza que eu vou te passar.");
+  alert("Arquivo ocultado da visualização local. O arquivo permanece intacto no Obsidian.");
 }
 
 // Carregar Dados
@@ -390,7 +394,7 @@ async function init() {
 
     catalog = resCat;
     brain = resBrain;
-    roadmap = resRoad.roadmap || [];
+    roadmap = resRoad.roadmap || resRoad.suggestions || resRoad.roadmap_items || [];
     const autoManifest = resAuto.files || [];
     
     // Resolver caminhos quebrados do catálogo usando o manifesto real do inbox (GitHub Pages)
@@ -448,12 +452,16 @@ function renderRoadmap() {
   if (!container || !roadmap || !roadmap.length) return;
   
   // Mostrar apenas as top 6 prioridades alta
-  const items = roadmap.filter(r => r.priority === 'alta').slice(0, 6);
-  container.innerHTML = items.map(r => `
-    <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:10px; border-radius:8px; font-size:.78rem">
-      <b style="color:var(--accent2)">#${r.id}</b> ${r.label}
-    </div>
-  `).join('');
+  const items = roadmap.filter(r => (r.priority || r.prioridade) === 'alta' || !r.priority).slice(0, 6);
+  container.innerHTML = items.map(r => {
+    const texto = r.label || r.title || r.description || 'Item sem título';
+    const id = r.id || '';
+    return `
+      <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:10px; border-radius:8px; font-size:.78rem">
+        <b style="color:var(--accent2)">${id ? '#' + id : ''}</b> ${texto}
+      </div>
+    `;
+  }).join('');
 }
 
 function popularSelects() {
@@ -513,6 +521,22 @@ function renderGrid() {
     return matchTheme && matchBusca;
   });
 
+  if (items.length === 0) {
+    grid.innerHTML = `
+      <div class="card" style="grid-column: 1/-1; padding: 40px; text-align: center; border-color: var(--yellow);">
+        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔍</div>
+        <h3>Nenhum resultado encontrado</h3>
+        <p style="color: var(--soft); margin-top: 0.5rem; font-size: 0.9rem;">
+          Temos ${catalog.items.length} itens no total, mas nenhum corresponde aos filtros atuais.
+        </p>
+        <button class="btn btn-secondary" onclick="limparFiltros()" style="margin-top: 1.5rem; display: inline-flex;">
+          Limpar Filtros e Busca
+        </button>
+      </div>`;
+    document.getElementById('empty-state').style.display = 'none';
+    return;
+  }
+
   grid.innerHTML = items.map(i => {
     const theme = (taxonomy.themes || []).find(t => t.id === i.theme) || { emoji: '📄' };
     return `
@@ -528,13 +552,13 @@ function renderGrid() {
           <button class="btn btn-primary" onclick="event.stopPropagation(); abrirPreview('${encodeURIComponent(i.path)}', '${i.title.replace(/'/g,"\\'")}')">👁️</button>
           <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirClassify('${i.id}')">📂</button>
           <a href="${i.path}" download class="btn btn-secondary" onclick="event.stopPropagation()">⬇️</a>
-          <button class="btn btn-delete" onclick="marcarParaExcluir('${i.id}', event)">🗑️</button>
+          <button class="btn btn-delete" title="Ocultar do catálogo" onclick="marcarParaExcluir('${i.id}', event)">🗑️ Ocultar</button>
         </div>
       </div>
     `;
   }).join('');
   
-  document.getElementById('empty-state').style.display = items.length === 0 ? 'block' : 'none';
+  document.getElementById('empty-state').style.display = 'none';
 }
 
 // Renderizar Triagem
@@ -552,7 +576,7 @@ function renderTriagem() {
       <div class="card-actions" style="margin-top:auto; display:flex; gap:5px">
         <button class="btn btn-triagem" style="flex:1" onclick="event.stopPropagation(); abrirClassify('${i.id}')">📂 Classificar</button>
         <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirPreview('${encodeURIComponent(i.path)}', '${i.title}')">👁️</button>
-        <button class="btn btn-delete" style="padding:0.5rem" onclick="marcarParaExcluir('${i.id}', event)">🗑️</button>
+        <button class="btn btn-delete" style="padding:0.5rem" title="Ocultar do catálogo" onclick="marcarParaExcluir('${i.id}', event)">🗑️</button>
       </div>
     </div>
   `).join('');
@@ -701,6 +725,10 @@ function sincronizarConexoesBrain(docId, tags) {
 
 // Preview
 function abrirPreview(encodedPath, titulo) {
+  if (!encodedPath) {
+    console.warn("abrirPreview: path vazio recebido.");
+    return;
+  }
   const path = decodeURIComponent(encodedPath);
   const baseUrl = getBaseUrl();
   const fullUrl = path.startsWith('http') ? path : baseUrl + path;
@@ -708,7 +736,7 @@ function abrirPreview(encodedPath, titulo) {
   const frame = document.getElementById('previewFrame');
   
   // 📱 FIX MOBILE: Dispositivos móveis (especialmente iOS/iPhone) limitam PDFs em iframes à primeira página.
-  // Abrir direto na nova aba ativa o visualizador nativo do celular (com scroll, zoom e marcações).
+  // Abrir direto na nova aba activa o visualizador nativo do celular (com scroll, zoom e marcações).
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 800;
   if (ext === 'pdf' && isMobile) {
     window.open(path, '_blank');
