@@ -49,6 +49,16 @@ function hydrateFilters(){
 
 function renderDocs(){
   if (!registry.documents) return;
+  
+  if (registry.documents.length === 0) {
+    grid.innerHTML = `
+      <article class="card" style="grid-column: 1/-1; border-color: var(--yellow);">
+        <h3>📂 Sem Conteúdo Publicado</h3>
+        <p>Nenhum UpDown publicado no registry.json. Verifique se os arquivos .md foram integrados ao registro central.</p>
+      </article>`;
+    return;
+  }
+
   const q = (searchInput && searchInput.value || '').toLowerCase();
   const theme = themeFilter && themeFilter.value;
   const status = statusFilter && statusFilter.value;

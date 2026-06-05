@@ -1,20 +1,50 @@
 {
-  "updatedAt": "2026-05-08",
+  "updatedAt": "2026-06-05",
   "project": "Enciclopédia Médica Intensiva & Medicina Interna",
-  "version": "resgate-manifest-first-1.0",
+  "version": "manifest-canonico-v2",
+  "stack": "html-css-js-json-static",
+  "note": "Espelho de data/site_manifest.json — fonte canonica esta na raiz.",
   "hubs": {
     "home": "index.html",
-    "updown": "07_Estudos_Markdown/index.html",
-    "biblioteca": "biblioteca/index.html",
-    "imagens": "imagens/index.html",
-    "apps": "apps/index.html",
+    "updown": "01_UpDown_Hub/index.html",
+    "biblioteca": "02_Biblioteca_IA_Engine/index.html",
+    "imagens": "05_Midia_E_Feed/index.html",
+    "apps": "03_Calculadoras_E_Apps/index.html",
     "mapa": "data/connections.json",
     "questoes": "02_Banco_Questoes_TEMI/index.html"
   },
+  "canonicalRoutes": {
+    "home": "index.html",
+    "updown": "01_UpDown_Hub/index.html",
+    "biblioteca": "02_Biblioteca_IA_Engine/index.html",
+    "calculadoras": "03_Calculadoras_E_Apps/index.html",
+    "feed": "05_Midia_E_Feed/index.html",
+    "questoes_temi": "02_Banco_Questoes_TEMI/index.html",
+    "ebooks": "04_Ebooks_Intensiva_Clinica/index.html",
+    "questoes_comentadas": "07_Questoes_Comentadas/index.html",
+    "transcricoes": "08_Transcricoes/index.html",
+    "pocus": "09_POCUS_Hub/index.html",
+    "respirasense": "01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html",
+    "respiracrit": "01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html",
+    "mapa": "data/connections.json"
+  },
+  "legacyRoutes": [
+    { "from": "07_Estudos_Markdown/index.html", "to": "01_UpDown_Hub/index.html", "status": "wrapper-redirect" },
+    { "from": "05_Biblioteca_IA/index.html", "to": "02_Biblioteca_IA_Engine/index.html", "status": "wrapper-redirect" },
+    { "from": "03_Calculadoras_UTI/index.html", "to": "03_Calculadoras_E_Apps/index.html", "status": "wrapper-redirect" },
+    { "from": "06_Card_Feed_Medico/index.html", "to": "05_Midia_E_Feed/index.html", "status": "wrapper-redirect" }
+  ],
   "modules": [
-    { "id": "biblioteca", "path": "05_Biblioteca_IA/index.html", "label": "Biblioteca IA" },
-    { "id": "updown", "path": "07_Estudos_Markdown/index.html", "label": "UpDown Hub" },
-    { "id": "calculadoras", "path": "03_Calculadoras_UTI/index.html", "label": "Calculadoras UTI" },
-    { "id": "banco_temi", "path": "02_Banco_Questoes_TEMI/index.html", "label": "Banco TEMI" }
+    { "id": "updown", "path": "01_UpDown_Hub/index.html", "label": "UpDown Hub" },
+    { "id": "biblioteca", "path": "02_Biblioteca_IA_Engine/index.html", "label": "Biblioteca IA" },
+    { "id": "calculadoras", "path": "03_Calculadoras_E_Apps/index.html", "label": "Calculadoras UTI" },
+    { "id": "feed", "path": "05_Midia_E_Feed/index.html", "label": "Card Feed Médico" },
+    { "id": "banco_temi", "path": "02_Banco_Questoes_TEMI/index.html", "label": "Banco TEMI" },
+    { "id": "ebooks", "path": "04_Ebooks_Intensiva_Clinica/index.html", "label": "Ebooks Intensiva & Clínica" },
+    { "id": "questoes_comentadas", "path": "07_Questoes_Comentadas/index.html", "label": "Questões Comentadas" },
+    { "id": "transcricoes", "path": "08_Transcricoes/index.html", "label": "Transcrições" },
+    { "id": "pocus", "path": "09_POCUS_Hub/index.html", "label": "POCUS Hub" },
+    { "id": "respirasense", "path": "01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html", "label": "RespiraSense ICU" },
+    { "id": "respiracrit", "path": "01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html", "label": "RespiraCrit" }
   ]
 }

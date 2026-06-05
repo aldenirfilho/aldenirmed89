@@ -76,8 +76,13 @@ Material bruto (PDF/DOCX/aula/IA)
 | `data/` | Manifests que dirigem o site: `connections.json` (Mapa Vivo D3), `topics.json`, `route_aliases.json`, `site_manifest.json` | ✅ (dados) |
 | `01_UpDown_Hub/` | **UpDown Hub** — conteúdo .md canônico + leitores | ✅ |
 | `02_Biblioteca_IA_Engine/` | Acervo de documentos (PDF/DOCX) com busca | ✅ |
-| `03_Calculadoras_E_Apps/` | Hub de calculadoras de plantão | ✅ |
+| `03_Calculadoras_UTI/` | Hub de calculadoras de plantão | ✅ |
+| `03_Calculadoras_E_Apps/` | Alias legado para calculadoras | ✅ |
+| `04_Ebooks_Intensiva_Clinica/` | Ebooks, manuais e guias longos de Terapia Intensiva e Clínica Médica Interna | ✅ |
 | `05_Midia_E_Feed/` | Feed de cards visuais (PWA, service worker) | ✅ |
+| `07_Questoes_Comentadas/` | Questões comentadas, simulados, casos clínicos, OSCE, CSV e Anki | ✅ |
+| `08_Transcricoes/` | Transcrições de aulas, vídeos, podcasts, reuniões e discussões clínicas | ✅ |
+| `09_POCUS_Hub/` | POCUS/USG beira-leito: aulas, vídeos, artigos, imagens, modelos, dicas e links | ✅ |
 | `01_Modulos_Clinicos/` | Módulos clínicos em HTML (legados/originais) | ✅ |
 | `02_Banco_Questoes_TEMI/` | Banco de questões TEMI/R3 (motor) | ✅ |
 | `questoes/` | Wrapper público de questões (redireciona p/ banco TEMI) | ✅ |
@@ -90,6 +95,18 @@ Material bruto (PDF/DOCX/aula/IA)
 | `_SUPORTE_PROJETO/` · `docs_projeto/` | Documentação interna | 🔒 NÃO |
 | `scripts_admin/` | Scripts utilitários (sync, validação) | 🔒 NÃO |
 | `ANTIGRAVITY_INSTRUCTIONS.md` | **Manual operacional único do agente** | 🔒 NÃO |
+
+### Alimentação contínua dos novos diretórios
+
+Cada novo hub tem uma pasta `inbox/` para arquivos e uma pasta `links/` para links externos ou páginas HTML interativas. Depois de inserir novos conteúdos, rode o scanner do próprio diretório para atualizar `data/catalogo.json`.
+
+Formatos aceitos: PDF, EPUB/MOBI/AZW3, DOC/DOCX/RTF/Pages, XLS/XLSX/Numbers, CSV/TSV, MD/Markdown, PPT/PPTX/Keynote, TXT/SRT/VTT, HTML/HTM, APKG/Anki, imagens, vídeos, áudios e compactados.
+
+```bash
+for d in 04_Ebooks_Intensiva_Clinica 07_Questoes_Comentadas 08_Transcricoes 09_POCUS_Hub; do
+  (cd "$d" && bash scan_inbox.sh)
+done
+```
 
 ---
 

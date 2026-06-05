@@ -47,6 +47,8 @@ async function initGraph() {
 
   container.innerHTML = '<div style="padding:40px; color:#64748b; font-family:Syne;">🧠 Carregando Cérebro Clínico v4.1...</div>';
 
+  const d3Loaded = typeof d3 !== 'undefined';
+
   try {
     const dataUrl = container.getAttribute('data-graph-src') || 'data/connections.json';
     
@@ -58,6 +60,12 @@ async function initGraph() {
     
     loadOverlay();
     applyOverlay();
+
+    if (!d3Loaded) {
+      console.warn("⚠️ D3.js não está carregado. Usando renderização em lista.");
+      renderFallback(container, "Visualizador gráfico offline (D3.js indisponível). Exibindo lista de conexões ativas.");
+      return;
+    }
 
     renderInterface(container);
     updateGraph();
@@ -72,35 +80,56 @@ async function initGraph() {
  * Carrega o JSON principal e tenta mesclar com um patch opcional da Biblioteca IA
  */
 async function loadConnectionsData(dataUrl) {
-  try {
-    // 1. Buscar base com cache-buster
-    const res = await fetch(dataUrl + '?t=' + Date.now());
-    if (!res.ok) throw new Error("JSON principal do mapa não encontrado.");
-    let baseData = await res.json();
+  // Candidatos a tentar em caso de erro
+  const candidates = [
+    dataUrl,
+    'data/connections.json',
+    './data/connections.json',
+    '../data/connections.json',
+    '/antigravity-consultas/data/connections.json'
+  ];
 
-    // 2. Tentar buscar patch opcional da Biblioteca IA
-    // Caminho relativo ao index da biblioteca ou da home
-    const patchPaths = ['data/connections_patch_biblioteca.json', '05_Biblioteca_IA/data/connections_patch_biblioteca.json'];
-    
-    for (const path of patchPaths) {
-      try {
-        const patchRes = await fetch(path + '?t=' + Date.now());
-        if (patchRes.ok) {
-          const patchData = await patchRes.json();
-          console.log("🧩 Patch de conexões aplicado:", path);
-          
-          if (patchData.nodes) baseData.nodes = [...(baseData.nodes || []), ...patchData.nodes];
-          if (patchData.edges) baseData.edges = [...(baseData.edges || []), ...patchData.edges];
-          if (patchData.links) baseData.links = [...(baseData.links || []), ...patchData.links];
-          break; // Sucesso no patch
-        }
-      } catch(e) { /* patch opcional falhou silenciosamente */ }
+  // Remover duplicatas e valores falsy
+  const uniqueCandidates = [...new Set(candidates.filter(Boolean))];
+  let lastError = null;
+
+  for (const candidate of uniqueCandidates) {
+    try {
+      const res = await fetch(candidate + '?t=' + Date.now());
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      let baseData = await res.json();
+      console.log("🎯 Conexões do Mapa Vivo carregadas de:", candidate);
+      
+      // Aplicar patch opcional se funcionar
+      const patchPaths = [
+        'data/connections_patch_biblioteca.json', 
+        '05_Biblioteca_IA/data/connections_patch_biblioteca.json',
+        '../data/connections_patch_biblioteca.json',
+        '/antigravity-consultas/05_Biblioteca_IA/data/connections_patch_biblioteca.json'
+      ];
+      
+      for (const path of patchPaths) {
+        try {
+          const patchRes = await fetch(path + '?t=' + Date.now());
+          if (patchRes.ok) {
+            const patchData = await patchRes.json();
+            console.log("🧩 Patch de conexões aplicado:", path);
+            
+            if (patchData.nodes) baseData.nodes = [...(baseData.nodes || []), ...patchData.nodes];
+            if (patchData.edges) baseData.edges = [...(baseData.edges || []), ...patchData.edges];
+            if (patchData.links) baseData.links = [...(baseData.links || []), ...patchData.links];
+            break; // Sucesso no patch
+          }
+        } catch(e) { /* patch opcional falhou silenciosamente */ }
+      }
+      
+      return baseData;
+    } catch (err) {
+      console.warn(`Falha ao carregar do candidato: ${candidate}`, err);
+      lastError = err;
     }
-
-    return baseData;
-  } catch (err) {
-    throw err;
   }
+  throw lastError || new Error("Nenhum caminho de connections.json válido encontrado.");
 }
 
 /**
@@ -461,7 +490,43 @@ window.hideNodeDirect = (id) => {
 
 function setMode(m) { state.currentMode = m; updateGraph(); }
 function renderFallback(container, msg) {
-  container.innerHTML = `<div class="graph-fallback"><h3>⚠️ Modo Seguro</h3><p>${msg}</p><ul style="text-align:left;max-height:300px;overflow:auto">${state.fullData.nodes.map(n => `<li><a href="${n.url}">${n.label}</a></li>`).join('')}</ul></div>`;
+  // Nós estáticos caso o JSON também tenha falhado
+  const backupNodes = [
+    { id: "portal", label: "Central de Comando", type: "hub", url: "index.html" },
+    { id: "updown", label: "UpDown Hub", type: "hub", url: "01_UpDown_Hub/index.html" },
+    { id: "biblioteca", label: "Biblioteca IA", type: "hub", url: "02_Biblioteca_IA_Engine/index.html" },
+    { id: "questoes", label: "Banco TEMI", type: "hub", url: "02_Banco_Questoes_TEMI/index.html" },
+    { id: "calculadoras", label: "Calculadoras UTI", type: "hub", url: "03_Calculadoras_E_Apps/index.html" },
+    { id: "feed", label: "Card Feed", type: "hub", url: "05_Midia_E_Feed/index.html" }
+  ];
+
+  const nodes = (state.fullData && state.fullData.nodes && state.fullData.nodes.length > 0) 
+    ? state.fullData.nodes 
+    : backupNodes;
+
+  container.innerHTML = `
+    <div class="graph-fallback" style="padding:30px; background:rgba(0,0,0,0.4); border-radius:15px; border:1px solid rgba(255,255,255,0.1)">
+      <h3 style="color:var(--yellow, #ffc107); font-family:Syne; margin-bottom:10px;">⚠️ Mapa Vivo em Modo de Segurança</h3>
+      <p style="color:var(--soft, #94a3b8); font-size:0.88rem; margin-bottom:20px;">${msg}</p>
+      <div style="max-height:400px; overflow-y:auto;">
+        <ul style="list-style:none; padding:0; display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:10px;">
+          ${nodes.map(n => {
+            const url = n.url && n.url !== '#' ? n.url : `javascript:alert('ID: ${n.id} - ${n.body || "Sem link direto."}')`;
+            const label = n.label || n.id;
+            const emoji = n.type === 'hub' ? '⚙️' : (n.type === 'module' ? '🏥' : (n.type === 'file' ? '📄' : '🔗'));
+            return `
+              <li style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px; text-align:left;">
+                <a href="${url}" style="display:block; text-decoration:none; color:var(--cyan, #00d4ff); font-weight:600; font-size:0.9rem;">
+                  ${emoji} ${label}
+                </a>
+                <span style="font-size:0.7rem; color:var(--muted, #64748b); display:block; margin-top:4px;">Tipo: ${n.type || 'Tema'}</span>
+              </li>
+            `;
+          }).join('')}
+        </ul>
+      </div>
+    </div>
+  `;
 }
 
 document.addEventListener('DOMContentLoaded', initGraph);

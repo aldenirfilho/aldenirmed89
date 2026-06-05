@@ -6,7 +6,7 @@ window.ENCICLOPEDIA_MODULES.push({
   title: "RespiraSense ICU",
   subtitle: "Calculadora respiratória, VM protetora, gasometria e ARDS/SARA",
   emoji: "🫁",
-  href: "./respirasense-icu/index.html",
+  href: "01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html",
   category: "Calculadoras UTI",
   tags: ["UTI", "Ventilação Mecânica", "Gasometria", "SARA", "ARDS", "ROX", "P/F", "Driving Pressure", "CBAF", "VNI", "TEMI"],
   status: "PWA offline",

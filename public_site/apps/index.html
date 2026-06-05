@@ -4,68 +4,175 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clinical Apps | Antigravity</title>
-  <link rel="stylesheet" href="../07_Estudos_Markdown/assets/estudos.css" />
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: rgba(255,255,255,.075);
+      --border: rgba(255,255,255,.14);
+      --text: #f6f8fc;
+      --muted: #aebbd0;
+      --cyan: #3ee8ff;
+      --green: #4ef0a1;
+      --violet: #a98cff;
+      --yellow: #ffd166;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(62,232,255,.18), transparent 34rem),
+        radial-gradient(circle at top right, rgba(78,240,161,.14), transparent 30rem),
+        linear-gradient(135deg, #07111f, #0b182b);
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 22px;
+      background: rgba(7,17,31,.82);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,.09);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; }
+    nav { display: flex; gap: 10px; flex-wrap: wrap; }
+    nav a {
+      padding: 8px 11px;
+      border-radius: 999px;
+      color: #dce6f5;
+      font-weight: 800;
+      font-size: .9rem;
+    }
+    nav a:hover { background: rgba(255,255,255,.08); }
+    .shell { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+    .hero { padding: 56px 0 28px; }
+    .eyebrow {
+      display: inline-flex;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(62,232,255,.25);
+      background: rgba(62,232,255,.08);
+      color: #d9fbff;
+      font-weight: 900;
+      font-size: .82rem;
+    }
+    h1 {
+      max-width: 920px;
+      margin: 0 0 14px;
+      font-size: clamp(2.3rem, 6vw, 4.6rem);
+      line-height: .96;
+      letter-spacing: 0;
+    }
+    .hero p { max-width: 780px; color: #dce6f5; line-height: 1.65; font-size: 1.05rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      padding: 16px 0 48px;
+    }
+    .card {
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(255,255,255,.105), rgba(255,255,255,.045));
+      box-shadow: 0 22px 70px rgba(0,0,0,.28);
+    }
+    .card h2 { margin: 0; font-size: 1.35rem; letter-spacing: 0; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.58; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+    .tag {
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 999px;
+      padding: 5px 8px;
+      color: #dce6f5;
+      font-size: .78rem;
+      font-weight: 800;
+    }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 13px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.08);
+      font-weight: 900;
+    }
+    .btn.primary { color: #04131f; border: 0; background: linear-gradient(135deg, var(--cyan), var(--green)); }
+    .btn.violet { color: #07111f; border: 0; background: linear-gradient(135deg, var(--violet), #d9cbff); }
+    .btn.yellow { color: #201503; border: 0; background: linear-gradient(135deg, var(--yellow), #ffac4b); }
+    footer { padding: 24px 0 36px; color: var(--muted); border-top: 1px solid rgba(255,255,255,.1); }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="../index.html">📱 <span>Clinical Apps</span></a>
-    <nav>
-      <a href="../index.html">🏠 Home</a>
-      <a href="../updown/index.html">↕️ UpDown</a>
-      <a href="../biblioteca/index.html">📚 Biblioteca</a>
+    <nav aria-label="Navegação principal">
+      <a href="../index.html">Home</a>
+      <a href="../03_Calculadoras_UTI/index.html">Calculadoras UTI</a>
+      <a href="../07_Estudos_Markdown/index.html">UpDown</a>
+      <a href="../biblioteca/index.html">Biblioteca</a>
     </nav>
   </header>
 
-  <main>
+  <main class="shell">
     <section class="hero">
-      <div>
-        <span class="eyebrow">🧮 Ferramentas de Suporte à Decisão</span>
-        <h1>Aplicações Clínicas</h1>
-        <p>Calculadoras, escores e bundles interativos para uso beira-leito.</p>
-      </div>
+      <span class="eyebrow">Ferramentas beira-leito</span>
+      <h1>Aplicativos clínicos</h1>
+      <p>Central de acesso rápido para dashboards, calculadoras e ferramentas interativas do projeto Antigravity.</p>
     </section>
 
-    <div class="grid three">
+    <section class="grid" aria-label="Aplicativos disponíveis">
       <article class="card">
-        <h3>💊 Calculadora de Vasoativas</h3>
-        <p>Cálculo de mL/h, doses em mcg/kg/min e geração de prescrição.</p>
-        <div class="pillrow">
-          <span class="pill status">Atualizado v2</span>
-          <span class="pill">Drogas</span>
-        </div>
-        <div class="actions">
-          <a class="btn primary" href="../07_Estudos_Markdown/apps/vasoativas/index.html">Abrir App →</a>
-        </div>
+        <h2>🫁 RespiraSense ICU</h2>
+        <p>Dashboard PWA para oxigenoterapia, CBAF/HFNC, VNI, VM protetora, SARA/ARDS, gasometria e assincronias.</p>
+        <div class="tags"><span class="tag">PWA offline</span><span class="tag">ROX</span><span class="tag">P/F</span><span class="tag">PBW/VT</span></div>
+        <div class="actions"><a class="btn primary" href="../01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html">Abrir RespiraSense</a></div>
       </article>
 
-      <article class="card" style="opacity: 0.5;">
-        <h3>🧠 CAM-ICU / RASS</h3>
-        <p>Rastreio de delirium e escala de sedação interativa.</p>
-        <div class="pillrow">
-          <span class="pill">Em breve</span>
-          <span class="pill">Neurologia</span>
-        </div>
-        <div class="actions">
-          <button class="btn ghost" disabled>Bloqueado</button>
-        </div>
+      <article class="card">
+        <h2>📟 RespiraCrit</h2>
+        <p>Calculadora avançada para ventilação protetora, mecânica respiratória, gasometria e estratificação de SARA/ARDS.</p>
+        <div class="tags"><span class="tag">VM protetora</span><span class="tag">SARA</span><span class="tag">Gasometria</span><span class="tag">Mecânica</span></div>
+        <div class="actions"><a class="btn primary" href="../01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html">Abrir RespiraCrit</a></div>
       </article>
 
-      <article class="card" style="opacity: 0.5;">
-        <h3>🫁 SOFA / SAPS 3</h3>
-        <p>Calculadora de gravidade e prognóstico para o round.</p>
-        <div class="pillrow">
-          <span class="pill">Em breve</span>
-          <span class="pill">Gravidade</span>
-        </div>
-        <div class="actions">
-          <button class="btn ghost" disabled>Bloqueado</button>
-        </div>
+      <article class="card">
+        <h2>🧮 Calculadoras UTI PRO</h2>
+        <p>Drogas vasoativas, sedoanalgesia, bloqueio neuromuscular, insulina, ventilação, gasometria, renal e eletrólitos.</p>
+        <div class="tags"><span class="tag">DVA</span><span class="tag">Sedação</span><span class="tag">Eletrólitos</span><span class="tag">Gasometria</span></div>
+        <div class="actions"><a class="btn violet" href="../03_Calculadoras_UTI/index.html">Abrir Calculadoras</a></div>
       </article>
-    </div>
+
+      <article class="card">
+        <h2>💊 Vasoativas</h2>
+        <p>Cálculo rápido de mL/h, doses em mcg/kg/min e apoio para conferência de bomba no plantão.</p>
+        <div class="tags"><span class="tag">Drogas</span><span class="tag">Bomba</span><span class="tag">UTI</span></div>
+        <div class="actions"><a class="btn yellow" href="../07_Estudos_Markdown/apps/vasoativas/index.html">Abrir Vasoativas</a></div>
+      </article>
+    </section>
   </main>
 
-  <footer>
-    <p>🧠 <strong>Enciclomedia Antigravity</strong> — Dr. Aldenir Rocha</p>
+  <footer class="shell">
+    <p>Enciclopédia Médica Intensiva & Medicina Interna — ferramentas educacionais, não substituem julgamento clínico.</p>
   </footer>
 </body>
 </html>

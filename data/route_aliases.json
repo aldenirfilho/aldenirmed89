@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-04",
-  "version": "route-aliases-manifest-first-2026-06-04",
-  "policy": "Rotas publicas e legadas devem apontar para destinos canonicos existentes, sem mover ou apagar arquivos originais.",
+  "updatedAt": "2026-06-05",
+  "version": "route-aliases-canonico-v2",
+  "policy": "Rotas publicas e legadas devem apontar para destinos canonicos existentes na nova arquitetura (01_UpDown_Hub, 02_Biblioteca_IA_Engine, etc.), sem mover ou apagar arquivos originais.",
   "aliases": [
     {
       "from": "index.html",
@@ -11,51 +11,75 @@
     },
     {
       "from": "updown/index.html",
-      "to": "07_Estudos_Markdown/index.html",
+      "to": "01_UpDown_Hub/index.html",
       "status": "wrapper-confirmed",
-      "note": "Wrapper legado ja redireciona para o Hub UpDown canonico."
+      "note": "Wrapper legado redireciona para o Hub UpDown canonico."
     },
     {
       "from": "biblioteca/index.html",
-      "to": "05_Biblioteca_IA/index.html",
+      "to": "02_Biblioteca_IA_Engine/index.html",
       "status": "wrapper-confirmed",
-      "note": "Wrapper publico da Biblioteca IA."
+      "note": "Wrapper publico da Biblioteca IA Engine."
     },
     {
       "from": "questoes/index.html",
       "to": "02_Banco_Questoes_TEMI/index.html",
       "status": "wrapper-confirmed",
-      "note": "Corrigido: antes apontava para UpDown, mas o wrapper real aponta para Banco TEMI."
+      "note": "Wrapper de questoes aponta para Banco TEMI (corrigido do antigo UpDown)."
     },
     {
       "from": "imagens/index.html",
       "to": "imagens/index.html",
       "status": "public-hub-active",
-      "note": "Galeria visual publica ativa; nao redirecionar para caminho inexistente."
+      "note": "Galeria visual publica ativa; rota propria."
     },
     {
       "from": "apps/index.html",
       "to": "apps/index.html",
       "status": "public-hub-active",
-      "note": "Hub publico de apps ativo; manter como rota publica estavel."
+      "note": "Hub publico de apps ativo; rota propria."
     },
     {
       "from": "calculadoras/index.html",
-      "to": "03_Calculadoras_UTI/index.html",
-      "status": "canonical-module",
-      "note": "Rota amigavel futura para calculadoras UTI."
+      "to": "03_Calculadoras_E_Apps/index.html",
+      "status": "wrapper-redirect",
+      "note": "Rota amigavel para calculadoras -> destino canonico novo."
     },
     {
       "from": "card-feed/index.html",
-      "to": "06_Card_Feed_Medico/index.html",
-      "status": "canonical-module",
-      "note": "Rota amigavel futura para Card Feed Medico."
+      "to": "05_Midia_E_Feed/index.html",
+      "status": "wrapper-redirect",
+      "note": "Rota amigavel para Card Feed -> destino canonico novo."
     },
     {
       "from": "mapa",
       "to": "data/connections.json",
       "status": "data-canonical",
       "note": "JSON canonico do Mapa Vivo."
+    },
+    {
+      "from": "07_Estudos_Markdown/index.html",
+      "to": "01_UpDown_Hub/index.html",
+      "status": "legacy-redirect",
+      "note": "Pasta legada redireciona para UpDown Hub canonico."
+    },
+    {
+      "from": "05_Biblioteca_IA/index.html",
+      "to": "02_Biblioteca_IA_Engine/index.html",
+      "status": "legacy-redirect",
+      "note": "Pasta legada redireciona para Biblioteca IA Engine canonica."
+    },
+    {
+      "from": "03_Calculadoras_UTI/index.html",
+      "to": "03_Calculadoras_E_Apps/index.html",
+      "status": "legacy-redirect",
+      "note": "Pasta legada redireciona para Calculadoras E Apps canonico."
+    },
+    {
+      "from": "06_Card_Feed_Medico/index.html",
+      "to": "05_Midia_E_Feed/index.html",
+      "status": "legacy-redirect",
+      "note": "Pasta legada redireciona para Midia E Feed canonico."
     }
   ]
 }
