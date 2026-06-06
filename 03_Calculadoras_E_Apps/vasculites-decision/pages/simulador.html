@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simulador terapêutico — Vasculites</title>
+<meta name="description" content="Mini-plataforma interativa de vasculites focada em diagnóstico e decisão terapêutica rápida." />
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="../index.html"><span class="brand-badge">🧬</span><span>Vasculites Decision</span></a>
+    <nav class="navlinks">
+      <a href="../index.html">Hub</a>
+      <a href="../pages/simulador.html">Simulador</a>
+      <a href="../pages/aav.html">AAV</a>
+      <a href="../pages/pan.html">PAN</a>
+      <a href="../pages/gca-takayasu.html">GCA/TAK</a>
+      <a href="../pages/crioglobulinemia.html">Crio</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<section class="page-title"><div class="wrap"><span class="eyebrow">🧠 Simulador prático</span><h1>Qual droga escolher neste caso?</h1><p class="sub">Preencha o cenário e gere uma proposta de indução inicial + exames que mudam decisão + armadilhas. Pensado para plantão, enfermaria e discussão com Reumato/Nefro/Infecto.</p></div></section>
+<section class="section"><div class="wrap grid two">
+ <div class="panel sim">
+  <h2>🎛️ Entrada clínica</h2>
+  <label>Vasculite provável</label><select id="dx"><option value="AAV">AAV — GPA/MPA/EGPA</option><option value="PAN">PAN</option><option value="GCA">GCA</option><option value="TAK">Takayasu</option><option value="CRIO">Crioglobulinemia</option></select>
+  <label>Gravidade</label><select id="severity"><option value="severe">Ameaça de órgão/vida</option><option value="nonsevere">Sem ameaça imediata</option></select>
+  <label>Órgão dominante</label><select id="organ"><option value="renal">Rim/GN ativa</option><option value="pulmonary">Pulmão/DAH</option><option value="ocular">Olho/visual</option><option value="neuro">Neuropatia/SNC</option><option value="gi">Mesentério/TGI</option><option value="cardiac">Coração</option><option value="skin">Pele/articular</option><option value="large-vessel">Grandes vasos</option></select>
+  <label>Infecção mimetizadora</label><select id="infection"><option value="controlled">Sem sepse evidente / investigação em curso</option><option value="suspected">Sepse/endocardite/TB/fungo possível</option></select>
+  <label>Vírus relevante</label><select id="viral"><option value="none">Nenhum conhecido</option><option value="HBV">HBV positivo/suspeito</option><option value="HCV">HCV positivo/suspeito</option><option value="HIV">HIV positivo/suspeito</option></select>
+  <label>Rim</label><select id="renal"><option value="none">Sem lesão renal relevante</option><option value="active-sediment">EAS ativo/proteinúria/hematúria</option><option value="rapid-rise">Creatinina subindo rápido</option><option value="dialysis">Dialítico ou quase dialítico</option></select>
+  <label>Pulmão</label><select id="pulmonary"><option value="none">Sem DAH</option><option value="DAH-no-hypoxemia">DAH sem hipoxemia importante</option><option value="DAH-hypoxemia">DAH com hipoxemia</option></select>
+  <div class="cta"><button class="primary" onclick="runVascSimulator()">⚡ Gerar decisão</button></div>
+  <h3>Casos rápidos</h3>
+  <div class="chiprow"><button class="tab" onclick="loadCase('AAV','severe','renal','none','dialysis','none')">AAV rim grave</button><button class="tab" onclick="loadCase('AAV','severe','pulmonary','none','rapid-rise','DAH-hypoxemia')">AAV DAH</button><button class="tab" onclick="loadCase('PAN','severe','gi','HBV','none','none')">PAN + HBV</button><button class="tab" onclick="loadCase('GCA','severe','ocular','none','none','none')">GCA visual</button><button class="tab" onclick="loadCase('CRIO','severe','renal','HCV','active-sediment','none')">Crio GN + HCV</button></div>
+ </div>
+ <div class="panel soft"><h2>📤 Saída</h2><div id="decision" class="decision-output"><h3>Escolha um cenário</h3><p>O resultado aparecerá aqui em formato de prescrição cognitiva: prioridade, droga inicial, exames úteis, manutenção e armadilhas.</p></div></div>
+</div></section>
+<section class="section"><div class="wrap"><h2>🧯 Tradução rápida da saída</h2><div class="table-wrap"><table><thead><tr><th>Situação</th><th>Conduta-mãe</th><th>Quando chamar UTI/especialista agora</th></tr></thead><tbody><tr><td>AAV rim/DAH grave</td><td>GC + rituximabe ou ciclofosfamida; avacopan se estratégia poupadora; PLEX selecionada.</td><td>Hipoxemia, creatinina em rápida ascensão, diálise, anti-GBM, hemoptise/queda Hb.</td></tr><tr><td>PAN grave</td><td>GC + ciclofosfamida; pesquisar HBV e aneurismas/isch TGI.</td><td>Dor abdominal forte, sangramento/isquemia, neuropatia motora, rim renovascular grave.</td></tr><tr><td>GCA visual</td><td>Corticoide imediato, frequentemente pulso IV, imagem/biópsia sem atrasar.</td><td>Amaurose, diplopia, déficit visual, AVC, sintomas cranianos intensos.</td></tr><tr><td>Takayasu ativo</td><td>GC + poupador; imagem vascular; revascularização preferir doença inativa.</td><td>Isquemia crítica, HAS renovascular, AVC/AIT, dissecção/aneurisma.</td></tr><tr><td>Crioglobulinemia grave</td><td>Rituximabe + GC; DAA se HCV; plasmaférese em fulminante/hiperviscosidade.</td><td>GN rapidamente progressiva, necrose digital, hiperviscosidade, DAH, TGI/SNC.</td></tr></tbody></table></div></div></section>
+
+<section class="section" id="fontes">
+  <div class="wrap">
+    <div class="panel soft">
+      <h2>📚 Fontes clínicas principais</h2>
+      <p class="sub">Conteúdo educacional, sem substituir avaliação especializada. Revisado para uso como apoio rápido de plantão.</p>
+      <ul class="mini">
+        <li>Chapel Hill Consensus Conference 2012 — nomenclatura das vasculites.</li>
+        <li>ACR/Vasculitis Foundation 2021 — AAV, PAN, GCA e Takayasu.</li>
+        <li>EULAR 2024 — recomendações atualizadas para vasculites ANCA-associadas.</li>
+        <li>KDIGO 2024 — capítulo de vasculite ANCA com acometimento renal.</li>
+        <li>EULAR 2024 — imagem em vasculites de grandes vasos.</li>
+        <li>Revisões e consensos sobre vasculite crioglobulinêmica, rituximabe, antivirais diretos e plasmaférese em cenários graves.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="sticky-tools"><button onclick="toggleTheme()" title="Tema">◐</button><button onclick="printPage()" title="Imprimir/PDF">⎙</button><button onclick="scrollTo(0,0)" title="Topo">↑</button></div>
+<footer class="footer"><div class="wrap"><b>🧬 Vasculites Decision — Antigravity Consultas</b><br><span class="mini">Versão 2.0 · Atualizado em 06/06/2026 · Uso educacional e apoio cognitivo; não substitui julgamento clínico, protocolos locais, bula nem discussão com especialista.</span></div></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

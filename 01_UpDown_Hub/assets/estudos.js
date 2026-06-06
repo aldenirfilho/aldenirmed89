@@ -63,7 +63,11 @@ function renderDocs(){
   const theme = themeFilter && themeFilter.value;
   const status = statusFilter && statusFilter.value;
   
+  const urlParams = new URLSearchParams(window.location.search);
+  const showPreview = urlParams.get('preview') === 'true' || urlParams.get('preview') === '1';
+
   const docs = registry.documents.filter(d => {
+    if (d.status === "aguardando_revisao_medica" && !showPreview) return false;
     const hay = `${d.title} ${d.theme} ${(d.tags||[]).join(' ')} ${d.summary||''}`.toLowerCase();
     return (!q || hay.includes(q)) && (!theme || d.theme === theme) && (!status || d.status === status);
   });

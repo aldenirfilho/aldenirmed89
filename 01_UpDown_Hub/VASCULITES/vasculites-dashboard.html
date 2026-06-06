@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vasculites — Diagnóstico & Terapêutica | Enciclomedia Médica</title>
+<meta name="description" content="Dashboard interativo de vasculites: algoritmo de anticorpos, calculadora de classificação ACR/EULAR 2022, escalada terapêutica, complicações graves, indicações de UTI e questões TEMI/R3.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b11; --bg-2:#0c1119; --surface:#111824; --surface-2:#172131; --surface-3:#1e2a3c;
+  --border:#243246; --border-soft:#1b2636;
+  --text:#e8eef6; --text-dim:#93a1b5; --text-faint:#5f6e84;
+  --large:#f5b324;        /* grandes vasos */
+  --medium:#fb7a3c;       /* médios vasos */
+  --anca:#27d3ee;         /* pequenos vasos ANCA */
+  --ic:#a98bfb;           /* pequenos vasos imunocomplexos */
+  --variable:#f472b6;     /* calibre variável */
+  --rare:#52e0a4;         /* raras / órgão único */
+  --accent:#ff5b6e;       /* assinatura */
+  --danger:#ff5252; --warn:#ffb020; --ok:#34d399; --info:#38bdf8;
+  --shadow:0 18px 50px -22px rgba(0,0,0,.85);
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+  --display:'Syne',var(--sans);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:74px}
+body{
+  background:
+    radial-gradient(1100px 620px at 82% -8%, rgba(255,91,110,.10), transparent 60%),
+    radial-gradient(900px 560px at 8% 6%, rgba(39,211,238,.08), transparent 55%),
+    radial-gradient(800px 700px at 50% 120%, rgba(169,139,251,.07), transparent 60%),
+    var(--bg);
+  color:var(--text);font-family:var(--sans);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.035;
+  background-image:linear-gradient(var(--text) 1px,transparent 1px),linear-gradient(90deg,var(--text) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+a{color:var(--anca);text-decoration:none}
+
+/* ---------- NAV ---------- */
+nav.topbar{
+  position:sticky;top:0;z-index:50;background:rgba(8,11,17,.82);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--border-soft);
+}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px}
+.brand{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.5px;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.navscroll{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto;-webkit-overflow-scrolling:touch}
+.navscroll::-webkit-scrollbar{display:none}
+.navscroll a{
+  font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--text-dim);
+  padding:7px 11px;border-radius:8px;white-space:nowrap;border:1px solid transparent;transition:.18s;
+}
+.navscroll a:hover{color:var(--text);background:var(--surface-2)}
+.navscroll a.active{color:var(--text);background:var(--surface-2);border-color:var(--border)}
+
+/* ---------- HERO ---------- */
+header.hero{padding:54px 0 30px;position:relative}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:14px}
+h1.title{font-family:var(--display);font-weight:800;font-size:clamp(2.3rem,6vw,4rem);line-height:1.02;letter-spacing:-1px}
+h1.title em{font-style:normal;background:linear-gradient(120deg,var(--accent),var(--variable) 55%,var(--anca));-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{margin-top:16px;max-width:680px;color:var(--text-dim);font-size:1.04rem}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chip{font-family:var(--mono);font-size:11px;padding:6px 11px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);display:inline-flex;gap:6px;align-items:center}
+.chip b{color:var(--text);font-weight:600}
+
+.disclaimer{
+  margin-top:26px;border:1px solid rgba(255,176,32,.3);background:rgba(255,176,32,.06);
+  border-radius:14px;padding:14px 18px;font-size:.88rem;color:#ffd98a;display:flex;gap:12px;align-items:flex-start
+}
+.disclaimer svg{flex-shrink:0;margin-top:2px}
+
+/* ---------- SECTION ---------- */
+section{padding:46px 0;scroll-margin-top:74px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;flex-wrap:wrap}
+.sec-num{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:600}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(1.5rem,3.4vw,2.1rem);letter-spacing:-.5px;line-height:1.1}
+.sec-sub{color:var(--text-dim);font-size:.98rem;margin-bottom:26px;max-width:760px}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:880px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+/* vessel legend */
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:6px 0 26px}
+.legend .li{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11.5px;color:var(--text-dim)}
+.swatch{width:13px;height:13px;border-radius:4px}
+
+/* vessel map */
+.vlayer{border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;background:var(--surface);position:relative;overflow:hidden}
+.vlayer::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+.vl-large::before{background:var(--large)} .vl-medium::before{background:var(--medium)}
+.vl-anca::before{background:var(--anca)} .vl-ic::before{background:var(--ic)}
+.vl-variable::before{background:var(--variable)} .vl-rare::before{background:var(--rare)}
+.vl-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.vl-head h3{font-family:var(--display);font-size:1.05rem;font-weight:700}
+.vl-tag{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.vl-desc{color:var(--text-dim);font-size:.86rem;margin-bottom:12px}
+.ent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.ent{background:var(--bg-2);border:1px solid var(--border-soft);border-radius:10px;padding:10px 12px;transition:.18s;cursor:default}
+.ent:hover{border-color:var(--border);transform:translateY(-2px)}
+.ent .ab{font-family:var(--display);font-weight:700;font-size:.95rem}
+.ent .full{font-size:.74rem;color:var(--text-faint);margin-top:2px}
+.ent .mk{font-family:var(--mono);font-size:.68rem;margin-top:6px;color:var(--text-dim)}
+
+/* tables */
+.tbl-scroll{overflow-x:auto;border-radius:12px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:560px}
+th{background:var(--surface-2);text-align:left;padding:11px 13px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-dim);font-weight:600;border-bottom:1px solid var(--border)}
+td{padding:11px 13px;border-bottom:1px solid var(--border-soft);vertical-align:top;color:var(--text)}
+td b{color:#fff}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.015)}
+.pill{font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 7px;border-radius:6px;white-space:nowrap}
+.p-1{background:rgba(52,211,153,.14);color:#7ff0c2} /* 1ª linha / forte */
+.p-2{background:rgba(56,189,248,.14);color:#92d6ff} /* alternativa */
+.p-3{background:rgba(255,176,32,.14);color:#ffce7a} /* atenção */
+.p-d{background:rgba(255,82,82,.16);color:#ff9b9b}  /* perigo */
+
+/* callouts */
+.callout{border-radius:12px;padding:14px 16px;font-size:.88rem;display:flex;gap:11px;align-items:flex-start;margin-top:14px}
+.callout svg{flex-shrink:0;margin-top:1px}
+.c-danger{background:rgba(255,82,82,.07);border:1px solid rgba(255,82,82,.3);color:#ffb3b3}
+.c-warn{background:rgba(255,176,32,.07);border:1px solid rgba(255,176,32,.28);color:#ffd98a}
+.c-ok{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.28);color:#9bf0cf}
+.c-info{background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.28);color:#a5dcff}
+.c-nerd{background:rgba(169,139,251,.07);border:1px solid rgba(169,139,251,.3);color:#cdb8ff}
+.callout b{color:#fff}
+
+ul.tight{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:4px}
+ul.tight li{padding-left:20px;position:relative;font-size:.88rem;color:var(--text)}
+ul.tight li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+.muted{color:var(--text-dim)}
+
+/* ---------- ALGORITMO DE ANTICORPOS ---------- */
+.algo-wrap{display:grid;grid-template-columns:300px 1fr;gap:18px}
+@media(max-width:880px){.algo-wrap{grid-template-columns:1fr}}
+.algo-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px}
+.algo-panel h4{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:12px}
+.opt{display:block;width:100%;text-align:left;background:var(--bg-2);border:1px solid var(--border-soft);border-radius:10px;padding:11px 13px;margin-bottom:8px;color:var(--text);font-family:var(--sans);font-size:.86rem;cursor:pointer;transition:.16s}
+.opt:hover{border-color:var(--border);background:var(--surface-2)}
+.opt.sel{border-color:var(--accent);background:rgba(255,91,110,.1);color:#fff;font-weight:600}
+.opt small{display:block;color:var(--text-faint);font-weight:400;font-size:.72rem;margin-top:2px}
+.algo-result{min-height:260px}
+.result-card{border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;background:var(--bg-2);animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.result-card .rc-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.result-card h3{font-family:var(--display);font-size:1.15rem;font-weight:700}
+.dx-line{font-size:.86rem;margin:6px 0;color:var(--text)}
+.dx-line span{color:var(--text-dim)}
+.ddx{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
+.ddx-title{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--warn);margin-bottom:8px}
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:260px;color:var(--text-faint);text-align:center;gap:12px;border:1px dashed var(--border);border-radius:14px}
+
+/* ---------- CALCULADORA ACR/EULAR ---------- */
+.calc-tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.calc-tab{font-family:var(--display);font-weight:700;font-size:.92rem;padding:9px 18px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);cursor:pointer;transition:.16s}
+.calc-tab.active{color:#fff}
+.calc-tab[data-t="gpa"].active{background:rgba(39,211,238,.16);border-color:var(--anca);color:#bff3fb}
+.calc-tab[data-t="mpa"].active{background:rgba(56,189,248,.16);border-color:var(--info);color:#bfe6ff}
+.calc-tab[data-t="egpa"].active{background:rgba(169,139,251,.16);border-color:var(--ic);color:#dccffd}
+.calc-body{display:grid;grid-template-columns:1fr 320px;gap:18px}
+@media(max-width:880px){.calc-body{grid-template-columns:1fr}}
+.crit{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-2);border:1px solid var(--border-soft);border-radius:10px;padding:11px 14px;margin-bottom:8px;cursor:pointer;transition:.15s;user-select:none}
+.crit:hover{border-color:var(--border)}
+.crit.on{border-color:var(--anca);background:rgba(39,211,238,.07)}
+.crit-label{font-size:.85rem}
+.crit-label small{display:block;color:var(--text-faint);font-size:.72rem}
+.crit-pts{font-family:var(--mono);font-weight:600;font-size:.85rem;padding:3px 9px;border-radius:7px;white-space:nowrap}
+.pos{background:rgba(52,211,153,.16);color:#7ff0c2}
+.neg{background:rgba(255,82,82,.16);color:#ff9b9b}
+.cbx{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s}
+.crit.on .cbx{background:var(--anca);border-color:var(--anca)}
+.crit.on .cbx::after{content:"✓";color:#062028;font-weight:700;font-size:13px}
+.score-box{background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:20px;position:sticky;top:84px;height:fit-content}
+.score-num{font-family:var(--display);font-weight:800;font-size:3.4rem;line-height:1;text-align:center}
+.score-cat{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;text-align:center;color:var(--text-dim);margin-top:4px}
+.verdict{margin-top:16px;border-radius:10px;padding:13px;font-size:.86rem;text-align:center;font-weight:600;border:1px solid var(--border)}
+.v-yes{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.4);color:#9bf0cf}
+.v-no{background:rgba(95,110,132,.12);color:var(--text-dim)}
+.thr{font-family:var(--mono);font-size:11px;color:var(--text-faint);text-align:center;margin-top:8px}
+.reset-btn{width:100%;margin-top:14px;background:transparent;border:1px solid var(--border);color:var(--text-dim);font-family:var(--mono);font-size:11px;padding:9px;border-radius:9px;cursor:pointer;transition:.15s}
+.reset-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ---------- ACCORDION ATLAS ---------- */
+.acc{border:1px solid var(--border);border-radius:13px;margin-bottom:10px;overflow:hidden;background:var(--surface)}
+.acc-head{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;user-select:none;transition:.15s}
+.acc-head:hover{background:var(--surface-2)}
+.acc-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.acc-title{font-family:var(--display);font-weight:700;font-size:1rem;flex:1}
+.acc-title small{display:block;font-family:var(--sans);font-weight:400;color:var(--text-faint);font-size:.74rem;margin-top:1px}
+.acc-tag{font-family:var(--mono);font-size:9.5px;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.acc-arrow{transition:.25s;color:var(--text-dim);flex-shrink:0}
+.acc.open .acc-arrow{transform:rotate(180deg)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.acc-inner{padding:0 18px 18px;border-top:1px solid var(--border-soft)}
+.acc-inner h5{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin:16px 0 7px}
+.acc-inner p,.acc-inner li{font-size:.86rem}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.84rem;margin-top:4px}
+.kv dt{color:var(--text-dim);font-family:var(--mono);font-size:.76rem;white-space:nowrap}
+.kv dd{color:var(--text)}
+
+/* ---------- ESCADA TERAPÊUTICA ---------- */
+.ladder{position:relative;padding-left:30px}
+.ladder::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--ok),var(--warn),var(--danger))}
+.step{position:relative;margin-bottom:16px}
+.step::before{content:"";position:absolute;left:-26px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--accent)}
+.step.s1::before{border-color:var(--ok)} .step.s2::before{border-color:var(--info)}
+.step.s3::before{border-color:var(--warn)} .step.s4::before{border-color:var(--danger)}
+.step h4{font-family:var(--display);font-weight:700;font-size:1rem;margin-bottom:4px}
+.step .lvl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-faint);margin-bottom:6px}
+
+/* ---------- FFS ---------- */
+.ffs-grid{display:grid;grid-template-columns:1fr 300px;gap:18px}
+@media(max-width:880px){.ffs-grid{grid-template-columns:1fr}}
+
+/* ---------- FLASHCARDS ---------- */
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.fc{height:175px;perspective:1200px;cursor:pointer}
+.fc-in{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--border)}
+.fc-front{background:var(--surface-2)}
+.fc-back{background:linear-gradient(150deg,var(--surface-3),var(--surface));transform:rotateY(180deg);border-color:var(--accent)}
+.fc-q{font-family:var(--display);font-weight:700;font-size:.98rem;line-height:1.3}
+.fc-a{font-size:.84rem;color:var(--text);line-height:1.45}
+.fc-hint{position:absolute;bottom:11px;right:14px;font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.5px}
+
+/* ---------- QUIZ ---------- */
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+.q-num{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.5px}
+.q-stem{font-size:.94rem;margin:8px 0 16px;line-height:1.55}
+.q-opt{display:flex;gap:11px;align-items:flex-start;background:var(--bg-2);border:1px solid var(--border-soft);border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:.15s;font-size:.87rem}
+.q-opt:hover{border-color:var(--border)}
+.q-opt .lt{font-family:var(--mono);font-weight:600;color:var(--text-dim);flex-shrink:0}
+.q-opt.correct{border-color:var(--ok);background:rgba(52,211,153,.1)}
+.q-opt.correct .lt{color:var(--ok)}
+.q-opt.wrong{border-color:var(--danger);background:rgba(255,82,82,.08)}
+.q-opt.wrong .lt{color:var(--danger)}
+.q-opt.disabled{cursor:default;opacity:.85}
+.q-exp{margin-top:14px;border-radius:12px;padding:15px;font-size:.85rem;background:var(--bg-2);border:1px solid var(--border);display:none}
+.q-exp.show{display:block;animation:fade .3s}
+.q-exp .et{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;font-weight:600}
+.q-exp .trap{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);color:#ffd98a}
+.q-exp .trap b{color:var(--warn)}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--border-soft);margin-top:30px;padding:34px 0 60px;color:var(--text-faint);font-size:.82rem}
+footer h4{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:12px}
+.ref-list{display:flex;flex-direction:column;gap:7px;font-size:.78rem;line-height:1.4}
+.ref-list span{color:var(--text-dim)}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:30px}
+@media(max-width:880px){.foot-grid{grid-template-columns:1fr}}
+.badge-safe{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;padding:5px 11px;border-radius:999px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);color:#9bf0cf;margin-top:10px}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="dot"></span>VASCULITES</div>
+    <div class="navscroll">
+      <a href="#mapa" class="active">Mapa</a>
+      <a href="#anticorpos">Anticorpos</a>
+      <a href="#calc">Classificação</a>
+      <a href="#atlas">Atlas</a>
+      <a href="#terapia">Terapia</a>
+      <a href="#complic">Complicações</a>
+      <a href="#internacao">Internação/UTI</a>
+      <a href="#ffs">Prognóstico</a>
+      <a href="#raras">Raras graves</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Questões</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Enciclomedia Médica · Reumatologia na UTI & Clínica</div>
+    <h1 class="title">Vasculites:<br><em>diagnóstico & terapêutica</em></h1>
+    <p class="subtitle">Da nomenclatura de Chapel Hill ao algoritmo de anticorpos, com calculadora de classificação ACR/EULAR 2022, escalada terapêutica atualizada, complicações que matam, gatilhos de UTI e questões estilo TEMI/R3. Foco em conduta, prova e segurança.</p>
+    <div class="meta-row">
+      <span class="chip">📅 <b>Diretrizes:</b> ACR/VF 2021 · ACR/EULAR 2022</span>
+      <span class="chip">💊 <b>Atualizado:</b> avacopan · upadacitinibe · benralizumabe</span>
+      <span class="chip">🎯 <b>Nível:</b> R3 / TEMI / plantão</span>
+      <span class="chip">🩸 <b>11 módulos interativos</b></span>
+    </div>
+    <div class="disclaimer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffd98a" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      <div><b>Material educacional autoral.</b> Critérios ACR/EULAR 2022 são de <b>classificação</b> (pesquisa/seleção de coorte), não de diagnóstico — sempre exclua mimetizadores primeiro. Doses e condutas dependem de protocolo institucional, função orgânica e julgamento clínico. Não substitui avaliação do reumatologista.</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MÓDULO 1 · MAPA ============ -->
+<section id="mapa">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Mapa das vasculites por calibre</h2></div>
+    <p class="sec-sub">A nomenclatura de Chapel Hill (CHCC 2012) organiza tudo pelo <b>calibre do vaso predominante</b>. Memorize este mapa — ele orienta o raciocínio diagnóstico, os anticorpos a pedir e a urgência. 🧠</p>
+
+    <div class="legend">
+      <div class="li"><span class="swatch" style="background:var(--large)"></span>Grandes vasos</div>
+      <div class="li"><span class="swatch" style="background:var(--medium)"></span>Médios vasos</div>
+      <div class="li"><span class="swatch" style="background:var(--anca)"></span>Pequenos · ANCA</div>
+      <div class="li"><span class="swatch" style="background:var(--ic)"></span>Pequenos · imunocomplexos</div>
+      <div class="li"><span class="swatch" style="background:var(--variable)"></span>Calibre variável</div>
+      <div class="li"><span class="swatch" style="background:var(--rare)"></span>Órgão único / raras</div>
+    </div>
+
+    <div class="vlayer vl-large">
+      <div class="vl-head"><h3>Grandes vasos (LVV)</h3><span class="vl-tag" style="background:rgba(245,179,36,.16);color:#ffd87a">aorta e ramos</span></div>
+      <div class="vl-desc">Inflamação granulomatosa da aorta e grandes ramos → estenose, aneurisma, isquemia. Marca registrada: claudicação, pulsos assimétricos, sopros.</div>
+      <div class="ent-grid">
+        <div class="ent"><div class="ab">ACG</div><div class="full">Arterite de células gigantes</div><div class="mk">&gt;50a · cefaleia, amaurose, VHS↑</div></div>
+        <div class="ent"><div class="ab">AT</div><div class="full">Arterite de Takayasu</div><div class="mk">&lt;40a, mulher · "doença sem pulso"</div></div>
+      </div>
+    </div>
+
+    <div class="vlayer vl-medium">
+      <div class="vl-head"><h3>Médios vasos (MVV)</h3><span class="vl-tag" style="background:rgba(251,122,60,.16);color:#ffb78a">artérias musculares</span></div>
+      <div class="vl-desc">Necrose fibrinoide de artérias musculares → microaneurismas, infartos viscerais, mononeurite múltipla. <b>ANCA tipicamente negativo.</b></div>
+      <div class="ent-grid">
+        <div class="ent"><div class="ab">PAN</div><div class="full">Poliarterite nodosa</div><div class="mk">microaneurismas · HBV · poupa pulmão</div></div>
+        <div class="ent"><div class="ab">DK</div><div class="full">Doença de Kawasaki</div><div class="mk">criança · aneurisma coronário</div></div>
+      </div>
+    </div>
+
+    <div class="vlayer vl-anca">
+      <div class="vl-head"><h3>Pequenos vasos — associadas a ANCA (AAV)</h3><span class="vl-tag" style="background:rgba(39,211,238,.16);color:#aeeefa">pauci-imune</span></div>
+      <div class="vl-desc">Necrosante, pauci-imune (pouco depósito). Tríade temida: <b>GNRP + hemorragia alveolar + ANCA</b>. Pedem indução imunossupressora rápida.</div>
+      <div class="ent-grid">
+        <div class="ent"><div class="ab">GPA</div><div class="full">Granulomatose com poliangeíte</div><div class="mk">PR3/c-ANCA · ORL + pulmão + rim</div></div>
+        <div class="ent"><div class="ab">PAM</div><div class="full">Poliangeíte microscópica</div><div class="mk">MPO/p-ANCA · rim-pulmão, sem granuloma</div></div>
+        <div class="ent"><div class="ab">GEPA</div><div class="full">Granulomatose eosinofílica c/ poliangeíte</div><div class="mk">asma + eosinofilia · MPO em ~40%</div></div>
+      </div>
+    </div>
+
+    <div class="vlayer vl-ic">
+      <div class="vl-head"><h3>Pequenos vasos — por imunocomplexos</h3><span class="vl-tag" style="background:rgba(169,139,251,.16);color:#cdb8ff">depósito imune</span></div>
+      <div class="vl-desc">Depósito de imunoglobulinas/complemento na parede. Buscar gatilho: infecção, crioglobulina, droga. Complemento costuma estar <b>baixo</b> (exceto IgAV).</div>
+      <div class="ent-grid">
+        <div class="ent"><div class="ab">IgAV</div><div class="full">Vasculite por IgA (Henoch-Schönlein)</div><div class="mk">púrpura + artrite + dor abd + rim</div></div>
+        <div class="ent"><div class="ab">VC</div><div class="full">Vasculite crioglobulinêmica</div><div class="mk">HCV · púrpura, C4↓↓, neuropatia</div></div>
+        <div class="ent"><div class="ab">anti-MBG</div><div class="full">Doença anti-membrana basal</div><div class="mk">Goodpasture · rim-pulmão fulminante</div></div>
+        <div class="ent"><div class="ab">VUH</div><div class="full">Vasculite urticariforme hipocomplementêmica</div><div class="mk">anti-C1q · urticária &gt;24h</div></div>
+      </div>
+    </div>
+
+    <div class="vlayer vl-variable">
+      <div class="vl-head"><h3>Calibre variável (VVV)</h3><span class="vl-tag" style="background:rgba(244,114,182,.16);color:#fbb8da">qualquer vaso</span></div>
+      <div class="vl-desc">Podem acometer vasos de qualquer tamanho, arteriais e venosos.</div>
+      <div class="ent-grid">
+        <div class="ent"><div class="ab">DB</div><div class="full">Doença de Behçet</div><div class="mk">aftas oral+genital, uveíte, HLA-B51</div></div>
+        <div class="ent"><div class="ab">SC</div><div class="full">Síndrome de Cogan</div><div class="mk">ceratite + disfunção audiovestibular</div></div>
+      </div>
+    </div>
+
+    <div class="vlayer vl-rare">
+      <div class="vl-head"><h3>Órgão único & associadas / raras</h3><span class="vl-tag" style="background:rgba(82,224,164,.16);color:#9fefce">localizada ou 2ária</span></div>
+      <div class="vl-desc">Restritas a um órgão ou secundárias a doença sistêmica/etiologia. Várias têm potencial de gravidade desproporcional.</div>
+      <div class="ent-grid">
+        <div class="ent"><div class="ab">PACNS</div><div class="full">Vasculite primária do SNC</div><div class="mk">AVC + cefaleia + declínio cognitivo</div></div>
+        <div class="ent"><div class="ab">VLC</div><div class="full">Vasculite leucocitoclástica cutânea</div><div class="mk">púrpura palpável isolada</div></div>
+        <div class="ent"><div class="ab">VEXAS</div><div class="full">Síndrome VEXAS (UBA1)</div><div class="mk">homem &gt;50a · febre, condrite, anemia macro</div></div>
+        <div class="ent"><div class="ab">2árias</div><div class="full">Lúpica · reumatoide · sarcoide</div><div class="mk">associadas a doença sistêmica</div></div>
+      </div>
+    </div>
+
+    <div class="callout c-nerd">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cdb8ff" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 0 7 4.5v15A2.5 2.5 0 0 0 9.5 22h5a2.5 2.5 0 0 0 2.5-2.5v-15A2.5 2.5 0 0 0 14.5 2z"/><path d="M7 8h10M7 16h10"/></svg>
+      <div><b>🤓 Curiosidade nerd:</b> a <b>VEXAS</b> (<i>Vacuoles, E1 enzyme, X-linked, Autoinflammatory, Somatic</i>) foi descrita só em <b>2020</b> — mutação somática no gene <b>UBA1</b> em células-tronco mieloides. Une reumatologia e hematologia: vasculite/condrite + citopenias/SMD em homens idosos. É a estrela das provas modernas e quase sempre refratária. 🧬</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MÓDULO 2 · ALGORITMO DE ANTICORPOS ============ -->
+<section id="anticorpos">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Algoritmo de anticorpos & diferenciais</h2></div>
+    <p class="sec-sub">Selecione o achado sorológico/clínico dominante. O painel mostra a vasculite mais provável, o que confirma e os <b>mimetizadores que você precisa excluir</b> antes de imunossuprimir. 🧪</p>
+
+    <div class="algo-wrap">
+      <div class="algo-panel">
+        <h4>Achado dominante</h4>
+        <button class="opt" data-k="pr3">PR3-ANCA / c-ANCA positivo<small>padrão citoplasmático</small></button>
+        <button class="opt" data-k="mpo">MPO-ANCA / p-ANCA positivo<small>padrão perinuclear</small></button>
+        <button class="opt" data-k="eo">Eosinofilia + asma<small>± mononeurite</small></button>
+        <button class="opt" data-k="cryo">Crioglobulinas + C4 baixo<small>FR positivo</small></button>
+        <button class="opt" data-k="iga">Púrpura palpável + IgA<small>criança/adulto jovem</small></button>
+        <button class="opt" data-k="gbm">Anti-MBG positivo<small>rim + pulmão</small></button>
+        <button class="opt" data-k="anca_neg">ANCA negativo + médio vaso<small>microaneurismas</small></button>
+        <button class="opt" data-k="behcet">Aftas + uveíte + patergia<small>HLA-B51</small></button>
+        <button class="opt" data-k="dual">Duplo ANCA / necrose de orelha<small>cocaína/levamisol</small></button>
+      </div>
+      <div class="algo-result" id="algoResult">
+        <div class="placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5f6e84" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <div>Escolha um achado à esquerda<br>para ver diagnóstico e diferenciais</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout c-danger" style="margin-top:18px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff9b9b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      <div><b>Regra de ouro:</b> <b>ANCA não fecha diagnóstico isolado.</b> Endocardite infecciosa, êmbolos de colesterol, SAF/PTT, mixoma e drogas mimetizam vasculite e podem cursar com ANCA+ ou complemento baixo. <b>Sempre faça hemoculturas e ecocardiograma</b> antes de imunossuprimir um quadro "vasculítico" febril.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MÓDULO 3 · CALCULADORA ACR/EULAR 2022 ============ -->
+<section id="calc">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Calculadora de classificação ACR/EULAR 2022</h2></div>
+    <p class="sec-sub">Critérios <b>ponderados</b> para as vasculites associadas a ANCA. Marque os itens presentes — o escore e o veredito atualizam ao vivo. ⚠️ Aplicar <b>somente após</b> confirmar vasculite de pequeno/médio vaso e excluir mimetizadores.</p>
+
+    <div class="calc-tabs">
+      <button class="calc-tab active" data-t="gpa">GPA</button>
+      <button class="calc-tab" data-t="mpa">PAM</button>
+      <button class="calc-tab" data-t="egpa">GEPA</button>
+    </div>
+
+    <div class="card">
+      <div class="calc-body">
+        <div id="critList"></div>
+        <div class="score-box">
+          <div class="score-num" id="scoreNum">0</div>
+          <div class="score-cat" id="scoreCat">pontos</div>
+          <div class="verdict v-no" id="verdict">Selecione os critérios</div>
+          <div class="thr" id="thr"></div>
+          <button class="reset-btn" id="resetCalc">↺ limpar seleção</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout c-info" style="margin-top:16px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a5dcff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <div><b>Como cai na prova:</b> note os pontos <b>negativos</b> — eosinofilia ≥1×10⁹/L tira pontos de GPA/PAM (−4), e PR3/c-ANCA tira pontos de GEPA (−3) e PAM (−1). A sorologia ANCA "puxa" a classificação: PR3→GPA, MPO→PAM. Sensibilidade/especificidade ~85–99%, mas só valem após excluir sósias. 📌</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MÓDULO 4 · ATLAS CLÍNICO ============ -->
+<section id="atlas">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Atlas clínico das principais vasculites</h2></div>
+    <p class="sec-sub">Clique para expandir. Cada ficha traz <b>quem</b>, <b>como se apresenta</b>, <b>como confirmar</b>, <b>como tratar</b> e <b>o que vigiar</b>. 🩺</p>
+
+    <!-- ACG -->
+    <div class="acc">
+      <div class="acc-head"><span class="acc-dot" style="background:var(--large)"></span>
+        <div class="acc-title">Arterite de Células Gigantes (ACG) <small>arterite temporal · grandes vasos</small></div>
+        <span class="acc-tag" style="background:rgba(245,179,36,.16);color:#ffd87a">emergência ocular</span>
+        <svg class="acc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <h5>Perfil & clínica</h5>
+        <dl class="kv">
+          <dt>Quem</dt><dd>&gt;50 anos (pico 70–80a), mulheres, descendência norte-europeia. Associa-se a polimialgia reumática.</dd>
+          <dt>Cefaleia</dt><dd>Nova, temporal, com hipersensibilidade do couro cabeludo.</dd>
+          <dt>Bandeira ⚠️</dt><dd>Claudicação de mandíbula, amaurose fugaz, diplopia → risco de cegueira (NOIA).</dd>
+          <dt>Sistêmico</dt><dd>Febre baixa, perda de peso, VHS/PCR muito elevados.</dd>
+        </dl>
+        <h5>Diagnóstico</h5>
+        <ul class="tight">
+          <li>VHS ↑↑ (frequentemente &gt;50) e PCR elevada; trombocitose.</li>
+          <li>Biópsia de artéria temporal (padrão-ouro): segmento ≥1 cm; <b>não atrasar corticoide</b> para fazê-la (achados persistem ~2 semanas).</li>
+          <li>USG temporal: sinal do halo. AngioTC/PET para acometimento de grandes vasos (aortite).</li>
+        </ul>
+        <h5>Tratamento</h5>
+        <ul class="tight">
+          <li><span class="pill p-1">imediato</span> Corticoide em <b>dose alta sem esperar biópsia</b>: prednisona 40–60 mg/dia.</li>
+          <li><span class="pill p-d">ameaça visual</span> Pulso de metilprednisolona IV 0,5–1 g/dia por 3 dias.</li>
+          <li><span class="pill p-1">poupador</span> <b>Tocilizumabe</b> (anti-IL-6R) associado ao corticoide — poupa esteroide e reduz recaída.</li>
+          <li><span class="pill p-2">novo</span> <b>Upadacitinibe</b> 15 mg/dia (1º JAK oral aprovado p/ ACG, FDA abr/2025 — SELECT-GCA).</li>
+          <li><span class="pill p-3">adjuvante</span> AAS se acometimento crítico vertebral/carotídeo. Desmame do corticoide em ~12 meses.</li>
+        </ul>
+        <div class="callout c-danger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9b9b" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><div>Perda visual em ACG geralmente é <b>irreversível</b> e o segundo olho pode seguir em dias. Diante de suspeita + sintoma ocular = pulso de corticoide JÁ. 👁️</div></div>
+      </div></div>
+    </div>
+
+    <!-- Takayasu -->
+    <div class="acc">
+      <div class="acc-head"><span class="acc-dot" style="background:var(--large)"></span>
+        <div class="acc-title">Arterite de Takayasu (AT) <small>"doença sem pulso" · grandes vasos</small></div>
+        <span class="acc-tag" style="background:rgba(245,179,36,.16);color:#ffd87a">jovem</span>
+        <svg class="acc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <h5>Perfil & clínica</h5>
+        <dl class="kv">
+          <dt>Quem</dt><dd>Mulher &lt;40 anos (clássico asiática, mas global).</dd>
+          <dt>Fase 1</dt><dd>Sistêmica inflamatória inespecífica (febre, mialgia, perda de peso).</dd>
+          <dt>Fase 2</dt><dd>Oclusiva: claudicação de membros, <b>pulsos assimétricos/ausentes</b>, diferença de PA entre braços (&gt;10 mmHg), sopros, HAS renovascular.</dd>
+        </dl>
+        <h5>Diagnóstico</h5>
+        <ul class="tight">
+          <li>Imagem é central: angioRM/angioTC/PET-CT mostram espessamento parietal, estenoses, aneurismas da aorta e ramos.</li>
+          <li>Provas inflamatórias podem ser normais mesmo com doença ativa (cuidado!).</li>
+        </ul>
+        <h5>Tratamento</h5>
+        <ul class="tight">
+          <li><span class="pill p-1">inicial</span> Corticoide + <b>imunossupressor não-esteroide já de início</b> (MTX, azatioprina, MMF ou anti-TNF).</li>
+          <li><span class="pill p-2">refratária</span> Anti-TNF &gt; tocilizumabe (tocilizumabe não atingiu desfecho primário no único ECR em AT).</li>
+          <li><span class="pill p-3">revascularização</span> Angioplastia/cirurgia para estenose crítica — idealmente com <b>doença em remissão</b>.</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <!-- PAN -->
+    <div class="acc">
+      <div class="acc-head"><span class="acc-dot" style="background:var(--medium)"></span>
+        <div class="acc-title">Poliarterite Nodosa (PAN) <small>médios vasos · ANCA negativo</small></div>
+        <span class="acc-tag" style="background:rgba(251,122,60,.16);color:#ffb78a">HBV</span>
+        <svg class="acc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <h5>Perfil & clínica</h5>
+        <dl class="kv">
+          <dt>Marca</dt><dd>Necrose de artérias musculares → <b>microaneurismas</b>. Tipicamente <b>poupa o pulmão</b> e não causa GN (diferente das AAV).</dd>
+          <dt>Multissistêmica</dt><dd>Constitucional + <b>mononeurite múltipla</b>, livedo, nódulos, úlceras, dor abdominal isquêmica, orquite, HAS, IRA.</dd>
+          <dt>Gatilho</dt><dd><b>Hepatite B</b> (clássica); também tricoleucemia. Forma cutânea isolada existe.</dd>
+        </dl>
+        <h5>Diagnóstico</h5>
+        <ul class="tight">
+          <li>Arteriografia (mesentérica/renal): microaneurismas e estenoses em "contas de rosário".</li>
+          <li>Biópsia (nervo sural/músculo/pele): vasculite necrosante de médio vaso. <b>Sorologia HBV obrigatória.</b></li>
+        </ul>
+        <h5>Tratamento</h5>
+        <ul class="tight">
+          <li><span class="pill p-1">idiopática</span> Corticoide ± <b>ciclofosfamida</b> se grave (FFS ≥1).</li>
+          <li><span class="pill p-d">PAN-HBV</span> Estratégia <b>diferente</b>: corticoide curto + <b>antiviral</b> (entecavir/tenofovir) + plasmaférese — evitar imunossupressão prolongada (favorece replicação viral).</li>
+        </ul>
+        <div class="callout c-warn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd98a" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><div><b>Pegadinha clássica:</b> PAN <b>não</b> tem glomerulonefrite (acomete artérias renais, não glomérulos) e <b>não</b> tem hemorragia alveolar. Se houver GN/HA + ANCA → pense em <b>PAM</b>, não PAN.</div></div>
+      </div></div>
+    </div>
+
+    <!-- GPA -->
+    <div class="acc">
+      <div class="acc-head"><span class="acc-dot" style="background:var(--anca)"></span>
+        <div class="acc-title">Granulomatose com Poliangeíte (GPA) <small>ex-Wegener · pequenos vasos ANCA</small></div>
+        <span class="acc-tag" style="background:rgba(39,211,238,.16);color:#aeeefa">PR3 / c-ANCA</span>
+        <svg class="acc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <h5>Perfil & clínica</h5>
+        <dl class="kv">
+          <dt>Tríade</dt><dd>Via aérea <b>superior</b> + via aérea <b>inferior</b> + <b>rim</b>.</dd>
+          <dt>ORL</dt><dd>Sinusite crônica, rinorreia sanguinolenta, crostas, <b>nariz em sela</b>, estenose subglótica, otite/mastoidite.</dd>
+          <dt>Pulmão</dt><dd>Nódulos/cavitações, hemorragia alveolar.</dd>
+          <dt>Rim</dt><dd>GN rapidamente progressiva pauci-imune.</dd>
+        </dl>
+        <h5>Diagnóstico</h5>
+        <ul class="tight">
+          <li><b>PR3-ANCA (c-ANCA)</b> em ~80–90% da doença sistêmica.</li>
+          <li>Biópsia: inflamação granulomatosa necrosante + vasculite pauci-imune.</li>
+        </ul>
+        <h5>Tratamento (ver módulo 05)</h5>
+        <ul class="tight">
+          <li><span class="pill p-1">indução grave</span> Corticoide em dose reduzida + <b>rituximabe</b> (preferido) ou ciclofosfamida; considerar <b>avacopan</b>.</li>
+          <li><span class="pill p-1">manutenção</span> <b>Rituximabe</b> &gt; azatioprina/MTX.</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <!-- PAM -->
+    <div class="acc">
+      <div class="acc-head"><span class="acc-dot" style="background:var(--anca)"></span>
+        <div class="acc-title">Poliangeíte Microscópica (PAM) <small>pequenos vasos ANCA</small></div>
+        <span class="acc-tag" style="background:rgba(56,189,248,.16);color:#bfe6ff">MPO / p-ANCA</span>
+        <svg class="acc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <h5>Perfil & clínica</h5>
+        <dl class="kv">
+          <dt>Marca</dt><dd>Síndrome <b>rim-pulmão</b> sem granuloma e sem doença ORL destrutiva. Principal causa de síndrome pulmão-rim com GNRP.</dd>
+          <dt>Pulmão</dt><dd>Hemorragia alveolar difusa; fibrose pulmonar pode preceder anos.</dd>
+        </dl>
+        <h5>Diagnóstico</h5>
+        <ul class="tight">
+          <li><b>MPO-ANCA (p-ANCA)</b> na grande maioria.</li>
+          <li>Biópsia renal: GN necrosante pauci-imune com crescentes.</li>
+        </ul>
+        <h5>Tratamento</h5>
+        <ul class="tight">
+          <li>Igual à GPA grave: corticoide reduzido + rituximabe/ciclofosfamida ± avacopan; manutenção com rituximabe.</li>
+          <li><span class="pill p-3">plasmaférese</span> Considerar em creatinina muito alta/diálise ou hemorragia alveolar (decisão individualizada — PEXIVAS).</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <!-- GEPA -->
+    <div class="acc">
+      <div class="acc-head"><span class="acc-dot" style="background:var(--anca)"></span>
+        <div class="acc-title">Granulomatose Eosinofílica com Poliangeíte (GEPA) <small>ex-Churg-Strauss</small></div>
+        <span class="acc-tag" style="background:rgba(169,139,251,.16);color:#dccffd">asma + eosinofilia</span>
+        <svg class="acc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <h5>Perfil & clínica (3 fases)</h5>
+        <dl class="kv">
+          <dt>1 · prodrômica</dt><dd>Asma de difícil controle + rinossinusite/polipose.</dd>
+          <dt>2 · eosinofílica</dt><dd>Eosinofilia sangue/tecido (Löffler, gastroenterite eosinofílica).</dd>
+          <dt>3 · vasculítica</dt><dd><b>Mononeurite múltipla</b>, púrpura, <b>miocardite/cardiomiopatia</b> (principal causa de morte), GN.</dd>
+        </dl>
+        <h5>Diagnóstico</h5>
+        <ul class="tight">
+          <li>Eosinofilia ≥1×10⁹/L; <b>MPO-ANCA positivo em só ~30–40%</b> (mais ligado a fenótipo vasculítico/renal).</li>
+          <li>Biópsia: inflamação eosinofílica extravascular ± granuloma.</li>
+        </ul>
+        <h5>Tratamento</h5>
+        <ul class="tight">
+          <li><span class="pill p-d">grave (FFS≥1, coração/rim/SNC)</span> Corticoide (pulso ou VO alta) + <b>ciclofosfamida ou rituximabe</b>.</li>
+          <li><span class="pill p-1">não-grave</span> Corticoide + <b>mepolizumabe</b> (anti-IL-5).</li>
+          <li><span class="pill p-2">alternativa anti-IL-5</span> <b>Benralizumabe</b> (anti-IL-5Rα) — não inferior ao mepolizumabe (MANDARA, 2024).</li>
+        </ul>
+        <div class="callout c-danger"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9b9b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><div><b>Coração mata na GEPA.</b> Acometimento cardíaco (miocardite/cardiomiopatia eosinofílica) é o principal determinante de mortalidade — investigue com ECG, troponina, eco e RM cardíaca. ❤️</div></div>
+      </div></div>
+    </div>
+
+    <!-- IgAV -->
+    <div class="acc">
+      <div class="acc-head"><span class="acc-dot" style="background:var(--ic)"></span>
+        <div class="acc-title">Vasculite por IgA (Henoch-Schönlein) <small>imunocomplexos</small></div>
+        <span class="acc-tag" style="background:rgba(82,224,164,.16);color:#9fefce">geralmente autolimitada</span>
+        <svg class="acc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <h5>Tétrade clássica</h5>
+        <dl class="kv">
+          <dt>Pele</dt><dd>Púrpura palpável em membros inferiores/nádegas.</dd>
+          <dt>Articular</dt><dd>Artralgia/artrite.</dd>
+          <dt>Abdome</dt><dd>Dor abdominal (risco de <b>intussuscepção</b> em crianças).</dd>
+          <dt>Rim</dt><dd>Nefrite por IgA (hematúria/proteinúria) — define prognóstico, sobretudo em adultos.</dd>
+        </dl>
+        <h5>Tratamento</h5>
+        <ul class="tight">
+          <li><span class="pill p-1">maioria</span> Suporte — costuma resolver espontaneamente.</li>
+          <li><span class="pill p-3">corticoide</span> Para dor abdominal grave; nefrite significativa pode exigir imunossupressão (GN crescêntica).</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <!-- Crioglobulinêmica -->
+    <div class="acc">
+      <div class="acc-head"><span class="acc-dot" style="background:var(--ic)"></span>
+        <div class="acc-title">Vasculite Crioglobulinêmica <small>imunocomplexos · HCV</small></div>
+        <span class="acc-tag" style="background:rgba(169,139,251,.16);color:#dccffd">C4 ↓↓</span>
+        <svg class="acc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <h5>Perfil & clínica</h5>
+        <dl class="kv">
+          <dt>Tríade de Meltzer</dt><dd>Púrpura + artralgia + fraqueza.</dd>
+          <dt>Outros</dt><dd>Neuropatia periférica, GN membranoproliferativa, úlceras, fenômeno de Raynaud.</dd>
+          <dt>Gatilho</dt><dd><b>Hepatite C</b> (tipo II mista). Também doenças linfoproliferativas e autoimunes.</dd>
+        </dl>
+        <h5>Diagnóstico</h5>
+        <ul class="tight">
+          <li>Crioglobulinas positivas (coleta a 37°C!), <b>C4 muito baixo</b> com C3 normal/pouco reduzido, FR positivo. Sorologia HCV.</li>
+        </ul>
+        <h5>Tratamento</h5>
+        <ul class="tight">
+          <li><span class="pill p-1">HCV</span> <b>Antivirais de ação direta (DAA)</b> — base do tratamento da forma associada ao HCV.</li>
+          <li><span class="pill p-d">grave/órgão-ameaçador</span> <b>Rituximabe</b> + corticoide ± plasmaférese (GN rapidamente progressiva, neuropatia grave, úlceras isquêmicas).</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <!-- Behçet -->
+    <div class="acc">
+      <div class="acc-head"><span class="acc-dot" style="background:var(--variable)"></span>
+        <div class="acc-title">Doença de Behçet <small>calibre variável · arterial + venoso</small></div>
+        <span class="acc-tag" style="background:rgba(244,114,182,.16);color:#fbb8da">HLA-B51</span>
+        <svg class="acc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="acc-body"><div class="acc-inner">
+        <h5>Perfil & clínica</h5>
+        <dl class="kv">
+          <dt>Mucocutâneo</dt><dd>Aftas orais recorrentes + úlceras genitais + lesões cutâneas (pseudofoliculite, eritema nodoso).</dd>
+          <dt>Ocular</dt><dd><b>Uveíte</b> (anterior e posterior, panuveíte) — risco de cegueira.</dd>
+          <dt>Grave</dt><dd>Trombose venosa, <b>aneurismas de artéria pulmonar</b>, neuro-Behçet, acometimento GI.</dd>
+          <dt>Sinal</dt><dd>Patergia positiva; forte associação com <b>HLA-B51</b>.</dd>
+        </dl>
+        <h5>Tratamento (por manifestação)</h5>
+        <ul class="tight">
+          <li><span class="pill p-1">mucocutâneo</span> Colchicina; apremilaste para aftas refratárias.</li>
+          <li><span class="pill p-d">ocular/neuro/vascular grave</span> Corticoide + azatioprina e/ou <b>anti-TNF (infliximabe/adalimumabe)</b>.</li>
+          <li><span class="pill p-3">trombose</span> Tratar a <b>inflamação</b> (imunossupressão); anticoagulação é controversa e há risco com aneurisma pulmonar.</li>
+        </ul>
+      </div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ MÓDULO 5 · ESCALADA TERAPÊUTICA ============ -->
+<section id="terapia">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Escalada terapêutica</h2></div>
+    <p class="sec-sub">Modelo geral das AAV graves (GPA/PAM): <b>indução → manutenção → recaída/refratariedade</b>. A lógica moderna é poupar corticoide (avacopan, desmame rápido) e usar rituximabe como espinha dorsal. 💊</p>
+
+    <div class="grid g2">
+      <div class="card">
+        <h5 style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:18px">Escada da doença grave (GPA/PAM)</h5>
+        <div class="ladder">
+          <div class="step s1">
+            <div class="lvl">Degrau 1 · Indução</div>
+            <h4>Rituximabe + corticoide em dose reduzida</h4>
+            <p class="muted" style="font-size:.84rem">Rituximabe é preferido à ciclofosfamida (menos toxicidade). Esquema de corticoide reduzido (estilo PEXIVAS) com desmame rápido. Considerar <b>avacopan</b> para poupar esteroide, sobretudo com rim acometido.</p>
+          </div>
+          <div class="step s2">
+            <div class="lvl">Degrau 2 · Adjuvantes na indução</div>
+            <h4>Avacopan ± plasmaférese</h4>
+            <p class="muted" style="font-size:.84rem"><b>Avacopan</b> (inibidor do receptor C5a): poupa corticoide e favorece recuperação renal (ADVOCATE). <b>Plasmaférese</b>: considerar em creatinina muito elevada/diálise, hemorragia alveolar ou anti-MBG concomitante (PEXIVAS: não reduz morte/DRC de forma global — individualize).</p>
+          </div>
+          <div class="step s3">
+            <div class="lvl">Degrau 3 · Manutenção</div>
+            <h4>Rituximabe programado</h4>
+            <p class="muted" style="font-size:.84rem">Rituximabe em redosagem agendada &gt; azatioprina/metotrexato. Duração ≥18 meses, frequentemente mais longa em PR3+/recidivantes. Profilaxia de PJP e atualização vacinal.</p>
+          </div>
+          <div class="step s4">
+            <div class="lvl">Degrau 4 · Recaída / refratária</div>
+            <h4>Re-indução com rituximabe</h4>
+            <p class="muted" style="font-size:.84rem">Rituximabe é o imunossupressor preferido na recaída grave. IVIG pode ser ponte em paciente séptico com doença ainda ativa ou na hipogamaglobulinemia pós-rituximabe.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h5 style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:14px">Princípios por cenário</h5>
+        <ul class="tight">
+          <li><b>GPA não-grave:</b> metotrexato ou azatioprina + corticoide (evitar ciclofosfamida).</li>
+          <li><b>GEPA grave:</b> corticoide + ciclofosfamida ou rituximabe. <b>Não-grave:</b> corticoide + mepolizumabe/benralizumabe.</li>
+          <li><b>ACG:</b> corticoide alto imediato; + tocilizumabe ou upadacitinibe (poupadores).</li>
+          <li><b>Takayasu:</b> corticoide + imunossupressor não-esteroide desde o início; anti-TNF se refratária.</li>
+          <li><b>PAN-HBV:</b> corticoide curto + antiviral + plasmaférese (não imunossuprimir longo).</li>
+          <li><b>Crioglobulinêmica-HCV:</b> DAA; rituximabe + corticoide se grave.</li>
+          <li><b>Behçet grave:</b> corticoide + azatioprina/anti-TNF conforme órgão.</li>
+        </ul>
+        <div class="callout c-ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9bf0cf" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><div><b>Antes de imunossuprimir:</b> rastrear HBV/HCV/HIV e tuberculose latente; programar profilaxia de PJP (sulfametoxazol-trimetoprim) e vacinas (inativadas). 🛡️</div></div>
+      </div>
+    </div>
+
+    <h5 style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin:26px 0 12px">Arsenal farmacológico — referência rápida</h5>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Fármaco</th><th>Classe / alvo</th><th>Papel</th><th>Cuidados-chave</th></tr></thead>
+        <tbody>
+          <tr><td><b>Rituximabe</b></td><td>Anti-CD20 (depleção B)</td><td><span class="pill p-1">indução + manutenção</span> AAV; recaída</td><td>Reativação HBV, hipogamaglobulinemia, infecções; rastrear sorologias.</td></tr>
+          <tr><td><b>Ciclofosfamida</b></td><td>Alquilante</td><td><span class="pill p-2">indução</span> alternativa em AAV/GEPA grave</td><td>Toxicidade gonadal/vesical (cistite, neoplasia), citopenia; mesna/hidratação.</td></tr>
+          <tr><td><b>Avacopan</b></td><td>Inibidor receptor C5a</td><td><span class="pill p-1">poupador de corticoide</span> AAV</td><td>Hepatotoxicidade; suspender em ~6–12 meses (EULAR).</td></tr>
+          <tr><td><b>Tocilizumabe</b></td><td>Anti-IL-6R</td><td><span class="pill p-1">poupador</span> ACG (e refratários)</td><td>Mascara PCR/VHS; dislipidemia, neutropenia, perfuração GI.</td></tr>
+          <tr><td><b>Upadacitinibe</b></td><td>Inibidor JAK oral</td><td><span class="pill p-2">novo</span> ACG (FDA abr/2025)</td><td>Risco CV/tromboembólico, infecções, herpes-zóster.</td></tr>
+          <tr><td><b>Mepolizumabe</b></td><td>Anti-IL-5</td><td><span class="pill p-1">GEPA não-grave</span></td><td>Bom perfil; reações de hipersensibilidade.</td></tr>
+          <tr><td><b>Benralizumabe</b></td><td>Anti-IL-5Rα</td><td><span class="pill p-2">GEPA</span> (não inferior — MANDARA)</td><td>Depleção eosinofílica mais profunda.</td></tr>
+          <tr><td><b>Metotrexato / Azatioprina</b></td><td>Imunossupressores</td><td><span class="pill p-2">manutenção</span> / doença não-grave</td><td>MTX: hepato/mielo, contraindicado em DRC e gravidez. AZA: checar TPMT.</td></tr>
+          <tr><td><b>Anti-TNF</b> (infliximabe/adalimumabe)</td><td>Anti-TNF-α</td><td><span class="pill p-2">Takayasu / Behçet</span> grave</td><td>TB latente, infecções; <b>não</b> usar como 1ª linha em GPA/PAM.</td></tr>
+          <tr><td><b>Corticoide</b></td><td>Glicocorticoide</td><td><span class="pill p-1">base de quase tudo</span></td><td>Tendência atual: dose reduzida + desmame rápido; profilaxia óssea/PJP.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted" style="font-size:.78rem;margin-top:10px">Doses específicas variam por protocolo, peso, função renal/hepática e disponibilidade institucional — confira a fonte primária antes de prescrever.</p>
+  </div>
+</section>
+
+<!-- ============ MÓDULO 6 · COMPLICAÇÕES GRAVES ============ -->
+<section id="complic">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Complicações graves & emergências</h2></div>
+    <p class="sec-sub">As complicações que levam o paciente vasculítico à UTI — organizadas por sistema, com a(s) vasculite(s) mais associada(s). 🚨</p>
+
+    <div class="grid g2">
+      <div class="card">
+        <h5 style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--danger);margin-bottom:12px">🫁 Pulmonar & ❤️ Cardiovascular</h5>
+        <ul class="tight">
+          <li><b>Hemorragia alveolar difusa</b> → insuf. respiratória — PAM, GPA, anti-MBG.</li>
+          <li><b>Estenose subglótica</b> → obstrução de via aérea — GPA.</li>
+          <li><b>Miocardite/cardiomiopatia eosinofílica</b> → principal causa de morte na GEPA.</li>
+          <li><b>Aneurisma/dissecção de aorta</b> — ACG, Takayasu, Behçet.</li>
+          <li><b>Aneurisma de artéria pulmonar</b> (risco hemoptise maciça) — Behçet.</li>
+          <li><b>Aneurisma de coronária / IAM</b> — Kawasaki, Behçet.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h5 style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--danger);margin-bottom:12px">🧠 Neurológico & 👁️ Ocular</h5>
+        <ul class="tight">
+          <li><b>Cegueira (NOIA)</b> — emergência da ACG.</li>
+          <li><b>AVC / isquemia cerebral</b> — Takayasu, ACG, PACNS, Behçet.</li>
+          <li><b>Mononeurite múltipla</b> — PAN, GEPA, AAV, crioglobulinemia.</li>
+          <li><b>Neuro-Behçet</b> (parenquimatoso/trombose de seio).</li>
+          <li><b>Uveíte com risco de cegueira</b> — Behçet.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h5 style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--danger);margin-bottom:12px">🫘 Renal & 🩸 Abdominal/Vascular</h5>
+        <ul class="tight">
+          <li><b>GN rapidamente progressiva</b> → DRC terminal/diálise — AAV, anti-MBG, crioglobulinemia.</li>
+          <li><b>Isquemia mesentérica / perfuração intestinal</b> — PAN, Behçet, IgAV.</li>
+          <li><b>Intussuscepção</b> (criança) — IgAV.</li>
+          <li><b>Isquemia crítica de membro / gangrena</b> — Takayasu, PAN, crioglobulinemia.</li>
+          <li><b>HAS renovascular grave</b> — Takayasu, PAN.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h5 style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--warn);margin-bottom:12px">💉 Da imunossupressão</h5>
+        <ul class="tight">
+          <li><b>Infecções oportunistas</b> (PJP, fúngicas, virais) — principal causa de morte precoce no 1º ano.</li>
+          <li><b>Sepse neutropênica</b> — ciclofosfamida/rituximabe.</li>
+          <li><b>Reativação de HBV/TB</b> — rituximabe/anti-TNF.</li>
+          <li><b>Cistite hemorrágica/neoplasia vesical</b> — ciclofosfamida.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout c-danger" style="margin-top:18px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff9b9b" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      <div><b>Síndrome pulmão-rim</b> (hemorragia alveolar + GNRP) é a grande emergência das vasculites de pequenos vasos: estabilizar via aérea/oxigenação, pulso de corticoide, indução imunossupressora e considerar plasmaférese. Investigar AAV <b>e</b> anti-MBG simultaneamente (pode haver duplo positivo).</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MÓDULO 7 · INTERNAÇÃO / UTI ============ -->
+<section id="internacao">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Indicações de internação & UTI</h2></div>
+    <p class="sec-sub">Gatilhos práticos para internar e para acionar terapia intensiva. Na dúvida com órgão nobre em risco isquêmico agudo, internar. 🏥</p>
+    <div class="grid g2">
+      <div class="card" style="border-color:rgba(255,176,32,.35)">
+        <h5 style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--warn);margin-bottom:12px">Internar (enfermaria)</h5>
+        <ul class="tight">
+          <li>Suspeita de ACG com sintoma visual → corticoide + investigação urgente.</li>
+          <li>Doença sistêmica nova com necessidade de indução imunossupressora e monitorização.</li>
+          <li>Lesão renal aguda com sedimento ativo / suspeita de GNRP (biópsia + indução).</li>
+          <li>Púrpura extensa com dor abdominal intensa ou sangramento.</li>
+          <li>Mononeurite múltipla aguda / déficit neurológico em investigação.</li>
+          <li>Febre + quadro vasculítico onde é preciso excluir endocardite/infecção.</li>
+          <li>Necessidade de pulso de corticoide, plasmaférese ou ciclofosfamida IV.</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(255,82,82,.4)">
+        <h5 style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--danger);margin-bottom:12px">UTI (terapia intensiva)</h5>
+        <ul class="tight">
+          <li><b>Hemorragia alveolar</b> / insuficiência respiratória / necessidade de VM.</li>
+          <li><b>Obstrução de via aérea</b> (estenose subglótica sintomática).</li>
+          <li><b>GNRP</b> com hipercalemia/acidose/uremia ou necessidade de diálise/plasmaférese urgente.</li>
+          <li><b>Instabilidade hemodinâmica</b> / choque (vasculite grave ou sepse).</li>
+          <li><b>Isquemia mesentérica</b> / abdome agudo / perfuração.</li>
+          <li><b>AVC agudo</b> / neuro-Behçet grave / déficit neurológico em progressão.</li>
+          <li><b>Dissecção/rotura de aneurisma</b>; hemoptise maciça (aneurisma pulmonar de Behçet).</li>
+          <li><b>Sepse neutropênica</b> grave pós-imunossupressão.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MÓDULO 8 · FIVE FACTOR SCORE ============ -->
+<section id="ffs">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">08</span><h2>Five Factor Score (FFS 2011)</h2></div>
+    <p class="sec-sub">Escore prognóstico do French Vasculitis Study Group para PAN, PAM e GEPA (versão revista 2011). Cada item presente vale <b>+1</b>. Quanto maior, pior a sobrevida — e mais se justifica imunossupressão agressiva. 📊</p>
+    <div class="card">
+      <div class="ffs-grid">
+        <div id="ffsList"></div>
+        <div class="score-box">
+          <div class="score-num" id="ffsNum" style="color:var(--ok)">0</div>
+          <div class="score-cat">FFS</div>
+          <div class="verdict v-no" id="ffsVerdict">Mortalidade 5 anos ~9%</div>
+          <div class="thr">0 → ~9% · 1 → ~21% · ≥2 → ~40% (5 anos)</div>
+          <button class="reset-btn" id="resetFFS">↺ limpar</button>
+        </div>
+      </div>
+      <div class="callout c-info"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a5dcff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><div><b>Pegadinha do FFS 2011:</b> a <b>ausência</b> de sintomas ORL é fator de <b>mau</b> prognóstico (sinaliza fenótipo mais sistêmico/visceral). E <b>idade &gt;65 anos</b> entrou como fator. Não confundir com o FFS de 1996.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MÓDULO 9 · RARAS GRAVES ============ -->
+<section id="raras">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">09</span><h2>Vasculites raras de alta gravidade</h2></div>
+    <p class="sec-sub">Quadros incomuns que você não pode perder — desproporcionalmente letais ou debilitantes. 🧬</p>
+    <div class="grid g2">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="acc-dot" style="background:var(--ic)"></span><b style="font-family:var(--display)">Doença anti-MBG (Goodpasture)</b></div>
+        <p class="muted" style="font-size:.85rem">Síndrome pulmão-rim <b>fulminante</b>: hemorragia alveolar + GNRP. Anti-MBG positivo. <b>Emergência</b>: plasmaférese + ciclofosfamida + corticoide. Pode coexistir com AAV (duplo positivo). Janela terapêutica renal curta — quanto antes, melhor.</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="acc-dot" style="background:var(--rare)"></span><b style="font-family:var(--display)">Vasculite primária do SNC (PACNS)</b></div>
+        <p class="muted" style="font-size:.85rem">Cefaleia progressiva + déficits focais + declínio cognitivo + AVCs de repetição em jovem sem fatores de risco. Diagnóstico difícil: angiografia ("contas de rosário") e/ou <b>biópsia cerebral</b>. Excluir vasoconstrição reversível (RCVS) e infecções. Trata com corticoide + ciclofosfamida.</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="acc-dot" style="background:var(--variable)"></span><b style="font-family:var(--display)">Síndrome de Cogan</b></div>
+        <p class="muted" style="font-size:.85rem">Ceratite intersticial + disfunção audiovestibular (surdez neurossensorial súbita, vertigem tipo Ménière) ± <b>aortite</b>. Janela curta para salvar audição → corticoide precoce. Acometimento de grandes vasos é a face grave.</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="acc-dot" style="background:var(--rare)"></span><b style="font-family:var(--display)">Síndrome VEXAS (UBA1)</b></div>
+        <p class="muted" style="font-size:.85rem">Homem &gt;50a com febre recorrente, condrite (orelha/nariz), vasculite cutânea, infiltrados pulmonares e <b>anemia macrocítica/citopenias</b> (vacúolos em precursores mieloides, frequente SMD). Mutação somática <b>UBA1</b>. Inflamatória <b>refratária</b> — pode exigir abordagem hemato-reumatológica (azacitidina, transplante de MO).</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="acc-dot" style="background:var(--medium)"></span><b style="font-family:var(--display)">Vasculite por cocaína/levamisol</b></div>
+        <p class="muted" style="font-size:.85rem"><b>Mimetiza AAV.</b> Púrpura retiforme e <b>necrose de orelha/face</b>, <b>duplo ANCA</b> (PR3 + MPO), neutropenia, anticorpos antielastase/HNE. Tratamento principal: <b>suspender a droga</b>; imunossupressão tem papel limitado. Pista de prova: necrose bilateral de orelhas.</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="acc-dot" style="background:var(--ic)"></span><b style="font-family:var(--display)">Vasculite urticariforme hipocomplementêmica</b></div>
+        <p class="muted" style="font-size:.85rem">Urticária que <b>dura &gt;24h</b>, deixa hiperpigmentação e queima (não coça). Anti-C1q, complemento baixo. Pode ter doença pulmonar tipo DPOC, uveíte, GN, angioedema. Sobreposição com lúpus.</p>
+      </div>
+    </div>
+    <div class="callout c-nerd"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cdb8ff" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 0 7 4.5v15A2.5 2.5 0 0 0 9.5 22h5a2.5 2.5 0 0 0 2.5-2.5v-15A2.5 2.5 0 0 0 14.5 2z"/></svg><div><b>🤓 Para aprofundar:</b> a fronteira atual da reumatologia são as <b>doenças autoinflamatórias monogênicas do adulto</b> (VEXAS, DADA2 — deficiência de ADA2 que causa PAN-like com AVCs em jovens). DADA2 responde a <b>anti-TNF</b>, não a imunossupressão clássica — um divisor de águas terapêutico.</div></div>
+  </div>
+</section>
+
+<!-- ============ MÓDULO 10 · FLASHCARDS ============ -->
+<section id="flash">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">10</span><h2>Flashcards</h2></div>
+    <p class="sec-sub">Toque para virar. Revisão ativa dos pontos de maior rendimento. 🔁</p>
+    <div class="fc-grid" id="fcGrid"></div>
+  </div>
+</section>
+
+<!-- ============ MÓDULO 11 · QUESTÕES TEMI/R3 ============ -->
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">11</span><h2>Questões estilo TEMI / R3</h2></div>
+    <p class="sec-sub">Clique na alternativa para ver gabarito, comentário e a pegadinha. 📌</p>
+    <div id="quizGrid"></div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Fontes a verificar</h4>
+        <div class="ref-list">
+          <span>• ACR/Vasculitis Foundation 2021 — Guidelines para AAV (GPA/PAM/GEPA), ACG e Takayasu.</span>
+          <span>• Critérios de classificação ACR/EULAR 2022 — GPA, PAM e GEPA (Ann Rheum Dis / Arthritis Rheumatol).</span>
+          <span>• Chapel Hill Consensus Conference (CHCC) 2012 — nomenclatura das vasculites.</span>
+          <span>• ADVOCATE (avacopan, NEJM 2021); PEXIVAS (plasmaférese/corticoide, NEJM 2020).</span>
+          <span>• SELECT-GCA (upadacitinibe em ACG, NEJM 2025); MANDARA (benralizumabe vs mepolizumabe em GEPA, NEJM 2024); MIRRA (mepolizumabe).</span>
+          <span>• KDIGO 2021 / EULAR 2022 — manejo de vasculite com glomerulonefrite.</span>
+          <span>• Five Factor Score revisado (FVSG, 2011).</span>
+        </div>
+        <div class="badge-safe"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9bf0cf" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Conteúdo autoral · sem cópia literal · seguro para publicação</div>
+      </div>
+      <div>
+        <h4>Temas correlatos (Enciclomedia)</h4>
+        <div class="ref-list">
+          <span>→ Lúpus eritematoso sistêmico (LES) — sobreposição vasculítica</span>
+          <span>→ Glomerulonefrite rapidamente progressiva na UTI</span>
+          <span>→ Hemorragia alveolar difusa — abordagem</span>
+          <span>→ Síndrome pulmão-rim — diagnóstico diferencial</span>
+          <span>→ Imunossupressão na UTI: profilaxias e infecções oportunistas</span>
+          <span>→ Plasmaférese: indicações em terapia intensiva</span>
+        </div>
+        <p style="margin-top:16px;font-size:.74rem;color:var(--text-faint)">Enciclomedia Médica · Projeto Antigravity / UpDown · Material educacional. Última revisão científica conforme fontes acima. Não substitui avaliação especializada nem protocolo institucional.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===================== NAV ATIVA ===================== */
+(function(){
+  const links=[...document.querySelectorAll('.navscroll a')];
+  const map={};links.forEach(a=>map[a.getAttribute('href').slice(1)]=a);
+  const secs=[...document.querySelectorAll('section[id]')];
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));
+      const a=map[e.target.id];if(a){a.classList.add('active');
+        a.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});}}});
+  },{rootMargin:'-45% 0px -50% 0px'});
+  secs.forEach(s=>obs.observe(s));
+})();
+
+/* ===================== ALGORITMO DE ANTICORPOS ===================== */
+const ALGO={
+  pr3:{c:'var(--anca)',t:'Granulomatose com poliangeíte (GPA)',sub:'pequenos vasos · ANCA',
+    dx:[['Sugere','GPA (também GEPA ocasional; raramente PAM)'],['Confirma','quadro ORL + pulmonar + renal; biópsia com granuloma/vasculite pauci-imune'],['Conduta','indução: corticoide reduzido + rituximabe ± avacopan']],
+    ddx:['Vasculite por cocaína/levamisol (necrose de orelha, duplo ANCA)','Drogas: hidralazina, propiltiouracil, minociclina','Infecção crônica (endocardite) com ANCA+','Linfoma/granulomatose linfomatoide']},
+  mpo:{c:'var(--info)',t:'Poliangeíte microscópica (PAM)',sub:'pequenos vasos · ANCA',
+    dx:[['Sugere','PAM; também GEPA vasculítica'],['Confirma','síndrome rim-pulmão, GN pauci-imune, hemorragia alveolar'],['Conduta','indução como GPA grave; plasmaférese se Cr muito alta/HA']],
+    ddx:['Drogas: hidralazina, propiltiouracil (MPO+)','Endocardite infecciosa','Anti-MBG concomitante (pedir sempre)','Fibrose pulmonar idiopática MPO+']},
+  eo:{c:'var(--ic)',t:'Granulomatose eosinofílica c/ poliangeíte (GEPA)',sub:'pequenos vasos',
+    dx:[['Sugere','GEPA (asma + eosinofilia + mononeurite)'],['Confirma','eosinofilia ≥1×10⁹/L, MPO+ em ~30–40%, biópsia eosinofílica'],['Conduta','grave→corticoide+CFC/RTX; não-grave→corticoide+mepolizumabe']],
+    ddx:['Síndrome hipereosinofílica','Aspergilose broncopulmonar alérgica','Pneumonia eosinofílica crônica','Parasitoses; reação a drogas (DRESS)']},
+  cryo:{c:'var(--ic)',t:'Vasculite crioglobulinêmica',sub:'imunocomplexos',
+    dx:[['Sugere','crioglobulinemia mista (tipo II)'],['Confirma','crioglobulinas+ (37°C), C4↓↓ C3~, FR+, sorologia HCV'],['Conduta','HCV→antivirais (DAA); grave→rituximabe+corticoide±plasmaférese']],
+    ddx:['Outras causas de C↓: lúpus, endocardite, pós-infeccioso','Linfoproliferativo subjacente','Vasculite por IgA (mas C normal)']},
+  iga:{c:'var(--ic)',t:'Vasculite por IgA (Henoch-Schönlein)',sub:'imunocomplexos',
+    dx:[['Sugere','IgAV (púrpura + artrite + dor abd + rim)'],['Confirma','depósito de IgA na biópsia (pele/rim); complemento normal'],['Conduta','suporte; corticoide se abdome grave; imunossupressão se nefrite crescêntica']],
+    ddx:['Outras vasculites leucocitoclásticas','Crioglobulinemia (C baixo)','Sepse/coagulopatia com púrpura','Intussuscepção como complicação']},
+  gbm:{c:'var(--ic)',t:'Doença anti-membrana basal (Goodpasture)',sub:'imunocomplexos · EMERGÊNCIA',
+    dx:[['Sugere','síndrome pulmão-rim fulminante'],['Confirma','anti-MBG+; biópsia renal com depósito linear de IgG'],['Conduta','plasmaférese + ciclofosfamida + corticoide URGENTE']],
+    ddx:['AAV (pode coexistir — duplo positivo!)','Outras causas de hemorragia alveolar','Edema pulmonar/infecção']},
+  anca_neg:{c:'var(--medium)',t:'Vasculite de médio vaso (PAN) / ANCA-negativa',sub:'médios vasos',
+    dx:[['Sugere','PAN; considerar GEPA ANCA-negativa, IgAV, crio'],['Confirma','microaneurismas na arteriografia; biópsia de médio vaso; sorologia HBV'],['Conduta','idiopática→corticoide±CFC; PAN-HBV→antiviral+corticoide curto+plasmaférese']],
+    ddx:['DADA2 (deficiência de ADA2) em jovem com AVCs','Êmbolos de colesterol','Endocardite/mixoma','Displasia fibromuscular','SAF']},
+  behcet:{c:'var(--variable)',t:'Doença de Behçet',sub:'calibre variável',
+    dx:[['Sugere','aftas oral+genital, uveíte, patergia+'],['Confirma','clínico; HLA-B51 apoia'],['Conduta','colchicina (mucocutâneo); anti-TNF/azatioprina (ocular/neuro/vascular)']],
+    ddx:['Doença inflamatória intestinal','Lúpus, doença de Crohn','HSV recorrente','MAGIC syndrome (Behçet + condrite)']},
+  dual:{c:'var(--medium)',t:'Vasculite induzida por cocaína/levamisol',sub:'mimetizador de AAV',
+    dx:[['Sugere','púrpura retiforme, necrose de orelha/face bilateral'],['Confirma','duplo ANCA (PR3+MPO), neutropenia, anti-HNE/elastase+; história de uso'],['Conduta','SUSPENDER a droga; imunossupressão tem papel limitado']],
+    ddx:['AAV verdadeira','Calcifilaxia','SAF catastrófica/CIVD','Crioglobulinemia, embolia de colesterol']}
+};
+(function(){
+  const opts=[...document.querySelectorAll('#anticorpos .opt')];
+  const out=document.getElementById('algoResult');
+  opts.forEach(o=>o.addEventListener('click',()=>{
+    opts.forEach(x=>x.classList.remove('sel'));o.classList.add('sel');
+    const d=ALGO[o.dataset.k];
+    out.innerHTML=`<div class="result-card" style="border-color:${d.c}">
+      <div class="rc-top"><span class="acc-dot" style="background:${d.c}"></span><h3>${d.t}</h3></div>
+      <div class="muted" style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">${d.sub}</div>
+      ${d.dx.map(l=>`<div class="dx-line"><span>${l[0]}:</span> ${l[1]}</div>`).join('')}
+      <div class="ddx"><div class="ddx-title">⚠️ Excluir / diferenciais</div>
+        <ul class="tight">${d.ddx.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    </div>`;
+  }));
+})();
+
+/* ===================== CALCULADORA ACR/EULAR 2022 ===================== */
+const CALC={
+  gpa:{thr:5,name:'GPA',color:'var(--anca)',items:[
+    {l:'Secreção nasal sanguinolenta, úlceras, crostas, congestão ou perfuração/defeito septal',s:3},
+    {l:'Acometimento cartilaginoso',sub:'condrite de orelha/nariz, rouquidão/estridor, inflam. traqueal',s:2},
+    {l:'Perda auditiva condutiva ou neurossensorial',s:1},
+    {l:'c-ANCA ou PR3-ANCA positivo',s:5},
+    {l:'Nódulos, massa ou cavitação pulmonar na imagem de tórax',s:2},
+    {l:'Granuloma / inflamação granulomatosa extravascular / células gigantes na biópsia',s:2},
+    {l:'Inflamação de seios nasais/paranasais ou mastoidite na imagem',s:1},
+    {l:'Glomerulonefrite pauci-imune',s:1},
+    {l:'p-ANCA ou MPO-ANCA positivo',s:-1},
+    {l:'Eosinófilos no sangue ≥1×10⁹/L',s:-4}
+  ]},
+  mpa:{thr:5,name:'PAM',color:'var(--info)',items:[
+    {l:'Secreção nasal sanguinolenta, úlceras, crostas, congestão ou perfuração/defeito septal',s:-3},
+    {l:'p-ANCA ou MPO-ANCA positivo',s:6},
+    {l:'Fibrose ou doença pulmonar intersticial na imagem de tórax',s:3},
+    {l:'Glomerulonefrite pauci-imune',s:3},
+    {l:'c-ANCA ou PR3-ANCA positivo',s:-1},
+    {l:'Eosinófilos no sangue ≥1×10⁹/L',s:-4}
+  ]},
+  egpa:{thr:6,name:'GEPA',color:'var(--ic)',items:[
+    {l:'Doença obstrutiva das vias aéreas',sub:'asma / obstrução ao fluxo',s:3},
+    {l:'Pólipos nasais',s:3},
+    {l:'Mononeurite múltipla / neuropatia motora (não radicular)',s:1},
+    {l:'Eosinófilos no sangue ≥1×10⁹/L',s:5},
+    {l:'Inflamação extravascular com predomínio eosinofílico na biópsia',s:2},
+    {l:'c-ANCA ou PR3-ANCA positivo',s:-3},
+    {l:'Hematúria',s:-1}
+  ]}
+};
+let curCalc='gpa';
+const critList=document.getElementById('critList');
+const scoreNum=document.getElementById('scoreNum'),scoreCat=document.getElementById('scoreCat');
+const verdict=document.getElementById('verdict'),thr=document.getElementById('thr');
+function renderCalc(){
+  const c=CALC[curCalc];
+  critList.innerHTML=c.items.map((it,i)=>`
+    <div class="crit" data-i="${i}" data-s="${it.s}">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="cbx"></div>
+        <div class="crit-label">${it.l}${it.sub?`<small>${it.sub}</small>`:''}</div>
+      </div>
+      <div class="crit-pts ${it.s>0?'pos':'neg'}">${it.s>0?'+':''}${it.s}</div>
+    </div>`).join('');
+  critList.querySelectorAll('.crit').forEach(el=>el.addEventListener('click',()=>{el.classList.toggle('on');calcScore();}));
+  scoreCat.textContent='pontos';calcScore();
+}
+function calcScore(){
+  const c=CALC[curCalc];let total=0;
+  critList.querySelectorAll('.crit.on').forEach(el=>total+=parseInt(el.dataset.s));
+  scoreNum.textContent=total;scoreNum.style.color=total>=c.thr?'var(--ok)':'var(--text)';
+  thr.textContent=`limiar de classificação ≥ ${c.thr}`;
+  if(total>=c.thr){verdict.className='verdict v-yes';verdict.textContent=`✓ Compatível com classificação de ${c.name}`;}
+  else{verdict.className='verdict v-no';verdict.textContent=`Abaixo do limiar para ${c.name}`;}
+}
+document.querySelectorAll('.calc-tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.calc-tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');curCalc=t.dataset.t;renderCalc();
+}));
+document.getElementById('resetCalc').addEventListener('click',()=>{critList.querySelectorAll('.crit.on').forEach(el=>el.classList.remove('on'));calcScore();});
+renderCalc();
+
+/* ===================== ACCORDION ===================== */
+document.querySelectorAll('.acc-head').forEach(h=>h.addEventListener('click',()=>{
+  const acc=h.parentElement,body=acc.querySelector('.acc-body');
+  const open=acc.classList.contains('open');
+  if(open){acc.classList.remove('open');body.style.maxHeight=null;}
+  else{acc.classList.add('open');body.style.maxHeight=body.scrollHeight+40+'px';}
+}));
+
+/* ===================== FIVE FACTOR SCORE ===================== */
+const FFS=[
+  {l:'Idade > 65 anos',s:1},
+  {l:'Sintomas cardíacos (insuficiência cardíaca)',s:1},
+  {l:'Insuficiência renal',sub:'creatinina estabilizada ≥ 150 µmol/L (~1,7 mg/dL)',s:1},
+  {l:'Manifestações gastrointestinais',sub:'sangramento, perfuração, pancreatite, isquemia',s:1},
+  {l:'AUSÊNCIA de sintomas ORL',sub:'fator de mau prognóstico',s:1}
+];
+const ffsList=document.getElementById('ffsList');
+const ffsNum=document.getElementById('ffsNum'),ffsV=document.getElementById('ffsVerdict');
+ffsList.innerHTML=FFS.map((it,i)=>`
+  <div class="crit" data-i="${i}">
+    <div style="display:flex;align-items:center;gap:12px"><div class="cbx"></div>
+      <div class="crit-label">${it.l}${it.sub?`<small>${it.sub}</small>`:''}</div></div>
+    <div class="crit-pts pos">+1</div>
+  </div>`).join('');
+function ffsCalc(){
+  const n=ffsList.querySelectorAll('.crit.on').length;
+  ffsNum.textContent=n;
+  let m,col;
+  if(n===0){m='Mortalidade 5 anos ~9%';col='var(--ok)';}
+  else if(n===1){m='Mortalidade 5 anos ~21%';col='var(--warn)';}
+  else{m='Mortalidade 5 anos ~40%';col='var(--danger)';}
+  ffsNum.style.color=col;ffsV.textContent=m;
+  ffsV.className='verdict '+(n===0?'v-no':'v-yes');
+  ffsV.style.color=col;
+}
+ffsList.querySelectorAll('.crit').forEach(el=>el.addEventListener('click',()=>{el.classList.toggle('on');ffsCalc();}));
+document.getElementById('resetFFS').addEventListener('click',()=>{ffsList.querySelectorAll('.crit.on').forEach(el=>el.classList.remove('on'));ffsCalc();});
+ffsCalc();
+
+/* ===================== FLASHCARDS ===================== */
+const FC=[
+  ['Qual ANCA marca a GPA e qual marca a PAM?','GPA → <b>PR3 (c-ANCA)</b>. PAM → <b>MPO (p-ANCA)</b>. GEPA: MPO+ em só ~30–40%.'],
+  ['Vasculite que poupa o pulmão e não dá GN?','<b>PAN</b> — acomete artérias musculares (médio vaso), faz microaneurismas; sem hemorragia alveolar e sem glomerulonefrite.'],
+  ['Conduta imediata na suspeita de ACG com sintoma visual?','<b>Corticoide em dose alta JÁ</b> (pulso IV se ameaça visual) — não esperar a biópsia temporal.'],
+  ['Principal causa de morte na GEPA?','<b>Acometimento cardíaco</b> (miocardite/cardiomiopatia eosinofílica). Investigar com troponina, ECG, eco e RM cardíaca.'],
+  ['Indução preferida na GPA/PAM grave (ACR 2021)?','<b>Rituximabe</b> + corticoide em dose reduzida (± avacopan). Rituximabe > ciclofosfamida por toxicidade.'],
+  ['Para que serve o avacopan?','Inibidor do <b>receptor C5a</b>; poupa corticoide na AAV e favorece recuperação renal (ADVOCATE).'],
+  ['Tríade da vasculite crioglobulinêmica + laboratório?','Púrpura + artralgia + fraqueza (Meltzer); <b>C4 muito baixo</b>, FR+, crioglobulinas+. Buscar <b>HCV</b>.'],
+  ['Necrose bilateral de orelha + duplo ANCA + neutropenia?','<b>Vasculite por cocaína/levamisol</b>. Conduta principal: suspender a droga.'],
+  ['Síndrome pulmão-rim fulminante com anti-MBG?','<b>Doença anti-MBG (Goodpasture)</b> — emergência: plasmaférese + ciclofosfamida + corticoide. Pedir AAV junto (duplo positivo).'],
+  ['Novo JAK oral aprovado para ACG (2025)?','<b>Upadacitinibe</b> 15 mg/dia (SELECT-GCA). Alternativa poupadora ao tocilizumabe.'],
+  ['Anti-IL-5 para GEPA não-grave?','<b>Mepolizumabe</b> (e <b>benralizumabe</b>, não inferior — MANDARA 2024).'],
+  ['VEXAS — gene, perfil e pista?','Gene <b>UBA1</b> (mutação somática); homem >50a com febre, condrite, anemia macrocítica/SMD. Inflamatória refratária.']
+];
+document.getElementById('fcGrid').innerHTML=FC.map(c=>`
+  <div class="fc"><div class="fc-in">
+    <div class="fc-face fc-front"><div class="fc-q">${c[0]}</div><span class="fc-hint">tocar p/ virar</span></div>
+    <div class="fc-face fc-back"><div class="fc-a">${c[1]}</div><span class="fc-hint">← voltar</span></div>
+  </div></div>`).join('');
+document.querySelectorAll('.fc').forEach(f=>f.addEventListener('click',()=>f.classList.toggle('flip')));
+
+/* ===================== QUIZ ===================== */
+const QUIZ=[
+  {q:'Mulher, 32 anos, com claudicação de membros superiores, diferença de PA de 25 mmHg entre os braços e sopro subclávio. AngioTC mostra espessamento e estenose do arco aórtico. Provas inflamatórias normais. Diagnóstico e conduta inicial mais adequados?',
+   o:['ACG; biópsia de artéria temporal antes de tratar','Arterite de Takayasu; corticoide + imunossupressor não-esteroide já de início','PAN; ciclofosfamida isolada','Aterosclerose precoce; estatina e AAS','Displasia fibromuscular; angioplastia imediata'],
+   a:1,
+   exp:'Mulher jovem com doença oclusiva de grandes vasos = <b>Takayasu</b>. O tratamento inicial associa corticoide a um imunossupressor não-esteroide (MTX, AZA, anti-TNF) desde o início. Provas inflamatórias normais NÃO excluem atividade.',
+   trap:'A normalidade de VHS/PCR engana — na Takayasu a imagem manda. Idade <40 afasta ACG (que é >50a).'},
+  {q:'Homem, 58 anos, asma de difícil controle há 3 anos, polipose nasal, agora com mononeurite múltipla, eosinófilos de 6.800/µL e infiltrados pulmonares migratórios. Troponina elevada. Qual a conduta de maior impacto na sobrevida?',
+   o:['Mepolizumabe isolado','Apenas broncodilatador e corticoide inalatório','Corticoide sistêmico + ciclofosfamida ou rituximabe (doença grave)','Omalizumabe','Plasmaférese isolada'],
+   a:2,
+   exp:'GEPA com <b>acometimento cardíaco</b> (troponina+) = doença grave/FFS≥1. Indução com corticoide sistêmico + <b>ciclofosfamida ou rituximabe</b>. O coração é o principal determinante de mortalidade.',
+   trap:'Mepolizumabe/benralizumabe são para GEPA NÃO-grave. Com órgão nobre ameaçado (coração), escale para CFC/RTX.'},
+  {q:'Paciente, 45 anos, com sinusite crônica destrutiva, nariz em sela, nódulos pulmonares cavitados e creatinina subindo com hematúria dismórfica. PR3-ANCA positivo. Qual o esquema de indução preferido pelas diretrizes ACR 2021?',
+   o:['Ciclofosfamida + corticoide em dose plena prolongada','Rituximabe + corticoide em dose reduzida (± avacopan)','Metotrexato + corticoide','Apenas corticoide em pulso','Anti-TNF + azatioprina'],
+   a:1,
+   exp:'GPA grave (rim + pulmão + ORL, PR3+). A diretriz ACR/VF 2021 prefere <b>rituximabe</b> à ciclofosfamida e recomenda corticoide em dose reduzida; <b>avacopan</b> ajuda a poupar esteroide, sobretudo com rim acometido.',
+   trap:'Anti-TNF NÃO é tratamento de AAV (foi negativo no ensaio WGET para GPA). Reserve anti-TNF para Takayasu/Behçet.'},
+  {q:'Homem, 60 anos, usuário de cocaína, com púrpura retiforme e necrose das duas orelhas, neutropenia e ANCA com dupla positividade (PR3 e MPO). Qual a medida terapêutica central?',
+   o:['Pulso de ciclofosfamida','Rituximabe em dose alta','Suspender a droga (cocaína/levamisol)','Plasmaférese diária','Iniciar anti-TNF'],
+   a:2,
+   exp:'Quadro clássico de <b>vasculite por cocaína contaminada com levamisol</b>: necrose de orelhas, duplo ANCA, neutropenia, anti-elastase. A base do tratamento é <b>cessar a exposição</b>; imunossupressão tem papel limitado.',
+   trap:'O duplo ANCA (PR3+MPO) é a pista. Tratar como AAV "verdadeira" com imunossupressão pesada é erro se a droga continuar.'},
+  {q:'Mulher, 28 anos, com aftas orais e genitais recorrentes, uveíte posterior e teste de patergia positivo. Apresenta trombose venosa profunda. Qual afirmação está correta?',
+   o:['O pilar é anticoagulação plena isolada','Tratar a inflamação (imunossupressão); anticoagulação é controversa','Colchicina resolve a uveíte posterior grave','HLA-B27 confirma o diagnóstico','Corticoide é contraindicado'],
+   a:1,
+   exp:'<b>Behçet</b> com trombose: a fisiopatologia é inflamatória, então o foco é <b>imunossuprimir</b> (corticoide + azatioprina/anti-TNF). Anticoagulação isolada é controversa e arriscada se houver aneurisma de artéria pulmonar.',
+   trap:'Associa-se a <b>HLA-B51</b> (não B27, que é espondiloartrite). Uveíte posterior grave exige imunossupressão potente, não só colchicina.'},
+  {q:'Paciente com PAM em uso de rituximabe e corticoide, evoluindo no 4º mês com febre, dispneia e infiltrado pulmonar bilateral em vidro fosco, LDH alto e hipoxemia desproporcional. Qual a principal hipótese?',
+   o:['Recaída da vasculite com hemorragia alveolar','Pneumonia por Pneumocystis jirovecii (PJP)','Edema agudo cardiogênico','Embolia pulmonar','Fibrose pulmonar progressiva'],
+   a:1,
+   exp:'Imunossuprimido (rituximabe + corticoide) com febre, vidro fosco bilateral, LDH alto e hipoxemia desproporcional = <b>PJP</b> até prova em contrário. Reforça a importância da <b>profilaxia com sulfametoxazol-trimetoprim</b>.',
+   trap:'É fácil atribuir tudo à recaída da vasculite e escalar imunossupressão — o que pioraria a infecção. Investigue oportunistas primeiro.'}
+];
+document.getElementById('quizGrid').innerHTML=QUIZ.map((it,qi)=>`
+  <div class="q-card">
+    <div class="q-num">QUESTÃO ${qi+1}</div>
+    <div class="q-stem">${it.q}</div>
+    <div class="q-opts" data-qi="${qi}">
+      ${it.o.map((op,oi)=>`<div class="q-opt" data-oi="${oi}"><span class="lt">${String.fromCharCode(65+oi)}</span><span>${op}</span></div>`).join('')}
+    </div>
+    <div class="q-exp" id="exp-${qi}">
+      <div class="et" style="color:var(--ok)">✓ Gabarito: ${String.fromCharCode(65+it.a)} — comentário</div>
+      <div>${it.exp}</div>
+      <div class="trap"><b>Pegadinha:</b> ${it.trap}</div>
+    </div>
+  </div>`).join('');
+document.querySelectorAll('.q-opts').forEach(grp=>{
+  const qi=+grp.dataset.qi,correct=QUIZ[qi].a;
+  grp.querySelectorAll('.q-opt').forEach(opt=>opt.addEventListener('click',()=>{
+    if(grp.dataset.done)return;grp.dataset.done='1';
+    const oi=+opt.dataset.oi;
+    grp.querySelectorAll('.q-opt').forEach(o=>o.classList.add('disabled'));
+    grp.querySelectorAll('.q-opt')[correct].classList.add('correct');
+    if(oi!==correct)opt.classList.add('wrong');
+    document.getElementById('exp-'+qi).classList.add('show');
+  }));
+});
+</script>
+</body>
+</html>
