@@ -1,0 +1,688 @@
+From 4d59fa42a3a3ca89d959584824e04c2f43041430 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 5 Jun 2026 03:29:33 +0000
+Subject: [PATCH 2/2] feat: alimentacao continua, validacao anti-404 e pagina
+ de diagnostico
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Operacionaliza a atualizacao de conteudo "de forma definitiva" e simples.
+
+- scripts_admin/scan_content_module.py: reindexador de hub (inbox -> catalogo.json
+  validado). Estava referenciado pelos scan_inbox.sh dos hubs mas nao existia.
+- scripts_admin/validar_paths.py: rede de seguranca idempotente que conserta
+  paths divergentes (acento/espaco/':'/Unicode) e garante zero 404 nos manifestos.
+  Use --check no CI.
+- scripts_admin/atualizar_tudo.sh: um comando que reindexa tudo + valida.
+- diagnostico.html: autoteste no navegador (paginas, libs do visualizador e
+  manifestos) — verde/amarelo/vermelho. Roda local (Antigravity) e online.
+- PLANO_ALIMENTACAO_CONTINUA.md: fluxo de 3 passos (soltar arquivo -> 1 comando
+  -> push) e os principios que mantem o site sem 404.
+
+https://claude.ai/code/session_017Xb4tWUGcVugVni1ABLpWi
+---
+ PLANO_ALIMENTACAO_CONTINUA.md        | 111 ++++++++++++++++
+ diagnostico.html                     | 181 +++++++++++++++++++++++++++
+ scripts_admin/atualizar_tudo.sh      |  41 ++++++
+ scripts_admin/scan_content_module.py | 172 +++++++++++++++++++++++++
+ scripts_admin/validar_paths.py       | 114 +++++++++++++++++
+ 5 files changed, 619 insertions(+)
+ create mode 100644 PLANO_ALIMENTACAO_CONTINUA.md
+ create mode 100644 diagnostico.html
+ create mode 100755 scripts_admin/atualizar_tudo.sh
+ create mode 100755 scripts_admin/scan_content_module.py
+ create mode 100755 scripts_admin/validar_paths.py
+
+diff --git a/PLANO_ALIMENTACAO_CONTINUA.md b/PLANO_ALIMENTACAO_CONTINUA.md
+new file mode 100644
+index 0000000..e404b20
+--- /dev/null
++++ b/PLANO_ALIMENTACAO_CONTINUA.md
+@@ -0,0 +1,111 @@
++# 🔄 Plano de Alimentação Contínua de Conteúdo
++
++> Versão simplificada e otimizada. Objetivo: adicionar conteúdo novo ao site
++> com **3 passos**, sem quebrar nada e sem depender de visualizadores externos.
++
++---
++
++## 🧠 Como o site funciona (em 1 minuto)
++
++O site é **estático** (HTML/CSS/JS puro, publicado no GitHub Pages). Não há build
++complicado. O conteúdo é dirigido por **manifestos JSON** que cada página lê no
++navegador:
++
++```
++   VOCÊ SOLTA ARQUIVOS                 SCANNERS GERAM JSON              PÁGINAS LEEM O JSON
++ ┌──────────────────────┐          ┌──────────────────────┐        ┌──────────────────────┐
++ │ .../inbox/            │  ──────► │ data/catalogo.json   │ ─────► │ index.html do módulo │
++ │ .../acervo/<tema>/    │          │ *_manifest.json      │        │ (grade + visualizador)│
++ └──────────────────────┘          └──────────────────────┘        └──────────────────────┘
++```
++
++Os documentos (PDF, DOCX, XLSX, MD, CSV…) são **visualizados dentro do site** por
++`assets/js/doc-viewer.js`, que usa bibliotecas **vendoradas localmente** em
++`assets/vendor/` (mammoth, SheetJS, marked). Isso funciona **offline, no Antigravity
++e online**, sem Google/Office.
++
++---
++
++## ✅ O fluxo de 3 passos
++
++### 1) Solte os arquivos na pasta certa
++
++| Tipo de conteúdo | Onde colocar |
++|---|---|
++| 📚 Documento clínico já curado (protocolo, guia) | `02_Biblioteca_IA_Engine/acervo/<tema>/` |
++| 📥 Documento novo, ainda sem classificar | `02_Biblioteca_IA_Engine/inbox/` |
++| 📘 E-book | `04_Ebooks_Intensiva_Clinica/inbox/` |
++| 🧠 Questão comentada / simulado | `07_Questoes_Comentadas/inbox/` |
++| 🎙️ Transcrição de aula | `08_Transcricoes/inbox/` |
++| 🔊 Material de POCUS/USG | `09_POCUS_Hub/inbox/` |
++| 🖼️ Card visual (imagem) do feed | `05_Midia_E_Feed/assets/cards/inbox/` + cadastrar em `data/cards.json` |
++| 🔗 Link externo (artigo, vídeo) | `links/links.json` do módulo (lista de `{title,url,source,tags}`) |
++
++> Os temas do acervo já existem: `cardio-hemodinamica`, `neuro-uti`, `sepse-choque`,
++> `vm-sdra`, `nefro-aki-trs`, `uti-geral`, `temi-prova`, `infectologia`, etc.
++> Para um tema novo, basta criar a pasta dentro de `acervo/`.
++
++**Regras de nome de arquivo (evita 404):** prefira nomes sem `:` e sem caracteres
++que confundam URLs. Acentos e espaços são tolerados (o validador corrige), mas
++`a-z 0-9 _ -` é o mais seguro.
++
++### 2) Rode UM comando
++
++```bash
++bash scripts_admin/atualizar_tudo.sh
++```
++
++Isso reindexa **todos** os hubs e a Biblioteca, e roda a **rede de segurança
++anti-404** (`validar_paths.py`), que conserta caminhos divergentes (acento/espaço/
++`:`/Unicode) e remove apenas o que realmente não existe.
++
++> Atalhos por módulo (se quiser rodar só um):
++> ```bash
++> python3 scripts_admin/scan_content_module.py 07_Questoes_Comentadas
++> python3 scripts_admin/validar_paths.py            # valida tudo
++> python3 scripts_admin/validar_paths.py --check    # só relata (CI)
++> ```
++
++### 3) Commit e push
++
++```bash
++git add -A
++git commit -m "conteudo: atualiza acervo e manifestos"
++git push origin <sua-branch>
++```
++
++O deploy do GitHub Pages roda sozinho quando isso chega na branch `main`
++(`.github/workflows/deploy-seguro.yml`).
++
++---
++
++## 🩺 Conferir que ficou tudo verde
++
++Abra **`diagnostico.html`** (na raiz do site). Ele testa, no navegador:
++
++- Todas as páginas principais respondem (sem 404).
++- O visualizador e as bibliotecas de `assets/vendor/` carregam.
++- Os manifestos da Biblioteca/Feed/Hubs carregam e os caminhos batem com o disco.
++
++Verde em tudo = pronto para publicar.
++
++---
++
++## 🛟 Princípios que mantêm o site saudável
++
++1. **Manifesto = espelho do disco.** Nunca aponte para arquivo que não existe.
++   O `validar_paths.py` garante isso automaticamente.
++2. **Visualização sem dependência externa.** DOCX/XLSX/MD/PDF abrem dentro do site
++   via bibliotecas locais — funciona no Antigravity e offline.
++3. **Nomes de arquivo limpos.** Sem `:`; de preferência sem espaços/acentos.
++4. **Conteúdo curado vai para `acervo/<tema>/`; rascunho vai para `inbox/`.**
++   O inbox aparece na aba *Triagem* até ser classificado.
++5. **Um comando, sempre o mesmo:** `bash scripts_admin/atualizar_tudo.sh`.
++
++---
++
++## 📌 Resumo de bolso
++
++```text
++soltar arquivo  →  bash scripts_admin/atualizar_tudo.sh  →  git push  →  abrir diagnostico.html
++```
+diff --git a/diagnostico.html b/diagnostico.html
+new file mode 100644
+index 0000000..3ea7a0e
+--- /dev/null
++++ b/diagnostico.html
+@@ -0,0 +1,181 @@
++<!DOCTYPE html>
++<html lang="pt-BR">
++<head>
++<meta charset="UTF-8"/>
++<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
++<title>🩺 Diagnóstico do Site | Antigravity</title>
++<meta name="robots" content="noindex"/>
++<style>
++  :root{--bg:#050d1a;--bg2:#0f1f38;--card:#0d1b30;--text:#e2e8f0;--muted:#64748b;
++        --line:#1e3a5f;--ok:#10b981;--warn:#f59e0b;--err:#ef4444;--accent:#00d4ff}
++  *{margin:0;padding:0;box-sizing:border-box}
++  body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
++       line-height:1.5;padding:0 0 4rem}
++  header{background:linear-gradient(135deg,var(--bg2),#0a1628);border-bottom:1px solid var(--line);
++         padding:1.6rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
++  h1{font-size:1.4rem;font-weight:800}
++  h1 small{display:block;font-size:.8rem;color:var(--muted);font-weight:400;margin-top:.2rem}
++  a.back{color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:.5rem .9rem;border-radius:8px;font-size:.85rem}
++  .wrap{max-width:1000px;margin:0 auto;padding:1.5rem}
++  .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin-bottom:1.5rem}
++  .sumcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem;text-align:center}
++  .sumcard b{display:block;font-size:1.8rem;font-weight:800}
++  .sumcard.ok b{color:var(--ok)}.sumcard.warn b{color:var(--warn)}.sumcard.err b{color:var(--err)}
++  .sumcard small{color:var(--muted);font-size:.75rem}
++  .group{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:1rem;overflow:hidden}
++  .group h2{font-size:.95rem;padding:.9rem 1.1rem;background:rgba(255,255,255,.03);border-bottom:1px solid var(--line);
++            display:flex;align-items:center;gap:.5rem}
++  .row{display:flex;align-items:center;gap:.7rem;padding:.6rem 1.1rem;border-bottom:1px solid rgba(30,58,95,.4);font-size:.86rem}
++  .row:last-child{border-bottom:none}
++  .badge{font-size:.7rem;font-weight:700;padding:.18rem .55rem;border-radius:999px;white-space:nowrap;min-width:64px;text-align:center}
++  .badge.ok{background:rgba(16,185,129,.15);color:var(--ok)}
++  .badge.warn{background:rgba(245,158,11,.15);color:var(--warn)}
++  .badge.err{background:rgba(239,68,68,.15);color:var(--err)}
++  .badge.run{background:rgba(100,116,139,.2);color:var(--muted)}
++  .row .name{flex:1;font-family:ui-monospace,monospace}
++  .row .detail{color:var(--muted);font-size:.78rem}
++  .btn{background:var(--accent);color:#04121f;border:none;padding:.6rem 1.2rem;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
++  .note{color:var(--muted);font-size:.8rem;margin:1rem 0;padding:.8rem 1rem;background:rgba(0,212,255,.05);border:1px solid var(--line);border-radius:10px}
++</style>
++</head>
++<body>
++<header>
++  <h1>🩺 Diagnóstico do Site<small>Autoteste do produto — roda local (Antigravity) e online</small></h1>
++  <a class="back" href="index.html">← Voltar à Home</a>
++</header>
++<div class="wrap">
++  <div class="note">
++    Esta página verifica, no próprio navegador, se as páginas principais, os dados (manifestos)
++    e o visualizador de documentos estão saudáveis. Use-a para depurar rapidamente após cada
++    atualização. <b>Verde</b> = ok · <b>Amarelo</b> = atenção · <b>Vermelho</b> = falha.
++  </div>
++  <div class="summary" id="summary">
++    <div class="sumcard ok"><b id="c-ok">0</b><small>✓ OK</small></div>
++    <div class="sumcard warn"><b id="c-warn">0</b><small>⚠ Atenção</small></div>
++    <div class="sumcard err"><b id="c-err">0</b><small>✗ Falhas</small></div>
++    <div class="sumcard"><b id="c-total">0</b><small>Testes</small></div>
++  </div>
++  <div style="margin-bottom:1.2rem"><button class="btn" onclick="runAll()">🔄 Rodar testes novamente</button></div>
++
++  <div class="group"><h2>📄 Páginas principais</h2><div id="g-pages"></div></div>
++  <div class="group"><h2>🧩 Visualizador & bibliotecas (assets/vendor)</h2><div id="g-viewer"></div></div>
++  <div class="group"><h2>📚 Dados da Biblioteca IA</h2><div id="g-biblio"></div></div>
++  <div class="group"><h2>🖼️ Card Feed & Hubs de conteúdo</h2><div id="g-data"></div></div>
++</div>
++
++<script>
++const PAGES = [
++  ['index.html', 'Home (Enciclopédia)'],
++  ['01_UpDown_Hub/index.html', 'UpDown Hub'],
++  ['02_Biblioteca_IA_Engine/index.html', 'Biblioteca IA'],
++  ['02_Banco_Questoes_TEMI/index.html', 'Banco TEMI'],
++  ['03_Calculadoras_E_Apps/index.html', 'Calculadoras'],
++  ['04_Ebooks_Intensiva_Clinica/index.html', 'Ebooks'],
++  ['05_Midia_E_Feed/index.html', 'Card Feed'],
++  ['07_Questoes_Comentadas/index.html', 'Questões Comentadas'],
++  ['08_Transcricoes/index.html', 'Transcrições'],
++  ['09_POCUS_Hub/index.html', 'POCUS Hub'],
++  ['01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html', 'RespiraSense'],
++  ['01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html', 'RespiraCrit'],
++  ['01_Modulos_Clinicos/AVC_Agudo/avc.html', 'AVC Agudo'],
++  ['les-autoanticorpos/index.html', 'LES Autoanticorpos'],
++];
++const VENDOR = [
++  ['assets/vendor/mammoth.browser.min.js', 'mammoth.js (DOCX)'],
++  ['assets/vendor/marked.min.js', 'marked (Markdown)'],
++  ['assets/vendor/xlsx.full.min.js', 'SheetJS (XLSX)'],
++  ['assets/js/doc-viewer.js', 'DocViewer (motor)'],
++  ['assets/css/content-hub.css', 'content-hub.css'],
++  ['assets/js/content-hub.js', 'content-hub.js'],
++];
++const BIBLIO = [
++  ['02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json', 'Manifesto de documentos', 'files'],
++  ['02_Biblioteca_IA_Engine/data/biblioteca_catalogo.json', 'Catálogo (acervo)', 'items'],
++  ['02_Biblioteca_IA_Engine/data/biblioteca_inbox_manifest_auto.json', 'Manifesto do inbox', 'files'],
++];
++const DATA = [
++  ['05_Midia_E_Feed/data/cards.json', 'Card Feed (cards)', 'cards'],
++  ['04_Ebooks_Intensiva_Clinica/data/catalogo.json', 'Ebooks (catálogo)', 'items'],
++  ['07_Questoes_Comentadas/data/catalogo.json', 'Questões (catálogo)', 'items'],
++  ['08_Transcricoes/data/catalogo.json', 'Transcrições (catálogo)', 'items'],
++  ['09_POCUS_Hub/data/catalogo.json', 'POCUS (catálogo)', 'items'],
++];
++
++let counts = {ok:0, warn:0, err:0};
++function enc(u){return u.split('/').map(encodeURIComponent).join('/');}
++function row(container, name, status, detail){
++  const div = document.createElement('div');
++  div.className = 'row';
++  div.innerHTML = `<span class="badge ${status}">${status==='ok'?'✓ OK':status==='warn'?'⚠ ATEN':status==='err'?'✗ FALHA':'…'}</span>`
++    + `<span class="name">${name}</span><span class="detail">${detail||''}</span>`;
++  container.appendChild(div);
++  if(counts[status]!==undefined) counts[status]++;
++  updateSummary();
++}
++function updateSummary(){
++  document.getElementById('c-ok').textContent = counts.ok;
++  document.getElementById('c-warn').textContent = counts.warn;
++  document.getElementById('c-err').textContent = counts.err;
++  document.getElementById('c-total').textContent = counts.ok+counts.warn+counts.err;
++}
++async function exists(url){
++  try{
++    const r = await fetch(enc(url), {method:'GET', cache:'no-store'});
++    return r.ok;
++  }catch(e){ return false; }
++}
++async function fetchJSON(url){
++  const r = await fetch(enc(url), {cache:'no-store'});
++  if(!r.ok) throw new Error('HTTP '+r.status);
++  return r.json();
++}
++
++async function runAll(){
++  counts = {ok:0, warn:0, err:0};
++  ['g-pages','g-viewer','g-biblio','g-data'].forEach(id=>document.getElementById(id).innerHTML='');
++  updateSummary();
++
++  // Páginas
++  for(const [u,label] of PAGES){
++    const ok = await exists(u);
++    row(document.getElementById('g-pages'), label, ok?'ok':'err', ok?u:('não encontrada: '+u));
++  }
++  // Vendor / viewer
++  for(const [u,label] of VENDOR){
++    const ok = await exists(u);
++    row(document.getElementById('g-viewer'), label, ok?'ok':'err', ok?'carregável':('ausente: '+u));
++  }
++  // Biblioteca: carrega manifesto + valida amostra de paths
++  for(const [u,label,key] of BIBLIO){
++    try{
++      const d = await fetchJSON(u);
++      const arr = d[key] || [];
++      // valida amostra de até 12 paths
++      const sample = arr.filter(x=>x.path).slice(0,12);
++      let bad=0;
++      for(const it of sample){
++        const base = u.substring(0, u.indexOf('/data/')+1);
++        if(!(await exists(base + it.path))) bad++;
++      }
++      const st = arr.length===0 ? 'warn' : (bad>0 ? 'warn' : 'ok');
++      row(document.getElementById('g-biblio'), label, st,
++          `${arr.length} itens · amostra ${sample.length-bad}/${sample.length} paths ok`);
++    }catch(e){
++      row(document.getElementById('g-biblio'), label, 'err', String(e.message||e));
++    }
++  }
++  // Feed + hubs
++  for(const [u,label,key] of DATA){
++    try{
++      const d = await fetchJSON(u);
++      const arr = d[key] || [];
++      row(document.getElementById('g-data'), label, 'ok', `${arr.length} itens`);
++    }catch(e){
++      row(document.getElementById('g-data'), label, 'err', String(e.message||e));
++    }
++  }
++}
++runAll();
++</script>
++</body>
++</html>
+diff --git a/scripts_admin/atualizar_tudo.sh b/scripts_admin/atualizar_tudo.sh
+new file mode 100755
+index 0000000..44edf97
+--- /dev/null
++++ b/scripts_admin/atualizar_tudo.sh
+@@ -0,0 +1,41 @@
++#!/bin/bash
++# =====================================================================
++#  atualizar_tudo.sh — ALIMENTAÇÃO CONTÍNUA (um comando só)
++#  ---------------------------------------------------------------------
++#  Reindexa TODO o conteúdo do site a partir das pastas de entrada e
++#  valida que nenhum documento aponta para um caminho quebrado (404).
++#
++#  Fluxo do dia a dia:
++#    1) Solte arquivos nas pastas de entrada (veja PLANO_ALIMENTACAO_CONTINUA.md)
++#    2) Rode:  bash scripts_admin/atualizar_tudo.sh
++#    3) git add -A && git commit -m "conteudo: atualiza acervo" && git push
++# =====================================================================
++set -e
++cd "$(dirname "$0")/.."   # raiz do repositório
++ROOT="$(pwd)"
++echo "📂 Raiz: $ROOT"
++echo ""
++
++echo "── 1/3 · Hubs de conteúdo (inbox -> data/catalogo.json) ────────────"
++for h in 04_Ebooks_Intensiva_Clinica 07_Questoes_Comentadas 08_Transcricoes 09_POCUS_Hub; do
++  if [ -d "$h" ]; then
++    python3 scripts_admin/scan_content_module.py "$h"
++  fi
++done
++echo ""
++
++echo "── 2/3 · Biblioteca IA (acervo + inbox -> manifestos) ──────────────"
++if [ -f "02_Biblioteca_IA_Engine/scan_biblioteca.py" ]; then
++  ( cd 02_Biblioteca_IA_Engine && python3 scan_biblioteca.py ) || echo "  (scan_biblioteca.py indisponível — seguindo)"
++else
++  echo "  (sem scan_biblioteca.py — pulado)"
++fi
++echo ""
++
++echo "── 3/3 · Validação anti-404 (rede de segurança) ───────────────────"
++python3 scripts_admin/validar_paths.py
++echo ""
++
++echo "✅ Concluído. Próximo passo:"
++echo "   git add -A && git commit -m 'conteudo: atualiza acervo e manifestos' && git push origin <branch>"
++echo "   (Depois abra diagnostico.html para conferir o verde.)"
+diff --git a/scripts_admin/scan_content_module.py b/scripts_admin/scan_content_module.py
+new file mode 100755
+index 0000000..049e4a2
+--- /dev/null
++++ b/scripts_admin/scan_content_module.py
+@@ -0,0 +1,172 @@
++#!/usr/bin/env python3
++# -*- coding: utf-8 -*-
++"""
++scan_content_module.py — Reindexador de um hub de conteúdo
++==========================================================
++Varre `inbox/` (e `acervo/`, se existir) de um módulo-hub e reconstrói
++`data/catalogo.json` no formato que `assets/js/content-hub.js` consome.
++Também conta os links de `links/links.json`.
++
++Uso:
++    python3 ../scripts_admin/scan_content_module.py [DIR_DO_MODULO]
++    (padrão: diretório atual)
++
++Saída: data/catalogo.json com paths VALIDADOS (só entram arquivos que existem).
++Idempotente: pode rodar quantas vezes quiser. É o motor da alimentação contínua.
++"""
++import os, sys, json, datetime, re
++
++# Grupos de formato (espelham GROUPS em content-hub.js)
++FORMAT_GROUPS = [
++    ("pdf",    "📄", "PDF",          ["pdf"]),
++    ("word",   "📝", "Word/DOCX",    ["doc", "docx"]),
++    ("sheet",  "📊", "Planilha/CSV", ["xls", "xlsx", "xlsm", "csv", "tsv"]),
++    ("md",     "⬇️", "Markdown",     ["md", "markdown"]),
++    ("slides", "📽️", "Slides",       ["ppt", "pptx"]),
++    ("anki",   "🃏", "Anki",         ["apkg"]),
++    ("html",   "🌐", "HTML",         ["html", "htm"]),
++    ("image",  "🖼️", "Imagem",       ["png", "jpg", "jpeg", "gif", "webp", "svg"]),
++    ("text",   "📃", "Texto/TXT",    ["txt", "rtf", "log"]),
++]
++EXT_TO_GROUP = {e: gid for gid, _emo, _lbl, exts in FORMAT_GROUPS for e in exts}
++GROUP_META = {gid: (emo, lbl) for gid, emo, lbl, _ in FORMAT_GROUPS}
++
++IGNORE = {".DS_Store", "Thumbs.db", ".gitkeep", "_last_sync.txt"}
++
++
++def ext_of(name):
++    m = re.search(r"\.([A-Za-z0-9]+)$", name)
++    return m.group(1).lower() if m else ""
++
++
++def group_of(ext):
++    return EXT_TO_GROUP.get(ext, "text")
++
++
++def clean_title(filename):
++    base = re.sub(r"\.[^.]+$", "", filename)
++    base = re.sub(r"[_]+", " ", base).strip()
++    return base
++
++
++def scan_dir(module_dir, sub):
++    """Retorna lista de itens para uma subpasta (inbox/acervo)."""
++    items = []
++    root = os.path.join(module_dir, sub)
++    if not os.path.isdir(root):
++        return items
++    for dp, dn, fn in os.walk(root):
++        dn[:] = [d for d in dn if not d.startswith(".")]
++        for f in sorted(fn):
++            if f in IGNORE or f.startswith("."):
++                continue
++            abs_p = os.path.join(dp, f)
++            rel_p = os.path.relpath(abs_p, module_dir).replace(os.sep, "/")
++            ext = ext_of(f)
++            grp = group_of(ext)
++            emo, lbl = GROUP_META.get(grp, ("📦", "Outro"))
++            items.append({
++                "id": re.sub(r"[^a-z0-9]+", "-", rel_p.lower()).strip("-"),
++                "title": clean_title(f),
++                "path": rel_p,
++                "ext": ext,
++                "format": grp,
++                "formatLabel": lbl,
++                "formatEmoji": emo,
++                "source": "inbox" if sub == "inbox" else "acervo",
++                "status": "revisar" if sub == "inbox" else "catalogado",
++                "tags": [],
++                "summary": "",
++            })
++    return items
++
++
++def load_existing_metadata(catalogo_path):
++    """Preserva título/resumo/tags já curados (casados por path)."""
++    meta = {}
++    if os.path.isfile(catalogo_path):
++        try:
++            old = json.load(open(catalogo_path, encoding="utf-8"))
++            for it in old.get("items", []):
++                if it.get("path"):
++                    meta[it["path"]] = {
++                        "title": it.get("title"),
++                        "summary": it.get("summary") or it.get("resumo"),
++                        "tags": it.get("tags") or [],
++                        "status": it.get("status"),
++                    }
++        except Exception:
++            pass
++    return meta
++
++
++def main(module_dir):
++    module_dir = os.path.abspath(module_dir)
++    data_dir = os.path.join(module_dir, "data")
++    os.makedirs(data_dir, exist_ok=True)
++    catalogo_path = os.path.join(data_dir, "catalogo.json")
++
++    # bloco "module" (de module.json ou catalogo antigo)
++    module_block = {"id": os.path.basename(module_dir), "title": os.path.basename(module_dir)}
++    mj = os.path.join(module_dir, "module.json")
++    if os.path.isfile(mj):
++        try:
++            module_block = json.load(open(mj, encoding="utf-8"))
++        except Exception:
++            pass
++    elif os.path.isfile(catalogo_path):
++        try:
++            module_block = json.load(open(catalogo_path, encoding="utf-8")).get("module", module_block)
++        except Exception:
++            pass
++
++    prev_meta = load_existing_metadata(catalogo_path)
++
++    items = scan_dir(module_dir, "inbox") + scan_dir(module_dir, "acervo")
++    # validação de path + reaplicação de metadados curados
++    valid = []
++    for it in items:
++        if not os.path.isfile(os.path.join(module_dir, it["path"])):
++            continue
++        m = prev_meta.get(it["path"])
++        if m:
++            if m.get("title"):   it["title"] = m["title"]
++            if m.get("summary"): it["summary"] = m["summary"]
++            if m.get("tags"):    it["tags"] = m["tags"]
++            if m.get("status"):  it["status"] = m["status"]
++        valid.append(it)
++
++    # links
++    links = []
++    lp = os.path.join(module_dir, "links", "links.json")
++    if os.path.isfile(lp):
++        try:
++            ld = json.load(open(lp, encoding="utf-8"))
++            links = ld if isinstance(ld, list) else ld.get("links", ld.get("items", []))
++        except Exception:
++            links = []
++
++    # contagem por formato
++    counts = {}
++    for it in valid:
++        counts[it["format"]] = counts.get(it["format"], 0) + 1
++    formats = [{"id": g, "emoji": GROUP_META[g][0], "label": GROUP_META[g][1], "count": counts[g]}
++               for g in counts]
++
++    catalogo = {
++        "updatedAt": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
++        "module": module_block,
++        "totalItems": len(valid) + len(links),
++        "totalFiles": len(valid),
++        "totalLinks": len(links),
++        "formats": formats,
++        "items": valid,
++    }
++    json.dump(catalogo, open(catalogo_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
++    print(f"[scan_content_module] {module_block.get('title', module_dir)}")
++    print(f"  arquivos: {len(valid)} | links: {len(links)} | formatos: {len(formats)}")
++    print(f"  -> {os.path.relpath(catalogo_path)}")
++
++
++if __name__ == "__main__":
++    main(sys.argv[1] if len(sys.argv) > 1 else ".")
+diff --git a/scripts_admin/validar_paths.py b/scripts_admin/validar_paths.py
+new file mode 100755
+index 0000000..043145e
+--- /dev/null
++++ b/scripts_admin/validar_paths.py
+@@ -0,0 +1,114 @@
++#!/usr/bin/env python3
++# -*- coding: utf-8 -*-
++"""
++validar_paths.py — Rede de segurança anti-404 dos manifestos
++============================================================
++Percorre TODOS os manifestos do site e garante que cada `path` aponta para um
++arquivo que existe no disco. Quando o caminho diverge só por acento, espaço,
++underscore, ':' ou normalização Unicode (NFC/NFD), o caminho é CORRIGIDO para o
++nome real. Só remove a entrada se não houver arquivo correspondente.
++
++É idempotente e seguro: rode sempre após adicionar conteúdo / rodar os scanners.
++
++Uso:
++    python3 scripts_admin/validar_paths.py            # valida e corrige
++    python3 scripts_admin/validar_paths.py --check    # só relata (não grava)
++"""
++import os, sys, json, re, unicodedata, datetime
++from collections import defaultdict
++
++ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++
++# (arquivo_json, chave_da_lista, base_relativa_dos_paths)
++TARGETS = [
++    ("02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json", "files", "02_Biblioteca_IA_Engine"),
++    ("02_Biblioteca_IA_Engine/data/biblioteca_catalogo.json",            "items", "02_Biblioteca_IA_Engine"),
++    ("02_Biblioteca_IA_Engine/data/biblioteca_inbox_manifest_auto.json", "files", "02_Biblioteca_IA_Engine"),
++    ("04_Ebooks_Intensiva_Clinica/data/catalogo.json", "items", "04_Ebooks_Intensiva_Clinica"),
++    ("07_Questoes_Comentadas/data/catalogo.json",      "items", "07_Questoes_Comentadas"),
++    ("08_Transcricoes/data/catalogo.json",             "items", "08_Transcricoes"),
++    ("09_POCUS_Hub/data/catalogo.json",                "items", "09_POCUS_Hub"),
++]
++
++def norm_key(s):
++    s = unicodedata.normalize("NFC", s).lower()
++    s = re.sub(r"[ _\-]+", " ", s).strip()
++    return s
++
++def build_disk_index(base_abs):
++    """dir_abs -> { norm_basename -> rel_path_from_base }"""
++    idx = defaultdict(dict)
++    realset = set()
++    for dp, dn, fn in os.walk(base_abs):
++        dn[:] = [d for d in dn if not d.startswith(".")]
++        for f in fn:
++            absf = os.path.join(dp, f)
++            rel = os.path.relpath(absf, base_abs).replace(os.sep, "/")
++            realset.add(rel)
++            idx[os.path.normpath(dp)][norm_key(f)] = rel
++    return idx, realset
++
++def resolve(path, base_abs, idx, realset):
++    if not path:
++        return None
++    if path in realset and os.path.isfile(os.path.join(base_abs, path)):
++        return path
++    # tentativa direta
++    if os.path.isfile(os.path.join(base_abs, path)):
++        return path
++    # ':' -> '-'
++    if ":" in path:
++        r = resolve(path.replace(":", "-"), base_abs, idx, realset)
++        if r:
++            return r
++    d = os.path.normpath(os.path.join(base_abs, os.path.dirname(path)))
++    b = norm_key(os.path.basename(path))
++    if d in idx and b in idx[d]:
++        return idx[d][b]
++    # fuzzy global (só se único)
++    matches = [rp for dd in idx for k, rp in idx[dd].items() if k == b]
++    if len(matches) == 1:
++        return matches[0]
++    return None
++
++def main(check_only=False):
++    total_fixed = total_dropped = total_ok = 0
++    for rel_json, key, base_rel in TARGETS:
++        jpath = os.path.join(ROOT, rel_json)
++        if not os.path.isfile(jpath):
++            print(f"  (pulado, inexistente) {rel_json}")
++            continue
++        base_abs = os.path.join(ROOT, base_rel)
++        idx, realset = build_disk_index(base_abs)
++        d = json.load(open(jpath, encoding="utf-8"))
++        arr = d.get(key, [])
++        keep, fixed, dropped, ok = [], 0, 0, 0
++        for e in arr:
++            p = e.get("path", "")
++            r = resolve(p, base_abs, idx, realset)
++            if r:
++                if os.path.normpath(r) != os.path.normpath(p):
++                    e["path"] = r; fixed += 1
++                else:
++                    ok += 1
++                keep.append(e)
++            else:
++                dropped += 1
++        if not check_only and (fixed or dropped):
++            d[key] = keep
++            # recalcula contagens simples se existirem
++            if "totalFiles" in d:
++                d["totalFiles"] = len(keep)
++            if "totalItems" in d:
++                d["totalItems"] = len(keep) + d.get("totalLinks", 0)
++            d["updatedAt"] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
++            json.dump(d, open(jpath, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
++        flag = "OK" if dropped == 0 else "ATENÇÃO"
++        print(f"  [{flag}] {rel_json}: {len(keep)} válidos · {fixed} corrigidos · {dropped} removidos")
++        total_fixed += fixed; total_dropped += dropped; total_ok += ok
++    print(f"\nResumo: {total_ok} ok · {total_fixed} paths corrigidos · {total_dropped} removidos (404)")
++    if check_only and total_dropped:
++        sys.exit(1)
++
++if __name__ == "__main__":
++    main(check_only="--check" in sys.argv)
+-- 
+2.43.0
+

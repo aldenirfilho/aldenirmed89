@@ -35,10 +35,11 @@ body{
     radial-gradient(800px 700px at 50% 120%, rgba(169,139,251,.07), transparent 60%),
     var(--bg);
   color:var(--text);font-family:var(--sans);line-height:1.6;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  overflow-x: clip; /* Substitui overflow-x: hidden para evitar bloqueio de scroll no iOS */
 }
 body::before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.035;
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.035;
   background-image:linear-gradient(var(--text) 1px,transparent 1px),linear-gradient(90deg,var(--text) 1px,transparent 1px);
   background-size:52px 52px;
 }

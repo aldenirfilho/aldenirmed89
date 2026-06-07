@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Página interativa sobre vasculites: abordagem diagnóstica, terapêutica, algoritmos, urgências e mnemônicos para clínica médica, reumatologia, nefrologia e UTI." />
+  <title>Vasculites | Abordagem Diagnóstica e Terapêutica — Antigravity Consultas</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --surface: rgba(255,255,255,.075);
+      --surface2: rgba(255,255,255,.105);
+      --text: #eef2ff;
+      --muted: #b7c2e2;
+      --line: rgba(255,255,255,.16);
+      --brand: #7dd3fc;
+      --brand2: #c084fc;
+      --danger: #fb7185;
+      --warn: #fbbf24;
+      --ok: #34d399;
+      --info: #60a5fa;
+      --shadow: 0 22px 70px rgba(0,0,0,.35);
+      --radius: 24px;
+      --radius2: 16px;
+      --font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    [data-theme="light"] {
+      --bg: #f6f8ff;
+      --surface: rgba(255,255,255,.82);
+      --surface2: rgba(255,255,255,.96);
+      --text: #101828;
+      --muted: #475467;
+      --line: rgba(16,24,40,.12);
+      --shadow: 0 22px 70px rgba(16,24,40,.12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(125,211,252,.30), transparent 32rem),
+        radial-gradient(circle at 88% 12%, rgba(192,132,252,.26), transparent 34rem),
+        radial-gradient(circle at 58% 96%, rgba(52,211,153,.12), transparent 30rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { width: min(1180px, calc(100% - 28px)); margin: 0 auto; }
+    .hero {
+      padding: 34px 0 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(125,211,252,.14), rgba(192,132,252,.12)), var(--surface);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      border-radius: calc(var(--radius) + 6px);
+      padding: clamp(22px, 4vw, 42px);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.08);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .92rem;
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-size: clamp(2.05rem, 6vw, 4.75rem);
+      line-height: .96;
+      margin: 0 0 16px;
+      letter-spacing: -0.06em;
+    }
+    .lead {
+      max-width: 890px;
+      font-size: clamp(1.05rem, 1.8vw, 1.32rem);
+      color: var(--muted);
+      margin: 0;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    button, .btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface2);
+      color: var(--text);
+      padding: 10px 14px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    button:hover, .btn:hover {
+      transform: translateY(-1px);
+      background: rgba(125,211,252,.18);
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(125,211,252,.28), rgba(192,132,252,.26));
+      border-color: rgba(125,211,252,.42);
+    }
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 920px) {
+      .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    }
+    section { padding: 22px 0; }
+    .card {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 12px 36px rgba(0,0,0,.10);
+    }
+    .card h2, .card h3 { margin-top: 0; letter-spacing: -0.03em; }
+    .card p:last-child, .card ul:last-child, .card ol:last-child { margin-bottom: 0; }
+    .stat {
+      min-height: 154px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat .emoji { font-size: 2rem; display: block; margin-bottom: 10px; }
+    .stat strong { display:block; font-size: 1.15rem; margin-bottom: 6px; }
+    .muted { color: var(--muted); }
+    .tagrow, .tabs, .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255,255,255,.06);
+      font-size: .9rem;
+      font-weight: 700;
+    }
+    .pill.danger { color: #fecdd3; border-color: rgba(251,113,133,.42); background: rgba(251,113,133,.14); }
+    .pill.warn { color: #fde68a; border-color: rgba(251,191,36,.42); background: rgba(251,191,36,.12); }
+    .pill.ok { color: #bbf7d0; border-color: rgba(52,211,153,.42); background: rgba(52,211,153,.12); }
+    .pill.info { color: #bfdbfe; border-color: rgba(96,165,250,.42); background: rgba(96,165,250,.12); }
+
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(18px);
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+    .sticky-nav .wrap {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+    .sticky-nav a {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-weight: 800;
+      border: 1px solid var(--line);
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.045);
+    }
+    .sticky-nav a:hover { color: var(--text); background: rgba(125,211,252,.14); text-decoration: none; }
+
+    .searchbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin: 14px 0 4px;
+    }
+    input[type="search"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface2);
+      color: var(--text);
+      padding: 14px 16px;
+      font-size: 1rem;
+      outline: none;
+    }
+    input[type="search"]:focus { border-color: rgba(125,211,252,.75); box-shadow: 0 0 0 4px rgba(125,211,252,.12); }
+    .disease-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 100%;
+    }
+    .disease-card .topline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .disease-card .icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(125,211,252,.20), rgba(192,132,252,.20));
+      border: 1px solid var(--line);
+      font-size: 1.3rem;
+      flex: 0 0 auto;
+    }
+    .disease-card h3 { margin: 0; }
+    .disease-card ul { padding-left: 20px; margin: 0; }
+    .hide { display: none !important; }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: var(--radius2);
+      background: rgba(255,255,255,.055);
+      padding: 12px 14px;
+      margin: 10px 0;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 850;
+      letter-spacing: -.01em;
+    }
+    summary::marker { color: var(--brand); }
+    .flow {
+      counter-reset: step;
+      display: grid;
+      gap: 12px;
+    }
+    .flow-step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: start;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .flow-step::before {
+      counter-increment: step;
+      content: counter(step);
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(125,211,252,.18);
+      border: 1px solid rgba(125,211,252,.35);
+      font-weight: 900;
+    }
+    .table-wrap { overflow-x: auto; border-radius: 18px; border: 1px solid var(--line); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 780px;
+      background: rgba(255,255,255,.04);
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+    }
+    th {
+      background: rgba(125,211,252,.10);
+      font-size: .92rem;
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: 0; }
+
+    .redbox {
+      border-color: rgba(251,113,133,.40);
+      background: linear-gradient(135deg, rgba(251,113,133,.14), rgba(251,191,36,.06)), var(--surface);
+    }
+    .greenbox {
+      border-color: rgba(52,211,153,.38);
+      background: linear-gradient(135deg, rgba(52,211,153,.12), rgba(125,211,252,.06)), var(--surface);
+    }
+    .bluebox {
+      border-color: rgba(96,165,250,.38);
+      background: linear-gradient(135deg, rgba(96,165,250,.14), rgba(192,132,252,.06)), var(--surface);
+    }
+
+    .quiz-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border-radius: 16px;
+      margin: 8px 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+    }
+    .quiz-option.correct { border-color: rgba(52,211,153,.68); background: rgba(52,211,153,.15); }
+    .quiz-option.wrong { border-color: rgba(251,113,133,.68); background: rgba(251,113,133,.14); }
+    .quiz-feedback { margin-top: 10px; font-weight: 800; }
+
+    .print-only { display: none; }
+    @media print {
+      body { background: white !important; color: #101828 !important; }
+      .sticky-nav, .hero-actions, .filters, .searchbar, button, .no-print { display: none !important; }
+      .card, .hero-card, details { box-shadow: none !important; border-color: #d0d5dd !important; background: white !important; }
+      details { display: block; }
+      details > * { display: block; }
+      .print-only { display: block; }
+      a { color: #101828; text-decoration: underline; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-card">
+        <div class="eyebrow">🧬 Antigravity Consultas · Clínica Médica · Reumatologia · UTI</div>
+        <h1>Vasculites: abordagem diagnóstica e terapêutica</h1>
+        <p class="lead">
+          Página interativa para raciocínio clínico rápido: classifique pelo calibre do vaso, reconheça síndromes de ameaça a órgão/vida,
+          escolha exames com inteligência e conecte o tratamento à gravidade e ao fenótipo.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#algoritmo">⚡ Ir para algoritmo</a>
+          <a class="btn" href="#tratamento">💊 Terapia por gravidade</a>
+          <a class="btn" href="#diferencial">🕵️ Mimetizadores</a>
+          <button type="button" onclick="toggleTheme()">🌗 Alternar tema</button>
+          <button type="button" onclick="window.print()">🖨️ Imprimir / PDF</button>
+        </div>
+        <div class="tagrow" aria-label="tags do módulo">
+          <span class="pill info">ANCA</span>
+          <span class="pill ok">Púrpura palpável</span>
+          <span class="pill warn">RPGN</span>
+          <span class="pill danger">Hemorragia alveolar</span>
+          <span class="pill">Aorta e grandes vasos</span>
+          <span class="pill">PAN</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sticky-nav no-print" aria-label="Navegação interna">
+    <div class="wrap">
+      <a href="#mapa">🗺️ Mapa</a>
+      <a href="#algoritmo">⚡ Algoritmo</a>
+      <a href="#doencas">🧩 Vasculites</a>
+      <a href="#exames">🧪 Exames</a>
+      <a href="#tratamento">💊 Tratamento</a>
+      <a href="#urgencias">🚨 Urgências</a>
+      <a href="#drogas">🧫 Drogas</a>
+      <a href="#quiz">🎯 Quiz</a>
+      <a href="#fontes">📚 Fontes</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="alerta">
+      <div class="wrap grid grid-3">
+        <article class="card redbox stat">
+          <span class="emoji">🚨</span>
+          <strong>Vasculite não é diagnóstico de triagem: é diagnóstico sindrômico.</strong>
+          <span class="muted">Antes de imunossuprimir: procure infecção, endocardite, neoplasia, drogas, trombose/êmbolos e doenças do tecido conjuntivo.</span>
+        </article>
+        <article class="card bluebox stat">
+          <span class="emoji">🧭</span>
+          <strong>O melhor atalho é “vaso + órgão + gravidade”.</strong>
+          <span class="muted">Grandes vasos, médios vasos ou pequenos vasos; rim/pulmão/pele/nervo/olho/SNC/mesentério; ameaçador ou não ameaçador.</span>
+        </article>
+        <article class="card greenbox stat">
+          <span class="emoji">🧠</span>
+          <strong>Biopsie quando possível, trate quando necessário.</strong>
+          <span class="muted">Em perda visual iminente, hemorragia alveolar ou glomerulonefrite rapidamente progressiva, não espere todos os resultados.</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="mapa">
+      <div class="wrap">
+        <div class="card">
+          <h2>🗺️ Classificação prática pelo vaso dominante</h2>
+          <p class="muted">Base conceitual: nomenclatura de Chapel Hill. Na prática, o paciente pode misturar vasos, mas o “vaso dominante” guia o raciocínio inicial.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Grupo</th>
+                  <th>Exemplos</th>
+                  <th>Pistas clínicas</th>
+                  <th>Exames mais úteis</th>
+                  <th>Tratamento-base</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Grandes vasos</strong></td>
+                  <td>Arterite de células gigantes, Takayasu</td>
+                  <td>Cefaleia temporal, claudicação mandibular, amaurose; ou sopros, assimetria de pulso/PA, claudicação de membros.</td>
+                  <td>US Doppler temporal/axilar, angio-TC/RM, PET-CT, VHS/PCR; biópsia temporal em casos selecionados.</td>
+                  <td>Glicocorticoide; considerar tocilizumabe ou imunossupressor poupador; revascularização se isquemia crítica, idealmente com doença controlada.</td>
+                </tr>
+                <tr>
+                  <td><strong>Médios vasos</strong></td>
+                  <td>Poliarterite nodosa, Kawasaki</td>
+                  <td>Livedo, nódulos, mononeurite múltipla, dor abdominal/isquemia, HAS renovascular, microaneurismas; pulmão e glomérulo geralmente poupados na PAN clássica.</td>
+                  <td>Angio-TC/arteriografia de território sintomático, biópsia pele/nervo/músculo, sorologias HBV/HCV/HIV.</td>
+                  <td>Glicocorticoide ± ciclofosfamida se grave; tratar HBV quando associado; evitar imunossupressão cega se infecção ativa.</td>
+                </tr>
+                <tr>
+                  <td><strong>Pequenos vasos ANCA</strong></td>
+                  <td>GPA, MPA, EGPA</td>
+                  <td>Síndrome pulmão-rim, sinusite/otite/destruição nasal, nódulos/cavitações, púrpura, neuropatia; asma/eosinofilia sugere EGPA.</td>
+                  <td>Urina tipo I, relação proteína/creatinina, creatinina, ANCA PR3/MPO por imunoensaio, TC tórax, biópsia renal/pele/pulmão.</td>
+                  <td>Indução com glicocorticoide + rituximabe ou ciclofosfamida nos casos graves; manutenção geralmente com rituximabe ou azatioprina.</td>
+                </tr>
+                <tr>
+                  <td><strong>Pequenos vasos por imunocomplexos</strong></td>
+                  <td>IgA, crioglobulinêmica, urticariforme hipocomplementêmica, vasculite lúpica</td>
+                  <td>Púrpura palpável, artralgia, dor abdominal, hematúria; C4 baixo e HCV sugerem crioglobulinemia.</td>
+                  <td>C3/C4, IgA, crioglobulinas com coleta aquecida, HCV/HBV/HIV, FAN/dsDNA, biópsia com imunofluorescência.</td>
+                  <td>Tratar causa de base; suporte renal; rituximabe/plasmaférese em formas graves selecionadas.</td>
+                </tr>
+                <tr>
+                  <td><strong>Vaso variável</strong></td>
+                  <td>Behçet, Cogan</td>
+                  <td>Aftas orais/genitais, uveíte, trombose, aneurisma; sintomas audiovestibulares/oculares em Cogan.</td>
+                  <td>Avaliação oftalmo, imagem vascular dirigida, excluir infecção/trombofilia conforme cenário.</td>
+                  <td>Depende do órgão: colchicina/corticoide/imunossupressor/biológico; manejo multidisciplinar.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="algoritmo">
+      <div class="wrap grid grid-2">
+        <article class="card">
+          <h2>⚡ Algoritmo diagnóstico em 8 passos</h2>
+          <div class="flow">
+            <div class="flow-step"><div><strong>Estabilize e procure ameaça imediata.</strong><br><span class="muted">Olho, rim, pulmão, SNC, mesentério, coração, isquemia de membro.</span></div></div>
+            <div class="flow-step"><div><strong>Confirme que o quadro é inflamatório sistêmico.</strong><br><span class="muted">Febre, perda ponderal, PCR/VHS, anemia inflamatória, lesões cutâneas, neuropatia, sedimento urinário ativo.</span></div></div>
+            <div class="flow-step"><div><strong>Exclua mimetizadores antes da imunossupressão.</strong><br><span class="muted">Endocardite, sepse, HIV/HBV/HCV, TB, embolia, neoplasia, cocaína/levamisol, APS, DIC/TTP, ateroembolismo.</span></div></div>
+            <div class="flow-step"><div><strong>Classifique por vaso dominante.</strong><br><span class="muted">Grandes vasos, médios vasos, pequenos vasos ANCA, pequenos vasos por imunocomplexos, vaso variável.</span></div></div>
+            <div class="flow-step"><div><strong>Mapeie órgãos com exame barato e de alto rendimento.</strong><br><span class="muted">Urina I + sedimento, proteinúria, creatinina, hemograma, enzimas hepáticas, CPK, raio/TC de tórax se respiratório.</span></div></div>
+            <div class="flow-step"><div><strong>Peça sorologia/imunologia orientada.</strong><br><span class="muted">ANCA PR3/MPO, C3/C4, FAN/dsDNA, anti-GBM, crioglobulinas, HBV/HCV/HIV, eosinófilos/IgE quando EGPA.</span></div></div>
+            <div class="flow-step"><div><strong>Imagem ou biópsia conforme território.</strong><br><span class="muted">Angio-TC/RM/PET para grandes vasos; angio abdominal/renal/mesentérica na PAN; biópsia pele/nervo/rim/pulmão/temporal quando viável.</span></div></div>
+            <div class="flow-step"><div><strong>Escolha terapia por gravidade.</strong><br><span class="muted">Não grave: poupador + corticoide menor. Grave/ameaçador: pulsoterapia + rituximabe/ciclofosfamida ± plasmaférese em cenários específicos.</span></div></div>
+          </div>
+        </article>
+
+        <article class="card redbox" id="diferencial">
+          <h2>🕵️ Mimetizadores que podem matar se você “chutar vasculite”</h2>
+          <details open>
+            <summary>Infecção e endocardite</summary>
+            <ul>
+              <li>Hemoculturas antes de pulsoterapia se febre, sopro, fenômenos embólicos ou prótese/dispositivo.</li>
+              <li>Endocardite pode dar púrpura, GN, ANCA falso-positivo, embolias e fenômenos imunológicos.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Drogas e tóxicos</summary>
+            <ul>
+              <li>Cocaína/levamisol: necrose cutânea, ANCA, neutropenia, lesões auriculares/nasais.</li>
+              <li>Hidralazina, PTU, minociclina, anti-TNF e outros podem induzir vasculite.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Trombose/êmbolos/hematológicas</summary>
+            <ul>
+              <li>APS, embolia por colesterol, DIC, PTT/SHU, crioglobulinemia, síndrome antifosfolípide catastrófica.</li>
+              <li>Quando plaquetas muito baixas + hemólise microangiopática, pense TMA antes de “vasculite”.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Neoplasia e paraneoplasia</summary>
+            <ul>
+              <li>Vasculite cutânea em idoso, perda ponderal desproporcional ou refratariedade: rastreie neoplasia conforme contexto.</li>
+            </ul>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section id="doencas">
+      <div class="wrap">
+        <div class="card">
+          <h2>🧩 Vasculites por fenótipo — cards pesquisáveis</h2>
+          <p class="muted">Use a busca por termo clínico: “asma”, “mononeurite”, “pulmão-rim”, “C4 baixo”, “amaurose”, “HBV”, “púrpura”.</p>
+          <div class="searchbar">
+            <input id="searchInput" type="search" placeholder="🔎 Buscar vasculite, pista clínica, ANCA, órgão, tratamento..." oninput="renderDiseases()" />
+            <button type="button" onclick="clearSearch()">Limpar</button>
+          </div>
+          <div class="filters" role="group" aria-label="filtros de calibre de vaso">
+            <button type="button" class="filterBtn btn-primary" data-filter="todos" onclick="setFilter('todos')">Todos</button>
+            <button type="button" class="filterBtn" data-filter="grandes" onclick="setFilter('grandes')">Grandes vasos</button>
+            <button type="button" class="filterBtn" data-filter="medios" onclick="setFilter('medios')">Médios vasos</button>
+            <button type="button" class="filterBtn" data-filter="pequenos-anca" onclick="setFilter('pequenos-anca')">Pequenos ANCA</button>
+            <button type="button" class="filterBtn" data-filter="pequenos-ic" onclick="setFilter('pequenos-ic')">Imunocomplexos</button>
+            <button type="button" class="filterBtn" data-filter="variavel" onclick="setFilter('variavel')">Variável</button>
+          </div>
+          <div id="diseaseGrid" class="grid grid-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="exames">
+      <div class="wrap grid grid-2">
+        <article class="card">
+          <h2>🧪 Exames iniciais: pacote “não perder rim/pulmão/infecção”</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Domínio</th><th>Exames</th><th>Por quê?</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Inflamação/gravidade</td><td>Hemograma, PCR/VHS, albumina, função hepática, DHL se suspeita hematológica</td><td>Quantifica inflamação, anemia, leucocitose, eosinofilia, toxicidade e mimetizadores.</td></tr>
+                <tr><td>Rim</td><td>Creatinina, ureia, eletrólitos, urina I com sedimento, relação proteína/creatinina</td><td>Hematúria dismórfica/cilindros/proteinúria mudam urgência e indicam biópsia renal.</td></tr>
+                <tr><td>Imunologia</td><td>ANCA PR3/MPO, C3/C4, FAN, anti-dsDNA, anti-GBM, IgA conforme cenário</td><td>Diferencia AAV, imunocomplexos, lúpus, anti-GBM e sobreposições.</td></tr>
+                <tr><td>Infecção</td><td>HBsAg, anti-HBc, anti-HCV, HIV, hemoculturas se febre, TB conforme risco</td><td>Evita imunossupressão perigosa e identifica vasculites secundárias tratáveis.</td></tr>
+                <tr><td>Fenótipos especiais</td><td>Crioglobulinas com coleta adequada, C4, eletroforese, eosinófilos/IgE, troponina/BNP na EGPA</td><td>Crioglobulinemia e EGPA têm pegadas laboratoriais próprias; coração na EGPA muda prognóstico.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>🖼️ Imagem e biópsia: escolha pelo território</h2>
+          <details open>
+            <summary>Grandes vasos</summary>
+            <p>US Doppler temporal/axilar, angio-TC, angio-RM ou PET-CT conforme disponibilidade, urgência e segmento vascular. Na arterite de células gigantes, imagem não deve atrasar corticoide se houver risco visual.</p>
+          </details>
+          <details>
+            <summary>Suspeita de PAN</summary>
+            <p>Angio-TC/arteriografia de território sintomático pode demonstrar microaneurismas/estenoses. Biópsia de pele, nervo ou músculo aumenta rendimento quando há lesão acessível.</p>
+          </details>
+          <details>
+            <summary>AAV com rim</summary>
+            <p>Biópsia renal é muito útil para confirmar pauci-imune, estimar atividade versus cronicidade e guiar prognóstico, sobretudo quando apresentação não é clássica.</p>
+          </details>
+          <details>
+            <summary>Pele e nervo periférico</summary>
+            <p>Púrpura palpável recente: biópsia de pele com imunofluorescência. Mononeurite múltipla: considerar eletroneuromiografia e biópsia nervo/músculo em centros experientes.</p>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section id="tratamento">
+      <div class="wrap">
+        <div class="card">
+          <h2>💊 Tratamento por gravidade — matriz de decisão</h2>
+          <p class="muted">A terapia muda radicalmente conforme ameaça a órgão/vida. Use como mapa educacional; individualize com reumatologia, nefrologia, infectologia e UTI.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cenário</th>
+                  <th>Exemplos</th>
+                  <th>Conduta geral</th>
+                  <th>Observações críticas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Não grave / sem ameaça a órgão</strong></td>
+                  <td>Púrpura cutânea limitada, sintomas constitucionais, artralgia, GPA localizada, IgA sem nefrite relevante.</td>
+                  <td>Confirmar diagnóstico, excluir infecção, corticoide em dose menor ou curto curso; metotrexato/azatioprina/MMF/rituximabe conforme doença.</td>
+                  <td>Evitar ciclofosfamida se não houver ameaça. Monitorar urina/creatinina seriados: paciente “cutâneo” pode virar renal.</td>
+                </tr>
+                <tr>
+                  <td><strong>Ameaça a órgão/vida</strong></td>
+                  <td>RPGN, hemorragia alveolar, mononeurite múltipla progressiva, isquemia mesentérica, SNC, ocular, cardíaco na EGPA.</td>
+                  <td>Pulsoterapia com metilprednisolona em cenário crítico + indução com rituximabe ou ciclofosfamida conforme fenótipo.</td>
+                  <td>Não atrasar tratamento por biópsia se risco imediato; colher exames e culturas antes quando possível.</td>
+                </tr>
+                <tr>
+                  <td><strong>AAV grave</strong></td>
+                  <td>GPA/MPA com rim ou pulmão-rim; EGPA grave com coração/SNC/neuropatia importante.</td>
+                  <td>Glicocorticoide + rituximabe ou ciclofosfamida. Avacopan pode ser poupador de corticoide em GPA/MPA selecionadas.</td>
+                  <td>Plasmaférese: considerar em anti-GBM overlap, creatinina muito elevada/diálise/declínio rápido, ou hemorragia alveolar hipoxêmica.</td>
+                </tr>
+                <tr>
+                  <td><strong>PAN grave</strong></td>
+                  <td>Isquemia intestinal, renal/renovascular grave, neuropatia motora progressiva, manifestações ameaçadoras.</td>
+                  <td>Glicocorticoide + ciclofosfamida em PAN sistêmica grave não associada ao HBV.</td>
+                  <td>PAN associada ao HBV exige antiviral e estratégia especializada; investigar HBV antes de imunossupressão prolongada.</td>
+                </tr>
+                <tr>
+                  <td><strong>Grandes vasos</strong></td>
+                  <td>Arterite temporal com risco visual; Takayasu ativa com isquemia.</td>
+                  <td>Glicocorticoide; considerar tocilizumabe na GCA e imunossupressores/biológicos na Takayasu; intervenção vascular se isquemia crítica.</td>
+                  <td>Na suspeita de arterite de células gigantes com sintomas visuais, tratar imediatamente e acionar oftalmo/reumato.</td>
+                </tr>
+                <tr>
+                  <td><strong>Crioglobulinemia grave</strong></td>
+                  <td>GN rapidamente progressiva, neuropatia severa, úlcera/necrose, hiperviscosidade.</td>
+                  <td>Tratar causa, especialmente HCV; rituximabe ± glicocorticoide; plasmaférese se hiperviscosidade/ameaça imediata.</td>
+                  <td>C4 baixo + púrpura + neuropatia + HCV é pista clássica.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="urgencias">
+      <div class="wrap grid grid-2">
+        <article class="card redbox">
+          <h2>🚨 Situações “não espere segunda-feira”</h2>
+          <ul>
+            <li><strong>Perda visual, diplopia, amaurose fugaz, cefaleia temporal nova em >50 anos:</strong> tratar como arterite de células gigantes até prova em contrário.</li>
+            <li><strong>Hemoptise + queda de Hb + infiltrado difuso/hipoxemia:</strong> pensar hemorragia alveolar; broncoscopia se necessário, UTI e indução rápida.</li>
+            <li><strong>Creatinina subindo + hematúria/cilindros:</strong> glomerulonefrite rapidamente progressiva; nefro, biópsia renal e indução.</li>
+            <li><strong>Dor abdominal intensa/desproporcional:</strong> isquemia mesentérica/PAN/vasculite de médio vaso; angio-TC e cirurgia se peritonite.</li>
+            <li><strong>Mononeurite múltipla progressiva:</strong> vasculite de nervo é órgão-ameaçadora.</li>
+            <li><strong>SNC, miocardite, isquemia de membro:</strong> manejo urgente e multidisciplinar.</li>
+          </ul>
+        </article>
+
+        <article class="card greenbox">
+          <h2>🛡️ Segurança antes/depois da imunossupressão</h2>
+          <ul>
+            <li>Colher hemoculturas se febre/suspeita infecciosa antes de pulsar corticoide.</li>
+            <li>Triar HBV/HCV/HIV; risco de reativação com rituximabe/ciclofosfamida.</li>
+            <li>Considerar profilaxia para Pneumocystis jirovecii quando rituximabe/ciclofosfamida e/ou corticoide em altas doses.</li>
+            <li>Vacinas antes de rituximabe sempre que possível; evitar vacinas vivas durante imunossupressão intensa.</li>
+            <li>Proteger osso/metabolismo: cálcio/vitamina D, risco de osteoporose, glicemia, PA, infecção, úlcera conforme risco.</li>
+            <li>Ciclofosfamida: fertilidade, cistite hemorrágica, citopenia, dose por função renal/idade e hidratação.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="drogas">
+      <div class="wrap">
+        <div class="card">
+          <h2>🧫 Drogas e estratégias terapêuticas — visão rápida</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Estratégia</th><th>Onde entra</th><th>Cuidados</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Glicocorticoide</td><td>Indução rápida, especialmente ameaça a órgão/vida; dose e velocidade de desmame dependem da doença.</td><td>Infecção, hiperglicemia, delirium, miopatia, osteoporose; preferir desmame planejado.</td></tr>
+                <tr><td>Rituximabe</td><td>AAV grave, manutenção AAV, crioglobulinemia grave, algumas formas refratárias.</td><td>HBV, imunoglobulinas, vacinas, infecções; resposta vacinal reduzida por meses.</td></tr>
+                <tr><td>Ciclofosfamida</td><td>Doença grave/ameaçadora, PAN grave, AAV grave selecionada.</td><td>Citopenia, infecção, bexiga, gonadal, malignidade; usar pelo menor tempo necessário.</td></tr>
+                <tr><td>Avacopan</td><td>GPA/MPA como estratégia poupadora de corticoide em pacientes selecionados.</td><td>Custo/acesso, função hepática, interações; não é monoterapia isolada de indução.</td></tr>
+                <tr><td>Tocilizumabe</td><td>Arterite de células gigantes; Takayasu em cenários selecionados/refratários.</td><td>PCR pode ficar artificialmente baixa; monitorar clínica/imagem e risco infeccioso.</td></tr>
+                <tr><td>Metotrexato</td><td>Doença não grave, manutenção/poupador em algumas vasculites.</td><td>Evitar em DRC importante, hepatopatia, gestação; ácido fólico.</td></tr>
+                <tr><td>Azatioprina/MMF</td><td>Manutenção ou poupadores conforme fenótipo; AZA comum em manutenção AAV quando rituximabe indisponível.</td><td>Citopenia/hepatotoxicidade; interações; MMF teratogênico.</td></tr>
+                <tr><td>Mepolizumabe</td><td>EGPA não grave/recaídas com componente eosinofílico/asma.</td><td>Não substitui rituximabe/ciclofosfamida em EGPA grave ameaçadora.</td></tr>
+                <tr><td>Plasmaférese</td><td>Anti-GBM overlap; AAV com rim muito grave/declínio rápido; hemorragia alveolar hipoxêmica; hiperviscosidade crioglobulinêmica.</td><td>Não é rotina para toda hemorragia alveolar; ponderar sangramento, acesso e albumina/plasma.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mnemonicos">
+      <div class="wrap grid grid-3">
+        <article class="card">
+          <h2>🧠 Mnemônico 1: “VASCULITE”</h2>
+          <ul>
+            <li><strong>V</strong>aso dominante</li>
+            <li><strong>A</strong>meaça a órgão?</li>
+            <li><strong>S</strong>edimento urinário</li>
+            <li><strong>C</strong>omplemento/ANCA</li>
+            <li><strong>U</strong>rgências: olho, rim, pulmão</li>
+            <li><strong>L</strong>esão para biópsia</li>
+            <li><strong>I</strong>nfecção excluída</li>
+            <li><strong>T</strong>erapia por gravidade</li>
+            <li><strong>E</strong>stratégia de manutenção</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h2>🧠 Mnemônico 2: “PAN não pega PULMÃO-RIM”</h2>
+          <p>PAN clássica é médio vaso: pode pegar renal por isquemia/renovascular, mas não costuma causar glomerulonefrite pauci-imune nem capilarite pulmonar.</p>
+        </article>
+        <article class="card">
+          <h2>🧠 Mnemônico 3: “ANCA = AR + Nefrite + Capilarite”</h2>
+          <p>Quando houver vias aéreas superiores/inferiores + urina ativa + lesão cutânea/neuropatia, pense em GPA/MPA/EGPA e procure PR3/MPO.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <div class="wrap">
+        <div class="card">
+          <h2>🎯 Quiz relâmpago — beira-leito</h2>
+          <p id="quizQuestion"><strong>Caso:</strong> paciente de 24 anos com nódulos dolorosos em MMII, livedo, perda ponderal, mononeurite e HAS nova. ANCA negativo. Urina sem cilindros hemáticos; TC tórax sem hemorragia/nódulos. Qual hipótese sobe no ranking?</p>
+          <button class="quiz-option" onclick="answerQuiz(this, false)">A) Granulomatose com poliangiite</button>
+          <button class="quiz-option" onclick="answerQuiz(this, true)">B) Poliarterite nodosa</button>
+          <button class="quiz-option" onclick="answerQuiz(this, false)">C) Crioglobulinemia por HCV</button>
+          <button class="quiz-option" onclick="answerQuiz(this, false)">D) Arterite de células gigantes</button>
+          <button class="quiz-option" onclick="answerQuiz(this, false)">E) Vasculite IgA pura sem envolvimento sistêmico</button>
+          <div id="quizFeedback" class="quiz-feedback muted"></div>
+          <details>
+            <summary>💡 Comentário do preceptor</summary>
+            <p>PAN combina médio vaso, livedo/nódulos, mononeurite, sintomas sistêmicos e HAS renovascular. A ausência de glomerulonefrite e capilarite pulmonar ajuda a separá-la das AAV clássicas.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="fontes">
+      <div class="wrap">
+        <div class="card">
+          <h2>📚 Fontes e atualização</h2>
+          <p class="muted">Conteúdo educacional para apoio à decisão, não substitui avaliação médica especializada, protocolos locais, discussão com reumatologia/nefrologia/infectologia ou julgamento clínico à beira-leito.</p>
+          <ul>
+            <li>Jennette JC et al. 2012 Revised International Chapel Hill Consensus Conference Nomenclature of Vasculitides. Arthritis Rheum. 2013.</li>
+            <li>American College of Rheumatology / Vasculitis Foundation. Guidelines 2021: ANCA-associated vasculitis; Polyarteritis Nodosa; Giant Cell Arteritis and Takayasu Arteritis.</li>
+            <li>EULAR recommendations for the management of ANCA-associated vasculitis: 2022 update, Ann Rheum Dis 2024.</li>
+            <li>EULAR recommendations for the use of imaging in large vessel vasculitis in clinical practice: 2023 update, Ann Rheum Dis 2024.</li>
+            <li>KDIGO 2024 Clinical Practice Guideline for ANCA-associated vasculitis.</li>
+          </ul>
+          <p><strong>Última revisão do módulo:</strong> 06/06/2026 · <strong>Projeto:</strong> Antigravity Consultas · <strong>Categoria:</strong> Clínica Médica / Reumatologia / Nefrologia / UTI.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const diseases = [
+      {
+        group: "grandes", icon: "👁️", title: "Arterite de células gigantes (GCA)",
+        tags: ["grandes vasos", "idade >50", "cefaleia temporal", "claudicação mandibular", "amaurose", "polimialgia", "VHS", "PCR", "tocilizumabe"],
+        clues: ["Idade geralmente >50 anos", "Cefaleia nova, dor temporal, claudicação mandibular", "Amaurose fugaz/perda visual = emergência"],
+        dx: "VHS/PCR, US temporal/axilar ou biópsia temporal conforme disponibilidade; avaliar aorta/axilar em doença extensa.",
+        tx: "Corticoide imediato se suspeita com risco visual; considerar tocilizumabe como poupador em casos selecionados."
+      },
+      {
+        group: "grandes", icon: "🫀", title: "Arterite de Takayasu",
+        tags: ["grandes vasos", "jovem", "mulher", "aorta", "sopro", "pulso ausente", "claudicação", "angioTC", "angioRM", "PET"],
+        clues: ["Paciente jovem, frequentemente mulher", "Assimetria de pulso/PA, sopros, claudicação", "Aorta e ramos principais"],
+        dx: "Angio-TC/RM/PET-CT; atividade clínica + imagem, pois PCR/VHS podem falhar.",
+        tx: "Glicocorticoide + poupador/biológico em doença ativa; revascularização quando isquemia crítica, idealmente com inflamação controlada."
+      },
+      {
+        group: "medios", icon: "🕸️", title: "Poliarterite nodosa (PAN)",
+        tags: ["médios vasos", "livedo", "nódulos", "mononeurite", "HAS", "renal isquêmico", "HBV", "ANCA negativo", "microaneurismas"],
+        clues: ["Livedo/nódulos subcutâneos", "Mononeurite múltipla", "HAS por isquemia renal; dor abdominal/isquemia"],
+        dx: "Biópsia pele/nervo/músculo quando lesão acessível; angio-TC/arteriografia pode mostrar microaneurismas; rastrear HBV/HCV/HIV.",
+        tx: "Não grave: corticoide ± poupador. Grave: corticoide + ciclofosfamida. HBV: antiviral + estratégia especializada."
+      },
+      {
+        group: "pequenos-anca", icon: "🫁", title: "Granulomatose com poliangiite (GPA)",
+        tags: ["ANCA", "PR3", "c-ANCA", "sinusite", "otite", "nariz em sela", "nódulo pulmonar", "cavitação", "glomerulonefrite"],
+        clues: ["Via aérea superior destrutiva/recorrente", "Nódulos ou cavitações pulmonares", "GN pauci-imune"],
+        dx: "ANCA PR3/MPO, urina ativa, TC tórax/seios da face, biópsia renal/pulmão/ENT quando possível.",
+        tx: "Grave: corticoide + rituximabe ou ciclofosfamida. Manutenção: rituximabe ou azatioprina/MTX/MMF conforme caso."
+      },
+      {
+        group: "pequenos-anca", icon: "🧫", title: "Poliangiite microscópica (MPA)",
+        tags: ["ANCA", "MPO", "p-ANCA", "pulmão-rim", "hemorragia alveolar", "RPGN", "capilarite"],
+        clues: ["Síndrome pulmão-rim", "GN rapidamente progressiva", "Capilarite pulmonar/hemorragia alveolar"],
+        dx: "ANCA MPO/PR3, anti-GBM para overlap, urina/sedimento, TC tórax, biópsia renal.",
+        tx: "Corticoide + rituximabe ou ciclofosfamida; plasmaférese em overlap anti-GBM ou rim/pulmão muito graves selecionados."
+      },
+      {
+        group: "pequenos-anca", icon: "🌬️", title: "Granulomatose eosinofílica com poliangiite (EGPA)",
+        tags: ["ANCA", "asma", "eosinofilia", "sinusite", "neuropatia", "coração", "mepolizumabe"],
+        clues: ["Asma + eosinofilia", "Sinusopatia/pólipos", "Neuropatia; coração muda prognóstico"],
+        dx: "Eosinófilos, IgE, ANCA MPO/PR3, troponina/BNP/eco/RM cardíaca se suspeita, TC tórax.",
+        tx: "Não grave/recaída eosinofílica: corticoide ± mepolizumabe. Grave: corticoide + rituximabe ou ciclofosfamida conforme fenótipo."
+      },
+      {
+        group: "pequenos-ic", icon: "🟣", title: "Vasculite por IgA",
+        tags: ["IgA", "púrpura", "artralgia", "dor abdominal", "hematúria", "criança", "adulto"],
+        clues: ["Púrpura palpável em MMII/glúteos", "Artralgia e dor abdominal", "Hematúria/proteinúria indicam nefrite"],
+        dx: "Urina e proteinúria seriadas; biópsia pele/rim com IgA quando necessário.",
+        tx: "Suporte; tratar dor/GI. Nefrite relevante: nefrologia, antiproteinúrico e imunossupressão individualizada."
+      },
+      {
+        group: "pequenos-ic", icon: "❄️", title: "Vasculite crioglobulinêmica",
+        tags: ["crioglobulina", "HCV", "C4 baixo", "púrpura", "neuropatia", "glomerulonefrite", "hiperviscosidade", "rituximabe"],
+        clues: ["Púrpura + neuropatia + artralgia", "C4 baixo", "Associação forte com HCV e doenças linfoproliferativas"],
+        dx: "Crioglobulinas com manejo adequado da amostra, C3/C4, HCV/HBV/HIV, eletroforese, urina/proteinúria.",
+        tx: "Tratar causa; rituximabe ± corticoide se grave; plasmaférese se hiperviscosidade/ameaça imediata."
+      },
+      {
+        group: "pequenos-ic", icon: "🧬", title: "Vasculite lúpica / secundária a doença sistêmica",
+        tags: ["FAN", "lúpus", "C3 baixo", "C4 baixo", "artrite reumatoide", "sarcoidose", "secundária"],
+        clues: ["Fenótipo de doença do tecido conjuntivo", "Complemento baixo, FAN/dsDNA, citopenias", "Pode coexistir com nefrite lúpica"],
+        dx: "FAN, dsDNA, C3/C4, urina, biópsia conforme órgão.",
+        tx: "Tratar doença de base e órgão ameaçado; evitar chamar de primária antes de investigar secundárias."
+      },
+      {
+        group: "variavel", icon: "🔥", title: "Doença de Behçet",
+        tags: ["vaso variável", "aftas", "úlcera genital", "uveíte", "trombose", "aneurisma", "colchicina"],
+        clues: ["Aftas orais recorrentes + úlceras genitais", "Uveíte/retinite", "Trombose venosa, aneurismas pulmonares ou arteriais"],
+        dx: "Clínico; avaliação oftalmo; imagem vascular se sintomas; excluir infecção/IBD conforme caso.",
+        tx: "Colchicina/corticoide/imunossupressor/biológico conforme órgão; anticoagulação é individualizada em trombose inflamatória."
+      }
+    ];
+
+    let activeFilter = "todos";
+
+    function normalizeText(text) {
+      return (text || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function setFilter(filter) {
+      activeFilter = filter;
+      document.querySelectorAll(".filterBtn").forEach(btn => {
+        btn.classList.toggle("btn-primary", btn.dataset.filter === filter);
+      });
+      renderDiseases();
+    }
+
+    function clearSearch() {
+      document.getElementById("searchInput").value = "";
+      renderDiseases();
+    }
+
+    function renderDiseases() {
+      const grid = document.getElementById("diseaseGrid");
+      const q = normalizeText(document.getElementById("searchInput").value);
+      const filtered = diseases.filter(d => {
+        const inGroup = activeFilter === "todos" || d.group === activeFilter;
+        const hay = normalizeText([d.title, d.group, d.tags.join(" "), d.clues.join(" "), d.dx, d.tx].join(" "));
+        return inGroup && (!q || hay.includes(q));
+      });
+      grid.innerHTML = filtered.map(d => `
+        <article class="card disease-card">
+          <div class="topline">
+            <div>
+              <h3>${d.title}</h3>
+              <span class="pill">${labelGroup(d.group)}</span>
+            </div>
+            <div class="icon" aria-hidden="true">${d.icon}</div>
+          </div>
+          <div class="tagrow">${d.tags.slice(0, 5).map(t => `<span class="pill info">${t}</span>`).join("")}</div>
+          <div>
+            <strong>🔎 Pistas:</strong>
+            <ul>${d.clues.map(c => `<li>${c}</li>`).join("")}</ul>
+          </div>
+          <p><strong>🧪 Diagnóstico:</strong> ${d.dx}</p>
+          <p><strong>💊 Tratamento:</strong> ${d.tx}</p>
+        </article>
+      `).join("") || `<p class="muted">Nenhum card encontrado com esse filtro. Tente outro termo.</p>`;
+    }
+
+    function labelGroup(group) {
+      return {
+        "grandes": "Grandes vasos",
+        "medios": "Médios vasos",
+        "pequenos-anca": "Pequenos vasos · ANCA",
+        "pequenos-ic": "Pequenos vasos · imunocomplexos",
+        "variavel": "Vaso variável"
+      }[group] || group;
+    }
+
+    function answerQuiz(btn, correct) {
+      document.querySelectorAll(".quiz-option").forEach(b => {
+        b.disabled = true;
+        b.classList.remove("correct", "wrong");
+      });
+      btn.classList.add(correct ? "correct" : "wrong");
+      const fb = document.getElementById("quizFeedback");
+      fb.textContent = correct
+        ? "✅ Isso! PAN sobe muito: médio vaso, pele/nervo/rim isquêmico, ANCA negativo, sem GN/capilarite pulmonar."
+        : "⚠️ Boa tentativa, mas o conjunto aponta melhor para PAN: médio vaso + mononeurite + livedo/nódulos + HAS renovascular.";
+      fb.classList.remove("muted");
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.dataset.theme === "dark" ? "light" : "dark";
+      html.dataset.theme = next;
+      localStorage.setItem("vasculites-theme", next);
+    }
+
+    (function init() {
+      const stored = localStorage.getItem("vasculites-theme");
+      if (stored) document.documentElement.dataset.theme = stored;
+      renderDiseases();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vasculites Decision — Antigravity</title>
+<meta name="description" content="Mini-plataforma interativa de vasculites focada em diagnóstico e decisão terapêutica rápida." />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><span class="brand-badge">🧬</span><span>Vasculites Decision</span></a>
+    <nav class="navlinks">
+      <a href="index.html">Hub</a>
+      <a href="pages/simulador.html">Simulador</a>
+      <a href="pages/aav.html">AAV</a>
+      <a href="pages/pan.html">PAN</a>
+      <a href="pages/gca-takayasu.html">GCA/TAK</a>
+      <a href="pages/crioglobulinemia.html">Crio</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">⚡ Plantão · Diagnóstico · Terapia inicial</span>
+      <h1>Vasculites: decisão rápida em paciente real</h1>
+      <p>Mini-plataforma prática para transformar suspeita clínica em conduta: <b>é vasculite?</b> → <b>qual vaso/órgão?</b> → <b>ameaça vida/órgão?</b> → <b>qual droga escolher?</b></p>
+      <div class="cta">
+        <a href="pages/simulador.html">🧠 Abrir simulador terapêutico</a>
+        <a href="#algoritmo">🩺 Ver algoritmo de plantão</a>
+        <a href="#modulos">📚 Escolher vasculite</a>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi"><strong>5</strong><span>módulos clínicos</span></div>
+        <div class="kpi"><strong>1</strong><span>simulador de droga</span></div>
+        <div class="kpi"><strong>8</strong><span>passos diagnósticos</span></div>
+        <div class="kpi"><strong>UTI</strong><span>alertas de órgão</span></div>
+      </div>
+    </div>
+    <aside class="panel soft">
+      <h2>🚨 Regra de ouro</h2>
+      <p class="quote">Vasculite grave não espera sorologia perfeita. Mas infecção grave, endocardite, TB e neoplasia podem imitar vasculite e piorar dramaticamente com imunossupressão.</p>
+      <div class="danger"><b>Antes da ciclo/ritux:</b> culturas se febre/choque, HBV/HCV/HIV, TB conforme risco, hemograma, rim/fígado, gravidez quando aplicável, vacinação/profilaxias se tempo clínico permitir.</div>
+    </aside>
+  </div>
+</section>
+
+<section class="section" id="algoritmo">
+ <div class="wrap">
+  <h2>🧭 Algoritmo de plantão em 8 passos</h2>
+  <p class="sub">Use como checklist mental quando chega paciente com púrpura, neuropatia, rim ativo, febre inflamatória ou síndrome sistêmica.</p>
+  <div class="flow">
+    <div class="step"><div class="num">1</div><div><b>Confirmar síndrome inflamatória vascular</b><br><span class="mini">Púrpura palpável, livedo/nódulos, mononeurite múltipla, GN ativa, DAH, isquemia mesentérica, cefaleia nova >50 anos, claudicação de membros.</span></div></div>
+    <div class="step"><div class="num">2</div><div><b>Procurar ameaça de órgão/vida</b><br><span class="mini">Rim rapidamente piorando, hipoxemia/hemorragia alveolar, olho, SNC, mesentério, coração, neuropatia motora progressiva.</span></div></div>
+    <div class="step"><div class="num">3</div><div><b>Excluir mimetizadores perigosos</b><br><span class="mini">Sepse, endocardite, TB/fungo, neoplasia, embolia, cocaína/levamisol, SAF catastrófica, DRESS, IgA pós-infecção.</span></div></div>
+    <div class="step"><div class="num">4</div><div><b>Definir vaso dominante</b><br><span class="mini">Grande vaso: GCA/TAK · Médio vaso: PAN · Pequeno vaso ANCA: AAV · Imunocomplexos: crio/IgA/anti-GBM diferencial.</span></div></div>
+    <div class="step"><div class="num">5</div><div><b>Coletar painel que muda tratamento</b><br><span class="mini">ANCA PR3/MPO, EAS/sedimento/proteinúria, creatinina, complemento/C4, crioglobulinas, HBV/HCV/HIV, TC tórax, angioTC/RM/PET conforme fenótipo.</span></div></div>
+    <div class="step"><div class="num">6</div><div><b>Biopsiar quando acessível, sem atrasar emergência</b><br><span class="mini">Pele, nervo/músculo, rim, temporal. Em GCA ocular e AAV grave: tratar primeiro se atraso ameaçar órgão.</span></div></div>
+    <div class="step"><div class="num">7</div><div><b>Induzir remissão conforme gravidade</b><br><span class="mini">Corticoide + rituximabe/ciclofosfamida/tocilizumabe/antiviral conforme doença. Plasmaférese só em nichos específicos.</span></div></div>
+    <div class="step"><div class="num">8</div><div><b>Planejar manutenção desde o dia 1</b><br><span class="mini">Reduzir corticoide, prevenir PJP/osteoporose/úlcera/trombose conforme risco, vacinar, monitorar recaída e toxicidade.</span></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="modulos">
+ <div class="wrap">
+  <h2>📚 Mini-plataforma por doença</h2>
+  <p class="sub">Cada página responde: quando suspeitar, como confirmar, quando internar, qual droga escolher e o que não esquecer.</p>
+  <div class="searchbar"><input id="q" placeholder="Buscar: rim, pele, DAH, neuropatia, HBV, visual, rituximabe..."/><button class="filterbtn active" data-filter="all">Todos</button><button class="filterbtn" data-filter="anca">ANCA</button><button class="filterbtn" data-filter="medio">Médio vaso</button><button class="filterbtn" data-filter="grande">Grande vaso</button><button class="filterbtn" data-filter="imuno">Imunocomplexos</button></div>
+  <div class="grid three">
+    <article class="card module-card" data-card data-group="anca"><h3>🧪 AAV — GPA/MPA/EGPA</h3><p>Rim ativo, hemorragia alveolar, ORL/pulmão, neuropatia, ANCA PR3/MPO.</p><div class="chiprow"><span class="chip red">rim/DAH</span><span class="chip">RTX vs CYC</span><span class="chip">avacopan</span></div><div class="cta"><a href="pages/aav.html">Abrir módulo</a></div></article>
+    <article class="card module-card" data-card data-group="medio"><h3>🩸 PAN</h3><p>Vasculite de médio vaso: livedo/nódulos, neuropatia, dor abdominal, aneurismas, HBV.</p><div class="chiprow"><span class="chip red">mesentério</span><span class="chip">ciclofosfamida</span><span class="chip">HBV</span></div><div class="cta"><a href="pages/pan.html">Abrir módulo</a></div></article>
+    <article class="card module-card" data-card data-group="grande"><h3>👁️ GCA / 🫀 Takayasu</h3><p>GCA: cefaleia/visual em >50. TAK: pulsos, sopros, PA assimétrica e grandes vasos.</p><div class="chiprow"><span class="chip red">olho</span><span class="chip">tocilizumabe</span><span class="chip">angioRM</span></div><div class="cta"><a href="pages/gca-takayasu.html">Abrir módulo</a></div></article>
+    <article class="card module-card" data-card data-group="imuno"><h3>❄️ Crioglobulinemia</h3><p>Púrpura + artralgia + neuropatia/GN, C4 baixo, HCV, coleta aquecida.</p><div class="chiprow"><span class="chip red">GN</span><span class="chip">rituximabe</span><span class="chip">DAA</span></div><div class="cta"><a href="pages/crioglobulinemia.html">Abrir módulo</a></div></article>
+    <article class="card module-card" data-card data-group="sim"><h3>🧠 Simulador terapêutico</h3><p>Escolha doença, gravidade, órgão-alvo e infecção viral para receber uma conduta inicial estruturada.</p><div class="chiprow"><span class="chip green">plantão</span><span class="chip">droga inicial</span><span class="chip">alertas</span></div><div class="cta"><a href="pages/simulador.html">Abrir simulador</a></div></article>
+    <article class="card module-card" data-card data-group="all"><h3>🧯 Alertas universais</h3><p>Imunossupressão forte exige rastrear infecção, hepatites, risco de PJP, fertilidade, citopenias e rim/fígado.</p><div class="chiprow"><span class="chip red">segurança</span><span class="chip">profilaxia</span></div><div class="cta"><a href="#seguranca">Ver segurança</a></div></article>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="seguranca">
+ <div class="wrap">
+  <h2>🛡️ Segurança antes da imunossupressão pesada</h2>
+  <div class="grid three">
+    <div class="redflag"><span>🦠</span><div><b>Infecção oculta</b><br><span class="mini">Endocardite, TB, fungo, HIV, hepatites e sepse podem mimetizar vasculite.</span></div></div>
+    <div class="redflag"><span>💊</span><div><b>Profilaxias</b><br><span class="mini">PJP se corticoide alto + ciclo/RTX; proteção gástrica/osso conforme risco; vacinação se tempo permitir.</span></div></div>
+    <div class="redflag"><span>🧬</span><div><b>Antes de ciclofosfamida</b><br><span class="mini">Hemograma, rim/fígado, fertilidade, bexiga/hidratação, dose por idade/rim e risco infeccioso.</span></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="fontes">
+  <div class="wrap">
+    <div class="panel soft">
+      <h2>📚 Fontes clínicas principais</h2>
+      <p class="sub">Conteúdo educacional, sem substituir avaliação especializada. Revisado para uso como apoio rápido de plantão.</p>
+      <ul class="mini">
+        <li>Chapel Hill Consensus Conference 2012 — nomenclatura das vasculites.</li>
+        <li>ACR/Vasculitis Foundation 2021 — AAV, PAN, GCA e Takayasu.</li>
+        <li>EULAR 2024 — recomendações atualizadas para vasculites ANCA-associadas.</li>
+        <li>KDIGO 2024 — capítulo de vasculite ANCA com acometimento renal.</li>
+        <li>EULAR 2024 — imagem em vasculites de grandes vasos.</li>
+        <li>Revisões e consensos sobre vasculite crioglobulinêmica, rituximabe, antivirais diretos e plasmaférese em cenários graves.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="sticky-tools"><button onclick="toggleTheme()" title="Tema">◐</button><button onclick="printPage()" title="Imprimir/PDF">⎙</button><button onclick="scrollTo(0,0)" title="Topo">↑</button></div>
+<footer class="footer"><div class="wrap"><b>🧬 Vasculites Decision — Antigravity Consultas</b><br><span class="mini">Versão 2.0 · Atualizado em 06/06/2026 · Uso educacional e apoio cognitivo; não substitui julgamento clínico, protocolos locais, bula nem discussão com especialista.</span></div></footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
