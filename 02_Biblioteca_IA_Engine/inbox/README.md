@@ -1,48 +1,40 @@
-# Inbox — Biblioteca IA
+# 🧠 Enciclopédia Médica Intensiva — Módulo 01: AVC Agudo
 
-Use esta pasta para documentos novos que ainda precisam de triagem, tema, resumo ou revisão antes de entrar no acervo curado.
+**Data da versão:** 2026-05-05  
+**Uso:** importar/abrir no Google Antigravity, Obsidian, VS Code, GitHub ou qualquer leitor Markdown/HTML.  
+**Foco:** Emergência + Enfermaria + UTI + preparação TEMI.  
 
-## O que colocar aqui
+> ⚠️ Este material é apoio educacional e operacional. Deve ser adaptado ao protocolo institucional, disponibilidade local, avaliação neurológica/neurocirúrgica e julgamento clínico.
 
-- PDFs, DOC/DOCX, planilhas, CSV/TSV, Markdown, TXT, HTML e slides recebidos para avaliação.
-- Materiais clínicos ainda sem tema definitivo.
-- Arquivos que precisam de revisão de privacidade, fonte, validade científica ou utilidade TEMI/plantão.
+## Estrutura do pacote
 
-## Quando não usar o inbox
+| Arquivo | Função |
+|---|---|
+| `00_HOME.md` | Página inicial do módulo e mapa de navegação |
+| `01_AVC_AGUDO_UTI.md` | Conteúdo principal completo |
+| `02_CHECKLISTS.md` | Checklists rápidos de porta, UTI e round |
+| `03_PRESCRICAO_BUNDLE.md` | Prescrição-bundle e cuidados que não podem faltar |
+| `04_FLASHCARDS.md` | Flashcards para revisão ativa |
+| `05_QUESTOES_TEMI.md` | Questões estilo TEMI com comentários |
+| `06_ESCALAS_ALGORITMOS.md` | NIHSS, ASPECTS, mRS, ICH Score, ABCD2 e algoritmos |
+| `07_REFERENCIAS.md` | Referências e trilha de atualização contínua |
+| `08_PROMPT_ANTIGRAVITY_RULES.md` | Prompt/rules para colar no Antigravity |
+| `metadata.json` | Metadados do módulo para indexação |
+| `index.html` | Versão HTML navegável local |
+| `style.css` | Estilo visual do HTML |
 
-Se o conteúdo já estiver curado e o tema estiver claro, coloque diretamente em:
+## Como usar no Antigravity
 
-```text
-02_Biblioteca_IA_Engine/acervo/<tema>/
-```
+1. Copie a pasta `enciclopedia_avc_agudo_antigravity` para dentro do seu projeto.
+2. Abra o arquivo `08_PROMPT_ANTIGRAVITY_RULES.md`.
+3. Cole as regras no contexto/rules do projeto.
+4. Peça ao Antigravity: **“Assimile este módulo como Módulo 01 da Enciclopédia Médica Intensiva e gere navegação entre arquivos.”**
+5. Use `index.html` para visualização rápida e os `.md` para edição contínua.
 
-Exemplos de temas: `uti-geral`, `sepse-choque`, `vm-sdra`, `nefro-aki-trs`, `infectologia`, `neuro-uti`, `cardio-hemodinamica`, `pocus-usg`, `temi-prova`.
+## Próximos produtos sugeridos
 
-## Atualizar catálogo
-
-Na raiz do repositório:
-
-```bash
-bash scripts_admin/atualizar_tudo.sh
-```
-
-Ou apenas a Biblioteca:
-
-```bash
-cd 02_Biblioteca_IA_Engine
-bash scan_inbox.sh
-```
-
-Antes de publicar, valide:
-
-```bash
-python3 scripts_admin/check_static_manifests.py
-python3 scripts_admin/validar_paths.py --check
-```
-
-## Regras de segurança
-
-- Nunca inserir dados identificáveis de pacientes.
-- Preferir nomes sem `:` e sem caracteres especiais.
-- Não apagar arquivos do acervo sem revisão manual.
-- Conteúdo educacional: não substitui julgamento clínico nem protocolo institucional.
+- 📱 Wallpaper 1080×1920: Código AVC em 10 minutos.
+- 📱 Wallpaper 1080×1920: Hemorragia intracerebral na UTI.
+- 🧾 Modelo de evolução médica: AVCi pós-trombólise.
+- 🎮 Modo NEURO ICU para Passa-Tempo TEMI.
+- 📊 Dashboard de indicadores: porta-TC, porta-agulha, porta-punção.

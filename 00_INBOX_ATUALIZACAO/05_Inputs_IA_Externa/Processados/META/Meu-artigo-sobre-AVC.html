@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Enciclopédia TEMI/UTI – AVC Agudo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
+        .adhd-highlight { background: linear-gradient(120deg, #fef08a 0%, #fde047 100%); padding: 0.1em 0.4em; border-radius: 0.4rem; font-weight: 700; color: #422006; }
+        .dark .adhd-highlight { background: linear-gradient(120deg, #eab308 0%, #ca8a04 100%); color: #fefce8; }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-4px); }
+        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .flipped .flash-inner { transform: rotateY(180deg); }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .dark .scrollbar-thin::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="bg-[#f8fafc] dark:bg-slate-950 text-slate-800 dark:text-slate-100 antialiased selection:bg-yellow-300 selection:text-slate-900">
+    <!-- HEADER -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 h-[68px] flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <button id="menuBtn" class="lg:hidden p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-600 grid place-items-center text-2xl shadow-lg shadow-violet-600/20">🧠</div>
+                    <div>
+                        <h1 class="text-[17px] sm:text-xl font-extrabold tracking-tight leading-tight">Enciclopédia TEMI/UTI – AVC Agudo ⚡</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium hidden sm:block">Interativa • Atualizada • Beira-leito</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="hidden md:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">✓ AHA/ASA 2026</span>
+                <button id="themeToggle" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="fixed top-[68px] left-0 w-[300px] h-[calc(100vh-68px)] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 -translate-x-full lg:translate-x-0 transition-transform duration-300 z-30 overflow-y-auto scrollbar-thin">
+        <nav class="p-4">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-3">Navegação Rápida</p>
+            <ul class="space-y-1 text-[14px]">
+                <li><a href="#definicao" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">🧠 Definição</a></li>
+                <li><a href="#epidemiologia" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">📊 Epidemiologia</a></li>
+                <li><a href="#etiologias" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">🧩 Etiologias</a></li>
+                <li><a href="#fisiopatologia" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">⚙️ Fisiopatologia</a></li>
+                <li><a href="#clinica" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">🚨 Clínica</a></li>
+                <li><a href="#diagnostico" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">🔍 Diagnóstico</a></li>
+                <li><a href="#prevencao" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">🛡️ Prevenção</a></li>
+                <li><a href="#tratamento" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">💉 Tratamento</a></li>
+                <li><a href="#farmacologia" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">💊 Farmacologia</a></li>
+                <li><a href="#metas" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">🎯 Metas UTI</a></li>
+                <li><a href="#prescricao" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">📝 Prescrição</a></li>
+                <li><a href="#bundles" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">📦 Bundles</a></li>
+                <li><a href="#escalas" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">📏 Escalas</a></li>
+                <li><a href="#mnemonicos" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">🧠 Mnemônicos</a></li>
+                <li><a href="#flashcards" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">🃏 Flashcards</a></li>
+                <li><a href="#questoes" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">❓ Questões</a></li>
+                <li><a href="#pegadinhas" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">⚠️ Pegadinhas</a></li>
+                <li><a href="#insights" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">💡 Insights</a></li>
+                <li><a href="#pesquisas" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">🔬 Pesquisas</a></li>
+                <li><a href="#referencias" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">📚 Referências</a></li>
+            </ul>
+            <div class="mt-6 p-3.5 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-200/50 dark:border-amber-800/30">
+                <p class="text-xs font-bold text-amber-900 dark:text-amber-200">⚡ Dica ADHD</p>
+                <p class="text-xs text-amber-800 dark:text-amber-300 mt-1">Use ⌘+F para buscar. Clique nos cards para expandir.</p>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- OVERLAY MOBILE -->
+    <div id="overlay" class="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-20 hidden"></div>
+
+    <!-- MAIN -->
+    <main class="lg:ml-[300px] pt-[84px] pb-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- HERO -->
+            <div class="mb-8 p-6 sm:p-8 rounded-[2rem] bg-gradient-to-br from-violet-600 via-fuchsia-600 to-pink-600 text-white shadow-2xl shadow-violet-600/20 relative overflow-hidden">
+                <div class="absolute -right-20 -top-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+                <div class="relative">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-xs font-bold mb-3">ATUALIZADO 2026 • TEM FOCADO</div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">AVC Agudo em 21 Cards</h2>
+                    <p class="mt-2 text-white/90 max-w-2xl">Visual. Rápido. Beira-leito. Sem enrolação. <span class="font-bold">Tempo é cérebro.</span></p>
+                    <div class="mt-5 flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 rounded-xl bg-white/15 text-sm font-semibold">⏱️ Porta-agulha <25min</span>
+                        <span class="px-3 py-1.5 rounded-xl bg-white/15 text-sm font-semibold">🧪 TNK > tPA</span>
+                        <span class="px-3 py-1.5 rounded-xl bg-white/15 text-sm font-semibold">🎯 Metas claras</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1 DEFINIÇÃO -->
+            <section id="definicao" class="scroll-mt-24">
+                <details open class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl shadow-slate-200/60 dark:shadow-black/30 border border-slate-100 dark:border-slate-800 mb-6 card-hover overflow-hidden">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 grid place-items-center text-3xl shadow-lg shadow-blue-500/20">🧠</div>
+                            <div>
+                                <h3 class="text-2xl font-extrabold">Definição</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">O que é AVC em 10 segundos</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="p-5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200/50 dark:border-blue-900/50">
+                                <p class="text-sm font-bold text-blue-700 dark:text-blue-300 mb-1">AVC =</p>
+                                <p class="text-[15px] leading-snug"><strong>Déficit neurológico súbito</strong> por isquemia OU hemorragia. Focal. Sem trauma.</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-200/50 dark:border-cyan-900/50">
+                                <p class="text-sm font-bold text-cyan-700 dark:text-cyan-300 mb-1">Isquêmico</p>
+                                <p class="text-3xl font-extrabold">85% <span class="text-base font-semibold">dos casos</span></p>
+                                <p class="text-xs mt-1">Artéria ocluída</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200/50 dark:border-rose-900/50">
+                                <p class="text-sm font-bold text-rose-700 dark:text-rose-300 mb-1">Hemorrágico</p>
+                                <p class="text-3xl font-extrabold">15%</p>
+                                <p class="text-xs mt-1">Sangramento intraparenquimatoso ou HSA</p>
+                            </div>
+                        <div class="mt-4 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
+                            <p class="text-[15px]"><span class="adhd-highlight">Tempo = cérebro</span> → perde <strong>1,9 milhão de neurônios/minuto</strong>. Aja rápido.</p>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 2 EPIDEMIOLOGIA -->
+            <section id="epidemiologia" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6 card-hover">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-violet-500 grid place-items-center text-3xl shadow-lg shadow-purple-500/20">📊</div>
+                            <h3 class="text-2xl font-extrabold">Epidemiologia</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <ul class="grid sm:grid-cols-2 gap-3 text-[15px]">
+                            <li class="flex gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60"><span class="text-xl">🇧🇷</span><span><strong>2ª causa de morte</strong> no Brasil</span></li>
+                            <li class="flex gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60"><span class="text-xl">🎲</span><span><strong>1 em 4 pessoas</strong> terá AVC na vida</span></li>
+                            <li class="flex gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60"><span class="text-xl">👴</span><span>Mortalidade maior: idosos, <strong>HAS</strong>, <strong>FA</strong></span></li>
+                            <li class="flex gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60"><span class="text-xl">🏥</span><span>UTI: ~<strong>10% admissões neuro</strong> são AVC</span></li>
+                        </ul>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 3 ETIOLOGIAS -->
+            <section id="etiologias" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 grid place-items-center text-3xl shadow-lg shadow-amber-500/20">🧩</div>
+                            <h3 class="text-2xl font-extrabold">Etiologias (TOAST)</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <div class="p-4 rounded-2xl border-2 border-amber-300 dark:border-amber-700 bg-amber-50/70 dark:bg-amber-950/30"><p class="font-bold">1️⃣ Grandes vasos</p><p class="text-sm">Aterosclerose carótida/vertebral</p></div>
+                            <div class="p-4 rounded-2xl border-2 border-rose-300 dark:border-rose-700 bg-rose-50/70 dark:bg-rose-950/30"><p class="font-bold">2️⃣ Cardioembólico</p><p class="text-sm"><span class="adhd-highlight">FA</span> é #1</p></div>
+                            <div class="p-4 rounded-2xl border-2 border-sky-300 dark:border-sky-700 bg-sky-50/70 dark:bg-sky-950/30"><p class="font-bold">3️⃣ Pequenos vasos</p><p class="text-sm">Lacunar • HAS/DM</p></div>
+                            <div class="p-4 rounded-2xl border-2 border-violet-300 dark:border-violet-700 bg-violet-50/70 dark:bg-violet-950/30"><p class="font-bold">4️⃣ Outras</p><p class="text-sm">Dissecção, vasculite</p></div>
+                            <div class="p-4 rounded-2xl border-2 border-slate-300 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/30"><p class="font-bold">5️⃣ Indeterminado</p><p class="text-sm">Criptogênico</p></div>
+                        </div>
+                        <div class="mt-4 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900">
+                            <p class="font-bold text-rose-800 dark:text-rose-200 mb-1">Hemorrágico:</p>
+                            <p class="text-sm"><strong>HAS</strong> profunda, <strong>angiopatia amiloide</strong> lobar, anticoagulantes, malformação.</p>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 4 FISIOPATOLOGIA -->
+            <section id="fisiopatologia" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 grid place-items-center text-3xl shadow-lg">⚙️</div>
+                            <h3 class="text-2xl font-extrabold">Fisiopatologia</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+                                <p class="font-bold text-lg mb-2">🧊 Core</p>
+                                <p class="text-sm opacity-90">Morte neuronal em <strong>minutos</strong>. Irreversível. ATP = 0.</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white">
+                                <p class="font-bold text-lg mb-2">🌗 Penumbra</p>
+                                <p class="text-sm opacity-95">Salvável por <strong>horas</strong>. Alvo da reperfusão.</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 grid sm:grid-cols-4 gap-2 text-center text-[13px]">
+                            <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800">Falha ATP</div>
+                            <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800">Glutamato ↑</div>
+                            <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800">Cálcio ↑</div>
+                            <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800">Radicais livres</div>
+                        </div>
+                        <p class="mt-3 text-sm"><strong>Hemorrágico:</strong> efeito massa + toxicidade do sangue (hemoglobina → edema).</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 5 CLINICA -->
+            <section id="clinica" class="scroll-mt-24">
+                <details open class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-600 grid place-items-center text-3xl shadow-lg shadow-rose-500/20">🚨</div>
+                            <h3 class="text-2xl font-extrabold">Clínica</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <p class="font-bold mb-3">Início <span class="adhd-highlight">súbito</span> e focal. Use BE-FAST:</p>
+                        <div class="grid sm:grid-cols-3 gap-3">
+                            <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900"><p class="text-2xl">⚖️</p><p class="font-bold">B - Balance</p><p class="text-sm">Queda, ataxia</p></div>
+                            <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900"><p class="text-2xl">👀</p><p class="font-bold">E - Eyes</p><p class="text-sm">Diplopia, perda visual</p></div>
+                            <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900"><p class="text-2xl">🙂</p><p class="font-bold">F - Face</p><p class="text-sm">Assimetria</p></div>
+                            <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900"><p class="text-2xl">💪</p><p class="font-bold">A - Arm</p><p class="text-sm">Paresia</p></div>
+                            <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900"><p class="text-2xl">🗣️</p><p class="font-bold">S - Speech</p><p class="text-sm">Afasia, disartria</p></div>
+                            <div class="p-4 rounded-2xl bg-amber-100 dark:bg-amber-900/40 border-2 border-amber-400"><p class="text-2xl">⏱️</p><p class="font-bold">T - Time</p><p class="text-sm">Ligue 192</p></div>
+                        </div>
+                        <div class="mt-4 p-4 rounded-xl bg-slate-900 text-white dark:bg-black">
+                            <p class="font-bold">Hemorrágico: <span class="text-rose-300">cefaleia explosiva + vômitos + rebaixamento</span></p>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 6 DIAGNOSTICO -->
+            <section id="diagnostico" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 grid place-items-center text-3xl shadow-lg">🔍</div>
+                            <h3 class="text-2xl font-extrabold">Diagnóstico</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8 space-y-3 text-[15px]">
+                        <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50"><span class="text-xl">🫁</span><span><strong>ABC</strong> + sinais vitais</span></div>
+                        <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50"><span class="text-xl">🩸</span><span><strong>Glicemia capilar IMEDIATA</strong> – hipoglicemia mimetiza!</span></div>
+                        <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50"><span class="text-xl">🧮</span><span><strong>NIHSS</strong> na chegada</span></div>
+                        <div class="flex gap-3 items-start p-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900"><span class="text-xl">🧠</span><span><strong>TC sem contraste &lt;20 min</strong> porta-imagem</span></div>
+                        <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50"><span class="text-xl">🎭</span><span>Mimics: hipoglicemia, crise, enxaqueca, conversão</span></div>
+                        <div class="flex gap-3 items-start p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50"><span class="text-xl">⏰</span><span>Se &lt;4.5h: avaliar trombólise. Suspeita LVO? <strong>Angio-TC</strong></span></div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 7 PREVENCAO -->
+            <section id="prevencao" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 grid place-items-center text-3xl">🛡️</div>
+                            <h3 class="text-2xl font-extrabold">Prevenção</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <div class="grid sm:grid-cols-2 gap-2.5 text-[15px]">
+                            <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30">✓ Controle <strong>HAS</strong></div>
+                            <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30">✓ Controle <strong>DM</strong> e dislipidemia</div>
+                            <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30">✓ <strong>FA anticoagulada</strong> (CHA2DS2-VASc)</div>
+                            <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30">✓ Antiagregação pós-AVC não-cardioembólico</div>
+                            <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 sm:col-span-2">✓ Estilo de vida: parar cigarro, atividade física, dieta</div>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 8 TRATAMENTO -->
+            <section id="tratamento" class="scroll-mt-24">
+                <details open class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500 to-orange-600 grid place-items-center text-3xl shadow-lg shadow-red-500/20">💉</div>
+                            <h3 class="text-2xl font-extrabold">Tratamento</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <div class="space-y-3">
+                            <div class="p-4 rounded-2xl border-l-4 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"><p class="font-bold">0–4.5h ISQUÊMICO</p><p class="text-sm">Trombólise IV: <span class="adhd-highlight">Tenecteplase 0.25 mg/kg max 25mg bolus</span> OU alteplase 0.9 mg/kg max 90mg</p></div>
+                            <div class="p-4 rounded-2xl border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-950/30"><p class="font-bold">0–6h LVO</p><p class="text-sm">Trombectomia mecânica + TNK</p></div>
+                            <div class="p-4 rounded-2xl border-l-4 border-violet-500 bg-violet-50 dark:bg-violet-950/30"><p class="font-bold">6–24h</p><p class="text-sm">Trombectomia se <strong>DAWN/DEFUSE-3</strong> (mismatch)</p></div>
+                            <div class="p-4 rounded-2xl border-l-4 border-slate-500 bg-slate-50 dark:bg-slate-800/50"><p class="font-bold">Sem trombólise</p><p class="text-sm">AAS 300mg em 24–48h (após excluir hemorragia)</p></div>
+                            <div class="p-4 rounded-2xl border-l-4 border-rose-500 bg-rose-50 dark:bg-rose-950/30"><p class="font-bold">HEMORRÁGICO</p><p class="text-sm">Reverter anticoagulação • PA &lt;140 mmHg • Neurocirurgia se indicado</p></div>
+                        </div>
+                        <div class="mt-4 p-4 rounded-xl bg-slate-900 text-slate-100">
+                            <p class="font-bold mb-1">Suporte beira-leito:</p>
+                            <p class="text-sm opacity-90">Cabeceira 30° • SpO₂&gt;94% • Evitar hipertermia • <strong>Teste disfagia antes de VO</strong></p>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 9 FARMACOLOGIA -->
+            <section id="farmacologia" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 grid place-items-center text-3xl">💊</div>
+                            <h3 class="text-2xl font-extrabold">Farmacologia</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8 overflow-x-auto">
+                        <table class="w-full text-[14px]">
+                            <thead><tr class="border-b border-slate-200 dark:border-slate-700 text-left"><th class="pb-2 pr-4">Droga</th><th class="pb-2 pr-4">Dose</th><th class="pb-2">Nota</th></tr></thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <tr><td class="py-2.5 pr-4 font-semibold">Tenecteplase</td><td class="py-2.5 pr-4">0.25 mg/kg IV bolus, max 25mg</td><td class="py-2.5">Bolus único. Não inferior a alteplase. 2025 FDA.</td></tr>
+                                <tr><td class="py-2.5 pr-4 font-semibold">Alteplase</td><td class="py-2.5 pr-4">0.9 mg/kg (10% bolus, resto 60min) max 90mg</td><td class="py-2.5">Infusão 1h</td></tr>
+                                <tr><td class="py-2.5 pr-4 font-semibold">Labetalol / Nicardipina</td><td class="py-2.5 pr-4">EV titulável</td><td class="py-2.5">Controle PA peri-trombólise</td></tr>
+                                <tr><td class="py-2.5 pr-4 font-semibold">Reversão varfarina</td><td class="py-2.5 pr-4">PCC + Vit K 10mg EV</td><td class="py-2.5">INR alvo &lt;1.3</td></tr>
+                                <tr><td class="py-2.5 pr-4 font-semibold">Reversão DOAC</td><td class="py-2.5 pr-4">Idarucizumabe (dabigatrana) / Andexanet (Xa)</td><td class="py-2.5">Hemorragia grave</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 10 METAS -->
+            <section id="metas" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 grid place-items-center text-3xl">🎯</div>
+                            <h3 class="text-2xl font-extrabold">Metas na UTI</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-[15px]">
+                            <div class="p-4 rounded-2xl bg-teal-50 dark:bg-teal-950/30 border border-teal-200 dark:border-teal-900"><p class="font-bold">PA pré-TNK</p><p class="text-2xl font-extrabold">&lt;185/110</p></div>
+                            <div class="p-4 rounded-2xl bg-teal-50 dark:bg-teal-950/30 border border-teal-200 dark:border-teal-900"><p class="font-bold">PA pós-TNK</p><p class="text-2xl font-extrabold">&lt;180/105</p><p class="text-xs">por 24h</p></div>
+                            <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900"><p class="font-bold">PA hemorragia</p><p class="text-2xl font-extrabold">&lt;140/90</p></div>
+                            <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900"><p class="font-bold">Glicemia</p><p class="text-2xl font-extrabold">140–180</p><p class="text-xs">mg/dL</p></div>
+                            <div class="p-4 rounded-2xl bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-900"><p class="font-bold">Temp</p><p class="text-2xl font-extrabold">&lt;37.5°C</p></div>
+                            <div class="p-4 rounded-2xl bg-violet-50 dark:bg-violet-950/30 border border-violet-200 dark:border-violet-900"><p class="font-bold">SpO₂ / Na+</p><p class="text-lg font-bold">&gt;94% / 135–145</p></div>
+                        </div>
+                        <p class="mt-3 text-sm p-3 rounded-xl bg-amber-100 dark:bg-amber-900/30"><strong>Evitar hipotensão!</strong> Pressão de perfusão cerebral é vital.</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 11 PRESCRICAO -->
+            <section id="prescricao" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-600 to-slate-800 grid place-items-center text-3xl">📝</div>
+                            <h3 class="text-2xl font-extrabold">Prescrição sugerida</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <div class="p-5 rounded-2xl bg-slate-950 text-slate-100 font-mono text-[13px] leading-relaxed overflow-x-auto">
+<pre>1. Dieta ZERO até teste de disfagia (fono)
+2. Cabeceira 30-45°
+3. SF 0,9% 20 mL/h (manter euvolemia)
+4. Monitorização contínua PA, FC, SpO2, neuro hourly
+5. O2 se SpO2 <94%
+6. Dipirona 1g EV se T >37,5°C
+7. Insulina regular SC conforme glicemia alvo 140-180
+8. Profilaxia TEV: heparina após 24h se sem hemorragia
+9. Omeprazol 40mg EV 1x/dia
+10. Fisioterapia motora e respiratória precoce
+11. NÃO iniciar VO, NÃO AAS nas primeiras 24h pós-TNK</pre>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 12 BUNDLES -->
+            <section id="bundles" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 grid place-items-center text-3xl">📦</div>
+                            <h3 class="text-2xl font-extrabold">Bundles & Checklists</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <p class="font-bold mb-3">CODE STROKE – 10 itens (marque):</p>
+                        <div id="checklist" class="grid sm:grid-cols-2 gap-2 text-[14px]">
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-violet-600"> Hora última vez bem</label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-violet-600"> Glicemia capilar</label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-violet-600"> NIHSS calculado</label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-violet-600"> TC <20min porta-imagem</label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-violet-600"> PA <185/110</label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-violet-600"> Contraindicações checadas</label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-violet-600"> Peso aferido</label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-violet-600"> 2 acessos venosos</label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-violet-600"> Consentimento</label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"><input type="checkbox" class="w-4 h-4 accent-violet-600"> Neurocirurgia avisada se hemorragia</label>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 13 ESCALAS -->
+            <section id="escalas" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 grid place-items-center text-3xl">📏</div>
+                            <h3 class="text-2xl font-extrabold">Escalas</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8 space-y-4">
+                        <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/30"><p class="font-bold">Cincinnati (FAST)</p><p class="text-sm">3 testes: face, braço, fala. <strong>1 alterado = 72% AVC. 3 alterados >85%.</strong></p></div>
+                        <div class="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/30"><p class="font-bold">NIHSS (0–42)</p><p class="text-sm">&lt;4 leve • 4-15 moderado • &gt;15 grave • &gt;25 muito grave</p></div>
+                        <div class="p-4 rounded-2xl bg-violet-50 dark:bg-violet-950/30"><p class="font-bold">RACE ≥5</p><p class="text-sm">Sugere LVO (oclusão grande vaso) → acionar trombectomia</p></div>
+                        <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-800"><p class="font-bold">mRS</p><p class="text-sm">0 assintomático → 6 óbito. Meta <2 em 90 dias.</p></div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 14 MNEMONICOS -->
+            <section id="mnemonicos" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-fuchsia-500 to-pink-500 grid place-items-center text-3xl">🧠</div>
+                            <h3 class="text-2xl font-extrabold">Mnemônicos</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8 grid sm:grid-cols-2 gap-3">
+                        <div class="p-4 rounded-2xl border-2 border-dashed border-fuchsia-300 dark:border-fuchsia-800 bg-fuchsia-50/50 dark:bg-fuchsia-950/20"><p class="font-extrabold text-lg">BE-FAST</p><p class="text-sm">Balance, Eyes, Face, Arm, Speech, Time</p></div>
+                        <div class="p-4 rounded-2xl border-2 border-dashed border-amber-300 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-950/20"><p class="font-extrabold text-lg">4.5 TNK, 0.25 max 25</p><p class="text-sm">Janela e dose tenecteplase</p></div>
+                        <div class="p-4 rounded-2xl border-2 border-dashed border-rose-300 dark:border-rose-800 bg-rose-50/50 dark:bg-rose-950/20"><p class="font-extrabold text-lg">HEMORRAGIA</p><p class="text-sm">Dor cabeça explosiva, Vômito, Coma</p></div>
+                        <div class="p-4 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30"><p class="font-extrabold text-lg">Tempo é cérebro</p><p class="text-sm">Cada minuto conta</p></div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 15 FLASHCARDS -->
+            <section id="flashcards" class="scroll-mt-24">
+                <details open class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 grid place-items-center text-3xl">🃏</div>
+                            <h3 class="text-2xl font-extrabold">Flashcards</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8">
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Flashcard -->
+                            <div class="flashcard cursor-pointer h-36" onclick="this.classList.toggle('flipped')">
+                                <div class="flash-inner relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d]">
+                                    <div class="absolute inset-0 backface-hidden p-5 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white grid place-items-center text-center font-bold">Janela trombólise?</div>
+                                    <div class="absolute inset-0 backface-hidden [transform:rotateY(180deg)] p-5 rounded-2xl bg-slate-900 text-white grid place-items-center text-center font-extrabold text-xl">4,5 horas</div>
+                                </div>
+                            </div>
+                            <div class="flashcard cursor-pointer h-36" onclick="this.classList.toggle('flipped')">
+                                <div class="flash-inner relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d]">
+                                    <div class="absolute inset-0 backface-hidden p-5 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white grid place-items-center text-center font-bold">Dose TNK?</div>
+                                    <div class="absolute inset-0 backface-hidden [transform:rotateY(180deg)] p-5 rounded-2xl bg-slate-900 text-white grid place-items-center text-center font-extrabold text-xl">0,25 mg/kg max 25mg</div>
+                                </div>
+                            </div>
+                            <div class="flashcard cursor-pointer h-36" onclick="this.classList.toggle('flipped')">
+                                <div class="flash-inner relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d]">
+                                    <div class="absolute inset-0 backface-hidden p-5 rounded-2xl bg-gradient-to-br from-rose-600 to-pink-600 text-white grid place-items-center text-center font-bold">PA alvo hemorragia?</div>
+                                    <div class="absolute inset-0 backface-hidden [transform:rotateY(180deg)] p-5 rounded-2xl bg-slate-900 text-white grid place-items-center text-center font-extrabold text-xl">&lt;140/90 mmHg</div>
+                                </div>
+                            </div>
+                            <div class="flashcard cursor-pointer h-36" onclick="this.classList.toggle('flipped')">
+                                <div class="flash-inner relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d]">
+                                    <div class="absolute inset-0 backface-hidden p-5 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white grid place-items-center text-center font-bold">Primeiro exame?</div>
+                                    <div class="absolute inset-0 backface-hidden [transform:rotateY(180deg)] p-5 rounded-2xl bg-slate-900 text-white grid place-items-center text-center font-extrabold text-xl">Glicemia + TC sem contraste</div>
+                                </div>
+                            <div class="flashcard cursor-pointer h-36" onclick="this.classList.toggle('flipped')">
+                                <div class="flash-inner relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d]">
+                                    <div class="absolute inset-0 backface-hidden p-5 rounded-2xl bg-gradient-to-br from-sky-600 to-cyan-600 text-white grid place-items-center text-center font-bold">RACE ≥5 indica?</div>
+                                    <div class="absolute inset-0 backface-hidden [transform:rotateY(180deg)] p-5 rounded-2xl bg-slate-900 text-white grid place-items-center text-center font-extrabold text-xl">LVO → trombectomia</div>
+                                </div>
+                            <div class="flashcard cursor-pointer h-36" onclick="this.classList.toggle('flipped')">
+                                <div class="flash-inner relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d]">
+                                    <div class="absolute inset-0 backface-hidden p-5 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 text-white grid place-items-center text-center font-bold">Quando iniciar AAS?</div>
+                                    <div class="absolute inset-0 backface-hidden [transform:rotateY(180deg)] p-5 rounded-2xl bg-slate-900 text-white grid place-items-center text-center font-extrabold text-xl">24-48h após excluir sangramento</div>
+                                </div>
+                            </div>
+                        <p class="text-xs text-slate-500 mt-3">Clique para virar • ADHD-friendly: repetição ativa</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 16 QUESTOES -->
+            <section id="questoes" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 grid place-items-center text-3xl">❓</div>
+                            <h3 class="text-2xl font-extrabold">Questões comentadas</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8 space-y-4">
+                        <details class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60">
+                            <summary class="font-bold cursor-pointer">Q1. Homem 68a, FA sem anticoagulação, NIHSS 14, início há 2h. PA 190/105. Conduta?</summary>
+                            <div class="mt-3 text-sm space-y-2">
+                                <p><strong>Gabarito:</strong> Baixar PA para &lt;185/110 com nicardipina/labetalol EV, depois tenecteplase 0,25 mg/kg.</p>
+                                <p class="text-slate-600 dark:text-slate-300">Comentário: FA = cardioembólico. Janela &lt;4,5h. PA é contraindicação relativa – tratar primeiro. Não esperar PA normalizar espontaneamente.</p>
+                            </div>
+                        </details>
+                        <div class="grid sm:grid-cols-2 gap-3 mt-6">
+                            <span class="inline-flex items-center gap-3 px-4 py-1.5"></span>
+                        </div>
+
+                        <details class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60">
+                            <summary class="font-bold cursor-pointer">Q2. Mulher 55a, cefaleia súbita, vômitos, Glasgow 8, usa varfarina INR 3,5. TC: hematoma 30 mL.</summary>
+                            <div class="mt-3 text-sm space-y-2">
+                                <p><strong>Gabarito:</strong> Intubar (Glasgow ≤8), reverter com PCC + Vit K 10mg EV, PA alvo &lt;140 sistólica, acionar neurocirurgia.</p>
+                                <p class="text-slate-600 dark:text-slate-300">Comentário: HIC relacionado a anticoagulante. Tempo é cérebro também na hemorragia. Não dar plasma isolado.</p>
+                            </div>
+                        </details>
+                        <details class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60">
+                            <summary class="font-bold cursor-pointer">Q3. Paciente 3 dias pós-AVC isquêmico, disfagia não testada, febre 38,5°C, RX infiltrado.</summary>
+                            <div class="mt-3 text-sm space-y-2">
+                                <p><strong>Gabarito:</strong> Pneumonia aspirativa. Iniciar antibiótico, manter dieta zero, solicitar fono, cabeceira elevada.</p>
+                                <p class="text-slate-600 dark:text-slate-300">Comentário: Disfagia causa 50% das pneumonias pós-AVC. Prevenção é beira-leito.</p>
+                            </div>
+                        </details>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 17 PEGADINHAS -->
+            <section id="pegadinhas" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 to-rose-600 grid place-items-center text-3xl">⚠️</div>
+                            <h3 class="text-2xl font-extrabold">Pegadinhas</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8 space-y-2.5 text-[15px]">
+                        <div class="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/30 border-l-4 border-red-500"><strong>Hipoglicemia &lt;50</strong> mimetiza AVC perfeitamente. Sempre dosar!</div>
+                        <div class="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/30 border-l-4 border-red-500"><strong>NIHSS 0</strong> pode ter LVO (ex: afasia leve que melhorou). Faça RACE.</div>
+                        <div class="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/30 border-l-4 border-red-500">Não dar <strong>O₂ se SpO₂ normal</strong>. Hiperóxia piora penumbra.</div>
+                        <div class="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/30 border-l-4 border-red-500">Não baixar PA agressivo <strong>pré-reperfusão</strong> (exceto &gt;185/110).</div>
+                        <div class="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/30 border-l-4 border-red-500">Não iniciar AAS/nas primeiras 24h <strong>pós-TNK</strong>.</div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 18 INSIGHTS -->
+            <section id="insights" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-yellow-500 grid place-items-center text-3xl">💡</div>
+                            <h3 class="text-2xl font-extrabold">Insights beira-leito</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8 grid sm:grid-cols-2 gap-3 text-[15px]">
+                        <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30">UTI não é esperar. É <strong>antecipar herniação</strong> (piora do nível, anisocoria).</div>
+                        <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30">Disfagia = <strong>pneumonia</strong>. Teste fono antes de qualquer VO.</div>
+                        <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30">Mobile stroke unit reduz <strong>porta-agulha em 30min</strong>.</div>
+                        <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30">Comunique: <strong>última vez bem</strong>, não hora que encontrou.</div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 19 PESQUISAS -->
+            <section id="pesquisas" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 grid place-items-center text-3xl">🔬</div>
+                            <h3 class="text-2xl font-extrabold">Pesquisas em andamento</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8 space-y-2 text-[15px]">
+                        <p>• <strong>AHA/ASA 2026:</strong> Tenecteplase como padrão ouro sobre alteplase</p>
+                        <p>• <strong>TIMELESS trial:</strong> TNK 4.5–24h com mismatch perfusão</p>
+                        <p>• <strong>Unidades móveis</strong> no Brasil (SAMU AVC)</p>
+                        <p>• Neuroproteção e controle glicêmico estrito em estudo</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 20 REFERENCIAS -->
+            <section id="referencias" class="scroll-mt-24">
+                <details class="group bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 mb-6">
+                    <summary class="flex items-center justify-between p-6 sm:p-8 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 grid place-items-center text-3xl">📚</div>
+                            <h3 class="text-2xl font-extrabold">Referências</h3>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 sm:px-8 pb-8 text-[14px] space-y-1.5">
+                        <p>• UpToDate 2026 – Acute ischemic stroke management</p>
+                        <p>• AHA/ASA Guideline for Early Management of AIS, 2026 Update</p>
+                        <p>• Sociedade Brasileira de AVC – Diretrizes 2024-2025</p>
+                        <p>• Medway – Preparatório TEMI/UTI 2026</p>
+                        <p>• NEJM 2025 – Tenecteplase vs Alteplase (AcT, TASTE trials)</p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 21 MENSAGEM FINAL -->
+            <section id="mensagem" class="scroll-mt-24">
+                <div class="p-8 sm:p-10 rounded-[2rem] bg-gradient-to-br from-violet-600 via-fuchsia-600 to-pink-600 text-white shadow-2xl shadow-violet-600/20 text-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.2),transparent_50%)]"></div>
+                    <div class="relative">
+                        <div class="text-5xl mb-3">💬</div>
+                        <h3 class="text-2xl sm:text-3xl font-extrabold">Mensagem Final</h3>
+                        <p class="mt-3 max-w-2xl mx-auto text-white/90 text-[16px] leading-relaxed">Você não trata um exame. Você salva um cérebro. <strong>Seja rápido, seja sistemático, seja humano.</strong> Na dúvida, ative o CODE STROKE. Cada minuto que você ganha é uma palavra, um passo, uma vida que volta.</p>
+                        <p class="mt-4 font-bold text-amber-200">⚡ Tempo é cérebro. E você é o tempo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="mt-12 text-center text-xs text-slate-500 dark:text-slate-500">
+                Enciclopédia TEMI/UTI • Feito para aprendizado rápido • v2026.1
+            </footer>
+        </div>
+    </main>
+
+    <script>
+        // Theme
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+        if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        }
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+        });
+
+        // Sidebar mobile
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+        menuBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+        document.querySelectorAll('.nav-link').forEach(a => {
+            a.addEventListener('click', () => {
+                if (window.innerWidth < 1024) toggleSidebar();
+            });
+        });
+
+        // Checklist save
+        const checklist = document.getElementById('checklist');
+        if (checklist) {
+            const boxes = checklist.querySelectorAll('input[type="checkbox"]');
+            boxes.forEach((box, i) => {
+                const key = 'avc-check-' + i;
+                box.checked = localStorage.getItem(key) === '1';
+                box.addEventListener('change', () => localStorage.setItem(key, box.checked ? '1' : '0'));
+            });
+        }
+
+        // Active nav on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(sec => {
+                const top = sec.offsetTop - 120;
+                if (pageYOffset >= top) current = sec.id;
+            });
+            navLinks.forEach(link => {
+                link.classList.toggle('bg-violet-100', link.getAttribute('href') === '#' + current);
+                link.classList.toggle('dark:bg-violet-900/30', link.getAttribute('href') === '#' + current);
+                link.classList.toggle('font-bold', link.getAttribute('href') === '#' + current);
+            });
+        });
+    </script>
+</body>
+</html>
