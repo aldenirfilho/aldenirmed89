@@ -985,7 +985,8 @@ footer h4{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter
   const obs=new IntersectionObserver(es=>{
     es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));
       const a=map[e.target.id];if(a){a.classList.add('active');
-        a.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});}}});
+        // a.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'}); // REMOVIDO para evitar travamento no mobile
+      }}});
   },{rootMargin:'-45% 0px -50% 0px'});
   secs.forEach(s=>obs.observe(s));
 })();
