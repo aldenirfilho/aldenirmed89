@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RenalDose ICU · Ajuste de Antimicrobianos para Função Renal · Antigravity</title>
+<meta name="description" content="Tutorial e calculadora prática de ajuste de doses de antimicrobianos para função renal em UTI adulto. CKD-EPI 2021, Cockcroft-Gault, KDIGO CKD 2024, AKI 2012. Base: Sanford Guide e UpToDate."/>
+<meta name="theme-color" content="#040d1a"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANTIGRAVITY · RENALDOSE ICU                                ║
+  ║  Módulo 13 — Ajuste de Antimicrobianos para Função Renal    ║
+  ║  Standalone HTML — CSS/JS inline. Deploy-safe.              ║
+  ║  Base: Sanford Guide 55ª ed., UpToDate, KDIGO CKD 2024,     ║
+  ║         KDIGO AKI 2012, IDSA, ASHP, bulas ANVISA.           ║
+  ║  AVISO MÉDICO: Apoio à decisão. Não substitui julgamento    ║
+  ║  clínico, farmácia clínica nem nefrologia.                  ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<style>
+:root{
+  --bg:#040d1a;--bg2:#071422;--bg3:#0b1a2e;
+  --surf:rgba(255,255,255,.055);--surf-h:rgba(255,255,255,.09);
+  --brd:rgba(255,255,255,.09);--brd-h:rgba(255,255,255,.18);
+  --text:#e4edf8;--muted:#5c7a9a;--soft:#93b0cc;
+  --cyan:#3ee8ff;--cyan-d:rgba(62,232,255,.14);
+  --violet:#a98cff;--vio-d:rgba(169,140,255,.14);
+  --green:#4ef0a1;--grn-d:rgba(78,240,161,.12);
+  --yellow:#ffd166;--yel-d:rgba(255,209,102,.13);
+  --red:#ff6060;--red-d:rgba(255,96,96,.13);
+  --orange:#ff9a3c;--orange-d:rgba(255,154,60,.15);
+  --font-head:'Syne',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-body:'Outfit',sans-serif;
+  --r:14px;--r-lg:22px;--r-xl:32px;
+  --shadow:0 24px 80px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+  line-height:1.55;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(circle at 18% 10%,rgba(255,96,96,.10),transparent 45%),
+    radial-gradient(circle at 88% 80%,rgba(62,232,255,.08),transparent 50%),
+    radial-gradient(circle at 50% 50%,rgba(169,140,255,.05),transparent 60%);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select{font-family:inherit;color:inherit}
+
+.shell{max-width:1280px;margin:0 auto;padding:0 28px}
+
+/* ── HEADER ──────────────────────────────── */
+header.top{
+  position:sticky;top:0;z-index:50;
+  background:rgba(4,13,26,.78);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--brd);
+}
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1280px;margin:0 auto;padding:14px 28px;gap:16px;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,var(--red),var(--orange));
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.brand-text strong{font-family:var(--font-head);font-size:.95rem;letter-spacing:.5px;display:block}
+.brand-text span{font-size:.7rem;color:var(--muted);font-family:var(--font-mono)}
+.nav-back{
+  font-family:var(--font-mono);font-size:.78rem;
+  padding:8px 14px;border:1px solid var(--brd);border-radius:10px;
+  color:var(--soft);transition:.2s;
+}
+.nav-back:hover{color:var(--cyan);border-color:var(--brd-h);background:var(--surf)}
+
+/* ── HERO ────────────────────────────────── */
+.hero{padding:48px 0 24px}
+.hero-eyebrow{
+  display:inline-block;font-family:var(--font-mono);font-size:.78rem;
+  color:var(--red);letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:14px;padding:6px 12px;border:1px solid rgba(255,96,96,.25);
+  border-radius:999px;background:var(--red-d);
+}
+.hero-eyebrow::before{content:'// ';opacity:.6}
+.hero h1{
+  font-family:var(--font-head);font-size:clamp(2rem,4.5vw,3rem);
+  font-weight:800;line-height:1.1;margin-bottom:14px;
+}
+.hero h1 .hl{
+  background:linear-gradient(90deg,var(--red),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-lead{color:var(--soft);font-size:1.05rem;max-width:780px;margin-bottom:22px}
+.warn-box{
+  background:linear-gradient(135deg,rgba(255,154,60,.10),rgba(255,96,96,.06));
+  border:1px solid rgba(255,154,60,.25);border-radius:var(--r-lg);
+  padding:18px 22px;margin-top:22px;display:flex;gap:14px;align-items:flex-start;
+}
+.warn-box .ico{font-size:24px;flex-shrink:0}
+.warn-box p{font-size:.9rem;color:var(--soft);line-height:1.6}
+.warn-box strong{color:var(--yellow)}
+
+/* ── CALCULATOR ──────────────────────────── */
+.calc-section{padding:32px 0}
+.section-label{
+  font-family:var(--font-mono);font-size:.75rem;color:var(--muted);
+  letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;
+}
+.section-title{
+  font-family:var(--font-head);font-size:clamp(1.5rem,2.5vw,2rem);
+  font-weight:800;margin-bottom:6px;
+}
+.section-sub{color:var(--soft);margin-bottom:24px;font-size:.95rem}
+
+.calc-grid{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:24px;
+  background:linear-gradient(135deg,rgba(62,232,255,.04),rgba(169,140,255,.03));
+  border:1px solid var(--brd);border-radius:var(--r-xl);
+  padding:28px;
+}
+.calc-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{
+  font-family:var(--font-mono);font-size:.72rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1px;
+}
+.field input,.field select{
+  background:var(--bg3);border:1px solid var(--brd);border-radius:10px;
+  padding:11px 14px;font-size:.95rem;transition:.2s;
+}
+.field input:focus,.field select:focus{
+  outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-d);
+}
+.field-full{grid-column:1/-1}
+.field-help{font-size:.7rem;color:var(--muted);font-family:var(--font-mono)}
+
+.calc-result{
+  background:var(--bg3);border:1px solid var(--brd);border-radius:var(--r-lg);
+  padding:24px;display:flex;flex-direction:column;justify-content:center;
+}
+.result-eyebrow{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.result-value{font-family:var(--font-head);font-size:3rem;font-weight:800;line-height:1;margin-bottom:6px}
+.result-unit{font-size:.85rem;color:var(--soft);font-family:var(--font-mono);margin-bottom:18px}
+.result-stage{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:10px;font-weight:600;font-size:.9rem;
+  font-family:var(--font-mono);
+}
+.result-stage .dot{width:10px;height:10px;border-radius:50%}
+.stage-G1{background:rgba(78,240,161,.13);color:var(--green)} .stage-G1 .dot{background:var(--green)}
+.stage-G2{background:rgba(106,169,255,.13);color:#6aa9ff} .stage-G2 .dot{background:#6aa9ff}
+.stage-G3a{background:rgba(255,209,102,.13);color:var(--yellow)} .stage-G3a .dot{background:var(--yellow)}
+.stage-G3b{background:rgba(255,154,60,.15);color:var(--orange)} .stage-G3b .dot{background:var(--orange)}
+.stage-G4{background:rgba(255,96,96,.13);color:var(--red)} .stage-G4 .dot{background:var(--red)}
+.stage-G5{background:rgba(169,140,255,.14);color:var(--violet)} .stage-G5 .dot{background:var(--violet)}
+.result-eq-toggle{
+  display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;
+}
+.eq-btn{
+  font-family:var(--font-mono);font-size:.72rem;
+  padding:6px 11px;border:1px solid var(--brd);border-radius:8px;
+  color:var(--soft);transition:.2s;
+}
+.eq-btn.active{background:var(--cyan-d);color:var(--cyan);border-color:rgba(62,232,255,.3)}
+.eq-btn:hover{border-color:var(--brd-h)}
+
+/* ── FILTROS / BUSCA ─────────────────────── */
+.filter-bar{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  margin:32px 0 18px;padding:14px 18px;
+  background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-lg);
+}
+.search-box{
+  flex:1;min-width:240px;display:flex;align-items:center;gap:10px;
+  background:var(--bg3);border:1px solid var(--brd);border-radius:10px;
+  padding:8px 14px;
+}
+.search-box input{
+  flex:1;background:none;border:none;outline:none;font-size:.95rem;
+}
+.search-box .ico{color:var(--muted);font-size:16px}
+.chip{
+  font-family:var(--font-mono);font-size:.72rem;
+  padding:7px 12px;border:1px solid var(--brd);border-radius:999px;
+  color:var(--soft);transition:.2s;
+}
+.chip:hover{border-color:var(--brd-h);color:var(--text)}
+.chip.active{background:var(--cyan-d);color:var(--cyan);border-color:rgba(62,232,255,.3)}
+.chip-red.active{background:var(--red-d);color:var(--red);border-color:rgba(255,96,96,.3)}
+.chip-violet.active{background:var(--vio-d);color:var(--violet);border-color:rgba(169,140,255,.3)}
+.chip-yellow.active{background:var(--yel-d);color:var(--yellow);border-color:rgba(255,209,102,.3)}
+.chip-green.active{background:var(--grn-d);color:var(--green);border-color:rgba(78,240,161,.3)}
+
+/* ── DRUG CARDS ──────────────────────────── */
+.drugs-grid{display:grid;gap:18px;padding-bottom:80px}
+.drug-card{
+  background:var(--surf);border:1px solid var(--brd);
+  border-radius:var(--r-lg);padding:22px;
+  transition:.2s;
+}
+.drug-card:hover{border-color:var(--brd-h);background:var(--surf-h)}
+.drug-head{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  gap:14px;margin-bottom:14px;flex-wrap:wrap;
+}
+.drug-name{
+  font-family:var(--font-head);font-size:1.35rem;font-weight:800;
+}
+.drug-class{
+  font-family:var(--font-mono);font-size:.72rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1px;margin-top:4px;
+}
+.drug-tags{display:flex;gap:6px;flex-wrap:wrap}
+.drug-tag{
+  font-family:var(--font-mono);font-size:.68rem;
+  padding:4px 10px;border-radius:6px;letter-spacing:.5px;
+  background:var(--bg3);color:var(--soft);border:1px solid var(--brd);
+}
+.tag-rec{background:var(--red-d);color:var(--red);border-color:rgba(255,96,96,.25)}
+.tag-hd{background:var(--cyan-d);color:var(--cyan);border-color:rgba(62,232,255,.25)}
+.tag-crrt{background:var(--vio-d);color:var(--violet);border-color:rgba(169,140,255,.25)}
+.tag-time{background:var(--grn-d);color:var(--green);border-color:rgba(78,240,161,.25)}
+
+.dose-row{
+  display:grid;grid-template-columns:140px 1fr 1fr;gap:12px;
+  padding:10px 0;border-top:1px dashed var(--brd);
+  font-size:.88rem;align-items:flex-start;
+}
+.dose-row:first-of-type{border-top:1px solid var(--brd-h)}
+.dose-row .gfr-label{
+  font-family:var(--font-mono);font-size:.78rem;font-weight:600;
+  display:flex;align-items:center;gap:8px;
+}
+.dose-row .gfr-label .dot{width:8px;height:8px;border-radius:50%}
+.dose-row.highlight{background:rgba(255,209,102,.07);margin:4px -10px;padding:10px;border-radius:10px;border-top:1px solid rgba(255,209,102,.25)}
+.dose-row .dose-text strong{color:var(--text)}
+.dose-row .dose-text{color:var(--soft);line-height:1.5}
+.dose-row .pres-text{color:var(--muted);font-family:var(--font-mono);font-size:.78rem;line-height:1.5}
+
+.drug-notes{
+  margin-top:14px;padding:12px 14px;
+  background:rgba(62,232,255,.05);border-left:3px solid var(--cyan);
+  border-radius:6px;font-size:.84rem;color:var(--soft);
+}
+.drug-notes strong{color:var(--cyan);font-family:var(--font-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px}
+.drug-warn{
+  margin-top:8px;padding:12px 14px;
+  background:rgba(255,96,96,.06);border-left:3px solid var(--red);
+  border-radius:6px;font-size:.84rem;color:var(--soft);
+}
+.drug-warn strong{color:var(--red);font-family:var(--font-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px}
+.drug-ref{
+  margin-top:10px;font-family:var(--font-mono);font-size:.7rem;
+  color:var(--muted);
+}
+
+/* ── TUTORIAL ────────────────────────────── */
+.tutorial{padding:36px 0;border-top:1px solid var(--brd);margin-top:24px}
+.tut-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:20px}
+.tut-card{
+  background:var(--surf);border:1px solid var(--brd);
+  border-radius:var(--r-lg);padding:20px;
+}
+.tut-card h4{
+  font-family:var(--font-head);font-size:1.05rem;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;
+}
+.tut-card .num{
+  width:28px;height:28px;border-radius:8px;background:var(--cyan-d);
+  color:var(--cyan);display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:.85rem;font-weight:700;
+}
+.tut-card p{color:var(--soft);font-size:.88rem;line-height:1.6}
+.tut-card code{
+  font-family:var(--font-mono);background:var(--bg3);padding:2px 6px;
+  border-radius:4px;font-size:.82rem;color:var(--cyan);
+}
+
+footer{
+  border-top:1px solid var(--brd);padding:28px 0;margin-top:40px;
+  font-size:.78rem;color:var(--muted);text-align:center;
+}
+footer a{color:var(--cyan)}
+
+@media(max-width:880px){
+  .calc-grid{grid-template-columns:1fr}
+  .calc-fields{grid-template-columns:1fr 1fr}
+  .dose-row{grid-template-columns:1fr;gap:6px}
+  .dose-row .pres-text{padding-left:18px;border-left:2px solid var(--brd)}
+  .hero{padding:32px 0 16px}
+  .shell{padding:0 18px}
+  .nav{padding:12px 18px}
+  .brand-text span{display:none}
+}
+@media(max-width:520px){
+  .calc-fields{grid-template-columns:1fr}
+  .result-value{font-size:2.2rem}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <nav class="nav">
+    <a class="brand" href="../index.html" aria-label="Voltar à Enciclopédia">
+      <div class="brand-icon" aria-hidden="true">💊</div>
+      <div class="brand-text">
+        <strong>RenalDose ICU</strong>
+        <span>Antigravity · Módulo 13</span>
+      </div>
+    </a>
+    <a class="nav-back" href="../index.html">← Voltar à Enciclopédia</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- ────────── HERO ────────── -->
+<section class="shell hero">
+  <div class="hero-eyebrow">Tutorial · Ajuste de dose · Função renal</div>
+  <h1>Ajuste de <span class="hl">antimicrobianos</span> para função renal em UTI adulto.</h1>
+  <p class="hero-lead">
+    Calculadora <strong>CKD-EPI 2021 (race-free)</strong> e <strong>Cockcroft-Gault</strong>, classificação <strong>KDIGO CKD 2024</strong> e <strong>KDIGO AKI 2012</strong>, com doses ajustadas — incluindo apresentação ANVISA, diluição e tempo de infusão. Base: Sanford Guide 55ª ed., UpToDate, IDSA, ASHP, bulas brasileiras.
+  </p>
+
+  <div class="warn-box">
+    <div class="ico">⚠️</div>
+    <p>
+      <strong>Aviso médico-legal:</strong> Esta é uma ferramenta de <strong>apoio à decisão</strong> para o médico assistente. Não substitui julgamento clínico, farmácia clínica nem parecer da nefrologia. Em <strong>AKI instável</strong>, a TFG estimada pode <strong>superestimar</strong> a real — use estimativa conservadora, monitore níveis séricos quando disponíveis (vancomicina, aminoglicosídeos) e priorize <strong>dose de ataque plena</strong> em sepse/choque séptico antes de qualquer redução. Sempre confira na bula e no Sanford Guide vigente.
+    </p>
+  </div>
+</section>
+
+<!-- ────────── CALCULADORA ────────── -->
+<section class="shell calc-section" id="calculadora">
+  <div class="section-label">// passo 1 — estimar TFG</div>
+  <h2 class="section-title">Calculadora de função renal 🧮</h2>
+  <p class="section-sub">Insira os dados do paciente. A classificação KDIGO é aplicada automaticamente e usada para destacar a faixa correspondente em cada antimicrobiano abaixo.</p>
+
+  <div class="calc-grid">
+    <div>
+      <div class="result-eq-toggle">
+        <button class="eq-btn active" data-eq="ckdepi">CKD-EPI 2021 (race-free)</button>
+        <button class="eq-btn" data-eq="cg">Cockcroft-Gault</button>
+      </div>
+      <div class="calc-fields">
+        <div class="field">
+          <label>Creatinina sérica</label>
+          <input type="number" id="scr" step="0.01" min="0.1" max="20" value="1.0"/>
+          <span class="field-help">mg/dL</span>
+        </div>
+        <div class="field">
+          <label>Idade</label>
+          <input type="number" id="age" min="18" max="110" value="60"/>
+          <span class="field-help">anos</span>
+        </div>
+        <div class="field">
+          <label>Sexo</label>
+          <select id="sex">
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+          </select>
+        </div>
+        <div class="field" id="weight-field">
+          <label>Peso</label>
+          <input type="number" id="weight" min="30" max="250" value="70"/>
+          <span class="field-help">kg — usado em Cockcroft-Gault</span>
+        </div>
+        <div class="field field-full">
+          <label>Situação de diálise</label>
+          <select id="dialysis">
+            <option value="none">Sem TRS</option>
+            <option value="ihd">HD intermitente (3×/sem)</option>
+            <option value="crrt">CRRT (CVVH/CVVHD/CVVHDF)</option>
+            <option value="sled">SLED / PIRRT</option>
+            <option value="pd">Diálise peritoneal</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="calc-result">
+      <div class="result-eyebrow">Taxa de filtração glomerular estimada</div>
+      <div class="result-value" id="gfr-val">—</div>
+      <div class="result-unit" id="gfr-unit">mL/min/1,73 m²</div>
+      <div class="result-stage stage-G2" id="gfr-stage"><span class="dot"></span><span id="gfr-stage-text">—</span></div>
+      <p style="font-size:.78rem;color:var(--muted);margin-top:14px;line-height:1.5" id="gfr-note">
+        Em <strong style="color:var(--soft)">paciente crítico</strong>, considere também ARC (Augmented Renal Clearance) se ClCr &gt; 130 mL/min — pode subdosar β-lactâmicos e vancomicina.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── FILTROS ────────── -->
+<section class="shell">
+  <div class="section-label">// passo 2 — buscar antimicrobiano</div>
+  <h2 class="section-title">Doses ajustadas 💊</h2>
+  <p class="section-sub">A faixa de TFG correspondente à classificação do paciente fica destacada em amarelo automaticamente.</p>
+
+  <div class="filter-bar">
+    <div class="search-box">
+      <span class="ico">🔍</span>
+      <input type="text" id="search" placeholder="Buscar antimicrobiano (ex.: vanco, meropenem, ampi/sulb)..."/>
+    </div>
+    <button class="chip active" data-cat="all">Todos</button>
+    <button class="chip chip-red" data-cat="beta">β-lactâmicos</button>
+    <button class="chip chip-violet" data-cat="glico">Glicopep/Lipo</button>
+    <button class="chip chip-yellow" data-cat="amino">Aminoglicos</button>
+    <button class="chip chip-green" data-cat="quino">Quinolonas</button>
+    <button class="chip" data-cat="outros">Outros ATB</button>
+    <button class="chip" data-cat="fungo">Antifúngicos</button>
+    <button class="chip" data-cat="viral">Antivirais</button>
+    <button class="chip" data-cat="tb">Antituberc/Outros</button>
+  </div>
+
+  <div class="drugs-grid" id="drugs-grid"></div>
+</section>
+
+<!-- ────────── TUTORIAL ────────── -->
+<section class="shell tutorial" id="tutorial">
+  <div class="section-label">// como usar este módulo</div>
+  <h2 class="section-title">Tutorial rápido 📚</h2>
+  <p class="section-sub">Passo-a-passo TDAH-friendly para tomada de decisão em 30 segundos no plantão.</p>
+
+  <div class="tut-grid">
+    <div class="tut-card">
+      <h4><span class="num">1</span>Calcule a TFG</h4>
+      <p>Em paciente crônico estável, use <strong>CKD-EPI 2021</strong> (recomendação KDIGO CKD 2024). Em paciente crítico/instável ou idoso magro, prefira <strong>Cockcroft-Gault</strong> com peso ideal (PBW) ou peso ajustado se obeso.</p>
+    </div>
+    <div class="tut-card">
+      <h4><span class="num">2</span>Classifique pelo KDIGO</h4>
+      <p>A faixa do paciente é destacada nos cards. Para <strong>AKI</strong>, lembre: a creatinina <code>atrasa</code> a queda real da TFG em 24–48h — em AKI ascendente, considere TFG &lt;30 mesmo com creatinina ainda &quot;normal&quot;.</p>
+    </div>
+    <div class="tut-card">
+      <h4><span class="num">3</span>Sempre dose de ataque cheia</h4>
+      <p>Em sepse, choque séptico, meningite ou infecção grave: <strong>nunca reduza dose de ataque</strong>. Ajuste só dose de manutenção. A meta é atingir concentração-alvo rápido.</p>
+    </div>
+    <div class="tut-card">
+      <h4><span class="num">4</span>Tempo-dependentes: infusão estendida</h4>
+      <p>Para <strong>β-lactâmicos</strong> em UTI (pip-tazo, meropenem, cefepime), considere infusão estendida 3–4h ou contínua após dose de ataque — melhora atingimento de %fT&gt;MIC, especialmente em ARC.</p>
+    </div>
+    <div class="tut-card">
+      <h4><span class="num">5</span>Cuidado com TRS</h4>
+      <p>Em <strong>CRRT</strong>, muitos antimicrobianos precisam de dose <strong>maior</strong> que em IRC sem diálise (clearance da máquina + residual). Sempre <strong>após</strong> sessão de HD intermitente para drogas dialisáveis (β-lactâmicos, vanco em parte, aminoglicos).</p>
+    </div>
+    <div class="tut-card">
+      <h4><span class="num">6</span>Monitore níveis quando puder</h4>
+      <p><strong>Vancomicina:</strong> AUC/MIC 400–600 ou vale 15–20 mg/L (alvo terapêutico em ICU).<br><strong>Aminoglicosídeos:</strong> pico e vale (gentamicina vale &lt;1, amicacina vale &lt;5). <strong>Voriconazol:</strong> vale 1–5,5 mg/L.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="shell">
+    <p>
+      <strong>RenalDose ICU</strong> · Módulo 13 da <a href="../index.html">Enciclopédia Antigravity</a> ·
+      Desenvolvido por Dr. Aldenir Rocha de Oliveira Filho (CRM-CE 16587 · RQE Clínica Médica 11846).
+    </p>
+    <p style="margin-top:8px">
+      Bibliografia: Sanford Guide to Antimicrobial Therapy 55ª ed. · UpToDate (atualizado) · KDIGO 2024 CKD Guideline · KDIGO 2012 AKI Guideline ·
+      IDSA Guidelines · ASHP/IDSA Vancomycin 2020 · bulas ANVISA.
+    </p>
+    <p style="margin-top:8px;color:var(--red)">
+      ⚠️ Apoio à decisão. Não substitui julgamento clínico, farmácia clínica e nefrologia. Confira sempre na bula vigente.
+    </p>
+  </div>
+</footer>
+
+</main>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   BASE DE DADOS — Antimicrobianos UTI adulto
+   Fontes consolidadas: Sanford Guide 55ª ed., UpToDate, IDSA,
+   ASHP/IDSA Vanco 2020, bulas ANVISA, KDIGO 2024.
+   Estrutura: { nome, classe, cat, apres, ataque, doses:[{gfr,mant,pres}],
+                hd, crrt, dil, time, obs, warn, ref }
+   ═══════════════════════════════════════════════════════════════ */
+
+const DRUGS = [
+/* ───── BETALACTÂMICOS ───── */
+{
+  nome:"Piperacilina/Tazobactam", classe:"Penicilina + inibidor de β-lactamase", cat:"beta",
+  apres:"Frasco-ampola 4,5 g (4 g pip + 0,5 g tazo) IV",
+  ataque:"4,5 g IV (sem ajuste)",
+  doses:[
+    {gfr:"≥40", mant:"4,5 g IV 6/6h", pres:"1 fr 4,5 g a cada 6h = 18 g/dia"},
+    {gfr:"20–40", mant:"3,375 g IV 6/6h ou 4,5 g 8/8h", pres:"≈ 13,5 g/dia"},
+    {gfr:"<20", mant:"2,25 g IV 6/6h ou 4,5 g 12/12h", pres:"≈ 9 g/dia"},
+    {gfr:"HD", mant:"2,25 g IV 8/8h + 0,75 g pós-HD (extra)", pres:"Administrar dose extra após cada sessão"},
+    {gfr:"CRRT", mant:"3,375 g IV 6/6h (ou 4,5 g 8/8h)", pres:"Manter dose ≈ TFG 20–40"}
+  ],
+  dil:"SG 5% ou SF 0,9% — diluir em 50–100 mL",
+  time:"Infusão estendida 4h (preferencial em UTI/sepse) ou 30 min se não puder estender",
+  obs:"Em UTI/sepse grave, infusão estendida 4h melhora %fT>MIC (estudos BLISS, BLING-III). Considere infusão contínua 18 g/24h após ataque em pseudomonas MDR.",
+  warn:"Nefrotoxicidade aumenta com vancomicina concomitante (combo VANCO+PTZ): considerar cefepime ou meropenem como alternativa se TFG limítrofe.",
+  ref:"Sanford 55ª; UpToDate; BLING-III NEJM 2024"
+},
+{
+  nome:"Meropenem", classe:"Carbapenêmico", cat:"beta",
+  apres:"Frasco-ampola 500 mg e 1 g IV",
+  ataque:"1–2 g IV (sem ajuste) — 2 g em meningite/pseudomonas MDR",
+  doses:[
+    {gfr:">50", mant:"1 g IV 8/8h (até 2 g 8/8h em SNC/MDR)", pres:"3 fr 1 g/dia ou 6 fr 1 g/dia"},
+    {gfr:"25–50", mant:"1 g IV 12/12h", pres:"2 fr 1 g/dia"},
+    {gfr:"10–25", mant:"500 mg IV 12/12h", pres:"2 fr 500 mg/dia"},
+    {gfr:"<10", mant:"500 mg IV 24/24h", pres:"1 fr 500 mg/dia"},
+    {gfr:"HD", mant:"500 mg IV 24/24h, dose após HD nos dias de sessão", pres:""},
+    {gfr:"CRRT", mant:"1 g IV 8/8h (ou 12/12h se clearance baixo)", pres:""}
+  ],
+  dil:"SF 0,9% — 100 mL (estendida) ou 20 mL bolus lento",
+  time:"Infusão estendida 3h (preferencial UTI) ou bolus 15–30 min",
+  obs:"Instabilidade da molécula em SG 5%; prefira SF. Infusão estendida tem evidência crescente em pseudomonas e enterobactérias produtoras de AmpC.",
+  warn:"Convulsão (raro mas dose-dependente): atenção em idosos, AKI e SNC. Reduzir se TFG <50 + epilepsia prévia.",
+  ref:"Sanford 55ª; UpToDate; MERCY trial JAMA 2023"
+},
+{
+  nome:"Imipenem/Cilastatina", classe:"Carbapenêmico", cat:"beta",
+  apres:"Frasco-ampola 500 mg IV",
+  ataque:"500 mg IV (sem ajuste)",
+  doses:[
+    {gfr:">90", mant:"500 mg IV 6/6h", pres:"4 fr 500 mg/dia"},
+    {gfr:"60–90", mant:"500 mg IV 6–8h", pres:""},
+    {gfr:"30–60", mant:"500 mg IV 8/8h", pres:"3 fr/dia"},
+    {gfr:"15–30", mant:"500 mg IV 12/12h ou 250 mg 6/6h", pres:""},
+    {gfr:"<15", mant:"Evitar — usar só se HD disponível: 250 mg 12/12h", pres:""},
+    {gfr:"HD", mant:"250 mg IV 12/12h, dose após HD", pres:""},
+    {gfr:"CRRT", mant:"500 mg IV 6/6h ou 8/8h", pres:""}
+  ],
+  dil:"SF 0,9% — 100 mL",
+  time:"Infusão 30–60 min (não fazer bolus)",
+  obs:"Maior risco convulsivo entre carbapenêmicos. Preferir meropenem em SNC e em risco convulsivo.",
+  warn:"Convulsão >> meropenem. Evitar TFG<15 sem TRS.",
+  ref:"Sanford 55ª; UpToDate"
+},
+{
+  nome:"Ertapenem", classe:"Carbapenêmico (não-pseudomonas)", cat:"beta",
+  apres:"Frasco-ampola 1 g IV/IM",
+  ataque:"1 g IV (sem ajuste)",
+  doses:[
+    {gfr:">30", mant:"1 g IV 24/24h", pres:"1 fr/dia"},
+    {gfr:"≤30", mant:"500 mg IV 24/24h", pres:"meio frasco/dia"},
+    {gfr:"HD", mant:"500 mg 24/24h; se dose &lt;6h pré-HD, dar 150 mg suplementar pós-HD", pres:""},
+    {gfr:"CRRT", mant:"1 g IV 24/24h", pres:""}
+  ],
+  dil:"SF 0,9% — 50 mL (NÃO usar SG 5% nem SR)",
+  time:"30 min",
+  obs:"Não cobre Pseudomonas, Acinetobacter, Enterococo. Boa opção para enterobactérias ESBL não-críticas e domiciliar (OPAT).",
+  warn:"Alteração do estado mental e convulsão em idosos com IRC.",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Cefepime", classe:"Cefalosporina 4ª geração", cat:"beta",
+  apres:"Frasco-ampola 1 g e 2 g IV",
+  ataque:"2 g IV (sem ajuste)",
+  doses:[
+    {gfr:">60", mant:"2 g IV 8/8h (Pseudomonas/MDR) ou 12/12h", pres:"3 fr 2 g/dia ou 2 fr/dia"},
+    {gfr:"30–60", mant:"2 g IV 12/12h", pres:"2 fr 2 g/dia"},
+    {gfr:"11–30", mant:"2 g IV 24/24h", pres:"1 fr 2 g/dia"},
+    {gfr:"≤10", mant:"1 g IV 24/24h", pres:"1 fr 1 g/dia"},
+    {gfr:"HD", mant:"1 g IV 24/24h; administrar APÓS HD nos dias de sessão", pres:""},
+    {gfr:"CRRT", mant:"2 g IV 12/12h", pres:""}
+  ],
+  dil:"SF 0,9% ou SG 5% — 100 mL",
+  time:"Infusão estendida 3h em UTI/sepse; bolus 30 min se rotina",
+  obs:"Excelente cobertura Pseudomonas. Boa alternativa a pip-tazo+vanco para reduzir AKI (CAMERA-2).",
+  warn:"NEUROTOXICIDADE (encefalopatia, mioclonias, status não-convulsivo): risco alto em IRC subdosada → SOBREdose paradoxal. Monitorar EEG se confusão inexplicada em IRC.",
+  ref:"Sanford 55ª; UpToDate; CAMERA-2 JAMA 2020"
+},
+{
+  nome:"Ceftriaxona", classe:"Cefalosporina 3ª geração", cat:"beta",
+  apres:"Frasco-ampola 1 g IV/IM",
+  ataque:"2 g IV (sem ajuste)",
+  doses:[
+    {gfr:"qualquer", mant:"1–2 g IV 24/24h (2 g 12/12h em meningite)", pres:"1 a 4 fr 1 g/dia"},
+    {gfr:"HD", mant:"Sem ajuste; máx 2 g/dia se IRC + hepatopatia", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""}
+  ],
+  dil:"SF 0,9% ou SG 5% — 50–100 mL. NÃO misturar com Ringer/cálcio (precipitação, especialmente neonatos)",
+  time:"30 min IV",
+  obs:"Eliminação dupla (renal + biliar) — não exige ajuste renal. Considere pseudocolelitíase (lama biliar) em uso prolongado.",
+  warn:"Precipitação com Ca²⁺ (Ringer Lactato) — fatal em neonatos. Em adulto: usar linha separada se infusão concomitante.",
+  ref:"Sanford 55ª; UpToDate"
+},
+{
+  nome:"Ceftazidima", classe:"Cefalosporina 3ª (anti-pseudomonas)", cat:"beta",
+  apres:"Frasco-ampola 1 g IV",
+  ataque:"2 g IV",
+  doses:[
+    {gfr:">50", mant:"2 g IV 8/8h", pres:"6 fr 1 g/dia"},
+    {gfr:"31–50", mant:"2 g IV 12/12h", pres:"4 fr 1 g/dia"},
+    {gfr:"16–30", mant:"2 g IV 24/24h", pres:"2 fr 1 g/dia"},
+    {gfr:"6–15", mant:"1 g IV 24/24h", pres:"1 fr 1 g/dia"},
+    {gfr:"<5", mant:"500 mg IV 24/24h", pres:""},
+    {gfr:"HD", mant:"1 g pós-HD; ou 500 mg 24/24h + 1 g pós-sessão", pres:""},
+    {gfr:"CRRT", mant:"2 g IV 12/12h", pres:""}
+  ],
+  dil:"SF 0,9% — 100 mL",
+  time:"30 min ou estendida 3h",
+  obs:"Boa opção em fibrose cística e pseudomonas. Sem cobertura Gram+.",
+  warn:"Neurotoxicidade similar a cefepime em IRC subdosada.",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Ceftazidima/Avibactam", classe:"Cefalosporina + inibidor β-lactamase", cat:"beta",
+  apres:"Frasco-ampola 2,5 g (2 g CAZ + 0,5 g AVI)",
+  ataque:"2,5 g IV",
+  doses:[
+    {gfr:">50", mant:"2,5 g IV 8/8h", pres:"3 fr/dia"},
+    {gfr:"31–50", mant:"1,25 g IV 8/8h", pres:""},
+    {gfr:"16–30", mant:"0,94 g IV 12/12h", pres:""},
+    {gfr:"6–15", mant:"0,94 g IV 24/24h", pres:""},
+    {gfr:"≤5/HD", mant:"0,94 g IV 48/48h; dose após HD", pres:""},
+    {gfr:"CRRT", mant:"2,5 g IV 8/8h", pres:""}
+  ],
+  dil:"SF 0,9% ou SG 5% — 100 mL",
+  time:"Infusão 2h",
+  obs:"Cobertura KPC, OXA-48, AmpC, ESBL. Sem ação contra metalo-β-lactamases (NDM, VIM, IMP) — combinar com aztreonam.",
+  warn:"Subdoses em IRC se associadas a clearance preservado do componente avibactam — preferir TDM em centros de referência.",
+  ref:"Sanford 55ª; UpToDate"
+},
+{
+  nome:"Ampicilina/Sulbactam", classe:"Penicilina + inibidor β-lactamase", cat:"beta",
+  apres:"Frasco-ampola 1,5 g (1 g amp + 0,5 g sulb) e 3 g (2 g + 1 g) IV",
+  ataque:"3 g IV (sem ajuste)",
+  doses:[
+    {gfr:">30", mant:"3 g IV 6/6h", pres:"4 fr 3 g/dia = 12 g/dia"},
+    {gfr:"15–29", mant:"3 g IV 12/12h", pres:"2 fr 3 g/dia"},
+    {gfr:"<15", mant:"3 g IV 24/24h", pres:"1 fr 3 g/dia"},
+    {gfr:"HD", mant:"3 g IV 24/24h, administrar após HD", pres:""},
+    {gfr:"CRRT", mant:"3 g IV 8/8h", pres:""}
+  ],
+  dil:"SF 0,9% — 50–100 mL",
+  time:"15–30 min",
+  obs:"Em Acinetobacter MDR sensível: doses altas até 9 g sulbactam/dia (27 g amp/sulb 3g 8/8h). Boa opção em PAV inicial Acinetobacter.",
+  warn:"Rash em mononucleose. Não cobre Pseudomonas.",
+  ref:"Sanford 55ª; UpToDate"
+},
+{
+  nome:"Oxacilina", classe:"Penicilina antiestafilocócica", cat:"beta",
+  apres:"Frasco-ampola 500 mg IV",
+  ataque:"2 g IV",
+  doses:[
+    {gfr:"qualquer", mant:"2 g IV 4/4h (12 g/dia) em endocardite/bacteremia MSSA", pres:"4 fr 500 mg cada 4h = 24 fr/dia"},
+    {gfr:"HD", mant:"Sem ajuste significativo", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""}
+  ],
+  dil:"SF 0,9% — 100 mL",
+  time:"30–60 min",
+  obs:"Padrão-ouro para MSSA invasivo. Em endocardite MSSA: 12 g/dia 4/4h por 4–6 sem.",
+  warn:"Nefrite intersticial aguda (eosinofilúria), hepatotoxicidade dose-dependente, mielotoxicidade em uso prolongado.",
+  ref:"Sanford 55ª; IDSA endocardite"
+},
+{
+  nome:"Aztreonam", classe:"Monobactâmico", cat:"beta",
+  apres:"Frasco-ampola 1 g IV",
+  ataque:"2 g IV",
+  doses:[
+    {gfr:">30", mant:"2 g IV 8/8h", pres:"6 fr 1 g/dia"},
+    {gfr:"10–30", mant:"1 g IV 8/8h ou 2 g 12/12h", pres:""},
+    {gfr:"<10", mant:"500 mg IV 8/8h ou 1 g 12/12h", pres:""},
+    {gfr:"HD", mant:"500 mg 8/8h + 1/8 da dose após HD", pres:""},
+    {gfr:"CRRT", mant:"2 g IV 12/12h", pres:""}
+  ],
+  dil:"SF 0,9% — 100 mL",
+  time:"30 min",
+  obs:"Cobertura só Gram−. Opção em alergia grave a β-lactâmicos (sem reação cruzada exceto ceftazidima). Combinar com CAZ-AVI para metalo-β-lactamases.",
+  warn:"Reatividade cruzada com ceftazidima (cadeia lateral idêntica) — evitar em alergia confirmada a CAZ.",
+  ref:"Sanford 55ª"
+},
+
+/* ───── GLICOPEPTÍDEOS / LIPOPEPTÍDEOS ───── */
+{
+  nome:"Vancomicina", classe:"Glicopeptídeo", cat:"glico",
+  apres:"Frasco-ampola 500 mg e 1 g IV",
+  ataque:"25–30 mg/kg IV (peso real) — em UTI/sepse, ATAQUE OBRIGATÓRIO",
+  doses:[
+    {gfr:">90", mant:"15–20 mg/kg IV 8/8h (alvo AUC 400–600)", pres:"≈ 1 g 8/8h em 70 kg"},
+    {gfr:"50–90", mant:"15–20 mg/kg IV 12/12h", pres:"≈ 1 g 12/12h"},
+    {gfr:"20–49", mant:"15–20 mg/kg IV 24/24h", pres:"≈ 1 g/dia"},
+    {gfr:"<20", mant:"Dose única + redose por NÍVEL (vale &lt;15–20)", pres:"Suspender até nível alvo"},
+    {gfr:"HD", mant:"Ataque 25 mg/kg; redose 500–1000 mg pós-HD guiada por nível pré-sessão (alvo 15–20)", pres:""},
+    {gfr:"CRRT", mant:"Ataque 25–30 mg/kg; manter 15 mg/kg 24/24h ou 10 mg/kg 12/12h (depende clearance)", pres:""}
+  ],
+  dil:"SF 0,9% ou SG 5% — concentração máx 5 mg/mL (1 g em ≥200 mL)",
+  time:"≥60 min (cada 1 g em 1h). Doses >1 g: 1,5–2h. Bolus rápido → síndrome do homem vermelho",
+  obs:"DOSE GUIADA POR NÍVEL: meta AUC₂₄/MIC 400–600 (ASHP/IDSA 2020) — vale 15–20 é proxy menos preciso. Em obesidade: 15–20 mg/kg peso REAL, máx 2,5–3 g/dose. ARC: pode precisar 8/8h.",
+  warn:"AKI dose-dependente: risco ↑ se vale &gt;20, idade ↑, vancomicina+pip-tazo (combo VPT), vasopressor. Considere DAPTOMICINA ou LINEZOLIDA se AKI emergente.",
+  ref:"Sanford 55ª; ASHP/IDSA Vancomycin 2020"
+},
+{
+  nome:"Daptomicina", classe:"Lipopeptídeo cíclico", cat:"glico",
+  apres:"Frasco-ampola 350 mg e 500 mg IV",
+  ataque:"Dose plena (sem ajuste do ataque)",
+  doses:[
+    {gfr:"≥30", mant:"6 mg/kg/dia (pele/parte mole) ou 8–12 mg/kg/dia (bacteremia/endocardite)", pres:"≈ 500 mg/dia para 70 kg em dose padrão"},
+    {gfr:"<30", mant:"Mesma dose mg/kg a cada 48h", pres:"Ex.: 500 mg 48/48h"},
+    {gfr:"HD", mant:"Mesma dose a cada 48h; após HD nos dias de sessão", pres:""},
+    {gfr:"CRRT", mant:"6–10 mg/kg a cada 24h (não 48h)", pres:""}
+  ],
+  dil:"SF 0,9% — 50–100 mL",
+  time:"30 min IV (ou bolus 2 min em adultos)",
+  obs:"NÃO USAR EM PNEUMONIA (inativada pelo surfactante). Boa opção em bacteremia/endocardite MRSA e VRE, especialmente se vanco falhou ou AKI.",
+  warn:"Miopatia/rabdomiólise: monitorar CPK semanal; suspender se CPK &gt;5× LSN sintomática ou &gt;10× LSN assintomática. Interação com estatinas (suspender estatina).",
+  ref:"Sanford 55ª; UpToDate"
+},
+{
+  nome:"Teicoplanina", classe:"Glicopeptídeo", cat:"glico",
+  apres:"Frasco-ampola 200 mg e 400 mg IV/IM",
+  ataque:"400 mg 12/12h por 3 doses (ataque) — em infecção grave: 800–1200 mg 12/12h × 3–5 doses",
+  doses:[
+    {gfr:">60", mant:"400 mg IV 24/24h (até 800 mg/dia em infecção grave)", pres:"1 fr 400 mg/dia"},
+    {gfr:"40–60", mant:"400 mg 48/48h após ataque", pres:""},
+    {gfr:"<40", mant:"400 mg 72/72h após ataque", pres:""},
+    {gfr:"HD", mant:"400 mg semanal após ataque", pres:""},
+    {gfr:"CRRT", mant:"400 mg 24/24h", pres:""}
+  ],
+  dil:"SF 0,9% — 50–100 mL",
+  time:"30 min IV",
+  obs:"Alvo vale 20–30 mg/L em infecção grave. Menos nefrotóxica que vanco. Boa alternativa em UTI com AKI emergente.",
+  warn:"Reações cutâneas (DRESS raro). Pancitopenia.",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Linezolida", classe:"Oxazolidinona", cat:"glico",
+  apres:"Bolsa IV 600 mg/300 mL ou comprimido 600 mg",
+  ataque:"600 mg (sem ajuste)",
+  doses:[
+    {gfr:"qualquer", mant:"600 mg IV/VO 12/12h", pres:"1 bolsa 12/12h"},
+    {gfr:"HD", mant:"600 mg 12/12h (metabólitos acumulam — monitorar plaquetas)", pres:""},
+    {gfr:"CRRT", mant:"600 mg 12/12h", pres:""}
+  ],
+  dil:"Pronta para uso (300 mL)",
+  time:"30–120 min",
+  obs:"Sem ajuste renal. Excelente penetração pulmonar e SNC. Biodisponibilidade oral 100% — switch IV→VO precoce. Boa para VRE e MRSA pulmonar.",
+  warn:"Trombocitopenia dose-cumulativa (>14 dias, dialisado). Síndrome serotoninérgica com ISRS/IMAO/tramadol/fentanil. Neuropatia óptica/periférica se >28 dias. Acidose láctica (toxicidade mitocondrial).",
+  ref:"Sanford 55ª; UpToDate"
+},
+
+/* ───── AMINOGLICOSÍDEOS ───── */
+{
+  nome:"Amicacina", classe:"Aminoglicosídeo", cat:"amino",
+  apres:"Ampola 500 mg/2 mL IV/IM",
+  ataque:"15–20 mg/kg/dia (peso ajustado se obeso)",
+  doses:[
+    {gfr:">60", mant:"15 mg/kg IV 24/24h (dose única diária)", pres:"1 g/dia em 70 kg = 2 amp 500 mg"},
+    {gfr:"40–60", mant:"15 mg/kg 36/36h", pres:""},
+    {gfr:"20–40", mant:"15 mg/kg 48/48h ou 7,5 mg/kg 24/24h", pres:""},
+    {gfr:"<20", mant:"7,5 mg/kg + monitorar nível; redose por vale &lt;5", pres:""},
+    {gfr:"HD", mant:"5–7,5 mg/kg após HD; redose por nível", pres:""},
+    {gfr:"CRRT", mant:"7,5 mg/kg 24/24h, monitorar nível", pres:""}
+  ],
+  dil:"SF 0,9% — 100 mL",
+  time:"30 min IV (dose única diária)",
+  obs:"DOSE ÚNICA DIÁRIA = padrão (efeito pós-antibiótico, menor toxicidade). Alvo: pico 56–64 / vale &lt;5. Sinergia com β-lactâmicos em endocardite/sepse Gram−.",
+  warn:"NEFRO + OTO + VESTIBULOTOXICIDADE. Cumulativa, irreversível. Evitar >7–10 dias se possível. Monitorar audição.",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Gentamicina", classe:"Aminoglicosídeo", cat:"amino",
+  apres:"Ampola 80 mg/2 mL e 280 mg/2 mL IV/IM",
+  ataque:"5–7 mg/kg/dia (dose única) ou 1 mg/kg 8/8h (sinergia endocardite)",
+  doses:[
+    {gfr:">60", mant:"5–7 mg/kg IV 24/24h", pres:"≈ 400 mg/dia em 70 kg"},
+    {gfr:"40–60", mant:"5 mg/kg 36/36h", pres:""},
+    {gfr:"20–40", mant:"5 mg/kg 48/48h", pres:""},
+    {gfr:"<20", mant:"2 mg/kg + redose por nível (vale &lt;1)", pres:""},
+    {gfr:"HD", mant:"1–2 mg/kg após HD", pres:""},
+    {gfr:"CRRT", mant:"2,5 mg/kg 24/24h", pres:""}
+  ],
+  dil:"SF 0,9% — 100 mL",
+  time:"30 min IV",
+  obs:"Em endocardite enterocócica: 1 mg/kg 8/8h (sinergia ampi). Em sepse Gram−: dose única diária. Alvo: pico 15–20 / vale &lt;1.",
+  warn:"Idem amicacina. Mais miastenia (bloqueio neuromuscular).",
+  ref:"Sanford 55ª"
+},
+
+/* ───── QUINOLONAS ───── */
+{
+  nome:"Ciprofloxacino", classe:"Fluoroquinolona", cat:"quino",
+  apres:"Bolsa IV 200 mg/100 mL e 400 mg/200 mL · cp 500 mg",
+  ataque:"400 mg IV (sem ajuste)",
+  doses:[
+    {gfr:">50", mant:"400 mg IV 8/8h (sepse grave/Pseudomonas) ou 12/12h", pres:"3 bolsas 400 mg/dia"},
+    {gfr:"30–50", mant:"400 mg IV 12/12h", pres:"2 bolsas/dia"},
+    {gfr:"<30", mant:"400 mg IV 24/24h", pres:"1 bolsa/dia"},
+    {gfr:"HD", mant:"400 mg 24/24h, após HD", pres:""},
+    {gfr:"CRRT", mant:"400 mg 12/12h", pres:""}
+  ],
+  dil:"Pronto para uso (SG 5%)",
+  time:"60 min IV (rapidez → hipotensão)",
+  obs:"Biodisponibilidade VO 70% — switch precoce. Cobertura Pseudomonas. Cuidado em pneumonia bacteriana com pneumococo (cobertura limítrofe).",
+  warn:"Tendinite/ruptura tendínea (Aquiles), QT longo, hipoglicemia (idoso/diabético), dissecção aórtica (idoso), neuropatia periférica, delirium. EVITAR com tizanidina, teofilina, varfarina.",
+  ref:"Sanford 55ª; FDA box warning"
+},
+{
+  nome:"Levofloxacino", classe:"Fluoroquinolona respiratória", cat:"quino",
+  apres:"Bolsa IV 500 mg/100 mL e 750 mg/150 mL · cp 500/750 mg",
+  ataque:"750 mg IV (sem ajuste)",
+  doses:[
+    {gfr:">50", mant:"750 mg IV 24/24h (PAC grave) ou 500 mg 24/24h", pres:"1 bolsa/dia"},
+    {gfr:"20–49", mant:"750 mg dose única, depois 750 mg 48/48h (ou 500 mg/dia → 250 mg/dia)", pres:""},
+    {gfr:"<20", mant:"750 mg dose única, depois 500 mg 48/48h", pres:""},
+    {gfr:"HD", mant:"750 mg ataque + 500 mg 48/48h", pres:""},
+    {gfr:"CRRT", mant:"500 mg 24/24h ou 750 mg 48/48h", pres:""}
+  ],
+  dil:"Pronto para uso",
+  time:"60 min IV (750 mg em 90 min)",
+  obs:"Excelente penetração pulmonar — fluoroquinolona respiratória de escolha em PAC. Switch IV→VO precoce (biodisp 99%).",
+  warn:"Idem ciprofloxacino. Maior potencial de QT longo.",
+  ref:"Sanford 55ª"
+},
+
+/* ───── OUTROS ANTIBIÓTICOS ───── */
+{
+  nome:"Polimixina B", classe:"Polipeptídeo", cat:"outros",
+  apres:"Frasco-ampola 500.000 UI (50 mg) IV",
+  ataque:"2,0–2,5 mg/kg IV (≈ 20.000–25.000 UI/kg) — DOSE DE ATAQUE OBRIGATÓRIA",
+  doses:[
+    {gfr:"qualquer", mant:"1,25–1,5 mg/kg IV 12/12h (12.500–15.000 UI/kg 12/12h) — NÃO ajustar por TFG", pres:"≈ 100 mg 12/12h em 70 kg"},
+    {gfr:"HD", mant:"Mesma dose; suplementar 0,5–1 mg/kg pós-HD se sessão coincidir", pres:""},
+    {gfr:"CRRT", mant:"Mesma dose 12/12h", pres:""}
+  ],
+  dil:"SG 5% — 100 mL (NÃO SF — pode precipitar). Concentração final ≤2 mg/mL",
+  time:"60–90 min IV",
+  obs:"NÃO ajustar dose por função renal (diferente da colistina/polimixina E). Eliminação renal mínima. Usar peso REAL. Reservado para Gram− MDR/XDR (KPC, NDM, Acinetobacter).",
+  warn:"Nefrotoxicidade dose-cumulativa (50–60%, geralmente reversível). Neurotoxicidade (parestesias periorais, ataxia). Bloqueio neuromuscular. Considerar terapia combinada.",
+  ref:"Sanford 55ª; Polymyxin Consensus 2019"
+},
+{
+  nome:"Colistina (Polimixina E)", classe:"Polipeptídeo", cat:"outros",
+  apres:"Frasco-ampola colistimetato sódico 1.000.000 UI (≈ 80 mg CMS = ≈ 33 mg colistina base)",
+  ataque:"9 MUI (≈ 300 mg colistina base) IV — dose única ataque",
+  doses:[
+    {gfr:">90", mant:"4,5 MUI IV 12/12h (9 MUI/dia)", pres:""},
+    {gfr:"50–90", mant:"3,5–4,5 MUI 12/12h (7–9 MUI/dia)", pres:""},
+    {gfr:"30–49", mant:"2,5–3,5 MUI 12/12h (5–7 MUI/dia)", pres:""},
+    {gfr:"10–29", mant:"1,5 MUI 12/12h (3 MUI/dia)", pres:""},
+    {gfr:"<10", mant:"1,5 MUI 24/24h", pres:""},
+    {gfr:"HD", mant:"1,5 MUI/dia + 1,5 MUI extra pós-HD", pres:""},
+    {gfr:"CRRT", mant:"4,5 MUI 12/12h (9 MUI/dia)", pres:""}
+  ],
+  dil:"SF 0,9% — 100 mL (preparo imediato — instável)",
+  time:"30–60 min IV",
+  obs:"DIFERENTE da polimixina B: AJUSTAR por TFG. Inalada para PAV: 1–2 MUI 8/8h adjuvante. Cuidado com unidades (UI vs mg base vs mg CMS — fonte de erro grave).",
+  warn:"Nefrotoxicidade > polimixina B. Neurotoxicidade. Erros de prescrição frequentes — confirmar unidade.",
+  ref:"Sanford 55ª; ESCMID 2017"
+},
+{
+  nome:"Tigeciclina", classe:"Glicilciclina", cat:"outros",
+  apres:"Frasco-ampola 50 mg IV",
+  ataque:"100 mg IV (200 mg em infecção grave)",
+  doses:[
+    {gfr:"qualquer", mant:"50 mg IV 12/12h (100 mg 12/12h em PAV/bacteremia grave)", pres:"2 fr 50 mg/dia ou 4 fr/dia"},
+    {gfr:"HD", mant:"Sem ajuste renal; reduzir em Child-Pugh C: 25 mg 12/12h", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""}
+  ],
+  dil:"SF 0,9% ou SG 5% — 100 mL",
+  time:"30–60 min IV",
+  obs:"NÃO atinge boa concentração sérica — EVITAR em bacteremia primária e pneumonia leve-moderada. Em PAV/MDR usar 200 mg ataque + 100 mg 12/12h.",
+  warn:"FDA black box: aumento de mortalidade em PAV e infecções graves. Reduzir em hepatopatia avançada.",
+  ref:"Sanford 55ª; FDA black box"
+},
+{
+  nome:"Metronidazol", classe:"Nitroimidazol", cat:"outros",
+  apres:"Bolsa IV 500 mg/100 mL · cp 250/400 mg",
+  ataque:"500 mg (sem ajuste)",
+  doses:[
+    {gfr:">10", mant:"500 mg IV/VO 8/8h", pres:"3 bolsas/dia"},
+    {gfr:"<10", mant:"500 mg IV/VO 12/12h (acúmulo de metabólitos)", pres:""},
+    {gfr:"HD", mant:"500 mg 8/8h; dose após HD nos dias de sessão", pres:""},
+    {gfr:"CRRT", mant:"500 mg 8/8h (sem ajuste)", pres:""}
+  ],
+  dil:"Pronto (bolsa)",
+  time:"30–60 min IV",
+  obs:"Anaeróbios + protozoários (Giardia, ameba, Trichomonas). C. difficile não-grave: 500 mg VO 8/8h (mas vanco oral é preferido).",
+  warn:"Neuropatia periférica (>14 dias), efeito dissulfiram (evitar álcool), gosto metálico, sabor metalico. Encefalopatia (DWI cerebelo) em uso prolongado.",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Clindamicina", classe:"Lincosamida", cat:"outros",
+  apres:"Ampola 300 mg/2 mL e 600 mg/4 mL IV/IM · cps 150/300 mg VO",
+  ataque:"600–900 mg IV (sem ajuste)",
+  doses:[
+    {gfr:"qualquer", mant:"600–900 mg IV 8/8h (até 900 mg 6/6h em fasciite necrosante)", pres:""},
+    {gfr:"HD", mant:"Sem ajuste", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""}
+  ],
+  dil:"SF 0,9% ou SG 5% — 50–100 mL (concentração máx 18 mg/mL)",
+  time:"30–60 min IV (nunca bolus)",
+  obs:"Inibe toxinas em fasciite necrosante e síndrome do choque tóxico (adicionar à penicilina/oxacilina). Sem ajuste renal (eliminação hepática).",
+  warn:"COLITE PSEUDOMEMBRANOSA (C. difficile) — alto risco. Reação anafilactoide se infusão rápida.",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Sulfametoxazol/Trimetoprim (SMX-TMP)", classe:"Sulfa + diaminopirimidina", cat:"outros",
+  apres:"Ampola 400/80 mg/5 mL IV · cp 400/80 mg e 800/160 mg",
+  ataque:"15–20 mg/kg/dia (componente TMP) em PJP grave",
+  doses:[
+    {gfr:">30", mant:"PJP grave: 15–20 mg/kg/dia TMP dividido 6/6 ou 8/8h × 21 dias", pres:""},
+    {gfr:"15–30", mant:"50% da dose", pres:""},
+    {gfr:"<15", mant:"Evitar — usar só se HD + monitorar K⁺", pres:""},
+    {gfr:"HD", mant:"5 mg/kg TMP 24/24h após HD", pres:""},
+    {gfr:"CRRT", mant:"Dose padrão", pres:""}
+  ],
+  dil:"SG 5% — 125 mL para cada 5 mL (alta diluição obrigatória)",
+  time:"60–90 min IV",
+  obs:"PJP é indicação principal em UTI (paciente HIV/imunossupressão). Stenotrophomonas: ATB de escolha. Profilaxia: 1 cp simples 3×/sem ou diário.",
+  warn:"HIPERCALEMIA (importante em IRC + IECA/BRA + espironolactona), AKI (mimetiza pela tubulopatia + cristalúria), citopenias, Stevens-Johnson, hipoglicemia.",
+  ref:"Sanford 55ª; UpToDate PJP"
+},
+{
+  nome:"Azitromicina", classe:"Macrolídeo", cat:"outros",
+  apres:"Ampola 500 mg IV · cp 500 mg",
+  ataque:"500 mg (sem ajuste)",
+  doses:[
+    {gfr:"qualquer", mant:"500 mg IV/VO 24/24h", pres:"1 fr/dia"},
+    {gfr:"HD", mant:"Sem ajuste", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""}
+  ],
+  dil:"SF 0,9% — 250–500 mL (concentração 1–2 mg/mL)",
+  time:"60 min IV (nunca bolus — flebite)",
+  obs:"Combinado a β-lactâmico em PAC grave (efeito imunomodulador). Eliminação biliar — sem ajuste renal.",
+  warn:"QT longo, hepatotoxicidade, ototoxicidade em IRC com uso prolongado, miastenia.",
+  ref:"Sanford 55ª"
+},
+
+/* ───── ANTIFÚNGICOS ───── */
+{
+  nome:"Fluconazol", classe:"Triazólico", cat:"fungo",
+  apres:"Bolsa IV 100/200/400 mg · cps 150 mg",
+  ataque:"800 mg (12 mg/kg) IV — em candidemia/UTI: ATAQUE obrigatório",
+  doses:[
+    {gfr:">50", mant:"400–800 mg IV/VO 24/24h (6–12 mg/kg/dia)", pres:"1 bolsa 400 mg/dia ou 2"},
+    {gfr:"≤50", mant:"50% da dose de manutenção (após ataque cheio)", pres:""},
+    {gfr:"HD", mant:"Dose plena após HD nos dias de sessão", pres:""},
+    {gfr:"CRRT", mant:"800 mg 24/24h (clearance significativo)", pres:""}
+  ],
+  dil:"Pronto (bolsa)",
+  time:"60–120 min IV (máx 200 mg/h)",
+  obs:"Candida albicans / parapsilosis. NÃO cobre Candida krusei (R) e auris (R variável). Em UTI com candidemia inicial: prefira EQUINOCANDINA até identificação/antifungigrama.",
+  warn:"QT longo, hepatotoxicidade, interações CYP (varfarina, fenitoína, sirolimus, tacrolimus).",
+  ref:"Sanford 55ª; IDSA Candidiasis 2016"
+},
+{
+  nome:"Anidulafungina", classe:"Equinocandina", cat:"fungo",
+  apres:"Frasco-ampola 100 mg IV",
+  ataque:"200 mg IV (sem ajuste)",
+  doses:[
+    {gfr:"qualquer", mant:"100 mg IV 24/24h (após ataque)", pres:"1 fr/dia"},
+    {gfr:"HD", mant:"Sem ajuste; não dialisável", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""}
+  ],
+  dil:"SF 0,9% ou SG 5% — concentração máx 0,36 mg/mL (100 mg em ≥250 mL)",
+  time:"≤1,1 mg/min (100 mg em ≥90 min)",
+  obs:"PRIMEIRA ESCOLHA empírica em candidemia em UTI (IDSA 2016). Sem ajuste renal ou hepático. Cobertura Candida spp incluindo krusei e glabrata.",
+  warn:"Hepatotoxicidade rara. Reações infusionais (histamina) se infusão rápida.",
+  ref:"Sanford 55ª; IDSA Candidiasis 2016"
+},
+{
+  nome:"Caspofungina", classe:"Equinocandina", cat:"fungo",
+  apres:"Frasco-ampola 50 mg e 70 mg IV",
+  ataque:"70 mg IV",
+  doses:[
+    {gfr:"qualquer", mant:"50 mg IV 24/24h (70 mg/dia se >80 kg)", pres:"1 fr 50 mg/dia"},
+    {gfr:"HD", mant:"Sem ajuste", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""},
+    {gfr:"Child B", mant:"35 mg 24/24h após ataque", pres:""}
+  ],
+  dil:"SF 0,9% — 250 mL (NÃO usar SG)",
+  time:"60 min IV",
+  obs:"Alternativa à anidulafungina. Reduzir em Child-Pugh B. Sem ajuste renal.",
+  warn:"Hepatotoxicidade leve. Interações CYP3A (rifampicina, ciclosporina).",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Micafungina", classe:"Equinocandina", cat:"fungo",
+  apres:"Frasco-ampola 50 mg e 100 mg IV",
+  ataque:"Sem ataque",
+  doses:[
+    {gfr:"qualquer", mant:"100 mg IV 24/24h (até 200 mg em infecção grave)", pres:"1 fr 100 mg/dia"},
+    {gfr:"HD", mant:"Sem ajuste", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""}
+  ],
+  dil:"SF 0,9% ou SG 5% — 100 mL",
+  time:"60 min IV",
+  obs:"Sem ajuste renal/hepático significativo. Menos interações CYP que voriconazol/posaconazol.",
+  warn:"Hepatotoxicidade, rash, hemólise rara.",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Anfotericina B desoxicolato (convencional)", classe:"Poliênico", cat:"fungo",
+  apres:"Frasco-ampola 50 mg IV",
+  ataque:"Sem ataque; iniciar 0,1–0,25 mg/kg → titular",
+  doses:[
+    {gfr:"qualquer", mant:"0,7–1 mg/kg/dia (peso real)", pres:""},
+    {gfr:"AKI", mant:"Trocar para formulação LIPÍDICA imediatamente", pres:""},
+    {gfr:"HD", mant:"Mesma dose; não removida por HD", pres:""},
+    {gfr:"CRRT", mant:"Mesma dose", pres:""}
+  ],
+  dil:"SG 5% (incompatível com SF) — concentração ≤0,1 mg/mL",
+  time:"4–6h (lenta) ou 24h infusão contínua para reduzir toxicidade",
+  obs:"EVITAR em UTI — usar SEMPRE formulação lipídica (anfo lipossomal 3–5 mg/kg/dia ou complexo lipídico) se disponível: nefrotoxicidade muito menor.",
+  warn:"NEFROTOXICIDADE intensa (90% pacientes), hipoK⁺, hipoMg²⁺, calafrios/febre infusional (pré-medicar: paracetamol + difenidramina ± hidrocortisona). Pré-hidratação SF 500 mL antes e depois.",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Anfotericina B lipossomal", classe:"Poliênico (formulação lipídica)", cat:"fungo",
+  apres:"Frasco-ampola 50 mg IV",
+  ataque:"Sem ataque formal",
+  doses:[
+    {gfr:"qualquer", mant:"3–5 mg/kg/dia (mucormicose: 5–10 mg/kg/dia)", pres:""},
+    {gfr:"HD", mant:"Sem ajuste", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""}
+  ],
+  dil:"SG 5% — concentração final 1–2 mg/mL (NÃO SF)",
+  time:"2h IV (4h se reação infusional)",
+  obs:"PREFERIDA em UTI. Indicações: criptococose meníngea, leishmaniose visceral, mucormicose, aspergilose alternativa.",
+  warn:"Nefrotoxicidade menor mas existe. Reações infusionais (dor torácica, dispneia) — pré-medicar.",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Voriconazol", classe:"Triazólico de 2ª geração", cat:"fungo",
+  apres:"Frasco-ampola 200 mg IV · cps 50/200 mg",
+  ataque:"6 mg/kg IV 12/12h × 2 doses",
+  doses:[
+    {gfr:">50", mant:"4 mg/kg IV 12/12h ou 200 mg VO 12/12h", pres:""},
+    {gfr:"<50", mant:"Mesma dose VO (preferir VO); IV: acúmulo do veículo SBECD — usar com cautela", pres:""},
+    {gfr:"HD", mant:"VO mesma dose (não dialisado); IV evitar (SBECD acumula)", pres:""},
+    {gfr:"CRRT", mant:"IV pode ser usado com monitorização TDM", pres:""}
+  ],
+  dil:"SF ou SG 5% — concentração final 0,5–5 mg/mL",
+  time:"1–2h IV (máx 3 mg/kg/h)",
+  obs:"PRIMEIRA ESCOLHA em aspergilose invasiva (junto com isavuconazol). TDM ESSENCIAL — alvo vale 1–5,5 mg/L. Polimorfismo CYP2C19 → metabolismo variável.",
+  warn:"Distúrbios visuais (fotopsia) 30%, hepatotoxicidade, alucinações, QT longo, fotossensibilidade/CA pele, periostite. Em IRC: acumular veículo SBECD da formulação IV.",
+  ref:"Sanford 55ª; IDSA Aspergillosis 2016"
+},
+
+/* ───── ANTIVIRAIS ───── */
+{
+  nome:"Aciclovir IV", classe:"Análogo nucleosídeo", cat:"viral",
+  apres:"Frasco-ampola 250 mg IV · cp 200/400 mg VO",
+  ataque:"10 mg/kg IV (peso ideal — encefalite herpética)",
+  doses:[
+    {gfr:">50", mant:"10 mg/kg IV 8/8h (encefalite/HSV grave) × 14–21 dias", pres:"≈ 700 mg 8/8h em 70 kg"},
+    {gfr:"25–50", mant:"10 mg/kg IV 12/12h", pres:""},
+    {gfr:"10–25", mant:"10 mg/kg IV 24/24h", pres:""},
+    {gfr:"<10", mant:"5 mg/kg IV 24/24h", pres:""},
+    {gfr:"HD", mant:"2,5–5 mg/kg após HD", pres:""},
+    {gfr:"CRRT", mant:"5–10 mg/kg 24/24h", pres:""}
+  ],
+  dil:"SF 0,9% ou SG 5% — 100 mL (concentração ≤7 mg/mL)",
+  time:"≥60 min IV (lenta — evitar cristalúria)",
+  obs:"Encefalite HSV: 10 mg/kg 8/8h × 14–21d. Usar PESO IDEAL (especialmente em obesos) para evitar nefrotoxicidade. HIDRATAR bem antes/durante.",
+  warn:"AKI por cristalização tubular (especialmente bolus rápido + desidratação). Neurotoxicidade (mioclonias, confusão) — risco ↑ em IRC.",
+  ref:"Sanford 55ª; UpToDate HSV encefalite"
+},
+{
+  nome:"Ganciclovir IV", classe:"Análogo nucleosídeo", cat:"viral",
+  apres:"Frasco-ampola 500 mg IV",
+  ataque:"5 mg/kg IV (sem ajuste)",
+  doses:[
+    {gfr:">70", mant:"5 mg/kg IV 12/12h (indução CMV) × 14–21d; 5 mg/kg/dia (manutenção)", pres:""},
+    {gfr:"50–69", mant:"2,5 mg/kg 12/12h (indução)", pres:""},
+    {gfr:"25–49", mant:"2,5 mg/kg 24/24h", pres:""},
+    {gfr:"10–24", mant:"1,25 mg/kg 24/24h", pres:""},
+    {gfr:"<10", mant:"1,25 mg/kg 3×/sem após HD", pres:""},
+    {gfr:"HD", mant:"1,25 mg/kg 3×/sem após sessão", pres:""},
+    {gfr:"CRRT", mant:"2,5 mg/kg 24/24h", pres:""}
+  ],
+  dil:"SF 0,9% ou SG 5% — 100 mL (concentração ≤10 mg/mL)",
+  time:"≥60 min IV (bomba)",
+  obs:"CMV doença em imunocomprometido (transplante, HIV avançado). Valganciclovir VO 900 mg 12/12h = equivalente VO. Monitorar carga viral CMV.",
+  warn:"MIELOSSUPRESSÃO grave (neutropenia, plaquetopenia), nefrotoxicidade, carcinogênico — usar EPI ao manipular.",
+  ref:"Sanford 55ª"
+},
+{
+  nome:"Oseltamivir", classe:"Inibidor neuraminidase", cat:"viral",
+  apres:"Cps 30/45/75 mg VO · suspensão 6 mg/mL",
+  ataque:"Sem ataque",
+  doses:[
+    {gfr:">60", mant:"75 mg VO 12/12h × 5 dias (10d em UTI/grave)", pres:"2 cps/dia"},
+    {gfr:"30–60", mant:"30 mg VO 12/12h", pres:""},
+    {gfr:"10–30", mant:"30 mg VO 24/24h", pres:""},
+    {gfr:"<10 sem HD", mant:"Não recomendado", pres:""},
+    {gfr:"HD", mant:"30 mg após cada HD (3×/sem)", pres:""},
+    {gfr:"CRRT", mant:"75 mg 12/12h", pres:""}
+  ],
+  dil:"VO/sonda",
+  time:"VO",
+  obs:"Influenza A/B. Início precoce (<48h sintomas) — em UTI iniciar mesmo após 48h se ainda em fase ativa. Em ECMO/UTI grave: considerar dose dobrada 150 mg 12/12h.",
+  warn:"Náuseas/vômitos, eventos neuropsiquiátricos (alucinações em jovens — raros).",
+  ref:"Sanford 55ª; CDC Influenza"
+},
+{
+  nome:"Remdesivir", classe:"Análogo nucleotídeo", cat:"viral",
+  apres:"Frasco-ampola 100 mg IV (liofilizado)",
+  ataque:"200 mg IV dose única",
+  doses:[
+    {gfr:"≥30", mant:"100 mg IV 24/24h × 4–9 dias (COVID-19 hospitalizado)", pres:"1 fr/dia"},
+    {gfr:"<30", mant:"Não havia restrição formal nas atualizações 2023+ — pode ser usado com monitoramento", pres:""},
+    {gfr:"HD", mant:"Pode ser usado; preferir após sessão", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste claro — monitorar função hepática", pres:""}
+  ],
+  dil:"SF 0,9% — 100–250 mL",
+  time:"30–120 min IV",
+  obs:"COVID-19 hospitalizado com necessidade de O₂. A restrição original TFG<30 foi relaxada em atualizações de bula 2023+ (FDA/EMA). Eficácia maior se iniciado precocemente.",
+  warn:"Hepatotoxicidade (ALT/AST), bradicardia, reações infusionais. Veículo SBECD pode acumular em IRC grave.",
+  ref:"Sanford 55ª; UpToDate COVID-19"
+},
+
+/* ───── TB / OUTROS ESPECIAIS ───── */
+{
+  nome:"Isoniazida (H)", classe:"Antituberculose 1ª linha", cat:"tb",
+  apres:"Cp 100/300 mg · Coformulado RHZE",
+  ataque:"Sem ataque",
+  doses:[
+    {gfr:"qualquer", mant:"5 mg/kg/dia (máx 300 mg/dia) — sem ajuste renal", pres:""},
+    {gfr:"HD", mant:"Mesma dose, após HD", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""}
+  ],
+  dil:"VO/sonda",
+  time:"VO",
+  obs:"Metabolização hepática (acetilação). Associar PIRIDOXINA (B6) 25–50 mg/dia para prevenir neuropatia.",
+  warn:"Hepatotoxicidade (especialmente acetiladores lentos + álcool), neuropatia periférica.",
+  ref:"Sanford 55ª; Brasil MS PCDT TB 2023"
+},
+{
+  nome:"Rifampicina (R)", classe:"Rifamicina", cat:"tb",
+  apres:"Cps 300 mg · suspensão 20 mg/mL · IV 600 mg",
+  ataque:"Sem ataque",
+  doses:[
+    {gfr:"qualquer", mant:"10 mg/kg/dia (máx 600 mg) — sem ajuste renal", pres:""},
+    {gfr:"HD", mant:"Mesma dose", pres:""},
+    {gfr:"CRRT", mant:"Sem ajuste", pres:""}
+  ],
+  dil:"SF 0,9% (IV) — 250–500 mL",
+  time:"30 min–3h IV",
+  obs:"Indutor potente CYP450 — REDUZ múltiplos fármacos (varfarina, anticoncepcional, antirretrovirais, tacrolimus, voriconazol). Adjuvante em endocardite estafilocócica e infecções de prótese.",
+  warn:"Colora secreções alaranjadas (urina, lágrima, lentes), hepatotoxicidade, flu-like syndrome se intermitente.",
+  ref:"Sanford 55ª; Brasil MS PCDT TB 2023"
+},
+{
+  nome:"Pirazinamida (Z)", classe:"Antituberculose 1ª linha", cat:"tb",
+  apres:"Cp 500 mg",
+  ataque:"Sem ataque",
+  doses:[
+    {gfr:">50", mant:"25 mg/kg/dia (máx 2 g) — diária", pres:""},
+    {gfr:"≤50", mant:"25–35 mg/kg 3×/sem", pres:""},
+    {gfr:"HD", mant:"25–35 mg/kg 3×/sem após HD", pres:""},
+    {gfr:"CRRT", mant:"Padrão", pres:""}
+  ],
+  dil:"VO",
+  time:"VO",
+  obs:"Faz parte do RHZE. Útil só nos 2 primeiros meses.",
+  warn:"Hiperuricemia, hepatotoxicidade, artralgia, rash.",
+  ref:"Brasil MS PCDT TB 2023"
+},
+{
+  nome:"Etambutol (E)", classe:"Antituberculose", cat:"tb",
+  apres:"Cp 400 mg",
+  ataque:"Sem ataque",
+  doses:[
+    {gfr:">50", mant:"15–20 mg/kg/dia (máx 1600 mg)", pres:""},
+    {gfr:"30–50", mant:"15 mg/kg 24/24h ou 25 mg/kg 3×/sem", pres:""},
+    {gfr:"<30", mant:"15–20 mg/kg 3×/sem", pres:""},
+    {gfr:"HD", mant:"15 mg/kg 3×/sem após HD", pres:""},
+    {gfr:"CRRT", mant:"Padrão", pres:""}
+  ],
+  dil:"VO",
+  time:"VO",
+  obs:"Neurite óptica dose-dependente — fazer fundoscopia/visão de cores no diagnóstico e seriado.",
+  warn:"NEURITE ÓPTICA (vermelho-verde) reversível se suspenso precoce. Cuidado em IRC.",
+  ref:"Brasil MS PCDT TB 2023"
+}
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   CÁLCULO DE TFG
+   ═══════════════════════════════════════════════════════════════ */
+
+function calcCKDEPI(scr, age, sex){
+  // CKD-EPI 2021 race-free
+  const k = sex==='F' ? 0.7 : 0.9;
+  const a = sex==='F' ? -0.241 : -0.302;
+  const minTerm = Math.min(scr/k, 1);
+  const maxTerm = Math.max(scr/k, 1);
+  let egfr = 142 * Math.pow(minTerm, a) * Math.pow(maxTerm, -1.200) * Math.pow(0.9938, age);
+  if(sex==='F') egfr *= 1.012;
+  return Math.round(egfr * 10) / 10;
+}
+
+function calcCG(scr, age, sex, weight){
+  // Cockcroft-Gault
+  let crcl = ((140 - age) * weight) / (72 * scr);
+  if(sex==='F') crcl *= 0.85;
+  return Math.round(crcl * 10) / 10;
+}
+
+function classifyKDIGO(gfr){
+  if(gfr >= 90) return {stage:'G1', label:'G1 · ≥90 · Normal/alta', cls:'stage-G1'};
+  if(gfr >= 60) return {stage:'G2', label:'G2 · 60–89 · Levemente reduzida', cls:'stage-G2'};
+  if(gfr >= 45) return {stage:'G3a', label:'G3a · 45–59 · Leve a moderada', cls:'stage-G3a'};
+  if(gfr >= 30) return {stage:'G3b', label:'G3b · 30–44 · Moderada a grave', cls:'stage-G3b'};
+  if(gfr >= 15) return {stage:'G4', label:'G4 · 15–29 · Grave', cls:'stage-G4'};
+  return {stage:'G5', label:'G5 · <15 · Falência renal', cls:'stage-G5'};
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════════════════════════════ */
+
+let state = {
+  eq:'ckdepi',
+  scr:1.0, age:60, sex:'M', weight:70,
+  dialysis:'none',
+  gfr:null, stage:null,
+  cat:'all', search:''
+};
+
+function updateGFR(){
+  state.scr = parseFloat(document.getElementById('scr').value) || 1.0;
+  state.age = parseInt(document.getElementById('age').value) || 60;
+  state.sex = document.getElementById('sex').value;
+  state.weight = parseFloat(document.getElementById('weight').value) || 70;
+  state.dialysis = document.getElementById('dialysis').value;
+
+  let gfr;
+  if(state.eq==='ckdepi') gfr = calcCKDEPI(state.scr, state.age, state.sex);
+  else gfr = calcCG(state.scr, state.age, state.sex, state.weight);
+
+  state.gfr = gfr;
+  state.stage = classifyKDIGO(gfr);
+
+  document.getElementById('gfr-val').textContent = gfr;
+  document.getElementById('gfr-unit').textContent = state.eq==='ckdepi'
+    ? 'mL/min/1,73 m² (CKD-EPI 2021)'
+    : 'mL/min (Cockcroft-Gault)';
+  const stageEl = document.getElementById('gfr-stage');
+  stageEl.className = 'result-stage ' + state.stage.cls;
+  document.getElementById('gfr-stage-text').textContent = state.stage.label;
+
+  // Nota contextual
+  let note = '';
+  if(state.dialysis==='ihd') note='⚠️ Paciente em <strong>HD intermitente</strong>: use a linha “HD” em cada antimicrobiano. Administrar dose <strong>após</strong> sessão para drogas dialisáveis (β-lactâmicos, vanco em parte, aminoglicos).';
+  else if(state.dialysis==='crrt') note='⚠️ Paciente em <strong>CRRT</strong>: use a linha “CRRT”. Clearance significativo — frequentemente requer dose MAIOR que IRC sem diálise. Considere TDM.';
+  else if(state.dialysis==='sled') note='⚠️ <strong>SLED/PIRRT</strong>: clearance intermediário. Em geral aproxima-se de TFG 30–50 durante e CRRT durante sessão.';
+  else if(state.dialysis==='pd') note='⚠️ <strong>Diálise peritoneal</strong>: clearance menor que HD. Aproximar de TFG &lt;15 sem HD. Considere dose intraperitoneal em peritonite (consultar nefrologia).';
+  else if(gfr > 130) note='🚀 <strong>ARC (Augmented Renal Clearance)</strong>: ClCr &gt;130 mL/min frequente em jovem, sepse, queimado, neuro-trauma. Subdosa β-lactâmicos e vanco — considere infusão estendida/contínua e TDM.';
+  else note='Em <strong>paciente crítico</strong>, considere também ARC se ClCr &gt; 130 mL/min — pode subdosar β-lactâmicos e vancomicina.';
+  document.getElementById('gfr-note').innerHTML = note;
+
+  renderDrugs();
+}
+
+/* Identifica qual linha de dose se aplica ao GFR/diálise atual */
+function matchDoseRow(drug, gfr, dialysis){
+  if(dialysis==='ihd' || dialysis==='pd'){
+    return drug.doses.findIndex(d => /HD/i.test(d.gfr));
+  }
+  if(dialysis==='crrt' || dialysis==='sled'){
+    return drug.doses.findIndex(d => /CRRT/i.test(d.gfr));
+  }
+  // Sem TRS — compara faixas numéricas
+  for(let i=0;i<drug.doses.length;i++){
+    const g = drug.doses[i].gfr;
+    if(/HD|CRRT|Child|AKI/i.test(g)) continue;
+    if(g === 'qualquer') return i;
+    // ">N"
+    let m = g.match(/^>(\d+)$/); if(m && gfr > +m[1]) return i;
+    m = g.match(/^≥(\d+)$/); if(m && gfr >= +m[1]) return i;
+    // "<N" / "≤N"
+    m = g.match(/^<(\d+)$/); if(m && gfr < +m[1]) return i;
+    m = g.match(/^≤(\d+)$/); if(m && gfr <= +m[1]) return i;
+    // "N-N" ou "N–N"
+    m = g.match(/^(\d+)[\-–](\d+)$/); if(m && gfr >= +m[1] && gfr <= +m[2]) return i;
+  }
+  return -1;
+}
+
+function renderDrugs(){
+  const grid = document.getElementById('drugs-grid');
+  const q = state.search.toLowerCase().trim();
+  const filtered = DRUGS.filter(d => {
+    const catOK = state.cat==='all' || d.cat===state.cat;
+    const txtOK = !q || d.nome.toLowerCase().includes(q) || d.classe.toLowerCase().includes(q);
+    return catOK && txtOK;
+  });
+
+  if(filtered.length===0){
+    grid.innerHTML = '<div style="text-align:center;color:var(--muted);padding:60px 20px;font-family:var(--font-mono)">Nenhum antimicrobiano encontrado.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(d => {
+    const highlightIdx = state.gfr ? matchDoseRow(d, state.gfr, state.dialysis) : -1;
+    const dosesHTML = d.doses.map((row,i) => `
+      <div class="dose-row ${i===highlightIdx?'highlight':''}">
+        <div class="gfr-label">
+          <span class="dot" style="background:${rowColor(row.gfr)}"></span>
+          ${row.gfr.includes('HD')||row.gfr.includes('CRRT')||row.gfr.includes('Child')||row.gfr.includes('AKI')?row.gfr:'ClCr '+row.gfr}
+        </div>
+        <div class="dose-text">${row.mant}</div>
+        <div class="pres-text">${row.pres||'—'}</div>
+      </div>`).join('');
+
+    const tags = [];
+    if(d.cat==='beta' || d.classe.includes('Glicopeptídeo')) tags.push('<span class="drug-tag tag-time">Tempo-dependente</span>');
+    if(d.nome==='Vancomicina'||d.nome==='Polimixina B'||d.nome==='Colistina (Polimixina E)') tags.push('<span class="drug-tag tag-rec">Atenção AKI</span>');
+
+    return `
+    <article class="drug-card" data-cat="${d.cat}">
+      <div class="drug-head">
+        <div>
+          <div class="drug-name">${d.nome}</div>
+          <div class="drug-class">${d.classe}</div>
+          <div style="font-size:.82rem;color:var(--soft);margin-top:6px">📦 ${d.apres}</div>
+        </div>
+        <div class="drug-tags">${tags.join('')}</div>
+      </div>
+
+      <div style="font-size:.85rem;color:var(--soft);margin-bottom:10px"><strong style="color:var(--green);font-family:var(--font-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:1px">Dose de ataque</strong><br>${d.ataque}</div>
+
+      ${dosesHTML}
+
+      <div class="drug-notes">
+        <strong>💧 Diluição & ⏱️ Tempo</strong>
+        <div><strong>Diluir em:</strong> ${d.dil}</div>
+        <div><strong>Infundir em:</strong> ${d.time}</div>
+      </div>
+
+      ${d.obs ? `<div class="drug-notes"><strong>📌 Observações práticas</strong>${d.obs}</div>` : ''}
+      ${d.warn ? `<div class="drug-warn"><strong>⚠️ Alerta de segurança</strong>${d.warn}</div>` : ''}
+      <div class="drug-ref">📚 Ref.: ${d.ref}</div>
+    </article>`;
+  }).join('');
+}
+
+function rowColor(g){
+  if(/HD/i.test(g)) return 'var(--cyan)';
+  if(/CRRT|SLED/i.test(g)) return 'var(--violet)';
+  if(/qualquer/i.test(g)) return 'var(--green)';
+  if(/^>(\d+)/.test(g)) return 'var(--green)';
+  if(/^≥(\d+)/.test(g)) return 'var(--green)';
+  if(/\d+[\-–]\d+/.test(g)){
+    const m = g.match(/(\d+)[\-–](\d+)/);
+    const mid = (+m[1]+ +m[2])/2;
+    if(mid>=45) return 'var(--yellow)';
+    if(mid>=30) return 'var(--orange)';
+    return 'var(--red)';
+  }
+  if(/^<(\d+)/.test(g) || /^≤(\d+)/.test(g)){
+    const m = g.match(/(\d+)/);
+    if(+m[1]<=20) return 'var(--red)';
+    return 'var(--orange)';
+  }
+  return 'var(--muted)';
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EVENTOS
+   ═══════════════════════════════════════════════════════════════ */
+document.querySelectorAll('#scr,#age,#sex,#weight,#dialysis').forEach(el => {
+  el.addEventListener('input', updateGFR);
+  el.addEventListener('change', updateGFR);
+});
+document.querySelectorAll('.eq-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.eq-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    state.eq = b.dataset.eq;
+    updateGFR();
+  });
+});
+document.getElementById('search').addEventListener('input', e => {
+  state.search = e.target.value;
+  renderDrugs();
+});
+document.querySelectorAll('.chip').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+    state.cat = c.dataset.cat;
+    renderDrugs();
+  });
+});
+
+// Inicializar
+updateGFR();
+</script>
+</body>
+</html>
