@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SAPS 3 · Calculadora de Mortalidade na Admissão UTI · Antigravity</title>
+<meta name="description" content="Calculadora SAPS 3 (Simplified Acute Physiology Score 3) com estimativa de mortalidade hospitalar global e customizada para América Central/Sul (Brasil). 20 variáveis das 3 caixas. Base: Metnitz/Moreno, Intensive Care Med 2005."/>
+<meta name="theme-color" content="#040d1a"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANTIGRAVITY · SAPS 3 CALCULATOR                            ║
+  ║  Módulo 14 — Mortalidade Hospitalar na Admissão UTI         ║
+  ║  Standalone HTML — CSS/JS inline. Deploy-safe.              ║
+  ║  Base: Metnitz PG, Moreno RP et al. Intensive Care Med      ║
+  ║         2005;31:1336-1355 (Parte 1) e 1345-1355 (Parte 2)   ║
+  ║  Equações: Geral (SE) + Customizada CSA (Brasil/Am. Sul)    ║
+  ║  AVISO MÉDICO: Apoio à decisão. Não substitui julgamento    ║
+  ║  clínico nem avaliação intensivista beira-leito.            ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<style>
+:root{
+  --bg:#040d1a;--bg2:#071422;--bg3:#0b1a2e;
+  --surf:rgba(255,255,255,.055);--surf-h:rgba(255,255,255,.09);
+  --brd:rgba(255,255,255,.09);--brd-h:rgba(255,255,255,.18);
+  --text:#e4edf8;--muted:#5c7a9a;--soft:#93b0cc;
+  --cyan:#3ee8ff;--cyan-d:rgba(62,232,255,.14);
+  --violet:#a98cff;--vio-d:rgba(169,140,255,.14);
+  --green:#4ef0a1;--grn-d:rgba(78,240,161,.12);
+  --yellow:#ffd166;--yel-d:rgba(255,209,102,.13);
+  --red:#ff6060;--red-d:rgba(255,96,96,.13);
+  --orange:#ff9a3c;--orange-d:rgba(255,154,60,.15);
+  --font-head:'Syne',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-body:'Outfit',sans-serif;
+  --r:14px;--r-lg:22px;--r-xl:32px;
+  --shadow:0 24px 80px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+  line-height:1.55;
+  background-image:
+    radial-gradient(1100px 600px at 12% -10%, rgba(169,140,255,.10), transparent 60%),
+    radial-gradient(900px 500px at 100% 8%, rgba(62,232,255,.07), transparent 65%),
+    radial-gradient(700px 400px at 50% 100%, rgba(78,240,161,.06), transparent 70%);
+}
+::selection{background:var(--violet);color:#000}
+a{color:var(--violet);text-decoration:none}
+a:hover{color:var(--cyan)}
+button{font-family:inherit;cursor:pointer}
+
+/* ── HEADER ─────────────────────────────────────────── */
+header.site{
+  position:sticky;top:0;z-index:50;
+  background:rgba(4,13,26,.78);
+  backdrop-filter:blur(18px) saturate(140%);
+  border-bottom:1px solid var(--brd);
+}
+.nav{
+  max-width:1300px;margin:0 auto;
+  padding:14px 22px;
+  display:flex;align-items:center;gap:22px;flex-wrap:wrap;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-head);
+  font-weight:800;font-size:1.05rem;
+  text-decoration:none;color:var(--text);
+}
+.brand-mark{
+  width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,var(--violet),var(--cyan));
+  display:grid;place-items:center;
+  font-family:var(--font-mono);font-weight:700;font-size:.8rem;color:#000;
+}
+.nav-links{display:flex;gap:14px;flex-wrap:wrap;font-size:.88rem}
+.nav-links a{color:var(--soft);padding:6px 10px;border-radius:8px;transition:.2s}
+.nav-links a:hover{color:var(--text);background:var(--surf)}
+.nav-back{
+  margin-left:auto;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:10px;
+  background:var(--vio-d);color:var(--violet);
+  border:1px solid rgba(169,140,255,.32);
+  font-weight:600;font-size:.85rem;
+}
+.nav-back:hover{background:rgba(169,140,255,.22);color:var(--cyan)}
+
+/* ── HERO ───────────────────────────────────────────── */
+.shell{max-width:1300px;margin:0 auto;padding:0 22px}
+.hero{
+  padding:48px 0 24px;
+  display:grid;gap:18px;
+}
+.eyebrow{
+  font-family:var(--font-mono);font-size:.78rem;
+  color:var(--violet);text-transform:uppercase;letter-spacing:.14em;
+}
+h1.title{
+  font-family:var(--font-head);
+  font-size:clamp(2rem,4.6vw,3.2rem);
+  line-height:1.08;font-weight:800;
+  background:linear-gradient(120deg,#fff 0%,var(--violet) 55%,var(--cyan) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lead{color:var(--soft);font-size:1.05rem;max-width:780px}
+.hero-meta{
+  display:flex;gap:10px;flex-wrap:wrap;
+  margin-top:6px;
+}
+.chip{
+  font-family:var(--font-mono);font-size:.74rem;
+  padding:5px 10px;border-radius:99px;
+  background:var(--surf);border:1px solid var(--brd);
+  color:var(--soft);
+}
+.chip.violet{background:var(--vio-d);color:var(--violet);border-color:rgba(169,140,255,.3)}
+.chip.cyan{background:var(--cyan-d);color:var(--cyan);border-color:rgba(62,232,255,.3)}
+.chip.green{background:var(--grn-d);color:var(--green);border-color:rgba(78,240,161,.3)}
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+.grid-main{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 360px;
+  gap:24px;
+  padding:18px 0 80px;
+}
+@media (max-width:1020px){
+  .grid-main{grid-template-columns:1fr}
+  .result-panel{position:static !important}
+}
+
+/* ── BOX (CAIXAS DO SAPS 3) ─────────────────────────── */
+.box{
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));
+  border:1px solid var(--brd);
+  border-radius:var(--r-lg);
+  padding:20px 22px;
+  margin-bottom:18px;
+  transition:.25s;
+}
+.box:hover{border-color:var(--brd-h)}
+.box-head{
+  display:flex;align-items:center;gap:12px;
+  padding-bottom:12px;margin-bottom:14px;
+  border-bottom:1px solid var(--brd);
+}
+.box-num{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--vio-d);
+  border:1px solid rgba(169,140,255,.3);
+  display:grid;place-items:center;
+  font-family:var(--font-head);font-weight:800;
+  color:var(--violet);font-size:1rem;
+}
+.box-cyan .box-num{background:var(--cyan-d);border-color:rgba(62,232,255,.3);color:var(--cyan)}
+.box-green .box-num{background:var(--grn-d);border-color:rgba(78,240,161,.3);color:var(--green)}
+.box-title{
+  font-family:var(--font-head);font-size:1.18rem;font-weight:700;
+}
+.box-sub{font-size:.82rem;color:var(--muted);margin-top:2px;font-family:var(--font-mono)}
+
+/* ── ITEM (VARIÁVEL) ────────────────────────────────── */
+.item{
+  padding:14px 0;
+  border-bottom:1px dashed rgba(255,255,255,.05);
+}
+.item:last-child{border-bottom:none}
+.item-label{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;gap:10px;flex-wrap:wrap;
+}
+.item-name{
+  font-weight:600;font-size:.97rem;color:var(--text);
+}
+.item-points{
+  font-family:var(--font-mono);font-size:.78rem;
+  padding:3px 9px;border-radius:6px;
+  background:var(--surf);color:var(--muted);
+  min-width:42px;text-align:center;
+}
+.item-points.active{background:var(--vio-d);color:var(--violet)}
+.item-points.neg{background:var(--grn-d);color:var(--green)}
+.item-help{font-size:.78rem;color:var(--muted);margin-bottom:8px}
+
+/* ── INPUTS ─────────────────────────────────────────── */
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{
+  padding:7px 12px;border-radius:9px;
+  background:var(--surf);border:1px solid var(--brd);
+  color:var(--soft);font-size:.84rem;
+  transition:.18s;
+  font-family:var(--font-body);
+}
+.opt:hover{background:var(--surf-h);color:var(--text);border-color:var(--brd-h)}
+.opt.sel{
+  background:var(--vio-d);color:var(--violet);
+  border-color:rgba(169,140,255,.45);font-weight:600;
+}
+.opt.neg.sel{background:var(--grn-d);color:var(--green);border-color:rgba(78,240,161,.45)}
+
+.num-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.num-row input[type="number"]{
+  background:var(--surf);border:1px solid var(--brd);border-radius:9px;
+  padding:8px 12px;color:var(--text);font-family:var(--font-mono);
+  width:120px;font-size:.92rem;
+}
+.num-row input[type="number"]:focus{outline:none;border-color:var(--violet)}
+.num-row .unit{font-size:.82rem;color:var(--muted);font-family:var(--font-mono)}
+.num-row select{
+  background:var(--surf);border:1px solid var(--brd);border-radius:9px;
+  padding:8px 10px;color:var(--text);font-family:var(--font-mono);font-size:.85rem;
+}
+
+/* ── RESULTADO (PAINEL LATERAL) ─────────────────────── */
+.result-panel{
+  position:sticky;top:80px;
+  background:linear-gradient(180deg,rgba(169,140,255,.07),rgba(62,232,255,.04));
+  border:1px solid rgba(169,140,255,.22);
+  border-radius:var(--r-xl);
+  padding:24px;
+  height:fit-content;
+}
+.result-eyebrow{
+  font-family:var(--font-mono);font-size:.72rem;
+  color:var(--violet);text-transform:uppercase;letter-spacing:.12em;
+  margin-bottom:10px;
+}
+.score-big{
+  font-family:var(--font-head);font-size:3.8rem;font-weight:800;
+  line-height:1;
+  background:linear-gradient(120deg,var(--violet),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.score-label{
+  font-size:.85rem;color:var(--soft);
+  margin-top:4px;margin-bottom:18px;
+}
+.mort-block{
+  background:var(--bg2);
+  border:1px solid var(--brd);
+  border-radius:var(--r-lg);
+  padding:16px;
+  margin-bottom:12px;
+}
+.mort-block.csa{border-color:rgba(255,154,60,.28);background:linear-gradient(180deg,rgba(255,154,60,.08),var(--bg2))}
+.mort-head{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:.78rem;
+  color:var(--muted);text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:8px;
+}
+.mort-head .dot{width:8px;height:8px;border-radius:50%;background:var(--violet)}
+.csa .mort-head .dot{background:var(--orange)}
+.mort-val{
+  font-family:var(--font-head);font-size:2.1rem;font-weight:800;color:var(--text);
+}
+.csa .mort-val{color:var(--orange)}
+.mort-note{font-size:.75rem;color:var(--muted);margin-top:6px;line-height:1.45}
+.risk-bar{
+  height:8px;border-radius:4px;background:var(--bg3);
+  margin-top:10px;overflow:hidden;
+}
+.risk-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--green) 0%,var(--yellow) 40%,var(--orange) 70%,var(--red) 100%);
+  transition:width .4s;width:0%;
+}
+
+.actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.btn{
+  padding:9px 14px;border-radius:10px;
+  background:var(--surf);border:1px solid var(--brd);
+  color:var(--text);font-size:.85rem;font-weight:600;
+  transition:.18s;
+}
+.btn:hover{background:var(--surf-h);border-color:var(--brd-h)}
+.btn.primary{background:var(--violet);color:#000;border-color:var(--violet)}
+.btn.primary:hover{background:var(--cyan);border-color:var(--cyan);color:#000}
+
+/* ── INFO/NOTAS ─────────────────────────────────────── */
+.info-card{
+  background:var(--surf);
+  border:1px solid var(--brd);
+  border-radius:var(--r-lg);
+  padding:18px;
+  margin-top:24px;
+}
+.info-card h3{
+  font-family:var(--font-head);font-size:1.05rem;font-weight:700;
+  margin-bottom:10px;color:var(--cyan);
+}
+.info-card p,.info-card li{font-size:.88rem;color:var(--soft);line-height:1.6}
+.info-card ul{padding-left:18px;margin-top:6px}
+.info-card code{
+  font-family:var(--font-mono);font-size:.82rem;
+  background:var(--bg2);padding:2px 6px;border-radius:4px;color:var(--violet);
+}
+.eq-block{
+  background:var(--bg2);border:1px solid var(--brd);
+  border-radius:10px;padding:12px;margin:10px 0;
+  font-family:var(--font-mono);font-size:.83rem;color:var(--cyan);
+  word-break:break-word;
+}
+
+footer.site{
+  margin-top:60px;padding:30px 22px;
+  border-top:1px solid var(--brd);
+  text-align:center;font-size:.82rem;color:var(--muted);
+}
+footer.site strong{color:var(--soft)}
+
+/* ── ANIMAÇÃO ───────────────────────────────────────── */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.box{animation:fadeIn .4s ease-out both}
+.box:nth-child(2){animation-delay:.08s}
+.box:nth-child(3){animation-delay:.16s}
+
+/* ── DETAIL DROPDOWN ────────────────────────────────── */
+details.deep{
+  margin-top:14px;
+  background:var(--surf);border:1px solid var(--brd);
+  border-radius:var(--r);padding:12px 14px;
+}
+details.deep summary{
+  cursor:pointer;font-weight:600;font-size:.9rem;color:var(--cyan);
+  list-style:none;
+}
+details.deep summary::-webkit-details-marker{display:none}
+details.deep summary::before{content:"▸ ";color:var(--violet)}
+details.deep[open] summary::before{content:"▾ "}
+details.deep .deep-body{margin-top:10px;font-size:.85rem;color:var(--soft);line-height:1.6}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────── -->
+<header class="site">
+  <nav class="nav">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark">A</span>
+      Antigravity · SAPS 3
+    </a>
+    <div class="nav-links" role="navigation" aria-label="Atalhos">
+      <a href="#box1">📦 Box I</a>
+      <a href="#box2">🏥 Box II</a>
+      <a href="#box3">🩺 Box III</a>
+      <a href="#info">📚 Referências</a>
+    </div>
+    <a class="nav-back" href="../index.html">← Voltar</a>
+  </nav>
+</header>
+
+<main class="shell">
+
+  <!-- ── HERO ─────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="title">
+    <div class="eyebrow">Módulo 14 · Severity Score · Admissão UTI</div>
+    <h1 class="title" id="title">SAPS 3 · Estimativa de Mortalidade Hospitalar na Admissão</h1>
+    <p class="lead">
+      Calculadora completa do <strong>Simplified Acute Physiology Score 3</strong> (Metnitz/Moreno, Intensive Care Med 2005).
+      20 variáveis em 3 caixas, com janela de coleta de <strong>±1 hora da admissão na UTI</strong>.
+      Fornece estimativa de mortalidade pela equação <strong>geral</strong> e pela equação <strong>customizada para América Central/Sul (CSA)</strong> — incluindo nota de calibração para UTIs brasileiras contemporâneas.
+    </p>
+    <div class="hero-meta">
+      <span class="chip violet">20 variáveis</span>
+      <span class="chip cyan">3 caixas</span>
+      <span class="chip green">Equação CSA + Global</span>
+      <span class="chip">Janela ±1h admissão</span>
+      <span class="chip">v2026.06</span>
+    </div>
+  </section>
+
+  <div class="grid-main">
+
+    <!-- ─── COLUNA ESQUERDA: FORMULÁRIO ─────────────── -->
+    <div>
+
+      <!-- ── BOX I ── -->
+      <section class="box" id="box1">
+        <div class="box-head">
+          <div class="box-num">I</div>
+          <div>
+            <div class="box-title">📦 Condições prévias à admissão</div>
+            <div class="box-sub">Age · Comorbidities · LOS · Local · Vasoativos pré-UTI</div>
+          </div>
+        </div>
+
+        <!-- Idade -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🎂 Idade (anos)</span>
+            <span class="item-points" id="pt-age">0</span>
+          </div>
+          <div class="item-help">Pontuação cresce em faixas. Idoso ≥80a: +18 pts.</div>
+          <div class="opts" data-var="age">
+            <button class="opt" data-pts="0">&lt; 40</button>
+            <button class="opt" data-pts="5">40–59</button>
+            <button class="opt" data-pts="9">60–69</button>
+            <button class="opt" data-pts="13">70–74</button>
+            <button class="opt" data-pts="15">75–79</button>
+            <button class="opt" data-pts="18">≥ 80</button>
+          </div>
+        </div>
+
+        <!-- Comorbidades -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🧬 Comorbidades (somar todas aplicáveis)</span>
+            <span class="item-points" id="pt-com">0</span>
+          </div>
+          <div class="item-help">Múltiplas seleções permitidas. Cada uma soma seus pontos.</div>
+          <div class="opts" data-var="com" data-multi="1">
+            <button class="opt" data-pts="3">Quimioterapia/RT (3)</button>
+            <button class="opt" data-pts="6">Câncer hematológico (6)</button>
+            <button class="opt" data-pts="6">ICC NYHA IV (6)</button>
+            <button class="opt" data-pts="8">Cirrose (8)</button>
+            <button class="opt" data-pts="8">AIDS (8)</button>
+            <button class="opt" data-pts="11">Câncer metastático (11)</button>
+          </div>
+        </div>
+
+        <!-- LOS antes da UTI -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🏥 Tempo de internação antes da UTI (dias)</span>
+            <span class="item-points" id="pt-los">0</span>
+          </div>
+          <div class="item-help">Dias entre admissão hospitalar e admissão na UTI.</div>
+          <div class="opts" data-var="los">
+            <button class="opt" data-pts="0">&lt; 14</button>
+            <button class="opt" data-pts="6">14–27</button>
+            <button class="opt" data-pts="7">≥ 28</button>
+          </div>
+        </div>
+
+        <!-- Local intra-hospitalar antes da UTI -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">📍 Local intra-hospitalar imediatamente antes da UTI</span>
+            <span class="item-points" id="pt-loc">0</span>
+          </div>
+          <div class="opts" data-var="loc">
+            <button class="opt neg" data-pts="-6">Sala de cirurgia urg./eletiva (-6)</button>
+            <button class="opt" data-pts="0">Emergência (0)</button>
+            <button class="opt" data-pts="5">Outra unidade/enfermaria (5)</button>
+            <button class="opt" data-pts="7">Outra UTI (7)</button>
+            <button class="opt" data-pts="8">Outro hospital (8)</button>
+          </div>
+        </div>
+
+        <!-- Drogas vasoativas pré-UTI -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">💉 Uso de drogas vasoativas antes da admissão UTI</span>
+            <span class="item-points" id="pt-vaso">0</span>
+          </div>
+          <div class="item-help">Norepi, epi, dopamina, vasopressina em qualquer dose, antes da chegada à UTI.</div>
+          <div class="opts" data-var="vaso">
+            <button class="opt" data-pts="0">Não</button>
+            <button class="opt" data-pts="3">Sim (+3)</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── BOX II ── -->
+      <section class="box box-cyan" id="box2">
+        <div class="box-head">
+          <div class="box-num">II</div>
+          <div>
+            <div class="box-title">🏥 Circunstâncias da admissão</div>
+            <div class="box-sub">Reason · Planning · Surgical status · Anatomical site · Infection</div>
+          </div>
+        </div>
+
+        <!-- Planejada/Não planejada -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">📅 Admissão planejada ou não planejada</span>
+            <span class="item-points" id="pt-plan">0</span>
+          </div>
+          <div class="opts" data-var="plan">
+            <button class="opt" data-pts="0">Planejada</button>
+            <button class="opt" data-pts="3">Não planejada (+3)</button>
+          </div>
+        </div>
+
+        <!-- Razão da admissão - múltiplas -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🚨 Razão(ões) para admissão UTI (somar aplicáveis)</span>
+            <span class="item-points" id="pt-reason">0</span>
+          </div>
+          <div class="item-help">Selecione TODAS as razões agudas presentes. Negativas reduzem o escore (proteção).</div>
+          <div class="opts" data-var="reason" data-multi="1">
+            <button class="opt neg" data-pts="-5">CV: Arritmia/distúrbio de ritmo (-5)</button>
+            <button class="opt neg" data-pts="-4">Neuro: Convulsões (-4)</button>
+            <button class="opt" data-pts="3">CV: Choque hipovolêmico hemo/não-hemo (+3)</button>
+            <button class="opt" data-pts="3">GI: Abdome agudo / outros (+3)</button>
+            <button class="opt" data-pts="4">Neuro: Coma/estupor/agitação/delirium (+4)</button>
+            <button class="opt" data-pts="5">CV: Choque séptico (+5)</button>
+            <button class="opt" data-pts="5">CV: Choque anafilático/misto/indef (+5)</button>
+            <button class="opt" data-pts="6">Hepático: Insuficiência hepática (+6)</button>
+            <button class="opt" data-pts="7">Neuro: Déficit neurológico focal (+7)</button>
+            <button class="opt" data-pts="9">GI: Pancreatite grave (+9)</button>
+            <button class="opt" data-pts="10">Neuro: Efeito de massa intracraniano (+10)</button>
+          </div>
+        </div>
+
+        <!-- Status cirúrgico -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🔪 Status cirúrgico na admissão</span>
+            <span class="item-points" id="pt-surg">0</span>
+          </div>
+          <div class="opts" data-var="surg">
+            <button class="opt neg" data-pts="-11">Cirurgia eletiva (-11)</button>
+            <button class="opt" data-pts="0">Não cirúrgico (0)</button>
+            <button class="opt" data-pts="6">Cirurgia de emergência (+6)</button>
+          </div>
+        </div>
+
+        <!-- Sítio anatômico -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🫀 Sítio anatômico da cirurgia (se cirúrgico)</span>
+            <span class="item-points" id="pt-site">0</span>
+          </div>
+          <div class="item-help">Quando paciente foi operado. Transplantes têm pontuação negativa (proteção).</div>
+          <div class="opts" data-var="site">
+            <button class="opt neg" data-pts="-11">Transplante: fígado/rim/pâncreas/outro (-11)</button>
+            <button class="opt neg" data-pts="-8">Trauma isolado (tórax/abd/membro) ou múltiplo (-8)</button>
+            <button class="opt neg" data-pts="-6">Cirurgia cardíaca: CRM sem troca valvar (-6)</button>
+            <button class="opt" data-pts="0">Outros sítios / sem cirurgia (0)</button>
+            <button class="opt" data-pts="5">Neurocirurgia por AVC (+5)</button>
+          </div>
+        </div>
+
+        <!-- Infecção aguda -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🦠 Infecção aguda na admissão</span>
+            <span class="item-points" id="pt-inf">0</span>
+          </div>
+          <div class="opts" data-var="inf" data-multi="1">
+            <button class="opt" data-pts="0">Sem infecção / não suspeita</button>
+            <button class="opt" data-pts="4">Nosocomial (+4)</button>
+            <button class="opt" data-pts="5">Respiratória (+5)</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── BOX III ── -->
+      <section class="box box-green" id="box3">
+        <div class="box-head">
+          <div class="box-num">III</div>
+          <div>
+            <div class="box-title">🩺 Fisiologia aguda (±1h da admissão UTI)</div>
+            <div class="box-sub">Pior valor dentro da janela. GCS · Bili · Temp · Cr · FC · Leuco · pH · Plaquetas · PAS · Oxigenação</div>
+          </div>
+        </div>
+
+        <!-- Glasgow -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🧠 Glasgow estimado (sedado: use pré-sedação ou despertar)</span>
+            <span class="item-points" id="pt-gcs">0</span>
+          </div>
+          <div class="item-help">Em paciente sedado/curarizado: estimar pré-sedação ou aguardar despertar.</div>
+          <div class="opts" data-var="gcs">
+            <button class="opt" data-pts="0">≥ 13</button>
+            <button class="opt" data-pts="2">7–12</button>
+            <button class="opt" data-pts="7">6</button>
+            <button class="opt" data-pts="13">5</button>
+            <button class="opt" data-pts="15">3–4</button>
+          </div>
+        </div>
+
+        <!-- Bilirrubina -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🟡 Bilirrubina total mais alta (mg/dL)</span>
+            <span class="item-points" id="pt-bili">0</span>
+          </div>
+          <div class="opts" data-var="bili">
+            <button class="opt" data-pts="0">&lt; 2</button>
+            <button class="opt" data-pts="4">2–5,9</button>
+            <button class="opt" data-pts="5">≥ 6</button>
+          </div>
+        </div>
+
+        <!-- Temperatura -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🌡️ Temperatura mais alta (°C)</span>
+            <span class="item-points" id="pt-temp">0</span>
+          </div>
+          <div class="item-help">Hipotermia leve não pontua aqui (paradoxal); apenas hipertermia.</div>
+          <div class="opts" data-var="temp">
+            <button class="opt" data-pts="0">&lt; 35</button>
+            <button class="opt" data-pts="7">≥ 35</button>
+          </div>
+        </div>
+
+        <!-- Creatinina -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🟤 Creatinina mais alta (mg/dL)</span>
+            <span class="item-points" id="pt-cr">0</span>
+          </div>
+          <div class="opts" data-var="cr">
+            <button class="opt" data-pts="0">&lt; 1,2</button>
+            <button class="opt" data-pts="2">1,2–1,99</button>
+            <button class="opt" data-pts="7">2–3,49</button>
+            <button class="opt" data-pts="8">≥ 3,5</button>
+          </div>
+        </div>
+
+        <!-- FC -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">❤️ Frequência cardíaca mais alta (bpm)</span>
+            <span class="item-points" id="pt-fc">0</span>
+          </div>
+          <div class="opts" data-var="fc">
+            <button class="opt" data-pts="0">&lt; 120</button>
+            <button class="opt" data-pts="5">120–159</button>
+            <button class="opt" data-pts="7">≥ 160</button>
+          </div>
+        </div>
+
+        <!-- Leucócitos -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🔬 Leucócitos mais altos (×10³/μL)</span>
+            <span class="item-points" id="pt-leuc">0</span>
+          </div>
+          <div class="opts" data-var="leuc">
+            <button class="opt" data-pts="0">&lt; 15</button>
+            <button class="opt" data-pts="2">≥ 15</button>
+          </div>
+        </div>
+
+        <!-- pH -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🧪 pH mais baixo</span>
+            <span class="item-points" id="pt-ph">0</span>
+          </div>
+          <div class="opts" data-var="ph">
+            <button class="opt" data-pts="0">&gt; 7,25</button>
+            <button class="opt" data-pts="3">≤ 7,25</button>
+          </div>
+        </div>
+
+        <!-- Plaquetas -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🩸 Plaquetas mais baixas (×10³/μL)</span>
+            <span class="item-points" id="pt-plaq">0</span>
+          </div>
+          <div class="opts" data-var="plaq">
+            <button class="opt" data-pts="0">≥ 100</button>
+            <button class="opt" data-pts="5">50–99</button>
+            <button class="opt" data-pts="8">20–49</button>
+            <button class="opt" data-pts="13">&lt; 20</button>
+          </div>
+        </div>
+
+        <!-- PAS -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🩺 PAS mais baixa (mmHg)</span>
+            <span class="item-points" id="pt-pas">0</span>
+          </div>
+          <div class="opts" data-var="pas">
+            <button class="opt" data-pts="0">≥ 120</button>
+            <button class="opt" data-pts="3">70–119</button>
+            <button class="opt" data-pts="8">40–69</button>
+            <button class="opt" data-pts="11">&lt; 40</button>
+          </div>
+        </div>
+
+        <!-- Oxigenação -->
+        <div class="item">
+          <div class="item-label">
+            <span class="item-name">🫁 Oxigenação (combinação P/F + VM)</span>
+            <span class="item-points" id="pt-ox">0</span>
+          </div>
+          <div class="item-help">Avalie pior relação PaO₂/FiO₂ ou pior PaO₂ se em ar ambiente.</div>
+          <div class="opts" data-var="ox">
+            <button class="opt" data-pts="0">PaO₂ ≥ 60 sem VM (0)</button>
+            <button class="opt" data-pts="5">PaO₂ &lt; 60 sem VM (+5)</button>
+            <button class="opt" data-pts="7">P/F ≥ 100 com VM (+7)</button>
+            <button class="opt" data-pts="11">P/F &lt; 100 com VM (+11)</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── INFO/REFERÊNCIAS ── -->
+      <section class="info-card" id="info">
+        <h3>📚 Equações, calibração e referências</h3>
+        <p><strong>Equação geral (Metnitz/Moreno 2005):</strong></p>
+        <div class="eq-block">logit = −32,6659 + ln(SAPS3 + 20,5958) × 7,3068<br>P(óbito) = e^logit / (1 + e^logit)</div>
+
+        <p><strong>Equação customizada América Central/Sul (CSA) — Brasil incluso:</strong></p>
+        <div class="eq-block">logit = −64,5990 + ln(SAPS3 + 71,0599) × 13,2322<br>P(óbito) = e^logit / (1 + e^logit)</div>
+
+        <p style="margin-top:14px"><strong>⚠️ Calibração no Brasil contemporâneo:</strong> Soares M et al. (Crit Care 2017, validação externa em coorte brasileira) mostrou que a equação <strong>CSA superestima a mortalidade</strong> em UTIs brasileiras modernas, com <strong>SMR ≈ 0,75</strong> (IC 0,74–0,77), enquanto a equação <strong>global (SE) teve SMR ≈ 1,00</strong> (IC 0,98–1,02), sendo mais bem calibrada. Por isso esta calculadora exibe <strong>ambas</strong> as estimativas — a global tende a refletir melhor o desfecho atual, e a CSA mostra o valor histórico da literatura latino-americana original. Recomenda-se interpretar a faixa entre os dois valores.</p>
+
+        <details class="deep">
+          <summary>🔬 Curiosidades nerd & limitações</summary>
+          <div class="deep-body">
+            <ul>
+              <li><strong>Construção do modelo:</strong> coorte multinacional de 19.577 pacientes, 307 UTIs em 14 países (out–dez 2002). Discriminação AUROC = 0,848.</li>
+              <li><strong>Janela única de ±1h:</strong> diferente de APACHE II/IV (24h), reduz viés de "lead-time" e captura gravidade real à admissão.</li>
+              <li><strong>Variáveis "subagudas" (Box I)</strong> contribuem ~50% da capacidade prognóstica — Moreno mostrou que comorbidade + idade são tão importantes quanto fisiologia aguda.</li>
+              <li><strong>Pontuação NÃO é APACHE:</strong> use SAPS 3 para benchmarking de admissão, não para gravidade evolutiva (use SOFA diário para isso).</li>
+              <li><strong>Pegadinhas TEMI:</strong> (1) SAPS 3 é coletado em até 1h pós-admissão — APACHE II em 24h. (2) Hipotermia &lt;35°C <em>não</em> pontua na temperatura. (3) Cirurgia eletiva e transplante <em>reduzem</em> o escore (-11 cada). (4) Necessita PaO₂ e FiO₂ — se só tiver SatO₂, estime pela tabela ou registre como missing.</li>
+              <li><strong>Limitações:</strong> não validado para queimados, cardiopatas pós-CRVM eletivos isolados, pediatria, obstétrico.</li>
+              <li><strong>Comparação no Brasil:</strong> em coorte de Soares 2017 (n=48.816, 78 UTIs), SAPS 3-SE teve melhor calibração que MPM₀-III (subestimava) e que SAPS 3-CSA (superestimava).</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="deep">
+          <summary>📄 Referências completas</summary>
+          <div class="deep-body">
+            <ul>
+              <li>Moreno RP, Metnitz PG, Almeida E, et al. <strong>SAPS 3—From evaluation of the patient to evaluation of the intensive care unit. Part 2: Development of a prognostic model for hospital mortality at ICU admission.</strong> Intensive Care Med. 2005;31(10):1345-1355. DOI: 10.1007/s00134-005-2763-5. <a href="https://pubmed.ncbi.nlm.nih.gov/16132892/" target="_blank">PubMed</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1315315/" target="_blank">PMC</a></li>
+              <li>Metnitz PG, Moreno RP, Almeida E, et al. <strong>SAPS 3—Part 1: Objectives, methods and cohort description.</strong> Intensive Care Med. 2005;31(10):1336-1344.</li>
+              <li>Soares M et al. <strong>External validation of SAPS 3 and MPM₀-III scores in 48.816 patients from 78 Brazilian ICUs.</strong> Ann Intensive Care 2017. <a href="https://pubmed.ncbi.nlm.nih.gov/28523584/" target="_blank">PubMed</a></li>
+              <li>Silva Junior JM et al. <strong>Aplicabilidade do escore SAPS 3 em hospital brasileiro.</strong> Rev Bras Ter Intensiva 2009;21(1):1-8.</li>
+              <li>Tabela oficial atualizada: <a href="https://www.icuregswe.org/globalassets/riktlinjer/saps3_2.pdf" target="_blank">SAPS 3 — Intensive Care Med 2005 (PDF oficial)</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="deep">
+          <summary>🧠 Sugestões de aprofundamento</summary>
+          <div class="deep-body">
+            Posso elaborar, se desejar:
+            <ul>
+              <li>📊 Infográfico das 20 variáveis e seus pesos (PNG/PDF).</li>
+              <li>📋 Checklist em Markdown/Word para coleta beira-leito em &lt; 1h.</li>
+              <li>🔢 Comparativo SAPS 3 × APACHE II × APACHE IV × SOFA × MPM₀-III.</li>
+              <li>🇧🇷 Mini-review da literatura brasileira de calibração (Silva Jr, Soares, Nassar Jr).</li>
+              <li>🎯 Banco de 20 questões TEMI sobre SAPS 3 (pegadinhas + alternativas comentadas).</li>
+              <li>📈 Versão offline (PWA) com export PDF do laudo de admissão.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+    </div>
+
+    <!-- ─── COLUNA DIREITA: RESULTADO ──────────────── -->
+    <aside class="result-panel" aria-live="polite">
+      <div class="result-eyebrow">🎯 Resultado</div>
+      <div class="score-big" id="score-total">0</div>
+      <div class="score-label">SAPS 3 (pontos)</div>
+
+      <div class="mort-block">
+        <div class="mort-head"><span class="dot"></span>Mortalidade · Equação Geral</div>
+        <div class="mort-val" id="mort-general">—</div>
+        <div class="risk-bar"><div class="risk-fill" id="bar-general"></div></div>
+        <div class="mort-note">Coorte multinacional (Metnitz/Moreno 2005). Em estudos brasileiros recentes, esta equação apresenta a melhor calibração (SMR ≈ 1,00).</div>
+      </div>
+
+      <div class="mort-block csa">
+        <div class="mort-head"><span class="dot"></span>Mortalidade · Equação CSA · 🇧🇷</div>
+        <div class="mort-val" id="mort-csa">—</div>
+        <div class="risk-bar"><div class="risk-fill" id="bar-csa"></div></div>
+        <div class="mort-note"><strong>Customizada para América Central/Sul.</strong> Tende a <em>superestimar</em> mortalidade em UTIs brasileiras modernas (SMR ≈ 0,75 — Soares 2017). Útil para benchmarking histórico.</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="btn-copy">📋 Copiar resumo</button>
+        <button class="btn" id="btn-reset">🔄 Limpar</button>
+      </div>
+    </aside>
+
+  </div>
+
+</main>
+
+<footer class="site">
+  <p><strong>Antigravity · SAPS 3 v2026.06</strong> — Calculadora educacional para apoio à decisão clínica.</p>
+  <p>Dr. Aldenir Rocha de Oliveira Filho · CRM-CE 16587 · RQE Clínica Médica 11846 · Mestre Ciências da Saúde (UFC)</p>
+  <p>Plantonista UTI/Enfermaria — Hospital Regional Norte e Santa Casa de Sobral</p>
+  <p style="margin-top:8px;color:var(--orange)">⚠️ Esta ferramenta não substitui julgamento clínico, contexto individual do paciente nem avaliação intensivista beira-leito.</p>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── Estado: cada variável tem pontos selecionados (multi ou single) ──
+  const state = {
+    age:null, com:[], los:null, loc:null, vaso:null,
+    plan:null, reason:[], surg:null, site:null, inf:[],
+    gcs:null, bili:null, temp:null, cr:null, fc:null, leuc:null,
+    ph:null, plaq:null, pas:null, ox:null
+  };
+
+  // ── Mapa variável → id do badge ──
+  const badgeMap = {
+    age:'pt-age', com:'pt-com', los:'pt-los', loc:'pt-loc', vaso:'pt-vaso',
+    plan:'pt-plan', reason:'pt-reason', surg:'pt-surg', site:'pt-site', inf:'pt-inf',
+    gcs:'pt-gcs', bili:'pt-bili', temp:'pt-temp', cr:'pt-cr', fc:'pt-fc',
+    leuc:'pt-leuc', ph:'pt-ph', plaq:'pt-plaq', pas:'pt-pas', ox:'pt-ox'
+  };
+
+  // ── Calcula pontos de uma variável ──
+  function ptsOf(key){
+    const v = state[key];
+    if(v === null || v === undefined) return 0;
+    if(Array.isArray(v)) return v.reduce((a,b)=>a+b,0);
+    return v;
+  }
+
+  // ── Atualiza badges + score total + mortalidades ──
+  function recalc(){
+    let total = 0;
+    Object.keys(state).forEach(k=>{
+      const p = ptsOf(k);
+      total += p;
+      const el = document.getElementById(badgeMap[k]);
+      if(el){
+        el.textContent = (p>0?'+':'') + p;
+        el.classList.toggle('active', p>0);
+        el.classList.toggle('neg', p<0);
+      }
+    });
+
+    // SAPS 3 nunca é negativo na prática: pisar em 0 mínimo p/ exibição,
+    // mas calcular logit com valor real (ln só aceita >0; equação usa SAPS+offset)
+    document.getElementById('score-total').textContent = total;
+
+    // ── Equação Geral ──
+    // logit = -32.6659 + ln(SAPS + 20.5958) * 7.3068
+    const logitG = -32.6659 + Math.log(total + 20.5958) * 7.3068;
+    const pG = Math.exp(logitG) / (1 + Math.exp(logitG));
+    document.getElementById('mort-general').textContent = (pG*100).toFixed(1) + '%';
+    document.getElementById('bar-general').style.width = Math.min(100, pG*100) + '%';
+
+    // ── Equação CSA ──
+    // logit = -64.5990 + ln(SAPS + 71.0599) * 13.2322
+    const logitC = -64.5990 + Math.log(total + 71.0599) * 13.2322;
+    const pC = Math.exp(logitC) / (1 + Math.exp(logitC));
+    document.getElementById('mort-csa').textContent = (pC*100).toFixed(1) + '%';
+    document.getElementById('bar-csa').style.width = Math.min(100, pC*100) + '%';
+  }
+
+  // ── Handler dos botões de opção ──
+  document.querySelectorAll('.opts').forEach(group=>{
+    const key = group.dataset.var;
+    const multi = group.dataset.multi === '1';
+
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const pts = parseInt(btn.dataset.pts, 10);
+
+        if(multi){
+          // toggle
+          if(btn.classList.contains('sel')){
+            btn.classList.remove('sel');
+            const idx = state[key].indexOf(pts);
+            if(idx>-1) state[key].splice(idx,1);
+          } else {
+            btn.classList.add('sel');
+            state[key].push(pts);
+          }
+        } else {
+          // single: limpar outros
+          group.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
+          btn.classList.add('sel');
+          state[key] = pts;
+        }
+        recalc();
+      });
+    });
+  });
+
+  // ── Botão limpar ──
+  document.getElementById('btn-reset').addEventListener('click', ()=>{
+    document.querySelectorAll('.opt.sel').forEach(b=>b.classList.remove('sel'));
+    Object.keys(state).forEach(k=>{
+      state[k] = Array.isArray(state[k]) ? [] : null;
+    });
+    recalc();
+  });
+
+  // ── Botão copiar resumo ──
+  document.getElementById('btn-copy').addEventListener('click', ()=>{
+    const total = parseInt(document.getElementById('score-total').textContent, 10);
+    const mG = document.getElementById('mort-general').textContent;
+    const mC = document.getElementById('mort-csa').textContent;
+    const txt =
+`SAPS 3 — Admissão UTI
+=====================
+Pontuação total: ${total}
+Mortalidade estimada (eq. Geral): ${mG}
+Mortalidade estimada (eq. CSA, América Central/Sul): ${mC}
+
+⚠️ Eq. CSA tende a superestimar mortalidade em UTIs brasileiras contemporâneas (Soares 2017, SMR≈0,75).
+Eq. Geral apresenta melhor calibração no Brasil moderno (SMR≈1,00).
+
+Calculado em Antigravity · SAPS 3 Calculator
+Base: Metnitz/Moreno, Intensive Care Med 2005;31:1336-1355.`;
+
+    navigator.clipboard.writeText(txt).then(()=>{
+      const b = document.getElementById('btn-copy');
+      const orig = b.textContent;
+      b.textContent = '✅ Copiado';
+      setTimeout(()=>{ b.textContent = orig; }, 1800);
+    }).catch(()=>{
+      alert('Não foi possível copiar automaticamente. Selecione manualmente.');
+    });
+  });
+
+  // ── Inicializa ──
+  recalc();
+})();
+</script>
+
+</body>
+</html>
