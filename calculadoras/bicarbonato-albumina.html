@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bicarbonato & Albumina PRO | Déficit, preparo e infusão</title>
+  <meta name="description" content="Calculadoras de reposição de bicarbonato (déficit por HCO3 e por BE) com preparo, vazão e ΔHCO3 estimado; reposição completa de albumina (déficit, frascos e protocolos)." />
+  <link rel="canonical" href="bicarbonato-albumina.html" />
+  <style>
+    :root{
+      --bg:#07111f; --bg2:#0b182b; --panel:rgba(255,255,255,.075);
+      --border:rgba(255,255,255,.14); --text:#f6f8fc; --muted:#aebbd0;
+      --cyan:#3ee8ff; --green:#4ef0a1; --red:#ff6b6b; --yellow:#ffd166;
+      --violet:#a98cff; --orange:#ffac4b; --radius:26px;
+      --shadow:0 24px 80px rgba(0,0,0,.34);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left,rgba(78,240,161,.18),transparent 32rem),
+        radial-gradient(circle at 85% 10%,rgba(255,172,75,.16),transparent 30rem),
+        linear-gradient(135deg,var(--bg),var(--bg2));
+      min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none}
+    .topbar{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 22px;backdrop-filter:blur(18px);background:rgba(7,17,31,.78);border-bottom:1px solid rgba(255,255,255,.08)}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:16px;background:rgba(78,240,161,.12);border:1px solid var(--border)}
+    .brand strong{display:block;line-height:1}
+    .brand small{color:var(--muted)}
+    .nav{display:flex;gap:10px;flex-wrap:wrap}
+    .nav a{padding:8px 10px;border-radius:999px;color:#dce6f5;font-weight:800;font-size:.88rem}
+    .nav a:hover{background:rgba(255,255,255,.08)}
+    .shell{max-width:1240px;margin:0 auto;padding:28px 22px}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:stretch;padding-top:36px}
+    .glass,.card{border:1px solid var(--border);background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045));border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero-copy{padding:30px}
+    .eyebrow{display:inline-flex;margin-bottom:14px;padding:8px 12px;border-radius:999px;border:1px solid rgba(78,240,161,.24);background:rgba(78,240,161,.08);color:#dfffee;font-weight:900}
+    h1{font-size:clamp(2.2rem,6vw,4.2rem);line-height:.95;letter-spacing:-.07em;margin:0 0 16px;background:linear-gradient(90deg,#fff,#caffdf 40%,#ffe9c2 72%,#d9efff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    h2{font-size:clamp(1.4rem,2.6vw,2rem);letter-spacing:-.04em;margin:0 0 12px}
+    h3{margin:0 0 10px;letter-spacing:-.02em}
+    p,.muted{color:var(--muted);line-height:1.6}
+    .hero p{color:#dce6f5;font-size:1.02rem}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .btn,button{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 14px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.08);color:var(--text);font-weight:900;cursor:pointer;transition:.18s ease;font-size:.92rem}
+    .btn:hover,button:hover{transform:translateY(-2px);background:rgba(255,255,255,.12)}
+    .btn.primary,button.primary{background:linear-gradient(135deg,var(--green),var(--cyan));color:#04131f;border:0}
+    .btn.ghost{background:transparent}
+    .status-card{padding:22px}
+    .metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+    .metric-grid div{padding:14px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+    .metric-grid strong{display:block;font-size:1.4rem}
+    .metric-grid span{color:var(--muted);font-size:.84rem}
+    .notice{border:1px solid rgba(255,209,102,.3);background:linear-gradient(145deg,rgba(255,209,102,.12),rgba(255,255,255,.04));border-radius:18px;padding:14px;margin-top:14px;color:#fff4cf;font-size:.92rem}
+    .section{padding-top:26px;padding-bottom:26px}
+    .tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0 20px}
+    .tab{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);border-radius:16px;padding:12px 8px;font-weight:900;text-align:center;cursor:pointer;user-select:none;color:#dce6f5;font-size:.94rem}
+    .tab.active{background:linear-gradient(135deg,rgba(78,240,161,.22),rgba(62,232,255,.16));border-color:rgba(78,240,161,.46);box-shadow:0 12px 36px rgba(78,240,161,.12)}
+    .panel{display:none}.panel.active{display:block}
+    .grid{display:grid;gap:18px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{padding:20px}
+    .card.warn{border-color:rgba(255,209,102,.25);background:radial-gradient(circle at top right,rgba(255,209,102,.12),transparent 20rem),linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045))}
+    .card.danger{border-color:rgba(255,107,107,.28);background:radial-gradient(circle at top right,rgba(255,107,107,.14),transparent 20rem),linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045))}
+    .card.ok{border-color:rgba(78,240,161,.25);background:radial-gradient(circle at top right,rgba(78,240,161,.12),transparent 20rem),linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045))}
+    label{display:block;font-size:.88rem;color:#dce6f5;font-weight:800;margin:12px 0 6px}
+    input,select,textarea{width:100%;background:#0e172a;color:var(--text);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 12px;font-size:1rem;outline:none}
+    input:focus,select:focus,textarea:focus{border-color:rgba(78,240,161,.62);box-shadow:0 0 0 4px rgba(78,240,161,.08)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .row.three{grid-template-columns:1fr 1fr 1fr}
+    .row.four{grid-template-columns:repeat(4,1fr)}
+    .result{margin-top:14px;border:1px solid rgba(78,240,161,.18);background:rgba(5,13,26,.68);border-radius:16px;padding:14px;min-height:64px}
+    .result .big{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:1000;margin:2px 0 6px;color:#dff6ff;letter-spacing:-.04em}
+    .formula{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px;margin-top:8px;color:#d9efff;overflow:auto;font-size:.84rem}
+    .pill{display:inline-block;background:rgba(78,240,161,.10);border:1px solid rgba(78,240,161,.22);border-radius:999px;padding:5px 10px;color:#dfffee;font-size:.76rem;margin:5px 5px 0 0;font-weight:800}
+    .pill.yellow{background:rgba(255,209,102,.1);border-color:rgba(255,209,102,.25);color:#fff4cf}
+    .pill.red{background:rgba(255,107,107,.1);border-color:rgba(255,107,107,.25);color:#ffd6d6}
+    .pill.cyan{background:rgba(62,232,255,.1);border-color:rgba(62,232,255,.25);color:#d9fbff}
+    .pill.violet{background:rgba(169,140,255,.12);border-color:rgba(169,140,255,.3);color:#e6dcff}
+    .okText{color:var(--green)}.warnText{color:var(--yellow)}.dangerText{color:var(--red)}
+    .small{font-size:.84rem}
+    .copy{margin-top:10px;width:auto}
+    .footer{color:var(--muted);border-top:1px solid rgba(255,255,255,.1);margin-top:38px;padding-top:24px}
+    .step-list{padding-left:18px;line-height:1.7}
+    .step-list li{margin-bottom:4px}
+    table.mini{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:8px}
+    table.mini th,table.mini td{border-bottom:1px solid rgba(255,255,255,.1);padding:8px;text-align:left}
+    table.mini th{color:#caffdf;background:rgba(78,240,161,.06)}
+    .recipe{background:rgba(78,240,161,.06);border:1px solid rgba(78,240,161,.2);border-radius:14px;padding:12px;margin-top:10px}
+    .recipe h4{margin:0 0 8px;color:#caffdf}
+    .danger-banner{border:1px solid rgba(255,107,107,.4);background:linear-gradient(145deg,rgba(255,107,107,.16),rgba(255,255,255,.04));border-radius:18px;padding:14px;color:#ffd6d6;font-weight:700;margin-top:12px}
+    .sticky-note{position:sticky;top:86px}
+    @media(max-width:1060px){.hero,.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(2,1fr)}.nav{display:none}.hero{padding-top:18px}.hero-copy{padding:22px}.row,.row.three,.row.four{grid-template-columns:1fr}.sticky-note{position:static}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">
+      <span class="brand-icon">🧪</span>
+      <span><strong>Enciclopédia Médica</strong><small>Bicarbonato & Albumina PRO</small></span>
+    </a>
+    <nav class="nav">
+      <a href="../index.html">🏠 Home</a>
+      <a href="../03_Calculadoras_E_Apps/index.html">🧮 Central UTI</a>
+      <a href="sodio-disnatremia.html">🧂 Disnatremias</a>
+      <a href="#calculadoras" style="color:#4ef0a1">🧪 Bic + Albumina</a>
+      <a href="#seguranca">🛡️ Segurança</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-copy glass">
+        <span class="eyebrow">⚖️ Acidose metabólica • Hipoalbuminemia • Preparo de infusão</span>
+        <h1>Bicarbonato & Albumina PRO</h1>
+        <p>
+          Duas calculadoras integradas: <b>reposição de bicarbonato</b> a partir do déficit (HCO₃ atual × alvo)
+          <b>ou</b> do <b>base excess (BE)</b>, com receita de preparo, vazão e ΔHCO₃ estimado;
+          e <b>reposição de albumina</b> com cálculo de déficit, frascos a 20% e protocolo de infusão.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="#calculadoras">⚡ Abrir calculadoras</a>
+          <a class="btn" href="sodio-disnatremia.html">🧂 Sódio & Disnatremias</a>
+          <a class="btn ghost" href="../03_Calculadoras_E_Apps/index.html">🧮 Central UTI</a>
+        </div>
+        <div class="notice">
+          <b>⚠️ Bicarbonato EV é controverso:</b> indicar em <b>pH &lt; 7,1–7,2</b> (ou &lt; 7,2 com instabilidade), <b>hiperK grave com ECG</b>,
+          <b>intoxicação por bloqueador de canal Na (AAS, TCA)</b>, <b>acidose tubular renal</b> e <b>perdas digestivas baixas</b>.
+          Em cetoacidose diabética e acidose lática a indicação é restrita.
+        </div>
+      </div>
+      <aside class="status-card glass">
+        <h2>📊 Painel</h2>
+        <div class="metric-grid">
+          <div><strong>02</strong><span>Calculadoras</span></div>
+          <div><strong>HCO₃</strong><span>Déficit & BE</span></div>
+          <div><strong>Alb</strong><span>20% / 5%</span></div>
+          <div><strong>Mix</strong><span>NaHCO₃ 8,4% e 10%</span></div>
+        </div>
+        <p class="muted small">Receitas com cálculo de mEq totais, vazão e tempo de infusão.</p>
+        <div class="result small">
+          <b>Fluxo:</b> ① avaliar gasometria + ânion gap → ② calcular déficit → ③ definir alvo parcial (≤ ½ do déficit) → ④ preparar e infundir → ⑤ reavaliar gaso em 1–2 h.
+        </div>
+      </aside>
+    </section>
+
+    <section id="calculadoras" class="shell section">
+      <h2>🧮 Calculadoras</h2>
+      <div class="tabs">
+        <div class="tab active" onclick="showTab('bic',this)">🧪 Bicarbonato</div>
+        <div class="tab" onclick="showTab('alb',this)">🩸 Albumina</div>
+      </div>
+
+      <!-- ====================== BICARBONATO ====================== -->
+      <div id="bic" class="panel active">
+        <div class="grid two">
+          <article class="card">
+            <h2>🧪 Reposição de bicarbonato</h2>
+            <p class="muted small">Calcula déficit total, dose recomendada (geralmente <b>½ do déficit</b> em 4–8 h) e gera receita de preparo + vazão.</p>
+
+            <div class="row">
+              <div>
+                <label>Método de cálculo do déficit</label>
+                <select id="bicMethod" onchange="toggleBicMethod()">
+                  <option value="hco3">A partir do HCO₃ (atual × alvo)</option>
+                  <option value="be">A partir do Base Excess (BE)</option>
+                </select>
+              </div>
+              <div>
+                <label>Peso (kg)</label>
+                <input id="bicPeso" type="text" inputmode="decimal" placeholder="Ex.: 70">
+              </div>
+            </div>
+
+            <!-- Método HCO3 -->
+            <div id="bicHco3Wrap">
+              <div class="row three">
+                <div><label>HCO₃ atual (mEq/L)</label><input id="bicHco3" type="text" inputmode="decimal" placeholder="Ex.: 10"></div>
+                <div><label>HCO₃ alvo (mEq/L)</label><input id="bicTarget" type="text" inputmode="decimal" value="15"></div>
+                <div><label>Fator de distribuição</label>
+                  <select id="bicFactor">
+                    <option value="0.5">0,5 (clássico)</option>
+                    <option value="0.4">0,4</option>
+                    <option value="0.6">0,6 (acidose grave / 0,4–0,8 variável)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Método BE -->
+            <div id="bicBeWrap" style="display:none">
+              <div class="row">
+                <div><label>Base Excess (BE, mEq/L) — usar valor negativo</label><input id="bicBE" type="text" inputmode="decimal" placeholder="Ex.: -12"></div>
+                <div><label>Fator (clássico 0,3 × peso × |BE|)</label>
+                  <select id="bicBeFactor">
+                    <option value="0.3">0,3 (clássico)</option>
+                    <option value="0.4">0,4</option>
+                    <option value="0.2">0,2 (conservador)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row three">
+              <div>
+                <label>Fração do déficit a repor agora</label>
+                <select id="bicFrac">
+                  <option value="0.5">½ (50%) — padrão</option>
+                  <option value="0.33">⅓ (33%)</option>
+                  <option value="1">100% (raro/cauteloso)</option>
+                </select>
+              </div>
+              <div>
+                <label>Tempo de infusão (h)</label>
+                <input id="bicTime" type="text" inputmode="decimal" value="6">
+              </div>
+              <div>
+                <label>Apresentação</label>
+                <select id="bicForm">
+                  <option value="84">NaHCO₃ 8,4% (1 mEq/mL)</option>
+                  <option value="10">NaHCO₃ 10% (~1,19 mEq/mL)</option>
+                </select>
+              </div>
+            </div>
+
+            <label>Diluente</label>
+            <select id="bicDil">
+              <option value="ad">Água destilada (AD) — preferido para isotonizar</option>
+              <option value="sg5">SG 5%</option>
+              <option value="puro">Sem diluição (acesso central, bolus em PCR/hiperK)</option>
+            </select>
+
+            <div class="row">
+              <div>
+                <label>Modo de preparo</label>
+                <select id="bicPrepMode">
+                  <option value="iso">Solução isotônica de NaHCO₃ ~1,4–1,5% (150 mEq/L) — diluir em 1 L</option>
+                  <option value="full">Usar todo o mEq calculado em volume final personalizado</option>
+                </select>
+              </div>
+              <div>
+                <label>Volume final (mL) — se modo "personalizado"</label>
+                <input id="bicVolFinal" type="text" inputmode="decimal" value="500">
+              </div>
+            </div>
+
+            <button class="primary" onclick="calcBic()">🧪 Calcular reposição + receita</button>
+            <div class="result" id="bicOut"><div class="small muted">Resultado aparecerá aqui.</div></div>
+
+            <div class="formula">
+              Déficit (HCO₃) = (HCO₃ alvo − HCO₃ atual) × peso × fator de distribuição
+              <br>Déficit (BE) = |BE| × peso × 0,3
+              <br>Dose recomendada: <b>½ do déficit</b> em <b>4–8 h</b>
+              <br>NaHCO₃ 8,4%: <b>1 mEq/mL</b>. NaHCO₃ 10%: <b>~1,19 mEq/mL</b> (1000 mg/mL ÷ 84 mg/mEq).
+              <br>Solução isotônica: <b>150 mL de NaHCO₃ 8,4% (150 mEq) em 850 mL de AD/SG5% → 1 L</b> com Na+HCO₃ = 150 mEq/L cada.
+            </div>
+          </article>
+
+          <aside class="card warn sticky-note">
+            <h3>⚠️ Cuidados críticos</h3>
+            <ul class="step-list small">
+              <li><b>Indicações</b>: pH &lt; 7,1 (ou &lt;7,2 com instabilidade), hiperK grave com alterações de ECG, intoxicação por TCA/AAS, acidose tubular, perdas baixas (diarreia, ileostomia, fístula).</li>
+              <li><b>Cautela</b>: cetoacidose (acidose se autocorrige com insulina) e acidose lática (BICAR-ICU mostrou benefício só em AKI 2-3 com pH &lt;7,2).</li>
+              <li><b>Efeitos adversos</b>: hipernatremia, hipocalemia, hipocalcemia (Ca iônico ↓ com alcalose), sobrecarga volêmica, alcalose paradoxal LCR, deslocamento da curva de Hb (↓ O₂ tecidual).</li>
+              <li><b>Via</b>: ampolas concentradas (8,4%) preferencialmente em <b>acesso central</b>. Solução <b>isotonizada</b> pode ir em periférico.</li>
+              <li><b>Não misturar</b> com cálcio, ringer ou catecolaminas na mesma via (precipitação).</li>
+              <li><b>Reavaliar</b> gasometria + K + Ca iônico em 1–2 h.</li>
+            </ul>
+            <span class="pill red">Alto risco</span>
+            <span class="pill yellow">Cheque K e Ca</span>
+            <span class="pill cyan">Não misturar com Ca</span>
+          </aside>
+        </div>
+
+        <article class="card ok" style="margin-top:18px">
+          <h3>📚 Pearls TEMI</h3>
+          <ul class="step-list small">
+            <li><b>BICAR-ICU (Lancet 2018)</b>: NaHCO₃ em acidose metabólica grave (pH ≤7,2) com AKI 2-3 reduziu necessidade de TRS e mortalidade no subgrupo de AKI.</li>
+            <li>Em <b>PCR</b>: NaHCO₃ apenas em situações específicas (hiperK conhecida, intoxicação por TCA, acidose pré-existente grave) — não rotineiro.</li>
+            <li>Na <b>hiperK com ECG</b>: 50 mEq EV em bolus (1 amp 50 mL 8,4%) — efeito modesto e tardio; ainda assim útil em acidose associada.</li>
+            <li>Lembrar que <b>cada mEq de HCO₃ vem com 1 mEq de Na</b> → atenção em IC, hipernatremia, anasarca.</li>
+          </ul>
+        </article>
+      </div>
+
+      <!-- ====================== ALBUMINA ====================== -->
+      <div id="alb" class="panel">
+        <div class="grid two">
+          <article class="card">
+            <h2>🩸 Reposição de albumina</h2>
+            <p class="muted small">Calcula <b>déficit em gramas</b>, número de <b>frascos de albumina 20%</b> (50 mL = 10 g), protocolo de infusão e variação estimada da albumina sérica.</p>
+
+            <div class="row three">
+              <div><label>Peso (kg)</label><input id="albPeso" type="text" inputmode="decimal" placeholder="Ex.: 70"></div>
+              <div><label>Albumina atual (g/dL)</label><input id="albAtual" type="text" inputmode="decimal" placeholder="Ex.: 1,8"></div>
+              <div><label>Albumina alvo (g/dL)</label><input id="albAlvo" type="text" inputmode="decimal" value="3"></div>
+            </div>
+
+            <div class="row three">
+              <div>
+                <label>Fator volume plasmático</label>
+                <select id="albFactor">
+                  <option value="0.8">0,8 (clássico)</option>
+                  <option value="0.6">0,6 (alternativo)</option>
+                  <option value="1.0">1,0 (acumular toda albumina infundida — superestima)</option>
+                </select>
+              </div>
+              <div>
+                <label>Apresentação</label>
+                <select id="albForm">
+                  <option value="20-50">Albumina 20% — 50 mL (10 g/frasco)</option>
+                  <option value="20-100">Albumina 20% — 100 mL (20 g/frasco)</option>
+                  <option value="5-250">Albumina 5% — 250 mL (12,5 g/frasco)</option>
+                  <option value="5-500">Albumina 5% — 500 mL (25 g/frasco)</option>
+                </select>
+              </div>
+              <div>
+                <label>Indicação clínica</label>
+                <select id="albInd">
+                  <option value="phs">PBE / Hepatorenal (cirrose)</option>
+                  <option value="parac">Paracentese de alto volume (&gt;5 L)</option>
+                  <option value="sepse">Choque séptico (após cristaloide)</option>
+                  <option value="nefro">Síndrome nefrótica refratária</option>
+                  <option value="trs">HD intradialítica</option>
+                  <option value="hipo">Hipoalbuminemia + edema refratário</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="primary" onclick="calcAlb()">🩸 Calcular reposição completa</button>
+            <div class="result" id="albOut"><div class="small muted">Resultado aparecerá aqui.</div></div>
+
+            <div class="formula">
+              Déficit (g) = (Alb alvo − Alb atual) × peso × fator
+              <br>Frascos = ceil(Déficit / g por frasco)
+              <br>Albumina 20% é <b>hiperoncótica</b> — mobiliza ~3–4× seu volume para o intravascular.
+            </div>
+          </article>
+
+          <aside class="card warn sticky-note">
+            <h3>📌 Doses-padrão por indicação</h3>
+            <table class="mini">
+              <tr><th>Indicação</th><th>Esquema usual</th></tr>
+              <tr><td><b>PBE</b></td><td>1,5 g/kg dia 1 + 1 g/kg dia 3</td></tr>
+              <tr><td><b>Síndrome hepatorenal</b></td><td>1 g/kg (máx 100 g) dia 1, depois 20–40 g/dia + terlipressina/noradr</td></tr>
+              <tr><td><b>Paracentese &gt;5 L</b></td><td>6–8 g por litro de ascite retirada</td></tr>
+              <tr><td><b>Sepse</b></td><td>Considerar se hipoalbumin grave e refratariedade a cristaloide (SAFE/ALBIOS)</td></tr>
+              <tr><td><b>Nefrótica refratária</b></td><td>0,5–1 g/kg + furosemida (uso restrito)</td></tr>
+            </table>
+            <ul class="step-list small" style="margin-top:10px">
+              <li>⚠️ <b>Não usar em TCE</b> (SAFE-TBI: mais mortalidade).</li>
+              <li>Velocidade típica albumina 20%: <b>1–2 mL/min</b> (≈ 60–120 mL/h). Em paracentese pode acelerar.</li>
+              <li>Risco: <b>sobrecarga volêmica</b>, especialmente após mobilização do interstício.</li>
+              <li>Monitorar: PA, ausculta pulmonar, diurese, eletrólitos.</li>
+              <li>Reavaliar albumina em 24–48 h (não é instantâneo).</li>
+            </ul>
+            <span class="pill red">Evitar em TCE</span>
+            <span class="pill yellow">Risco de hipervolemia</span>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="seguranca" class="shell section">
+      <h2>🛡️ Checklist de segurança</h2>
+      <div class="grid four">
+        <article class="card danger"><h3>1️⃣ Indicação</h3><p class="small">Bicar e albumina têm indicações estritas. Lista clara antes de prescrever.</p></article>
+        <article class="card warn"><h3>2️⃣ Acesso e via</h3><p class="small">NaHCO₃ concentrado → central. Albumina periférica OK. Nunca misturar bicar com Ca/Ringer.</p></article>
+        <article class="card warn"><h3>3️⃣ Monitorização</h3><p class="small">Gaso 1–2 h, K+, Ca iônico, Na, diurese, PA, ausculta pulmonar.</p></article>
+        <article class="card ok"><h3>4️⃣ Reavaliação</h3><p class="small">Tratar a causa. Suspender quando alvo parcial atingido. Documentar evolução.</p></article>
+      </div>
+    </section>
+
+    <section class="shell section">
+      <h2>🔗 Outras calculadoras</h2>
+      <div class="grid three">
+        <a class="card" href="sodio-disnatremia.html"><h3>🧂 Sódio & Disnatremias</h3><p class="small muted">Cálcio corrigido, NaCl 3%/0,45%, ACT, Adrogué-Madias.</p></a>
+        <a class="card" href="../03_Calculadoras_E_Apps/index.html"><h3>🧮 Central UTI PRO</h3><p class="small muted">DVA, sedoanalgesia, BNM, VM, gasometria, renal.</p></a>
+        <a class="card" href="../index.html"><h3>🏠 Home</h3><p class="small muted">Portal da Enciclopédia Médica.</p></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <p class="small">🧠 Enciclopédia Médica Intensiva & Medicina Interna — Bicarbonato & Albumina PRO. Ferramenta educacional, não substitui julgamento clínico.</p>
+  </footer>
+
+<script>
+function num(id){ const v=document.getElementById(id).value; return parseFloat(String(v).replace(',','.')) }
+function setVal(id,v){ document.getElementById(id).value = String(v).replace('.',',') }
+function fmt(x,n=2){ if(!Number.isFinite(x)) return '—'; return Number(x).toFixed(n).replace('.',',') }
+function valid(arr){ return arr.every(v=>Number.isFinite(v)&&v>0) }
+function copyText(t){ navigator.clipboard?.writeText(t).catch(()=>{}) }
+function render(id,html,copy){ document.getElementById(id).innerHTML = html + (copy?`<br><button class="copy" onclick="copyText(\`${copy.replace(/`/g,"'")}\`)">📋 Copiar resultado</button>`:'') }
+function showTab(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active'); el.classList.add('active');
+}
+
+function toggleBicMethod(){
+  const m=document.getElementById('bicMethod').value;
+  document.getElementById('bicHco3Wrap').style.display = m==='hco3'?'block':'none';
+  document.getElementById('bicBeWrap').style.display   = m==='be'?'block':'none';
+}
+
+function calcBic(){
+  const peso=num('bicPeso');
+  if(!Number.isFinite(peso)||peso<=0){ render('bicOut','<span class="dangerText">Informe o peso.</span>'); return }
+  const method = document.getElementById('bicMethod').value;
+  let deficit=NaN, deltaTarget=NaN, hco3a=NaN, hco3t=NaN;
+
+  if(method==='hco3'){
+    hco3a = num('bicHco3'); hco3t = num('bicTarget');
+    const factor = parseFloat(document.getElementById('bicFactor').value);
+    if(!valid([hco3a,hco3t]) || hco3t<=hco3a){
+      render('bicOut','<span class="dangerText">Preencha HCO₃ atual e alvo válidos (alvo > atual).</span>'); return;
+    }
+    deltaTarget = hco3t - hco3a;
+    deficit = deltaTarget * peso * factor;
+  } else {
+    const be = num('bicBE');
+    const factor = parseFloat(document.getElementById('bicBeFactor').value);
+    if(!Number.isFinite(be) || be>=0){
+      render('bicOut','<span class="dangerText">BE precisa ser negativo (ex.: -12).</span>'); return;
+    }
+    deficit = Math.abs(be) * peso * factor;
+  }
+
+  const frac = parseFloat(document.getElementById('bicFrac').value);
+  const dose = deficit * frac; // mEq a repor agora
+  const time = num('bicTime');
+  if(!Number.isFinite(time)||time<=0){ render('bicOut','<span class="dangerText">Informe tempo de infusão (h).</span>'); return }
+
+  const form = document.getElementById('bicForm').value; // '84' ou '10'
+  const mEqPerMl = form==='84' ? 1.0 : (1000/84); // 8,4% = 1 mEq/mL; 10% = ~11,9 mEq/mL  -- ERRO, recalc
+  // Correção: 8,4% = 84 mg/mL ÷ 84 mg/mEq = 1 mEq/mL. 10% = 100 mg/mL ÷ 84 = 1,1905 mEq/mL.
+  const mEqPerMlFix = form==='84' ? 1.0 : (100/84);
+  const mlConcentrate = dose / mEqPerMlFix;
+
+  const dil = document.getElementById('bicDil').value;
+  const prepMode = document.getElementById('bicPrepMode').value;
+  let volFinal = num('bicVolFinal');
+  let recipeText='', NaPerL=NaN, osmText='';
+  let diluentVol=NaN;
+
+  if(dil==='puro'){
+    volFinal = mlConcentrate;
+    diluentVol = 0;
+    NaPerL = mEqPerMlFix*1000; // mEq Na por L = mesma de HCO3
+    osmText = 'Solução PURA (não diluída) — hipertônica, acesso central preferível.';
+    recipeText = `<ol class="step-list">
+      <li>Aspirar <b>${fmt(mlConcentrate,1)} mL</b> de <b>NaHCO₃ ${form==='84'?'8,4%':'10%'}</b> (= ${fmt(dose,1)} mEq).</li>
+      <li>Infundir <b>sem diluir</b> em acesso central, em ${fmt(time,1)} h.</li>
+      <li>Vazão = <b>${fmt(volFinal/time,1)} mL/h</b>.</li>
+    </ol>`;
+  } else if(prepMode==='iso'){
+    // Solução isotônica: 150 mL de NaHCO3 8,4% (150 mEq) em 850 mL AD/SG5% → 1 L com 150 mEq/L
+    // Vamos escalar: queremos infundir 'dose' mEq como solução ~150 mEq/L
+    const VsolL = dose/150;
+    const VsolMl = VsolL*1000;
+    // Quantidade de concentrado: a 8,4% precisa 150 mL para 150 mEq -> mLconcentr = (dose/150)*150 = dose (em mL para 8,4%)
+    const mlConc = dose/mEqPerMlFix;
+    const mlAdi = VsolMl - mlConc;
+    volFinal = VsolMl;
+    diluentVol = mlAdi;
+    NaPerL = 150;
+    osmText = 'Solução isotonizada ~1,4–1,5% (Na/HCO₃ ≈ 150 mEq/L) — pode ser infundida em periférico.';
+    recipeText = `<ol class="step-list">
+      <li>Aspirar <b>${fmt(mlConc,1)} mL</b> de <b>NaHCO₃ ${form==='84'?'8,4%':'10%'}</b> (= ${fmt(dose,1)} mEq).</li>
+      <li>Adicionar <b>${fmt(mlAdi,1)} mL</b> de <b>${dil==='ad'?'Água Destilada':'SG 5%'}</b>.</li>
+      <li>Volume final: <b>${fmt(volFinal,0)} mL</b> (≈ 150 mEq/L de NaHCO₃).</li>
+      <li>Infundir em <b>${fmt(time,1)} h</b> → vazão <b>${fmt(volFinal/time,1)} mL/h</b>.</li>
+    </ol>`;
+  } else {
+    if(!Number.isFinite(volFinal)||volFinal<=0){ render('bicOut','<span class="dangerText">Informe volume final para modo personalizado.</span>'); return }
+    diluentVol = volFinal - mlConcentrate;
+    if(diluentVol<0){ render('bicOut','<span class="dangerText">Volume final menor que o volume da apresentação. Aumente o volume final.</span>'); return }
+    NaPerL = (dose/volFinal)*1000;
+    osmText = `Concentração resultante: ${fmt(NaPerL,0)} mEq/L de Na+HCO₃ — ${NaPerL>175?'hipertônica (preferir central)':'tolerável em periférico se ≤150–175 mEq/L'}.`;
+    recipeText = `<ol class="step-list">
+      <li>Aspirar <b>${fmt(mlConcentrate,1)} mL</b> de <b>NaHCO₃ ${form==='84'?'8,4%':'10%'}</b> (= ${fmt(dose,1)} mEq).</li>
+      <li>Adicionar <b>${fmt(diluentVol,1)} mL</b> de <b>${dil==='ad'?'Água Destilada':'SG 5%'}</b>.</li>
+      <li>Volume final: <b>${fmt(volFinal,0)} mL</b>.</li>
+      <li>Infundir em <b>${fmt(time,1)} h</b> → vazão <b>${fmt(volFinal/time,1)} mL/h</b>.</li>
+    </ol>`;
+  }
+
+  // Estimativa de ΔHCO3 após a dose: dose / (peso × fator) — usa o fator escolhido
+  const factorEst = method==='hco3' ? parseFloat(document.getElementById('bicFactor').value)
+                                    : parseFloat(document.getElementById('bicBeFactor').value);
+  const deltaHCO3 = dose / (peso*factorEst);
+  const novoHCO3 = method==='hco3'? hco3a + deltaHCO3 : null;
+
+  // Sódio extra administrado
+  const NaTotal = dose; // 1 mEq HCO₃ = 1 mEq Na+
+
+  const html = `
+    <div class="big">${fmt(dose,1)} mEq HCO₃⁻ agora</div>
+    <div class="small">Déficit total estimado: <b>${fmt(deficit,1)} mEq</b> · Repondo <b>${(frac*100).toFixed(0)}%</b> em <b>${fmt(time,1)} h</b>.</div>
+    <div class="small">ΔHCO₃ estimado após dose: <b>+${fmt(deltaHCO3,1)} mEq/L</b>${novoHCO3?`; HCO₃ esperado <b>${fmt(novoHCO3,1)}</b>`:''}.</div>
+    <div class="small">Sódio adicional administrado: <b>${fmt(NaTotal,1)} mEq</b> (cuidado em IC, hiperNa, anasarca).</div>
+    <div class="recipe">
+      <h4>🧪 Receita</h4>
+      ${recipeText}
+      <p class="small muted" style="margin-top:6px">${osmText}</p>
+    </div>
+    <div class="small warnText" style="margin-top:8px">⚠️ Reavaliar gasometria + K + Ca iônico em 1–2 h. Tratar a causa subjacente.</div>
+  `;
+  const copy = `NaHCO₃: déficit ${fmt(deficit,1)} mEq; dose agora ${fmt(dose,1)} mEq em ${fmt(time,1)} h; ΔHCO₃ esperado +${fmt(deltaHCO3,1)} mEq/L; receita: ${fmt(mlConcentrate,1)} mL ${form==='84'?'8,4%':'10%'} + ${fmt(diluentVol,1)} mL ${dil==='ad'?'AD':dil==='sg5'?'SG5%':'sem diluição'} → ${fmt(volFinal,0)} mL → ${fmt(volFinal/time,1)} mL/h.`;
+  render('bicOut', html, copy);
+}
+
+// ============ ALBUMINA ============
+function calcAlb(){
+  const peso=num('albPeso'), atual=num('albAtual'), alvo=num('albAlvo');
+  const factor=parseFloat(document.getElementById('albFactor').value);
+  const form=document.getElementById('albForm').value;
+  const ind=document.getElementById('albInd').value;
+  if(!valid([peso,atual,alvo]) || alvo<=atual){
+    render('albOut','<span class="dangerText">Preencha peso, Alb atual e alvo (alvo > atual).</span>'); return;
+  }
+  // Déficit em g/L: (alvo-atual) g/dL × 10 = g/L; volume plasmático ≈ peso×0,04 (4%) L; tradicional usa peso×fator com fator empírico 0,8
+  // Fórmula didática: Déficit(g) = (Alb alvo - Alb atual) × peso × fator  (com fator 0,8 → unidades resultam em g)
+  const deficit = (alvo-atual) * peso * factor;
+
+  // Apresentações
+  let gPorFr=0, mlPorFr=0, labelForm='';
+  if(form==='20-50'){ gPorFr=10; mlPorFr=50; labelForm='Albumina 20% — 50 mL (10 g)'; }
+  if(form==='20-100'){ gPorFr=20; mlPorFr=100; labelForm='Albumina 20% — 100 mL (20 g)'; }
+  if(form==='5-250'){ gPorFr=12.5; mlPorFr=250; labelForm='Albumina 5% — 250 mL (12,5 g)'; }
+  if(form==='5-500'){ gPorFr=25; mlPorFr=500; labelForm='Albumina 5% — 500 mL (25 g)'; }
+
+  const frascos = Math.ceil(deficit/gPorFr);
+  const gTot = frascos*gPorFr;
+  const volTot = frascos*mlPorFr;
+
+  // Protocolo conforme indicação
+  let prot='', vazao='', tempo='', alerta='';
+  if(ind==='phs'){
+    prot = '<b>PBE</b>: 1,5 g/kg no dia 1 + 1 g/kg no dia 3.';
+    const d1 = 1.5*peso, d3 = 1.0*peso;
+    prot += `<br>D1 ≈ <b>${fmt(d1,0)} g</b> (≈ ${Math.ceil(d1/gPorFr)} frascos de ${labelForm})<br>D3 ≈ <b>${fmt(d3,0)} g</b> (≈ ${Math.ceil(d3/gPorFr)} frascos).`;
+    vazao = 'Albumina 20%: <b>1–2 mL/min</b> (60–120 mL/h).';
+    tempo = `Cada frasco 50 mL em ~25–50 min; 100 mL em ~1–2 h.`;
+  } else if(ind==='parac'){
+    prot = '<b>Paracentese &gt;5 L</b>: 6–8 g de albumina por litro de ascite drenada.';
+    vazao = 'Infusão em 1–4 h após a paracentese.';
+    tempo = 'Pode-se iniciar durante o procedimento.';
+  } else if(ind==='sepse'){
+    prot = '<b>Choque séptico</b>: considerar após cristaloide se hipoalbuminemia grave (ALBIOS sugere meta Alb &gt;3 g/dL).';
+    vazao = 'Albumina 20%: <b>~60–120 mL/h</b>. Albumina 5% pode ser usada como expansor (mais volume).';
+    alerta = '⚠️ Albumina não é primeira linha — cristaloide balanceado é o padrão.';
+  } else if(ind==='nefro'){
+    prot = '<b>Nefrótica refratária</b>: 0,5–1 g/kg lentamente + furosemida EV.';
+    vazao = 'Infundir em 2–4 h para evitar congestão.';
+    alerta = 'Uso controverso/limitado. Benefício transitório.';
+  } else if(ind==='trs'){
+    prot = '<b>Hipotensão intradialítica</b>: 25 g (1 frasco 5% 500 mL ou 2 frascos 20% 50 mL) durante HD.';
+    vazao = 'Bolus na sessão.';
+  } else {
+    prot = '<b>Hipoalbuminemia + edema refratário</b>: 0,5–1 g/kg + furosemida — uso restrito.';
+    vazao = 'Albumina 20% em 1–2 h.';
+    alerta = 'Pouca evidência para uso isolado para "subir albumina".';
+  }
+
+  // Estimativa de ΔAlb (extremamente aproximada): cada 1 g/kg pode subir ~0,5–1 g/dL transitoriamente
+  const dosePerKg = gTot/peso;
+  const deltaEst = dosePerKg*0.6; // aproximação didática
+  const novoAlb = atual + deltaEst;
+
+  const html = `
+    <div class="big">${fmt(deficit,1)} g (déficit)</div>
+    <div class="small">Apresentação: <b>${labelForm}</b></div>
+    <div class="small">Frascos necessários: <b>${frascos}</b> · Total: <b>${fmt(gTot,1)} g</b> em <b>${fmt(volTot,0)} mL</b>.</div>
+    <div class="small">ΔAlb estimado: <b>+${fmt(deltaEst,2)} g/dL</b>; albumina sérica esperada ≈ <b>${fmt(novoAlb,2)} g/dL</b> <span class="muted">(estimativa didática)</span>.</div>
+    <div class="recipe">
+      <h4>📋 Protocolo</h4>
+      <p class="small">${prot}</p>
+      <p class="small"><b>Velocidade:</b> ${vazao}</p>
+      ${tempo?'<p class="small"><b>Tempo:</b> '+tempo+'</p>':''}
+      ${alerta?'<p class="small dangerText">'+alerta+'</p>':''}
+    </div>
+    <div class="small warnText" style="margin-top:8px">
+      ⚠️ Atenção: <b>hipervolemia</b> (mobilização de líquido para o intravascular pode dobrar/triplicar o volume infundido).
+      Reavaliar Alb sérica em <b>24–48 h</b>. Não usar em <b>TCE</b>.
+    </div>
+  `;
+  const copy = `Albumina: déficit ${fmt(deficit,1)} g; ${frascos} frascos de ${labelForm} (= ${fmt(gTot,1)} g / ${fmt(volTot,0)} mL); ΔAlb estimada +${fmt(deltaEst,2)} g/dL; indicação ${ind}.`;
+  render('albOut', html, copy);
+}
+</script>
+</body>
+</html>

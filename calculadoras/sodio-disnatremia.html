@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sódio & Disnatremias PRO | Adrogué-Madias, NaCl 3%/0,45%, ACT, Ca corrigido</title>
+  <meta name="description" content="Calculadoras de cálcio corrigido pela albumina, preparo de NaCl 3% e 0,45%, água corporal total e Adrogué-Madias para correção de hipo/hipernatremia." />
+  <link rel="canonical" href="sodio-disnatremia.html" />
+  <style>
+    :root{
+      --bg:#07111f; --bg2:#0b182b; --panel:rgba(255,255,255,.075);
+      --border:rgba(255,255,255,.14); --text:#f6f8fc; --muted:#aebbd0;
+      --cyan:#3ee8ff; --green:#4ef0a1; --red:#ff6b6b; --yellow:#ffd166;
+      --violet:#a98cff; --orange:#ffac4b; --radius:26px;
+      --shadow:0 24px 80px rgba(0,0,0,.34);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left,rgba(62,232,255,.18),transparent 32rem),
+        radial-gradient(circle at 85% 10%,rgba(169,140,255,.16),transparent 30rem),
+        linear-gradient(135deg,var(--bg),var(--bg2));
+      min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none}
+    .topbar{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 22px;backdrop-filter:blur(18px);background:rgba(7,17,31,.78);border-bottom:1px solid rgba(255,255,255,.08)}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:16px;background:rgba(62,232,255,.12);border:1px solid var(--border)}
+    .brand strong{display:block;line-height:1}
+    .brand small{color:var(--muted)}
+    .nav{display:flex;gap:10px;flex-wrap:wrap}
+    .nav a{padding:8px 10px;border-radius:999px;color:#dce6f5;font-weight:800;font-size:.88rem}
+    .nav a:hover{background:rgba(255,255,255,.08)}
+    .shell{max-width:1240px;margin:0 auto;padding:28px 22px}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:stretch;padding-top:36px}
+    .glass,.card{border:1px solid var(--border);background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045));border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero-copy{padding:30px}
+    .eyebrow{display:inline-flex;margin-bottom:14px;padding:8px 12px;border-radius:999px;border:1px solid rgba(62,232,255,.24);background:rgba(62,232,255,.08);color:#d9fbff;font-weight:900}
+    h1{font-size:clamp(2.2rem,6vw,4.2rem);line-height:.95;letter-spacing:-.07em;margin:0 0 16px;background:linear-gradient(90deg,#fff,#baf3ff 40%,#d9cbff 72%,#caffdf);-webkit-background-clip:text;background-clip:text;color:transparent}
+    h2{font-size:clamp(1.4rem,2.6vw,2rem);letter-spacing:-.04em;margin:0 0 12px}
+    h3{margin:0 0 10px;letter-spacing:-.02em}
+    p,.muted{color:var(--muted);line-height:1.6}
+    .hero p{color:#dce6f5;font-size:1.02rem}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .btn,button{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 14px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.08);color:var(--text);font-weight:900;cursor:pointer;transition:.18s ease;font-size:.92rem}
+    .btn:hover,button:hover{transform:translateY(-2px);background:rgba(255,255,255,.12)}
+    .btn.primary,button.primary{background:linear-gradient(135deg,var(--cyan),var(--green));color:#04131f;border:0}
+    .btn.ghost{background:transparent}
+    .status-card{padding:22px}
+    .metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+    .metric-grid div{padding:14px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+    .metric-grid strong{display:block;font-size:1.4rem}
+    .metric-grid span{color:var(--muted);font-size:.84rem}
+    .notice{border:1px solid rgba(255,209,102,.3);background:linear-gradient(145deg,rgba(255,209,102,.12),rgba(255,255,255,.04));border-radius:18px;padding:14px;margin-top:14px;color:#fff4cf;font-size:.92rem}
+    .section{padding-top:26px;padding-bottom:26px}
+    .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 20px}
+    .tab{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);border-radius:16px;padding:12px 8px;font-weight:900;text-align:center;cursor:pointer;user-select:none;color:#dce6f5;font-size:.94rem}
+    .tab.active{background:linear-gradient(135deg,rgba(62,232,255,.22),rgba(78,240,161,.16));border-color:rgba(62,232,255,.46);box-shadow:0 12px 36px rgba(62,232,255,.12)}
+    .panel{display:none}.panel.active{display:block}
+    .grid{display:grid;gap:18px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{padding:20px}
+    .card.warn{border-color:rgba(255,209,102,.25);background:radial-gradient(circle at top right,rgba(255,209,102,.12),transparent 20rem),linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045))}
+    .card.danger{border-color:rgba(255,107,107,.28);background:radial-gradient(circle at top right,rgba(255,107,107,.14),transparent 20rem),linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045))}
+    .card.ok{border-color:rgba(78,240,161,.25);background:radial-gradient(circle at top right,rgba(78,240,161,.12),transparent 20rem),linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045))}
+    label{display:block;font-size:.88rem;color:#dce6f5;font-weight:800;margin:12px 0 6px}
+    input,select,textarea{width:100%;background:#0e172a;color:var(--text);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 12px;font-size:1rem;outline:none}
+    input:focus,select:focus,textarea:focus{border-color:rgba(62,232,255,.62);box-shadow:0 0 0 4px rgba(62,232,255,.08)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .row.three{grid-template-columns:1fr 1fr 1fr}
+    .row.four{grid-template-columns:repeat(4,1fr)}
+    .result{margin-top:14px;border:1px solid rgba(62,232,255,.18);background:rgba(5,13,26,.68);border-radius:16px;padding:14px;min-height:64px}
+    .result .big{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:1000;margin:2px 0 6px;color:#dff6ff;letter-spacing:-.04em}
+    .formula{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px;margin-top:8px;color:#d9efff;overflow:auto;font-size:.84rem}
+    .pill{display:inline-block;background:rgba(62,232,255,.10);border:1px solid rgba(62,232,255,.22);border-radius:999px;padding:5px 10px;color:#d9efff;font-size:.76rem;margin:5px 5px 0 0;font-weight:800}
+    .pill.yellow{background:rgba(255,209,102,.1);border-color:rgba(255,209,102,.25);color:#fff4cf}
+    .pill.red{background:rgba(255,107,107,.1);border-color:rgba(255,107,107,.25);color:#ffd6d6}
+    .pill.green{background:rgba(78,240,161,.1);border-color:rgba(78,240,161,.25);color:#dfffee}
+    .pill.violet{background:rgba(169,140,255,.12);border-color:rgba(169,140,255,.3);color:#e6dcff}
+    .okText{color:var(--green)}.warnText{color:var(--yellow)}.dangerText{color:var(--red)}
+    .small{font-size:.84rem}
+    .copy{margin-top:10px;width:auto}
+    .footer{color:var(--muted);border-top:1px solid rgba(255,255,255,.1);margin-top:38px;padding-top:24px}
+    .step-list{padding-left:18px;line-height:1.7}
+    .step-list li{margin-bottom:4px}
+    table.mini{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:8px}
+    table.mini th,table.mini td{border-bottom:1px solid rgba(255,255,255,.1);padding:8px;text-align:left}
+    table.mini th{color:#d9fbff;background:rgba(62,232,255,.06)}
+    .recipe{background:rgba(78,240,161,.06);border:1px solid rgba(78,240,161,.2);border-radius:14px;padding:12px;margin-top:10px}
+    .recipe h4{margin:0 0 8px;color:#caffdf}
+    .danger-banner{border:1px solid rgba(255,107,107,.4);background:linear-gradient(145deg,rgba(255,107,107,.16),rgba(255,255,255,.04));border-radius:18px;padding:14px;color:#ffd6d6;font-weight:700;margin-top:12px}
+    .sticky-note{position:sticky;top:86px}
+    @media(max-width:1060px){.hero,.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(2,1fr)}.nav{display:none}.hero{padding-top:18px}.hero-copy{padding:22px}.row,.row.three,.row.four{grid-template-columns:1fr}.sticky-note{position:static}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">
+      <span class="brand-icon">🧠</span>
+      <span><strong>Enciclopédia Médica</strong><small>Intensiva & Medicina Interna</small></span>
+    </a>
+    <nav class="nav">
+      <a href="../index.html">🏠 Home</a>
+      <a href="../03_Calculadoras_E_Apps/index.html">🧮 Central UTI</a>
+      <a href="bicarbonato-albumina.html">🧪 Bic + Albumina</a>
+      <a href="#calculadoras" style="color:#4ef0a1">🧂 Disnatremias</a>
+      <a href="#seguranca">🛡️ Segurança</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-copy glass">
+        <span class="eyebrow">⚡ Módulo Eletrólitos • Sódio & Volume • Adrogué-Madias</span>
+        <h1>Sódio & Disnatremias PRO</h1>
+        <p>
+          Suíte para o plantão: <b>cálcio corrigido pela albumina</b>, <b>preparo de NaCl 3% e 0,45%</b> a partir de
+          NaCl 0,9% / 10% / 20% + AD + SG 5%, <b>água corporal total (ACT)</b> e <b>Adrogué-Madias</b> com
+          volume, tempo de infusão e Δ[Na] estimado em 24 h. Tudo offline no navegador.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="#calculadoras">⚡ Abrir calculadoras</a>
+          <a class="btn" href="bicarbonato-albumina.html">🧪 Bicarbonato + Albumina</a>
+          <a class="btn ghost" href="../03_Calculadoras_E_Apps/index.html">🧮 Central UTI</a>
+        </div>
+        <div class="notice">
+          <b>⚠️ Segurança crítica:</b> hiponatremia crônica grave — não corrigir &gt; <b>8–10 mEq/L em 24 h</b> (risco de mielinólise pontina/SDO).
+          Em hipernatremia crônica — não baixar mais de <b>~0,5 mEq/L/h (≤10 mEq/L/24h)</b>. Reavaliar Na sérico a cada 2–4 h durante correção ativa.
+        </div>
+      </div>
+      <aside class="status-card glass">
+        <h2>📊 Painel</h2>
+        <div class="metric-grid">
+          <div><strong>04</strong><span>Calculadoras</span></div>
+          <div><strong>NaCl</strong><span>0,9 / 10 / 20%</span></div>
+          <div><strong>A-M</strong><span>Adrogué-Madias</span></div>
+          <div><strong>ACT</strong><span>Watson / clássica</span></div>
+        </div>
+        <p class="muted small">Projetado para iPhone/iPad/Mac, GitHub Pages e Antigravity. Roda 100% local.</p>
+        <div class="result small">
+          <b>Fluxo sugerido:</b> ① calcular Ca corrigido → ② estimar ACT → ③ escolher solução e preparar → ④ aplicar A-M → ⑤ definir mL/h e tempo.
+        </div>
+      </aside>
+    </section>
+
+    <section id="calculadoras" class="shell section">
+      <h2>🧮 Calculadoras</h2>
+      <p class="muted small">Os campos são editáveis e aceitam vírgula ou ponto decimal.</p>
+      <div class="tabs">
+        <div class="tab active" onclick="showTab('ca',this)">🦴 Ca corrigido</div>
+        <div class="tab" onclick="showTab('prep',this)">🧂 Preparo NaCl 3% / 0,45%</div>
+        <div class="tab" onclick="showTab('act',this)">💧 ACT</div>
+        <div class="tab" onclick="showTab('am',this)">⚖️ Adrogué-Madias</div>
+      </div>
+
+      <!-- ===================== CÁLCIO CORRIGIDO ===================== -->
+      <div id="ca" class="panel active">
+        <div class="grid two">
+          <article class="card">
+            <h2>🦴 Cálcio corrigido pela albumina</h2>
+            <p class="muted small">Estimativa do cálcio total corrigido em hipoalbuminemia. <b>Padrão-ouro</b> em UTI: <b>cálcio iônico</b>. A correção é estimativa.</p>
+            <div class="row three">
+              <div>
+                <label>Cálcio total (mg/dL)</label>
+                <input id="caTot" type="text" inputmode="decimal" placeholder="Ex.: 7,8">
+              </div>
+              <div>
+                <label>Albumina (g/dL)</label>
+                <input id="caAlb" type="text" inputmode="decimal" placeholder="Ex.: 2,3">
+              </div>
+              <div>
+                <label>Unidade de saída</label>
+                <select id="caUnit">
+                  <option value="mgdl">mg/dL</option>
+                  <option value="mmoll">mmol/L</option>
+                </select>
+              </div>
+            </div>
+            <button class="primary" onclick="calcCa()">Calcular Ca corrigido</button>
+            <div class="result" id="caOut"><div class="small muted">Resultado aparecerá aqui.</div></div>
+            <div class="formula">
+              Ca corrigido (mg/dL) = Ca total + 0,8 × (4 − Albumina)
+              <br>1 mg/dL Ca ≈ 0,25 mmol/L
+            </div>
+          </article>
+          <aside class="card warn sticky-note">
+            <h3>📌 Pérolas clínicas</h3>
+            <ul class="step-list small">
+              <li>Em crítico, prefira <b>Ca iônico</b> (gasometria). Correção pela albumina é pouco acurada em UTI.</li>
+              <li>Acidose ↑ Ca iônico; alcalose ↓ Ca iônico (~0,05 mmol/L por 0,1 de pH).</li>
+              <li>Sintomático: Trousseau/Chvostek, QT longo, tetania, laringoespasmo.</li>
+              <li>Reposição EV: <b>gluconato de Ca 10%</b> (1–2 g em 10–20 min em sintomático grave) — checar Mg++ junto.</li>
+            </ul>
+            <span class="pill yellow">Confirmar com Ca iônico</span>
+            <span class="pill red">Atenção QT</span>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ===================== PREPARO NaCl ===================== -->
+      <div id="prep" class="panel">
+        <div class="grid two">
+          <article class="card">
+            <h2>🧂 Preparo de solução: NaCl 3% (hipertônica) ou 0,45% (hipotônica)</h2>
+            <p class="muted small">Calcula receita de preparo a partir de <b>NaCl 0,9% / 10% / 20%</b>, <b>Água Destilada (AD)</b> e <b>SG 5%</b>. Salinas hipertônicas são <b>medicamentos de alto risco</b>.</p>
+
+            <div class="row">
+              <div>
+                <label>Solução-alvo</label>
+                <select id="prepTarget" onchange="renderRecipes()">
+                  <option value="3">NaCl 3% (hipertônica)</option>
+                  <option value="0.45">NaCl 0,45% (hipotônica)</option>
+                </select>
+              </div>
+              <div>
+                <label>Volume final desejado (mL)</label>
+                <input id="prepVol" type="text" inputmode="decimal" value="250" oninput="renderRecipes()">
+              </div>
+            </div>
+
+            <label>Fonte concentrada disponível</label>
+            <select id="prepSource" onchange="renderRecipes()">
+              <option value="20">NaCl 20% (200 mg/mL ≈ 3,4 mEq/mL Na)</option>
+              <option value="10">NaCl 10% (100 mg/mL ≈ 1,71 mEq/mL Na)</option>
+              <option value="09">NaCl 0,9% como base (apenas para 0,45%, com AD ou SG5%)</option>
+            </select>
+
+            <label>Diluente</label>
+            <select id="prepDiluent" onchange="renderRecipes()">
+              <option value="ad">AD (água destilada)</option>
+              <option value="sg5">SG 5%</option>
+            </select>
+
+            <button class="primary" onclick="renderRecipes()">🧪 Calcular receita</button>
+
+            <div class="result" id="prepOut"><div class="small muted">Resultado e receita aparecerão aqui.</div></div>
+
+            <div class="formula">
+              C₁·V₁ = C₂·V₂ &nbsp;|&nbsp; em mg/mL: NaCl 0,9% = 9, NaCl 3% = 30, NaCl 10% = 100, NaCl 20% = 200, NaCl 0,45% = 4,5
+              <br>Equivalência: 1 g NaCl ≈ 17,1 mEq Na⁺ (e Cl⁻)
+            </div>
+          </article>
+
+          <aside class="card danger sticky-note">
+            <h3>🛡️ Cuidados</h3>
+            <ul class="step-list small">
+              <li><b>NaCl 3%</b> idealmente em <b>acesso central</b>. Periférico só em emergência (convulsão hiponatrêmica) com bolus pequeno (100–150 mL).</li>
+              <li>Velocidade típica em hipoNa sintomática: <b>bolus 100 mL NaCl 3% em 10 min</b>, repetir até 3× ou até cessar sintoma (não exceder Δ Na seguro/24h).</li>
+              <li>Reavaliar <b>Na sérico a cada 2–4 h</b> durante correção ativa.</li>
+              <li>NaCl 0,45% é hipotônica — risco de edema cerebral se uso indiscriminado. Uso típico: hipernatremia, manutenção pediátrica/idosos selecionados.</li>
+              <li>Conferir <b>concentração final</b>, rótulo e bomba (alto risco de erro de diluição).</li>
+            </ul>
+            <span class="pill red">Alto risco</span>
+            <span class="pill yellow">Dupla checagem</span>
+            <span class="pill violet">Acesso central preferível (3%)</span>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ===================== ACT ===================== -->
+      <div id="act" class="panel">
+        <div class="grid two">
+          <article class="card">
+            <h2>💧 Água Corporal Total (ACT)</h2>
+            <p class="muted small">Insumo essencial da fórmula de Adrogué-Madias e do déficit/excesso de água livre.</p>
+            <div class="row">
+              <div>
+                <label>Método</label>
+                <select id="actMethod">
+                  <option value="class">Clássico (fração × peso)</option>
+                  <option value="watson">Watson (mais acurado)</option>
+                </select>
+              </div>
+              <div>
+                <label>Sexo biológico</label>
+                <select id="actSex">
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
+                </select>
+              </div>
+            </div>
+            <div class="row three">
+              <div><label>Idade (anos)</label><input id="actIdade" type="text" inputmode="decimal" placeholder="Ex.: 65"></div>
+              <div><label>Peso (kg)</label><input id="actPeso" type="text" inputmode="decimal" placeholder="Ex.: 70"></div>
+              <div><label>Altura (cm) — Watson</label><input id="actAlt" type="text" inputmode="decimal" placeholder="Ex.: 170"></div>
+            </div>
+            <label>Status clínico (modifica fração no clássico)</label>
+            <select id="actStatus">
+              <option value="adulto">Adulto eutrófico</option>
+              <option value="idoso">Idoso / desidratado</option>
+              <option value="crianca">Criança</option>
+            </select>
+            <button class="primary" onclick="calcACT()">Calcular ACT</button>
+            <div class="result" id="actOut"><div class="small muted">Resultado aparecerá aqui.</div></div>
+            <div class="formula">
+              Clássico: ACT = peso × fração (♂ 0,6 / ♀ 0,5 / idoso ♂ 0,5 ♀ 0,45 / criança 0,6)
+              <br>Watson ♂: 2,447 − 0,09516·idade + 0,1074·altura + 0,3362·peso
+              <br>Watson ♀: −2,097 + 0,1069·altura + 0,2466·peso
+            </div>
+          </article>
+          <aside class="card warn sticky-note">
+            <h3>📌 Pérolas</h3>
+            <ul class="step-list small">
+              <li>Watson tende a ser mais preciso; clássico é didático e amplamente usado.</li>
+              <li>Obeso → ACT real é <b>menor</b> que a fração tradicional sugere (gordura = pouca água).</li>
+              <li>ACT entra como denominador da A-M: errar ACT desloca a Δ[Na] estimada.</li>
+              <li>Reavaliar a cada exame; Δ[Na] real &gt; estimado em diabetes insípido/poliúria.</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ===================== ADROGUÉ-MADIAS ===================== -->
+      <div id="am" class="panel">
+        <article class="card">
+          <h2>⚖️ Adrogué-Madias — taxa de infusão e Δ[Na] em 24 h</h2>
+          <p class="muted small">Estima quanto o sódio sérico vai variar com <b>1 L</b> da solução escolhida e fornece volume, tempo de infusão e mL/h para atingir um Δ[Na] alvo seguro em 24 h.</p>
+
+          <div class="row four">
+            <div><label>Na sérico atual (mEq/L)</label><input id="amNa" type="text" inputmode="decimal" placeholder="Ex.: 118"></div>
+            <div><label>Na alvo em 24 h (mEq/L)</label><input id="amTarget" type="text" inputmode="decimal" placeholder="Ex.: 126"></div>
+            <div><label>K sérico (mEq/L) — opcional</label><input id="amK" type="text" inputmode="decimal" placeholder="Ex.: 4"></div>
+            <div><label>ACT (L) — use a calculadora ACT</label><input id="amACT" type="text" inputmode="decimal" placeholder="Ex.: 42"></div>
+          </div>
+
+          <label>Solução escolhida (Na da infusão)</label>
+          <select id="amSol">
+            <option value="513">NaCl 3% — 513 mEq/L</option>
+            <option value="154">NaCl 0,9% — 154 mEq/L</option>
+            <option value="77">NaCl 0,45% — 77 mEq/L</option>
+            <option value="34">NaCl 0,2% em SG 5% — 34 mEq/L</option>
+            <option value="0">SG 5% / Água livre — 0 mEq/L</option>
+            <option value="custom">Personalizar...</option>
+          </select>
+          <div class="row" id="amCustomWrap" style="display:none">
+            <div><label>Na da solução personalizada (mEq/L)</label><input id="amSolCustom" type="text" inputmode="decimal" placeholder="Ex.: 250"></div>
+            <div><label>K da solução (mEq/L) — opcional</label><input id="amKsol" type="text" inputmode="decimal" placeholder="Ex.: 0"></div>
+          </div>
+
+          <button class="primary" onclick="calcAdrogue()" style="margin-top:10px">⚖️ Calcular A-M (Δ por 1 L + volume/tempo p/ alvo)</button>
+          <div class="result" id="amOut"><div class="small muted">Resultado aparecerá aqui.</div></div>
+
+          <div class="formula">
+            Δ[Na] por 1 L de solução = (Na_infusão + K_infusão − Na_sérico) / (ACT + 1)
+            <br>Volume necessário (L) = (Na_alvo − Na_atual) / Δ[Na] por 1 L
+            <br>Taxa segura usual: ≤ 8–10 mEq/L em 24 h (crônica) ou 10–12 mEq/L em 24 h (aguda, com cautela)
+          </div>
+
+          <div class="danger-banner">
+            ⚠️ <b>Overcorrection</b> em hipoNa crônica → <b>mielinólise pontina</b>. Se ultrapassar o alvo, considerar
+            <b>DDAVP 2–4 mcg EV/SC</b> + reposição com <b>água livre / SG 5%</b>. Risco maior em alcoolista, desnutrida, hipoK, hepatopata.
+          </div>
+        </article>
+
+        <div class="grid two" style="margin-top:18px">
+          <article class="card ok">
+            <h3>📊 Referências de Na das soluções (mEq/L)</h3>
+            <table class="mini">
+              <tr><th>Solução</th><th>Na</th><th>Tonicidade vs plasma</th></tr>
+              <tr><td>NaCl 3%</td><td>513</td><td>Hipertônica</td></tr>
+              <tr><td>NaCl 0,9%</td><td>154</td><td>Isotônica</td></tr>
+              <tr><td>Ringer Lactato</td><td>130</td><td>Quase isotônica</td></tr>
+              <tr><td>NaCl 0,45%</td><td>77</td><td>Hipotônica</td></tr>
+              <tr><td>NaCl 0,2% em SG5%</td><td>34</td><td>Hipotônica</td></tr>
+              <tr><td>SG 5% / Água livre</td><td>0</td><td>Hipotônica pura</td></tr>
+            </table>
+          </article>
+          <article class="card warn">
+            <h3>🚦 Alvo seguro de correção</h3>
+            <ul class="step-list small">
+              <li><b>HipoNa crônica</b> (&gt;48 h ou indeterminada): Δ <b>≤ 8 mEq/L / 24 h</b>; limite absoluto 10–12.</li>
+              <li><b>HipoNa aguda sintomática</b> grave (convulsão): bolus 100 mL NaCl 3% em 10 min × até 3 vezes.</li>
+              <li><b>HiperNa crônica</b>: queda ≤ <b>0,5 mEq/L/h</b> (≤10 mEq/L/24h).</li>
+              <li><b>Reavaliar Na</b> a cada 2–4 h em fase ativa.</li>
+              <li>Tratar <b>causa</b>: SIADH, hipovolemia, DI, hiperglicemia, diuréticos.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="seguranca" class="shell section">
+      <h2>🛡️ Checklist beira-leito</h2>
+      <div class="grid four">
+        <article class="card danger"><h3>1️⃣ Diagnóstico</h3><p class="small">HipoNa aguda × crônica? Hipo, eu ou hipervolêmica? Osm urina, Na urina, ácido úrico.</p></article>
+        <article class="card warn"><h3>2️⃣ Alvo seguro</h3><p class="small">Defina Δ[Na] de 24 h <b>antes</b> de prescrever. Anote no prontuário.</p></article>
+        <article class="card warn"><h3>3️⃣ Reavaliação</h3><p class="small">Na sérico a cada 2–4 h. Diurese horária. Sintomas neurológicos.</p></article>
+        <article class="card ok"><h3>4️⃣ Resgate</h3><p class="small">Overcorrection? DDAVP + SG 5%. HipoNa sintomática? NaCl 3% bolus.</p></article>
+      </div>
+    </section>
+
+    <section class="shell section">
+      <h2>🔗 Outras calculadoras</h2>
+      <div class="grid three">
+        <a class="card" href="bicarbonato-albumina.html"><h3>🧪 Bicarbonato + Albumina</h3><p class="small muted">Déficit por BE / HCO₃, preparo e infusão. Reposição de albumina completa.</p></a>
+        <a class="card" href="../03_Calculadoras_E_Apps/index.html"><h3>🧮 Central UTI PRO</h3><p class="small muted">DVA, sedoanalgesia, BNM, VM, gasometria, renal e mais.</p></a>
+        <a class="card" href="../index.html"><h3>🏠 Home</h3><p class="small muted">Portal da Enciclopédia Médica.</p></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <p class="small">🧠 Enciclopédia Médica Intensiva & Medicina Interna — Calculadoras de Disnatremias. Ferramenta educacional, não substitui julgamento clínico.</p>
+  </footer>
+
+<script>
+// ============ helpers ============
+function num(id){ const v=document.getElementById(id).value; return parseFloat(String(v).replace(',','.')) }
+function setVal(id,v){ document.getElementById(id).value = String(v).replace('.',',') }
+function fmt(x,n=2){ if(!Number.isFinite(x)) return '—'; return Number(x).toFixed(n).replace('.',',') }
+function valid(arr){ return arr.every(v=>Number.isFinite(v)&&v>0) }
+function copyText(t){ navigator.clipboard?.writeText(t).catch(()=>{}) }
+function render(id,html,copy){ document.getElementById(id).innerHTML = html + (copy?`<br><button class="copy" onclick="copyText(\`${copy.replace(/`/g,"'")}\`)">📋 Copiar resultado</button>`:'') }
+function showTab(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active'); el.classList.add('active');
+}
+
+// ============ Ca corrigido ============
+function calcCa(){
+  const ca=num('caTot'), alb=num('caAlb'), unit=document.getElementById('caUnit').value;
+  if(!Number.isFinite(ca)||!Number.isFinite(alb)){ render('caOut','<span class="dangerText">Preencha Ca total e Albumina.</span>'); return }
+  const caCorr = ca + 0.8*(4-alb);
+  const inMmol = caCorr*0.25;
+  let flag='';
+  const valOut = unit==='mmoll'?inMmol:caCorr;
+  const lblOut = unit==='mmoll'?'mmol/L':'mg/dL';
+  // faixas (mg/dL): <8.5 hipo, 8.5–10.5 normal, >10.5 hiper
+  if(caCorr<8.5) flag='<span class="dangerText">⬇️ Hipocalcemia (corrigida)</span>';
+  else if(caCorr>10.5) flag='<span class="dangerText">⬆️ Hipercalcemia (corrigida)</span>';
+  else flag='<span class="okText">Dentro da faixa normal</span>';
+  const html=`<div class="big">${fmt(valOut,2)} ${lblOut}</div>
+    <div class="small">Ca corrigido (mg/dL): <b>${fmt(caCorr,2)}</b> · em mmol/L: <b>${fmt(inMmol,2)}</b></div>
+    <div class="small">${flag}</div>
+    <div class="small warnText">⚠️ Em paciente crítico, prefira <b>cálcio iônico</b>.</div>`;
+  const copy = `Ca corrigido = ${fmt(caCorr,2)} mg/dL (${fmt(inMmol,2)} mmol/L). Ca total ${fmt(ca,2)}; Alb ${fmt(alb,2)}.`;
+  render('caOut',html,copy);
+}
+
+// ============ Preparo de soluções NaCl ============
+// Concentrações em mg/mL
+const NACL = { '20':200, '10':100, '09':9, '3':30, '0.45':4.5 };
+
+function renderRecipes(){
+  const target = document.getElementById('prepTarget').value; // '3' ou '0.45'
+  const Vfinal = num('prepVol');
+  const source = document.getElementById('prepSource').value; // '20','10','09'
+  const diluentSel = document.getElementById('prepDiluent').value; // 'ad' ou 'sg5'
+
+  if(!Number.isFinite(Vfinal)||Vfinal<=0){
+    render('prepOut','<span class="dangerText">Informe o volume final (mL).</span>'); return;
+  }
+
+  const Ctarget = NACL[target]; // mg/mL desejado
+  const Csource = NACL[source]; // mg/mL fonte
+
+  // Validações
+  if(source==='09' && target==='3'){
+    render('prepOut','<span class="dangerText">NaCl 0,9% é insuficiente para preparar NaCl 3% (concentração da fonte &lt; alvo). Use NaCl 10% ou 20%.</span>'); return;
+  }
+
+  // V1 (mL da fonte) por C1V1 = C2V2
+  const V1 = (Ctarget*Vfinal)/Csource;
+  const Vdil = Vfinal - V1;
+
+  if(V1<=0 || Vdil<0){
+    render('prepOut','<span class="dangerText">Combinação inválida: a fonte é menos concentrada que o alvo.</span>'); return;
+  }
+
+  // mEq Na resultante
+  const massNa_mg = Ctarget*Vfinal; // mg NaCl total na solução final
+  const mEqNa = (massNa_mg/1000)*17.1; // 1 g NaCl ≈ 17,1 mEq
+
+  const NaPerL = (Ctarget*1000)/58.44; // mEq/L (massa molar NaCl 58.44 g/mol, mas 1 mEq Na = 1 mmol = 58.44 mg NaCl)
+  // ajuste: 1 g NaCl = 17,1 mEq → mEq/L = (Ctarget mg/mL × 1000 mL/L) / 1000 mg/g × 17,1 = Ctarget × 17,1
+  const NaPerL2 = Ctarget*17.1;
+
+  const diluentLabel = diluentSel==='ad' ? 'Água Destilada (AD)' : 'SG 5%';
+  const targetLabel = target==='3' ? 'NaCl 3% (513 mEq/L Na)' : 'NaCl 0,45% (77 mEq/L Na)';
+  const sourceLabel = source==='20'?'NaCl 20%': source==='10'?'NaCl 10%':'NaCl 0,9%';
+
+  // Alerta se diluente SG5% para hipertônica (osmolaridade alta + glicose: aceitável, mas comentar)
+  let warn='';
+  if(target==='3' && diluentSel==='sg5'){
+    warn = '<div class="small warnText">⚠️ NaCl 3% diluído em SG 5% adiciona ~25 g/L de glicose à infusão — confirme se isso é aceitável (DM/hiperglicemia, jejum, nutrição).</div>';
+  }
+  if(target==='0.45' && source==='09' && diluentSel==='sg5'){
+    warn += '<div class="small warnText">ℹ️ NaCl 0,9% diluído 1:1 com SG 5% gera NaCl 0,45% em SG 2,5% — solução comum, mas confirme calorias/glicose.</div>';
+  }
+
+  const recipe = `
+    <div class="recipe">
+      <h4>🧪 Receita pronta</h4>
+      <ol class="step-list">
+        <li>Aspirar <b>${fmt(V1,1)} mL</b> de <b>${sourceLabel}</b>.</li>
+        <li>Completar com <b>${fmt(Vdil,1)} mL</b> de <b>${diluentLabel}</b>.</li>
+        <li>Volume final: <b>${fmt(Vfinal,0)} mL</b> de <b>${targetLabel}</b>.</li>
+        <li>Conteúdo: ${fmt(massNa_mg/1000,2)} g NaCl ≈ <b>${fmt(mEqNa,1)} mEq Na⁺</b> totais.</li>
+        <li>Identificar o frasco: <b>${target==='3'?'NaCl 3% — ALTO RISCO':'NaCl 0,45%'}</b>, paciente, data/hora, responsável.</li>
+      </ol>
+      ${warn}
+    </div>
+  `;
+
+  const html = `
+    <div class="big">${fmt(V1,1)} mL fonte + ${fmt(Vdil,1)} mL diluente</div>
+    <div class="small">Preparo de <b>${fmt(Vfinal,0)} mL</b> de <b>${targetLabel}</b></div>
+    <div class="small">Concentração final NaCl: <b>${fmt(Ctarget,2)} mg/mL</b> · Na ≈ <b>${fmt(NaPerL2,0)} mEq/L</b></div>
+    ${recipe}
+  `;
+  const copy = `Preparo ${targetLabel} (${fmt(Vfinal,0)} mL): ${fmt(V1,1)} mL de ${sourceLabel} + ${fmt(Vdil,1)} mL de ${diluentLabel}. Total Na ≈ ${fmt(mEqNa,1)} mEq.`;
+  render('prepOut', html, copy);
+}
+
+// ============ ACT ============
+function calcACT(){
+  const method=document.getElementById('actMethod').value;
+  const sex=document.getElementById('actSex').value;
+  const idade=num('actIdade'), peso=num('actPeso'), alt=num('actAlt');
+  const status=document.getElementById('actStatus').value;
+  let act=NaN, used='';
+  if(method==='watson'){
+    if(!valid([idade,peso,alt])){ render('actOut','<span class="dangerText">Watson: preencha idade, peso e altura.</span>'); return }
+    act = sex==='M' ? (2.447 - 0.09516*idade + 0.1074*alt + 0.3362*peso)
+                    : (-2.097 + 0.1069*alt + 0.2466*peso);
+    used = `Watson (${sex==='M'?'♂':'♀'})`;
+  } else {
+    if(!Number.isFinite(peso)||peso<=0){ render('actOut','<span class="dangerText">Clássico: informe o peso.</span>'); return }
+    let frac;
+    if(status==='crianca') frac=0.6;
+    else if(status==='idoso') frac = sex==='M'?0.5:0.45;
+    else frac = sex==='M'?0.6:0.5;
+    act = peso*frac;
+    used = `Clássico (${(frac).toString().replace('.',',')} × peso)`;
+  }
+  const html = `<div class="big">${fmt(act,1)} L</div>
+    <div class="small">Método: <b>${used}</b></div>
+    <div class="small">Use este valor no campo ACT da calculadora de Adrogué-Madias.</div>`;
+  const copy = `ACT estimada (${used}) = ${fmt(act,1)} L.`;
+  render('actOut', html, copy);
+}
+
+// ============ Adrogué-Madias ============
+document.addEventListener('DOMContentLoaded',()=>{
+  const sel = document.getElementById('amSol');
+  sel.addEventListener('change',()=>{
+    document.getElementById('amCustomWrap').style.display = sel.value==='custom' ? 'grid':'none';
+  });
+});
+function calcAdrogue(){
+  const Na=num('amNa'), target=num('amTarget'), act=num('amACT');
+  const K=num('amK');
+  let solSel=document.getElementById('amSol').value;
+  let NaInf, Kinf=0;
+  if(solSel==='custom'){
+    NaInf=num('amSolCustom'); Kinf=num('amKsol');
+    if(!Number.isFinite(NaInf)){ render('amOut','<span class="dangerText">Personalizar: informe Na da solução.</span>'); return }
+    if(!Number.isFinite(Kinf)) Kinf=0;
+  } else { NaInf=parseFloat(solSel); }
+  if(!valid([Na,target,act])){ render('amOut','<span class="dangerText">Preencha Na atual, Na alvo e ACT (todos &gt; 0).</span>'); return }
+  if(Number.isFinite(K) && !Number.isFinite(Kinf)) Kinf=0;
+
+  // Δ por 1 L
+  const delta1L = ( (NaInf + Kinf) - Na ) / ( act + 1 );
+  // Δ desejado em 24h
+  const deltaTarget = target - Na;
+  // L necessários
+  const Lneed = deltaTarget / delta1L; // pode ser negativo se direção incompatível
+  // Avaliar segurança
+  const absDelta = Math.abs(deltaTarget);
+  const horizon = 24; // horas
+  // Sugerir taxa segura: para crônica, limite 8 mEq/L/24h
+  const safeMax = 8; // mEq/L em 24h (crônica)
+  let safetyMsg='';
+  if(absDelta>safeMax){
+    safetyMsg = `<div class="dangerText small">⚠️ Δ planejado (${fmt(deltaTarget,1)} mEq/L em 24h) excede o limite seguro usual de ~${safeMax} mEq/L/24h em hipo/hipernatremia crônica.</div>`;
+  } else {
+    safetyMsg = `<div class="okText small">✅ Δ planejado (${fmt(deltaTarget,1)} mEq/L em 24h) dentro do limite usual seguro (≤${safeMax}).</div>`;
+  }
+
+  // Direção compatível?
+  let directionWarn='';
+  const goingUp = deltaTarget>0; // queremos subir Na
+  const liftsNa = (NaInf+Kinf) > Na; // solução tende a subir Na
+  if(goingUp !== liftsNa){
+    directionWarn = `<div class="dangerText small">⚠️ Direção incompatível: a solução escolhida tende a ${liftsNa?'aumentar':'reduzir'} o Na, mas o alvo pede ${goingUp?'aumento':'redução'}. Troque a solução.</div>`;
+  }
+
+  // Volume e taxa em 24h (assumindo distribuição uniforme)
+  let mlTotal=NaN, mlh=NaN, hoursToTarget=NaN;
+  if(Number.isFinite(Lneed) && Lneed>0 && (goingUp===liftsNa)){
+    mlTotal = Lneed*1000;
+    mlh = mlTotal/horizon;
+  }
+  // mEq Na que serão administrados (estimado)
+  const NaAdmin = Number.isFinite(mlTotal)? (mlTotal/1000)*NaInf : NaN;
+
+  const html = `
+    <div class="big">${fmt(delta1L,2)} mEq/L por 1 L</div>
+    <div class="small">Δ[Na] estimado para <b>1 L</b> da solução escolhida (Na ${fmt(NaInf,0)} mEq/L${Number.isFinite(Kinf)&&Kinf>0?'; K '+fmt(Kinf,0):''}).</div>
+    <hr style="border:0;border-top:1px solid rgba(255,255,255,.1);margin:10px 0">
+    <div class="small">Δ planejado em 24 h: <b>${fmt(deltaTarget,1)} mEq/L</b></div>
+    <div class="small">Volume total necessário: <b>${Number.isFinite(mlTotal)?fmt(mlTotal,0)+' mL ('+fmt(Lneed,2)+' L)':'—'}</b></div>
+    <div class="small">Vazão sugerida (em 24 h): <b>${Number.isFinite(mlh)?fmt(mlh,1)+' mL/h':'—'}</b></div>
+    <div class="small">Sódio total administrado: <b>${Number.isFinite(NaAdmin)?fmt(NaAdmin,1)+' mEq':'—'}</b></div>
+    ${directionWarn}
+    ${safetyMsg}
+    <div class="small warnText" style="margin-top:6px">📌 Reavaliar Na sérico a cada <b>2–4 h</b>. Adrogué-Madias é estimativa: perdas urinárias, diurese aquosa, DI ou polidipsia desviam o real.</div>
+  `;
+  const copy = `Adrogué-Madias: Δ[Na] por 1 L = ${fmt(delta1L,2)} mEq/L; Δ alvo 24h = ${fmt(deltaTarget,1)} mEq/L; volume ${fmt(mlTotal,0)} mL em 24h (${fmt(mlh,1)} mL/h); Na total ${fmt(NaAdmin,1)} mEq.`;
+  render('amOut', html, copy);
+}
+</script>
+</body>
+</html>
