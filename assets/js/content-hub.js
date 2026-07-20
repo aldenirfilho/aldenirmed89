@@ -11,10 +11,38 @@ const fmtIcon = {
   video: "🎬", audio: "🎧", archive: "🗜️", link: "🔗", file: "📦"
 };
 
-function safePath(path) {
-  if (!path) return "#";
-  if (/^https?:\/\//i.test(path)) return path;
-  return path.split("/").map(encodeURIComponent).join("/");
+function safePath(path, allowExternal = false) {
+  if (!path) return null;
+  const raw = String(path).trim();
+  if (!raw || raw.includes("\\") || raw.includes("\0")) return null;
+
+  let decoded;
+  try {
+    decoded = decodeURIComponent(raw);
+  } catch {
+    return null;
+  }
+
+  if (allowExternal) {
+    if (!/^https?:\/\//i.test(decoded)) return null;
+    try {
+      const external = new URL(decoded);
+      if (!["http:", "https:"].includes(external.protocol) || external.username || external.password) return null;
+      return external.href;
+    } catch {
+      return null;
+    }
+  }
+
+  if (/^(?:[a-z][a-z\d+.-]*:|\/\/|\/)/i.test(decoded)) return null;
+  const segments = decoded.split("/");
+  if (segments.some(segment => !segment || segment === "." || segment === "..")) return null;
+
+  const base = new URL("./", window.location.href);
+  const encoded = segments.map(segment => encodeURIComponent(segment)).join("/");
+  const resolved = new URL(encoded, base);
+  if (resolved.origin !== window.location.origin || !resolved.pathname.startsWith(base.pathname)) return null;
+  return resolved.href;
 }
 
 function escapeHtml(value) {
@@ -127,7 +155,7 @@ function renderGrid() {
   empty.style.display = items.length ? "none" : "block";
   grid.innerHTML = items.map(item => {
     const icon = item.formatEmoji || fmtIcon[item.format] || "📦";
-    const href = safePath(item.path || item.url);
+    const href = safePath(item.path || item.url, item.source === "link") || "#";
     const size = item.sizeBytes ? ` · ${bytesLabel(item.sizeBytes)}` : "";
     const fileLabel = item.source === "link" ? "Link externo" : `${item.filename || "Arquivo"}${size}`;
     const download = item.source === "link" ? "" : `<a class="btn" href="${escapeHtml(href)}" download>⬇️ Baixar</a>`;
@@ -151,7 +179,11 @@ function renderGrid() {
 
 function openPreview(encodedPath, title, format, source) {
   const path = decodeURIComponent(encodedPath);
-  const href = safePath(path);
+  const href = safePath(path, source === "link");
+  if (!href) {
+    console.error("Preview bloqueado: caminho fora da área permitida.", path);
+    return;
+  }
   const safeHref = escapeHtml(href);
   const safeTitle = escapeHtml(title);
   const overlay = document.getElementById("preview");
@@ -164,13 +196,14 @@ function openPreview(encodedPath, title, format, source) {
   download.href = href;
   download.style.display = source === "link" ? "none" : "inline-flex";
   frame.removeAttribute("srcdoc");
+  frame.setAttribute("sandbox", "allow-downloads");
   frame.src = "about:blank";
   body.innerHTML = "";
   frame.style.display = "block";
   body.style.display = "none";
 
   if (source === "link") {
-    window.open(path, "_blank", "noopener");
+    window.open(href, "_blank", "noopener");
     return;
   }
   if (format === "image") {
@@ -187,6 +220,7 @@ function openPreview(encodedPath, title, format, source) {
     body.innerHTML = `<audio src="${safeHref}" controls></audio>`;
   } else if (["word", "spreadsheet", "presentation"].includes(format)) {
     const fullUrl = new URL(href, window.location.href).href;
+    frame.setAttribute("sandbox", "allow-scripts allow-forms allow-popups allow-downloads");
     frame.src = `https://docs.google.com/gview?url=${encodeURIComponent(fullUrl)}&embedded=true`;
   } else if (format === "anki") {
     frame.srcdoc = `<html><body style="font-family:system-ui;padding:2rem"><h2>Arquivo Anki</h2><p>Baixe e importe no Anki.</p><p><a href="${safeHref}" download>Baixar arquivo</a></p></body></html>`;

@@ -6,6 +6,7 @@ Verifica a integridade física de todos os arquivos apontados nos manifests do s
 import json
 import os
 import argparse
+import sys
 from datetime import datetime
 from typing import Dict, List, Tuple
 
@@ -164,7 +165,7 @@ def main() -> None:
             print(f"- {desc}: {path}")
 
     if not args.write_report:
-        return
+        return 1 if broken_links else 0
 
     # Gerar Relatório em Markdown
     report_path = os.path.join(project_root, "08_Documentacao_Projeto", "RELATORIO_VALIDACAO_ROTAS.md")
@@ -204,7 +205,8 @@ def main() -> None:
             f.write(f"| {desc} | `{path}` | {status_emoji} |\n")
 
     print(f"✅ Auditoria concluída! Relatório gerado em: {report_path}")
+    return 1 if broken_links else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

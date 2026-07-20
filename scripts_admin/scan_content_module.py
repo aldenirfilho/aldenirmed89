@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Scanner generico para hubs de conteudo estatico do Antigravity."""
+"""Scanner de conteúdo aprovado para hubs estáticos do Antigravity.
+
+Arquivos em ``inbox/`` são staging local ignorado pelo Git. Somente itens
+promovidos para ``public/`` entram no catálogo e no GitHub Pages.
+"""
 
 from __future__ import annotations
 
@@ -133,12 +137,12 @@ def read_json(path: Path, fallback):
 
 
 def scan_files(module: Path) -> list[dict]:
-    inbox = module / "inbox"
+    public_dir = module / "public"
     items = []
-    if not inbox.exists():
+    if not public_dir.exists():
         return items
 
-    for path in sorted(inbox.rglob("*")):
+    for path in sorted(public_dir.rglob("*")):
         if not path.is_file() or path.name.startswith(".") or path.name.lower() == "readme.md":
             continue
         ext = path.suffix.lower()
@@ -162,7 +166,7 @@ def scan_files(module: Path) -> list[dict]:
                 "sizeBytes": stat.st_size,
                 "updatedAt": datetime.fromtimestamp(stat.st_mtime).isoformat(timespec="seconds"),
                 "tags": [fmt, ext.lstrip(".")],
-                "description": "Arquivo adicionado ao inbox do modulo. Revise titulo, tags e contexto quando possivel.",
+                "description": "Arquivo aprovado para publicação neste módulo.",
             }
         )
     return items

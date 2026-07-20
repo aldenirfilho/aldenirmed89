@@ -30,7 +30,9 @@ Serve a **três públicos** ao mesmo tempo:
 
 ## 🧱 Arquitetura real (modelo de 2 camadas)
 
-O projeto é **estático puro** (HTML/CSS/JS), publicado no GitHub Pages. Não exige Node nem build obrigatório.
+O projeto é **estático puro** (HTML/CSS/JS), publicado no GitHub Pages. Não exige
+Node no navegador; o CI usa scripts Python para gerar catálogos, validar e montar
+um artefato público por allowlist.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -84,8 +86,8 @@ Material bruto (PDF/DOCX/aula/IA)
 | `08_Transcricoes/` | Transcrições de aulas, vídeos, podcasts, reuniões e discussões clínicas | ✅ |
 | `09_POCUS_Hub/` | POCUS/USG beira-leito: aulas, vídeos, artigos, imagens, modelos, dicas e links | ✅ |
 | `01_Modulos_Clinicos/` | Módulos clínicos em HTML (legados/originais) | ✅ |
-| `02_Banco_Questoes_TEMI/` | Banco de questões TEMI/R3 (motor) | ✅ |
-| `questoes/` | Wrapper público de questões (redireciona p/ banco TEMI) | ✅ |
+| `questoes/` | Banco de questões TEMI/R3 — rota canônica | ✅ |
+| `02_Banco_Questoes_TEMI/` | Alias legado com redirect para `questoes/` | ✅ |
 | `les-autoanticorpos/` | Módulo LES — autoanticorpos | ✅ |
 | `apps/` · `biblioteca/` · `updown/` | Wrappers de rota amigável/legado (redirects) | ✅ |
 | `imagens/` | Galeria visual / infográficos | ✅ |
@@ -98,7 +100,10 @@ Material bruto (PDF/DOCX/aula/IA)
 
 ### Alimentação contínua dos novos diretórios
 
-Cada novo hub tem uma pasta `inbox/` para arquivos e uma pasta `links/` para links externos ou páginas HTML interativas. Depois de inserir novos conteúdos, rode o scanner do próprio diretório para atualizar `data/catalogo.json`.
+Cada hub usa `inbox/` como **staging local privado e ignorado pelo Git**. Depois
+dos gates de LGPD, licença e revisão clínica, copie somente a versão aprovada para
+`public/`. A pasta `links/` recebe links externos revisados. Em seguida, rode o
+scanner do próprio diretório para atualizar `data/catalogo.json`.
 
 Formatos aceitos: PDF, EPUB/MOBI/AZW3, DOC/DOCX/RTF/Pages, XLS/XLSX/Numbers, CSV/TSV, MD/Markdown, PPT/PPTX/Keynote, TXT/SRT/VTT, HTML/HTM, APKG/Anki, imagens, vídeos, áudios e compactados.
 
@@ -108,12 +113,19 @@ for d in 04_Ebooks_Intensiva_Clinica 07_Questoes_Comentadas 08_Transcricoes 09_P
 done
 ```
 
+> O nome `scan_inbox.sh` foi preservado por compatibilidade, mas o scanner atual
+> lê somente `public/`. Consulte o
+> [`Guia de inserção segura`](08_Documentacao_Projeto/GUIA_INSERCAO_SEGURA_DOCUMENTOS.md)
+> antes de adicionar qualquer documento.
+
 ---
 
 ## 🛡️ Regras de segurança INVIOLÁVEIS
 
 1. **Nunca expor dados de pacientes.** Todo conteúdo é anonimizado.
-2. **Nunca publicar bastidores** — prompts internos, instruções do agente, pastas `_private/`. O workflow já remove esses arquivos do artefato público.
+2. **Nunca versionar/publicar bastidores** — `inbox/`, prompts internos,
+   instruções do agente e pastas `_private/`. O workflow e o portão bloqueiam
+   esses arquivos no artefato público.
 3. **Nunca apagar/mover** PDF, DOCX, MD, HTML, PNG, JSON ou ZIP sem autorização explícita do autor.
 4. **Nenhum HTML clínico vai ao ar sem revisão médica** do Dr. Aldenir.
 5. **Apoio cognitivo, não prescrição.** Toda dose/diluição exige checagem dupla no protocolo institucional local.

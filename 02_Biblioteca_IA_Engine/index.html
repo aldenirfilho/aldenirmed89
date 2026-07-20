@@ -378,7 +378,7 @@
       <button class="btn btn-primary" onclick="fecharPreview()" style="font-size:.75rem">✕ Fechar</button>
     </div>
   </div>
-  <iframe class="preview-iframe" id="previewFrame"></iframe>
+  <iframe class="preview-iframe" id="previewFrame" sandbox="allow-downloads allow-forms allow-popups" referrerpolicy="no-referrer"></iframe>
 </div>
 
 <script>
@@ -407,7 +407,29 @@ function getBaseUrl() {
 // Normalização de caminhos para evitar redundância de pasta pai (Fix 404)
 function normalizePath(p) {
   if (!p) return '';
-  return String(p).replace(/^\.\//, '').replace(/^05_Biblioteca_IA\//, '');
+  const raw = String(p).trim().replace(/^\.\//, '').replace(/^05_Biblioteca_IA\//, '');
+  if (/^https:\/\//i.test(raw)) return raw;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(raw) || raw.startsWith('/') || raw.includes('\\')) return '';
+  const parts = raw.split('/');
+  if (parts.some(part => !part || part === '.' || part === '..' || /[\u0000-\u001f]/.test(part))) return '';
+  return parts.join('/');
+}
+
+function escapeHTML(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function inlineToken(value) {
+  return encodeURIComponent(String(value ?? '')).replace(/'/g, '%27');
+}
+
+function decodeInlineToken(value) {
+  try { return decodeURIComponent(value); } catch (_) { return ''; }
 }
 
 
@@ -544,7 +566,7 @@ function renderRoadmap() {
     const id = r.id || '';
     return `
       <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:10px; border-radius:8px; font-size:.78rem">
-        <b style="color:var(--accent2)">${id ? '#' + id : ''}</b> ${texto}
+        <b style="color:var(--accent2)">${escapeHTML(id ? '#' + id : '')}</b> ${escapeHTML(texto)}
       </div>
     `;
   }).join('');
@@ -553,7 +575,7 @@ function renderRoadmap() {
 function popularSelects() {
   const select = document.getElementById('clTheme');
   if (!taxonomy.themes) return;
-  select.innerHTML = taxonomy.themes.map(t => `<option value="${t.id}">${t.emoji} ${t.label}</option>`).join('');
+  select.innerHTML = taxonomy.themes.map(t => `<option value="${escapeHTML(t.id)}">${escapeHTML(t.emoji)} ${escapeHTML(t.label)}</option>`).join('');
 }
 
 // Renderizar Filtros
@@ -572,13 +594,13 @@ function popularFiltros() {
     span.className = `filtro ${currentFilter===t.id?'ativo':''}`;
     span.dataset.filter = t.id;
     span.onclick = () => setFilter(t.id);
-    span.innerHTML = `${t.emoji} ${t.label}`;
+    span.textContent = `${t.emoji || '📂'} ${t.label || 'Tema'}`;
     container.appendChild(span);
   });
 
   // Populate Select in Modal
   const sel = document.getElementById('clTheme');
-  sel.innerHTML = taxonomy.themes.map(t => `<option value="${t.id}">${t.emoji || '📂'} ${t.label}</option>`).join('');
+  sel.innerHTML = taxonomy.themes.map(t => `<option value="${escapeHTML(t.id)}">${escapeHTML(t.emoji || '📂')} ${escapeHTML(t.label)}</option>`).join('');
 }
 
 function popularFormatos() {
@@ -590,10 +612,10 @@ function popularFormatos() {
   const origins = documentManifest.origins || [];
 
   formatoSelect.innerHTML = '<option value="todos">Todos os formatos</option>' +
-    partitions.map(p => `<option value="${p.id}">${p.emoji || '📦'} ${p.label} (${p.count})</option>`).join('');
+    partitions.map(p => `<option value="${escapeHTML(p.id)}">${escapeHTML(p.emoji || '📦')} ${escapeHTML(p.label)} (${Number(p.count) || 0})</option>`).join('');
 
   origemSelect.innerHTML = '<option value="todos">Todas as origens</option>' +
-    origins.map(o => `<option value="${o.id}">${o.emoji || '🔎'} ${o.label} (${o.count})</option>`).join('');
+    origins.map(o => `<option value="${escapeHTML(o.id)}">${escapeHTML(o.emoji || '🔎')} ${escapeHTML(o.label)} (${Number(o.count) || 0})</option>`).join('');
 }
 
 function renderParticoes() {
@@ -601,13 +623,13 @@ function renderParticoes() {
   if (!container) return;
   const partitions = documentManifest.partitions || [];
   container.innerHTML = partitions.map(p => `
-    <div class="partition-card ${currentFormatFilter === p.id ? 'ativo' : ''}" onclick="setFormatFilter('${p.id}')">
-      <div class="pc-icon">${p.emoji || '📦'}</div>
+    <div class="partition-card ${currentFormatFilter === p.id ? 'ativo' : ''}" onclick="setFormatFilter(decodeInlineToken('${inlineToken(p.id)}'))">
+      <div class="pc-icon">${escapeHTML(p.emoji || '📦')}</div>
       <div>
-        <strong>${p.shortLabel || p.label}</strong>
-        <small>${p.description || p.label}</small>
+        <strong>${escapeHTML(p.shortLabel || p.label)}</strong>
+        <small>${escapeHTML(p.description || p.label)}</small>
       </div>
-      <div class="pc-count">${p.count}</div>
+      <div class="pc-count">${Number(p.count) || 0}</div>
     </div>
   `).join('');
 }
@@ -722,26 +744,29 @@ function renderGrid() {
     const originLabel = i.origemLabel || i.originLabel || originId;
     const formatEmoji = i.formatEmoji || getIcon(i.tipo);
     const originEmoji = i.originEmoji || (originId === 'artigo-cientifico-original' ? '🔬' : '🤖');
-    const safeTitle = (i.title || 'Arquivo').replace(/'/g,"\\'");
+    const titleToken = inlineToken(i.title || 'Arquivo');
+    const pathToken = inlineToken(normalizePath(i.path));
+    const idToken = inlineToken(i.id);
     const downloadPath = safeEncodePath(i.path);
+    const cardClass = String(i.tipo || '').replace(/[^a-z0-9_-]/gi, '');
     return `
-      <div class="card ${i.tipo}" onclick="abrirPreview('${encodeURIComponent(i.path)}', '${safeTitle}')">
+      <div class="card ${cardClass}" onclick="abrirPreview('${pathToken}', '${titleToken}')">
         <span class="card-icon">${getIcon(i.tipo)}</span>
-        <div class="card-title">${i.title}</div>
-        <div class="card-meta">📅 ${i.data || '2026'} · ${theme.emoji || '📂'} ${i.theme}</div>
+        <div class="card-title">${escapeHTML(i.title)}</div>
+        <div class="card-meta">📅 ${escapeHTML(i.data || '2026')} · ${escapeHTML(theme.emoji || '📂')} ${escapeHTML(i.theme)}</div>
         <div class="meta-pills">
-          <span class="meta-pill format">${formatEmoji} ${formatLabel}</span>
-          <span class="meta-pill origin">${originEmoji} ${originLabel}</span>
+          <span class="meta-pill format">${escapeHTML(formatEmoji)} ${escapeHTML(formatLabel)}</span>
+          <span class="meta-pill origin">${escapeHTML(originEmoji)} ${escapeHTML(originLabel)}</span>
         </div>
-        <div class="card-desc">${i.resumo || 'Clique para visualizar este material médico.'}</div>
+        <div class="card-desc">${escapeHTML(i.resumo || 'Clique para visualizar este material médico.')}</div>
         <div class="card-tags">
-          ${(i.tags || []).map(t => `<span class="tag">#${t}</span>`).join('')}
+          ${(i.tags || []).map(t => `<span class="tag">#${escapeHTML(t)}</span>`).join('')}
         </div>
         <div class="card-actions">
-          <button class="btn btn-primary" onclick="event.stopPropagation(); abrirPreview('${encodeURIComponent(i.path)}', '${safeTitle}')">👁️ Ver</button>
-          <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirClassify('${i.id}')">📂</button>
+          <button class="btn btn-primary" onclick="event.stopPropagation(); abrirPreview('${pathToken}', '${titleToken}')">👁️ Ver</button>
+          <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirClassify(decodeInlineToken('${idToken}'))">📂</button>
           <a href="${downloadPath}" download class="btn btn-secondary" onclick="event.stopPropagation()">⬇️ Baixar</a>
-          <button class="btn btn-delete" title="Ocultar do catálogo" onclick="marcarParaExcluir('${i.id}', event)">🗑️ Ocultar</button>
+          <button class="btn btn-delete" title="Ocultar do catálogo" onclick="marcarParaExcluir(decodeInlineToken('${idToken}'), event)">🗑️ Ocultar</button>
         </div>
       </div>
     `;
@@ -785,25 +810,27 @@ function renderTriagem() {
   const items = catalog.items.filter(i => i.theme === 'inbox-revisar');
   
   grid.innerHTML = items.map(i => {
-    const safeTitle = (i.title || 'Arquivo').replace(/'/g,"\\'");
+    const titleToken = inlineToken(i.title || 'Arquivo');
+    const pathToken = inlineToken(normalizePath(i.path));
+    const idToken = inlineToken(i.id);
     const formatLabel = i.formatoLabel || i.formatLabel || i.formato || i.tipo || 'Formato';
     const originLabel = i.origemLabel || i.originLabel || i.origem || i.origin || 'Origem';
     const downloadPath = safeEncodePath(i.path);
     return `
-    <div class="card ${i.tipo}" style="border-style:dashed; border-width:2px">
+    <div class="card ${String(i.tipo || '').replace(/[^a-z0-9_-]/gi, '')}" style="border-style:dashed; border-width:2px">
       <span class="inbox-badge">📥 INBOX</span>
       <span class="card-icon">${getIcon(i.tipo)}</span>
-      <div class="card-title">${i.title}</div>
-      <div class="card-meta" style="word-break:break-all">${i.filename || i.path}</div>
+      <div class="card-title">${escapeHTML(i.title)}</div>
+      <div class="card-meta" style="word-break:break-all">${escapeHTML(i.filename || i.path)}</div>
       <div class="meta-pills">
-        <span class="meta-pill format">${i.formatEmoji || getIcon(i.tipo)} ${formatLabel}</span>
-        <span class="meta-pill origin">${i.originEmoji || '🔎'} ${originLabel}</span>
+        <span class="meta-pill format">${escapeHTML(i.formatEmoji || getIcon(i.tipo))} ${escapeHTML(formatLabel)}</span>
+        <span class="meta-pill origin">${escapeHTML(i.originEmoji || '🔎')} ${escapeHTML(originLabel)}</span>
       </div>
       <div class="card-actions" style="margin-top:auto; display:flex; gap:5px">
-        <button class="btn btn-triagem" style="flex:1" onclick="event.stopPropagation(); abrirClassify('${i.id}')">📂 Classificar</button>
-        <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirPreview('${encodeURIComponent(i.path)}', '${safeTitle}')">👁️</button>
+        <button class="btn btn-triagem" style="flex:1" onclick="event.stopPropagation(); abrirClassify(decodeInlineToken('${idToken}'))">📂 Classificar</button>
+        <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirPreview('${pathToken}', '${titleToken}')">👁️</button>
         <a href="${downloadPath}" download class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation()">⬇️</a>
-        <button class="btn btn-delete" style="padding:0.5rem" title="Ocultar do catálogo" onclick="marcarParaExcluir('${i.id}', event)">🗑️</button>
+        <button class="btn btn-delete" style="padding:0.5rem" title="Ocultar do catálogo" onclick="marcarParaExcluir(decodeInlineToken('${idToken}'), event)">🗑️</button>
       </div>
     </div>
   `}).join('');
@@ -961,7 +988,18 @@ function sincronizarConexoesBrain(docId, tags) {
 
 function renderMarkdownToHtml(raw) {
   // Escapar HTML perigoso
-  function esc(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function esc(t) { return escapeHTML(t); }
+  function safeMarkdownUrl(value) {
+    const url = String(value || '').trim();
+    if (/^https?:\/\//i.test(url)) {
+      try {
+        const parsed = new URL(url);
+        return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? escapeHTML(parsed.href) : '#';
+      } catch (_) { return '#'; }
+    }
+    if (/^[a-z][a-z0-9+.-]*:/i.test(url) || url.startsWith('/') || url.includes('\\')) return '#';
+    return normalizePath(url) ? safeEncodePath(url) : '#';
+  }
   var h = esc(raw);
   // Blocos de código
   h = h.replace(/```([\s\S]*?)```/g, function(m,c){ return '<pre><code>'+c.trim()+'</code></pre>'; });
@@ -977,9 +1015,13 @@ function renderMarkdownToHtml(raw) {
   h = h.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
   h = h.replace(/\*(.+?)\*/g, '<i>$1</i>');
   // Imagens
-  h = h.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+  h = h.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(_, alt, url) {
+    return '<img src="' + safeMarkdownUrl(url) + '" alt="' + alt + '">';
+  });
   // Links
-  h = h.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+  h = h.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(_, label, url) {
+    return '<a href="' + safeMarkdownUrl(url) + '" target="_blank" rel="noopener noreferrer">' + label + '</a>';
+  });
   // Blockquotes
   h = h.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
   // HR
@@ -1021,7 +1063,16 @@ function renderMarkdownToHtml(raw) {
 }
 
 function safeEncodePath(path) {
-  return path
+  const normalized = normalizePath(path);
+  if (!normalized) return '#';
+  if (/^https:\/\//i.test(normalized)) {
+    try {
+      const parsed = new URL(normalized);
+      if (parsed.protocol !== 'https:' || parsed.username || parsed.password) return '#';
+      return parsed.href;
+    } catch (_) { return '#'; }
+  }
+  return normalized
     .split('/')
     .map(part => encodeURIComponent(part))
     .join('/');
@@ -1033,12 +1084,18 @@ function abrirPreview(encodedPath, titulo) {
     console.warn("abrirPreview: path vazio recebido.");
     return;
   }
-  const path = decodeURIComponent(encodedPath);
+  const path = normalizePath(decodeInlineToken(encodedPath));
+  if (!path) {
+    console.warn("abrirPreview: caminho inseguro bloqueado.");
+    return;
+  }
   const baseUrl = getBaseUrl();
-  const isRemoteUrl = /^https?:\/\//i.test(path);
-  const encodedRelative = isRemoteUrl ? path : safeEncodePath(path);
+  const isRemoteUrl = /^https:\/\//i.test(path);
+  const encodedRelative = safeEncodePath(path);
+  if (encodedRelative === '#') return;
   const fullUrl = isRemoteUrl ? path : new URL(encodedRelative, baseUrl).href;
-  const ext = path.split('.').pop().toLowerCase();
+  const pathForExtension = isRemoteUrl ? new URL(path).pathname : path;
+  const ext = pathForExtension.split('.').pop().toLowerCase();
   const frame = document.getElementById('previewFrame');
   frame.removeAttribute('srcdoc');
   
@@ -1051,7 +1108,7 @@ function abrirPreview(encodedPath, titulo) {
     return;
   }
   
-  document.getElementById('previewTitle').textContent = titulo || 'Visualizando arquivo';
+  document.getElementById('previewTitle').textContent = decodeInlineToken(titulo) || 'Visualizando arquivo';
   document.getElementById('previewDirect').href = encodedRelative;
   document.getElementById('previewDownload').href = encodedRelative;
   
@@ -1075,7 +1132,7 @@ function abrirPreview(encodedPath, titulo) {
       const blob = new Blob([rendered], {type: 'text/html'});
       frame.src = URL.createObjectURL(blob);
     }).catch(e => {
-      frame.srcdoc = '<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center"><h2 style="color:#f59e0b">Erro ao carregar Markdown</h2><p>' + e + '</p><a href="' + encodedRelative + '" download style="color:#00d4ff">Baixar arquivo</a></body></html>';
+      frame.srcdoc = '<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center"><h2 style="color:#f59e0b">Erro ao carregar Markdown</h2><p>Não foi possível carregar o documento.</p><a href="' + encodedRelative + '" download style="color:#00d4ff">Baixar arquivo</a></body></html>';
     });
   } else if (['txt', 'html', 'htm'].includes(ext)) {
     frame.src = encodedRelative;

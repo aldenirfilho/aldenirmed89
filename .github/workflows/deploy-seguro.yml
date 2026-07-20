@@ -28,6 +28,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -40,11 +43,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -52,6 +51,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - name: Compilar desafios, mnemônicos e indexar hubs de conteúdo
@@ -59,13 +59,14 @@ jobs:
           set -e
           python3 scripts_admin/build_desafios.py
           python3 scripts_admin/build_mnemonicos.py
+          python3 02_Biblioteca_IA_Engine/scan_biblioteca.py
+          python3 scripts_admin/scan_card_feed.py
           python3 scripts_admin/build_connections.py
           for hub in 04_Ebooks_Intensiva_Clinica 07_Questoes_Comentadas 08_Transcricoes 09_POCUS_Hub; do
             if [ -d "$hub" ]; then
               python3 scripts_admin/scan_content_module.py "$hub"
             fi
           done
-          python3 scripts_admin/validar_paths.py --fix
 
       - name: Validar manifests e paths antes do deploy
         run: |
@@ -73,105 +74,34 @@ jobs:
           python3 scripts_admin/check_static_manifests.py
           python3 scripts_admin/validar_paths.py --check
           python3 scripts/validate_routes.py
+          python3 scripts_admin/publication_guard.py check-repository .
 
       - name: Montar pasta publica limpa (allowlist)
         run: |
           set -e
-          rm -rf site
-          mkdir -p site
-
-          # ---- 1. Raiz essencial -------------------------------------------
-          cp -r index.html              site/ 2>/dev/null || true
-          cp -r logo_concept*.png       site/ 2>/dev/null || true
-          cp -r favicon.ico             site/ 2>/dev/null || true
-          cp -r manifest.json           site/ 2>/dev/null || true
-          cp -r sitemap.xml             site/ 2>/dev/null || true
-          cp -r robots.txt              site/ 2>/dev/null || true
-
-          # ---- 2. Assets globais (a home depende destes) -------------------
-          cp -r 06_Infra_Site_E_Assets  site/ 2>/dev/null || true   # <- FIX home CSS/JS/data
-          cp -r assets                  site/ 2>/dev/null || true
-          cp -r css                     site/ 2>/dev/null || true
-          cp -r js                      site/ 2>/dev/null || true
-          cp -r imagens                 site/ 2>/dev/null || true
-          cp -r data                    site/ 2>/dev/null || true   # <- FIX Mapa Vivo / manifests
-          cp -r admin                   site/ 2>/dev/null || true   # <- FIX editor público de desafios
-          cp -r desafios                site/ 2>/dev/null || true   # <- leitor full-page de desafios
-
-          # ---- 3. Módulos públicos (Atualizado p/ a nova arquitetura) ------
-          cp -r 01_UpDown_Hub           site/ 2>/dev/null || true
-          cp -r 02_Biblioteca_IA_Engine site/ 2>/dev/null || true
-          cp -r 03_Calculadoras_UTI     site/ 2>/dev/null || true
-          cp -r 03_Calculadoras_E_Apps  site/ 2>/dev/null || true   # alias legado
-          cp -r 04_Ebooks_Intensiva_Clinica site/ 2>/dev/null || true
-          cp -r 05_Midia_E_Feed         site/ 2>/dev/null || true
-          cp -r 05_Biblioteca_IA         site/ 2>/dev/null || true   # alias legado -> 02_Biblioteca_IA_Engine
-          cp -r 06_Card_Feed_Medico      site/ 2>/dev/null || true   # alias legado -> 05_Midia_E_Feed
-          cp -r 07_Estudos_Markdown      site/ 2>/dev/null || true   # alias legado -> 01_UpDown_Hub
-          cp -r 07_Questoes_Comentadas  site/ 2>/dev/null || true
-          cp -r 08_Transcricoes         site/ 2>/dev/null || true
-          cp -r 09_POCUS_Hub            site/ 2>/dev/null || true
-          cp -r 10_DESAFIOS             site/ 2>/dev/null || true
-          cp -r 11_MNEMONICOS           site/ 2>/dev/null || true
-          cp -r 13_RenalDose_Antimicrobianos site/ 2>/dev/null || true   # <- Módulo 13: ajuste de antimicrobianos para função renal
-          cp -r 14_SAPS3_Calculator site/ 2>/dev/null || true              # <- Módulo 14: SAPS 3 calculator (mortalidade UTI)
-          
-          # Módulos legados (preservados caso ainda existam na raiz soltos)
-          cp -r 01_Modulos_Clinicos     site/ 2>/dev/null || true
-          cp -r 02_Banco_Questoes_TEMI  site/ 2>/dev/null || true
-          cp -r questoes                site/ 2>/dev/null || true
-          cp -r les-autoanticorpos      site/ 2>/dev/null || true   # <- FIX módulo LES
-          cp -r apps                    site/ 2>/dev/null || true
-          cp -r respirasense-icu        site/ 2>/dev/null || true   # alias legado -> RespiraSense atual
-
-          # ---- 4. Rotas amigáveis / wrappers legados -----------------------
-          # /biblioteca/ e /updown/ são wrappers de redirect (NÃO copiar a
-          # biblioteca inteira de novo). Se o wrapper existir, ele é levíssimo.
-          cp -r biblioteca              site/ 2>/dev/null || true
-          cp -r updown                  site/ 2>/dev/null || true
-          cp -r calculadoras            site/ 2>/dev/null || true   # <- FIX calculadoras avulsas (sódio, bicarbonato, albumina)
-
-          # ---- 5. Higiene Jekyll / permissões ------------------------------
-          touch site/.nojekyll
-          chmod -R 755 site/
-
-          # ---- 6. Remover symlinks (artefato Pages não aceita) -------------
-          find site -type l -print -delete || true
-          find site -name ".DS_Store" -print -delete || true
-
-          # ---- 7. PRIVACIDADE: remover bastidores do artefato público ------
-          # Regra inviolável: nunca expor prompts/instruções internas.
-          find site -type d -name "_private"            -prune -print -exec rm -rf {} + 2>/dev/null || true
-          find site -type d -iname "*Antigravity_Repo_Pack*" -prune -print -exec rm -rf {} + 2>/dev/null || true
-          find site -type f -iname "*antigravity*instruc*"     -print -delete 2>/dev/null || true
-          find site -type f -iname "INSTRUCOES-ANTIGRAVITY*"   -print -delete 2>/dev/null || true
-          find site -type f -iname "*PROMPT_ANTIGRAVITY_RULES*" -print -delete 2>/dev/null || true
-          find site -type f -iname "*PROMPT*RULES*.md"          -print -delete 2>/dev/null || true
-          find site -type f -iname "*PROMPT_ANTIGRAVITY*"       -print -delete 2>/dev/null || true
-          find site -type f -iname "*PROMPT*ANTIGRAVITY*"       -print -delete 2>/dev/null || true
-          find site -type f -iname "PATCH_*.md"                 -print -delete 2>/dev/null || true
-          find site -type f -iname "*.bak"                      -print -delete 2>/dev/null || true
-          find site -type f -iname "*.tmp"                      -print -delete 2>/dev/null || true
-          find site -type f -iname "*_PRIVAD*"                  -print -delete 2>/dev/null || true
-          # Markdown de governança que não precisa ser público:
-          rm -f site/ANTIGRAVITY_INSTRUCTIONS.md site/ANTIGRAVITY_AUDIT_MAP.md \
-                site/ANTIGRAVITY_TASK_QUEUE.md   site/RELATORIO_ETAPA1_HOMEPAGE_LINKS.md 2>/dev/null || true
-
-          echo "==== Conteúdo final publicado (top-level) ===="
-          ls -1 site/
-          echo "==== Checagens essenciais do artefato ===="
+          python3 scripts_admin/build_public_site.py . site
+          python3 scripts_admin/publication_guard.py sanitize-site site
+          python3 scripts_admin/publication_guard.py check-site site
           test -f site/admin/desafios.html
           test -f site/data/desafios.json
           test -f site/desafios/index.html
           test -f site/02_Biblioteca_IA_Engine/index.html
-          echo "==== Tamanho do artefato ===="
-          du -sh site/
+          test -s site/questoes/data/hub_qbanks.js
 
       - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: './site'
 
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

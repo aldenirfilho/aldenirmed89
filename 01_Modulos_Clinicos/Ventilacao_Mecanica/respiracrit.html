@@ -266,14 +266,14 @@ canvas{display:block;width:100%}
       <!-- CONDUCT -->
       <div id="gas-conduct"></div>
 
-      <!-- AI -->
+      <!-- AI: integration intentionally disabled until a protected backend exists -->
       <div class="ai-box">
-        <div class="ai-box-head">🤖 Análise IA — Raciocínio Clínico</div>
+        <div class="ai-box-head">🔒 Assistente de IA — integração protegida</div>
         <div class="ai-box-body">
-          <div class="ai-out ai-typing" id="gas-ai-out">Insira os dados gasométricos para obter análise detalhada...</div>
+          <div class="ai-out" id="gas-ai-out">Recurso temporariamente desativado: dados clínicos não serão enviados diretamente do navegador. Use a interpretação determinística acima e confirme a conduta no contexto clínico.</div>
           <div class="btn-row" style="margin-top:10px">
-            <button class="btn btn-acc" onclick="runGasAI()">Analisar com IA ↗</button>
-            <button class="btn btn-purple" onclick="runGasAIConduct()">Conduta detalhada ↗</button>
+            <button class="btn btn-acc" type="button" disabled title="Requer backend autenticado e política de privacidade">Análise IA indisponível</button>
+            <button class="btn btn-purple" type="button" disabled title="Requer backend autenticado e política de privacidade">Conduta IA indisponível</button>
           </div>
         </div>
       </div>
@@ -700,7 +700,7 @@ function analyzeGas() {
         <div style="font-size:11px;color:var(--muted)">Gradiente A-a: ${aa_grad} mmHg (normal 0–20) · CaO₂: ${cao2} mL/dL</div>
         ${be<-4?`<div class="alert alert-warn" style="margin-top:8px">⚠️ Base Excess ${be}: déficit significativo de bases — investigar causa metabólica</div>`:''}
         ${lac>2?`<div class="alert alert-danger" style="margin-top:8px">🔴 Lactato elevado (${lac}) — hipoperfusão tecidual? Choque? Sepse?</div>`:''}
-        ${ph<7.20?`<div class="alert alert-danger" style="margin-top:8px">🚨 pH CRÍTICO &lt;7.20 — ação imediata necessária!</div>`:''}
+        ${pH<7.20?`<div class="alert alert-danger" style="margin-top:8px">🚨 pH CRÍTICO &lt;7.20 — ação imediata necessária!</div>`:''}
       </div>
     </div>`;
 
@@ -709,14 +709,14 @@ function analyzeGas() {
   let actions = [];
   let level = 'maintain';
 
-  if(pf<100 || (ph<7.25 && pco2>55) || po2<55) {
+  if(pf<100 || (pH<7.25 && pco2>55) || po2<55) {
     level='escalate';
     if(pf<100) actions.push('P/F <100: considerar PRONA se em VM (≥16h/dia, PROSEVA)');
-    if(ph<7.25 && pco2>55) actions.push('Acidose respiratória grave: aumentar FR ou VC (cuidado com Pplat)');
+    if(pH<7.25 && pco2>55) actions.push('Acidose respiratória grave: aumentar FR ou VC (cuidado com Pplat)');
     if(po2<55) actions.push('Hipoxemia grave: aumentar FiO₂ e/ou PEEP (tabela ARDSNet)');
     if(pf<150) actions.push('Considerar bloqueio neuromuscular (cisatracúrio 48h)');
     if(pf<80) actions.push('Avaliar critérios para VV-ECMO (Murray score, pH)');
-  } else if(pf>=300 && ph>=7.35 && ph<=7.45 && lac<2) {
+  } else if(pf>=300 && pH>=7.35 && pH<=7.45 && lac<2) {
     level='deescalate';
     actions.push('Gasometria dentro dos alvos — considerar desmame/redução de suporte');
     actions.push('Avaliar ventilação espontânea: protocolo SAT + SBT');
@@ -1122,14 +1122,14 @@ function diagAsync() {
     name:'Ciclagem Tardia (Late cycling)',
     severity:'warn',
     mech:'Ti ventilador > Ti neural → expira contra pressão positiva',
-    action:'Reduzir Ti ou aumentar % ciclagem de fluxo (PSV: 50→25%), sedação leve',
+    action:'Reduzir Ti ou aumentar % ciclagem de fluxo (PSV: 25→50%), sedação leve',
     consequence:'Auto-PEEP, duplo disparo, assincronia Ti-Te'
   });
   if(precoce) results.push({
     name:'Ciclagem Precoce (Early cycling)',
     severity:'info',
-    mech:'Ti ventilador < Ti neural → paciente ativa expiração com Ti da máquina ainda ativo',
-    action:'Aumentar Ti, reduzir % ciclagem de fluxo (PSV: 25→50%), verificar vazamento',
+    mech:'Ti ventilador < Ti neural → esforço inspiratório persiste após a máquina ciclar para expiração',
+    action:'Aumentar Ti, reduzir % ciclagem de fluxo (PSV: 50→25%), verificar vazamento',
     consequence:'VT reduzido, drive respiratório aumentado, disforia'
   });
   if(reverso) results.push({
@@ -1196,8 +1196,8 @@ function analyzeCurvePhoto(input) {
   reader.onload = function(e) {
     document.getElementById('curve-photo-result').innerHTML = `
       <div style="margin-bottom:8px"><img src="${e.target.result}" style="max-width:100%;border-radius:var(--r);border:1px solid var(--border)"/></div>
-      <div class="ai-box"><div class="ai-box-head">🤖 Analisando curva com IA</div>
-      <div class="ai-box-body"><div class="ai-out" id="curve-ai-out">Analisando...</div></div></div>`;
+      <div class="ai-box"><div class="ai-box-head">🔒 Análise de curva por IA</div>
+      <div class="ai-box-body"><div class="ai-out" id="curve-ai-out">A imagem permanece apenas neste navegador. A análise externa está desativada até existir um backend autenticado e adequado à privacidade clínica.</div></div></div>`;
     analyzeCurveWithAI(e.target.result);
   };
   reader.readAsDataURL(input.files[0]);
@@ -1205,23 +1205,8 @@ function analyzeCurvePhoto(input) {
 
 function analyzeCurveWithAI(imgData) {
   const out = document.getElementById('curve-ai-out');
-  out.innerHTML='<span class="ai-typing">Analisando curva ventilatória...</span><span class="cursor"></span>';
-  const base64 = imgData.split(',')[1];
-  const mtype = imgData.split(';')[0].split(':')[1];
-  fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:1000,
-      messages:[{role:'user',content:[
-        {type:'image',source:{type:'base64',media_type:mtype,data:base64}},
-        {type:'text',text:'Você é um especialista em ventilação mecânica e medicina intensiva. Analise esta imagem de curva ventilatória. Identifique: 1) Qual tipo de curva (pressão, fluxo, volume, P-V loop); 2) Modo ventilatório aparente; 3) Presença de assincronias (duplo disparo, falha de gatilho, ciclagem tardia/precoce, auto-PEEP, fluxo reverso); 4) Anomalias de forma; 5) Condutas recomendadas. Seja direto e clínico.'}
-      ]}]
-    })
-  }).then(r=>r.json()).then(d=>{
-    out.innerHTML=(d.content&&d.content[0]&&d.content[0].text)?d.content[0].text.replace(/\n/g,'<br>'):'Sem resposta da IA.';
-  }).catch(()=>{ out.innerHTML='<span style="color:var(--danger)">Erro na análise. Verifique conexão.</span>'; });
+  void imgData;
+  out.textContent = 'Análise externa desativada por segurança. Nenhuma imagem clínica foi transmitida.';
 }
 
 // ============ SARA ============
@@ -1470,12 +1455,8 @@ function runGasAIConduct() {
 }
 
 function callAI(prompt, el) {
-  fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
-  }).then(r=>r.json()).then(d=>{
-    el.innerHTML=(d.content&&d.content[0]&&d.content[0].text)?d.content[0].text.replace(/\n/g,'<br>'):'Sem resposta.';
-  }).catch(()=>{ el.innerHTML='<span style="color:var(--danger)">Erro de conexão com IA.</span>'; });
+  void prompt;
+  el.textContent = 'Integração externa desativada por segurança. Nenhum dado clínico foi transmitido.';
 }
 
 // ============ INIT ============

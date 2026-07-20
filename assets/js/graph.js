@@ -495,7 +495,7 @@ function renderFallback(container, msg) {
     { id: "portal", label: "Central de Comando", type: "hub", url: "index.html" },
     { id: "updown", label: "UpDown Hub", type: "hub", url: "01_UpDown_Hub/index.html" },
     { id: "biblioteca", label: "Biblioteca IA", type: "hub", url: "02_Biblioteca_IA_Engine/index.html" },
-    { id: "questoes", label: "Banco TEMI", type: "hub", url: "02_Banco_Questoes_TEMI/index.html" },
+    { id: "questoes", label: "Banco TEMI", type: "hub", url: "questoes/index.html" },
     { id: "calculadoras", label: "Calculadoras UTI", type: "hub", url: "03_Calculadoras_E_Apps/index.html" },
     { id: "feed", label: "Card Feed", type: "hub", url: "05_Midia_E_Feed/index.html" }
   ];

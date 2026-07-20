@@ -414,7 +414,7 @@
       </a>
       <nav class="nav-actions">
         <a class="btn" href="../index.html">🏠 Enciclopédia</a>
-        <a class="btn" href="../02_Banco_Questoes_TEMI/index.html">🏆 TEMI</a>
+        <a class="btn" href="../questoes/index.html">🏆 TEMI</a>
         <a class="btn" href="../03_Calculadoras_E_Apps/index.html">🧮 Calculadoras</a>
         <a class="btn" href="../02_Biblioteca_IA_Engine/index.html">📚 Biblioteca IA</a>
       </nav>
@@ -538,7 +538,7 @@
       <button class="btn small" onclick="document.getElementById('viewerDialog').close()">✕</button>
     </div>
     <div class="modal-body">
-      <img id="viewerImg" class="viewer-img" />
+      <img id="viewerImg" class="viewer-img" alt="Imagem ampliada do card selecionado" hidden />
     </div>
   </dialog>
 
@@ -677,8 +677,8 @@
       themes = themeData.themes || [];
       const cardData = await fetchJSON("data/cards.json", { cards: [] });
       repoCards = (cardData.cards || []).map(c => ({ ...c, origin: "repo" }));
-      // Auto-scan inbox
-      const inboxData = await fetchJSON("data/inbox.json", { files: [] });
+      // Auto-scan apenas do diretório público previamente aprovado
+      const inboxData = await fetchJSON("data/public.json", { files: [] });
       const inboxFiles = inboxData.files || [];
       const existingIds = new Set(repoCards.map(c => c.id));
       for (const file of inboxFiles) {
@@ -693,7 +693,7 @@
           explanation: "",
           source: "Inbox — aguardando classificação",
           status: "novo",
-          imageUrl: "assets/cards/inbox/" + file,
+          imageUrl: "assets/cards/public/" + file,
           createdAt: nowISO(),
           origin: "repo"
         });
@@ -996,8 +996,14 @@
     function openViewer(id) {
       const c = getCard(id);
       if (!c) return;
+      const imageSource = c.imageData || c.imageUrl || "";
+      if (!imageSource) {
+        toast("Este card não possui imagem para ampliar.");
+        return;
+      }
       $("viewerTitle").textContent = c.title || "Imagem";
-      $("viewerImg").src = c.imageData || c.imageUrl || "";
+      $("viewerImg").src = imageSource;
+      $("viewerImg").hidden = false;
       $("viewerDialog").showModal();
     }
 

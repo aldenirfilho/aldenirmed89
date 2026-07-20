@@ -168,12 +168,12 @@
             <h3>💾 Salvar snapshot anônimo</h3>
             <p>Salva apenas no navegador atual usando <code>localStorage</code>. Não grave nome, CPF, CNS, prontuário, telefone, leito ou foto identificável.</p>
             <div class="form-grid four">
-              <label class="field"><span>Código anônimo</span><input id="snapCode" value="CASO-UTI-001"></label>
+              <label class="field"><span>Código anônimo</span><input id="snapCode" value="CASO-UTI-001" maxlength="40" autocomplete="off"></label>
               <label class="field"><span>Cenário</span><select id="snapSetting"><option>UTI</option><option>Emergência</option><option>Enfermaria</option><option>Sala vermelha</option><option>Simulação/Treinamento</option></select></label>
-              <label class="field"><span>Diagnóstico/hipótese</span><input id="snapDiagnosis" value="Insuficiência respiratória / SARA"></label>
+              <label class="field"><span>Diagnóstico/hipótese</span><input id="snapDiagnosis" value="Insuficiência respiratória / SARA" maxlength="160" autocomplete="off"></label>
               <label class="field"><span>Feedback</span><select id="snapFeedback"><option>não avaliado</option><option>concordo</option><option>parcialmente</option><option>discordo</option><option>alerta útil</option><option>falso positivo</option><option>falso negativo</option></select></label>
-              <label class="field full"><span>Conduta final da equipe</span><textarea id="snapConduct" placeholder="Ex.: aumentar PEEP, pronar, manter CBAF, intubar, iniciar TRE/SBT..."></textarea></label>
-              <label class="field full"><span>Tags</span><input id="snapTags" placeholder="SARA, CBAF, VNI, prona, TEMI"></label>
+              <label class="field full"><span>Conduta final da equipe</span><textarea id="snapConduct" maxlength="600" autocomplete="off" placeholder="Ex.: aumentar PEEP, pronar, manter CBAF, intubar, iniciar TRE/SBT..."></textarea></label>
+              <label class="field full"><span>Tags</span><input id="snapTags" maxlength="160" autocomplete="off" placeholder="SARA, CBAF, VNI, prona, TEMI"></label>
             </div>
             <button id="btnSaveSnapshot" class="primary" type="button">Salvar snapshot</button>
           </div>

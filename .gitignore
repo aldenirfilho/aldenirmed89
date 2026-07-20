@@ -7,6 +7,8 @@ Thumbs.db
 *.bak
 *.tmp
 *~
+**/__pycache__/
+*.py[cod]
 
 # ── Bastidores / privado (NUNCA versionar nem publicar) ────────
 04_Historico_Chats/
@@ -15,6 +17,12 @@ Thumbs.db
 **/_private/
 *_PRIVADO*
 *.local
+
+# Todo staging fica apenas no computador. Conteúdo só entra no site após
+# revisão/anonimização/licença e promoção explícita para `public/` ou `acervo/`.
+00_INBOX_ATUALIZACAO/
+**/inbox/
+**/juridico-financeiro/
 
 # ── Artefatos de build (regenerados no CI a cada push) ─────────
 # A pasta `site/` é montada pelo workflow deploy-seguro.yml no runner.
@@ -27,7 +35,8 @@ site/
 *.pdf
 .site_test/
 
-# ── Permitir PDFs legítimos dos hubs de conteúdo ───────────
+# ── Permitir PDFs legítimos apenas fora dos diretórios ignorados ───────────
+!02_Biblioteca_IA_Engine/acervo/**/*.pdf
 !09_POCUS_Hub/**/*.pdf
 !04_Ebooks_Intensiva_Clinica/**/*.pdf
 !08_Transcricoes/**/*.pdf
@@ -36,4 +45,3 @@ site/
 # ── Exceção: ebooks > 100 MB não cabem no GitHub (limite por arquivo) ──
 # Ficam só no computador/inbox; hospede externamente se precisar publicar.
 04_Ebooks_Intensiva_Clinica/inbox/Cardiointensivismo AMIB 1° Ed.pdf
-

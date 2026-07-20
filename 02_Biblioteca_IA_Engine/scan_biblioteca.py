@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Gera manifestos da Biblioteca IA por formato, origem e particao virtual."""
+"""Gera manifestos públicos da Biblioteca IA por formato e origem.
+
+O diretório ``inbox/`` é staging local e nunca entra nos manifestos públicos.
+Documentos só passam a ser catalogados apó revisão e movimentação para
+``acervo/<tema>/``. A categoria jurídico-financeira permanece sempre privada.
+"""
 
 from __future__ import annotations
 
@@ -11,7 +16,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "data"
-SCAN_DIRS = [ROOT / "inbox", ROOT / "acervo"]
+SCAN_DIRS = [ROOT / "acervo"]
+PRIVATE_THEMES = {"juridico-financeiro"}
 
 SUPPORTED = {
     ".pdf",
@@ -250,6 +256,8 @@ def collect_files() -> list[dict]:
         for path in sorted(directory.rglob("*")):
             if not path.is_file():
                 continue
+            if any(part.lower() in PRIVATE_THEMES for part in path.relative_to(ROOT).parts):
+                continue
             if path.name == ".DS_Store" or path.name.lower() == "readme.md":
                 continue
             ext = path.suffix.lower()
@@ -330,11 +338,12 @@ def main() -> None:
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
     )
 
-    inbox_files = [item for item in files if item["path"].startswith("inbox/")]
+    # Compatibilidade segura: o staging não é serializado em arquivo público.
+    inbox_files: list[dict] = []
     (DATA_DIR / "inbox.json").write_text(
         json.dumps(
             {
-                "description": "Arquivos no inbox aguardando classificação",
+                "description": "Staging local não publicado. Revise e mova para acervo/<tema>/.",
                 "updatedAt": date.today().isoformat(),
                 "files": [
                     {

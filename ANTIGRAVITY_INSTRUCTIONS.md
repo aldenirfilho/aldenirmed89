@@ -196,14 +196,18 @@ git commit -m "fix: remove symlinks quebrados da raiz" && git push
 
 ## 3. 🔄 SOP — Alimentação contínua (adicionar um novo tema)
 
+Para documentos em qualquer hub, o procedimento vigente e detalhado está em
+`08_Documentacao_Projeto/GUIA_INSERCAO_SEGURA_DOCUMENTOS.md`.
+
 Fluxo padrão para cada novo UpDown (mantém o site organizado e versionável):
 
-1. **Depositar** o material bruto em `05_Biblioteca_IA/inbox/` (ou pasta de acervo correspondente).
+1. **Depositar** o material bruto em `00_INBOX_ATUALIZACAO/triagem/`, staging
+   local privado e ignorado pelo Git. Nunca versionar um diretório `inbox/`.
 2. **Gerar o `.md` canônico** com o Prompt-Mestre UpDown → salvar em
-   `07_Estudos_Markdown/content/<area>/<slug>.md` com frontmatter YAML completo.
+   `01_UpDown_Hub/content/<area>/<slug>.md` com frontmatter YAML completo.
    - `area` ∈ {`intensiva`, `interna`, `emergencia`, `reumatologia`, …}
    - `slug` minúsculo, sem acento: ex. `choque-septico-refratario-na-uti`
-3. **Registrar** o documento em `07_Estudos_Markdown/registry.json` (id, title, icon, path, status).
+3. **Registrar** o documento em `01_UpDown_Hub/registry.json` (id, title, icon, path, status).
 4. **Revisão médica** do Dr. Aldenir → mudar `status` para `ativo` só após aprovação. 🛡️
 5. **(Opcional) Publicar HTML/app** correspondente e linká-lo.
 6. **Conectar no Mapa Vivo**: adicionar nós/arestas em `data/connections.json` e tópicos em `data/topics.json`.
