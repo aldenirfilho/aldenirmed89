@@ -2,7 +2,7 @@
 
 **Projeto:** Antigravity Consultas
 
-**Versão:** 1.0 — 20/07/2026
+**Versão:** 1.1 — 20/07/2026
 **Objetivo:** inserir novos conteúdos na seção correta sem expor dados privados,
 violar licença, quebrar rotas ou publicar material clínico não revisado.
 
@@ -13,10 +13,12 @@ violar licença, quebrar rotas ou publicar material clínico não revisado.
 > 🔒 **Todo arquivo nasce privado. Só é copiado para uma pasta pública depois de
 > passar pelos gates LGPD, licença e revisão clínica.**
 
-Os diretórios `inbox/` e `00_INBOX_ATUALIZACAO/` são **staging local privado**:
+O caminho canônico `00_INBOX_ATUALIZACAO/_private/triagem/` e qualquer diretório
+`inbox/` são **staging local privado**:
 ficam ignorados pelo Git, não entram nos catálogos e nunca são copiados para o
-site. A publicação só ocorre a partir de `public/`, `acervo/` ou `content/`,
-conforme a seção.
+site. Documentos de acervo/conteúdo só são promovidos a partir de `public/`,
+`acervo/` ou `content/`; links, imagens e apps usam os destinos explícitos da
+tabela da seção 5.
 
 ---
 
@@ -40,7 +42,7 @@ VALIDAR → PREVIEW → PR → DEPLOY → TESTE REAL
 
 ### Checklist de 60 segundos
 
-- [ ] O arquivo está primeiro em `_private/`?
+- [ ] O arquivo está primeiro em `00_INBOX_ATUALIZACAO/_private/triagem/`?
 - [ ] Não contém identificador de paciente ou dado pessoal?
 - [ ] Há autorização/licença para publicação?
 - [ ] O conteúdo foi transformado em material autoral quando necessário?
@@ -52,23 +54,37 @@ Se uma resposta for **não** ou **não sei**, o arquivo permanece privado.
 
 ---
 
-## 3. Etapa 0 — criar staging privado
+## 3. Etapa 0 — abrir o projeto, criar branch e preparar o staging
 
-Na raiz do repositório:
+Abra o aplicativo **Terminal** no Mac e execute, uma linha por vez:
 
 ```bash
-mkdir -p "00_INBOX_ATUALIZACAO/_private/triagem"
-git check-ignore -v "00_INBOX_ATUALIZACAO/triagem/arquivo-teste.local"
+cd "/Users/aldenirpro/Documents/OpenAI-export/antigravity-consultas"
+pwd
+git status --short --branch
 ```
 
-O segundo comando deve mostrar a regra `00_INBOX_ATUALIZACAO/` do `.gitignore`.
+Se `git status` mostrar alterações que você não reconhece, **pare** e solicite
+revisão do estado atual. Se estiver limpo, continue:
+
+```bash
+git switch main
+git pull --ff-only
+git switch -c content/slug-do-tema-AAAA-MM-DD
+mkdir -p "00_INBOX_ATUALIZACAO/_private/triagem"
+git check-ignore -v "00_INBOX_ATUALIZACAO/_private/triagem/arquivo-teste.local"
+```
+
+Substitua `slug-do-tema-AAAA-MM-DD` por um nome curto, por exemplo
+`content/pocus-choque-2026-07-20`. O último comando deve mostrar uma regra do
+`.gitignore`; se não mostrar, **pare e não copie o documento**.
 
 ### Uso correto
 
 1. Coloque o arquivo bruto em:
 
 ```text
-00_INBOX_ATUALIZACAO/triagem/
+00_INBOX_ATUALIZACAO/_private/triagem/
 ```
 
 2. Faça a triagem sem mover o original.
@@ -125,6 +141,21 @@ git diff --cached --check
 - [ ] linguagem educacional, sem substituir decisão clínica individual;
 - [ ] aprovação médica antes de mudar `status` para `ativo`.
 
+### Limite dos portões automáticos
+
+> ⚠️ `publication_guard.py` verifica **caminhos, JSON e tamanho**, mas não lê o
+> conteúdo interno de PDF, DOCX, XLSX, PPTX, imagens ou arquivos compactados.
+
+Antes da promoção, faça inspeção humana de:
+
+- texto, imagens e dados identificáveis dentro do arquivo;
+- autor, comentários, propriedades e histórico de revisão;
+- planilhas/abas/colunas ocultas e notas do apresentador;
+- anexos e conteúdo de ZIP/RAR/7z;
+- metadados de imagens e PDFs;
+- HTML/JavaScript, que exige revisão técnica específica antes de compartilhar o
+  mesmo domínio do site.
+
 ---
 
 ## 5. Para qual seção o documento deve ir?
@@ -139,7 +170,7 @@ git diff --cached --check
 | Aula, imagem, vídeo ou material POCUS licenciado | `09_POCUS_Hub/public/` | Scanner do hub |
 | Card/infográfico autoral | `05_Midia_E_Feed/assets/cards/public/` | Scanner do Card Feed |
 | Página/app clínico interativo | `01_Modulos_Clinicos/<dominio>/` | Registro/links e teste manual |
-| Calculadora clínica | `03_Calculadoras_UTI/` | Manifest/rota e testes clínicos |
+| Calculadora ou app clínico | `03_Calculadoras_E_Apps/<slug>/` | Manifest/rota e testes clínicos; `03_Calculadoras_UTI/` é apenas wrapper legado |
 | Link externo | `<hub>/links/links.json` | Scanner do hub correspondente |
 | Imagem de galeria | `imagens/` | Link/index manual e teste de caixa/Unicode |
 
@@ -169,14 +200,17 @@ Use para fontes e documentos pesquisáveis já autorizados para distribuição.
 (cd 02_Biblioteca_IA_Engine && python3 scan_biblioteca.py)
 ```
 
-4. Saneie metadados e verifique o portão:
+4. Verifique o portão sem reescrever dados:
 
 ```bash
-python3 scripts_admin/publication_guard.py sanitize-data .
 python3 scripts_admin/publication_guard.py check-repository .
 ```
 
 5. Revise o diff dos JSON gerados antes de adicionar ao Git.
+
+> 🚨 Não use `sanitize-data` como rotina. Esse modo reescreve JSON e remove
+> registros classificados como privados. Ele fica reservado para recuperação
+> supervisionada, em branch limpa, com backup e revisão integral do diff.
 
 **Não usar:** a área de staging da biblioteca como fonte pública. Ela é privada,
 ignorada e excluída dos catálogos públicos.
@@ -187,14 +221,20 @@ ignorada e excluída dos catálogos públicos.
 
 Use para material didático autoral e revisado.
 
-1. Crie o arquivo em:
+1. Escreva e revise o rascunho **somente** em:
+
+```text
+00_INBOX_ATUALIZACAO/_private/triagem/<slug>.md
+```
+
+2. Após os três gates e o aceite médico, copie a versão final para:
 
 ```text
 01_UpDown_Hub/content/<area>/<slug>.md
 ```
 
-2. Use slug minúsculo, sem acento e com hífens.
-3. Inclua frontmatter:
+3. Use slug minúsculo, sem acento e com hífens.
+4. Inclua frontmatter **ativo** somente na versão final aprovada:
 
 ```yaml
 ---
@@ -202,7 +242,7 @@ title: "Título do tema"
 slug: "slug-do-tema"
 category: "Terapia Intensiva"
 tags: [uti, temi]
-status: "rascunho"
+status: "ativo"
 visibility: "publico"
 source_type: "síntese autoral baseada em fontes citadas"
 copyright_safety: "reescrita autoral, sem cópia literal extensa"
@@ -211,7 +251,7 @@ created_for: "Projeto Antigravity"
 ---
 ```
 
-4. Adicione a entrada correspondente em:
+5. Adicione a entrada correspondente em:
 
 ```text
 01_UpDown_Hub/registry.json
@@ -226,18 +266,19 @@ Campos mínimos:
   "icon": "🩺",
   "path": "content/area/slug-do-tema.md",
   "theme": "tema",
-  "status": "rascunho",
-  "version": "v0.1",
+  "status": "ativo",
+  "version": "v1.0",
   "summary": "Resumo curto e objetivo.",
   "tags": ["uti", "temi"]
 }
 ```
 
-5. Mantenha `rascunho` ou `em_revisao` até o aceite médico.
-6. Depois do aceite, mude para `ativo` e execute os validadores gerais.
+6. Execute `check-repository` e os validadores gerais.
 
-> Não há scanner automático confiável para o registry: a entrada é revisada e
-> adicionada manualmente.
+> 🚨 `status: rascunho` **não protege um arquivo já versionado** contra acesso
+> direto por URL e também reprova o portão de publicação. Rascunhos permanecem
+> apenas no staging ignorado. Não há scanner automático confiável para o
+> registry: a entrada pública é adicionada manualmente após o aceite.
 
 ---
 
@@ -246,6 +287,13 @@ Campos mínimos:
 Após os três gates, copie a versão aprovada para o diretório `public/` do hub
 correto. Os scripts mantêm o nome legado `scan_inbox.sh`, mas leem somente
 `public/`; nenhum arquivo de `inbox/` é catalogado.
+
+Se o diretório ainda não existir em um clone limpo, crie apenas o destino
+necessário, por exemplo:
+
+```bash
+mkdir -p "09_POCUS_Hub/public"
+```
 
 Execute somente o scanner do hub alterado:
 
@@ -272,6 +320,9 @@ O catálogo gerado fica em:
 ```
 
 Revise, no mínimo: `title`, `path`, `format`, `sizeBytes`, `tags` e contagem.
+O aumento da contagem deve corresponder exatamente aos arquivos aprovados que
+foram adicionados; qualquer item extra ou exclusão inesperada exige pausa e
+investigação.
 
 #### Arquivos grandes
 
@@ -279,6 +330,45 @@ Revise, no mínimo: `title`, `path`, `format`, `sizeBytes`, `tags` e contagem.
 - Um arquivo aceito individualmente ainda pode tornar o artefato total inviável.
 - Prefira página autoral + link oficial para obras longas protegidas.
 - O artefato inteiro deve permanecer abaixo do orçamento interno de 900 MiB.
+
+#### Exemplo completo — adicionar um PDF autoral ao POCUS
+
+1. Pelo Finder, coloque o original em:
+
+```text
+00_INBOX_ATUALIZACAO/_private/triagem/guia-pocus-choque.pdf
+```
+
+2. Faça os três gates, remova metadados indevidos e obtenha o aceite clínico.
+3. Crie o destino, se necessário, e copie **somente a versão final** para:
+
+```text
+09_POCUS_Hub/public/guia-pocus-choque.pdf
+```
+
+4. No Terminal, regenere e confira o catálogo:
+
+```bash
+python3 scripts_admin/scan_content_module.py 09_POCUS_Hub
+git diff -- 09_POCUS_Hub/data/catalogo.json
+python3 scripts_admin/publication_guard.py check-repository .
+```
+
+5. Execute toda a suíte da seção 8, sirva `site/` e confirme o PDF no hub.
+6. Adicione explicitamente apenas o PDF e o catálogo esperado:
+
+```bash
+git add "09_POCUS_Hub/public/guia-pocus-choque.pdf"
+git add "09_POCUS_Hub/data/catalogo.json"
+git diff --cached --stat
+git diff --cached --check
+```
+
+7. Faça commit/PR e, após o deploy, teste o item em:
+
+```text
+https://aldenirfilho.github.io/antigravity-consultas/09_POCUS_Hub/
+```
 
 ---
 
@@ -305,7 +395,8 @@ Para Ebooks, Questões, Transcrições ou POCUS:
 }
 ```
 
-3. Confirme que o domínio é oficial e a URL usa HTTPS.
+3. Confirme que o domínio é oficial, a URL usa HTTPS e não contém token,
+   credencial, assinatura temporária, endereço privado ou parâmetro sensível.
 4. Rode o scanner do hub.
 5. Teste o link no navegador.
 
@@ -337,6 +428,10 @@ evite imagens maiores que a resolução necessária para o card.
 ### F. Módulos clínicos e calculadoras 🧮
 
 Esses itens não são simples documentos: podem alterar decisões clínicas.
+
+Use `01_Modulos_Clinicos/<dominio>/` para módulos clínicos e
+`03_Calculadoras_E_Apps/<slug>/` para calculadoras/apps. Não implemente conteúdo
+novo em `03_Calculadoras_UTI/`; esse caminho existe apenas para compatibilidade.
 
 1. Crie/edite em branch própria.
 2. Mantenha funções de cálculo separadas da interface quando possível.
@@ -402,15 +497,21 @@ python3 scripts_admin/validar_paths.py --check
 python3 scripts/validate_routes.py
 python3 scripts_admin/validate_mapa_vivo.py
 bash scripts_admin/atualizar_tudo.sh --check
+python3 -m unittest discover -s tests -p 'test_p0_regressions.py' -v
+python3 scripts_admin/build_public_site.py . site
+python3 scripts_admin/publication_guard.py sanitize-site site
+python3 scripts_admin/publication_guard.py check-site site
 ```
 
 Todos os comandos devem terminar com código 0. Avisos precisam ser lidos; não
-devem ser ignorados automaticamente.
+devem ser ignorados automaticamente. `sanitize-site` atua somente sobre o
+artefato temporário `site/` e deve informar zero remoção inesperada; se remover
+conteúdo, pare e corrija a fonte pública antes do commit.
 
 ### Preview local
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory site
 ```
 
 Abra:
@@ -420,7 +521,8 @@ http://localhost:8000/
 ```
 
 Teste a home, o hub alterado, o documento novo, um link de retorno e uma rota
-inválida. Encerre o servidor com `Control + C`.
+inválida. Esse preview serve o mesmo artefato allowlist usado pelo Pages, e não a
+raiz ampla do repositório. Encerre o servidor com `Control + C`.
 
 ### Checklist visual
 
@@ -437,10 +539,10 @@ inválida. Encerre o servidor com `Control + C`.
 
 ## 9. Commit seguro e Pull Request
 
-Crie uma branch descritiva:
+Confirme que continua na branch criada na Etapa 0:
 
 ```bash
-git switch -c content/slug-do-tema-AAAA-MM-DD
+git status --short --branch
 ```
 
 Adicione explicitamente apenas a versão pública e os manifests esperados:
@@ -464,6 +566,9 @@ No PR, registre:
 - tamanho do arquivo e impacto no artefato;
 - screenshots quando houver alteração visual.
 
+Preserve a URL do PR como registro auditável da origem, licença, revisão e data
+de aprovação do conteúdo.
+
 ---
 
 ## 10. Depois do merge — não parar no “Actions verde” 🌐
@@ -471,7 +576,9 @@ No PR, registre:
 1. Confirmar o SHA mergeado.
 2. Aguardar o workflow do GitHub Pages.
 3. Confirmar que o deploy usa o mesmo SHA.
-4. Abrir o site original sem depender da aba antiga.
+4. Abrir o site original em
+   `https://aldenirfilho.github.io/antigravity-consultas/`, sem depender da aba
+   antiga.
 5. Testar o novo conteúdo e uma rota antiga relacionada.
 6. Verificar Console e Network.
 7. Testar desktop e mobile.
@@ -493,6 +600,8 @@ No PR, registre:
 | Upload Pages falha | Tamanho individual e total | Remover do artefato público; usar link externo autorizado |
 | Site mostra versão antiga | Service worker/cache/deploy SHA | Confirmar SHA, atualizar e testar janela nova |
 | HTML não abre no preview | Sandbox ou formato não aprovado | Não relaxar segurança sem análise; converter para formato seguro |
+| Arquivo foi copiado para pasta errada | `git status` e destino canônico | Não commitar; manter o original privado e remover apenas a cópia pública equivocada após confirmar o caminho exato |
+| Diff contém exclusões ou itens extras | Scanner, catálogo e arquivos públicos | Não usar `git add`; investigar até o diff conter somente o esperado |
 
 ---
 
@@ -525,6 +634,6 @@ arquivo integral.
 
 Se houver qualquer dúvida de privacidade, licença ou segurança clínica:
 
-1. manter o arquivo em `_private/`;
+1. manter o arquivo em `00_INBOX_ATUALIZACAO/_private/triagem/`;
 2. não catalogar nem adicionar ao Git;
 3. solicitar revisão específica antes de continuar.

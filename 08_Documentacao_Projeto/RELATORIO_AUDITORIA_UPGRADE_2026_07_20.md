@@ -8,12 +8,18 @@
 
 **Base auditada:** `ad1674f8b4871067fe86e47fdf9807134265b467`
 
-**Estado deste documento:** gate local concluído; publicação e aceite em produção ainda pendentes
+**PR técnico publicado:** `#5`
+
+**SHA técnico em produção:** `76004e8cdc270a0fbf5537b7c5ad984fdc3449e9`
+
+**Estado deste documento:** release técnica publicada e testada em produção;
+aceites humanos mobile/Safari e clínico integral ainda não presumidos
+
 **Responsável pelo aceite clínico e visual:** Dr. Aldenir Rocha
 
-> ⚠️ Este relatório não declara deploy, aprovação visual nem teste final do site
-> público como concluídos. Os campos de evidência da release devem ser preenchidos
-> somente após commit, Pull Request, GitHub Actions e teste no navegador real.
+> ⚠️ O deploy e o teste automatizado no site público em Google Chrome foram
+> concluídos. Este relatório **não** presume aprovação visual humana, teste em
+> Safari/iPhone/iPad ou revisão clínica humana integral.
 
 ---
 
@@ -23,8 +29,8 @@ A auditoria encontrou riscos relevantes em **privacidade**, **tamanho do artefat
 **segurança do leitor de Markdown**, **cálculos/textos clínicos**, **rotas**,
 **catálogos** e **cache PWA**.
 
-As primeiras correções foram aplicadas localmente com estratégia
-**manifest-first**, sem reorganização destrutiva do acervo. O principal ganho foi
+As correções foram aplicadas e publicadas com estratégia **manifest-first**, sem
+reorganização destrutiva do acervo. O principal ganho foi
 a implantação de um portão de publicação que bloqueia staging e categorias
 privadas, saneia metadados e rejeita um artefato acima do limite interno.
 
@@ -32,12 +38,12 @@ privadas, saneia metadados e rejeita um artefato acima do limite interno.
 
 | Área | Situação atual | Próximo gate |
 |---|---|---|
-| Privacidade do estado atual | Mitigação local aplicada | Confirmar artefato montado e tratar histórico separadamente |
-| Rotas e diretórios | Correções locais aplicadas; nova validação obrigatória | Executar suíte final após todas as mudanças |
-| Conteúdo clínico interativo | Correções críticas aplicadas e cobertas por regressão local | Repetir smoke test e obter revisão médica |
-| Segurança do frontend | Endurecimento aplicado; IA externa do RespiraCrit desativada | Repetir QA no artefato final |
-| Performance/publicação | Build allowlist medido abaixo do orçamento | Fechar varredura completa de metadados e duplicatas |
-| GitHub/Pages | **Não concluído neste relatório** | Commit → PR → Actions → deploy → navegador real |
+| Privacidade do estado atual | Portões do repositório e do artefato aprovados; 1.254 arquivos deixaram de ser rastreados sem exclusão local | Tratar o histórico Git em projeto separado e autorizado |
+| Rotas e diretórios | 56/56 rotas e 427 referências HTML/CSS aprovadas | Manter regressão no CI |
+| Conteúdo clínico interativo | Correções críticas publicadas e 9/9 regressões verdes | Obter revisão médica humana integral |
+| Segurança do frontend | Endurecimento publicado; IA externa do RespiraCrit desativada | Manter teste de segurança no CI |
+| Performance/publicação | Artefato final com 497 arquivos e 179,4 MiB | Criar orçamento por módulo |
+| GitHub/Pages | PR #5 mergeado, Actions e deploy verdes; teste desktop automatizado concluído | Validar Safari e dispositivos móveis reais |
 
 ---
 
@@ -62,7 +68,8 @@ privadas, saneia metadados e rejeita um artefato acima do limite interno.
 - auditoria jurídica de direitos autorais de cada documento;
 - limpeza do histórico Git;
 - teste completo em todos os navegadores/dispositivos;
-- comprovação de deploy do commit final.
+- aprovação visual humana em iPhone/iPad e Safari;
+- revisão clínica humana integral de todos os módulos.
 
 ### Princípios usados
 
@@ -74,7 +81,8 @@ privadas, saneia metadados e rejeita um artefato acima do limite interno.
    `git revert`, sem reescrita destrutiva.
 4. **Sem aprovação visual presumida:** validação estática não substitui o teste
    do site real.
-5. **Conteúdo clínico exige duplo gate:** teste de software + revisão médica.
+5. **Aceite clínico integral exige duplo gate:** teste de software + revisão
+   médica humana.
 
 ---
 
@@ -88,15 +96,15 @@ privadas, saneia metadados e rejeita um artefato acima do limite interno.
 |---|---:|---|---|---|
 | 0 | 0–20 min | Guard inicial | Projeto, branch, base/HEAD, remote e worktree registrados | ✅ Concluído localmente |
 | 1 | 20–40 min | Arquitetura e rotas | Mapa de hubs, wrappers, aliases, 404 e transições | ✅ Concluído localmente |
-| 2 | 40–60 min | Privacidade e publicação | Rastreamento privado interrompido; portão fail-closed criado | ✅ Aplicado localmente; aceite do artefato pendente |
-| 3 | 60–80 min | Segurança do frontend | Leitor Markdown, preview, iframes e armazenamento local revisados | ✅ Correções aplicadas; QA final no artefato ainda obrigatório |
+| 2 | 40–60 min | Privacidade e publicação | Rastreamento privado interrompido; portão fail-closed criado | ✅ Repositório e artefato final aprovados |
+| 3 | 60–80 min | Segurança do frontend | Leitor Markdown, preview, iframes e armazenamento local revisados | ✅ Correções publicadas e QA automatizado aprovado |
 | 4 | 80–100 min | Segurança clínica | Fórmula de PBW e texto de ciclagem em PSV revisados/testados | ✅ Regressões automatizadas verdes; aceite médico humano pendente |
-| 5 | 100–120 min | Diretórios e catálogos | Scanners regenerados; referências obsoletas removidas dos manifests | ✅ Parcialmente concluído; reexecutar no fechamento |
-| 6 | 120–140 min | PWA e desempenho | Cache isolado; artefato abaixo do limite; estratégia de atualização validada | ✅ Build intermediário de 179,6 MiB; repetir medição no fechamento |
+| 5 | 100–120 min | Diretórios e catálogos | Scanners regenerados; referências obsoletas removidas dos manifests | ✅ Concluído e validado no artefato final |
+| 6 | 120–140 min | PWA e desempenho | Cache isolado; artefato abaixo do limite; estratégia de atualização validada | ✅ Artefato final: 497 arquivos e 179,4 MiB |
 | 7 | 140–160 min | Testes locais | Validadores verdes + smoke test das rotas críticas | ✅ Gate local concluído em artefato reconstruído |
 | 8 | 160–180 min | Documentação e handoff | Relatório, guia de inserção e checklist de release | ✅ Documentos preparados |
-| 9 | 180–200 min | GitHub | Escopo revisado, commit, push e PR com evidências | ⏳ Pendente |
-| 10 | 200–220 min | Deploy e produção | Actions verde, Pages no SHA esperado e navegador real aprovado | ⏳ Pendente — não presumir aprovação |
+| 9 | 180–200 min | GitHub | Escopo revisado, commit, push e PR com evidências | ✅ PR #5 mergeado em `main` |
+| 10 | 200–220 min | Deploy e produção | Actions verde, Pages no SHA esperado e navegador real aprovado | ✅ Deploy e desktop automatizado concluídos; mobile/Safari humano pendente |
 
 ### Regra de checkpoint
 
@@ -125,9 +133,9 @@ Ao terminar cada bloco, registrar:
 
 | ID | Achado | Impacto | Tratamento | Estado |
 |---|---|---|---|---|
-| P0-01 | O workflow copiava uma árvore ampla da biblioteca, incluindo staging e uma categoria pessoal | Exposição pública de conteúdo sensível e metadados | Remover essas classes do rastreamento atual, ignorá-las, saneá-las dos JSON e bloquear no repositório/artefato | ✅ Mitigado no estado local atual; histórico Git ainda requer plano próprio |
-| P0-02 | O conjunto permitido para o Pages ultrapassava aproximadamente 1 GiB | Falha de upload/deploy, lentidão e custo de distribuição | Limite interno de 900 MiB e revisão da allowlist/acervo público | ✅ Build intermediário reduzido para 179,6 MiB; medição final obrigatória |
-| P0-03 | O banco de questões carregava um arquivo de dados vazio na rota pública | Tela sem conteúdo ou falha silenciosa | Corrigir a fonte canônica/wrapper e adicionar teste de carregamento | ✅ Fonte canônica populada; rota e redirect aprovados no navegador local |
+| P0-01 | O workflow copiava uma árvore ampla da biblioteca, incluindo staging e uma categoria pessoal | Exposição pública de conteúdo sensível e metadados | Remover essas classes do rastreamento atual, ignorá-las, saneá-las dos JSON e bloquear no repositório/artefato | ✅ Mitigado no estado publicado; histórico Git ainda requer plano próprio |
+| P0-02 | O conjunto permitido para o Pages ultrapassava aproximadamente 1 GiB | Falha de upload/deploy, lentidão e custo de distribuição | Limite interno de 900 MiB e revisão da allowlist/acervo público | ✅ Artefato final reduzido para 179,4 MiB |
+| P0-03 | O banco de questões carregava um arquivo de dados vazio na rota pública | Tela sem conteúdo ou falha silenciosa | Corrigir a fonte canônica/wrapper e adicionar teste de carregamento | ✅ Quatro módulos publicados; rota e redirect aprovados em produção |
 | P0-04 | O cálculo de peso corporal predito (PBW) limitava alturas baixas a 152,4 cm | Superestimação de PBW e volume corrente em pacientes de menor estatura | Usar a altura real validada e cobrir limites com testes | ✅ Corrigido e coberto por regressão; aceite clínico humano pendente |
 | P0-05 | A orientação textual de ciclagem em PSV estava invertida entre ciclagem precoce e tardia | Risco educacional e de aplicação clínica inadequada | Corrigir direção do ajuste, citar fonte e obter revisão médica | ✅ Corrigido e coberto por regressão; aceite clínico humano pendente |
 | P0-06 | O leitor Markdown aceitava caminho arbitrário e injetava HTML renderizado diretamente | XSS/execução de conteúdo não confiável no mesmo domínio | Restringir a origem/caminhos, sanitizar o HTML e usar fallback seguro | ✅ Allowlist/sanitização aplicadas e regressão verde |
@@ -138,33 +146,34 @@ Ao terminar cada bloco, registrar:
 
 | ID | Achado | Impacto | Tratamento | Estado |
 |---|---|---|---|---|
-| P1-01 | Links do hub de apps não subiam um nível de diretório | Navegação para caminhos inexistentes | Corrigir caminhos relativos | ✅ Aplicado localmente |
-| P1-02 | Imagens do módulo de AVC divergiam em caixa e normalização Unicode | 404 em ambiente Linux/GitHub Pages | Alinhar caixa e usar nomes NFC | ✅ Aplicado localmente |
-| P1-03 | A página 404 não era copiada e os links relativos falhavam em rotas aninhadas | Recuperação inconsistente de navegação | Copiar `404.html` e definir base pública | ✅ Aplicado localmente |
-| P1-04 | O wrapper amigável do Card Feed não fazia parte do artefato | Rota amigável ausente | Incluir o wrapper na allowlist | ✅ Aplicado localmente |
-| P1-05 | Validadores podiam terminar com sucesso após encontrar divergências; um modo de correção removia referências | Falso verde e perda silenciosa de catálogo | Tornar falhas não zero e impedir poda automática de item ausente | ✅ Aplicado localmente |
-| P1-06 | Service workers removiam caches que não lhes pertenciam | Interferência entre módulos do mesmo domínio | Prefixar/fixar a família de cache e apagar apenas versões próprias | ✅ Isolamento inicial aplicado |
-| P1-07 | Snapshots clínicos persistiam HTML/dados livres no armazenamento local | Privacidade local e superfície de injeção | Persistir somente dados necessários, escapar saída e evitar identificadores | ✅ Chave versionada, limites e escape aplicados; QA final ainda obrigatório |
+| P1-01 | Links do hub de apps não subiam um nível de diretório | Navegação para caminhos inexistentes | Corrigir caminhos relativos | ✅ Publicado e testado |
+| P1-02 | Imagens do módulo de AVC divergiam em caixa e normalização Unicode | 404 em ambiente Linux/GitHub Pages | Alinhar caixa e usar nomes NFC | ✅ Publicado e testado |
+| P1-03 | A página 404 não era copiada e os links relativos falhavam em rotas aninhadas | Recuperação inconsistente de navegação | Copiar `404.html` e definir base pública | ✅ Publicado e testado |
+| P1-04 | O wrapper amigável do Card Feed não fazia parte do artefato | Rota amigável ausente | Incluir o wrapper na allowlist | ✅ Publicado e testado |
+| P1-05 | Validadores podiam terminar com sucesso após encontrar divergências; um modo de correção removia referências | Falso verde e perda silenciosa de catálogo | Tornar falhas não zero e impedir poda automática de item ausente | ✅ Publicado e validado no CI |
+| P1-06 | Service workers removiam caches que não lhes pertenciam | Interferência entre módulos do mesmo domínio | Prefixar/fixar a família de cache e apagar apenas versões próprias | ✅ Isolamento publicado e testado |
+| P1-07 | Snapshots clínicos persistiam HTML/dados livres no armazenamento local | Privacidade local e superfície de injeção | Persistir somente dados necessários, escapar saída e evitar identificadores | ✅ Chave versionada, limites e escape publicados; QA automatizado aprovado |
 | P1-08 | A pasta espelho `public_site/` divergia da fonte principal | Duplicidade, confusão de fonte canônica e validações frágeis | Torná-la gerada automaticamente ou removê-la do contrato após migração controlada | ⏳ Decisão arquitetural pendente |
+| P1-09 | A execução do Pages informou depreciação do runtime Node.js 20 em actions oficiais | Risco futuro de incompatibilidade quando o fallback for removido | Atualizar/fixar versões oficiais compatíveis com Node.js 24 e repetir o deploy | ⏳ Próximo ciclo; não bloqueou a release atual |
 
 ### P2 — otimização e manutenção 🛠️
 
 | ID | Achado | Melhoria recomendada |
 |---|---|---|
-| P2-01 | Um índice de imagens aponta para uma folha de estilo ausente | Corrigir para asset compartilhado existente e adicionar smoke test visual |
+| P2-01 | Não há regressão visual automatizada das galerias e hubs | Adicionar screenshots comparativos em desktop e mobile |
 | P2-02 | Há aliases, wrappers e nomes legados em paralelo | Formalizar uma rota canônica por produto e testar todos os redirects |
 | P2-03 | Scanners aceitam muitos formatos sem política de publicação por tipo | Criar allowlist por hub e exigir sandbox/revisão para HTML e arquivos executáveis |
 | P2-04 | Catálogos podem manter entradas de arquivos removidos ou grandes demais | Tornar scanners determinísticos e comparar catálogo com disco no CI |
-| P2-05 | O workflow usa cópias repetidas e permissões amplas no artefato | Criar script único de build local/CI e aplicar permissões mínimas |
+| P2-05 | O build centralizado ainda não gera manifesto criptográfico do artefato | Gerar lista SHA-256 para auditoria e comparação entre releases |
 | P2-06 | Não há orçamento explícito por módulo | Adotar limite de tamanho, contagem e tempo de carregamento por hub |
 | P2-07 | Falta matriz automatizada de acessibilidade e mobile | Incluir testes de teclado, contraste, viewport e redução de movimento |
 
 ---
 
-## 5. Correções aplicadas localmente
+## 5. Correções aplicadas e publicadas
 
-> “Aplicada localmente” significa presente na branch de trabalho; não significa
-> que já esteja publicada no site original.
+> As mudanças desta seção foram publicadas pelo PR #5. Aprovação humana clínica,
+> visual e mobile continua sendo um gate separado.
 
 ### 5.1 Privacidade e LGPD
 
@@ -230,25 +239,24 @@ prescrições universais; a resposta deve ser reavaliada nas curvas e na clínic
 
 ---
 
-## 6. Correções ainda pendentes antes da release
+## 6. Pendências residuais após a release
 
-### Bloqueiam publicação
+### Aceites humanos ainda não presumidos
 
-- [x] endurecer o portão para varrer todos os JSON e rejeitar duplicatas de
-  conflito, reconstruindo o artefato com zero referência privada;
-- [ ] obter aceite médico humano das correções de PBW/ciclagem;
-- [x] repetir o smoke test em aba limpa após o último build;
-- [x] montar o artefato final e comprovar tamanho `≤ 900 MiB` e zero metadado
-  privado;
-- [x] reexecutar toda a suíte após a última alteração.
+- [ ] obter revisão médica humana das correções de PBW/ciclagem e dos demais
+  módulos clínicos;
+- [ ] concluir inspeção visual humana em Safari, iPhone e iPad reais;
+- [ ] registrar formalmente os aceites clínico e visual com data e responsável.
 
-### Podem entrar em ciclo posterior, se os P0 estiverem fechados
+### Próximo ciclo técnico
 
 - [ ] decidir o destino definitivo do espelho `public_site/`;
 - [ ] consolidar nomes canônicos e aliases legados;
 - [ ] ampliar a matriz de atualização/fallback dos service workers em navegadores
   e estados offline diferentes;
 - [ ] adicionar automação de acessibilidade, mobile e orçamento de desempenho;
+- [ ] atualizar/fixar as actions oficiais para runtime Node.js atual e repetir o
+  deploy;
 - [ ] avaliar distribuição externa de arquivos muito grandes;
 - [ ] planejar, com backup e autorização explícita, a eventual limpeza do
   histórico Git que contenha material sensível.
@@ -266,6 +274,10 @@ python3 scripts_admin/validar_paths.py --check
 python3 scripts/validate_routes.py
 python3 scripts_admin/validate_mapa_vivo.py
 bash scripts_admin/atualizar_tudo.sh --check
+python3 -m unittest discover -s tests -p 'test_p0_regressions.py' -v
+python3 scripts_admin/build_public_site.py . site
+python3 scripts_admin/publication_guard.py sanitize-site site
+python3 scripts_admin/publication_guard.py check-site site
 ```
 
 ### Resultado final local em 20/07/2026
@@ -285,7 +297,7 @@ bash scripts_admin/atualizar_tudo.sh --check
 ### Smoke test local
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory site
 ```
 
 Abrir `http://localhost:8000/` e verificar:
@@ -297,7 +309,25 @@ Abrir `http://localhost:8000/` e verificar:
 - [x] banco de questões contém quatro módulos no teste local;
 - [x] traversal do leitor é rejeitado e previews usam sandbox;
 - [x] service workers usam versão/família de cache isolada;
-- [ ] layout é utilizável em desktop e viewport móvel.
+- [x] layout desktop foi aprovado no smoke test automatizado em Chrome;
+- [ ] viewport móvel real ainda requer teste humano — a automação disponível
+  impôs largura mínima e não produziu emulação móvel conclusiva.
+
+### Smoke test no site original
+
+- [x] home respondeu HTTP 200 e abriu sem erro crítico;
+- [x] duas rotas privadas sentinela responderam HTTP 404;
+- [x] Banco TEMI exibiu quatro módulos e a rota antiga redirecionou para a
+  canônica;
+- [x] Biblioteca exibiu 50 cards e Card Feed exibiu três cards, sem termos
+  privados detectados;
+- [x] traversal do leitor Markdown foi rejeitado;
+- [x] Galeria, Ebooks e POCUS abriram sem imagem quebrada detectada;
+- [x] RespiraCrit exibiu o alerta de `pH` crítico e manteve as ações de IA
+  desativadas;
+- [x] RespiraSense calculou PBW feminino de 38,8 kg e VT de 233 mL para 145 cm,
+  com avisos de extrapolação e de não uso pediátrico;
+- [ ] inspeção humana em Safari/iPhone/iPad permanece pendente.
 
 ---
 
@@ -305,66 +335,68 @@ Abrir `http://localhost:8000/` e verificar:
 
 ### Privacidade e publicação
 
-- [ ] `check-repository` retorna código 0;
-- [ ] artefato contém zero caminhos/metadados privados;
-- [ ] `check-site` retorna código 0;
-- [ ] artefato final mede no máximo 900 MiB;
-- [ ] nenhum dado de paciente, documento pessoal ou bastidor aparece no site;
-- [ ] risco de exposição histórica foi registrado e tem plano separado.
+- [x] `check-repository` retorna código 0;
+- [x] artefato contém zero caminhos/metadados privados detectados;
+- [x] `check-site` retorna código 0;
+- [x] artefato final mede no máximo 900 MiB;
+- [x] nenhum caminho ou termo privado previsto pelos portões foi encontrado no
+  site publicado;
+- [x] risco de exposição histórica foi registrado e tem plano separado.
 
 ### Integridade funcional
 
-- [ ] validadores estáticos e de rotas retornam código 0;
-- [ ] aliases preservam links antigos;
-- [ ] nenhum 404 nas rotas críticas;
-- [ ] banco de questões carrega conteúdo real;
-- [ ] imagens auditadas carregam com caixa/Unicode corretos;
-- [ ] console do navegador sem erro crítico.
+- [x] validadores estáticos e de rotas retornam código 0;
+- [x] aliases preservam links antigos;
+- [x] nenhum 404 nas rotas críticas;
+- [x] banco de questões carrega quatro módulos reais;
+- [x] imagens auditadas carregam com caixa/Unicode corretos;
+- [x] console do navegador sem erro crítico.
 
 ### Segurança clínica
 
-- [ ] fórmula de PBW validada com exemplos de ambos os sexos e alturas abaixo,
+- [x] fórmula de PBW validada por regressão com exemplos de ambos os sexos e alturas abaixo,
   próximas e acima de 152,4 cm;
 - [ ] texto de ciclagem em PSV revisado pelo responsável médico;
 - [ ] doses, unidades, arredondamentos e avisos clínicos revisados;
-- [ ] ferramenta mantém aviso de apoio cognitivo, não prescrição.
+- [x] ferramenta mantém aviso de apoio cognitivo, não prescrição.
 
 ### Segurança web
 
-- [ ] leitor aceita somente documentos públicos previstos;
-- [ ] HTML renderizado é sanitizado, com fallback seguro;
-- [ ] iframes usam sandbox mínimo compatível;
-- [ ] armazenamento local não persiste identificadores desnecessários;
-- [ ] service workers não removem caches de outros módulos.
+- [x] leitor aceita somente documentos públicos previstos;
+- [x] HTML renderizado é sanitizado, com fallback seguro;
+- [x] iframes usam sandbox mínimo compatível;
+- [x] armazenamento local não persiste identificadores desnecessários;
+- [x] service workers não removem caches de outros módulos.
 
 ### Release e validação humana
 
-- [ ] PR revisado e mergeado;
-- [ ] GitHub Actions verde no SHA esperado;
-- [ ] GitHub Pages aponta para o mesmo SHA;
-- [ ] teste no site original concluído em navegador real;
+- [x] PR #5 passou pelos gates automatizados e foi mergeado; revisão humana não
+  presumida;
+- [x] GitHub Actions verde no SHA esperado;
+- [x] GitHub Pages publicou o SHA técnico esperado;
+- [x] teste automatizado no site original concluído em Chrome real;
 - [ ] teste mobile concluído;
 - [ ] aprovação visual e clínica registrada por humano.
 
 ---
 
-## 9. Evidências da release — preencher após execução
+## 9. Evidências da release
 
 | Evidência | Valor |
 |---|---|
-| Commit final | `PREENCHER` |
-| URL da Pull Request | `PREENCHER` |
-| Revisores/aceites | `PREENCHER` |
-| URL da execução GitHub Actions | `PREENCHER` |
-| Resultado do build | `PENDENTE` |
-| Tamanho do artefato | `PENDENTE` |
-| SHA publicado no Pages | `PENDENTE` |
+| Commit técnico publicado | `76004e8cdc270a0fbf5537b7c5ad984fdc3449e9` |
+| URL da Pull Request | `https://github.com/aldenirfilho/antigravity-consultas/pull/5` |
+| Revisores/aceites | Gates automatizados aprovados; aceite humano não presumido |
+| URL da execução GitHub Actions | `https://github.com/aldenirfilho/antigravity-consultas/actions/runs/29777630244` |
+| Resultado do build/deploy | Sucesso |
+| Tamanho do artefato | 179,4 MiB; 497 arquivos |
+| SHA publicado no Pages | `76004e8cdc270a0fbf5537b7c5ad984fdc3449e9` |
 | URL de produção testada | `https://aldenirfilho.github.io/antigravity-consultas/` |
-| Data/hora do teste (America/Fortaleza) | `PENDENTE` |
-| Navegador/versão | `PENDENTE` |
-| Console/Network | `PENDENTE` |
-| Desktop | `PENDENTE` |
-| Mobile | `PENDENTE` |
+| Data/hora do teste (America/Fortaleza) | 20/07/2026, 17:53 (-03) |
+| Navegador/versão | Google Chrome conectado via Codex Desktop; versão não exposta pela automação |
+| Console/Network | Sem erro crítico; home HTTP 200; duas rotas privadas sentinela retornaram HTTP 404 |
+| Desktop | Aprovado no teste automatizado em produção |
+| Mobile | Automação inconclusiva por largura mínima; teste humano pendente |
 | Aprovação visual humana | `NÃO PRESUMIDA — PENDENTE` |
 | Aprovação clínica humana | `NÃO PRESUMIDA — PENDENTE` |
 
@@ -412,9 +444,11 @@ git push -u origin hotfix/rollback-antigravity-AAAA-MM-DD
 
 ### Melhor opção — próximo ciclo
 
-1. Criar um único script de build local idêntico ao GitHub Actions.
-2. Adicionar testes automatizados de segurança e cálculo clínico.
-3. Trocar publicação de acervo bruto por conteúdo autoral leve e links às fontes.
+1. Preparar, com backup e autorização explícita, a remediação do histórico Git
+   que possa conter material privado.
+2. Adicionar E2E de mobile, acessibilidade e orçamento de desempenho.
+3. Atualizar/fixar as GitHub Actions para runtime Node.js atual e registrar hash
+   do artefato publicado.
 
 ### Alternativa
 
@@ -432,12 +466,17 @@ git push -u origin hotfix/rollback-antigravity-AAAA-MM-DD
 
 ## 12. Síntese prática
 
-**O projeto deve ser publicado apenas quando quatro gates estiverem verdes:**
+**A release técnica foi publicada com os portões automatizados verdes. O aceite
+integral permanece dividido em quatro gates auditáveis:**
 
-1. 🔒 privacidade/LGPD;
-2. 🩺 segurança clínica;
-3. 🧪 testes locais e automáticos;
-4. 🌐 validação do site original em navegador real.
+1. 🔒 privacidade/LGPD — **automatizado verde; histórico separado pendente**;
+2. 🩺 segurança clínica — **regressões verdes; revisão médica humana pendente**;
+3. 🧪 testes locais e automáticos — **verde**;
+4. 🌐 site original — **desktop automatizado verde; Safari/mobile humano
+   pendente**.
+
+O deploy não deve ser confundido com aprovação clínica ou visual humana. Esses
+aceites permanecem explicitamente não presumidos.
 
 ### Principais erros a evitar
 
