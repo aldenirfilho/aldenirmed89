@@ -580,6 +580,19 @@ function searchKey(value) {
     .trim();
 }
 
+function matchesSearch(haystack, normalizedQuery) {
+  if (!normalizedQuery) return true;
+  const normalizedHaystack = searchKey(haystack);
+  if (normalizedHaystack.includes(normalizedQuery)) return true;
+
+  // A ordem e as palavras intermediárias podem variar, mas cada termo digitado
+  // continua obrigatório. Não removemos stopwords: "NO" e "FA" são siglas médicas.
+  const terms = normalizedQuery
+    .split(' ')
+    .filter(Boolean);
+  return terms.length > 0 && terms.every(term => normalizedHaystack.includes(term));
+}
+
 function authorshipLabel(status) {
   return ({
     'confirmado-autoral': '✍️ Autoral confirmado',
@@ -888,11 +901,18 @@ function renderGrid() {
       i.resumo,
       ...(i.tags || [])
     ].filter(Boolean).join(' ');
-    const matchBusca = !busca || searchKey(haystack).includes(busca);
+    const matchBusca = matchesSearch(haystack, busca);
     return matchTheme && matchFormat && matchOrigin && matchBusca;
   });
 
+  document.getElementById('grid-subtitle').textContent =
+    `${items.length} documento(s) encontrados com os filtros atuais.`;
+  document.getElementById('grid-title').textContent =
+    currentFormatFilter === 'todos' ? '📂 Acervo Catalogado' : '🧩 Repartição por formato';
+
   if (items.length === 0) {
+    const existingLoadMoreButton = document.getElementById('btn-load-more');
+    if (existingLoadMoreButton) existingLoadMoreButton.parentNode.style.display = 'none';
     grid.innerHTML = `
       <div class="card" style="grid-column: 1/-1; padding: 40px; text-align: center; border-color: var(--yellow);">
         <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔍</div>
@@ -977,8 +997,6 @@ function renderGrid() {
   }
 
   document.getElementById('empty-state').style.display = items.length === 0 ? 'block' : 'none';
-  document.getElementById('grid-title').textContent = currentFormatFilter === 'todos' ? '📂 Acervo Catalogado' : '🧩 Repartição por formato';
-  document.getElementById('grid-subtitle').textContent = `${items.length} documento(s) encontrados com os filtros atuais.`;
 }
 
 // Renderizar Triagem

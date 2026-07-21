@@ -292,6 +292,16 @@ class LibraryStudyInterfaceTests(unittest.TestCase):
         self.assertNotIn("05_Midia_E_Feed/index.html?theme=", self.source)
         self.assertIn("Original somente leitura", self.source)
         self.assertIn("function searchKey(value)", self.source)
+        self.assertIn("function matchesSearch(haystack, normalizedQuery)", self.source)
+        self.assertIn("terms.every(term => normalizedHaystack.includes(term))", self.source)
+        render_grid = self.source.split("function renderGrid()", 1)[1].split(
+            "// Renderizar Triagem", 1
+        )[0]
+        self.assertLess(
+            render_grid.index("grid-subtitle"),
+            render_grid.index("if (items.length === 0)"),
+        )
+        self.assertIn("existingLoadMoreButton", render_grid)
         self.assertIn("function authorshipLabel(status)", self.source)
         self.assertIn("function scheduleStudyAutosave()", self.source)
         self.assertIn("sourceSha256: currentPreviewItem.sourceSha256", self.source)
