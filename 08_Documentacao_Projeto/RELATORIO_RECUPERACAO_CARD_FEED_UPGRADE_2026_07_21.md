@@ -136,9 +136,14 @@ Se a publicação apresentar regressão, reverter o commit da release por um nov
 
 - Commit principal da recuperação: `75ea417b1092d74eb2f61bd18a0e763065c10326`.
 - Pull request: [#8 — Restore and upgrade the medical card feed](https://github.com/aldenirfilho/antigravity-consultas/pull/8).
-- Branch remota: `codex/card-feed-recovery-upgrade`.
-- URL alvo de produção: [Card Feed — Antigravity Consultas](https://aldenirfilho.github.io/antigravity-consultas/05_Midia_E_Feed/index.html).
-- Estado deste registro: PR em modo rascunho, aguardando os gates remotos, merge e teste automatizado no GitHub Pages. O resultado final permanece verificável no histórico da PR e do workflow de deploy.
+- Merge squash na `main`: `499fed630fe0bb7b28145fa6485ca3466d90bb0e`.
+- Gate remoto da PR: [workflow #72](https://github.com/aldenirfilho/antigravity-consultas/actions/runs/29836723479), concluído com sucesso.
+- Deploy da `main`: [workflow #73](https://github.com/aldenirfilho/antigravity-consultas/actions/runs/29836878579), concluído com sucesso em 21/07/2026.
+- Produção: [Card Feed — Antigravity Consultas](https://aldenirfilho.github.io/antigravity-consultas/05_Midia_E_Feed/index.html).
+- Teste automatizado em produção: 255 cards do repositório, 252 imagens renderizadas, 3 cards sem imagem, 0 imagens quebradas, 0 cards locais e 255 itens sinalizados para revisão.
+- Filtros de imagem, ausência, revisão, origem e os modos grade, contínuo e compacto aprovados; sorteio de card e conexão Feed → Biblioteca também aprovados.
+- Manifestos públicos confirmados: 220 arquivos, 43.894.630 bytes, 1 fonte em quarentena, 0 referência ausente e nenhum caminho público para o SVG clínico desatualizado.
+- Gate residual: teste visual humano no Safari do Mac e no iPhone continua pendente e não é presumido por esta auditoria automatizada.
 
 ## 10. Próximos upgrades recomendados
 
