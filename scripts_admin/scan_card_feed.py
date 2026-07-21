@@ -28,6 +28,8 @@ def main() -> int:
         "description": "Imagens explicitamente aprovadas para o Card Feed público.",
         "updatedAt": date.today().isoformat(),
         "files": files,
+        "totalFiles": len(files),
+        "totalBytes": sum((PUBLIC_DIR / relative).stat().st_size for relative in files),
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

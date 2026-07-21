@@ -2,7 +2,7 @@
 
 **Projeto:** Antigravity Consultas
 
-**Versão:** 1.1 — 20/07/2026
+**Versão:** 1.2 — 21/07/2026
 **Objetivo:** inserir novos conteúdos na seção correta sem expor dados privados,
 violar licença, quebrar rotas ou publicar material clínico não revisado.
 
@@ -76,7 +76,7 @@ git check-ignore -v "00_INBOX_ATUALIZACAO/_private/triagem/arquivo-teste.local"
 ```
 
 Substitua `slug-do-tema-AAAA-MM-DD` por um nome curto, por exemplo
-`content/pocus-choque-2026-07-20`. O último comando deve mostrar uma regra do
+`content/pocus-choque-AAAA-MM-DD`. O último comando deve mostrar uma regra do
 `.gitignore`; se não mostrar, **pare e não copie o documento**.
 
 ### Uso correto
@@ -194,10 +194,11 @@ Use para fontes e documentos pesquisáveis já autorizados para distribuição.
 ```
 
 2. Copie apenas a versão aprovada para o tema.
-3. Regenere o catálogo:
+3. Regenere o catálogo e o grafo de conexões:
 
 ```bash
 (cd 02_Biblioteca_IA_Engine && python3 scan_biblioteca.py)
+python3 scripts_admin/build_library_connections.py
 ```
 
 4. Verifique o portão sem reescrever dados:
@@ -404,21 +405,57 @@ Para Ebooks, Questões, Transcrições ou POCUS:
 
 ### E. Card Feed 🖼️
 
-1. Confirme autoria/licença e remova qualquer identificador.
-2. Use imagem otimizada em PNG, JPG/JPEG ou WebP.
-3. Copie a versão final para:
+1. Guarde o arquivo mestre apenas no staging privado:
 
 ```text
-05_Midia_E_Feed/assets/cards/public/
+00_INBOX_ATUALIZACAO/_private/triagem/cards/
 ```
 
-4. Atualize o manifesto:
+2. Confirme autoria/licença, faça revisão clínica e remova identificadores e
+   metadados. Nome do arquivo ou a marca “gerado por IA” **não provam autoria**.
+3. Gere uma cópia derivada para web. Prefira WebP, nome ASCII e no máximo a
+   resolução necessária para leitura; preserve o mestre sem sobrescrever.
+4. Copie somente o derivado aprovado para:
+
+```text
+05_Midia_E_Feed/assets/cards/public/<tema>/
+```
+
+5. Atualize o manifesto público. Não edite `data/public.json` à mão:
 
 ```bash
-(cd 05_Midia_E_Feed && bash scan_inbox.sh)
+python3 scripts_admin/scan_card_feed.py
 ```
 
-5. Abra o Card Feed e verifique corte, texto, contraste e mobile.
+6. Para título, explicação, tags e conexão curados, adicione o card em
+   `05_Midia_E_Feed/data/cards.json`. O `imageUrl` deve começar por
+   `assets/cards/public/` e nunca conter `inbox/`.
+7. Abra o Card Feed e verifique imagem ampliada, corte, texto, contraste,
+   filtros, conexão temática e mobile.
+
+#### Reprodução do lote histórico de 21/07/2026
+
+A ferramenta abaixo é **restrita ao lote histórico já auditado**. Ela valida a
+impressão digital das 257 fontes e o baseline de 198 cards, grava os derivados
+públicos e sobrescreve os arquivos canônicos `cards.json` e
+`recovery_manifest.json`. Não a use para anexar novos cards.
+
+```bash
+/Users/aldenirpro/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 \
+  scripts_admin/prepare_card_feed_recovery.py \
+  --source-dir "00_INBOX_ATUALIZACAO/_private/card-feed-recovery-2026-07-21/05_Midia_E_Feed/assets/cards/inbox" \
+  --legacy-cards "00_INBOX_ATUALIZACAO/_private/card-feed-recovery-2026-07-21/05_Midia_E_Feed/data/cards.json" \
+  --acknowledge-historical-batch-2026-07-21
+python3 scripts_admin/scan_card_feed.py
+```
+
+O runtime absoluto é necessário porque o Python padrão deste Mac não possui
+Pillow/WebP. O utilitário deduplica por SHA-256, corrige divergências NFC/NFD,
+converte raster para WebP sem metadados e sanitiza SVG. SVG inseguro ou
+malformado fica em quarentena e não entra no site.
+
+Para um novo lote, siga o fluxo individual desta seção ou crie uma ferramenta
+separada que exija manifesto de autoria/licença e revisão por arquivo.
 
 Sugestão de desempenho: prefira WebP quando não houver perda de legibilidade e
 evite imagens maiores que a resolução necessária para o card.
@@ -497,7 +534,7 @@ python3 scripts_admin/validar_paths.py --check
 python3 scripts/validate_routes.py
 python3 scripts_admin/validate_mapa_vivo.py
 bash scripts_admin/atualizar_tudo.sh --check
-python3 -m unittest discover -s tests -p 'test_p0_regressions.py' -v
+python3 -m unittest discover -s tests -p 'test_*.py' -v
 python3 scripts_admin/build_public_site.py . site
 python3 scripts_admin/publication_guard.py sanitize-site site
 python3 scripts_admin/publication_guard.py check-site site

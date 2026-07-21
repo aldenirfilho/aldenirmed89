@@ -47,7 +47,7 @@
       -webkit-backdrop-filter: blur(18px);
       background: rgba(2,6,23,.82);
       border-bottom: 1px solid var(--line);
-      padding: 12px max(14px, env(safe-area-inset-left)) 12px max(14px, env(safe-area-inset-left));
+      padding: 12px max(14px, env(safe-area-inset-right)) 12px max(14px, env(safe-area-inset-left));
     }
     .topbar-inner {
       max-width: 1200px;
@@ -154,7 +154,7 @@
     .metric span { color: var(--muted); font-size: .82rem; }
     .toolbar {
       display: grid;
-      grid-template-columns: 1.3fr .7fr .7fr;
+      grid-template-columns: 1.25fr .72fr .72fr .72fr;
       gap: 9px;
       margin-bottom: 12px;
     }
@@ -219,6 +219,12 @@
       place-items: center;
       cursor: zoom-in;
       position: relative;
+      width: 100%;
+      border: 0;
+      padding: 0;
+      color: inherit;
+      font: inherit;
+      text-align: inherit;
     }
     .imgbox img {
       width: 100%;
@@ -325,6 +331,16 @@
       margin-bottom: 12px;
       font-size: .94rem;
     }
+    .clinical-notice {
+      border: 1px solid rgba(248,113,113,.38);
+      background: rgba(127,29,29,.18);
+      border-radius: 18px;
+      padding: 12px;
+      color: #fecaca;
+      line-height: 1.45;
+      margin-bottom: 12px;
+      font-size: .94rem;
+    }
     @media (max-width: 820px) {
       .topbar-inner { align-items: flex-start; }
       .nav-actions { display: none; }
@@ -361,6 +377,39 @@
       max-height: none;
       object-fit: contain;
     }
+    body.feed-compact .feed {
+      columns: unset;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    body.feed-compact .card {
+      display: grid;
+      grid-template-columns: minmax(116px, 34%) 1fr;
+      margin: 0;
+      min-height: 180px;
+    }
+    body.feed-compact .imgbox { min-height: 100%; }
+    body.feed-compact .imgbox img {
+      width: 100%;
+      height: 100%;
+      min-height: 180px;
+      object-fit: cover;
+    }
+    body.feed-compact .body { align-content: start; }
+    body.feed-compact .explain {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    body.feed-compact .tags .tag:nth-child(n+4),
+    body.feed-compact .meta { display: none; }
+    .card.random-focus { animation: card-focus 1.5s ease; }
+    @keyframes card-focus {
+      0%, 100% { box-shadow: var(--shadow); }
+      35% { box-shadow: 0 0 0 4px rgba(56,189,248,.55), 0 24px 70px rgba(56,189,248,.3); }
+    }
     .view-mode-indicator {
       display: inline-flex;
       gap: 6px;
@@ -395,6 +444,11 @@
       .feed { columns: 2; }
       .card { box-shadow: none; border: 1px solid #ddd; background: #fff; color: #111; }
       .explain, .meta, .tag, .theme-label { color: #111; }
+    }
+    @media (max-width: 740px) {
+      body.feed-compact .feed { grid-template-columns: 1fr; }
+      body.feed-compact .card { grid-template-columns: 104px 1fr; }
+      body.feed-compact .imgbox img { min-height: 160px; }
     }
   </style>
 </head>
@@ -435,10 +489,12 @@
           <button class="btn" id="btnBackup">📥 Importar backup</button>
           <button class="btn" id="btnExport">📤 Exportar backup</button>
           <button class="btn gold" id="btnReview">🔁 Modo revisão</button>
-          <button class="btn" id="btnFeedMode">📲 Feed contínuo</button>
+          <button class="btn" id="btnFeedMode">📐 Visualização</button>
+          <button class="btn" id="btnRandom">🎲 Sortear card</button>
           <span class="view-mode-indicator" id="viewModeIndicator">▦ Grade</span>
           <button class="btn" id="btnHelp">📘 Como usar</button>
           <button class="btn" id="btnPrint">🖨️ Imprimir/PDF</button>
+          <a class="btn" href="../index.html#mapa">🕸️ Mapa de conexões</a>
         </div>
       </div>
       <aside class="glass">
@@ -457,10 +513,25 @@
       Compartilhar → <b>Adicionar à Tela de Início</b>. No Mac, salve como favorito ou fixe na Dock. ✨
     </div>
 
+    <div class="clinical-notice" role="note">
+      <b>⚠️ Acervo educacional recuperado:</b> cards marcados como “revisão clínica pendente”
+      ainda não foram validados contra diretrizes atuais. Não use um card isoladamente para
+      decidir conduta; confirme a fonte vigente e o protocolo institucional.
+    </div>
+
     <section class="toolbar">
-      <input id="search" class="field" placeholder="🔎 Buscar por tema, título, tag, comentário..." />
-      <select id="themeFilter" class="select"></select>
-      <select id="sortMode" class="select">
+      <input id="search" class="field" aria-label="Buscar cards" placeholder="🔎 Buscar por tema, título, tag, comentário..." />
+      <select id="themeFilter" class="select" aria-label="Filtrar por tema"></select>
+      <select id="assetFilter" class="select" aria-label="Filtrar por estado do card">
+        <option value="all">Todos os cards</option>
+        <option value="images">🖼️ Com imagem</option>
+        <option value="missing">⬚ Sem imagem</option>
+        <option value="favorites">⭐ Favoritos</option>
+        <option value="review">🔁 Para revisar</option>
+        <option value="repo">☁️ Publicados</option>
+        <option value="local">💾 Locais</option>
+      </select>
+      <select id="sortMode" class="select" aria-label="Ordenar cards">
         <option value="newest">Mais recentes</option>
         <option value="oldest">Mais antigos</option>
         <option value="inbox">📥 Inbox primeiro</option>
@@ -494,6 +565,7 @@
         <label>Status
           <select id="editStatus" class="select">
             <option value="novo">Novo</option>
+            <option value="publicado">Publicado</option>
             <option value="inbox">📥 Inbox</option>
             <option value="revisar">Revisar</option>
             <option value="aprendendo">Aprendendo</option>
@@ -552,12 +624,13 @@
       <div class="help-box"><b>2) Organização automática</b><br/>O app sugere tema pelo nome do arquivo: <code>AKI</code>, <code>KDIGO</code>, <code>VM</code>, <code>sepse</code>. Depois edite manualmente.</div>
       <div class="help-box"><b>3) Comentários</b><br/>Em cada card, toque em <code>Editar</code>. Acrescente resumo, conduta, alerta TEMI, tags e status.</div>
       <div class="help-box"><b>4) Backup e migração</b><br/>Use <code>Exportar backup</code> e salve no iCloud. Para restaurar, use <code>Importar backup</code>.</div>
-      <div class="help-box"><b>5) Modo Feed Contínuo</b><br/>Clique em <code>📲 Feed contínuo</code> para ver cards um abaixo do outro, estilo Instagram. Ideal para celular.</div>
+      <div class="help-box"><b>5) Três visualizações</b><br/>O botão <code>📐 Visualização</code> alterna entre Grade, Feed contínuo e Compacto. A escolha fica salva neste navegador.</div>
+      <div class="help-box"><b>6) Revisão e conexões</b><br/>Use <code>🎲 Sortear card</code>, os filtros rápidos e <code>🔗 Explorar tema</code> para saltar à Biblioteca, POCUS, TEMI ou calculadoras.</div>
       <div class="help-box" style="border-color:rgba(251,191,36,.24);background:rgba(251,191,36,.08);color:#fde68a"><b>⚠️ Limitação</b><br/>Cards locais ficam neste navegador (IndexedDB). Para sincronizar, exporte backup JSON ou envie imagens para <code>assets/cards/</code> + cadastre em <code>data/cards.json</code>.</div>
     </div>
   </dialog>
 
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
     const DB_NAME = "CardFeedMedicoLocalDB_v2";
@@ -568,12 +641,53 @@
     let themes = [];
     let reviewOnly = false;
     let activeTheme = "";
-    let viewMode = localStorage.getItem('cardFeedViewMode') || 'grid';
-    let hiddenCards = JSON.parse(localStorage.getItem('cardFeedHidden') || '[]');
+    const VIEW_MODES = ["grid", "continuous", "compact"];
+    const LOCAL_MUTABLE_FIELDS = [
+      "title", "theme", "tags", "explanation", "notes", "source", "status",
+      "favorite", "nextReview", "updatedAt"
+    ];
+    let viewMode = localStorage.getItem("cardFeedViewMode") || "grid";
+    if (!VIEW_MODES.includes(viewMode)) viewMode = "grid";
+    let hiddenCards = readStoredList("cardFeedHidden");
 
     const $ = id => document.getElementById(id);
     const nowISO = () => new Date().toISOString();
     const uid = () => "local_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,8);
+
+    function readStoredList(key) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key) || "[]");
+        return Array.isArray(value) ? Array.from(new Set(value.map(String))) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function mergeLocalOverride(repoCard, localOverride) {
+      const merged = { ...repoCard };
+      for (const field of LOCAL_MUTABLE_FIELDS) {
+        if (Object.prototype.hasOwnProperty.call(localOverride, field)) {
+          merged[field] = localOverride[field];
+        }
+      }
+      // Campos de asset, autoria, licença e revisão clínica permanecem canônicos.
+      merged.origin = "local";
+      return merged;
+    }
+
+    function needsReview(card) {
+      return card.clinicalReviewStatus === "pendente" ||
+        ["revisar", "aprendendo", "pendente-imagem"].includes(card.status) ||
+        Boolean(card.nextReview && new Date(card.nextReview) <= new Date());
+    }
+
+    function publicAssetTheme(file) {
+      const parts = String(file || "").split("/").filter(Boolean);
+      const filename = parts[parts.length - 1] || "";
+      const directoryTheme = parts[0] === "recovered" && parts.length >= 3 ? parts[1] : "";
+      const knownTheme = themes.some(theme => theme.id === directoryTheme);
+      return { filename, theme: knownTheme ? directoryTheme : inferTheme(filename) };
+    }
 
     function toast(msg) {
       const el = $("toast");
@@ -601,19 +715,24 @@
 
     function applyViewMode() {
       const isContinuous = viewMode === "continuous";
+      const isCompact = viewMode === "compact";
       document.body.classList.toggle("feed-continuous", isContinuous);
+      document.body.classList.toggle("feed-compact", isCompact);
       const btn = $("btnFeedMode");
       const indicator = $("viewModeIndicator");
-      if (btn) btn.textContent = isContinuous ? "▦ Modo grade" : "📲 Feed contínuo";
-      if (indicator) indicator.textContent = isContinuous ? "📲 Feed contínuo" : "▦ Grade";
+      const labels = { grid: "▦ Grade", continuous: "📲 Feed contínuo", compact: "▤ Compacto" };
+      const nextLabels = { grid: "📲 Ir para Feed", continuous: "▤ Ir para Compacto", compact: "▦ Ir para Grade" };
+      if (btn) btn.textContent = nextLabels[viewMode];
+      if (indicator) indicator.textContent = labels[viewMode];
       localStorage.setItem("cardFeedViewMode", viewMode);
     }
 
     function toggleViewMode() {
-      viewMode = viewMode === "continuous" ? "grid" : "continuous";
+      viewMode = VIEW_MODES[(VIEW_MODES.indexOf(viewMode) + 1) % VIEW_MODES.length];
       applyViewMode();
       window.scrollTo({ top: 0, behavior: "smooth" });
-      toast(viewMode === "continuous" ? "📲 Modo Feed Contínuo ativado." : "▦ Modo Grade ativado.");
+      const labels = { grid: "▦ Modo Grade", continuous: "📲 Feed contínuo", compact: "▤ Modo Compacto" };
+      toast(`${labels[viewMode]} ativado.`);
     }
 
     async function quickStatus(id, status) {
@@ -681,22 +800,29 @@
       const inboxData = await fetchJSON("data/public.json", { files: [] });
       const inboxFiles = inboxData.files || [];
       const existingIds = new Set(repoCards.map(c => c.id));
+      const existingImages = new Set(repoCards.map(c => c.imageUrl).filter(Boolean));
       for (const file of inboxFiles) {
+        const publicUrl = "assets/cards/public/" + file;
+        if (existingImages.has(publicUrl)) continue;
         const id = "inbox-" + file.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
         if (existingIds.has(id)) continue;
-        const theme = inferTheme(file);
+        const asset = publicAssetTheme(file);
+        const theme = asset.theme;
         repoCards.push({
           id,
-          title: cleanTitle(file),
+          title: cleanTitle(asset.filename),
           theme: theme === "uti-geral" ? "inbox" : theme,
-          tags: inferTags(file, theme),
+          tags: inferTags(asset.filename, theme),
           explanation: "",
-          source: "Inbox — aguardando classificação",
-          status: "novo",
-          imageUrl: "assets/cards/public/" + file,
-          createdAt: nowISO(),
+          source: "Acervo autoral recuperado — aguardando curadoria de metadados",
+          status: "publicado",
+          clinicalReviewStatus: "pendente",
+          imageUrl: publicUrl,
+          createdAt: inboxData.updatedAt || nowISO(),
           origin: "repo"
         });
+        existingIds.add(id);
+        existingImages.add(publicUrl);
       }
     }
 
@@ -706,12 +832,24 @@
 
     function allCards() {
       const repoIds = new Set(repoCards.map(c => c.id));
-      const locals = localCards.filter(c => !repoIds.has(c.id));
-      return [...repoCards, ...locals];
+      const localById = new Map(localCards.map(c => [c.id, c]));
+      const mergedRepo = repoCards.map(repoCard => {
+        const localOverride = localById.get(repoCard.id);
+        return localOverride ? mergeLocalOverride(repoCard, localOverride) : repoCard;
+      });
+      const localOnly = localCards.filter(c => !repoIds.has(c.id));
+      return [...mergedRepo, ...localOnly];
     }
 
     function themeById(id) {
       return themes.find(t => t.id === id) || { id, label: id || "Outros", emoji: "🗂️", folder: "" };
+    }
+
+    function connectedHref(card, theme) {
+      const base = theme.href || `../02_Biblioteca_IA_Engine/index.html?theme=${encodeURIComponent(card.theme || "uti-geral")}`;
+      if (!base.includes("02_Biblioteca_IA_Engine")) return base;
+      const query = String(card.title || (card.tags || [])[0] || "").trim();
+      return `${base}${base.includes("?") ? "&" : "?"}q=${encodeURIComponent(query)}`;
     }
 
     function cleanTitle(name) {
@@ -720,16 +858,16 @@
 
     function inferTheme(name = "") {
       const n = name.toLowerCase();
+      if (/(pocus|ultrassom|usg|\beco\b|lung|fast|vexus)/.test(n)) return "pocus";
       if (/(kdigo|aki|ira|renal|rim|hemodial|dialise|diálise|trs|crrt|sled|pirrt)/.test(n)) return "nefro-aki-trs";
       if (/(temi|prova|quest|flashcard|memory)/.test(n)) return "temi";
       if (/(vm|ventil|sara|ards|sdra|pav)/.test(n)) return "vm-sdra";
       if (/(sepse|septic|choque|vasopressor|noradrenalina|lactato)/.test(n)) return "sepse-choque";
       if (/(diabetes|cad|cetoacid|hipoglic|hiperglic|hhs|ehh|insulina)/.test(n)) return "endocrino-diabetes";
-      if (/(avc|tce|convuls|neuro|coma|delirium|sedacao|sedação)/.test(n)) return "neuro-uti";
+      if (/(avc|tce|convuls|neuro|\bcoma\b|delirium|sedacao|sedação)/.test(n)) return "neuro-uti";
       if (/(ecg|cardio|iam|arrit|bradi|taqui|hemodin)/.test(n)) return "cardio-hemodinamica";
       if (/(antibi|infect|pneumo|aspirat|mening|cdc|idSA|anvisa)/.test(n)) return "infectologia";
       if (/(dose|dilui|farmaco|droga|bomba|mlh|ml\/h)/.test(n)) return "farmaco-doses";
-      if (/(pocus|ultrassom|usg|eco|lung|fast)/.test(n)) return "pocus";
       if (/(mae|mãe|familia|família|cuidado|idos|paciente)/.test(n)) return "familia-paciente";
       if (/(obsidian|ia|gpt|claude|antigravity|github|token)/.test(n)) return "ia-produtividade";
       if (/(jurid|finance|banco|divor|irpf|serasa|divida|dívida)/.test(n)) return "juridico-financeiro";
@@ -826,12 +964,22 @@
 
     function getFiltered() {
       const q = $("search").value.trim().toLowerCase();
-      const theme = activeTheme || $("themeFilter").value;
+      const hiddenMode = activeTheme === "__hidden__";
+      const theme = hiddenMode ? "" : (activeTheme || $("themeFilter").value);
+      const assetFilter = $("assetFilter").value;
       let list = allCards().filter(c => {
+        const isHidden = hiddenCards.includes(c.id);
+        const hasImage = Boolean(c.imageData || c.imageUrl);
+        const reviewDue = needsReview(c);
+        if (hiddenMode ? !isHidden : isHidden) return false;
         if (theme && c.theme !== theme) return false;
-        if (reviewOnly && !["revisar", "aprendendo", "pendente-imagem"].includes(c.status)) return false;
-        if (hiddenCards.includes(c.id) && activeTheme !== '__hidden__') return false;
-        if (activeTheme === '__hidden__') return hiddenCards.includes(c.id);
+        if (reviewOnly && !reviewDue) return false;
+        if (assetFilter === "images" && !hasImage) return false;
+        if (assetFilter === "missing" && hasImage) return false;
+        if (assetFilter === "favorites" && !c.favorite) return false;
+        if (assetFilter === "review" && !reviewDue) return false;
+        if (assetFilter === "repo" && c.origin !== "repo") return false;
+        if (assetFilter === "local" && c.origin !== "local") return false;
         if (!q) return true;
         const blob = [c.title, c.theme, (c.tags || []).join(" "), c.explanation, c.notes, c.source, c.status, (c.related || []).join(" ")].join(" ").toLowerCase();
         return blob.includes(q);
@@ -859,7 +1007,7 @@
     function updateControls() {
       const opts = ['<option value="">Todos os temas</option>'].concat(themes.map(t => `<option value="${esc(t.id)}">${t.emoji} ${esc(t.label)}</option>`));
       $("themeFilter").innerHTML = opts.join("");
-      $("themeFilter").value = activeTheme || "";
+      $("themeFilter").value = activeTheme === "__hidden__" ? "" : (activeTheme || "");
       $("editTheme").innerHTML = themes.map(t => `<option value="${esc(t.id)}">${t.emoji} ${esc(t.label)}</option>`).join("");
       $("themeStrip").innerHTML = [
         `<button class="chip ${!activeTheme ? "active" : ""}" data-theme="">🌐 Todos</button>`,
@@ -879,7 +1027,7 @@
       $("statRepo").textContent = repoCards.length;
       $("statLocal").textContent = localCards.length;
       $("statFav").textContent = list.filter(c => c.favorite).length;
-      const reviewCount = list.filter(c => c.status === "revisar" || c.status === "aprendendo" || (c.nextReview && new Date(c.nextReview) <= new Date())).length;
+      const reviewCount = list.filter(needsReview).length;
       $("statReview").textContent = reviewCount;
     }
 
@@ -888,12 +1036,14 @@
       const tags = (c.tags || []).slice(0, 7).map(t => `<span class="tag">#${esc(t)}</span>`).join("");
       const sourceBadge = c.origin === "repo" ? "GitHub Pages" : "Local";
       const image = c.imageData || c.imageUrl || "";
+      const connection = connectedHref(c, theme);
+      const clinicalLabel = c.clinicalReviewStatus === "pendente" ? " • revisão clínica pendente" : "";
       return `
-        <article class="card">
-          <div class="imgbox" data-view="${esc(c.id)}">
-            ${image ? `<img src="${esc(image)}" alt="${esc(c.title || "Card")}" loading="lazy" onerror="this.remove(); this.parentElement.innerHTML='<div class=&quot;missing&quot;>🖼️ Imagem ainda não enviada ao repositório.<br><small>Confira o caminho em data/cards.json</small></div>';" />`
+        <article class="card" data-card-id="${esc(c.id)}">
+          <button type="button" class="imgbox" data-view="${esc(c.id)}" aria-label="Ampliar imagem: ${esc(c.title || "Card")}">
+            ${image ? `<img src="${esc(image)}" alt="${esc(c.title || "Card")}" loading="lazy" decoding="async" onerror="this.parentElement.innerHTML='<div class=&quot;missing&quot;>🖼️ Imagem indisponível.<br><small>Confira o caminho em data/cards.json</small></div>';" />`
               : `<div class="missing">🖼️ Sem imagem associada</div>`}
-          </div>
+          </button>
           <div class="body">
             <div class="topline">
               <h3>${esc(c.title || "Card sem título")}</h3>
@@ -904,15 +1054,16 @@
             <div class="actions">
               ${c.theme === "inbox" ? `<button class="btn small primary" data-classify="${esc(c.id)}" style="background:linear-gradient(135deg,#f59e0b,#ef4444);border:none">📂 Classificar</button>` : ""}
               <button class="btn small" data-edit="${esc(c.id)}">✍️ Editar local</button>
-              <button class="btn small gold" data-fav="${esc(c.id)}">${c.favorite ? "⭐" : "☆"}</button>
+              <button class="btn small gold" data-fav="${esc(c.id)}" aria-label="${c.favorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}">${c.favorite ? "⭐" : "☆"}</button>
               <button class="btn small" data-review="${esc(c.id)}">🔁 Revisar</button>
+              <button class="btn small" data-copy="${esc(c.id)}">📋 Copiar resumo</button>
               <button class="btn small green" data-status="${esc(c.id)}" data-value="dominado">✅ Dominei</button>
               ${hiddenCards.includes(c.id)
                 ? `<button class="btn small" data-restore="${esc(c.id)}" style="border-color:#10b981;color:#6ee7b7">♻️ Restaurar</button>`
                 : `<button class="btn small" data-hide="${esc(c.id)}" style="border-color:#ef4444;color:#fca5a5">🚫 Ocultar</button>`}
-              <a class="btn small" href="../index.html">🔗 Enciclopédia</a>
+              <a class="btn small" href="${esc(connection)}">🔗 Explorar tema</a>
             </div>
-            <div class="meta"><span>${esc(c.status || "novo")} • ${esc(sourceBadge)} • ${formatDate(c.createdAt)}</span><span>${c.nextReview ? "Próx.: " + formatDate(c.nextReview) : esc(c.source || "")}</span></div>
+            <div class="meta"><span>${esc(c.status || "novo")}${esc(clinicalLabel)} • ${esc(sourceBadge)} • ${formatDate(c.createdAt)}</span><span>${c.nextReview ? "Próx.: " + formatDate(c.nextReview) : esc(c.source || "")}</span></div>
           </div>
         </article>
       `;
@@ -929,6 +1080,7 @@
       document.querySelectorAll("[data-view]").forEach(b => b.onclick = () => openViewer(b.dataset.view));
       document.querySelectorAll("[data-fav]").forEach(b => b.onclick = () => toggleFavorite(b.dataset.fav));
       document.querySelectorAll("[data-review]").forEach(b => b.onclick = () => markReview(b.dataset.review));
+      document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copySummary(b.dataset.copy));
       document.querySelectorAll("[data-status]").forEach(b => b.onclick = () => quickStatus(b.dataset.status, b.dataset.value));
       document.querySelectorAll("[data-classify]").forEach(b => b.onclick = () => openClassify(b.dataset.classify));
       document.querySelectorAll("[data-hide]").forEach(b => b.onclick = () => hideCard(b.dataset.hide));
@@ -937,7 +1089,7 @@
 
     function hideCard(id) {
       if (!confirm('🚫 Ocultar este card?\n\nVocê pode restaurar depois em 🚫 Ocultos.')) return;
-      hiddenCards.push(id);
+      hiddenCards = Array.from(new Set([...hiddenCards, id]));
       localStorage.setItem('cardFeedHidden', JSON.stringify(hiddenCards));
       render();
       toast('🚫 Card ocultado. Veja em 🚫 Ocultos para restaurar.');
@@ -948,6 +1100,49 @@
       localStorage.setItem('cardFeedHidden', JSON.stringify(hiddenCards));
       render();
       toast('♻️ Card restaurado!');
+    }
+
+    async function copySummary(id) {
+      const c = getCard(id);
+      if (!c) return;
+      const theme = themeById(c.theme);
+      const text = [
+        `${theme.emoji} ${c.title || "Card sem título"}`,
+        c.explanation || "",
+        (c.tags || []).map(tag => `#${tag}`).join(" "),
+        c.source ? `Fonte: ${c.source}` : ""
+      ].filter(Boolean).join("\n\n");
+      try {
+        if (!navigator.clipboard?.writeText) throw new Error("clipboard-unavailable");
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const area = document.createElement("textarea");
+        area.value = text;
+        area.setAttribute("readonly", "");
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+      }
+      toast("📋 Resumo copiado.");
+    }
+
+    function randomCard() {
+      const list = getFiltered();
+      if (!list.length) {
+        toast("Nenhum card disponível nos filtros atuais.");
+        return;
+      }
+      const card = list[Math.floor(Math.random() * list.length)];
+      const element = Array.from(document.querySelectorAll("[data-card-id]")).find(el => el.dataset.cardId === card.id);
+      if (!element) return;
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      element.classList.remove("random-focus");
+      requestAnimationFrame(() => element.classList.add("random-focus"));
+      window.setTimeout(() => element.classList.remove("random-focus"), 1700);
+      toast(`🎲 Sorteado: ${card.title || "card"}`);
     }
 
     function openClassify(id) {
@@ -1099,10 +1294,11 @@
       $("btnExport").onclick = exportBackup;
       $("btnReview").onclick = () => { reviewOnly = !reviewOnly; $("btnReview").textContent = reviewOnly ? "🗂️ Ver todos" : "🔁 Modo revisão"; render(); };
       $("btnFeedMode").onclick = toggleViewMode;
+      $("btnRandom").onclick = randomCard;
       $("btnHelp").onclick = () => $("helpDialog").showModal();
       $("btnPrint").onclick = () => window.print();
       $("classifyForm").onsubmit = async e => { e.preventDefault(); await saveClassify(); };
-      ["search", "sortMode"].forEach(id => { $(id).oninput = render; $(id).onchange = render; });
+      ["search", "sortMode", "assetFilter"].forEach(id => { $(id).oninput = render; $(id).onchange = render; });
       $("themeFilter").onchange = () => { activeTheme = $("themeFilter").value; render(); };
       $("editForm").onsubmit = async e => { e.preventDefault(); await saveEdit(); $("editDialog").close(); };
       $("btnDelete").onclick = deleteCurrent;

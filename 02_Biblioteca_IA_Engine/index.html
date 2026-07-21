@@ -440,6 +440,20 @@ function decodeInlineToken(value) {
   try { return decodeURIComponent(value); } catch (_) { return ''; }
 }
 
+function applyInitialQuery() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const query = (params.get('q') || '').trim().slice(0, 180);
+    const theme = (params.get('theme') || '').trim();
+    if (query) document.getElementById('busca').value = query;
+    if (theme && (taxonomy.themes || []).some(item => item.id === theme)) {
+      currentFilter = theme;
+    }
+  } catch (_) {
+    // URL sem parâmetros válidos: mantém a Biblioteca no estado padrão.
+  }
+}
+
 
 // Lógica de Exclusão
 function marcarParaExcluir(id, event) {
@@ -548,6 +562,7 @@ async function init() {
       else catalog.items.push(mod);
     });
 
+    applyInitialQuery();
     popularFiltros();
     popularFormatos();
     popularSelects();

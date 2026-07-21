@@ -38,6 +38,7 @@ echo ""
 echo "1/4 Biblioteca IA..."
 if [ -f "02_Biblioteca_IA_Engine/scan_biblioteca.py" ]; then
   (cd 02_Biblioteca_IA_Engine && python3 scan_biblioteca.py)
+  python3 scripts_admin/build_library_connections.py
 else
   echo "Aviso: 02_Biblioteca_IA_Engine/scan_biblioteca.py nao encontrado."
 fi

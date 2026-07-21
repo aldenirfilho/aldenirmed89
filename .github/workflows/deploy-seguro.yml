@@ -60,6 +60,7 @@ jobs:
           python3 scripts_admin/build_desafios.py
           python3 scripts_admin/build_mnemonicos.py
           python3 02_Biblioteca_IA_Engine/scan_biblioteca.py
+          python3 scripts_admin/build_library_connections.py
           python3 scripts_admin/scan_card_feed.py
           python3 scripts_admin/build_connections.py
           for hub in 04_Ebooks_Intensiva_Clinica 07_Questoes_Comentadas 08_Transcricoes 09_POCUS_Hub; do
@@ -71,6 +72,7 @@ jobs:
       - name: Validar manifests e paths antes do deploy
         run: |
           set -e
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
           python3 scripts_admin/check_static_manifests.py
           python3 scripts_admin/validar_paths.py --check
           python3 scripts/validate_routes.py

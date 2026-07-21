@@ -30,6 +30,11 @@ MNEM_JSON = os.path.join(ROOT_DIR, "data", "mnemonicos.json")
 
 # Tipos gerenciados automaticamente por este script (podem ser podados).
 AUTO_TYPES = {"desafio", "mnemonico"}
+CANONICAL_URLS = {
+    "05_Biblioteca_IA/index.html": "02_Biblioteca_IA_Engine/index.html",
+    "06_Card_Feed_Medico/index.html": "05_Midia_E_Feed/index.html",
+    "03_Calculadoras_UTI/index.html": "03_Calculadoras_E_Apps/index.html",
+}
 
 
 def load_json(path, default):
@@ -79,12 +84,16 @@ def main():
     nodes = conn.get("nodes", [])
     edges = conn.get("edges", [])
     index = {n["id"]: n for n in nodes if n.get("id")}
-    edge_seen = {(e.get("from"), e.get("to")) for e in edges}
+    for node in index.values():
+        if node.get("url") in CANONICAL_URLS:
+            node["url"] = CANONICAL_URLS[node["url"]]
+    edge_seen = {(e.get("from"), e.get("to"), e.get("relation")) for e in edges}
 
     def ensure_edge(frm, to, relation):
-        if frm == to or (frm, to) in edge_seen:
+        key = (frm, to, relation)
+        if frm == to or key in edge_seen:
             return
-        edge_seen.add((frm, to))
+        edge_seen.add(key)
         edges.append({"from": frm, "to": to, "relation": relation})
 
     # ── Hubs garantidos ────────────────────────────────────────────────
@@ -164,8 +173,16 @@ def main():
         if nid not in ordered_ids:
             ordered_ids.append(nid)
     conn["nodes"] = [index[nid] for nid in ordered_ids]
-    conn["edges"] = [e for e in edges
-                     if e.get("from") in index and e.get("to") in index]
+    valid_edges = [e for e in edges
+                   if e.get("from") in index and e.get("to") in index]
+    deduplicated_edges = []
+    seen_edges = set()
+    for edge in valid_edges:
+        key = json.dumps(edge, ensure_ascii=False, sort_keys=True)
+        if key not in seen_edges:
+            seen_edges.add(key)
+            deduplicated_edges.append(edge)
+    conn["edges"] = deduplicated_edges
     conn["updatedAt"] = datetime.now().isoformat(timespec="seconds")
 
     os.makedirs(os.path.dirname(CONN_JSON), exist_ok=True)
