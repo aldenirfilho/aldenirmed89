@@ -121,7 +121,30 @@
   .preview-overlay.open{display:flex}
   .preview-toolbar{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.2rem;background:var(--bg2);border-bottom:1px solid var(--border)}
   .preview-toolbar h3{font-family:'Syne',sans-serif;font-size:.95rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;margin-right:1rem}
-  .preview-iframe{flex:1;border:none;background:#fff}
+  .preview-shell{min-height:0;flex:1;display:grid;grid-template-columns:minmax(0,1fr) 350px;background:var(--bg)}
+  .preview-stage{min-width:0;min-height:0;display:flex;position:relative;background:#fff}
+  .preview-iframe{width:100%;height:100%;border:none;background:#fff}
+  .study-panel{overflow:auto;background:var(--card);border-left:1px solid var(--border);padding:1rem;display:flex;flex-direction:column;gap:.85rem}
+  .study-panel h4,.study-dashboard h2{font-family:'Syne',sans-serif;color:var(--accent)}
+  .study-panel label,.study-controls label{display:block;font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace}
+  .study-panel textarea,.study-panel select,.study-panel input,.study-controls select{width:100%;margin-top:.3rem;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.65rem;color:var(--text);font:inherit}
+  .study-panel textarea{min-height:88px;resize:vertical}
+  .study-panel .readonly-note{font-size:.72rem;line-height:1.5;color:var(--muted);background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);padding:.65rem;border-radius:8px}
+  .connections-list{display:grid;gap:.45rem}
+  .connections-list a{color:var(--accent);text-decoration:none;font-size:.78rem;padding:.5rem;border:1px solid var(--border);border-radius:7px}
+  .connections-list a:hover{background:rgba(0,212,255,.08)}
+
+  /* ── MODO ESTUDO ── */
+  .study-dashboard{max-width:1100px;margin:1.5rem auto;padding:0 1rem}
+  .study-hero{background:linear-gradient(135deg,rgba(0,212,255,.10),rgba(124,58,237,.12));border:1px solid var(--border);border-radius:16px;padding:1.3rem}
+  .study-hero p{color:var(--muted);font-size:.85rem;line-height:1.55;margin-top:.4rem}
+  .study-controls{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem;align-items:end}
+  .study-controls label{min-width:180px;flex:1}
+  .study-queue{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-top:1rem}
+  .study-progress{height:7px;background:var(--bg3);border-radius:99px;overflow:hidden;margin:.75rem 0}
+  .study-progress span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3))}
+  .study-badge{font-size:.67rem;border:1px solid var(--border);border-radius:999px;padding:.2rem .55rem;color:var(--accent3)}
+  .study-empty{color:var(--muted);text-align:center;padding:3rem;border:1px dashed var(--border);border-radius:12px;grid-column:1/-1}
 
   /* BRAIN MAP MINI */
   .brain-map-mini{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;max-width:900px;margin:2rem auto;text-align:center}
@@ -172,6 +195,9 @@
     .preview-toolbar{align-items:flex-start;flex-wrap:wrap;gap:.75rem;padding:.75rem}
     .preview-toolbar h3{flex:1 0 100%;margin-right:0}
     .preview-toolbar>div{display:flex;flex-wrap:wrap;gap:.4rem;width:100%}
+    .preview-shell{grid-template-columns:1fr;grid-template-rows:minmax(55vh,1fr) auto;overflow:auto}
+    .preview-stage{min-height:55vh}
+    .study-panel{max-height:none;border-left:none;border-top:1px solid var(--border)}
     .search-bar input,.filter-panel select,.classify-box select,.classify-box input,.classify-box textarea{font-size:16px}
   }
 </style>
@@ -182,7 +208,9 @@
   <h1>📚 Biblioteca IA — Enciclopédia Médica</h1>
   <div class="actions">
     <button class="nav-btn active" id="btn-catalogo" onclick="switchView('catalogo')">📂 Catálogo</button>
+    <button class="nav-btn" id="btn-estudo" onclick="switchView('estudo')">🧠 Estudo <span id="study-due-count" style="background:var(--accent2);color:#fff;padding:1px 5px;border-radius:10px;font-size:.6rem;margin-left:3px">0</span></button>
     <button class="nav-btn" id="btn-triagem" onclick="switchView('triagem')">📥 Triagem <span id="triagem-count" style="background:var(--red);color:#fff;padding:1px 5px;border-radius:10px;font-size:.6rem;margin-left:3px">0</span></button>
+    <a href="GUIA_BIBLIOTECA_E_PUBLICACAO.md" target="_blank" rel="noopener noreferrer" class="back">➕ Como adicionar</a>
     <a href="../index.html" class="back">← Voltar</a>
   </div>
 </header>
@@ -192,7 +220,7 @@
   <div style="max-width:900px;margin:2rem auto 0;padding:0 1rem">
     <!-- AVISO JURÍDICO -->
     <div class="juridico">
-      <p>Materiais produzidos pelo <strong>Dr. Aldenir Rocha</strong> com suporte de IA para fins educacionais e de apoio à decisão clínica. Obra intelectual organizada para uso próprio em UTI, enfermaria e preparação TEMI.</p>
+      <p>Acervo organizado pelo <strong>Dr. Aldenir Rocha</strong>. A autoria e a licença são registradas por documento: materiais próprios, produzidos com apoio de IA e referências externas não são tratados como equivalentes. Conteúdo educacional — confirme condutas em fontes clínicas atualizadas.</p>
     </div>
 
     <!-- STATS -->
@@ -272,6 +300,37 @@
   </div>
 </div>
 
+<!-- VIEW: ESTUDO -->
+<div id="view-estudo" data-view="estudo">
+  <div class="study-dashboard">
+    <div class="study-hero">
+      <h2>🧠 Central de Estudo da Biblioteca</h2>
+      <p>Escolha um documento, registre síntese e notas editáveis, defina confiança e programe a revisão. O caderno local não é criptografado nem sincronizado: nunca insira dados identificáveis de pacientes e exporte um backup antes de limpar o navegador.</p>
+      <div class="stats" style="margin:1rem 0 0;max-width:none">
+        <div class="stat"><span id="study-total">0</span><small>Em estudo</small></div>
+        <div class="stat"><span id="study-due">0</span><small>Revisões devidas</small></div>
+        <div class="stat"><span id="study-mastered">0</span><small>Dominados</small></div>
+        <div class="stat"><span id="study-favorites">0</span><small>Favoritos</small></div>
+      </div>
+      <div class="study-controls">
+        <label>Fila
+          <select id="study-filter" onchange="renderStudyDashboard()">
+            <option value="due">Revisar agora</option>
+            <option value="active">Em estudo</option>
+            <option value="favorites">Favoritos</option>
+            <option value="all">Todo o acervo</option>
+          </select>
+        </label>
+        <button class="btn btn-primary" onclick="openNextStudy()">▶️ Próxima peça</button>
+        <button class="btn btn-secondary" onclick="exportStudyBackup()">💾 Exportar caderno</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('study-import').click()">📥 Importar backup</button>
+        <input id="study-import" type="file" accept="application/json" hidden onchange="importStudyBackup(event)"/>
+      </div>
+    </div>
+    <div class="study-queue" id="study-queue"></div>
+  </div>
+</div>
+
 <!-- VIEW: TRIAGEM -->
 <div id="view-triagem" data-view="triagem">
   <section class="section-title">
@@ -333,7 +392,7 @@
         </select>
       </label>
       <label>Tipo de Arquivo
-        <select id="clTipo">
+        <select id="clTipo" disabled title="O formato é detectado pelo arquivo físico e não pode ser alterado no navegador.">
           <option value="pdf">📄 PDF</option>
           <option value="word">📝 Word/DOCX</option>
           <option value="spreadsheet">📊 XLS/XLSX</option>
@@ -381,12 +440,52 @@
   <div class="preview-toolbar">
     <h3 id="previewTitle">Visualizando arquivo</h3>
     <div style="display:flex;gap:.5rem">
-      <a id="previewDirect" href="#" target="_blank" class="btn btn-secondary" style="font-size:.75rem">🔗 Abrir direto</a>
+      <a id="previewDirect" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:.75rem">🔗 Abrir direto</a>
+      <a id="previewOffice" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:.75rem;display:none">📝 Office Online</a>
       <a id="previewDownload" href="#" download class="btn btn-secondary" style="font-size:.75rem">⬇️ Baixar</a>
       <button class="btn btn-primary" onclick="fecharPreview()" style="font-size:.75rem">✕ Fechar</button>
     </div>
   </div>
-  <iframe class="preview-iframe" id="previewFrame" sandbox="allow-downloads allow-forms allow-popups" referrerpolicy="no-referrer"></iframe>
+  <div class="preview-shell">
+    <div class="preview-stage">
+      <iframe class="preview-iframe" id="previewFrame" title="Pré-visualização segura do documento" sandbox="allow-downloads allow-forms allow-popups" referrerpolicy="no-referrer"></iframe>
+    </div>
+    <aside class="study-panel">
+      <h4>✍️ Caderno editável</h4>
+      <div class="readonly-note">🔒 Original somente leitura. O caderno usa armazenamento local não criptografado, pode ser perdido ao limpar o navegador e não deve conter qualquer dado identificável de paciente.</div>
+      <div class="readonly-note" id="previewEditorialWarning">🔎 Verificando autoria, licença e revisão clínica…</div>
+      <label>Status
+        <select id="previewStudyStatus" onchange="scheduleStudyAutosave()">
+          <option value="novo">Novo</option>
+          <option value="estudando">Estudando</option>
+          <option value="revisar">Revisar</option>
+          <option value="dominado">Dominado</option>
+        </select>
+      </label>
+      <label>Confiança: <strong id="confidenceValue">1/5</strong>
+        <input id="previewConfidence" type="range" min="1" max="5" value="1" oninput="document.getElementById('confidenceValue').textContent=this.value+'/5';scheduleStudyAutosave()"/>
+      </label>
+      <label>Próxima revisão
+        <input id="previewNextReview" type="date" onchange="scheduleStudyAutosave()"/>
+      </label>
+      <label>Síntese em suas palavras
+        <textarea id="previewSummary" oninput="scheduleStudyAutosave()" placeholder="3–5 linhas: o que muda minha conduta ou minha prova?"></textarea>
+      </label>
+      <label>Notas / dúvidas
+        <textarea id="previewNotes" oninput="scheduleStudyAutosave()" placeholder="Lacunas, perguntas, condutas para conferir..."></textarea>
+      </label>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="saveCurrentStudy()">💾 Salvar estudo</button>
+        <button class="btn btn-secondary" onclick="toggleCurrentFavorite()" id="previewFavorite">☆ Favoritar</button>
+        <button class="btn btn-secondary" onclick="copyStudyPrompt()">📋 Prompt</button>
+        <span id="studySaveStatus" style="font-size:.7rem;color:var(--muted);align-self:center" aria-live="polite"></span>
+      </div>
+      <h4>🔗 Continuar no ecossistema</h4>
+      <div class="connections-list" id="previewConnections"></div>
+      <h4>📚 Relacionados</h4>
+      <div class="connections-list" id="previewRelated"></div>
+    </aside>
+  </div>
 </div>
 
 <script>
@@ -398,10 +497,20 @@ let catalog = { items: [] };
 let brain = { nodes: [], edges: [] };
 let roadmap = [];
 let documentManifest = { files: [], partitions: [], origins: [] };
+let previewManifest = { documents: [] };
+let currentPreviewItem = null;
+let activePreviewBlobUrl = '';
+let studyAutosaveTimer = null;
+let studyFormDirty = false;
+let previewLoadToken = 0;
+let studyStoreCache = null;
 let currentFilter = 'todos';
 let currentFormatFilter = 'todos';
 let currentOriginFilter = 'todos';
 let currentView = 'catalogo';
+const STUDY_STORAGE_KEY = 'biblioteca_estudo_v1';
+const LOCAL_MUTABLE_FIELDS = ["title","resumo","theme","tags","status","ia_origem","origin","origem","updatedAt"];
+const EDITORIAL_FIELDS = ["title","resumo","tags","ia_origem","data","createdAt","authorshipStatus","authorshipEvidence","license","privacyReviewStatus","clinicalReviewStatus","reviewedAt"];
 
 // Lógica de URL base dinâmica
 function getBaseUrl() {
@@ -415,12 +524,43 @@ function getBaseUrl() {
 // Normalização de caminhos para evitar redundância de pasta pai (Fix 404)
 function normalizePath(p) {
   if (!p) return '';
-  const raw = String(p).trim().replace(/^\.\//, '').replace(/^05_Biblioteca_IA\//, '');
+  const raw = String(p).normalize('NFC').trim().replace(/^\.\//, '').replace(/^05_Biblioteca_IA\//, '');
   if (/^https:\/\//i.test(raw)) return raw;
   if (/^[a-z][a-z0-9+.-]*:/i.test(raw) || raw.startsWith('/') || raw.includes('\\')) return '';
   const parts = raw.split('/');
   if (parts.some(part => !part || part === '.' || part === '..' || /[\u0000-\u001f]/.test(part))) return '';
   return parts.join('/');
+}
+
+function readLocalJSON(key, fallback) {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(key) || 'null');
+    return parsed === null ? fallback : parsed;
+  } catch (_) {
+    return fallback;
+  }
+}
+
+function mergeLocalOverride(repoItem, localOverride) {
+  const merged = { ...repoItem };
+  if (!localOverride || typeof localOverride !== 'object') return merged;
+  LOCAL_MUTABLE_FIELDS.forEach(field => {
+    if (Object.prototype.hasOwnProperty.call(localOverride, field)) merged[field] = localOverride[field];
+  });
+  return merged;
+}
+
+function mergeEditorial(repoItem, editorial) {
+  const merged = { ...repoItem };
+  if (!editorial || typeof editorial !== 'object') return merged;
+  EDITORIAL_FIELDS.forEach(field => {
+    if (Object.prototype.hasOwnProperty.call(editorial, field)) merged[field] = editorial[field];
+  });
+  // Identidade, integridade e rota pertencem exclusivamente ao manifesto físico.
+  ['id','path','filename','name','extension','tipo','format','sourceSha256','previewMode','sizeBytes'].forEach(field => {
+    merged[field] = repoItem[field];
+  });
+  return merged;
 }
 
 function escapeHTML(value) {
@@ -430,6 +570,43 @@ function escapeHTML(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+function searchKey(value) {
+  return String(value ?? '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function authorshipLabel(status) {
+  return ({
+    'confirmado-autoral': '✍️ Autoral confirmado',
+    'autoral-com-ia': '🤖 Autoral com IA',
+    'terceiro-referencia': '📚 Referência externa',
+    'a-confirmar': '🔎 Autoria a confirmar'
+  })[status] || '🔎 Autoria a confirmar';
+}
+
+function licenseLabel(value) {
+  return value && value !== 'a-confirmar' ? `⚖️ Licença: ${value}` : '⚠️ Licença a confirmar';
+}
+
+function clinicalReviewLabel(value) {
+  return value && !['nao-revisado','a-confirmar'].includes(value) ? `🩺 Revisão: ${value}` : '⚠️ Revisão clínica não confirmada';
+}
+
+function privacyReviewLabel(value) {
+  return value && value.startsWith('revisado-') ? `🔐 Privacidade: ${value}` : '⚠️ Privacidade não reatestada';
+}
+
+function localDateISO(value = new Date()) {
+  const year = value.getFullYear();
+  const month = String(value.getMonth() + 1).padStart(2, '0');
+  const day = String(value.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 function inlineToken(value) {
@@ -464,8 +641,9 @@ function marcarParaExcluir(id, event) {
   if (!item) return;
 
   // Adicionar ao log de exclusão no localStorage
-  let deleted = JSON.parse(localStorage.getItem('biblioteca_deleted_files') || '[]');
-  deleted.push(item.path);
+  let deleted = readLocalJSON('biblioteca_deleted_files', []);
+  if (!Array.isArray(deleted)) deleted = [];
+  if (!deleted.includes(item.path)) deleted.push(item.path);
   localStorage.setItem('biblioteca_deleted_files', JSON.stringify(deleted));
 
   // Remover do catálogo atual na memória (para sumir da tela)
@@ -475,19 +653,20 @@ function marcarParaExcluir(id, event) {
   renderStats();
   renderTriagem();
 
-  alert("Arquivo ocultado da visualização local. O arquivo permanece intacto no Obsidian.");
+  alert("Arquivo ocultado apenas nesta sessão. Recarregue a Biblioteca para restaurá-lo; o original permanece intacto.");
 }
 
 // Carregar Dados
 async function init() {
   try {
-    const [resTax, resCat, resBrain, resRoad, resAuto, resDocs] = await Promise.all([
+    const [resTax, resCat, resBrain, resRoad, resAuto, resDocs, resPreviews] = await Promise.all([
       fetch('data/biblioteca_taxonomia_temas.json').then(r => r.ok ? r.json() : {themes:[]}),
       fetch('data/biblioteca_catalogo.json').then(r => r.ok ? r.json() : {items:[]}),
       fetch('data/biblioteca_brain_connections.json').then(r => r.ok ? r.json() : {nodes:[], edges:[]}),
       fetch('../data/roadmap_30_melhorias_biblioteca_ia.json').then(r => r.ok ? r.json() : {roadmap:[]}).catch(() => ({roadmap:[]})),
       fetch('data/biblioteca_inbox_manifest_auto.json').then(r => r.ok ? r.json() : {files:[]}).catch(() => ({files:[]})),
-      fetch('data/biblioteca_documentos_manifest.json').then(r => r.ok ? r.json() : {files:[], partitions:[], origins:[]}).catch(() => ({files:[], partitions:[], origins:[]}))
+      fetch('data/biblioteca_documentos_manifest.json').then(r => r.ok ? r.json() : {files:[], partitions:[], origins:[]}).catch(() => ({files:[], partitions:[], origins:[]})),
+      fetch('data/biblioteca_previews.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : {documents:[]}).catch(() => ({documents:[]}))
     ]);
     
     taxonomy = resTax;
@@ -497,70 +676,39 @@ async function init() {
     if (!taxonomy.themes) taxonomy.themes = [];
     taxonomy.themes = [...taxonomy.themes, ...customThemes];
 
-    catalog = resCat;
     brain = resBrain;
     roadmap = resRoad.roadmap || resRoad.suggestions || resRoad.roadmap_items || [];
     documentManifest = resDocs && resDocs.files && resDocs.files.length ? resDocs : { ...resAuto, partitions: [], origins: [] };
-    const autoManifest = documentManifest.files || [];
-    
-    // Resolver caminhos quebrados do catálogo usando o manifesto real do inbox (GitHub Pages)
-    const manifestByName = new Map(autoManifest.map(f => [f.name || f.filename, { ...f, path: normalizePath(f.path) }]));
-    const manifestByPath = new Map(autoManifest.map(f => [normalizePath(f.path), { ...f, path: normalizePath(f.path) }]));
-    (catalog.items || []).forEach(item => {
-      const fileName = item.filename || (item.path || '').split('/').pop();
-      const meta = manifestByName.get(fileName) || manifestByPath.get(normalizePath(item.path));
-      if (meta) {
-        item.path = meta.path;
-        item.filename = item.filename || meta.name || meta.filename;
-        item.tipo = meta.tipo || item.tipo;
-        item.extension = meta.extension || item.extension;
-        item.formato = meta.format || item.formato;
-        item.formatoLabel = meta.formatLabel || item.formatoLabel;
-        item.formatEmoji = meta.formatEmoji || item.formatEmoji;
-        item.origem = meta.origin || item.origem;
-        item.origemLabel = meta.originLabel || item.origemLabel;
-        item.originEmoji = meta.originEmoji || item.originEmoji;
-        item.sizeBytes = meta.sizeBytes || item.sizeBytes;
-        item.tags = Array.from(new Set([...(item.tags || []), meta.extension, meta.format, meta.origin].filter(Boolean)));
-      }
-    });
-    
-    // Sincronizar arquivos do manifesto automático que não estão no catálogo
-    autoManifest.forEach(autoFile => {
-        const normalizedPath = normalizePath(autoFile.path);
-        const exists = catalog.items.find(i => normalizePath(i.path) === normalizedPath || i.filename === (autoFile.name || autoFile.filename));
-        if (!exists) {
-            catalog.items.push({
-                id: autoFile.id || 'auto-' + Math.random().toString(36).substr(2, 9),
-                title: autoFile.title || (autoFile.name || autoFile.filename || 'Arquivo').replace(/\.[^/.]+$/, "").replace(/_/g, " "),
-                filename: autoFile.name || autoFile.filename,
-                theme: autoFile.theme || 'inbox-revisar',
-                tipo: autoFile.tipo || (autoFile.extension === 'pdf' ? 'pdf' : (['docx', 'doc'].includes(autoFile.extension) ? 'word' : 'text')),
-                extension: autoFile.extension,
-                formato: autoFile.format,
-                formatoLabel: autoFile.formatLabel,
-                formatEmoji: autoFile.formatEmoji,
-                origem: autoFile.origin,
-                origemLabel: autoFile.originLabel,
-                originEmoji: autoFile.originEmoji,
-                sizeBytes: autoFile.sizeBytes,
-                tags: ['auto-detectado', autoFile.extension, autoFile.format, autoFile.origin].filter(Boolean),
-                status: 'revisar',
-                path: normalizedPath,
-                resumo: 'Arquivo detectado automaticamente no inbox. Aguardando classificação.',
-                data: (autoFile.addedAt || '').substring(0, 7) || '2026',
-                createdAt: new Date().toISOString()
-            });
-        }
-    });
+    previewManifest = resPreviews || { documents: [] };
 
-    // Mesclar classificações locais (se houver)
-    const localModifs = JSON.parse(localStorage.getItem('lib_classificacoes') || '[]');
-    localModifs.forEach(mod => {
-      const idx = catalog.items.findIndex(i => i.id === mod.id);
-      if (idx !== -1) catalog.items[idx] = { ...catalog.items[idx], ...mod };
-      else catalog.items.push(mod);
+    // O manifesto físico validado é a única fonte estrutural da interface.
+    const editorialGroups = new Map();
+    (resCat.items || []).forEach(item => {
+      const key = normalizePath(item.path);
+      if (!key) return;
+      const group = editorialGroups.get(key) || [];
+      group.push(item);
+      editorialGroups.set(key, group);
     });
+    const localModifs = readLocalJSON('lib_classificacoes', []);
+    const localById = new Map(Array.isArray(localModifs) ? localModifs.filter(Boolean).map(item => [String(item.id || ''), item]) : []);
+    const localByPath = new Map(Array.isArray(localModifs) ? localModifs.filter(item => normalizePath(item?.path)).map(item => [normalizePath(item.path), item]) : []);
+    const seenPaths = new Set();
+    const seenIds = new Set();
+    const canonicalItems = [];
+
+    (documentManifest.files || []).forEach(file => {
+      const path = normalizePath(file.path);
+      const id = String(file.id || '');
+      if (!path || !id || seenPaths.has(path) || seenIds.has(id)) return;
+      seenPaths.add(path);
+      seenIds.add(id);
+      const canonical = { ...file, path, filename: file.filename || file.name };
+      const editorial = editorialGroups.get(path);
+      const enriched = editorial && editorial.length === 1 ? mergeEditorial(canonical, editorial[0]) : canonical;
+      canonicalItems.push(mergeLocalOverride(enriched, localByPath.get(path) || localById.get(id)));
+    });
+    catalog = { ...resCat, totalFiles: canonicalItems.length, items: canonicalItems };
 
     applyInitialQuery();
     popularFiltros();
@@ -570,6 +718,7 @@ async function init() {
     renderParticoes();
     renderGrid();
     renderTriagem();
+    renderStudyDashboard();
     renderRoadmap();
   } catch(e) {
     console.error("Erro ao carregar dados:", e);
@@ -699,6 +848,7 @@ function renderStats() {
   document.getElementById('count-nodes').textContent = brain.nodes ? brain.nodes.length : 0;
   document.getElementById('count-edges').textContent = brain.edges ? brain.edges.length : 0;
   document.getElementById('triagem-count').textContent = catalog.items.filter(i => i.theme === 'inbox-revisar').length;
+  updateStudyCounters();
 }
 
 let currentRenderLimit = 50;
@@ -707,7 +857,7 @@ let lastRenderState = '';
 // Renderizar Grid
 function renderGrid() {
   const grid = document.getElementById('grid-arquivos');
-  const busca = document.getElementById('busca').value.toLowerCase();
+  const busca = searchKey(document.getElementById('busca').value);
   
   const currentState = `${currentFilter}|${currentFormatFilter}|${currentOriginFilter}|${busca}`;
   if (currentState !== lastRenderState) {
@@ -735,10 +885,11 @@ function renderGrid() {
       originId,
       i.origemLabel,
       i.originLabel,
+      i.authorshipStatus,
       i.resumo,
       ...(i.tags || [])
-    ].filter(Boolean).join(' ').toLowerCase();
-    const matchBusca = !busca || haystack.includes(busca);
+    ].filter(Boolean).join(' ');
+    const matchBusca = !busca || searchKey(haystack).includes(busca);
     return matchTheme && matchFormat && matchOrigin && matchBusca;
   });
 
@@ -780,6 +931,10 @@ function renderGrid() {
         <div class="meta-pills">
           <span class="meta-pill format">${escapeHTML(formatEmoji)} ${escapeHTML(formatLabel)}</span>
           <span class="meta-pill origin">${escapeHTML(originEmoji)} ${escapeHTML(originLabel)}</span>
+          <span class="meta-pill">${escapeHTML(authorshipLabel(i.authorshipStatus))}</span>
+          <span class="meta-pill">${escapeHTML(licenseLabel(i.license))}</span>
+          <span class="meta-pill">${escapeHTML(clinicalReviewLabel(i.clinicalReviewStatus))}</span>
+          <span class="meta-pill">${escapeHTML(privacyReviewLabel(i.privacyReviewStatus))}</span>
         </div>
         <div class="card-desc">${escapeHTML(i.resumo || 'Clique para visualizar este material médico.')}</div>
         <div class="card-tags">
@@ -787,6 +942,7 @@ function renderGrid() {
         </div>
         <div class="card-actions">
           <button class="btn btn-primary" onclick="event.stopPropagation(); abrirPreview('${pathToken}', '${titleToken}')">👁️ Ver</button>
+          <button class="btn btn-secondary" onclick="event.stopPropagation(); abrirPreview('${pathToken}', '${titleToken}', true)">🧠 Estudar</button>
           <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirClassify(decodeInlineToken('${idToken}'))">📂</button>
           <a href="${downloadPath}" download class="btn btn-secondary" onclick="event.stopPropagation()">⬇️ Baixar</a>
           <button class="btn btn-delete" title="Ocultar do catálogo" onclick="marcarParaExcluir(decodeInlineToken('${idToken}'), event)">🗑️ Ocultar</button>
@@ -872,6 +1028,7 @@ function getIcon(tipo) {
   if (tipo === 'html') return '🌐';
   if (tipo === 'image') return '🖼️';
   if (tipo === 'data') return '📊';
+  if (tipo === 'download') return '📦';
   return '📦';
 }
 
@@ -891,6 +1048,281 @@ function switchView(v) {
   document.querySelectorAll('.nav-btn').forEach(el => {
     el.classList.toggle('active', el.id === 'btn-' + v);
   });
+  if (v === 'estudo') renderStudyDashboard();
+}
+
+// ============================================================
+//  CADERNO DE ESTUDO LOCAL — somente metadados editáveis
+// ============================================================
+function getStudyStore() {
+  if (studyStoreCache) return studyStoreCache;
+  const raw = readLocalJSON(STUDY_STORAGE_KEY, { version: 1, records: {} });
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    studyStoreCache = { version: 1, records: {} };
+    return studyStoreCache;
+  }
+  if (!raw.records || typeof raw.records !== 'object' || Array.isArray(raw.records)) raw.records = {};
+  studyStoreCache = { version: 1, records: raw.records };
+  return studyStoreCache;
+}
+
+function writeStudyStore(store) {
+  try {
+    localStorage.setItem(STUDY_STORAGE_KEY, JSON.stringify(store));
+    studyStoreCache = store;
+    return true;
+  } catch (_) {
+    const status = document.getElementById('studySaveStatus');
+    if (status) status.textContent = '❌ Não foi possível salvar: exporte o caderno e libere espaço.';
+    return false;
+  }
+}
+
+function sanitizeStudyRecord(value) {
+  const source = value && typeof value === 'object' ? value : {};
+  const allowedStatus = ['novo','estudando','revisar','dominado'];
+  const confidence = Math.max(1, Math.min(5, Number(source.confidence) || 1));
+  return {
+    status: allowedStatus.includes(source.status) ? source.status : 'novo',
+    confidence,
+    nextReview: /^\d{4}-\d{2}-\d{2}$/.test(String(source.nextReview || '')) ? source.nextReview : '',
+    summary: String(source.summary || '').slice(0, 6000),
+    notes: String(source.notes || '').slice(0, 12000),
+    favorite: Boolean(source.favorite),
+    sourceSha256: /^[0-9a-f]{64}$/.test(String(source.sourceSha256 || '')) ? source.sourceSha256 : '',
+    documentTitle: String(source.documentTitle || '').slice(0, 500),
+    updatedAt: String(source.updatedAt || '')
+  };
+}
+
+function getStudyRecord(id) {
+  const record = sanitizeStudyRecord(getStudyStore().records[String(id)]);
+  const item = (catalog.items || []).find(candidate => candidate.id === id);
+  const sourceChanged = Boolean(record.sourceSha256 && item?.sourceSha256 && record.sourceSha256 !== item.sourceSha256);
+  return sourceChanged
+    ? { ...record, status: 'revisar', confidence: Math.min(record.confidence, 2), nextReview: localDateISO(), sourceChanged: true }
+    : { ...record, sourceChanged: false };
+}
+
+function persistStudyRecord(id, record) {
+  if (!(catalog.items || []).some(item => item.id === id)) return;
+  const store = getStudyStore();
+  const previous = store.records[id];
+  store.records[id] = sanitizeStudyRecord({ ...record, updatedAt: new Date().toISOString() });
+  if (!writeStudyStore(store)) {
+    if (previous === undefined) delete store.records[id];
+    else store.records[id] = previous;
+    return false;
+  }
+  updateStudyCounters();
+  return true;
+}
+
+function isStudyStarted(record) {
+  return Boolean(record.updatedAt || record.summary || record.notes || record.favorite || record.status !== 'novo');
+}
+
+function isReviewDue(record) {
+  if (!isStudyStarted(record)) return false;
+  if (!record.nextReview) return record.status === 'revisar';
+  return record.nextReview <= localDateISO();
+}
+
+function updateStudyCounters() {
+  const records = (catalog.items || []).map(item => getStudyRecord(item.id));
+  const started = records.filter(isStudyStarted).length;
+  const due = records.filter(isReviewDue).length;
+  const mastered = records.filter(record => record.status === 'dominado').length;
+  const favorites = records.filter(record => record.favorite).length;
+  const ids = { 'study-total': started, 'study-due': due, 'study-mastered': mastered, 'study-favorites': favorites, 'study-due-count': due };
+  Object.entries(ids).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  });
+}
+
+function studyStatusLabel(status) {
+  return ({ novo:'🆕 Novo', estudando:'📖 Estudando', revisar:'🔁 Revisar', dominado:'✅ Dominado' })[status] || '🆕 Novo';
+}
+
+function renderStudyDashboard() {
+  const queue = document.getElementById('study-queue');
+  if (!queue) return;
+  updateStudyCounters();
+  const filter = document.getElementById('study-filter')?.value || 'due';
+  const enriched = (catalog.items || []).map(item => ({ item, record: getStudyRecord(item.id) }));
+  let selected = enriched.filter(({ record }) => {
+    if (filter === 'due') return isReviewDue(record);
+    if (filter === 'active') return isStudyStarted(record) && record.status !== 'dominado';
+    if (filter === 'favorites') return record.favorite;
+    return true;
+  });
+  selected.sort((a, b) => {
+    const dateA = a.record.nextReview || '9999-12-31';
+    const dateB = b.record.nextReview || '9999-12-31';
+    return dateA.localeCompare(dateB) || String(a.item.title).localeCompare(String(b.item.title), 'pt-BR');
+  });
+  if (!selected.length) {
+    queue.innerHTML = '<div class="study-empty">🎉 Nenhum item nesta fila. Use <strong>Próxima peça</strong> para iniciar um documento novo.</div>';
+    return;
+  }
+  queue.innerHTML = selected.map(({ item, record }) => {
+    const pathToken = inlineToken(item.path);
+    const titleToken = inlineToken(item.title || item.filename);
+    return `<article class="card ${escapeHTML(String(item.tipo || ''))}">
+      <div style="display:flex;justify-content:space-between;gap:.5rem"><span class="card-icon">${getIcon(item.tipo)}</span><span class="study-badge">${studyStatusLabel(record.status)}</span></div>
+      <div class="card-title">${escapeHTML(item.title || item.filename)}</div>
+      <div class="card-meta">${escapeHTML(item.theme || 'sem tema')} · confiança ${record.confidence}/5 ${record.favorite ? '· ⭐' : ''} ${record.sourceChanged ? '· ⚠️ conteúdo atualizado' : ''}</div>
+      <div class="study-progress"><span style="width:${record.confidence * 20}%"></span></div>
+      <div class="card-desc">${escapeHTML(record.summary || item.resumo || 'Ainda sem síntese pessoal.')}</div>
+      <div class="card-actions"><button class="btn btn-primary" onclick="abrirPreview('${pathToken}','${titleToken}',true)">▶️ Estudar</button>${record.nextReview ? `<span class="meta-pill">📅 ${escapeHTML(record.nextReview)}</span>` : ''}</div>
+    </article>`;
+  }).join('');
+}
+
+function openNextStudy() {
+  const candidates = (catalog.items || []).map(item => ({ item, record: getStudyRecord(item.id) }));
+  const due = candidates.filter(({ record }) => isReviewDue(record)).sort((a,b) => (a.record.nextReview || '').localeCompare(b.record.nextReview || ''));
+  const next = due[0]
+    || candidates.find(({ record }) => !isStudyStarted(record))
+    || candidates.find(({ record }) => record.status !== 'dominado')
+    || candidates[0];
+  if (!next) return;
+  abrirPreview(inlineToken(next.item.path), inlineToken(next.item.title || next.item.filename), true);
+}
+
+function populateStudyPanel(item) {
+  const record = getStudyRecord(item.id);
+  document.getElementById('previewStudyStatus').value = record.status;
+  document.getElementById('previewConfidence').value = record.confidence;
+  document.getElementById('confidenceValue').textContent = record.confidence + '/5';
+  document.getElementById('previewNextReview').value = record.nextReview;
+  document.getElementById('previewSummary').value = record.summary;
+  document.getElementById('previewNotes').value = record.notes;
+  document.getElementById('previewFavorite').textContent = record.favorite ? '★ Favorito' : '☆ Favoritar';
+  document.getElementById('studySaveStatus').textContent = record.sourceChanged ? '⚠️ Documento atualizado: revisão reaberta' : (record.updatedAt ? '✓ Progresso carregado' : 'Ainda não salvo');
+  document.getElementById('previewEditorialWarning').textContent = `${authorshipLabel(item.authorshipStatus)} · ${licenseLabel(item.license)} · ${privacyReviewLabel(item.privacyReviewStatus)} · ${clinicalReviewLabel(item.clinicalReviewStatus)}`;
+  studyFormDirty = false;
+  renderDocumentConnections(item);
+}
+
+function scheduleStudyAutosave() {
+  if (!currentPreviewItem) return;
+  studyFormDirty = true;
+  document.getElementById('studySaveStatus').textContent = 'Alterações pendentes…';
+  clearTimeout(studyAutosaveTimer);
+  studyAutosaveTimer = setTimeout(() => saveCurrentStudy({ silent: true }), 700);
+}
+
+function saveCurrentStudy(options = {}) {
+  if (!currentPreviewItem) return;
+  clearTimeout(studyAutosaveTimer);
+  let nextReview = document.getElementById('previewNextReview').value;
+  const status = document.getElementById('previewStudyStatus').value;
+  if (!nextReview && status !== 'novo') {
+    const date = new Date();
+    date.setDate(date.getDate() + (status === 'dominado' ? 30 : 14));
+    nextReview = localDateISO(date);
+    document.getElementById('previewNextReview').value = nextReview;
+  }
+  const previous = getStudyRecord(currentPreviewItem.id);
+  const saved = persistStudyRecord(currentPreviewItem.id, {
+    ...previous,
+    status,
+    confidence: Number(document.getElementById('previewConfidence').value),
+    nextReview,
+    summary: document.getElementById('previewSummary').value,
+    notes: document.getElementById('previewNotes').value,
+    sourceSha256: currentPreviewItem.sourceSha256 || '',
+    documentTitle: currentPreviewItem.title || currentPreviewItem.filename || ''
+  });
+  if (!saved) return false;
+  renderStudyDashboard();
+  document.getElementById('previewFavorite').textContent = getStudyRecord(currentPreviewItem.id).favorite ? '★ Favorito' : '☆ Favoritar';
+  document.getElementById('studySaveStatus').textContent = `✓ Salvo às ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`;
+  studyFormDirty = false;
+  if (!options.silent) document.getElementById('studySaveStatus').setAttribute('data-confirmed', 'true');
+  return true;
+}
+
+function flushPendingStudy() {
+  if (!studyFormDirty || !currentPreviewItem) return true;
+  return saveCurrentStudy({ silent: true }) !== false;
+}
+
+function toggleCurrentFavorite() {
+  if (!currentPreviewItem) return;
+  if (studyFormDirty && !saveCurrentStudy({ silent: true })) return;
+  const record = getStudyRecord(currentPreviewItem.id);
+  if (!persistStudyRecord(currentPreviewItem.id, { ...record, favorite: !record.favorite })) return;
+  populateStudyPanel(currentPreviewItem);
+  renderStudyDashboard();
+}
+
+async function copyStudyPrompt() {
+  if (!currentPreviewItem) return;
+  if (studyFormDirty && !saveCurrentStudy({ silent: true })) return;
+  const record = getStudyRecord(currentPreviewItem.id);
+  const prompt = `Atue como tutor TEMI usando somente o título e as minhas anotações abaixo. O documento original NÃO foi anexado; não presuma acesso a ele. Título: “${currentPreviewItem.title || currentPreviewItem.filename}”. Minha síntese: ${record.summary || '[a preencher]'}. Minhas dúvidas: ${record.notes || '[a preencher]'}. Gere 5 perguntas progressivas, destaque lacunas e não invente conteúdo ausente.`;
+  try {
+    await navigator.clipboard.writeText(prompt);
+    alert('📋 Prompt copiado. Revise-o antes de colar em uma IA; o documento original não foi anexado.');
+  } catch (_) {
+    window.prompt('Copie o prompt:', prompt);
+  }
+}
+
+function exportStudyBackup() {
+  const payload = { schema: 'antigravity-library-study-v1', exportedAt: new Date().toISOString(), records: getStudyStore().records };
+  const blobUrl = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
+  const link = document.createElement('a');
+  link.href = blobUrl;
+  link.download = `biblioteca-estudo-${localDateISO()}.json`;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+}
+
+function importStudyBackup(event) {
+  const file = event.target.files && event.target.files[0];
+  event.target.value = '';
+  if (!file || file.size > 5 * 1024 * 1024) return alert('Arquivo inválido ou maior que 5 MB.');
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const payload = JSON.parse(String(reader.result || ''));
+      if (payload.schema !== 'antigravity-library-study-v1' || !payload.records || typeof payload.records !== 'object') throw new Error('schema');
+      const validIds = new Set((catalog.items || []).map(item => item.id));
+      const currentStore = getStudyStore();
+      const store = { version: 1, records: { ...currentStore.records } };
+      const incoming = Object.entries(payload.records).filter(([id]) => validIds.has(id));
+      const skipped = Object.keys(payload.records).length - incoming.length;
+      if (!confirm(`Importar ${incoming.length} registro(s)? Registros com o mesmo ID serão substituídos; ${skipped} item(ns) sem documento atual serão ignorados.`)) return;
+      incoming.forEach(([id, record]) => {
+        store.records[id] = sanitizeStudyRecord(record);
+      });
+      if (!writeStudyStore(store)) throw new Error('storage');
+      renderStudyDashboard();
+      alert(`✅ ${incoming.length} registro(s) importado(s); ${skipped} ignorado(s).`);
+    } catch (_) {
+      alert('Não foi possível importar: backup incompatível.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function renderDocumentConnections(item) {
+  const connections = document.getElementById('previewConnections');
+  const related = document.getElementById('previewRelated');
+  connections.innerHTML = [
+    [`../01_UpDown_Hub/index.html`, '🔎 Abrir UpDown'],
+    [`../05_Midia_E_Feed/index.html`, '🖼️ Abrir Card Feed'],
+    [`../07_Questoes_Comentadas/index.html`, '🧪 Abrir Questões Comentadas'],
+    [`../03_Calculadoras_E_Apps/index.html`, '🧮 Abrir Calculadoras e Apps'],
+    [`../09_POCUS_Hub/index.html`, '🩻 Abrir POCUS'],
+    [`../index.html#mapa`, '🧠 Mapa completo']
+  ].map(([href,label]) => `<a href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`).join('');
+  const siblings = (catalog.items || []).filter(other => other.id !== item.id && other.theme === item.theme).slice(0, 4);
+  related.innerHTML = siblings.length ? siblings.map(other => `<a href="#" onclick="event.preventDefault();abrirPreview('${inlineToken(other.path)}','${inlineToken(other.title || other.filename)}',true)">${getIcon(other.tipo)} ${escapeHTML(other.title || other.filename)}</a>`).join('') : '<span style="font-size:.75rem;color:var(--muted)">Nenhum relacionado neste tema.</span>';
 }
 
 // Modal
@@ -925,7 +1357,6 @@ function salvarClassificacao() {
     title: document.getElementById('clTitle').value.trim(),
     resumo: document.getElementById('clResumo').value.trim(),
     theme: document.getElementById('clTheme').value,
-    tipo: document.getElementById('clTipo').value,
     origem: document.getElementById('clOrigem').value,
     origin: document.getElementById('clOrigem').value,
     ia_origem: document.getElementById('clIA').value.trim(),
@@ -936,12 +1367,13 @@ function salvarClassificacao() {
   
   // Atualizar localmente
   const idx = catalog.items.findIndex(item => item.id === id);
-  catalog.items[idx] = { ...catalog.items[idx], ...modif };
+  catalog.items[idx] = mergeLocalOverride(catalog.items[idx], modif);
   
   // Persistir no localStorage para o Dr. Aldenir copiar depois
-  let local = JSON.parse(localStorage.getItem('lib_classificacoes') || '[]');
+  let local = readLocalJSON('lib_classificacoes', []);
+  if (!Array.isArray(local)) local = [];
   local = local.filter(l => l.id !== id);
-  local.push(catalog.items[idx]);
+  local.push(modif);
   localStorage.setItem('lib_classificacoes', JSON.stringify(local));
   
   fecharClassify();
@@ -1101,94 +1533,172 @@ function safeEncodePath(path) {
     .join('/');
 }
 
-// Preview
-function abrirPreview(encodedPath, titulo) {
-  if (!encodedPath) {
-    console.warn("abrirPreview: path vazio recebido.");
-    return;
+// Preview por formato: sem dependência obrigatória de visualizador externo.
+function releasePreviewBlob() {
+  if (activePreviewBlobUrl) URL.revokeObjectURL(activePreviewBlobUrl);
+  activePreviewBlobUrl = '';
+}
+
+function resetPreviewFrame(sandbox = true) {
+  const frame = document.getElementById('previewFrame');
+  releasePreviewBlob();
+  frame.removeAttribute('src');
+  frame.removeAttribute('srcdoc');
+  if (sandbox) frame.setAttribute('sandbox', 'allow-downloads allow-popups');
+  else frame.removeAttribute('sandbox');
+  return frame;
+}
+
+function previewMessage(title, message, href, actionLabel = '⬇️ Baixar arquivo') {
+  const safeHref = escapeHTML(href || '#');
+  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:system-ui;padding:clamp(1.5rem,5vw,4rem);background:#0f172a;color:#e2e8f0;line-height:1.6;text-align:center"><h2 style="color:#00d4ff">${escapeHTML(title)}</h2><p>${escapeHTML(message)}</p><a href="${safeHref}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:1rem;padding:.75rem 1rem;background:#00d4ff;color:#07111f;text-decoration:none;border-radius:8px;font-weight:700">${escapeHTML(actionLabel)}</a></body></html>`;
+}
+
+function findGeneratedPreview(path) {
+  const collections = [previewManifest.items, previewManifest.documents, previewManifest.previews, previewManifest.files];
+  const list = collections.find(Array.isArray) || [];
+  const entry = list.find(item => normalizePath(item.sourcePath || item.path || item.documentPath) === path);
+  if (entry) return normalizePath(entry.previewPath || entry.preview || entry.htmlPath);
+  if (previewManifest.byPath && previewManifest.byPath[path]) {
+    const mapped = previewManifest.byPath[path];
+    return normalizePath(typeof mapped === 'string' ? mapped : mapped.previewPath || mapped.preview);
   }
+  return '';
+}
+
+function setBlobPreview(html) {
+  const frame = resetPreviewFrame(true);
+  activePreviewBlobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html;charset=utf-8' }));
+  frame.src = activePreviewBlobUrl;
+}
+
+async function loadTextPreview(encodedRelative, renderer, errorTitle, loadToken) {
+  try {
+    const response = await fetch(encodedRelative);
+    if (!response.ok) throw new Error(String(response.status));
+    const raw = await response.text();
+    if (loadToken !== previewLoadToken) return;
+    setBlobPreview(renderer(raw));
+  } catch (_) {
+    if (loadToken !== previewLoadToken) return;
+    resetPreviewFrame(true).srcdoc = previewMessage(errorTitle, 'A pré-visualização não pôde ser montada. O original continua disponível para abrir ou baixar.', encodedRelative);
+  }
+}
+
+function renderPlainTextToHtml(raw, title = 'Texto') {
+  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;line-height:1.65"><h2 style="color:#00d4ff">${escapeHTML(title)}</h2><pre style="white-space:pre-wrap;word-break:break-word;font:14px/1.6 ui-monospace,monospace;background:#091426;padding:1rem;border-radius:9px">${escapeHTML(raw.slice(0, 1000000))}</pre></body></html>`;
+}
+
+function renderTablePreview(raw, separator) {
+  const rows = raw.replace(/\r/g, '').split('\n').slice(0, 300).map(row => row.split(separator).slice(0, 40));
+  const body = rows.map((row, rowIndex) => `<tr>${row.map(cell => `<${rowIndex === 0 ? 'th' : 'td'}>${escapeHTML(cell)}</${rowIndex === 0 ? 'th' : 'td'}>`).join('')}</tr>`).join('');
+  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><style>body{font-family:system-ui;padding:1rem;background:#0f172a;color:#e2e8f0}table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid #334155;padding:.5rem;text-align:left}th{position:sticky;top:0;background:#1e293b;color:#00d4ff}</style><body><h2>📊 Prévia tabular segura</h2><div style="overflow:auto"><table>${body}</table></div><p>Mostrando no máximo 300 linhas e 40 colunas.</p></body></html>`;
+}
+
+function abrirPreview(encodedPath, titulo, focusStudy = false) {
   const path = normalizePath(decodeInlineToken(encodedPath));
-  if (!path) {
-    console.warn("abrirPreview: caminho inseguro bloqueado.");
-    return;
-  }
-  const baseUrl = getBaseUrl();
-  const isRemoteUrl = /^https:\/\//i.test(path);
+  if (!path) return console.warn('abrirPreview: caminho inseguro bloqueado.');
   const encodedRelative = safeEncodePath(path);
   if (encodedRelative === '#') return;
-  const fullUrl = isRemoteUrl ? path : new URL(encodedRelative, baseUrl).href;
-  const pathForExtension = isRemoteUrl ? new URL(path).pathname : path;
-  const ext = pathForExtension.split('.').pop().toLowerCase();
-  const frame = document.getElementById('previewFrame');
-  frame.removeAttribute('srcdoc');
-  
-  // 📱 FIX MOBILE: Dispositivos móveis (especialmente iOS/iPhone) limitam PDFs em iframes à primeira página.
-  // Abrir direto na nova aba ativa o visualizador nativo do celular (com scroll, zoom e marcações).
+
+  if (studyFormDirty && currentPreviewItem && document.getElementById('previewOverlay').classList.contains('open')) {
+    if (!saveCurrentStudy({ silent: true })) return;
+  }
+  clearTimeout(studyAutosaveTimer);
+  const loadToken = ++previewLoadToken;
+
+  const fullUrl = /^https:\/\//i.test(path) ? path : new URL(encodedRelative, getBaseUrl()).href;
+  const pathname = /^https:\/\//i.test(path) ? new URL(path).pathname : path;
+  const ext = (pathname.split('.').pop() || '').toLowerCase();
+  const title = decodeInlineToken(titulo) || 'Visualizando arquivo';
+  const frame = resetPreviewFrame(true);
+  const officeLink = document.getElementById('previewOffice');
+  const isLocalHost = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname);
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 800;
-  
-  if (ext === 'pdf' && isMobile) {
-    window.open(encodedRelative, '_blank');
-    return;
-  }
-  
-  document.getElementById('previewTitle').textContent = decodeInlineToken(titulo) || 'Visualizando arquivo';
-  document.getElementById('previewDirect').href = encodedRelative;
-  document.getElementById('previewDownload').href = encodedRelative;
-  
-  if (ext === 'pdf') {
-    frame.src = encodedRelative;
-  } else if (['docx', 'doc', 'xlsx', 'xls', 'pptx', 'ppt'].includes(ext)) {
-    if (fullUrl.includes('localhost') || fullUrl.includes('127.0.0.1')) {
-      frame.srcdoc = `<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center;">
-        <h2 style="color:#f59e0b">Ambiente Local (Localhost)</h2>
-        <p>Visualizadores de nuvem (como o do Office) não conseguem ler arquivos direto do seu <code>localhost</code>.</p>
-        <p>Por favor, <strong>baixe</strong> o arquivo para abri-lo no seu computador, ou faça o Push para o GitHub Pages para a visualização nativa funcionar.</p>
-        <p><a href="${encodedRelative}" download style="display:inline-block;margin-top:1rem;padding:10px 20px;background:#00d4ff;color:#0a1628;text-decoration:none;border-radius:8px;font-weight:bold;">Baixar Arquivo</a></p>
-      </body></html>`;
-    } else {
-      frame.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(fullUrl);
-    }
-  } else if (['md', 'markdown'].includes(ext)) {
-    // Renderizar Markdown como HTML formatado via Blob URL (evita problema de </scr ipt> em srcdoc)
-    fetch(encodedRelative).then(r => r.ok ? r.text() : Promise.reject(r.status)).then(raw => {
-      const rendered = renderMarkdownToHtml(raw);
-      const blob = new Blob([rendered], {type: 'text/html'});
-      frame.src = URL.createObjectURL(blob);
-    }).catch(e => {
-      frame.srcdoc = '<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center"><h2 style="color:#f59e0b">Erro ao carregar Markdown</h2><p>Não foi possível carregar o documento.</p><a href="' + encodedRelative + '" download style="color:#00d4ff">Baixar arquivo</a></body></html>';
-    });
-  } else if (['txt', 'html', 'htm'].includes(ext)) {
-    frame.src = encodedRelative;
-  } else if (['csv', 'tsv'].includes(ext)) {
-    // CSV: Blob URL para evitar </scr ipt> dentro de srcdoc
-    fetch(encodedRelative).then(r => r.ok ? r.text() : Promise.reject(r.status)).then(csvText => {
-      const csvHtml = '<!DOCTYPE html><html><body style="font-family:system-ui;padding:1rem;background:#0f172a;color:#e2e8f0;">' +
-        '<h2 style="color:#00d4ff;margin-top:0;">Visualização Rápida de Dados</h2>' +
-        '<pre style="white-space:pre-wrap;word-break:break-all;background:#0a1628;padding:1rem;border-radius:8px;font-family:monospace;">' +
-        csvText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
-        '</pre></body></html>';
-      const blob = new Blob([csvHtml], {type: 'text/html'});
-      frame.src = URL.createObjectURL(blob);
-    }).catch(e => {
-      frame.srcdoc = '<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center"><p>Erro ao ler arquivo. Use o botão Baixar no topo.</p></body></html>';
-    });
-  } else if (['apkg'].includes(ext)) {
-    frame.srcdoc = `<html><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;text-align:center;">
-      <h2 style="color:#7c3aed">Arquivo Anki Deck</h2>
-      <p>Este formato é exclusivo para importação direta no software Anki.</p>
-      <p><a href="${encodedRelative}" download style="display:inline-block;margin-top:1rem;padding:10px 20px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">Baixar para Importar</a></p>
-    </body></html>`;
-  } else {
-    frame.src = encodedRelative;
-  }
-  
+
+  currentPreviewItem = (catalog.items || []).find(item => normalizePath(item.path) === path) || {
+    id: path, path, title, filename: path.split('/').pop(), theme: 'uti-geral', tipo: ext
+  };
+  document.getElementById('previewTitle').textContent = title;
+  document.getElementById('previewDirect').href = fullUrl;
+  document.getElementById('previewDownload').href = fullUrl;
+  officeLink.style.display = 'none';
   document.getElementById('previewOverlay').classList.add('open');
+  populateStudyPanel(currentPreviewItem);
+
+  if (ext === 'pdf') {
+    if (isMobile) {
+      frame.srcdoc = previewMessage('PDF pronto para abrir', 'No celular, use o visualizador nativo para rolar, ampliar e marcar todas as páginas.', fullUrl, '📄 Abrir PDF');
+    } else {
+      // O visualizador PDF do navegador não funciona dentro do sandbox genérico.
+      resetPreviewFrame(false).src = `${encodedRelative}#view=FitH`;
+    }
+  } else if (ext === 'docx') {
+    const generated = findGeneratedPreview(path);
+    officeLink.href = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(fullUrl);
+    if (!isLocalHost) officeLink.style.display = 'inline-flex';
+    if (generated) {
+      resetPreviewFrame(true).src = safeEncodePath(generated);
+    } else {
+      frame.srcdoc = previewMessage('Word preservado', 'A prévia local ainda não foi gerada para este arquivo. Abra no Word/Pages ou use o Office Online.', fullUrl, '📝 Abrir documento');
+    }
+  } else if (['doc','xlsx','xls','pptx','ppt'].includes(ext)) {
+    officeLink.href = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(fullUrl);
+    if (!isLocalHost) officeLink.style.display = 'inline-flex';
+    frame.srcdoc = previewMessage('Formato Office preservado', 'Este formato permanece para download. O Office Online é uma alternativa opcional e abre fora do painel seguro.', fullUrl, '📦 Abrir original');
+  } else if (['md','markdown'].includes(ext)) {
+    loadTextPreview(encodedRelative, renderMarkdownToHtml, 'Erro ao carregar Markdown', loadToken);
+  } else if (ext === 'txt') {
+    loadTextPreview(encodedRelative, raw => renderPlainTextToHtml(raw, title), 'Erro ao carregar texto', loadToken);
+  } else if (['csv','tsv'].includes(ext)) {
+    loadTextPreview(encodedRelative, raw => renderTablePreview(raw, ext === 'tsv' ? '\t' : ','), 'Erro ao carregar tabela', loadToken);
+  } else if (['html','htm'].includes(ext)) {
+    // HTML do acervo executa sem scripts e sem acesso à origem da Biblioteca.
+    resetPreviewFrame(true).src = encodedRelative;
+  } else if (['pages','apkg'].includes(ext)) {
+    const label = ext === 'pages' ? 'Apple Pages' : 'Anki';
+    frame.srcdoc = previewMessage(`${label}: download nativo`, `O navegador não possui um renderizador confiável para .${ext}. O arquivo não está perdido: baixe e abra no aplicativo correspondente.`, fullUrl, `📦 Baixar .${ext}`);
+  } else {
+    frame.srcdoc = previewMessage('Formato preservado', 'Não há pré-visualização segura para este formato. Use abrir ou baixar.', fullUrl);
+  }
+
+  if (focusStudy && window.innerWidth <= 760) {
+    setTimeout(() => document.querySelector('.study-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+  }
 }
 
 function fecharPreview() {
-  document.getElementById('previewFrame').src = '';
+  if (studyFormDirty && currentPreviewItem && !saveCurrentStudy({ silent: true })) return;
+  clearTimeout(studyAutosaveTimer);
+  previewLoadToken += 1;
+  resetPreviewFrame(true);
+  currentPreviewItem = null;
   document.getElementById('previewOverlay').classList.remove('open');
 }
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && document.getElementById('previewOverlay').classList.contains('open')) fecharPreview();
+});
+
+window.addEventListener('storage', event => {
+  if (event.key === STUDY_STORAGE_KEY) {
+    studyStoreCache = null;
+    updateStudyCounters();
+    if (currentView === 'estudo') renderStudyDashboard();
+  }
+});
+
+// Fecha a janela de perda entre uma digitação e o autosave de 700 ms.
+window.addEventListener('pagehide', flushPendingStudy);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') flushPendingStudy();
+});
+window.addEventListener('beforeunload', event => {
+  if (!flushPendingStudy()) {
+    event.preventDefault();
+    event.returnValue = '';
+  }
+});
 
 init();
 </script>

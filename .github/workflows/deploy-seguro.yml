@@ -60,6 +60,7 @@ jobs:
           python3 scripts_admin/build_desafios.py
           python3 scripts_admin/build_mnemonicos.py
           python3 02_Biblioteca_IA_Engine/scan_biblioteca.py
+          python3 scripts_admin/build_library_previews.py
           python3 scripts_admin/build_library_connections.py
           python3 scripts_admin/scan_card_feed.py
           python3 scripts_admin/build_connections.py
@@ -74,6 +75,8 @@ jobs:
           set -e
           python3 -m unittest discover -s tests -p 'test_*.py' -v
           python3 scripts_admin/check_static_manifests.py
+          python3 scripts_admin/update_library_publication_baseline.py --check
+          python3 scripts_admin/build_library_previews.py --check
           python3 scripts_admin/validar_paths.py --check
           python3 scripts/validate_routes.py
           python3 scripts_admin/publication_guard.py check-repository .
@@ -88,6 +91,8 @@ jobs:
           test -f site/data/desafios.json
           test -f site/desafios/index.html
           test -f site/02_Biblioteca_IA_Engine/index.html
+          test -s site/02_Biblioteca_IA_Engine/data/biblioteca_previews.json
+          test "$(find site/02_Biblioteca_IA_Engine/previews -type f -name '*.html' | wc -l)" -gt 0
           test -s site/questoes/data/hub_qbanks.js
 
       - name: Upload Pages artifact

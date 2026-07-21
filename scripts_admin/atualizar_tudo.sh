@@ -14,10 +14,16 @@ echo "Raiz: $ROOT"
 echo ""
 
 if [ "$MODE" = "--check" ]; then
-  echo "1/2 Validando manifests estaticos..."
+  echo "1/4 Validando baseline publico da Biblioteca..."
+  python3 scripts_admin/update_library_publication_baseline.py --check
+  echo ""
+  echo "2/4 Validando previews Word da Biblioteca..."
+  python3 scripts_admin/build_library_previews.py --check
+  echo ""
+  echo "3/4 Validando manifests estaticos..."
   python3 scripts_admin/check_static_manifests.py
   echo ""
-  echo "2/2 Validando paths de catalogos..."
+  echo "4/4 Validando paths de catalogos..."
   python3 scripts_admin/validar_paths.py --check
   echo ""
   echo "OK: checagem concluida sem escrita."
@@ -38,6 +44,7 @@ echo ""
 echo "1/4 Biblioteca IA..."
 if [ -f "02_Biblioteca_IA_Engine/scan_biblioteca.py" ]; then
   (cd 02_Biblioteca_IA_Engine && python3 scan_biblioteca.py)
+  python3 scripts_admin/build_library_previews.py
   python3 scripts_admin/build_library_connections.py
 else
   echo "Aviso: 02_Biblioteca_IA_Engine/scan_biblioteca.py nao encontrado."

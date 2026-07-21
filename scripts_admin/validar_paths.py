@@ -206,7 +206,9 @@ def main() -> int:
 
     print("")
     print(f"Resumo: {total_ok} ok, {total_fixable} corrigiveis, {total_missing} 404, {total_errors} erro(s)")
-    return 1 if total_missing or total_errors else 0
+    # Em CI, um path apenas "corrigível" ainda é uma rota pública divergente.
+    # O deploy falha até que a fonte JSON seja regenerada/corrigida e commitada.
+    return 1 if total_missing or total_errors or (args.check and total_fixable) else 0
 
 
 if __name__ == "__main__":

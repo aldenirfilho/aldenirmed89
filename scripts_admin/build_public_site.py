@@ -10,6 +10,7 @@ arquivos internos. A sanitização/validação final continua a cargo de
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import sys
 from pathlib import Path
@@ -65,6 +66,9 @@ OPTIONAL = (
 )
 
 BLOCKED_SUFFIXES = (".bak", ".tmp", ".command", ".py", ".pyc", ".sh")
+LIBRARY_ACERVO_PREFIX = "02_Biblioteca_IA_Engine/acervo/"
+LIBRARY_PRIVATE_PARTS = {"juridico-financeiro", "_private", "inbox"}
+NON_PUBLIC_ADMIN_NAMES = {".gitkeep"}
 
 
 def is_within(child: Path, parent: Path) -> bool:
@@ -84,7 +88,7 @@ def should_skip(root: Path, candidate: Path) -> bool:
         return True
     if any(part.lower() in {"inbox", "juridico-financeiro"} for part in candidate.parts):
         return True
-    if name in {".ds_store", "thumbs.db"} or name.endswith(BLOCKED_SUFFIXES):
+    if name in {".ds_store", "thumbs.db", *NON_PUBLIC_ADMIN_NAMES} or name.endswith(BLOCKED_SUFFIXES):
         return True
     if any(part.lower() == "_private" for part in candidate.parts):
         return True
@@ -101,7 +105,63 @@ def should_skip(root: Path, candidate: Path) -> bool:
     return False
 
 
-def copy_entry(root: Path, site: Path, relative: str) -> None:
+def load_library_acervo_allowlist(root: Path) -> set[str]:
+    manifest_path = root / "02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError("Manifesto canônico da Biblioteca ausente ou inválido.") from exc
+
+    allowlist: set[str] = set()
+    for item in manifest.get("files", []):
+        if not isinstance(item, dict) or not isinstance(item.get("path"), str):
+            raise ValueError("Manifesto da Biblioteca contém entrada inválida.")
+        relative = f"02_Biblioteca_IA_Engine/{item['path']}"
+        if not relative.startswith(LIBRARY_ACERVO_PREFIX) or relative in allowlist:
+            raise ValueError(f"Caminho inválido ou duplicado no manifesto: {relative}")
+        allowlist.add(relative)
+    return allowlist
+
+
+def validate_library_acervo(root: Path, allowlist: set[str]) -> None:
+    """Falha fechado se o acervo físico contém algo fora do manifesto."""
+
+    acervo = root / "02_Biblioteca_IA_Engine/acervo"
+    if not acervo.is_dir():
+        raise ValueError("Diretório público da Biblioteca ausente.")
+
+    physical: set[str] = set()
+    for candidate in sorted(acervo.rglob("*")):
+        relative_to_acervo = candidate.relative_to(acervo)
+        if any(part.lower() in LIBRARY_PRIVATE_PARTS for part in relative_to_acervo.parts):
+            continue
+        if candidate.is_symlink():
+            raise ValueError(f"Link simbólico não permitido no acervo: {candidate}")
+        if not candidate.is_file() or candidate.name.lower() in NON_PUBLIC_ADMIN_NAMES:
+            continue
+        physical.add(candidate.relative_to(root).as_posix())
+
+    unexpected = sorted(physical - allowlist)
+    missing = sorted(allowlist - physical)
+    blocked_allowlisted = sorted(
+        relative for relative in allowlist if should_skip(root, root / relative)
+    )
+    if unexpected:
+        raise ValueError(
+            "Arquivo físico fora do manifesto da Biblioteca: " + ", ".join(unexpected[:3])
+        )
+    if missing:
+        raise ValueError(
+            "Arquivo do manifesto ausente no acervo da Biblioteca: " + ", ".join(missing[:3])
+        )
+    if blocked_allowlisted:
+        raise ValueError(
+            "Arquivo aprovado seria omitido pelo filtro público: "
+            + ", ".join(blocked_allowlisted[:3])
+        )
+
+
+def copy_entry(root: Path, site: Path, relative: str, library_allowlist: set[str]) -> None:
     source = root / relative
     destination = site / relative
     if should_skip(root, source):
@@ -111,8 +171,10 @@ def copy_entry(root: Path, site: Path, relative: str) -> None:
         destination.mkdir(parents=True, exist_ok=True)
         for child in sorted(source.iterdir(), key=lambda path: path.name.casefold()):
             if not should_skip(root, child):
-                copy_entry(root, site, child.relative_to(root).as_posix())
+                copy_entry(root, site, child.relative_to(root).as_posix(), library_allowlist)
     elif source.is_file():
+        if relative.startswith(LIBRARY_ACERVO_PREFIX) and relative not in library_allowlist:
+            raise ValueError(f"Arquivo da Biblioteca fora da allowlist: {relative}")
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
 
@@ -138,17 +200,20 @@ def build(root: Path, site: Path) -> int:
             print(f"   - {relative}")
         return 1
 
+    library_allowlist = load_library_acervo_allowlist(root)
+    validate_library_acervo(root, library_allowlist)
+
     if site.exists():
         shutil.rmtree(site)
     site.mkdir(parents=True)
 
     for relative in REQUIRED:
-        copy_entry(root, site, relative)
+        copy_entry(root, site, relative, library_allowlist)
     for relative in OPTIONAL:
         if (root / relative).exists():
-            copy_entry(root, site, relative)
+            copy_entry(root, site, relative, library_allowlist)
     for logo in sorted(root.glob("logo_concept*.png")):
-        copy_entry(root, site, logo.name)
+        copy_entry(root, site, logo.name, library_allowlist)
 
     (site / ".nojekyll").touch(exist_ok=True)
     normalize_permissions(site)
