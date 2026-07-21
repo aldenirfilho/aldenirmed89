@@ -163,8 +163,16 @@
     font-weight: bold;
   }
   @media(max-width:760px){
+    header{padding:1rem;align-items:flex-start}
+    header .actions{width:100%;flex-wrap:wrap}
+    header a.back,header button.nav-btn{flex:1;min-width:max-content}
     .filter-panel{grid-template-columns:1fr}
     .partition-grid{grid-template-columns:1fr}
+    .classify-grid{grid-template-columns:1fr}
+    .preview-toolbar{align-items:flex-start;flex-wrap:wrap;gap:.75rem;padding:.75rem}
+    .preview-toolbar h3{flex:1 0 100%;margin-right:0}
+    .preview-toolbar>div{display:flex;flex-wrap:wrap;gap:.4rem;width:100%}
+    .search-bar input,.filter-panel select,.classify-box select,.classify-box input,.classify-box textarea{font-size:16px}
   }
 </style>
 </head>

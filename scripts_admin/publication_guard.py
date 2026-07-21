@@ -41,7 +41,7 @@ def has_private_segment(value: str) -> bool:
     return (
         normalized == "00_inbox_atualizacao"
         or normalized.startswith("00_inbox_atualizacao/")
-        or any(part in {"inbox", "juridico-financeiro"} for part in parts)
+        or any(part in {"_private", "inbox", "juridico-financeiro"} for part in parts)
     )
 
 
@@ -253,7 +253,8 @@ def sanitize_site(root: Path) -> int:
         (
             path
             for path in root.rglob("*")
-            if path.is_dir() and path.name.lower() in {"inbox", "juridico-financeiro"}
+            if path.is_dir()
+            and path.name.lower() in {"_private", "inbox", "juridico-financeiro"}
         ),
         key=lambda path: len(path.parts),
         reverse=True,

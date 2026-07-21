@@ -822,9 +822,11 @@ header{
   .footer-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
-  .nav-links{display:none}
+  .nav{height:auto;min-height:64px;padding:8px 18px;flex-wrap:wrap}
+  .nav-links{display:flex;order:3;width:100%;overflow-x:auto;padding-bottom:4px}
   .nav-status span{display:none}
   .hero h1{font-size:2.2rem}
+  .metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .modules-grid,.vias-grid,.g2,.g3,.g4{grid-template-columns:1fr}
   .pipeline-flow{grid-template-columns:1fr;max-width:300px;margin-left:auto;margin-right:auto}
   .pipeline-step:not(:last-child){padding-bottom:24px}
@@ -839,6 +841,7 @@ header{
   .mnem-grid{grid-template-columns:1fr}
   .dsf-grid{grid-template-columns:1fr}
   .dsf-tabs{flex-wrap:wrap}
+  input,select,textarea,.map-search,.mnem-search{font-size:16px}
 }
 </style>
 </head>

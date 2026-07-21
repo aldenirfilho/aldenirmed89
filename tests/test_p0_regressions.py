@@ -3,12 +3,24 @@
 
 from __future__ import annotations
 
+import importlib.util
 import re
+import tempfile
 import unittest
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def load_publication_guard():
+    path = ROOT / "scripts_admin/publication_guard.py"
+    spec = importlib.util.spec_from_file_location("publication_guard", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Não foi possível carregar publication_guard.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 class ClinicalSafetyRegressionTests(unittest.TestCase):
@@ -66,9 +78,29 @@ class ClinicalSafetyRegressionTests(unittest.TestCase):
         body = match.group("body")
         self.assertIn("const pH =", body)
         self.assertNotRegex(body, r"(?<![\w-])ph(?![\w-])")
+        self.assertIn("Math.log10(hco3 / (0.03 * pco2))", body)
+        self.assertIn("Math.abs(calculatedPH - pH) > 0.05", body)
+        self.assertIn("pco2>45 && hco3<22", body)
+        self.assertIn("pco2<35 && hco3>26", body)
+        self.assertIn("pH<7.20 || pH>7.60", body)
+        self.assertIn("CONFIRMAR GASOMETRIA E AVALIAR IMEDIATAMENTE", body)
 
 
 class WebSecurityRegressionTests(unittest.TestCase):
+    def test_publication_guard_rejects_and_removes_private_directories(self) -> None:
+        guard = load_publication_guard()
+        self.assertTrue(guard.has_private_segment("content/topic/_private/rules.md"))
+        self.assertTrue(guard.has_private_segment("content/topic/inbox/item.pdf"))
+        self.assertFalse(guard.has_private_segment("content/topic/private-practice.md"))
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            private_dir = root / "content/topic/_private"
+            private_dir.mkdir(parents=True)
+            (private_dir / "rules.md").write_text("private", encoding="utf-8")
+            self.assertEqual(guard.sanitize_site(root), 0)
+            self.assertFalse(private_dir.exists())
+
     def test_respiracrit_does_not_send_clinical_data_from_browser(self) -> None:
         source = (ROOT / "01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html").read_text(
             encoding="utf-8"

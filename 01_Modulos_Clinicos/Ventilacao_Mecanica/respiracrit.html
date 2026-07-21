@@ -171,6 +171,18 @@ canvas{display:block;width:100%}
 .cursor{display:inline-block;width:7px;height:13px;background:var(--acc);animation:pulse 0.8s infinite;vertical-align:middle;margin-left:2px}
 
 @media(max-width:900px){.gcols,.gcols3,.g3,.g4{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+@media(max-width:600px){
+  .hdr{align-items:flex-start;flex-wrap:wrap;padding:10px 12px}
+  .hdr-spacer{display:none}
+  .hdr>a{display:block;width:100%;text-align:center}
+  .nav{padding:0 8px}
+  .panel{padding:12px}
+  .gaso-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .inp-row3{grid-template-columns:1fr}
+  .inp{font-size:16px;min-height:44px}
+  .card-body{overflow-x:auto}
+  .btn-row .btn{flex:1 1 140px;min-height:44px}
+}
 </style>
 </head>
 <body>
@@ -476,7 +488,7 @@ canvas{display:block;width:100%}
               <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-duplo" onchange="diagAsync()"> Duplo disparo</label>
               <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-reverso" onchange="diagAsync()"> Fluxo reverso exp</label>
               <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-tardio" onchange="diagAsync()"> Ciclagem tardia</label>
-              <label style="display:flex;align-items:center;gap=6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-precoce" onchange="diagAsync()"> Ciclagem precoce</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-precoce" onchange="diagAsync()"> Ciclagem precoce</label>
               <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-falha" onchange="diagAsync()"> Falha de gatilho</label>
               <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer"><input type="checkbox" id="a-autop" onchange="diagAsync()"> Auto-PEEP suspeito</label>
             </div>
@@ -635,31 +647,41 @@ function analyzeGas() {
   const aa_grad = Math.round(pao2_expected - po2);
   const do2 = Math.round((1.34 * hgb * (sao2/100) + 0.003 * po2) * 5 * 10); // approx
   const cao2 = ((1.34 * hgb * (sao2/100)) + (0.003 * po2)).toFixed(2);
+  const calculatedPH = 6.1 + Math.log10(hco3 / (0.03 * pco2));
+  const gasInconsistent = !Number.isFinite(calculatedPH) || Math.abs(calculatedPH - pH) > 0.05;
 
   // ACID-BASE
   let ab_diag = '';
   let ab_color = 'var(--acc2)';
-  if(pH<7.35) {
+  let comp_note = '';
+  if(gasInconsistent) {
     ab_color='var(--danger)';
-    if(pco2>45) ab_diag = 'Acidose Respiratória';
+    ab_diag = 'Dados gasométricos inconsistentes — revisar digitação';
+    comp_note = Number.isFinite(calculatedPH)
+      ? `pH calculado por Henderson–Hasselbalch: ${calculatedPH.toFixed(2)}; diferença >0,05 em relação ao pH informado.`
+      : 'Não foi possível verificar a consistência entre pH, PaCO₂ e HCO₃.';
+  } else if(pH<7.35) {
+    ab_color='var(--danger)';
+    if(pco2>45 && hco3<22) ab_diag = 'Acidose Mista';
+    else if(pco2>45) ab_diag = 'Acidose Respiratória';
     else if(hco3<22) ab_diag = 'Acidose Metabólica';
-    else ab_diag = 'Acidose Mista';
+    else ab_diag = 'Acidemia com causa não definida — revisar dados';
   } else if(pH>7.45) {
     ab_color='var(--warn)';
-    if(pco2<35) ab_diag = 'Alcalose Respiratória';
+    if(pco2<35 && hco3>26) ab_diag = 'Alcalose Mista';
+    else if(pco2<35) ab_diag = 'Alcalose Respiratória';
     else if(hco3>26) ab_diag = 'Alcalose Metabólica';
-    else ab_diag = 'Alcalose Mista';
+    else ab_diag = 'Alcalemia com causa não definida — revisar dados';
   } else {
     ab_diag = 'Equilíbrio Ácido-Base Normal';
   }
 
   // COMPENSATION CHECK
-  let comp_note = '';
-  if(pH<7.35 && pco2>45) {
+  if(!gasInconsistent && pH<7.35 && pco2>45) {
     const expected_hco3 = 24 + 0.1*(pco2-40);
     comp_note = hco3 >= expected_hco3-2 ? 'Com compensação metabólica adequada' : 'Sem compensação metabólica adequada';
   }
-  if(pH<7.35 && hco3<22) {
+  if(!gasInconsistent && pH<7.35 && hco3<22) {
     const expected_pco2 = 1.5*hco3 + 8;
     comp_note = Math.abs(pco2-expected_pco2)<2 ? 'Com compensação respiratória (Winter)' : 'Compensação respiratória inadequada';
   }
@@ -700,7 +722,7 @@ function analyzeGas() {
         <div style="font-size:11px;color:var(--muted)">Gradiente A-a: ${aa_grad} mmHg (normal 0–20) · CaO₂: ${cao2} mL/dL</div>
         ${be<-4?`<div class="alert alert-warn" style="margin-top:8px">⚠️ Base Excess ${be}: déficit significativo de bases — investigar causa metabólica</div>`:''}
         ${lac>2?`<div class="alert alert-danger" style="margin-top:8px">🔴 Lactato elevado (${lac}) — hipoperfusão tecidual? Choque? Sepse?</div>`:''}
-        ${pH<7.20?`<div class="alert alert-danger" style="margin-top:8px">🚨 pH CRÍTICO &lt;7.20 — ação imediata necessária!</div>`:''}
+        ${pH<7.20||pH>7.60?`<div class="alert alert-danger" style="margin-top:8px">🚨 pH CRÍTICO (${pH.toFixed(2)}) — confirmar a amostra e avaliar imediatamente!</div>`:''}
       </div>
     </div>`;
 
@@ -708,10 +730,19 @@ function analyzeGas() {
   const conduct = document.getElementById('gas-conduct');
   let actions = [];
   let level = 'maintain';
+  let titleOverride = '';
 
-  if(pf<100 || (pH<7.25 && pco2>55) || po2<55) {
+  if(gasInconsistent) {
+    level=(pH<7.20 || pH>7.60)?'escalate':'maintain';
+    titleOverride=(pH<7.20 || pH>7.60)
+      ? '🔴 CONFIRMAR GASOMETRIA E AVALIAR IMEDIATAMENTE'
+      : '🟠 REVISAR DADOS ANTES DA CONDUTA';
+    actions.push('pH, PaCO₂ e HCO₃ são incompatíveis pela equação de Henderson–Hasselbalch: revisar digitação e confirmar a gasometria');
+    if(pH<7.20 || pH>7.60) actions.push('pH informado em faixa crítica: não aguardar a correção do dado para avaliar o paciente e a qualidade da amostra');
+  } else if(pf<100 || (pH<7.20 || pH>7.60) || (pH<7.25 && pco2>55) || po2<55) {
     level='escalate';
     if(pf<100) actions.push('P/F <100: considerar PRONA se em VM (≥16h/dia, PROSEVA)');
+    if(pH<7.20 || pH>7.60) actions.push('pH extremo: confirmar a amostra e iniciar avaliação imediata da causa no contexto clínico');
     if(pH<7.25 && pco2>55) actions.push('Acidose respiratória grave: aumentar FR ou VC (cuidado com Pplat)');
     if(po2<55) actions.push('Hipoxemia grave: aumentar FiO₂ e/ou PEEP (tabela ARDSNet)');
     if(pf<150) actions.push('Considerar bloqueio neuromuscular (cisatracúrio 48h)');
@@ -728,7 +759,7 @@ function analyzeGas() {
   }
 
   const boxClass = level==='escalate'?'conduct-escalate':level==='deescalate'?'conduct-deescalate':'conduct-maintain';
-  const boxTitle = level==='escalate'?'🔴 ESCALONAR SUPORTE':level==='deescalate'?'🟢 REDUZIR SUPORTE / DESMAME':'🟡 MANTER — MONITORAR';
+  const boxTitle = titleOverride || (level==='escalate'?'🔴 ESCALONAR SUPORTE':level==='deescalate'?'🟢 REDUZIR SUPORTE / DESMAME':'🟡 MANTER — MONITORAR');
 
   conduct.innerHTML = `<div class="conduct-box ${boxClass}">
     <div class="conduct-title">${boxTitle}</div>
