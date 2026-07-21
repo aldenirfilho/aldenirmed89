@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Testes isolados do gerador de previews DOCX da Biblioteca IA."""
+"""Testes isolados do gerador de previews DOCX/PDF da Biblioteca IA."""
 
 from __future__ import annotations
 
@@ -62,6 +62,38 @@ def write_docx(path: Path, marker: str = "Conduta segura") -> None:
         archive.writestr("word/document.xml", document_xml)
 
 
+def write_pdf(path: Path, marker: str = "Conteudo PDF local") -> None:
+    """Cria um PDF 1.4 mínimo sem depender de bibliotecas externas."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    stream = f"BT /F1 18 Tf 72 720 Td ({marker}) Tj ET".encode("ascii")
+    objects = [
+        b"<< /Type /Catalog /Pages 2 0 R >>",
+        b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+        b"/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+        b"<< /Length " + str(len(stream)).encode("ascii") + b" >>\nstream\n" + stream + b"\nendstream",
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+    ]
+    payload = bytearray(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n")
+    offsets = [0]
+    for number, value in enumerate(objects, start=1):
+        offsets.append(len(payload))
+        payload.extend(f"{number} 0 obj\n".encode("ascii"))
+        payload.extend(value)
+        payload.extend(b"\nendobj\n")
+    xref = len(payload)
+    payload.extend(f"xref\n0 {len(objects) + 1}\n".encode("ascii"))
+    payload.extend(b"0000000000 65535 f \n")
+    for offset in offsets[1:]:
+        payload.extend(f"{offset:010d} 00000 n \n".encode("ascii"))
+    payload.extend(
+        f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R >>\n"
+        f"startxref\n{xref}\n%%EOF\n".encode("ascii")
+    )
+    path.write_bytes(payload)
+
+
 def make_library(root: Path) -> tuple[Path, Path]:
     library = root / "02_Biblioteca_IA_Engine"
     source = library / "acervo/uti-geral/Documento_Autoral.docx"
@@ -86,6 +118,49 @@ def make_library(root: Path) -> tuple[Path, Path]:
     return library, source
 
 
+def add_pdf_to_library(library: Path) -> Path:
+    source = library / "acervo/uti-geral/Documento_PDF_Autoral.pdf"
+    write_pdf(source)
+    manifest_path = library / "data/biblioteca_documentos_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["files"].append(
+        {
+            "id": "acervo-uti-geral-documento-pdf-autoral-pdf",
+            "title": "Documento PDF Autoral",
+            "path": "acervo/uti-geral/Documento_PDF_Autoral.pdf",
+            "extension": "pdf",
+        }
+    )
+    manifest["totalFiles"] = len(manifest["files"])
+    manifest_path.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    return source
+
+
+def add_pages_to_library(library: Path) -> Path:
+    source = library / "acervo/uti-geral/Documento_Autoral.pages"
+    source.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(source, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr("preview-web.jpg", b"\xff\xd8\xff\xd9")
+        archive.writestr("Index/Document.iwa", b"fixture")
+    manifest_path = library / "data/biblioteca_documentos_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["files"].append(
+        {
+            "id": "acervo-uti-geral-documento-autoral-pages",
+            "title": "Documento Apple Pages Autoral",
+            "path": "acervo/uti-geral/Documento_Autoral.pages",
+            "extension": "pages",
+        }
+    )
+    manifest["totalFiles"] = len(manifest["files"])
+    manifest_path.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    return source
+
+
 class LibraryPreviewBuilderTests(unittest.TestCase):
     def test_generates_escaped_semantic_preview_and_exact_index(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -106,6 +181,54 @@ class LibraryPreviewBuilderTests(unittest.TestCase):
             self.assertNotIn("<script>", preview.casefold())
             self.assertIn("default-src 'none'", preview)
             self.assertEqual(BUILDER.sha256_file(preview_path), item["previewSha256"])
+            self.assertEqual(execute_quiet(library, check=True)[0], 0)
+
+    def test_generates_browser_independent_pdf_preview(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            library, _ = make_library(Path(temporary))
+            add_pdf_to_library(library)
+
+            code, _, error = execute_quiet(library, check=False)
+            self.assertEqual(code, 0, error)
+            index = json.loads(
+                (library / "data/biblioteca_previews.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                index["generatedByExtension"], {"docx": 1, "pages": 0, "pdf": 1}
+            )
+            pdf_item = next(item for item in index["items"] if item["previewFormat"] == "pdf")
+            preview = (library / pdf_item["previewPath"]).read_text(encoding="utf-8")
+
+            self.assertTrue(pdf_item["browserIndependent"])
+            self.assertIn("Prévia local independente do leitor PDF do navegador", preview)
+            self.assertIn("Baixar o PDF original", preview)
+            self.assertNotIn("<iframe", preview.casefold())
+            self.assertIn("default-src 'none'", preview)
+            if BUILDER.available_command("pdftoppm") and BUILDER.available_command("pdftotext"):
+                self.assertIn("data:image/jpeg;base64,", preview)
+                self.assertGreater(pdf_item["stats"]["coverBytes"], 0)
+            self.assertEqual(execute_quiet(library, check=True)[0], 0)
+
+    def test_generates_pages_quicklook_preview_without_executing_package(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            library, _ = make_library(Path(temporary))
+            add_pages_to_library(library)
+
+            code, _, error = execute_quiet(library, check=False)
+            self.assertEqual(code, 0, error)
+            index = json.loads(
+                (library / "data/biblioteca_previews.json").read_text(encoding="utf-8")
+            )
+            pages_item = next(
+                item for item in index["items"] if item["previewFormat"] == "pages"
+            )
+            preview = (library / pages_item["previewPath"]).read_text(encoding="utf-8")
+
+            self.assertEqual(pages_item["renderer"], "pages-quicklook-image-v1")
+            self.assertEqual(pages_item["stats"]["previewAsset"], "preview-web.jpg")
+            self.assertIn("data:image/jpeg;base64,", preview)
+            self.assertIn("Baixar o PAGES original", preview)
+            self.assertNotIn("Index/Document.iwa", preview)
             self.assertEqual(execute_quiet(library, check=True)[0], 0)
 
     def test_check_is_read_only_and_detects_stale_source(self) -> None:

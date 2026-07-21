@@ -499,7 +499,6 @@ let roadmap = [];
 let documentManifest = { files: [], partitions: [], origins: [] };
 let previewManifest = { documents: [] };
 let currentPreviewItem = null;
-let activePreviewBlobUrl = '';
 let studyAutosaveTimer = null;
 let studyFormDirty = false;
 let previewLoadToken = 0;
@@ -1534,14 +1533,8 @@ function safeEncodePath(path) {
 }
 
 // Preview por formato: sem dependência obrigatória de visualizador externo.
-function releasePreviewBlob() {
-  if (activePreviewBlobUrl) URL.revokeObjectURL(activePreviewBlobUrl);
-  activePreviewBlobUrl = '';
-}
-
 function resetPreviewFrame(sandbox = true) {
   const frame = document.getElementById('previewFrame');
-  releasePreviewBlob();
   frame.removeAttribute('src');
   frame.removeAttribute('srcdoc');
   if (sandbox) frame.setAttribute('sandbox', 'allow-downloads allow-popups');
@@ -1566,10 +1559,9 @@ function findGeneratedPreview(path) {
   return '';
 }
 
-function setBlobPreview(html) {
+function setInlinePreview(html) {
   const frame = resetPreviewFrame(true);
-  activePreviewBlobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html;charset=utf-8' }));
-  frame.src = activePreviewBlobUrl;
+  frame.srcdoc = html;
 }
 
 async function loadTextPreview(encodedRelative, renderer, errorTitle, loadToken) {
@@ -1578,7 +1570,7 @@ async function loadTextPreview(encodedRelative, renderer, errorTitle, loadToken)
     if (!response.ok) throw new Error(String(response.status));
     const raw = await response.text();
     if (loadToken !== previewLoadToken) return;
-    setBlobPreview(renderer(raw));
+    setInlinePreview(renderer(raw));
   } catch (_) {
     if (loadToken !== previewLoadToken) return;
     resetPreviewFrame(true).srcdoc = previewMessage(errorTitle, 'A pré-visualização não pôde ser montada. O original continua disponível para abrir ou baixar.', encodedRelative);
@@ -1614,7 +1606,6 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
   const frame = resetPreviewFrame(true);
   const officeLink = document.getElementById('previewOffice');
   const isLocalHost = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname);
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 800;
 
   currentPreviewItem = (catalog.items || []).find(item => normalizePath(item.path) === path) || {
     id: path, path, title, filename: path.split('/').pop(), theme: 'uti-geral', tipo: ext
@@ -1627,11 +1618,18 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
   populateStudyPanel(currentPreviewItem);
 
   if (ext === 'pdf') {
-    if (isMobile) {
-      frame.srcdoc = previewMessage('PDF pronto para abrir', 'No celular, use o visualizador nativo para rolar, ampliar e marcar todas as páginas.', fullUrl, '📄 Abrir PDF');
+    const generated = findGeneratedPreview(path);
+    if (generated) {
+      // Não depende do plugin PDF do navegador/WebView: usa o HTML local
+      // gerado durante o build, com capa e/ou texto extraído.
+      resetPreviewFrame(true).src = safeEncodePath(generated);
     } else {
-      // O visualizador PDF do navegador não funciona dentro do sandbox genérico.
-      resetPreviewFrame(false).src = `${encodedRelative}#view=FitH`;
+      frame.srcdoc = previewMessage(
+        'PDF preservado — prévia em recuperação',
+        'O leitor PDF deste navegador não é confiável e a prévia HTML local ainda não está disponível. O arquivo original não foi perdido.',
+        fullUrl,
+        '⬇️ Baixar PDF original'
+      );
     }
   } else if (ext === 'docx') {
     const generated = findGeneratedPreview(path);
@@ -1655,9 +1653,15 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
   } else if (['html','htm'].includes(ext)) {
     // HTML do acervo executa sem scripts e sem acesso à origem da Biblioteca.
     resetPreviewFrame(true).src = encodedRelative;
-  } else if (['pages','apkg'].includes(ext)) {
-    const label = ext === 'pages' ? 'Apple Pages' : 'Anki';
-    frame.srcdoc = previewMessage(`${label}: download nativo`, `O navegador não possui um renderizador confiável para .${ext}. O arquivo não está perdido: baixe e abra no aplicativo correspondente.`, fullUrl, `📦 Baixar .${ext}`);
+  } else if (ext === 'pages') {
+    const generated = findGeneratedPreview(path);
+    if (generated) {
+      resetPreviewFrame(true).src = safeEncodePath(generated);
+    } else {
+      frame.srcdoc = previewMessage('Apple Pages preservado', 'A imagem Quick Look local não pôde ser gerada. Baixe o arquivo e abra no Pages.', fullUrl, '📦 Baixar .pages');
+    }
+  } else if (ext === 'apkg') {
+    frame.srcdoc = previewMessage('Anki: download nativo', 'O navegador não possui um renderizador confiável para .apkg. O arquivo não está perdido: baixe e abra no Anki.', fullUrl, '📦 Baixar .apkg');
   } else {
     frame.srcdoc = previewMessage('Formato preservado', 'Não há pré-visualização segura para este formato. Use abrir ou baixar.', fullUrl);
   }

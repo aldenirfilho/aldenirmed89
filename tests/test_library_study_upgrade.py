@@ -64,16 +64,28 @@ class LibraryCanonicalCatalogTests(unittest.TestCase):
             self.assertNotIn("/_private/", f"/{item['path'].casefold()}/")
             self.assertNotIn("/inbox/", f"/{item['path'].casefold()}/")
 
-    def test_generated_preview_index_matches_every_docx_when_present(self) -> None:
+    def test_generated_preview_index_matches_every_docx_pdf_and_pages_when_present(self) -> None:
         index_path = LIBRARY / "data/biblioteca_previews.json"
         if not index_path.exists():
             self.skipTest("Artefato de build; é gerado antes dos testes no workflow.")
         manifest = load_json("02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json")
         previews = json.loads(index_path.read_text(encoding="utf-8"))
-        docx_paths = {item["path"] for item in manifest["files"] if item["extension"] == "docx"}
+        previewable_paths = {
+            item["path"]
+            for item in manifest["files"]
+            if item["extension"] in {"docx", "pdf", "pages"}
+        }
         preview_paths = {item["sourcePath"] for item in previews["items"]}
-        self.assertEqual(preview_paths, docx_paths)
-        self.assertEqual(previews["generatedPreviews"], len(docx_paths))
+        self.assertEqual(preview_paths, previewable_paths)
+        self.assertEqual(previews["generatedPreviews"], len(previewable_paths))
+        self.assertEqual(
+            previews["generatedByExtension"],
+            {
+                "docx": sum(item["extension"] == "docx" for item in manifest["files"]),
+                "pages": sum(item["extension"] == "pages" for item in manifest["files"]),
+                "pdf": sum(item["extension"] == "pdf" for item in manifest["files"]),
+            },
+        )
         for item in previews["items"]:
             self.assertTrue((LIBRARY / item["previewPath"]).is_file())
 
@@ -182,6 +194,34 @@ class LibraryCanonicalCatalogTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "seria omitido"):
                 builder.validate_library_acervo(root, allowlist)
 
+    def test_public_builder_preserves_but_excludes_card_conflict_copies(self) -> None:
+        builder = load_module("card_public_builder_test", ROOT / "scripts_admin/build_public_site.py")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            public_root = root / "05_Midia_E_Feed/assets/cards/public/recovered/uti-geral"
+            data_root = root / "05_Midia_E_Feed/data"
+            public_root.mkdir(parents=True)
+            data_root.mkdir(parents=True)
+            (public_root / "card-a1b2c3.webp").write_bytes(b"canonical")
+            conflict = public_root / "card-a1b2c3 2.webp"
+            conflict.write_bytes(b"conflict-copy-preserved")
+            (data_root / "public.json").write_text(
+                json.dumps({"files": ["recovered/uti-geral/card-a1b2c3.webp"]}),
+                encoding="utf-8",
+            )
+
+            allowlist = builder.load_card_public_allowlist(root)
+            conflicts = builder.validate_card_public_assets(root, allowlist)
+            self.assertEqual(
+                conflicts,
+                ["05_Midia_E_Feed/assets/cards/public/recovered/uti-geral/card-a1b2c3 2.webp"],
+            )
+            self.assertTrue(conflict.is_file())
+
+            (public_root / "rogue.webp").write_bytes(b"not-approved")
+            with self.assertRaisesRegex(ValueError, "fora do índice público"):
+                builder.validate_card_public_assets(root, allowlist)
+
     def test_hash_bound_attestation_overrides_legacy_editorial_status(self) -> None:
         scanner = (LIBRARY / "scan_biblioteca.py").read_text(encoding="utf-8")
         editorial_position = scanner.index("canonical.update(editorial)")
@@ -222,13 +262,17 @@ class LibraryStudyInterfaceTests(unittest.TestCase):
 
     def test_preview_modes_have_visible_safe_fallbacks(self) -> None:
         self.assertIn("fetch('data/biblioteca_previews.json', { cache: 'no-store' })", self.source)
-        self.assertIn("resetPreviewFrame(false).src = `${encodedRelative}#view=FitH`", self.source)
         self.assertIn("findGeneratedPreview(path)", self.source)
+        self.assertIn("PDF preservado — prévia em recuperação", self.source)
+        self.assertIn("com capa e/ou texto extraído", self.source)
+        self.assertIn("A imagem Quick Look local não pôde ser gerada", self.source)
+        self.assertIn("frame.srcdoc = html", self.source)
+        self.assertNotIn("#view=FitH", self.source)
         self.assertIn("renderTablePreview", self.source)
         self.assertIn("Apple Pages", self.source)
         self.assertNotIn("view.officeapps.live.com/op/embed.aspx", self.source)
         self.assertNotIn("window.open(encodedRelative", self.source)
-        self.assertIn("O visualizador PDF do navegador não funciona dentro do sandbox genérico", self.source)
+        self.assertNotIn("window.innerWidth <= 800", self.source)
 
     def test_study_tools_and_ecosystem_connections_are_wired(self) -> None:
         for marker in (

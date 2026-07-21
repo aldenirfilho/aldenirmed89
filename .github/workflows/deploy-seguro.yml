@@ -54,6 +54,11 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v6
 
+      - name: Instalar renderizador PDF local
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends poppler-utils
+
       - name: Compilar desafios, mnemônicos e indexar hubs de conteúdo
         run: |
           set -e

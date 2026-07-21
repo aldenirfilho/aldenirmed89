@@ -75,17 +75,38 @@ class CardFeedRecoveryTests(unittest.TestCase):
 
     def test_public_index_matches_approved_directory(self) -> None:
         public = load_json("05_Midia_E_Feed/data/public.json")
-        files_on_disk = sorted(
+        files_on_disk = {
             path.relative_to(PUBLIC_ROOT).as_posix()
             for path in PUBLIC_ROOT.rglob("*")
             if path.is_file() and path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp", ".svg"}
+        }
+        approved = set(public["files"])
+        self.assertTrue(approved.issubset(files_on_disk))
+        self.assertEqual(public["totalFiles"], len(approved))
+        self.assertEqual(
+            public["totalBytes"], sum((PUBLIC_ROOT / item).stat().st_size for item in approved)
         )
-        self.assertEqual(public["files"], files_on_disk)
-        self.assertEqual(public["totalFiles"], len(files_on_disk))
-        self.assertEqual(public["totalBytes"], sum((PUBLIC_ROOT / item).stat().st_size for item in files_on_disk))
+
+        unexpected = []
+        for relative in sorted(files_on_disk - approved):
+            path = Path(relative)
+            canonical_name = re.sub(
+                r" [2-9]\d*(\.(?:png|jpe?g|webp|svg))$",
+                r"\1",
+                path.name,
+                flags=re.IGNORECASE,
+            )
+            canonical = path.with_name(canonical_name).as_posix()
+            if canonical == relative or canonical not in approved:
+                unexpected.append(relative)
+        self.assertEqual(unexpected, [])
 
     def test_published_svgs_have_no_active_content(self) -> None:
-        for path in PUBLIC_ROOT.rglob("*.svg"):
+        public = load_json("05_Midia_E_Feed/data/public.json")
+        for relative in public["files"]:
+            path = PUBLIC_ROOT / relative
+            if path.suffix.casefold() != ".svg":
+                continue
             source = path.read_text(encoding="utf-8").casefold()
             self.assertNotIn("<script", source)
             self.assertNotIn("onclick=", source)

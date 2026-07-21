@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Gera previews textuais seguros para os DOCX públicos da Biblioteca IA.
+"""Gera previews HTML locais para DOCX, PDF e Pages públicos da Biblioteca IA.
 
-O gerador usa somente a biblioteca padrão do Python. Arquivos DOCX são lidos
-como pacotes ZIP/OOXML; nenhum macro, relacionamento externo ou conteúdo HTML
-do documento é executado. O resultado é uma representação textual útil para
-consulta rápida, não uma reprodução fiel do layout do Word.
+DOCX são lidos como pacotes ZIP/OOXML, sem executar macros ou relacionamentos
+externos. PDF recebe uma capa rasterizada e texto extraído quando Poppler ou
+``pypdf`` estão disponíveis. O HTML resultante é same-origin, funciona sem o
+plugin PDF do navegador e nunca executa conteúdo ativo do documento.
 
 Uso:
     python3 scripts_admin/build_library_previews.py
@@ -18,11 +18,14 @@ de previews obsoletos.
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import html
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
 import tempfile
 import unicodedata
@@ -40,7 +43,15 @@ INDEX_RELATIVE = Path("data/biblioteca_previews.json")
 PREVIEW_DIR_RELATIVE = Path("previews")
 PRIVATE_SEGMENTS = {"_private", "inbox", "juridico-financeiro"}
 MAX_DOCUMENT_XML_BYTES = 64 * 1024 * 1024
-RENDERER_VERSION = "docx-stdlib-xml-v1"
+MAX_PDF_TEXT_PAGES = 80
+MAX_PDF_TEXT_CHARS = 1_500_000
+MAX_PDF_COVER_BYTES = 3 * 1024 * 1024
+PDF_COMMAND_TIMEOUT_SECONDS = 90
+INDEX_RENDERER_VERSION = "library-safe-html-v2"
+DOCX_RENDERER_VERSION = "docx-stdlib-xml-v1"
+PDF_RENDERER_VERSION = "pdf-local-cover-text-v1"
+PAGES_RENDERER_VERSION = "pages-quicklook-image-v1"
+PREVIEW_EXTENSIONS = {"docx", "pdf", "pages"}
 
 WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 NS = {"w": WORD_NS}
@@ -106,14 +117,15 @@ def load_manifest(library_root: Path) -> tuple[dict, bytes]:
     return payload, raw
 
 
-def canonical_docx_path(raw_path: object) -> PurePosixPath:
+def canonical_preview_path(raw_path: object, expected_extension: str) -> PurePosixPath:
+    label = expected_extension.upper()
     if not isinstance(raw_path, str) or not raw_path.strip():
-        raise PreviewBuildError("Registro DOCX sem caminho válido.")
+        raise PreviewBuildError(f"Registro {label} sem caminho válido.")
     value = raw_path.strip()
     if "\\" in value:
-        raise PreviewBuildError(f"Caminho DOCX usa separador não canônico: {raw_path!r}")
+        raise PreviewBuildError(f"Caminho {label} usa separador não canônico: {raw_path!r}")
     if value != unicodedata.normalize("NFC", value):
-        raise PreviewBuildError(f"Caminho DOCX fora de NFC: {raw_path!r}")
+        raise PreviewBuildError(f"Caminho {label} fora de NFC: {raw_path!r}")
     path = PurePosixPath(value)
     parts = path.parts
     if (
@@ -123,9 +135,11 @@ def canonical_docx_path(raw_path: object) -> PurePosixPath:
         or parts[0] != "acervo"
         or any(part in {"", ".", ".."} for part in parts)
         or any(part.casefold() in PRIVATE_SEGMENTS for part in parts)
-        or path.suffix.casefold() != ".docx"
+        or path.suffix.casefold() != f".{expected_extension}"
     ):
-        raise PreviewBuildError(f"Caminho DOCX inseguro ou fora do acervo público: {raw_path!r}")
+        raise PreviewBuildError(
+            f"Caminho {label} inseguro ou fora do acervo público: {raw_path!r}"
+        )
     return path
 
 
@@ -135,11 +149,13 @@ def source_file(library_root: Path, relative: PurePosixPath) -> Path:
     try:
         resolved = candidate.resolve(strict=True)
     except OSError as exc:
-        raise PreviewBuildError(f"DOCX ausente: {relative.as_posix()}") from exc
+        raise PreviewBuildError(f"Documento ausente: {relative.as_posix()}") from exc
     if root != resolved and root not in resolved.parents:
-        raise PreviewBuildError(f"DOCX escapou da Biblioteca: {relative.as_posix()}")
+        raise PreviewBuildError(f"Documento escapou da Biblioteca: {relative.as_posix()}")
     if not resolved.is_file() or candidate.is_symlink():
-        raise PreviewBuildError(f"DOCX não é arquivo público regular: {relative.as_posix()}")
+        raise PreviewBuildError(
+            f"Documento não é arquivo público regular: {relative.as_posix()}"
+        )
     return resolved
 
 
@@ -312,23 +328,234 @@ def docx_document_xml(source: Path) -> bytes:
         raise PreviewBuildError(f"DOCX protegido ou ilegível: {source.name}") from exc
 
 
+def available_command(name: str) -> str | None:
+    """Resolve uma ferramenta opcional sem depender de shell."""
+
+    return shutil.which(name)
+
+
+def pdf_page_count(source: Path) -> int | None:
+    command = available_command("pdfinfo")
+    if not command or not available_command("pdftotext"):
+        return None
+    try:
+        result = subprocess.run(
+            [command, str(source)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=PDF_COMMAND_TIMEOUT_SECONDS,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if result.returncode != 0:
+        return None
+    output = result.stdout.decode("utf-8", errors="replace")
+    match = re.search(r"^Pages:\s*(\d+)\s*$", output, flags=re.MULTILINE)
+    return int(match.group(1)) if match else None
+
+
+def pdf_cover(source: Path) -> tuple[str, int]:
+    """Rasteriza somente a primeira página; falhas geram fallback textual."""
+
+    command = available_command("pdftoppm")
+    # A distribuição oficial de Poppler fornece as duas ferramentas. Alguns
+    # runtimes mínimos expõem um wrapper isolado de pdftoppm sem fontconfig
+    # funcional; nesse caso a extração pypdf evita travamentos locais.
+    if not command or not available_command("pdftotext"):
+        return "", 0
+    try:
+        with tempfile.TemporaryDirectory(prefix="library-pdf-cover-") as temporary:
+            prefix = Path(temporary) / "cover"
+            result = subprocess.run(
+                [
+                    command,
+                    "-f", "1",
+                    "-l", "1",
+                    "-singlefile",
+                    "-jpeg",
+                    "-jpegopt", "quality=76",
+                    "-r", "96",
+                    str(source),
+                    str(prefix),
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+                timeout=PDF_COMMAND_TIMEOUT_SECONDS,
+            )
+            cover_path = prefix.with_suffix(".jpg")
+            if result.returncode != 0 or not cover_path.is_file():
+                return "", 0
+            data = cover_path.read_bytes()
+    except (OSError, subprocess.TimeoutExpired):
+        return "", 0
+    if not data or len(data) > MAX_PDF_COVER_BYTES:
+        return "", 0
+    encoded = base64.b64encode(data).decode("ascii")
+    return f"data:image/jpeg;base64,{encoded}", len(data)
+
+
+def extract_pdf_text(source: Path, page_count: int | None) -> tuple[str, int, str]:
+    """Extrai texto limitado; a capa continua disponível quando não houver OCR."""
+
+    last_page = min(page_count or MAX_PDF_TEXT_PAGES, MAX_PDF_TEXT_PAGES)
+    command = available_command("pdftotext")
+    if command:
+        try:
+            result = subprocess.run(
+                [
+                    command,
+                    "-f", "1",
+                    "-l", str(max(last_page, 1)),
+                    "-layout",
+                    "-enc", "UTF-8",
+                    str(source),
+                    "-",
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+                timeout=PDF_COMMAND_TIMEOUT_SECONDS,
+            )
+            if result.returncode == 0:
+                text = result.stdout.decode("utf-8", errors="replace").replace("\x00", "")
+                return text[:MAX_PDF_TEXT_CHARS], last_page, "poppler-pdftotext"
+        except (OSError, subprocess.TimeoutExpired):
+            pass
+
+    # O runtime de documentos do Codex fornece pypdf localmente. O import é
+    # opcional para que o build continue com uma capa visível em ambientes sem
+    # essa biblioteca; o workflow oficial instala Poppler explicitamente.
+    try:
+        from pypdf import PdfReader  # type: ignore[import-not-found]
+
+        reader = PdfReader(str(source), strict=False)
+        if reader.is_encrypted:
+            try:
+                reader.decrypt("")
+            except Exception:
+                return "", 0, "unavailable"
+        page_limit = min(len(reader.pages), MAX_PDF_TEXT_PAGES)
+        pages: list[str] = []
+        for page in reader.pages[:page_limit]:
+            pages.append((page.extract_text() or "").replace("\x00", ""))
+            if sum(len(value) for value in pages) >= MAX_PDF_TEXT_CHARS:
+                break
+        return "\f".join(pages)[:MAX_PDF_TEXT_CHARS], len(pages), "pypdf"
+    except Exception:
+        return "", 0, "unavailable"
+
+
+def render_pdf_content(source: Path) -> tuple[str, dict[str, object], bool]:
+    pages = pdf_page_count(source)
+    cover_uri, cover_bytes = pdf_cover(source)
+    raw_text, text_pages, extractor = extract_pdf_text(source, pages)
+
+    blocks: list[str] = []
+    if cover_uri:
+        blocks.append(
+            '<figure class="pdf-cover"><img src="'
+            + cover_uri
+            + '" alt="Primeira página renderizada do PDF"><figcaption>'
+            "Página 1 renderizada localmente</figcaption></figure>"
+        )
+
+    text_sections = []
+    for page_number, page_text in enumerate(raw_text.split("\f"), start=1):
+        cleaned = page_text.strip()
+        if not cleaned:
+            continue
+        text_sections.append(
+            f'<section class="pdf-text-page"><h2>Página {page_number} — texto extraído</h2>'
+            f"<pre>{html.escape(cleaned)}</pre></section>"
+        )
+    if text_sections:
+        blocks.extend(text_sections)
+    elif cover_uri:
+        blocks.append(
+            '<p class="empty">Este PDF não forneceu texto extraível. A primeira página '
+            "renderizada acima confirma o conteúdo visual; o original integral permanece disponível.</p>"
+        )
+    else:
+        blocks.append(
+            '<p class="empty">Este PDF não forneceu texto nem capa extraíveis neste ambiente. '
+            "O original integral permanece preservado e disponível para download.</p>"
+        )
+
+    stats: dict[str, object] = {
+        "pages": pages,
+        "previewTextPages": text_pages,
+        "characters": len(raw_text),
+        "words": len(re.findall(r"\S+", raw_text)),
+        "coverBytes": cover_bytes,
+        "textExtractor": extractor,
+        "textPageLimit": MAX_PDF_TEXT_PAGES,
+    }
+    return "\n".join(blocks), stats, bool(cover_uri or text_sections)
+
+
+def render_pages_content(source: Path) -> tuple[str, dict[str, object], bool]:
+    """Usa apenas a imagem Quick Look já embutida no pacote Apple Pages."""
+
+    candidates = ("preview-web.jpg", "preview.jpg", "preview-micro.jpg")
+    selected = ""
+    data = b""
+    try:
+        with zipfile.ZipFile(source) as archive:
+            for candidate in candidates:
+                try:
+                    info = archive.getinfo(candidate)
+                except KeyError:
+                    continue
+                if 0 < info.file_size <= MAX_PDF_COVER_BYTES:
+                    value = archive.read(info)
+                    if value.startswith(b"\xff\xd8\xff"):
+                        selected = candidate
+                        data = value
+                        break
+    except (zipfile.BadZipFile, RuntimeError, OSError):
+        data = b""
+
+    if data:
+        encoded = base64.b64encode(data).decode("ascii")
+        content = (
+            '<figure class="pdf-cover"><img src="data:image/jpeg;base64,'
+            + encoded
+            + '" alt="Prévia Quick Look do documento Apple Pages"><figcaption>'
+            "Imagem de pré-visualização preservada no arquivo Pages</figcaption></figure>"
+        )
+        return content, {"previewAsset": selected, "previewBytes": len(data)}, True
+
+    content = (
+        '<p class="empty">Este pacote Apple Pages não contém uma imagem Quick Look '
+        "compatível. O original permanece disponível para abrir ou baixar.</p>"
+    )
+    return content, {"previewAsset": None, "previewBytes": 0}, False
+
+
 def render_page(
     *,
     title: str,
     source_path: str,
     source_sha256: str,
     content: str,
+    format_label: str,
+    notice: str,
+    content_label: str,
 ) -> bytes:
     safe_title = html.escape(title or Path(source_path).stem)
     safe_source = html.escape(source_path)
+    safe_notice = html.escape(notice)
+    safe_content_label = html.escape(content_label)
     original_href = "../" + quote(source_path, safe="/")
     page = f"""<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
-  <title>{safe_title} — prévia textual</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>{safe_title} — prévia local</title>
   <style>
     :root{{color-scheme:dark;--bg:#0b1220;--card:#111c30;--text:#e5edf8;--muted:#9fb0c8;--line:#263750;--accent:#38bdf8;--warn:#fbbf24}}
     *{{box-sizing:border-box}}
@@ -349,17 +576,22 @@ def render_page(
     a{{color:var(--accent)}}
     .download{{display:inline-block;margin-top:.7rem;padding:.65rem .9rem;border:1px solid var(--accent);border-radius:9px;text-decoration:none;font-weight:700}}
     .empty{{color:var(--muted);font-style:italic}}
+    .pdf-cover{{margin:0 auto 2rem;text-align:center}}
+    .pdf-cover img{{display:block;max-width:100%;height:auto;margin:auto;border:1px solid var(--line);border-radius:8px;box-shadow:0 12px 30px #0007}}
+    .pdf-cover figcaption{{color:var(--muted);font-size:.82rem;margin-top:.55rem}}
+    .pdf-text-page{{border-top:1px solid var(--line);padding-top:.5rem;margin-top:1.5rem}}
+    .pdf-text-page pre{{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}}
     @media(max-width:600px){{main{{padding:1rem}}article{{border-radius:12px;padding:1rem}}}}
     @media(prefers-reduced-motion:reduce){{*{{scroll-behavior:auto!important}}}}
   </style>
 </head>
 <body>
   <main>
-    <div class="notice" role="note">⚠️ Prévia textual segura. Layout, imagens, equações, notas e paginação podem diferir do Word original.</div>
+    <div class="notice" role="note">⚠️ {safe_notice}</div>
     <h1>{safe_title}</h1>
     <p class="meta">Fonte: {safe_source}<br>SHA-256: {source_sha256}</p>
-    <p><a class="download" href="{original_href}" download>⬇️ Baixar o DOCX original</a></p>
-    <article aria-label="Conteúdo textual extraído do documento">
+    <p><a class="download" href="{original_href}" download>⬇️ Baixar o {html.escape(format_label)} original</a></p>
+    <article aria-label="{safe_content_label}">
       {content}
     </article>
   </main>
@@ -369,9 +601,9 @@ def render_page(
     return page.encode("utf-8")
 
 
-def preview_name(source_path: str) -> str:
+def preview_name(source_path: str, extension: str) -> str:
     digest = hashlib.sha256(source_path.encode("utf-8")).hexdigest()[:20]
-    return f"docx-{digest}.html"
+    return f"{extension}-{digest}.html"
 
 
 def build_plan(library_root: Path) -> tuple[list[PreviewArtifact], dict]:
@@ -388,31 +620,78 @@ def build_plan(library_root: Path) -> tuple[list[PreviewArtifact], dict]:
         raw_path = record.get("path")
         path_suffix = PurePosixPath(str(raw_path or "")).suffix.casefold()
         extension = str(record.get("extension") or path_suffix.lstrip(".")).casefold().lstrip(".")
-        if extension != "docx" and path_suffix != ".docx":
+        if extension not in PREVIEW_EXTENSIONS and path_suffix not in {
+            f".{value}" for value in PREVIEW_EXTENSIONS
+        }:
             continue
-        if extension != "docx" or path_suffix != ".docx":
-            raise PreviewBuildError(f"Extensão divergente para DOCX: {raw_path!r}")
-        relative = canonical_docx_path(raw_path)
+        if extension not in PREVIEW_EXTENSIONS or path_suffix != f".{extension}":
+            raise PreviewBuildError(f"Extensão divergente para preview: {raw_path!r}")
+        relative = canonical_preview_path(raw_path, extension)
         source_path = relative.as_posix()
         document_id = str(record.get("id") or "").strip()
         if not document_id:
-            raise PreviewBuildError(f"DOCX sem ID no manifesto: {source_path}")
+            raise PreviewBuildError(f"Documento sem ID no manifesto: {source_path}")
         if source_path in seen_paths:
-            raise PreviewBuildError(f"Caminho DOCX duplicado no manifesto: {source_path}")
+            raise PreviewBuildError(f"Caminho duplicado no manifesto: {source_path}")
         if document_id in seen_ids:
-            raise PreviewBuildError(f"ID DOCX duplicado no manifesto: {document_id}")
+            raise PreviewBuildError(f"ID duplicado no manifesto: {document_id}")
         seen_paths.add(source_path)
         seen_ids.add(document_id)
 
         source = source_file(library_root, relative)
         source_sha = sha256_file(source)
-        content, stats = render_document_xml(docx_document_xml(source))
-        filename = preview_name(source_path)
+        declared_sha = str(record.get("sourceSha256") or "").casefold()
+        if declared_sha and declared_sha != source_sha:
+            raise PreviewBuildError(f"SHA-256 divergente no manifesto: {source_path}")
+
+        if extension == "docx":
+            content, stats = render_document_xml(docx_document_xml(source))
+            renderer = DOCX_RENDERER_VERSION
+            status = "ready"
+            text_only = True
+            notice = (
+                "Prévia textual segura. Layout, imagens, equações, notas e paginação "
+                "podem diferir do Word original."
+            )
+            content_label = "Conteúdo textual extraído do documento Word"
+        elif extension == "pdf":
+            content, stats, rendered = render_pdf_content(source)
+            renderer = PDF_RENDERER_VERSION
+            status = "ready" if rendered else "degraded"
+            text_only = False
+            if stats["coverBytes"] and stats["characters"]:
+                preview_detail = "primeira página renderizada e até 80 páginas de texto"
+            elif stats["coverBytes"]:
+                preview_detail = "primeira página renderizada; não foi encontrado texto extraível"
+            elif stats["characters"]:
+                preview_detail = "até 80 páginas de texto extraído"
+            else:
+                preview_detail = "fallback explícito; este arquivo não forneceu capa nem texto"
+            notice = (
+                "Prévia local independente do leitor PDF do navegador: "
+                f"{preview_detail}. O original integral não foi alterado."
+            )
+            content_label = "Prévia local do documento PDF"
+        else:
+            content, stats, rendered = render_pages_content(source)
+            renderer = PAGES_RENDERER_VERSION
+            status = "ready" if rendered else "degraded"
+            text_only = False
+            notice = (
+                "Prévia local da imagem Quick Look embutida no arquivo Apple Pages. "
+                "O documento original integral não foi alterado."
+            )
+            content_label = "Prévia local do documento Apple Pages"
+
+        filename = preview_name(source_path, extension)
         page = render_page(
             title=str(record.get("title") or record.get("name") or source.stem),
             source_path=source_path,
             source_sha256=source_sha,
             content=content,
+            format_label=extension.upper(),
+            notice=notice,
+            content_label=content_label,
         )
         preview_path = (PREVIEW_DIR_RELATIVE / filename).as_posix()
         metadata: dict[str, object] = {
@@ -421,23 +700,32 @@ def build_plan(library_root: Path) -> tuple[list[PreviewArtifact], dict]:
             "sourceSha256": source_sha,
             "previewPath": preview_path,
             "previewSha256": sha256_bytes(page),
-            "renderer": RENDERER_VERSION,
-            "status": "ready",
-            "textOnly": True,
+            "renderer": renderer,
+            "previewFormat": extension,
+            "status": status,
+            "textOnly": text_only,
+            "browserIndependent": True,
             "stats": stats,
         }
         artifacts.append(PreviewArtifact(filename=filename, html_bytes=page, metadata=metadata))
 
     artifacts.sort(key=lambda item: str(item.metadata["sourcePath"]).casefold())
+    generated_by_extension = {
+        extension: sum(
+            1 for artifact in artifacts if artifact.metadata["previewFormat"] == extension
+        )
+        for extension in sorted(PREVIEW_EXTENSIONS)
+    }
     index = {
-        "version": "library-previews-v1",
-        "renderer": RENDERER_VERSION,
+        "version": "library-previews-v2",
+        "renderer": INDEX_RENDERER_VERSION,
         "sourceManifest": MANIFEST_RELATIVE.as_posix(),
         "sourceManifestSha256": sha256_bytes(manifest_bytes),
         "sourceManifestUpdatedAt": manifest.get("updatedAt"),
         "manifestDocuments": len(raw_files),
         "previewableDocuments": len(artifacts),
         "generatedPreviews": len(artifacts),
+        "generatedByExtension": generated_by_extension,
         "items": [artifact.metadata for artifact in artifacts],
     }
     return artifacts, index
@@ -467,7 +755,7 @@ def check_outputs(library_root: Path, artifacts: list[PreviewArtifact], index: d
             details.append(f"ausentes={len(missing)}")
         if stale:
             details.append(f"obsoletos={len(stale)}")
-        raise PreviewBuildError("Cobertura DOCX divergente: " + ", ".join(details))
+        raise PreviewBuildError("Cobertura de previews divergente: " + ", ".join(details))
 
     for artifact in artifacts:
         path = preview_dir / artifact.filename
@@ -502,11 +790,15 @@ def execute(library_root: Path, *, check: bool) -> int:
         artifacts, index = build_plan(library_root)
         if check:
             check_outputs(library_root, artifacts, index)
-            print(f"✅ Cobertura validada: {len(artifacts)} preview(s) DOCX atuais, sem escrita.")
+            print(
+                f"✅ Cobertura validada: {len(artifacts)} preview(s) DOCX/PDF/Pages atuais, sem escrita."
+            )
         else:
             write_outputs(library_root, artifacts, index)
             check_outputs(library_root, artifacts, index)
-            print(f"✅ Previews gerados: {len(artifacts)} DOCX com cobertura integral.")
+            print(
+                f"✅ Previews gerados: {len(artifacts)} DOCX/PDF/Pages com cobertura integral."
+            )
         return 0
     except (PreviewBuildError, OSError) as exc:
         print(f"❌ {exc}", file=sys.stderr)
@@ -515,7 +807,7 @@ def execute(library_root: Path, *, check: bool) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Gera previews textuais seguros para DOCX públicos da Biblioteca IA."
+        description="Gera previews HTML locais para DOCX, PDF e Pages públicos da Biblioteca IA."
     )
     parser.add_argument(
         "--check",

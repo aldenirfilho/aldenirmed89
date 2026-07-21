@@ -8,10 +8,11 @@ Escopo: `02_Biblioteca_IA_Engine`
 - O manifesto físico passou a ser a única fonte estrutural do catálogo.
 - Cada documento público possui um ID e um caminho canônico únicos.
 - Rotas Unicode são normalizadas em NFC e divergências agora bloqueiam o deploy.
-- PDF usa o leitor nativo do navegador, com fallback visível no celular.
+- PDF recebe uma prévia HTML local com primeira página renderizada e texto extraído; não depende do leitor nativo do navegador.
 - DOCX recebe uma prévia textual local, sanitizada e gerada no build.
-- Markdown, TXT, CSV e TSV são renderizados sem executar conteúdo ativo.
-- Pages, Anki e formatos sem leitor seguro permanecem disponíveis para download.
+- Apple Pages usa a imagem Quick Look já embutida no pacote, quando disponível.
+- Markdown, TXT, CSV e TSV são renderizados em `srcdoc` sem executar conteúdo ativo.
+- Anki e formatos sem leitor seguro permanecem disponíveis para download.
 - Dados antigos do navegador não podem substituir path, ID, hash, extensão ou autoria.
 - O caderno de estudo salva notas, síntese, confiança, favoritos e próxima revisão sem alterar o original.
 
@@ -107,12 +108,16 @@ Esses comandos:
 
 1. reconstrói o manifesto e o catálogo canônico;
 2. calcula SHA-256;
-3. gera previews DOCX sanitizados;
+3. gera previews HTML locais de DOCX, PDF e Apple Pages;
 4. atualizam conexões da Biblioteca.
 
 `bash scripts_admin/atualizar_tudo.sh` também funciona, mas reindexa outros hubs e pode corrigir paths. Prefira os comandos direcionados acima e sempre revise `git diff` antes de continuar.
 
 **A prévia DOCX não é uma auditoria LGPD.** Ela extrai principalmente `word/document.xml`; pode não revelar imagens, cabeçalhos/rodapés, comentários, alterações controladas, propriedades, anexos, macros ou outros metadados. Inspecione o arquivo original e suas propriedades antes de publicar.
+
+**A prévia PDF também é uma camada de consulta, não uma reprodução integral.** Ela mostra a primeira página rasterizada e extrai texto de até 80 páginas. PDFs digitalizados podem não conter texto pesquisável; layout, anexos, formulários, assinaturas e páginas posteriores ao limite devem ser conferidos no original.
+
+**A prévia Pages é somente a imagem Quick Look incluída pelo próprio aplicativo.** Para editar, pesquisar todo o texto ou conferir páginas adicionais, abra o original no Apple Pages.
 
 ### 6. Completar os metadados editoriais
 
@@ -141,13 +146,13 @@ python3 scripts_admin/build_public_site.py . site
 python3 scripts_admin/publication_guard.py check-site site
 ```
 
-O resultado esperado é zero 404, zero paths corrigíveis, zero conteúdo privado e cobertura integral dos DOCX.
+O resultado esperado é zero 404, zero paths corrigíveis, zero conteúdo privado e cobertura integral dos DOCX/PDF/Pages.
 
 ### 8. Testar no navegador
 
 Confirme pelo menos:
 
-- um PDF com várias páginas;
+- um PDF na prévia HTML local, inclusive em viewport estreita/WebView;
 - um Word na prévia textual;
 - um Markdown;
 - um CSV/TSV, se houver;
