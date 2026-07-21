@@ -201,6 +201,7 @@
     .search-bar input,.filter-panel select,.classify-box select,.classify-box input,.classify-box textarea{font-size:16px}
   }
 </style>
+<link rel="stylesheet" href="assets/library-focused-reader.css"/>
 </head>
 <body>
 
@@ -446,9 +447,62 @@
       <button class="btn btn-primary" onclick="fecharPreview()" style="font-size:.75rem">✕ Fechar</button>
     </div>
   </div>
+  <div class="reader-tools" id="readerTools" aria-disabled="true" aria-label="Ferramentas de leitura focada">
+    <div class="reader-tool-group">
+      <button type="button" id="readerFocusToggle" class="reader-reading-control" aria-pressed="false">🎯 Leitura focada</button>
+      <select id="readerWidth" class="reader-reading-control" aria-label="Largura de leitura">
+        <option value="narrow">Estreita</option>
+        <option value="comfortable">Confortável</option>
+        <option value="wide">Ampla</option>
+      </select>
+      <select id="readerFont" class="reader-reading-control" aria-label="Fonte de leitura">
+        <option value="system">Sistema</option>
+        <option value="serif">Serifada</option>
+        <option value="mono">Mono</option>
+      </select>
+      <select id="readerTheme" class="reader-reading-control" aria-label="Tema de leitura">
+        <option value="dark">Escuro</option>
+        <option value="light">Claro</option>
+        <option value="sepia">Sépia</option>
+      </select>
+    </div>
+    <div class="reader-tool-group">
+      <button type="button" id="readerFontMinus" class="reader-reading-control" aria-label="Diminuir fonte">A−</button>
+      <span id="readerFontValue" class="reader-search-status">18px</span>
+      <button type="button" id="readerFontPlus" class="reader-reading-control" aria-label="Aumentar fonte">A+</button>
+      <button type="button" id="readerLineMinus" class="reader-reading-control" aria-label="Diminuir espaçamento">↕−</button>
+      <span id="readerLineValue" class="reader-search-status">1.75</span>
+      <button type="button" id="readerLinePlus" class="reader-reading-control" aria-label="Aumentar espaçamento">↕+</button>
+    </div>
+    <div class="reader-tool-group reader-search-group">
+      <input id="readerSearch" class="reader-reading-control" type="search" placeholder="Buscar no documento…" aria-label="Buscar no documento"/>
+      <button type="button" id="readerSearchPrev" class="reader-reading-control" aria-label="Ocorrência anterior">↑</button>
+      <button type="button" id="readerSearchNext" class="reader-reading-control" aria-label="Próxima ocorrência">↓</button>
+      <button type="button" id="readerSearchClear" class="reader-reading-control" aria-label="Limpar busca">✕</button>
+      <span id="readerSearchStatus" class="reader-search-status" aria-live="polite">Busca indisponível</span>
+    </div>
+    <div class="reader-tool-group">
+      <select id="readerHighlightColor" class="reader-reading-control" aria-label="Cor do destaque">
+        <option value="yellow">🟨 Amarelo</option>
+        <option value="green">🟩 Verde</option>
+        <option value="blue">🟦 Azul</option>
+        <option value="pink">🩷 Rosa</option>
+      </select>
+      <button type="button" id="readerAddHighlight" class="reader-reading-control">🖍️ Destacar seleção</button>
+    </div>
+    <div class="reader-tool-group">
+      <select id="readerExportFormat" class="reader-reading-control" aria-label="Formato de exportação">
+        <option value="markdown">Markdown</option>
+        <option value="json">JSON</option>
+        <option value="html">HTML</option>
+      </select>
+      <button type="button" id="readerExport" class="reader-reading-control">📤 Exportar</button>
+    </div>
+    <span id="readerStatus" class="reader-live-status" aria-live="polite">Abra um documento para iniciar.</span>
+  </div>
   <div class="preview-shell">
     <div class="preview-stage">
-      <iframe class="preview-iframe" id="previewFrame" title="Pré-visualização segura do documento" sandbox="allow-downloads allow-forms allow-popups" referrerpolicy="no-referrer"></iframe>
+      <iframe class="preview-iframe" id="previewFrame" title="Pré-visualização segura do documento" sandbox="allow-downloads allow-popups" referrerpolicy="no-referrer"></iframe>
     </div>
     <aside class="study-panel">
       <h4>✍️ Caderno editável</h4>
@@ -480,6 +534,19 @@
         <button class="btn btn-secondary" onclick="copyStudyPrompt()">📋 Prompt</button>
         <span id="studySaveStatus" style="font-size:.7rem;color:var(--muted);align-self:center" aria-live="polite"></span>
       </div>
+      <section class="reader-highlights-panel" aria-labelledby="readerHighlightsHeading">
+        <div class="reader-highlights-heading">
+          <h4 id="readerHighlightsHeading">🖍️ Destaques locais</h4>
+          <span id="readerHighlightCount" class="reader-highlight-count">0</span>
+        </div>
+        <p class="reader-highlights-help">Selecione texto na prévia verificada e use “Destacar seleção”. As anotações ficam neste navegador, sem criptografia, e nunca alteram o original.</p>
+        <div id="readerHighlightsList" class="reader-highlights-list"></div>
+        <div class="reader-export-row">
+          <button type="button" id="readerExportMarkdown" class="btn btn-secondary">MD</button>
+          <button type="button" id="readerExportJSON" class="btn btn-secondary">JSON</button>
+          <button type="button" id="readerExportHTML" class="btn btn-secondary">HTML</button>
+        </div>
+      </section>
       <h4>🔗 Continuar no ecossistema</h4>
       <div class="connections-list" id="previewConnections"></div>
       <h4>📚 Relacionados</h4>
@@ -488,6 +555,7 @@
   </div>
 </div>
 
+<script src="assets/library-focused-reader.js"></script>
 <script>
 // ============================================================
 //  BIBLIOTECA IA — MOTOR DE DADOS
@@ -502,6 +570,7 @@ let currentPreviewItem = null;
 let studyAutosaveTimer = null;
 let studyFormDirty = false;
 let previewLoadToken = 0;
+let focusedReader = null;
 let studyStoreCache = null;
 let currentFilter = 'todos';
 let currentFormatFilter = 'todos';
@@ -1531,7 +1600,7 @@ function renderMarkdownToHtml(raw) {
     'tr:nth-child(even){background:rgba(255,255,255,.03)}' +
     'hr{border:none;border-top:1px solid #334155;margin:1.5rem 0}' +
     'img{max-width:100%;border-radius:8px}' +
-    '</style></head><body>' + h + '</body></html>';
+    '</style></head><body><article data-reader-content="true">' + h + '</article></body></html>';
 }
 
 function safeEncodePath(path) {
@@ -1550,13 +1619,18 @@ function safeEncodePath(path) {
     .join('/');
 }
 
-// Preview por formato: sem dependência obrigatória de visualizador externo.
-function resetPreviewFrame(sandbox = true) {
+// Preview por formato: dois níveis explícitos de isolamento.
+// "trusted" é exclusivo para HTML local gerado/escapado e validado por SHA.
+function resetPreviewFrame(mode = 'isolated') {
   const frame = document.getElementById('previewFrame');
   frame.removeAttribute('src');
   frame.removeAttribute('srcdoc');
-  if (sandbox) frame.setAttribute('sandbox', 'allow-downloads allow-popups');
-  else frame.removeAttribute('sandbox');
+  frame.setAttribute(
+    'sandbox',
+    mode === 'trusted'
+      ? 'allow-downloads allow-same-origin'
+      : 'allow-downloads allow-popups'
+  );
   return frame;
 }
 
@@ -1565,44 +1639,81 @@ function previewMessage(title, message, href, actionLabel = '⬇️ Baixar arqui
   return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:system-ui;padding:clamp(1.5rem,5vw,4rem);background:#0f172a;color:#e2e8f0;line-height:1.6;text-align:center"><h2 style="color:#00d4ff">${escapeHTML(title)}</h2><p>${escapeHTML(message)}</p><a href="${safeHref}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:1rem;padding:.75rem 1rem;background:#00d4ff;color:#07111f;text-decoration:none;border-radius:8px;font-weight:700">${escapeHTML(actionLabel)}</a></body></html>`;
 }
 
-function findGeneratedPreview(path) {
+function findGeneratedPreviewEntry(path) {
   const collections = [previewManifest.items, previewManifest.documents, previewManifest.previews, previewManifest.files];
   const list = collections.find(Array.isArray) || [];
   const entry = list.find(item => normalizePath(item.sourcePath || item.path || item.documentPath) === path);
-  if (entry) return normalizePath(entry.previewPath || entry.preview || entry.htmlPath);
+  if (entry) return entry;
   if (previewManifest.byPath && previewManifest.byPath[path]) {
     const mapped = previewManifest.byPath[path];
-    return normalizePath(typeof mapped === 'string' ? mapped : mapped.previewPath || mapped.preview);
+    return typeof mapped === 'string'
+      ? { sourcePath: path, previewPath: mapped }
+      : mapped;
   }
-  return '';
+  return null;
 }
 
-function setInlinePreview(html) {
-  const frame = resetPreviewFrame(true);
+function validateTrustedPreview(entry, path, item, extension) {
+  if (!entry || !item) return null;
+  const previewPath = normalizePath(entry.previewPath || entry.preview || entry.htmlPath);
+  const sourcePath = normalizePath(entry.sourcePath || entry.path || entry.documentPath);
+  const sourceSha256 = String(entry.sourceSha256 || '').toLowerCase();
+  const previewSha256 = String(entry.previewSha256 || '').toLowerCase();
+  const itemSha256 = String(item.sourceSha256 || '').toLowerCase();
+  const previewFormat = String(entry.previewFormat || '').toLowerCase();
+  const allowedPath = /^previews\/(?:docx|pdf|pages)-[0-9a-f]{20}\.html$/;
+  if (!allowedPath.test(previewPath)) return null;
+  if (sourcePath !== path || !/^[0-9a-f]{64}$/.test(sourceSha256) || sourceSha256 !== itemSha256) return null;
+  if (!/^[0-9a-f]{64}$/.test(previewSha256) || entry.browserIndependent !== true) return null;
+  if (previewFormat !== extension) return null;
+  if (entry.documentId && item.id && String(entry.documentId) !== String(item.id)) return null;
+  return { ...entry, previewPath, sourcePath, sourceSha256, previewSha256 };
+}
+
+function setTrustedGeneratedPreview(entry, path, item, extension, loadToken) {
+  const trusted = validateTrustedPreview(entry, path, item, extension);
+  if (!trusted) return false;
+  const encodedPreview = safeEncodePath(trusted.previewPath);
+  if (encodedPreview === '#') return false;
+  const frame = resetPreviewFrame('trusted');
+  focusedReader?.prepareFrame(frame, item, loadToken, trusted);
+  frame.src = encodedPreview;
+  return true;
+}
+
+function setInlinePreview(html, loadToken, renderer) {
+  const frame = resetPreviewFrame('trusted');
+  focusedReader?.prepareFrame(frame, currentPreviewItem, loadToken, {
+    sourcePath: currentPreviewItem?.path || '',
+    sourceSha256: currentPreviewItem?.sourceSha256 || '',
+    renderer: renderer || 'inline-safe-v1',
+    previewFormat: 'inline'
+  });
   frame.srcdoc = html;
 }
 
-async function loadTextPreview(encodedRelative, renderer, errorTitle, loadToken) {
+async function loadTextPreview(encodedRelative, renderer, errorTitle, loadToken, rendererName) {
   try {
     const response = await fetch(encodedRelative);
     if (!response.ok) throw new Error(String(response.status));
     const raw = await response.text();
     if (loadToken !== previewLoadToken) return;
-    setInlinePreview(renderer(raw));
+    setInlinePreview(renderer(raw), loadToken, rendererName);
   } catch (_) {
     if (loadToken !== previewLoadToken) return;
-    resetPreviewFrame(true).srcdoc = previewMessage(errorTitle, 'A pré-visualização não pôde ser montada. O original continua disponível para abrir ou baixar.', encodedRelative);
+    focusedReader?.disable('A prévia permaneceu isolada; use abrir ou baixar o original.');
+    resetPreviewFrame('isolated').srcdoc = previewMessage(errorTitle, 'A pré-visualização não pôde ser montada. O original continua disponível para abrir ou baixar.', encodedRelative);
   }
 }
 
 function renderPlainTextToHtml(raw, title = 'Texto') {
-  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;line-height:1.65"><h2 style="color:#00d4ff">${escapeHTML(title)}</h2><pre style="white-space:pre-wrap;word-break:break-word;font:14px/1.6 ui-monospace,monospace;background:#091426;padding:1rem;border-radius:9px">${escapeHTML(raw.slice(0, 1000000))}</pre></body></html>`;
+  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;line-height:1.65"><article data-reader-content="true"><h2 style="color:#00d4ff">${escapeHTML(title)}</h2><pre style="white-space:pre-wrap;word-break:break-word;font:14px/1.6 ui-monospace,monospace;background:#091426;padding:1rem;border-radius:9px">${escapeHTML(raw.slice(0, 1000000))}</pre></article></body></html>`;
 }
 
 function renderTablePreview(raw, separator) {
   const rows = raw.replace(/\r/g, '').split('\n').slice(0, 300).map(row => row.split(separator).slice(0, 40));
   const body = rows.map((row, rowIndex) => `<tr>${row.map(cell => `<${rowIndex === 0 ? 'th' : 'td'}>${escapeHTML(cell)}</${rowIndex === 0 ? 'th' : 'td'}>`).join('')}</tr>`).join('');
-  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><style>body{font-family:system-ui;padding:1rem;background:#0f172a;color:#e2e8f0}table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid #334155;padding:.5rem;text-align:left}th{position:sticky;top:0;background:#1e293b;color:#00d4ff}</style><body><h2>📊 Prévia tabular segura</h2><div style="overflow:auto"><table>${body}</table></div><p>Mostrando no máximo 300 linhas e 40 colunas.</p></body></html>`;
+  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><style>body{font-family:system-ui;padding:1rem;background:#0f172a;color:#e2e8f0}table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid #334155;padding:.5rem;text-align:left}th{position:sticky;top:0;background:#1e293b;color:#00d4ff}</style><body><article data-reader-content="true"><h2>📊 Prévia tabular segura</h2><div style="overflow:auto"><table>${body}</table></div><p>Mostrando no máximo 300 linhas e 40 colunas.</p></article></body></html>`;
 }
 
 function abrirPreview(encodedPath, titulo, focusStudy = false) {
@@ -1614,6 +1725,7 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
   if (studyFormDirty && currentPreviewItem && document.getElementById('previewOverlay').classList.contains('open')) {
     if (!saveCurrentStudy({ silent: true })) return;
   }
+  if (currentPreviewItem && focusedReader?.closeDocument() === false) return;
   clearTimeout(studyAutosaveTimer);
   const loadToken = ++previewLoadToken;
 
@@ -1621,7 +1733,7 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
   const pathname = /^https:\/\//i.test(path) ? new URL(path).pathname : path;
   const ext = (pathname.split('.').pop() || '').toLowerCase();
   const title = decodeInlineToken(titulo) || 'Visualizando arquivo';
-  const frame = resetPreviewFrame(true);
+  const frame = resetPreviewFrame('isolated');
   const officeLink = document.getElementById('previewOffice');
   const isLocalHost = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname);
 
@@ -1633,54 +1745,57 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
   document.getElementById('previewDownload').href = fullUrl;
   officeLink.style.display = 'none';
   document.getElementById('previewOverlay').classList.add('open');
+  focusedReader?.beginDocument(currentPreviewItem);
   populateStudyPanel(currentPreviewItem);
 
   if (ext === 'pdf') {
-    const generated = findGeneratedPreview(path);
-    if (generated) {
+    const generated = findGeneratedPreviewEntry(path);
+    if (setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
       // Não depende do plugin PDF do navegador/WebView: usa o HTML local
       // gerado durante o build, com capa e/ou texto extraído.
-      resetPreviewFrame(true).src = safeEncodePath(generated);
     } else {
+      focusedReader?.disable('Prévia local não validada por caminho e SHA; leitor focado bloqueado.');
       frame.srcdoc = previewMessage(
         'PDF preservado — prévia em recuperação',
-        'O leitor PDF deste navegador não é confiável e a prévia HTML local ainda não está disponível. O arquivo original não foi perdido.',
+        'A prévia HTML local não passou pela validação de caminho e hash. O arquivo original não foi perdido.',
         fullUrl,
         '⬇️ Baixar PDF original'
       );
     }
   } else if (ext === 'docx') {
-    const generated = findGeneratedPreview(path);
+    const generated = findGeneratedPreviewEntry(path);
     officeLink.href = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(fullUrl);
     if (!isLocalHost) officeLink.style.display = 'inline-flex';
-    if (generated) {
-      resetPreviewFrame(true).src = safeEncodePath(generated);
-    } else {
+    if (!setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
+      focusedReader?.disable('Prévia local não validada por caminho e SHA; leitor focado bloqueado.');
       frame.srcdoc = previewMessage('Word preservado', 'A prévia local ainda não foi gerada para este arquivo. Abra no Word/Pages ou use o Office Online.', fullUrl, '📝 Abrir documento');
     }
   } else if (['doc','xlsx','xls','pptx','ppt'].includes(ext)) {
+    focusedReader?.disable('Formato mantido em modo isolado; use abrir ou baixar.');
     officeLink.href = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(fullUrl);
     if (!isLocalHost) officeLink.style.display = 'inline-flex';
     frame.srcdoc = previewMessage('Formato Office preservado', 'Este formato permanece para download. O Office Online é uma alternativa opcional e abre fora do painel seguro.', fullUrl, '📦 Abrir original');
   } else if (['md','markdown'].includes(ext)) {
-    loadTextPreview(encodedRelative, renderMarkdownToHtml, 'Erro ao carregar Markdown', loadToken);
+    loadTextPreview(encodedRelative, renderMarkdownToHtml, 'Erro ao carregar Markdown', loadToken, 'markdown-inline-safe-v1');
   } else if (ext === 'txt') {
-    loadTextPreview(encodedRelative, raw => renderPlainTextToHtml(raw, title), 'Erro ao carregar texto', loadToken);
+    loadTextPreview(encodedRelative, raw => renderPlainTextToHtml(raw, title), 'Erro ao carregar texto', loadToken, 'text-inline-safe-v1');
   } else if (['csv','tsv'].includes(ext)) {
-    loadTextPreview(encodedRelative, raw => renderTablePreview(raw, ext === 'tsv' ? '\t' : ','), 'Erro ao carregar tabela', loadToken);
+    loadTextPreview(encodedRelative, raw => renderTablePreview(raw, ext === 'tsv' ? '\t' : ','), 'Erro ao carregar tabela', loadToken, 'table-inline-safe-v1');
   } else if (['html','htm'].includes(ext)) {
     // HTML do acervo executa sem scripts e sem acesso à origem da Biblioteca.
-    resetPreviewFrame(true).src = encodedRelative;
+    focusedReader?.disable('HTML arbitrário permanece isolado; leitor focado bloqueado.');
+    resetPreviewFrame('isolated').src = encodedRelative;
   } else if (ext === 'pages') {
-    const generated = findGeneratedPreview(path);
-    if (generated) {
-      resetPreviewFrame(true).src = safeEncodePath(generated);
-    } else {
+    const generated = findGeneratedPreviewEntry(path);
+    if (!setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
+      focusedReader?.disable('Prévia Pages não validada por caminho e SHA.');
       frame.srcdoc = previewMessage('Apple Pages preservado', 'A imagem Quick Look local não pôde ser gerada. Baixe o arquivo e abra no Pages.', fullUrl, '📦 Baixar .pages');
     }
   } else if (ext === 'apkg') {
+    focusedReader?.disable('Anki permanece em download nativo; leitor focado indisponível.');
     frame.srcdoc = previewMessage('Anki: download nativo', 'O navegador não possui um renderizador confiável para .apkg. O arquivo não está perdido: baixe e abra no Anki.', fullUrl, '📦 Baixar .apkg');
   } else {
+    focusedReader?.disable('Formato mantido em modo isolado; leitor focado indisponível.');
     frame.srcdoc = previewMessage('Formato preservado', 'Não há pré-visualização segura para este formato. Use abrir ou baixar.', fullUrl);
   }
 
@@ -1691,15 +1806,19 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
 
 function fecharPreview() {
   if (studyFormDirty && currentPreviewItem && !saveCurrentStudy({ silent: true })) return;
+  if (focusedReader?.closeDocument() === false) return;
   clearTimeout(studyAutosaveTimer);
   previewLoadToken += 1;
-  resetPreviewFrame(true);
+  resetPreviewFrame('isolated');
   currentPreviewItem = null;
   document.getElementById('previewOverlay').classList.remove('open');
 }
 
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && document.getElementById('previewOverlay').classList.contains('open')) fecharPreview();
+  if (event.key === 'Escape' && document.getElementById('previewOverlay').classList.contains('open')) {
+    if (focusedReader?.exitFocus()) return;
+    fecharPreview();
+  }
 });
 
 window.addEventListener('storage', event => {
@@ -1722,6 +1841,9 @@ window.addEventListener('beforeunload', event => {
   }
 });
 
+focusedReader = window.LibraryFocusedReader
+  ? window.LibraryFocusedReader.create({ isTokenCurrent: token => token === previewLoadToken })
+  : null;
 init();
 </script>
 </body>

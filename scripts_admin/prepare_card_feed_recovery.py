@@ -191,6 +191,48 @@ def public_path(target: Path) -> str:
     return target.relative_to(ROOT / "05_Midia_E_Feed").as_posix()
 
 
+def recovery_target(source: Path, source_hash: str) -> Path:
+    theme = infer_theme(source.name)
+    stem = slugify(source.stem)
+    extension = ".svg" if source.suffix.lower() == ".svg" else ".webp"
+    return RECOVERED_ROOT / theme / f"{stem}-{source_hash[:10]}{extension}"
+
+
+def planned_recovery_targets(sources: list[Path]) -> set[Path]:
+    """Calcula o conjunto gerenciado antes de qualquer conversão ou escrita."""
+
+    expected: set[Path] = set()
+    seen_hashes: set[str] = set()
+    for source in sources:
+        source_hash = sha256(source)
+        if source_hash in seen_hashes:
+            continue
+        seen_hashes.add(source_hash)
+        if source_hash in CLINICAL_QUARANTINE_BY_SHA:
+            continue
+        expected.add(recovery_target(source, source_hash))
+    return expected
+
+
+def validate_recovered_root(recovered_root: Path, expected: set[Path]) -> None:
+    """Falha fechado diante de saídas inesperadas; nunca remove arquivos."""
+
+    if not recovered_root.exists():
+        return
+    unexpected: list[Path] = []
+    for path in sorted(recovered_root.rglob("*"), key=lambda item: item.as_posix().casefold()):
+        if path.is_symlink():
+            raise ValueError(f"Link simbólico inesperado no diretório recuperado: {path}")
+        if path.is_file() and path not in expected:
+            unexpected.append(path)
+    if unexpected:
+        sample = ", ".join(path.name for path in unexpected[:3])
+        raise ValueError(
+            f"Saída(s) inesperada(s) preservada(s) em recovered/: {len(unexpected)} "
+            f"({sample}). Revise manualmente; nenhuma exclusão foi realizada."
+        )
+
+
 def load_json(path: Path) -> dict:
     with path.open(encoding="utf-8") as handle:
         data = json.load(handle)
@@ -307,24 +349,26 @@ def main() -> int:
         print(f"   Referências de imagem: {legacy_image_refs} (esperado: {EXPECTED_LEGACY_IMAGE_REFS})")
         return 1
 
+    expected_public_paths = planned_recovery_targets(sources)
+    try:
+        validate_recovered_root(RECOVERED_ROOT, expected_public_paths)
+    except (OSError, ValueError) as exc:
+        print(f"❌ {exc}")
+        return 1
+
     entries: list[dict] = []
     by_source_hash: dict[str, dict] = {}
     by_name: dict[str, dict] = {}
-    expected_public_paths: set[Path] = set()
     original_bytes = 0
 
     for source in sources:
         original_bytes += source.stat().st_size
         source_hash = sha256(source)
         theme = infer_theme(source.name)
-        stem = slugify(source.stem)
-        short_hash = source_hash[:10]
-        extension = ".svg" if source.suffix.lower() == ".svg" else ".webp"
-        target = RECOVERED_ROOT / theme / f"{stem}-{short_hash}{extension}"
+        target = recovery_target(source, source_hash)
 
         quarantine_reason = CLINICAL_QUARANTINE_BY_SHA.get(source_hash)
         if quarantine_reason:
-            target.unlink(missing_ok=True)
             entry = {
                 "sourceFilename": source.name,
                 "sourceSha256": source_hash,
@@ -358,8 +402,6 @@ def main() -> int:
                 entry["quarantineReason"] = previous["quarantineReason"]
             entries.append(entry)
             by_name[normalized_key(source.name)] = entry
-            if entry.get("publicPath"):
-                expected_public_paths.add(ROOT / "05_Midia_E_Feed" / entry["publicPath"])
             continue
 
         try:
@@ -398,24 +440,6 @@ def main() -> int:
         entries.append(entry)
         by_source_hash[source_hash] = entry
         by_name[normalized_key(source.name)] = entry
-        expected_public_paths.add(target)
-
-    # O diretório recovered contém somente derivados geridos por esta ferramenta.
-    # Removemos saídas obsoletas após mudança de taxonomia ou quarentena, sem
-    # tocar nos mestres privados nem em outros diretórios públicos.
-    if RECOVERED_ROOT.is_dir():
-        for stale in sorted((path for path in RECOVERED_ROOT.rglob("*") if path.is_file())):
-            if stale not in expected_public_paths:
-                stale.unlink()
-        for directory in sorted(
-            (path for path in RECOVERED_ROOT.rglob("*") if path.is_dir()),
-            key=lambda path: len(path.parts),
-            reverse=True,
-        ):
-            try:
-                directory.rmdir()
-            except OSError:
-                pass
 
     cards, recovered_cards, missing = reconcile_cards(legacy, by_name)
     unique_entries = [item for item in by_source_hash.values() if item.get("publicPath")]

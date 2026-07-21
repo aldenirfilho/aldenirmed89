@@ -11,10 +11,12 @@ Escopo: `02_Biblioteca_IA_Engine`
 - PDF recebe uma prévia HTML local com primeira página renderizada e texto extraído; não depende do leitor nativo do navegador.
 - DOCX recebe uma prévia textual local, sanitizada e gerada no build.
 - Apple Pages usa a imagem Quick Look já embutida no pacote, quando disponível.
+- PDFs sem camada textual entram em OCR local controlado (`por+eng`) durante o build oficial; o original permanece intocado.
 - Markdown, TXT, CSV e TSV são renderizados em `srcdoc` sem executar conteúdo ativo.
 - Anki e formatos sem leitor seguro permanecem disponíveis para download.
 - Dados antigos do navegador não podem substituir path, ID, hash, extensão ou autoria.
 - O caderno de estudo salva notas, síntese, confiança, favoritos e próxima revisão sem alterar o original.
+- O Leitor Focado oferece tema, largura, fonte, tamanho, entrelinha, busca, destaques e exportação em Markdown, JSON ou HTML.
 
 ## Inserir um novo documento — fluxo seguro
 
@@ -109,13 +111,14 @@ Esses comandos:
 1. reconstrói o manifesto e o catálogo canônico;
 2. calcula SHA-256;
 3. gera previews HTML locais de DOCX, PDF e Apple Pages;
-4. atualizam conexões da Biblioteca.
+4. aplica OCR somente aos PDFs públicos que realmente precisam dele, quando Tesseract `por+eng` está disponível;
+5. atualizam conexões da Biblioteca.
 
 `bash scripts_admin/atualizar_tudo.sh` também funciona, mas reindexa outros hubs e pode corrigir paths. Prefira os comandos direcionados acima e sempre revise `git diff` antes de continuar.
 
 **A prévia DOCX não é uma auditoria LGPD.** Ela extrai principalmente `word/document.xml`; pode não revelar imagens, cabeçalhos/rodapés, comentários, alterações controladas, propriedades, anexos, macros ou outros metadados. Inspecione o arquivo original e suas propriedades antes de publicar.
 
-**A prévia PDF também é uma camada de consulta, não uma reprodução integral.** Ela mostra a primeira página rasterizada e extrai texto de até 80 páginas. PDFs digitalizados podem não conter texto pesquisável; layout, anexos, formulários, assinaturas e páginas posteriores ao limite devem ser conferidos no original.
+**A prévia PDF também é uma camada de consulta, não uma reprodução integral.** Ela mostra a primeira página rasterizada e extrai texto nativo de até 80 páginas. Quando o PDF é apenas imagem, o OCR processa no máximo 40 páginas, 30 MiB e 240 segundos por documento. O texto OCR pode conter erros; layout, anexos, formulários, assinaturas e páginas posteriores aos limites devem ser conferidos no original.
 
 **A prévia Pages é somente a imagem Quick Look incluída pelo próprio aplicativo.** Para editar, pesquisar todo o texto ou conferir páginas adicionais, abra o original no Apple Pages.
 
@@ -154,6 +157,10 @@ Confirme pelo menos:
 
 - um PDF na prévia HTML local, inclusive em viewport estreita/WebView;
 - um Word na prévia textual;
+- ativar `🎯 Leitura focada`, alterar tema/largura/fonte e sair com `Esc`;
+- pesquisar uma palavra dentro do documento;
+- selecionar um trecho, destacar, anotar, fechar, reabrir e confirmar a persistência;
+- exportar os destaques em Markdown, JSON e HTML;
 - um Markdown;
 - um CSV/TSV, se houver;
 - um formato download-only;
@@ -174,11 +181,33 @@ Revise os arquivos da branch criada na etapa 0, faça commit, abra a Pull Reques
 - Se o SHA-256 do documento mudar, o item volta para revisão e mantém as notas anteriores como contexto.
 - Use Exportar caderno antes de trocar de navegador, limpar dados ou migrar de computador.
 
-Para obra de terceiro, hospede o arquivo somente com licença aberta ou autorização explícita. Sem isso, mantenha apenas a referência bibliográfica e um link oficial.
+Na recuperação autoral, obra de terceiro permanece privada mesmo com licença aberta: publique somente a referência bibliográfica e um link oficial. Qualquer curadoria externa excepcional exige outro fluxo jurídico/editorial, fora desta ferramenta.
+
+## Usar o Leitor Focado e os destaques
+
+1. Abra um PDF, DOCX, Markdown, TXT, CSV/TSV ou outro preview local validado.
+2. Clique em `🎯 Leitura focada` para remover distrações.
+3. Ajuste largura, fonte, tamanho, entrelinha e tema claro/escuro/sépia.
+4. Para buscar, digite no campo `Buscar no documento` e use anterior/próximo.
+5. Selecione um trecho no texto, escolha a cor e clique em `Destacar seleção`.
+6. Escreva uma nota opcional no painel lateral.
+7. Escolha Markdown, JSON ou HTML e clique em `Exportar destaques`.
+
+Os destaques são vinculados ao SHA-256 do original. Se o arquivo mudar, a versão anterior fica arquivada e nenhum destaque é reposicionado silenciosamente. O armazenamento é local, não criptografado e não sincronizado; exporte antes de limpar o navegador ou trocar de computador. PDF com OCR ainda pendente, Apple Pages somente-imagem e HTML arbitrário permanecem bloqueados para destaque até existir texto confiável.
 
 ## Recuperação dos documentos que ficaram invisíveis
 
 Os documentos do `inbox/` não são apagados: ficam fora da interface pública por privacidade. A recuperação deve ocorrer em lotes pequenos:
+
+```bash
+python3 scripts_admin/recover_authorial_batches.py \
+  --source-root 02_Biblioteca_IA_Engine/inbox \
+  --registry 02_Biblioteca_IA_Engine/_private/authorial-recovery-decisions.json \
+  --public-manifest 02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json \
+  --batch-size 5
+```
+
+Esse primeiro comando é somente leitura. Ele confronta SHA-256 com o manifesto público, exclui do próximo lote obras idênticas já publicadas e mostra uma obra representativa por hash, preservando a lista de todas as ocorrências. Obras marcadas como `third-party` ficam em `hold-private`; decisões divergentes entre cópias idênticas geram um alerta explícito e retiram o SHA do lote até revisão. Para registrar decisões privadas, siga o guia detalhado `08_Documentacao_Projeto/GUIA_RECUPERACAO_AUTORAL_POR_LOTES.md`; a ferramenta nunca publica, move, renomeia nem apaga documentos.
 
 1. agrupar duplicatas por SHA-256;
 2. agrupar DOCX/PDF/PPTX/XLSX da mesma obra como versões do mesmo conteúdo;

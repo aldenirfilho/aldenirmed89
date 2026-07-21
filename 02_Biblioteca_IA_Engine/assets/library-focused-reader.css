@@ -1,0 +1,148 @@
+/* Biblioteca IA - Leitura Focada v1
+   A camada visual nunca altera o documento original. */
+
+.reader-tools {
+  display: none;
+  align-items: center;
+  gap: .55rem;
+  flex-wrap: wrap;
+  padding: .65rem 1rem;
+  background: #0b1527;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+}
+
+.preview-overlay.open .reader-tools { display: flex; }
+.reader-tools[aria-disabled="true"] .reader-reading-control { opacity: .45; pointer-events: none; }
+
+.reader-tool-group {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: 40px;
+  padding: .25rem .35rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .025);
+}
+
+.reader-tools button,
+.reader-tools select,
+.reader-tools input {
+  min-height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg3);
+  color: var(--text);
+  font: 700 .72rem/1.1 system-ui, sans-serif;
+}
+
+.reader-tools button { cursor: pointer; padding: .55rem .7rem; }
+.reader-tools button:hover,
+.reader-tools button:focus-visible { border-color: var(--accent); outline: 2px solid rgba(0, 212, 255, .18); }
+.reader-tools button[aria-pressed="true"] { background: var(--accent); color: #06101d; border-color: var(--accent); }
+.reader-tools button:disabled { cursor: not-allowed; opacity: .42; }
+.reader-tools select { padding: .45rem .55rem; }
+.reader-tools input { width: min(220px, 35vw); padding: .5rem .65rem; }
+
+.reader-search-status,
+.reader-live-status {
+  color: var(--muted);
+  font: 600 .68rem/1.35 "JetBrains Mono", monospace;
+}
+
+.reader-live-status { margin-left: auto; max-width: 260px; }
+.reader-live-status[data-state="ok"] { color: var(--accent3); }
+.reader-live-status[data-state="warn"] { color: var(--gold); }
+.reader-live-status[data-state="error"] { color: var(--red); }
+
+.preview-overlay.reader-focused .preview-shell { grid-template-columns: minmax(0, 1fr); }
+.preview-overlay.reader-focused .study-panel { display: none; }
+.preview-overlay.reader-focused .preview-stage { background: #0b1220; }
+.preview-overlay.reader-focused .preview-toolbar { padding-block: .55rem; }
+
+.reader-highlights-panel {
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+  padding-top: .35rem;
+  border-top: 1px solid var(--border);
+}
+
+.reader-highlights-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+}
+
+.reader-highlight-count {
+  min-width: 1.5rem;
+  padding: .15rem .45rem;
+  border-radius: 999px;
+  background: rgba(0, 212, 255, .12);
+  color: var(--accent);
+  text-align: center;
+  font: 700 .68rem/1.3 "JetBrains Mono", monospace;
+}
+
+.reader-highlights-help,
+.reader-highlights-empty {
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.5;
+}
+
+.reader-highlights-list { display: grid; gap: .65rem; }
+
+.reader-highlight-card {
+  display: grid;
+  gap: .5rem;
+  padding: .7rem;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--highlight-color, #fde047);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .025);
+}
+
+.reader-highlight-quote {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  color: var(--text);
+  font-size: .76rem;
+  line-height: 1.5;
+}
+
+.reader-highlight-card textarea {
+  min-height: 64px;
+  margin: 0;
+  font-size: .75rem;
+}
+
+.reader-highlight-actions { display: flex; flex-wrap: wrap; gap: .4rem; }
+.reader-highlight-actions button { min-height: 34px; font-size: .68rem; }
+
+.reader-export-row { display: flex; flex-wrap: wrap; gap: .4rem; }
+.reader-export-row .btn { flex: 1; min-width: 88px; justify-content: center; }
+
+@media (max-width: 980px) {
+  .reader-live-status { flex: 1 0 100%; max-width: none; }
+  .reader-tools input { width: min(250px, 44vw); }
+}
+
+@media (max-width: 760px) {
+  .reader-tools { padding: .55rem; gap: .4rem; }
+  .reader-tool-group { flex: 1 1 auto; min-height: 44px; }
+  .reader-tools button,
+  .reader-tools select,
+  .reader-tools input { min-height: 44px; font-size: .75rem; }
+  .reader-tools input { width: 100%; min-width: 150px; }
+  .reader-search-group { flex: 1 0 100%; }
+  .preview-overlay.reader-focused .preview-stage { min-height: calc(100vh - 190px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reader-tools *, .reader-highlight-card { transition: none !important; scroll-behavior: auto !important; }
+}

@@ -405,6 +405,80 @@
     }
     body.feed-compact .tags .tag:nth-child(n+4),
     body.feed-compact .meta { display: none; }
+    .focus-controls {
+      display: none;
+      width: min(820px, 100%);
+      margin: 0 auto 12px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(15,23,42,.78);
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow);
+    }
+    .focus-controls[hidden] { display: none !important; }
+    .focus-counter {
+      min-width: 110px;
+      text-align: center;
+      color: #bae6fd;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+    body.feed-carousel .wrap,
+    body.feed-study .wrap {
+      width: min(900px, calc(100% - 18px));
+    }
+    body.feed-carousel .focus-controls,
+    body.feed-study .focus-controls { display: flex; }
+    body.feed-carousel .feed,
+    body.feed-study .feed {
+      columns: unset;
+      display: block;
+      width: min(820px, 100%);
+      margin: 0 auto;
+      touch-action: pan-y;
+    }
+    body.feed-carousel .card,
+    body.feed-study .card {
+      width: 100%;
+      margin: 0;
+      break-inside: auto;
+    }
+    body.feed-carousel .imgbox,
+    body.feed-study .imgbox { min-height: 280px; }
+    body.feed-carousel .imgbox img,
+    body.feed-study .imgbox img {
+      width: 100%;
+      height: auto;
+      max-height: 72vh;
+      object-fit: contain;
+    }
+    .study-prompt {
+      padding: 16px;
+      text-align: center;
+      color: #dbeafe;
+      border-top: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(56,189,248,.10), rgba(167,139,250,.10));
+      line-height: 1.5;
+    }
+    .study-prompt strong { display: block; color: #f8fafc; margin-bottom: 3px; }
+    .study-answer[hidden] { display: none !important; }
+    .study-answer.revealed { animation: study-reveal .2s ease-out; }
+    .study-evaluation {
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+      display: grid;
+      gap: 8px;
+    }
+    .study-evaluation strong { color: #e0f2fe; }
+    .study-rating-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+    @keyframes study-reveal {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     .card.random-focus { animation: card-focus 1.5s ease; }
     @keyframes card-focus {
       0%, 100% { box-shadow: var(--shadow); }
@@ -449,6 +523,9 @@
       body.feed-compact .feed { grid-template-columns: 1fr; }
       body.feed-compact .card { grid-template-columns: 104px 1fr; }
       body.feed-compact .imgbox img { min-height: 160px; }
+      .study-rating-actions { grid-template-columns: 1fr; }
+      .focus-controls .btn { flex: 1 1 auto; }
+      .focus-counter { order: -1; flex: 1 0 100%; }
     }
   </style>
 </head>
@@ -542,6 +619,12 @@
     </section>
 
     <section id="themeStrip" class="theme-strip"></section>
+    <section id="focusControls" class="focus-controls" aria-label="Navegação de um card por vez" hidden>
+      <button type="button" class="btn" id="btnPreviousCard" aria-label="Card anterior">← Anterior</button>
+      <span id="focusCounter" class="focus-counter" role="status" aria-live="polite">0 de 0</span>
+      <button type="button" class="btn primary" id="btnRevealStudy" hidden>👁️ Revelar explicação</button>
+      <button type="button" class="btn" id="btnNextCard" aria-label="Próximo card">Próximo →</button>
+    </section>
     <section id="feed" class="feed" aria-live="polite"></section>
     <section id="empty" class="empty">Nenhum card encontrado. Importe imagens ou ajuste o filtro. 🧠</section>
   </main>
@@ -624,8 +707,9 @@
       <div class="help-box"><b>2) Organização automática</b><br/>O app sugere tema pelo nome do arquivo: <code>AKI</code>, <code>KDIGO</code>, <code>VM</code>, <code>sepse</code>. Depois edite manualmente.</div>
       <div class="help-box"><b>3) Comentários</b><br/>Em cada card, toque em <code>Editar</code>. Acrescente resumo, conduta, alerta TEMI, tags e status.</div>
       <div class="help-box"><b>4) Backup e migração</b><br/>Use <code>Exportar backup</code> e salve no iCloud. Para restaurar, use <code>Importar backup</code>.</div>
-      <div class="help-box"><b>5) Três visualizações</b><br/>O botão <code>📐 Visualização</code> alterna entre Grade, Feed contínuo e Compacto. A escolha fica salva neste navegador.</div>
-      <div class="help-box"><b>6) Revisão e conexões</b><br/>Use <code>🎲 Sortear card</code>, os filtros rápidos e <code>🔗 Explorar tema</code> para saltar à Biblioteca, POCUS, TEMI ou calculadoras.</div>
+      <div class="help-box"><b>5) Cinco visualizações</b><br/>O botão <code>📐 Visualização</code> alterna entre Grade, Feed contínuo, Compacto, Carrossel e Estudo. No Carrossel/Estudo, use ←/→ ou deslize para navegar.</div>
+      <div class="help-box"><b>6) Estudo ativo</b><br/>No modo Estudo, observe primeiro a imagem, revele a explicação e avalie como <code>Difícil</code>, <code>Aprendendo</code> ou <code>Dominei</code>. A próxima revisão fica salva neste navegador em 1, 3 ou 14 dias.</div>
+      <div class="help-box"><b>7) Revisão e conexões</b><br/>Use <code>🎲 Sortear card</code>, os filtros rápidos e <code>🔗 Explorar tema</code> para saltar à Biblioteca, POCUS, TEMI ou calculadoras.</div>
       <div class="help-box" style="border-color:rgba(251,191,36,.24);background:rgba(251,191,36,.08);color:#fde68a"><b>⚠️ Limitação</b><br/>Cards locais ficam neste navegador (IndexedDB). Para sincronizar, exporte backup JSON ou envie imagens para <code>assets/cards/</code> + cadastre em <code>data/cards.json</code>.</div>
     </div>
   </dialog>
@@ -641,7 +725,51 @@
     let themes = [];
     let reviewOnly = false;
     let activeTheme = "";
-    const VIEW_MODES = ["grid", "continuous", "compact"];
+    const VIEW_MODES = ["grid", "continuous", "compact", "carousel", "study"];
+    const ASSET_FILTERS = ["all", "images", "missing", "favorites", "review", "repo", "local"];
+    const LIBRARY_TO_FEED_THEME = Object.freeze({
+      "uti-geral": "uti-geral",
+      "sepse-choque": "sepse-choque",
+      "vm-sdra": "vm-sdra",
+      "nefro-aki-trs": "nefro-aki-trs",
+      "infectologia": "infectologia",
+      "neuro-uti": "neuro-uti",
+      "cardio-hemodinamica": "cardio-hemodinamica",
+      "endocrino-metabolico": "endocrino-diabetes",
+      "disturbios-eletroliticos": "uti-geral",
+      "gastro-hepatologia": "uti-geral",
+      "reumatologia": "reumato-imuno",
+      "hematologia": "uti-geral",
+      "emergencias-clinicas": "uti-geral",
+      "farmaco-doses": "farmaco-doses",
+      "morte-cerebral-doacao": "neuro-uti",
+      "sedacao-analgesia": "neuro-uti",
+      "psiquiatria": "uti-geral",
+      "procedimentos-dispositivos": "uti-geral",
+      "pocus-usg": "pocus",
+      "temi-prova": "temi",
+      "clinica-medica": "uti-geral",
+      "gestao-ia-produtividade": "ia-produtividade",
+      "familia-paciente": "familia-paciente",
+      "artigos-cientificos": "uti-geral",
+      "protocolos-institucionais": "uti-geral"
+    });
+    const FEED_TO_LIBRARY_THEME = Object.freeze({
+      "uti-geral": "uti-geral",
+      "temi": "temi-prova",
+      "vm-sdra": "vm-sdra",
+      "sepse-choque": "sepse-choque",
+      "nefro-aki-trs": "nefro-aki-trs",
+      "endocrino-diabetes": "endocrino-metabolico",
+      "neuro-uti": "neuro-uti",
+      "cardio-hemodinamica": "cardio-hemodinamica",
+      "infectologia": "infectologia",
+      "farmaco-doses": "farmaco-doses",
+      "pocus": "pocus-usg",
+      "familia-paciente": "familia-paciente",
+      "ia-produtividade": "gestao-ia-produtividade",
+      "reumato-imuno": "reumatologia"
+    });
     const LOCAL_MUTABLE_FIELDS = [
       "title", "theme", "tags", "explanation", "notes", "source", "status",
       "favorite", "nextReview", "updatedAt"
@@ -649,6 +777,12 @@
     let viewMode = localStorage.getItem("cardFeedViewMode") || "grid";
     if (!VIEW_MODES.includes(viewMode)) viewMode = "grid";
     let hiddenCards = readStoredList("cardFeedHidden");
+    let focusIndex = 0;
+    let focusedCardId = "";
+    let directCardId = "";
+    let studyRevealed = false;
+    let swipeStartX = 0;
+    let swipeStartY = 0;
 
     const $ = id => document.getElementById(id);
     const nowISO = () => new Date().toISOString();
@@ -701,6 +835,53 @@
       return String(s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
     }
 
+    function searchKey(value = "") {
+      return String(value)
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, " ")
+        .trim();
+    }
+
+    function searchTokens(value = "") {
+      return Array.from(new Set(searchKey(value).split(/\s+/).filter(Boolean))).slice(0, 24);
+    }
+
+    function safeQueryValue(value, maxLength) {
+      return String(value || "").replace(/[\u0000-\u001f\u007f]/g, "").trim().slice(0, maxLength);
+    }
+
+    function resolveFeedTheme(value) {
+      const slug = searchKey(value).replace(/\s+/g, "-").slice(0, 64);
+      const mapped = LIBRARY_TO_FEED_THEME[slug] || slug;
+      return themes.some(theme => theme.id === mapped) ? mapped : "";
+    }
+
+    function applyInitialQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const query = safeQueryValue(params.get("q"), 180);
+      const requestedTheme = resolveFeedTheme(safeQueryValue(params.get("theme"), 64));
+      const requestedView = safeQueryValue(params.get("view"), 24);
+      const requestedFilter = safeQueryValue(params.get("filter"), 24);
+      const requestedCard = safeQueryValue(params.get("card"), 180);
+
+      // Links contextuais da Biblioteca enviam título completo + tema. O tema
+      // deve abrir o conjunto útil de cards; a busca textual continua ativa
+      // quando `q` é usado isoladamente.
+      if (query && !requestedTheme) $("search").value = query;
+      if (requestedTheme) activeTheme = requestedTheme;
+      if (VIEW_MODES.includes(requestedView)) viewMode = requestedView;
+      if (ASSET_FILTERS.includes(requestedFilter)) $("assetFilter").value = requestedFilter;
+
+      const matchedCard = requestedCard && allCards().find(card => card.id === requestedCard);
+      if (matchedCard) {
+        directCardId = matchedCard.id;
+        focusedCardId = matchedCard.id;
+        if (!VIEW_MODES.includes(requestedView)) viewMode = "carousel";
+      }
+    }
+
     function formatDate(iso) {
       if (!iso) return "";
       try { return new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit" }); }
@@ -716,12 +897,16 @@
     function applyViewMode() {
       const isContinuous = viewMode === "continuous";
       const isCompact = viewMode === "compact";
+      const isCarousel = viewMode === "carousel";
+      const isStudy = viewMode === "study";
       document.body.classList.toggle("feed-continuous", isContinuous);
       document.body.classList.toggle("feed-compact", isCompact);
+      document.body.classList.toggle("feed-carousel", isCarousel);
+      document.body.classList.toggle("feed-study", isStudy);
       const btn = $("btnFeedMode");
       const indicator = $("viewModeIndicator");
-      const labels = { grid: "▦ Grade", continuous: "📲 Feed contínuo", compact: "▤ Compacto" };
-      const nextLabels = { grid: "📲 Ir para Feed", continuous: "▤ Ir para Compacto", compact: "▦ Ir para Grade" };
+      const labels = { grid: "▦ Grade", continuous: "📲 Feed contínuo", compact: "▤ Compacto", carousel: "🎞️ Carrossel", study: "🧠 Estudo" };
+      const nextLabels = { grid: "📲 Ir para Feed", continuous: "▤ Ir para Compacto", compact: "🎞️ Ir para Carrossel", carousel: "🧠 Ir para Estudo", study: "▦ Ir para Grade" };
       if (btn) btn.textContent = nextLabels[viewMode];
       if (indicator) indicator.textContent = labels[viewMode];
       localStorage.setItem("cardFeedViewMode", viewMode);
@@ -729,9 +914,11 @@
 
     function toggleViewMode() {
       viewMode = VIEW_MODES[(VIEW_MODES.indexOf(viewMode) + 1) % VIEW_MODES.length];
+      studyRevealed = false;
       applyViewMode();
       window.scrollTo({ top: 0, behavior: "smooth" });
-      const labels = { grid: "▦ Modo Grade", continuous: "📲 Feed contínuo", compact: "▤ Modo Compacto" };
+      render();
+      const labels = { grid: "▦ Modo Grade", continuous: "📲 Feed contínuo", compact: "▤ Modo Compacto", carousel: "🎞️ Modo Carrossel", study: "🧠 Modo Estudo" };
       toast(`${labels[viewMode]} ativado.`);
     }
 
@@ -744,6 +931,27 @@
       if (status === "dominado") c.nextReview = addDays(14);
       await saveCardAsLocal(c);
       toast(status === "dominado" ? "✅ Marcado como dominado." : "🔁 Card enviado para revisão.");
+    }
+
+    async function rateStudyCard(id, status) {
+      const before = getFiltered();
+      const beforePosition = Math.max(0, before.findIndex(card => card.id === id));
+      studyRevealed = false;
+      directCardId = "";
+      await quickStatus(id, status);
+      const after = getFiltered();
+      if (!after.length) {
+        focusedCardId = "";
+        focusIndex = 0;
+        render();
+        return;
+      }
+      const ratedPosition = after.findIndex(card => card.id === id);
+      focusIndex = ratedPosition >= 0
+        ? Math.min(ratedPosition + 1, after.length - 1)
+        : Math.min(beforePosition, after.length - 1);
+      focusedCardId = after[focusIndex].id;
+      render();
     }
 
     function openDB() {
@@ -846,7 +1054,8 @@
     }
 
     function connectedHref(card, theme) {
-      const base = theme.href || `../02_Biblioteca_IA_Engine/index.html?theme=${encodeURIComponent(card.theme || "uti-geral")}`;
+      const libraryTheme = FEED_TO_LIBRARY_THEME[card.theme] || card.theme || "uti-geral";
+      const base = theme.href || `../02_Biblioteca_IA_Engine/index.html?theme=${encodeURIComponent(libraryTheme)}`;
       if (!base.includes("02_Biblioteca_IA_Engine")) return base;
       const query = String(card.title || (card.tags || [])[0] || "").trim();
       return `${base}${base.includes("?") ? "&" : "?"}q=${encodeURIComponent(query)}`;
@@ -962,12 +1171,13 @@
       toast(`✅ Backup importado: ${count} card(s).`);
     }
 
-    function getFiltered() {
-      const q = $("search").value.trim().toLowerCase();
+    function getFiltered({ ignoreDirect = false } = {}) {
+      const tokens = searchTokens($("search").value);
       const hiddenMode = activeTheme === "__hidden__";
       const theme = hiddenMode ? "" : (activeTheme || $("themeFilter").value);
       const assetFilter = $("assetFilter").value;
-      let list = allCards().filter(c => {
+      const candidates = directCardId && !ignoreDirect ? allCards().filter(card => card.id === directCardId) : allCards();
+      let list = candidates.filter(c => {
         const isHidden = hiddenCards.includes(c.id);
         const hasImage = Boolean(c.imageData || c.imageUrl);
         const reviewDue = needsReview(c);
@@ -980,9 +1190,19 @@
         if (assetFilter === "review" && !reviewDue) return false;
         if (assetFilter === "repo" && c.origin !== "repo") return false;
         if (assetFilter === "local" && c.origin !== "local") return false;
-        if (!q) return true;
-        const blob = [c.title, c.theme, (c.tags || []).join(" "), c.explanation, c.notes, c.source, c.status, (c.related || []).join(" ")].join(" ").toLowerCase();
-        return blob.includes(q);
+        if (!tokens.length) return true;
+        const blob = searchKey([
+          c.title,
+          c.theme,
+          themeById(c.theme).label,
+          (c.tags || []).join(" "),
+          c.explanation,
+          c.notes,
+          c.source,
+          c.status,
+          (c.related || []).join(" ")
+        ].join(" "));
+        return tokens.every(token => blob.includes(token));
       });
       const sort = $("sortMode").value;
       list.sort((a,b) => {
@@ -1015,10 +1235,103 @@
         `<button class="chip ${activeTheme === '__hidden__' ? "active" : ""}" data-theme="__hidden__" style="border-color:rgba(239,68,68,.4);color:#fca5a5">🚫 Ocultos (${hiddenCards.length})</button>`
       ].join("");
       document.querySelectorAll("[data-theme]").forEach(el => el.onclick = () => {
+        resetFocusState();
         activeTheme = el.dataset.theme;
         $("themeFilter").value = activeTheme;
         render();
       });
+    }
+
+    function isFocusMode() {
+      return viewMode === "carousel" || viewMode === "study";
+    }
+
+    function resetFocusState() {
+      directCardId = "";
+      focusedCardId = "";
+      focusIndex = 0;
+      studyRevealed = false;
+    }
+
+    function resolveFocusPosition(list) {
+      if (!list.length) {
+        focusIndex = 0;
+        focusedCardId = "";
+        return -1;
+      }
+      const requestedIndex = focusedCardId ? list.findIndex(card => card.id === focusedCardId) : -1;
+      focusIndex = requestedIndex >= 0 ? requestedIndex : Math.min(Math.max(focusIndex, 0), list.length - 1);
+      focusedCardId = list[focusIndex].id;
+      return focusIndex;
+    }
+
+    function updateFocusControls(list, position) {
+      const controls = $("focusControls");
+      const focusMode = isFocusMode();
+      controls.hidden = !focusMode;
+      if (!focusMode) return;
+      const hasCards = position >= 0;
+      $("focusCounter").textContent = hasCards ? `${position + 1} de ${list.length}` : "0 de 0";
+      $("btnPreviousCard").disabled = !hasCards || position === 0;
+      $("btnNextCard").disabled = !hasCards || position === list.length - 1;
+      const reveal = $("btnRevealStudy");
+      reveal.hidden = viewMode !== "study" || !hasCards;
+      reveal.textContent = studyRevealed ? "🙈 Ocultar explicação" : "👁️ Revelar explicação";
+      reveal.setAttribute("aria-expanded", studyRevealed ? "true" : "false");
+    }
+
+    function moveFocus(delta) {
+      const previousId = focusedCardId;
+      directCardId = "";
+      const list = getFiltered();
+      if (!list.length) return;
+      const current = Math.max(0, list.findIndex(card => card.id === previousId));
+      const next = Math.min(Math.max(current + delta, 0), list.length - 1);
+      if (next === current) return;
+      focusIndex = next;
+      focusedCardId = list[next].id;
+      studyRevealed = false;
+      render();
+    }
+
+    function toggleStudyAnswer() {
+      if (viewMode !== "study" || !focusedCardId) return;
+      studyRevealed = !studyRevealed;
+      render();
+    }
+
+    function handleFocusKeydown(event) {
+      if (!isFocusMode() || document.querySelector("dialog[open]")) return;
+      const tag = event.target && event.target.tagName;
+      if (["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"].includes(tag)) return;
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        moveFocus(-1);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        moveFocus(1);
+      } else if (viewMode === "study" && (event.code === "Space" || event.key === "Enter")) {
+        event.preventDefault();
+        toggleStudyAnswer();
+      }
+    }
+
+    function wireFocusGestures() {
+      const feed = $("feed");
+      feed.addEventListener("touchstart", event => {
+        const touch = event.changedTouches[0];
+        swipeStartX = touch ? touch.clientX : 0;
+        swipeStartY = touch ? touch.clientY : 0;
+      }, { passive: true });
+      feed.addEventListener("touchend", event => {
+        if (!isFocusMode()) return;
+        const touch = event.changedTouches[0];
+        if (!touch) return;
+        const deltaX = touch.clientX - swipeStartX;
+        const deltaY = touch.clientY - swipeStartY;
+        if (Math.abs(deltaX) < 50 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
+        moveFocus(deltaX < 0 ? 1 : -1);
+      }, { passive: true });
     }
 
     function updateStats() {
@@ -1031,40 +1344,57 @@
       $("statReview").textContent = reviewCount;
     }
 
-    function cardHTML(c) {
+    function cardHTML(c, options = {}) {
       const theme = themeById(c.theme);
       const tags = (c.tags || []).slice(0, 7).map(t => `<span class="tag">#${esc(t)}</span>`).join("");
       const sourceBadge = c.origin === "repo" ? "GitHub Pages" : "Local";
       const image = c.imageData || c.imageUrl || "";
       const connection = connectedHref(c, theme);
       const clinicalLabel = c.clinicalReviewStatus === "pendente" ? " • revisão clínica pendente" : "";
+      const studyMode = options.study === true;
+      const revealed = !studyMode || options.revealed === true;
+      const imageAlt = studyMode ? "Imagem do card de estudo; tente recordar antes de revelar a explicação" : (c.title || "Card");
+      const answer = `
+        <div class="body${studyMode ? " study-answer" + (revealed ? " revealed" : "") : ""}"${studyMode && !revealed ? " hidden aria-hidden=\"true\"" : ""}>
+          <div class="topline">
+            <h3>${esc(c.title || "Card sem título")}</h3>
+            <span class="theme-label">${theme.emoji} ${esc(theme.label)}</span>
+          </div>
+          <div class="tags">${tags}</div>
+          <div class="explain">${esc(c.explanation || "Sem comentário ainda. Edite este card para adicionar explicação clínica ou nota TEMI.")}</div>
+          ${studyMode ? `
+            <div class="study-evaluation">
+              <strong>Como foi sua recordação?</strong>
+              <div class="study-rating-actions">
+                <button class="btn small danger" data-study-rating="${esc(c.id)}" data-value="revisar" title="Programar revisão em 1 dia">1 · Difícil — 1 dia</button>
+                <button class="btn small gold" data-study-rating="${esc(c.id)}" data-value="aprendendo" title="Programar revisão em 3 dias">2 · Aprendendo — 3 dias</button>
+                <button class="btn small green" data-study-rating="${esc(c.id)}" data-value="dominado" title="Programar revisão em 14 dias">3 · Dominei — 14 dias</button>
+              </div>
+            </div>
+          ` : ""}
+          <div class="actions">
+            ${c.theme === "inbox" ? `<button class="btn small primary" data-classify="${esc(c.id)}" style="background:linear-gradient(135deg,#f59e0b,#ef4444);border:none">📂 Classificar</button>` : ""}
+            <button class="btn small" data-edit="${esc(c.id)}">✍️ Editar local</button>
+            <button class="btn small gold" data-fav="${esc(c.id)}" aria-label="${c.favorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}">${c.favorite ? "⭐" : "☆"}</button>
+            <button class="btn small" data-review="${esc(c.id)}">🔁 Revisar</button>
+            <button class="btn small" data-copy="${esc(c.id)}">📋 Copiar resumo</button>
+            ${studyMode ? "" : `<button class="btn small green" data-status="${esc(c.id)}" data-value="dominado">✅ Dominei</button>`}
+            ${hiddenCards.includes(c.id)
+              ? `<button class="btn small" data-restore="${esc(c.id)}" style="border-color:#10b981;color:#6ee7b7">♻️ Restaurar</button>`
+              : `<button class="btn small" data-hide="${esc(c.id)}" style="border-color:#ef4444;color:#fca5a5">🚫 Ocultar</button>`}
+            <a class="btn small" href="${esc(connection)}">🔗 Explorar tema</a>
+          </div>
+          <div class="meta"><span>${esc(c.status || "novo")}${esc(clinicalLabel)} • ${esc(sourceBadge)} • ${formatDate(c.createdAt)}</span><span>${c.nextReview ? "Próx.: " + formatDate(c.nextReview) : esc(c.source || "")}</span></div>
+        </div>
+      `;
       return `
         <article class="card" data-card-id="${esc(c.id)}">
-          <button type="button" class="imgbox" data-view="${esc(c.id)}" aria-label="Ampliar imagem: ${esc(c.title || "Card")}">
-            ${image ? `<img src="${esc(image)}" alt="${esc(c.title || "Card")}" loading="lazy" decoding="async" onerror="this.parentElement.innerHTML='<div class=&quot;missing&quot;>🖼️ Imagem indisponível.<br><small>Confira o caminho em data/cards.json</small></div>';" />`
+          <button type="button" class="imgbox" data-view="${esc(c.id)}" aria-label="${studyMode ? "Ampliar imagem do card de estudo" : "Ampliar imagem: " + esc(c.title || "Card")}">
+            ${image ? `<img src="${esc(image)}" alt="${esc(imageAlt)}" loading="${isFocusMode() ? "eager" : "lazy"}" decoding="async" onerror="this.parentElement.innerHTML='<div class=&quot;missing&quot;>🖼️ Imagem indisponível.<br><small>Confira o caminho em data/cards.json</small></div>';" />`
               : `<div class="missing">🖼️ Sem imagem associada</div>`}
           </button>
-          <div class="body">
-            <div class="topline">
-              <h3>${esc(c.title || "Card sem título")}</h3>
-              <span class="theme-label">${theme.emoji} ${esc(theme.label)}</span>
-            </div>
-            <div class="tags">${tags}</div>
-            <div class="explain">${esc(c.explanation || "Sem comentário ainda. Edite este card para adicionar explicação clínica ou nota TEMI.")}</div>
-            <div class="actions">
-              ${c.theme === "inbox" ? `<button class="btn small primary" data-classify="${esc(c.id)}" style="background:linear-gradient(135deg,#f59e0b,#ef4444);border:none">📂 Classificar</button>` : ""}
-              <button class="btn small" data-edit="${esc(c.id)}">✍️ Editar local</button>
-              <button class="btn small gold" data-fav="${esc(c.id)}" aria-label="${c.favorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}">${c.favorite ? "⭐" : "☆"}</button>
-              <button class="btn small" data-review="${esc(c.id)}">🔁 Revisar</button>
-              <button class="btn small" data-copy="${esc(c.id)}">📋 Copiar resumo</button>
-              <button class="btn small green" data-status="${esc(c.id)}" data-value="dominado">✅ Dominei</button>
-              ${hiddenCards.includes(c.id)
-                ? `<button class="btn small" data-restore="${esc(c.id)}" style="border-color:#10b981;color:#6ee7b7">♻️ Restaurar</button>`
-                : `<button class="btn small" data-hide="${esc(c.id)}" style="border-color:#ef4444;color:#fca5a5">🚫 Ocultar</button>`}
-              <a class="btn small" href="${esc(connection)}">🔗 Explorar tema</a>
-            </div>
-            <div class="meta"><span>${esc(c.status || "novo")}${esc(clinicalLabel)} • ${esc(sourceBadge)} • ${formatDate(c.createdAt)}</span><span>${c.nextReview ? "Próx.: " + formatDate(c.nextReview) : esc(c.source || "")}</span></div>
-          </div>
+          ${studyMode ? `<div class="study-prompt"><strong>🧠 Recupere antes de revelar</strong>Observe a imagem e formule mentalmente o diagnóstico, conceito ou conduta.</div>` : ""}
+          ${answer}
         </article>
       `;
     }
@@ -1074,14 +1404,23 @@
       updateControls();
       updateStats();
       const list = getFiltered();
-      $("feed").innerHTML = list.map(cardHTML).join("");
-      $("empty").style.display = list.length ? "none" : "block";
+      const focusMode = isFocusMode();
+      const navigationList = focusMode && directCardId ? getFiltered({ ignoreDirect: true }) : list;
+      const focusPosition = focusMode ? resolveFocusPosition(navigationList) : -1;
+      const visibleCards = focusMode && focusPosition >= 0 ? [navigationList[focusPosition]] : (focusMode ? [] : list);
+      $("feed").innerHTML = visibleCards.map(card => cardHTML(card, {
+        study: viewMode === "study",
+        revealed: studyRevealed
+      })).join("");
+      updateFocusControls(navigationList, focusPosition);
+      $("empty").style.display = navigationList.length ? "none" : "block";
       document.querySelectorAll("[data-edit]").forEach(b => b.onclick = () => openEdit(b.dataset.edit));
       document.querySelectorAll("[data-view]").forEach(b => b.onclick = () => openViewer(b.dataset.view));
       document.querySelectorAll("[data-fav]").forEach(b => b.onclick = () => toggleFavorite(b.dataset.fav));
       document.querySelectorAll("[data-review]").forEach(b => b.onclick = () => markReview(b.dataset.review));
       document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copySummary(b.dataset.copy));
       document.querySelectorAll("[data-status]").forEach(b => b.onclick = () => quickStatus(b.dataset.status, b.dataset.value));
+      document.querySelectorAll("[data-study-rating]").forEach(b => b.onclick = () => rateStudyCard(b.dataset.studyRating, b.dataset.value));
       document.querySelectorAll("[data-classify]").forEach(b => b.onclick = () => openClassify(b.dataset.classify));
       document.querySelectorAll("[data-hide]").forEach(b => b.onclick = () => hideCard(b.dataset.hide));
       document.querySelectorAll("[data-restore]").forEach(b => b.onclick = () => restoreCard(b.dataset.restore));
@@ -1136,6 +1475,13 @@
         return;
       }
       const card = list[Math.floor(Math.random() * list.length)];
+      if (isFocusMode()) {
+        directCardId = "";
+        focusIndex = list.findIndex(item => item.id === card.id);
+        focusedCardId = card.id;
+        studyRevealed = false;
+        render();
+      }
       const element = Array.from(document.querySelectorAll("[data-card-id]")).find(el => el.dataset.cardId === card.id);
       if (!element) return;
       element.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1292,18 +1638,25 @@
       $("btnBackup").onclick = () => $("backupInput").click();
       $("backupInput").onchange = e => importBackup(e.target.files[0]);
       $("btnExport").onclick = exportBackup;
-      $("btnReview").onclick = () => { reviewOnly = !reviewOnly; $("btnReview").textContent = reviewOnly ? "🗂️ Ver todos" : "🔁 Modo revisão"; render(); };
+      $("btnReview").onclick = () => { resetFocusState(); reviewOnly = !reviewOnly; $("btnReview").textContent = reviewOnly ? "🗂️ Ver todos" : "🔁 Modo revisão"; render(); };
       $("btnFeedMode").onclick = toggleViewMode;
       $("btnRandom").onclick = randomCard;
       $("btnHelp").onclick = () => $("helpDialog").showModal();
       $("btnPrint").onclick = () => window.print();
       $("classifyForm").onsubmit = async e => { e.preventDefault(); await saveClassify(); };
-      ["search", "sortMode", "assetFilter"].forEach(id => { $(id).oninput = render; $(id).onchange = render; });
-      $("themeFilter").onchange = () => { activeTheme = $("themeFilter").value; render(); };
+      $("search").oninput = () => { resetFocusState(); render(); };
+      $("sortMode").onchange = () => { resetFocusState(); render(); };
+      $("assetFilter").onchange = () => { resetFocusState(); render(); };
+      $("themeFilter").onchange = () => { resetFocusState(); activeTheme = $("themeFilter").value; render(); };
+      $("btnPreviousCard").onclick = () => moveFocus(-1);
+      $("btnNextCard").onclick = () => moveFocus(1);
+      $("btnRevealStudy").onclick = toggleStudyAnswer;
       $("editForm").onsubmit = async e => { e.preventDefault(); await saveEdit(); $("editDialog").close(); };
       $("btnDelete").onclick = deleteCurrent;
       $("btnFavorite").onclick = async () => { await toggleFavorite($("editId").value); $("editDialog").close(); };
       $("btnMarkReview").onclick = async () => { await markReview($("editId").value); $("editDialog").close(); };
+      document.addEventListener("keydown", handleFocusKeydown);
+      wireFocusGestures();
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
         navigator.serviceWorker.register("sw.js").catch(() => {});
       }
@@ -1313,6 +1666,7 @@
       db = await openDB();
       await loadRepoData();
       await loadLocalData();
+      applyInitialQuery();
       wire();
       render();
       toast("🧠 Card Feed Médico carregado.");

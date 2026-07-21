@@ -117,7 +117,10 @@ class CardFeedRecoveryTests(unittest.TestCase):
 class CardFeedBehaviorTests(unittest.TestCase):
     def test_local_overrides_hidden_cards_and_new_tools_are_wired(self) -> None:
         source = (FEED / "index.html").read_text(encoding="utf-8")
-        self.assertIn('const VIEW_MODES = ["grid", "continuous", "compact"]', source)
+        self.assertIn(
+            'const VIEW_MODES = ["grid", "continuous", "compact", "carousel", "study"]',
+            source,
+        )
         self.assertIn("const localById = new Map", source)
         self.assertIn("mergeLocalOverride(repoCard, localOverride)", source)
         self.assertNotIn('{ ...repoCard, ...localOverride, origin: "local" }', source)
@@ -154,6 +157,89 @@ class CardFeedBehaviorTests(unittest.TestCase):
         self.assertEqual(merged["assetSha256"], repo["assetSha256"])
         self.assertEqual(merged["authorship"], repo["authorship"])
         self.assertTrue(merged["favorite"])
+
+    def test_query_contract_is_allowlisted_and_covers_library_feed_theme_aliases(self) -> None:
+        source = (FEED / "index.html").read_text(encoding="utf-8")
+        library = load_json("02_Biblioteca_IA_Engine/data/biblioteca_taxonomia_temas.json")
+        feed = load_json("05_Midia_E_Feed/data/themes.json")
+
+        forward_match = re.search(
+            r"const LIBRARY_TO_FEED_THEME = Object\.freeze\((\{[\s\S]*?\})\);",
+            source,
+        )
+        reverse_match = re.search(
+            r"const FEED_TO_LIBRARY_THEME = Object\.freeze\((\{[\s\S]*?\})\);",
+            source,
+        )
+        self.assertIsNotNone(forward_match)
+        self.assertIsNotNone(reverse_match)
+        forward = json.loads(forward_match.group(1))
+        reverse = json.loads(reverse_match.group(1))
+        library_ids = {theme["id"] for theme in library["themes"]}
+        feed_ids = {theme["id"] for theme in feed["themes"]}
+
+        self.assertTrue(library_ids.issubset(forward))
+        self.assertTrue(set(forward.values()).issubset(feed_ids))
+        self.assertEqual(set(reverse), feed_ids)
+        self.assertTrue(set(reverse.values()).issubset(library_ids))
+
+        for parameter in ("q", "theme", "view", "filter", "card"):
+            self.assertIn(f'params.get("{parameter}")', source)
+        self.assertIn("VIEW_MODES.includes(requestedView)", source)
+        self.assertIn("ASSET_FILTERS.includes(requestedFilter)", source)
+        self.assertIn("themes.some(theme => theme.id === mapped)", source)
+        self.assertIn("allCards().find(card => card.id === requestedCard)", source)
+        self.assertIn('if (!VIEW_MODES.includes(requestedView)) viewMode = "carousel"', source)
+        self.assertIn('if (query && !requestedTheme) $("search").value = query', source)
+        self.assertIn("applyInitialQuery();", source)
+
+    def test_search_uses_independent_normalized_tokens(self) -> None:
+        source = (FEED / "index.html").read_text(encoding="utf-8")
+        self.assertIn('normalize("NFKD")', source)
+        self.assertIn("function searchTokens(value", source)
+        self.assertIn("tokens.every(token => blob.includes(token))", source)
+        self.assertNotIn("return blob.includes(q)", source)
+
+    def test_carousel_and_study_are_single_card_keyboard_and_swipe_modes(self) -> None:
+        source = (FEED / "index.html").read_text(encoding="utf-8")
+        modes_match = re.search(r"const VIEW_MODES = (\[[^;]+\]);", source)
+        self.assertIsNotNone(modes_match)
+        self.assertEqual(
+            json.loads(modes_match.group(1)),
+            ["grid", "continuous", "compact", "carousel", "study"],
+        )
+        for marker in (
+            'id="focusControls"',
+            'id="btnPreviousCard"',
+            'id="btnNextCard"',
+            'id="focusCounter"',
+            'id="btnRevealStudy"',
+            "function moveFocus(delta)",
+            "function toggleStudyAnswer()",
+            "async function rateStudyCard(id, status)",
+            "function handleFocusKeydown(event)",
+            "function wireFocusGestures()",
+            'event.key === "ArrowLeft"',
+            'event.key === "ArrowRight"',
+            'feed.addEventListener("touchstart"',
+            'feed.addEventListener("touchend"',
+            "const visibleCards = focusMode && focusPosition >= 0 ? [navigationList[focusPosition]]",
+            'data-value="revisar"',
+            'data-value="aprendendo"',
+            'data-value="dominado"',
+        ):
+            self.assertIn(marker, source)
+        self.assertIn('if (status === "revisar") c.nextReview = addDays(1)', source)
+        self.assertIn('if (status === "aprendendo") c.nextReview = addDays(3)', source)
+        self.assertIn('if (status === "dominado") c.nextReview = addDays(14)', source)
+        move_focus = source[source.index("function moveFocus(delta)"):source.index("function toggleStudyAnswer()")]
+        self.assertLess(move_focus.index('directCardId = ""'), move_focus.index("const list = getFiltered()"))
+        self.assertIn("getFiltered({ ignoreDirect: true })", source)
+        self.assertIn("updateFocusControls(navigationList, focusPosition)", source)
+        rate_study = source[source.index("async function rateStudyCard"):source.index("function openDB()")]
+        self.assertIn("studyRevealed = false", rate_study)
+        self.assertIn("Math.min(ratedPosition + 1, after.length - 1)", rate_study)
+        self.assertIn("focusedCardId = after[focusIndex].id", rate_study)
 
     def test_library_accepts_feed_query_parameters(self) -> None:
         source = (ROOT / "02_Biblioteca_IA_Engine/index.html").read_text(encoding="utf-8")

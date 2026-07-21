@@ -8,12 +8,15 @@ Documentos só passam a ser catalogados apó revisão e movimentação para
 
 from __future__ import annotations
 
+import argparse
 import json
 import hashlib
 import re
+import sys
 import unicodedata
 from datetime import date, datetime
 from pathlib import Path
+from typing import Sequence
 
 
 ROOT = Path(__file__).resolve().parent
@@ -601,11 +604,10 @@ def verify_publication_baseline(files: list[dict], assets: list[dict] | None = N
         )
 
 
-def main() -> None:
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    assets = collect_public_assets()
-    files = collect_files()
-    verify_publication_baseline(files, assets)
+def build_outputs(files: list[dict], updated_at: str | None = None) -> dict[Path, dict]:
+    """Monta todos os manifests em memoria, sem tocar no sistema de arquivos."""
+
+    timestamp = updated_at or datetime.now().isoformat(timespec="seconds")
     format_counts = grouped_counts(files, "format")
     origin_counts = grouped_counts(files, "origin")
 
@@ -618,7 +620,7 @@ def main() -> None:
         origins.append({**meta, "id": key, "count": origin_counts.get(key, 0)})
 
     manifest = {
-        "updatedAt": datetime.now().isoformat(timespec="seconds"),
+        "updatedAt": timestamp,
         "totalFiles": len(files),
         "description": "Manifesto automatico da Biblioteca IA por formato, origem e particao virtual.",
         "partitions": partitions,
@@ -626,75 +628,113 @@ def main() -> None:
         "files": files,
     }
 
-    (DATA_DIR / "biblioteca_documentos_manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
-
-    # Catálogo público canônico: uma entrada por arquivo físico validado.
-    (DATA_DIR / "biblioteca_catalogo.json").write_text(
-        json.dumps(
-            {
-                "updatedAt": manifest["updatedAt"],
-                "project": "Biblioteca IA — Enciclopédia Médica Intensiva",
-                "totalFiles": len(files),
-                "items": files,
-            },
-            ensure_ascii=False,
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
-
-    (DATA_DIR / "biblioteca_duplicados.json").write_text(
-        json.dumps(build_duplicate_report(files), ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-
     # Compatibilidade segura: o staging não é serializado em arquivo público.
     inbox_files: list[dict] = []
-    (DATA_DIR / "inbox.json").write_text(
-        json.dumps(
-            {
-                "description": "Staging local não publicado. Revise e mova para acervo/<tema>/.",
-                "updatedAt": date.today().isoformat(),
-                "files": [
-                    {
-                        "filename": item["name"],
-                        "tipo": item["tipo"],
-                        "format": item["format"],
-                        "origin": item["origin"],
-                    }
-                    for item in inbox_files
-                ],
-                "totalFiles": len(inbox_files),
-            },
-            ensure_ascii=False,
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+    return {
+        DATA_DIR / "biblioteca_documentos_manifest.json": manifest,
+        DATA_DIR / "biblioteca_catalogo.json": {
+            "updatedAt": timestamp,
+            "project": "Biblioteca IA — Enciclopédia Médica Intensiva",
+            "totalFiles": len(files),
+            "items": files,
+        },
+        DATA_DIR / "biblioteca_duplicados.json": {
+            **build_duplicate_report(files),
+            "updatedAt": timestamp,
+        },
+        DATA_DIR / "inbox.json": {
+            "description": "Staging local não publicado. Revise e mova para acervo/<tema>/.",
+            "updatedAt": date.today().isoformat(),
+            "files": [
+                {
+                    "filename": item["name"],
+                    "tipo": item["tipo"],
+                    "format": item["format"],
+                    "origin": item["origin"],
+                }
+                for item in inbox_files
+            ],
+            "totalFiles": len(inbox_files),
+        },
+        # Compatibilidade com a pagina atual.
+        DATA_DIR / "biblioteca_inbox_manifest_auto.json": {
+            "updatedAt": timestamp,
+            "totalFiles": len(files),
+            "files": files,
+        },
+    }
 
-    # Compatibilidade com a pagina atual.
-    (DATA_DIR / "biblioteca_inbox_manifest_auto.json").write_text(
-        json.dumps(
-            {
-                "updatedAt": datetime.now().isoformat(timespec="seconds"),
-                "totalFiles": len(files),
-                "files": files,
-            },
-            ensure_ascii=False,
-            indent=2,
+
+def comparable_payload(payload: dict) -> dict:
+    """Remove somente metadado temporal para permitir uma checagem reproduzivel."""
+
+    return {key: value for key, value in payload.items() if key != "updatedAt"}
+
+
+def check_outputs(outputs: dict[Path, dict]) -> list[str]:
+    """Compara manifests existentes sem criar diretorios nem regravar arquivos."""
+
+    divergent: list[str] = []
+    for path, expected in outputs.items():
+        try:
+            existing = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            divergent.append(path.name)
+            continue
+        if not isinstance(existing, dict) or comparable_payload(existing) != comparable_payload(expected):
+            divergent.append(path.name)
+    return divergent
+
+
+def write_outputs(outputs: dict[Path, dict]) -> None:
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    for path, payload in outputs.items():
+        path.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
         )
-        + "\n",
-        encoding="utf-8",
+
+
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Gera ou valida, sem efeitos colaterais, os manifests da Biblioteca IA."
     )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Valida baseline e manifests existentes sem gravar nenhum arquivo.",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = parse_args(argv)
+    try:
+        assets = collect_public_assets()
+        files = collect_files()
+        verify_publication_baseline(files, assets)
+        outputs = build_outputs(files)
+        if args.check:
+            divergent = check_outputs(outputs)
+            if divergent:
+                print(
+                    "❌ Manifest(s) divergente(s): " + ", ".join(divergent),
+                    file=sys.stderr,
+                )
+                return 1
+            print(f"✅ Biblioteca válida sem escrita: {len(files)} arquivo(s).")
+            return 0
+
+        write_outputs(outputs)
+    except (OSError, RuntimeError, ValueError, json.JSONDecodeError) as exc:
+        print(f"❌ {exc}", file=sys.stderr)
+        return 1
 
     print(f"✅ Manifesto geral: {len(files)} arquivo(s)")
     print(f"📄 Arquivo: {DATA_DIR / 'biblioteca_documentos_manifest.json'}")
-    print(f"📥 Inbox: {len(inbox_files)} arquivo(s)")
+    print("📥 Inbox: 0 arquivo(s)")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

@@ -12,6 +12,7 @@ import unittest
 import zipfile
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -208,6 +209,148 @@ class LibraryPreviewBuilderTests(unittest.TestCase):
                 self.assertIn("data:image/jpeg;base64,", preview)
                 self.assertGreater(pdf_item["stats"]["coverBytes"], 0)
             self.assertEqual(execute_quiet(library, check=True)[0], 0)
+
+    def test_pdf_native_metrics_ignore_page_separators_and_require_ocr(self) -> None:
+        source = Path("Imagem_sem_texto.pdf")
+        with (
+            mock.patch.object(BUILDER, "pdf_page_count", return_value=3),
+            mock.patch.object(
+                BUILDER,
+                "pdf_cover",
+                return_value=("data:image/jpeg;base64,/9j/", 3),
+            ),
+            mock.patch.object(
+                BUILDER,
+                "extract_pdf_text",
+                return_value=("\f\f", 3, "pypdf"),
+            ),
+        ):
+            content, stats, rendered = BUILDER.render_pdf_content(source)
+
+        self.assertTrue(rendered)
+        self.assertEqual(stats["characters"], 0)
+        self.assertEqual(stats["previewTextPages"], 0)
+        self.assertEqual(stats["nativeVisibleCharacters"], 0)
+        self.assertEqual(stats["nativeTextPages"], 0)
+        self.assertEqual(stats["nativeTextCoverage"], 0.0)
+        self.assertTrue(stats["ocrRequired"])
+        self.assertEqual(stats["ocrReason"], "no-native-text")
+        self.assertIn("OCR necessário", content)
+        self.assertNotIn("texto extraído</h2>", content)
+
+    def test_pdf_native_metrics_measure_text_pages_and_coverage(self) -> None:
+        source = Path("Documento_misto.pdf")
+        raw_text = "Página um com texto\f \t\n\fPágina três com texto"
+        with (
+            mock.patch.object(BUILDER, "pdf_page_count", return_value=3),
+            mock.patch.object(BUILDER, "pdf_cover", return_value=("", 0)),
+            mock.patch.object(
+                BUILDER,
+                "extract_pdf_text",
+                return_value=(raw_text, 3, "poppler-pdftotext"),
+            ),
+        ):
+            content, stats, rendered = BUILDER.render_pdf_content(source)
+
+        self.assertTrue(rendered)
+        self.assertEqual(stats["analyzedPages"], 3)
+        self.assertEqual(stats["nativeTextPages"], 2)
+        self.assertEqual(stats["previewTextPages"], 2)
+        self.assertEqual(stats["nativeTextCoverage"], 0.6667)
+        self.assertGreater(stats["nativeVisibleCharacters"], 0)
+        self.assertEqual(stats["characters"], stats["nativeVisibleCharacters"])
+        self.assertFalse(stats["ocrRequired"])
+        self.assertIsNone(stats["ocrReason"])
+        self.assertIn("Página 1 — texto extraído", content)
+        self.assertIn("Página 3 — texto extraído", content)
+        self.assertNotIn("Página 2 — texto extraído", content)
+
+    def test_build_labels_rasterized_pdf_without_claiming_extracted_text(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            library, _ = make_library(Path(temporary))
+            add_pdf_to_library(library)
+            with (
+                mock.patch.object(BUILDER, "pdf_page_count", return_value=2),
+                mock.patch.object(
+                    BUILDER,
+                    "pdf_cover",
+                    return_value=("data:image/jpeg;base64,/9j/", 3),
+                ),
+                mock.patch.object(
+                    BUILDER,
+                    "extract_pdf_text",
+                    return_value=("\f", 2, "poppler-pdftotext"),
+                ),
+                mock.patch.object(
+                    BUILDER,
+                    "run_pdf_ocr",
+                    return_value=("", 0, "unavailable", "engine-unavailable"),
+                ),
+            ):
+                code, _, error = execute_quiet(library, check=False)
+
+            self.assertEqual(code, 0, error)
+            index = json.loads(
+                (library / "data/biblioteca_previews.json").read_text(encoding="utf-8")
+            )
+            pdf_item = next(item for item in index["items"] if item["previewFormat"] == "pdf")
+            preview = (library / pdf_item["previewPath"]).read_text(encoding="utf-8")
+
+            self.assertEqual(index["version"], "library-previews-v4")
+            self.assertEqual(index["ocrRequiredDocuments"], 1)
+            self.assertEqual(index["ocrUniqueJobs"], 1)
+            self.assertEqual(index["ocrReadyDocuments"], 0)
+            self.assertEqual(index["ocrFailedDocuments"], 1)
+            self.assertEqual(pdf_item["status"], "ocr-required")
+            self.assertTrue(pdf_item["stats"]["ocrRequired"])
+            self.assertFalse(pdf_item["stats"]["ocrReady"])
+            self.assertIn("OCR necessário", preview)
+            self.assertNotIn("páginas de texto extraído", preview)
+
+    def test_ocr_makes_rasterized_pdf_searchable_and_reuses_sha_cache(self) -> None:
+        cache = {}
+        recognized = "Choque séptico reconhecido por OCR\fNoradrenalina e perfusão"
+        with (
+            mock.patch.object(BUILDER, "pdf_page_count", return_value=2),
+            mock.patch.object(BUILDER, "pdf_cover", return_value=("", 0)),
+            mock.patch.object(
+                BUILDER,
+                "extract_pdf_text",
+                return_value=("\f", 2, "poppler-pdftotext"),
+            ),
+            mock.patch.object(
+                BUILDER,
+                "run_pdf_ocr",
+                return_value=(recognized, 2, "tesseract-por+eng", None),
+            ) as run_ocr,
+        ):
+            first, first_stats, first_rendered = BUILDER.render_pdf_content(
+                Path("rasterizado.pdf"), source_sha256="a" * 64, ocr_cache=cache
+            )
+            second, second_stats, _ = BUILDER.render_pdf_content(
+                Path("duplicata.pdf"), source_sha256="a" * 64, ocr_cache=cache
+            )
+
+        self.assertEqual(run_ocr.call_count, 1)
+        self.assertTrue(first_rendered)
+        self.assertTrue(first_stats["ocrRequired"])
+        self.assertTrue(first_stats["ocrReady"])
+        self.assertEqual(first_stats["ocrPages"], 2)
+        self.assertEqual(first_stats["ocrEngine"], "tesseract-por+eng")
+        self.assertEqual(first_stats["ocrLanguages"], ["por", "eng"])
+        self.assertIn("texto OCR (confira no original)", first)
+        self.assertIn("Choque séptico reconhecido por OCR", first)
+        self.assertEqual(second, first)
+        self.assertEqual(second_stats["ocrVisibleCharacters"], first_stats["ocrVisibleCharacters"])
+
+    def test_unavailable_extractor_does_not_guess_ocr_requirement(self) -> None:
+        stats = BUILDER.pdf_native_text_metrics("", 0, "unavailable")
+
+        self.assertEqual(stats["nativeVisibleCharacters"], 0)
+        self.assertEqual(stats["nativeTextPages"], 0)
+        self.assertEqual(stats["nativeTextCoverage"], 0.0)
+        self.assertFalse(stats["ocrRequired"])
+        self.assertIsNone(stats["ocrReason"])
 
     def test_generates_pages_quicklook_preview_without_executing_package(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

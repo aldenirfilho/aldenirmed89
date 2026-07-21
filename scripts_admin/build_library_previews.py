@@ -3,8 +3,10 @@
 
 DOCX são lidos como pacotes ZIP/OOXML, sem executar macros ou relacionamentos
 externos. PDF recebe uma capa rasterizada e texto extraído quando Poppler ou
-``pypdf`` estão disponíveis. O HTML resultante é same-origin, funciona sem o
-plugin PDF do navegador e nunca executa conteúdo ativo do documento.
+``pypdf`` estão disponíveis; PDFs totalmente rasterizados usam OCR local
+Tesseract ``por+eng`` quando o ambiente oficial oferece essas ferramentas. O
+HTML resultante é same-origin, funciona sem o plugin PDF do navegador e nunca
+executa conteúdo ativo do documento.
 
 Uso:
     python3 scripts_admin/build_library_previews.py
@@ -47,9 +49,14 @@ MAX_PDF_TEXT_PAGES = 80
 MAX_PDF_TEXT_CHARS = 1_500_000
 MAX_PDF_COVER_BYTES = 3 * 1024 * 1024
 PDF_COMMAND_TIMEOUT_SECONDS = 90
-INDEX_RENDERER_VERSION = "library-safe-html-v2"
+MAX_OCR_PDF_BYTES = 30 * 1024 * 1024
+MAX_OCR_PAGES = 40
+OCR_RENDER_DPI = 144
+OCR_PAGE_TIMEOUT_SECONDS = 20
+OCR_DOCUMENT_TIMEOUT_SECONDS = 240
+INDEX_RENDERER_VERSION = "library-safe-html-v4"
 DOCX_RENDERER_VERSION = "docx-stdlib-xml-v1"
-PDF_RENDERER_VERSION = "pdf-local-cover-text-v1"
+PDF_RENDERER_VERSION = "pdf-local-cover-text-ocr-v3"
 PAGES_RENDERER_VERSION = "pages-quicklook-image-v1"
 PREVIEW_EXTENSIONS = {"docx", "pdf", "pages"}
 
@@ -336,7 +343,7 @@ def available_command(name: str) -> str | None:
 
 def pdf_page_count(source: Path) -> int | None:
     command = available_command("pdfinfo")
-    if not command or not available_command("pdftotext"):
+    if not command:
         return None
     try:
         result = subprocess.run(
@@ -420,7 +427,14 @@ def extract_pdf_text(source: Path, page_count: int | None) -> tuple[str, int, st
             )
             if result.returncode == 0:
                 text = result.stdout.decode("utf-8", errors="replace").replace("\x00", "")
-                return text[:MAX_PDF_TEXT_CHARS], last_page, "poppler-pdftotext"
+                if page_count is None:
+                    page_chunks = text.split("\f")
+                    if text.endswith("\f"):
+                        page_chunks.pop()
+                    analyzed_pages = len(page_chunks)
+                else:
+                    analyzed_pages = last_page
+                return text[:MAX_PDF_TEXT_CHARS], analyzed_pages, "poppler-pdftotext"
         except (OSError, subprocess.TimeoutExpired):
             pass
 
@@ -447,10 +461,189 @@ def extract_pdf_text(source: Path, page_count: int | None) -> tuple[str, int, st
         return "", 0, "unavailable"
 
 
-def render_pdf_content(source: Path) -> tuple[str, dict[str, object], bool]:
+def visible_character_count(value: str) -> int:
+    """Conta caracteres realmente visíveis, ignorando whitespace/controles.
+
+    Separadores de página (`form feed`) são úteis para reconstruir a paginação,
+    mas não representam texto nativo e não podem mascarar PDFs rasterizados.
+    """
+
+    return sum(
+        1
+        for character in value
+        if not character.isspace()
+        and unicodedata.category(character)[0] not in {"C", "Z"}
+    )
+
+
+def pdf_native_text_metrics(
+    raw_text: str,
+    analyzed_pages: int,
+    extractor: str,
+) -> dict[str, object]:
+    """Mede somente texto nativo e sinaliza OCR sem falsos positivos.
+
+    OCR só é requerido quando um extrator executou, ao menos uma página foi
+    analisada e nenhum caractere visível foi encontrado. Ausência de ferramenta
+    continua sendo uma condição de ambiente, não evidência de PDF rasterizado.
+    """
+
+    page_chunks = raw_text.split("\f")
+    if raw_text.endswith("\f"):
+        page_chunks.pop()
+    if analyzed_pages > len(page_chunks):
+        page_chunks.extend([""] * (analyzed_pages - len(page_chunks)))
+    elif analyzed_pages and len(page_chunks) > analyzed_pages:
+        page_chunks = page_chunks[:analyzed_pages]
+
+    page_visible_characters = [visible_character_count(page) for page in page_chunks]
+    native_visible_characters = sum(page_visible_characters)
+    native_text_pages = sum(count > 0 for count in page_visible_characters)
+    native_text_coverage = (
+        round(native_text_pages / analyzed_pages, 4) if analyzed_pages else 0.0
+    )
+    extraction_available = extractor != "unavailable" and analyzed_pages > 0
+    ocr_required = extraction_available and native_visible_characters == 0
+
+    return {
+        "analyzedPages": analyzed_pages,
+        "nativeVisibleCharacters": native_visible_characters,
+        "nativeTextPages": native_text_pages,
+        "nativeTextCoverage": native_text_coverage,
+        "ocrRequired": ocr_required,
+        "ocrReason": "no-native-text" if ocr_required else None,
+    }
+
+
+def tesseract_languages(command: str) -> set[str]:
+    """Consulta idiomas instalados sem executar shell nem conteúdo do PDF."""
+
+    try:
+        result = subprocess.run(
+            [command, "--list-langs"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=10,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return set()
+    if result.returncode != 0:
+        return set()
+    lines = result.stdout.decode("utf-8", errors="replace").splitlines()
+    return {line.strip() for line in lines if re.fullmatch(r"[a-zA-Z0-9_-]+", line.strip())}
+
+
+def run_pdf_ocr(source: Path, page_count: int | None) -> tuple[str, int, str, str | None]:
+    """Executa OCR local limitado e retorna texto, páginas, motor e falha.
+
+    O original permanece somente leitura. Cada comando recebe argumentos em
+    lista, nunca ``shell=True``; temporários são descartados ao final.
+    """
+
+    if not source.is_file():
+        return "", 0, "unavailable", "source-unavailable"
+    try:
+        if source.stat().st_size > MAX_OCR_PDF_BYTES:
+            return "", 0, "unavailable", "size-limit"
+    except OSError:
+        return "", 0, "unavailable", "source-unavailable"
+
+    pdftoppm = available_command("pdftoppm")
+    tesseract = available_command("tesseract")
+    if not pdftoppm or not tesseract:
+        return "", 0, "unavailable", "engine-unavailable"
+    languages = tesseract_languages(tesseract)
+    if not {"por", "eng"}.issubset(languages):
+        return "", 0, "tesseract", "languages-unavailable"
+
+    last_page = min(page_count or MAX_OCR_PAGES, MAX_OCR_PAGES)
+    if last_page < 1:
+        return "", 0, "tesseract-por+eng", "page-count-unavailable"
+    environment = os.environ.copy()
+    environment["OMP_THREAD_LIMIT"] = "1"
+
+    try:
+        with tempfile.TemporaryDirectory(prefix="library-pdf-ocr-") as temporary:
+            prefix = Path(temporary) / "page"
+            rendered = subprocess.run(
+                [
+                    pdftoppm,
+                    "-f", "1",
+                    "-l", str(last_page),
+                    "-png",
+                    "-r", str(OCR_RENDER_DPI),
+                    str(source),
+                    str(prefix),
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+                timeout=OCR_DOCUMENT_TIMEOUT_SECONDS,
+                env=environment,
+            )
+            images = sorted(
+                Path(temporary).glob("page-*.png"),
+                key=lambda path: int(re.search(r"-(\d+)$", path.stem).group(1)),
+            )
+            if rendered.returncode != 0 or not images:
+                return "", 0, "tesseract-por+eng", "render-failed"
+
+            pages: list[str] = []
+            for image_path in images[:last_page]:
+                recognized = subprocess.run(
+                    [tesseract, str(image_path), "stdout", "-l", "por+eng", "--psm", "6"],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    check=False,
+                    timeout=OCR_PAGE_TIMEOUT_SECONDS,
+                    env=environment,
+                )
+                if recognized.returncode != 0:
+                    return "", 0, "tesseract-por+eng", "recognition-failed"
+                pages.append(
+                    recognized.stdout.decode("utf-8", errors="replace").replace("\x00", "")
+                )
+                if sum(len(value) for value in pages) >= MAX_PDF_TEXT_CHARS:
+                    break
+    except subprocess.TimeoutExpired:
+        return "", 0, "tesseract-por+eng", "timeout"
+    except OSError:
+        return "", 0, "tesseract-por+eng", "engine-error"
+
+    text = "\f".join(pages)[:MAX_PDF_TEXT_CHARS]
+    if visible_character_count(text) < 20:
+        return "", len(pages), "tesseract-por+eng", "empty-result"
+    return text, len(pages), "tesseract-por+eng", None
+
+
+def render_pdf_content(
+    source: Path,
+    *,
+    source_sha256: str | None = None,
+    ocr_cache: dict[str, tuple[str, int, str, str | None]] | None = None,
+) -> tuple[str, dict[str, object], bool]:
     pages = pdf_page_count(source)
     cover_uri, cover_bytes = pdf_cover(source)
-    raw_text, text_pages, extractor = extract_pdf_text(source, pages)
+    raw_text, analyzed_pages, extractor = extract_pdf_text(source, pages)
+    native_metrics = pdf_native_text_metrics(raw_text, analyzed_pages, extractor)
+
+    ocr_text = ""
+    ocr_pages = 0
+    ocr_engine = "not-required"
+    ocr_failure: str | None = None
+    if native_metrics["ocrRequired"]:
+        cache_key = source_sha256 or (
+            sha256_file(source) if source.is_file() else f"missing:{source.as_posix()}"
+        )
+        cached = ocr_cache.get(cache_key) if ocr_cache is not None else None
+        if cached is None:
+            cached = run_pdf_ocr(source, pages)
+            if ocr_cache is not None:
+                ocr_cache[cache_key] = cached
+        ocr_text, ocr_pages, ocr_engine, ocr_failure = cached
+    ocr_visible_characters = visible_character_count(ocr_text)
+    ocr_ready = ocr_visible_characters >= 20
 
     blocks: list[str] = []
     if cover_uri:
@@ -472,10 +665,35 @@ def render_pdf_content(source: Path) -> tuple[str, dict[str, object], bool]:
         )
     if text_sections:
         blocks.extend(text_sections)
+    elif ocr_ready:
+        ocr_sections = []
+        for page_number, page_text in enumerate(ocr_text.split("\f"), start=1):
+            cleaned = page_text.strip()
+            if not cleaned:
+                continue
+            ocr_sections.append(
+                f'<section class="pdf-text-page pdf-ocr-page"><h2>Página {page_number} — '
+                "texto OCR (confira no original)</h2>"
+                f"<pre>{html.escape(cleaned)}</pre></section>"
+            )
+        blocks.extend(ocr_sections)
+    elif native_metrics["ocrRequired"] and cover_uri:
+        blocks.append(
+            '<p class="empty"><strong>OCR necessário:</strong> este PDF é '
+            "rasterizado e não contém texto nativo pesquisável. A primeira página "
+            "renderizada acima confirma o conteúdo visual; o original integral "
+            "permanece disponível.</p>"
+        )
     elif cover_uri:
         blocks.append(
             '<p class="empty">Este PDF não forneceu texto extraível. A primeira página '
             "renderizada acima confirma o conteúdo visual; o original integral permanece disponível.</p>"
+        )
+    elif native_metrics["ocrRequired"]:
+        blocks.append(
+            '<p class="empty"><strong>OCR necessário:</strong> este PDF não contém '
+            "texto nativo pesquisável nem forneceu uma capa neste ambiente. O original "
+            "integral permanece preservado e disponível para download.</p>"
         )
     else:
         blocks.append(
@@ -485,14 +703,23 @@ def render_pdf_content(source: Path) -> tuple[str, dict[str, object], bool]:
 
     stats: dict[str, object] = {
         "pages": pages,
-        "previewTextPages": text_pages,
-        "characters": len(raw_text),
+        # Chaves legadas passam a refletir texto real, não páginas tentadas nem
+        # separadores de página. Os nomes `native*` documentam a nova semântica.
+        "previewTextPages": native_metrics["nativeTextPages"],
+        "characters": native_metrics["nativeVisibleCharacters"],
         "words": len(re.findall(r"\S+", raw_text)),
         "coverBytes": cover_bytes,
         "textExtractor": extractor,
         "textPageLimit": MAX_PDF_TEXT_PAGES,
+        "ocrReady": ocr_ready,
+        "ocrPages": ocr_pages,
+        "ocrVisibleCharacters": ocr_visible_characters,
+        "ocrEngine": ocr_engine,
+        "ocrLanguages": ["por", "eng"] if ocr_engine == "tesseract-por+eng" else [],
+        "ocrFailure": ocr_failure,
+        **native_metrics,
     }
-    return "\n".join(blocks), stats, bool(cover_uri or text_sections)
+    return "\n".join(blocks), stats, bool(cover_uri or text_sections or ocr_ready)
 
 
 def render_pages_content(source: Path) -> tuple[str, dict[str, object], bool]:
@@ -591,7 +818,7 @@ def render_page(
     <h1>{safe_title}</h1>
     <p class="meta">Fonte: {safe_source}<br>SHA-256: {source_sha256}</p>
     <p><a class="download" href="{original_href}" download>⬇️ Baixar o {html.escape(format_label)} original</a></p>
-    <article aria-label="{safe_content_label}">
+    <article data-reader-content="true" aria-label="{safe_content_label}">
       {content}
     </article>
   </main>
@@ -611,6 +838,7 @@ def build_plan(library_root: Path) -> tuple[list[PreviewArtifact], dict]:
     manifest, manifest_bytes = load_manifest(library_root)
     raw_files = manifest["files"]
     artifacts: list[PreviewArtifact] = []
+    ocr_cache: dict[str, tuple[str, int, str, str | None]] = {}
     seen_paths: set[str] = set()
     seen_ids: set[str] = set()
 
@@ -655,16 +883,37 @@ def build_plan(library_root: Path) -> tuple[list[PreviewArtifact], dict]:
             )
             content_label = "Conteúdo textual extraído do documento Word"
         elif extension == "pdf":
-            content, stats, rendered = render_pdf_content(source)
+            content, stats, rendered = render_pdf_content(
+                source,
+                source_sha256=source_sha,
+                ocr_cache=ocr_cache,
+            )
             renderer = PDF_RENDERER_VERSION
-            status = "ready" if rendered else "degraded"
+            status = (
+                "ocr-ready"
+                if stats["ocrReady"]
+                else "ocr-required"
+                if stats["ocrRequired"]
+                else "ready"
+                if rendered
+                else "degraded"
+            )
             text_only = False
-            if stats["coverBytes"] and stats["characters"]:
+            if stats["ocrReady"]:
+                preview_detail = (
+                    f"{stats['ocrPages']} página(s) convertida(s) por OCR local por+eng; "
+                    "o texto pode conter erros"
+                )
+            elif stats["coverBytes"] and stats["nativeTextPages"]:
                 preview_detail = "primeira página renderizada e até 80 páginas de texto"
+            elif stats["coverBytes"] and stats["ocrRequired"]:
+                preview_detail = "primeira página renderizada; OCR necessário para pesquisa e seleção"
             elif stats["coverBytes"]:
                 preview_detail = "primeira página renderizada; não foi encontrado texto extraível"
-            elif stats["characters"]:
+            elif stats["nativeTextPages"]:
                 preview_detail = "até 80 páginas de texto extraído"
+            elif stats["ocrRequired"]:
+                preview_detail = "OCR necessário; nenhum texto nativo pesquisável foi encontrado"
             else:
                 preview_detail = "fallback explícito; este arquivo não forneceu capa nem texto"
             notice = (
@@ -716,8 +965,19 @@ def build_plan(library_root: Path) -> tuple[list[PreviewArtifact], dict]:
         )
         for extension in sorted(PREVIEW_EXTENSIONS)
     }
+    ocr_pdf_artifacts = [
+        artifact
+        for artifact in artifacts
+        if artifact.metadata["previewFormat"] == "pdf"
+        and bool(artifact.metadata["stats"].get("ocrRequired"))
+    ]
+    ocr_unique_jobs: dict[str, dict] = {}
+    for artifact in ocr_pdf_artifacts:
+        source_sha = str(artifact.metadata["sourceSha256"])
+        ocr_unique_jobs.setdefault(source_sha, artifact.metadata["stats"])
+
     index = {
-        "version": "library-previews-v2",
+        "version": "library-previews-v4",
         "renderer": INDEX_RENDERER_VERSION,
         "sourceManifest": MANIFEST_RELATIVE.as_posix(),
         "sourceManifestSha256": sha256_bytes(manifest_bytes),
@@ -726,6 +986,21 @@ def build_plan(library_root: Path) -> tuple[list[PreviewArtifact], dict]:
         "previewableDocuments": len(artifacts),
         "generatedPreviews": len(artifacts),
         "generatedByExtension": generated_by_extension,
+        "ocrRequiredDocuments": len(ocr_pdf_artifacts),
+        "ocrUniqueJobs": len(ocr_unique_jobs),
+        "ocrReadyDocuments": sum(
+            bool(artifact.metadata["stats"].get("ocrReady"))
+            for artifact in ocr_pdf_artifacts
+        ),
+        "ocrFailedDocuments": sum(
+            not bool(artifact.metadata["stats"].get("ocrReady"))
+            for artifact in ocr_pdf_artifacts
+        ),
+        "ocrPages": sum(
+            int(stats.get("ocrPages") or 0)
+            for stats in ocr_unique_jobs.values()
+            if bool(stats.get("ocrReady"))
+        ),
         "items": [artifact.metadata for artifact in artifacts],
     }
     return artifacts, index

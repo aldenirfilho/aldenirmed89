@@ -128,10 +128,10 @@ class LibraryCanonicalCatalogTests(unittest.TestCase):
         self.assertIn("não confirma autoria", baseline["warning"])
 
         scanner = (LIBRARY / "scan_biblioteca.py").read_text(encoding="utf-8")
-        main_source = scanner.split("def main() -> None:", 1)[1]
+        main_source = scanner.split("def main(", 1)[1]
         self.assertLess(
             main_source.index("verify_publication_baseline(files, assets)"),
-            main_source.index("biblioteca_documentos_manifest.json"),
+            main_source.index("write_outputs(outputs)"),
         )
         workflow = (ROOT / ".github/workflows/deploy-seguro.yml").read_text(encoding="utf-8")
         self.assertIn("update_library_publication_baseline.py --check", workflow)
@@ -262,7 +262,8 @@ class LibraryStudyInterfaceTests(unittest.TestCase):
 
     def test_preview_modes_have_visible_safe_fallbacks(self) -> None:
         self.assertIn("fetch('data/biblioteca_previews.json', { cache: 'no-store' })", self.source)
-        self.assertIn("findGeneratedPreview(path)", self.source)
+        self.assertIn("findGeneratedPreviewEntry(path)", self.source)
+        self.assertIn("validateTrustedPreview(entry, path, item, extension)", self.source)
         self.assertIn("PDF preservado — prévia em recuperação", self.source)
         self.assertIn("com capa e/ou texto extraído", self.source)
         self.assertIn("A imagem Quick Look local não pôde ser gerada", self.source)
