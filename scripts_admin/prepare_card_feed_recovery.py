@@ -30,6 +30,11 @@ import xml.etree.ElementTree as ET
 from datetime import date
 from pathlib import Path
 
+try:
+    from svg_safety import validate_svg_file, validate_svg_integrity
+except ModuleNotFoundError:  # import via unittest/importlib a partir da raiz
+    from scripts_admin.svg_safety import validate_svg_file, validate_svg_integrity
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_ROOT = ROOT / "05_Midia_E_Feed/assets/cards/public"
@@ -47,6 +52,11 @@ EXPECTED_INVENTORY_SHA256 = "6684542494db23bd796ff7f0a0dec56735e5c77f8da34520704
 CLINICAL_QUARANTINE_BY_SHA = {
     "a1f5c6b454fdd06aaeb55df958023cf140cb4c6a404622169beeb53ed0a69e38": (
         "Conduta de bradicardia com doses desatualizadas; exige revisão clínica antes de publicar."
+    ),
+}
+EXPECTED_HISTORICAL_SVG_PUBLIC_SHA256 = {
+    "a42f2c4b5d11ce40a7e65368184b5e14b82403246b632f7df38879fe603be88d": (
+        "06868a374596011a7b0ee365ce406ebd6c429a76f2009402d64cd28fb333f74e"
     ),
 }
 
@@ -184,7 +194,19 @@ def sanitize_svg(source: Path, target: Path) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_name(target.name + ".tmp")
     ET.ElementTree(root).write(temporary, encoding="utf-8", xml_declaration=True)
+    validate_svg_file(temporary)
     temporary.replace(target)
+
+
+def validate_historical_svg_target(target: Path, source_hash: str) -> None:
+    """Impede reutilização de derivado SVG desconhecido ou adulterado."""
+
+    expected_hash = EXPECTED_HISTORICAL_SVG_PUBLIC_SHA256.get(source_hash)
+    if expected_hash is None:
+        raise ValueError(
+            "fonte SVG não pertence à allowlist de derivados do lote histórico"
+        )
+    validate_svg_integrity(target, expected_hash)
 
 
 def public_path(target: Path) -> str:
@@ -405,11 +427,15 @@ def main() -> int:
             continue
 
         try:
-            if not target.is_file():
-                if source.suffix.lower() in RASTER:
+            if source.suffix.lower() in RASTER:
+                if not target.is_file():
                     convert_raster(source, target, args.max_edge, args.quality)
+            else:
+                if target.is_file():
+                    validate_historical_svg_target(target, source_hash)
                 else:
                     sanitize_svg(source, target)
+                    validate_historical_svg_target(target, source_hash)
         except (ET.ParseError, ValueError) as exc:
             entry = {
                 "sourceFilename": source.name,

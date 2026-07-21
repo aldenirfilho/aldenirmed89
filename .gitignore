@@ -28,6 +28,9 @@ Thumbs.db
 # A pasta `site/` é montada pelo workflow deploy-seguro.yml no runner.
 # Versioná-la incha o repo (168 MB) e nunca é usada (o CI faz rm -rf site).
 site/
+# OCR público derivado, reutilizado apenas entre build/check e execuções do CI.
+# Nunca é fonte canônica nem entra no artefato publicado.
+.cache/
 02_Biblioteca_IA_Engine/previews/
 02_Biblioteca_IA_Engine/data/biblioteca_previews.json
 

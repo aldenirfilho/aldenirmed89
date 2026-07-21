@@ -17,6 +17,11 @@ from datetime import date
 from pathlib import Path
 from typing import Sequence
 
+try:
+    from svg_safety import validate_svg_file
+except ModuleNotFoundError:  # import via unittest/importlib a partir da raiz
+    from scripts_admin.svg_safety import validate_svg_file
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_DIR = ROOT / "05_Midia_E_Feed/assets/cards/public"
@@ -56,6 +61,11 @@ def collect_public_files(public_dir: Path) -> tuple[list[str], list[str]]:
         if not path.is_file() or path.suffix.casefold() not in SUPPORTED:
             continue
         relative = path.relative_to(public_dir).as_posix()
+        if path.suffix.casefold() == ".svg":
+            try:
+                validate_svg_file(path)
+            except ValueError as exc:
+                raise ValueError(f"SVG público inseguro bloqueado ({relative}): {exc}") from exc
         canonical = conflict_canonical(path)
         if canonical is None:
             canonical_files.append(relative)

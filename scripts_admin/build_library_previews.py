@@ -14,7 +14,8 @@ Uso:
 
 O modo ``--check`` não cria diretórios nem altera arquivos. Ele reconstrói os
 artefatos esperados em memória e exige cobertura exata, hashes atuais e ausência
-de previews obsoletos.
+de previews obsoletos. Resultados OCR válidos são reutilizados por SHA e
+configuração a partir de ``.cache/``, que nunca integra o site publicado.
 """
 
 from __future__ import annotations
@@ -54,6 +55,13 @@ MAX_OCR_PAGES = 40
 OCR_RENDER_DPI = 144
 OCR_PAGE_TIMEOUT_SECONDS = 20
 OCR_DOCUMENT_TIMEOUT_SECONDS = 240
+OCR_PIPELINE_VERSION = "tesseract-local-v1"
+OCR_CACHE_SCHEMA_VERSION = "library-ocr-cache-v1"
+OCR_CACHE_DIRECTORY = Path(".cache/library-ocr-v1")
+OCR_CACHE_LANGUAGES = ("por", "eng")
+OCR_ENGINE_LABEL = f"tesseract-{'+'.join(OCR_CACHE_LANGUAGES)}"
+OCR_TESSERACT_PSM = 6
+MAX_OCR_CACHE_ENTRY_BYTES = 8 * 1024 * 1024
 INDEX_RENDERER_VERSION = "library-safe-html-v4"
 DOCX_RENDERER_VERSION = "docx-stdlib-xml-v1"
 PDF_RENDERER_VERSION = "pdf-local-cover-text-ocr-v3"
@@ -75,6 +83,9 @@ class PreviewArtifact:
     filename: str
     html_bytes: bytes
     metadata: dict[str, object]
+
+
+OcrResult = tuple[str, int, str, str | None]
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -108,6 +119,194 @@ def atomic_write(path: Path, data: bytes) -> None:
     finally:
         if temporary_name:
             Path(temporary_name).unlink(missing_ok=True)
+
+
+def canonical_json_bytes(payload: object) -> bytes:
+    """Serializa metadados técnicos com representação estável para hashing."""
+
+    return json.dumps(
+        payload,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+def ocr_cache_config() -> dict[str, object]:
+    """Configuração completa que pode alterar o texto produzido pelo OCR."""
+
+    return {
+        "schemaVersion": OCR_CACHE_SCHEMA_VERSION,
+        "pipelineVersion": OCR_PIPELINE_VERSION,
+        "pdfRendererVersion": PDF_RENDERER_VERSION,
+        "engine": "tesseract",
+        "languages": list(OCR_CACHE_LANGUAGES),
+        "renderDpi": OCR_RENDER_DPI,
+        "pageLimit": MAX_OCR_PAGES,
+        "pageSegmentationMode": OCR_TESSERACT_PSM,
+        "pdfByteLimit": MAX_OCR_PDF_BYTES,
+        "textCharacterLimit": MAX_PDF_TEXT_CHARS,
+    }
+
+
+def normalized_source_sha256(value: object) -> str | None:
+    candidate = str(value or "").strip().casefold()
+    return candidate if re.fullmatch(r"[0-9a-f]{64}", candidate) else None
+
+
+def ocr_cache_key(source_sha256: str) -> str:
+    """Deriva uma chave sem paths nem bytes da fonte."""
+
+    normalized_sha = normalized_source_sha256(source_sha256)
+    if normalized_sha is None:
+        raise PreviewBuildError("SHA-256 inválido para cache OCR.")
+    return sha256_bytes(
+        canonical_json_bytes(
+            {
+                "sourceSha256": normalized_sha,
+                "config": ocr_cache_config(),
+            }
+        )
+    )
+
+
+def default_ocr_cache_root(library_root: Path) -> Path:
+    """Mantém o cache no topo do checkout, fora da Biblioteca publicada."""
+
+    return library_root.resolve().parent / OCR_CACHE_DIRECTORY
+
+
+def cache_root_is_safe(cache_root: Path) -> bool:
+    """Rejeita cache redirecionado por symlink ou objeto não diretório."""
+
+    parent = cache_root.parent
+    if parent.is_symlink() or cache_root.is_symlink():
+        return False
+    if parent.exists() and not parent.is_dir():
+        return False
+    if cache_root.exists() and not cache_root.is_dir():
+        return False
+    return True
+
+
+def ocr_result_payload(result: OcrResult) -> dict[str, object]:
+    text, pages, engine, failure = result
+    return {
+        "text": text,
+        "pages": pages,
+        "engine": engine,
+        "failure": failure,
+    }
+
+
+def cacheable_ocr_result(result: OcrResult) -> bool:
+    """Persiste apenas OCR completo; falhas transitórias devem ser reavaliadas."""
+
+    if not isinstance(result, tuple) or len(result) != 4:
+        return False
+    text, pages, engine, failure = result
+    return (
+        isinstance(text, str)
+        and "\x00" not in text
+        and len(text) <= MAX_PDF_TEXT_CHARS
+        and visible_character_count(text) >= 20
+        and isinstance(pages, int)
+        and not isinstance(pages, bool)
+        and 1 <= pages <= MAX_OCR_PAGES
+        and engine == OCR_ENGINE_LABEL
+        and failure is None
+    )
+
+
+def load_persistent_ocr_cache(
+    cache_root: Path,
+    source_sha256: str,
+) -> OcrResult | None:
+    """Lê uma entrada validada; qualquer divergência vira cache miss seguro."""
+
+    normalized_sha = normalized_source_sha256(source_sha256)
+    if normalized_sha is None or not cache_root_is_safe(cache_root):
+        return None
+    key = ocr_cache_key(normalized_sha)
+    cache_path = cache_root / f"{key}.json"
+    if cache_path.is_symlink() or not cache_path.is_file():
+        return None
+    try:
+        if cache_path.stat().st_size > MAX_OCR_CACHE_ENTRY_BYTES:
+            return None
+        payload = json.loads(cache_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        return None
+    if not isinstance(payload, dict) or set(payload) != {
+        "schema",
+        "key",
+        "sourceSha256",
+        "config",
+        "result",
+        "resultSha256",
+    }:
+        return None
+    if (
+        payload.get("schema") != OCR_CACHE_SCHEMA_VERSION
+        or payload.get("key") != key
+        or payload.get("sourceSha256") != normalized_sha
+        or payload.get("config") != ocr_cache_config()
+    ):
+        return None
+    result_payload = payload.get("result")
+    if not isinstance(result_payload, dict) or set(result_payload) != {
+        "text",
+        "pages",
+        "engine",
+        "failure",
+    }:
+        return None
+    if payload.get("resultSha256") != sha256_bytes(canonical_json_bytes(result_payload)):
+        return None
+    result: OcrResult = (
+        result_payload.get("text"),
+        result_payload.get("pages"),
+        result_payload.get("engine"),
+        result_payload.get("failure"),
+    )
+    return result if cacheable_ocr_result(result) else None
+
+
+def write_persistent_ocr_cache(
+    cache_root: Path,
+    source_sha256: str,
+    result: OcrResult,
+) -> bool:
+    """Grava atomicamente uma entrada allowlisted; nunca inclui path ou fonte."""
+
+    normalized_sha = normalized_source_sha256(source_sha256)
+    if (
+        normalized_sha is None
+        or not cacheable_ocr_result(result)
+        or not cache_root_is_safe(cache_root)
+    ):
+        return False
+    key = ocr_cache_key(normalized_sha)
+    cache_path = cache_root / f"{key}.json"
+    if cache_path.is_symlink():
+        return False
+    result_payload = ocr_result_payload(result)
+    payload = {
+        "schema": OCR_CACHE_SCHEMA_VERSION,
+        "key": key,
+        "sourceSha256": normalized_sha,
+        "config": ocr_cache_config(),
+        "result": result_payload,
+        "resultSha256": sha256_bytes(canonical_json_bytes(result_payload)),
+    }
+    data = (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    if len(data) > MAX_OCR_CACHE_ENTRY_BYTES:
+        return False
+    try:
+        atomic_write(cache_path, data)
+    except OSError:
+        return False
+    return True
 
 
 def load_manifest(library_root: Path) -> tuple[dict, bytes]:
@@ -554,12 +753,12 @@ def run_pdf_ocr(source: Path, page_count: int | None) -> tuple[str, int, str, st
     if not pdftoppm or not tesseract:
         return "", 0, "unavailable", "engine-unavailable"
     languages = tesseract_languages(tesseract)
-    if not {"por", "eng"}.issubset(languages):
+    if not set(OCR_CACHE_LANGUAGES).issubset(languages):
         return "", 0, "tesseract", "languages-unavailable"
 
     last_page = min(page_count or MAX_OCR_PAGES, MAX_OCR_PAGES)
     if last_page < 1:
-        return "", 0, "tesseract-por+eng", "page-count-unavailable"
+        return "", 0, OCR_ENGINE_LABEL, "page-count-unavailable"
     environment = os.environ.copy()
     environment["OMP_THREAD_LIMIT"] = "1"
 
@@ -587,12 +786,20 @@ def run_pdf_ocr(source: Path, page_count: int | None) -> tuple[str, int, str, st
                 key=lambda path: int(re.search(r"-(\d+)$", path.stem).group(1)),
             )
             if rendered.returncode != 0 or not images:
-                return "", 0, "tesseract-por+eng", "render-failed"
+                return "", 0, OCR_ENGINE_LABEL, "render-failed"
 
             pages: list[str] = []
             for image_path in images[:last_page]:
                 recognized = subprocess.run(
-                    [tesseract, str(image_path), "stdout", "-l", "por+eng", "--psm", "6"],
+                    [
+                        tesseract,
+                        str(image_path),
+                        "stdout",
+                        "-l",
+                        "+".join(OCR_CACHE_LANGUAGES),
+                        "--psm",
+                        str(OCR_TESSERACT_PSM),
+                    ],
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     check=False,
@@ -600,28 +807,30 @@ def run_pdf_ocr(source: Path, page_count: int | None) -> tuple[str, int, str, st
                     env=environment,
                 )
                 if recognized.returncode != 0:
-                    return "", 0, "tesseract-por+eng", "recognition-failed"
+                    return "", 0, OCR_ENGINE_LABEL, "recognition-failed"
                 pages.append(
                     recognized.stdout.decode("utf-8", errors="replace").replace("\x00", "")
                 )
                 if sum(len(value) for value in pages) >= MAX_PDF_TEXT_CHARS:
                     break
     except subprocess.TimeoutExpired:
-        return "", 0, "tesseract-por+eng", "timeout"
+        return "", 0, OCR_ENGINE_LABEL, "timeout"
     except OSError:
-        return "", 0, "tesseract-por+eng", "engine-error"
+        return "", 0, OCR_ENGINE_LABEL, "engine-error"
 
     text = "\f".join(pages)[:MAX_PDF_TEXT_CHARS]
     if visible_character_count(text) < 20:
-        return "", len(pages), "tesseract-por+eng", "empty-result"
-    return text, len(pages), "tesseract-por+eng", None
+        return "", len(pages), OCR_ENGINE_LABEL, "empty-result"
+    return text, len(pages), OCR_ENGINE_LABEL, None
 
 
 def render_pdf_content(
     source: Path,
     *,
     source_sha256: str | None = None,
-    ocr_cache: dict[str, tuple[str, int, str, str | None]] | None = None,
+    ocr_cache: dict[str, OcrResult] | None = None,
+    persistent_ocr_cache_root: Path | None = None,
+    write_ocr_cache: bool = False,
 ) -> tuple[str, dict[str, object], bool]:
     pages = pdf_page_count(source)
     cover_uri, cover_bytes = pdf_cover(source)
@@ -633,14 +842,38 @@ def render_pdf_content(
     ocr_engine = "not-required"
     ocr_failure: str | None = None
     if native_metrics["ocrRequired"]:
-        cache_key = source_sha256 or (
-            sha256_file(source) if source.is_file() else f"missing:{source.as_posix()}"
+        normalized_sha = normalized_source_sha256(source_sha256)
+        if normalized_sha is None and source.is_file():
+            normalized_sha = sha256_file(source)
+        cache_key = ocr_cache_key(normalized_sha) if normalized_sha else None
+        cached = (
+            ocr_cache.get(cache_key)
+            if ocr_cache is not None and cache_key is not None
+            else None
         )
-        cached = ocr_cache.get(cache_key) if ocr_cache is not None else None
+        if (
+            cached is None
+            and persistent_ocr_cache_root is not None
+            and normalized_sha is not None
+        ):
+            cached = load_persistent_ocr_cache(
+                persistent_ocr_cache_root,
+                normalized_sha,
+            )
         if cached is None:
             cached = run_pdf_ocr(source, pages)
-            if ocr_cache is not None:
-                ocr_cache[cache_key] = cached
+            if (
+                write_ocr_cache
+                and persistent_ocr_cache_root is not None
+                and normalized_sha is not None
+            ):
+                write_persistent_ocr_cache(
+                    persistent_ocr_cache_root,
+                    normalized_sha,
+                    cached,
+                )
+        if ocr_cache is not None and cache_key is not None:
+            ocr_cache[cache_key] = cached
         ocr_text, ocr_pages, ocr_engine, ocr_failure = cached
     ocr_visible_characters = visible_character_count(ocr_text)
     ocr_ready = ocr_visible_characters >= 20
@@ -715,7 +948,9 @@ def render_pdf_content(
         "ocrPages": ocr_pages,
         "ocrVisibleCharacters": ocr_visible_characters,
         "ocrEngine": ocr_engine,
-        "ocrLanguages": ["por", "eng"] if ocr_engine == "tesseract-por+eng" else [],
+        "ocrLanguages": list(OCR_CACHE_LANGUAGES)
+        if ocr_engine == OCR_ENGINE_LABEL
+        else [],
         "ocrFailure": ocr_failure,
         **native_metrics,
     }
@@ -833,12 +1068,19 @@ def preview_name(source_path: str, extension: str) -> str:
     return f"{extension}-{digest}.html"
 
 
-def build_plan(library_root: Path) -> tuple[list[PreviewArtifact], dict]:
+def build_plan(
+    library_root: Path,
+    *,
+    persistent_ocr_cache_root: Path | None = None,
+    write_ocr_cache: bool = False,
+) -> tuple[list[PreviewArtifact], dict]:
     library_root = library_root.resolve()
+    if persistent_ocr_cache_root is None:
+        persistent_ocr_cache_root = default_ocr_cache_root(library_root)
     manifest, manifest_bytes = load_manifest(library_root)
     raw_files = manifest["files"]
     artifacts: list[PreviewArtifact] = []
-    ocr_cache: dict[str, tuple[str, int, str, str | None]] = {}
+    ocr_cache: dict[str, OcrResult] = {}
     seen_paths: set[str] = set()
     seen_ids: set[str] = set()
 
@@ -887,6 +1129,8 @@ def build_plan(library_root: Path) -> tuple[list[PreviewArtifact], dict]:
                 source,
                 source_sha256=source_sha,
                 ocr_cache=ocr_cache,
+                persistent_ocr_cache_root=persistent_ocr_cache_root,
+                write_ocr_cache=write_ocr_cache,
             )
             renderer = PDF_RENDERER_VERSION
             status = (
@@ -1062,7 +1306,10 @@ def write_outputs(library_root: Path, artifacts: list[PreviewArtifact], index: d
 
 def execute(library_root: Path, *, check: bool) -> int:
     try:
-        artifacts, index = build_plan(library_root)
+        artifacts, index = build_plan(
+            library_root,
+            write_ocr_cache=not check,
+        )
         if check:
             check_outputs(library_root, artifacts, index)
             print(

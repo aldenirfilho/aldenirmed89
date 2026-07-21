@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#06111f" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'" />
+  <title>Recuperação autoral e revisão clínica | Biblioteca IA</title>
+  <meta name="description" content="Painel agregado de recuperação autoral e fila local de revisão clínica da Biblioteca IA." />
+  <link rel="icon" href="../favicon.ico" sizes="64x64" />
+  <link rel="stylesheet" href="assets/recovery-review-dashboard.css" />
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <p class="eyebrow">Biblioteca IA · governança editorial</p>
+        <h1>Recuperação e revisão clínica</h1>
+      </div>
+      <nav aria-label="Navegação do painel">
+        <a class="button ghost" href="index.html">← Biblioteca</a>
+        <a class="button ghost" href="../05_Midia_E_Feed/index.html?view=continuous">Card Feed</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo" class="shell">
+    <div id="dashboardStatus" class="status" role="status" aria-live="polite">Carregando dados públicos…</div>
+
+    <section class="hero" aria-labelledby="dashboardTitle">
+      <div>
+        <p class="eyebrow">Visão segura e agregada</p>
+        <h2 id="dashboardTitle">O acervo privado continua privado</h2>
+        <p>Este painel publica somente contagens. Nomes, caminhos, hashes e documentos candidatos não saem da área privada.</p>
+      </div>
+      <div class="safety-badge" aria-label="Modo somente leitura do inventário privado">🔒 Agregado · sem publicação</div>
+    </section>
+
+    <section aria-labelledby="recoveryTitle">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Recuperação autoral</p>
+          <h2 id="recoveryTitle">Painel dos candidatos</h2>
+        </div>
+        <p id="recoveryTimestamp" class="muted"></p>
+      </div>
+      <div id="recoveryMetrics" class="metric-grid" aria-live="polite"></div>
+      <div id="recoveryNotice" class="notice"></div>
+    </section>
+
+    <section class="queue-section" aria-labelledby="queueTitle">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Segurança do conteúdo</p>
+          <h2 id="queueTitle">Fila de revisão clínica</h2>
+        </div>
+        <div class="toolbar" aria-label="Ações da fila">
+          <button id="exportQueue" class="button" type="button">Exportar fila JSON</button>
+          <button id="importQueue" class="button ghost" type="button">Importar backup</button>
+          <input id="importQueueFile" class="visually-hidden" type="file" accept="application/json,.json" />
+        </div>
+      </div>
+
+      <p class="notice warning">⚠️ Responsável, fonte, datas e notas ficam somente neste navegador. Não registre dados identificáveis de pacientes. Exporte um backup antes de limpar o navegador.</p>
+
+      <div id="queueMetrics" class="metric-grid compact" aria-live="polite"></div>
+
+      <form id="queueFilters" class="filters" role="search">
+        <label>
+          <span>Buscar documento</span>
+          <input id="queueSearch" type="search" autocomplete="off" placeholder="Título, tema ou formato" />
+        </label>
+        <label>
+          <span>Status</span>
+          <select id="queueStatus">
+            <option value="all">Todos</option>
+            <option value="pending">Pendente</option>
+            <option value="assigned">Atribuído</option>
+            <option value="in-review">Em revisão</option>
+            <option value="approved">Aprovado</option>
+            <option value="expired">Validade vencida</option>
+            <option value="quarantine">Quarentena</option>
+          </select>
+        </label>
+        <label>
+          <span>Validade</span>
+          <select id="queueValidity">
+            <option value="all">Todas</option>
+            <option value="expired">Vencida</option>
+            <option value="due30">Vence em 30 dias</option>
+            <option value="without">Sem validade</option>
+          </select>
+        </label>
+        <button id="clearFilters" class="button ghost" type="button">Limpar filtros</button>
+      </form>
+
+      <p id="queueResultCount" class="result-count" aria-live="polite"></p>
+      <div id="queueList" class="queue-list" aria-busy="true"></div>
+    </section>
+  </main>
+
+  <dialog id="reviewDialog" aria-labelledby="reviewDialogTitle">
+    <form id="reviewForm">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Registro local</p>
+          <h2 id="reviewDialogTitle">Revisar documento</h2>
+        </div>
+        <button id="closeDialog" class="icon-button" type="button" aria-label="Fechar">×</button>
+      </div>
+      <p id="reviewDocumentTitle" class="document-title"></p>
+      <input id="reviewDocumentId" type="hidden" />
+
+      <div class="form-grid">
+        <label>
+          <span>Status</span>
+          <select id="reviewStatus" required>
+            <option value="pending">Pendente</option>
+            <option value="assigned">Atribuído</option>
+            <option value="in-review">Em revisão</option>
+            <option value="approved">Aprovado</option>
+            <option value="expired">Validade vencida</option>
+            <option value="quarantine">Quarentena</option>
+          </select>
+        </label>
+        <label>
+          <span>Responsável</span>
+          <input id="reviewResponsible" maxlength="120" autocomplete="name" placeholder="Nome ou função" />
+        </label>
+        <label>
+          <span>Data da revisão</span>
+          <input id="reviewDate" type="date" />
+        </label>
+        <label>
+          <span>Válido até</span>
+          <input id="reviewValidUntil" type="date" />
+        </label>
+      </div>
+
+      <label>
+        <span>Fonte / referência clínica</span>
+        <textarea id="reviewSource" maxlength="1000" rows="3" placeholder="Diretriz, DOI, URL oficial ou referência bibliográfica"></textarea>
+      </label>
+      <label>
+        <span>Notas de revisão (sem dados de paciente)</span>
+        <textarea id="reviewNotes" maxlength="2000" rows="4"></textarea>
+      </label>
+
+      <div class="dialog-actions">
+        <button id="deleteReview" class="button danger" type="button">Remover registro local</button>
+        <button id="cancelReview" class="button ghost" type="button">Cancelar</button>
+        <button class="button" type="submit">Salvar revisão</button>
+      </div>
+    </form>
+  </dialog>
+
+  <noscript><p class="noscript">Ative o JavaScript para usar a fila local. Os documentos originais continuam disponíveis na Biblioteca.</p></noscript>
+  <script type="module" src="assets/recovery-review-dashboard.js"></script>
+</body>
+</html>

@@ -54,6 +54,14 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v6
 
+      - name: Restaurar cache OCR público por SHA e configuração
+        uses: actions/cache@v4
+        with:
+          path: .cache/library-ocr-v1
+          key: library-ocr-v1-${{ runner.os }}-${{ hashFiles('scripts_admin/build_library_previews.py', '02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json') }}
+          restore-keys: |
+            library-ocr-v1-${{ runner.os }}-
+
       - name: Instalar renderizador PDF e OCR local
         run: |
           sudo apt-get update
@@ -95,9 +103,13 @@ jobs:
           test -f site/admin/desafios.html
           test -f site/data/desafios.json
           test -f site/desafios/index.html
+          test -s site/favicon.ico
           test -f site/02_Biblioteca_IA_Engine/index.html
+          test -f site/02_Biblioteca_IA_Engine/recovery-review-dashboard.html
+          test -s site/02_Biblioteca_IA_Engine/data/authorial_recovery_public_summary.json
           test -s site/02_Biblioteca_IA_Engine/data/biblioteca_previews.json
           test "$(find site/02_Biblioteca_IA_Engine/previews -type f -name '*.html' | wc -l)" -gt 0
+          test ! -e site/.cache
           test -s site/questoes/data/hub_qbanks.js
 
       - name: Upload Pages artifact

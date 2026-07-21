@@ -16,6 +16,11 @@ import shutil
 import sys
 from pathlib import Path, PurePosixPath
 
+try:
+    from svg_safety import validate_svg_file
+except ModuleNotFoundError:  # import via unittest/importlib a partir da raiz
+    from scripts_admin.svg_safety import validate_svg_file
+
 
 REQUIRED = (
     "index.html",
@@ -216,6 +221,16 @@ def validate_card_public_assets(root: Path, allowlist: set[str]) -> list[str]:
     missing = sorted(allowlist - physical)
     if missing:
         raise ValueError("Asset aprovado de card ausente: " + ", ".join(missing[:3]))
+
+    # Defesa em profundidade: mesmo que o builder seja executado sem o scanner
+    # anterior, nenhum SVG ativo presente na allowlist chega ao artefato.
+    for relative in sorted(allowlist):
+        if PurePosixPath(relative).suffix.casefold() != ".svg":
+            continue
+        try:
+            validate_svg_file(root / relative)
+        except ValueError as exc:
+            raise ValueError(f"SVG aprovado inseguro bloqueado ({relative}): {exc}") from exc
 
     conflicts: list[str] = []
     unexpected: list[str] = []

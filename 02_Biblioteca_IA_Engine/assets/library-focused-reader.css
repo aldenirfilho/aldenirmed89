@@ -1,5 +1,28 @@
-/* Biblioteca IA - Leitura Focada v1
+/* Biblioteca IA - Leitura Focada v2
    A camada visual nunca altera o documento original. */
+
+.preview-overlay { --reader-muted-accessible: #a8b4c8; }
+
+.preview-toolbar { flex-wrap: wrap; }
+.preview-toolbar-actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.preview-mode-button { font-size: .75rem; }
+.preview-mode-button[hidden] { display: none !important; }
+.preview-mode-button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: rgba(0, 212, 255, .14);
+  color: var(--accent);
+}
+.preview-format-help {
+  flex: 1 0 100%;
+  margin-top: .35rem;
+  color: var(--reader-muted-accessible);
+  font: 600 .75rem/1.45 "JetBrains Mono", monospace;
+}
+
+.preview-overlay :is(button, a, input, select, textarea):focus-visible {
+  outline: 3px solid #38bdf8;
+  outline-offset: 3px;
+}
 
 .reader-tools {
   display: none;
@@ -44,11 +67,26 @@
 .reader-tools button:disabled { cursor: not-allowed; opacity: .42; }
 .reader-tools select { padding: .45rem .55rem; }
 .reader-tools input { width: min(220px, 35vw); padding: .5rem .65rem; }
+.reader-tools kbd {
+  min-width: 1.35rem;
+  margin-left: .2rem;
+  padding: .12rem .3rem;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, .18);
+  font: 800 .68rem/1 system-ui, sans-serif;
+}
+
+.reader-shortcut-help {
+  flex: 1 0 100%;
+  color: var(--reader-muted-accessible);
+  font: 600 .75rem/1.45 "JetBrains Mono", monospace;
+}
 
 .reader-search-status,
 .reader-live-status {
-  color: var(--muted);
-  font: 600 .68rem/1.35 "JetBrains Mono", monospace;
+  color: var(--reader-muted-accessible);
+  font: 600 .75rem/1.35 "JetBrains Mono", monospace;
 }
 
 .reader-live-status { margin-left: auto; max-width: 260px; }
@@ -88,8 +126,8 @@
 
 .reader-highlights-help,
 .reader-highlights-empty {
-  color: var(--muted);
-  font-size: .72rem;
+  color: var(--reader-muted-accessible);
+  font-size: .75rem;
   line-height: 1.5;
 }
 
@@ -103,6 +141,21 @@
   border-left: 5px solid var(--highlight-color, #fde047);
   border-radius: 10px;
   background: rgba(255, 255, 255, .025);
+}
+
+.reader-highlight-card[data-annotation-kind="underline"] {
+  border-left-style: double;
+  border-left-width: 7px;
+}
+
+.reader-annotation-kind {
+  width: max-content;
+  padding: .15rem .4rem;
+  border: 1px solid var(--highlight-color, #fde047);
+  border-radius: 999px;
+  color: var(--highlight-color, #fde047);
+  font: 800 .62rem/1.2 "JetBrains Mono", monospace;
+  text-transform: uppercase;
 }
 
 .reader-highlight-quote {
@@ -133,6 +186,8 @@
 }
 
 @media (max-width: 760px) {
+  .preview-toolbar-actions { width: 100%; }
+  .preview-toolbar-actions .btn { min-height: 44px; }
   .reader-tools { padding: .55rem; gap: .4rem; }
   .reader-tool-group { flex: 1 1 auto; min-height: 44px; }
   .reader-tools button,

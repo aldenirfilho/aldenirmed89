@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#08111f" />
   <title>Card Feed Médico | Enciclopédia Aldenir</title>
   <meta name="description" content="Feed visual de cards médicos gerados por IA para UTI, Clínica Médica, TEMI e revisão contínua." />
+  <link rel="icon" href="../favicon.ico" sizes="64x64" />
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
     :root {
@@ -39,6 +40,10 @@
     }
     a { color: inherit; }
     button, input, select, textarea { font: inherit; }
+    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+      outline: 3px solid #fbbf24;
+      outline-offset: 3px;
+    }
     .topbar {
       position: sticky;
       top: 0;
@@ -197,14 +202,15 @@
       color: #e0f2fe;
     }
     .feed {
-      columns: 1;
-      column-gap: 14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
     }
-    @media (min-width: 740px) { .feed { columns: 2; } }
-    @media (min-width: 1080px) { .feed { columns: 3; } }
+    @media (min-width: 740px) { .feed { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 1080px) { .feed { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     .card {
       break-inside: avoid;
-      margin: 0 0 14px;
+      margin: 0;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: rgba(15,23,42,.75);
@@ -273,6 +279,24 @@
       padding: 28px 16px;
       background: rgba(15,23,42,.45);
       margin-top: 12px;
+    }
+    .empty strong { display: block; color: #e0f2fe; font-size: 1.05rem; }
+    .empty p { margin: 8px auto 14px; max-width: 680px; line-height: 1.5; }
+    .empty .actions { justify-content: center; }
+    .feed-progress {
+      width: min(680px, 100%);
+      margin: 16px auto 0;
+      display: grid;
+      justify-items: center;
+      gap: 9px;
+      color: #cbd5e1;
+      text-align: center;
+    }
+    .feed-progress[hidden] { display: none !important; }
+    .feed-sentinel {
+      width: 100%;
+      height: 2px;
+      pointer-events: none;
     }
     dialog {
       border: 1px solid var(--line);
@@ -363,7 +387,7 @@
     }
     body.feed-continuous .card {
       width: 100%;
-      margin: 0 0 16px;
+      margin: 0;
       break-inside: auto;
       border-radius: 26px;
     }
@@ -512,10 +536,10 @@
       color: #bae6fd;
     }
     @media print {
-      .topbar, .toolbar, .theme-strip, .floating, dialog, .install-hint { display: none !important; }
+      .topbar, .toolbar, .theme-strip, .floating, dialog, .install-hint, .feed-progress { display: none !important; }
       body { background: #fff; color: #111; padding: 0; }
       .wrap { width: 100%; padding: 0; }
-      .feed { columns: 2; }
+      .feed { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .card { box-shadow: none; border: 1px solid #ddd; background: #fff; color: #111; }
       .explain, .meta, .tag, .theme-label { color: #111; }
     }
@@ -568,7 +592,7 @@
           <button class="btn gold" id="btnReview">🔁 Modo revisão</button>
           <button class="btn" id="btnFeedMode">📐 Visualização</button>
           <button class="btn" id="btnRandom">🎲 Sortear card</button>
-          <span class="view-mode-indicator" id="viewModeIndicator">▦ Grade</span>
+          <span class="view-mode-indicator" id="viewModeIndicator" role="status" aria-live="polite">📲 Feed contínuo</span>
           <button class="btn" id="btnHelp">📘 Como usar</button>
           <button class="btn" id="btnPrint">🖨️ Imprimir/PDF</button>
           <a class="btn" href="../index.html#mapa">🕸️ Mapa de conexões</a>
@@ -625,8 +649,20 @@
       <button type="button" class="btn primary" id="btnRevealStudy" hidden>👁️ Revelar explicação</button>
       <button type="button" class="btn" id="btnNextCard" aria-label="Próximo card">Próximo →</button>
     </section>
-    <section id="feed" class="feed" aria-live="polite"></section>
-    <section id="empty" class="empty">Nenhum card encontrado. Importe imagens ou ajuste o filtro. 🧠</section>
+    <section id="feed" class="feed" aria-label="Cards médicos" aria-busy="false"></section>
+    <section id="feedProgress" class="feed-progress" aria-label="Progresso da rolagem contínua" hidden>
+      <span id="feedProgressText" role="status" aria-live="polite">Exibindo 0 de 0 cards.</span>
+      <div id="feedSentinel" class="feed-sentinel" aria-hidden="true"></div>
+      <button type="button" class="btn" id="btnLoadMore">Carregar mais cards</button>
+    </section>
+    <section id="empty" class="empty" role="status" aria-live="polite">
+      <strong id="emptyTitle">Nenhum card encontrado.</strong>
+      <p id="emptyText">Ajuste os filtros ou limpe a busca para voltar ao acervo.</p>
+      <div class="actions">
+        <button type="button" class="btn primary" id="btnEmptyAction">Limpar filtros</button>
+        <a class="btn" href="../02_Biblioteca_IA_Engine/index.html">📚 Abrir Biblioteca</a>
+      </div>
+    </section>
   </main>
 
   <button class="btn primary floating" id="btnFloating">➕ Card</button>
@@ -690,7 +726,7 @@
   <dialog id="viewerDialog">
     <div class="modal-head">
       <strong id="viewerTitle">Imagem</strong>
-      <button class="btn small" onclick="document.getElementById('viewerDialog').close()">✕</button>
+      <button type="button" class="btn small" id="btnCloseViewer" aria-label="Fechar imagem ampliada">✕</button>
     </div>
     <div class="modal-body">
       <img id="viewerImg" class="viewer-img" alt="Imagem ampliada do card selecionado" hidden />
@@ -700,14 +736,14 @@
   <dialog id="helpDialog">
     <div class="modal-head">
       <strong>📘 Como usar e alimentar continuamente</strong>
-      <button class="btn small" onclick="document.getElementById('helpDialog').close()">✕</button>
+      <button type="button" class="btn small" id="btnCloseHelp" aria-label="Fechar ajuda">✕</button>
     </div>
     <div class="modal-body">
       <div class="help-box"><b>1) Entrada pelo iCloud</b><br/>Crie no iCloud Drive uma pasta <code>GPT_Card_Feed_Medico</code>. Salve imagens do ChatGPT/Claude lá. Depois toque em <code>Importar imagens</code>.</div>
       <div class="help-box"><b>2) Organização automática</b><br/>O app sugere tema pelo nome do arquivo: <code>AKI</code>, <code>KDIGO</code>, <code>VM</code>, <code>sepse</code>. Depois edite manualmente.</div>
       <div class="help-box"><b>3) Comentários</b><br/>Em cada card, toque em <code>Editar</code>. Acrescente resumo, conduta, alerta TEMI, tags e status.</div>
       <div class="help-box"><b>4) Backup e migração</b><br/>Use <code>Exportar backup</code> e salve no iCloud. Para restaurar, use <code>Importar backup</code>.</div>
-      <div class="help-box"><b>5) Cinco visualizações</b><br/>O botão <code>📐 Visualização</code> alterna entre Grade, Feed contínuo, Compacto, Carrossel e Estudo. No Carrossel/Estudo, use ←/→ ou deslize para navegar.</div>
+      <div class="help-box"><b>5) Cinco visualizações</b><br/>A rolagem contínua é o padrão e carrega os cards em lotes leves. O botão <code>📐 Visualização</code> alterna entre Grade, Feed contínuo, Compacto, Carrossel e Estudo. No Carrossel/Estudo, use ←/→ ou deslize para navegar.</div>
       <div class="help-box"><b>6) Estudo ativo</b><br/>No modo Estudo, observe primeiro a imagem, revele a explicação e avalie como <code>Difícil</code>, <code>Aprendendo</code> ou <code>Dominei</code>. A próxima revisão fica salva neste navegador em 1, 3 ou 14 dias.</div>
       <div class="help-box"><b>7) Revisão e conexões</b><br/>Use <code>🎲 Sortear card</code>, os filtros rápidos e <code>🔗 Explorar tema</code> para saltar à Biblioteca, POCUS, TEMI ou calculadoras.</div>
       <div class="help-box" style="border-color:rgba(251,191,36,.24);background:rgba(251,191,36,.08);color:#fde68a"><b>⚠️ Limitação</b><br/>Cards locais ficam neste navegador (IndexedDB). Para sincronizar, exporte backup JSON ou envie imagens para <code>assets/cards/</code> + cadastre em <code>data/cards.json</code>.</div>
@@ -727,6 +763,10 @@
     let activeTheme = "";
     const VIEW_MODES = ["grid", "continuous", "compact", "carousel", "study"];
     const ASSET_FILTERS = ["all", "images", "missing", "favorites", "review", "repo", "local"];
+    const SORT_MODES = ["newest", "oldest", "inbox", "theme", "title", "review"];
+    const FEED_BATCH_SIZES = Object.freeze({ grid: 24, continuous: 10, compact: 20 });
+    const IMAGE_PRIORITY_COUNT = 2;
+    const FEED_PREFERENCES_KEY = "cardFeedPreferencesV2";
     const LIBRARY_TO_FEED_THEME = Object.freeze({
       "uti-geral": "uti-geral",
       "sepse-choque": "sepse-choque",
@@ -774,8 +814,9 @@
       "title", "theme", "tags", "explanation", "notes", "source", "status",
       "favorite", "nextReview", "updatedAt"
     ];
-    let viewMode = localStorage.getItem("cardFeedViewMode") || "grid";
-    if (!VIEW_MODES.includes(viewMode)) viewMode = "grid";
+    const legacyViewMode = readStorage("cardFeedViewMode");
+    let viewMode = readStorage("cardFeedViewModeV2") || (legacyViewMode && legacyViewMode !== "grid" ? legacyViewMode : "continuous");
+    if (!VIEW_MODES.includes(viewMode)) viewMode = "continuous";
     let hiddenCards = readStoredList("cardFeedHidden");
     let focusIndex = 0;
     let focusedCardId = "";
@@ -783,14 +824,30 @@
     let studyRevealed = false;
     let swipeStartX = 0;
     let swipeStartY = 0;
+    let dataLoadErrors = [];
+    let feedObserver = null;
+    let currentFeedCards = [];
+    let paginationContext = "";
+    let renderedCardCount = 0;
+    let isAppendingBatch = false;
 
     const $ = id => document.getElementById(id);
     const nowISO = () => new Date().toISOString();
     const uid = () => "local_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,8);
 
+    function readStorage(key, fallback = "") {
+      try { return localStorage.getItem(key) ?? fallback; }
+      catch { return fallback; }
+    }
+
+    function writeStorage(key, value) {
+      try { localStorage.setItem(key, value); }
+      catch { /* Modo privado ou armazenamento indisponível: o feed continua funcional. */ }
+    }
+
     function readStoredList(key) {
       try {
-        const value = JSON.parse(localStorage.getItem(key) || "[]");
+        const value = JSON.parse(readStorage(key, "[]"));
         return Array.isArray(value) ? Array.from(new Set(value.map(String))) : [];
       } catch {
         return [];
@@ -858,21 +915,42 @@
       return themes.some(theme => theme.id === mapped) ? mapped : "";
     }
 
+    function applyStoredPreferences() {
+      let saved = {};
+      try { saved = JSON.parse(readStorage(FEED_PREFERENCES_KEY, "{}")); }
+      catch { saved = {}; }
+      if (!saved || typeof saved !== "object" || Array.isArray(saved)) saved = {};
+      const savedView = safeQueryValue(saved.view, 24);
+      const savedTheme = safeQueryValue(saved.theme, 64);
+      const savedFilter = safeQueryValue(saved.filter, 24);
+      const savedSort = safeQueryValue(saved.sort, 24);
+      if (VIEW_MODES.includes(savedView)) viewMode = savedView;
+      if (savedTheme === "__hidden__" || themes.some(theme => theme.id === savedTheme)) activeTheme = savedTheme;
+      if (ASSET_FILTERS.includes(savedFilter)) $("assetFilter").value = savedFilter;
+      if (SORT_MODES.includes(savedSort)) $("sortMode").value = savedSort;
+      $("search").value = safeQueryValue(saved.q, 180);
+      reviewOnly = saved.reviewOnly === true;
+      $("btnReview").textContent = reviewOnly ? "🗂️ Ver todos" : "🔁 Modo revisão";
+    }
+
     function applyInitialQuery() {
       const params = new URLSearchParams(window.location.search);
       const query = safeQueryValue(params.get("q"), 180);
       const requestedTheme = resolveFeedTheme(safeQueryValue(params.get("theme"), 64));
       const requestedView = safeQueryValue(params.get("view"), 24);
       const requestedFilter = safeQueryValue(params.get("filter"), 24);
+      const requestedSort = safeQueryValue(params.get("sort"), 24);
       const requestedCard = safeQueryValue(params.get("card"), 180);
 
       // Links contextuais da Biblioteca enviam título completo + tema. O tema
       // deve abrir o conjunto útil de cards; a busca textual continua ativa
       // quando `q` é usado isoladamente.
+      if (params.has("q") || params.has("theme")) $("search").value = "";
       if (query && !requestedTheme) $("search").value = query;
-      if (requestedTheme) activeTheme = requestedTheme;
+      if (params.has("theme")) activeTheme = requestedTheme;
       if (VIEW_MODES.includes(requestedView)) viewMode = requestedView;
       if (ASSET_FILTERS.includes(requestedFilter)) $("assetFilter").value = requestedFilter;
+      if (SORT_MODES.includes(requestedSort)) $("sortMode").value = requestedSort;
 
       const matchedCard = requestedCard && allCards().find(card => card.id === requestedCard);
       if (matchedCard) {
@@ -880,6 +958,43 @@
         focusedCardId = matchedCard.id;
         if (!VIEW_MODES.includes(requestedView)) viewMode = "carousel";
       }
+    }
+
+    function syncBrowserState() {
+      const state = {
+        q: safeQueryValue($("search").value, 180),
+        theme: activeTheme || $("themeFilter").value || "",
+        filter: ASSET_FILTERS.includes($("assetFilter").value) ? $("assetFilter").value : "all",
+        sort: SORT_MODES.includes($("sortMode").value) ? $("sortMode").value : "newest",
+        view: VIEW_MODES.includes(viewMode) ? viewMode : "continuous",
+        reviewOnly
+      };
+      writeStorage(FEED_PREFERENCES_KEY, JSON.stringify(state));
+
+      try {
+        const url = new URL(window.location.href);
+        for (const key of ["q", "theme", "filter", "sort", "view", "card"]) url.searchParams.delete(key);
+        if (state.q) url.searchParams.set("q", state.q);
+        if (state.theme && state.theme !== "__hidden__") url.searchParams.set("theme", state.theme);
+        if (state.filter !== "all") url.searchParams.set("filter", state.filter);
+        if (state.sort !== "newest") url.searchParams.set("sort", state.sort);
+        url.searchParams.set("view", state.view);
+        const selectedCard = directCardId || (isFocusMode() ? focusedCardId : "");
+        if (selectedCard) url.searchParams.set("card", selectedCard);
+        window.history.replaceState(null, "", url);
+      } catch { /* URLs file:// e ambientes restritos podem bloquear replaceState. */ }
+    }
+
+    function paginationStateKey() {
+      return JSON.stringify([
+        viewMode,
+        activeTheme,
+        $("search").value,
+        $("assetFilter").value,
+        $("sortMode").value,
+        reviewOnly,
+        directCardId
+      ]);
     }
 
     function formatDate(iso) {
@@ -908,8 +1023,10 @@
       const labels = { grid: "▦ Grade", continuous: "📲 Feed contínuo", compact: "▤ Compacto", carousel: "🎞️ Carrossel", study: "🧠 Estudo" };
       const nextLabels = { grid: "📲 Ir para Feed", continuous: "▤ Ir para Compacto", compact: "🎞️ Ir para Carrossel", carousel: "🧠 Ir para Estudo", study: "▦ Ir para Grade" };
       if (btn) btn.textContent = nextLabels[viewMode];
+      if (btn) btn.setAttribute("aria-label", `${labels[viewMode]}. ${nextLabels[viewMode]}.`);
       if (indicator) indicator.textContent = labels[viewMode];
-      localStorage.setItem("cardFeedViewMode", viewMode);
+      writeStorage("cardFeedViewModeV2", viewMode);
+      writeStorage("cardFeedViewMode", viewMode);
     }
 
     function toggleViewMode() {
@@ -995,6 +1112,7 @@
         return await res.json();
       } catch (e) {
         console.warn("Não foi possível carregar", path, e);
+        if (!dataLoadErrors.includes(path)) dataLoadErrors.push(path);
         return fallback;
       }
     }
@@ -1353,6 +1471,7 @@
       const clinicalLabel = c.clinicalReviewStatus === "pendente" ? " • revisão clínica pendente" : "";
       const studyMode = options.study === true;
       const revealed = !studyMode || options.revealed === true;
+      const priorityImage = options.priority === true || isFocusMode();
       const imageAlt = studyMode ? "Imagem do card de estudo; tente recordar antes de revelar a explicação" : (c.title || "Card");
       const answer = `
         <div class="body${studyMode ? " study-answer" + (revealed ? " revealed" : "") : ""}"${studyMode && !revealed ? " hidden aria-hidden=\"true\"" : ""}>
@@ -1366,37 +1485,160 @@
             <div class="study-evaluation">
               <strong>Como foi sua recordação?</strong>
               <div class="study-rating-actions">
-                <button class="btn small danger" data-study-rating="${esc(c.id)}" data-value="revisar" title="Programar revisão em 1 dia">1 · Difícil — 1 dia</button>
-                <button class="btn small gold" data-study-rating="${esc(c.id)}" data-value="aprendendo" title="Programar revisão em 3 dias">2 · Aprendendo — 3 dias</button>
-                <button class="btn small green" data-study-rating="${esc(c.id)}" data-value="dominado" title="Programar revisão em 14 dias">3 · Dominei — 14 dias</button>
+                <button type="button" class="btn small danger" data-study-rating="${esc(c.id)}" data-value="revisar" title="Programar revisão em 1 dia">1 · Difícil — 1 dia</button>
+                <button type="button" class="btn small gold" data-study-rating="${esc(c.id)}" data-value="aprendendo" title="Programar revisão em 3 dias">2 · Aprendendo — 3 dias</button>
+                <button type="button" class="btn small green" data-study-rating="${esc(c.id)}" data-value="dominado" title="Programar revisão em 14 dias">3 · Dominei — 14 dias</button>
               </div>
             </div>
           ` : ""}
           <div class="actions">
-            ${c.theme === "inbox" ? `<button class="btn small primary" data-classify="${esc(c.id)}" style="background:linear-gradient(135deg,#f59e0b,#ef4444);border:none">📂 Classificar</button>` : ""}
-            <button class="btn small" data-edit="${esc(c.id)}">✍️ Editar local</button>
-            <button class="btn small gold" data-fav="${esc(c.id)}" aria-label="${c.favorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}">${c.favorite ? "⭐" : "☆"}</button>
-            <button class="btn small" data-review="${esc(c.id)}">🔁 Revisar</button>
-            <button class="btn small" data-copy="${esc(c.id)}">📋 Copiar resumo</button>
-            ${studyMode ? "" : `<button class="btn small green" data-status="${esc(c.id)}" data-value="dominado">✅ Dominei</button>`}
+            ${c.theme === "inbox" ? `<button type="button" class="btn small primary" data-classify="${esc(c.id)}" style="background:linear-gradient(135deg,#f59e0b,#ef4444);border:none">📂 Classificar</button>` : ""}
+            <button type="button" class="btn small" data-edit="${esc(c.id)}">✍️ Editar local</button>
+            <button type="button" class="btn small gold" data-fav="${esc(c.id)}" aria-label="${c.favorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}">${c.favorite ? "⭐" : "☆"}</button>
+            <button type="button" class="btn small" data-review="${esc(c.id)}">🔁 Revisar</button>
+            <button type="button" class="btn small" data-copy="${esc(c.id)}">📋 Copiar resumo</button>
+            ${studyMode ? "" : `<button type="button" class="btn small green" data-status="${esc(c.id)}" data-value="dominado">✅ Dominei</button>`}
             ${hiddenCards.includes(c.id)
-              ? `<button class="btn small" data-restore="${esc(c.id)}" style="border-color:#10b981;color:#6ee7b7">♻️ Restaurar</button>`
-              : `<button class="btn small" data-hide="${esc(c.id)}" style="border-color:#ef4444;color:#fca5a5">🚫 Ocultar</button>`}
+              ? `<button type="button" class="btn small" data-restore="${esc(c.id)}" style="border-color:#10b981;color:#6ee7b7">♻️ Restaurar</button>`
+              : `<button type="button" class="btn small" data-hide="${esc(c.id)}" style="border-color:#ef4444;color:#fca5a5">🚫 Ocultar</button>`}
             <a class="btn small" href="${esc(connection)}">🔗 Explorar tema</a>
           </div>
           <div class="meta"><span>${esc(c.status || "novo")}${esc(clinicalLabel)} • ${esc(sourceBadge)} • ${formatDate(c.createdAt)}</span><span>${c.nextReview ? "Próx.: " + formatDate(c.nextReview) : esc(c.source || "")}</span></div>
         </div>
       `;
       return `
-        <article class="card" data-card-id="${esc(c.id)}">
+        <article class="card" data-card-id="${esc(c.id)}" tabindex="-1" aria-label="${esc(c.title || "Card sem título")}">
           <button type="button" class="imgbox" data-view="${esc(c.id)}" aria-label="${studyMode ? "Ampliar imagem do card de estudo" : "Ampliar imagem: " + esc(c.title || "Card")}">
-            ${image ? `<img src="${esc(image)}" alt="${esc(imageAlt)}" loading="${isFocusMode() ? "eager" : "lazy"}" decoding="async" onerror="this.parentElement.innerHTML='<div class=&quot;missing&quot;>🖼️ Imagem indisponível.<br><small>Confira o caminho em data/cards.json</small></div>';" />`
+            ${image ? `<img src="${esc(image)}" alt="${esc(imageAlt)}" loading="${priorityImage ? "eager" : "lazy"}" decoding="async" fetchpriority="${priorityImage ? "high" : "low"}" data-card-image="${esc(c.id)}" />`
               : `<div class="missing">🖼️ Sem imagem associada</div>`}
           </button>
           ${studyMode ? `<div class="study-prompt"><strong>🧠 Recupere antes de revelar</strong>Observe a imagem e formule mentalmente o diagnóstico, conceito ou conduta.</div>` : ""}
           ${answer}
         </article>
       `;
+    }
+
+    function disconnectFeedObserver() {
+      if (feedObserver) feedObserver.disconnect();
+      feedObserver = null;
+    }
+
+    function batchSizeForCurrentView() {
+      return FEED_BATCH_SIZES[viewMode] || FEED_BATCH_SIZES.continuous;
+    }
+
+    function updateFeedProgress() {
+      const progress = $("feedProgress");
+      const focusMode = isFocusMode();
+      const hasCards = currentFeedCards.length > 0;
+      progress.hidden = focusMode || !hasCards;
+      if (progress.hidden) {
+        disconnectFeedObserver();
+        return;
+      }
+      const visible = Math.min(renderedCardCount, currentFeedCards.length);
+      const hasMore = visible < currentFeedCards.length;
+      $("feedProgressText").textContent = `Exibindo ${visible} de ${currentFeedCards.length} cards.`;
+      $("btnLoadMore").hidden = !hasMore;
+      $("feedSentinel").hidden = !hasMore;
+      if (!hasMore) disconnectFeedObserver();
+    }
+
+    function setupFeedObserver() {
+      disconnectFeedObserver();
+      if (isFocusMode() || renderedCardCount >= currentFeedCards.length) return;
+      if (!("IntersectionObserver" in window)) return;
+      feedObserver = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) loadNextBatch();
+      }, { rootMargin: "800px 0px", threshold: 0 });
+      feedObserver.observe($("feedSentinel"));
+    }
+
+    function loadNextBatch() {
+      if (isAppendingBatch || isFocusMode()) return;
+      const start = renderedCardCount;
+      if (start >= currentFeedCards.length) return;
+      isAppendingBatch = true;
+      $("feed").setAttribute("aria-busy", "true");
+      const end = Math.min(start + batchSizeForCurrentView(), currentFeedCards.length);
+      const html = currentFeedCards.slice(start, end).map((card, index) => cardHTML(card, {
+        study: false,
+        revealed: true,
+        priority: start + index < IMAGE_PRIORITY_COUNT
+      })).join("");
+      $("feed").insertAdjacentHTML("beforeend", html);
+      renderedCardCount = end;
+      updateFeedProgress();
+      $("feed").setAttribute("aria-busy", "false");
+      requestAnimationFrame(() => { isAppendingBatch = false; });
+    }
+
+    function updateEmptyState(list) {
+      const empty = $("empty");
+      const isEmpty = list.length === 0;
+      empty.style.display = isEmpty ? "block" : "none";
+      if (!isEmpty) return;
+      const total = allCards().length;
+      const loadFailed = dataLoadErrors.length > 0;
+      const action = $("btnEmptyAction");
+      if (loadFailed && total === 0) {
+        $("emptyTitle").textContent = "O acervo não pôde ser carregado.";
+        $("emptyText").textContent = "Verifique a conexão e tente novamente. Seus cards locais não foram apagados.";
+        action.textContent = "Tentar novamente";
+        action.dataset.emptyAction = "retry";
+      } else if (total === 0) {
+        $("emptyTitle").textContent = "O feed ainda não possui cards.";
+        $("emptyText").textContent = "Importe uma imagem local ou abra a Biblioteca para começar.";
+        action.textContent = "Importar imagens";
+        action.dataset.emptyAction = "import";
+      } else {
+        $("emptyTitle").textContent = "Nenhum card corresponde aos filtros.";
+        $("emptyText").textContent = "O acervo está disponível; apenas esta combinação de busca, tema e filtro retornou zero resultados.";
+        action.textContent = "Limpar filtros";
+        action.dataset.emptyAction = "clear";
+      }
+    }
+
+    function clearFeedFilters() {
+      resetFocusState();
+      $("search").value = "";
+      $("assetFilter").value = "all";
+      $("sortMode").value = "newest";
+      activeTheme = "";
+      reviewOnly = false;
+      $("btnReview").textContent = "🔁 Modo revisão";
+      render();
+      $("feed").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function handleFeedAction(event) {
+      const target = event.target instanceof Element ? event.target.closest("[data-edit], [data-view], [data-fav], [data-review], [data-copy], [data-status], [data-study-rating], [data-classify], [data-hide], [data-restore]") : null;
+      if (!target || !$("feed").contains(target)) return;
+      if (target.dataset.edit) return openEdit(target.dataset.edit);
+      if (target.dataset.view) return openViewer(target.dataset.view);
+      if (target.dataset.fav) return toggleFavorite(target.dataset.fav);
+      if (target.dataset.review) return markReview(target.dataset.review);
+      if (target.dataset.copy) return copySummary(target.dataset.copy);
+      if (target.dataset.status) return quickStatus(target.dataset.status, target.dataset.value);
+      if (target.dataset.studyRating) return rateStudyCard(target.dataset.studyRating, target.dataset.value);
+      if (target.dataset.classify) return openClassify(target.dataset.classify);
+      if (target.dataset.hide) return hideCard(target.dataset.hide);
+      if (target.dataset.restore) return restoreCard(target.dataset.restore);
+    }
+
+    function handleCardImageError(event) {
+      const image = event.target;
+      if (!(image instanceof HTMLImageElement) || !image.matches("[data-card-image]")) return;
+      const box = image.closest(".imgbox");
+      if (!box) return;
+      image.remove();
+      const fallback = document.createElement("div");
+      fallback.className = "missing";
+      fallback.textContent = "🖼️ Imagem indisponível. Confira o caminho em data/cards.json.";
+      box.appendChild(fallback);
+      box.removeAttribute("data-view");
+      box.setAttribute("aria-label", "Imagem indisponível");
+      box.disabled = true;
     }
 
     function render() {
@@ -1407,36 +1649,40 @@
       const focusMode = isFocusMode();
       const navigationList = focusMode && directCardId ? getFiltered({ ignoreDirect: true }) : list;
       const focusPosition = focusMode ? resolveFocusPosition(navigationList) : -1;
-      const visibleCards = focusMode && focusPosition >= 0 ? [navigationList[focusPosition]] : (focusMode ? [] : list);
-      $("feed").innerHTML = visibleCards.map(card => cardHTML(card, {
+      const nextContext = paginationStateKey();
+      if (!focusMode && nextContext !== paginationContext) {
+        renderedCardCount = Math.min(batchSizeForCurrentView(), list.length);
+      } else if (!focusMode) {
+        renderedCardCount = Math.min(list.length, Math.max(renderedCardCount, batchSizeForCurrentView()));
+      }
+      paginationContext = nextContext;
+      currentFeedCards = focusMode ? navigationList : list;
+      const visibleCards = focusMode && focusPosition >= 0 ? [navigationList[focusPosition]] : (focusMode ? [] : list.slice(0, renderedCardCount));
+      $("feed").setAttribute("aria-busy", "true");
+      $("feed").innerHTML = visibleCards.map((card, index) => cardHTML(card, {
         study: viewMode === "study",
-        revealed: studyRevealed
+        revealed: studyRevealed,
+        priority: index < IMAGE_PRIORITY_COUNT
       })).join("");
+      $("feed").setAttribute("aria-busy", "false");
       updateFocusControls(navigationList, focusPosition);
-      $("empty").style.display = navigationList.length ? "none" : "block";
-      document.querySelectorAll("[data-edit]").forEach(b => b.onclick = () => openEdit(b.dataset.edit));
-      document.querySelectorAll("[data-view]").forEach(b => b.onclick = () => openViewer(b.dataset.view));
-      document.querySelectorAll("[data-fav]").forEach(b => b.onclick = () => toggleFavorite(b.dataset.fav));
-      document.querySelectorAll("[data-review]").forEach(b => b.onclick = () => markReview(b.dataset.review));
-      document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copySummary(b.dataset.copy));
-      document.querySelectorAll("[data-status]").forEach(b => b.onclick = () => quickStatus(b.dataset.status, b.dataset.value));
-      document.querySelectorAll("[data-study-rating]").forEach(b => b.onclick = () => rateStudyCard(b.dataset.studyRating, b.dataset.value));
-      document.querySelectorAll("[data-classify]").forEach(b => b.onclick = () => openClassify(b.dataset.classify));
-      document.querySelectorAll("[data-hide]").forEach(b => b.onclick = () => hideCard(b.dataset.hide));
-      document.querySelectorAll("[data-restore]").forEach(b => b.onclick = () => restoreCard(b.dataset.restore));
+      updateEmptyState(navigationList);
+      updateFeedProgress();
+      syncBrowserState();
+      setupFeedObserver();
     }
 
     function hideCard(id) {
       if (!confirm('🚫 Ocultar este card?\n\nVocê pode restaurar depois em 🚫 Ocultos.')) return;
       hiddenCards = Array.from(new Set([...hiddenCards, id]));
-      localStorage.setItem('cardFeedHidden', JSON.stringify(hiddenCards));
+      writeStorage('cardFeedHidden', JSON.stringify(hiddenCards));
       render();
       toast('🚫 Card ocultado. Veja em 🚫 Ocultos para restaurar.');
     }
 
     function restoreCard(id) {
       hiddenCards = hiddenCards.filter(h => h !== id);
-      localStorage.setItem('cardFeedHidden', JSON.stringify(hiddenCards));
+      writeStorage('cardFeedHidden', JSON.stringify(hiddenCards));
       render();
       toast('♻️ Card restaurado!');
     }
@@ -1481,10 +1727,18 @@
         focusedCardId = card.id;
         studyRevealed = false;
         render();
+      } else {
+        const selectedIndex = list.findIndex(item => item.id === card.id);
+        if (selectedIndex >= renderedCardCount) {
+          renderedCardCount = selectedIndex + 1;
+          paginationContext = paginationStateKey();
+          render();
+        }
       }
       const element = Array.from(document.querySelectorAll("[data-card-id]")).find(el => el.dataset.cardId === card.id);
       if (!element) return;
       element.scrollIntoView({ behavior: "smooth", block: "center" });
+      element.focus({ preventScroll: true });
       element.classList.remove("random-focus");
       requestAnimationFrame(() => element.classList.add("random-focus"));
       window.setTimeout(() => element.classList.remove("random-focus"), 1700);
@@ -1642,7 +1896,16 @@
       $("btnFeedMode").onclick = toggleViewMode;
       $("btnRandom").onclick = randomCard;
       $("btnHelp").onclick = () => $("helpDialog").showModal();
+      $("btnCloseHelp").onclick = () => $("helpDialog").close();
+      $("btnCloseViewer").onclick = () => $("viewerDialog").close();
       $("btnPrint").onclick = () => window.print();
+      $("btnLoadMore").onclick = loadNextBatch;
+      $("btnEmptyAction").onclick = () => {
+        const action = $("btnEmptyAction").dataset.emptyAction;
+        if (action === "retry") return window.location.reload();
+        if (action === "import") return $("imageInput").click();
+        clearFeedFilters();
+      };
       $("classifyForm").onsubmit = async e => { e.preventDefault(); await saveClassify(); };
       $("search").oninput = () => { resetFocusState(); render(); };
       $("sortMode").onchange = () => { resetFocusState(); render(); };
@@ -1655,6 +1918,17 @@
       $("btnDelete").onclick = deleteCurrent;
       $("btnFavorite").onclick = async () => { await toggleFavorite($("editId").value); $("editDialog").close(); };
       $("btnMarkReview").onclick = async () => { await markReview($("editId").value); $("editDialog").close(); };
+      $("feed").addEventListener("click", event => {
+        handleFeedAction(event).catch(error => {
+          console.error(error);
+          toast("Não foi possível concluir esta ação.");
+        });
+      });
+      $("feed").addEventListener("error", handleCardImageError, true);
+      $("viewerImg").addEventListener("error", () => {
+        $("viewerImg").hidden = true;
+        toast("Imagem indisponível para ampliação.");
+      });
       document.addEventListener("keydown", handleFocusKeydown);
       wireFocusGestures();
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
@@ -1666,6 +1940,7 @@
       db = await openDB();
       await loadRepoData();
       await loadLocalData();
+      applyStoredPreferences();
       applyInitialQuery();
       wire();
       render();

@@ -343,6 +343,161 @@ class LibraryPreviewBuilderTests(unittest.TestCase):
         self.assertEqual(second, first)
         self.assertEqual(second_stats["ocrVisibleCharacters"], first_stats["ocrVisibleCharacters"])
 
+    def test_persistent_ocr_cache_reuses_build_result_in_check(self) -> None:
+        recognized = "Choque séptico por OCR\fNoradrenalina, perfusão e lactato"
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            library, _ = make_library(root)
+            add_pdf_to_library(library)
+            with (
+                mock.patch.object(BUILDER, "pdf_page_count", return_value=2),
+                mock.patch.object(BUILDER, "pdf_cover", return_value=("", 0)),
+                mock.patch.object(
+                    BUILDER,
+                    "extract_pdf_text",
+                    return_value=("\f", 2, "poppler-pdftotext"),
+                ),
+                mock.patch.object(
+                    BUILDER,
+                    "run_pdf_ocr",
+                    return_value=(recognized, 2, "tesseract-por+eng", None),
+                ) as run_ocr,
+            ):
+                self.assertEqual(execute_quiet(library, check=False)[0], 0)
+                cache_files = sorted(
+                    (root / ".cache/library-ocr-v1").glob("*.json")
+                )
+                self.assertEqual(len(cache_files), 1)
+                before = cache_files[0].read_bytes()
+                before_mtime = cache_files[0].stat().st_mtime_ns
+
+                with mock.patch.object(
+                    BUILDER,
+                    "write_persistent_ocr_cache",
+                    wraps=BUILDER.write_persistent_ocr_cache,
+                ) as write_cache:
+                    code, _, error = execute_quiet(library, check=True)
+
+                self.assertEqual(code, 0, error)
+                write_cache.assert_not_called()
+
+            self.assertEqual(run_ocr.call_count, 1)
+            self.assertEqual(cache_files[0].read_bytes(), before)
+            self.assertEqual(cache_files[0].stat().st_mtime_ns, before_mtime)
+            payload = json.loads(before.decode("utf-8"))
+            self.assertEqual(
+                set(payload),
+                {
+                    "schema",
+                    "key",
+                    "sourceSha256",
+                    "config",
+                    "result",
+                    "resultSha256",
+                },
+            )
+            self.assertNotIn("sourcePath", before.decode("utf-8"))
+            self.assertNotIn("Documento_PDF_Autoral.pdf", before.decode("utf-8"))
+
+    def test_check_without_cache_does_not_create_or_write_cache(self) -> None:
+        recognized = "OCR determinístico para validar modo somente leitura"
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            library, _ = make_library(root)
+            add_pdf_to_library(library)
+            patches = (
+                mock.patch.object(BUILDER, "pdf_page_count", return_value=1),
+                mock.patch.object(BUILDER, "pdf_cover", return_value=("", 0)),
+                mock.patch.object(
+                    BUILDER,
+                    "extract_pdf_text",
+                    return_value=("", 1, "poppler-pdftotext"),
+                ),
+                mock.patch.object(
+                    BUILDER,
+                    "run_pdf_ocr",
+                    return_value=(recognized, 1, "tesseract-por+eng", None),
+                ),
+            )
+            with patches[0], patches[1], patches[2], patches[3]:
+                self.assertEqual(execute_quiet(library, check=False)[0], 0)
+
+            cache_root = root / ".cache/library-ocr-v1"
+            for cache_file in cache_root.iterdir():
+                cache_file.unlink()
+            cache_root.rmdir()
+            cache_root.parent.rmdir()
+            self.assertFalse(cache_root.exists())
+
+            with (
+                mock.patch.object(BUILDER, "pdf_page_count", return_value=1),
+                mock.patch.object(BUILDER, "pdf_cover", return_value=("", 0)),
+                mock.patch.object(
+                    BUILDER,
+                    "extract_pdf_text",
+                    return_value=("", 1, "poppler-pdftotext"),
+                ),
+                mock.patch.object(
+                    BUILDER,
+                    "run_pdf_ocr",
+                    return_value=(recognized, 1, "tesseract-por+eng", None),
+                ) as run_ocr,
+            ):
+                code, _, error = execute_quiet(library, check=True)
+
+            self.assertEqual(code, 0, error)
+            self.assertEqual(run_ocr.call_count, 1)
+            self.assertFalse(cache_root.exists())
+
+    def test_ocr_cache_key_invalidates_on_source_and_render_config(self) -> None:
+        first_source = "a" * 64
+        second_source = "b" * 64
+        base_key = BUILDER.ocr_cache_key(first_source)
+
+        self.assertNotEqual(base_key, BUILDER.ocr_cache_key(second_source))
+        with mock.patch.object(BUILDER, "OCR_RENDER_DPI", BUILDER.OCR_RENDER_DPI + 1):
+            self.assertNotEqual(base_key, BUILDER.ocr_cache_key(first_source))
+        with mock.patch.object(BUILDER, "MAX_OCR_PAGES", BUILDER.MAX_OCR_PAGES - 1):
+            self.assertNotEqual(base_key, BUILDER.ocr_cache_key(first_source))
+        with mock.patch.object(BUILDER, "OCR_PIPELINE_VERSION", "tesseract-local-v2"):
+            self.assertNotEqual(base_key, BUILDER.ocr_cache_key(first_source))
+
+    def test_invalid_mismatched_and_symlinked_cache_entries_are_ignored(self) -> None:
+        result = ("Texto OCR válido com caracteres suficientes", 1, "tesseract-por+eng", None)
+        source_sha = "c" * 64
+        with tempfile.TemporaryDirectory() as temporary:
+            cache_root = Path(temporary) / ".cache/library-ocr-v1"
+            self.assertTrue(
+                BUILDER.write_persistent_ocr_cache(cache_root, source_sha, result)
+            )
+            key = BUILDER.ocr_cache_key(source_sha)
+            cache_path = cache_root / f"{key}.json"
+            valid_payload = json.loads(cache_path.read_text(encoding="utf-8"))
+
+            cache_path.write_text("{json inválido", encoding="utf-8")
+            self.assertIsNone(
+                BUILDER.load_persistent_ocr_cache(cache_root, source_sha)
+            )
+
+            mismatched = dict(valid_payload)
+            mismatched["key"] = "d" * 64
+            cache_path.write_text(json.dumps(mismatched), encoding="utf-8")
+            self.assertIsNone(
+                BUILDER.load_persistent_ocr_cache(cache_root, source_sha)
+            )
+
+            external = Path(temporary) / "external-cache.json"
+            external.write_text(json.dumps(valid_payload), encoding="utf-8")
+            cache_path.unlink()
+            cache_path.symlink_to(external)
+            self.assertIsNone(
+                BUILDER.load_persistent_ocr_cache(cache_root, source_sha)
+            )
+            self.assertEqual(
+                json.loads(external.read_text(encoding="utf-8")),
+                valid_payload,
+            )
+
     def test_unavailable_extractor_does_not_guess_ocr_requirement(self) -> None:
         stats = BUILDER.pdf_native_text_metrics("", 0, "unavailable")
 

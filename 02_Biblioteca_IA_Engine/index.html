@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>📚 Biblioteca IA — Enciclopédia Médica Intensiva</title>
 <meta name="description" content="Repositório de materiais médicos gerados com suporte de IA, organizados por Dr. Aldenir Rocha, médico intensivista e clínico."/>
+<link rel="icon" href="../favicon.ico" sizes="64x64"/>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap');
 
@@ -16,6 +17,7 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+  body.preview-modal-open{overflow:hidden}
 
   /* ── HEADER ── */
   header{background:linear-gradient(135deg,var(--bg2),var(--bg3));border-bottom:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
@@ -211,6 +213,7 @@
     <button class="nav-btn active" id="btn-catalogo" onclick="switchView('catalogo')">📂 Catálogo</button>
     <button class="nav-btn" id="btn-estudo" onclick="switchView('estudo')">🧠 Estudo <span id="study-due-count" style="background:var(--accent2);color:#fff;padding:1px 5px;border-radius:10px;font-size:.6rem;margin-left:3px">0</span></button>
     <button class="nav-btn" id="btn-triagem" onclick="switchView('triagem')">📥 Triagem <span id="triagem-count" style="background:var(--red);color:#fff;padding:1px 5px;border-radius:10px;font-size:.6rem;margin-left:3px">0</span></button>
+    <a href="recovery-review-dashboard.html" class="back">🩺 Revisão clínica</a>
     <a href="GUIA_BIBLIOTECA_E_PUBLICACAO.md" target="_blank" rel="noopener noreferrer" class="back">➕ Como adicionar</a>
     <a href="../index.html" class="back">← Voltar</a>
   </div>
@@ -437,15 +440,18 @@
 </div>
 
 <!-- PREVIEW OVERLAY -->
-<div class="preview-overlay" id="previewOverlay">
-  <div class="preview-toolbar">
+<div class="preview-overlay" id="previewOverlay" role="dialog" aria-modal="true" aria-labelledby="previewTitle" aria-hidden="true" tabindex="-1">
+  <div class="preview-toolbar" aria-label="Ações do documento original">
     <h3 id="previewTitle">Visualizando arquivo</h3>
-    <div style="display:flex;gap:.5rem">
-      <a id="previewDirect" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:.75rem">🔗 Abrir direto</a>
-      <a id="previewOffice" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:.75rem;display:none">📝 Office Online</a>
+    <div class="preview-toolbar-actions">
+      <button type="button" id="previewCleanView" class="btn btn-secondary preview-mode-button" aria-pressed="false" onclick="showPreviewClean()">📖 Leitura limpa</button>
+      <button type="button" id="previewOriginalView" class="btn btn-secondary preview-mode-button" aria-pressed="false" onclick="showPreviewOriginal()">📄 Visual original</button>
+      <a id="previewDirect" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:.75rem">📄 Abrir original</a>
+      <a id="previewOffice" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:.75rem;display:none" aria-label="Abrir documento público no Office Online, serviço externo">📝 Office Online ↗</a>
       <a id="previewDownload" href="#" download class="btn btn-secondary" style="font-size:.75rem">⬇️ Baixar</a>
-      <button class="btn btn-primary" onclick="fecharPreview()" style="font-size:.75rem">✕ Fechar</button>
+      <button type="button" id="previewClose" class="btn btn-primary" onclick="fecharPreview()" style="font-size:.75rem">✕ Fechar</button>
     </div>
+    <p id="previewFormatHelp" class="preview-format-help" role="status" aria-live="polite"></p>
   </div>
   <div class="reader-tools" id="readerTools" aria-disabled="true" aria-label="Ferramentas de leitura focada">
     <div class="reader-tool-group">
@@ -488,17 +494,21 @@
         <option value="blue">🟦 Azul</option>
         <option value="pink">🩷 Rosa</option>
       </select>
-      <button type="button" id="readerAddHighlight" class="reader-reading-control">🖍️ Destacar seleção</button>
+      <button type="button" id="readerAddHighlight" class="reader-reading-control" aria-label="Destacar seleção; tecla H quando o modo de atalhos estiver ativo" aria-keyshortcuts="H" aria-describedby="readerShortcutHelp">🖍️ Destacar <kbd>H</kbd></button>
+      <button type="button" id="readerAddUnderline" class="reader-reading-control" aria-label="Sublinhar seleção; tecla U quando o modo de atalhos estiver ativo" aria-keyshortcuts="U" aria-describedby="readerShortcutHelp"><u>U</u> Sublinha <kbd>U</kbd></button>
+      <button type="button" id="readerShortcutToggle" class="reader-reading-control" aria-pressed="false" aria-describedby="readerShortcutHelp">⌨️ Ativar atalhos H/U</button>
     </div>
     <div class="reader-tool-group">
       <select id="readerExportFormat" class="reader-reading-control" aria-label="Formato de exportação">
         <option value="markdown">Markdown</option>
         <option value="json">JSON</option>
         <option value="html">HTML</option>
+        <option value="pdf">PDF anotado (imprimir)</option>
       </select>
       <button type="button" id="readerExport" class="reader-reading-control">📤 Exportar</button>
     </div>
-    <span id="readerStatus" class="reader-live-status" aria-live="polite">Abra um documento para iniciar.</span>
+    <span id="readerShortcutHelp" class="reader-shortcut-help">Ative o modo e use H para destacar, U para sublinhar e Esc para desativar. Atalhos não atuam em campos de edição.</span>
+    <span id="readerStatus" class="reader-live-status" role="status" aria-live="polite" aria-atomic="true">Abra um documento para iniciar.</span>
   </div>
   <div class="preview-shell">
     <div class="preview-stage">
@@ -536,16 +546,18 @@
       </div>
       <section class="reader-highlights-panel" aria-labelledby="readerHighlightsHeading">
         <div class="reader-highlights-heading">
-          <h4 id="readerHighlightsHeading">🖍️ Destaques locais</h4>
+          <h4 id="readerHighlightsHeading">🖍️ Anotações locais</h4>
           <span id="readerHighlightCount" class="reader-highlight-count">0</span>
         </div>
-        <p class="reader-highlights-help">Selecione texto na prévia verificada e use “Destacar seleção”. As anotações ficam neste navegador, sem criptografia, e nunca alteram o original.</p>
+        <p class="reader-highlights-help">Na leitura limpa, selecione texto e use “Destacar” ou “Sublinhar”. As anotações ficam neste navegador, sem criptografia, e nunca alteram o original.</p>
         <div id="readerHighlightsList" class="reader-highlights-list"></div>
         <div class="reader-export-row">
           <button type="button" id="readerExportMarkdown" class="btn btn-secondary">MD</button>
           <button type="button" id="readerExportJSON" class="btn btn-secondary">JSON</button>
           <button type="button" id="readerExportHTML" class="btn btn-secondary">HTML</button>
+          <button type="button" id="readerExportPDF" class="btn btn-secondary">PDF*</button>
         </div>
+        <p class="reader-highlights-help">* PDF gera uma folha de anotações imprimível; escolha “Salvar como PDF”. Não aplica overlay ao arquivo original.</p>
       </section>
       <h4>🔗 Continuar no ecossistema</h4>
       <div class="connections-list" id="previewConnections"></div>
@@ -567,12 +579,16 @@ let roadmap = [];
 let documentManifest = { files: [], partitions: [], origins: [] };
 let previewManifest = { documents: [] };
 let currentPreviewItem = null;
+let currentPreviewContext = null;
+let previewReturnFocus = null;
+let previewBackgroundState = [];
 let studyAutosaveTimer = null;
 let studyFormDirty = false;
 let previewLoadToken = 0;
 let focusedReader = null;
 let studyStoreCache = null;
 let currentFilter = 'todos';
+const MAX_INLINE_TEXT_BYTES = 2 * 1024 * 1024;
 let currentFormatFilter = 'todos';
 let currentOriginFilter = 'todos';
 let currentView = 'catalogo';
@@ -1582,7 +1598,9 @@ function renderMarkdownToHtml(raw) {
   h = h.replace(/<p><(h[1-4]|pre|blockquote|ul|ol|table|hr)/g, '<$1');
   h = h.replace(/<\/(h[1-4]|pre|blockquote|ul|ol|table)><\/p>/g, '</$1>');
   // Montar página completa
-  return '<!DOCTYPE html><html><head><style>' +
+  return '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">' +
+    '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; img-src \'self\' data:">' +
+    '<meta name="viewport" content="width=device-width"><style>' +
     'body{font-family:system-ui,-apple-system,sans-serif;padding:2rem;background:#0f172a;color:#e2e8f0;line-height:1.7;max-width:800px;margin:0 auto}' +
     'h1,h2,h3,h4{color:#00d4ff;margin:1.5rem 0 .5rem;font-weight:700}' +
     'h1{font-size:1.8rem;border-bottom:2px solid #1e3a5f;padding-bottom:.5rem}' +
@@ -1692,28 +1710,304 @@ function setInlinePreview(html, loadToken, renderer) {
   frame.srcdoc = html;
 }
 
-async function loadTextPreview(encodedRelative, renderer, errorTitle, loadToken, rendererName) {
+class PreviewSizeLimitError extends Error {
+  constructor(receivedBytes, declaredBytes) {
+    super('preview-size-limit');
+    this.name = 'PreviewSizeLimitError';
+    this.receivedBytes = Number.isFinite(receivedBytes) ? receivedBytes : null;
+    this.declaredBytes = Number.isFinite(declaredBytes) ? declaredBytes : null;
+  }
+}
+
+function formatBytes(bytes) {
+  if (!Number.isFinite(bytes) || bytes < 0) return 'tamanho não informado';
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+async function fetchTextWithByteLimit(encodedRelative, maxBytes = MAX_INLINE_TEXT_BYTES) {
+  const response = await fetch(encodedRelative, { cache: 'no-store' });
+  if (!response.ok) throw new Error(String(response.status));
+
+  const lengthHeader = response.headers.get('content-length');
+  const declaredBytes = /^\d+$/.test(String(lengthHeader || '')) ? Number(lengthHeader) : null;
+  if (Number.isFinite(declaredBytes) && declaredBytes > maxBytes) {
+    if (response.body && typeof response.body.cancel === 'function') await response.body.cancel();
+    throw new PreviewSizeLimitError(0, declaredBytes);
+  }
+
+  // Sem streaming, só é permitido ler o corpo completo quando o servidor declarou
+  // previamente um tamanho dentro do limite. Ausência de tamanho falha fechada.
+  if (!response.body || typeof response.body.getReader !== 'function') {
+    if (!Number.isFinite(declaredBytes)) throw new PreviewSizeLimitError(null, null);
+    const buffer = await response.arrayBuffer();
+    if (buffer.byteLength > maxBytes) throw new PreviewSizeLimitError(buffer.byteLength, declaredBytes);
+    return new TextDecoder('utf-8', { fatal: false }).decode(buffer);
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder('utf-8', { fatal: false });
+  let receivedBytes = 0;
+  let raw = '';
   try {
-    const response = await fetch(encodedRelative);
-    if (!response.ok) throw new Error(String(response.status));
-    const raw = await response.text();
+    while (true) {
+      const chunk = await reader.read();
+      if (chunk.done) break;
+      receivedBytes += chunk.value.byteLength;
+      if (receivedBytes > maxBytes) {
+        await reader.cancel();
+        throw new PreviewSizeLimitError(receivedBytes, declaredBytes);
+      }
+      raw += decoder.decode(chunk.value, { stream: true });
+    }
+    raw += decoder.decode();
+    return raw;
+  } finally {
+    try { reader.releaseLock(); } catch (_) { /* leitor já encerrado */ }
+  }
+}
+
+async function loadTextPreview(encodedRelative, renderer, errorTitle, loadToken, rendererName, options = {}) {
+  try {
+    const raw = await fetchTextWithByteLimit(encodedRelative);
     if (loadToken !== previewLoadToken) return;
-    setInlinePreview(renderer(raw), loadToken, rendererName);
-  } catch (_) {
+    if (options.readerEnabled === false) {
+      focusedReader?.disable(options.disabledMessage || 'Fonte original em modo somente leitura; volte à leitura limpa para anotar.');
+      resetPreviewFrame('isolated').srcdoc = renderer(raw);
+    } else {
+      setInlinePreview(renderer(raw), loadToken, rendererName);
+    }
+  } catch (error) {
     if (loadToken !== previewLoadToken) return;
+    if (error instanceof PreviewSizeLimitError) {
+      const observed = error.declaredBytes ?? error.receivedBytes;
+      const detail = observed == null ? '' : ` O servidor informou ou transmitiu ${formatBytes(observed)}.`;
+      const limit = formatBytes(MAX_INLINE_TEXT_BYTES);
+      focusedReader?.disable(`Prévia bloqueada antes de carregar conteúdo acima de ${limit}.`);
+      resetPreviewFrame('isolated').srcdoc = previewMessage(
+        'Arquivo grande preservado',
+        `A leitura no painel é limitada a ${limit} para evitar travamentos.${detail} Abra ou baixe o original para leitura completa.`,
+        encodedRelative,
+        '📄 Abrir original'
+      );
+      return;
+    }
     focusedReader?.disable('A prévia permaneceu isolada; use abrir ou baixar o original.');
     resetPreviewFrame('isolated').srcdoc = previewMessage(errorTitle, 'A pré-visualização não pôde ser montada. O original continua disponível para abrir ou baixar.', encodedRelative);
   }
 }
 
 function renderPlainTextToHtml(raw, title = 'Texto') {
-  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;line-height:1.65"><article data-reader-content="true"><h2 style="color:#00d4ff">${escapeHTML(title)}</h2><pre style="white-space:pre-wrap;word-break:break-word;font:14px/1.6 ui-monospace,monospace;background:#091426;padding:1rem;border-radius:9px">${escapeHTML(raw.slice(0, 1000000))}</pre></article></body></html>`;
+  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'"><meta name="viewport" content="width=device-width"></head><body style="font-family:system-ui;padding:2rem;background:#0f172a;color:#e2e8f0;line-height:1.65"><article data-reader-content="true"><h2 style="color:#00d4ff">${escapeHTML(title)}</h2><pre style="white-space:pre-wrap;word-break:break-word;font:14px/1.6 ui-monospace,monospace;background:#091426;padding:1rem;border-radius:9px">${escapeHTML(raw)}</pre></article></body></html>`;
 }
 
 function renderTablePreview(raw, separator) {
   const rows = raw.replace(/\r/g, '').split('\n').slice(0, 300).map(row => row.split(separator).slice(0, 40));
   const body = rows.map((row, rowIndex) => `<tr>${row.map(cell => `<${rowIndex === 0 ? 'th' : 'td'}>${escapeHTML(cell)}</${rowIndex === 0 ? 'th' : 'td'}>`).join('')}</tr>`).join('');
-  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><style>body{font-family:system-ui;padding:1rem;background:#0f172a;color:#e2e8f0}table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid #334155;padding:.5rem;text-align:left}th{position:sticky;top:0;background:#1e293b;color:#00d4ff}</style><body><article data-reader-content="true"><h2>📊 Prévia tabular segura</h2><div style="overflow:auto"><table>${body}</table></div><p>Mostrando no máximo 300 linhas e 40 colunas.</p></article></body></html>`;
+  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'"><meta name="viewport" content="width=device-width"><style>body{font-family:system-ui;padding:1rem;background:#0f172a;color:#e2e8f0}table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid #334155;padding:.5rem;text-align:left}th{position:sticky;top:0;background:#1e293b;color:#00d4ff}</style></head><body><article data-reader-content="true"><h2>📊 Prévia tabular segura</h2><div style="overflow:auto"><table>${body}</table></div><p>Mostrando no máximo 300 linhas e 40 colunas.</p></article></body></html>`;
+}
+
+function setPreviewFormatHelp(message) {
+  const help = document.getElementById('previewFormatHelp');
+  if (help) help.textContent = message || '';
+}
+
+function setPreviewModeActive(mode) {
+  const clean = document.getElementById('previewCleanView');
+  const original = document.getElementById('previewOriginalView');
+  if (clean) clean.setAttribute('aria-pressed', mode === 'clean' ? 'true' : 'false');
+  if (original) original.setAttribute('aria-pressed', mode === 'original' ? 'true' : 'false');
+  const frame = document.getElementById('previewFrame');
+  if (frame && currentPreviewContext) {
+    frame.title = `${mode === 'original' ? 'Visual original' : 'Leitura limpa'}: ${currentPreviewContext.title}`;
+  }
+}
+
+function configurePreviewModes(ext) {
+  const clean = document.getElementById('previewCleanView');
+  const original = document.getElementById('previewOriginalView');
+  const supportsClean = ['pdf', 'docx', 'md', 'markdown', 'txt', 'csv', 'tsv', 'pages'].includes(ext);
+  const supportsEmbeddedOriginal = ext === 'pdf' || ['md', 'markdown'].includes(ext);
+  clean.hidden = !supportsClean;
+  original.hidden = !supportsEmbeddedOriginal;
+  original.textContent = ext === 'pdf' ? '📄 PDF original' : '⌨️ Fonte original';
+  clean.textContent = ['md', 'markdown'].includes(ext) ? '📖 Markdown renderizado' : '📖 Leitura limpa';
+  clean.setAttribute('aria-pressed', 'false');
+  original.setAttribute('aria-pressed', 'false');
+}
+
+function renderCurrentPreview(mode = 'clean') {
+  const context = currentPreviewContext;
+  if (!context || !currentPreviewItem) return;
+  const { ext, path, encodedRelative, fullUrl, title } = context;
+  const loadToken = ++previewLoadToken;
+  const frame = resetPreviewFrame('isolated');
+  focusedReader?.beginDocument(currentPreviewItem);
+  setPreviewModeActive(mode);
+
+  if (mode === 'original' && ext === 'pdf') {
+    focusedReader?.disable('PDF original em modo somente leitura. Volte à leitura limpa para pesquisar e anotar.');
+    setPreviewFormatHelp('PDF original, sem conversão. A renderização depende do visualizador do navegador; se falhar, use “Abrir original”. Destaques e sublinhados são aplicados somente à leitura limpa.');
+    frame.src = encodedRelative;
+    return;
+  }
+  if (mode === 'original' && ['md', 'markdown'].includes(ext)) {
+    setPreviewFormatHelp('Fonte Markdown original exibida como texto escapado, sem executar HTML ou scripts. Volte ao Markdown renderizado para destacar ou sublinhar.');
+    loadTextPreview(
+      encodedRelative,
+      raw => renderPlainTextToHtml(raw, 'Fonte Markdown original — somente leitura'),
+      'Erro ao carregar fonte Markdown',
+      loadToken,
+      'markdown-source-safe-v1',
+      { readerEnabled: false, disabledMessage: 'Fonte Markdown original em modo somente leitura; volte ao Markdown renderizado para anotar.' }
+    );
+    return;
+  }
+
+  if (ext === 'pdf') {
+    setPreviewFormatHelp('Leitura limpa local, validada por caminho e SHA-256, para busca e anotações. Use “PDF original” para conferir paginação, imagens e diagramação.');
+    // HTML local gerado no build, com capa e/ou texto extraído; não depende do plugin PDF.
+    const generated = findGeneratedPreviewEntry(path);
+    if (!setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
+      focusedReader?.disable('Prévia local não validada por caminho e SHA; leitor focado bloqueado.');
+      frame.srcdoc = previewMessage(
+        'PDF preservado — prévia em recuperação',
+        'A prévia HTML local não passou pela validação de caminho e hash. O arquivo original não foi perdido.',
+        fullUrl,
+        '⬇️ Baixar PDF original'
+      );
+    }
+  } else if (ext === 'docx') {
+    setPreviewFormatHelp('Leitura limpa converte texto e estrutura para acessibilidade; não promete fidelidade de paginação. Para o Word original, use “Abrir original” ou “Baixar”. Office Online é externo e recebe a URL pública do arquivo.');
+    const generated = findGeneratedPreviewEntry(path);
+    if (!setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
+      focusedReader?.disable('Prévia local não validada por caminho e SHA; leitor focado bloqueado.');
+      frame.srcdoc = previewMessage('Word preservado', 'A prévia local ainda não foi gerada para este arquivo. Abra no Word/Pages ou use o Office Online.', fullUrl, '📝 Abrir documento');
+    }
+  } else if (['doc','xlsx','xls','pptx','ppt'].includes(ext)) {
+    setPreviewFormatHelp('Formato original preservado. Este navegador não possui renderizador local seguro; use abrir, baixar ou o serviço externo Office Online.');
+    focusedReader?.disable('Formato mantido em modo isolado; use abrir ou baixar.');
+    frame.srcdoc = previewMessage('Formato Office preservado', 'Este formato permanece para download. O Office Online é uma alternativa opcional e abre fora do painel seguro.', fullUrl, '📦 Abrir original');
+  } else if (['md','markdown'].includes(ext)) {
+    setPreviewFormatHelp('Markdown renderizado localmente após escape de HTML, sem scripts. Use “Fonte original” para conferir a marcação textual sem execução.');
+    loadTextPreview(encodedRelative, renderMarkdownToHtml, 'Erro ao carregar Markdown', loadToken, 'markdown-inline-safe-v2');
+  } else if (ext === 'txt') {
+    setPreviewFormatHelp(`Texto original exibido com limite seguro de ${formatBytes(MAX_INLINE_TEXT_BYTES)} antes da leitura.`);
+    loadTextPreview(encodedRelative, raw => renderPlainTextToHtml(raw, title), 'Erro ao carregar texto', loadToken, 'text-inline-safe-v2');
+  } else if (['csv','tsv'].includes(ext)) {
+    setPreviewFormatHelp(`Tabela limitada a 300 linhas, 40 colunas e ${formatBytes(MAX_INLINE_TEXT_BYTES)} antes da leitura; o arquivo original permanece disponível.`);
+    loadTextPreview(encodedRelative, raw => renderTablePreview(raw, ext === 'tsv' ? '\t' : ','), 'Erro ao carregar tabela', loadToken, 'table-inline-safe-v2');
+  } else if (['html','htm'].includes(ext)) {
+    setPreviewFormatHelp('HTML do acervo é aberto em origem isolada, sem scripts, formulários ou acesso à Biblioteca.');
+    focusedReader?.disable('HTML arbitrário permanece isolado; leitor focado bloqueado.');
+    resetPreviewFrame('isolated').src = encodedRelative;
+  } else if (ext === 'pages') {
+    setPreviewFormatHelp('Prévia local estática do Pages; para edição ou fidelidade completa, baixe e abra o original no Apple Pages.');
+    const generated = findGeneratedPreviewEntry(path);
+    if (!setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
+      focusedReader?.disable('Prévia Pages não validada por caminho e SHA.');
+      frame.srcdoc = previewMessage('Apple Pages preservado', 'A imagem Quick Look local não pôde ser gerada. Baixe o arquivo e abra no Pages.', fullUrl, '📦 Baixar .pages');
+    }
+  } else if (ext === 'apkg') {
+    setPreviewFormatHelp('Pacote Anki preservado para download nativo.');
+    focusedReader?.disable('Anki permanece em download nativo; leitor focado indisponível.');
+    frame.srcdoc = previewMessage('Anki: download nativo', 'O navegador não possui um renderizador confiável para .apkg. O arquivo não está perdido: baixe e abra no Anki.', fullUrl, '📦 Baixar .apkg');
+  } else {
+    setPreviewFormatHelp('Arquivo original preservado; não há pré-visualização local segura para este formato.');
+    focusedReader?.disable('Formato mantido em modo isolado; leitor focado indisponível.');
+    frame.srcdoc = previewMessage('Formato preservado', 'Não há pré-visualização segura para este formato. Use abrir ou baixar.', fullUrl);
+  }
+}
+
+function showPreviewClean() {
+  renderCurrentPreview('clean');
+}
+
+function showPreviewOriginal() {
+  if (!currentPreviewContext) return;
+  if (!['pdf', 'md', 'markdown'].includes(currentPreviewContext.ext)) return;
+  renderCurrentPreview('original');
+}
+
+const PREVIEW_FOCUSABLE_SELECTOR = [
+  'a[href]:not([tabindex="-1"])',
+  'button:not([disabled]):not([tabindex="-1"])',
+  'input:not([disabled]):not([tabindex="-1"])',
+  'select:not([disabled]):not([tabindex="-1"])',
+  'textarea:not([disabled]):not([tabindex="-1"])',
+  'iframe:not([tabindex="-1"])',
+  '[contenteditable="true"]',
+  '[tabindex]:not([tabindex="-1"])'
+].join(',');
+
+function previewFocusableElements() {
+  const overlay = document.getElementById('previewOverlay');
+  if (!overlay) return [];
+  return Array.from(overlay.querySelectorAll(PREVIEW_FOCUSABLE_SELECTOR)).filter(element => {
+    if (!(element instanceof HTMLElement) || element.hidden) return false;
+    if (element.getAttribute('aria-hidden') === 'true') return false;
+    const style = window.getComputedStyle(element);
+    return style.display !== 'none' && style.visibility !== 'hidden' && element.getClientRects().length > 0;
+  });
+}
+
+function setPreviewModalEnvironment(open) {
+  const overlay = document.getElementById('previewOverlay');
+  if (!overlay) return;
+  if (open) {
+    if (!previewBackgroundState.length) {
+      previewBackgroundState = Array.from(document.body.children)
+        .filter(element => element !== overlay && !['SCRIPT', 'STYLE'].includes(element.tagName))
+        .map(element => ({
+          element,
+          inert: element.hasAttribute('inert'),
+          ariaHidden: element.getAttribute('aria-hidden')
+        }));
+      previewBackgroundState.forEach(entry => {
+        entry.element.setAttribute('inert', '');
+        entry.element.setAttribute('aria-hidden', 'true');
+      });
+    }
+    document.body.classList.add('preview-modal-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    return;
+  }
+
+  previewBackgroundState.forEach(entry => {
+    if (entry.inert) entry.element.setAttribute('inert', '');
+    else entry.element.removeAttribute('inert');
+    if (entry.ariaHidden === null) entry.element.removeAttribute('aria-hidden');
+    else entry.element.setAttribute('aria-hidden', entry.ariaHidden);
+  });
+  previewBackgroundState = [];
+  document.body.classList.remove('preview-modal-open');
+  overlay.setAttribute('aria-hidden', 'true');
+}
+
+function trapPreviewTab(event) {
+  const overlay = document.getElementById('previewOverlay');
+  if (!overlay?.classList.contains('open') || event.key !== 'Tab') return false;
+  const focusable = previewFocusableElements();
+  if (!focusable.length) {
+    event.preventDefault();
+    overlay.focus();
+    return true;
+  }
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  const active = document.activeElement;
+  if (event.shiftKey && (active === first || !overlay.contains(active))) {
+    event.preventDefault();
+    last.focus();
+    return true;
+  }
+  if (!event.shiftKey && (active === last || !overlay.contains(active))) {
+    event.preventDefault();
+    first.focus();
+    return true;
+  }
+  return false;
 }
 
 function abrirPreview(encodedPath, titulo, focusStudy = false) {
@@ -1727,77 +2021,37 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
   }
   if (currentPreviewItem && focusedReader?.closeDocument() === false) return;
   clearTimeout(studyAutosaveTimer);
-  const loadToken = ++previewLoadToken;
 
   const fullUrl = /^https:\/\//i.test(path) ? path : new URL(encodedRelative, getBaseUrl()).href;
   const pathname = /^https:\/\//i.test(path) ? new URL(path).pathname : path;
   const ext = (pathname.split('.').pop() || '').toLowerCase();
   const title = decodeInlineToken(titulo) || 'Visualizando arquivo';
-  const frame = resetPreviewFrame('isolated');
   const officeLink = document.getElementById('previewOffice');
   const isLocalHost = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname);
 
   currentPreviewItem = (catalog.items || []).find(item => normalizePath(item.path) === path) || {
     id: path, path, title, filename: path.split('/').pop(), theme: 'uti-geral', tipo: ext
   };
+  currentPreviewContext = { path, encodedRelative, fullUrl, ext, title };
+  const previewOverlay = document.getElementById('previewOverlay');
+  const previewWasOpen = previewOverlay.classList.contains('open');
+  if (!previewWasOpen) {
+    previewReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  }
   document.getElementById('previewTitle').textContent = title;
   document.getElementById('previewDirect').href = fullUrl;
   document.getElementById('previewDownload').href = fullUrl;
   officeLink.style.display = 'none';
-  document.getElementById('previewOverlay').classList.add('open');
-  focusedReader?.beginDocument(currentPreviewItem);
-  populateStudyPanel(currentPreviewItem);
-
-  if (ext === 'pdf') {
-    const generated = findGeneratedPreviewEntry(path);
-    if (setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
-      // Não depende do plugin PDF do navegador/WebView: usa o HTML local
-      // gerado durante o build, com capa e/ou texto extraído.
-    } else {
-      focusedReader?.disable('Prévia local não validada por caminho e SHA; leitor focado bloqueado.');
-      frame.srcdoc = previewMessage(
-        'PDF preservado — prévia em recuperação',
-        'A prévia HTML local não passou pela validação de caminho e hash. O arquivo original não foi perdido.',
-        fullUrl,
-        '⬇️ Baixar PDF original'
-      );
-    }
-  } else if (ext === 'docx') {
-    const generated = findGeneratedPreviewEntry(path);
+  if (ext === 'docx' || ['doc','xlsx','xls','pptx','ppt'].includes(ext)) {
     officeLink.href = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(fullUrl);
     if (!isLocalHost) officeLink.style.display = 'inline-flex';
-    if (!setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
-      focusedReader?.disable('Prévia local não validada por caminho e SHA; leitor focado bloqueado.');
-      frame.srcdoc = previewMessage('Word preservado', 'A prévia local ainda não foi gerada para este arquivo. Abra no Word/Pages ou use o Office Online.', fullUrl, '📝 Abrir documento');
-    }
-  } else if (['doc','xlsx','xls','pptx','ppt'].includes(ext)) {
-    focusedReader?.disable('Formato mantido em modo isolado; use abrir ou baixar.');
-    officeLink.href = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(fullUrl);
-    if (!isLocalHost) officeLink.style.display = 'inline-flex';
-    frame.srcdoc = previewMessage('Formato Office preservado', 'Este formato permanece para download. O Office Online é uma alternativa opcional e abre fora do painel seguro.', fullUrl, '📦 Abrir original');
-  } else if (['md','markdown'].includes(ext)) {
-    loadTextPreview(encodedRelative, renderMarkdownToHtml, 'Erro ao carregar Markdown', loadToken, 'markdown-inline-safe-v1');
-  } else if (ext === 'txt') {
-    loadTextPreview(encodedRelative, raw => renderPlainTextToHtml(raw, title), 'Erro ao carregar texto', loadToken, 'text-inline-safe-v1');
-  } else if (['csv','tsv'].includes(ext)) {
-    loadTextPreview(encodedRelative, raw => renderTablePreview(raw, ext === 'tsv' ? '\t' : ','), 'Erro ao carregar tabela', loadToken, 'table-inline-safe-v1');
-  } else if (['html','htm'].includes(ext)) {
-    // HTML do acervo executa sem scripts e sem acesso à origem da Biblioteca.
-    focusedReader?.disable('HTML arbitrário permanece isolado; leitor focado bloqueado.');
-    resetPreviewFrame('isolated').src = encodedRelative;
-  } else if (ext === 'pages') {
-    const generated = findGeneratedPreviewEntry(path);
-    if (!setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
-      focusedReader?.disable('Prévia Pages não validada por caminho e SHA.');
-      frame.srcdoc = previewMessage('Apple Pages preservado', 'A imagem Quick Look local não pôde ser gerada. Baixe o arquivo e abra no Pages.', fullUrl, '📦 Baixar .pages');
-    }
-  } else if (ext === 'apkg') {
-    focusedReader?.disable('Anki permanece em download nativo; leitor focado indisponível.');
-    frame.srcdoc = previewMessage('Anki: download nativo', 'O navegador não possui um renderizador confiável para .apkg. O arquivo não está perdido: baixe e abra no Anki.', fullUrl, '📦 Baixar .apkg');
-  } else {
-    focusedReader?.disable('Formato mantido em modo isolado; leitor focado indisponível.');
-    frame.srcdoc = previewMessage('Formato preservado', 'Não há pré-visualização segura para este formato. Use abrir ou baixar.', fullUrl);
   }
+  configurePreviewModes(ext);
+  if (!previewWasOpen) setPreviewModalEnvironment(true);
+  previewOverlay.classList.add('open');
+  populateStudyPanel(currentPreviewItem);
+  renderCurrentPreview('clean');
+  setTimeout(() => document.getElementById('previewClose')?.focus(), 0);
 
   if (focusStudy && window.innerWidth <= 760) {
     setTimeout(() => document.querySelector('.study-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
@@ -1811,11 +2065,21 @@ function fecharPreview() {
   previewLoadToken += 1;
   resetPreviewFrame('isolated');
   currentPreviewItem = null;
+  currentPreviewContext = null;
+  setPreviewFormatHelp('');
   document.getElementById('previewOverlay').classList.remove('open');
+  setPreviewModalEnvironment(false);
+  if (previewReturnFocus && document.contains(previewReturnFocus)) previewReturnFocus.focus();
+  previewReturnFocus = null;
 }
 
 document.addEventListener('keydown', event => {
+  if (event.key === 'Tab' && trapPreviewTab(event)) return;
   if (event.key === 'Escape' && document.getElementById('previewOverlay').classList.contains('open')) {
+    if (focusedReader?.deactivateShortcuts()) {
+      event.preventDefault();
+      return;
+    }
     if (focusedReader?.exitFocus()) return;
     fecharPreview();
   }

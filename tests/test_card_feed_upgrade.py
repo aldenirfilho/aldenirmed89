@@ -183,7 +183,7 @@ class CardFeedBehaviorTests(unittest.TestCase):
         self.assertEqual(set(reverse), feed_ids)
         self.assertTrue(set(reverse.values()).issubset(library_ids))
 
-        for parameter in ("q", "theme", "view", "filter", "card"):
+        for parameter in ("q", "theme", "view", "filter", "sort", "card"):
             self.assertIn(f'params.get("{parameter}")', source)
         self.assertIn("VIEW_MODES.includes(requestedView)", source)
         self.assertIn("ASSET_FILTERS.includes(requestedFilter)", source)
@@ -192,6 +192,87 @@ class CardFeedBehaviorTests(unittest.TestCase):
         self.assertIn('if (!VIEW_MODES.includes(requestedView)) viewMode = "carousel"', source)
         self.assertIn('if (query && !requestedTheme) $("search").value = query', source)
         self.assertIn("applyInitialQuery();", source)
+
+    def test_continuous_feed_is_default_and_renders_incremental_batches(self) -> None:
+        source = (FEED / "index.html").read_text(encoding="utf-8")
+        cards = load_json("05_Midia_E_Feed/data/cards.json")["cards"]
+
+        self.assertIn('readStorage("cardFeedViewModeV2") ||', source)
+        self.assertIn('legacyViewMode !== "grid" ? legacyViewMode : "continuous"', source)
+        self.assertIn('writeStorage("cardFeedViewModeV2", viewMode)', source)
+        self.assertIn('if (!VIEW_MODES.includes(viewMode)) viewMode = "continuous"', source)
+        self.assertIn("const FEED_BATCH_SIZES = Object.freeze", source)
+        sizes_match = re.search(
+            r"const FEED_BATCH_SIZES = Object\.freeze\(\{([^}]+)\}\);",
+            source,
+        )
+        self.assertIsNotNone(sizes_match)
+        batch_sizes = {
+            key: int(value)
+            for key, value in re.findall(r"(grid|continuous|compact):\s*(\d+)", sizes_match.group(1))
+        }
+        self.assertEqual(set(batch_sizes), {"grid", "continuous", "compact"})
+        self.assertGreater(min(batch_sizes.values()), 0)
+        self.assertLess(max(batch_sizes.values()), len(cards))
+
+        for marker in (
+            'id="feedProgress"',
+            'id="feedSentinel"',
+            'id="btnLoadMore"',
+            "function loadNextBatch()",
+            "currentFeedCards.slice(start, end)",
+            'insertAdjacentHTML("beforeend", html)',
+            "list.slice(0, renderedCardCount)",
+            'new IntersectionObserver(entries =>',
+            'rootMargin: "800px 0px"',
+            '$("btnLoadMore").onclick = loadNextBatch',
+        ):
+            self.assertIn(marker, source)
+
+        render = source[source.index("function render()"):source.index("function hideCard(id)")]
+        self.assertNotIn("(focusMode ? [] : list);", render)
+        self.assertIn('aria-busy="false"', source)
+
+    def test_feed_images_are_lazy_prioritized_and_fail_without_inline_script(self) -> None:
+        source = (FEED / "index.html").read_text(encoding="utf-8")
+        self.assertIn("const IMAGE_PRIORITY_COUNT = 2", source)
+        self.assertIn('loading="${priorityImage ? "eager" : "lazy"}"', source)
+        self.assertIn('decoding="async"', source)
+        self.assertIn('fetchpriority="${priorityImage ? "high" : "low"}"', source)
+        self.assertIn('data-card-image="${esc(c.id)}"', source)
+        self.assertIn("function handleCardImageError(event)", source)
+        self.assertIn('document.createElement("div")', source)
+        self.assertIn('$("feed").addEventListener("error", handleCardImageError, true)', source)
+        self.assertNotIn("onerror=", source)
+        self.assertNotIn("onclick=", source)
+        self.assertNotIn("parentElement.innerHTML", source)
+
+    def test_feed_state_empty_results_and_accessibility_are_explicit(self) -> None:
+        source = (FEED / "index.html").read_text(encoding="utf-8")
+        for marker in (
+            'const FEED_PREFERENCES_KEY = "cardFeedPreferencesV2"',
+            "function applyStoredPreferences()",
+            "function syncBrowserState()",
+            'window.history.replaceState(null, "", url)',
+            'url.searchParams.set("view", state.view)',
+            'id="emptyTitle"',
+            'id="emptyText"',
+            'id="btnEmptyAction"',
+            'id="btnCloseViewer"',
+            'id="btnCloseHelp"',
+            "function updateEmptyState(list)",
+            'action.dataset.emptyAction = "retry"',
+            'action.dataset.emptyAction = "clear"',
+            ':focus-visible',
+            'tabindex="-1"',
+            "element.focus({ preventScroll: true })",
+        ):
+            self.assertIn(marker, source)
+        self.assertIn("dataLoadErrors.length > 0", source)
+        self.assertIn("apenas esta combinação de busca, tema e filtro retornou zero resultados", source)
+
+        service_worker = (FEED / "sw.js").read_text(encoding="utf-8")
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v4`', service_worker)
 
     def test_search_uses_independent_normalized_tokens(self) -> None:
         source = (FEED / "index.html").read_text(encoding="utf-8")
