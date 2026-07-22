@@ -92,6 +92,59 @@ class FocusedReaderStaticTests(unittest.TestCase):
         self.assertIn("overflow-wrap:anywhere!important", READER)
         self.assertIn('body[data-reader-focused="true"]>article', READER)
 
+    def test_mobile_reader_prioritizes_document_without_losing_tools(self) -> None:
+        for marker in (
+            'viewport-fit=cover',
+            'assets/library-focused-reader.css?v=20260721-ios-reader-1',
+            'assets/library-focused-reader.js?v=20260721-ios-reader-1',
+            'height:100dvh',
+            'padding-top:env(safe-area-inset-top)',
+            'id="readerMobileDocumentButton"',
+            'id="readerMobileToolsToggle"',
+            'aria-controls="readerTools"',
+            'id="readerMobileStudyButton"',
+            'aria-controls="previewFrame" aria-pressed="false"',
+            'aria-controls="readerStudyPanel" aria-pressed="false"',
+            'scrolling="yes"',
+            'const READER_MOBILE_MEDIA',
+            '(max-width: 980px) and (max-height: 600px)',
+            'function setReaderMobileSection(section)',
+            'function setReaderMobileToolsExpanded(expanded)',
+            'function showReaderMobileDocument()',
+            'function showReaderMobileStudy()',
+            'function resetPreviewShellPosition(',
+            "setReaderMobileSection('document')",
+            "setReaderMobileSection('study')",
+            'Documento aberto primeiro. Use “Caderno”',
+        ):
+            self.assertIn(marker, INDEX)
+        for marker in (
+            '.reader-mobile-navigation',
+            '.preview-overlay.reader-mobile-tools-collapsed .reader-tools',
+            '.preview-overlay.reader-mobile-document .study-panel',
+            '.preview-overlay.reader-mobile-study .preview-stage',
+            '.reader-mobile-navigation button[aria-pressed="true"]',
+            'min-height: 46px',
+            'max-height: 86px',
+            'overflow-x: auto',
+            '-webkit-overflow-scrolling: touch',
+        ):
+            self.assertIn(marker, READER_CSS)
+        self.assertIn('60svh', INDEX)
+        self.assertIn('touch-action:auto', INDEX)
+        self.assertNotIn('touch-action:pan-y', INDEX)
+        self.assertNotIn('calc(100vh - 190px)', READER_CSS)
+        self.assertNotIn(".study-panel')?.scrollIntoView", INDEX)
+
+    def test_mobile_search_and_selection_survive_safari_toolbar_tap(self) -> None:
+        self.assertIn("this.textAvailable ? 'Digite para buscar' : 'OCR necessário'", READER)
+        self.assertIn('const MOBILE_SELECTION_GRACE_MS = 8000', READER)
+        self.assertIn('collapsedAt: null', READER)
+        self.assertIn('this.selection.collapsedAt = Date.now()', READER)
+        self.assertIn('Date.now() - collapsedAt > MOBILE_SELECTION_GRACE_MS', READER)
+        self.assertIn("addEventListener('pointerdown', this.documentPointerHandler, true)", READER)
+        self.assertIn("addEventListener('touchstart', this.documentPointerHandler, true)", READER)
+
     def test_printable_report_avoids_intermediate_blank_frame(self) -> None:
         printer = READER.split("printAnnotatedReport(payload)", 1)[1].split(
             "exportHighlights(format)", 1
@@ -259,6 +312,20 @@ editing.target = {{ tagName: 'TEXTAREA', closest: () => null }};
 assert.strictEqual(reader.handleKeyboardShortcut(editing), false);
 assert.strictEqual(reader.handleKeyboardShortcut(shortcutEvent('Escape')), true);
 assert.strictEqual(reader.shortcutsActive, false);
+
+reader.document = {{ getSelection: () => ({{ rangeCount: 0, isCollapsed: true }}) }};
+reader.root = {{ textContent: 'trecho selecionado' }};
+reader.textAvailable = true;
+reader.selection = {{ start: 0, end: 6, quote: 'trecho', capturedAt: Date.now() - 60000, collapsedAt: null }};
+reader.captureSelection();
+assert(reader.selection, 'Safari toolbar tap must preserve a fresh captured selection');
+assert(reader.selection.collapsedAt, 'grace period must start only when Safari collapses the selection');
+reader.selection.collapsedAt = Date.now() - 9000;
+reader.captureSelection();
+assert.strictEqual(reader.selection, null, 'expired mobile selection must be cleared');
+reader.selection = {{ start: 0, end: 6, quote: 'trecho', capturedAt: Date.now(), collapsedAt: null }};
+reader.clearCapturedSelection();
+assert.strictEqual(reader.selection, null, 'a deliberate document tap must clear the captured selection');
 
 reader.document = null;
 reader.textAvailable = false;

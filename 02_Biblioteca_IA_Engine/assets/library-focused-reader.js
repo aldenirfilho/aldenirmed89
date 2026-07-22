@@ -7,6 +7,7 @@
   const MAX_QUOTE_LENGTH = 2000;
   const MAX_NOTE_LENGTH = 4000;
   const MAX_SEARCH_RESULTS = 300;
+  const MOBILE_SELECTION_GRACE_MS = 8000;
   const ANNOTATION_KINDS = new Set(['highlight', 'underline']);
   const COLOR_VALUES = {
     yellow: '#fde047',
@@ -157,6 +158,8 @@
       this.frameLoadHandler = null;
       this.preferences = sanitizePreferences(readJSON(PREFERENCES_KEY, {}));
       this.keyboardHandler = this.handleKeyboardShortcut.bind(this);
+      this.selectionHandler = this.captureSelection.bind(this);
+      this.documentPointerHandler = this.clearCapturedSelection.bind(this);
       this.bindControls();
       this.renderPreferences();
       this.disable('Abra um documento para iniciar a leitura focada.');
@@ -261,6 +264,7 @@
         this.frame.removeEventListener('load', this.frameLoadHandler);
       }
       this.frameLoadHandler = null;
+      this.detachTrustedDocument();
       this.item = item || null;
       this.previewMetadata = null;
       this.document = null;
@@ -338,8 +342,10 @@
         this.root = root;
         this.injectRuntimeStyles();
         this.root.setAttribute('data-reader-content', 'true');
-        this.document.addEventListener('selectionchange', this.captureSelection.bind(this));
+        this.document.addEventListener('selectionchange', this.selectionHandler);
         this.document.addEventListener('keydown', this.keyboardHandler);
+        this.document.addEventListener('pointerdown', this.documentPointerHandler, true);
+        this.document.addEventListener('touchstart', this.documentPointerHandler, true);
         this.textAvailable = this.determineTextAvailability();
         this.enable();
         this.applyPreferences();
@@ -379,7 +385,7 @@
         const control = this.element(id);
         if (control) control.disabled = !this.textAvailable;
       });
-      if (!this.textAvailable) this.updateSearchStatus('OCR necessário');
+      this.updateSearchStatus(this.textAvailable ? 'Digite para buscar' : 'OCR necessário');
       this.updateExportControls();
     }
 
@@ -465,7 +471,15 @@
 
     setFocused(value) {
       this.focused = Boolean(value);
-      if (this.overlay) this.overlay.classList.toggle('reader-focused', this.focused);
+      if (this.overlay) {
+        this.overlay.classList.toggle('reader-focused', this.focused);
+        if (this.focused) {
+          this.overlay.classList.remove('reader-mobile-study');
+          this.overlay.classList.add('reader-mobile-document');
+          this.element('readerMobileDocumentButton')?.setAttribute('aria-pressed', 'true');
+          this.element('readerMobileStudyButton')?.setAttribute('aria-pressed', 'false');
+        }
+      }
       const toggle = this.element('readerFocusToggle');
       if (toggle) {
         toggle.setAttribute('aria-pressed', this.focused ? 'true' : 'false');
@@ -547,11 +561,29 @@
       return true;
     }
 
+    clearCapturedSelection() {
+      this.selection = null;
+    }
+
+    detachTrustedDocument() {
+      if (!this.document) return;
+      this.document.removeEventListener('selectionchange', this.selectionHandler);
+      this.document.removeEventListener('keydown', this.keyboardHandler);
+      this.document.removeEventListener('pointerdown', this.documentPointerHandler, true);
+      this.document.removeEventListener('touchstart', this.documentPointerHandler, true);
+    }
+
     captureSelection() {
       if (!this.document || !this.root || !this.textAvailable) return;
       const selection = this.document.getSelection();
       if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
-        this.selection = null;
+        if (!this.selection) return;
+        const collapsedAt = Number(this.selection.collapsedAt) || 0;
+        if (!collapsedAt) {
+          this.selection.collapsedAt = Date.now();
+        } else if (Date.now() - collapsedAt > MOBILE_SELECTION_GRACE_MS) {
+          this.selection = null;
+        }
         return;
       }
       const range = selection.getRangeAt(0);
@@ -571,7 +603,9 @@
         end: end,
         quote: allText.slice(start, end),
         prefix: allText.slice(Math.max(0, start - 80), start),
-        suffix: allText.slice(end, end + 80)
+        suffix: allText.slice(end, end + 80),
+        capturedAt: Date.now(),
+        collapsedAt: null
       };
       if (selectedText.length > MAX_QUOTE_LENGTH) {
         this.setStatus('Seleção longa demais; use até 2.000 caracteres.', 'warn');
@@ -1187,6 +1221,7 @@
       this.pendingNotes.clear();
       this.setShortcutsActive(false, true);
       this.setFocused(false);
+      this.detachTrustedDocument();
       this.item = null;
       this.previewMetadata = null;
       this.document = null;

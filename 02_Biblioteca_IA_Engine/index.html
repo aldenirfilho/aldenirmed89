@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>📚 Biblioteca IA — Enciclopédia Médica Intensiva</title>
 <meta name="description" content="Repositório de materiais médicos gerados com suporte de IA, organizados por Dr. Aldenir Rocha, médico intensivista e clínico."/>
 <link rel="icon" href="../favicon.ico" sizes="64x64"/>
@@ -119,13 +119,13 @@
   .inbox-badge{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:.65rem;padding:.15rem .5rem;border-radius:10px;font-weight:700;position:absolute;top:8px;right:8px;z-index:2}
 
   /* PREVIEW OVERLAY */
-  .preview-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:400;flex-direction:column}
+  .preview-overlay{display:none;position:fixed;inset:0;height:100vh;height:100dvh;max-height:100dvh;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);overflow:hidden;overscroll-behavior:contain;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:400;flex-direction:column}
   .preview-overlay.open{display:flex}
-  .preview-toolbar{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.2rem;background:var(--bg2);border-bottom:1px solid var(--border)}
+  .preview-toolbar{display:flex;flex:0 0 auto;align-items:center;justify-content:space-between;padding:.8rem 1.2rem;background:var(--bg2);border-bottom:1px solid var(--border)}
   .preview-toolbar h3{font-family:'Syne',sans-serif;font-size:.95rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;margin-right:1rem}
   .preview-shell{min-height:0;flex:1;display:grid;grid-template-columns:minmax(0,1fr) 350px;background:var(--bg)}
-  .preview-stage{min-width:0;min-height:0;display:flex;position:relative;background:#fff}
-  .preview-iframe{width:100%;height:100%;border:none;background:#fff}
+  .preview-stage{min-width:0;min-height:0;display:flex;position:relative;overflow:hidden;background:#fff}
+  .preview-iframe{display:block;width:100%;height:100%;min-height:100%;border:none;background:#fff;touch-action:auto}
   .study-panel{overflow:auto;background:var(--card);border-left:1px solid var(--border);padding:1rem;display:flex;flex-direction:column;gap:.85rem}
   .study-panel h4,.study-dashboard h2{font-family:'Syne',sans-serif;color:var(--accent)}
   .study-panel label,.study-controls label{display:block;font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace}
@@ -187,7 +187,7 @@
     border-radius: 4px;
     font-weight: bold;
   }
-  @media(max-width:760px){
+  @media (max-width:760px), (max-width:980px) and (max-height:600px){
     header{padding:1rem;align-items:flex-start}
     header .actions{width:100%;flex-wrap:wrap}
     header a.back,header button.nav-btn{flex:1;min-width:max-content}
@@ -197,13 +197,13 @@
     .preview-toolbar{align-items:flex-start;flex-wrap:wrap;gap:.75rem;padding:.75rem}
     .preview-toolbar h3{flex:1 0 100%;margin-right:0}
     .preview-toolbar>div{display:flex;flex-wrap:wrap;gap:.4rem;width:100%}
-    .preview-shell{grid-template-columns:1fr;grid-template-rows:minmax(55vh,1fr) auto;overflow:auto}
-    .preview-stage{min-height:55vh}
+    .preview-shell{grid-template-columns:1fr;grid-template-rows:minmax(55vh,1fr) auto;grid-template-rows:minmax(clamp(420px,60svh,620px),1fr) auto;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+    .preview-stage{min-height:55vh;min-height:clamp(420px,60svh,620px)}
     .study-panel{max-height:none;border-left:none;border-top:1px solid var(--border)}
     .search-bar input,.filter-panel select,.classify-box select,.classify-box input,.classify-box textarea{font-size:16px}
   }
 </style>
-<link rel="stylesheet" href="assets/library-focused-reader.css"/>
+<link rel="stylesheet" href="assets/library-focused-reader.css?v=20260721-ios-reader-1"/>
 </head>
 <body>
 
@@ -453,6 +453,11 @@
     </div>
     <p id="previewFormatHelp" class="preview-format-help" role="status" aria-live="polite"></p>
   </div>
+  <nav class="reader-mobile-navigation" aria-label="Navegação do leitor móvel">
+    <button type="button" id="readerMobileDocumentButton" aria-controls="previewFrame" aria-pressed="false" onclick="showReaderMobileDocument()">📖 Documento</button>
+    <button type="button" id="readerMobileToolsToggle" aria-controls="readerTools" aria-expanded="false" onclick="toggleReaderMobileTools()">🛠️ Ferramentas</button>
+    <button type="button" id="readerMobileStudyButton" aria-controls="readerStudyPanel" aria-pressed="false" onclick="showReaderMobileStudy()">✍️ Caderno</button>
+  </nav>
   <div class="reader-tools" id="readerTools" aria-disabled="true" aria-label="Ferramentas de leitura focada">
     <div class="reader-tool-group">
       <button type="button" id="readerFocusToggle" class="reader-reading-control" aria-pressed="false">🎯 Leitura focada</button>
@@ -512,9 +517,9 @@
   </div>
   <div class="preview-shell">
     <div class="preview-stage">
-      <iframe class="preview-iframe" id="previewFrame" title="Pré-visualização segura do documento" sandbox="allow-downloads allow-popups" referrerpolicy="no-referrer"></iframe>
+      <iframe class="preview-iframe" id="previewFrame" title="Pré-visualização segura do documento" sandbox="allow-downloads allow-popups" referrerpolicy="no-referrer" scrolling="yes"></iframe>
     </div>
-    <aside class="study-panel">
+    <aside class="study-panel" id="readerStudyPanel">
       <h4>✍️ Caderno editável</h4>
       <div class="readonly-note">🔒 Original somente leitura. O caderno usa armazenamento local não criptografado, pode ser perdido ao limpar o navegador e não deve conter qualquer dado identificável de paciente.</div>
       <div class="readonly-note" id="previewEditorialWarning">🔎 Verificando autoria, licença e revisão clínica…</div>
@@ -567,7 +572,7 @@
   </div>
 </div>
 
-<script src="assets/library-focused-reader.js"></script>
+<script src="assets/library-focused-reader.js?v=20260721-ios-reader-1"></script>
 <script>
 // ============================================================
 //  BIBLIOTECA IA — MOTOR DE DADOS
@@ -1813,6 +1818,103 @@ function setPreviewFormatHelp(message) {
   if (help) help.textContent = message || '';
 }
 
+const READER_MOBILE_MEDIA = '(max-width: 760px), (max-width: 980px) and (max-height: 600px)';
+
+function isReaderMobileLayout() {
+  return typeof window.matchMedia === 'function'
+    ? window.matchMedia(READER_MOBILE_MEDIA).matches
+    : window.innerWidth <= 760 || (window.innerWidth <= 980 && window.innerHeight <= 600);
+}
+
+function setReaderMobileSection(section) {
+  const overlay = document.getElementById('previewOverlay');
+  const documentButton = document.getElementById('readerMobileDocumentButton');
+  const studyButton = document.getElementById('readerMobileStudyButton');
+  const documentActive = section === 'document';
+  const studyActive = section === 'study';
+  overlay?.classList.toggle('reader-mobile-document', documentActive);
+  overlay?.classList.toggle('reader-mobile-study', studyActive);
+  documentButton?.setAttribute('aria-pressed', documentActive ? 'true' : 'false');
+  studyButton?.setAttribute('aria-pressed', studyActive ? 'true' : 'false');
+}
+
+function setReaderMobileToolsExpanded(expanded) {
+  const overlay = document.getElementById('previewOverlay');
+  const tools = document.getElementById('readerTools');
+  const toggle = document.getElementById('readerMobileToolsToggle');
+  if (!overlay || !tools || !toggle) return;
+
+  const mobile = isReaderMobileLayout();
+  const visible = !mobile || Boolean(expanded);
+  overlay.classList.toggle('reader-mobile-tools-collapsed', mobile && !visible);
+  toggle.setAttribute('aria-expanded', visible ? 'true' : 'false');
+  toggle.textContent = visible ? '🛠️ Ocultar' : '🛠️ Ferramentas';
+  if (mobile && !visible) tools.setAttribute('aria-hidden', 'true');
+  else tools.removeAttribute('aria-hidden');
+}
+
+function toggleReaderMobileTools() {
+  const toggle = document.getElementById('readerMobileToolsToggle');
+  if (!toggle) return;
+  setReaderMobileToolsExpanded(toggle.getAttribute('aria-expanded') !== 'true');
+}
+
+function resetPreviewShellPosition({ resetDocument = false } = {}) {
+  const shell = document.querySelector('.preview-shell');
+  if (shell) {
+    shell.scrollTop = 0;
+    shell.scrollLeft = 0;
+  }
+  if (!resetDocument) return;
+  try {
+    document.getElementById('previewFrame')?.contentWindow?.scrollTo(0, 0);
+  } catch (_) {
+    // O visual original pode permanecer isolado; a leitura limpa é same-origin.
+  }
+}
+
+function showReaderMobileDocument() {
+  setReaderMobileSection('document');
+  setReaderMobileToolsExpanded(false);
+  const cleanMode = document.getElementById('previewCleanView')?.getAttribute('aria-pressed') === 'true';
+  focusedReader?.setFocused(cleanMode);
+  requestAnimationFrame(() => resetPreviewShellPosition({ resetDocument: true }));
+}
+
+function showReaderMobileStudy() {
+  setReaderMobileSection('study');
+  setReaderMobileToolsExpanded(false);
+  focusedReader?.setFocused(false);
+  requestAnimationFrame(() => {
+    const study = document.querySelector('.study-panel');
+    if (study) study.scrollTop = 0;
+  });
+}
+
+const readerMobileBreakpoint = typeof window.matchMedia === 'function'
+  ? window.matchMedia(READER_MOBILE_MEDIA)
+  : null;
+function syncReaderMobileBreakpoint(event) {
+  const overlay = document.getElementById('previewOverlay');
+  if (!overlay?.classList.contains('open')) return;
+  if (event.matches) {
+    setReaderMobileSection('document');
+    setReaderMobileToolsExpanded(false);
+    if (document.getElementById('previewCleanView')?.getAttribute('aria-pressed') === 'true') {
+      focusedReader?.setFocused(true);
+    }
+    requestAnimationFrame(() => resetPreviewShellPosition({ resetDocument: true }));
+  } else {
+    setReaderMobileSection(null);
+    setReaderMobileToolsExpanded(true);
+  }
+}
+if (readerMobileBreakpoint?.addEventListener) {
+  readerMobileBreakpoint.addEventListener('change', syncReaderMobileBreakpoint);
+} else if (readerMobileBreakpoint?.addListener) {
+  readerMobileBreakpoint.addListener(syncReaderMobileBreakpoint);
+}
+
 function setPreviewModeActive(mode) {
   const clean = document.getElementById('previewCleanView');
   const original = document.getElementById('previewOriginalView');
@@ -1844,6 +1946,9 @@ function renderCurrentPreview(mode = 'clean') {
   const loadToken = ++previewLoadToken;
   const frame = resetPreviewFrame('isolated');
   focusedReader?.beginDocument(currentPreviewItem);
+  const mobileReader = isReaderMobileLayout();
+  setReaderMobileSection(mobileReader ? 'document' : null);
+  if (mode === 'clean' && mobileReader) focusedReader?.setFocused(true);
   setPreviewModeActive(mode);
 
   if (mode === 'original' && ext === 'pdf') {
@@ -1922,6 +2027,7 @@ function renderCurrentPreview(mode = 'clean') {
 
 function showPreviewClean() {
   renderCurrentPreview('clean');
+  requestAnimationFrame(() => resetPreviewShellPosition({ resetDocument: true }));
 }
 
 function showPreviewOriginal() {
@@ -2049,12 +2155,13 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
   configurePreviewModes(ext);
   if (!previewWasOpen) setPreviewModalEnvironment(true);
   previewOverlay.classList.add('open');
+  setReaderMobileToolsExpanded(!isReaderMobileLayout());
   populateStudyPanel(currentPreviewItem);
   renderCurrentPreview('clean');
   setTimeout(() => document.getElementById('previewClose')?.focus(), 0);
 
-  if (focusStudy && window.innerWidth <= 760) {
-    setTimeout(() => document.querySelector('.study-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+  if (focusStudy && isReaderMobileLayout()) {
+    focusedReader?.setStatus('Documento aberto primeiro. Use “Caderno” para registrar o estudo.', 'ok');
   }
 }
 
@@ -2067,7 +2174,8 @@ function fecharPreview() {
   currentPreviewItem = null;
   currentPreviewContext = null;
   setPreviewFormatHelp('');
-  document.getElementById('previewOverlay').classList.remove('open');
+  document.getElementById('previewOverlay').classList.remove('open', 'reader-mobile-document', 'reader-mobile-study');
+  setReaderMobileSection(null);
   setPreviewModalEnvironment(false);
   if (previewReturnFocus && document.contains(previewReturnFocus)) previewReturnFocus.focus();
   previewReturnFocus = null;
