@@ -94,7 +94,7 @@ class LocalImageStudioTests(unittest.TestCase):
 
     def test_images_persist_locally_and_can_be_reedited_or_downloaded(self) -> None:
         for marker in (
-            'indexedDB.open(DB_NAME, 1)',
+            'indexedDB.open(DB_NAME, 2)',
             'imageData: await fileToDataURL(file)',
             'imageSize: file.size',
             'id="editImageInput"',

@@ -32,6 +32,9 @@
   <link rel="icon" href="../favicon.ico" sizes="64x64" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="assets/knowledge-forge.css" />
+  <script src="assets/vendor/tesseract/tesseract.min.js" defer></script>
+  <script src="assets/knowledge-forge.js" defer></script>
   <style>
     :root {
       color-scheme: dark;
@@ -951,6 +954,36 @@
       </button>
     </section>
 
+    <section class="knowledge-forge" id="knowledgeForge" aria-labelledby="knowledgeForgeTitle">
+      <div class="forge-head">
+        <div class="forge-head-copy">
+          <span class="eyebrow">🧠 Knowledge Forge · produção ativa</span>
+          <h2 id="knowledgeForgeTitle">A imagem inicia a investigação — não encerra a resposta.</h2>
+          <p>
+            Converta imagens do GPT e outros geradores em projetos autorais: recorte e anote,
+            extraia texto localmente e produza modelos, mapas, decisões e microaulas criticáveis.
+          </p>
+        </div>
+        <div class="forge-head-actions">
+          <button class="btn primary" type="button" id="btnForgeExport">📦 Backup ZIP completo</button>
+          <button class="btn" type="button" id="btnForgeImport">↩️ Restaurar ZIP</button>
+          <input id="forgeZipInput" type="file" accept=".zip,application/zip" class="hidden" />
+        </div>
+      </div>
+      <div class="forge-metrics" aria-label="Métricas dos projetos de conhecimento">
+        <div class="forge-metric"><b id="forgeStatProjects">0</b><span>projetos visuais</span></div>
+        <div class="forge-metric"><b id="forgeStatProduced">0</b><span>artefatos produzidos</span></div>
+        <div class="forge-metric"><b id="forgeStatTeachable">0</b><span>sínteses ensináveis</span></div>
+        <div class="forge-metric"><b id="forgeStatOcr">0</b><span>projetos com OCR</span></div>
+      </div>
+      <p class="forge-principle">
+        <b>Princípio orbital:</b> não complete uma frase. Produza uma estrutura que possa ser
+        testada, contrariada, ensinada e melhorada.
+      </p>
+      <div class="forge-projects" id="forgeProjects" aria-live="polite"></div>
+      <p id="forgeBackupStatus" class="studio-status" role="status" aria-live="polite"></p>
+    </section>
+
     <section class="toolbar">
       <input id="search" class="field" aria-label="Buscar cards" placeholder="🔎 Buscar por tema, título, tag, comentário..." />
       <select id="themeFilter" class="select" aria-label="Filtrar por tema"></select>
@@ -997,6 +1030,106 @@
   </main>
 
   <button class="btn primary floating" id="btnFloating">➕ Card</button>
+
+  <dialog id="knowledgeForgeDialog" class="forge-dialog" aria-labelledby="forgeDialogTitle">
+    <div class="modal-head">
+      <div class="forge-dialog-title">
+        <strong id="forgeDialogTitle">Projeto de conhecimento</strong>
+        <small>Imagem → evidência → modelo → decisão → ensino</small>
+      </div>
+      <button class="btn small" type="button" id="btnForgeClose" aria-label="Fechar projeto">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="forge-tablist" role="tablist" aria-label="Etapas da Forja de Conhecimento">
+        <button class="btn small forge-tab" type="button" role="tab" data-forge-tab="image"
+          aria-selected="true" aria-controls="forgePanelImage">1 · Recortar e anotar</button>
+        <button class="btn small forge-tab" type="button" role="tab" data-forge-tab="ocr"
+          aria-selected="false" aria-controls="forgePanelOcr" tabindex="-1">2 · OCR local</button>
+        <button class="btn small forge-tab" type="button" role="tab" data-forge-tab="missions"
+          aria-selected="false" aria-controls="forgePanelMissions" tabindex="-1">3 · Produzir conhecimento</button>
+      </div>
+
+      <section class="forge-tabpanel" id="forgePanelImage" role="tabpanel" data-forge-panel="image">
+        <label>
+          Nome do projeto
+          <input class="field" id="forgeProjectTitle" maxlength="180" />
+        </label>
+        <div class="forge-image-layout">
+          <div class="forge-canvas-shell">
+            <canvas id="forgeCanvas" width="960" height="540" role="img"
+              aria-label="Editor local da imagem do projeto">Editor de imagem indisponível.</canvas>
+          </div>
+          <aside class="forge-editor-panel" aria-label="Ferramentas de edição">
+            <h3>🛰️ Laboratório visual</h3>
+            <p>As alterações ficam em uma cópia local. O card e a imagem original são preservados.</p>
+            <div class="forge-editor-tools" role="toolbar" aria-label="Ferramentas de anotação">
+              <button class="btn small forge-tool" type="button" data-forge-tool="pen" aria-pressed="true">✏️ Caneta</button>
+              <button class="btn small forge-tool" type="button" data-forge-tool="highlight" aria-pressed="false">🟨 Realce</button>
+              <button class="btn small forge-tool" type="button" data-forge-tool="arrow" aria-pressed="false">↗️ Seta</button>
+              <button class="btn small forge-tool" type="button" data-forge-tool="crop" aria-pressed="false">✂️ Corte</button>
+            </div>
+            <div class="forge-annotation-row">
+              <label>Cor <input class="forge-color" id="forgeColor" type="color" value="#38bdf8" /></label>
+              <label>Traço
+                <select class="select" id="forgeStroke">
+                  <option value="3">Fino</option>
+                  <option value="6" selected>Médio</option>
+                  <option value="10">Grosso</option>
+                </select>
+              </label>
+            </div>
+            <label>Texto na imagem
+              <input class="field" id="forgeTextAnnotation" maxlength="90" placeholder="Ex.: hipótese, achado, alerta…" />
+            </label>
+            <button class="btn" type="button" id="btnForgeText">T⁺ Adicionar texto</button>
+            <button class="btn gold" type="button" id="btnForgeApplyCrop">✂️ Aplicar corte</button>
+            <div class="forge-editor-tools">
+              <button class="btn" type="button" id="btnForgeUndo">↶ Desfazer</button>
+              <button class="btn" type="button" id="btnForgeReset">♻️ Original</button>
+            </div>
+            <p class="forge-editor-status" id="forgeEditorStatus" role="status" aria-live="polite"></p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="forge-tabpanel" id="forgePanelOcr" role="tabpanel" data-forge-panel="ocr" hidden>
+        <div class="forge-ocr-grid">
+          <div class="forge-ocr-card">
+            <h3>🔎 OCR automático no dispositivo</h3>
+            <p>
+              O motor português + inglês executa localmente. Nenhuma imagem é enviada.
+              O texto pode conter erros; confira sempre contra a imagem e a fonte original.
+            </p>
+            <button class="btn primary" type="button" id="btnForgeOcr">Extrair texto agora</button>
+            <div class="forge-ocr-progress" aria-hidden="true"><span id="forgeOcrBar"></span></div>
+            <p class="forge-ocr-status" id="forgeOcrStatus" role="status" aria-live="polite"></p>
+          </div>
+          <label>
+            Texto reconhecido e editável
+            <textarea id="forgeOcrText" placeholder="O OCR aparecerá aqui. Corrija erros ou complemente manualmente."></textarea>
+          </label>
+        </div>
+      </section>
+
+      <section class="forge-tabpanel" id="forgePanelMissions" role="tabpanel" data-forge-panel="missions" hidden>
+        <div class="forge-mission-intro">
+          <h3>🚀 Cinco missões produtivas</h3>
+          <p>
+            Não existe “verso correto” do flashcard. Cada missão exige um artefato novo,
+            evidências, incertezas e uma próxima pergunta. O conhecimento amadurece de
+            <b>rascunho</b> para <b>testável</b> e então <b>ensinável</b>.
+          </p>
+        </div>
+        <div class="forge-missions" id="forgeMissions"></div>
+      </section>
+    </div>
+    <div class="modal-actions">
+      <div class="forge-dialog-actions">
+        <span class="forge-save-status" id="forgeSaveStatus" role="status" aria-live="polite"></span>
+        <button class="btn primary" type="button" id="btnForgeSave">💾 Salvar projeto local</button>
+      </div>
+    </div>
+  </dialog>
 
   <dialog id="editDialog">
     <form method="dialog" id="editForm">
@@ -1078,10 +1211,11 @@
       <div class="help-box"><b>1) Entrada pelo iCloud</b><br/>Crie no iCloud Drive uma pasta <code>GPT_Card_Feed_Medico</code>. Salve imagens do ChatGPT/Claude lá. Depois toque em <code>Importar imagens</code>.</div>
       <div class="help-box"><b>2) Organização automática</b><br/>O app sugere tema pelo nome do arquivo: <code>AKI</code>, <code>KDIGO</code>, <code>VM</code>, <code>sepse</code>. Depois edite manualmente.</div>
       <div class="help-box"><b>3) Comentários</b><br/>Em cada card, toque em <code>Editar</code>. Acrescente resumo, conduta, alerta TEMI, tags e status.</div>
-      <div class="help-box"><b>4) Backup e migração</b><br/>Use <code>Exportar backup</code> e salve no iCloud. Para restaurar, use <code>Importar backup</code>.</div>
+      <div class="help-box"><b>4) Backup e migração</b><br/>O backup JSON preserva o fluxo legado. Na <code>Knowledge Forge</code>, use <code>Backup ZIP completo</code> para incluir cards, projetos, imagens editadas, OCR e missões produtivas.</div>
       <div class="help-box"><b>5) Cinco visualizações</b><br/>A rolagem contínua é o padrão e carrega os cards em lotes leves. O botão <code>📐 Visualização</code> alterna entre Grade, Feed contínuo, Compacto, Carrossel e Estudo. No Carrossel/Estudo, use ←/→ ou deslize para navegar.</div>
       <div class="help-box"><b>6) Estudo ativo</b><br/>No modo Estudo, observe primeiro a imagem, revele a explicação e avalie como <code>Difícil</code>, <code>Aprendendo</code> ou <code>Dominei</code>. A próxima revisão fica salva neste navegador em 1, 3 ou 14 dias.</div>
       <div class="help-box"><b>7) Revisão e conexões</b><br/>Use <code>🎲 Sortear card</code>, os filtros rápidos e <code>🔗 Explorar tema</code> para saltar à Biblioteca, POCUS, TEMI ou calculadoras.</div>
+      <div class="help-box"><b>8) Forja de Conhecimento</b><br/>Em um card com imagem, toque em <code>🧠 Forjar conhecimento</code>. Recorte e anote, execute OCR local e produza cinco artefatos: evidências, modelos concorrentes, mapa causal, decisão e síntese ensinável.</div>
       <div class="help-box help-warning"><b>⚠️ Limitação</b><br/>Cards locais ficam neste navegador (IndexedDB). Para sincronizar, exporte backup JSON ou envie imagens para <code>assets/cards/</code> + cadastre em <code>data/cards.json</code>.</div>
     </div>
   </dialog>
@@ -1091,6 +1225,7 @@
   <script>
     const DB_NAME = "CardFeedMedicoLocalDB_v2";
     const STORE = "cards";
+    const KNOWLEDGE_STORE = "knowledgeProjects";
     let db;
     let repoCards = [];
     let localCards = [];
@@ -1497,10 +1632,15 @@
 
     function openDB() {
       return new Promise((resolve, reject) => {
-        const req = indexedDB.open(DB_NAME, 1);
+        const req = indexedDB.open(DB_NAME, 2);
         req.onupgradeneeded = e => {
           const database = e.target.result;
           if (!database.objectStoreNames.contains(STORE)) database.createObjectStore(STORE, { keyPath: "id" });
+          if (!database.objectStoreNames.contains(KNOWLEDGE_STORE)) {
+            const projects = database.createObjectStore(KNOWLEDGE_STORE, { keyPath: "id" });
+            projects.createIndex("sourceCardId", "sourceCardId", { unique: false });
+            projects.createIndex("updatedAt", "updatedAt", { unique: false });
+          }
         };
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
@@ -1991,6 +2131,7 @@
             <button type="button" class="btn small" data-review="${esc(c.id)}">🔁 Revisar</button>
             <button type="button" class="btn small" data-copy="${esc(c.id)}">📋 Copiar resumo</button>
             ${image ? `<button type="button" class="btn small" data-download="${esc(c.id)}">⬇️ Baixar imagem</button>` : ""}
+            ${image ? `<button type="button" class="btn small primary" data-forge="${esc(c.id)}">🧠 Forjar conhecimento</button>` : ""}
             ${studyMode ? "" : `<button type="button" class="btn small green" data-status="${esc(c.id)}" data-value="dominado">✅ Dominei</button>`}
             ${hiddenCards.includes(c.id)
               ? `<button type="button" class="btn small restore-card" data-restore="${esc(c.id)}">♻️ Restaurar</button>`
@@ -2519,8 +2660,18 @@
       wire();
       render();
       await updateStudioStatus();
+      window.CardFeedBridge.ready = true;
+      window.dispatchEvent(new CustomEvent("cardfeed:ready"));
       toast("🧠 Card Feed Médico carregado.");
     }
+
+    window.CardFeedBridge = {
+      ready: false,
+      getCard,
+      getAllCards: allCards,
+      refresh,
+      toast
+    };
 
     main().catch(err => {
       console.error(err);

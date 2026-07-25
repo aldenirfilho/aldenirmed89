@@ -1,8 +1,15 @@
 const CACHE_PREFIX = "card-feed-medico-";
-const CACHE_NAME = `${CACHE_PREFIX}v5`;
+const CACHE_NAME = `${CACHE_PREFIX}v6`;
 const CORE_ASSETS = [
   "./",
   "./index.html",
+  "./assets/knowledge-forge.css",
+  "./assets/knowledge-forge.js",
+  "./assets/vendor/tesseract/tesseract.min.js",
+  "./assets/vendor/tesseract/worker.min.js",
+  "./assets/vendor/tesseract/tesseract-core-lstm.wasm.js",
+  "./assets/vendor/tesseract/lang/por.traineddata.gz",
+  "./assets/vendor/tesseract/lang/eng.traineddata.gz",
   "./data/cards.json",
   "./data/public.json",
   "./data/themes.json",

@@ -286,7 +286,7 @@ class CardFeedBehaviorTests(unittest.TestCase):
         self.assertIn("apenas esta combinação de busca, tema e filtro retornou zero resultados", source)
 
         service_worker = (FEED / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v5`', service_worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v6`', service_worker)
 
     def test_search_uses_independent_normalized_tokens(self) -> None:
         source = (FEED / "index.html").read_text(encoding="utf-8")
