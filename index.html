@@ -13,10 +13,16 @@
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#071422"/>
 <meta name="color-scheme" content="dark light"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Antigravity"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <link rel="icon" type="image/x-icon" href="./favicon.ico" sizes="64x64"/>
 <link rel="icon" type="image/png" href="./assets/icons/antigravity-consultas-32.png" sizes="32x32"/>
 <link rel="icon" type="image/png" href="./assets/icons/antigravity-consultas-64.png" sizes="64x64"/>
-<link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png"/>
+<link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png" sizes="180x180"/>
+<link rel="apple-touch-icon" href="./assets/icons/ios/apple-touch-icon-167.png" sizes="167x167"/>
+<link rel="apple-touch-icon" href="./assets/icons/ios/apple-touch-icon-152.png" sizes="152x152"/>
+<link rel="apple-touch-icon" href="./assets/icons/ios/apple-touch-icon-120.png" sizes="120x120"/>
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -941,19 +947,27 @@ header{
 .a11y-panel{
   position:fixed;right:82px;bottom:24px;z-index:220;
   width:min(360px,calc(100vw - 36px));padding:20px;
+  max-height:calc(100vh - 48px);overflow:auto;
   border:1px solid var(--brd-h);border-radius:18px;
   background:var(--bg3);box-shadow:var(--shadow);
 }
 .a11y-panel h2{font-family:var(--font-head);font-size:1rem;margin-bottom:5px}
+.a11y-panel h3{
+  margin:16px 0 6px;font-family:var(--font-mono);font-size:.72rem;
+  color:var(--soft);text-transform:uppercase;letter-spacing:.08em
+}
 .a11y-panel p{font-size:.78rem;line-height:1.5;color:var(--soft);margin-bottom:14px}
 .a11y-options{display:grid;gap:8px}
-.a11y-option,.a11y-link{
+.a11y-option,.a11y-link,.a11y-install{
   min-height:44px;width:100%;display:flex;align-items:center;justify-content:space-between;
   gap:12px;padding:9px 12px;border:1px solid var(--brd);border-radius:10px;
   background:var(--surf);color:var(--text);cursor:pointer;text-align:left;
 }
 .a11y-option[aria-pressed="true"]{border-color:var(--cyan);background:var(--cyan-d);color:var(--cyan)}
 .a11y-link{color:var(--cyan);margin-top:8px}
+.a11y-install{color:var(--green);border-color:rgba(78,240,161,.35);margin-top:8px}
+.a11y-install[hidden]{display:none}
+.a11y-status{min-height:1.2em;margin:8px 0 0!important;color:var(--green)!important}
 .a11y-close{position:absolute;right:12px;top:10px;background:none;border:0;color:var(--soft);cursor:pointer;padding:8px}
 
 @media(prefers-reduced-motion:reduce){
@@ -998,7 +1012,7 @@ header{
   .dsf-grid{grid-template-columns:1fr}
   .dsf-tabs{flex-wrap:wrap}
   input,select,textarea,.map-search,.mnem-search{font-size:16px}
-  .a11y-panel{right:18px;bottom:82px}
+  .a11y-panel{right:18px;bottom:82px;max-height:calc(100dvh - 100px)}
 }
 </style>
 </head>
@@ -1800,7 +1814,7 @@ header{
 </aside>
 
 <!-- ── FLOATING BUTTONS ───────────────────────────── -->
-<section class="a11y-panel" id="a11yPanel" aria-labelledby="a11yTitle" hidden>
+<section class="a11y-panel" id="a11yPanel" role="dialog" aria-labelledby="a11yTitle" hidden>
   <button class="a11y-close" id="a11yClose" aria-label="Fechar opções de acessibilidade">✕</button>
   <h2 id="a11yTitle">♿ Acesso rápido</h2>
   <p>Preferências ficam somente neste dispositivo. Nenhum dado clínico é enviado.</p>
@@ -1815,15 +1829,32 @@ header{
       <span>🧘 Reduzir animações</span><span aria-hidden="true">ON</span>
     </button>
   </div>
+  <h3>Instalar e abrir rápido</h3>
+  <button class="a11y-install" id="installPwaBtn" type="button" hidden>
+    <span>⚡ Instalar como aplicativo</span><span aria-hidden="true">PWA</span>
+  </button>
+  <p class="a11y-status" id="installPwaStatus" role="status" aria-live="polite"></p>
+  <a class="a11y-link" href="downloads/Antigravity-Consultas-Windows.zip" download>
+    <span>🪟 Atalho Windows — não assinado</span><span aria-hidden="true">ZIP</span>
+  </a>
+  <a class="a11y-link" href="downloads/Antigravity-Consultas-iPhone-Icones.zip" download>
+    <span>📱 Ícones para iPhone</span><span aria-hidden="true">ZIP</span>
+  </a>
   <a class="a11y-link" href="downloads/Antigravity-Consultas-macOS.zip">
     <span>⬇️ App para o Dock do Mac</span><span aria-hidden="true">ZIP</span>
   </a>
+  <a class="a11y-link" href="docs_usuario/ACESSO_WINDOWS.md">
+    <span>📘 Guia Windows</span><span aria-hidden="true">→</span>
+  </a>
+  <a class="a11y-link" href="docs_usuario/ACESSO_IPHONE.md">
+    <span>📘 Guia iPhone</span><span aria-hidden="true">→</span>
+  </a>
   <a class="a11y-link" href="docs_usuario/ACESSO_DOCK_MAC.md">
-    <span>📘 Passo a passo do Dock</span><span aria-hidden="true">→</span>
+    <span>📘 Guia do Dock no Mac</span><span aria-hidden="true">→</span>
   </a>
 </section>
 <div class="floaters" role="complementary" aria-label="Atalhos rápidos">
-  <button class="float-btn" id="a11yBtn" title="Acessibilidade e app para o Dock" aria-label="Abrir acessibilidade e app para o Dock" aria-controls="a11yPanel" aria-expanded="false">♿</button>
+  <button class="float-btn" id="a11yBtn" title="Acessibilidade e aplicativos" aria-label="Abrir acessibilidade e aplicativos para Mac, Windows e iPhone" aria-controls="a11yPanel" aria-expanded="false">♿</button>
   <button class="float-btn" id="topBtn" title="Voltar ao topo" aria-label="Voltar ao topo">⬆</button>
 </div>
 
@@ -2428,6 +2459,34 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&!a11yPanel.hidden){e.preventDefault();setA11yPanel(false)}
 });
 applyA11y();
+
+/* ── INSTALAÇÃO PWA (WINDOWS/EDGE/CHROME) ────────── */
+const installPwaBtn=document.getElementById('installPwaBtn');
+const installPwaStatus=document.getElementById('installPwaStatus');
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',event=>{
+  event.preventDefault();
+  deferredInstallPrompt=event;
+  installPwaBtn.hidden=false;
+});
+installPwaBtn.addEventListener('click',async()=>{
+  if(!deferredInstallPrompt){
+    installPwaStatus.textContent='Use o guia do seu dispositivo para instalar.';
+    return;
+  }
+  deferredInstallPrompt.prompt();
+  const choice=await deferredInstallPrompt.userChoice;
+  installPwaStatus.textContent=choice.outcome==='accepted'
+    ?'Instalação iniciada.'
+    :'Instalação cancelada — você pode tentar novamente pelo menu do navegador.';
+  deferredInstallPrompt=null;
+  installPwaBtn.hidden=true;
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  installPwaBtn.hidden=true;
+  installPwaStatus.textContent='Antigravity instalado neste dispositivo.';
+});
 
 /* ── TOP BUTTON ──────────────────────────────────── */
 const topBtn=document.getElementById('topBtn');

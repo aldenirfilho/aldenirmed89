@@ -10,11 +10,14 @@ arquivos internos. A sanitização/validação final continua a cargo de
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
+import stat
 import sys
 import unicodedata
+import zipfile
 from pathlib import Path, PurePosixPath
 
 try:
@@ -53,7 +56,6 @@ OPTIONAL = (
     "sw.js",
     "robots.txt",
     "sitemap.xml",
-    "downloads",
     "docs_usuario",
     "06_Infra_Site_E_Assets",
     "css",
@@ -82,6 +84,14 @@ CARD_PUBLIC_PREFIX = "05_Midia_E_Feed/assets/cards/public/"
 CARD_PUBLIC_INDEX = "05_Midia_E_Feed/data/public.json"
 CARD_ASSET_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".svg"}
 NON_PUBLIC_ADMIN_NAMES = {".gitkeep"}
+PUBLIC_DOWNLOADS = (
+    "downloads/Antigravity-Consultas-macOS.zip",
+    "downloads/Antigravity-Consultas-Windows.zip",
+    "downloads/Antigravity-Consultas-iPhone-Icones.zip",
+    "downloads/SHA256SUMS.txt",
+)
+DOWNLOAD_ARCHIVE_LIMIT = 512
+DOWNLOAD_UNCOMPRESSED_LIMIT = 64 * 1024 * 1024
 
 
 def is_within(child: Path, parent: Path) -> bool:
@@ -303,6 +313,86 @@ def validate_clinical_publication(root: Path) -> None:
             )
 
 
+def validate_public_downloads(root: Path) -> None:
+    """Publica somente pacotes declarados, íntegros e sem membros inseguros."""
+
+    downloads_root = root / "downloads"
+    expected_names = {PurePosixPath(relative).name for relative in PUBLIC_DOWNLOADS}
+    physical_names = {
+        path.name for path in downloads_root.iterdir() if path.is_file()
+    }
+    unexpected = sorted(physical_names - expected_names)
+    missing = sorted(expected_names - physical_names)
+    if unexpected:
+        raise ValueError(
+            "Download fora da allowlist pública: " + ", ".join(unexpected)
+        )
+    if missing:
+        raise ValueError("Download público ausente: " + ", ".join(missing))
+
+    checksum_path = downloads_root / "SHA256SUMS.txt"
+    checksums: dict[str, str] = {}
+    for line_number, raw_line in enumerate(
+        checksum_path.read_text(encoding="utf-8").splitlines(), start=1
+    ):
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        match = re.fullmatch(r"([0-9a-f]{64})  ([^/\\]+)", line)
+        if not match:
+            raise ValueError(
+                f"Linha inválida em downloads/SHA256SUMS.txt:{line_number}"
+            )
+        digest, filename = match.groups()
+        if filename in checksums:
+            raise ValueError(f"Checksum duplicado para download: {filename}")
+        checksums[filename] = digest
+
+    archive_names = expected_names - {"SHA256SUMS.txt"}
+    if set(checksums) != archive_names:
+        raise ValueError("SHA256SUMS.txt não corresponde à allowlist de downloads.")
+
+    for filename in sorted(archive_names):
+        archive_path = downloads_root / filename
+        digest = hashlib.sha256()
+        with archive_path.open("rb") as package:
+            for chunk in iter(lambda: package.read(1024 * 1024), b""):
+                digest.update(chunk)
+        if digest.hexdigest() != checksums[filename]:
+            raise ValueError(f"Checksum divergente para download: {filename}")
+
+        try:
+            with zipfile.ZipFile(archive_path) as archive:
+                members = archive.infolist()
+                if not members or len(members) > DOWNLOAD_ARCHIVE_LIMIT:
+                    raise ValueError(
+                        f"Quantidade insegura de membros no ZIP: {filename}"
+                    )
+                total_size = 0
+                for member in members:
+                    member_path = PurePosixPath(member.filename)
+                    total_size += member.file_size
+                    if (
+                        member.filename.startswith("/")
+                        or "\\" in member.filename
+                        or any(part in {"", ".", ".."} for part in member_path.parts)
+                        or member.flag_bits & 0x1
+                        or stat.S_ISLNK(member.external_attr >> 16)
+                    ):
+                        raise ValueError(
+                            f"Membro inseguro em {filename}: {member.filename!r}"
+                        )
+                if total_size > DOWNLOAD_UNCOMPRESSED_LIMIT:
+                    raise ValueError(f"ZIP público excede o limite: {filename}")
+                damaged = archive.testzip()
+                if damaged:
+                    raise ValueError(
+                        f"Membro corrompido em {filename}: {damaged}"
+                    )
+        except zipfile.BadZipFile as exc:
+            raise ValueError(f"Download ZIP inválido: {filename}") from exc
+
+
 def copy_entry(
     root: Path,
     site: Path,
@@ -362,6 +452,7 @@ def build(root: Path, site: Path) -> int:
     card_allowlist = load_card_public_allowlist(root)
     card_conflicts = validate_card_public_assets(root, card_allowlist)
     validate_clinical_publication(root)
+    validate_public_downloads(root)
 
     if site.exists():
         shutil.rmtree(site)
@@ -372,6 +463,8 @@ def build(root: Path, site: Path) -> int:
     for relative in OPTIONAL:
         if (root / relative).exists():
             copy_entry(root, site, relative, library_allowlist, card_allowlist)
+    for relative in PUBLIC_DOWNLOADS:
+        copy_entry(root, site, relative, library_allowlist, card_allowlist)
     for logo in sorted(root.glob("logo_concept*.png")):
         copy_entry(root, site, logo.name, library_allowlist, card_allowlist)
 

@@ -9,13 +9,17 @@
 
 - [⬇️ Baixar o app Antigravity Consultas para o Dock do macOS](downloads/Antigravity-Consultas-macOS.zip)
 - [📘 Instalar no MacBook Air, MacBook Pro ou Mac Pro](docs_usuario/ACESSO_DOCK_MAC.md)
+- [🪟 Baixar o acesso rápido para Windows](downloads/Antigravity-Consultas-Windows.zip)
+- [📘 Instalar no Windows sem privilégios administrativos](docs_usuario/ACESSO_WINDOWS.md)
+- [📱 Baixar os ícones para iPhone](downloads/Antigravity-Consultas-iPhone-Icones.zip)
+- [📘 Adicionar o Antigravity à Tela de Início do iPhone](docs_usuario/ACESSO_IPHONE.md)
 - [🔄 Alimentar Feed, Biblioteca, módulos e apps com segurança](docs_usuario/OPERACAO_CONTINUA.md)
 - [🩸 Abrir Hematologia Crítica](01_Modulos_Clinicos/Hematologia_Critica/index.html)
 - [🧬 Abrir Reumatologia Crítica](01_Modulos_Clinicos/Reumatologia_Critica/index.html)
 
 O botão flutuante **♿** da página inicial também ativa texto ampliado, alto
-contraste, redução de movimento e acesso direto ao pacote do Dock. As
-preferências ficam somente no navegador.
+contraste, redução de movimento, instalação PWA e acesso direto aos pacotes para
+Mac, Windows e iPhone. As preferências ficam somente no navegador.
 
 ---
 

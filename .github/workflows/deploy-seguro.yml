@@ -117,12 +117,25 @@ jobs:
           test -s site/offline.html
           test -s site/assets/icons/antigravity-consultas-192.png
           test -s site/assets/icons/antigravity-consultas-512.png
+          test -s site/assets/icons/apple-touch-icon.png
+          test -s site/assets/icons/ios/apple-touch-icon-120.png
+          test -s site/assets/icons/ios/apple-touch-icon-152.png
+          test -s site/assets/icons/ios/apple-touch-icon-167.png
+          test -s site/assets/icons/ios/apple-touch-icon-180.png
+          test -s site/assets/icons/ios/apple-touch-icon-1024.png
           test -s site/01_Modulos_Clinicos/Hematologia_Critica/index.html
           test -s site/01_Modulos_Clinicos/Reumatologia_Critica/index.html
           test -s site/docs_usuario/OPERACAO_CONTINUA.md
           test -s site/docs_usuario/ACESSO_DOCK_MAC.md
+          test -s site/docs_usuario/ACESSO_WINDOWS.md
+          test -s site/docs_usuario/ACESSO_IPHONE.md
           test -s site/downloads/Antigravity-Consultas-macOS.zip
+          test -s site/downloads/Antigravity-Consultas-Windows.zip
+          test -s site/downloads/Antigravity-Consultas-iPhone-Icones.zip
           unzip -t site/downloads/Antigravity-Consultas-macOS.zip
+          unzip -t site/downloads/Antigravity-Consultas-Windows.zip
+          unzip -t site/downloads/Antigravity-Consultas-iPhone-Icones.zip
+          (cd site/downloads && sha256sum -c SHA256SUMS.txt)
 
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'
@@ -130,9 +143,97 @@ jobs:
         with:
           path: './site'
 
+  windows-launcher:
+    name: Validar launcher no Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Baixar pacote e checksum do commit
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $commit = '${{ github.event.pull_request.head.sha || github.sha }}'
+          $baseUrl = "https://raw.githubusercontent.com/${{ github.repository }}/$commit/downloads"
+          New-Item -ItemType Directory -Path 'downloads' -Force | Out-Null
+          foreach ($filename in @(
+            'Antigravity-Consultas-Windows.zip',
+            'SHA256SUMS.txt'
+          )) {
+            & curl.exe --fail --location --retry 3 `
+              --output (Join-Path 'downloads' $filename) `
+              "$baseUrl/$filename"
+            if ($LASTEXITCODE -ne 0) {
+              throw "Falha ao baixar $filename do commit $commit."
+            }
+          }
+
+      - name: Instalar, conferir e desinstalar em perfil padrão
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $archive = 'downloads/Antigravity-Consultas-Windows.zip'
+          $checksumLine = Get-Content 'downloads/SHA256SUMS.txt' |
+            Where-Object { $_ -match '  Antigravity-Consultas-Windows\.zip$' }
+          if (@($checksumLine).Count -ne 1) {
+            throw 'Checksum Windows ausente ou duplicado.'
+          }
+          $expected = ($checksumLine -split '\s+')[0]
+          $actual = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $expected) {
+            throw 'Checksum Windows divergente.'
+          }
+
+          $extractRoot = Join-Path $env:RUNNER_TEMP 'antigravity-windows'
+          Expand-Archive -LiteralPath $archive -DestinationPath $extractRoot
+          $package = Join-Path $extractRoot 'Antigravity-Consultas-Windows'
+          $windowsPowerShell = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+
+          & $windowsPowerShell -NoLogo -NoProfile -ExecutionPolicy Bypass `
+            -File (Join-Path $package 'app\Instalar.ps1')
+          if ($LASTEXITCODE -ne 0) {
+            throw "Instalador terminou com codigo $LASTEXITCODE."
+          }
+
+          $desktopShortcut = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) `
+            'Antigravity Consultas.lnk'
+          $startMenuDirectory = Join-Path ([Environment]::GetFolderPath('Programs')) `
+            'Antigravity Consultas'
+          $startShortcut = Join-Path $startMenuDirectory 'Antigravity Consultas.lnk'
+          $uninstallShortcut = Join-Path $startMenuDirectory `
+            'Desinstalar Antigravity Consultas.lnk'
+          foreach ($shortcut in @($desktopShortcut, $startShortcut, $uninstallShortcut)) {
+            if (-not (Test-Path -LiteralPath $shortcut -PathType Leaf)) {
+              throw "Atalho esperado ausente: $shortcut"
+            }
+          }
+
+          $installDirectory = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) `
+            'Antigravity Consultas'
+          $sentinel = Join-Path $installDirectory 'arquivo-desconhecido.txt'
+          [IO.File]::WriteAllText($sentinel, 'preservar')
+
+          & $windowsPowerShell -NoLogo -NoProfile -ExecutionPolicy Bypass `
+            -File (Join-Path $installDirectory 'Desinstalar.ps1')
+          if ($LASTEXITCODE -ne 0) {
+            throw "Desinstalador terminou com codigo $LASTEXITCODE."
+          }
+          if (Test-Path -LiteralPath $desktopShortcut) {
+            throw 'Atalho do Desktop permaneceu após desinstalação.'
+          }
+          if (Test-Path -LiteralPath (Join-Path $installDirectory 'Abrir-Antigravity.cmd')) {
+            throw 'Launcher conhecido permaneceu após desinstalação.'
+          }
+          if (-not (Test-Path -LiteralPath $sentinel -PathType Leaf)) {
+            throw 'Arquivo desconhecido não foi preservado.'
+          }
+
+          Remove-Item -LiteralPath $sentinel -Force
+          Remove-Item -LiteralPath $installDirectory -Force
+          Write-Host 'Launcher Windows validado com instalação e desinstalação reversíveis.'
+
   deploy:
     if: github.event_name != 'pull_request'
-    needs: build
+    needs: [build, windows-launcher]
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

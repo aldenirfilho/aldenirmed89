@@ -19,6 +19,27 @@ privacidade, rastreabilidade ou segurança clínica.
 > arquivos pessoais, finanças, documentos jurídicos ou dados de pacientes com
 > uma atualização clínica.
 
+## 💻📱 Manter os acessos de Mac, Windows e iPhone
+
+Os pacotes em `downloads/` são apenas lançadores, atalhos e ícones. Eles não
+devem conter conteúdo clínico duplicado, credenciais, telemetria nem dados de
+pacientes. O conteúdo continua sendo atualizado no site publicado.
+
+Ao alterar qualquer pacote:
+
+1. mantenha a instalação sem privilégio administrativo;
+2. documente claramente todos os arquivos e ações locais;
+3. preserve desinstalação reversível e caminhos de destino restritos;
+4. regenere a linha correspondente em `downloads/SHA256SUMS.txt`;
+5. teste a estrutura do ZIP e valide dimensões/formato dos ícones;
+6. atualize o teste automatizado e o gate do GitHub Actions;
+7. faça homologação física no sistema operacional indicado antes de afirmar
+   compatibilidade total.
+
+No Windows, a instalação PWA pelo Microsoft Edge é a opção principal. O ZIP é
+uma alternativa transparente para criar atalhos locais. No iPhone, a instalação
+oficial é feita pelo Safari em **Compartilhar → Adicionar à Tela de Início**.
+
 ## 🛡️ Portão obrigatório antes de qualquer publicação
 
 Pare e mantenha o arquivo privado se qualquer resposta abaixo for “não sei”:

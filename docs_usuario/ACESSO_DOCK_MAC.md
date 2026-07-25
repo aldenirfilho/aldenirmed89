@@ -47,7 +47,8 @@ Baixe também `SHA256SUMS.txt` para a mesma pasta do ZIP. No Terminal:
 
 ```bash
 cd ~/Downloads
-shasum -a 256 -c SHA256SUMS.txt
+grep ' Antigravity-Consultas-macOS.zip$' SHA256SUMS.txt \
+  | shasum -a 256 -c -
 ```
 
 O resultado esperado termina em:

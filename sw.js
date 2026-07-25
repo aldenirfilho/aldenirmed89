@@ -1,14 +1,15 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v2`;
+const CACHE_NAME = `${CACHE_PREFIX}v3`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
   "./offline.html",
   "./manifest.webmanifest",
   "./assets/icons/antigravity-consultas-192.png",
-  "./assets/icons/antigravity-consultas-512.png"
+  "./assets/icons/antigravity-consultas-512.png",
+  "./assets/icons/apple-touch-icon.png"
 ];
 const WARM_ASSETS = [
   "./data/site_manifest.json",
@@ -78,12 +79,22 @@ async function cacheFirst(request) {
   return response;
 }
 
+function networkOnlyDownload(request) {
+  return fetch(new Request(request, { cache: "no-store" }));
+}
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
+  const downloadsPath = new URL("./downloads/", self.registration.scope).pathname;
+  if (url.pathname.startsWith(downloadsPath)) {
+    event.respondWith(networkOnlyDownload(request));
+    return;
+  }
 
   if (request.mode === "navigate") {
     event.respondWith(networkFirst(request));
