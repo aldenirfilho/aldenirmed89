@@ -5,6 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Central de Calculadoras UTI PRO | Enciclopédia Médica</title>
   <meta name="description" content="Central PRO de calculadoras UTI com drogas, diluições editáveis, ventilação mecânica, eletrólitos, renal, gasometria e segurança." />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <script>
+    /* Aplica a preferência global antes da primeira pintura. */
+    (() => {
+      try {
+        const prefs = JSON.parse(localStorage.getItem('antigravity:a11y:v1') || '{}');
+        const contrast = prefs?.contrast === true;
+        const theme = prefs?.theme;
+        const clarity = !contrast && (
+          theme === 'light' ||
+          (theme === 'system' && matchMedia('(prefers-color-scheme: light)').matches) ||
+          (!['dark', 'light', 'system'].includes(theme) && prefs?.clarity === true)
+        );
+        document.documentElement.classList.toggle('a11y-contrast', contrast);
+        document.documentElement.classList.toggle('a11y-light', clarity);
+        document.documentElement.style.colorScheme = clarity ? 'light' : 'dark';
+        document.querySelector('meta[name="theme-color"]').content = clarity ? '#ffffff' : contrast ? '#000000' : '#07111f';
+        document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content = clarity ? 'default' : 'black-translucent';
+      } catch (_) {}
+    })();
+  </script>
   <link rel="canonical" href="index.html" />
   <style>
     /*
@@ -20,6 +43,7 @@
       - sempre preservar avisos de segurança e dupla checagem.
     */
     :root{
+      color-scheme:dark;
       --bg:#07111f; --bg2:#0b182b; --panel:rgba(255,255,255,.075);
       --border:rgba(255,255,255,.14); --text:#f6f8fc; --muted:#aebbd0;
       --cyan:#3ee8ff; --green:#4ef0a1; --red:#ff6b6b; --yellow:#ffd166;
@@ -75,7 +99,64 @@
     .pill{display:inline-block;background:rgba(62,232,255,.10);border:1px solid rgba(62,232,255,.22);border-radius:999px;padding:6px 10px;color:#d9efff;font-size:.78rem;margin:6px 6px 0 0;font-weight:800}.pill.yellow{background:rgba(255,209,102,.1);border-color:rgba(255,209,102,.25);color:#fff4cf}.pill.red{background:rgba(255,107,107,.1);border-color:rgba(255,107,107,.25);color:#ffd6d6}.pill.green{background:rgba(78,240,161,.1);border-color:rgba(78,240,161,.25);color:#dfffee}
     .okText{color:var(--green)}.warnText{color:var(--yellow)}.dangerText{color:var(--red)}.small{font-size:.84rem}.copy{margin-top:10px;width:auto}.footer{color:var(--muted);border-top:1px solid rgba(255,255,255,.1);margin-top:38px;padding-top:24px}.link-grid a{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:18px;padding:14px;display:block;font-weight:900}.link-grid a small{display:block;color:var(--muted);font-weight:600;margin-top:4px;line-height:1.4}
     .drug-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.88rem}.drug-table th,.drug-table td{border-bottom:1px solid rgba(255,255,255,.1);padding:9px;text-align:left;vertical-align:top}.drug-table th{color:#d9fbff}.sticky-note{position:sticky;top:86px}
-    @media(max-width:1060px){.hero,.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(2,1fr)}.nav{display:none}.hero{padding-top:22px}.hero-copy{padding:24px}.row,.row.three{grid-template-columns:1fr}.sticky-note{position:static}}
+    .clarity-toggle{flex:0 0 auto;min-height:44px;padding:10px 13px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.08);color:var(--text);font:inherit;font-weight:900;cursor:pointer}
+    :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+    html.a11y-contrast{color-scheme:dark}
+    html.a11y-light{
+      color-scheme:light;
+      --bg:#fff;--bg2:#f6f9fc;--panel:#fff;
+      --border:#b8c7d4;--control-border:#71869a;
+      --text:#102a43;--muted:#536b7d;
+      --cyan:#006b7d;--green:#087a55;--red:#b4233f;--yellow:#855400;
+      --violet:#5946c7;--orange:#a23a00;
+      --shadow:0 16px 42px rgba(16,42,67,.1);
+    }
+    html.a11y-light body{background-color:#fff;background:radial-gradient(circle at top left,rgba(0,107,125,.08),transparent 32rem),radial-gradient(circle at 85% 10%,rgba(89,70,199,.07),transparent 30rem),linear-gradient(135deg,#fff,#f6f9fc)}
+    html.a11y-light .topbar{background:rgba(255,255,255,.96);border-bottom-color:var(--border);box-shadow:0 8px 28px rgba(16,42,67,.08)}
+    html.a11y-light .nav a,html.a11y-light .hero p,html.a11y-light label{color:var(--text)}
+    html.a11y-light .nav a[style]{color:var(--green)!important}
+    html.a11y-light .nav a:hover{background:#eef4f8}
+    html.a11y-light .brand-icon{background:#e8f6f8;border-color:var(--control-border)}
+    html.a11y-light h1{background:none;color:var(--text);-webkit-text-fill-color:var(--text)}
+    html.a11y-light .glass,html.a11y-light .card{background:rgba(255,255,255,.96);border-color:var(--border);box-shadow:var(--shadow)}
+    html.a11y-light .eyebrow{background:#e8f6f8;border-color:var(--cyan);color:var(--cyan)}
+    html.a11y-light .btn,html.a11y-light button,html.a11y-light input,html.a11y-light select,html.a11y-light textarea{background:#fff;color:var(--text);border-color:var(--control-border)}
+    html.a11y-light .btn.primary,html.a11y-light button.primary{background:var(--cyan);color:#fff;border:1px solid var(--cyan)}
+    html.a11y-light .btn:hover,html.a11y-light button:hover{background:#eef4f8}
+    html.a11y-light .btn.primary:hover,html.a11y-light button.primary:hover{background:#005568}
+    html.a11y-light .metric-grid div,html.a11y-light .link-grid a{background:#f6f9fc;border-color:var(--border)}
+    html.a11y-light .notice{background:#fff9e8;border-color:#a66a00;color:#5f3b00}
+    html.a11y-light .tab{background:#fff;border-color:var(--control-border);color:var(--text)}
+    html.a11y-light .tab.active{background:#e8f6f8;border-color:var(--cyan);color:var(--cyan);box-shadow:0 8px 24px rgba(0,107,125,.12)}
+    html.a11y-light .card.warn{background:#fff9e8;border-color:#a66a00}
+    html.a11y-light .card.danger{background:#fff4f6;border-color:var(--red)}
+    html.a11y-light .card.ok{background:#f1fbf6;border-color:var(--green)}
+    html.a11y-light input:focus,html.a11y-light select:focus,html.a11y-light textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,107,125,.12)}
+    html.a11y-light .result{background:#f6f9fc;border-color:var(--control-border)}
+    html.a11y-light .result .big{color:var(--text)}
+    html.a11y-light .formula{background:#eef4f8;border-color:var(--control-border);color:var(--text)}
+    html.a11y-light .pill{background:#e8f6f8;border-color:var(--cyan);color:var(--cyan)}
+    html.a11y-light .pill.yellow{background:#fff9e8;border-color:var(--yellow);color:var(--yellow)}
+    html.a11y-light .pill.red{background:#fff4f6;border-color:var(--red);color:var(--red)}
+    html.a11y-light .pill.green{background:#f1fbf6;border-color:var(--green);color:var(--green)}
+    html.a11y-light .drug-table th,html.a11y-light .drug-table td{border-bottom-color:var(--border)}
+    html.a11y-light .drug-table th{color:var(--cyan)}
+    html.a11y-light .clarity-toggle[aria-pressed="true"]{background:#e8f6f8;color:var(--cyan);border-color:var(--cyan)}
+    html.a11y-light :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline-color:#855400}
+    @media print{
+      @page{margin:14mm}
+      html,html.a11y-light,html.a11y-contrast{color-scheme:light;--bg:#fff;--bg2:#fff;--panel:#fff;--border:#71869a;--control-border:#71869a;--text:#102a43;--muted:#455f73;--cyan:#006b7d;--green:#087a55;--red:#b4233f;--yellow:#855400;--violet:#5946c7;--shadow:none}
+      body{background:#fff!important;color:var(--text)!important}
+      .topbar{position:static;background:#fff!important;border-color:#71869a;box-shadow:none}
+      .nav,.clarity-toggle{display:none!important}
+      h1{background:none!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important}
+      .glass,.card,.result,.formula,.notice,.metric-grid div,.link-grid a{background:#fff!important;color:var(--text)!important;border-color:#71869a!important;box-shadow:none!important}
+      .card,.result,.formula{break-inside:avoid}
+      .hero p,label,.result .big,.drug-table th{color:var(--text)!important}
+      .btn,button,input,select,textarea{background:#fff!important;color:var(--text)!important;border:1px solid #71869a!important}
+    }
+    @media(max-width:1060px){.topbar{flex-wrap:wrap}.hero,.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(2,1fr)}.nav{display:none}.hero{padding-top:22px}.hero-copy{padding:24px}.row,.row.three{grid-template-columns:1fr}.sticky-note{position:static}}
+    @media(max-width:520px){.topbar{padding:12px 14px}.brand{min-width:0}.brand small{display:none}.clarity-toggle{width:100%}}
   </style>
 </head>
 <body>
@@ -91,6 +172,7 @@
       <a href="#calculadoras" style="color:#4ef0a1">🧮 Calculadoras PRO</a>
       <a href="#seguranca">🛡️ Segurança</a>
     </nav>
+    <button class="clarity-toggle" type="button" data-clarity-toggle aria-pressed="false" aria-label="Ativar visualização clara com fundo branco">☀️ Visualização clara</button>
   </header>
 
   <main>
@@ -589,6 +671,67 @@ function init(){
   loadElectrolyte();
 }
 document.addEventListener('DOMContentLoaded',init);
+</script>
+<script>
+(() => {
+  const key='antigravity:a11y:v1';
+  const toggle=document.querySelector('[data-clarity-toggle]');
+  const themeMeta=document.querySelector('meta[name="theme-color"]');
+  const statusMeta=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+  let prefs={};
+  function readPrefs(raw){
+    try{
+      const stored=raw===undefined?localStorage.getItem(key):raw;
+      const parsed=JSON.parse(stored||'{}');
+      return parsed&&typeof parsed==='object'&&!Array.isArray(parsed)?parsed:{};
+    }catch(_){return {}}
+  }
+  function clarityEnabled(preferences){
+    if(preferences.contrast===true)return false;
+    if(preferences.theme==='light')return true;
+    if(preferences.theme==='dark')return false;
+    if(preferences.theme==='system')return matchMedia('(prefers-color-scheme: light)').matches;
+    return preferences.clarity===true;
+  }
+  function applyPrefs(){
+    const contrast=prefs.contrast===true;
+    const clarity=clarityEnabled(prefs);
+    document.documentElement.classList.toggle('a11y-contrast',contrast);
+    document.documentElement.classList.toggle('a11y-light',clarity);
+    document.documentElement.style.colorScheme=clarity?'light':'dark';
+    themeMeta?.setAttribute('content',clarity?'#ffffff':contrast?'#000000':'#07111f');
+    statusMeta?.setAttribute('content',clarity?'default':'black-translucent');
+    toggle.setAttribute('aria-pressed',String(clarity));
+    toggle.textContent=clarity?'🌙 Visualização escura':'☀️ Visualização clara';
+    toggle.setAttribute('aria-label',clarity?'Desativar visualização clara e voltar ao modo espacial escuro':'Ativar visualização clara com fundo branco');
+  }
+  prefs=readPrefs();
+  applyPrefs();
+  toggle.addEventListener('click',()=>{
+    prefs=readPrefs();
+    const clarityActive=clarityEnabled(prefs);
+    prefs.clarity=!clarityActive;
+    prefs.theme=prefs.clarity?'light':'dark';
+    if(prefs.clarity)prefs.contrast=false;
+    try{localStorage.setItem(key,JSON.stringify(prefs))}catch(_){}
+    applyPrefs();
+  });
+  window.addEventListener('storage',event=>{
+    if(event.key!==key)return;
+    prefs=readPrefs(event.newValue);
+    applyPrefs();
+  });
+  const systemTheme=matchMedia('(prefers-color-scheme: light)');
+  const handleSystemThemeChange=()=>{
+    prefs=readPrefs();
+    if(prefs.theme==='system')applyPrefs();
+  };
+  if(systemTheme.addEventListener){
+    systemTheme.addEventListener('change',handleSystemThemeChange);
+  }else{
+    systemTheme.addListener?.(handleSystemThemeChange);
+  }
+})();
 </script>
 </body>
 </html>

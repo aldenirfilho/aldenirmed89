@@ -6,6 +6,28 @@
 <title>SAPS 3 · Calculadora de Mortalidade na Admissão UTI · Antigravity</title>
 <meta name="description" content="Calculadora SAPS 3 (Simplified Acute Physiology Score 3) com estimativa de mortalidade hospitalar global e customizada para América Central/Sul (Brasil). 20 variáveis das 3 caixas. Base: Metnitz/Moreno, Intensive Care Med 2005."/>
 <meta name="theme-color" content="#040d1a"/>
+<meta name="color-scheme" content="dark light"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<script>
+/* Restaura o tema antes da primeira pintura para evitar flash escuro. */
+try{
+  const savedPrefs=JSON.parse(localStorage.getItem('antigravity:a11y:v1')||'{}');
+  const contrastActive=savedPrefs.contrast===true;
+  const savedTheme=savedPrefs.theme;
+  const clarityActive=!contrastActive&&(
+    savedTheme==='light'||
+    (savedTheme==='system'&&matchMedia('(prefers-color-scheme: light)').matches)||
+    (!['dark','light','system'].includes(savedTheme)&&savedPrefs.clarity===true)
+  );
+  document.documentElement.classList.toggle('a11y-contrast',contrastActive);
+  document.documentElement.classList.toggle('a11y-light',clarityActive);
+  document.documentElement.style.colorScheme=clarityActive?'light':'dark';
+  document.querySelector('meta[name="theme-color"]').content=
+    clarityActive?'#ffffff':contrastActive?'#000000':'#040d1a';
+  document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content=
+    clarityActive?'default':'black-translucent';
+}catch(_){}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -23,6 +45,7 @@
 -->
 <style>
 :root{
+  color-scheme:dark;
   --bg:#040d1a;--bg2:#071422;--bg3:#0b1a2e;
   --surf:rgba(255,255,255,.055);--surf-h:rgba(255,255,255,.09);
   --brd:rgba(255,255,255,.09);--brd-h:rgba(255,255,255,.18);
@@ -38,6 +61,34 @@
   --font-body:'Outfit',sans-serif;
   --r:14px;--r-lg:22px;--r-xl:32px;
   --shadow:0 24px 80px rgba(0,0,0,.4);
+}
+html.a11y-light{
+  color-scheme:light;
+  --bg:#ffffff;--bg2:#f5f8fb;--bg3:#ffffff;
+  --surf:#ffffff;--surf-h:#f2f6f9;
+  --brd:#9fb6c8;--brd-h:#71869a;--control-brd:#71869a;
+  --text:#102a43;--muted:#455f73;--soft:#263f56;
+  --cyan:#006b7d;--cyan-d:rgba(0,107,125,.10);
+  --violet:#5946c7;--vio-d:rgba(89,70,199,.10);
+  --green:#087a55;--grn-d:rgba(8,122,85,.10);
+  --yellow:#855400;--yel-d:rgba(133,84,0,.10);
+  --red:#b4233f;--red-d:rgba(180,35,63,.09);
+  --orange:#9a4d00;--orange-d:rgba(154,77,0,.10);
+  --shadow:0 18px 54px rgba(16,42,67,.12);
+}
+html.a11y-contrast{
+  color-scheme:dark;
+  --bg:#000000;--bg2:#000000;--bg3:#080808;
+  --surf:#0a0a0a;--surf-h:#161616;
+  --brd:#ffffff;--brd-h:#ffd84d;--control-brd:#ffffff;
+  --text:#ffffff;--muted:#ffffff;--soft:#ffffff;
+  --cyan:#72f1ff;--cyan-d:rgba(114,241,255,.18);
+  --violet:#d5c8ff;--vio-d:rgba(213,200,255,.18);
+  --green:#7dffbd;--grn-d:rgba(125,255,189,.18);
+  --yellow:#ffe066;--yel-d:rgba(255,224,102,.18);
+  --red:#ff8ca0;--red-d:rgba(255,140,160,.18);
+  --orange:#ffc078;--orange-d:rgba(255,192,120,.18);
+  --shadow:none;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -94,6 +145,16 @@ header.site{
   font-weight:600;font-size:.85rem;
 }
 .nav-back:hover{background:rgba(169,140,255,.22);color:var(--cyan)}
+.nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.clarity-toggle{
+  min-height:44px;padding:8px 13px;border:1px solid var(--brd);
+  border-radius:10px;background:var(--surf);color:var(--soft);
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  font-family:var(--font-mono);font-size:.74rem;font-weight:600;
+  transition:.2s;
+}
+.clarity-toggle:hover{color:var(--cyan);border-color:var(--brd-h);background:var(--surf-h)}
+.clarity-toggle[aria-pressed="true"]{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-d)}
 
 /* ── HERO ───────────────────────────────────────────── */
 .shell{max-width:1300px;margin:0 auto;padding:0 22px}
@@ -339,6 +400,84 @@ details.deep summary::-webkit-details-marker{display:none}
 details.deep summary::before{content:"▸ ";color:var(--violet)}
 details.deep[open] summary::before{content:"▾ "}
 details.deep .deep-body{margin-top:10px;font-size:.85rem;color:var(--soft);line-height:1.6}
+
+html.a11y-light body{
+  background:#ffffff;
+  color:var(--text);
+  background-image:
+    radial-gradient(900px 460px at 10% -8%,rgba(89,70,199,.06),transparent 62%),
+    radial-gradient(760px 420px at 100% 6%,rgba(0,107,125,.055),transparent 66%);
+}
+html.a11y-light header.site{
+  background:rgba(255,255,255,.94);
+  box-shadow:0 8px 24px rgba(16,42,67,.08);
+}
+html.a11y-light h1.title{
+  background:none;color:var(--text);-webkit-text-fill-color:currentColor;
+}
+html.a11y-light .brand-mark{color:#ffffff}
+html.a11y-light ::selection{background:var(--violet);color:#ffffff}
+html.a11y-light .box{
+  background:linear-gradient(180deg,#ffffff,#f8fafc);
+}
+html.a11y-light .item{border-bottom-color:var(--brd)}
+html.a11y-light .result-panel{
+  background:linear-gradient(180deg,rgba(89,70,199,.055),rgba(0,107,125,.035));
+  border-color:#71869a;
+}
+html.a11y-light .score-big{
+  background:none;color:var(--violet);-webkit-text-fill-color:currentColor;
+}
+html.a11y-light .num-row input[type="number"],
+html.a11y-light .num-row select,
+html.a11y-light .opt,
+html.a11y-light .btn,
+html.a11y-light .nav-back,
+html.a11y-light .clarity-toggle{
+  border-color:var(--control-brd);
+}
+html.a11y-light .btn.primary{
+  background:var(--violet);border-color:var(--violet);color:#ffffff;
+}
+html.a11y-light .btn.primary:hover{
+  background:#006b7d;border-color:#006b7d;color:#ffffff;
+}
+html.a11y-light :where(a,button,input,select,[tabindex]):focus-visible,
+html.a11y-contrast :where(a,button,input,select,[tabindex]):focus-visible{
+  outline:3px solid #855400!important;outline-offset:3px;
+}
+html.a11y-contrast :where(a,button,input,select,[tabindex]):focus-visible{
+  outline-color:#ffe066!important;
+}
+
+@media(max-width:720px){
+  .clarity-label{display:none}
+  .nav-actions{width:100%;justify-content:flex-end}
+}
+
+@media print{
+  @page{margin:13mm}
+  html,html.a11y-light,html.a11y-contrast{
+    color-scheme:light;
+    --bg:#ffffff;--bg2:#ffffff;--bg3:#ffffff;
+    --surf:#ffffff;--surf-h:#f5f8fb;
+    --brd:#9fb6c8;--brd-h:#71869a;--control-brd:#71869a;
+    --text:#102a43;--muted:#455f73;--soft:#263f56;
+    --cyan:#006b7d;--violet:#5946c7;--green:#087a55;
+    --yellow:#855400;--red:#b4233f;--orange:#9a4d00;
+    --shadow:none;
+  }
+  *{animation:none!important;transition:none!important;box-shadow:none!important}
+  body{background:#fff!important;color:var(--text)!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  header.site{position:static;background:#fff!important}
+  .nav-links,.clarity-toggle,.actions{display:none!important}
+  .shell{max-width:none;padding-left:0;padding-right:0}
+  .grid-main{grid-template-columns:1fr}
+  .result-panel{position:static;break-inside:avoid;page-break-inside:avoid}
+  .box,.info-card,.mort-block{break-inside:avoid;page-break-inside:avoid;background:#fff!important}
+  h1.title,.score-big{background:none!important;color:var(--text)!important;-webkit-text-fill-color:currentColor!important}
+  a{text-decoration:none}
+}
 </style>
 </head>
 <body>
@@ -356,7 +495,14 @@ details.deep .deep-body{margin-top:10px;font-size:.85rem;color:var(--soft);line-
       <a href="#box3">🩺 Box III</a>
       <a href="#info">📚 Referências</a>
     </div>
-    <a class="nav-back" href="../index.html">← Voltar</a>
+    <div class="nav-actions">
+      <button class="clarity-toggle" id="clarity-toggle" type="button"
+        aria-pressed="false" aria-label="Ativar visualização clara com fundo branco"
+        title="Ativar visualização clara">
+        <span aria-hidden="true">☀️</span><span class="clarity-label">Visualização clara</span>
+      </button>
+      <a class="nav-back" href="../index.html">← Voltar</a>
+    </div>
   </nav>
 </header>
 
@@ -802,6 +948,75 @@ details.deep .deep-body{margin-top:10px;font-size:.85rem;color:var(--soft);line-
   <p>Plantonista UTI/Enfermaria — Hospital Regional Norte e Santa Casa de Sobral</p>
   <p style="margin-top:8px;color:var(--orange)">⚠️ Esta ferramenta não substitui julgamento clínico, contexto individual do paciente nem avaliação intensivista beira-leito.</p>
 </footer>
+
+<script>
+/* ── VISUALIZAÇÃO CLARA COMPARTILHADA ───────────────────────── */
+(()=>{
+  const preferenceKey='antigravity:a11y:v1';
+  const root=document.documentElement;
+  const toggle=document.getElementById('clarity-toggle');
+  const themeColor=document.querySelector('meta[name="theme-color"]');
+  const appleStatus=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+
+  function readPreferences(){
+    try{
+      const value=JSON.parse(localStorage.getItem(preferenceKey)||'{}');
+      return value&&typeof value==='object'&&!Array.isArray(value)?value:{};
+    }catch(_){return {}}
+  }
+  function clarityEnabled(preferences){
+    if(preferences.contrast===true)return false;
+    if(preferences.theme==='light')return true;
+    if(preferences.theme==='dark')return false;
+    if(preferences.theme==='system')return matchMedia('(prefers-color-scheme: light)').matches;
+    return preferences.clarity===true;
+  }
+  function applyPreferences(preferences){
+    const contrastActive=preferences.contrast===true;
+    const clarityActive=clarityEnabled(preferences);
+    root.classList.toggle('a11y-contrast',contrastActive);
+    root.classList.toggle('a11y-light',clarityActive);
+    root.style.colorScheme=clarityActive?'light':'dark';
+    themeColor?.setAttribute('content',clarityActive?'#ffffff':contrastActive?'#000000':'#040d1a');
+    appleStatus?.setAttribute('content',clarityActive?'default':'black-translucent');
+    toggle.setAttribute('aria-pressed',String(clarityActive));
+    toggle.querySelector('[aria-hidden="true"]').textContent=clarityActive?'🌙':'☀️';
+    toggle.title=clarityActive?'Voltar ao modo espacial escuro':'Ativar visualização clara';
+    toggle.setAttribute(
+      'aria-label',
+      clarityActive
+        ?'Desativar visualização clara e voltar ao modo espacial escuro'
+        :'Ativar visualização clara com fundo branco'
+    );
+  }
+  toggle.addEventListener('click',()=>{
+    const current=readPreferences();
+    const clarityActive=clarityEnabled(current);
+    const updated={
+      ...current,
+      clarity:!clarityActive,
+      theme:clarityActive?'dark':'light'
+    };
+    if(updated.clarity)updated.contrast=false;
+    try{localStorage.setItem(preferenceKey,JSON.stringify(updated))}catch(_){}
+    applyPreferences(updated);
+  });
+  window.addEventListener('storage',event=>{
+    if(event.key===preferenceKey)applyPreferences(readPreferences());
+  });
+  const systemTheme=matchMedia('(prefers-color-scheme: light)');
+  const handleSystemThemeChange=()=>{
+    const current=readPreferences();
+    if(current.theme==='system')applyPreferences(current);
+  };
+  if(systemTheme.addEventListener){
+    systemTheme.addEventListener('change',handleSystemThemeChange);
+  }else{
+    systemTheme.addListener?.(handleSystemThemeChange);
+  }
+  applyPreferences(readPreferences());
+})();
+</script>
 
 <script>
 (function(){

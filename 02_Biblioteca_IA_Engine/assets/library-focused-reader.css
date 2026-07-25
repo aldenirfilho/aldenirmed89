@@ -1,7 +1,10 @@
 /* Biblioteca IA - Leitura Focada v2
    A camada visual nunca altera o documento original. */
 
-.preview-overlay { --reader-muted-accessible: #a8b4c8; }
+.preview-overlay {
+  --reader-muted-accessible: #a8b4c8;
+  --reader-focus-ring: #38bdf8;
+}
 
 .preview-toolbar { flex-wrap: wrap; }
 .preview-toolbar-actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
@@ -20,7 +23,7 @@
 }
 
 .preview-overlay :is(button, a, input, select, textarea):focus-visible {
-  outline: 3px solid #38bdf8;
+  outline: 3px solid var(--reader-focus-ring);
   outline-offset: 3px;
 }
 
@@ -64,8 +67,11 @@
 }
 
 .reader-tools button { cursor: pointer; padding: .55rem .7rem; }
-.reader-tools button:hover,
-.reader-tools button:focus-visible { border-color: var(--accent); outline: 2px solid rgba(0, 212, 255, .18); }
+.reader-tools button:hover { border-color: var(--accent); }
+.reader-tools button:focus-visible {
+  border-color: var(--accent);
+  outline: 3px solid var(--reader-focus-ring);
+}
 .reader-tools button[aria-pressed="true"] { background: var(--accent); color: #06101d; border-color: var(--accent); }
 .reader-tools button:disabled { cursor: not-allowed; opacity: .42; }
 .reader-tools select { padding: .45rem .55rem; }
@@ -156,7 +162,8 @@
   padding: .15rem .4rem;
   border: 1px solid var(--highlight-color, #fde047);
   border-radius: 999px;
-  color: var(--highlight-color, #fde047);
+  background: var(--highlight-color, #fde047);
+  color: #102a43;
   font: 800 .62rem/1.2 "JetBrains Mono", monospace;
   text-transform: uppercase;
 }
@@ -213,7 +220,7 @@
   }
   .reader-mobile-navigation button:focus-visible {
     border-color: var(--accent);
-    outline: 3px solid #38bdf8;
+    outline: 3px solid var(--reader-focus-ring);
     outline-offset: 2px;
   }
   .reader-mobile-navigation button[aria-pressed="true"] {

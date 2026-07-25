@@ -1,13 +1,196 @@
 <!doctype html>
-<html lang="pt-BR" data-theme="dark">
+<html lang="pt-BR" data-theme="dark" data-module="hematologia" data-legacy-theme-key="hemato-theme" data-dark-theme-color="#17070d">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#17070d">
+  <meta name="color-scheme" content="dark light">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="description" content="Plataforma TDAH-friendly de Hematologia Crítica: PTT, MAT, HLH/MAS, CIVD, LPA e outras emergências, com revisão Turbo TEMI.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'sha256-IQsMvsYeFrDZp8eE4iPNC6XswoVwmV/gvfA/EQnfpQc='; script-src 'self' 'sha256-dxzSd0HGlfBmkMOL5rjGWsZELBjOgVAnD2k7dRHI1lM=' 'sha256-FzhtNnQLFNJk5qJ7EtTyqvIVAA/G9YYOH8s654rnbGA='; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>Hematologia Crítica — Antigravity</title>
+  <script data-clarity-bootstrap>
+    (() => {
+      const root = document.documentElement;
+      const globalKey = "antigravity:a11y:v1";
+      const legacyKey = root.dataset.legacyThemeKey;
+      let preferences = {};
+      let hasGlobalPreference = false;
+      let legacyTheme = null;
+      try {
+        const serialized = localStorage.getItem(globalKey);
+        hasGlobalPreference = serialized !== null;
+        preferences = JSON.parse(serialized || "{}");
+        if (!preferences || typeof preferences !== "object" || Array.isArray(preferences)) preferences = {};
+      } catch (_) {
+        preferences = {};
+      }
+      try {
+        legacyTheme = legacyKey ? localStorage.getItem(legacyKey) : null;
+      } catch (_) {}
+      const contrast = preferences.contrast === true;
+      const legacyClarity = legacyTheme === "light" || legacyTheme === '"light"';
+      const hasTheme = ["dark", "light", "system"].includes(preferences.theme);
+      const systemLight = matchMedia("(prefers-color-scheme: light)").matches;
+      const globalClarity = hasTheme
+        ? preferences.theme === "light" || (preferences.theme === "system" && systemLight)
+        : typeof preferences.clarity === "boolean" ? preferences.clarity : null;
+      const clarity = !contrast && (globalClarity === null ? legacyClarity : globalClarity);
+      root.classList.toggle("a11y-contrast", contrast);
+      root.classList.toggle("a11y-light", clarity);
+      root.dataset.theme = clarity ? "light" : "dark";
+      root.style.colorScheme = clarity ? "light" : "dark";
+      document.querySelector('meta[name="theme-color"]').content = clarity
+        ? "#ffffff"
+        : contrast ? "#000000" : root.dataset.darkThemeColor;
+      document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content =
+        clarity ? "default" : "black-translucent";
+    })();
+  </script>
   <link rel="stylesheet" href="assets/styles.css">
+  <style data-clarity-styles>
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg: #ffffff;
+      --bg-2: #f6f9fc;
+      --panel: #ffffff;
+      --panel-2: #eef4f8;
+      --panel-3: #e6edf3;
+      --text: #102a43;
+      --soft: #334e68;
+      --muted: #536b7d;
+      --line: #71869a;
+      --line-strong: #526779;
+      --blood: #b4233f;
+      --blood-2: #8f1933;
+      --rose: #9f1239;
+      --amber: #855400;
+      --yellow: #855400;
+      --green: #087a55;
+      --cyan: #006b7d;
+      --violet: #5946c7;
+      --danger-bg: #fff4f5;
+      --shadow: 0 18px 48px rgba(16, 42, 67, 0.11);
+    }
+    html[data-module="reumatologia"][data-theme="light"] {
+      --blood: #087a55;
+      --blood-2: #055f3d;
+      --rose: #087a55;
+    }
+    html[data-theme="light"] body,
+    html[data-theme="light"] .hero {
+      background: #ffffff;
+    }
+    html[data-theme="light"] .topbar {
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom-color: #71869a;
+      box-shadow: 0 8px 28px rgba(16, 42, 67, 0.08);
+    }
+    html[data-theme="light"] :where(button, a, input, select, textarea, [tabindex]):focus-visible {
+      outline-color: #855400;
+    }
+    html[data-theme="light"] :where(.icon-button, .button, input, select, textarea, .filter-button, .comparison-tabs button, .study-tabs button) {
+      border-color: #71869a;
+    }
+    html[data-theme="light"] #themeToggle[aria-pressed="true"] {
+      color: var(--blood);
+      background: var(--panel-2);
+      border-color: var(--blood);
+    }
+    html[data-theme="light"] .emergency-card[data-category="hiperinflamacao"] {
+      --card-accent: #9a3412;
+    }
+    html.a11y-contrast {
+      color-scheme: dark;
+      --bg: #000000;
+      --bg-2: #000000;
+      --panel: #000000;
+      --panel-2: #111111;
+      --panel-3: #171717;
+      --text: #ffffff;
+      --soft: #ffffff;
+      --muted: #f5f5f5;
+      --line: #ffffff;
+      --line-strong: #ffffff;
+      --blood: #ffea00;
+      --blood-2: #ffd600;
+      --rose: #ffea00;
+      --amber: #ffea00;
+      --yellow: #ffea00;
+      --green: #72ffb2;
+      --cyan: #7eeeff;
+      --violet: #d7c5ff;
+      --danger-bg: #000000;
+      --shadow: none;
+    }
+    html.a11y-contrast body,
+    html.a11y-contrast .hero,
+    html.a11y-contrast .topbar {
+      background: #000000;
+    }
+    html.a11y-contrast :where(button, a, input, select, textarea, [tabindex]):focus-visible {
+      outline-color: #ffea00;
+    }
+    @media print {
+      html,
+      html[data-theme="light"],
+      html[data-theme="dark"],
+      html.a11y-contrast {
+        color-scheme: light;
+        --bg: #ffffff;
+        --bg-2: #ffffff;
+        --panel: #ffffff;
+        --panel-2: #ffffff;
+        --panel-3: #f1f5f9;
+        --text: #102a43;
+        --soft: #334e68;
+        --muted: #455f73;
+        --line: #71869a;
+        --line-strong: #526779;
+        --blood: #9f1239;
+        --blood-2: #7f1d1d;
+        --rose: #9f1239;
+        --amber: #855400;
+        --yellow: #855400;
+        --green: #087a55;
+        --cyan: #006b7d;
+        --violet: #5946c7;
+        --shadow: none;
+      }
+      body,
+      .hero,
+      .section,
+      .section-plantao,
+      .section-diff,
+      .section-products,
+      .section-review {
+        background: #ffffff !important;
+        color: var(--text) !important;
+        print-color-adjust: economy;
+        -webkit-print-color-adjust: economy;
+      }
+      .emergency-card,
+      .decision-panel,
+      .comparison-card,
+      .review-card,
+      .learning-card,
+      .alert-card,
+      .calculator-panel {
+        background: #ffffff !important;
+        border-color: #71869a !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+      .emergency-card[data-category="hiperinflamacao"] {
+        --card-accent: #9a3412;
+      }
+      .cockpit-warning {
+        color: #704600 !important;
+        background: #fff8e8 !important;
+        border-color: #855400 !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -28,7 +211,7 @@
         <a href="#produtos">Produtos didáticos</a>
         <a href="#turbo">Turbo TEMI</a>
         <button class="icon-button" id="focusToggle" type="button" aria-pressed="false" title="Alternar modo foco">🎯 <span>Foco</span></button>
-        <button class="icon-button" id="themeToggle" type="button" title="Alternar tema">◐ <span>Tema</span></button>
+        <button class="icon-button" id="themeToggle" data-clarity-toggle type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco" title="Ativar visualização clara">☀️ <span>Clara</span></button>
       </nav>
     </div>
   </header>
@@ -369,5 +552,124 @@
 
   <script src="data/catalog.js"></script>
   <script src="assets/app.js"></script>
+  <script data-clarity-controller>
+    (() => {
+      const root = document.documentElement;
+      const globalKey = "antigravity:a11y:v1";
+      const legacyKey = root.dataset.legacyThemeKey;
+      const button = document.querySelector("[data-clarity-toggle]");
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      const statusMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+
+      function readGlobal(serialized) {
+        const supplied = arguments.length > 0;
+        let raw = serialized;
+        try {
+          if (!supplied) raw = localStorage.getItem(globalKey);
+          const preferences = JSON.parse(raw || "{}");
+          return {
+            hasGlobalPreference: raw !== null,
+            preferences: preferences && typeof preferences === "object" && !Array.isArray(preferences)
+              ? preferences
+              : {}
+          };
+        } catch (_) {
+          return { hasGlobalPreference: raw !== null, preferences: {} };
+        }
+      }
+
+      function legacyIsLight() {
+        try {
+          const value = legacyKey ? localStorage.getItem(legacyKey) : null;
+          return value === "light" || value === '"light"';
+        } catch (_) {
+          return false;
+        }
+      }
+      function clarityEnabled(state) {
+        if (state.preferences.contrast === true) return false;
+        const theme = state.preferences.theme;
+        if (theme === "light") return true;
+        if (theme === "dark") return false;
+        if (theme === "system") return matchMedia("(prefers-color-scheme: light)").matches;
+        if (typeof state.preferences.clarity === "boolean") return state.preferences.clarity;
+        return legacyIsLight();
+      }
+
+      function applyState(state) {
+        const contrast = state.preferences.contrast === true;
+        const clarity = clarityEnabled(state);
+        root.classList.toggle("a11y-contrast", contrast);
+        root.classList.toggle("a11y-light", clarity);
+        root.dataset.theme = clarity ? "light" : "dark";
+        root.style.colorScheme = clarity ? "light" : "dark";
+        themeMeta?.setAttribute(
+          "content",
+          clarity ? "#ffffff" : contrast ? "#000000" : root.dataset.darkThemeColor
+        );
+        statusMeta?.setAttribute("content", clarity ? "default" : "black-translucent");
+        if (button) {
+          button.setAttribute("aria-pressed", String(clarity));
+          button.setAttribute(
+            "aria-label",
+            clarity
+              ? "Desativar visualização clara e voltar ao modo espacial escuro"
+              : "Ativar visualização clara com fundo branco"
+          );
+          button.title = clarity ? "Voltar ao modo espacial escuro" : "Ativar visualização clara";
+          button.innerHTML = clarity ? "🌙 <span>Escura</span>" : "☀️ <span>Clara</span>";
+        }
+      }
+
+      function currentState(serialized) {
+        return arguments.length > 0 ? readGlobal(serialized) : readGlobal();
+      }
+
+      function toggleClarity(event) {
+        event?.preventDefault();
+        event?.stopImmediatePropagation();
+        const current = readGlobal();
+        const clarity = clarityEnabled(current);
+        const updated = {
+          ...current.preferences,
+          clarity: !clarity,
+          theme: clarity ? "dark" : "light"
+        };
+        if (updated.clarity) updated.contrast = false;
+        try {
+          localStorage.setItem(globalKey, JSON.stringify(updated));
+          if (legacyKey) localStorage.setItem(legacyKey, updated.clarity ? "light" : "dark");
+        } catch (_) {}
+        applyState({ hasGlobalPreference: true, preferences: updated });
+      }
+
+      button?.addEventListener("click", toggleClarity, true);
+      document.addEventListener("keydown", (event) => {
+        const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || "");
+        if (
+          !typing &&
+          !event.metaKey &&
+          !event.ctrlKey &&
+          !event.altKey &&
+          event.key.toLowerCase() === "t"
+        ) toggleClarity(event);
+      }, true);
+      window.addEventListener("storage", (event) => {
+        if (event.key !== globalKey) return;
+        applyState(currentState(event.newValue));
+      });
+      const systemTheme = matchMedia("(prefers-color-scheme: light)");
+      const handleSystemThemeChange = () => {
+        const state = currentState();
+        if (state.preferences.theme === "system") applyState(state);
+      };
+      if (systemTheme.addEventListener) {
+        systemTheme.addEventListener("change", handleSystemThemeChange);
+      } else {
+        systemTheme.addListener?.(handleSystemThemeChange);
+      }
+      applyState(currentState());
+    })();
+  </script>
 </body>
 </html>

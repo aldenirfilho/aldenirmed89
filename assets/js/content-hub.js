@@ -4,6 +4,80 @@ const state = {
   source: "todos",
   query: ""
 };
+let previewReturnFocus = null;
+let previewBackgroundState = [];
+const PREVIEW_FOCUSABLE = [
+  'a[href]:not([tabindex="-1"])',
+  'button:not([disabled]):not([tabindex="-1"])',
+  'audio[controls]',
+  'video[controls]',
+  'iframe:not([tabindex="-1"])',
+  '[tabindex]:not([tabindex="-1"])'
+].join(",");
+
+function previewFocusableElements() {
+  const overlay = document.getElementById("preview");
+  if (!overlay) return [];
+  return Array.from(overlay.querySelectorAll(PREVIEW_FOCUSABLE)).filter(element => {
+    if (!(element instanceof HTMLElement) || element.hidden) return false;
+    if (element.getAttribute("aria-hidden") === "true") return false;
+    const style = window.getComputedStyle(element);
+    return style.display !== "none" && style.visibility !== "hidden";
+  });
+}
+
+function setPreviewModalEnvironment(open) {
+  const overlay = document.getElementById("preview");
+  if (!overlay) return;
+  if (open) {
+    if (!previewBackgroundState.length) {
+      previewBackgroundState = Array.from(document.body.children)
+        .filter(element => element !== overlay && !["SCRIPT", "STYLE"].includes(element.tagName))
+        .map(element => ({
+          element,
+          inert: element.hasAttribute("inert"),
+          ariaHidden: element.getAttribute("aria-hidden")
+        }));
+      previewBackgroundState.forEach(entry => {
+        entry.element.setAttribute("inert", "");
+        entry.element.setAttribute("aria-hidden", "true");
+      });
+    }
+    document.body.classList.add("preview-modal-open");
+    overlay.setAttribute("aria-hidden", "false");
+    return;
+  }
+  previewBackgroundState.forEach(entry => {
+    if (entry.inert) entry.element.setAttribute("inert", "");
+    else entry.element.removeAttribute("inert");
+    if (entry.ariaHidden === null) entry.element.removeAttribute("aria-hidden");
+    else entry.element.setAttribute("aria-hidden", entry.ariaHidden);
+  });
+  previewBackgroundState = [];
+  document.body.classList.remove("preview-modal-open");
+  overlay.setAttribute("aria-hidden", "true");
+}
+
+function trapPreviewTab(event) {
+  const overlay = document.getElementById("preview");
+  if (!overlay?.classList.contains("open") || event.key !== "Tab") return;
+  const focusable = previewFocusableElements();
+  if (!focusable.length) {
+    event.preventDefault();
+    overlay.focus();
+    return;
+  }
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  const active = document.activeElement;
+  if (event.shiftKey && (active === first || !overlay.contains(active))) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && (active === last || !overlay.contains(active))) {
+    event.preventDefault();
+    first.focus();
+  }
+}
 
 const fmtIcon = {
   pdf: "📄", ebook: "📘", word: "📝", spreadsheet: "📊", markdown: "⬇️", csv: "📈",
@@ -206,6 +280,9 @@ function openPreview(encodedPath, title, format, source) {
     window.open(href, "_blank", "noopener");
     return;
   }
+  previewReturnFocus = document.activeElement instanceof HTMLElement
+    ? document.activeElement
+    : null;
   if (format === "image") {
     frame.style.display = "none";
     body.style.display = "grid";
@@ -231,13 +308,33 @@ function openPreview(encodedPath, title, format, source) {
   } else {
     frame.src = href;
   }
+  setPreviewModalEnvironment(true);
   overlay.classList.add("open");
+  requestAnimationFrame(() => {
+    const closeButton = overlay.querySelector("[data-preview-close]");
+    (closeButton || overlay).focus();
+  });
 }
 
 function closePreview() {
+  const overlay = document.getElementById("preview");
   document.getElementById("preview-frame").src = "about:blank";
-  document.getElementById("preview").classList.remove("open");
+  overlay.classList.remove("open");
+  setPreviewModalEnvironment(false);
+  if (previewReturnFocus && document.contains(previewReturnFocus)) previewReturnFocus.focus();
+  previewReturnFocus = null;
 }
+
+document.addEventListener("keydown", event => {
+  const overlay = document.getElementById("preview");
+  if (!overlay?.classList.contains("open")) return;
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closePreview();
+    return;
+  }
+  trapPreviewTab(event);
+});
 
 initHub().catch(err => {
   console.error(err);

@@ -6,6 +6,28 @@
 <title>RenalDose ICU · Ajuste de Antimicrobianos para Função Renal · Antigravity</title>
 <meta name="description" content="Tutorial e calculadora prática de ajuste de doses de antimicrobianos para função renal em UTI adulto. CKD-EPI 2021, Cockcroft-Gault, KDIGO CKD 2024, AKI 2012. Base: Sanford Guide e UpToDate."/>
 <meta name="theme-color" content="#040d1a"/>
+<meta name="color-scheme" content="dark light"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<script>
+/* Restaura o tema antes da primeira pintura para evitar flash escuro. */
+try{
+  const savedPrefs=JSON.parse(localStorage.getItem('antigravity:a11y:v1')||'{}');
+  const contrastActive=savedPrefs.contrast===true;
+  const savedTheme=savedPrefs.theme;
+  const clarityActive=!contrastActive&&(
+    savedTheme==='light'||
+    (savedTheme==='system'&&matchMedia('(prefers-color-scheme: light)').matches)||
+    (!['dark','light','system'].includes(savedTheme)&&savedPrefs.clarity===true)
+  );
+  document.documentElement.classList.toggle('a11y-contrast',contrastActive);
+  document.documentElement.classList.toggle('a11y-light',clarityActive);
+  document.documentElement.style.colorScheme=clarityActive?'light':'dark';
+  document.querySelector('meta[name="theme-color"]').content=
+    clarityActive?'#ffffff':contrastActive?'#000000':'#040d1a';
+  document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content=
+    clarityActive?'default':'black-translucent';
+}catch(_){}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -22,6 +44,7 @@
 -->
 <style>
 :root{
+  color-scheme:dark;
   --bg:#040d1a;--bg2:#071422;--bg3:#0b1a2e;
   --surf:rgba(255,255,255,.055);--surf-h:rgba(255,255,255,.09);
   --brd:rgba(255,255,255,.09);--brd-h:rgba(255,255,255,.18);
@@ -37,6 +60,34 @@
   --font-body:'Outfit',sans-serif;
   --r:14px;--r-lg:22px;--r-xl:32px;
   --shadow:0 24px 80px rgba(0,0,0,.4);
+}
+html.a11y-light{
+  color-scheme:light;
+  --bg:#ffffff;--bg2:#f5f8fb;--bg3:#ffffff;
+  --surf:#ffffff;--surf-h:#f2f6f9;
+  --brd:#9fb6c8;--brd-h:#71869a;--control-brd:#71869a;
+  --text:#102a43;--muted:#455f73;--soft:#263f56;
+  --cyan:#006b7d;--cyan-d:rgba(0,107,125,.10);
+  --violet:#5946c7;--vio-d:rgba(89,70,199,.10);
+  --green:#087a55;--grn-d:rgba(8,122,85,.10);
+  --yellow:#855400;--yel-d:rgba(133,84,0,.10);
+  --red:#b4233f;--red-d:rgba(180,35,63,.09);
+  --orange:#9a4d00;--orange-d:rgba(154,77,0,.10);
+  --shadow:0 18px 54px rgba(16,42,67,.12);
+}
+html.a11y-contrast{
+  color-scheme:dark;
+  --bg:#000000;--bg2:#000000;--bg3:#080808;
+  --surf:#0a0a0a;--surf-h:#161616;
+  --brd:#ffffff;--brd-h:#ffd84d;--control-brd:#ffffff;
+  --text:#ffffff;--muted:#ffffff;--soft:#ffffff;
+  --cyan:#72f1ff;--cyan-d:rgba(114,241,255,.18);
+  --violet:#d5c8ff;--vio-d:rgba(213,200,255,.18);
+  --green:#7dffbd;--grn-d:rgba(125,255,189,.18);
+  --yellow:#ffe066;--yel-d:rgba(255,224,102,.18);
+  --red:#ff8ca0;--red-d:rgba(255,140,160,.18);
+  --orange:#ffc078;--orange-d:rgba(255,192,120,.18);
+  --shadow:none;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -91,6 +142,16 @@ header.top{
   color:var(--soft);transition:.2s;
 }
 .nav-back:hover{color:var(--cyan);border-color:var(--brd-h);background:var(--surf)}
+.nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.clarity-toggle{
+  min-height:44px;padding:8px 13px;border:1px solid var(--brd);
+  border-radius:10px;background:var(--surf);color:var(--soft);
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  font-family:var(--font-mono);font-size:.74rem;font-weight:600;
+  transition:.2s;
+}
+.clarity-toggle:hover{color:var(--cyan);border-color:var(--brd-h);background:var(--surf-h)}
+.clarity-toggle[aria-pressed="true"]{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-d)}
 
 /* ── HERO ────────────────────────────────── */
 .hero{padding:48px 0 24px}
@@ -301,6 +362,76 @@ footer{
 }
 footer a{color:var(--cyan)}
 
+html.a11y-light body{
+  background:#ffffff;
+  color:var(--text);
+}
+html.a11y-light body::before{
+  background:
+    radial-gradient(circle at 14% 4%,rgba(0,107,125,.08),transparent 40%),
+    radial-gradient(circle at 90% 78%,rgba(89,70,199,.06),transparent 46%);
+}
+html.a11y-light body::after{
+  background-image:radial-gradient(rgba(16,42,67,.10) 1px,transparent 1px);
+}
+html.a11y-light header.top{
+  background:rgba(255,255,255,.94);
+  box-shadow:0 8px 24px rgba(16,42,67,.08);
+}
+html.a11y-light .calc-grid{
+  background:linear-gradient(135deg,rgba(0,107,125,.05),rgba(89,70,199,.035));
+}
+html.a11y-light .warn-box{
+  background:linear-gradient(135deg,rgba(154,77,0,.08),rgba(180,35,63,.045));
+  border-color:#9a4d00;
+}
+html.a11y-light .field input,
+html.a11y-light .field select,
+html.a11y-light .search-box,
+html.a11y-light .eq-btn,
+html.a11y-light .chip,
+html.a11y-light .nav-back,
+html.a11y-light .clarity-toggle{
+  border-color:var(--control-brd);
+}
+html.a11y-light .stage-G2{background:rgba(23,92,211,.10);color:#175cd3}
+html.a11y-light .stage-G2 .dot{background:#175cd3}
+html.a11y-light .dose-row.highlight{background:rgba(133,84,0,.08);border-top-color:#855400}
+html.a11y-light .drug-notes{background:rgba(0,107,125,.06)}
+html.a11y-light .drug-warn{background:rgba(180,35,63,.06)}
+html.a11y-light :where(a,button,input,select,[tabindex]):focus-visible,
+html.a11y-contrast :where(a,button,input,select,[tabindex]):focus-visible{
+  outline:3px solid #855400!important;outline-offset:3px;
+}
+html.a11y-contrast :where(a,button,input,select,[tabindex]):focus-visible{
+  outline-color:#ffe066!important;
+}
+
+@media print{
+  @page{margin:13mm}
+  html,html.a11y-light,html.a11y-contrast{
+    color-scheme:light;
+    --bg:#ffffff;--bg2:#ffffff;--bg3:#ffffff;
+    --surf:#ffffff;--surf-h:#f5f8fb;
+    --brd:#9fb6c8;--brd-h:#71869a;--control-brd:#71869a;
+    --text:#102a43;--muted:#455f73;--soft:#263f56;
+    --cyan:#006b7d;--violet:#5946c7;--green:#087a55;
+    --yellow:#855400;--red:#b4233f;--orange:#9a4d00;
+    --shadow:none;
+  }
+  *{animation:none!important;transition:none!important;box-shadow:none!important}
+  body{background:#fff!important;color:var(--text)!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  body::before,body::after,.clarity-toggle{display:none!important}
+  header.top{position:static;background:#fff!important}
+  .shell{max-width:none;padding-left:0;padding-right:0}
+  .calc-grid{grid-template-columns:1fr;background:#fff!important}
+  .drug-card,.tut-card,.calc-result,.warn-box{break-inside:avoid;page-break-inside:avoid}
+  .filter-bar{background:#fff!important}
+  .stage-G2{background:#eef4ff!important;color:#175cd3!important}
+  .stage-G2 .dot{background:#175cd3!important}
+  a{text-decoration:none}
+}
+
 @media(max-width:880px){
   .calc-grid{grid-template-columns:1fr}
   .calc-fields{grid-template-columns:1fr 1fr}
@@ -308,12 +439,16 @@ footer a{color:var(--cyan)}
   .dose-row .pres-text{padding-left:18px;border-left:2px solid var(--brd)}
   .hero{padding:32px 0 16px}
   .shell{padding:0 18px}
-  .nav{padding:12px 18px}
+  .nav{padding:12px 18px;flex-wrap:wrap}
+  .nav-actions{min-width:0}
   .brand-text span{display:none}
+  .clarity-label{display:none}
 }
 @media(max-width:520px){
   .calc-fields{grid-template-columns:1fr}
   .result-value{font-size:2.2rem}
+  .nav-actions{flex:1 1 100%;justify-content:space-between;margin-left:0}
+  .nav-back{min-width:0;padding:8px 10px;font-size:.7rem}
 }
 </style>
 </head>
@@ -328,7 +463,14 @@ footer a{color:var(--cyan)}
         <span>Antigravity · Módulo 13</span>
       </div>
     </a>
-    <a class="nav-back" href="../index.html">← Voltar à Enciclopédia</a>
+    <div class="nav-actions">
+      <button class="clarity-toggle" id="clarity-toggle" type="button"
+        aria-pressed="false" aria-label="Ativar visualização clara com fundo branco"
+        title="Ativar visualização clara">
+        <span aria-hidden="true">☀️</span><span class="clarity-label">Visualização clara</span>
+      </button>
+      <a class="nav-back" href="../index.html">← Voltar à Enciclopédia</a>
+    </div>
   </nav>
 </header>
 
@@ -485,6 +627,75 @@ footer a{color:var(--cyan)}
 </footer>
 
 </main>
+
+<script>
+/* ── VISUALIZAÇÃO CLARA COMPARTILHADA ───────────────────────── */
+(()=>{
+  const preferenceKey='antigravity:a11y:v1';
+  const root=document.documentElement;
+  const toggle=document.getElementById('clarity-toggle');
+  const themeColor=document.querySelector('meta[name="theme-color"]');
+  const appleStatus=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+
+  function readPreferences(){
+    try{
+      const value=JSON.parse(localStorage.getItem(preferenceKey)||'{}');
+      return value&&typeof value==='object'&&!Array.isArray(value)?value:{};
+    }catch(_){return {}}
+  }
+  function clarityEnabled(preferences){
+    if(preferences.contrast===true)return false;
+    if(preferences.theme==='light')return true;
+    if(preferences.theme==='dark')return false;
+    if(preferences.theme==='system')return matchMedia('(prefers-color-scheme: light)').matches;
+    return preferences.clarity===true;
+  }
+  function applyPreferences(preferences){
+    const contrastActive=preferences.contrast===true;
+    const clarityActive=clarityEnabled(preferences);
+    root.classList.toggle('a11y-contrast',contrastActive);
+    root.classList.toggle('a11y-light',clarityActive);
+    root.style.colorScheme=clarityActive?'light':'dark';
+    themeColor?.setAttribute('content',clarityActive?'#ffffff':contrastActive?'#000000':'#040d1a');
+    appleStatus?.setAttribute('content',clarityActive?'default':'black-translucent');
+    toggle.setAttribute('aria-pressed',String(clarityActive));
+    toggle.querySelector('[aria-hidden="true"]').textContent=clarityActive?'🌙':'☀️';
+    toggle.title=clarityActive?'Voltar ao modo espacial escuro':'Ativar visualização clara';
+    toggle.setAttribute(
+      'aria-label',
+      clarityActive
+        ?'Desativar visualização clara e voltar ao modo espacial escuro'
+        :'Ativar visualização clara com fundo branco'
+    );
+  }
+  toggle.addEventListener('click',()=>{
+    const current=readPreferences();
+    const clarityActive=clarityEnabled(current);
+    const updated={
+      ...current,
+      clarity:!clarityActive,
+      theme:clarityActive?'dark':'light'
+    };
+    if(updated.clarity)updated.contrast=false;
+    try{localStorage.setItem(preferenceKey,JSON.stringify(updated))}catch(_){}
+    applyPreferences(updated);
+  });
+  window.addEventListener('storage',event=>{
+    if(event.key===preferenceKey)applyPreferences(readPreferences());
+  });
+  const systemTheme=matchMedia('(prefers-color-scheme: light)');
+  const handleSystemThemeChange=()=>{
+    const current=readPreferences();
+    if(current.theme==='system')applyPreferences(current);
+  };
+  if(systemTheme.addEventListener){
+    systemTheme.addEventListener('change',handleSystemThemeChange);
+  }else{
+    systemTheme.addListener?.(handleSystemThemeChange);
+  }
+  applyPreferences(readPreferences());
+})();
+</script>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════

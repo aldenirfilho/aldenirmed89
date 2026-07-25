@@ -77,6 +77,7 @@ a{color:inherit}
   background:var(--paper-soft);border-radius:0 14px 14px 0;
 }
 .guide code{background:#e1edf7;padding:.12rem .36rem;border-radius:6px;font-size:.9em}
+.guide :not(pre)>code{overflow-wrap:anywhere;word-break:break-word}
 .guide pre{
   overflow:auto;background:#0e1b2d;color:#e8f4ff;border-radius:16px;
   padding:1rem;border:1px solid #253b55;
@@ -99,7 +100,7 @@ html.reader-contrast{--paper:#fff;--ink:#000;--paper-line:#7a7a7a;--paper-soft:#
   .topbar{position:relative;padding:1rem;align-items:flex-start;flex-direction:column}
   .reading-progress{top:0}
   .reader-layout{grid-template-columns:1fr}
-  .reader-aside{position:relative;top:0;max-height:none}
+  .reader-aside{position:relative;top:0;max-height:min(65vh,34rem);overflow:auto}
   .toc{grid-template-columns:1fr 1fr}
 }
 @media(max-width:560px){

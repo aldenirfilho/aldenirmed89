@@ -3,13 +3,46 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#060a0f"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>RespiraCrit — Suporte Respiratório Inteligente | Dr. Aldenir Rocha</title>
+<script>
+(() => {
+  try {
+    const saved = JSON.parse(localStorage.getItem('antigravity:a11y:v1') || '{}');
+    const prefs = saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    const statusMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+    if (prefs.contrast === true) {
+      document.documentElement.classList.add('a11y-contrast');
+      document.documentElement.style.colorScheme = 'dark';
+      themeMeta.content = '#000000';
+      statusMeta.content = 'black-translucent';
+    } else if (
+      prefs.theme === 'light' ||
+      (prefs.theme === 'system' && matchMedia('(prefers-color-scheme: light)').matches) ||
+      (!['dark', 'light', 'system'].includes(prefs.theme) && prefs.clarity === true)
+    ) {
+      document.documentElement.classList.add('a11y-light');
+      document.documentElement.style.colorScheme = 'light';
+      themeMeta.content = '#ffffff';
+      statusMeta.content = 'default';
+    }
+  } catch (_) {
+    // Preferência inválida não deve impedir a abertura do módulo.
+  }
+})();
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap');
 :root {
+  color-scheme:dark;
   --bg:#060a0f;--s1:#0b1018;--s2:#111820;--s3:#18222e;--border:#1e2d3d;
   --border2:#2a3f55;--text:#c8d8e8;--muted:#5a7a95;--dim:#3a5570;
   --acc:#00d4ff;--acc2:#00ff88;--acc3:#ff6b35;--acc4:#b44fff;--warn:#ffc107;--danger:#ff4757;
+  --chart-bg:#18222e;--chart-grid:#1e2d3d;--chart-text:#00d4ff;--chart-muted:#5a7a95;
+  --chart-pressure:#00d4ff;--chart-flow:#00ff88;--chart-volume:#b44fff;
+  --chart-loop:#ffc107;--chart-loop-grid:rgba(255,193,7,0.2);
   --font:'JetBrains Mono',monospace;--syne:'Syne',sans-serif;
   --r:6px;--r2:10px;
 }
@@ -170,6 +203,100 @@ canvas{display:block;width:100%}
 .ai-typing{color:var(--muted);font-size:11px}
 .cursor{display:inline-block;width:7px;height:13px;background:var(--acc);animation:pulse 0.8s infinite;vertical-align:middle;margin-left:2px}
 
+.clarity-toggle{
+  min-height:44px;padding:7px 12px;border-radius:16px;border:1px solid var(--border2);
+  background:var(--s2);color:var(--text);font:600 11px var(--font);cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap
+}
+.clarity-toggle:hover{border-color:var(--acc);color:var(--acc)}
+.clarity-toggle[aria-pressed="true"]{border-color:var(--acc);background:rgba(0,212,255,0.12);color:var(--acc)}
+:where(a,button,input,select,[tabindex]):focus-visible{outline:3px solid var(--warn);outline-offset:3px}
+
+html.a11y-light{
+  color-scheme:light;
+  --bg:#ffffff;--s1:#f7fafc;--s2:#edf4f8;--s3:#e3edf3;
+  --border:#71869a;--border2:#536b7d;--text:#102a43;--muted:#536b7d;--dim:#526779;
+  --acc:#006b7d;--acc2:#087a55;--acc3:#a33c14;--acc4:#5946c7;
+  --warn:#855400;--danger:#b4233f;
+  --chart-bg:#ffffff;--chart-grid:#71869a;--chart-text:#102a43;--chart-muted:#536b7d;
+  --chart-pressure:#006b7d;--chart-flow:#087a55;--chart-volume:#5946c7;
+  --chart-loop:#855400;--chart-loop-grid:#71869a;
+}
+html.a11y-light body{background:#fff}
+html.a11y-light .hdr,html.a11y-light .nav{background:#fff;border-color:#71869a}
+html.a11y-light .card{box-shadow:0 10px 28px rgba(16,42,67,0.08)}
+html.a11y-light .ok{color:#087a55;background:#e7f8f1;border-color:#087a55}
+html.a11y-light .warn{color:#855400;background:#fff4d6;border-color:#855400}
+html.a11y-light .danger{color:#b4233f;background:#fff0f3;border-color:#b4233f}
+html.a11y-light .info{color:#006b7d;background:#e5f7fa;border-color:#006b7d}
+html.a11y-light .purple{color:#5946c7;background:#f2efff;border-color:#5946c7}
+html.a11y-light .conduct-escalate{background:#fff0f3}
+html.a11y-light .conduct-maintain{background:#fff4d6}
+html.a11y-light .conduct-deescalate{background:#e7f8f1}
+html.a11y-light .conduct-action{background:#e5f7fa}
+html.a11y-light .btn-acc{background:#e5f7fa}
+html.a11y-light .btn-green{background:#e7f8f1}
+html.a11y-light .btn-danger{background:#fff0f3}
+html.a11y-light .btn-purple{background:#f2efff}
+html.a11y-light .alert-danger{background:#fff0f3;border-color:#b4233f;color:#8a1730}
+html.a11y-light .alert-warn{background:#fff4d6;border-color:#855400;color:#6b4300}
+html.a11y-light .alert-ok{background:#e7f8f1;border-color:#087a55;color:#065f46}
+html.a11y-light .alert-info{background:#e5f7fa;border-color:#006b7d;color:#005466}
+html.a11y-light .alert-purple{background:#f2efff;border-color:#5946c7;color:#4635a7}
+html.a11y-light .berlin-mild{background:#fff4d6}
+html.a11y-light .berlin-mod{background:#ffeadf}
+html.a11y-light .berlin-sev{background:#fff0f3}
+html.a11y-light .berlin-marker{background:#102a43}
+html.a11y-light .ladder-item.active,html.a11y-light .ai-box-head{background:#e5f7fa}
+html.a11y-light .ladder-item.past{background:#e7f8f1;opacity:1}
+html.a11y-light .ladder-item.future{opacity:0.7}
+html.a11y-light .badge-live{animation:none}
+html.a11y-light .clarity-toggle[aria-pressed="true"]{background:#e5f7fa}
+html.a11y-light :where(a,button,input,select,[tabindex]):focus-visible{outline-color:#855400}
+
+html.a11y-contrast{
+  color-scheme:dark;
+  --bg:#000;--s1:#000;--s2:#080808;--s3:#101010;--border:#fff;--border2:#fff;
+  --text:#fff;--muted:#fff;--dim:#fff;--acc:#00ffff;--acc2:#7fff7f;
+  --acc3:#ffb347;--acc4:#e0aaff;--warn:#ffff00;--danger:#ff8080;
+  --chart-bg:#000;--chart-grid:#fff;--chart-text:#fff;--chart-muted:#fff;
+  --chart-pressure:#00ffff;--chart-flow:#7fff7f;--chart-volume:#e0aaff;
+  --chart-loop:#ffff00;--chart-loop-grid:#fff;
+}
+html.a11y-contrast body,html.a11y-contrast .hdr,html.a11y-contrast .nav{background:#000}
+html.a11y-contrast :where(a,button,input,select,[tabindex]):focus-visible{outline:3px solid #ffff00;outline-offset:3px}
+
+html.print-light{
+  color-scheme:light;
+  --bg:#fff;--s1:#fff;--s2:#f7fafc;--s3:#edf4f8;--border:#71869a;--border2:#536b7d;
+  --text:#102a43;--muted:#536b7d;--dim:#526779;--acc:#006b7d;--acc2:#087a55;
+  --acc3:#a33c14;--acc4:#5946c7;--warn:#855400;--danger:#b4233f;
+  --chart-bg:#fff;--chart-grid:#71869a;--chart-text:#102a43;--chart-muted:#536b7d;
+  --chart-pressure:#006b7d;--chart-flow:#087a55;--chart-volume:#5946c7;
+  --chart-loop:#855400;--chart-loop-grid:#71869a;
+}
+
+@media print{
+  html,html.a11y-light,html.a11y-contrast,html.print-light,body{background:#fff!important;color:#102a43!important}
+  .nav,.clarity-toggle{display:none!important}
+  .hdr{position:static!important;background:#fff!important;border-color:#71869a!important}
+  .panel{padding:10px 0}
+  .card,.metric,.formula-card,.async-card,.ai-box,.waveform-container{
+    background:#fff!important;color:#102a43!important;box-shadow:none!important;
+    border-color:#71869a!important;break-inside:avoid;page-break-inside:avoid
+  }
+  .card-head,th{background:#edf4f8!important;color:#102a43!important}
+  td{color:#102a43!important;border-color:#71869a!important}
+  .alert-danger{background:#fff0f3!important;border-color:#b4233f!important;color:#8a1730!important}
+  .alert-warn{background:#fff4d6!important;border-color:#855400!important;color:#6b4300!important}
+  .alert-ok{background:#e7f8f1!important;border-color:#087a55!important;color:#065f46!important}
+  .alert-info{background:#e5f7fa!important;border-color:#006b7d!important;color:#005466!important}
+  .alert-purple{background:#f2efff!important;border-color:#5946c7!important;color:#4635a7!important}
+  .btn-row{display:none!important}
+  canvas{background:#fff!important;max-width:100%!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
 @media(max-width:900px){.gcols,.gcols3,.g3,.g4{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
 @media(max-width:600px){
   .hdr{align-items:flex-start;flex-wrap:wrap;padding:10px 12px}
@@ -196,6 +323,9 @@ canvas{display:block;width:100%}
     </div>
   </div>
   <div class="hdr-spacer"></div>
+  <button class="clarity-toggle" id="clarity-toggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco" title="Ativar visualização clara">
+    <span aria-hidden="true">☀️</span><span class="clarity-label">Visualização clara</span>
+  </button>
   <a href="../../index.html" style="font-size:11px; font-family:var(--font); color:var(--text); text-decoration:none; padding:6px 12px; background:var(--s2); border:1px solid var(--border); border-radius:16px; transition:0.2s;">← Voltar ao Hub</a>
 </div>
 
@@ -432,12 +562,12 @@ canvas{display:block;width:100%}
         <div class="card-head"><span class="icon">📈</span><span class="htitle">Curvas Ventilatórias</span></div>
         <div class="card-body">
           <div style="margin-bottom:6px;font-size:10px;color:var(--muted);display:flex;gap:8px">
-            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" onclick="drawCurve('pressao')">P × t</button>
-            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" onclick="drawCurve('fluxo')">F × t</button>
-            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" onclick="drawCurve('volume')">V × t</button>
-            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" onclick="drawCurve('pvloop')">P-V loop</button>
+            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" data-wave-type="pressao" aria-pressed="true" onclick="drawCurve('pressao')">P × t</button>
+            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" data-wave-type="fluxo" aria-pressed="false" onclick="drawCurve('fluxo')">F × t</button>
+            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" data-wave-type="volume" aria-pressed="false" onclick="drawCurve('volume')">V × t</button>
+            <button class="btn btn-acc" style="font-size:9px;padding:3px 8px" data-wave-type="pvloop" aria-pressed="false" onclick="drawCurve('pvloop')">P-V loop</button>
           </div>
-          <canvas id="wave-canvas" width="600" height="220" style="width:100%;border-radius:var(--r);background:var(--s3)"></canvas>
+          <canvas id="wave-canvas" width="600" height="220" role="img" aria-labelledby="wave-label" aria-label="Curva Pressão por Tempo; valores atualizados conforme os parâmetros ventilatórios." style="width:100%;border-radius:var(--r);background:var(--s3)">Curva ventilatória calculada a partir dos parâmetros informados.</canvas>
           <div style="text-align:center;font-size:9px;color:var(--muted);margin-top:4px" id="wave-label">Curva Pressão × Tempo</div>
         </div>
       </div>
@@ -598,6 +728,113 @@ canvas{display:block;width:100%}
 </div>
 
 <script>
+const A11Y_PREFERENCES_KEY = 'antigravity:a11y:v1';
+const DARK_THEME_COLOR = '#060a0f';
+const LIGHT_THEME_COLOR = '#ffffff';
+const CONTRAST_THEME_COLOR = '#000000';
+let activeWaveType = 'pressao';
+
+function parseA11yPreferences(raw) {
+  try {
+    const parsed = JSON.parse(raw || '{}');
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch (_) {
+    return {};
+  }
+}
+
+function readA11yPreferences() {
+  try {
+    return parseA11yPreferences(localStorage.getItem(A11Y_PREFERENCES_KEY));
+  } catch (_) {
+    return {};
+  }
+}
+
+let respiracritA11yPreferences = readA11yPreferences();
+function respiraCritClarityEnabled(preferences) {
+  if (preferences.contrast === true) return false;
+  if (preferences.theme === 'light') return true;
+  if (preferences.theme === 'dark') return false;
+  if (preferences.theme === 'system') {
+    return matchMedia('(prefers-color-scheme: light)').matches;
+  }
+  return preferences.clarity === true;
+}
+
+function applyRespiraCritTheme({persist = false} = {}) {
+  const root = document.documentElement;
+  const contrastActive = respiracritA11yPreferences.contrast === true;
+  const clarityActive = respiraCritClarityEnabled(respiracritA11yPreferences);
+  const button = document.getElementById('clarity-toggle');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const statusMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+
+  root.classList.toggle('a11y-light', clarityActive);
+  root.classList.toggle('a11y-contrast', contrastActive);
+  root.style.colorScheme = clarityActive ? 'light' : 'dark';
+  themeMeta?.setAttribute('content', clarityActive ? LIGHT_THEME_COLOR : contrastActive ? CONTRAST_THEME_COLOR : DARK_THEME_COLOR);
+  statusMeta?.setAttribute('content', clarityActive ? 'default' : 'black-translucent');
+
+  if (button) {
+    button.setAttribute('aria-pressed', String(clarityActive));
+    button.setAttribute('aria-label', clarityActive ? 'Voltar ao modo espacial escuro' : 'Ativar visualização clara com fundo branco');
+    button.title = clarityActive ? 'Voltar ao modo espacial escuro' : 'Ativar visualização clara';
+    button.querySelector('[aria-hidden="true"]').textContent = clarityActive ? '🌙' : '☀️';
+    button.querySelector('.clarity-label').textContent = clarityActive ? 'Modo espacial' : 'Visualização clara';
+  }
+
+  if (persist) {
+    try {
+      localStorage.setItem(A11Y_PREFERENCES_KEY, JSON.stringify(respiracritA11yPreferences));
+    } catch (_) {
+      // O suporte respiratório permanece funcional sem armazenamento local.
+    }
+  }
+  const canvas = document.getElementById('wave-canvas');
+  if (canvas?.dataset.drawn === 'true') drawCurve(activeWaveType);
+}
+
+document.getElementById('clarity-toggle')?.addEventListener('click', () => {
+  const current = readA11yPreferences();
+  const clarityActive = respiraCritClarityEnabled(current);
+  respiracritA11yPreferences = {
+    ...current,
+    clarity: !clarityActive,
+    theme: clarityActive ? 'dark' : 'light'
+  };
+  if (respiracritA11yPreferences.clarity) respiracritA11yPreferences.contrast = false;
+  applyRespiraCritTheme({persist: true});
+});
+
+window.addEventListener('storage', (event) => {
+  if (event.key !== A11Y_PREFERENCES_KEY) return;
+  respiracritA11yPreferences = parseA11yPreferences(event.newValue);
+  applyRespiraCritTheme();
+});
+const respiracritSystemTheme = matchMedia('(prefers-color-scheme: light)');
+const handleRespiraCritSystemThemeChange = () => {
+  respiracritA11yPreferences = readA11yPreferences();
+  if (respiracritA11yPreferences.theme === 'system') applyRespiraCritTheme();
+};
+if (respiracritSystemTheme.addEventListener) {
+  respiracritSystemTheme.addEventListener('change', handleRespiraCritSystemThemeChange);
+} else {
+  respiracritSystemTheme.addListener?.(handleRespiraCritSystemThemeChange);
+}
+
+window.addEventListener('beforeprint', () => {
+  document.documentElement.classList.add('print-light');
+  drawCurve(activeWaveType);
+});
+
+window.addEventListener('afterprint', () => {
+  document.documentElement.classList.remove('print-light');
+  drawCurve(activeWaveType);
+});
+
+applyRespiraCritTheme();
+
 // ============ UTILITIES ============
 function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -1003,15 +1240,30 @@ function calcVM() {
 
 // ============ WAVEFORM DRAWING ============
 function drawCurve(type) {
+  activeWaveType = type;
   const canvas = document.getElementById('wave-canvas');
   const ctx = canvas.getContext('2d');
   const W=canvas.width, H=canvas.height;
+  const styles = getComputedStyle(document.documentElement);
+  const chartColor = name => styles.getPropertyValue(name).trim();
+  const palette = {
+    background:chartColor('--chart-bg'),
+    grid:chartColor('--chart-grid'),
+    text:chartColor('--chart-text'),
+    muted:chartColor('--chart-muted'),
+    pressure:chartColor('--chart-pressure'),
+    flow:chartColor('--chart-flow'),
+    volume:chartColor('--chart-volume'),
+    loop:chartColor('--chart-loop'),
+    loopGrid:chartColor('--chart-loop-grid')
+  };
   ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='#18222e';
+  ctx.fillStyle=palette.background;
   ctx.fillRect(0,0,W,H);
+  canvas.dataset.drawn = 'true';
 
   // Grid
-  ctx.strokeStyle='#1e2d3d'; ctx.lineWidth=0.5;
+  ctx.strokeStyle=palette.grid; ctx.lineWidth=0.5;
   for(let i=0;i<W;i+=40){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,H);ctx.stroke();}
   for(let i=0;i<H;i+=30){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(W,i);ctx.stroke();}
 
@@ -1029,7 +1281,7 @@ function drawCurve(type) {
 
   if(type==='pressao') {
     document.getElementById('wave-label').textContent='Curva Pressão × Tempo (VCV)';
-    ctx.strokeStyle='#00d4ff'; ctx.lineWidth=2;
+    ctx.strokeStyle=palette.pressure; ctx.lineWidth=2;
     const baseline = H*0.8;
     const scale = (H*0.65)/(ppico+5);
     for(let c=0;c<cycles;c++) {
@@ -1043,16 +1295,16 @@ function drawCurve(type) {
       ctx.stroke();
     }
     // Labels
-    ctx.fillStyle='#00d4ff'; ctx.font='10px JetBrains Mono';
+    ctx.fillStyle=palette.text; ctx.font='10px JetBrains Mono';
     ctx.fillText(`Ppico: ${ppico}`, 10, baseline-ppico*scale-5);
     ctx.fillText(`Pplat: ${pplat}`, 10, baseline-pplat*scale-5);
-    ctx.fillStyle='#5a7a95';
+    ctx.fillStyle=palette.muted;
     ctx.fillText(`PEEP: ${peep}`, 10, baseline-peep*scale-5);
   } else if(type==='fluxo') {
     document.getElementById('wave-label').textContent='Curva Fluxo × Tempo';
     const pflow=parseFloat(document.getElementById('vm-pinsp')||{value:60}).value||60;
     const mid=H/2;
-    ctx.strokeStyle='#00ff88'; ctx.lineWidth=2;
+    ctx.strokeStyle=palette.flow; ctx.lineWidth=2;
     for(let c=0;c<cycles;c++){
       const x0=c*cycleW;
       ctx.beginPath();
@@ -1068,14 +1320,14 @@ function drawCurve(type) {
       }
       ctx.stroke();
     }
-    ctx.fillStyle='#00ff88'; ctx.font='10px JetBrains Mono';
+    ctx.fillStyle=palette.flow; ctx.font='10px JetBrains Mono';
     ctx.fillText('Fluxo inspiratório', 10, mid-65);
     ctx.fillText('Fluxo expiratório', 10, mid+55);
   } else if(type==='volume') {
     document.getElementById('wave-label').textContent='Curva Volume × Tempo';
     const baseline=H*0.85;
     const scale=(H*0.65)/(vc+50);
-    ctx.strokeStyle='#b44fff'; ctx.lineWidth=2;
+    ctx.strokeStyle=palette.volume; ctx.lineWidth=2;
     for(let c=0;c<cycles;c++){
       const x0=c*cycleW;
       ctx.beginPath();
@@ -1085,11 +1337,11 @@ function drawCurve(type) {
       for(let dx=0;dx<teW;dx++){ctx.lineTo(x0+tiW+dx,baseline-vc*scale*(1-dx/teW));}
       ctx.stroke();
     }
-    ctx.fillStyle='#b44fff'; ctx.font='10px JetBrains Mono';
+    ctx.fillStyle=palette.volume; ctx.font='10px JetBrains Mono';
     ctx.fillText(`VC: ${vc} mL`, 10, baseline-vc*scale-5);
   } else if(type==='pvloop') {
     document.getElementById('wave-label').textContent='Loop Pressão-Volume (P-V)';
-    ctx.strokeStyle='#ffc107'; ctx.lineWidth=2;
+    ctx.strokeStyle=palette.loop; ctx.lineWidth=2;
     const cx=W*0.35, cy=H*0.5;
     const sx=(W*0.55)/(ppico+5), sy=(H*0.75)/(vc+50);
     ctx.beginPath();
@@ -1109,13 +1361,23 @@ function drawCurve(type) {
     ctx.moveTo(pts[0][0],pts[0][1]);
     pts.forEach(p=>ctx.lineTo(p[0],p[1]));
     ctx.stroke();
-    ctx.fillStyle='#ffc107'; ctx.font='10px JetBrains Mono';
+    ctx.fillStyle=palette.loop; ctx.font='10px JetBrains Mono';
     ctx.fillText('LIP',cx+peep*sx-15,cy-10);
     ctx.fillText('UIP',cx+(ppico-5)*sx,cy-vc*0.9*sy-10);
-    ctx.strokeStyle='rgba(255,193,7,0.2)'; ctx.lineWidth=1;
+    ctx.strokeStyle=palette.loopGrid; ctx.lineWidth=1;
     ctx.beginPath(); ctx.moveTo(cx,cy-H*0.4); ctx.lineTo(cx,cy+H*0.1); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(cx-10,cy); ctx.lineTo(cx+W*0.6,cy); ctx.stroke();
   }
+  document.querySelectorAll('[data-wave-type]').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.waveType === type));
+  });
+  const curveDescriptions = {
+    pressao:`Curva Pressão por Tempo em VCV. Ppico ${ppico} cmH₂O; Pplat ${pplat} cmH₂O; PEEP ${peep} cmH₂O.`,
+    fluxo:`Curva Fluxo por Tempo. Fases inspiratória e expiratória; frequência ${fr} incursões por minuto.`,
+    volume:`Curva Volume por Tempo. Volume corrente ${vc} mL; frequência ${fr} incursões por minuto.`,
+    pvloop:`Loop Pressão-Volume. Ppico ${ppico} cmH₂O; Pplat ${pplat} cmH₂O; PEEP ${peep} cmH₂O; volume corrente ${vc} mL.`
+  };
+  canvas.setAttribute('aria-label', curveDescriptions[type] || 'Curva ventilatória.');
 }
 
 // ============ ASSINCRONIAS ============

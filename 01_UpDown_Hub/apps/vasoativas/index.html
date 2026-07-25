@@ -3,10 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Calculadora de Vasoativas v2 | UpDown Hub</title>
+  <script>
+    (() => {
+      try {
+        const saved = JSON.parse(localStorage.getItem('antigravity:a11y:v1') || '{}');
+        const prefs = saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
+        const themeMeta = document.querySelector('meta[name="theme-color"]');
+        const statusMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+        if (prefs.contrast === true) {
+          document.documentElement.classList.add('a11y-contrast');
+          document.documentElement.style.colorScheme = 'dark';
+          themeMeta.content = '#000000';
+          statusMeta.content = 'black-translucent';
+        } else if (
+          prefs.theme === 'light' ||
+          (prefs.theme === 'system' && matchMedia('(prefers-color-scheme: light)').matches) ||
+          (!['dark', 'light', 'system'].includes(prefs.theme) && prefs.clarity === true)
+        ) {
+          document.documentElement.classList.add('a11y-light');
+          document.documentElement.style.colorScheme = 'light';
+          themeMeta.content = '#ffffff';
+          statusMeta.content = 'default';
+        }
+      } catch (_) {
+        // Uma preferência inválida não deve impedir o uso da calculadora.
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="../../assets/estudos.css" />
   <style>
-    :root { --p: #38bdf8; --s: #4ef0a1; --warn: #fb7185; }
+    :root { color-scheme: dark; --p: #38bdf8; --s: #4ef0a1; --warn: #fb7185; }
     .calc-container { max-width: 800px; margin: 0 auto; padding: 1rem; }
     .form-group { margin-bottom: 1.2rem; }
     label { display: block; font-size: 0.85rem; font-weight: 800; color: var(--muted); text-transform: uppercase; margin-bottom: 0.4rem; }
@@ -21,12 +50,83 @@
     .tab { flex: 1; padding: 0.8rem; text-align: center; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 0.8rem; }
     .tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
     .manual-dilution { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+    .clarity-toggle { min-height: 44px; padding: 0.5rem 0.8rem; border-radius: 999px; border: 1px solid var(--border); background: var(--bg2); color: var(--text); cursor: pointer; font: 800 0.78rem/1 Inter, system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; }
+    .clarity-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    .clarity-toggle[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: rgba(56,189,248,0.12); }
+    :where(a, button, input, select, [tabindex]):focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+    html.a11y-light {
+      color-scheme: light;
+      --bg: #ffffff; --bg2: #edf4f8; --card: #ffffff; --text: #102a43;
+      --muted: #536b7d; --border: #71869a; --accent: #006b7d; --accent2: #087a55;
+      --gold: #855400; --danger: #b4233f; --p: #006b7d; --s: #087a55; --warn: #b4233f;
+    }
+    html.a11y-light body { background: #fff; }
+    html.a11y-light .topbar { background: rgba(255,255,255,0.96); border-color: #71869a; box-shadow: 0 6px 20px rgba(16,42,67,0.08); }
+    html.a11y-light .panel { background: #fff; border-color: #71869a; box-shadow: 0 12px 36px rgba(16,42,67,0.08); }
+    html.a11y-light input,
+    html.a11y-light select,
+    html.a11y-light .tab { background: #fff; color: #102a43; border-color: #71869a; }
+    html.a11y-light .tab.active { background: #006b7d; color: #fff; border-color: #006b7d; }
+    html.a11y-light .result-panel { background: linear-gradient(135deg,#edf9fb,#eefaf5); border-color: #006b7d; }
+    html.a11y-light .prescription-box { background: #fff; color: #102a43; border: 1px solid #71869a; }
+    html.a11y-light .copy-btn { background: #006b7d; color: #fff; border: 1px solid #004f5e; }
+    html.a11y-light .warning-box { background: #fff0f3; border-color: #b4233f; color: #8a1730; }
+    html.a11y-light footer { color: #536b7d; opacity: 1 !important; }
+    html.a11y-light .clarity-toggle[aria-pressed="true"] { background: #e5f7fa; }
+    html.a11y-light :where(a, button, input, select, [tabindex]):focus-visible { outline-color: #855400; }
+
+    html.a11y-contrast {
+      color-scheme: dark;
+      --bg: #000; --bg2: #080808; --card: #000; --text: #fff; --muted: #fff;
+      --border: #fff; --accent: #00ffff; --accent2: #7fff7f; --gold: #ffff00;
+      --danger: #ff8080; --p: #00ffff; --s: #7fff7f; --warn: #ff8080;
+    }
+    html.a11y-contrast body,
+    html.a11y-contrast .topbar { background: #000; }
+    html.a11y-contrast .panel,
+    html.a11y-contrast .result-panel { background: #000; border-color: #fff; box-shadow: none; }
+    html.a11y-contrast .prescription-box { border: 1px solid #fff; }
+    html.a11y-contrast :where(a, button, input, select, [tabindex]):focus-visible { outline: 3px solid #ffff00; outline-offset: 3px; }
+
+    @media print {
+      html, html.a11y-light, html.a11y-contrast {
+        color-scheme: light;
+        --bg: #fff; --bg2: #fff; --card: #fff; --text: #102a43; --muted: #455f73;
+        --border: #71869a; --accent: #006b7d; --accent2: #087a55; --gold: #855400;
+        --danger: #b4233f; --p: #006b7d; --s: #087a55; --warn: #b4233f;
+      }
+      body { background: #fff !important; color: #102a43 !important; }
+      .topbar nav, .clarity-toggle, .copy-btn { display: none !important; }
+      .topbar { position: static !important; background: #fff !important; border-color: #71869a !important; }
+      .panel, .result-panel, .prescription-box, input, select, .tab {
+        background: #fff !important; color: #102a43 !important; border-color: #71869a !important;
+        box-shadow: none !important; break-inside: avoid; page-break-inside: avoid;
+      }
+      .tab.active { background: #edf9fb !important; color: #005466 !important; border-color: #006b7d !important; }
+      label, .muted, footer { color: #455f73 !important; opacity: 1 !important; }
+      .result-val { color: #087a55 !important; }
+      .warning-box { background: #fff !important; color: #8a1730 !important; border-color: #b4233f !important; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 560px) {
+      .topbar { align-items: stretch; }
+      .topbar nav { width: 100%; }
+      .clarity-toggle, .topbar nav a { flex: 1 1 auto; }
+      .manual-dilution, .result-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="../../index.html">💊 <span>Vasoativas v2</span></a>
-    <nav><a href="../index.html">⬅️ Apps</a></nav>
+    <nav>
+      <button class="clarity-toggle" id="clarity-toggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco" title="Ativar visualização clara">
+        <span aria-hidden="true">☀️</span><span class="clarity-label">Visualização clara</span>
+      </button>
+      <a href="../index.html">⬅️ Apps</a>
+    </nav>
   </header>
 
   <main class="calc-container">
@@ -50,17 +150,17 @@
         </div>
       </div>
 
-      <div class="tabs">
-        <div class="tab active" id="tabDose" onclick="setMode('dose')">Dose → mL/h</div>
-        <div class="tab" id="tabFlow" onclick="setMode('flow')">mL/h → Dose</div>
+      <div class="tabs" role="tablist" aria-label="Sentido do cálculo">
+        <button class="tab active" id="tabDose" type="button" role="tab" aria-selected="true" aria-controls="inputDoseGroup" onclick="setMode('dose')">Dose → mL/h</button>
+        <button class="tab" id="tabFlow" type="button" role="tab" aria-selected="false" aria-controls="inputFlowGroup" onclick="setMode('flow')">mL/h → Dose</button>
       </div>
 
-      <div class="form-group" id="inputDoseGroup">
+      <div class="form-group" id="inputDoseGroup" role="tabpanel" aria-labelledby="tabDose">
         <label id="doseLabel">Dose Alvo (mcg/kg/min)</label>
         <input type="number" id="inputDose" step="0.01" oninput="calc()">
       </div>
 
-      <div class="form-group" id="inputFlowGroup" style="display:none">
+      <div class="form-group" id="inputFlowGroup" role="tabpanel" aria-labelledby="tabFlow" style="display:none">
         <label>Vazão Atual (mL/h)</label>
         <input type="number" id="inputFlow" step="0.1" oninput="calc()">
       </div>
@@ -96,6 +196,100 @@
   </main>
 
   <script>
+    const A11Y_PREFERENCES_KEY = 'antigravity:a11y:v1';
+    const DARK_THEME_COLOR = '#07111f';
+    const LIGHT_THEME_COLOR = '#ffffff';
+    const CONTRAST_THEME_COLOR = '#000000';
+
+    function parseA11yPreferences(raw) {
+      try {
+        const parsed = JSON.parse(raw || '{}');
+        return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function readA11yPreferences() {
+      try {
+        return parseA11yPreferences(localStorage.getItem(A11Y_PREFERENCES_KEY));
+      } catch (_) {
+        return {};
+      }
+    }
+
+    let vasoactiveA11yPreferences = readA11yPreferences();
+    function vasoactiveClarityEnabled(preferences) {
+      if (preferences.contrast === true) return false;
+      if (preferences.theme === 'light') return true;
+      if (preferences.theme === 'dark') return false;
+      if (preferences.theme === 'system') {
+        return matchMedia('(prefers-color-scheme: light)').matches;
+      }
+      return preferences.clarity === true;
+    }
+
+    function applyVasoactiveTheme({persist = false} = {}) {
+      const root = document.documentElement;
+      const contrastActive = vasoactiveA11yPreferences.contrast === true;
+      const clarityActive = vasoactiveClarityEnabled(vasoactiveA11yPreferences);
+      const button = document.getElementById('clarity-toggle');
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      const statusMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+
+      root.classList.toggle('a11y-light', clarityActive);
+      root.classList.toggle('a11y-contrast', contrastActive);
+      root.style.colorScheme = clarityActive ? 'light' : 'dark';
+      themeMeta?.setAttribute('content', clarityActive ? LIGHT_THEME_COLOR : contrastActive ? CONTRAST_THEME_COLOR : DARK_THEME_COLOR);
+      statusMeta?.setAttribute('content', clarityActive ? 'default' : 'black-translucent');
+
+      if (button) {
+        button.setAttribute('aria-pressed', String(clarityActive));
+        button.setAttribute('aria-label', clarityActive ? 'Voltar ao modo espacial escuro' : 'Ativar visualização clara com fundo branco');
+        button.title = clarityActive ? 'Voltar ao modo espacial escuro' : 'Ativar visualização clara';
+        button.querySelector('[aria-hidden="true"]').textContent = clarityActive ? '🌙' : '☀️';
+        button.querySelector('.clarity-label').textContent = clarityActive ? 'Modo espacial' : 'Visualização clara';
+      }
+
+      if (persist) {
+        try {
+          localStorage.setItem(A11Y_PREFERENCES_KEY, JSON.stringify(vasoactiveA11yPreferences));
+        } catch (_) {
+          // A interface continua funcional mesmo sem armazenamento local.
+        }
+      }
+    }
+
+    document.getElementById('clarity-toggle')?.addEventListener('click', () => {
+      const current = readA11yPreferences();
+      const clarityActive = vasoactiveClarityEnabled(current);
+      vasoactiveA11yPreferences = {
+        ...current,
+        clarity: !clarityActive,
+        theme: clarityActive ? 'dark' : 'light'
+      };
+      if (vasoactiveA11yPreferences.clarity) vasoactiveA11yPreferences.contrast = false;
+      applyVasoactiveTheme({persist: true});
+    });
+
+    window.addEventListener('storage', (event) => {
+      if (event.key !== A11Y_PREFERENCES_KEY) return;
+      vasoactiveA11yPreferences = parseA11yPreferences(event.newValue);
+      applyVasoactiveTheme();
+    });
+    const vasoactiveSystemTheme = matchMedia('(prefers-color-scheme: light)');
+    const handleVasoactiveSystemThemeChange = () => {
+      vasoactiveA11yPreferences = readA11yPreferences();
+      if (vasoactiveA11yPreferences.theme === 'system') applyVasoactiveTheme();
+    };
+    if (vasoactiveSystemTheme.addEventListener) {
+      vasoactiveSystemTheme.addEventListener('change', handleVasoactiveSystemThemeChange);
+    } else {
+      vasoactiveSystemTheme.addListener?.(handleVasoactiveSystemThemeChange);
+    }
+
+    applyVasoactiveTheme();
+
     let drugs = [];
     let mode = 'dose';
 
@@ -142,8 +336,12 @@
 
     function setMode(m) {
       mode = m;
-      document.getElementById('tabDose').className = (m === 'dose') ? 'tab active' : 'tab';
-      document.getElementById('tabFlow').className = (m === 'flow') ? 'tab active' : 'tab';
+      const doseTab = document.getElementById('tabDose');
+      const flowTab = document.getElementById('tabFlow');
+      doseTab.className = (m === 'dose') ? 'tab active' : 'tab';
+      flowTab.className = (m === 'flow') ? 'tab active' : 'tab';
+      doseTab.setAttribute('aria-selected', String(m === 'dose'));
+      flowTab.setAttribute('aria-selected', String(m === 'flow'));
       document.getElementById('inputDoseGroup').style.display = (m === 'dose') ? 'block' : 'none';
       document.getElementById('inputFlowGroup').style.display = (m === 'flow') ? 'block' : 'none';
       document.getElementById('resLabel1').textContent = (m === 'dose') ? 'Vazão Sugerida' : 'Dose Calculada';

@@ -5,11 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="RespiraSense ICU — calculadora respiratória e dashboard de ventilação mecânica para Enciclopédia Médica Intensiva." />
   <title>RespiraSense ICU | Enciclopédia Médica Intensiva</title>
+  <meta name="theme-color" content="#07111f" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <script>
+    /* Aplica a preferência global antes da primeira pintura e evita flash de tema. */
+    try {
+      const savedPrefs = JSON.parse(localStorage.getItem("antigravity:a11y:v1") || "{}");
+      if (savedPrefs.contrast === true) {
+        document.documentElement.classList.add("a11y-contrast");
+        document.documentElement.style.colorScheme = "dark";
+        document.querySelector('meta[name="theme-color"]').content = "#000000";
+      } else if (
+        savedPrefs.theme === "light" ||
+        (savedPrefs.theme === "system" && matchMedia("(prefers-color-scheme: light)").matches) ||
+        (!["dark", "light", "system"].includes(savedPrefs.theme) && savedPrefs.clarity === true)
+      ) {
+        document.documentElement.classList.add("a11y-light");
+        document.documentElement.style.colorScheme = "light";
+        document.querySelector('meta[name="theme-color"]').content = "#ffffff";
+        document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content = "default";
+      }
+    } catch (_) {}
+  </script>
   <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="./icons/icon-192.png" />
   <link rel="apple-touch-icon" href="./icons/icon-192.png" />
-  <meta name="theme-color" content="#07111f" />
 </head>
 <body>
   <header class="topbar">
@@ -23,6 +45,7 @@
     <nav class="top-actions">
       <a class="ghost" href="../../../index.html">🏠 Página principal Enciclopédia</a>
       <span id="offlineStatus" class="status-pill online">🟢 online</span>
+      <button id="btnClarity" class="ghost clarity-toggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco">☀️ Visualização clara</button>
       <button id="btnInstallPWA" class="ghost" type="button">📲 Instalar</button>
       <button id="btnPrint" class="ghost" type="button">🖨️ Imprimir</button>
       <button id="btnExport" class="primary" type="button">⬇️ Exportar JSON</button>
@@ -148,17 +171,17 @@
 
       <section class="workspace">
         <div class="tabs" role="tablist" aria-label="Módulos do RespiraSense ICU">
-          <button class="tab active" data-tab="conduct">🧭 Conduta</button>
-          <button class="tab" data-tab="gas">🧪 Gasometria</button>
-          <button class="tab" data-tab="protective">🫁 VM protetora</button>
-          <button class="tab" data-tab="sim">📈 Simulador VM</button>
-          <button class="tab" data-tab="async">🌊 Assincronias</button>
-          <button class="tab" data-tab="quick">⚡ Painel rápido</button>
-          <button class="tab" data-tab="db">💾 Snapshots</button>
-          <button class="tab" data-tab="validation">🧬 Validação</button>
+          <button type="button" class="tab active" id="tab-button-conduct" data-tab="conduct" role="tab" aria-selected="true" aria-controls="tab-conduct" tabindex="0">🧭 Conduta</button>
+          <button type="button" class="tab" id="tab-button-gas" data-tab="gas" role="tab" aria-selected="false" aria-controls="tab-gas" tabindex="-1">🧪 Gasometria</button>
+          <button type="button" class="tab" id="tab-button-protective" data-tab="protective" role="tab" aria-selected="false" aria-controls="tab-protective" tabindex="-1">🫁 VM protetora</button>
+          <button type="button" class="tab" id="tab-button-sim" data-tab="sim" role="tab" aria-selected="false" aria-controls="tab-sim" tabindex="-1">📈 Simulador VM</button>
+          <button type="button" class="tab" id="tab-button-async" data-tab="async" role="tab" aria-selected="false" aria-controls="tab-async" tabindex="-1">🌊 Assincronias</button>
+          <button type="button" class="tab" id="tab-button-quick" data-tab="quick" role="tab" aria-selected="false" aria-controls="tab-quick" tabindex="-1">⚡ Painel rápido</button>
+          <button type="button" class="tab" id="tab-button-db" data-tab="db" role="tab" aria-selected="false" aria-controls="tab-db" tabindex="-1">💾 Snapshots</button>
+          <button type="button" class="tab" id="tab-button-validation" data-tab="validation" role="tab" aria-selected="false" aria-controls="tab-validation" tabindex="-1">🧬 Validação</button>
         </div>
 
-        <section class="tabpage active" id="tab-conduct">
+        <section class="tabpage active" id="tab-conduct" role="tabpanel" aria-labelledby="tab-button-conduct" tabindex="0">
           <div class="section-head">
             <h2>Conduta sugerida pelo motor clínico</h2>
             <p>Recomendações ordenadas por risco. Interprete com tendências, exame físico, imagem, recursos locais e protocolo institucional.</p>
@@ -179,17 +202,17 @@
           </div>
         </section>
 
-        <section class="tabpage" id="tab-gas">
+        <section class="tabpage" id="tab-gas" role="tabpanel" aria-labelledby="tab-button-gas" tabindex="0" hidden>
           <div class="section-head"><h2>Análise gasométrica e metabólica</h2><p>Inclui oxigenação, distúrbio ácido-base, ânion gap, delta ratio e conteúdo arterial de oxigênio.</p></div>
           <div id="gasPanel"></div>
         </section>
 
-        <section class="tabpage" id="tab-protective">
+        <section class="tabpage" id="tab-protective" role="tabpanel" aria-labelledby="tab-button-protective" tabindex="0" hidden>
           <div class="section-head"><h2>Ventilação protetora e SARA/ARDS</h2><p>PBW, VT alvo, mecânica respiratória, PEEP/FiO₂ e checklist protetor.</p></div>
           <div id="protectivePanel"></div>
         </section>
 
-        <section class="tabpage" id="tab-sim">
+        <section class="tabpage" id="tab-sim" role="tabpanel" aria-labelledby="tab-button-sim" tabindex="0" hidden>
           <div class="section-head"><h2>Simulador de ventilação mecânica — 1 compartimento</h2><p>Modelo educacional: paciente passivo, sem esforço, sem vazamento, sem recrutamento não linear.</p></div>
           <div class="panel soft">
             <div class="form-grid four">
@@ -204,12 +227,12 @@
             </div>
           </div>
           <div id="simMetrics" class="quick-grid mini"></div>
-          <canvas id="pressureChart" height="180"></canvas>
-          <canvas id="flowChart" height="180"></canvas>
-          <canvas id="volumeChart" height="180"></canvas>
+          <canvas id="pressureChart" height="180" role="img" aria-label="Curva pressão por tempo; valores atualizados conforme a simulação.">Curva pressão por tempo da simulação ventilatória.</canvas>
+          <canvas id="flowChart" height="180" role="img" aria-label="Curva fluxo por tempo; valores atualizados conforme a simulação.">Curva fluxo por tempo da simulação ventilatória.</canvas>
+          <canvas id="volumeChart" height="180" role="img" aria-label="Curva volume por tempo; valores atualizados conforme a simulação.">Curva volume por tempo da simulação ventilatória.</canvas>
         </section>
 
-        <section class="tabpage" id="tab-async">
+        <section class="tabpage" id="tab-async" role="tabpanel" aria-labelledby="tab-button-async" tabindex="0" hidden>
           <div class="section-head"><h2>Curvas e diagnóstico de assincronias</h2><p>Selecione achados observados na curva/foto/parâmetros. O app gera hipóteses e ações corretivas.</p></div>
           <div id="asyncChecklist" class="check-grid"></div>
           <div id="asyncResults"></div>
@@ -217,12 +240,12 @@
           <div id="asyncLibrary" class="table-wrap"></div>
         </section>
 
-        <section class="tabpage" id="tab-quick">
+        <section class="tabpage" id="tab-quick" role="tabpanel" aria-labelledby="tab-button-quick" tabindex="0" hidden>
           <div class="section-head"><h2>Painel rápido</h2><p>Dispositivos de oxigênio, modos ventilatórios, fórmulas, tabelas PEEP/FiO₂ e metas protetoras.</p></div>
           <div id="quickTables"></div>
         </section>
 
-        <section class="tabpage" id="tab-db">
+        <section class="tabpage" id="tab-db" role="tabpanel" aria-labelledby="tab-button-db" tabindex="0" hidden>
           <div class="section-head"><h2>Banco local de snapshots</h2><p>Histórico anônimo no navegador atual. Para produção hospitalar, usar backend com autenticação, PostgreSQL, logs e LGPD.</p></div>
           <div class="toolbar">
             <button id="btnDownloadSnapshots" class="primary">⬇️ Baixar snapshots JSON</button>
@@ -232,7 +255,7 @@
           <div id="snapshotTable" class="table-wrap"></div>
         </section>
 
-        <section class="tabpage" id="tab-validation">
+        <section class="tabpage" id="tab-validation" role="tabpanel" aria-labelledby="tab-button-validation" tabindex="0" hidden>
           <div class="section-head"><h2>Validação, creditação e uso real</h2><p>Caminho seguro para transformar protótipo em CDS/SaMD validado.</p></div>
           <div class="validation-grid">
             <article class="info-card"><h3>0️⃣ Técnica</h3><p>Testes unitários de fórmulas, limites fisiológicos, cenários extremos, erros de unidade e revisão médica/fisioterapia.</p></article>

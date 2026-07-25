@@ -5,8 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UpDown Hub | Enciclomedia Antigravity</title>
   <meta name="description" content="Hub médico para conteúdos transformados: UpDown, Biblioteca, Imagens e Aplicações Clínicas." />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <script>
+    (() => {
+      try {
+        const saved = JSON.parse(localStorage.getItem('antigravity:a11y:v1') || '{}');
+        const prefs = saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
+        const contrast = prefs.contrast === true;
+        const theme = prefs.theme;
+        const clarity = !contrast && (
+          theme === 'light' ||
+          (theme === 'system' && matchMedia('(prefers-color-scheme: light)').matches) ||
+          (!['dark', 'light', 'system'].includes(theme) && prefs.clarity === true)
+        );
+        document.documentElement.classList.toggle('a11y-contrast', contrast);
+        document.documentElement.classList.toggle('a11y-light', clarity);
+        document.documentElement.style.colorScheme = clarity ? 'light' : 'dark';
+        document.querySelector('meta[name="theme-color"]').content = clarity ? '#ffffff' : contrast ? '#000000' : '#07111f';
+        document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content = clarity ? 'default' : 'black-translucent';
+      } catch (_) {}
+    })();
+  </script>
   <link rel="stylesheet" href="assets/estudos.css" />
   <style>
+    :root { color-scheme: dark; }
+
     /* Estilos Adicionais para o Redesign Hub */
     .hub-nav {
       display: grid;
@@ -76,6 +101,153 @@
     .app-table tr:hover td { background: rgba(56,189,248,0.05); }
 
     .nav-links-hub { display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: center; }
+
+    .clarity-toggle {
+      min-height: 44px;
+      padding: .55rem .8rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--bg2);
+      color: var(--text);
+      font: 800 .78rem/1 Inter, system-ui, sans-serif;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      white-space: nowrap;
+    }
+    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    html.a11y-light {
+      color-scheme: light;
+      --bg: #ffffff;
+      --bg2: #f6f9fc;
+      --card: #ffffff;
+      --text: #102a43;
+      --muted: #536b7d;
+      --border: #71869a;
+      --accent: #006b7d;
+      --accent2: #087a55;
+      --gold: #855400;
+      --danger: #b4233f;
+    }
+    html.a11y-light body {
+      background:
+        radial-gradient(circle at 10% 0%, rgba(0,107,125,.08), transparent 28%),
+        radial-gradient(circle at 92% 8%, rgba(8,122,85,.06), transparent 30%),
+        #ffffff;
+    }
+    html.a11y-light .topbar {
+      background: rgba(255,255,255,.96);
+      border-color: #71869a;
+      box-shadow: 0 8px 26px rgba(16,42,67,.08);
+    }
+    html.a11y-light .hero > div,
+    html.a11y-light .panel,
+    html.a11y-light .card,
+    html.a11y-light .block {
+      background: #ffffff;
+      border-color: #b8c7d4;
+      box-shadow: 0 14px 38px rgba(16,42,67,.09);
+    }
+    html.a11y-light .triangle-viz {
+      background: #f6f9fc;
+      border-color: #71869a;
+    }
+    html.a11y-light .triangle-node,
+    html.a11y-light .metrics div,
+    html.a11y-light .app-table,
+    html.a11y-light .app-table th,
+    html.a11y-light .searchbox input,
+    html.a11y-light .searchbox select {
+      background: #ffffff;
+      color: #102a43;
+      border-color: #71869a;
+    }
+    html.a11y-light .app-table tr:hover td { background: #edf4f8; }
+    html.a11y-light .pill {
+      background: #e5f7fa;
+      border-color: #006b7d;
+      color: #005466;
+    }
+    html.a11y-light .pill.status {
+      background: #e7f8f1;
+      border-color: #087a55;
+      color: #065f46;
+    }
+    html.a11y-light .btn,
+    html.a11y-light .clarity-toggle {
+      background: #ffffff;
+      color: #102a43;
+      border-color: #71869a;
+    }
+    html.a11y-light .btn.primary {
+      background: #006b7d;
+      color: #ffffff;
+      border: 1px solid #006b7d;
+    }
+    html.a11y-light :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+      outline-color: #855400;
+    }
+
+    html.a11y-contrast {
+      color-scheme: dark;
+      --bg: #000000;
+      --bg2: #080808;
+      --card: #000000;
+      --text: #ffffff;
+      --muted: #ffffff;
+      --border: #ffffff;
+      --accent: #00ffff;
+      --accent2: #7fff7f;
+      --gold: #ffff00;
+      --danger: #ff8080;
+    }
+    html.a11y-contrast body,
+    html.a11y-contrast .topbar { background: #000000; }
+
+    @media print {
+      @page { margin: 14mm; }
+      html,
+      html.a11y-light,
+      html.a11y-contrast {
+        color-scheme: light;
+        --bg: #ffffff;
+        --bg2: #ffffff;
+        --card: #ffffff;
+        --text: #102a43;
+        --muted: #455f73;
+        --border: #71869a;
+        --accent: #006b7d;
+        --accent2: #087a55;
+        --gold: #855400;
+        --danger: #b4233f;
+      }
+      body { background: #ffffff !important; color: #102a43 !important; }
+      .topbar { position: static !important; background: #ffffff !important; box-shadow: none !important; }
+      .topbar nav, .clarity-toggle, .searchbox { display: none !important; }
+      .hero > div, .panel, .card, .block, .triangle-viz, .triangle-node,
+      .metrics div, .app-table {
+        background: #ffffff !important;
+        color: #102a43 !important;
+        border-color: #71869a !important;
+        box-shadow: none !important;
+      }
+      .card, .panel, .block, .app-table tr { break-inside: avoid; page-break-inside: avoid; }
+      .app-table th, .app-table td { background: #ffffff !important; color: #102a43 !important; }
+      .btn { background: #ffffff !important; color: #102a43 !important; border: 1px solid #71869a !important; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 560px) {
+      .clarity-label { display: none; }
+      .clarity-toggle { min-width: 44px; padding-inline: .65rem; }
+      .nav-links-hub { justify-content: flex-start; }
+    }
   </style>
 </head>
 <body>
@@ -86,6 +258,9 @@
       <a href="../biblioteca/index.html">📚 Biblioteca</a>
       <a href="../imagens/index.html">🖼️ Imagens</a>
       <a href="../apps/index.html">📱 Apps</a>
+      <button class="clarity-toggle" id="clarity-toggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco" title="Ativar visualização clara">
+        <span aria-hidden="true">☀️</span><span class="clarity-label">Visualização clara</span>
+      </button>
     </nav>
   </header>
 
@@ -213,5 +388,86 @@
   </footer>
 
   <script src="assets/estudos.js"></script>
+  <script>
+    (() => {
+      const preferenceKey = 'antigravity:a11y:v1';
+      const root = document.documentElement;
+      const toggle = document.getElementById('clarity-toggle');
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+      const appleStatus = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+
+      function parsePreferences(raw) {
+        try {
+          const parsed = JSON.parse(raw || '{}');
+          return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+        } catch (_) {
+          return {};
+        }
+      }
+      function readPreferences(raw) {
+        if (raw !== undefined) return parsePreferences(raw);
+        try {
+          return parsePreferences(localStorage.getItem(preferenceKey));
+        } catch (_) {
+          return {};
+        }
+      }
+      function clarityEnabled(preferences) {
+        if (preferences.contrast === true) return false;
+        if (preferences.theme === 'light') return true;
+        if (preferences.theme === 'dark') return false;
+        if (preferences.theme === 'system') {
+          return matchMedia('(prefers-color-scheme: light)').matches;
+        }
+        return preferences.clarity === true;
+      }
+      function applyPreferences(preferences) {
+        const contrast = preferences.contrast === true;
+        const clarity = clarityEnabled(preferences);
+        root.classList.toggle('a11y-contrast', contrast);
+        root.classList.toggle('a11y-light', clarity);
+        root.style.colorScheme = clarity ? 'light' : 'dark';
+        themeColor?.setAttribute('content', clarity ? '#ffffff' : contrast ? '#000000' : '#07111f');
+        appleStatus?.setAttribute('content', clarity ? 'default' : 'black-translucent');
+        toggle.setAttribute('aria-pressed', String(clarity));
+        toggle.setAttribute('aria-label', clarity ? 'Voltar ao modo espacial escuro' : 'Ativar visualização clara com fundo branco');
+        toggle.title = clarity ? 'Voltar ao modo espacial escuro' : 'Ativar visualização clara';
+        toggle.querySelector('[aria-hidden="true"]').textContent = clarity ? '🌙' : '☀️';
+        toggle.querySelector('.clarity-label').textContent = clarity ? 'Modo espacial' : 'Visualização clara';
+      }
+
+      let preferences = readPreferences();
+      applyPreferences(preferences);
+      toggle.addEventListener('click', () => {
+        const current = readPreferences();
+        const clarity = clarityEnabled(current);
+        preferences = {
+          ...current,
+          clarity: !clarity,
+          theme: clarity ? 'dark' : 'light'
+        };
+        if (preferences.clarity) preferences.contrast = false;
+        try {
+          localStorage.setItem(preferenceKey, JSON.stringify(preferences));
+        } catch (_) {}
+        applyPreferences(preferences);
+      });
+      window.addEventListener('storage', event => {
+        if (event.key !== preferenceKey) return;
+        preferences = readPreferences(event.newValue);
+        applyPreferences(preferences);
+      });
+      const systemTheme = matchMedia('(prefers-color-scheme: light)');
+      const handleSystemThemeChange = () => {
+        const current = readPreferences();
+        if (current.theme === 'system') applyPreferences(current);
+      };
+      if (systemTheme.addEventListener) {
+        systemTheme.addEventListener('change', handleSystemThemeChange);
+      } else {
+        systemTheme.addListener?.(handleSystemThemeChange);
+      }
+    })();
+  </script>
 </body>
 </html>

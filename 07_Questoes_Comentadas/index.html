@@ -4,7 +4,93 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Questões Comentadas | Antigravity</title>
+  <meta name="theme-color" content="#050d1a"/>
+  <meta name="color-scheme" content="dark light"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <script>
+    /* Restaura a preferência global antes da primeira pintura. */
+    (() => {
+      try {
+        const saved = JSON.parse(localStorage.getItem("antigravity:a11y:v1") || "{}");
+        const prefs = saved && typeof saved === "object" && !Array.isArray(saved) ? saved : {};
+        const contrast = prefs.contrast === true;
+        const theme = prefs.theme;
+        const clarity = !contrast && (
+          theme === "light" ||
+          (theme === "system" && matchMedia("(prefers-color-scheme: light)").matches) ||
+          (!["dark", "light", "system"].includes(theme) && prefs.clarity === true)
+        );
+        document.documentElement.classList.toggle("a11y-contrast", contrast);
+        document.documentElement.classList.toggle("a11y-light", clarity);
+        document.documentElement.style.colorScheme = clarity ? "light" : "dark";
+        document.querySelector('meta[name="theme-color"]').content =
+          clarity ? "#ffffff" : contrast ? "#000000" : "#050d1a";
+        document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content =
+          clarity ? "default" : "black-translucent";
+      } catch (_) {}
+    })();
+  </script>
   <link rel="stylesheet" href="../assets/css/content-hub.css"/>
+  <style>
+    :root{color-scheme:dark}
+    html.a11y-light{
+      color-scheme:light;
+      --bg:#fff;--bg2:#f6f9fc;--card:#fff;--card2:#eef4f8;
+      --border:#71869a;--text:#102a43;--muted:#536b7d;
+      --accent:#006b7d;--accent2:#5946c7;--green:#087a55;
+      --gold:#855400;--red:#b4233f;
+    }
+    html.a11y-contrast{
+      color-scheme:dark;
+      --bg:#000;--bg2:#050505;--card:#080808;--card2:#111;
+      --border:#fff;--text:#fff;--muted:#fff;--accent:#00ffff;
+      --accent2:#d8b4fe;--green:#7fff7f;--gold:#ffff00;--red:#ff8fa3;
+    }
+    html.a11y-light body{
+      background:
+        radial-gradient(circle at 12% 0,rgba(0,107,125,.09),transparent 28rem),
+        radial-gradient(circle at 90% 8%,rgba(89,70,199,.07),transparent 30rem),
+        #fff;
+    }
+    html.a11y-light .topbar{background:rgba(255,255,255,.96);box-shadow:0 8px 28px rgba(16,42,67,.08)}
+    html.a11y-light .brand-icon{background:rgba(0,107,125,.1);border-color:#006b7d}
+    html.a11y-light .panel,
+    html.a11y-light .stat,
+    html.a11y-light .card,
+    html.a11y-light .empty{background:#fff;border-color:#71869a;box-shadow:0 12px 34px rgba(16,42,67,.08)}
+    html.a11y-light .control,
+    html.a11y-light .tab,
+    html.a11y-light .btn{background:#fff;color:var(--text);border-color:#71869a}
+    html.a11y-light .btn.primary{background:#006b7d;border-color:#006b7d;color:#fff}
+    html.a11y-light .tab.active,
+    html.a11y-light .tab:hover{background:#e8f6f8;color:#006b7d;border-color:#006b7d}
+    html.a11y-light .tag{background:#eef4f8;color:#006b7d;border-color:#71869a}
+    html.a11y-light .instructions code{background:#eef4f8;color:#102a43;border-color:#71869a}
+    html.a11y-light .preview-bar{background:#eef4f8}
+    html.a11y-light .preview-body{background:#fff;color:#102a43}
+    .clarity-toggle{min-height:44px}
+    :where(a,button,input,select,[tabindex]):focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+    html.a11y-light :where(a,button,input,select,[tabindex]):focus-visible{outline-color:#855400}
+    @media(max-width:520px){.clarity-label{display:none}.clarity-toggle{flex:0 0 48px}}
+    @media print{
+      @page{margin:14mm}
+      html,html.a11y-light,html.a11y-contrast{
+        color-scheme:light;
+        --bg:#fff;--bg2:#fff;--card:#fff;--card2:#eef4f8;
+        --border:#71869a;--text:#102a43;--muted:#455f73;
+        --accent:#006b7d;--accent2:#5946c7;--green:#087a55;
+        --gold:#855400;--red:#b4233f;
+      }
+      *{animation:none!important;transition:none!important;box-shadow:none!important}
+      body{background:#fff!important;color:#102a43!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+      .topbar{position:static;background:#fff!important;border-color:#71869a!important}
+      .nav-actions,.controls,.format-tabs,.preview{display:none!important}
+      .hero{grid-template-columns:1fr}
+      .panel,.stat,.card,.empty{background:#fff!important;color:#102a43!important;border-color:#71869a!important;break-inside:avoid;page-break-inside:avoid}
+      .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      a{text-decoration:none}
+    }
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -12,7 +98,7 @@
       <span class="brand-icon">🧠</span>
       <span><strong>Questões Comentadas</strong><small>TEMI, R3, UTI, casos e OSCE</small></span>
     </a>
-    <nav class="nav-actions"><a class="btn" href="../index.html">← Home</a><span class="btn" aria-disabled="true">✅ Conteúdo aprovado</span></nav>
+    <nav class="nav-actions"><a class="btn" href="../index.html">← Home</a><span class="btn" aria-disabled="true">✅ Conteúdo aprovado</span><button class="btn clarity-toggle" type="button" data-clarity-toggle aria-pressed="false" aria-label="Ativar visualização clara com fundo branco"><span aria-hidden="true">☀️</span><span class="clarity-label">Visualização clara</span></button></nav>
   </header>
   <main class="shell">
     <section class="hero">
@@ -20,13 +106,79 @@
       <aside class="panel stats"><div class="stat"><strong id="stat-total">0</strong><span>Itens</span></div><div class="stat"><strong id="stat-files">0</strong><span>Arquivos</span></div><div class="stat"><strong id="stat-links">0</strong><span>Links</span></div><div class="stat"><strong id="stat-formats">0</strong><span>Formatos</span></div></aside>
     </section>
     <section class="panel instructions"><strong>Publicação segura:</strong> revise no staging privado e promova apenas arquivos aprovados para <code>07_Questoes_Comentadas/public/</code>; depois rode o scanner.</section>
-    <section class="controls"><input id="search" class="control" placeholder="Buscar questão, tema, prova, formato ou tag..." oninput="setQuery(this.value)"/><select id="format-filter" class="control" onchange="setFormat(this.value)"></select><select id="source-filter" class="control" onchange="setSource(this.value)"></select><button class="btn" onclick="clearFilters()">Limpar</button></section>
+    <section class="controls"><input id="search" class="control" aria-label="Buscar no acervo de questões comentadas" placeholder="Buscar questão, tema, prova, formato ou tag..." oninput="setQuery(this.value)"/><select id="format-filter" class="control" aria-label="Filtrar questões por formato" onchange="setFormat(this.value)"></select><select id="source-filter" class="control" aria-label="Filtrar questões por origem" onchange="setSource(this.value)"></select><button class="btn" onclick="clearFilters()">Limpar</button></section>
     <div id="format-tabs" class="format-tabs"></div>
     <section class="section-title"><div><h2>Acervo</h2><p id="result-count">0 item(ns)</p></div></section>
     <div id="empty-state" class="empty" style="display:none">Nenhum item público aprovado neste módulo.</div>
     <div id="items-grid" class="grid"></div>
   </main>
-  <div id="preview" class="preview"><div class="preview-bar"><h3 id="preview-title">Visualização</h3><div class="actions"><a id="preview-direct" class="btn" target="_blank" rel="noopener">Abrir</a><a id="preview-download" class="btn" download>Baixar</a><button class="btn primary" onclick="closePreview()">Fechar</button></div></div><iframe id="preview-frame" class="preview-frame" sandbox="allow-downloads" referrerpolicy="no-referrer"></iframe><div id="preview-body" class="preview-body"></div></div>
+  <div id="preview" class="preview" role="dialog" aria-modal="true" aria-labelledby="preview-title" aria-hidden="true" tabindex="-1"><div class="preview-bar"><h3 id="preview-title">Visualização</h3><div class="actions"><a id="preview-direct" class="btn" target="_blank" rel="noopener">Abrir</a><a id="preview-download" class="btn" download>Baixar</a><button class="btn primary" type="button" data-preview-close onclick="closePreview()">Fechar</button></div></div><iframe id="preview-frame" class="preview-frame" title="Pré-visualização segura do documento" sandbox="allow-downloads" referrerpolicy="no-referrer"></iframe><div id="preview-body" class="preview-body"></div></div>
+  <script>
+    (() => {
+      const key = "antigravity:a11y:v1";
+      const toggle = document.querySelector("[data-clarity-toggle]");
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      const statusMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+      function readPreferences(raw) {
+        try {
+          const parsed = JSON.parse(raw === undefined ? localStorage.getItem(key) || "{}" : raw || "{}");
+          return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? {...parsed} : {};
+        } catch (_) {
+          return {};
+        }
+      }
+      let preferences = readPreferences();
+      function clarityEnabled(prefs) {
+        if (prefs.contrast === true) return false;
+        if (prefs.theme === "light") return true;
+        if (prefs.theme === "dark") return false;
+        if (prefs.theme === "system") return matchMedia("(prefers-color-scheme: light)").matches;
+        return prefs.clarity === true;
+      }
+      function applyPreferences({persist = false} = {}) {
+        const contrast = preferences.contrast === true;
+        const clarity = clarityEnabled(preferences);
+        document.documentElement.classList.toggle("a11y-contrast", contrast);
+        document.documentElement.classList.toggle("a11y-light", clarity);
+        document.documentElement.style.colorScheme = clarity ? "light" : "dark";
+        themeMeta?.setAttribute("content", clarity ? "#ffffff" : contrast ? "#000000" : "#050d1a");
+        statusMeta?.setAttribute("content", clarity ? "default" : "black-translucent");
+        toggle.setAttribute("aria-pressed", String(clarity));
+        toggle.querySelector('[aria-hidden="true"]').textContent = clarity ? "🌙" : "☀️";
+        toggle.querySelector(".clarity-label").textContent = clarity ? "Modo espacial" : "Visualização clara";
+        toggle.setAttribute("aria-label", clarity
+          ? "Desativar visualização clara e voltar ao modo espacial escuro"
+          : "Ativar visualização clara com fundo branco");
+        if (persist) {
+          try { localStorage.setItem(key, JSON.stringify(preferences)); } catch (_) {}
+        }
+      }
+      toggle.addEventListener("click", () => {
+        preferences = readPreferences();
+        const clarity = clarityEnabled(preferences);
+        preferences.clarity = !clarity;
+        preferences.theme = preferences.clarity ? "light" : "dark";
+        if (preferences.clarity) preferences.contrast = false;
+        applyPreferences({persist: true});
+      });
+      window.addEventListener("storage", event => {
+        if (event.key !== key) return;
+        preferences = readPreferences(event.newValue);
+        applyPreferences();
+      });
+      const systemTheme = matchMedia("(prefers-color-scheme: light)");
+      const handleSystemThemeChange = () => {
+        preferences = readPreferences();
+        if (preferences.theme === "system") applyPreferences();
+      };
+      if (systemTheme.addEventListener) {
+        systemTheme.addEventListener("change", handleSystemThemeChange);
+      } else {
+        systemTheme.addListener?.(handleSystemThemeChange);
+      }
+      applyPreferences();
+    })();
+  </script>
   <script src="../assets/js/content-hub.js"></script>
 </body>
 </html>

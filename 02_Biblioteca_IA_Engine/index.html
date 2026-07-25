@@ -5,11 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>📚 Biblioteca IA — Enciclopédia Médica Intensiva</title>
 <meta name="description" content="Repositório de materiais médicos gerados com suporte de IA, organizados por Dr. Aldenir Rocha, médico intensivista e clínico."/>
+<meta name="theme-color" content="#050d1a"/>
+<meta name="color-scheme" content="dark light"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<script>
+(() => {
+  try {
+    const saved = JSON.parse(localStorage.getItem('antigravity:a11y:v1') || '{}');
+    const prefs = saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
+    const contrast = prefs.contrast === true;
+    const theme = prefs.theme;
+    const clarity = !contrast && (
+      theme === 'light' ||
+      (theme === 'system' && matchMedia('(prefers-color-scheme: light)').matches) ||
+      (!['dark', 'light', 'system'].includes(theme) && prefs.clarity === true)
+    );
+    document.documentElement.classList.toggle('a11y-contrast', contrast);
+    document.documentElement.classList.toggle('a11y-light', clarity);
+    document.documentElement.style.colorScheme = clarity ? 'light' : 'dark';
+    document.querySelector('meta[name="theme-color"]').content = clarity ? '#ffffff' : contrast ? '#000000' : '#050d1a';
+    document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content = clarity ? 'default' : 'black-translucent';
+  } catch (_) {}
+})();
+</script>
 <link rel="icon" href="../favicon.ico" sizes="64x64"/>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap');
 
   :root{
+    color-scheme:dark;
     --bg:#050d1a;--bg2:#0a1628;--bg3:#0f1f38;
     --accent:#00d4ff;--accent2:#7c3aed;--accent3:#10b981;--gold:#f59e0b;
     --red:#ef4444;--text:#e2e8f0;--muted:#64748b;--border:#1e3a5f;
@@ -17,7 +41,7 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
-  body.preview-modal-open{overflow:hidden}
+  body.preview-modal-open,body.form-modal-open{overflow:hidden}
 
   /* ── HEADER ── */
   header{background:linear-gradient(135deg,var(--bg2),var(--bg3));border-bottom:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
@@ -47,7 +71,7 @@
 
   /* ── FILTROS ── */
   .filtros{display:flex;gap:.5rem;flex-wrap:wrap;max-width:900px;margin:.5rem auto 1.5rem;padding:0 1rem}
-  .filtro{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:.35rem .9rem;font-size:.8rem;cursor:pointer;transition:.2s;color:var(--muted)}
+  .filtro{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:.35rem .9rem;font:inherit;font-size:.8rem;cursor:pointer;transition:.2s;color:var(--muted)}
   .filtro.ativo,.filtro:hover{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
   .filter-panel{max-width:900px;margin:.7rem auto 1.2rem;padding:0 1rem;display:grid;grid-template-columns:1fr 1fr auto;gap:.7rem;align-items:end}
   .filter-panel label{font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
@@ -204,6 +228,166 @@
   }
 </style>
 <link rel="stylesheet" href="assets/library-focused-reader.css?v=20260721-ios-reader-1"/>
+<style>
+  .clarity-toggle{
+    min-height:44px;padding:.48rem .75rem;border:1px solid var(--border);
+    border-radius:8px;background:transparent;color:var(--accent);cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
+    font:700 .78rem/1 'Inter',sans-serif;white-space:nowrap
+  }
+  :where(a,button,input,select,textarea,[tabindex]):focus-visible{
+    outline:3px solid var(--gold);outline-offset:3px
+  }
+
+  html.a11y-light{
+    color-scheme:light;
+    --bg:#ffffff;--bg2:#f6f9fc;--bg3:#edf4f8;
+    --accent:#006b7d;--accent2:#5946c7;--accent3:#087a55;--gold:#855400;
+    --red:#b4233f;--text:#102a43;--muted:#536b7d;--border:#71869a;
+    --card:#ffffff;--card2:#f6f9fc;--primary:#006b7d;
+  }
+  html.a11y-light body{background:#ffffff;color:var(--text)}
+  html.a11y-light header{
+    background:linear-gradient(135deg,#ffffff,#f6f9fc);
+    border-color:#71869a;box-shadow:0 8px 26px rgba(16,42,67,.08)
+  }
+  html.a11y-light header h1{
+    background:none;color:var(--text);-webkit-text-fill-color:currentColor
+  }
+  html.a11y-light header a.back,
+  html.a11y-light header button.nav-btn,
+  html.a11y-light .clarity-toggle{
+    background:#ffffff;color:var(--text);border-color:#71869a
+  }
+  html.a11y-light header button.nav-btn.active{
+    background:#006b7d;color:#ffffff;border-color:#006b7d
+  }
+  html.a11y-light .juridico{
+    background:#fff9e8;border-color:#855400;color:#5f3b00
+  }
+  html.a11y-light .juridico p{color:#5f3b00}
+  html.a11y-light .juridico strong,
+  html.a11y-light .juridico::before{color:#6b4300}
+  html.a11y-light .stat,
+  html.a11y-light .partition-card,
+  html.a11y-light .card,
+  html.a11y-light .brain-map-mini,
+  html.a11y-light .study-hero,
+  html.a11y-light .study-empty,
+  html.a11y-light .classify-box,
+  html.a11y-light .study-panel{
+    background:#ffffff;color:var(--text);border-color:#b8c7d4;
+    box-shadow:0 12px 34px rgba(16,42,67,.08)
+  }
+  html.a11y-light .partition-card:hover,
+  html.a11y-light .partition-card.ativo{
+    background:#e5f7fa;border-color:#006b7d
+  }
+  html.a11y-light .meta-pill,
+  html.a11y-light .tag,
+  html.a11y-light .study-progress,
+  html.a11y-light .reader-tool-group,
+  html.a11y-light .reader-highlight-card{
+    background:#f6f9fc;color:var(--muted);border-color:#71869a
+  }
+  html.a11y-light .search-bar input,
+  html.a11y-light .filter-panel select,
+  html.a11y-light .classify-box select,
+  html.a11y-light .classify-box input,
+  html.a11y-light .classify-box textarea,
+  html.a11y-light .study-panel textarea,
+  html.a11y-light .study-panel select,
+  html.a11y-light .study-panel input,
+  html.a11y-light .study-controls select,
+  html.a11y-light .reader-tools button,
+  html.a11y-light .reader-tools select,
+  html.a11y-light .reader-tools input,
+  html.a11y-light .reader-mobile-navigation button{
+    background:#ffffff;color:var(--text);border-color:#71869a
+  }
+  html.a11y-light .filtro{background:#ffffff;color:var(--muted);border-color:#71869a}
+  html.a11y-light .filtro.ativo,
+  html.a11y-light .filtro:hover,
+  html.a11y-light .page-btn.active,
+  html.a11y-light .page-btn:hover{
+    background:#006b7d;color:#ffffff;border-color:#006b7d
+  }
+  html.a11y-light .btn-primary{background:#006b7d;color:#ffffff}
+  html.a11y-light .btn-triagem{background:#855400;color:#ffffff}
+  html.a11y-light .btn-delete{
+    background:#fff0f3;color:#8a1730;border-color:#b4233f
+  }
+  html.a11y-light .classify-overlay{background:rgba(16,42,67,.32)}
+  html.a11y-light .preview-overlay{
+    --reader-muted-accessible:#536b7d;
+    --reader-focus-ring:#855400;
+    background:rgba(16,42,67,.28)
+  }
+  html.a11y-light .preview-toolbar,
+  html.a11y-light .preview-shell,
+  html.a11y-light .reader-tools,
+  html.a11y-light .reader-mobile-navigation{
+    background:#f6f9fc;color:var(--text);border-color:#71869a
+  }
+  html.a11y-light .preview-stage,
+  html.a11y-light .preview-overlay.reader-focused .preview-stage{background:#ffffff}
+  html.a11y-light .preview-mode-button[aria-pressed="true"],
+  html.a11y-light .reader-mobile-navigation button[aria-pressed="true"]{
+    background:#e5f7fa;color:#005466;border-color:#006b7d
+  }
+  html.a11y-light .reader-tools button[aria-pressed="true"]{
+    background:#006b7d;color:#ffffff;border-color:#006b7d
+  }
+  html.a11y-light :where(a,button,input,select,textarea,[tabindex]):focus-visible{
+    outline-color:#855400
+  }
+
+  html.a11y-contrast{
+    color-scheme:dark;
+    --bg:#000000;--bg2:#000000;--bg3:#080808;
+    --accent:#00ffff;--accent2:#d5c8ff;--accent3:#7fffbd;--gold:#ffff00;
+    --red:#ff8ca0;--text:#ffffff;--muted:#ffffff;--border:#ffffff;
+    --card:#000000;--card2:#080808;--primary:#00ffff;
+  }
+  html.a11y-contrast body,
+  html.a11y-contrast header,
+  html.a11y-contrast .reader-tools,
+  html.a11y-contrast .reader-mobile-navigation{background:#000000}
+  html.a11y-contrast .preview-overlay{--reader-focus-ring:#ffff00}
+
+  @media print{
+    @page{margin:14mm}
+    html,html.a11y-light,html.a11y-contrast{
+      color-scheme:light;
+      --bg:#ffffff;--bg2:#ffffff;--bg3:#edf4f8;
+      --accent:#006b7d;--accent2:#5946c7;--accent3:#087a55;--gold:#855400;
+      --red:#b4233f;--text:#102a43;--muted:#455f73;--border:#71869a;
+      --card:#ffffff;--card2:#f6f9fc;--primary:#006b7d
+    }
+    body{background:#ffffff!important;color:#102a43!important}
+    header{position:static;background:#ffffff!important;box-shadow:none!important}
+    header .actions,.clarity-toggle,.search-bar,.filtros,.filter-panel,.pagination{
+      display:none!important
+    }
+    header h1{background:none!important;color:#102a43!important;-webkit-text-fill-color:currentColor!important}
+    .juridico,.stat,.partition-card,.card,.brain-map-mini,.study-hero,.study-empty,
+    .classify-box,.study-panel,.reader-highlight-card{
+      background:#ffffff!important;color:#102a43!important;
+      border-color:#71869a!important;box-shadow:none!important
+    }
+    .card,.partition-card,.stat,.brain-map-mini,.study-hero,.reader-highlight-card{
+      break-inside:avoid;page-break-inside:avoid
+    }
+    .juridico p,.juridico strong,.juridico::before{color:#5f3b00!important}
+    .btn{background:#ffffff!important;color:#102a43!important;border:1px solid #71869a!important}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+
+  @media (max-width:760px), (max-width:980px) and (max-height:600px){
+    .clarity-label{display:none}
+    .clarity-toggle{min-width:44px;padding-inline:.65rem}
+  }
+</style>
 </head>
 <body>
 
@@ -213,6 +397,9 @@
     <button class="nav-btn active" id="btn-catalogo" onclick="switchView('catalogo')">📂 Catálogo</button>
     <button class="nav-btn" id="btn-estudo" onclick="switchView('estudo')">🧠 Estudo <span id="study-due-count" style="background:var(--accent2);color:#fff;padding:1px 5px;border-radius:10px;font-size:.6rem;margin-left:3px">0</span></button>
     <button class="nav-btn" id="btn-triagem" onclick="switchView('triagem')">📥 Triagem <span id="triagem-count" style="background:var(--red);color:#fff;padding:1px 5px;border-radius:10px;font-size:.6rem;margin-left:3px">0</span></button>
+    <button class="clarity-toggle" id="clarity-toggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco" title="Ativar visualização clara">
+      <span aria-hidden="true">☀️</span><span class="clarity-label">Visualização clara</span>
+    </button>
     <a href="recovery-review-dashboard.html" class="back">🩺 Revisão clínica</a>
     <a href="GUIA_BIBLIOTECA_E_PUBLICACAO.md" target="_blank" rel="noopener noreferrer" class="back">➕ Como adicionar</a>
     <a href="../index.html" class="back">← Voltar</a>
@@ -239,13 +426,13 @@
 
   <!-- BUSCA -->
   <div class="search-bar">
-    <input type="text" id="busca" placeholder="🔍 Buscar por tema, formato, origem, palavra-chave ou título..." oninput="renderGrid()"/>
+    <input type="text" id="busca" aria-label="Buscar na Biblioteca IA" placeholder="🔍 Buscar por tema, formato, origem, palavra-chave ou título..." oninput="renderGrid()"/>
   </div>
 
   <!-- FILTROS POR TEMA -->
   <div class="filtros" id="filtros-temas">
-    <span class="filtro ativo" data-filter="todos" onclick="setFilter('todos')">📦 Todos</span>
-    <span class="filtro" onclick="abrirNovoTema()" style="border-style:dashed; opacity:0.7">➕ Novo Tema</span>
+    <button type="button" class="filtro ativo" data-filter="todos" onclick="setFilter('todos')">📦 Todos</button>
+    <button type="button" class="filtro" data-modal-trigger="newThemeOverlay" onclick="abrirNovoTema()" style="border-style:dashed; opacity:0.7">➕ Novo Tema</button>
     <!-- Populado via JSON -->
   </div>
 
@@ -348,9 +535,9 @@
 </div>
 
 <!-- DIALOG: NOVO TEMA -->
-<div class="classify-overlay" id="newThemeOverlay" onclick="if(event.target===this)fecharNovoTema()">
+<div class="classify-overlay" id="newThemeOverlay" role="dialog" aria-modal="true" aria-labelledby="newThemeTitle" aria-hidden="true" tabindex="-1" onclick="if(event.target===this)fecharNovoTema()">
   <div class="classify-box">
-    <h3>➕ Adicionar Novo Tema Médico</h3>
+    <h3 id="newThemeTitle">➕ Adicionar Novo Tema Médico</h3>
     <p style="font-size:.8rem; color:var(--muted)">Crie uma nova especialidade ou categoria para organizar seus documentos.</p>
     
     <label>Nome do Tema
@@ -367,16 +554,16 @@
     </div>
 
     <div class="classify-actions" style="margin-top:2rem">
-      <button class="btn btn-secondary" onclick="fecharNovoTema()">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarNovoTema()">✅ Criar Tema</button>
+      <button type="button" class="btn btn-secondary" onclick="fecharNovoTema()">Cancelar</button>
+      <button type="button" class="btn btn-primary" onclick="salvarNovoTema()">✅ Criar Tema</button>
     </div>
   </div>
 </div>
 
 <!-- CLASSIFY DIALOG -->
-<div class="classify-overlay" id="classifyOverlay" onclick="if(event.target===this)fecharClassify()">
+<div class="classify-overlay" id="classifyOverlay" role="dialog" aria-modal="true" aria-labelledby="classifyTitle" aria-hidden="true" tabindex="-1" onclick="if(event.target===this)fecharClassify()">
   <div class="classify-box">
-    <h3>📥 Classificar para a Enciclopédia</h3>
+    <h3 id="classifyTitle">📥 Classificar para a Enciclopédia</h3>
     <p id="clFilename" style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);margin-bottom:1rem;word-break:break-all"></p>
     
     <input type="hidden" id="clId" />
@@ -429,8 +616,8 @@
     </label>
 
     <div class="classify-actions">
-      <button class="btn btn-secondary" onclick="fecharClassify()">Cancelar</button>
-      <button class="btn btn-primary btn-triagem" onclick="salvarClassificacao()">📂 Salvar no Catálogo</button>
+      <button type="button" class="btn btn-secondary" onclick="fecharClassify()">Cancelar</button>
+      <button type="button" class="btn btn-primary btn-triagem" onclick="salvarClassificacao()">📂 Salvar no Catálogo</button>
     </div>
     
     <p style="font-size:.65rem;color:var(--muted);margin-top:1rem;text-align:center">
@@ -474,6 +661,7 @@
       <select id="readerTheme" class="reader-reading-control" aria-label="Tema de leitura">
         <option value="dark">Escuro</option>
         <option value="light">Claro</option>
+        <option value="contrast">Alto contraste</option>
         <option value="sepia">Sépia</option>
       </select>
     </div>
@@ -572,6 +760,112 @@
   </div>
 </div>
 
+<script>
+(() => {
+  const preferenceKey = 'antigravity:a11y:v1';
+  const root = document.documentElement;
+  const toggle = document.getElementById('clarity-toggle');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const appleStatus = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+
+  const parsePreferences = value => {
+    try {
+      const parsed = JSON.parse(value || '{}');
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+    } catch {
+      return {};
+    }
+  };
+
+  const readPreferences = value => {
+    if (value !== undefined) return parsePreferences(value);
+    try {
+      return parsePreferences(localStorage.getItem(preferenceKey));
+    } catch {
+      return {};
+    }
+  };
+  const clarityEnabled = preferences => {
+    if (preferences.contrast === true) return false;
+    if (preferences.theme === 'light') return true;
+    if (preferences.theme === 'dark') return false;
+    if (preferences.theme === 'system') {
+      return matchMedia('(prefers-color-scheme: light)').matches;
+    }
+    return preferences.clarity === true;
+  };
+
+  const applyPreferences = preferences => {
+    const contrast = preferences.contrast === true;
+    const clarity = clarityEnabled(preferences);
+    root.classList.toggle('a11y-contrast', contrast);
+    root.classList.toggle('a11y-light', clarity);
+    root.style.colorScheme = clarity ? 'light' : 'dark';
+
+    if (themeMeta) {
+      themeMeta.setAttribute('content', clarity ? '#ffffff' : contrast ? '#000000' : '#050d1a');
+    }
+    if (appleStatus) {
+      appleStatus.setAttribute('content', clarity ? 'default' : 'black-translucent');
+    }
+
+    if (toggle) {
+      toggle.setAttribute('aria-pressed', String(clarity));
+      toggle.setAttribute(
+        'aria-label',
+        clarity
+          ? 'Desativar visualização clara e usar fundo escuro'
+          : 'Ativar visualização clara com fundo branco'
+      );
+      toggle.setAttribute(
+        'title',
+        clarity ? 'Usar fundo escuro' : 'Ativar visualização clara'
+      );
+      const icon = toggle.querySelector('[aria-hidden="true"]');
+      if (icon) icon.textContent = clarity ? '🌙' : '☀️';
+      const label = toggle.querySelector('.clarity-label');
+      if (label) label.textContent = clarity ? 'Visualização escura' : 'Visualização clara';
+    }
+    window.dispatchEvent(new CustomEvent('antigravity:themechange', {
+      detail: { clarity, contrast }
+    }));
+  };
+
+  applyPreferences(readPreferences());
+
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      const current = readPreferences();
+      const clarity = clarityEnabled(current);
+      const next = {
+        ...current,
+        clarity: !clarity,
+        theme: clarity ? 'dark' : 'light'
+      };
+      if (next.clarity) next.contrast = false;
+      try {
+        localStorage.setItem(preferenceKey, JSON.stringify(next));
+      } catch {}
+      applyPreferences(next);
+    });
+  }
+
+  window.addEventListener('storage', event => {
+    if (event.key !== preferenceKey) return;
+    applyPreferences(readPreferences(event.newValue));
+  });
+  const systemTheme = matchMedia('(prefers-color-scheme: light)');
+  const handleSystemThemeChange = () => {
+    const current = readPreferences();
+    if (current.theme === 'system') applyPreferences(current);
+  };
+  if (systemTheme.addEventListener) {
+    systemTheme.addEventListener('change', handleSystemThemeChange);
+  } else {
+    systemTheme.addListener?.(handleSystemThemeChange);
+  }
+})();
+</script>
 <script src="assets/library-focused-reader.js?v=20260721-ios-reader-1"></script>
 <script>
 // ============================================================
@@ -587,6 +881,18 @@ let currentPreviewItem = null;
 let currentPreviewContext = null;
 let previewReturnFocus = null;
 let previewBackgroundState = [];
+let activeFormModal = null;
+let formModalReturnFocus = null;
+let formModalBackgroundState = [];
+const FORM_MODAL_FOCUSABLE_SELECTOR = [
+  'a[href]:not([tabindex="-1"])',
+  'button:not([disabled]):not([tabindex="-1"])',
+  'input:not([disabled]):not([tabindex="-1"])',
+  'select:not([disabled]):not([tabindex="-1"])',
+  'textarea:not([disabled]):not([tabindex="-1"])',
+  '[contenteditable="true"]',
+  '[tabindex]:not([tabindex="-1"])'
+].join(',');
 let studyAutosaveTimer = null;
 let studyFormDirty = false;
 let previewLoadToken = 0;
@@ -859,17 +1165,18 @@ function popularFiltros() {
   
   // Manter o botão 'Todos' e 'Novo Tema'
   container.innerHTML = `
-    <span class="filtro ${currentFilter==='todos'?'ativo':''}" data-filter="todos" onclick="setFilter('todos')">📦 Todos</span>
-    <span class="filtro" onclick="abrirNovoTema()" style="border-style:dashed; opacity:0.7">➕ Novo Tema</span>
+    <button type="button" class="filtro ${currentFilter==='todos'?'ativo':''}" data-filter="todos" onclick="setFilter('todos')">📦 Todos</button>
+    <button type="button" class="filtro" data-modal-trigger="newThemeOverlay" onclick="abrirNovoTema()" style="border-style:dashed; opacity:0.7">➕ Novo Tema</button>
   `;
 
   items.forEach(t => {
-    const span = document.createElement('span');
-    span.className = `filtro ${currentFilter===t.id?'ativo':''}`;
-    span.dataset.filter = t.id;
-    span.onclick = () => setFilter(t.id);
-    span.textContent = `${t.emoji || '📂'} ${t.label || 'Tema'}`;
-    container.appendChild(span);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `filtro ${currentFilter===t.id?'ativo':''}`;
+    button.dataset.filter = t.id;
+    button.onclick = () => setFilter(t.id);
+    button.textContent = `${t.emoji || '📂'} ${t.label || 'Tema'}`;
+    container.appendChild(button);
   });
 
   // Populate Select in Modal
@@ -1432,6 +1739,90 @@ function renderDocumentConnections(item) {
   related.innerHTML = siblings.length ? siblings.map(other => `<a href="#" onclick="event.preventDefault();abrirPreview('${inlineToken(other.path)}','${inlineToken(other.title || other.filename)}',true)">${getIcon(other.tipo)} ${escapeHTML(other.title || other.filename)}</a>`).join('') : '<span style="font-size:.75rem;color:var(--muted)">Nenhum relacionado neste tema.</span>';
 }
 
+// Diálogos de formulário acessíveis
+function formModalFocusableElements(overlay) {
+  if (!overlay) return [];
+  return Array.from(overlay.querySelectorAll(FORM_MODAL_FOCUSABLE_SELECTOR)).filter(element => {
+    if (!(element instanceof HTMLElement) || element.hidden) return false;
+    if (element.getAttribute('aria-hidden') === 'true') return false;
+    const style = window.getComputedStyle(element);
+    return style.display !== 'none' && style.visibility !== 'hidden' && element.getClientRects().length > 0;
+  });
+}
+
+function openFormModal(overlayId) {
+  const overlay = document.getElementById(overlayId);
+  if (!overlay || (activeFormModal && activeFormModal !== overlay)) return;
+  formModalReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  formModalBackgroundState = Array.from(document.body.children)
+    .filter(element => element !== overlay && !['SCRIPT', 'STYLE'].includes(element.tagName))
+    .map(element => ({
+      element,
+      inert: element.hasAttribute('inert'),
+      ariaHidden: element.getAttribute('aria-hidden')
+    }));
+  formModalBackgroundState.forEach(entry => {
+    entry.element.setAttribute('inert', '');
+    entry.element.setAttribute('aria-hidden', 'true');
+  });
+  activeFormModal = overlay;
+  document.body.classList.add('form-modal-open');
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden', 'false');
+  requestAnimationFrame(() => {
+    const first = formModalFocusableElements(overlay)[0];
+    (first || overlay).focus();
+  });
+}
+
+function closeFormModal(overlayId) {
+  const overlay = document.getElementById(overlayId);
+  if (!overlay) return;
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden', 'true');
+  if (activeFormModal === overlay) {
+    formModalBackgroundState.forEach(entry => {
+      if (entry.inert) entry.element.setAttribute('inert', '');
+      else entry.element.removeAttribute('inert');
+      if (entry.ariaHidden === null) entry.element.removeAttribute('aria-hidden');
+      else entry.element.setAttribute('aria-hidden', entry.ariaHidden);
+    });
+    formModalBackgroundState = [];
+    activeFormModal = null;
+    document.body.classList.remove('form-modal-open');
+    const returnFocus = formModalReturnFocus;
+    formModalReturnFocus = null;
+    requestAnimationFrame(() => {
+      if (returnFocus && document.contains(returnFocus)) returnFocus.focus();
+      else document.querySelector(`[data-modal-trigger="${overlayId}"]`)?.focus();
+    });
+  }
+}
+
+function trapFormModalTab(event) {
+  if (!activeFormModal || event.key !== 'Tab') return false;
+  const focusable = formModalFocusableElements(activeFormModal);
+  if (!focusable.length) {
+    event.preventDefault();
+    activeFormModal.focus();
+    return true;
+  }
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  const active = document.activeElement;
+  if (event.shiftKey && (active === first || !activeFormModal.contains(active))) {
+    event.preventDefault();
+    last.focus();
+    return true;
+  }
+  if (!event.shiftKey && (active === last || !activeFormModal.contains(active))) {
+    event.preventDefault();
+    first.focus();
+    return true;
+  }
+  return false;
+}
+
 // Modal
 function abrirClassify(id) {
   const i = catalog.items.find(item => item.id === id);
@@ -1447,11 +1838,11 @@ function abrirClassify(id) {
   document.getElementById('clIA').value = i.ia_origem || 'IA';
   document.getElementById('clTags').value = (i.tags || []).join(', ');
   
-  document.getElementById('classifyOverlay').classList.add('open');
+  openFormModal('classifyOverlay');
 }
 
 function fecharClassify() {
-  document.getElementById('classifyOverlay').classList.remove('open');
+  closeFormModal('classifyOverlay');
 }
 
 function salvarClassificacao() {
@@ -1498,10 +1889,10 @@ function salvarClassificacao() {
 
 // Lógica de Novo Tema
 function abrirNovoTema() {
-  document.getElementById('newThemeOverlay').classList.add('open');
+  openFormModal('newThemeOverlay');
 }
 function fecharNovoTema() {
-  document.getElementById('newThemeOverlay').classList.remove('open');
+  closeFormModal('newThemeOverlay');
 }
 function salvarNovoTema() {
   const label = document.getElementById('ntLabel').value.trim();
@@ -2182,6 +2573,13 @@ function fecharPreview() {
 }
 
 document.addEventListener('keydown', event => {
+  if (event.key === 'Tab' && trapFormModalTab(event)) return;
+  if (event.key === 'Escape' && activeFormModal) {
+    event.preventDefault();
+    if (activeFormModal.id === 'newThemeOverlay') fecharNovoTema();
+    else fecharClassify();
+    return;
+  }
   if (event.key === 'Tab' && trapPreviewTab(event)) return;
   if (event.key === 'Escape' && document.getElementById('previewOverlay').classList.contains('open')) {
     if (focusedReader?.deactivateShortcuts()) {

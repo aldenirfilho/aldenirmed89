@@ -5,9 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sódio & Disnatremias PRO | Adrogué-Madias, NaCl 3%/0,45%, ACT, Ca corrigido</title>
   <meta name="description" content="Calculadoras de cálcio corrigido pela albumina, preparo de NaCl 3% e 0,45%, água corporal total e Adrogué-Madias para correção de hipo/hipernatremia." />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <script>
+    /* Aplica a preferência global antes da primeira pintura. */
+    (() => {
+      try {
+        const prefs = JSON.parse(localStorage.getItem('antigravity:a11y:v1') || '{}');
+        const contrast = prefs?.contrast === true;
+        const theme = prefs?.theme;
+        const clarity = !contrast && (
+          theme === 'light' ||
+          (theme === 'system' && matchMedia('(prefers-color-scheme: light)').matches) ||
+          (!['dark', 'light', 'system'].includes(theme) && prefs?.clarity === true)
+        );
+        document.documentElement.classList.toggle('a11y-contrast', contrast);
+        document.documentElement.classList.toggle('a11y-light', clarity);
+        document.documentElement.style.colorScheme = clarity ? 'light' : 'dark';
+        document.querySelector('meta[name="theme-color"]').content = clarity ? '#ffffff' : contrast ? '#000000' : '#07111f';
+        document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content = clarity ? 'default' : 'black-translucent';
+      } catch (_) {}
+    })();
+  </script>
   <link rel="canonical" href="sodio-disnatremia.html" />
   <style>
     :root{
+      color-scheme:dark;
       --bg:#07111f; --bg2:#0b182b; --panel:rgba(255,255,255,.075);
       --border:rgba(255,255,255,.14); --text:#f6f8fc; --muted:#aebbd0;
       --cyan:#3ee8ff; --green:#4ef0a1; --red:#ff6b6b; --yellow:#ffd166;
@@ -95,7 +119,69 @@
     .recipe h4{margin:0 0 8px;color:#caffdf}
     .danger-banner{border:1px solid rgba(255,107,107,.4);background:linear-gradient(145deg,rgba(255,107,107,.16),rgba(255,255,255,.04));border-radius:18px;padding:14px;color:#ffd6d6;font-weight:700;margin-top:12px}
     .sticky-note{position:sticky;top:86px}
-    @media(max-width:1060px){.hero,.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(2,1fr)}.nav{display:none}.hero{padding-top:18px}.hero-copy{padding:22px}.row,.row.three,.row.four{grid-template-columns:1fr}.sticky-note{position:static}}
+    .clarity-toggle{flex:0 0 auto;min-height:44px;padding:10px 13px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.08);color:var(--text);font:inherit;font-weight:900;cursor:pointer}
+    :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+    html.a11y-contrast{color-scheme:dark}
+    html.a11y-light{
+      color-scheme:light;
+      --bg:#fff;--bg2:#f6f9fc;--panel:#fff;
+      --border:#b8c7d4;--control-border:#71869a;
+      --text:#102a43;--muted:#536b7d;
+      --cyan:#006b7d;--green:#087a55;--red:#b4233f;--yellow:#855400;
+      --violet:#5946c7;--orange:#a23a00;
+      --shadow:0 16px 42px rgba(16,42,67,.1);
+    }
+    html.a11y-light body{background-color:#fff;background:radial-gradient(circle at top left,rgba(0,107,125,.08),transparent 32rem),radial-gradient(circle at 85% 10%,rgba(89,70,199,.07),transparent 30rem),linear-gradient(135deg,#fff,#f6f9fc)}
+    html.a11y-light .topbar{background:rgba(255,255,255,.96);border-bottom-color:var(--border);box-shadow:0 8px 28px rgba(16,42,67,.08)}
+    html.a11y-light .nav a,html.a11y-light .hero p,html.a11y-light label{color:var(--text)}
+    html.a11y-light .nav a[style]{color:var(--green)!important}
+    html.a11y-light .nav a:hover{background:#eef4f8}
+    html.a11y-light .brand-icon{background:#e8f6f8;border-color:var(--control-border)}
+    html.a11y-light h1{background:none;color:var(--text);-webkit-text-fill-color:var(--text)}
+    html.a11y-light .glass,html.a11y-light .card{background:rgba(255,255,255,.96);border-color:var(--border);box-shadow:var(--shadow)}
+    html.a11y-light .eyebrow{background:#e8f6f8;border-color:var(--cyan);color:var(--cyan)}
+    html.a11y-light .btn,html.a11y-light button,html.a11y-light input,html.a11y-light select,html.a11y-light textarea{background:#fff;color:var(--text);border-color:var(--control-border)}
+    html.a11y-light .btn.primary,html.a11y-light button.primary{background:var(--cyan);color:#fff;border:1px solid var(--cyan)}
+    html.a11y-light .btn:hover,html.a11y-light button:hover{background:#eef4f8}
+    html.a11y-light .btn.primary:hover,html.a11y-light button.primary:hover{background:#005568}
+    html.a11y-light .metric-grid div{background:#f6f9fc;border-color:var(--border)}
+    html.a11y-light .notice{background:#fff9e8;border-color:#a66a00;color:#5f3b00}
+    html.a11y-light .tab{background:#fff;border-color:var(--control-border);color:var(--text)}
+    html.a11y-light .tab.active{background:#e8f6f8;border-color:var(--cyan);color:var(--cyan);box-shadow:0 8px 24px rgba(0,107,125,.12)}
+    html.a11y-light .card.warn{background:#fff9e8;border-color:#a66a00}
+    html.a11y-light .card.danger{background:#fff4f6;border-color:var(--red)}
+    html.a11y-light .card.ok{background:#f1fbf6;border-color:var(--green)}
+    html.a11y-light input:focus,html.a11y-light select:focus,html.a11y-light textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,107,125,.12)}
+    html.a11y-light .result{background:#f6f9fc;border-color:var(--control-border)}
+    html.a11y-light .result .big{color:var(--text)}
+    html.a11y-light .formula{background:#eef4f8;border-color:var(--control-border);color:var(--text)}
+    html.a11y-light .pill{background:#e8f6f8;border-color:var(--cyan);color:var(--cyan)}
+    html.a11y-light .pill.yellow{background:#fff9e8;border-color:var(--yellow);color:var(--yellow)}
+    html.a11y-light .pill.red{background:#fff4f6;border-color:var(--red);color:var(--red)}
+    html.a11y-light .pill.green{background:#f1fbf6;border-color:var(--green);color:var(--green)}
+    html.a11y-light .pill.violet{background:#f3f1ff;border-color:var(--violet);color:var(--violet)}
+    html.a11y-light table.mini th,html.a11y-light table.mini td{border-bottom-color:var(--border)}
+    html.a11y-light table.mini th{color:var(--cyan);background:#e8f6f8}
+    html.a11y-light .recipe{background:#f1fbf6;border-color:var(--green)}
+    html.a11y-light .recipe h4{color:var(--green)}
+    html.a11y-light .danger-banner{background:#fff4f6;border-color:var(--red);color:var(--red)}
+    html.a11y-light hr{border-top-color:var(--border)!important}
+    html.a11y-light .clarity-toggle[aria-pressed="true"]{background:#e8f6f8;color:var(--cyan);border-color:var(--cyan)}
+    html.a11y-light :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline-color:#855400}
+    @media print{
+      @page{margin:14mm}
+      html,html.a11y-light,html.a11y-contrast{color-scheme:light;--bg:#fff;--bg2:#fff;--panel:#fff;--border:#71869a;--control-border:#71869a;--text:#102a43;--muted:#455f73;--cyan:#006b7d;--green:#087a55;--red:#b4233f;--yellow:#855400;--violet:#5946c7;--shadow:none}
+      body{background:#fff!important;color:var(--text)!important}
+      .topbar{position:static;background:#fff!important;border-color:#71869a;box-shadow:none}
+      .nav,.clarity-toggle{display:none!important}
+      h1{background:none!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important}
+      .glass,.card,.result,.formula,.notice,.metric-grid div,.recipe,.danger-banner{background:#fff!important;color:var(--text)!important;border-color:#71869a!important;box-shadow:none!important}
+      .card,.result,.formula,.recipe{break-inside:avoid}
+      .hero p,label,.result .big,table.mini th{color:var(--text)!important}
+      .btn,button,input,select,textarea{background:#fff!important;color:var(--text)!important;border:1px solid #71869a!important}
+    }
+    @media(max-width:1060px){.topbar{flex-wrap:wrap}.hero,.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(2,1fr)}.nav{display:none}.hero{padding-top:18px}.hero-copy{padding:22px}.row,.row.three,.row.four{grid-template-columns:1fr}.sticky-note{position:static}}
+    @media(max-width:520px){.topbar{padding:12px 14px}.brand{min-width:0}.brand small{display:none}.clarity-toggle{width:100%}}
   </style>
 </head>
 <body>
@@ -111,6 +197,7 @@
       <a href="#calculadoras" style="color:#4ef0a1">🧂 Disnatremias</a>
       <a href="#seguranca">🛡️ Segurança</a>
     </nav>
+    <button class="clarity-toggle" type="button" data-clarity-toggle aria-pressed="false" aria-label="Ativar visualização clara com fundo branco">☀️ Visualização clara</button>
   </header>
 
   <main>
@@ -616,6 +703,67 @@ function calcAdrogue(){
   const copy = `Adrogué-Madias: Δ[Na] por 1 L = ${fmt(delta1L,2)} mEq/L; Δ alvo 24h = ${fmt(deltaTarget,1)} mEq/L; volume ${fmt(mlTotal,0)} mL em 24h (${fmt(mlh,1)} mL/h); Na total ${fmt(NaAdmin,1)} mEq.`;
   render('amOut', html, copy);
 }
+</script>
+<script>
+(() => {
+  const key='antigravity:a11y:v1';
+  const toggle=document.querySelector('[data-clarity-toggle]');
+  const themeMeta=document.querySelector('meta[name="theme-color"]');
+  const statusMeta=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+  let prefs={};
+  function readPrefs(raw){
+    try{
+      const stored=raw===undefined?localStorage.getItem(key):raw;
+      const parsed=JSON.parse(stored||'{}');
+      return parsed&&typeof parsed==='object'&&!Array.isArray(parsed)?parsed:{};
+    }catch(_){return {}}
+  }
+  function clarityEnabled(preferences){
+    if(preferences.contrast===true)return false;
+    if(preferences.theme==='light')return true;
+    if(preferences.theme==='dark')return false;
+    if(preferences.theme==='system')return matchMedia('(prefers-color-scheme: light)').matches;
+    return preferences.clarity===true;
+  }
+  function applyPrefs(){
+    const contrast=prefs.contrast===true;
+    const clarity=clarityEnabled(prefs);
+    document.documentElement.classList.toggle('a11y-contrast',contrast);
+    document.documentElement.classList.toggle('a11y-light',clarity);
+    document.documentElement.style.colorScheme=clarity?'light':'dark';
+    themeMeta?.setAttribute('content',clarity?'#ffffff':contrast?'#000000':'#07111f');
+    statusMeta?.setAttribute('content',clarity?'default':'black-translucent');
+    toggle.setAttribute('aria-pressed',String(clarity));
+    toggle.textContent=clarity?'🌙 Visualização escura':'☀️ Visualização clara';
+    toggle.setAttribute('aria-label',clarity?'Desativar visualização clara e voltar ao modo espacial escuro':'Ativar visualização clara com fundo branco');
+  }
+  prefs=readPrefs();
+  applyPrefs();
+  toggle.addEventListener('click',()=>{
+    prefs=readPrefs();
+    const clarityActive=clarityEnabled(prefs);
+    prefs.clarity=!clarityActive;
+    prefs.theme=prefs.clarity?'light':'dark';
+    if(prefs.clarity)prefs.contrast=false;
+    try{localStorage.setItem(key,JSON.stringify(prefs))}catch(_){}
+    applyPrefs();
+  });
+  window.addEventListener('storage',event=>{
+    if(event.key!==key)return;
+    prefs=readPrefs(event.newValue);
+    applyPrefs();
+  });
+  const systemTheme=matchMedia('(prefers-color-scheme: light)');
+  const handleSystemThemeChange=()=>{
+    prefs=readPrefs();
+    if(prefs.theme==='system')applyPrefs();
+  };
+  if(systemTheme.addEventListener){
+    systemTheme.addEventListener('change',handleSystemThemeChange);
+  }else{
+    systemTheme.addListener?.(handleSystemThemeChange);
+  }
+})();
 </script>
 </body>
 </html>

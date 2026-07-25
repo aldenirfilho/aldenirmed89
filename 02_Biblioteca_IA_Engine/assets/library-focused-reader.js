@@ -3,6 +3,7 @@
 
   const STORAGE_KEY = 'biblioteca_reader_v1';
   const PREFERENCES_KEY = 'biblioteca_reader_preferences_v1';
+  const GLOBAL_PREFERENCES_KEY = 'antigravity:a11y:v1';
   const MAX_HIGHLIGHTS_PER_DOCUMENT = 300;
   const MAX_QUOTE_LENGTH = 2000;
   const MAX_NOTE_LENGTH = 4000;
@@ -111,7 +112,20 @@
       .replace(/([\\`*_[\]{}()#+\-.!|])/g, '\\$1');
   }
 
-  function sanitizePreferences(value) {
+  function globalReaderTheme(value) {
+    const preferences = value && typeof value === 'object'
+      ? value
+      : readJSON(GLOBAL_PREFERENCES_KEY, {});
+    if (preferences.contrast === true) return 'contrast';
+    if (preferences.theme === 'light') return 'light';
+    if (preferences.theme === 'dark') return 'dark';
+    if (preferences.theme === 'system') {
+      return matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+    return preferences.clarity === true ? 'light' : 'dark';
+  }
+
+  function sanitizePreferences(value, fallbackTheme) {
     const source = value && typeof value === 'object' ? value : {};
     return {
       width: Object.prototype.hasOwnProperty.call(WIDTH_VALUES, source.width)
@@ -122,7 +136,9 @@
         : 'system',
       fontSize: clamp(source.fontSize || 18, 14, 28),
       lineHeight: clamp(source.lineHeight || 1.75, 1.35, 2.25),
-      theme: ['dark', 'light', 'sepia'].includes(source.theme) ? source.theme : 'dark'
+      theme: ['dark', 'light', 'contrast', 'sepia'].includes(source.theme)
+        ? source.theme
+        : ['dark', 'light', 'contrast'].includes(fallbackTheme) ? fallbackTheme : globalReaderTheme()
     };
   }
 
@@ -156,7 +172,9 @@
       this.noteTimers = new Map();
       this.pendingNotes = new Map();
       this.frameLoadHandler = null;
-      this.preferences = sanitizePreferences(readJSON(PREFERENCES_KEY, {}));
+      const storedPreferences = readJSON(PREFERENCES_KEY, {});
+      this.followsGlobalTheme = !Object.prototype.hasOwnProperty.call(storedPreferences, 'theme');
+      this.preferences = sanitizePreferences(storedPreferences, globalReaderTheme());
       this.keyboardHandler = this.handleKeyboardShortcut.bind(this);
       this.selectionHandler = this.captureSelection.bind(this);
       this.documentPointerHandler = this.clearCapturedSelection.bind(this);
@@ -165,6 +183,9 @@
       this.disable('Abra um documento para iniciar a leitura focada.');
       document.addEventListener('keydown', this.keyboardHandler);
       window.addEventListener('storage', this.handleStorage.bind(this));
+      window.addEventListener('antigravity:themechange', (event) => {
+        this.syncGlobalTheme(event.detail || {});
+      });
       window.addEventListener('pagehide', this.flushAllNotes.bind(this));
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'hidden') this.flushAllNotes();
@@ -192,6 +213,7 @@
       });
       const theme = this.element('readerTheme');
       if (theme) theme.addEventListener('change', function () {
+        self.followsGlobalTheme = false;
         self.preferences.theme = theme.value;
         self.savePreferences();
       });
@@ -402,14 +424,18 @@
       style.textContent = [
         ':root{--reader-width:820px;--reader-font-size:18px;--reader-line-height:1.75;--reader-font:system-ui,sans-serif}',
         'body[data-reader-theme="dark"]{--reader-bg:#0b1220;--reader-card:#111c30;--reader-text:#e5edf8;--reader-muted:#9fb0c8;--reader-line:#263750}',
-        'body[data-reader-theme="light"]{--reader-bg:#f7fafc;--reader-card:#ffffff;--reader-text:#172033;--reader-muted:#536175;--reader-line:#cbd5e1}',
+        'body[data-reader-theme="light"]{--reader-bg:#f7fafc;--reader-card:#ffffff;--reader-text:#172033;--reader-muted:#536175;--reader-line:#cbd5e1;color-scheme:light;background:var(--reader-bg)!important;color:var(--reader-text)!important}',
+        'body[data-reader-theme="contrast"]{--reader-bg:#000;--reader-card:#000;--reader-text:#fff;--reader-muted:#f1f5f9;--reader-line:#fff;--reader-link:#67e8f9;color-scheme:dark;background:#000!important;color:#fff!important}',
         'body[data-reader-theme="sepia"]{--reader-bg:#f3ead5;--reader-card:#fff9eb;--reader-text:#3c3022;--reader-muted:#76634d;--reader-line:#d8c7a8}',
+        'body[data-reader-theme="light"] :is(article,main){background:var(--reader-card)!important;color:var(--reader-text)!important}',
+        'body[data-reader-theme="contrast"] :is(article,main){background:#000!important;color:#fff!important;border-color:#fff!important}',
         'body[data-reader-focused="true"]{box-sizing:border-box!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;overflow-x:hidden!important;background:var(--reader-bg)!important;color:var(--reader-text)!important;font-family:var(--reader-font)!important;font-size:var(--reader-font-size)!important;line-height:var(--reader-line-height)!important}',
         'body[data-reader-focused="true"] main,body[data-reader-focused="true"]>article{box-sizing:border-box!important;width:min(var(--reader-width),100%)!important;max-width:none!important;margin-inline:auto!important;padding:clamp(1rem,4vw,2.5rem)!important}',
         'body[data-reader-focused="true"] :is(article,main) *{box-sizing:border-box;max-width:100%}',
         'body[data-reader-focused="true"] .notice,body[data-reader-focused="true"] .meta,body[data-reader-focused="true"] .download{display:none!important}',
         'body[data-reader-focused="true"] article{background:var(--reader-card)!important;color:var(--reader-text)!important;border:0!important;box-shadow:none!important;padding:clamp(1.25rem,4vw,3rem)!important}',
         'body[data-reader-focused="true"] h1,body[data-reader-focused="true"] h2,body[data-reader-focused="true"] h3,body[data-reader-focused="true"] h4{color:var(--reader-text)!important}',
+        'body[data-reader-focused="true"][data-reader-theme="contrast"] a{color:var(--reader-link)!important;text-decoration:underline!important}',
         'body[data-reader-focused="true"] p,body[data-reader-focused="true"] li,body[data-reader-focused="true"] td,body[data-reader-focused="true"] pre{overflow-wrap:anywhere!important;word-break:break-word!important;font-family:var(--reader-font)!important;font-size:1em!important;line-height:var(--reader-line-height)!important;color:var(--reader-text)!important}',
         'body[data-reader-focused="true"] table{display:block!important;width:100%!important;max-width:100%!important;overflow-x:auto!important}',
         'body[data-reader-focused="true"] .pdf-text-page pre{white-space:pre-wrap!important;overflow-wrap:anywhere!important}',
@@ -445,10 +471,19 @@
     savePreferences() {
       this.preferences = sanitizePreferences(this.preferences);
       try {
-        localStorage.setItem(PREFERENCES_KEY, JSON.stringify(this.preferences));
+        const storedPreferences = { ...this.preferences };
+        if (this.followsGlobalTheme) delete storedPreferences.theme;
+        localStorage.setItem(PREFERENCES_KEY, JSON.stringify(storedPreferences));
       } catch (_) {
         this.setStatus('Preferências não puderam ser salvas.', 'error');
       }
+      this.renderPreferences();
+      this.applyPreferences();
+    }
+
+    syncGlobalTheme(preferences) {
+      if (!this.followsGlobalTheme) return;
+      this.preferences.theme = globalReaderTheme(preferences);
       this.renderPreferences();
       this.applyPreferences();
     }
@@ -1196,9 +1231,14 @@
 
     handleStorage(event) {
       if (event.key === PREFERENCES_KEY) {
-        this.preferences = sanitizePreferences(readJSON(PREFERENCES_KEY, {}));
+        const storedPreferences = readJSON(PREFERENCES_KEY, {});
+        this.followsGlobalTheme = !Object.prototype.hasOwnProperty.call(storedPreferences, 'theme');
+        this.preferences = sanitizePreferences(storedPreferences, globalReaderTheme());
         this.renderPreferences();
         this.applyPreferences();
+      }
+      if (event.key === GLOBAL_PREFERENCES_KEY) {
+        this.syncGlobalTheme(readJSON(GLOBAL_PREFERENCES_KEY, {}));
       }
       if (event.key === STORAGE_KEY && this.item) {
         this.renderDocumentAnnotations();

@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v6`;
+const CACHE_NAME = `${CACHE_PREFIX}v7`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -25,6 +25,8 @@ const WARM_ASSETS = [
   "./docs_usuario/guide-reader.js",
   "./docs_usuario/OPERACAO_CONTINUA/index.html",
   "./docs_usuario/OPERACAO_CONTINUA.md",
+  "./docs_usuario/ALIMENTAR_CONTEUDO_SITE/index.html",
+  "./docs_usuario/ALIMENTAR_CONTEUDO_SITE.md",
   "./docs_usuario/ACESSO_DOCK_MAC/index.html",
   "./docs_usuario/ACESSO_DOCK_MAC.md",
   "./docs_usuario/ACESSO_WINDOWS/index.html",
@@ -35,27 +37,29 @@ const WARM_ASSETS = [
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(async (cache) => {
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
       await cache.addAll(SHELL_ASSETS);
       await Promise.allSettled(
         WARM_ASSETS.map((asset) => cache.add(asset))
       );
-    })
+      await self.skipWaiting();
+    })()
   );
-  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(
         keys
           .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
           .map((key) => caches.delete(key))
-      )
-    )
+      );
+      await self.clients.claim();
+    })()
   );
-  self.clients.claim();
 });
 
 async function networkFirst(request) {
@@ -75,15 +79,12 @@ async function networkFirst(request) {
 }
 
 async function cacheFirst(request) {
+  if (request.headers.has("range")) return fetch(request);
   const cached = await caches.match(request);
   if (cached) return cached;
 
   const response = await fetch(request);
-  if (
-    response.ok &&
-    response.type === "basic" &&
-    !request.headers.has("range")
-  ) {
+  if (response.ok && response.type === "basic") {
     const cache = await caches.open(CACHE_NAME);
     await cache.put(request, response.clone());
   }

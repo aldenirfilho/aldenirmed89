@@ -34,6 +34,7 @@ h1{font-size:clamp(2rem,5vw,3.5rem);line-height:.98;letter-spacing:-.04em;margin
 .stat span{font-size:.72rem;color:var(--muted)}
 .controls{display:grid;grid-template-columns:minmax(0,1fr) 220px 220px auto;gap:.7rem;margin:1rem 0 1.2rem}
 .control{background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);padding:.75rem .85rem;outline:none}
+.control::placeholder{color:var(--muted);opacity:1}
 .control:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(62,232,255,.12)}
 .format-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.1rem}
 .tab{background:var(--card);border:1px solid var(--border);border-radius:999px;padding:.45rem .75rem;font-size:.78rem;color:var(--muted);cursor:pointer}
@@ -57,6 +58,7 @@ h1{font-size:clamp(2rem,5vw,3.5rem);line-height:.98;letter-spacing:-.04em;margin
 .instructions code{background:#061020;border:1px solid var(--border);border-radius:7px;padding:.15rem .35rem}
 .preview{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;flex-direction:column;z-index:50}
 .preview.open{display:flex}
+.preview-modal-open{overflow:hidden}
 .preview-bar{display:flex;gap:.6rem;align-items:center;justify-content:space-between;padding:.75rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border)}
 .preview-bar h3{font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .preview-frame{flex:1;border:0;background:#fff}

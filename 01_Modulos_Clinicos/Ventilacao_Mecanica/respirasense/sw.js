@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "respirasense-icu-";
-const CACHE_NAME = `${CACHE_PREFIX}v3.1.0`;
+const CACHE_NAME = `${CACHE_PREFIX}v3.2.0`;
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -30,6 +30,10 @@ self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
+  if (event.request.headers.has("range")) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
 
   const networkFirst = event.request.mode === "navigate" ||
     ["document", "script", "style"].includes(event.request.destination) ||

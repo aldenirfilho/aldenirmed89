@@ -30,6 +30,25 @@ def node_binary() -> str | None:
 
 
 class FocusedReaderStaticTests(unittest.TestCase):
+    def test_global_clarity_drives_default_reader_without_overriding_user_choice(self) -> None:
+        for marker in (
+            "const GLOBAL_PREFERENCES_KEY = 'antigravity:a11y:v1'",
+            "preferences.theme === 'light'",
+            "preferences.theme === 'system'",
+            "preferences.contrast === true) return 'contrast'",
+            "this.followsGlobalTheme",
+            "delete storedPreferences.theme",
+            "syncGlobalTheme(preferences)",
+            "'antigravity:themechange'",
+        ):
+            self.assertIn(marker, READER)
+        self.assertIn("background:var(--reader-bg)!important", READER)
+        self.assertIn('option value="contrast">Alto contraste', INDEX)
+        self.assertIn('body[data-reader-theme="contrast"]', READER)
+        self.assertIn("--reader-line:#fff", READER)
+        self.assertIn("background: var(--highlight-color, #fde047)", READER_CSS)
+        self.assertIn("color: #102a43", READER_CSS)
+
     def test_controls_and_all_exports_are_wired(self) -> None:
         for marker in (
             'assets/library-focused-reader.css',
@@ -81,7 +100,31 @@ class FocusedReaderStaticTests(unittest.TestCase):
         self.assertIn("entry.element.setAttribute('inert', '')", INDEX)
         self.assertIn("function trapPreviewTab(event)", INDEX)
         self.assertIn("event.key === 'Tab' && trapPreviewTab(event)", INDEX)
-        self.assertIn("body.preview-modal-open{overflow:hidden}", INDEX)
+        self.assertIn(
+            "body.preview-modal-open,body.form-modal-open{overflow:hidden}",
+            INDEX,
+        )
+
+    def test_library_form_dialogs_are_keyboard_modal_and_restore_focus(self) -> None:
+        self.assertEqual(INDEX.count('class="classify-overlay"'), 2)
+        self.assertIn(
+            'id="newThemeOverlay" role="dialog" aria-modal="true"',
+            INDEX,
+        )
+        self.assertIn(
+            'id="classifyOverlay" role="dialog" aria-modal="true"',
+            INDEX,
+        )
+        self.assertIn('aria-hidden="true" tabindex="-1"', INDEX)
+        self.assertIn('data-modal-trigger="newThemeOverlay"', INDEX)
+        self.assertIn("function openFormModal(overlayId)", INDEX)
+        self.assertIn("function closeFormModal(overlayId)", INDEX)
+        self.assertIn("function trapFormModalTab(event)", INDEX)
+        self.assertIn("entry.element.setAttribute('inert', '')", INDEX)
+        self.assertIn("event.key === 'Tab' && trapFormModalTab(event)", INDEX)
+        self.assertIn("event.key === 'Escape' && activeFormModal", INDEX)
+        self.assertIn("document.contains(returnFocus)", INDEX)
+        self.assertIn("body.form-modal-open{overflow:hidden}", INDEX)
 
     def test_reader_help_contrast_and_inline_width_are_accessible(self) -> None:
         self.assertIn("--reader-muted-accessible: #a8b4c8", READER_CSS)
@@ -91,6 +134,14 @@ class FocusedReaderStaticTests(unittest.TestCase):
         self.assertIn("overflow-x:hidden!important", READER)
         self.assertIn("overflow-wrap:anywhere!important", READER)
         self.assertIn('body[data-reader-focused="true"]>article', READER)
+        self.assertIn("--reader-focus-ring: #38bdf8", READER_CSS)
+        self.assertIn(
+            "outline: 3px solid var(--reader-focus-ring)",
+            READER_CSS,
+        )
+        self.assertNotIn("outline: 2px solid rgba(0, 212, 255, .18)", READER_CSS)
+        self.assertIn("--reader-focus-ring:#855400", INDEX)
+        self.assertIn("--reader-focus-ring:#ffff00", INDEX)
 
     def test_mobile_reader_prioritizes_document_without_losing_tools(self) -> None:
         for marker in (

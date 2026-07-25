@@ -12,14 +12,36 @@
 - [📘 Instalar no Windows sem privilégios administrativos](docs_usuario/ACESSO_WINDOWS/)
 - [📱 Baixar os ícones para iPhone](downloads/Antigravity-Consultas-iPhone-Icones.zip)
 - [📘 Adicionar o Antigravity à Tela de Início do iPhone](docs_usuario/ACESSO_IPHONE/)
+- [🧭 Alimentar cada seção e bloco do site, passo a passo](docs_usuario/ALIMENTAR_CONTEUDO_SITE/)
 - [🔄 Alimentar Feed, Biblioteca, módulos e apps com segurança](docs_usuario/OPERACAO_CONTINUA/)
 - [📚 Abrir a central HTML de guias](docs_usuario/)
 - [🩸 Abrir Hematologia Crítica](01_Modulos_Clinicos/Hematologia_Critica/index.html)
 - [🧬 Abrir Reumatologia Crítica](01_Modulos_Clinicos/Reumatologia_Critica/index.html)
 
-O botão flutuante **♿** da página inicial também ativa texto ampliado, alto
-contraste, redução de movimento, instalação PWA e acesso direto aos pacotes para
-Mac, Windows e iPhone. As preferências ficam somente no navegador.
+O controle **☀️ Visualização clara** ativa a **Visualização Clara**: fundo branco real, tipografia
+azul-marinho de alto contraste e acentos aeroespaciais preservados. Ela funciona
+na página inicial, no modo offline, na página 404 e nos **15 módulos acessíveis
+pela Home**: **UpDown Hub**, **Biblioteca IA**, **Calculadoras UTI**,
+**RespiraSense ICU**, **RespiraCrit**, **Simulador TEMI**, **Card Feed Médico**,
+**Ebooks**, **Questões Comentadas**, **Transcrições**, **POCUS**, **RenalDose**,
+**SAPS 3**, **Hematologia Crítica** e **Reumatologia Crítica**. As três PWAs
+instaláveis — **Antigravity**, **Card Feed Médico** e **RespiraSense ICU** — e os
+atalhos de Mac, Windows e iPhone que abrem a plataforma também recebem a
+preferência. A impressão e a exportação para PDF usam uma folha branca
+otimizada.
+
+Nos aplicativos destacados pela página inicial e pelo Hub de Apps, o mesmo
+estado global acompanha **RespiraCrit**, **Vasoativas**, **RenalDose**,
+**SAPS 3**, **Vasculites Decision**, o **Hub de Calculadoras** e as calculadoras
+de **sódio/disnatremia** e **bicarbonato/albumina**. Gráficos e curvas são
+redesenhados com cores próprias para o fundo branco; fórmulas, regras clínicas
+e dados permanecem inalterados. Documentos, imagens e arquivos para download
+mantêm sua aparência e resolução nativas.
+
+O painel **♿** reúne o mesmo controle, texto ampliado, alto contraste, redução
+de movimento, instalação PWA e os pacotes de acesso rápido. As preferências
+ficam somente no navegador, sem conta, nuvem ou telemetria, e podem variar
+entre aparelhos ou perfis.
 
 ---
 

@@ -11,6 +11,12 @@
   const contrastButton = document.getElementById("contrastButton");
   const printButton = document.getElementById("printButton");
   const preferenceKey = "antigravity:guide-reader:v1";
+  const tocLevels = new Set(
+    String(script?.dataset.tocLevels || "2,3")
+      .split(",")
+      .map((level) => level.trim())
+      .filter((level) => level === "2" || level === "3")
+  );
 
   const escapeHtml = (value) =>
     String(value ?? "")
@@ -40,6 +46,22 @@
       return "#";
     }
     return url;
+  };
+
+  const safeGuideSourceUrl = (value) => {
+    try {
+      const resolved = new URL(String(value || ""), window.location.href);
+      const docsRoot = new URL("../", window.location.href);
+      if (
+        resolved.origin !== window.location.origin ||
+        !resolved.pathname.startsWith(docsRoot.pathname)
+      ) {
+        return "#";
+      }
+      return resolved.href;
+    } catch (_) {
+      return "#";
+    }
   };
 
   const inline = (value) => {
@@ -220,7 +242,8 @@
   }
 
   function buildToc() {
-    const headings = article.querySelectorAll("h2, h3");
+    const selector = [...tocLevels].map((level) => `h${level}`).join(", ") || "h2";
+    const headings = article.querySelectorAll(selector);
     toc.replaceChildren();
     headings.forEach((heading) => {
       const link = document.createElement("a");
@@ -285,7 +308,7 @@
       const detail = document.createElement("p");
       detail.textContent = "A página principal continua disponível. Tente recarregar ou abra o arquivo original.";
       const link = document.createElement("a");
-      link.href = safeUrl(source);
+      link.href = safeGuideSourceUrl(source);
       link.textContent = "Abrir versão Markdown";
       panel.append(title, detail, link);
       article.append(panel);
