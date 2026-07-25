@@ -118,7 +118,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="Antigravity"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v8`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v9`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
@@ -553,7 +553,7 @@ class OperationalPackageTests(unittest.TestCase):
         ):
             self.assertIn(expected, operation)
         for expected in (
-            "Os 19 cartões",
+            "Os 20 cartões",
             "01_UpDown_Hub/content/",
             "update_library_publication_baseline.py --approve",
             "scan_card_feed.py",

@@ -8,7 +8,7 @@ compatibilidade offline.
 |---|---|
 | Versão | 1.0 |
 | Atualizado em | 25 de julho de 2026 |
-| Escopo | Home, 18 módulos + Mapa Vivo, hubs editoriais, apps clínicos, TEMI, guias, imagens, downloads e GitHub Pages |
+| Escopo | Home, 19 módulos + Mapa Vivo, hubs editoriais, apps clínicos, TEMI, guias, imagens, downloads e GitHub Pages |
 
 > **Regra central:** conteúdo novo começa privado. Só chega ao site depois de autoria/licença, privacidade e revisão clínica humana.
 
@@ -40,6 +40,7 @@ PRIVADO → 3 GATES → FONTE CANÔNICA → GERADOR → DIFF
 
 | Quero adicionar | Fonte canônica | Atualização principal |
 |---|---|---|
+| Notícia, artigo ou destaque emergente no Portal Vivo | `17_Portal_Vivo/data/posts.json` | Compositor → agente `antigravity-publicar-portal` → publicador validado |
 | Texto, botão ou cartão da Home | `index.html` | Edição manual + testes |
 | Estudo clínico estruturado | `01_UpDown_Hub/content/` | Registro em `01_UpDown_Hub/registry.json` |
 | PDF, DOCX ou documento pesquisável | `02_Biblioteca_IA_Engine/acervo/` | Baseline → scanner → previews |
@@ -167,7 +168,7 @@ index.html
 5. Atualize textos e links do bloco `#downloads` em `index.html`.
 6. Faça homologação física no sistema operacional antes de afirmar suporte.
 
-### Os 19 cartões — 18 módulos + Mapa Vivo
+### Os 20 cartões — 19 módulos + Mapa Vivo
 
 Cada cartão é um link com classe `module-card` e possui:
 
@@ -180,11 +181,11 @@ tags
 chamada para ação
 ```
 
-Os 18 módulos são Radar Científico, Diretório Médico, UpDown, Biblioteca,
+Os 19 módulos são Portal Vivo, Radar Científico, Diretório Médico, UpDown, Biblioteca,
 Calculadoras, RespiraSense,
 RespiraCrit, Simulador TEMI, Card Feed, Ebooks, Questões Comentadas,
 Transcrições, POCUS, RenalDose, SAPS 3, Hematologia, Reumatologia e Delirium.
-O 19º cartão visual é o **Mapa Vivo**, que abre a seção `#mapa` da Home.
+O 20º cartão visual é o **Mapa Vivo**, que abre a seção `#mapa` da Home.
 
 Ao criar ou alterar um cartão:
 

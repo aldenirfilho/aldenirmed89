@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v8`;
+const CACHE_NAME = `${CACHE_PREFIX}v9`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -18,6 +18,10 @@ const WARM_ASSETS = [
   "./15_Radar_Cientifico/data/radar-history.json",
   "./16_Diretorio_Medico/index.html",
   "./16_Diretorio_Medico/data/sites.js",
+  "./17_Portal_Vivo/index.html",
+  "./17_Portal_Vivo/data/posts.js",
+  "./17_Portal_Vivo/data/posts.json",
+  "./17_Portal_Vivo/data/publication-history.json",
   "./01_Modulos_Clinicos/Hematologia_Critica/index.html",
   "./01_Modulos_Clinicos/Hematologia_Critica/assets/app.js",
   "./01_Modulos_Clinicos/Hematologia_Critica/assets/styles.css",
@@ -34,6 +38,8 @@ const WARM_ASSETS = [
   "./docs_usuario/ALIMENTAR_CONTEUDO_SITE.md",
   "./docs_usuario/RADAR_CIENTIFICO_OPERACAO/index.html",
   "./docs_usuario/RADAR_CIENTIFICO_OPERACAO.md",
+  "./docs_usuario/PORTAL_VIVO_PUBLICACAO/index.html",
+  "./docs_usuario/PORTAL_VIVO_PUBLICACAO.md",
   "./docs_usuario/ACESSO_DOCK_MAC/index.html",
   "./docs_usuario/ACESSO_DOCK_MAC.md",
   "./docs_usuario/ACESSO_WINDOWS/index.html",

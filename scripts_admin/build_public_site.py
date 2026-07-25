@@ -43,6 +43,7 @@ REQUIRED = (
     "11_MNEMONICOS",
     "15_Radar_Cientifico",
     "16_Diretorio_Medico",
+    "17_Portal_Vivo",
     "01_Modulos_Clinicos",
     "questoes",
     "apps",
