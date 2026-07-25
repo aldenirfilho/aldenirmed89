@@ -23,6 +23,8 @@ EXPECTED_MODULE_ENTRYPOINTS = {
     "01_Modulos_Clinicos/Hematologia_Critica/index.html",
     "01_Modulos_Clinicos/Reumatologia_Critica/index.html",
     "01_Modulos_Clinicos/Delirium_UTI/index.html",
+    "15_Radar_Cientifico/index.html",
+    "16_Diretorio_Medico/index.html",
 }
 
 
@@ -40,7 +42,7 @@ class ClarityHomeCoverageTests(unittest.TestCase):
 
     def test_all_home_module_entrypoints_are_covered(self):
         self.assertEqual(self.entrypoints, EXPECTED_MODULE_ENTRYPOINTS)
-        self.assertEqual(len(self.entrypoints), 16)
+        self.assertEqual(len(self.entrypoints), 18)
 
     def test_every_module_has_global_clarity_and_accessible_control(self):
         for relative_path in sorted(self.entrypoints):

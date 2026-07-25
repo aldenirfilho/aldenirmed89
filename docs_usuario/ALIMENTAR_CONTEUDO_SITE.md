@@ -8,7 +8,7 @@ compatibilidade offline.
 |---|---|
 | Versão | 1.0 |
 | Atualizado em | 25 de julho de 2026 |
-| Escopo | Home, 15 módulos + Mapa Vivo, hubs editoriais, apps clínicos, TEMI, guias, imagens, downloads e GitHub Pages |
+| Escopo | Home, 18 módulos + Mapa Vivo, hubs editoriais, apps clínicos, TEMI, guias, imagens, downloads e GitHub Pages |
 
 > **Regra central:** conteúdo novo começa privado. Só chega ao site depois de autoria/licença, privacidade e revisão clínica humana.
 
@@ -167,7 +167,7 @@ index.html
 5. Atualize textos e links do bloco `#downloads` em `index.html`.
 6. Faça homologação física no sistema operacional antes de afirmar suporte.
 
-### Os 16 cartões — 15 módulos + Mapa Vivo
+### Os 19 cartões — 18 módulos + Mapa Vivo
 
 Cada cartão é um link com classe `module-card` e possui:
 
@@ -180,10 +180,11 @@ tags
 chamada para ação
 ```
 
-Os 15 módulos são UpDown, Biblioteca, Calculadoras, RespiraSense,
+Os 18 módulos são Radar Científico, Diretório Médico, UpDown, Biblioteca,
+Calculadoras, RespiraSense,
 RespiraCrit, Simulador TEMI, Card Feed, Ebooks, Questões Comentadas,
-Transcrições, POCUS, RenalDose, SAPS 3, Hematologia e Reumatologia.
-O 16º cartão visual é o **Mapa Vivo**, que abre a seção `#mapa` da Home.
+Transcrições, POCUS, RenalDose, SAPS 3, Hematologia, Reumatologia e Delirium.
+O 19º cartão visual é o **Mapa Vivo**, que abre a seção `#mapa` da Home.
 
 Ao criar ou alterar um cartão:
 
@@ -195,7 +196,8 @@ Ao criar ou alterar um cartão:
 6. execute os validadores de rotas e manifests;
 7. confira o cartão no tema claro, espacial e alto contraste.
 
-> **Atenção:** os cartões HTML são a apresentação efetiva. Alguns manifestos ainda possuem 13 entradas e podem não refletir RenalDose e SAPS 3. Não use esses manifestos isoladamente para contar os 15 módulos nem os 16 cartões.
+> **Atenção:** os cartões HTML são a apresentação efetiva. Confirme também
+> `data/site_manifest.json` e os testes de cobertura antes de publicar.
 
 ### Hematologia e Reumatologia em destaque
 

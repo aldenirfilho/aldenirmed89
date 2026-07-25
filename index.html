@@ -381,6 +381,21 @@ body.mission-locked{overflow:hidden}
   line-height:1;letter-spacing:-.045em;color:#fff;
 }
 .mission-subtitle{margin:0;color:#b8d8f4;font-size:clamp(.82rem,1.8vw,1rem)}
+.mission-sound-picker{
+  display:flex;justify-content:center;gap:7px;flex-wrap:wrap;
+  width:min(680px,90vw);padding:4px;
+}
+.mission-sound-theme{
+  min-height:38px;padding:7px 11px;border-radius:999px;
+  border:1px solid rgba(125,211,252,.25);background:rgba(4,17,38,.7);
+  color:#b8d8f4;font:700 .72rem var(--font-mono);cursor:pointer;
+  transition:.16s ease;
+}
+.mission-sound-theme:hover{border-color:#7dd3fc;color:#fff}
+.mission-sound-theme[aria-pressed="true"]{
+  border-color:#3ee8ff;color:#03101f;background:#7dd3fc;
+  box-shadow:0 0 22px rgba(62,232,255,.25);
+}
 .mission-choices{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
 .mission-choice{
   min-height:48px;padding:11px 17px;border-radius:12px;
@@ -1650,6 +1665,11 @@ html.mission-returning .mission-emblem{
       <p class="mission-subtitle" id="missionSubtitle">
         Cinco segundos para sair da inércia, entrar em órbita e estudar com propósito.
       </p>
+      <div class="mission-sound-picker" role="group" aria-label="Escolher tema sonoro da missão">
+        <button class="mission-sound-theme" type="button" data-mission-sound="honra" aria-pressed="true">🛡️ Honra orbital</button>
+        <button class="mission-sound-theme" type="button" data-mission-sound="foco" aria-pressed="false">🧠 Foco tático</button>
+        <button class="mission-sound-theme" type="button" data-mission-sound="vigor" aria-pressed="false">🔥 Vigor épico</button>
+      </div>
       <div class="mission-choices">
         <button class="mission-choice primary" id="missionStartSound" type="button">
           🎧 Iniciar missão com som
@@ -1692,6 +1712,8 @@ html.mission-returning .mission-emblem{
       </div>
     </a>
     <div class="nav-links" role="navigation" aria-label="Módulos principais">
+      <a href="15_Radar_Cientifico/index.html" class="accent">📡 Radar diário</a>
+      <a href="16_Diretorio_Medico/index.html">🌐 Sites médicos</a>
       <a href="01_UpDown_Hub/index.html" class="accent">↕️ UpDown Hub</a>
       <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras</a>
       <a href="05_Midia_E_Feed/index.html">🖼️ Card Feed</a>
@@ -1731,6 +1753,7 @@ html.mission-returning .mission-emblem{
         Plataforma médica interativa, continuamente atualizada e pensada para decisão real — da beira-leito da UTI à prova de título TEMI. Conteúdo autoral, didático e rastreável por raciocínio clínico.
       </p>
       <div class="hero-btns">
+        <a class="btn btn-primary" href="15_Radar_Cientifico/index.html">📡 Briefing científico de hoje</a>
         <a class="btn btn-primary" href="01_UpDown_Hub/index.html">↕️ Abrir UpDown Hub</a>
         <a class="btn btn-ghost" href="#downloads">⬇️ Baixar apps</a>
         <a class="btn btn-ghost" href="#modulos">⬛ Ver todos os módulos</a>
@@ -1764,7 +1787,7 @@ html.mission-returning .mission-emblem{
           <div class="lbl">Temas clínicos</div>
         </div>
         <div class="metric-cell">
-          <div class="val" data-count="14">14</div>
+          <div class="val" data-count="18">18</div>
           <div class="lbl">Módulos centrais</div>
         </div>
         <div class="metric-cell">
@@ -1897,6 +1920,30 @@ html.mission-returning .mission-emblem{
       <p class="section-sub">Módulos interconectados — do acervo bruto às emergências hematológicas, simulado de prova, ebooks, transcrições e POCUS.</p>
     </div>
     <div class="modules-grid">
+
+      <a class="module-card mod-cyan reveal" href="15_Radar_Cientifico/index.html" aria-label="Abrir Radar Científico diário">
+        <div class="module-icon">📡</div>
+        <h3>Radar Científico Diário</h3>
+        <p>Briefing priorizado, artigos de alto impacto, saúde global e brasileira, 10 mapas visuais e foco TEMI sem repetição.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">Atualização diária</span>
+          <span class="module-tag">10 visuais</span>
+          <span class="module-tag">Spotify + foco</span>
+        </div>
+        <span class="module-link" style="color:var(--cyan)">Abrir radar</span>
+      </a>
+
+      <a class="module-card mod-violet reveal" href="16_Diretorio_Medico/index.html" aria-label="Abrir Diretório Médico mundial">
+        <div class="module-icon">🌐</div>
+        <h3>Diretório Médico Mundial</h3>
+        <p>Mais de 250 fontes nacionais e internacionais filtráveis por área, região, prioridade e tipo de acesso.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">Fontes verificáveis</span>
+          <span class="module-tag">Brasil + Ceará</span>
+          <span class="module-tag">POCUS · UTI · IA</span>
+        </div>
+        <span class="module-link" style="color:var(--violet)">Explorar fontes</span>
+      </a>
 
       <a class="module-card mod-green reveal" href="01_UpDown_Hub/index.html" aria-label="Abrir UpDown Hub">
         <div class="module-icon">↕️</div>
@@ -2548,6 +2595,8 @@ html.mission-returning .mission-emblem{
       </div>
       <div class="footer-col">
         <h4>Módulos</h4>
+        <a href="15_Radar_Cientifico/index.html">📡 Radar Científico Diário</a>
+        <a href="16_Diretorio_Medico/index.html">🌐 Diretório Médico Mundial</a>
         <a href="01_UpDown_Hub/index.html">↕️ UpDown Hub</a>
         <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca IA</a>
         <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras UTI</a>
@@ -2656,6 +2705,9 @@ html.mission-returning .mission-emblem{
     <a class="a11y-link" href="docs_usuario/ALIMENTAR_CONTEUDO_SITE/">
       <span>🧭 Alimentar cada seção do site</span><span aria-hidden="true">→</span>
     </a>
+    <a class="a11y-link" href="docs_usuario/RADAR_CIENTIFICO_OPERACAO/">
+      <span>📡 Operar o Radar Científico</span><span aria-hidden="true">→</span>
+    </a>
     <a class="a11y-link" href="docs_usuario/">
       <span>📚 Todos os guias</span><span aria-hidden="true">→</span>
     </a>
@@ -2672,6 +2724,7 @@ html.mission-returning .mission-emblem{
 
 /* ── PORTAL DE MISSÃO · 5 SEGUNDOS ─────────────── */
 const MISSION_INTRO_KEY='antigravity:mission-intro:v1';
+const MISSION_SOUND_KEY='antigravity:mission-sound-theme:v1';
 const MISSION_DURATION=5000;
 const missionIntro=document.getElementById('missionIntro');
 const missionCore=document.getElementById('missionCore');
@@ -2681,10 +2734,29 @@ const missionStartSilent=document.getElementById('missionStartSilent');
 const missionSkip=document.getElementById('missionSkip');
 const missionStatus=document.getElementById('missionStatus');
 const missionCountdown=document.getElementById('missionCountdown');
+const missionSoundThemes=[...document.querySelectorAll('[data-mission-sound]')];
 let missionRunning=false;
 let missionTimers=[];
 let missionAnimations=[];
 let missionAudioContext=null;
+let missionSoundTheme='honra';
+
+try{
+  const storedMissionTheme=localStorage.getItem(MISSION_SOUND_KEY);
+  if(['honra','foco','vigor'].includes(storedMissionTheme))missionSoundTheme=storedMissionTheme;
+}catch(_){}
+
+function selectMissionSound(theme,{remember=true}={}){
+  if(!['honra','foco','vigor'].includes(theme))return;
+  missionSoundTheme=theme;
+  missionSoundThemes.forEach(button=>{
+    button.setAttribute('aria-pressed',String(button.dataset.missionSound===theme));
+  });
+  if(remember){
+    try{localStorage.setItem(MISSION_SOUND_KEY,theme)}catch(_){}
+  }
+}
+selectMissionSound(missionSoundTheme,{remember:false});
 
 function missionHasReducedMotion(){
   return document.documentElement.classList.contains('a11y-reduce-motion')||
@@ -2713,7 +2785,7 @@ function stopMissionAudio(){
   missionAudioContext=null;
   context.close().catch(()=>{});
 }
-function playMissionSound({compact=false}={}){
+function playMissionSound({compact=false,theme='honra'}={}){
   const AudioEngine=window.AudioContext||window.webkitAudioContext;
   if(!AudioEngine)return;
   stopMissionAudio();
@@ -2722,12 +2794,17 @@ function playMissionSound({compact=false}={}){
     missionAudioContext=context;
     if(context.state==='suspended')context.resume().catch(()=>{});
     const start=context.currentTime+.025;
+    const profile={
+      honra:{master:.145,wave:'sawtooth',riserStart:88,riserEnd:410,noise:.042},
+      foco:{master:.092,wave:'triangle',riserStart:132,riserEnd:286,noise:.018},
+      vigor:{master:.165,wave:'sawtooth',riserStart:72,riserEnd:520,noise:.05}
+    }[theme]||{master:.145,wave:'sawtooth',riserStart:88,riserEnd:410,noise:.042};
     const duration=compact?.55:5.05;
     const master=context.createGain();
     const compressor=context.createDynamicsCompressor();
     master.gain.setValueAtTime(.0001,start);
-    master.gain.exponentialRampToValueAtTime(compact?.1:.145,start+.08);
-    master.gain.setValueAtTime(compact?.1:.145,start+Math.max(.12,duration-.28));
+    master.gain.exponentialRampToValueAtTime(compact?.08:profile.master,start+.08);
+    master.gain.setValueAtTime(compact?.08:profile.master,start+Math.max(.12,duration-.28));
     master.gain.exponentialRampToValueAtTime(.0001,start+duration);
     compressor.threshold.value=-18;
     compressor.knee.value=16;
@@ -2749,20 +2826,22 @@ function playMissionSound({compact=false}={}){
       oscillator.start(when);
       oscillator.stop(when+.52);
     };
-    impact(start,compact?82:62,compact?.18:.22);
+    impact(start,compact?82:(theme==='foco'?96:62),compact?.14:theme==='vigor'?.25:.2);
     if(!compact){
-      impact(start+.82,74,.16);
-      impact(start+1.62,82,.14);
-      impact(start+3.26,55,.24);
-      impact(start+4.18,96,.2);
+      const impacts=theme==='foco'
+        ? [[1.5,110,.1],[3.72,82,.14]]
+        : theme==='vigor'
+          ? [[.62,74,.18],[1.28,88,.16],[2.06,64,.2],[3.12,55,.26],[3.82,82,.22],[4.42,110,.2]]
+          : [[.82,74,.16],[1.62,82,.14],[3.26,55,.24],[4.18,96,.2]];
+      impacts.forEach(([offset,frequency,level])=>impact(start+offset,frequency,level));
     }
 
     const riser=context.createOscillator();
     const riserFilter=context.createBiquadFilter();
     const riserGain=context.createGain();
-    riser.type='sawtooth';
-    riser.frequency.setValueAtTime(compact?150:88,start);
-    riser.frequency.exponentialRampToValueAtTime(compact?260:410,start+Math.max(.35,duration-.62));
+    riser.type=profile.wave;
+    riser.frequency.setValueAtTime(compact?150:profile.riserStart,start);
+    riser.frequency.exponentialRampToValueAtTime(compact?260:profile.riserEnd,start+Math.max(.35,duration-.62));
     riserFilter.type='lowpass';
     riserFilter.frequency.setValueAtTime(540,start);
     riserFilter.frequency.exponentialRampToValueAtTime(3200,start+Math.max(.35,duration-.62));
@@ -2788,13 +2867,14 @@ function playMissionSound({compact=false}={}){
       noiseFilter.frequency.setValueAtTime(180,start);
       noiseFilter.frequency.exponentialRampToValueAtTime(5200,start+4.4);
       noiseGain.gain.setValueAtTime(.0001,start);
-      noiseGain.gain.exponentialRampToValueAtTime(.042,start+2.8);
+      noiseGain.gain.exponentialRampToValueAtTime(profile.noise,start+2.8);
       noiseGain.gain.exponentialRampToValueAtTime(.0001,start+4.72);
       noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
       noiseSource.start(start);
       noiseSource.stop(start+4.74);
 
-      [110,164.81,220].forEach((frequency,index)=>{
+      const chord=theme==='foco'?[130.81,196,261.63]:theme==='vigor'?[98,146.83,220]:[110,164.81,220];
+      chord.forEach((frequency,index)=>{
         const tone=context.createOscillator();
         const toneGain=context.createGain();
         const chordStart=start+3.72+(index*.035);
@@ -2869,7 +2949,7 @@ function launchMission(withSound){
   missionIntro.classList.remove('is-finishing');
   missionIntro.classList.add('is-launching');
   setMissionStatus('IGNIÇÃO AUTORIZADA','T−5,0');
-  if(withSound)playMissionSound({compact:missionHasReducedMotion()});
+  if(withSound)playMissionSound({compact:missionHasReducedMotion(),theme:missionSoundTheme});
 
   if(missionHasReducedMotion()){
     setMissionStatus('MISSÃO INICIADA','T+0,0');
@@ -2928,6 +3008,9 @@ if(missionIntro&&missionEmblem){
   }
   missionStartSound.addEventListener('click',()=>launchMission(true));
   missionStartSilent.addEventListener('click',()=>launchMission(false));
+  missionSoundThemes.forEach(button=>{
+    button.addEventListener('click',()=>selectMissionSound(button.dataset.missionSound));
+  });
   missionSkip.addEventListener('click',()=>finishMission({immediate:true}));
   missionEmblem.addEventListener('click',openMissionPortal);
   missionIntro.addEventListener('keydown',event=>{

@@ -32,12 +32,22 @@ class MissionPortalTests(unittest.TestCase):
             "window.AudioContext||window.webkitAudioContext",
             "context.createOscillator()",
             "context.createBuffer(",
-            "playMissionSound({compact:missionHasReducedMotion()})",
+            "playMissionSound({compact:missionHasReducedMotion(),theme:missionSoundTheme})",
         ):
             self.assertIn(marker, HOME)
         self.assertNotIn("<audio autoplay", HOME.lower())
         self.assertNotIn("new Audio(", HOME)
         self.assertNotIn("fetch('./assets/audio", HOME)
+
+    def test_three_sound_themes_are_selectable_and_persistent(self) -> None:
+        for marker in (
+            "const MISSION_SOUND_KEY='antigravity:mission-sound-theme:v1'",
+            'data-mission-sound="honra"',
+            'data-mission-sound="foco"',
+            'data-mission-sound="vigor"',
+            "localStorage.setItem(MISSION_SOUND_KEY,theme)",
+        ):
+            self.assertIn(marker, HOME)
 
     def test_five_second_flight_lands_on_the_replay_emblem(self) -> None:
         for marker in (

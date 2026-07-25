@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#06111f"/>
+  <title>Diretório Médico Vivo · Antigravity</title>
+  <meta name="description" content="Diretório pesquisável com centenas de fontes médicas nacionais e internacionais, classificadas por tema e acesso."/>
+  <link rel="icon" href="../assets/icons/antigravity-consultas-64.png"/>
+  <style>
+    :root{
+      color-scheme:dark;--bg:#050b15;--panel:#0a1626;--panel2:#0d1d31;--line:#203550;
+      --text:#eef8ff;--soft:#a7bed2;--cyan:#42e8ff;--violet:#aa91ff;--amber:#ffd166;
+      --green:#52e0a4;--red:#ff6f91;--mono:"SFMono-Regular",Consolas,monospace;
+      --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    html.a11y-light{color-scheme:light;--bg:#f5f8fc;--panel:#fff;--panel2:#edf4fa;--line:#aac0d2;
+      --text:#10263b;--soft:#334f67;--cyan:#006f7d;--violet:#6548b8;--green:#087a4e;
+      --amber:#865800;--red:#b42335}
+    html.a11y-light header,html.a11y-light .control-deck{background:rgba(255,255,255,.94)}
+    html.a11y-light .nav-link,html.a11y-light .field{background:#fff;color:#10263b}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:
+      radial-gradient(circle at 8% 0,rgba(66,232,255,.11),transparent 30%),
+      radial-gradient(circle at 92% 9%,rgba(170,145,255,.1),transparent 34%),var(--bg);
+      color:var(--text);font-family:var(--sans);min-height:100vh}
+    a{color:inherit}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .skip{position:fixed;left:12px;top:-60px;z-index:20;background:#fff;color:#000;padding:10px 14px;border-radius:9px}
+    .skip:focus{top:12px}
+    header{position:sticky;top:0;z-index:10;border-bottom:1px solid rgba(66,232,255,.14);
+      background:rgba(5,11,21,.86);backdrop-filter:blur(18px)}
+    .nav{max-width:1500px;margin:auto;min-height:66px;padding:10px clamp(16px,3vw,38px);
+      display:flex;align-items:center;gap:14px}
+    .brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-weight:900}
+    .brand img{width:39px;height:39px;border-radius:11px}
+    .brand small{display:block;color:var(--soft);font:600 .68rem var(--mono)}
+    .nav-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+    .nav-link,.btn{border:1px solid var(--line);background:rgba(13,29,49,.76);color:var(--text);
+      min-height:42px;padding:9px 13px;border-radius:11px;text-decoration:none;font-weight:800}
+    .nav-link:hover,.btn:hover{border-color:var(--cyan)}
+    main{max-width:1500px;margin:auto;padding:clamp(28px,5vw,70px) clamp(16px,3vw,38px) 80px}
+    .hero{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);gap:28px;align-items:end}
+    .eyebrow{font:800 .7rem var(--mono);text-transform:uppercase;letter-spacing:.18em;color:var(--cyan)}
+    h1{font-size:clamp(2.3rem,6vw,5.5rem);line-height:.92;letter-spacing:-.065em;margin:14px 0 18px;max-width:900px}
+    .lead{font-size:clamp(1rem,2vw,1.25rem);line-height:1.55;color:var(--soft);max-width:850px}
+    .hero-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .metric{background:linear-gradient(145deg,rgba(13,29,49,.94),rgba(7,19,34,.9));border:1px solid var(--line);
+      border-radius:16px;padding:18px}
+    .metric strong{display:block;font-size:2rem;color:var(--cyan)}
+    .metric span{color:var(--soft);font-size:.78rem}
+    .legal-note{margin:30px 0 18px;border:1px solid rgba(255,209,102,.34);background:rgba(255,209,102,.07);
+      padding:15px 17px;border-radius:14px;color:#ffe5a3;line-height:1.45}
+    .access-legend{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 26px}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border:1px solid var(--line);
+      border-radius:999px;font:750 .68rem var(--mono)}
+    .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+    .aberto{color:var(--green)}.semiaberto{color:var(--amber)}.fechado{color:var(--red)}
+    .control-deck{position:sticky;top:67px;z-index:8;margin:24px 0;padding:14px;border:1px solid var(--line);
+      background:rgba(7,18,32,.92);backdrop-filter:blur(18px);border-radius:18px;display:grid;
+      grid-template-columns:minmax(260px,1fr) repeat(3,minmax(150px,.3fr));gap:10px}
+    .field{min-height:48px;width:100%;border:1px solid var(--line);border-radius:11px;background:#081525;color:var(--text);padding:10px 12px}
+    .result-line{display:flex;align-items:center;gap:12px;justify-content:space-between;margin:18px 0}
+    .result-line strong{font-size:1.15rem}
+    .result-line span{color:var(--soft);font:700 .72rem var(--mono)}
+    .site-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+    .site-card{position:relative;min-height:250px;border:1px solid var(--line);background:linear-gradient(150deg,var(--panel2),var(--panel));
+      border-radius:17px;padding:16px;display:flex;flex-direction:column;transition:.18s ease}
+    .site-card:hover{transform:translateY(-2px);border-color:rgba(66,232,255,.55);box-shadow:0 20px 55px rgba(0,0,0,.28)}
+    .card-top{display:flex;align-items:flex-start;gap:11px}
+    .site-icon{width:43px;height:43px;border-radius:12px;border:1px solid var(--line);background:#fff;
+      display:grid;place-items:center;overflow:hidden;flex:0 0 43px;color:#071423;font-weight:900}
+    .site-icon img{width:100%;height:100%;object-fit:contain;padding:5px}
+    .site-card h2{font-size:1.02rem;line-height:1.15;margin:3px 0 0}
+    .favorite{margin-left:auto;width:39px;height:39px;border-radius:11px;border:1px solid var(--line);
+      background:transparent;color:var(--soft);font-size:1.05rem}
+    .favorite[aria-pressed="true"]{color:var(--amber);border-color:rgba(255,209,102,.5);background:rgba(255,209,102,.08)}
+    .site-note{color:var(--soft);font-size:.82rem;line-height:1.4;margin:14px 0;flex:1}
+    .site-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+    .tag{font:700 .62rem var(--mono);padding:4px 7px;border-radius:999px;background:rgba(66,232,255,.07);color:#bcecf6}
+    .visit{display:flex;align-items:center;justify-content:space-between;text-decoration:none;border-top:1px solid var(--line);
+      padding-top:12px;font-weight:850;color:var(--cyan)}
+    .empty{grid-column:1/-1;border:1px dashed var(--line);border-radius:18px;padding:45px;text-align:center;color:var(--soft)}
+    .directory-foot{margin-top:40px;border-top:1px solid var(--line);padding-top:24px;color:var(--soft);line-height:1.55}
+    @media(max-width:1150px){.site-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.control-deck{grid-template-columns:1fr 1fr}}
+    @media(max-width:800px){.hero{grid-template-columns:1fr}.site-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .control-deck{position:static;grid-template-columns:1fr}.nav-actions .optional{display:none}}
+    @media(max-width:540px){.site-grid{grid-template-columns:1fr}.site-card{min-height:220px}.hero-metrics{grid-template-columns:1fr 1fr}
+      h1{font-size:2.65rem}.brand small{display:none}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.site-card{transition:none}}
+    @media print{header,.control-deck,.favorite,.legal-note{display:none}.site-grid{grid-template-columns:repeat(2,1fr)}
+      body{background:#fff;color:#111}.site-card{break-inside:avoid;background:#fff;color:#111}.site-note{color:#444}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#directory">Pular para o diretório</a>
+  <header>
+    <nav class="nav" aria-label="Navegação do diretório">
+      <a class="brand" href="../index.html">
+        <img src="../assets/icons/antigravity-consultas-64.png" alt=""/>
+        <span>ANTIGRAVITY<small>Diretório Médico Vivo</small></span>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link optional" href="../15_Radar_Cientifico/index.html">📡 Radar científico</a>
+        <button class="nav-link" id="clarityToggle" type="button" aria-label="Ativar visualização clara" aria-pressed="false">☀️ Claro</button>
+        <a class="nav-link" href="../index.html">← Central</a>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <div class="eyebrow">Biblioteca de navegação · fontes verificáveis</div>
+        <h1 id="title">O mapa da medicina mundial.</h1>
+        <p class="lead">Fontes nacionais, internacionais e do Ceará reunidas em um diretório plugável, pesquisável e classificado por tema e nível de acesso. Prioridade para conteúdo aberto e de alto valor clínico.</p>
+      </div>
+      <div class="hero-metrics" aria-label="Resumo do diretório">
+        <div class="metric"><strong id="metricTotal">—</strong><span>fontes catalogadas</span></div>
+        <div class="metric"><strong id="metricOpen">—</strong><span>fontes abertas</span></div>
+        <div class="metric"><strong id="metricCategories">—</strong><span>categorias clínicas</span></div>
+        <div class="metric"><strong id="metricPriority">—</strong><span>prioridade máxima</span></div>
+      </div>
+    </section>
+
+    <aside class="legal-note">
+      🛡️ <strong>Acesso responsável:</strong> o Sci-Hub não é conectado por questões jurídicas e de segurança.
+      Para localizar versões legais gratuitas, use <a href="https://unpaywall.org/" target="_blank" rel="noopener noreferrer">Unpaywall</a>,
+      <a href="https://pmc.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer">PubMed Central</a>,
+      <a href="https://doaj.org/" target="_blank" rel="noopener noreferrer">DOAJ</a> ou
+      <a href="https://openalex.org/" target="_blank" rel="noopener noreferrer">OpenAlex</a>.
+    </aside>
+    <div class="access-legend" aria-label="Legenda de acesso">
+      <span class="badge aberto">Aberto · conteúdo principal gratuito</span>
+      <span class="badge semiaberto">Semiaberto · mistura de conteúdo livre e restrito</span>
+      <span class="badge fechado">Fechado · assinatura ou vínculo institucional</span>
+    </div>
+
+    <section class="control-deck" aria-label="Filtros do diretório">
+      <input class="field" id="search" type="search" placeholder="Buscar: POCUS, sepse, PubMed, Ceará…" autocomplete="off"/>
+      <select class="field" id="region" aria-label="Filtrar por região"><option value="">Todas as regiões</option></select>
+      <select class="field" id="category" aria-label="Filtrar por categoria"><option value="">Todas as categorias</option></select>
+      <select class="field" id="access" aria-label="Filtrar por acesso">
+        <option value="">Todos os acessos</option><option value="aberto">Aberto</option>
+        <option value="semiaberto">Semiaberto</option><option value="fechado">Fechado</option>
+      </select>
+    </section>
+
+    <section id="directory" aria-labelledby="resultTitle">
+      <div class="result-line">
+        <strong id="resultTitle">Fontes prioritárias</strong>
+        <span id="resultCount" role="status" aria-live="polite"></span>
+      </div>
+      <div class="site-grid" id="siteGrid"></div>
+    </section>
+    <footer class="directory-foot">
+      <strong>Como interpretar:</strong> a classificação descreve o acesso típico em julho de 2026 e pode mudar.
+      Um site semiaberto pode oferecer resumos e alguns artigos gratuitos, mantendo outros sob assinatura.
+      Favoritos ficam somente neste dispositivo. A presença no diretório não substitui avaliação crítica, diretriz local ou julgamento clínico.
+    </footer>
+  </main>
+  <script src="./data/sites.js"></script>
+  <script>
+  (function(){
+    const sites=Array.isArray(window.ANTIGRAVITY_MEDICAL_SITES)?window.ANTIGRAVITY_MEDICAL_SITES:[];
+    const $=id=>document.getElementById(id);
+    const clarityKey="antigravity:a11y:v1";
+    const systemTheme=window.matchMedia("(prefers-color-scheme: light)");
+    let clarityPrefs={theme:"dark"};
+    try{clarityPrefs={...clarityPrefs,...JSON.parse(localStorage.getItem(clarityKey)||"{}")}}catch(_){}
+    function drawClarity(){
+      const clarity=clarityPrefs.theme==="light"||(clarityPrefs.theme==="system"&&systemTheme.matches);
+      document.documentElement.classList.toggle("a11y-light",clarity);
+      $("clarityToggle").setAttribute("aria-pressed",String(clarity));
+      $("clarityToggle").setAttribute("aria-label",clarity?"Ativar visualização escura":"Ativar visualização clara");
+      $("clarityToggle").textContent=clarity?"🌌 Escuro":"☀️ Claro";
+    }
+    $("clarityToggle").addEventListener("click",()=>{
+      const active=clarityPrefs.theme==="light"||(clarityPrefs.theme==="system"&&systemTheme.matches);
+      clarityPrefs.theme=active?"dark":"light";drawClarity();
+      try{localStorage.setItem(clarityKey,JSON.stringify(clarityPrefs))}catch(_){}
+    });
+    systemTheme.addEventListener?.("change",drawClarity);
+    drawClarity();
+    const state={search:"",region:"",category:"",access:""};
+    const favoriteKey="antigravity:medical-directory:favorites:v1";
+    let favorites=new Set();
+    try{favorites=new Set(JSON.parse(localStorage.getItem(favoriteKey)||"[]"))}catch(_){}
+    const categoryNotes={
+      "Terapia intensiva":"UTI, ressuscitação, ventilação, sepse e cuidados críticos.",
+      "Clínica médica":"Referência clínica, diretrizes e atualização em Medicina Interna.",
+      "Pesquisa científica":"Busca, publicação, preprints, referências e integridade científica.",
+      "Medicina baseada em evidências":"Síntese, diretrizes, avaliação de risco de viés e GRADE.",
+      "Emergência":"Decisão tempo-dependente e educação em emergência.",
+      "POCUS":"Ultrassom à beira-leito, ecocardiografia e educação visual.",
+      "Cuidados paliativos":"Comunicação, controle de sintomas e cuidado centrado na pessoa.",
+      "Doenças raras":"Fenótipos, genética, diagnóstico e redes de doenças raras.",
+      "IA em saúde":"Inteligência artificial clínica, governança e pesquisa translacional.",
+      "Tecnologia em saúde":"Dados, interoperabilidade, terminologias e saúde digital.",
+      "Saúde pública":"Sistemas de saúde, vigilância, políticas e saúde global.",
+      "Formação e TEMI":"Provas, residência, educação continuada e certificação."
+    };
+    function fillSelect(id,values){
+      const select=$(id);
+      values.sort((a,b)=>a.localeCompare(b,"pt-BR")).forEach(value=>{
+        const option=document.createElement("option");option.value=value;option.textContent=value;select.append(option);
+      });
+    }
+    fillSelect("region",[...new Set(sites.map(item=>item.region))]);
+    fillSelect("category",[...new Set(sites.map(item=>item.category))]);
+    $("metricTotal").textContent=sites.length;
+    $("metricOpen").textContent=sites.filter(item=>item.access==="aberto").length;
+    $("metricCategories").textContent=new Set(sites.map(item=>item.category)).size;
+    $("metricPriority").textContent=sites.filter(item=>item.priority===1).length;
+    function normalize(value){return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()}
+    function favicon(url){try{return `${new URL(url).origin}/favicon.ico`}catch(_){return ""}}
+    function saveFavorites(){try{localStorage.setItem(favoriteKey,JSON.stringify([...favorites]))}catch(_){}}
+    function createCard(item){
+      const card=document.createElement("article");card.className="site-card";
+      const top=document.createElement("div");top.className="card-top";
+      const icon=document.createElement("div");icon.className="site-icon";icon.textContent=item.name.slice(0,2).toUpperCase();
+      const img=document.createElement("img");img.alt="";img.loading="lazy";img.decoding="async";img.referrerPolicy="no-referrer";
+      img.src=favicon(item.url);img.addEventListener("load",()=>{icon.textContent="";icon.append(img)},{once:true});
+      img.addEventListener("error",()=>img.remove(),{once:true});
+      const title=document.createElement("h2");title.textContent=item.name;
+      const fav=document.createElement("button");fav.type="button";fav.className="favorite";fav.textContent="★";
+      fav.setAttribute("aria-label",`Favoritar ${item.name}`);fav.setAttribute("aria-pressed",String(favorites.has(item.id)));
+      fav.addEventListener("click",()=>{favorites.has(item.id)?favorites.delete(item.id):favorites.add(item.id);saveFavorites();render()});
+      top.append(icon,title,fav);
+      const note=document.createElement("p");note.className="site-note";note.textContent=item.note||categoryNotes[item.category]||"Fonte médica selecionada.";
+      const meta=document.createElement("div");meta.className="site-meta";
+      [item.region,item.category].forEach(text=>{const tag=document.createElement("span");tag.className="tag";tag.textContent=text;meta.append(tag)});
+      const access=document.createElement("span");access.className=`badge ${item.access}`;access.textContent=item.access;
+      const link=document.createElement("a");link.className="visit";link.href=item.url;link.target="_blank";link.rel="noopener noreferrer";
+      link.setAttribute("aria-label",`Abrir ${item.name} em nova aba`);link.append(access,document.createTextNode("Acessar ↗"));
+      card.append(top,note,meta,link);return card;
+    }
+    function filtered(){
+      const query=normalize(state.search);
+      return sites.filter(item=>{
+        const haystack=normalize(`${item.name} ${item.category} ${item.region} ${item.note}`);
+        return (!query||haystack.includes(query))&&(!state.region||item.region===state.region)&&
+          (!state.category||item.category===state.category)&&(!state.access||item.access===state.access);
+      }).sort((a,b)=>(favorites.has(b.id)-favorites.has(a.id))||(a.priority-b.priority)||a.name.localeCompare(b.name,"pt-BR"));
+    }
+    function render(){
+      const results=filtered(),grid=$("siteGrid");grid.replaceChildren();
+      $("resultCount").textContent=`${results.length} de ${sites.length} fontes`;
+      $("resultTitle").textContent=favorites.size&&!state.search&&!state.region&&!state.category&&!state.access
+        ?"Favoritos e fontes prioritárias":"Resultados do diretório";
+      if(!results.length){const empty=document.createElement("div");empty.className="empty";empty.textContent="Nenhuma fonte encontrada. Limpe um filtro ou tente outro termo.";grid.append(empty);return}
+      results.forEach(item=>grid.append(createCard(item)));
+    }
+    [["search","input"],["region","change"],["category","change"],["access","change"]].forEach(([id,event])=>{
+      $(id).addEventListener(event,()=>{state[id]=$(id).value.trim();render()});
+    });
+    render();
+  })();
+  </script>
+</body>
+</html>

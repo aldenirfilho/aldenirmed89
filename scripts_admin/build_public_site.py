@@ -41,6 +41,8 @@ REQUIRED = (
     "09_POCUS_Hub",
     "10_DESAFIOS",
     "11_MNEMONICOS",
+    "15_Radar_Cientifico",
+    "16_Diretorio_Medico",
     "01_Modulos_Clinicos",
     "questoes",
     "apps",
