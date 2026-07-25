@@ -68,7 +68,10 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertEqual(manifest["scope"], "./")
         self.assertIn('rel="manifest" href="./manifest.webmanifest"', home)
         self.assertIn('rel="apple-touch-icon"', home)
-        self.assertIn("navigator.serviceWorker.register('./sw.js')", home)
+        self.assertIn(
+            "navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'})",
+            home,
+        )
         self.assertIn('const CACHE_PREFIX = "antigravity-root-"', worker)
         self.assertIn("const SHELL_ASSETS", worker)
         self.assertIn("Promise.allSettled", worker)
@@ -86,7 +89,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="Antigravity"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v3`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v4`', worker)
         self.assertIn('new URL("./downloads/", self.registration.scope)', worker)
         self.assertIn('cache: "no-store"', worker)
         self.assertIn("networkOnlyDownload(request)", worker)
@@ -95,13 +98,57 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("Antigravity-Consultas-Windows.zip", home)
         self.assertIn("Antigravity-Consultas-iPhone-Icones.zip", home)
 
+    def test_public_download_showcase_is_visible_and_complete(self) -> None:
+        home = (ROOT / "index.html").read_text(encoding="utf-8")
+
+        self.assertIn(
+            '<section class="downloads-section" id="downloads"',
+            home,
+        )
+        self.assertLess(home.index('id="downloads"'), home.index('id="pipeline"'))
+        self.assertEqual(home.count('data-download-card="'), 3)
+        for platform in ("macos", "windows", "ios"):
+            self.assertIn(f'data-download-card="{platform}"', home)
+        for archive in (
+            "downloads/Antigravity-Consultas-macOS.zip",
+            "downloads/Antigravity-Consultas-Windows.zip",
+            "downloads/Antigravity-Consultas-iPhone-Icones.zip",
+        ):
+            self.assertIn(f'href="{archive}" download', home)
+        for guide in (
+            "docs_usuario/ACESSO_DOCK_MAC.md",
+            "docs_usuario/ACESSO_WINDOWS.md",
+            "docs_usuario/ACESSO_IPHONE.md",
+        ):
+            self.assertIn(f'href="{guide}"', home)
+        self.assertIn('class="nav-download" href="#downloads"', home)
+        self.assertIn('class="nav-status-full">Sistema online</span>', home)
+        self.assertIn('class="nav-status-short">Online</span>', home)
+        self.assertIn('class="nav-download-short">Apps</span>', home)
+        self.assertIn('class="brand-short">Antigravity</span>', home)
+        self.assertIn("não um aplicativo publicado na App Store", home)
+        self.assertIn(".hero>*{min-width:0}", home)
+
     def test_home_accessibility_and_untrusted_content_contracts(self) -> None:
         home = (ROOT / "index.html").read_text(encoding="utf-8")
         self.assertIn('class="skip-link"', home)
         self.assertIn('id="a11yPanel"', home)
         self.assertIn('data-a11y="contrast"', home)
         self.assertIn("@media(prefers-reduced-motion:reduce)", home)
-        self.assertIn('role="dialog" aria-modal="true"', home)
+        self.assertIn(
+            'id="a11yPanel" role="dialog" aria-modal="false"',
+            home,
+        )
+        self.assertIn("overflow-y:auto;overscroll-behavior:contain", home)
+        self.assertIn("-webkit-overflow-scrolling:touch", home)
+        self.assertIn("touch-action:pan-y", home)
+        self.assertIn("a11yPanel.scrollTo({", home)
+        self.assertIn("env(safe-area-inset-bottom)", home)
+        self.assertIn("env(safe-area-inset-right)", home)
+        self.assertIn("html{scroll-behavior:smooth;overflow-x:hidden}", home)
+        self.assertIn("if(quickPanel&&!quickPanel.hidden)setA11yPanel(false)", home)
+        self.assertIn(".drawer-head{", home)
+        self.assertIn("position:sticky;top:0;z-index:2", home)
         self.assertIn("let h = escHtml(md)", home)
         self.assertIn("${escHtml(t)}</span>", home)
         self.assertIn("${escH(stripTags(v))}</span>", home)

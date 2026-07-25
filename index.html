@@ -54,7 +54,7 @@
   --shadow:0 24px 80px rgba(0,0,0,.4);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 body{
   font-family:var(--font-body);
   background:var(--bg);
@@ -158,10 +158,14 @@ header{
   display:block;font-family:var(--font-head);font-size:.92rem;
   font-weight:700;letter-spacing:-.02em;line-height:1.1
 }
-.brand-text span{
+.brand-text .brand-subtitle{
   font-family:var(--font-mono);font-size:.66rem;color:var(--muted);
 }
-.nav-links{display:flex;align-items:center;gap:4px}
+.brand-short{display:none}
+.nav-links{
+  display:flex;align-items:center;gap:4px;flex:1;min-width:0;
+  overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin;
+}
 .nav-links a{
   padding:7px 13px;border-radius:8px;font-size:.83rem;font-weight:500;
   color:var(--soft);border:1px solid transparent;
@@ -169,10 +173,20 @@ header{
 }
 .nav-links a:hover{color:var(--text);background:var(--surf);border-color:var(--brd)}
 .nav-links a.accent{color:var(--green)}
+.nav-tools{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.nav-download{
+  min-height:40px;display:inline-flex;align-items:center;gap:7px;
+  padding:8px 13px;border-radius:10px;white-space:nowrap;
+  background:var(--cyan);border:1px solid var(--cyan);color:#030c18;
+  font-size:.8rem;font-weight:800;box-shadow:0 8px 28px rgba(62,232,255,.18);
+}
+.nav-download:hover{background:#72f0ff;transform:translateY(-1px)}
+.nav-download-short{display:none}
 .nav-status{
   display:flex;align-items:center;gap:8px;flex-shrink:0;
-  font-family:var(--font-mono);font-size:.72rem;color:var(--green);
+  font-family:var(--font-mono);font-size:.72rem;color:var(--green);white-space:nowrap;
 }
+.nav-status-short{display:none}
 .pulse{
   width:7px;height:7px;border-radius:50%;background:var(--green);
   animation:pulse 2s ease-in-out infinite;
@@ -195,6 +209,7 @@ header{
   display:grid;grid-template-columns:1fr 480px;
   gap:40px;align-items:center;
 }
+.hero>*{min-width:0}
 .hero-eyebrow{
   font-family:var(--font-mono);font-size:.75rem;font-weight:500;
   letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);
@@ -236,8 +251,78 @@ header{
 }
 .btn-violet:hover{background:rgba(169,140,255,.22);transform:translateY(-1px)}
 
+/* ── DOWNLOADS MULTIPLATAFORMA ───────────────────── */
+.downloads-section{padding:0 0 88px;scroll-margin-top:82px}
+.download-showcase{
+  position:relative;overflow:hidden;
+  padding:34px;border:1px solid rgba(62,232,255,.22);border-radius:var(--r-xl);
+  background:
+    radial-gradient(circle at 8% 0%,rgba(62,232,255,.15),transparent 34%),
+    radial-gradient(circle at 95% 100%,rgba(169,140,255,.14),transparent 36%),
+    var(--bg2);
+  box-shadow:var(--shadow);
+}
+.download-showcase::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+.download-head,.download-grid,.download-trust{position:relative;z-index:1}
+.download-head{
+  display:flex;justify-content:space-between;align-items:end;gap:28px;margin-bottom:26px;
+}
+.download-head .section-sub{max-width:690px}
+.download-ready{
+  display:inline-flex;align-items:center;gap:8px;flex-shrink:0;
+  padding:8px 12px;border:1px solid rgba(78,240,161,.3);border-radius:999px;
+  color:var(--green);background:var(--grn-d);font-family:var(--font-mono);
+  font-size:.7rem;font-weight:600;white-space:nowrap;
+}
+.download-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.download-card{
+  display:flex;flex-direction:column;min-width:0;padding:22px;
+  border:1px solid var(--brd);border-radius:18px;background:rgba(4,13,26,.78);
+}
+.download-card:hover{border-color:var(--brd-h);background:rgba(11,26,46,.92)}
+.download-platform{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.download-icon{
+  width:46px;height:46px;display:grid;place-items:center;flex:0 0 46px;
+  border-radius:13px;background:var(--surf);border:1px solid var(--brd-h);font-size:1.35rem;
+}
+.download-platform small{
+  display:block;margin-bottom:3px;color:var(--muted);font-family:var(--font-mono);
+  font-size:.63rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+}
+.download-card h3{font-family:var(--font-head);font-size:1.16rem;line-height:1.2}
+.download-card p{color:var(--soft);font-size:.86rem;line-height:1.55;margin:0 0 16px}
+.download-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:17px}
+.download-tag{
+  padding:4px 8px;border:1px solid var(--brd);border-radius:999px;
+  color:var(--soft);background:var(--surf);font-family:var(--font-mono);font-size:.61rem;
+}
+.download-actions{display:grid;gap:8px;margin-top:auto}
+.download-action{
+  min-height:46px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px 13px;border-radius:10px;border:1px solid var(--brd-h);
+  font-size:.82rem;font-weight:700;text-decoration:none;
+}
+.download-action.primary{background:var(--cyan);border-color:var(--cyan);color:#030c18}
+.download-action.primary:hover{background:#72f0ff;transform:translateY(-1px)}
+.download-action.secondary{background:var(--surf);color:var(--text)}
+.download-action.secondary:hover{border-color:var(--cyan);color:var(--cyan)}
+.download-action span:last-child{font-family:var(--font-mono);font-size:.62rem;white-space:nowrap}
+.download-note{margin:12px 0 0!important;color:var(--muted)!important;font-size:.72rem!important}
+.download-trust{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 18px;
+  margin-top:22px;padding-top:18px;border-top:1px solid var(--brd);
+  color:var(--soft);font-family:var(--font-mono);font-size:.68rem;
+}
+.download-trust a{color:var(--cyan);text-decoration:underline;text-underline-offset:3px}
+
 /* Hero panel (right side) */
 .hero-panel{
+  width:100%;min-width:0;
   background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-xl);
   overflow:hidden;
 }
@@ -894,19 +979,26 @@ header{
 #drawer{
   position:fixed;right:-400px;top:0;bottom:0;width:380px;
   background:var(--bg3);border-left:1px solid var(--brd);
-  z-index:200;padding:32px 28px;overflow-y:auto;
+  z-index:200;padding:0 28px 32px;overflow-x:hidden;overflow-y:auto;
+  overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;
   transition:right .28s cubic-bezier(.4,0,.2,1);
 }
 #drawer.open{right:0}
+.drawer-head{
+  position:sticky;top:0;z-index:2;display:flex;align-items:flex-start;gap:12px;
+  margin:0 -1px 12px;padding:20px 0 14px;
+  background:rgba(11,26,46,.97);border-bottom:1px solid var(--brd);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
 .drawer-close{
-  position:absolute;top:20px;right:20px;
+  position:static;flex:0 0 36px;
   background:var(--surf);border:1px solid var(--brd);
   border-radius:8px;width:36px;height:36px;
   display:grid;place-items:center;cursor:pointer;font-size:1.1rem;
   transition:.15s;color:var(--soft);
 }
 .drawer-close:hover{background:var(--surf-h);color:var(--text)}
-#drawerTitle{font-family:var(--font-head);font-size:1.25rem;font-weight:800;margin-bottom:10px;padding-right:40px}
+#drawerTitle{flex:1;font-family:var(--font-head);font-size:1.25rem;font-weight:800;margin:4px 0 0}
 #drawerText{font-size:.88rem;color:var(--soft);line-height:1.7;margin-bottom:16px}
 #drawerText h1,#drawerText h2{font-family:var(--font-head);color:var(--text);margin:18px 0 6px;font-size:1rem}
 #drawerText h3{font-family:var(--font-head);color:var(--cyan);margin:14px 0 4px;font-size:.9rem}
@@ -946,12 +1038,22 @@ header{
 .float-btn:hover{background:var(--surf-h);border-color:var(--cyan);color:var(--cyan)}
 .a11y-panel{
   position:fixed;right:82px;bottom:24px;z-index:220;
-  width:min(360px,calc(100vw - 36px));padding:20px;
-  max-height:calc(100vh - 48px);overflow:auto;
+  width:min(380px,calc(100vw - 36px));padding:0;
+  max-height:min(760px,calc(100vh - 32px));
+  max-height:min(760px,calc(100dvh - 32px));
+  overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;scrollbar-gutter:stable;
+  touch-action:pan-y;
   border:1px solid var(--brd-h);border-radius:18px;
   background:var(--bg3);box-shadow:var(--shadow);
 }
-.a11y-panel h2{font-family:var(--font-head);font-size:1rem;margin-bottom:5px}
+.a11y-panel-head{
+  position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;
+  padding:15px 18px;border-bottom:1px solid var(--brd);
+  background:rgba(11,26,46,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.a11y-panel-body{padding:15px 18px 20px}
+.a11y-panel h2{font-family:var(--font-head);font-size:1rem;margin:0}
 .a11y-panel h3{
   margin:16px 0 6px;font-family:var(--font-mono);font-size:.72rem;
   color:var(--soft);text-transform:uppercase;letter-spacing:.08em
@@ -968,7 +1070,16 @@ header{
 .a11y-install{color:var(--green);border-color:rgba(78,240,161,.35);margin-top:8px}
 .a11y-install[hidden]{display:none}
 .a11y-status{min-height:1.2em;margin:8px 0 0!important;color:var(--green)!important}
-.a11y-close{position:absolute;right:12px;top:10px;background:none;border:0;color:var(--soft);cursor:pointer;padding:8px}
+.a11y-scroll-help{
+  padding:7px 10px;border-radius:8px;background:var(--cyan-d);color:var(--cyan)!important;
+  font-family:var(--font-mono);font-size:.66rem!important;
+}
+.a11y-close{
+  width:36px;height:36px;margin-left:auto;display:grid;place-items:center;flex:0 0 36px;
+  background:var(--surf);border:1px solid var(--brd);border-radius:9px;
+  color:var(--soft);cursor:pointer;padding:0;
+}
+.a11y-close:hover{border-color:var(--cyan);color:var(--cyan)}
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -984,6 +1095,8 @@ header{
 @media(max-width:1024px){
   .hero{grid-template-columns:1fr;gap:40px}
   .hero-panel{max-width:520px}
+  .download-grid{grid-template-columns:1fr}
+  .download-head{align-items:start}
   .metrics-grid{grid-template-columns:repeat(4,1fr)}
   .modules-grid{grid-template-columns:repeat(2,1fr)}
   .pipeline-flow{grid-template-columns:repeat(3,1fr);gap:20px}
@@ -992,10 +1105,22 @@ header{
   .footer-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
-  .nav{height:auto;min-height:64px;padding:8px 18px;flex-wrap:wrap}
-  .nav-links{display:flex;order:3;width:100%;overflow-x:auto;padding-bottom:4px}
-  .nav-status span{display:none}
+  .nav{height:auto;min-height:64px;padding:8px 18px;flex-wrap:wrap;gap:8px}
+  .brand{gap:8px}
+  .brand-full,.brand-subtitle{display:none}
+  .brand-short{display:inline}
+  .nav-links{display:flex;order:3;width:100%;flex-basis:100%;overflow-x:auto;padding-bottom:4px}
+  .nav-tools{margin-left:auto}
+  .nav-status-full{display:none}
+  .nav-status-short{display:inline}
+  .nav-download{min-height:38px;padding:7px 10px}
+  .nav-download-full{display:none}
+  .nav-download-short{display:inline}
   .hero h1{font-size:2.2rem}
+  .download-showcase{padding:24px 18px;border-radius:22px}
+  .download-head{display:block}
+  .download-ready{margin-top:16px}
+  .download-card{padding:19px}
   .metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .modules-grid,.vias-grid,.g2,.g3,.g4{grid-template-columns:1fr}
   .pipeline-flow{grid-template-columns:1fr;max-width:300px;margin-left:auto;margin-right:auto}
@@ -1012,7 +1137,17 @@ header{
   .dsf-grid{grid-template-columns:1fr}
   .dsf-tabs{flex-wrap:wrap}
   input,select,textarea,.map-search,.mnem-search{font-size:16px}
-  .a11y-panel{right:18px;bottom:82px;max-height:calc(100dvh - 100px)}
+  .a11y-panel{
+    left:calc(12px + env(safe-area-inset-left));
+    right:calc(12px + env(safe-area-inset-right));
+    bottom:calc(76px + env(safe-area-inset-bottom));
+    width:auto;max-height:calc(100vh - 96px);
+    max-height:calc(100dvh - 96px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+  .floaters{
+    right:calc(12px + env(safe-area-inset-right));
+    bottom:calc(14px + env(safe-area-inset-bottom));
+  }
 }
 </style>
 </head>
@@ -1030,8 +1165,8 @@ header{
     <a class="brand" href="#top" aria-label="Início">
       <div class="brand-icon" aria-hidden="true"><img src="logo_concept_3_book_1778036997285.png" alt="Logotipo Antigravity" style="width: 38px; height: 38px; object-fit: cover; border-radius: 8px;"></div>
       <div class="brand-text">
-        <strong>Enciclopédia Médica</strong>
-        <span>Intensiva &amp; Medicina Interna</span>
+        <strong><span class="brand-full">Enciclopédia Médica</span><span class="brand-short">Antigravity</span></strong>
+        <span class="brand-subtitle">Intensiva &amp; Medicina Interna</span>
       </div>
     </a>
     <div class="nav-links" role="navigation" aria-label="Módulos principais">
@@ -1045,9 +1180,15 @@ header{
       <a href="13_RenalDose_Antimicrobianos/index.html">💊 RenalDose ICU</a>
       <a href="14_SAPS3_Calculator/index.html">📊 SAPS 3</a>
     </div>
-    <div class="nav-status" aria-label="Status do sistema">
-      <div class="pulse" aria-hidden="true"></div>
-      <span>Sistema ativo</span>
+    <div class="nav-tools">
+      <a class="nav-download" href="#downloads" aria-label="Ir para downloads de macOS, Windows e iPhone">
+        <span aria-hidden="true">⬇️</span><span class="nav-download-full">Baixar apps</span><span class="nav-download-short">Apps</span>
+      </a>
+      <div class="nav-status" aria-label="Sistema online">
+        <div class="pulse" aria-hidden="true"></div>
+        <span class="nav-status-full">Sistema online</span>
+        <span class="nav-status-short">Online</span>
+      </div>
     </div>
   </nav>
 </header>
@@ -1069,6 +1210,7 @@ header{
       </p>
       <div class="hero-btns">
         <a class="btn btn-primary" href="01_UpDown_Hub/index.html">↕️ Abrir UpDown Hub</a>
+        <a class="btn btn-ghost" href="#downloads">⬇️ Baixar apps</a>
         <a class="btn btn-ghost" href="#modulos">⬛ Ver todos os módulos</a>
         <a class="btn btn-violet" href="#mapa">🕸️ Mapa de conexões</a>
       </div>
@@ -1121,6 +1263,94 @@ header{
 
   </section>
 </div><!-- /shell -->
+
+<!-- ── DOWNLOADS MULTIPLATAFORMA ─────────────────── -->
+<section class="downloads-section" id="downloads" aria-labelledby="downloads-heading">
+  <div class="shell">
+    <div class="download-showcase">
+      <div class="download-head">
+        <div>
+          <div class="section-label">// acesso fácil em qualquer dispositivo</div>
+          <h2 class="section-title" id="downloads-heading">Baixe ou instale o Antigravity 💻📱</h2>
+          <p class="section-sub">Três caminhos claros e diretos. O conteúdo continua vindo do mesmo site, sempre atualizado, sem telemetria e sem armazenar dados de pacientes.</p>
+        </div>
+        <span class="download-ready"><span aria-hidden="true">●</span> Links disponíveis agora</span>
+      </div>
+
+      <div class="download-grid" role="list" aria-label="Downloads por plataforma">
+        <article class="download-card" role="listitem" data-download-card="macos">
+          <div class="download-platform">
+            <span class="download-icon" aria-hidden="true">🍎</span>
+            <div><small>Computadores Apple</small><h3>macOS</h3></div>
+          </div>
+          <p>Aplicativo local para abrir a plataforma direto pelo Dock no MacBook Pro ou Air.</p>
+          <div class="download-tags" aria-label="Características do pacote macOS">
+            <span class="download-tag">App para o Dock</span>
+            <span class="download-tag">ZIP · 1,9 MB</span>
+          </div>
+          <div class="download-actions">
+            <a class="download-action primary" href="downloads/Antigravity-Consultas-macOS.zip" download>
+              <span>Baixar para macOS</span><span>ZIP ↓</span>
+            </a>
+            <a class="download-action secondary" href="docs_usuario/ACESSO_DOCK_MAC.md">
+              <span>Ver instalação passo a passo</span><span>GUIA →</span>
+            </a>
+          </div>
+          <p class="download-note">Pacote sem notarização Apple; o guia explica a liberação segura no Gatekeeper.</p>
+        </article>
+
+        <article class="download-card" role="listitem" data-download-card="windows">
+          <div class="download-platform">
+            <span class="download-icon" aria-hidden="true">🪟</span>
+            <div><small>PC e notebook</small><h3>Windows</h3></div>
+          </div>
+          <p>Instalador reversível que cria atalhos no Desktop e no menu Iniciar, sem exigir administrador.</p>
+          <div class="download-tags" aria-label="Características do pacote Windows">
+            <span class="download-tag">Windows 10/11</span>
+            <span class="download-tag">ZIP · 127 KB</span>
+          </div>
+          <div class="download-actions">
+            <a class="download-action primary" href="downloads/Antigravity-Consultas-Windows.zip" download>
+              <span>Baixar para Windows</span><span>ZIP ↓</span>
+            </a>
+            <a class="download-action secondary" href="docs_usuario/ACESSO_WINDOWS.md">
+              <span>Ver instalação passo a passo</span><span>GUIA →</span>
+            </a>
+          </div>
+          <p class="download-note">Launcher transparente e sem assinatura Authenticode; o guia mostra como instalar e remover.</p>
+        </article>
+
+        <article class="download-card" role="listitem" data-download-card="ios">
+          <div class="download-platform">
+            <span class="download-icon" aria-hidden="true">📱</span>
+            <div><small>Celular e tablet Apple</small><h3>iPhone / iPad</h3></div>
+          </div>
+          <p>Instale o site como App Web pelo Safari e abra em tela cheia com ícone próprio na Tela de Início.</p>
+          <div class="download-tags" aria-label="Características do acesso iOS">
+            <span class="download-tag">App Web iOS</span>
+            <span class="download-tag">Tela de Início</span>
+          </div>
+          <div class="download-actions">
+            <a class="download-action primary" href="docs_usuario/ACESSO_IPHONE.md">
+              <span>Instalar no iPhone / iPad</span><span>GUIA →</span>
+            </a>
+            <a class="download-action secondary" href="downloads/Antigravity-Consultas-iPhone-Icones.zip" download>
+              <span>Baixar pacote de ícones</span><span>ZIP · 1,3 MB</span>
+            </a>
+          </div>
+          <p class="download-note">É um App Web instalado pelo Safari, não um aplicativo publicado na App Store.</p>
+        </article>
+      </div>
+
+      <div class="download-trust" aria-label="Informações de segurança dos downloads">
+        <span>🔒 Sem telemetria</span>
+        <span>🧹 Instalações reversíveis</span>
+        <span>🌐 Conteúdo sempre atualizado pelo site</span>
+        <a href="downloads/SHA256SUMS.txt">Verificar checksums SHA-256</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ── PIPELINE ────────────────────────────────────── -->
 <section class="pipeline-section" id="pipeline" aria-labelledby="pipe-heading">
@@ -1791,6 +2021,7 @@ header{
       </div>
       <div class="footer-col">
         <h4>Projeto</h4>
+        <a href="#downloads">⬇️ Apps para Mac, Windows e iPhone</a>
         <a href="https://github.com/aldenirfilho/antigravity-consultas">GitHub Repository</a>
         <a href="https://github.com/aldenirfilho/antigravity-consultas#readme">Documentação</a>
         <a href="#roadmap">Roadmap</a>
@@ -1807,51 +2038,61 @@ header{
 <!-- ── DRAWER ──────────────────────────────────────── -->
 <div id="overlay" class="overlay" aria-hidden="true"></div>
 <aside id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true" tabindex="-1">
-  <button class="drawer-close" id="drawerClose" aria-label="Fechar painel">✕</button>
-  <h3 id="drawerTitle">Tema</h3>
+  <div class="drawer-head">
+    <h3 id="drawerTitle">Tema</h3>
+    <button class="drawer-close" id="drawerClose" aria-label="Fechar painel">✕</button>
+  </div>
   <div id="drawerText"></div>
   <div class="drawer-tags" id="drawerTags"></div>
 </aside>
 
 <!-- ── FLOATING BUTTONS ───────────────────────────── -->
-<section class="a11y-panel" id="a11yPanel" role="dialog" aria-labelledby="a11yTitle" hidden>
-  <button class="a11y-close" id="a11yClose" aria-label="Fechar opções de acessibilidade">✕</button>
-  <h2 id="a11yTitle">♿ Acesso rápido</h2>
-  <p>Preferências ficam somente neste dispositivo. Nenhum dado clínico é enviado.</p>
-  <div class="a11y-options">
-    <button class="a11y-option" type="button" data-a11y="large" aria-pressed="false">
-      <span>🔎 Texto ampliado</span><span aria-hidden="true">A+</span>
-    </button>
-    <button class="a11y-option" type="button" data-a11y="contrast" aria-pressed="false">
-      <span>◐ Alto contraste</span><span aria-hidden="true">ON</span>
-    </button>
-    <button class="a11y-option" type="button" data-a11y="motion" aria-pressed="false">
-      <span>🧘 Reduzir animações</span><span aria-hidden="true">ON</span>
-    </button>
+<section class="a11y-panel" id="a11yPanel" role="dialog" aria-modal="false" aria-labelledby="a11yTitle" aria-describedby="a11yIntro" tabindex="-1" hidden>
+  <div class="a11y-panel-head">
+    <h2 id="a11yTitle">♿ Acesso rápido</h2>
+    <button class="a11y-close" id="a11yClose" aria-label="Fechar opções de acessibilidade">✕</button>
   </div>
-  <h3>Instalar e abrir rápido</h3>
-  <button class="a11y-install" id="installPwaBtn" type="button" hidden>
-    <span>⚡ Instalar como aplicativo</span><span aria-hidden="true">PWA</span>
-  </button>
-  <p class="a11y-status" id="installPwaStatus" role="status" aria-live="polite"></p>
-  <a class="a11y-link" href="downloads/Antigravity-Consultas-Windows.zip" download>
-    <span>🪟 Atalho Windows — não assinado</span><span aria-hidden="true">ZIP</span>
-  </a>
-  <a class="a11y-link" href="downloads/Antigravity-Consultas-iPhone-Icones.zip" download>
-    <span>📱 Ícones para iPhone</span><span aria-hidden="true">ZIP</span>
-  </a>
-  <a class="a11y-link" href="downloads/Antigravity-Consultas-macOS.zip">
-    <span>⬇️ App para o Dock do Mac</span><span aria-hidden="true">ZIP</span>
-  </a>
-  <a class="a11y-link" href="docs_usuario/ACESSO_WINDOWS.md">
-    <span>📘 Guia Windows</span><span aria-hidden="true">→</span>
-  </a>
-  <a class="a11y-link" href="docs_usuario/ACESSO_IPHONE.md">
-    <span>📘 Guia iPhone</span><span aria-hidden="true">→</span>
-  </a>
-  <a class="a11y-link" href="docs_usuario/ACESSO_DOCK_MAC.md">
-    <span>📘 Guia do Dock no Mac</span><span aria-hidden="true">→</span>
-  </a>
+  <div class="a11y-panel-body">
+    <p id="a11yIntro">Preferências ficam somente neste dispositivo. Nenhum dado clínico é enviado.</p>
+    <p class="a11y-scroll-help">↕️ Se o quadro ficar maior que a tela, role dentro dele com mouse, trackpad ou toque.</p>
+    <div class="a11y-options">
+      <button class="a11y-option" type="button" data-a11y="large" aria-pressed="false">
+        <span>🔎 Texto ampliado</span><span aria-hidden="true">A+</span>
+      </button>
+      <button class="a11y-option" type="button" data-a11y="contrast" aria-pressed="false">
+        <span>◐ Alto contraste</span><span aria-hidden="true">ON</span>
+      </button>
+      <button class="a11y-option" type="button" data-a11y="motion" aria-pressed="false">
+        <span>🧘 Reduzir animações</span><span aria-hidden="true">ON</span>
+      </button>
+    </div>
+    <h3>Instalar e abrir rápido</h3>
+    <button class="a11y-install" id="installPwaBtn" type="button" hidden>
+      <span>⚡ Instalar como aplicativo</span><span aria-hidden="true">PWA</span>
+    </button>
+    <p class="a11y-status" id="installPwaStatus" role="status" aria-live="polite"></p>
+    <a class="a11y-link" href="#downloads">
+      <span>💻📱 Ver quadro completo de apps</span><span aria-hidden="true">→</span>
+    </a>
+    <a class="a11y-link" href="downloads/Antigravity-Consultas-Windows.zip" download>
+      <span>🪟 Baixar para Windows</span><span aria-hidden="true">ZIP</span>
+    </a>
+    <a class="a11y-link" href="downloads/Antigravity-Consultas-iPhone-Icones.zip" download>
+      <span>📱 Baixar ícones para iPhone</span><span aria-hidden="true">ZIP</span>
+    </a>
+    <a class="a11y-link" href="downloads/Antigravity-Consultas-macOS.zip" download>
+      <span>🍎 Baixar app para macOS</span><span aria-hidden="true">ZIP</span>
+    </a>
+    <a class="a11y-link" href="docs_usuario/ACESSO_WINDOWS.md">
+      <span>📘 Guia Windows</span><span aria-hidden="true">→</span>
+    </a>
+    <a class="a11y-link" href="docs_usuario/ACESSO_IPHONE.md">
+      <span>📘 Guia iPhone</span><span aria-hidden="true">→</span>
+    </a>
+    <a class="a11y-link" href="docs_usuario/ACESSO_DOCK_MAC.md">
+      <span>📘 Guia do Dock no Mac</span><span aria-hidden="true">→</span>
+    </a>
+  </div>
 </section>
 <div class="floaters" role="complementary" aria-label="Atalhos rápidos">
   <button class="float-btn" id="a11yBtn" title="Acessibilidade e aplicativos" aria-label="Abrir acessibilidade e aplicativos para Mac, Windows e iPhone" aria-controls="a11yPanel" aria-expanded="false">♿</button>
@@ -1883,6 +2124,8 @@ let drawerReturnFocus=null;
 
 function openDrawer(key, isMnem = false){
   const d=TOPICS[key];if(!d)return;
+  const quickPanel=document.getElementById('a11yPanel');
+  if(quickPanel&&!quickPanel.hidden)setA11yPanel(false);
   if(!drawer.classList.contains('open')) drawerReturnFocus=document.activeElement;
   document.getElementById('drawerTitle').textContent=d.title;
   
@@ -2443,7 +2686,10 @@ function applyA11y(){
 function setA11yPanel(open){
   a11yPanel.hidden=!open;
   a11yBtn.setAttribute('aria-expanded',String(open));
-  if(open)a11yClose.focus();
+  if(open){
+    a11yPanel.scrollTop=0;
+    a11yClose.focus();
+  }
   else a11yBtn.focus();
 }
 a11yBtn.addEventListener('click',()=>setA11yPanel(a11yPanel.hidden));
@@ -2458,6 +2704,22 @@ document.querySelectorAll('[data-a11y]').forEach(btn=>{
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&!a11yPanel.hidden){e.preventDefault();setA11yPanel(false)}
 });
+a11yPanel.addEventListener('keydown',e=>{
+  if(a11yPanel.scrollHeight<=a11yPanel.clientHeight)return;
+  const step=Math.max(180,Math.round(a11yPanel.clientHeight*.72));
+  let target=null;
+  if(e.key==='PageDown')target=a11yPanel.scrollTop+step;
+  if(e.key==='PageUp')target=a11yPanel.scrollTop-step;
+  if(e.key==='Home'&&!e.metaKey&&!e.ctrlKey)target=0;
+  if(e.key==='End'&&!e.metaKey&&!e.ctrlKey)target=a11yPanel.scrollHeight;
+  if(target===null)return;
+  e.preventDefault();
+  a11yPanel.scrollTo({
+    top:target,
+    behavior:document.documentElement.classList.contains('a11y-reduce-motion')?'auto':'smooth'
+  });
+});
+a11yPanel.querySelector('a[href="#downloads"]').addEventListener('click',()=>setA11yPanel(false));
 applyA11y();
 
 /* ── INSTALAÇÃO PWA (WINDOWS/EDGE/CHROME) ────────── */
@@ -2518,7 +2780,7 @@ window.addEventListener('scroll',()=>{
 /* ── PWA OFFLINE ─────────────────────────────────── */
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js').catch(error=>{
+    navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(error=>{
       console.warn('Service worker indisponível:',error);
     });
   });
