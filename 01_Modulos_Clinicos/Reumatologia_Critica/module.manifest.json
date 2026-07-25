@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "reumatologia-critica-turbo",
+  "title": "Reumatologia Crítica — Emergências & Diagnósticos Difíceis",
+  "shortTitle": "Reuma Crítica",
+  "emoji": "🧬",
+  "entrypoint": "index.html",
+  "href": "01_Modulos_Clinicos/Reumatologia_Critica/index.html",
+  "version": "1.0.0-rc.1",
+  "status": "em-revisao-medica",
+  "clinicalReviewRequired": true,
+  "publication": {
+    "mode": "public-preview",
+    "publicPreview": true,
+    "clinicalReviewOngoing": true,
+    "purpose": "educacional-e-apoio-cognitivo",
+    "authorizedAt": "2026-07-25"
+  },
+  "updatedAt": "2026-07-25",
+  "category": [
+    "Reumatologia",
+    "Medicina Intensiva",
+    "Emergência",
+    "Clínica Médica",
+    "TEMI"
+  ],
+  "keywords": [
+    "vasculite",
+    "pulmão-rim",
+    "ANCA",
+    "anti-GBM",
+    "SAF catastrófica",
+    "crise renal esclerodérmica",
+    "MAS",
+    "HLH",
+    "LES grave",
+    "anti-MDA5",
+    "DPI rapidamente progressiva",
+    "miopatia",
+    "GCA",
+    "PAN",
+    "Behçet",
+    "policondrite",
+    "TEMI"
+  ],
+  "features": [
+    "HTML, CSS e JavaScript puros; sem backend, telemetria ou dependências externas",
+    "Catálogo clínico plugável dirigido por dados em data/catalog.js",
+    "19 emergências e 8 trilhas de síndrome para Plantão 60 s",
+    "Comparadores de pulmão-rim, TMA/IRA, hiperinflamação, DPI e calibre vascular",
+    "Conceitos, mnemônicos, alertas cognitivos, flashcards, questões e casos TEMI",
+    "Sete ferramentas educacionais com finalidade, pré-requisitos e limitações",
+    "Integração com o laboratório Vasculites Decision já existente",
+    "Sprint de foco de 12 minutos e progresso exclusivamente local",
+    "Tema claro/escuro, impressão e navegação por teclado"
+  ],
+  "pluginContract": {
+    "global": "window.ANTIGRAVITY_RHEUMATOLOGY",
+    "genericGlobal": "window.ANTIGRAVITY_CRITICAL_MODULE",
+    "event": "antigravity:rheumatology-ready",
+    "collections": [
+      "emergencies",
+      "diagnosticTracks",
+      "comparisons",
+      "concepts",
+      "mnemonics",
+      "alerts",
+      "calculators",
+      "questions",
+      "flashcards",
+      "cases",
+      "references"
+    ],
+    "extensionRule": "Novos itens entram como objetos de dados; a interface compartilhada não precisa ser reescrita."
+  },
+  "privacy": {
+    "networkRuntime": false,
+    "cloud": false,
+    "telemetry": false,
+    "patientData": false,
+    "localStorage": [
+      "preferência de tema",
+      "progresso de flashcards, casos e questões",
+      "estado do sprint de foco"
+    ]
+  },
+  "safetyNotice": "Conteúdo educacional e apoio cognitivo. Critérios classificatórios não são diagnósticos. Não substitui avaliação clínica, protocolo institucional, especialistas, farmácia clínica nem dupla checagem de doses.",
+  "reviewGate": {
+    "owner": "Dr. Aldenir Rocha",
+    "requiredBeforePublish": [
+      "revisar cada card, comparador, flashcard, questão e caso",
+      "validar pré-requisitos, pesos e limiares de todos os scores",
+      "adaptar imunossupressão, profilaxias e cobertura infecciosa aos protocolos institucionais",
+      "confirmar disponibilidade local de biópsia, plasmaférese, imagem vascular e especialistas",
+      "validar referências e data de atualização",
+      "mudar status para ativo somente após homologação médica"
+    ]
+  }
+}

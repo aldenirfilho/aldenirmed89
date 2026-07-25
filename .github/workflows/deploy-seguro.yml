@@ -87,6 +87,7 @@ jobs:
         run: |
           set -e
           python3 -m unittest discover -s tests -p 'test_*.py' -v
+          node tests/validate_clinical_catalogs.js
           python3 scripts_admin/check_static_manifests.py
           python3 scripts_admin/update_library_publication_baseline.py --check
           python3 scripts_admin/build_library_previews.py --check
@@ -111,6 +112,17 @@ jobs:
           test "$(find site/02_Biblioteca_IA_Engine/previews -type f -name '*.html' | wc -l)" -gt 0
           test ! -e site/.cache
           test -s site/questoes/data/hub_qbanks.js
+          test -s site/manifest.webmanifest
+          test -s site/sw.js
+          test -s site/offline.html
+          test -s site/assets/icons/antigravity-consultas-192.png
+          test -s site/assets/icons/antigravity-consultas-512.png
+          test -s site/01_Modulos_Clinicos/Hematologia_Critica/index.html
+          test -s site/01_Modulos_Clinicos/Reumatologia_Critica/index.html
+          test -s site/docs_usuario/OPERACAO_CONTINUA.md
+          test -s site/docs_usuario/ACESSO_DOCK_MAC.md
+          test -s site/downloads/Antigravity-Consultas-macOS.zip
+          unzip -t site/downloads/Antigravity-Consultas-macOS.zip
 
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'

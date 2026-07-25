@@ -8,6 +8,7 @@
   <meta name="description" content="Feed visual de cards médicos gerados por IA para UTI, Clínica Médica, TEMI e revisão contínua." />
   <link rel="icon" href="../favicon.ico" sizes="64x64" />
   <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png" />
   <style>
     :root {
       --bg: #06101f;
@@ -875,7 +876,11 @@
     function publicAssetTheme(file) {
       const parts = String(file || "").split("/").filter(Boolean);
       const filename = parts[parts.length - 1] || "";
-      const directoryTheme = parts[0] === "recovered" && parts.length >= 3 ? parts[1] : "";
+      const directoryTheme = parts[0] === "recovered" && parts.length >= 3
+        ? parts[1]
+        : parts.length >= 2
+          ? parts[0]
+          : "";
       const knownTheme = themes.some(theme => theme.id === directoryTheme);
       return { filename, theme: knownTheme ? directoryTheme : inferTheme(filename) };
     }

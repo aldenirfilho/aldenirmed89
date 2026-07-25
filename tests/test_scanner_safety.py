@@ -159,5 +159,37 @@ class HistoricalRecoverySafetyTests(unittest.TestCase):
         self.assertNotIn(".rmdir(", source)
 
 
+class GenericContentScannerSafetyTests(unittest.TestCase):
+    def configured_scanner(self, temporary: str):
+        scanner = load_module(
+            "generic_content_scanner_safety",
+            ROOT / "scripts_admin/scan_content_module.py",
+        )
+        base = Path(temporary)
+        module = base / "Hub_Publico"
+        (module / "public").mkdir(parents=True)
+        (module / "links").mkdir()
+        (module / "public/resumo.md").write_text("conteúdo", encoding="utf-8")
+        (module / "module.json").write_text(
+            json.dumps({"title": "Hub Público"}), encoding="utf-8"
+        )
+        (module / "links/links.json").write_text("[]", encoding="utf-8")
+        scanner.ROOT = base
+        scanner.ALLOWED_HUBS = {"Hub_Publico"}
+        return scanner, module
+
+    def test_rejects_unknown_target_and_supports_check_without_writing(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            scanner, module = self.configured_scanner(temporary)
+            self.assertEqual(scanner.main(["../fora"]), 2)
+            self.assertFalse((Path(temporary).parent / "fora/data/catalogo.json").exists())
+
+            self.assertEqual(scanner.main(["Hub_Publico"]), 0)
+            catalog = module / "data/catalogo.json"
+            before = (catalog.read_bytes(), catalog.stat().st_mtime_ns)
+            self.assertEqual(scanner.main(["Hub_Publico", "--check"]), 0)
+            self.assertEqual((catalog.read_bytes(), catalog.stat().st_mtime_ns), before)
+
+
 if __name__ == "__main__":
     unittest.main()

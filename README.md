@@ -5,6 +5,18 @@
 🌐 **Site público:** https://aldenirfilho.github.io/antigravity-consultas/
 👤 **Autoria/curadoria médica:** Dr. Aldenir Rocha — CRM-CE 16587 · RQE Clínica Médica 11846 · Mestre em Ciências da Saúde (UFC)
 
+## ♿ Acesso rápido e manutenção
+
+- [⬇️ Baixar o app Antigravity Consultas para o Dock do macOS](downloads/Antigravity-Consultas-macOS.zip)
+- [📘 Instalar no MacBook Air, MacBook Pro ou Mac Pro](docs_usuario/ACESSO_DOCK_MAC.md)
+- [🔄 Alimentar Feed, Biblioteca, módulos e apps com segurança](docs_usuario/OPERACAO_CONTINUA.md)
+- [🩸 Abrir Hematologia Crítica](01_Modulos_Clinicos/Hematologia_Critica/index.html)
+- [🧬 Abrir Reumatologia Crítica](01_Modulos_Clinicos/Reumatologia_Critica/index.html)
+
+O botão flutuante **♿** da página inicial também ativa texto ampliado, alto
+contraste, redução de movimento e acesso direto ao pacote do Dock. As
+preferências ficam somente no navegador.
+
 ---
 
 ## 🎯 O que é este projeto
@@ -85,7 +97,7 @@ Material bruto (PDF/DOCX/aula/IA)
 | `07_Questoes_Comentadas/` | Questões comentadas, simulados, casos clínicos, OSCE, CSV e Anki | ✅ |
 | `08_Transcricoes/` | Transcrições de aulas, vídeos, podcasts, reuniões e discussões clínicas | ✅ |
 | `09_POCUS_Hub/` | POCUS/USG beira-leito: aulas, vídeos, artigos, imagens, modelos, dicas e links | ✅ |
-| `01_Modulos_Clinicos/` | Módulos clínicos em HTML (legados/originais) | ✅ |
+| `01_Modulos_Clinicos/` | Módulos clínicos em HTML, incluindo **Hematologia Crítica** e **Reumatologia Crítica** (emergências, diagnóstico difícil, scores e Turbo TEMI) | ✅ |
 | `questoes/` | Banco de questões TEMI/R3 — rota canônica | ✅ |
 | `02_Banco_Questoes_TEMI/` | Alias legado com redirect para `questoes/` | ✅ |
 | `les-autoanticorpos/` | Módulo LES — autoanticorpos | ✅ |

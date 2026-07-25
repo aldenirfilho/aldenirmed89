@@ -4,13 +4,20 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Enciclopédia Médica Intensiva & Medicina Interna</title>
-<meta name="description" content="Plataforma médica interativa para Medicina Intensiva, UTI, emergência, Clínica Médica avançada e preparação TEMI/R3. Conteúdo autoral, didático e continuamente atualizado."/>
+<meta name="description" content="Plataforma médica interativa para Medicina Intensiva, UTI, emergência, Hematologia Crítica, Reumatologia Crítica, Clínica Médica avançada e preparação TEMI/R3."/>
 <meta property="og:title" content="Enciclopédia Médica Intensiva & Medicina Interna"/>
-<meta property="og:description" content="Central de comando clínica: UpDowns, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo de conhecimento."/>
+<meta property="og:description" content="Central clínica: UpDowns, Hematologia e Reumatologia Críticas, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo."/>
 <meta property="og:url" content="https://aldenirfilho.github.io/antigravity-consultas/"/>
 <meta property="og:type" content="website"/>
+<meta property="og:image" content="https://aldenirfilho.github.io/antigravity-consultas/assets/icons/antigravity-consultas-1024.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="theme-color" content="#071422"/>
+<meta name="color-scheme" content="dark light"/>
 <link rel="icon" type="image/x-icon" href="./favicon.ico" sizes="64x64"/>
+<link rel="icon" type="image/png" href="./assets/icons/antigravity-consultas-32.png" sizes="32x32"/>
+<link rel="icon" type="image/png" href="./assets/icons/antigravity-consultas-64.png" sizes="64x64"/>
+<link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png"/>
+<link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -33,7 +40,7 @@
   --violet:#a98cff;--vio-d:rgba(169,140,255,.14);
   --green:#4ef0a1;--grn-d:rgba(78,240,161,.12);
   --yellow:#ffd166;--yel-d:rgba(255,209,102,.13);
-  --red:#ff6060;
+  --red:#ff6060;--red-d:rgba(255,96,96,.13);
   --font-head:'Syne',sans-serif;
   --font-mono:'IBM Plex Mono',monospace;
   --font-body:'Outfit',sans-serif;
@@ -51,6 +58,35 @@ body{
 }
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
+button,input,select,textarea{font:inherit}
+:focus-visible{
+  outline:3px solid var(--yellow);
+  outline-offset:4px;
+  border-radius:5px;
+}
+.skip-link{
+  position:fixed;top:12px;left:12px;z-index:1000;
+  padding:11px 16px;border-radius:10px;
+  background:#fff;color:#071422;font-weight:800;
+  transform:translateY(-180%);transition:transform .18s ease;
+}
+.skip-link:focus{transform:translateY(0)}
+[hidden]{display:none!important}
+html.a11y-large{font-size:112.5%}
+html.a11y-contrast{
+  --bg:#000;--bg2:#050505;--bg3:#090909;
+  --surf:rgba(255,255,255,.12);--surf-h:rgba(255,255,255,.2);
+  --brd:rgba(255,255,255,.45);--brd-h:rgba(255,255,255,.75);
+  --text:#fff;--muted:#c7d9eb;--soft:#e5eef8;
+  --cyan:#63efff;--violet:#c9b8ff;--green:#72ffb7;--yellow:#ffe28a;--red:#ff8a8a;
+}
+html.a11y-reduce-motion{scroll-behavior:auto}
+html.a11y-reduce-motion *,html.a11y-reduce-motion *::before,html.a11y-reduce-motion *::after{
+  animation-duration:.01ms!important;
+  animation-iteration-count:1!important;
+  transition-duration:.01ms!important;
+  scroll-behavior:auto!important;
+}
 
 /* ── BACKGROUND: dot grid + animated orbs ─────────── */
 body::before{
@@ -235,6 +271,7 @@ header{
 .topic-pill.violet{color:var(--violet);background:var(--vio-d);border-color:rgba(169,140,255,.2)}
 .topic-pill.green{color:var(--green);background:var(--grn-d);border-color:rgba(78,240,161,.2)}
 .topic-pill.yellow{color:var(--yellow);background:var(--yel-d);border-color:rgba(255,209,102,.22)}
+.topic-pill.red{color:var(--red);background:var(--red-d);border-color:rgba(255,96,96,.24)}
 .topic-pill:hover{transform:translateY(-1px);filter:brightness(1.15)}
 .panel-ecg{padding:10px 24px 20px;position:relative}
 .ecg-svg{width:100%;height:52px;display:block}
@@ -326,6 +363,98 @@ header{
 .mod-muted{--accent:var(--soft);--accent-d:rgba(147,176,204,.08)}
 .mod-muted .module-icon{background:rgba(147,176,204,.1);border-color:rgba(147,176,204,.2);color:var(--soft)}
 .mod-muted .module-link{color:var(--soft)}
+
+/* ── HEMATOLOGIA CRÍTICA ──────────────────────────── */
+.hema-section{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 82% 20%,rgba(255,96,96,.11),transparent 30%),
+    linear-gradient(135deg,#160a13 0%,var(--bg2) 58%,#071422 100%);
+  border-top:1px solid rgba(255,96,96,.16);
+  border-bottom:1px solid rgba(255,96,96,.16);
+}
+.hema-section::before{
+  content:'';position:absolute;width:520px;height:520px;border-radius:50%;
+  right:-240px;top:-250px;border:1px solid rgba(255,96,96,.13);
+  box-shadow:0 0 0 80px rgba(255,96,96,.025),0 0 0 160px rgba(255,96,96,.018);
+}
+.hema-grid{display:grid;grid-template-columns:1.18fr .82fr;gap:50px;align-items:center}
+.hema-kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;
+  color:#ff91a7;border:1px solid rgba(255,96,96,.22);background:rgba(255,96,96,.07);
+  padding:6px 11px;border-radius:999px;margin-bottom:18px;
+}
+.hema-title{
+  font-family:var(--font-head);font-size:clamp(2.3rem,5.8vw,4.7rem);
+  line-height:.95;letter-spacing:-.05em;margin-bottom:18px;
+}
+.hema-title span{color:var(--red)}
+.hema-lead{max-width:690px;color:var(--soft);font-size:1.04rem;line-height:1.7;margin-bottom:26px}
+.hema-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:28px}
+.hema-tags span{
+  font-family:var(--font-mono);font-size:.64rem;color:#f4b5c2;
+  border:1px solid rgba(255,96,96,.17);border-radius:999px;padding:5px 10px;
+  background:rgba(255,96,96,.055);
+}
+.btn-red{background:linear-gradient(135deg,#ff456c,#a60832);color:white;border-color:transparent}
+.btn-red:hover{transform:translateY(-1px);box-shadow:0 10px 34px rgba(255,69,108,.28)}
+.hema-cockpit{
+  position:relative;border:1px solid rgba(255,96,96,.2);border-radius:var(--r-xl);
+  padding:24px;background:rgba(4,13,26,.62);box-shadow:var(--shadow);
+}
+.hema-cockpit-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding-bottom:14px;border-bottom:1px solid var(--brd);
+  font-family:var(--font-mono);font-size:.66rem;color:var(--muted);letter-spacing:.1em;
+}
+.hema-cockpit-head b{color:#ff91a7}
+.hema-emergencies{display:grid;gap:9px;margin-top:16px}
+.hema-emergencies a{
+  display:grid;grid-template-columns:36px 1fr auto;gap:11px;align-items:center;
+  border:1px solid var(--brd);border-radius:12px;padding:10px 12px;background:var(--surf);
+  transition:.18s;
+}
+.hema-emergencies a:hover{border-color:rgba(255,96,96,.32);background:rgba(255,96,96,.07);transform:translateX(3px)}
+.hema-emergencies strong{font-size:.82rem}
+.hema-emergencies small{display:block;color:var(--muted);font-size:.68rem;margin-top:1px}
+.hema-emergencies em{font-family:var(--font-mono);font-size:.58rem;color:var(--red);font-style:normal}
+.hema-note{
+  margin-top:14px;border-left:3px solid var(--yellow);padding:9px 11px;
+  color:var(--soft);background:rgba(255,209,102,.05);font-size:.76rem;line-height:1.5;
+}
+.reuma-section{
+  background:
+    radial-gradient(circle at 18% 20%,rgba(42,211,138,.12),transparent 31%),
+    radial-gradient(circle at 86% 75%,rgba(185,149,255,.09),transparent 28%),
+    linear-gradient(135deg,#07160f 0%,var(--bg2) 58%,#0c1020 100%);
+  border-color:rgba(42,211,138,.18);
+}
+.reuma-section::before{
+  left:-240px;right:auto;border-color:rgba(42,211,138,.14);
+  box-shadow:0 0 0 80px rgba(42,211,138,.025),0 0 0 160px rgba(42,211,138,.018);
+}
+.reuma-section .hema-kicker{
+  color:#76efb7;border-color:rgba(42,211,138,.25);background:rgba(42,211,138,.07);
+}
+.reuma-section .hema-title span{color:#49dfa0}
+.reuma-section .hema-tags span{
+  color:#a5f3ce;border-color:rgba(42,211,138,.2);background:rgba(42,211,138,.055);
+}
+.reuma-section .hema-cockpit{border-color:rgba(42,211,138,.23)}
+.reuma-section .hema-cockpit-head b{color:#76efb7}
+.reuma-section .hema-emergencies a:hover{border-color:rgba(42,211,138,.34);background:rgba(42,211,138,.07)}
+.reuma-section .hema-emergencies em{color:#49dfa0}
+.btn-reuma{background:linear-gradient(135deg,#24cc7b,#08764b);color:#fff;border-color:transparent}
+.btn-reuma:hover{transform:translateY(-1px);box-shadow:0 10px 34px rgba(36,204,123,.25)}
+@media(max-width:960px){
+  .hema-grid{grid-template-columns:1fr;gap:34px}
+  .hema-cockpit{max-width:720px}
+}
+@media(max-width:560px){
+  .hema-emergencies a{grid-template-columns:32px 1fr}
+  .hema-emergencies em{grid-column:2}
+}
 
 /* ── PIPELINE ─────────────────────────────────────── */
 .pipeline-section{background:var(--bg2);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd)}
@@ -803,12 +932,39 @@ header{
 /* ── FLOATING BUTTONS ─────────────────────────────── */
 .floaters{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:90}
 .float-btn{
-  width:42px;height:42px;border-radius:10px;
+  width:46px;height:46px;border-radius:12px;
   background:var(--bg3);border:1px solid var(--brd);
   display:grid;place-items:center;cursor:pointer;font-size:1rem;
   transition:.18s;color:var(--soft);
 }
 .float-btn:hover{background:var(--surf-h);border-color:var(--cyan);color:var(--cyan)}
+.a11y-panel{
+  position:fixed;right:82px;bottom:24px;z-index:220;
+  width:min(360px,calc(100vw - 36px));padding:20px;
+  border:1px solid var(--brd-h);border-radius:18px;
+  background:var(--bg3);box-shadow:var(--shadow);
+}
+.a11y-panel h2{font-family:var(--font-head);font-size:1rem;margin-bottom:5px}
+.a11y-panel p{font-size:.78rem;line-height:1.5;color:var(--soft);margin-bottom:14px}
+.a11y-options{display:grid;gap:8px}
+.a11y-option,.a11y-link{
+  min-height:44px;width:100%;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:9px 12px;border:1px solid var(--brd);border-radius:10px;
+  background:var(--surf);color:var(--text);cursor:pointer;text-align:left;
+}
+.a11y-option[aria-pressed="true"]{border-color:var(--cyan);background:var(--cyan-d);color:var(--cyan)}
+.a11y-link{color:var(--cyan);margin-top:8px}
+.a11y-close{position:absolute;right:12px;top:10px;background:none;border:0;color:var(--soft);cursor:pointer;padding:8px}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
 
 /* ── RESPONSIVE ───────────────────────────────────── */
 @media(max-width:1024px){
@@ -842,10 +998,12 @@ header{
   .dsf-grid{grid-template-columns:1fr}
   .dsf-tabs{flex-wrap:wrap}
   input,select,textarea,.map-search,.mnem-search{font-size:16px}
+  .a11y-panel{right:18px;bottom:82px}
 }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#top">Pular para o conteúdo principal</a>
 
 <!-- Animated background orbs -->
 <div class="orbs" aria-hidden="true">
@@ -867,6 +1025,8 @@ header{
       <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras</a>
       <a href="05_Midia_E_Feed/index.html">🖼️ Card Feed</a>
       <a href="questoes/index.html">🏆 Simulador TEMI</a>
+      <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia</a>
+      <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Reumatologia</a>
       <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca</a>
       <a href="13_RenalDose_Antimicrobianos/index.html">💊 RenalDose ICU</a>
       <a href="14_SAPS3_Calculator/index.html">📊 SAPS 3</a>
@@ -878,7 +1038,7 @@ header{
   </nav>
 </header>
 
-<main id="top">
+<main id="top" tabindex="-1">
 
 <!-- ── HERO ───────────────────────────────────────── -->
 <div class="shell">
@@ -911,11 +1071,11 @@ header{
           <div class="lbl">UpDowns ativos</div>
         </div>
         <div class="metric-cell">
-          <div class="val" data-count="5">5</div>
+          <div class="val" data-count="6">6</div>
           <div class="lbl">Temas clínicos</div>
         </div>
         <div class="metric-cell">
-          <div class="val" data-count="10">10</div>
+          <div class="val" data-count="13">13</div>
           <div class="lbl">Módulos centrais</div>
         </div>
         <div class="metric-cell">
@@ -931,6 +1091,8 @@ header{
           <a class="topic-pill violet" href="01_UpDown_Hub/index.html">🔵 LES — Manifestações</a>
           <a class="topic-pill violet" href="01_UpDown_Hub/index.html">💊 LES — Manejo</a>
           <a class="topic-pill violet" href="les-autoanticorpos/index.html">🧬 LES — Autoanticorpos</a>
+          <a class="topic-pill red" href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 PTT · HLH/MAS · LPA</a>
+          <a class="topic-pill green" href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Pulmão–rim · CAPS · MDA5</a>
           <span class="topic-pill green">🫁 VM + SDRA <sup style="font-size:.5rem;vertical-align:top;opacity:.6">em breve</sup></span>
           <span class="topic-pill yellow">🦠 Sepse <sup style="font-size:.5rem;vertical-align:top;opacity:.6">em breve</sup></span>
         </div>
@@ -1004,11 +1166,11 @@ header{
     <div class="reveal">
       <div class="section-label">// módulos do projeto</div>
       <h2 class="section-title" id="mod-heading">O ecossistema Antigravity 🧬</h2>
-      <p class="section-sub">Dez módulos interconectados — do acervo bruto ao simulado de prova, ebooks, transcrições e POCUS.</p>
+      <p class="section-sub">Módulos interconectados — do acervo bruto às emergências hematológicas, simulado de prova, ebooks, transcrições e POCUS.</p>
     </div>
-    <div class="modules-grid" role="list">
+    <div class="modules-grid">
 
-      <a class="module-card mod-green reveal" href="01_UpDown_Hub/index.html" role="listitem" aria-label="Abrir UpDown Hub">
+      <a class="module-card mod-green reveal" href="01_UpDown_Hub/index.html" aria-label="Abrir UpDown Hub">
         <div class="module-icon">↕️</div>
         <h3>UpDown Hub</h3>
         <p>O coração do sistema. Artigos e diretrizes transformados em hipertexto médico com flashcards, mnemônicos e questões TEMI.</p>
@@ -1020,7 +1182,7 @@ header{
         <span class="module-link" style="color:var(--green)">Abrir hub</span>
       </a>
 
-      <a class="module-card mod-violet reveal" href="02_Biblioteca_IA_Engine/index.html" role="listitem" aria-label="Abrir Biblioteca IA">
+      <a class="module-card mod-violet reveal" href="02_Biblioteca_IA_Engine/index.html" aria-label="Abrir Biblioteca IA">
         <div class="module-icon">📚</div>
         <h3>Biblioteca IA</h3>
         <p>Acervo de referências (PDF, DOCX) com busca por especialidade — o insumo bruto para produção de conteúdo.</p>
@@ -1032,7 +1194,7 @@ header{
         <span class="module-link" style="color:var(--violet)">Explorar acervo</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="03_Calculadoras_E_Apps/index.html" role="listitem" aria-label="Abrir Calculadoras UTI">
+      <a class="module-card mod-cyan reveal" href="03_Calculadoras_E_Apps/index.html" aria-label="Abrir Calculadoras UTI">
         <div class="module-icon">🧮</div>
         <h3>Calculadoras UTI</h3>
         <p>Ferramentas de decisão rápida para plantão: SOFA, Glasgow, Ânion Gap, Osmolaridade, Drogas vasoativas e mais.</p>
@@ -1044,7 +1206,7 @@ header{
         <span class="module-link" style="color:var(--cyan)">Usar calculadoras</span>
       </a>
 
-      <a class="module-card mod-green reveal" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html" role="listitem" aria-label="Abrir RespiraSense ICU">
+      <a class="module-card mod-green reveal" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html" aria-label="Abrir RespiraSense ICU">
         <div class="module-icon">🫁</div>
         <h3>RespiraSense ICU</h3>
         <p>Dashboard PWA para oxigenoterapia, CBAF/HFNC, VNI, VM protetora, SARA/ARDS, gasometria e assincronias.</p>
@@ -1056,7 +1218,7 @@ header{
         <span class="module-link" style="color:var(--green)">Abrir RespiraSense</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html" role="listitem" aria-label="Abrir RespiraCrit">
+      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html" aria-label="Abrir RespiraCrit">
         <div class="module-icon">📟</div>
         <h3>RespiraCrit</h3>
         <p>Calculadora avançada para ventilação protetora, mecânica respiratória, gasometria e estratificação de SARA/ARDS.</p>
@@ -1068,7 +1230,7 @@ header{
         <span class="module-link" style="color:var(--cyan)">Abrir RespiraCrit</span>
       </a>
 
-      <a class="module-card mod-yellow reveal" href="questoes/index.html" role="listitem" aria-label="Abrir Simulador TEMI">
+      <a class="module-card mod-yellow reveal" href="questoes/index.html" aria-label="Abrir Simulador TEMI">
         <div class="module-icon">🏆</div>
         <h3>Simulador TEMI</h3>
         <p>Banco de questões comentadas estilo TEMI/R3. Pegadinhas, diferenciais, condutas de prova e correlação com a prática.</p>
@@ -1080,7 +1242,7 @@ header{
         <span class="module-link" style="color:var(--yellow)">Iniciar simulado</span>
       </a>
 
-      <a class="module-card mod-blue reveal" href="05_Midia_E_Feed/index.html" role="listitem" aria-label="Abrir Card Feed">
+      <a class="module-card mod-blue reveal" href="05_Midia_E_Feed/index.html" aria-label="Abrir Card Feed">
         <div class="module-icon">🖼️</div>
         <h3>Card Feed Médico</h3>
         <p>Feed visual de cards 1080×1920, infográficos, algoritmos e resumos para celular. PWA — funciona offline.</p>
@@ -1092,7 +1254,7 @@ header{
         <span class="module-link" style="color:#6aa9ff">Ver cards</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="04_Ebooks_Intensiva_Clinica/index.html" role="listitem" aria-label="Abrir Ebooks Intensiva e Clínica Médica">
+      <a class="module-card mod-cyan reveal" href="04_Ebooks_Intensiva_Clinica/index.html" aria-label="Abrir Ebooks Intensiva e Clínica Médica">
         <div class="module-icon">📘</div>
         <h3>Ebooks Intensiva &amp; Clínica</h3>
         <p>Diretório para ebooks, manuais, guias longos e compêndios de Terapia Intensiva e Clínica Médica Interna.</p>
@@ -1104,7 +1266,7 @@ header{
         <span class="module-link">Abrir ebooks</span>
       </a>
 
-      <a class="module-card mod-yellow reveal" href="07_Questoes_Comentadas/index.html" role="listitem" aria-label="Abrir Questões Comentadas">
+      <a class="module-card mod-yellow reveal" href="07_Questoes_Comentadas/index.html" aria-label="Abrir Questões Comentadas">
         <div class="module-icon">🧠</div>
         <h3>Questões Comentadas</h3>
         <p>Espaço para simulados, casos clínicos, bancos de questões, respostas comentadas e treino direcionado TEMI/R3.</p>
@@ -1116,7 +1278,7 @@ header{
         <span class="module-link">Treinar questões</span>
       </a>
 
-      <a class="module-card mod-green reveal" href="08_Transcricoes/index.html" role="listitem" aria-label="Abrir Transcrições">
+      <a class="module-card mod-green reveal" href="08_Transcricoes/index.html" aria-label="Abrir Transcrições">
         <div class="module-icon">🎙️</div>
         <h3>Transcrições</h3>
         <p>Biblioteca para transcrições de aulas, vídeos, podcasts, reuniões, discussões clínicas e notas longas pesquisáveis.</p>
@@ -1128,7 +1290,7 @@ header{
         <span class="module-link">Ver transcrições</span>
       </a>
 
-      <a class="module-card mod-violet reveal" href="09_POCUS_Hub/index.html" role="listitem" aria-label="Abrir POCUS Hub">
+      <a class="module-card mod-violet reveal" href="09_POCUS_Hub/index.html" aria-label="Abrir POCUS Hub">
         <div class="module-icon">🔊</div>
         <h3>POCUS Hub</h3>
         <p>Central de POCUS com aulas, vídeos, artigos, imagens, modelos de USG, dicas práticas e links interativos de estudo.</p>
@@ -1140,7 +1302,7 @@ header{
         <span class="module-link">Abrir POCUS</span>
       </a>
 
-      <a class="module-card mod-red reveal" href="13_RenalDose_Antimicrobianos/index.html" role="listitem" aria-label="Abrir RenalDose ICU — Ajuste de Antimicrobianos para Função Renal">
+      <a class="module-card mod-red reveal" href="13_RenalDose_Antimicrobianos/index.html" aria-label="Abrir RenalDose ICU — Ajuste de Antimicrobianos para Função Renal">
         <div class="module-icon">💊</div>
         <h3>RenalDose ICU</h3>
         <p>Tutorial e calculadora para <strong>ajuste de antimicrobianos em função renal</strong> (UTI adulto). CKD-EPI 2021, Cockcroft-Gault, KDIGO CKD 2024. Sanford 55ª + UpToDate.</p>
@@ -1152,7 +1314,7 @@ header{
         <span class="module-link">Abrir RenalDose ICU</span>
       </a>
 
-      <a class="module-card mod-violet reveal" href="14_SAPS3_Calculator/index.html" role="listitem" aria-label="Abrir SAPS 3 — Calculadora de Mortalidade na Admissão UTI">
+      <a class="module-card mod-violet reveal" href="14_SAPS3_Calculator/index.html" aria-label="Abrir SAPS 3 — Calculadora de Mortalidade na Admissão UTI">
         <div class="module-icon">📊</div>
         <h3>SAPS 3 Calculator</h3>
         <p>Estimativa de <strong>mortalidade hospitalar na admissão UTI</strong> com 20 variáveis em 3 caixas. Equação <strong>global + customizada CSA</strong> (Brasil/Am. Sul). Base: Metnitz/Moreno 2005.</p>
@@ -1164,7 +1326,31 @@ header{
         <span class="module-link">Abrir SAPS 3</span>
       </a>
 
-      <div class="module-card mod-muted reveal" role="listitem" aria-label="Mapa Vivo de Conexões">
+      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/Hematologia_Critica/index.html" aria-label="Abrir Hematologia Crítica">
+        <div class="module-icon">🩸</div>
+        <h3>Hematologia Crítica</h3>
+        <p>PTT/MAT, HLH/MAS, LPA/CIVD e diagnósticos raros com trilha Plantão 60 s, casos e revisão Turbo TEMI.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">16 emergências</span>
+          <span class="module-tag">Diagnóstico difícil</span>
+          <span class="module-tag">TDAH-friendly</span>
+        </div>
+        <span class="module-link">Abrir plataforma</span>
+      </a>
+
+      <a class="module-card mod-green reveal" href="01_Modulos_Clinicos/Reumatologia_Critica/index.html" aria-label="Abrir Reumatologia Crítica">
+        <div class="module-icon">🧬</div>
+        <h3>Reumatologia Crítica</h3>
+        <p>Pulmão–rim, SAF catastrófica, crise renal esclerodérmica, MAS/HLH, LES grave, DPI-RP e via aérea.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">19 emergências</span>
+          <span class="module-tag">7 scores guiados</span>
+          <span class="module-tag">Turbo TEMI</span>
+        </div>
+        <span class="module-link">Abrir plataforma</span>
+      </a>
+
+      <div class="module-card mod-muted reveal" aria-label="Mapa Vivo de Conexões">
         <div class="module-icon">🕸️</div>
         <h3>Mapa Vivo</h3>
         <p>Grafo interativo (D3.js) conectando todos os temas por raciocínio clínico. Cada nó é uma página, cada aresta é uma decisão.</p>
@@ -1177,6 +1363,130 @@ header{
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ── HEMATOLOGIA CRÍTICA ────────────────────────── -->
+<section id="hematologia" class="hema-section" aria-labelledby="hema-heading">
+  <div class="shell hema-grid">
+    <div class="reveal-l">
+      <div class="hema-kicker">🩸 novo eixo clínico · UTI + emergência + TEMI</div>
+      <h2 class="hema-title" id="hema-heading">Hematologia <span>Crítica</span></h2>
+      <p class="hema-lead">
+        Uma plataforma independente para doenças graves, emergências
+        tempo-dependentes e diagnósticos que costumam se esconder no paciente
+        crítico. Simples por fora, profunda por dentro: reconheça a síndrome,
+        compare mecanismos e treine por recordação ativa.
+      </p>
+      <div class="hema-tags" aria-label="Conteúdos da plataforma">
+        <span>PTT / MAT / SHU</span>
+        <span>HLH / MAS</span>
+        <span>LPA / CIVD</span>
+        <span>Leucostase / lise tumoral</span>
+        <span>HIT / hemofilia adquirida</span>
+        <span>Hemólise / transfusão</span>
+      </div>
+      <div class="hero-btns">
+        <a class="btn btn-red" href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🚨 Abrir Plantão 60 s</a>
+        <a class="btn btn-ghost" href="01_Modulos_Clinicos/Hematologia_Critica/index.html#diferencial">🧩 Diagnóstico difícil</a>
+        <a class="btn btn-violet" href="01_Modulos_Clinicos/Hematologia_Critica/index.html#turbo">⚡ Turbo TEMI</a>
+      </div>
+    </div>
+
+    <aside class="hema-cockpit reveal" aria-label="Emergências hematológicas prioritárias">
+      <div class="hema-cockpit-head">
+        <span>// NÃO PODE ESPERAR</span>
+        <b>PRIMEIRA HORA</b>
+      </div>
+      <div class="hema-emergencies">
+        <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html#plasmic">
+          <span aria-hidden="true">⚡</span>
+          <div><strong>PTT provável</strong><small>MAT + plaquetopenia · ADAMTS13 sem atrasar TPE</small></div>
+          <em>AGORA</em>
+        </a>
+        <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html#emergencias">
+          <span aria-hidden="true">🔥</span>
+          <div><strong>HLH / MAS</strong><small>Febre + citopenias + ferritina em ascensão</small></div>
+          <em>AGORA</em>
+        </a>
+        <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html#emergencias">
+          <span aria-hidden="true">🧫</span>
+          <div><strong>LPA + coagulopatia</strong><small>ATRA no fluxo da suspeita · suporte hemostático</small></div>
+          <em>AGORA</em>
+        </a>
+        <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html#emergencias">
+          <span aria-hidden="true">🌪️</span>
+          <div><strong>Leucostase / lise</strong><small>Neuro ou pulmão · citorredução + prevenção de SLT</small></div>
+          <em>URGENTE</em>
+        </a>
+      </div>
+      <div class="hema-note">
+        🛡️ Conteúdo em pré-publicação: revisão médica obrigatória antes do
+        deploy. Apoio cognitivo — não substitui protocolo institucional.
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ── REUMATOLOGIA CRÍTICA ───────────────────────── -->
+<section id="reumatologia" class="hema-section reuma-section" aria-labelledby="reuma-heading">
+  <div class="shell hema-grid">
+    <div class="reveal-l">
+      <div class="hema-kicker">🧬 novo eixo clínico · órgão ameaçado + diagnóstico difícil</div>
+      <h2 class="hema-title" id="reuma-heading">Reumatologia <span>Crítica</span></h2>
+      <p class="hema-lead">
+        Uma plataforma independente para síndromes imunes graves que atravessam
+        UTI, emergência e clínica médica. Proteja o órgão, mantenha infecção e
+        outros mimetizadores no mapa, compare mecanismos e treine decisões
+        recuperáveis no formato Turbo TEMI.
+      </p>
+      <div class="hema-tags" aria-label="Conteúdos da plataforma">
+        <span>Pulmão–rim / AAV / anti-GBM</span>
+        <span>SAF catastrófica</span>
+        <span>Crise renal esclerodérmica</span>
+        <span>LES grave / neuro / nefrite</span>
+        <span>MAS / HLH / Still</span>
+        <span>Anti-MDA5 / miopatias / via aérea</span>
+      </div>
+      <div class="hero-btns">
+        <a class="btn btn-reuma" href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🚨 Abrir Plantão 60 s</a>
+        <a class="btn btn-ghost" href="01_Modulos_Clinicos/Reumatologia_Critica/index.html#diferencial">🧩 Comparar mecanismos</a>
+        <a class="btn btn-violet" href="01_Modulos_Clinicos/Reumatologia_Critica/index.html#produtos">🧠 Scores + mnemônicos</a>
+      </div>
+    </div>
+
+    <aside class="hema-cockpit reveal" aria-label="Emergências reumatológicas prioritárias">
+      <div class="hema-cockpit-head">
+        <span>// ÓRGÃO AMEAÇADO</span>
+        <b>PRIMEIRA HORA</b>
+      </div>
+      <div class="hema-emergencies">
+        <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html#plantao">
+          <span aria-hidden="true">🫁</span>
+          <div><strong>Síndrome pulmão–rim</strong><small>DAH + GN · AAV, anti-GBM, LES e infecção</small></div>
+          <em>AGORA</em>
+        </a>
+        <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html#emergencias">
+          <span aria-hidden="true">🧨</span>
+          <div><strong>SAF catastrófica</strong><small>Trombose multiorgânica · trate gatilho e imunotrombose</small></div>
+          <em>AGORA</em>
+        </a>
+        <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html#emergencias">
+          <span aria-hidden="true">🫘</span>
+          <div><strong>Crise renal esclerodérmica</strong><small>PA nova + IRA · IECA no fluxo apropriado</small></div>
+          <em>AGORA</em>
+        </a>
+        <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html#emergencias">
+          <span aria-hidden="true">🌫️</span>
+          <div><strong>DPI rapidamente progressiva</strong><small>Anti-MDA5/miopatia · CK pode ser normal</small></div>
+          <em>URGENTE</em>
+        </a>
+      </div>
+      <div class="hema-note">
+        🛡️ Conteúdo em pré-publicação: revisão médica obrigatória. Scores
+        classificatórios e prognósticos não substituem diagnóstico nem protocolo.
+      </div>
+    </aside>
   </div>
 </section>
 
@@ -1452,6 +1762,8 @@ header{
         <a href="07_Questoes_Comentadas/index.html">🧠 Questões Comentadas</a>
         <a href="08_Transcricoes/index.html">🎙️ Transcrições</a>
         <a href="09_POCUS_Hub/index.html">🔊 POCUS Hub</a>
+        <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia Crítica</a>
+        <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Reumatologia Crítica</a>
       </div>
       <div class="footer-col">
         <h4>Conteúdo</h4>
@@ -1460,6 +1772,8 @@ header{
         <a href="les-autoanticorpos/index.html">🔵 LES Autoanticorpos</a>
         <a href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html">📟 RespiraCrit</a>
         <a href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html">🫁 RespiraSense ICU</a>
+        <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 PTT · HLH/MAS · LPA</a>
+        <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Pulmão–rim · CAPS · MAS</a>
       </div>
       <div class="footer-col">
         <h4>Projeto</h4>
@@ -1478,7 +1792,7 @@ header{
 
 <!-- ── DRAWER ──────────────────────────────────────── -->
 <div id="overlay" class="overlay" aria-hidden="true"></div>
-<aside id="drawer" aria-label="Detalhes do tema" aria-hidden="true" tabindex="-1">
+<aside id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true" tabindex="-1">
   <button class="drawer-close" id="drawerClose" aria-label="Fechar painel">✕</button>
   <h3 id="drawerTitle">Tema</h3>
   <div id="drawerText"></div>
@@ -1486,7 +1800,30 @@ header{
 </aside>
 
 <!-- ── FLOATING BUTTONS ───────────────────────────── -->
+<section class="a11y-panel" id="a11yPanel" aria-labelledby="a11yTitle" hidden>
+  <button class="a11y-close" id="a11yClose" aria-label="Fechar opções de acessibilidade">✕</button>
+  <h2 id="a11yTitle">♿ Acesso rápido</h2>
+  <p>Preferências ficam somente neste dispositivo. Nenhum dado clínico é enviado.</p>
+  <div class="a11y-options">
+    <button class="a11y-option" type="button" data-a11y="large" aria-pressed="false">
+      <span>🔎 Texto ampliado</span><span aria-hidden="true">A+</span>
+    </button>
+    <button class="a11y-option" type="button" data-a11y="contrast" aria-pressed="false">
+      <span>◐ Alto contraste</span><span aria-hidden="true">ON</span>
+    </button>
+    <button class="a11y-option" type="button" data-a11y="motion" aria-pressed="false">
+      <span>🧘 Reduzir animações</span><span aria-hidden="true">ON</span>
+    </button>
+  </div>
+  <a class="a11y-link" href="downloads/Antigravity-Consultas-macOS.zip">
+    <span>⬇️ App para o Dock do Mac</span><span aria-hidden="true">ZIP</span>
+  </a>
+  <a class="a11y-link" href="docs_usuario/ACESSO_DOCK_MAC.md">
+    <span>📘 Passo a passo do Dock</span><span aria-hidden="true">→</span>
+  </a>
+</section>
 <div class="floaters" role="complementary" aria-label="Atalhos rápidos">
+  <button class="float-btn" id="a11yBtn" title="Acessibilidade e app para o Dock" aria-label="Abrir acessibilidade e app para o Dock" aria-controls="a11yPanel" aria-expanded="false">♿</button>
   <button class="float-btn" id="topBtn" title="Voltar ao topo" aria-label="Voltar ao topo">⬆</button>
 </div>
 
@@ -1511,9 +1848,11 @@ const TOPICS = {
 const drawer=document.getElementById('drawer');
 const overlay=document.getElementById('overlay');
 const drawerClose=document.getElementById('drawerClose');
+let drawerReturnFocus=null;
 
 function openDrawer(key, isMnem = false){
   const d=TOPICS[key];if(!d)return;
+  if(!drawer.classList.contains('open')) drawerReturnFocus=document.activeElement;
   document.getElementById('drawerTitle').textContent=d.title;
   
   const drawerText = document.getElementById('drawerText');
@@ -1532,20 +1871,36 @@ function openDrawer(key, isMnem = false){
   }
 
   const tags=document.getElementById('drawerTags');
-  tags.innerHTML=(d.tags||[]).map(t=>`<span class="dtag">${t}</span>`).join('');
+  tags.innerHTML=(d.tags||[]).map(t=>`<span class="dtag">${escHtml(t)}</span>`).join('');
   drawer.classList.add('open');
   drawer.setAttribute('aria-hidden','false');
   overlay.classList.add('show');
-  drawer.focus();
+  overlay.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  drawerClose.focus();
 }
 function closeDrawer(){
+  if(!drawer.classList.contains('open'))return;
   drawer.classList.remove('open');
   drawer.setAttribute('aria-hidden','true');
   overlay.classList.remove('show');
+  overlay.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+  if(drawerReturnFocus&&document.contains(drawerReturnFocus))drawerReturnFocus.focus();
+  drawerReturnFocus=null;
 }
 drawerClose.addEventListener('click',closeDrawer);
 overlay.addEventListener('click',closeDrawer);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&drawer.classList.contains('open')){e.preventDefault();closeDrawer();return}
+  if(e.key!=='Tab'||!drawer.classList.contains('open'))return;
+  const focusable=[...drawer.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')]
+    .filter(el=>!el.hasAttribute('hidden'));
+  if(!focusable.length){e.preventDefault();drawer.focus();return}
+  const first=focusable[0],last=focusable[focusable.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+});
 
 document.querySelectorAll('[data-node]').forEach(btn=>{
   btn.addEventListener('click',()=>openDrawer(btn.dataset.node));
@@ -1595,9 +1950,9 @@ document.querySelectorAll('[data-count]').forEach(el=>cntObserver.observe(el));
 /* ── MARKDOWN RENDERER (drawer de desafios) ──────── */
 function mdToHtml(md){
   if(!md) return '';
-  let h = md
+  let h = escHtml(md)
     // code blocks
-    .replace(/```[\w]*\n?([\s\S]*?)```/g,(_,c)=>`<pre><code>${escHtml(c.trim())}</code></pre>`)
+    .replace(/```[\w]*\n?([\s\S]*?)```/g,(_,c)=>`<pre><code>${c.trim()}</code></pre>`)
     // headings
     .replace(/^#{3}\s+(.+)$/gm,'<h3>$1</h3>')
     .replace(/^#{2}\s+(.+)$/gm,'<h2>$1</h2>')
@@ -1637,7 +1992,8 @@ function mdToHtml(md){
   return h;
 }
 function escHtml(s){
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
 /* ── DESAFIOS CLÍNICOS — loader ──────────────────── */
@@ -1696,8 +2052,8 @@ function escHtml(s){
     const diffLabel={basica:'Básica',media:'Média',alta:'Alta'};
 
     grid.innerHTML=sorted.map(d=>`
-      <div class="dsf-card reveal" role="listitem"
-        data-dsf-id="${escH(d.id)}" data-dsf-branch="${activeTab}"
+      <a class="dsf-card reveal"
+        href="desafios/?b=${encodeURIComponent(activeTab)}&id=${encodeURIComponent(String(d.id||''))}"
         style="--dsf-c:${color}"
         aria-label="${escH(d.title||'Desafio')}">
         <div class="dsf-card-meta">
@@ -1712,18 +2068,8 @@ function escHtml(s){
         <div class="dsf-tags">${
           (d.tags||[]).map(t=>`<span class="dsf-tag">${escH(t)}</span>`).join('')
         }</div>
-      </div>
+      </a>
     `).join('');
-
-    grid.querySelectorAll('.dsf-card').forEach(card=>{
-      // Abre a página full-page de leitura contínua do desafio
-      card.style.cursor='pointer';
-      card.addEventListener('click',()=>{
-        const id=card.dataset.dsfId;
-        const b=card.dataset.dsfBranch;
-        location.href='desafios/?b='+encodeURIComponent(b)+'&id='+encodeURIComponent(id);
-      });
-    });
 
     grid.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
   }
@@ -1812,8 +2158,9 @@ function escHtml(s){
     if(!m.letters) return '';
     return Object.entries(m.letters).map(([k,v]) => {
       if (k === 'letterSep') return '';
-      if (k === 'sepText')  return `<div class="mnem-sep">⮕ ${v}</div>`;
-      return `<div class="mnem-line"><span class="letter">${escH(k)}</span><span class="ltxt">${v}</span></div>`;
+      if (k === 'sepText')  return `<div class="mnem-sep">⮕ ${escH(stripTags(v))}</div>`;
+      const interactive=trainMode?' tabindex="0" role="button" aria-pressed="false"':'';
+      return `<div class="mnem-line"${interactive}><span class="letter">${escH(k)}</span><span class="ltxt">${escH(stripTags(v))}</span></div>`;
     }).join('');
   }
 
@@ -1864,11 +2211,22 @@ function escHtml(s){
     }
     if (trainMode) {
       const line = e.target.closest('.mnem-line');
-      if (line) { line.classList.toggle('revealed'); return; }
+      if (line) {
+        line.classList.toggle('revealed');
+        line.setAttribute('aria-pressed',String(line.classList.contains('revealed')));
+        return;
+      }
     }
     openDrawer(card.dataset.mnem, true);
   });
   grid.addEventListener('keydown', e => {
+    const line=e.target.closest('.mnem-line');
+    if(trainMode&&line&&(e.key==='Enter'||e.key===' ')){
+      e.preventDefault();
+      line.classList.toggle('revealed');
+      line.setAttribute('aria-pressed',String(line.classList.contains('revealed')));
+      return;
+    }
     if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('mnem-card')) {
       e.preventDefault();
       openDrawer(e.target.dataset.mnem, true);
@@ -2031,6 +2389,46 @@ function escHtml(s){
   render();
 })();
 
+/* ── ACESSIBILIDADE + INSTALAÇÃO LOCAL ───────────── */
+const a11yBtn=document.getElementById('a11yBtn');
+const a11yPanel=document.getElementById('a11yPanel');
+const a11yClose=document.getElementById('a11yClose');
+const a11yKey='antigravity:a11y:v1';
+let a11yPrefs={large:false,contrast:false,motion:false};
+try{
+  a11yPrefs={...a11yPrefs,...JSON.parse(localStorage.getItem(a11yKey)||'{}')};
+}catch(_){}
+
+function applyA11y(){
+  const root=document.documentElement;
+  root.classList.toggle('a11y-large',Boolean(a11yPrefs.large));
+  root.classList.toggle('a11y-contrast',Boolean(a11yPrefs.contrast));
+  root.classList.toggle('a11y-reduce-motion',Boolean(a11yPrefs.motion));
+  document.querySelectorAll('[data-a11y]').forEach(btn=>{
+    btn.setAttribute('aria-pressed',String(Boolean(a11yPrefs[btn.dataset.a11y])));
+  });
+  try{localStorage.setItem(a11yKey,JSON.stringify(a11yPrefs))}catch(_){}
+}
+function setA11yPanel(open){
+  a11yPanel.hidden=!open;
+  a11yBtn.setAttribute('aria-expanded',String(open));
+  if(open)a11yClose.focus();
+  else a11yBtn.focus();
+}
+a11yBtn.addEventListener('click',()=>setA11yPanel(a11yPanel.hidden));
+a11yClose.addEventListener('click',()=>setA11yPanel(false));
+document.querySelectorAll('[data-a11y]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const key=btn.dataset.a11y;
+    a11yPrefs[key]=!a11yPrefs[key];
+    applyA11y();
+  });
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!a11yPanel.hidden){e.preventDefault();setA11yPanel(false)}
+});
+applyA11y();
+
 /* ── TOP BUTTON ──────────────────────────────────── */
 const topBtn=document.getElementById('topBtn');
 window.addEventListener('scroll',()=>{
@@ -2038,11 +2436,16 @@ window.addEventListener('scroll',()=>{
   topBtn.style.pointerEvents=window.scrollY>400?'auto':'none';
 },{ passive:true });
 topBtn.style.opacity='0';topBtn.style.transition='opacity .3s';
-topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+topBtn.addEventListener('click',()=>window.scrollTo({
+  top:0,
+  behavior:document.documentElement.classList.contains('a11y-reduce-motion')?'auto':'smooth'
+}));
 
 /* ── ORBS PARALLAX (subtle) ──────────────────────── */
 let raf;
 window.addEventListener('scroll',()=>{
+  if(document.documentElement.classList.contains('a11y-reduce-motion')||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   if(raf)return;
   raf=requestAnimationFrame(()=>{
     const y=window.scrollY;
@@ -2052,6 +2455,15 @@ window.addEventListener('scroll',()=>{
     raf=null;
   });
 },{passive:true});
+
+/* ── PWA OFFLINE ─────────────────────────────────── */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js').catch(error=>{
+      console.warn('Service worker indisponível:',error);
+    });
+  });
+}
 
 })();
 </script>

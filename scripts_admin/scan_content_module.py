@@ -7,11 +7,22 @@ promovidos para ``public/`` entram no catálogo e no GitHub Pages.
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
 from datetime import datetime
 from pathlib import Path
+from typing import Sequence
+
+
+ROOT = Path(__file__).resolve().parents[1]
+ALLOWED_HUBS = {
+    "04_Ebooks_Intensiva_Clinica",
+    "07_Questoes_Comentadas",
+    "08_Transcricoes",
+    "09_POCUS_Hub",
+}
 
 
 SUPPORTED = {
@@ -175,6 +186,11 @@ def scan_files(module: Path) -> list[dict]:
 def scan_links(module: Path) -> list[dict]:
     links_file = module / "links" / "links.json"
     raw = read_json(links_file, [])
+    links_updated_at = (
+        datetime.fromtimestamp(links_file.stat().st_mtime).isoformat(timespec="seconds")
+        if links_file.is_file()
+        else ""
+    )
     items = []
     if isinstance(raw, dict):
         raw = raw.get("links", [])
@@ -197,16 +213,55 @@ def scan_links(module: Path) -> list[dict]:
                 "formatEmoji": link.get("formatEmoji") or meta["emoji"],
                 "tags": link.get("tags") or [fmt, "link"],
                 "description": link.get("description") or "Link externo ou HTML interativo anexado ao modulo.",
-                "updatedAt": datetime.now().isoformat(timespec="seconds"),
+                "updatedAt": link.get("updatedAt") or links_updated_at,
             }
         )
     return items
 
 
-def main() -> None:
-    module = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
-    data_dir = module / "data"
-    data_dir.mkdir(parents=True, exist_ok=True)
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Gera ou valida o catálogo de um hub público aprovado."
+    )
+    parser.add_argument(
+        "module",
+        help="Um dos quatro hubs públicos permitidos.",
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Compara o catálogo canônico sem gravar arquivos.",
+    )
+    return parser.parse_args(argv)
+
+
+def resolve_module(value: str) -> Path:
+    root = ROOT.resolve()
+    candidate = Path(value)
+    module = candidate.resolve() if candidate.is_absolute() else (root / candidate).resolve()
+    try:
+        relative = module.relative_to(root)
+    except ValueError as exc:
+        raise ValueError("O hub precisa estar dentro do repositório.") from exc
+    if len(relative.parts) != 1 or relative.as_posix() not in ALLOWED_HUBS:
+        allowed = ", ".join(sorted(ALLOWED_HUBS))
+        raise ValueError(f"Hub não permitido. Use um destes: {allowed}.")
+    if not module.is_dir() or not (module / "module.json").is_file():
+        raise ValueError(f"Hub inexistente ou sem module.json: {relative}")
+    return module
+
+
+def comparable(catalog: dict) -> dict:
+    return {key: value for key, value in catalog.items() if key != "updatedAt"}
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = parse_args(argv)
+    try:
+        module = resolve_module(args.module)
+    except ValueError as exc:
+        print(f"❌ {exc}", file=sys.stderr)
+        return 2
 
     config = read_json(module / "module.json", {})
     files = scan_files(module)
@@ -231,11 +286,30 @@ def main() -> None:
         "items": items,
     }
 
+    data_dir = module / "data"
     output = data_dir / "catalogo.json"
-    output.write_text(json.dumps(catalog, ensure_ascii=False, indent=2), encoding="utf-8")
+    if args.check:
+        try:
+            current = json.loads(output.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            print(f"❌ Catálogo ausente ou inválido: {output.relative_to(ROOT.resolve())}", file=sys.stderr)
+            return 1
+        if comparable(current) != comparable(catalog):
+            print(f"❌ Catálogo desatualizado: {output.relative_to(ROOT.resolve())}", file=sys.stderr)
+            return 1
+        print(f"✅ Catálogo válido sem escrita: {output.relative_to(ROOT.resolve())}")
+        return 0
+
+    data_dir.mkdir(parents=True, exist_ok=True)
+    output = data_dir / "catalogo.json"
+    output.write_text(
+        json.dumps(catalog, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     print(f"✅ {config.get('title', module.name)}: {len(files)} arquivo(s), {len(links)} link(s)")
     print(f"📄 Manifesto salvo em: {output}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

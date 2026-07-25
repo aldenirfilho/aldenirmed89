@@ -14,6 +14,7 @@ import json
 import re
 import shutil
 import sys
+import unicodedata
 from pathlib import Path, PurePosixPath
 
 try:
@@ -49,8 +50,11 @@ OPTIONAL = (
     "manifest.json",
     "manifest.webmanifest",
     "offline.html",
+    "sw.js",
     "robots.txt",
     "sitemap.xml",
+    "downloads",
+    "docs_usuario",
     "06_Infra_Site_E_Assets",
     "css",
     "js",
@@ -82,6 +86,12 @@ NON_PUBLIC_ADMIN_NAMES = {".gitkeep"}
 
 def is_within(child: Path, parent: Path) -> bool:
     return child == parent or parent in child.parents
+
+
+def canonical_relative(value: str) -> str:
+    """Compara paths em NFC sem depender da normalização do macOS/iCloud."""
+
+    return unicodedata.normalize("NFC", value)
 
 
 def should_skip(root: Path, candidate: Path) -> bool:
@@ -131,7 +141,7 @@ def load_library_acervo_allowlist(root: Path) -> set[str]:
     for item in manifest.get("files", []):
         if not isinstance(item, dict) or not isinstance(item.get("path"), str):
             raise ValueError("Manifesto da Biblioteca contém entrada inválida.")
-        relative = f"02_Biblioteca_IA_Engine/{item['path']}"
+        relative = canonical_relative(f"02_Biblioteca_IA_Engine/{item['path']}")
         if not relative.startswith(LIBRARY_ACERVO_PREFIX) or relative in allowlist:
             raise ValueError(f"Caminho inválido ou duplicado no manifesto: {relative}")
         allowlist.add(relative)
@@ -154,7 +164,7 @@ def validate_library_acervo(root: Path, allowlist: set[str]) -> None:
             raise ValueError(f"Link simbólico não permitido no acervo: {candidate}")
         if not candidate.is_file() or candidate.name.lower() in NON_PUBLIC_ADMIN_NAMES:
             continue
-        physical.add(candidate.relative_to(root).as_posix())
+        physical.add(canonical_relative(candidate.relative_to(root).as_posix()))
 
     unexpected = sorted(physical - allowlist)
     missing = sorted(allowlist - physical)
@@ -199,7 +209,7 @@ def load_card_public_allowlist(root: Path) -> set[str]:
             or relative_asset.suffix.casefold() not in CARD_ASSET_SUFFIXES
         ):
             raise ValueError(f"Asset público de card inseguro: {value!r}")
-        relative = CARD_PUBLIC_PREFIX + value
+        relative = canonical_relative(CARD_PUBLIC_PREFIX + value)
         if relative in allowlist:
             raise ValueError(f"Asset público de card duplicado: {value}")
         allowlist.add(relative)
@@ -214,7 +224,7 @@ def validate_card_public_assets(root: Path, allowlist: set[str]) -> list[str]:
         raise ValueError("Diretório público dos cards ausente.")
 
     physical = {
-        path.relative_to(root).as_posix()
+        canonical_relative(path.relative_to(root).as_posix())
         for path in public_root.rglob("*")
         if path.is_file() and path.suffix.casefold() in CARD_ASSET_SUFFIXES
     }
@@ -251,6 +261,48 @@ def validate_card_public_assets(root: Path, allowlist: set[str]) -> list[str]:
     return conflicts
 
 
+def validate_clinical_publication(root: Path) -> None:
+    """Exige autorização explícita para publicar módulos ainda em revisão."""
+
+    modules_root = root / "01_Modulos_Clinicos"
+    for manifest_path in sorted(modules_root.rglob("module.manifest.json")):
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise ValueError(f"Manifesto clínico inválido: {manifest_path}") from exc
+
+        status = str(manifest.get("status", "")).strip().casefold()
+        if status in {"privado", "private", "rascunho", "revisar"}:
+            raise ValueError(
+                f"Módulo clínico não publicável ({status}): "
+                f"{manifest_path.relative_to(root)}"
+            )
+        if status != "em-revisao-medica":
+            continue
+
+        publication = manifest.get("publication")
+        explicit_preview = (
+            isinstance(publication, dict)
+            and publication.get("mode") == "public-preview"
+            and publication.get("publicPreview") is True
+            and publication.get("clinicalReviewOngoing") is True
+        )
+        index_path = manifest_path.parent / str(manifest.get("entrypoint", "index.html"))
+        try:
+            index_html = index_path.read_text(encoding="utf-8").casefold()
+        except OSError as exc:
+            raise ValueError(f"Entrypoint clínico ausente: {index_path}") from exc
+        visible_review_notice = (
+            "review-strip" in index_html
+            and ("revisão médica" in index_html or "revisao medica" in index_html)
+        )
+        if not explicit_preview or not visible_review_notice:
+            raise ValueError(
+                "Módulo em revisão só pode sair como prévia pública explícita, "
+                f"com aviso visível: {manifest_path.relative_to(root)}"
+            )
+
+
 def copy_entry(
     root: Path,
     site: Path,
@@ -275,9 +327,10 @@ def copy_entry(
                     card_allowlist,
                 )
     elif source.is_file():
-        if relative.startswith(LIBRARY_ACERVO_PREFIX) and relative not in library_allowlist:
+        canonical = canonical_relative(relative)
+        if canonical.startswith(LIBRARY_ACERVO_PREFIX) and canonical not in library_allowlist:
             raise ValueError(f"Arquivo da Biblioteca fora da allowlist: {relative}")
-        if relative.startswith(CARD_PUBLIC_PREFIX) and relative not in card_allowlist:
+        if canonical.startswith(CARD_PUBLIC_PREFIX) and canonical not in card_allowlist:
             return
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
@@ -308,6 +361,7 @@ def build(root: Path, site: Path) -> int:
     validate_library_acervo(root, library_allowlist)
     card_allowlist = load_card_public_allowlist(root)
     card_conflicts = validate_card_public_assets(root, card_allowlist)
+    validate_clinical_publication(root)
 
     if site.exists():
         shutil.rmtree(site)

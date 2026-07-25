@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17070d">
+  <meta name="description" content="Plataforma TDAH-friendly de Hematologia Crítica: PTT, MAT, HLH/MAS, CIVD, LPA e outras emergências, com revisão Turbo TEMI.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Hematologia Crítica — Antigravity</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="../../index.html" aria-label="Voltar ao portal Antigravity">
+        <span class="brand-mark" aria-hidden="true">🩸</span>
+        <span>
+          <strong>Hemato Crítica</strong>
+          <small>Antigravity · Turbo TEMI</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Navegação do módulo">
+        <a href="#plantao">Plantão 60 s</a>
+        <a href="#emergencias">Emergências</a>
+        <a href="#diferencial">Diagnóstico difícil</a>
+        <a href="#produtos">Produtos didáticos</a>
+        <a href="#turbo">Turbo TEMI</a>
+        <button class="icon-button" id="focusToggle" type="button" aria-pressed="false" title="Alternar modo foco">🎯 <span>Foco</span></button>
+        <button class="icon-button" id="themeToggle" type="button" title="Alternar tema">◐ <span>Tema</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="review-strip" role="status">
+    <div class="wrap">
+      <strong>🛡️ Pré-publicação</strong>
+      <span>Conteúdo em revisão médica obrigatória · apoio cognitivo, não prescrição.</span>
+      <a href="#gate-revisao">Ver gate clínico</a>
+    </div>
+  </div>
+
+  <main id="conteudo">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">🩸 UTI · Emergência · Diagnóstico raro · TEMI</div>
+          <h1>Hematologia crítica sem ruído.</h1>
+          <p class="hero-lead">
+            Reconheça o padrão, proteja o paciente e acione o tratamento
+            tempo-dependente — antes que uma doença rara se esconda atrás de
+            “sepse”, “plaquetopenia da UTI” ou “coagulopatia”.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#plantao">🚨 Estou no plantão</a>
+            <a class="button secondary" href="#diferencial">🧩 Diagnóstico difícil</a>
+            <a class="button ghost" href="#turbo">⚡ Treinar TEMI</a>
+          </div>
+          <div class="hero-chips" aria-label="Temas prioritários">
+            <span>PTT / MAT</span>
+            <span>HLH / MAS</span>
+            <span>LPA / CIVD</span>
+            <span>Leucostase</span>
+            <span>HIT</span>
+            <span>Hemólise</span>
+          </div>
+        </div>
+
+        <aside class="hero-cockpit" aria-label="Cockpit hematológico">
+          <div class="cockpit-head">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span>REGRA DOS 3 MOVIMENTOS</span>
+          </div>
+          <ol class="rule-list">
+            <li>
+              <span>1</span>
+              <div><strong>Reconheça a síndrome</strong><small>Hemólise? Consumo? Hiperinflamação? Leucostase?</small></div>
+            </li>
+            <li>
+              <span>2</span>
+              <div><strong>Colete o que muda conduta</strong><small>Sem atrasar plasmaférese, ATRA, antibiótico ou suporte.</small></div>
+            </li>
+            <li>
+              <span>3</span>
+              <div><strong>Acione cedo</strong><small>Hematologia, hemoterapia, UTI e laboratório especializado.</small></div>
+            </li>
+          </ol>
+          <div class="cockpit-warning">
+            <b>⚠️ A pêntade clássica da PTT é tardia.</b>
+            <span>MAT + plaquetopenia já deve disparar o raciocínio.</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="mode-rail" aria-label="Modos de uso">
+      <div class="wrap mode-grid">
+        <a href="#plantao"><b>60 s</b><span>ver o que não pode esperar</span></a>
+        <a href="#emergencias"><b>16</b><span>emergências essenciais</span></a>
+        <a href="#produtos"><b>5×</b><span>conceitos, mnemônicos, alertas, scores e questões</span></a>
+        <a href="#turbo"><b>12 min</b><span>sprint TDAH-friendly</span></a>
+      </div>
+    </section>
+
+    <section class="section section-plantao" id="plantao" aria-labelledby="plantao-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="kicker">// plantão 60 segundos</span>
+            <h2 id="plantao-title">Qual é a síndrome que está na sua frente?</h2>
+            <p>Escolha o padrão dominante. O painel mostra prioridades, exames que mudam conduta e armadilhas.</p>
+          </div>
+          <span class="badge danger">🚨 tempo-dependente</span>
+        </div>
+        <div class="syndrome-layout">
+          <div class="syndrome-buttons" id="syndromeButtons" aria-label="Síndromes hematológicas"></div>
+          <article class="decision-panel" id="syndromePanel" aria-live="polite">
+            <div class="empty-state">
+              <span>🩸</span>
+              <h3>Comece pelo padrão, não pelo nome da doença.</h3>
+              <p>Selecione uma síndrome à esquerda para abrir o checklist de reconhecimento.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="emergencias" aria-labelledby="emergencias-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="kicker">// biblioteca operacional</span>
+            <h2 id="emergencias-title">Emergências hematológicas essenciais</h2>
+            <p>Cards curtos com gatilho clínico, primeira hora, exames decisivos e erro perigoso.</p>
+          </div>
+          <div class="result-count"><strong id="visibleCount">16</strong><span>itens visíveis</span></div>
+        </div>
+
+        <div class="search-panel" role="search">
+          <label class="search-box" for="emergencySearch">
+            <span aria-hidden="true">⌕</span>
+            <input id="emergencySearch" type="search" autocomplete="off" placeholder="Buscar: esquizócitos, ferritina, aPTT, leucostase…" aria-label="Buscar emergências">
+            <kbd>/</kbd>
+          </label>
+          <div class="filter-row" id="categoryFilters" role="group" aria-label="Filtrar emergências"></div>
+        </div>
+
+        <div class="emergency-grid" id="emergencyGrid" role="list"></div>
+        <div class="no-results" id="noResults" hidden>
+          <span>🔎</span>
+          <h3>Nenhum card encontrado</h3>
+          <p>Tente outro termo ou volte ao filtro “Todos”.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-diff" id="diferencial" aria-labelledby="diferencial-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="kicker">// diagnóstico difícil</span>
+            <h2 id="diferencial-title">Pare de decorar listas. Compare mecanismos.</h2>
+            <p>Use padrões discriminadores para reduzir ancoragem e fechar o próximo exame útil.</p>
+          </div>
+          <span class="badge violet">🧩 mecanismo primeiro</span>
+        </div>
+
+        <div class="comparison-tabs" id="comparisonTabs" role="tablist" aria-label="Comparadores diagnósticos"></div>
+        <div class="comparison-card" id="comparisonPanel" role="tabpanel" tabindex="0"></div>
+
+        <div class="plasmic-shell" id="plasmic">
+          <div class="plasmic-copy">
+            <span class="kicker">// ferramenta educacional</span>
+            <h3>PLASMIC em 7 cliques</h3>
+            <p>Estima a probabilidade de deficiência grave de ADAMTS13 em adulto com suspeita de MAT. Não substitui ADAMTS13 nem julgamento clínico.</p>
+            <div class="safety-note">
+              <b>🛡️ Segurança</b>
+              <span>Use somente depois de reconhecer MAT. Não espere o escore para acionar hematologia/plasmaférese quando a suspeita clínica for alta.</span>
+            </div>
+          </div>
+          <form class="plasmic-form" id="plasmicForm">
+            <fieldset>
+              <legend>Marque cada critério presente</legend>
+              <label><input type="checkbox" name="plasmic" value="platelets"> Plaquetas &lt; 30 × 10⁹/L</label>
+              <label><input type="checkbox" name="plasmic" value="hemolysis"> Hemólise: retic &gt;2,5%, haptoglobina indetectável ou BI &gt;2 mg/dL</label>
+              <label><input type="checkbox" name="plasmic" value="cancer"> Sem câncer ativo</label>
+              <label><input type="checkbox" name="plasmic" value="transplant"> Sem transplante prévio</label>
+              <label><input type="checkbox" name="plasmic" value="mcv"> VCM &lt; 90 fL</label>
+              <label><input type="checkbox" name="plasmic" value="inr"> INR &lt; 1,5</label>
+              <label><input type="checkbox" name="plasmic" value="creatinine"> Creatinina &lt; 2,0 mg/dL</label>
+            </fieldset>
+            <div class="score-box" id="plasmicResult" aria-live="polite">
+              <span>ESCORE</span>
+              <strong>0/7</strong>
+              <p>Marque os critérios para ver a faixa de probabilidade.</p>
+            </div>
+            <button class="text-button" type="reset">Limpar critérios</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-products" id="produtos" aria-labelledby="products-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="kicker">// laboratório didático turbo</span>
+            <h2 id="products-title">Transforme informação em decisão recuperável.</h2>
+            <p>Conceitos de alta densidade, mnemônicos com limite explícito, alertas contra vieses e ferramentas com finalidade declarada.</p>
+          </div>
+          <span class="badge green">🧠 TDAH-friendly</span>
+        </div>
+
+        <div class="product-block">
+          <div class="subsection-heading">
+            <div><span class="kicker">// conceitos essenciais</span><h3>Entenda o mecanismo antes de memorizar.</h3></div>
+          </div>
+          <div class="learning-grid" id="conceptGrid"></div>
+        </div>
+
+        <div class="product-block">
+          <div class="subsection-heading">
+            <div><span class="kicker">// mnemônicos clínicos</span><h3>Gatilhos curtos — nunca atalhos cegos.</h3></div>
+          </div>
+          <div class="learning-grid" id="mnemonicGrid"></div>
+        </div>
+
+        <div class="product-block">
+          <div class="subsection-heading">
+            <div><span class="kicker">// alertas cognitivos</span><h3>Erros que mudam desfecho.</h3></div>
+          </div>
+          <div class="alert-grid" id="alertGrid"></div>
+        </div>
+
+        <div class="product-block">
+          <div class="subsection-heading">
+            <div><span class="kicker">// score lab</span><h3>Calcule — e saiba o que o número não responde.</h3></div>
+          </div>
+          <div class="calculator-tabs" id="calculatorTabs" role="group" aria-label="Ferramentas hematológicas"></div>
+          <div class="calculator-panel" id="calculatorPanel"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-turbo" id="turbo" aria-labelledby="turbo-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="kicker">// turbo TEMI · TDAH-friendly</span>
+            <h2 id="turbo-title">Um sprint. Uma decisão. Uma memória forte.</h2>
+            <p>Faça 12 minutos de recordação ativa: flashcards, casos curtos e feedback imediato.</p>
+          </div>
+          <div class="study-progress" aria-label="Progresso do estudo">
+            <span id="progressLabel">0 revisões</span>
+            <progress id="progressBar" max="22" value="0">0%</progress>
+          </div>
+        </div>
+
+        <div class="turbo-layout">
+          <aside class="sprint-card">
+            <span class="kicker">// sprint de foco</span>
+            <div class="timer" id="timer" aria-label="Tempo restante: 12:00">12:00</div>
+            <p>Silencie notificações. Faça uma rodada sem trocar de aba.</p>
+            <p id="timerStatus" role="status" aria-live="polite" aria-atomic="true">Cronômetro pronto para iniciar.</p>
+            <div class="timer-actions">
+              <button class="button primary" id="timerStart" type="button">▶ Iniciar</button>
+              <button class="button secondary" id="timerReset" type="button">↺ Reiniciar</button>
+            </div>
+            <ol class="sprint-steps">
+              <li><b>4 min</b> flashcards</li>
+              <li><b>5 min</b> casos clínicos</li>
+              <li><b>3 min</b> reveja erros</li>
+            </ol>
+          </aside>
+
+          <div class="study-card">
+            <div class="study-tabs" role="tablist" aria-label="Atividades de estudo">
+              <button class="active" id="studyTabFlashcards" type="button" role="tab" aria-selected="true" aria-controls="flashcardsPane" data-study-tab="flashcards">⚡ Flashcards</button>
+              <button id="studyTabCases" type="button" role="tab" aria-selected="false" aria-controls="casesPane" data-study-tab="cases">🧠 Casos TEMI</button>
+              <button id="studyTabQuestions" type="button" role="tab" aria-selected="false" aria-controls="questionsPane" data-study-tab="questions">🎯 Questões</button>
+            </div>
+
+            <div class="study-pane active" id="flashcardsPane" role="tabpanel" aria-labelledby="studyTabFlashcards" data-study-pane="flashcards">
+              <article class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Flashcard. Pressione Enter para revelar.">
+                <span class="flashcard-label">PERGUNTA</span>
+                <h3 id="flashcardPrompt"></h3>
+                <div class="flashcard-answer" id="flashcardAnswer" hidden></div>
+                <span class="flashcard-hint" id="flashcardHint">Clique ou pressione Enter para revelar</span>
+              </article>
+              <div class="study-controls">
+                <button class="button secondary" id="flashPrev" type="button">← Anterior</button>
+                <span id="flashPosition">1/1</span>
+                <button class="button primary" id="flashNext" type="button">Próximo →</button>
+              </div>
+            </div>
+
+            <div class="study-pane" id="casesPane" role="tabpanel" aria-labelledby="studyTabCases" data-study-pane="cases" hidden>
+              <div class="case-stage" id="caseStage"></div>
+              <div class="study-controls">
+                <button class="button secondary" id="casePrev" type="button">← Caso anterior</button>
+                <span id="casePosition">1/1</span>
+                <button class="button primary" id="caseNext" type="button">Próximo caso →</button>
+              </div>
+            </div>
+
+            <div class="study-pane" id="questionsPane" role="tabpanel" aria-labelledby="studyTabQuestions" data-study-pane="questions" hidden>
+              <div class="case-stage" id="questionStage"></div>
+              <div class="study-controls">
+                <button class="button secondary" id="questionPrev" type="button">← Questão anterior</button>
+                <span id="questionPosition">1/1</span>
+                <button class="button primary" id="questionNext" type="button">Próxima questão →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fontes" aria-labelledby="fontes-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="kicker">// rastreabilidade</span>
+            <h2 id="fontes-title">Fontes para conferir, não para venerar</h2>
+            <p>Diretrizes e consensos sustentam o mapa; contexto local e revisão médica definem a conduta final.</p>
+          </div>
+          <span class="badge green">📚 links primários</span>
+        </div>
+        <div class="reference-grid" id="referenceGrid"></div>
+      </div>
+    </section>
+
+    <section class="section section-review" id="gate-revisao" aria-labelledby="review-title">
+      <div class="wrap review-card">
+        <div>
+          <span class="kicker">// gate antes de publicar</span>
+          <h2 id="review-title">Revisão médica obrigatória</h2>
+          <p>O módulo está funcional, mas permanece em pré-publicação até a homologação clínica do Dr. Aldenir.</p>
+        </div>
+        <ul>
+          <li>Validar PTT/MAT, PLASMIC e fluxo de ADAMTS13/plasmaférese.</li>
+          <li>Validar HLH/MAS, LPA/CIVD, leucostase e lise tumoral.</li>
+          <li>Adaptar hemoterapia, antídotos e terapias à disponibilidade institucional.</li>
+          <li>Revisar casos TEMI, contraindicações, linguagem e data das referências.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div>
+        <strong>🩸 Hematologia Crítica — Antigravity</strong>
+        <p>Versão 1.1.0-rc.1 · Atualizado em 25/07/2026.</p>
+      </div>
+      <div>
+        <b>Privacidade local</b>
+        <p>Sem rede, nuvem, cadastro, telemetria ou dados de pacientes.</p>
+      </div>
+      <div>
+        <b>Atalhos</b>
+        <p><kbd>/</kbd> buscar · <kbd>F</kbd> foco · <kbd>T</kbd> tema</p>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-top" id="backTop" type="button" aria-label="Voltar ao topo">↑</button>
+
+  <script src="data/catalog.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

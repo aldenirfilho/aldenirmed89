@@ -193,6 +193,20 @@ class CardFeedBehaviorTests(unittest.TestCase):
         self.assertIn('if (query && !requestedTheme) $("search").value = query', source)
         self.assertIn("applyInitialQuery();", source)
 
+    def test_new_public_assets_inherit_their_theme_directory(self) -> None:
+        source = (FEED / "index.html").read_text(encoding="utf-8")
+        themes = load_json("05_Midia_E_Feed/data/themes.json")["themes"]
+
+        self.assertIn('parts[0] === "recovered"', source)
+        self.assertIn("parts.length >= 2", source)
+        self.assertIn("? parts[1]", source)
+        self.assertIn(": parts.length >= 2", source)
+        for theme in themes:
+            self.assertEqual(
+                theme["folder"],
+                f"assets/cards/public/{theme['id']}/",
+            )
+
     def test_continuous_feed_is_default_and_renders_incremental_batches(self) -> None:
         source = (FEED / "index.html").read_text(encoding="utf-8")
         cards = load_json("05_Midia_E_Feed/data/cards.json")["cards"]

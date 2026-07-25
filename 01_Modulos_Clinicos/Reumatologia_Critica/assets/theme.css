@@ -1,0 +1,67 @@
+:root {
+  --blood: #22c97a;
+  --blood-2: #087f50;
+  --rose: #6ee7a8;
+  --cyan: #68d9ff;
+  --violet: #b995ff;
+  --amber: #ffc85c;
+  --green: #5ee39b;
+}
+
+[data-theme="light"] {
+  --blood: #087f50;
+  --blood-2: #055f3d;
+  --rose: #087f50;
+  --cyan: #087fa4;
+  --violet: #7043aa;
+  --green: #096c43;
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 12% 20%, color-mix(in srgb, var(--green) 16%, transparent), transparent 30%),
+    radial-gradient(circle at 86% 15%, color-mix(in srgb, var(--violet) 13%, transparent), transparent 32%),
+    linear-gradient(180deg, #07170f, var(--bg));
+}
+
+[data-theme="light"] .hero {
+  background:
+    radial-gradient(circle at 12% 20%, color-mix(in srgb, var(--green) 15%, transparent), transparent 30%),
+    radial-gradient(circle at 86% 15%, color-mix(in srgb, var(--violet) 10%, transparent), transparent 32%),
+    linear-gradient(180deg, #f0fff7, var(--bg));
+}
+
+.emergency-card[data-category="vasculite"] { --card-accent: var(--green); }
+.emergency-card[data-category="lupus"] { --card-accent: var(--violet); }
+.emergency-card[data-category="trombose"] { --card-accent: var(--rose); }
+.emergency-card[data-category="hiperinflamacao"] { --card-accent: #ff8a5c; }
+.emergency-card[data-category="intersticio"] { --card-accent: var(--cyan); }
+.emergency-card[data-category="via-aerea"] { --card-accent: var(--amber); }
+
+.cross-module {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 24px;
+  padding: 22px;
+  border: 1px solid color-mix(in srgb, var(--green) 45%, var(--line));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--green) 7%, var(--panel));
+}
+
+.cross-module h3 {
+  margin: 6px 0;
+}
+
+.cross-module p {
+  margin: 0;
+  color: var(--soft);
+}
+
+@media (max-width: 720px) {
+  .cross-module {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

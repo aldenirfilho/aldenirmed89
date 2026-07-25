@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "hematologia-critica-turbo",
+  "title": "Hematologia Crítica — Emergências & Diagnósticos Difíceis",
+  "shortTitle": "Hemato Crítica",
+  "emoji": "🩸",
+  "entrypoint": "index.html",
+  "href": "01_Modulos_Clinicos/Hematologia_Critica/index.html",
+  "version": "1.1.0-rc.1",
+  "status": "em-revisao-medica",
+  "clinicalReviewRequired": true,
+  "publication": {
+    "mode": "public-preview",
+    "publicPreview": true,
+    "clinicalReviewOngoing": true,
+    "purpose": "educacional-e-apoio-cognitivo",
+    "authorizedAt": "2026-07-25"
+  },
+  "updatedAt": "2026-07-25",
+  "category": [
+    "Hematologia",
+    "Medicina Intensiva",
+    "Emergência",
+    "Clínica Médica",
+    "TEMI"
+  ],
+  "keywords": [
+    "PTT",
+    "TTP",
+    "MAT",
+    "SHU",
+    "HLH",
+    "MAS",
+    "CIVD",
+    "LPA",
+    "leucostase",
+    "síndrome de lise tumoral",
+    "HIT",
+    "hemofilia adquirida",
+    "anemia hemolítica",
+    "falciforme",
+    "TEMI"
+  ],
+  "features": [
+    "HTML, CSS e JavaScript puros; sem backend, rede, telemetria ou dependências externas",
+    "Catálogo clínico plugável dirigido por dados em data/catalog.js",
+    "Trilhas Plantão 60 s, Diagnóstico Difícil e Turbo TEMI",
+    "Busca, filtros por síndrome, comparador de microangiopatias e checklists",
+    "Laboratório com PLASMIC, 4Ts e ISTH CIVD, cada um com finalidade e limites",
+    "Conceitos, mnemônicos, alertas cognitivos e banco de questões",
+    "12 casos comentados e 32 flashcards de recordação ativa",
+    "Sprint de foco de 12 minutos e progresso local no dispositivo",
+    "Tema claro/escuro, impressão e navegação por teclado"
+  ],
+  "pluginContract": {
+    "global": "window.ANTIGRAVITY_HEMATOLOGY",
+    "genericGlobal": "window.ANTIGRAVITY_CRITICAL_MODULE",
+    "event": "antigravity:hematology-ready",
+    "collections": [
+      "emergencies",
+      "diagnosticTracks",
+      "comparisons",
+      "concepts",
+      "mnemonics",
+      "alerts",
+      "calculators",
+      "questions",
+      "flashcards",
+      "cases",
+      "references"
+    ],
+    "extensionRule": "Novos itens entram como objetos de dados; a interface não precisa ser reescrita."
+  },
+  "privacy": {
+    "network": false,
+    "cloud": false,
+    "telemetry": false,
+    "patientData": false,
+    "localStorage": [
+      "preferência de tema",
+      "progresso de flashcards",
+      "estado do sprint de foco"
+    ]
+  },
+  "safetyNotice": "Conteúdo educacional e apoio cognitivo. Não substitui avaliação clínica, protocolo institucional, hematologista, hemoterapia, farmácia clínica nem dupla checagem de doses.",
+  "reviewGate": {
+    "owner": "Dr. Aldenir Rocha",
+    "requiredBeforePublish": [
+      "revisar cada card clínico e cada caso",
+      "confirmar disponibilidade local de plasmaférese, ADAMTS13, caplacizumabe, antídotos e hemoterapia",
+      "adaptar condutas aos protocolos institucionais",
+      "validar referências e data de atualização",
+      "mudar status para ativo somente após homologação médica"
+    ]
+  }
+}
