@@ -19,7 +19,18 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/Hematologia_Critica/data/catalog.js",
   "./01_Modulos_Clinicos/Reumatologia_Critica/index.html",
   "./01_Modulos_Clinicos/Reumatologia_Critica/assets/theme.css",
-  "./01_Modulos_Clinicos/Reumatologia_Critica/data/catalog.js"
+  "./01_Modulos_Clinicos/Reumatologia_Critica/data/catalog.js",
+  "./docs_usuario/index.html",
+  "./docs_usuario/guide-reader.css",
+  "./docs_usuario/guide-reader.js",
+  "./docs_usuario/OPERACAO_CONTINUA/index.html",
+  "./docs_usuario/OPERACAO_CONTINUA.md",
+  "./docs_usuario/ACESSO_DOCK_MAC/index.html",
+  "./docs_usuario/ACESSO_DOCK_MAC.md",
+  "./docs_usuario/ACESSO_WINDOWS/index.html",
+  "./docs_usuario/ACESSO_WINDOWS.md",
+  "./docs_usuario/ACESSO_IPHONE/index.html",
+  "./docs_usuario/ACESSO_IPHONE.md"
 ];
 
 self.addEventListener("install", (event) => {

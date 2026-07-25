@@ -7,13 +7,13 @@
 
 ## ♿ Acesso rápido e manutenção
 
-- [⬇️ Baixar o app Antigravity Consultas para o Dock do macOS](downloads/Antigravity-Consultas-macOS.zip)
-- [📘 Instalar no MacBook Air, MacBook Pro ou Mac Pro](docs_usuario/ACESSO_DOCK_MAC.md)
+- [🍎 Instalar no Mac pelo Safari, sem bloqueio do Gatekeeper](docs_usuario/ACESSO_DOCK_MAC/)
 - [🪟 Baixar o acesso rápido para Windows](downloads/Antigravity-Consultas-Windows.zip)
-- [📘 Instalar no Windows sem privilégios administrativos](docs_usuario/ACESSO_WINDOWS.md)
+- [📘 Instalar no Windows sem privilégios administrativos](docs_usuario/ACESSO_WINDOWS/)
 - [📱 Baixar os ícones para iPhone](downloads/Antigravity-Consultas-iPhone-Icones.zip)
-- [📘 Adicionar o Antigravity à Tela de Início do iPhone](docs_usuario/ACESSO_IPHONE.md)
-- [🔄 Alimentar Feed, Biblioteca, módulos e apps com segurança](docs_usuario/OPERACAO_CONTINUA.md)
+- [📘 Adicionar o Antigravity à Tela de Início do iPhone](docs_usuario/ACESSO_IPHONE/)
+- [🔄 Alimentar Feed, Biblioteca, módulos e apps com segurança](docs_usuario/OPERACAO_CONTINUA/)
+- [📚 Abrir a central HTML de guias](docs_usuario/)
 - [🩸 Abrir Hematologia Crítica](01_Modulos_Clinicos/Hematologia_Critica/index.html)
 - [🧬 Abrir Reumatologia Crítica](01_Modulos_Clinicos/Reumatologia_Critica/index.html)
 

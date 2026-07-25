@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import plistlib
 import struct
 import unicodedata
 import unittest
@@ -118,6 +119,10 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("beforeinstallprompt", home)
         self.assertIn("Antigravity-Consultas-Windows.zip", home)
         self.assertIn("Antigravity-Consultas-iPhone-Icones.zip", home)
+        self.assertIn('href="docs_usuario/ACESSO_DOCK_MAC/"', home)
+        self.assertIn('href="docs_usuario/OPERACAO_CONTINUA/"', home)
+        self.assertIn("Baixar atalho opcional", home)
+        self.assertIn("não contém .app, script ou instalador", home)
 
     def test_public_download_showcase_is_visible_and_complete(self) -> None:
         home = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -137,9 +142,9 @@ class AccessiblePwaTests(unittest.TestCase):
         ):
             self.assertIn(f'href="{archive}" download', home)
         for guide in (
-            "docs_usuario/ACESSO_DOCK_MAC.md",
-            "docs_usuario/ACESSO_WINDOWS.md",
-            "docs_usuario/ACESSO_IPHONE.md",
+            "docs_usuario/ACESSO_DOCK_MAC/",
+            "docs_usuario/ACESSO_WINDOWS/",
+            "docs_usuario/ACESSO_IPHONE/",
         ):
             self.assertIn(f'href="{guide}"', home)
         self.assertIn('class="nav-download" href="#downloads"', home)
@@ -300,10 +305,24 @@ class OperationalPackageTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(), expected)
 
         with zipfile.ZipFile(archive) as package:
-            names = package.namelist()
-        self.assertTrue(any(name.endswith("/Contents/Info.plist") for name in names))
-        self.assertTrue(any(name.endswith("/Contents/Resources/AntigravityConsultas.icns") for name in names))
-        self.assertTrue(any(name.endswith("/Contents/MacOS/AntigravityConsultas") for name in names))
+            names = {name for name in package.namelist() if not name.endswith("/")}
+            web_location = plistlib.loads(
+                package.read(
+                    "Antigravity-Consultas-macOS/Antigravity Consultas.webloc"
+                )
+            )
+        self.assertEqual(
+            names,
+            {
+                "Antigravity-Consultas-macOS/Antigravity Consultas.webloc",
+                "Antigravity-Consultas-macOS/LEIA-ME.md",
+            },
+        )
+        self.assertEqual(
+            web_location["URL"],
+            "https://aldenirfilho.github.io/antigravity-consultas/",
+        )
+        self.assertFalse(any(".app/" in name for name in names))
 
     def test_iphone_icon_package_is_complete_and_matches_checksum(self) -> None:
         archive = ROOT / "downloads/Antigravity-Consultas-iPhone-Icones.zip"
@@ -388,10 +407,40 @@ class OperationalPackageTests(unittest.TestCase):
         self.assertIn("Safari", dock)
         self.assertIn("Dock", dock)
         self.assertIn("Gatekeeper", dock)
+        self.assertIn("Safari", dock)
+        self.assertIn("Adicionar ao Dock", dock)
+        self.assertIn("Abrir Mesmo Assim", dock)
         self.assertIn("Adicionar à Tela de Início", iphone)
         self.assertIn("Abrir como App da Web", iphone)
         self.assertIn("permissão de administrador", windows)
         self.assertIn("não possui assinatura digital Authenticode", windows)
+
+    def test_html_guides_are_stable_safe_and_keep_markdown_fallbacks(self) -> None:
+        guide_root = ROOT / "docs_usuario"
+        hub = (guide_root / "index.html").read_text(encoding="utf-8")
+        reader = (guide_root / "guide-reader.js").read_text(encoding="utf-8")
+        worker = (ROOT / "sw.js").read_text(encoding="utf-8")
+
+        expected = {
+            "OPERACAO_CONTINUA": "OPERACAO_CONTINUA.md",
+            "ACESSO_DOCK_MAC": "ACESSO_DOCK_MAC.md",
+            "ACESSO_WINDOWS": "ACESSO_WINDOWS.md",
+            "ACESSO_IPHONE": "ACESSO_IPHONE.md",
+        }
+        for route, markdown in expected.items():
+            page = (guide_root / route / "index.html").read_text(encoding="utf-8")
+            self.assertIn("../guide-reader.css", page)
+            self.assertIn("../guide-reader.js", page)
+            self.assertIn(f'data-source="../{markdown}"', page)
+            self.assertIn(f'href="../{markdown}"', page)
+            self.assertIn(f"./{route}/", hub)
+            self.assertIn(f"./docs_usuario/{route}/index.html", worker)
+
+        self.assertIn("escapeHtml", reader)
+        self.assertIn("safeUrl", reader)
+        self.assertIn('article.setAttribute("aria-busy", "false")', reader)
+        self.assertNotIn("eval(", reader)
+        self.assertNotIn("cdn.", hub)
 
     def test_corrected_canonical_routes_exist(self) -> None:
         connections = load_json("data/connections.json")
