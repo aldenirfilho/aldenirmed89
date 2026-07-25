@@ -48,6 +48,27 @@ def load_download_checksums() -> dict[str, str]:
     return result
 
 
+def contrast_ratio(first: str, second: str) -> float:
+    def luminance(color: str) -> float:
+        channels = [
+            int(color[index : index + 2], 16) / 255
+            for index in (1, 3, 5)
+        ]
+        linear = [
+            channel / 12.92
+            if channel <= 0.04045
+            else ((channel + 0.055) / 1.055) ** 2.4
+            for channel in channels
+        ]
+        return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2]
+
+    first_luminance = luminance(first)
+    second_luminance = luminance(second)
+    lighter = max(first_luminance, second_luminance)
+    darker = min(first_luminance, second_luminance)
+    return (lighter + 0.05) / (darker + 0.05)
+
+
 def load_builder():
     path = ROOT / "scripts_admin/build_public_site.py"
     spec = importlib.util.spec_from_file_location("build_public_site_expansion", path)
@@ -89,7 +110,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="Antigravity"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v4`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v5`', worker)
         self.assertIn('new URL("./downloads/", self.registration.scope)', worker)
         self.assertIn('cache: "no-store"', worker)
         self.assertIn("networkOnlyDownload(request)", worker)
@@ -154,6 +175,97 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("${escH(stripTags(v))}</span>", home)
         self.assertIn('<a class="dsf-card reveal"', home)
         self.assertNotIn('<div class="dsf-card reveal"', home)
+
+    def test_home_expanded_layout_and_information_hierarchy_contracts(self) -> None:
+        home = (ROOT / "index.html").read_text(encoding="utf-8")
+
+        self.assertIn("--page-max:1720px;", home)
+        self.assertIn("max-width:var(--page-max)", home)
+        self.assertIn(
+            "html.layout-focus{--page-max:1260px;",
+            home,
+        )
+        self.assertIn(
+            "grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));",
+            home,
+        )
+        self.assertIn(
+            ".modules-grid{\n  display:grid;\n  grid-template-columns:repeat(4,minmax(0,1fr));",
+            home,
+        )
+        self.assertIn(
+            '<div class="critical-grid" role="group"',
+            home,
+        )
+        self.assertIn(
+            ".timeline{\n  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));",
+            home,
+        )
+        self.assertGreaterEqual(home.count('class="reveal section-intro"'), 7)
+        self.assertLess(home.index('id="modulos"'), home.index('id="pipeline"'))
+        self.assertLess(home.index('id="temi"'), home.index('id="pipeline"'))
+
+        self.assertIn(
+            "{id:'arquivos',  label:'📄 Arquivos',    types:['file']",
+            home,
+        )
+        self.assertIn("const active = new Set(['estrutura']);", home)
+        self.assertIn("let vis = query ? allNodes", home)
+        self.assertIn("typeToGroup[n.type] || 'outros'", home)
+
+    def test_light_and_flexible_view_controls_are_persistent(self) -> None:
+        home = (ROOT / "index.html").read_text(encoding="utf-8")
+
+        self.assertIn('id="themeModeSelect" data-theme-select', home)
+        self.assertIn(
+            '<option value="light">☀️ Visualização clara</option>',
+            home,
+        )
+        self.assertIn('<option value="system">💻 Sistema</option>', home)
+        self.assertIn('id="wideViewBtn"', home)
+        self.assertEqual(
+            home.count(' data-layout-wide aria-pressed="true"'),
+            2,
+        )
+        self.assertIn('html[data-theme="light"]{', home)
+        self.assertIn("document.documentElement.dataset.themeMode=mode;", home)
+        self.assertIn("saved.wide!==false", home)
+        self.assertIn("theme:'dark',wide:true", home)
+        self.assertIn(
+            "if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed))",
+            home,
+        )
+        self.assertIn("root.dataset.themeMode=a11yPrefs.theme;", home)
+        self.assertIn(
+            "root.dataset.theme=contrastActive?'dark':resolvedTheme;",
+            home,
+        )
+        self.assertIn("themeColorMeta?.setAttribute(", home)
+        self.assertIn(
+            "systemTheme.addEventListener('change',syncSystemTheme)",
+            home,
+        )
+        self.assertIn("systemTheme.addListener?.(syncSystemTheme)", home)
+        self.assertIn("localStorage.setItem(a11yKey,JSON.stringify(a11yPrefs))", home)
+
+        light_background = "#f4f8fc"
+        for foreground in (
+            "#10263b",
+            "#334f67",
+            "#536b7d",
+            "#006f7d",
+            "#6548b8",
+            "#087a4e",
+            "#865800",
+            "#b42335",
+            "#175cd3",
+        ):
+            self.assertIn(foreground, home)
+            self.assertGreaterEqual(
+                contrast_ratio(foreground, light_background),
+                4.5,
+                foreground,
+            )
 
     def test_public_builder_copies_installation_assets_and_checks_review_gate(self) -> None:
         builder = load_builder()

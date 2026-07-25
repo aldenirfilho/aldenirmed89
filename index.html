@@ -16,6 +16,27 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="Antigravity"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<script>
+/* Restaura tema e largura antes da primeira pintura para evitar saltos visuais. */
+(function(){
+  let mode='dark';
+  let wide=true;
+  let contrast=false;
+  try{
+    const saved=JSON.parse(localStorage.getItem('antigravity:a11y:v1')||'{}');
+    if(['dark','light','system'].includes(saved.theme)) mode=saved.theme;
+    else if(saved.clarity===true) mode='light';
+    wide=saved.wide!==false;
+    contrast=saved.contrast===true;
+  }catch(_){}
+  const systemLight=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;
+  const resolved=mode==='system'?(systemLight?'light':'dark'):mode;
+  document.documentElement.dataset.themeMode=mode;
+  document.documentElement.dataset.theme=contrast?'dark':resolved;
+  document.documentElement.classList.toggle('a11y-contrast',contrast);
+  document.documentElement.classList.toggle('layout-focus',!wide);
+})();
+</script>
 <link rel="icon" type="image/x-icon" href="./favicon.ico" sizes="64x64"/>
 <link rel="icon" type="image/png" href="./assets/icons/antigravity-consultas-32.png" sizes="32x32"/>
 <link rel="icon" type="image/png" href="./assets/icons/antigravity-consultas-64.png" sizes="64x64"/>
@@ -38,6 +59,7 @@
 <style>
 /* ── DESIGN SYSTEM ─────────────────────────────────── */
 :root{
+  color-scheme:dark;
   --bg:#040d1a;--bg2:#071422;--bg3:#0b1a2e;
   --surf:rgba(255,255,255,.055);--surf-h:rgba(255,255,255,.09);
   --brd:rgba(255,255,255,.09);--brd-h:rgba(255,255,255,.18);
@@ -52,6 +74,16 @@
   --font-body:'Outfit',sans-serif;
   --r:14px;--r-lg:22px;--r-xl:32px;
   --shadow:0 24px 80px rgba(0,0,0,.4);
+  --page-max:1720px;
+  --page-gutter:clamp(18px,3vw,52px);
+  --section-space:clamp(62px,6vw,90px);
+  --header-bg:rgba(4,13,26,.86);
+  --panel-head-bg:rgba(11,26,46,.97);
+  --download-card-bg:rgba(4,13,26,.78);
+  --download-card-hover:rgba(11,26,46,.92);
+  --cockpit-bg:rgba(4,13,26,.62);
+  --grid-dot:rgba(255,255,255,.055);
+  --on-accent:#030c18;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden}
@@ -79,12 +111,37 @@ button,input,select,textarea{font:inherit}
 .skip-link:focus{transform:translateY(0)}
 [hidden]{display:none!important}
 html.a11y-large{font-size:112.5%}
+html.layout-focus{--page-max:1260px;--page-gutter:clamp(18px,2vw,28px)}
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f4f8fc;--bg2:#eaf2f8;--bg3:#fff;
+  --surf:rgba(16,38,59,.045);--surf-h:rgba(16,38,59,.085);
+  --brd:#d3e0ea;--brd-h:#9eb4c5;
+  --text:#10263b;--muted:#536b7d;--soft:#334f67;
+  --cyan:#006f7d;--cyan-d:rgba(0,111,125,.1);
+  --violet:#6548b8;--vio-d:rgba(101,72,184,.1);
+  --green:#087a4e;--grn-d:rgba(8,122,78,.1);
+  --yellow:#865800;--yel-d:rgba(134,88,0,.1);
+  --red:#b42335;--red-d:rgba(180,35,53,.1);
+  --shadow:0 18px 52px rgba(16,38,59,.14);
+  --header-bg:rgba(244,248,252,.92);
+  --panel-head-bg:rgba(255,255,255,.96);
+  --download-card-bg:rgba(255,255,255,.86);
+  --download-card-hover:#fff;
+  --cockpit-bg:rgba(255,255,255,.82);
+  --grid-dot:rgba(16,38,59,.11);
+  --on-accent:#fff;
+}
 html.a11y-contrast{
+  color-scheme:dark;
   --bg:#000;--bg2:#050505;--bg3:#090909;
   --surf:rgba(255,255,255,.12);--surf-h:rgba(255,255,255,.2);
   --brd:rgba(255,255,255,.45);--brd-h:rgba(255,255,255,.75);
   --text:#fff;--muted:#c7d9eb;--soft:#e5eef8;
   --cyan:#63efff;--violet:#c9b8ff;--green:#72ffb7;--yellow:#ffe28a;--red:#ff8a8a;
+  --header-bg:rgba(0,0,0,.94);--panel-head-bg:rgba(9,9,9,.98);
+  --download-card-bg:#050505;--download-card-hover:#101010;
+  --cockpit-bg:#050505;--grid-dot:rgba(255,255,255,.18);--on-accent:#000;
 }
 html.a11y-reduce-motion{scroll-behavior:auto}
 html.a11y-reduce-motion *,html.a11y-reduce-motion *::before,html.a11y-reduce-motion *::after{
@@ -93,11 +150,80 @@ html.a11y-reduce-motion *,html.a11y-reduce-motion *::before,html.a11y-reduce-mot
   transition-duration:.01ms!important;
   scroll-behavior:auto!important;
 }
+html[data-theme="light"] .orb:nth-child(1){
+  background:radial-gradient(circle,rgba(0,111,125,.11) 0%,transparent 70%)
+}
+html[data-theme="light"] .orb:nth-child(2){
+  background:radial-gradient(circle,rgba(101,72,184,.1) 0%,transparent 70%)
+}
+html[data-theme="light"] .orb:nth-child(3){
+  background:radial-gradient(circle,rgba(8,122,78,.08) 0%,transparent 70%)
+}
+html[data-theme="light"] .brand-icon{
+  background:linear-gradient(135deg,var(--cyan-d),var(--vio-d));
+  border-color:var(--brd-h);
+}
+html[data-theme="light"] .mod-blue{
+  --accent:#175cd3;--accent-d:rgba(23,92,211,.1)
+}
+html[data-theme="light"] .mod-blue .module-icon{
+  background:var(--accent-d);border-color:var(--accent);color:var(--accent)
+}
+html[data-theme="light"] .mod-blue .module-link{color:var(--accent)}
+html[data-theme="light"] .download-showcase{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(0,111,125,.1),transparent 34%),
+    radial-gradient(circle at 95% 100%,rgba(101,72,184,.1),transparent 36%),
+    var(--bg3);
+}
+html[data-theme="light"] .hema-section{
+  background:
+    radial-gradient(circle at 82% 20%,rgba(180,35,53,.09),transparent 30%),
+    linear-gradient(135deg,#fff7f8 0%,var(--bg3) 58%,var(--bg2) 100%);
+  border-color:rgba(180,35,53,.22);
+}
+html[data-theme="light"] .reuma-section{
+  background:
+    radial-gradient(circle at 18% 20%,rgba(8,122,78,.1),transparent 31%),
+    radial-gradient(circle at 86% 75%,rgba(101,72,184,.07),transparent 28%),
+    linear-gradient(135deg,#f3fcf8 0%,var(--bg3) 58%,#f5f3ff 100%);
+  border-color:rgba(8,122,78,.22);
+}
+html[data-theme="light"] .hema-kicker,
+html[data-theme="light"] .hema-tags span,
+html[data-theme="light"] .hema-cockpit-head b{color:var(--red)}
+html[data-theme="light"] .reuma-section .hema-kicker,
+html[data-theme="light"] .reuma-section .hema-title span,
+html[data-theme="light"] .reuma-section .hema-tags span,
+html[data-theme="light"] .reuma-section .hema-cockpit-head b,
+html[data-theme="light"] .reuma-section .hema-emergencies em{color:var(--green)}
+html[data-theme="light"] .map-container{background:rgba(16,38,59,.025)}
+html[data-theme="light"] .map-line{stroke:rgba(51,79,103,.42)}
+html[data-theme="light"] .chip,
+html[data-theme="light"] .temi-topic-row,
+html[data-theme="light"] .status-next,
+html[data-theme="light"] #drawerText pre{background:var(--surf)}
+html[data-theme="light"] .nav-download:hover,
+html[data-theme="light"] .btn-primary:hover,
+html[data-theme="light"] .download-action.primary:hover{
+  background:#005966;color:#fff
+}
+html[data-theme="light"] .btn-red{
+  background:linear-gradient(135deg,#b42335,#7f1426)
+}
+html[data-theme="light"] .btn-reuma{
+  background:linear-gradient(135deg,#087a4e,#055638)
+}
+html[data-theme="light"] .temi-stat-big{
+  background:linear-gradient(135deg,#865800,#9b3b00);
+  -webkit-background-clip:text;background-clip:text;
+}
+html[data-theme="light"] .temi-section .btn-primary{color:#fff!important}
 
 /* ── BACKGROUND: dot grid + animated orbs ─────────── */
 body::before{
   content:'';position:fixed;inset:0;
-  background-image:radial-gradient(circle,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-image:radial-gradient(circle,var(--grid-dot) 1px,transparent 1px);
   background-size:32px 32px;
   pointer-events:none;z-index:0;
 }
@@ -119,8 +245,11 @@ body::before{
 }
 
 /* ── SHELL & LAYOUT ───────────────────────────────── */
-.shell{position:relative;z-index:1;max-width:1260px;margin:0 auto;padding:0 28px}
-section{padding:96px 0}
+.shell{
+  position:relative;z-index:1;width:100%;max-width:var(--page-max);
+  margin:0 auto;padding:0 var(--page-gutter)
+}
+section{padding:var(--section-space) 0;scroll-margin-top:88px}
 .section-label{
   font-family:var(--font-mono);font-size:.72rem;font-weight:500;
   letter-spacing:.18em;text-transform:uppercase;
@@ -131,7 +260,8 @@ section{padding:96px 0}
   font-weight:800;line-height:1.1;letter-spacing:-.02em;
   color:var(--text);margin-bottom:16px
 }
-.section-sub{font-size:1rem;color:var(--soft);max-width:560px;line-height:1.65}
+.section-sub{font-size:1rem;color:var(--soft);max-width:72ch;line-height:1.65}
+.section-intro{max-width:1180px}
 .g2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -139,11 +269,11 @@ section{padding:96px 0}
 /* ── NAVIGATION ───────────────────────────────────── */
 header{
   position:sticky;top:0;z-index:100;
-  background:rgba(4,13,26,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(255,255,255,.07);
+  background:var(--header-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--brd);
 }
 .nav{
-  max-width:1260px;margin:0 auto;padding:0 28px;
+  width:100%;max-width:var(--page-max);margin:0 auto;padding:0 var(--page-gutter);
   display:flex;align-items:center;justify-content:space-between;gap:16px;
   height:64px;
 }
@@ -177,7 +307,7 @@ header{
 .nav-download{
   min-height:40px;display:inline-flex;align-items:center;gap:7px;
   padding:8px 13px;border-radius:10px;white-space:nowrap;
-  background:var(--cyan);border:1px solid var(--cyan);color:#030c18;
+  background:var(--cyan);border:1px solid var(--cyan);color:var(--on-accent);
   font-size:.8rem;font-weight:800;box-shadow:0 8px 28px rgba(62,232,255,.18);
 }
 .nav-download:hover{background:#72f0ff;transform:translateY(-1px)}
@@ -205,9 +335,9 @@ header{
 
 /* ── HERO ─────────────────────────────────────────── */
 .hero{
-  padding:80px 0 72px;
-  display:grid;grid-template-columns:1fr 480px;
-  gap:40px;align-items:center;
+  padding:clamp(58px,6vw,88px) 0 clamp(54px,5vw,76px);
+  display:grid;grid-template-columns:minmax(0,1.28fr) minmax(420px,.72fr);
+  gap:clamp(40px,5vw,86px);align-items:center;
 }
 .hero>*{min-width:0}
 .hero-eyebrow{
@@ -217,7 +347,8 @@ header{
 }
 .hero-eyebrow::before{content:'//';opacity:.5}
 .hero h1{
-  font-family:var(--font-head);font-size:clamp(2.4rem,5vw,3.8rem);
+  max-width:960px;
+  font-family:var(--font-head);font-size:clamp(2.7rem,4.7vw,4.9rem);
   font-weight:800;line-height:1.0;letter-spacing:-.03em;
   margin-bottom:20px;
 }
@@ -228,9 +359,29 @@ header{
 }
 .hero-lead{
   font-size:1.05rem;color:var(--soft);line-height:1.7;
-  max-width:520px;margin-bottom:32px;
+  max-width:720px;margin-bottom:32px;
 }
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.view-controls{
+  width:max-content;max-width:100%;display:flex;align-items:center;flex-wrap:wrap;
+  gap:8px;margin-top:24px;padding:8px;border:1px solid var(--brd);
+  border-radius:14px;background:var(--surf);
+}
+.view-controls-label{
+  padding:0 8px;color:var(--muted);font-family:var(--font-mono);
+  font-size:.64rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+}
+.view-select,.view-toggle,.a11y-select{
+  min-height:44px;border:1px solid var(--brd-h);border-radius:9px;
+  background:var(--bg3);color:var(--text);cursor:pointer;
+}
+.view-select{padding:8px 34px 8px 12px;font-size:.78rem;font-weight:700}
+.view-toggle{
+  padding:8px 12px;font-size:.76rem;font-weight:700;white-space:nowrap;
+}
+.view-toggle[aria-pressed="true"]{
+  border-color:var(--cyan);background:var(--cyan-d);color:var(--cyan);
+}
 .btn{
   display:inline-flex;align-items:center;gap:8px;
   padding:12px 22px;border-radius:10px;
@@ -239,7 +390,7 @@ header{
   text-decoration:none;
 }
 .btn-primary{
-  background:var(--cyan);color:#030c18;border-color:var(--cyan);
+  background:var(--cyan);color:var(--on-accent);border-color:var(--cyan);
 }
 .btn-primary:hover{background:#72f0ff;transform:translateY(-1px);box-shadow:0 8px 30px rgba(62,232,255,.35)}
 .btn-ghost{
@@ -279,12 +430,16 @@ header{
   color:var(--green);background:var(--grn-d);font-family:var(--font-mono);
   font-size:.7rem;font-weight:600;white-space:nowrap;
 }
-.download-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.download-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));
+  gap:16px
+}
 .download-card{
   display:flex;flex-direction:column;min-width:0;padding:22px;
-  border:1px solid var(--brd);border-radius:18px;background:rgba(4,13,26,.78);
+  border:1px solid var(--brd);border-radius:18px;background:var(--download-card-bg);
 }
-.download-card:hover{border-color:var(--brd-h);background:rgba(11,26,46,.92)}
+.download-card:hover{border-color:var(--brd-h);background:var(--download-card-hover)}
 .download-platform{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .download-icon{
   width:46px;height:46px;display:grid;place-items:center;flex:0 0 46px;
@@ -307,7 +462,7 @@ header{
   padding:10px 13px;border-radius:10px;border:1px solid var(--brd-h);
   font-size:.82rem;font-weight:700;text-decoration:none;
 }
-.download-action.primary{background:var(--cyan);border-color:var(--cyan);color:#030c18}
+.download-action.primary{background:var(--cyan);border-color:var(--cyan);color:var(--on-accent)}
 .download-action.primary:hover{background:#72f0ff;transform:translateY(-1px)}
 .download-action.secondary{background:var(--surf);color:var(--text)}
 .download-action.secondary:hover{border-color:var(--cyan);color:var(--cyan)}
@@ -381,7 +536,7 @@ header{
 /* ── MODULES SECTION ──────────────────────────────── */
 .modules-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:18px;margin-top:40px;
 }
 .module-card{
@@ -394,7 +549,7 @@ header{
   position:relative;
   overflow:hidden;
   text-decoration:none;
-  display:block;
+  display:flex;flex-direction:column;min-width:0;min-height:100%;
 }
 .module-card::before{
   content:'';position:absolute;inset:0;
@@ -417,7 +572,11 @@ header{
   font-family:var(--font-head);font-size:1rem;font-weight:700;
   letter-spacing:-.01em;margin-bottom:8px;line-height:1.2;
 }
-.module-card p{font-size:.85rem;color:var(--soft);line-height:1.55;margin-bottom:16px}
+.module-card p{
+  font-size:.85rem;color:var(--soft);line-height:1.55;margin-bottom:16px;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;
+  line-clamp:3;overflow:hidden;
+}
 .module-tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
 .module-tag{
   font-family:var(--font-mono);font-size:.62rem;font-weight:500;
@@ -426,7 +585,7 @@ header{
 }
 .module-link{
   font-family:var(--font-mono);font-size:.72rem;font-weight:600;
-  display:inline-flex;align-items:center;gap:6px;
+  display:inline-flex;align-items:center;gap:6px;margin-top:auto;
   transition:.15s;
 }
 .module-link::after{content:'→';transition:.15s}
@@ -456,6 +615,10 @@ header{
 .mod-muted .module-link{color:var(--soft)}
 
 /* ── HEMATOLOGIA CRÍTICA ──────────────────────────── */
+.critical-grid{
+  width:100%;max-width:var(--page-max);margin:0 auto;
+  padding:0 var(--page-gutter);
+}
 .hema-section{
   position:relative;overflow:hidden;
   background:
@@ -492,7 +655,7 @@ header{
 .btn-red:hover{transform:translateY(-1px);box-shadow:0 10px 34px rgba(255,69,108,.28)}
 .hema-cockpit{
   position:relative;border:1px solid rgba(255,96,96,.2);border-radius:var(--r-xl);
-  padding:24px;background:rgba(4,13,26,.62);box-shadow:var(--shadow);
+  padding:24px;background:var(--cockpit-bg);box-shadow:var(--shadow);
 }
 .hema-cockpit-head{
   display:flex;align-items:center;justify-content:space-between;gap:12px;
@@ -538,6 +701,26 @@ header{
 .reuma-section .hema-emergencies em{color:#49dfa0}
 .btn-reuma{background:linear-gradient(135deg,#24cc7b,#08764b);color:#fff;border-color:transparent}
 .btn-reuma:hover{transform:translateY(-1px);box-shadow:0 10px 34px rgba(36,204,123,.25)}
+@media(min-width:1181px){
+  .critical-grid{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:24px;padding-top:18px;padding-bottom:18px;
+  }
+  .critical-grid .hema-section{
+    min-width:0;border:1px solid var(--brd);border-radius:var(--r-xl);
+    padding:clamp(44px,4vw,64px) 0;
+  }
+  .critical-grid .shell{max-width:none;padding:0 clamp(24px,2.5vw,40px)}
+  .critical-grid .hema-grid{grid-template-columns:1fr;gap:28px;align-items:start}
+  .critical-grid .hema-title{font-size:clamp(2.25rem,3.25vw,3.55rem)}
+  .critical-grid .hema-lead{font-size:.96rem}
+  .critical-grid .hema-cockpit{height:100%}
+  html.layout-focus .critical-grid{grid-template-columns:1fr}
+  html.layout-focus .critical-grid .hema-grid{
+    grid-template-columns:minmax(0,1.18fr) minmax(360px,.82fr);
+    align-items:center;
+  }
+}
 @media(max-width:960px){
   .hema-grid{grid-template-columns:1fr;gap:34px}
   .hema-cockpit{max-width:720px}
@@ -682,7 +865,7 @@ header{
 
 /* ── MNEMÔNICOS UTI ───────────────────────────────── */
 .mnem-section{background:var(--bg2)}
-.mnem-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:40px}
+.mnem-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:40px}
 .mnem-card{
   background:var(--surf);border:1px solid var(--brd);
   border-radius:var(--r-xl);padding:28px 26px;
@@ -787,7 +970,7 @@ header{
   border-color:var(--dsf-c,var(--cyan));color:var(--dsf-c,var(--cyan));
   background:rgba(62,232,255,.07);
 }
-.dsf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+.dsf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:8px}
 .dsf-card{
   background:var(--surf);border:1px solid var(--brd);
   border-left:3px solid var(--dsf-c, var(--cyan));
@@ -907,24 +1090,28 @@ header{
 .temi-topic-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--yellow),#ff9a3c)}
 
 /* ── ROADMAP ──────────────────────────────────────── */
-.timeline{display:flex;flex-direction:column;gap:0;margin-top:40px;position:relative}
+.timeline{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;margin-top:40px;position:relative
+}
 .timeline::before{
-  content:'';position:absolute;left:28px;top:0;bottom:0;
-  width:2px;background:linear-gradient(180deg,var(--cyan),var(--violet),var(--green),rgba(255,255,255,.08));
+  content:'';position:absolute;left:28px;right:28px;top:29px;height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--violet),var(--green),var(--brd-h));
 }
 .phase{
-  display:flex;gap:24px;padding:0 0 32px 68px;
-  position:relative;
-  opacity:0;transform:translateX(-16px);
+  display:block;min-width:0;padding:58px 20px 22px;
+  position:relative;border:1px solid var(--brd);border-radius:var(--r-lg);
+  background:var(--surf);
+  opacity:0;transform:translateY(16px);
   transition:opacity .5s ease,transform .5s ease;
 }
 .phase.visible{opacity:1;transform:none}
 .phase-dot{
-  position:absolute;left:18px;top:4px;
+  position:absolute;left:18px;top:18px;
   width:22px;height:22px;border-radius:50%;
   border:2px solid;display:grid;place-items:center;
   font-family:var(--font-mono);font-size:.62rem;font-weight:600;
-  background:var(--bg);
+  background:var(--bg3);
 }
 .phase-body h3{font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:5px}
 .phase-body p{font-size:.85rem;color:var(--soft);line-height:1.55}
@@ -987,7 +1174,7 @@ header{
 .drawer-head{
   position:sticky;top:0;z-index:2;display:flex;align-items:flex-start;gap:12px;
   margin:0 -1px 12px;padding:20px 0 14px;
-  background:rgba(11,26,46,.97);border-bottom:1px solid var(--brd);
+  background:var(--panel-head-bg);border-bottom:1px solid var(--brd);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
 }
 .drawer-close{
@@ -1050,7 +1237,7 @@ header{
 .a11y-panel-head{
   position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;
   padding:15px 18px;border-bottom:1px solid var(--brd);
-  background:rgba(11,26,46,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  background:var(--panel-head-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
 }
 .a11y-panel-body{padding:15px 18px 20px}
 .a11y-panel h2{font-family:var(--font-head);font-size:1rem;margin:0}
@@ -1065,6 +1252,10 @@ header{
   gap:12px;padding:9px 12px;border:1px solid var(--brd);border-radius:10px;
   background:var(--surf);color:var(--text);cursor:pointer;text-align:left;
 }
+.a11y-select{
+  width:100%;padding:9px 12px;margin-top:8px;font-size:.82rem;font-weight:700;
+}
+.a11y-select + .a11y-option{margin-top:8px}
 .a11y-option[aria-pressed="true"]{border-color:var(--cyan);background:var(--cyan-d);color:var(--cyan)}
 .a11y-link{color:var(--cyan);margin-top:8px}
 .a11y-install{color:var(--green);border-color:rgba(78,240,161,.35);margin-top:8px}
@@ -1092,17 +1283,42 @@ header{
 }
 
 /* ── RESPONSIVE ───────────────────────────────────── */
+@media(min-width:1100px){
+  .section-intro{
+    display:grid;grid-template-columns:minmax(300px,.8fr) minmax(420px,1.2fr);
+    column-gap:clamp(36px,5vw,84px);align-items:end;
+  }
+  .section-intro .section-label{grid-column:1;grid-row:1}
+  .section-intro .section-title{grid-column:1;grid-row:2;margin-bottom:0}
+  .section-intro .section-sub{
+    grid-column:2;grid-row:1 / span 2;align-self:end;margin-bottom:2px
+  }
+  html.layout-focus .timeline{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:1281px){
+  html.layout-focus .modules-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  html.layout-focus .mnem-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html.layout-focus .dsf-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:1280px){
+  .modules-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .mnem-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dsf-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .timeline{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media(max-width:1024px){
-  .hero{grid-template-columns:1fr;gap:40px}
-  .hero-panel{max-width:520px}
-  .download-grid{grid-template-columns:1fr}
   .download-head{align-items:start}
   .metrics-grid{grid-template-columns:repeat(4,1fr)}
-  .modules-grid{grid-template-columns:repeat(2,1fr)}
   .pipeline-flow{grid-template-columns:repeat(3,1fr);gap:20px}
   .pipeline-connector{display:none}
   .temi-inner{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:40px}
+  .hero-panel{max-width:620px}
+  .modules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dsf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:768px){
   .nav{height:auto;min-height:64px;padding:8px 18px;flex-wrap:wrap;gap:8px}
@@ -1122,7 +1338,7 @@ header{
   .download-ready{margin-top:16px}
   .download-card{padding:19px}
   .metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .modules-grid,.vias-grid,.g2,.g3,.g4{grid-template-columns:1fr}
+  .vias-grid,.g2,.g3,.g4{grid-template-columns:1fr}
   .pipeline-flow{grid-template-columns:1fr;max-width:300px;margin-left:auto;margin-right:auto}
   .pipeline-step:not(:last-child){padding-bottom:24px}
   section{padding:64px 0}
@@ -1135,6 +1351,10 @@ header{
   .node-btn small{font-size:.55rem}
   .mnem-grid{grid-template-columns:1fr}
   .dsf-grid{grid-template-columns:1fr}
+  .timeline{grid-template-columns:1fr}
+  .timeline::before{left:29px;right:auto;top:18px;bottom:18px;width:2px;height:auto}
+  .phase{padding:22px 18px 22px 62px}
+  .phase-dot{left:18px;top:22px}
   .dsf-tabs{flex-wrap:wrap}
   input,select,textarea,.map-search,.mnem-search{font-size:16px}
   .a11y-panel{
@@ -1148,6 +1368,13 @@ header{
     right:calc(12px + env(safe-area-inset-right));
     bottom:calc(14px + env(safe-area-inset-bottom));
   }
+}
+@media(max-width:620px){
+  .modules-grid{grid-template-columns:1fr}
+  .view-controls{width:100%;align-items:stretch}
+  .view-controls-label{width:100%;padding:2px 4px}
+  .view-select{flex:1;min-width:0}
+  .view-toggle{flex:1}
 }
 </style>
 </head>
@@ -1213,6 +1440,17 @@ header{
         <a class="btn btn-ghost" href="#downloads">⬇️ Baixar apps</a>
         <a class="btn btn-ghost" href="#modulos">⬛ Ver todos os módulos</a>
         <a class="btn btn-violet" href="#mapa">🕸️ Mapa de conexões</a>
+      </div>
+      <div class="view-controls" role="group" aria-label="Controles de visualização da página">
+        <span class="view-controls-label" aria-hidden="true">👁️ Visualização</span>
+        <select class="view-select" id="themeModeSelect" data-theme-select aria-label="Escolher tema visual">
+          <option value="dark">🌌 Aeroespacial</option>
+          <option value="light">☀️ Visualização clara</option>
+          <option value="system">💻 Sistema</option>
+        </select>
+        <button class="view-toggle" id="wideViewBtn" type="button" data-layout-wide aria-pressed="true" title="Alternar entre vista expandida e vista de foco">
+          ↔ Vista expandida
+        </button>
       </div>
     </div>
 
@@ -1352,62 +1590,10 @@ header{
   </div>
 </section>
 
-<!-- ── PIPELINE ────────────────────────────────────── -->
-<section class="pipeline-section" id="pipeline" aria-labelledby="pipe-heading">
-  <div class="shell">
-    <div class="reveal">
-      <div class="section-label">// fluxo editorial</div>
-      <h2 class="section-title" id="pipe-heading">Como funciona a máquina ⚙️</h2>
-      <p class="section-sub">Cada tema percorre 5 etapas antes de virar uma página clínica pública e conectada.</p>
-    </div>
-    <div style="position:relative;margin-top:48px">
-      <div class="pipeline-connector" aria-hidden="true"></div>
-      <div class="pipeline-flow" role="list">
-
-        <div class="pipeline-step" role="listitem">
-          <div class="pipe-num">01</div>
-          <div class="pipe-icon" style="background:rgba(106,169,255,.13);border:1px solid rgba(106,169,255,.25)">📥</div>
-          <div class="pipe-label">Entrada bruta</div>
-          <div class="pipe-desc">Artigos, PDFs, diretrizes, aulas, análises de IA chegam na Biblioteca.</div>
-        </div>
-
-        <div class="pipeline-step" role="listitem">
-          <div class="pipe-num">02</div>
-          <div class="pipe-icon" style="background:var(--vio-d);border:1px solid rgba(169,140,255,.25)">📚</div>
-          <div class="pipe-label">Biblioteca IA</div>
-          <div class="pipe-desc">Documentos indexados com metadados, disponíveis para busca e leitura profunda.</div>
-        </div>
-
-        <div class="pipeline-step" role="listitem">
-          <div class="pipe-num">03</div>
-          <div class="pipe-icon" style="background:var(--grn-d);border:1px solid rgba(78,240,161,.25)">↕️</div>
-          <div class="pipe-label">UpDown Markdown</div>
-          <div class="pipe-desc">Reescrita autoral didática: flashcards, mnemônicos, questões TEMI, fluxogramas.</div>
-        </div>
-
-        <div class="pipeline-step" role="listitem">
-          <div class="pipe-num">04</div>
-          <div class="pipe-icon" style="background:rgba(255,96,96,.1);border:1px solid rgba(255,96,96,.22)">🛡️</div>
-          <div class="pipe-label">Revisão Médica</div>
-          <div class="pipe-desc">Verificação clínica obrigatória — nenhum conteúdo vai ao ar sem aprovação.</div>
-        </div>
-
-        <div class="pipeline-step" role="listitem">
-          <div class="pipe-num">05</div>
-          <div class="pipe-icon" style="background:var(--cyan-d);border:1px solid rgba(62,232,255,.25)">🌐</div>
-          <div class="pipe-label">Publicação</div>
-          <div class="pipe-desc">HTML interativo no ar, linkado ao Mapa Vivo e aos módulos relacionados.</div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── MÓDULOS ─────────────────────────────────────── -->
 <section id="modulos" aria-labelledby="mod-heading">
   <div class="shell">
-    <div class="reveal">
+    <div class="reveal section-intro">
       <div class="section-label">// módulos do projeto</div>
       <h2 class="section-title" id="mod-heading">O ecossistema Antigravity 🧬</h2>
       <p class="section-sub">Módulos interconectados — do acervo bruto às emergências hematológicas, simulado de prova, ebooks, transcrições e POCUS.</p>
@@ -1610,6 +1796,8 @@ header{
   </div>
 </section>
 
+<!-- ── DECK DE MISSÕES CRÍTICAS ───────────────────── -->
+<div class="critical-grid" role="group" aria-label="Plataformas clínicas críticas">
 <!-- ── HEMATOLOGIA CRÍTICA ────────────────────────── -->
 <section id="hematologia" class="hema-section" aria-labelledby="hema-heading">
   <div class="shell hema-grid">
@@ -1733,11 +1921,12 @@ header{
     </aside>
   </div>
 </section>
+</div><!-- /critical-grid -->
 
 <!-- ── DUAS GRANDES VIAS ───────────────────────────── -->
 <section id="vias" aria-labelledby="vias-heading">
   <div class="shell">
-    <div class="reveal">
+    <div class="reveal section-intro">
       <div class="section-label">// trilhas principais</div>
       <h2 class="section-title" id="vias-heading">As duas grandes vias 🛣️</h2>
       <p class="section-sub">A plataforma se organiza em duas trilhas-mãe que se conversam, sem virar silos.</p>
@@ -1789,7 +1978,7 @@ header{
 <!-- ── KNOWLEDGE MAP ───────────────────────────────── -->
 <section id="mapa" class="map-section" aria-labelledby="map-heading">
   <div class="shell">
-    <div class="reveal">
+    <div class="reveal section-intro">
       <div class="section-label">// mapa semântico</div>
       <h2 class="section-title" id="map-heading">Mapa vivo de conexões 🕸️</h2>
       <p class="section-sub">Cada nó é uma página real do projeto; cada aresta, uma decisão clínica. Gerado de <code>data/connections.json</code> e atualizado automaticamente a cada publicação. Filtre por ramo, passe o mouse para destacar conexões e clique para abrir.</p>
@@ -1807,14 +1996,14 @@ header{
     </div>
 
     <div class="map-legend" id="mapLegend"></div>
-    <div class="map-howto">➕ O mapa se atualiza sozinho: novos módulos, desafios e mnemônicos entram via <code>build_connections.py</code> a cada publicação.</div>
+    <div class="map-howto">🛰️ A abertura mostra apenas a estrutura essencial. Ative Tópicos, Temas, Desafios, Mnemônicos ou Arquivos quando precisar aprofundar; a busca consulta todo o mapa.</div>
   </div>
 </section>
 
 <!-- ── MNEMÔNICOS UTI ──────────────────────────────── -->
 <section id="mnemonicos" class="mnem-section" aria-labelledby="mnem-heading">
   <div class="shell">
-    <div class="reveal">
+    <div class="reveal section-intro">
       <div class="section-label">// técnicas cognitivas</div>
       <h2 class="section-title" id="mnem-heading">Mnemônicos Clínicos Rápidos 🧩</h2>
       <p class="section-sub">Ferramentas cognitivas para UTI e beira-leito. Pesquise, filtre por tema, ative o <strong>Modo Treino</strong> para memorizar por recordação ativa e clique em qualquer card para os detalhes clínicos completos.</p>
@@ -1840,7 +2029,7 @@ header{
 <!-- ── DESAFIOS CLÍNICOS ──────────────────────────── -->
 <section id="desafios" class="dsf-section" aria-labelledby="dsf-heading">
   <div class="shell">
-    <div class="reveal">
+    <div class="reveal section-intro">
       <div class="section-label">// banco de desafios</div>
       <h2 class="section-title" id="dsf-heading">Desafios Clínicos 🏋️</h2>
       <p class="section-sub">Casos, questões e dúvidas do dia a dia — colados direto dos chats e eternizados aqui. Dois ramos: Medicina Intensiva (TEMI) e Clínica Médica Avançada (R3).</p>
@@ -1925,10 +2114,62 @@ header{
   </div>
 </section>
 
+<!-- ── PIPELINE ────────────────────────────────────── -->
+<section class="pipeline-section" id="pipeline" aria-labelledby="pipe-heading">
+  <div class="shell">
+    <div class="reveal section-intro">
+      <div class="section-label">// fluxo editorial</div>
+      <h2 class="section-title" id="pipe-heading">Como funciona a máquina ⚙️</h2>
+      <p class="section-sub">Cada tema percorre 5 etapas antes de virar uma página clínica pública e conectada.</p>
+    </div>
+    <div style="position:relative;margin-top:48px">
+      <div class="pipeline-connector" aria-hidden="true"></div>
+      <div class="pipeline-flow" role="list">
+
+        <div class="pipeline-step" role="listitem">
+          <div class="pipe-num">01</div>
+          <div class="pipe-icon" style="background:rgba(106,169,255,.13);border:1px solid rgba(106,169,255,.25)">📥</div>
+          <div class="pipe-label">Entrada bruta</div>
+          <div class="pipe-desc">Artigos, PDFs, diretrizes, aulas, análises de IA chegam na Biblioteca.</div>
+        </div>
+
+        <div class="pipeline-step" role="listitem">
+          <div class="pipe-num">02</div>
+          <div class="pipe-icon" style="background:var(--vio-d);border:1px solid rgba(169,140,255,.25)">📚</div>
+          <div class="pipe-label">Biblioteca IA</div>
+          <div class="pipe-desc">Documentos indexados com metadados, disponíveis para busca e leitura profunda.</div>
+        </div>
+
+        <div class="pipeline-step" role="listitem">
+          <div class="pipe-num">03</div>
+          <div class="pipe-icon" style="background:var(--grn-d);border:1px solid rgba(78,240,161,.25)">↕️</div>
+          <div class="pipe-label">UpDown Markdown</div>
+          <div class="pipe-desc">Reescrita autoral didática: flashcards, mnemônicos, questões TEMI, fluxogramas.</div>
+        </div>
+
+        <div class="pipeline-step" role="listitem">
+          <div class="pipe-num">04</div>
+          <div class="pipe-icon" style="background:rgba(255,96,96,.1);border:1px solid rgba(255,96,96,.22)">🛡️</div>
+          <div class="pipe-label">Revisão Médica</div>
+          <div class="pipe-desc">Verificação clínica obrigatória — nenhum conteúdo vai ao ar sem aprovação.</div>
+        </div>
+
+        <div class="pipeline-step" role="listitem">
+          <div class="pipe-num">05</div>
+          <div class="pipe-icon" style="background:var(--cyan-d);border:1px solid rgba(62,232,255,.25)">🌐</div>
+          <div class="pipe-label">Publicação</div>
+          <div class="pipe-desc">HTML interativo no ar, linkado ao Mapa Vivo e aos módulos relacionados.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── ROADMAP ─────────────────────────────────────── -->
 <section id="roadmap" aria-labelledby="road-heading">
   <div class="shell">
-    <div class="reveal">
+    <div class="reveal section-intro">
       <div class="section-label">// evolução do projeto</div>
       <h2 class="section-title" id="road-heading">Roadmap 🧗</h2>
       <p class="section-sub">Construção incremental — primeiro a base sólida, depois escala e inteligência.</p>
@@ -2055,6 +2296,16 @@ header{
   <div class="a11y-panel-body">
     <p id="a11yIntro">Preferências ficam somente neste dispositivo. Nenhum dado clínico é enviado.</p>
     <p class="a11y-scroll-help">↕️ Se o quadro ficar maior que a tela, role dentro dele com mouse, trackpad ou toque.</p>
+    <h3>Visualização</h3>
+    <select class="a11y-select" id="themeModeSelectPanel" data-theme-select aria-label="Escolher tema visual da página">
+      <option value="dark">🌌 Aeroespacial</option>
+      <option value="light">☀️ Visualização clara</option>
+      <option value="system">💻 Acompanhar sistema</option>
+    </select>
+    <button class="a11y-option" type="button" data-layout-wide aria-pressed="true">
+      <span>↔ Vista expandida</span><span aria-hidden="true">ON</span>
+    </button>
+    <h3>Acessibilidade</h3>
     <div class="a11y-options">
       <button class="a11y-option" type="button" data-a11y="large" aria-pressed="false">
         <span>🔎 Texto ampliado</span><span aria-hidden="true">A+</span>
@@ -2546,18 +2797,19 @@ function escHtml(s){
     hub:'var(--cyan)', module:'var(--cyan)', biblioteca:'var(--violet)',
     feed:'var(--violet)', qbank:'var(--yellow)', tool:'var(--green)',
     topic:'var(--violet)', theme:'var(--green)', desafio:'var(--yellow)',
-    mnemonico:'var(--violet)'
+    mnemonico:'var(--violet)', file:'var(--soft)'
   };
   const GROUPS = [
     {id:'estrutura', label:'🏛️ Estrutura', types:['hub','module','biblioteca','feed','qbank','tool'], color:'var(--cyan)'},
     {id:'topicos',   label:'🎯 Tópicos',    types:['topic'],      color:'var(--violet)'},
     {id:'desafios',  label:'🏋️ Desafios',   types:['desafio'],    color:'var(--yellow)'},
     {id:'mnemonicos',label:'🧩 Mnemônicos', types:['mnemonico'],  color:'var(--violet)'},
-    {id:'temas',     label:'🗂️ Temas',      types:['theme'],      color:'var(--green)'}
+    {id:'temas',     label:'🗂️ Temas',      types:['theme'],      color:'var(--green)'},
+    {id:'arquivos',  label:'📄 Arquivos',    types:['file'],       color:'var(--soft)'}
   ];
   const typeToGroup = {};
   GROUPS.forEach(g=>g.types.forEach(t=>typeToGroup[t]=g.id));
-  const active = new Set(['estrutura','topicos','desafios','mnemonicos']);
+  const active = new Set(['estrutura']);
   let query = '';
 
   // registra todos os nós no drawer (com link p/ a página real)
@@ -2566,17 +2818,17 @@ function escHtml(s){
   });
 
   const colorOf = n => TYPE_COLOR[n.type] || 'var(--cyan)';
-  const groupOf = n => typeToGroup[n.type] || 'estrutura';
+  const groupOf = n => typeToGroup[n.type] || 'outros';
 
   function visibleSet(){
-    let vis = allNodes.filter(n=> active.has(groupOf(n)));
+    let vis = query ? allNodes : allNodes.filter(n=>active.has(groupOf(n)));
     if(query){
       const q = query.toLowerCase();
       const match = new Set(vis.filter(n=>String(n.label||n.id).toLowerCase().includes(q)).map(n=>n.id));
       if(match.size){
         allEdges.forEach(e=>{ if(match.has(e.from)) match.add(e.to); if(match.has(e.to)) match.add(e.from); });
-        vis = vis.filter(n=>match.has(n.id));
       }
+      vis = vis.filter(n=>match.has(n.id));
     }
     return vis;
   }
@@ -2667,19 +2919,52 @@ function escHtml(s){
 const a11yBtn=document.getElementById('a11yBtn');
 const a11yPanel=document.getElementById('a11yPanel');
 const a11yClose=document.getElementById('a11yClose');
+const themeColorMeta=document.querySelector('meta[name="theme-color"]');
+const appleStatusMeta=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+const systemTheme=window.matchMedia('(prefers-color-scheme: light)');
 const a11yKey='antigravity:a11y:v1';
-let a11yPrefs={large:false,contrast:false,motion:false};
+let savedA11yPrefs={};
 try{
-  a11yPrefs={...a11yPrefs,...JSON.parse(localStorage.getItem(a11yKey)||'{}')};
+  const parsed=JSON.parse(localStorage.getItem(a11yKey)||'{}');
+  if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed))savedA11yPrefs=parsed;
 }catch(_){}
+if(!['dark','light','system'].includes(savedA11yPrefs.theme)&&savedA11yPrefs.clarity===true){
+  savedA11yPrefs.theme='light';
+}
+let a11yPrefs={
+  large:false,contrast:false,motion:false,theme:'dark',wide:true,...savedA11yPrefs
+};
+if(!['dark','light','system'].includes(a11yPrefs.theme))a11yPrefs.theme='dark';
 
 function applyA11y(){
   const root=document.documentElement;
+  const resolvedTheme=a11yPrefs.theme==='system'
+    ?(systemTheme.matches?'light':'dark')
+    :a11yPrefs.theme;
+  const contrastActive=Boolean(a11yPrefs.contrast);
   root.classList.toggle('a11y-large',Boolean(a11yPrefs.large));
-  root.classList.toggle('a11y-contrast',Boolean(a11yPrefs.contrast));
+  root.classList.toggle('a11y-contrast',contrastActive);
   root.classList.toggle('a11y-reduce-motion',Boolean(a11yPrefs.motion));
+  root.classList.toggle('layout-focus',!Boolean(a11yPrefs.wide));
+  root.dataset.themeMode=a11yPrefs.theme;
+  root.dataset.theme=contrastActive?'dark':resolvedTheme;
+  root.style.colorScheme=contrastActive?'dark':resolvedTheme;
+  themeColorMeta?.setAttribute(
+    'content',
+    contrastActive?'#000000':resolvedTheme==='light'?'#f4f8fc':'#071422'
+  );
+  appleStatusMeta?.setAttribute(
+    'content',
+    !contrastActive&&resolvedTheme==='light'?'default':'black-translucent'
+  );
   document.querySelectorAll('[data-a11y]').forEach(btn=>{
     btn.setAttribute('aria-pressed',String(Boolean(a11yPrefs[btn.dataset.a11y])));
+  });
+  document.querySelectorAll('[data-theme-select]').forEach(select=>{
+    select.value=a11yPrefs.theme;
+  });
+  document.querySelectorAll('[data-layout-wide]').forEach(btn=>{
+    btn.setAttribute('aria-pressed',String(Boolean(a11yPrefs.wide)));
   });
   try{localStorage.setItem(a11yKey,JSON.stringify(a11yPrefs))}catch(_){}
 }
@@ -2701,6 +2986,24 @@ document.querySelectorAll('[data-a11y]').forEach(btn=>{
     applyA11y();
   });
 });
+document.querySelectorAll('[data-theme-select]').forEach(select=>{
+  select.addEventListener('change',()=>{
+    if(!['dark','light','system'].includes(select.value))return;
+    a11yPrefs.theme=select.value;
+    applyA11y();
+  });
+});
+document.querySelectorAll('[data-layout-wide]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    a11yPrefs.wide=!a11yPrefs.wide;
+    applyA11y();
+  });
+});
+const syncSystemTheme=()=>{
+  if(a11yPrefs.theme==='system')applyA11y();
+};
+if(systemTheme.addEventListener)systemTheme.addEventListener('change',syncSystemTheme);
+else systemTheme.addListener?.(syncSystemTheme);
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&!a11yPanel.hidden){e.preventDefault();setA11yPanel(false)}
 });
