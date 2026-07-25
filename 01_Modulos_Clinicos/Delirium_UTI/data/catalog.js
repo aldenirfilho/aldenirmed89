@@ -2,7 +2,7 @@
   "use strict";
 
   const catalog = {
-    version: "1.0.0-rc.1",
+    version: "1.1.0-rc.1",
     updatedAt: "2026-07-25",
     rass: [
       { score: 4, label: "Combativo", cue: "Violento, risco imediato para equipe." },
@@ -106,6 +106,18 @@
       {
         q: "Quando pedir TC, EEG ou líquor?",
         a: "Não como painel universal. Use conforme sinais focais/trauma, rebaixamento inexplicado, suspeita de crise não convulsiva ou infecção/inflamação do SNC."
+      },
+      {
+        q: "Qual é o gate da COFEN 746/2024 para contenção mecânica?",
+        a: "Ser o único meio disponível para prevenir dano imediato ou iminente ao paciente ou aos demais, sob supervisão direta do enfermeiro, monitorização e registro."
+      },
+      {
+        q: "Existe intervalo nacional fixo de 15 minutos na COFEN 746/2024?",
+        a: "Não. A norma exige monitorização e registro, mas não fixa esse intervalo. Frequência e intensidade seguem risco e protocolo local; o horário do formulário não substitui vigilância clínica."
+      },
+      {
+        q: "Quem responde juridicamente pela contenção?",
+        a: "Não há culpado automático por cargo. Avaliam-se atos/omissões individuais, competência, dever, dano, nexo, prova e falhas sistêmicas; enfermeiro supervisiona diretamente a aplicação conforme COFEN 746, e a instituição deve prover protocolo e recursos."
       }
     ],
     questions: [
@@ -218,6 +230,39 @@
         ],
         answer: 1,
         why: "É modelo prognóstico das primeiras 24 h, não instrumento diagnóstico."
+      },
+      {
+        q: "Pela COFEN 746/2024, a contenção mecânica é cabível quando:",
+        options: [
+          "O paciente tem diagnóstico de delirium",
+          "A equipe quer prevenir toda retirada de dispositivo",
+          "É o único meio disponível para prevenir dano imediato ou iminente",
+          "Há déficit de pessoal no turno"
+        ],
+        answer: 2,
+        why: "O critério é excepcional e concreto: único meio disponível diante de dano imediato ou iminente, com supervisão, monitorização e registro."
+      },
+      {
+        q: "Qual registro é inadequado após contenção?",
+        options: [
+          "Risco concreto e alternativas tentadas",
+          "Início, avaliações, monitorização, eventos e término",
+          "Apenas 'agitado, contido', sem contexto",
+          "Critério de retirada e resposta"
+        ],
+        answer: 2,
+        why: "Registro genérico não demonstra indicação, proporcionalidade, monitorização nem reavaliação, e não orienta o cuidado."
+      },
+      {
+        q: "Sobre responsabilidade profissional, a afirmação mais correta é:",
+        options: [
+          "Sempre responde apenas o médico",
+          "Sempre responde apenas o enfermeiro",
+          "A instituição absorve toda responsabilidade individual",
+          "Apuram-se atos/omissões e falhas sistêmicas conforme competência, contexto, nexo e prova"
+        ],
+        answer: 3,
+        why: "Responsabilidade não decorre automaticamente do cargo; o caso concreto pode envolver profissionais, lideranças e instituição em esferas diferentes."
       }
     ],
     cases: [
@@ -250,11 +295,23 @@
         vignette: "Oscilações motoras faciais e rebaixamento persistem apesar de correção metabólica e retirada de sedativos.",
         prompt: "Qual diagnóstico alternativo não pode ser perdido?",
         answer: "Estado epiléptico não convulsivo. Reavaliar neurologicamente e indicar EEG conforme disponibilidade e probabilidade clínica; neuroimagem/líquor dependem dos red flags."
+      },
+      {
+        title: "Caso 6 — A contenção preventiva",
+        vignette: "Paciente calmo, CAM-ICU positivo, cateter venoso sem indicação atual. Sugere-se contenção 'para não puxar durante a noite'.",
+        prompt: "Qual é a resposta de segurança?",
+        answer: "Diagnóstico ou dispositivo isolados não preenchem o gate. Rever necessidade do cateter, corrigir causas, organizar ambiente e observação. Sem dano imediato/iminente e sem ser o único meio, não indicar contenção."
+      },
+      {
+        title: "Caso 7 — Contenção com risco persistente",
+        vignette: "Durante agitação com risco imediato, medidas menos restritivas falham e contenção é iniciada. Após tratamento de hipóxia e dor, o paciente fica calmo, mas a contenção permanece 'até o próximo plantão'.",
+        prompt: "O que está errado?",
+        answer: "A indicação deve ser reavaliada e cessar quando o risco termina. Documentar motivo, duração, avaliações, monitorização, eventos e término; manter por rotina ou conveniência expõe paciente e profissionais a dano evitável."
       }
     ],
     checklists: {
       triagem: {
-        title: "🚨 Sessão 1 — Triagem em 60 segundos",
+        title: "🚑 Sessão 1 — Emergência e triagem em 60 segundos",
         text: [
           "[ ] Segurança imediata: paciente, equipe, dispositivos e via aérea",
           "[ ] ABC + SpO₂/ventilação + perfusão + glicemia",
@@ -295,6 +352,7 @@
           "[ ] Óculos, aparelho auditivo, prótese e comunicação disponíveis",
           "[ ] Mobilização segura e redução de dispositivos desnecessários",
           "[ ] Hidratação, nutrição, oxigenação e trânsito intestinal revistos",
+          "[ ] Atividade significativa e AVD graduadas; terapia ocupacional quando disponível",
           "[ ] Família envolvida em reorientação e metas quando apropriado"
         ]
       },
@@ -312,8 +370,21 @@
           "[ ] Se sedação profunda for inevitável por risco imediato: ambiente monitorizado e via aérea preparada"
         ]
       },
+      contencao: {
+        title: "⚖️ Sessão 6 — Contenção física/mecânica",
+        text: [
+          "[ ] Risco imediato/iminente concreto descrito; contenção é o único meio disponível",
+          "[ ] Alternativas menos restritivas tentadas ou justificadamente inviáveis",
+          "[ ] Supervisão direta do enfermeiro e protocolo institucional acionado",
+          "[ ] Menor restrição e menor tempo; alvo e critério de retirada definidos",
+          "[ ] Monitorar ABC, consciência, posição, pele, perfusão, função distal e conforto",
+          "[ ] Registrar motivo, início, avaliações, eventos, monitorização e término",
+          "[ ] Reavaliar para retirar assim que o risco cessar; tratar a causa em paralelo",
+          "[ ] Comunicar intercorrência e acionar governança/jurídico se houver conflito ou dano"
+        ]
+      },
       passagem: {
-        title: "📣 Sessão 6 — Passagem e documentação",
+        title: "📣 Sessão 7 — Passagem e documentação",
         text: [
           "[ ] Basal cognitivo e funcional + fonte da informação",
           "[ ] Início/flutuação + fenótipo + RASS",
@@ -375,6 +446,41 @@
         title: "CAM-ICU — validação original",
         note: "Validação em pacientes críticos sob ventilação mecânica.",
         href: "https://jamanetwork.com/journals/jama/fullarticle/194422"
+      },
+      {
+        title: "COFEN 746/2024 — contenção mecânica",
+        note: "Único meio para dano imediato/iminente, supervisão, monitorização e prontuário.",
+        href: "https://www.cofen.gov.br/resolucao-cofen-no-746-de-20-de-marco-de-2024/"
+      },
+      {
+        title: "Lei 15.378/2026 — Direitos do Paciente",
+        note: "Participação, segurança, informação, representante, autonomia e consentimento.",
+        href: "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/lei/l15378.htm"
+      },
+      {
+        title: "Código de Ética Médica — CFM 2.217/2018",
+        note: "Responsabilidade pessoal, consentimento, urgência e documentação clínica.",
+        href: "https://sistemas.cfm.org.br/normas/visualizar/resolucoes/BR/2018/2217"
+      },
+      {
+        title: "Contenção em UTI — revisão sistemática 2016",
+        note: "Evidência sobre contenção para prevenir retirada de dispositivos.",
+        href: "https://pubmed.ncbi.nlm.nih.gov/27820242/"
+      },
+      {
+        title: "Prevalência de contenção em UTI — meta-análise 2025",
+        note: "39 estudos, 21.665 pacientes e ampla heterogeneidade entre contextos.",
+        href: "https://pubmed.ncbi.nlm.nih.gov/40101313/"
+      },
+      {
+        title: "Redução de contenção — umbrella review 2022",
+        note: "Intervenções multicomponentes, família, reabilitação e manejo de sintomas.",
+        href: "https://pubmed.ncbi.nlm.nih.gov/35573001/"
+      },
+      {
+        title: "R2D2-ICU — JAMA 2026",
+        note: "Estratégias de baixo versus alto uso em 405 adultos sob ventilação mecânica.",
+        href: "https://jamanetwork.com/journals/jama/article-abstract/2846726"
       }
     ]
   };

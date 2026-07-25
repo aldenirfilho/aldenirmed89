@@ -2,7 +2,7 @@
 title: "Delirium na UTI e Enfermaria — Diagnóstico, Prevenção e Controle"
 slug: "delirium-uti-enfermaria"
 category: "Medicina Intensiva / Clínica Médica / Enfermaria"
-tags: [delirium, CAM-ICU, ICDSC, 4AT, RASS, ABCDEF, agitação, TEMI]
+tags: [delirium, CAM-ICU, ICDSC, 4AT, RASS, ABCDEF, agitação, contenção, terapia ocupacional, TEMI]
 status: "em_revisao"
 visibility: "publico"
 source_type: "síntese autoral de diretrizes e estudos primários"
@@ -22,6 +22,36 @@ multifatorial. Sua identificação exige comparar o estado atual com o basal,
 buscar desatenção e alterações de vigília/cognição e demonstrar uma causa médica,
 farmacológica, tóxica ou de abstinência provável. Um instrumento positivo apoia
 o rastreio, mas não substitui diagnóstico clínico nem investigação etiológica.
+
+## Principais momentos para pensar e investigar
+
+### Emergência
+
+- Na chegada e diante de queda, recusa, sonolência, agitação, fala alterada ou
+  qualquer mudança recente relatada por quem conhece o paciente.
+- Estabilizar ABC, glicose, perfusão, temperatura e ameaças neurológicas antes
+  de aguardar uma escala.
+- Obter basal e cronologia; com indicadores e paciente avaliável, aplicar 4AT,
+  confirmar clinicamente e dirigir a investigação.
+
+### UTI
+
+- Na admissão, em cada turno, após procedimento/intubação/ajuste de sedação, no
+  despertar diário e diante de falha de SBT/desmame, assincronia, retirada de
+  dispositivo, inversão sono–vigília ou retraimento.
+- Aplicar RASS primeiro. Em RASS −4/−5, não aplicar CAM-ICU; em RASS ≥−3,
+  CAM-ICU avalia o momento e ICDSC integra a janela do turno.
+- Persistência apesar das primeiras medidas deve reabrir o diagnóstico, não
+  apenas provocar adição automática de sedativo.
+
+### Enfermaria
+
+- Observar diariamente e nas transições da UTI/pós-operatório, especialmente
+  queda, baixa ingesta, perda funcional, alteração do sono ou nova medicação.
+- Com indicador, aplicar 4AT e investigar. Demência não exclui delirium
+  sobreposto.
+- Documentar e transmitir basal, início/flutuação, instrumento, causas,
+  intervenções e momento da reavaliação.
 
 ## Fluxo de 60 segundos
 
@@ -130,6 +160,18 @@ Somar reorientação, relógio/calendário, óculos/aparelho auditivo, dia ativo
 noite menos ruidosa, hidratação/nutrição, trânsito e retirada de dispositivos
 desnecessários.
 
+### Medidas ocupacionais e funcionais
+
+- Reconstruir rotina dia–noite com atividade diurna e períodos reais de repouso.
+- Graduar higiene, alimentação, comunicação e atividades de vida diária para
+  devolver autonomia sem ultrapassar estabilidade e tolerância.
+- Usar objetos, temas, música ou tarefas com significado biográfico quando
+  apropriado, evitando sobrecarga sensorial.
+- Corrigir visão/audição, oferecer comunicação alternativa e envolver família
+  na orientação consistente.
+- Acionar terapia ocupacional, fisioterapia, fonoaudiologia e enfermagem
+  conforme déficit e disponibilidade.
+
 ## Farmacoterapia
 
 - Antipsicóticos não devem ser usados como prevenção universal ou tratamento
@@ -158,6 +200,80 @@ desnecessários.
 6. Se sedação profunda for inevitável por risco imediato, usar ambiente
    monitorizado, via aérea preparada, alvo e plano de redução.
 
+## Contenção física/mecânica no adulto
+
+### Evidência e limite
+
+A SCCM observa que contenções são usadas para tentar evitar autoextubação,
+remoção de dispositivos, quedas e agressão, apesar da falta de estudos
+demonstrando eficácia e de preocupações com maior agitação e extubação não
+planejada. Revisões encontram uso frequente e associação com delirium, sedação
+e ventilação, mas associação não estabelece causalidade.
+
+No R2D2-ICU, ensaio com 405 adultos em ventilação mecânica, uma estratégia de
+baixo versus alto uso não mudou dias vivos sem coma/delirium em 14 dias. O
+resultado não demonstra benefício da estratégia liberal nem resolve todos os
+desfechos de segurança.
+
+Programas de redução são multicomponentes: educação, comunicação, família,
+reabilitação/mobilidade, manejo de dor/delirium/sono e redução de dispositivos e
+tempo de ventilação. A contenção não trata a causa do delirium.
+
+### Gate brasileiro
+
+A Resolução COFEN 746/2024 estabelece contenção mecânica quando for o único meio
+disponível para prevenir dano imediato ou iminente ao paciente ou aos demais.
+A aplicação ocorre sob supervisão direta do enfermeiro; todo paciente contido
+deve ser monitorado pela equipe de Enfermagem. Razões, duração, avaliações,
+eventos adversos e detalhes da monitorização clínica devem constar no
+prontuário.
+
+Não usar por conveniência, punição, déficit de pessoal, diagnóstico isolado,
+risco abstrato ou simples presença de dispositivo. Tentar alternativas viáveis,
+usar a menor restrição e retirar assim que o risco excepcional cessar.
+
+### Monitorização
+
+- via aérea, ventilação, perfusão, consciência, posição e aspiração;
+- pele, pressão, dor, edema, cor, temperatura e função neurovascular distal;
+- dispositivos, hidratação, eliminação, higiene, conforto e mobilidade;
+- medo, agitação, delirium, resposta e eventos adversos;
+- persistência da indicação e alternativa menos restritiva.
+
+A Resolução 746/2024 não fixa intervalo nacional universal de 15 minutos.
+Intensidade/frequência seguem risco, avaliação clínica e protocolo
+institucional.
+
+### Responsabilidade
+
+Não existe responsável automático apenas pelo cargo. Avaliam-se atos e omissões
+individuais, competência, dever aplicável, dano, nexo e prova, além de condições
+sistêmicas, em esferas ético-profissional, administrativa, civil e, conforme os
+fatos, penal.
+
+- Enfermagem: supervisão direta do enfermeiro, aplicação segura, cuidado,
+  monitorização e registro conforme escopo e norma.
+- Medicina: avaliação clínica, tratamento da causa e atos médicos
+  praticados/indicados; o Código de Ética Médica afirma responsabilidade pessoal
+  e não presumida.
+- Equipe: alternativas, comunicação, cuidado e escalonamento dentro de cada
+  competência.
+- Instituição/lideranças: protocolo, treinamento, materiais, dimensionamento,
+  supervisão, registro e resposta a eventos.
+
+A Lei 15.378/2026 assegura segurança, informação, participação, representante,
+autonomia e consentimento. A exceção expressa do art. 14 é risco de morte com
+paciente inconsciente; não deve ser generalizada para toda agitação.
+
+Podem prejudicar paciente e profissional: ausência de risco imediato/iminente,
+uso punitivo ou rotineiro, desproporção, atuação fora da competência, falta de
+monitorização/reavaliação, persistência após cessar o risco, omissão da causa ou
+do evento adverso e prontuário genérico/ausente.
+
+Esta síntese é educacional, não parecer jurídico. Conflitos reais exigem
+protocolo local e apoio da chefia, segurança do paciente, comissão de ética,
+direção técnica, jurídico institucional, COREN/CRM.
+
 ## Referências centrais
 
 1. SCCM. PADIS Guidelines 2018.
@@ -171,6 +287,18 @@ desnecessários.
    Patients. NEJM. 2022.
 8. van den Boogaard M et al. Development and validation of PRE-DELIRIC. BMJ.
    2012.
+9. COFEN. Resolução 746/2024. Procedimentos de enfermagem na contenção
+   mecânica.
+10. Brasil. Lei 15.378/2026. Estatuto dos Direitos do Paciente.
+11. CFM. Resolução 2.217/2018, modificada pelas Resoluções 2.222/2018 e
+    2.226/2019. Código de Ética Médica.
+12. Zare-Kaseb A et al. Prevalence and variability in use of physical
+    restraints in intensive care units. Aust Crit Care. 2025.
+13. Bassi E, Ceresola M. Use of physical restraints in adult ICU patients to
+    prevent patient-initiated device removal: a systematic review. JBI Libr
+    Syst Rev. 2011.
+14. Sonneville R et al. Restrictive vs Liberal Physical Restraint Strategies in
+    Critically Ill Patients: R2D2-ICU. JAMA. 2026.
 
 > Conteúdo educacional e apoio cognitivo. Não substitui protocolo institucional,
 > avaliação individual, monitorização, especialistas ou dupla checagem

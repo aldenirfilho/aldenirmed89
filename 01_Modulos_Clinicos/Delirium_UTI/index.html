@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="pt-BR" data-theme="dark" data-module="delirium" data-global-theme-key="antigravity:a11y:v1" data-legacy-theme-key="delirium-theme" data-dark-theme-color="#07101d">
+<html lang="pt-BR" data-theme="light" data-default-theme="light" data-module="delirium" data-global-theme-key="antigravity:a11y:v1" data-legacy-theme-key="delirium-theme" data-dark-theme-color="#07101d">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#07101d">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="dark light">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="Delirium na UTI e enfermaria: RASS, CAM-ICU, ICDSC, 4AT, prevenção ABCDEF, investigação e agitação refratária em módulo Turbo TEMI.">
+  <meta name="description" content="Delirium adulto na emergência, UTI e enfermaria: investigação por cenário, RASS, CAM-ICU, ICDSC, 4AT, prevenção ocupacional, agitação e contenção física em módulo Turbo TEMI.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'">
-  <title>Delirium na UTI e Enfermaria — Turbo TEMI</title>
+  <title>Delirium na Emergência, UTI e Enfermaria — Turbo TEMI</title>
   <script src="assets/theme-bootstrap.js"></script>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
@@ -21,7 +21,7 @@
       <a class="brand" href="../../index.html" aria-label="Voltar ao portal Antigravity">
         <span class="brand-mark" aria-hidden="true">🧠</span>
         <span>
-          <strong>Delirium UTI/Enfermaria</strong>
+          <strong>Delirium · Emergência/UTI/Enfermaria</strong>
           <small>Antigravity · Turbo TEMI</small>
         </span>
       </a>
@@ -31,10 +31,11 @@
       </button>
 
       <nav class="nav-links" id="moduleNav" aria-label="Navegação do módulo">
-        <a href="#plantao">Plantão 60 s</a>
+        <a href="#momentos">Quando investigar</a>
         <a href="#escalas">Escalas</a>
         <a href="#prevencao">Prevenção</a>
         <a href="#agitacao">Agitação refratária</a>
+        <a href="#contencao">Contenção física</a>
         <a href="#checklists">Checklists</a>
         <button class="icon-button" id="printButton" type="button" title="Imprimir ou salvar em PDF">🖨️ <span>PDF</span></button>
         <button class="icon-button" id="focusToggle" type="button" aria-pressed="false" title="Alternar modo foco">🎯 <span>Foco</span></button>
@@ -55,7 +56,7 @@
     <section class="hero">
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <div class="eyebrow">🧠 UTI · Enfermaria · Segurança · TEMI</div>
+            <div class="eyebrow">🧠 Emergência · UTI · Enfermaria · Segurança · TEMI</div>
           <h1>Delirium:<br><span>reconheça cedo.</span></h1>
           <p class="hero-lead">
             Disfunção cerebral aguda, flutuante e geralmente multifatorial.
@@ -64,13 +65,13 @@
             imobilidade e desorganização ambiental.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#plantao">🚨 Estou no plantão</a>
+            <a class="button primary" href="#momentos">🚨 Onde estou agora?</a>
             <a class="button" href="#escalas">🧮 Aplicar escalas</a>
             <a class="button danger" href="#agitacao">🔥 Agitação perigosa</a>
           </div>
           <p class="hero-note">
             Conteúdo adulto · sem dados de pacientes · sem rede ou telemetria ·
-            atualizado com SCCM PADIS 2018/2025 e NICE 2023.
+            atualizado com SCCM PADIS 2018/2025, NICE 2023, COFEN 746/2024 e legislação brasileira vigente em 25/07/2026.
           </p>
         </div>
 
@@ -101,6 +102,147 @@
             </li>
           </ol>
         </aside>
+      </div>
+    </section>
+
+    <section class="section moment-section" id="momentos" aria-labelledby="momentos-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// comece pelo momento assistencial</span>
+            <h2 id="momentos-title">Quando pensar, rastrear e investigar?</h2>
+            <p>Mudança aguda do comportamento, atenção, vigília ou função é o gatilho. Não espere “agitação”: delirium hipoativo também exige ação, e instabilidade clínica vem antes de qualquer escala.</p>
+          </div>
+          <span class="badge amber">⏱️ reconheça a mudança</span>
+        </div>
+
+        <figure class="learning-figure learning-figure-featured">
+          <img src="assets/images/01-quando-pensar-delirium.png" width="1672" height="941"
+               alt="Infográfico com gatilhos para pensar em delirium na emergência, UTI e enfermaria."
+               decoding="async">
+          <figcaption><strong>Mapa de entrada:</strong> compare sempre com o basal. A imagem é um resumo; os gatilhos e as condutas completas estão nos painéis abaixo.</figcaption>
+        </figure>
+
+        <div class="scenario-shell">
+          <div class="scenario-tabs" role="tablist" aria-label="Escolher cenário assistencial">
+            <button class="scenario-tab" id="scenario-emergencia-tab" type="button" role="tab"
+                    aria-selected="true" aria-controls="scenario-emergencia" tabindex="0" data-scenario="emergencia">🚑 Emergência</button>
+            <button class="scenario-tab" id="scenario-uti-tab" type="button" role="tab"
+                    aria-selected="false" aria-controls="scenario-uti" tabindex="-1" data-scenario="uti">🫁 UTI</button>
+            <button class="scenario-tab" id="scenario-enfermaria-tab" type="button" role="tab"
+                    aria-selected="false" aria-controls="scenario-enfermaria" tabindex="-1" data-scenario="enfermaria">🏥 Enfermaria</button>
+          </div>
+
+          <section class="scenario-panel" id="scenario-emergencia" role="tabpanel" aria-labelledby="scenario-emergencia-tab">
+            <div class="scenario-grid">
+              <article>
+                <span class="step-chip">1 · PENSAR</span>
+                <h3>Na chegada e em qualquer deterioração</h3>
+                <ul>
+                  <li>Confusão, sonolência, agitação, queda, recusa de cuidado ou fala “estranha” de início recente.</li>
+                  <li>Idoso frágil, demência, infecção, trauma, pós-operatório, intoxicação, abstinência ou nova medicação.</li>
+                  <li>Relato do familiar: “não está como costuma ser” vale mais que orientação isolada.</li>
+                </ul>
+              </article>
+              <article>
+                <span class="step-chip">2 · APLICAR</span>
+                <h3>Estabilize, obtenha basal e use 4AT</h3>
+                <ul>
+                  <li>ABC, SpO₂/ventilação, perfusão, glicemia, temperatura, dor e exame neurológico.</li>
+                  <li>Colateral: início, flutuação, função/cognição basal, fármacos e última dose/ingesta.</li>
+                  <li>Com indicadores e paciente avaliável, 4AT; positivo sustenta avaliação diagnóstica, não a encerra.</li>
+                </ul>
+              </article>
+              <article class="scenario-alert">
+                <span class="step-chip danger-chip">3 · NÃO ESPERAR</span>
+                <h3>Red flags mudam a prioridade</h3>
+                <p>Déficit focal, crise, trauma/anticoagulação, coma abrupto, choque, hipoxemia/hipercapnia, hipoglicemia, hipertermia, rigidez ou toxidrome exigem via de emergência dirigida antes do score.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="scenario-panel" id="scenario-uti" role="tabpanel" aria-labelledby="scenario-uti-tab" hidden>
+            <div class="scenario-grid">
+              <article>
+                <span class="step-chip">1 · PENSAR</span>
+                <h3>Em cada turno e após mudanças</h3>
+                <ul>
+                  <li>Admissão, troca de turno, despertar diário e depois de intubação, procedimento ou ajuste de sedação.</li>
+                  <li>Nova assincronia, falha de SBT/desmame, retirada de dispositivo, inversão sono–vigília ou retraimento.</li>
+                  <li>A ausência de agitação não exclui: procure lentificação, contato pobre e pouca interação.</li>
+                </ul>
+              </article>
+              <article>
+                <span class="step-chip">2 · APLICAR</span>
+                <h3>RASS primeiro; depois CAM-ICU/ICDSC</h3>
+                <ul>
+                  <li>RASS −4/−5: não avaliável; rever coma, sedação, ventilação e ameaças fisiológicas.</li>
+                  <li>RASS ≥−3: CAM-ICU para o estado atual ou ICDSC para integrar o turno.</li>
+                  <li>Documentar horário, resultado, fenótipo, mudança do basal, causas e próxima reavaliação.</li>
+                </ul>
+              </article>
+              <article class="scenario-alert">
+                <span class="step-chip danger-chip">3 · REABRIR</span>
+                <h3>“Refratário” pode ser diagnóstico incompleto</h3>
+                <p>Se o comportamento persiste apesar das primeiras medidas, reavalie dor, abstinência, CO₂/O₂, ventilador, retenção, choque, crise não convulsiva, AVC, toxidrome, catatonia e efeitos farmacológicos.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="scenario-panel" id="scenario-enfermaria" role="tabpanel" aria-labelledby="scenario-enfermaria-tab" hidden>
+            <div class="scenario-grid">
+              <article>
+                <span class="step-chip">1 · PENSAR</span>
+                <h3>Na observação diária e nas transições</h3>
+                <ul>
+                  <li>Admissão, pós-operatório, transferência da UTI, nova infecção, troca de quarto ou início/retirada de fármaco.</li>
+                  <li>Queda, baixa ingesta, perda funcional, recusa, alteração do sono, alucinação ou sonolência nova.</li>
+                  <li>Pergunte a quem conhece o paciente se atenção, conversa e autonomia mudaram.</li>
+                </ul>
+              </article>
+              <article>
+                <span class="step-chip">2 · APLICAR</span>
+                <h3>4AT quando houver indicador</h3>
+                <ul>
+                  <li>Observe mudança diária; se presente, aplique 4AT e faça diagnóstico clínico dirigido.</li>
+                  <li>Revisar fármacos, hidratação, dor, retenção, constipação, infecção, sono, visão e audição.</li>
+                  <li>Repetir se flutuar e comunicar claramente na passagem e na alta.</li>
+                </ul>
+              </article>
+              <article class="scenario-alert">
+                <span class="step-chip danger-chip">3 · NÃO ROTULAR</span>
+                <h3>Não chame automaticamente de “demência”</h3>
+                <p>Demência e delirium coexistem. Mudança recente/flutuante e desatenção devem ser investigadas como delirium até explicação melhor, inclusive no paciente já desorientado no basal.</p>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <form class="decision-console" id="investigationConsole">
+          <div class="decision-console-copy">
+            <span class="kicker">// simulador sem dados do paciente</span>
+            <h3>Qual é o próximo movimento?</h3>
+            <p>Selecione apenas o cenário didático. Nada é salvo ou transmitido.</p>
+          </div>
+          <div class="decision-fields">
+            <label class="field" for="investigationContext">
+              <span>Local</span>
+              <select id="investigationContext">
+                <option value="emergencia">Emergência</option>
+                <option value="uti">UTI</option>
+                <option value="enfermaria">Enfermaria</option>
+              </select>
+            </label>
+            <label class="check-row"><input id="investigationThreat" type="checkbox"> Ameaça fisiológica ou neurológica imediata</label>
+            <label class="check-row"><input id="investigationChange" type="checkbox"> Mudança aguda ou flutuação em relação ao basal</label>
+            <label class="check-row"><input id="investigationDeep" type="checkbox"> RASS −4/−5 ou não desperta para testar</label>
+            <button class="button primary" id="investigationRun" type="button">Gerar próximo passo</button>
+          </div>
+          <div class="decision-result" id="investigationResult" role="status" aria-live="polite">
+            <strong>Pronto para simular.</strong>
+            O resultado prioriza estabilidade, avaliabilidade e ferramenta adequada ao contexto.
+          </div>
+        </form>
       </div>
     </section>
 
@@ -218,10 +360,23 @@
           <span class="badge">⌨️ interativo</span>
         </div>
 
+        <figure class="learning-figure">
+          <img src="assets/images/04-qual-teste-momento.png" width="1672" height="941" loading="lazy"
+               alt="Infográfico que direciona CAM-ICU para avaliação atual na UTI, ICDSC ao longo do turno e 4AT para emergência e enfermaria."
+               decoding="async">
+          <figcaption><strong>Escolha contextual:</strong> em cuidado crítico/recuperação use CAM-ICU ou ICDSC; fora desse contexto, o 4AT é o rastreio rápido quando surgem indicadores.</figcaption>
+        </figure>
+
         <div class="scale-grid">
           <article class="scale-card" id="rass-tool">
             <h3>1 · RASS — vigília/agitação</h3>
             <p class="scale-intro">Observe. Se não alerta, chame pelo nome e peça abertura ocular; se não houver resposta, use estímulo físico. Escolha o nível mais fiel.</p>
+            <figure class="learning-figure compact">
+              <img src="assets/images/02-rass-porta-entrada.png" width="1672" height="941" loading="lazy"
+                   alt="Régua RASS de mais quatro a menos cinco, com gate de aplicabilidade do CAM-ICU."
+                   decoding="async">
+              <figcaption>RASS define vigília e gate; não diagnostica delirium.</figcaption>
+            </figure>
             <div class="scale-options" id="rassOptions" role="group" aria-label="Selecionar escore RASS"></div>
             <div class="scale-result" id="rassResult" role="status" aria-live="polite">
               <strong>Selecione um escore.</strong>
@@ -232,6 +387,12 @@
           <article class="scale-card" id="cam-tool">
             <h3>2 · CAM-ICU (iCAM-ICU) — estado atual</h3>
             <p class="scale-intro">Aplicável inclusive em paciente intubado, desde que desperte o suficiente. RASS −4/−5 = não avaliável.</p>
+            <figure class="learning-figure compact">
+              <img src="assets/images/03-cam-icu-quatro-passos.png" width="1672" height="941" loading="lazy"
+                   alt="Fórmula visual do CAM-ICU positivo: características um e dois, associadas à três ou quatro."
+                   decoding="async">
+              <figcaption>Fórmula visual; execute cada característica com o instrumento validado.</figcaption>
+            </figure>
             <div class="assessment-grid">
               <div class="field">
                 <label for="camRass">RASS atual</label>
@@ -341,6 +502,12 @@
           </div>
           <span class="badge">🔎 causas tratáveis</span>
         </div>
+        <figure class="learning-figure">
+          <img src="assets/images/05-procure-gatilho.png" width="1536" height="1024" loading="lazy"
+               alt="Infográfico de oito domínios de causas de delirium, incluindo oxigenação, perfusão, infecção, dor, fármacos, abstinência, metabolismo e ambiente."
+               decoding="async">
+          <figcaption><strong>Regra-mãe:</strong> a agitação é um sinal; procure o gatilho fisiológico, farmacológico, neurológico, funcional e ambiental.</figcaption>
+        </figure>
         <div class="cause-grid" id="causeGrid"></div>
         <div class="two-col mt-18">
           <article class="card">
@@ -366,6 +533,13 @@
           <span class="badge green">🛡️ bundle diário</span>
         </div>
 
+        <figure class="learning-figure">
+          <img src="assets/images/06-prevencao-leito.png" width="1672" height="941" loading="lazy"
+               alt="Infográfico de prevenção do delirium no leito com orientação, correção sensorial, sono, mobilidade, conforto, família e atividade significativa."
+               decoding="async">
+          <figcaption><strong>Medidas ocupacionais:</strong> Atividade significativa e AVD graduadas recuperam rotina, papéis e autonomia possível, alinhadas à estabilidade e às metas da equipe.</figcaption>
+        </figure>
+
         <div class="bundle-grid">
           <article class="bundle-card"><span class="bundle-letter">A</span><h3>A · Avaliar e tratar dor</h3><p>Auto-relato quando possível; CPOT/BPS quando não. Analgesia adequada sem confundir agitação com “falta de opioide”.</p></article>
           <article class="bundle-card"><span class="bundle-letter">B</span><h3>B · SAT + SBT</h3><p>Despertar e respiração espontânea coordenados quando elegíveis, com segurança e metas explícitas.</p></article>
@@ -383,6 +557,7 @@
               <tr><td><strong>Sono</strong></td><td>Dia claro/ativo; noite silenciosa; agrupar cuidados quando seguro.</td><td>Acordar por rotinas sem benefício e luz/ruído contínuos.</td></tr>
               <tr><td><strong>Sensorial</strong></td><td>Óculos, audição, prótese e intérprete.</td><td>Rotular como “confuso” sem corrigir barreiras.</td></tr>
               <tr><td><strong>Mobilidade</strong></td><td>Sentar, ortostatismo, marcha e fisioterapia conforme estabilidade.</td><td>Imobilidade e dispositivos sem indicação atual.</td></tr>
+              <tr><td><strong>Ocupação/ADL</strong></td><td>Higiene, alimentação, comunicação e atividade familiar graduadas; terapia ocupacional quando disponível.</td><td>Passividade contínua, sobrecarga cognitiva ou tarefa incompatível com segurança.</td></tr>
               <tr><td><strong>Fármacos</strong></td><td>Revisão diária de sedativos, anticolinérgicos e polifarmácia.</td><td>Antipsicótico ou benzodiazepínico profilático de rotina.</td></tr>
               <tr><td><strong>Fisiologia</strong></td><td>Oxigenação, hidratação, nutrição, trânsito, dor e infecção.</td><td>“Tratar o score” sem tratar o organismo.</td></tr>
             </tbody>
@@ -401,6 +576,13 @@
           </div>
           <span class="badge amber">💊 dupla checagem</span>
         </div>
+
+        <figure class="learning-figure">
+          <img src="assets/images/08-risco-farmacologico.png" width="1672" height="941" loading="lazy"
+               alt="Infográfico com riscos principais de antipsicóticos, dexmedetomidina, benzodiazepínicos e propofol."
+               decoding="async">
+          <figcaption><strong>Risco primeiro:</strong> fármaco é intervenção sintomática ou sedativa em cenários selecionados; não substitui diagnóstico, etiologia nem monitorização.</figcaption>
+        </figure>
 
         <div class="table-wrap" tabindex="0" aria-label="Tabela terapêutica do delirium">
           <table>
@@ -428,13 +610,13 @@
                 <td><strong>Haloperidol/antipsicótico</strong></td>
                 <td>Curto prazo para sofrimento intenso ou risco a si/outros após desescalada e correção de causas, conforme protocolo.</td>
                 <td>Não encurta delirium de rotina; SCCM 2025 não recomenda a favor nem contra por evidência baixa.</td>
-                <td>QTc, K/Mg, interações, EPS/NMS; evitar/cautela em Parkinson e corpos de Lewy.</td>
+                <td>QTc/torsades, K/Mg, interações, hipotensão, sedação, efeitos extrapiramidais e síndrome neuroléptica maligna; evitar/cautela em Parkinson e corpos de Lewy.</td>
               </tr>
               <tr>
                 <td><strong>Benzodiazepínico</strong></td>
                 <td>Abstinência de álcool/benzodiazepínico, convulsão ou indicação específica.</td>
                 <td>Não é sedativo padrão do delirium comum.</td>
-                <td>Depressão respiratória, acúmulo e piora paradoxal; exposição é fator modificável associado.</td>
+                <td>Depressão respiratória, hipotensão, acúmulo, reação paradoxal, quedas e piora do delirium; exposição é fator modificável associado.</td>
               </tr>
               <tr>
                 <td><strong>Melatonina</strong></td>
@@ -472,6 +654,33 @@
           <span class="badge amber">🔥 escalonamento</span>
         </div>
 
+        <figure class="learning-figure">
+          <img src="assets/images/07-escada-seguranca-agitacao.png" width="1536" height="1024" loading="lazy"
+               alt="Escada de segurança para agitação: segurança e ABC, causas reversíveis, desescalada, fármaco somente com risco e contenção como último recurso."
+               decoding="async">
+          <figcaption><strong>Escada, não atalho:</strong> a menor intervenção eficaz deve preservar via aérea, exame neurológico, mobilidade e possibilidade de reavaliação.</figcaption>
+        </figure>
+
+        <form class="decision-console agitation-console" id="agitationConsole">
+          <div class="decision-console-copy">
+            <span class="kicker">// pause antes da próxima ampola</span>
+            <h3>Simulador de escalonamento</h3>
+            <p>Marque o cenário didático. A saída mostra prioridades e alertas, sem recomendar dose.</p>
+          </div>
+          <div class="decision-fields">
+            <label class="check-row"><input id="agitationDanger" type="checkbox"> Há risco imediato de dano, via aérea ou dispositivo vital</label>
+            <label class="check-row"><input id="agitationWithdrawal" type="checkbox"> Abstinência de álcool/benzodiazepínico ou convulsão é provável</label>
+            <label class="check-row"><input id="agitationVent" type="checkbox"> Em VM, a agitação impede desmame/extubação</label>
+            <label class="check-row"><input id="agitationNeurolepticRisk" type="checkbox"> QT prolongado, Parkinson/Lewy, EPS ou interação relevante</label>
+            <label class="check-row"><input id="agitationBasics" type="checkbox"> ABC, dor, causas e desescalada já foram revistos</label>
+            <button class="button primary" id="agitationRun" type="button">Priorizar conduta</button>
+          </div>
+          <div class="decision-result" id="agitationResult" role="status" aria-live="polite">
+            <strong>Comece por segurança e causa.</strong>
+            Nenhum checkbox substitui avaliação presencial, monitorização e protocolo institucional.
+          </div>
+        </form>
+
         <div class="algorithm">
           <article class="algorithm-step"><div><h3>Ative ajuda e organize o ambiente</h3><p>Saída livre, equipe suficiente, uma pessoa fala, voz baixa, frases curtas, reduzir público/ruído e retirar objetos perigosos.</p></div></article>
           <article class="algorithm-step"><div><h3>Trate ameaças em paralelo</h3><p>O₂/CO₂, glicemia, choque, temperatura, dor, retenção, abstinência, falha ventilatória e dispositivos. Não espere o score para estabilizar.</p></div></article>
@@ -501,6 +710,182 @@
             </ul>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section alt restraint-section" id="contencao" aria-labelledby="contencao-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// tema crítico · adulto · brasil</span>
+            <h2 id="contencao-title">Contenção física/mecânica: último recurso, não rotina</h2>
+            <p>Ela restringe liberdade e pode produzir dano. A pergunta correta não é “o paciente está agitado?”, mas “há dano imediato ou iminente que não pode ser prevenido por alternativa menos restritiva agora?”.</p>
+          </div>
+          <span class="badge amber">⚖️ proporcionalidade + registro</span>
+        </div>
+
+        <div class="restraint-banner" role="note">
+          <strong>Limite desta aba</strong>
+          <span>Conteúdo educacional e de governança. Não ensina técnica de imobilização e não substitui treinamento presencial, avaliação individual, protocolo institucional, COREN/CRM ou assessoria jurídica.</span>
+        </div>
+
+        <figure class="learning-figure">
+          <img src="assets/images/09-contencao-ultimo-recurso.png" width="1672" height="941" loading="lazy"
+               alt="Fluxo de decisão para contenção física: risco imediato, falha de alternativas, menor medida, protocolo, supervisão e monitorização."
+               decoding="async">
+          <figcaption><strong>Gate ético-prático:</strong> se qualquer condição deixa de existir, a indicação precisa ser interrompida ou reavaliada.</figcaption>
+        </figure>
+
+        <div class="restraint-tabs" role="tablist" aria-label="Conteúdo sobre contenção física">
+          <button class="restraint-tab" id="restraint-evidence-tab" type="button" role="tab"
+                  aria-selected="true" aria-controls="restraint-evidence" tabindex="0" data-restraint-tab="evidence">📚 O que a evidência mostra</button>
+          <button class="restraint-tab" id="restraint-criteria-tab" type="button" role="tab"
+                  aria-selected="false" aria-controls="restraint-criteria" tabindex="-1" data-restraint-tab="criteria">🚦 Quando considerar</button>
+          <button class="restraint-tab" id="restraint-monitor-tab" type="button" role="tab"
+                  aria-selected="false" aria-controls="restraint-monitor" tabindex="-1" data-restraint-tab="monitor">👁️ Monitorar e retirar</button>
+          <button class="restraint-tab" id="restraint-legal-tab" type="button" role="tab"
+                  aria-selected="false" aria-controls="restraint-legal" tabindex="-1" data-restraint-tab="legal">⚖️ Responsabilidade no Brasil</button>
+        </div>
+
+        <section class="restraint-panel" id="restraint-evidence" role="tabpanel" aria-labelledby="restraint-evidence-tab">
+          <div class="two-col">
+            <article class="card">
+              <h3>O que sabemos</h3>
+              <ul>
+                <li>A SCCM registra uso frequente para evitar autoextubação, remoção de dispositivos, quedas e agressão, apesar da falta de estudos demonstrando eficácia e de preocupações com maior agitação e extubações não planejadas.</li>
+                <li>Meta-análise de 39 estudos e 21.665 adultos encontrou prevalência agrupada de 41,6% (IC 95% 33,8–49,5%), com heterogeneidade extrema: prática varia muito entre locais.</li>
+                <li>No R2D2-ICU (405 adultos em VM), uma estratégia de baixo versus alto uso não mudou dias vivos sem coma/delirium em 14 dias; isso não demonstra benefício da estratégia liberal nem resolve todos os desfechos de segurança.</li>
+                <li>Associações com delirium, sedação e ventilação mecânica não provam que a contenção seja a causa; pacientes mais graves também têm maior chance de ser contidos.</li>
+              </ul>
+            </article>
+            <article class="card warning-card">
+              <h3>O que não podemos prometer</h3>
+              <ul>
+                <li>Não há base segura para afirmar que contenção previne retirada de dispositivos ou quedas em todos os pacientes.</li>
+                <li>Ela não trata delirium, medo, dor, dispneia, abstinência ou desorganização ambiental.</li>
+                <li>Programas de redução tendem a combinar educação, comunicação, família, reabilitação/mobilidade e manejo de sintomas; não existe intervenção única universal.</li>
+              </ul>
+            </article>
+          </div>
+          <p class="clinical-note"><strong>Leitura crítica:</strong> “associado” não significa “causou”; mas incerteza de benefício + dano plausível exige indicação excepcional, menor restrição e retirada precoce.</p>
+        </section>
+
+        <section class="restraint-panel" id="restraint-criteria" role="tabpanel" aria-labelledby="restraint-criteria-tab" hidden>
+          <div class="three-col">
+            <article class="card danger-card">
+              <h3>✅ Condição necessária</h3>
+              <p>Pela Resolução COFEN 746/2024, a contenção mecânica é realizada quando for o <strong>único meio disponível</strong> para prevenir dano imediato ou iminente ao paciente ou aos demais.</p>
+            </article>
+            <article class="card">
+              <h3>🔁 Antes, tente o possível</h3>
+              <ul>
+                <li>Ajuda suficiente e uma voz para desescalada.</li>
+                <li>Dor, dispneia, hipóxia/CO₂, retenção, abstinência e delirium.</li>
+                <li>Reorientação, familiar/acompanhante, óculos, audição e intérprete.</li>
+                <li>Retirar dispositivo desnecessário; proteger/adaptar o indispensável.</li>
+                <li>Observação próxima e ambiente mais seguro quando disponíveis.</li>
+              </ul>
+            </article>
+            <article class="card warning-card">
+              <h3>⛔ Não é indicação isolada</h3>
+              <ul>
+                <li>Conveniência, punição, disciplina ou “paciente difícil”.</li>
+                <li>Déficit de pessoal ou ausência de vigilância adequada.</li>
+                <li>Demência, delirium, risco de queda ou dispositivo apenas pelo diagnóstico.</li>
+                <li>Recusa capaz sem risco imediato/iminente, sem avaliação e sem via apropriada.</li>
+              </ul>
+            </article>
+          </div>
+          <div class="formula">RISCO CONCRETO + ÚNICO MEIO + MENOR RESTRIÇÃO + MENOR TEMPO + REAVALIAÇÃO</div>
+        </section>
+
+        <section class="restraint-panel" id="restraint-monitor" role="tabpanel" aria-labelledby="restraint-monitor-tab" hidden>
+          <div class="two-col">
+            <article class="card">
+              <h3>Monitorização clínica orientada por risco</h3>
+              <ul>
+                <li>Via aérea, ventilação, perfusão, consciência, posição e sinais de aspiração.</li>
+                <li>Pele, pressão, dor, edema, coloração, temperatura, perfusão e função neurovascular distal.</li>
+                <li>Dispositivos, hidratação, eliminação, higiene, conforto e necessidade de mobilidade.</li>
+                <li>Efeito sobre medo, agitação, delirium e interação; procurar eventos adversos.</li>
+              </ul>
+            </article>
+            <article class="card success-card">
+              <h3>Reavaliar para retirar, não para renovar</h3>
+              <ul>
+                <li>O risco ainda é imediato/iminente?</li>
+                <li>Uma alternativa menos restritiva tornou-se viável?</li>
+                <li>A causa recebeu tratamento e o alvo foi alcançado?</li>
+                <li>Interromper assim que a condição excepcional terminar.</li>
+              </ul>
+            </article>
+          </div>
+          <p class="clinical-note"><strong>Intervalo:</strong> a Resolução COFEN 746/2024 exige monitorização, mas não fixa “15 minutos” como regra nacional. Intensidade e frequência devem seguir risco, avaliação contínua e protocolo institucional — sem transformar intervalo de folha em teto de vigilância.</p>
+        </section>
+
+        <section class="restraint-panel" id="restraint-legal" role="tabpanel" aria-labelledby="restraint-legal-tab" hidden>
+          <figure class="learning-figure">
+            <img src="assets/images/10-contencao-responsabilidade.png" width="1536" height="1024" loading="lazy"
+                 alt="Infográfico de responsabilidades da equipe, enfermeiro, medicina e instituição, com elementos que precisam constar no prontuário."
+                 decoding="async">
+            <figcaption><strong>Não existe “um cargo culpado por definição”:</strong> apuram-se conduta, competência, dever, dano, nexo, contexto e falhas sistêmicas.</figcaption>
+          </figure>
+
+          <div class="responsibility-grid">
+            <article class="responsibility-card">
+              <span>Enfermagem</span>
+              <h3>Supervisão e cuidado</h3>
+              <p>A aplicação ocorre sob supervisão direta do enfermeiro. A equipe de Enfermagem monitora para prevenir danos e eventos adversos, nos termos da COFEN 746/2024.</p>
+            </article>
+            <article class="responsibility-card">
+              <span>Medicina</span>
+              <h3>Avaliação e causa</h3>
+              <p>Responde pelos atos médicos que praticar ou indicar, pela avaliação clínica, tratamento causal e decisões dentro de sua competência. A responsabilidade médica é pessoal e não pode ser presumida.</p>
+            </article>
+            <article class="responsibility-card">
+              <span>Equipe multiprofissional</span>
+              <h3>Menor restrição</h3>
+              <p>Cada profissional atua dentro de sua habilitação, comunica riscos, executa alternativas, monitora o que lhe compete e documenta intervenções e intercorrências.</p>
+            </article>
+            <article class="responsibility-card">
+              <span>Instituição e lideranças</span>
+              <h3>Condições do sistema</h3>
+              <p>Devem prover protocolo, materiais adequados, dimensionamento, capacitação, supervisão, resposta a eventos e governança. Falha sistêmica não apaga eventual responsabilidade individual — nem o contrário.</p>
+            </article>
+          </div>
+
+          <div class="two-col mt-18">
+            <article class="card">
+              <h3>📝 Registro mínimo defensável e útil</h3>
+              <ul>
+                <li>Risco concreto, motivo e alternativas tentadas/por que eram inviáveis.</li>
+                <li>Data/hora de início, pessoas/competências envolvidas e protocolo seguido.</li>
+                <li>Avaliações clínicas, monitorização, resposta, eventos adversos e providências.</li>
+                <li>Capacidade/consentimento, comunicação com representante/família quando cabível.</li>
+                <li>Reavaliações, redução, data/hora de término e plano após retirada.</li>
+              </ul>
+              <p>A COFEN 746 exige registrar razões, duração, avaliações, eventos adversos e detalhes do monitoramento clínico.</p>
+            </article>
+            <article class="card danger-card">
+              <h3>🚨 O que pode prejudicar o profissional</h3>
+              <ul>
+                <li>Conter sem risco imediato/iminente, por punição, conveniência ou rotina.</li>
+                <li>Ignorar alternativas, usar força desproporcional ou atuar fora da competência.</li>
+                <li>Não supervisionar, monitorar, reavaliar ou retirar quando cessa a necessidade.</li>
+                <li>Omitir causa tratável, lesão, deterioração, evento adverso ou pedido de ajuda.</li>
+                <li>Prontuário ausente, genérico, contraditório ou feito retrospectivamente sem clareza.</li>
+                <li>Desconsiderar capacidade, representante, diretiva antecipada, privacidade e informação.</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="legal-explainer">
+            <h3>Então, juridicamente, quem responde?</h3>
+            <p><strong>Não há resposta automática por cargo.</strong> Podem ser analisados o profissional pelo próprio ato/omissão, responsáveis técnicos e a instituição por condições sistêmicas, em esferas ético-profissional, administrativa, civil e, conforme os fatos, penal. A apuração depende de dever aplicável, competência, culpa ou outro critério legal, dano, nexo e prova.</p>
+            <p>A Lei 15.378/2026 protege participação, informação, segurança, autonomia, representante e consentimento. Sua exceção expressa do art. 14 é estreita — risco de morte com paciente inconsciente — e não deve ser generalizada para toda agitação. Em urgência, registre capacidade, risco, proporcionalidade, alternativas e fundamento institucional.</p>
+            <p><strong>Nota:</strong> esta síntese orienta governança clínica; não é parecer jurídico. Casos reais exigem protocolo local e, diante de conflito, Núcleo de Segurança, chefia, comissão de ética, direção técnica, jurídico institucional, COREN/CRM.</p>
+          </div>
+        </section>
       </div>
     </section>
 
@@ -598,6 +983,8 @@
           <li>Validar RASS, CAM-ICU, ICDSC e 4AT com enfermagem e equipe médica.</li>
           <li>Definir horários de rastreio, documentação e plano de reavaliação.</li>
           <li>Revisar protocolo de abstinência, antipsicóticos, sedação e QTc.</li>
+          <li>Homologar contenção mecânica com Enfermagem, Segurança do Paciente, direção técnica e jurídico institucional.</li>
+          <li>Validar as dez imagens contra o texto clínico acessível; em divergência, prevalece o texto revisado.</li>
           <li>Confirmar fluxo para EEG, neuroimagem, neurologia, psiquiatria e geriatria.</li>
           <li>Revisar casos/questões e alterar o manifesto para “ativo” somente após aceite.</li>
         </ul>
@@ -607,7 +994,7 @@
 
   <footer class="footer">
     <div class="wrap footer-grid">
-      <div><strong>🧠 Delirium UTI/Enfermaria</strong><p>Versão 1.0.0-rc.1 · 25/07/2026.</p></div>
+      <div><strong>🧠 Delirium Emergência/UTI/Enfermaria</strong><p>Versão 1.1.0-rc.1 · 25/07/2026.</p></div>
       <div><strong>🔒 Privacidade local</strong><p>Sem nuvem, cadastro, telemetria ou persistência de avaliações.</p></div>
       <div><strong>⌨️ Atalhos</strong><p><kbd>T</kbd> tema · <kbd>F</kbd> foco · <kbd>/</kbd> escalas</p></div>
     </div>

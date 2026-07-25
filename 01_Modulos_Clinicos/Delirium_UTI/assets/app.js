@@ -62,7 +62,7 @@
       return matchMedia("(prefers-color-scheme: light)").matches;
     }
     if (typeof preferences.clarity === "boolean") return preferences.clarity;
-    return legacyIsLight();
+    return legacyIsLight() || root.dataset.defaultTheme === "light";
   }
 
   function applyTheme(preferences = readThemeState()) {
@@ -122,11 +122,146 @@
   }
   applyTheme();
 
+  function initTabs(tabSelector, panelSelector, onActivate) {
+    const tabs = $$(tabSelector);
+    const panels = $$(panelSelector);
+    if (!tabs.length || !panels.length) return;
+
+    function activate(tab, moveFocus = false) {
+      tabs.forEach((candidate) => {
+        const active = candidate === tab;
+        candidate.setAttribute("aria-selected", String(active));
+        candidate.tabIndex = active ? 0 : -1;
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.id !== tab.getAttribute("aria-controls");
+      });
+      if (moveFocus) tab.focus();
+      onActivate?.(tab);
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => activate(tab));
+      tab.addEventListener("keydown", (event) => {
+        let nextIndex = null;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+          nextIndex = (index + 1) % tabs.length;
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+          nextIndex = (index - 1 + tabs.length) % tabs.length;
+        } else if (event.key === "Home") {
+          nextIndex = 0;
+        } else if (event.key === "End") {
+          nextIndex = tabs.length - 1;
+        }
+        if (nextIndex === null) return;
+        event.preventDefault();
+        activate(tabs[nextIndex], true);
+      });
+    });
+
+    activate(tabs.find((tab) => tab.getAttribute("aria-selected") === "true") || tabs[0]);
+  }
+
+  initTabs(".scenario-tab", ".scenario-panel", (tab) => {
+    const context = $("#investigationContext");
+    if (context && tab.dataset.scenario) context.value = tab.dataset.scenario;
+    announce(`Cenário ${tab.textContent.trim()} selecionado.`);
+  });
+
+  initTabs(".restraint-tab", ".restraint-panel", (tab) => {
+    announce(`Aba ${tab.textContent.trim()} selecionada.`);
+  });
+
   function setScaleResult(element, title, text) {
     if (!element) return;
     const strong = create("strong", "", title);
     element.replaceChildren(strong, document.createTextNode(text));
   }
+
+  function runInvestigation() {
+    const context = $("#investigationContext")?.value || "emergencia";
+    const threat = $("#investigationThreat")?.checked === true;
+    const change = $("#investigationChange")?.checked === true;
+    const deep = $("#investigationDeep")?.checked === true;
+    const result = $("#investigationResult");
+
+    if (threat) {
+      setScaleResult(
+        result,
+        "Prioridade 0 · estabilizar e investigar a ameaça",
+        "Ative ajuda; trate ABC, glicose, perfusão, temperatura e red flags neurológicas/toxicológicas. Não espere CAM-ICU, ICDSC ou 4AT para iniciar estabilização."
+      );
+      return;
+    }
+    if (deep) {
+      setScaleResult(
+        result,
+        "Não avaliável cognitivamente neste momento",
+        "RASS −4/−5 ou ausência de despertar: rever sedação, coma, ventilação e causas fisiológicas. Não registre CAM-ICU como negativo; reavalie quando houver vigília suficiente."
+      );
+      return;
+    }
+    if (!change) {
+      setScaleResult(
+        result,
+        "Primeiro defina o basal e procure flutuação",
+        "Obtenha história colateral, compare atenção, vigília, cognição e função. Mantenha observação e aplique o instrumento se surgirem indicadores; comprometimento crônico não exclui delirium sobreposto."
+      );
+      return;
+    }
+    if (context === "uti") {
+      setScaleResult(
+        result,
+        "UTI · RASS → CAM-ICU ou ICDSC",
+        "Documente RASS; com RASS ≥−3, use CAM-ICU para o estado atual ou ICDSC para integrar o turno. Depois confirme clinicamente, procure causas e inicie ABCDEF."
+      );
+      return;
+    }
+    setScaleResult(
+      result,
+      `${context === "emergencia" ? "Emergência" : "Enfermaria"} · 4AT + diagnóstico clínico`,
+      "Com mudança aguda/flutuação e paciente avaliável, aplique 4AT; um resultado positivo exige confirmação, etiologia, plano e reavaliação. Red flags sempre mudam a prioridade."
+    );
+  }
+
+  $("#investigationRun")?.addEventListener("click", runInvestigation);
+
+  function runAgitation() {
+    const danger = $("#agitationDanger")?.checked === true;
+    const withdrawal = $("#agitationWithdrawal")?.checked === true;
+    const ventilated = $("#agitationVent")?.checked === true;
+    const neurolepticRisk = $("#agitationNeurolepticRisk")?.checked === true;
+    const basics = $("#agitationBasics")?.checked === true;
+    const result = $("#agitationResult");
+    const guidance = [];
+
+    if (!basics) {
+      setScaleResult(
+        result,
+        "Volte aos degraus 1–3",
+        "Organize segurança/ABC, trate dor e causas reversíveis e faça desescalada ambiental. Sem isso, repetir ou somar sedativos pode ocultar deterioração e aumentar dano."
+      );
+      return;
+    }
+    if (withdrawal) {
+      guidance.push("Abstinência/convulsão muda a lógica: benzodiazepínico pode ser indicado conforme protocolo, com vigilância respiratória e hemodinâmica.");
+    }
+    if (ventilated) {
+      guidance.push("Em VM com agitação impedindo desmame/extubação, dexmedetomidina pode ser considerada conforme protocolo; vigiar bradicardia e hipotensão.");
+    }
+    if (neurolepticRisk) {
+      guidance.push("Risco com antipsicótico: rever QT/K/Mg/interações e Parkinson/Lewy/EPS; prefira alternativa coerente e apoio especializado.");
+    }
+    if (danger) {
+      guidance.push("Risco imediato exige equipe, ambiente monitorizado, alvo explícito e via aérea preparada; contenção só se for o único meio disponível e pelo menor tempo.");
+    }
+    if (!guidance.length) {
+      guidance.push("Se não há perigo imediato nem indicação específica, mantenha medidas não farmacológicas, tratamento causal e reavaliação; não medique apenas o score.");
+    }
+    setScaleResult(result, danger ? "Escalonar com segurança" : "Evitar sedação automática", guidance.join(" "));
+  }
+
+  $("#agitationRun")?.addEventListener("click", runAgitation);
 
   function formatRass(score) {
     return score > 0 ? `+${score}` : String(score).replace("-", "−");

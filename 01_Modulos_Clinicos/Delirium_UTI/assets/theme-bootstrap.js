@@ -28,6 +28,7 @@
     ? preferences.theme
     : null;
   const legacyClarity = legacyTheme === "light" || legacyTheme === '"light"';
+  const defaultClarity = root.dataset.defaultTheme === "light";
   const clarity = !contrast && (
     requestedTheme === "light"
     || (requestedTheme === "system" && systemLight)
@@ -36,7 +37,7 @@
       && (
         typeof preferences.clarity === "boolean"
           ? preferences.clarity
-          : legacyClarity
+          : legacyClarity || defaultClarity
       )
     )
   );

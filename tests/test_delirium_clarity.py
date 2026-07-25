@@ -77,6 +77,8 @@ class DeliriumModuleTests(unittest.TestCase):
         self.assertFalse(manifest["privacy"]["patientData"])
         self.assertIn("review-strip", self.html)
         self.assertIn("Revisão médica obrigatória", self.html)
+        self.assertEqual(manifest["version"], "1.1.0-rc.1")
+        self.assertEqual(manifest["media"]["count"], 10)
 
     def test_csp_offline_privacy_and_no_inline_style_contract(self) -> None:
         policy_match = re.search(
@@ -116,8 +118,13 @@ class DeliriumModuleTests(unittest.TestCase):
             "@media (prefers-reduced-motion: reduce)",
             "@media print",
             "background: #ffffff !important",
+            ".learning-figure",
+            ".scenario-tabs",
+            ".restraint-tabs",
         ):
             self.assertIn(required, self.css)
+        self.assertIn('data-default-theme="light"', self.html)
+        self.assertIn('root.dataset.defaultTheme === "light"', self.app)
         for color in (
             "#102a43",
             "#334e68",
@@ -155,6 +162,31 @@ class DeliriumModuleTests(unittest.TestCase):
             'event.key === "/"',
             'event.key === "Escape"',
             "scrollIntoView",
+            'event.key === "ArrowRight"',
+            'event.key === "Home"',
+            'event.key === "End"',
+            "initTabs",
+        ):
+            self.assertIn(required, self.app)
+
+    def test_practical_scenarios_and_decision_support_are_explicit(self) -> None:
+        for required in (
+            "Quando pensar, rastrear e investigar?",
+            'role="tablist" aria-label="Escolher cenário assistencial"',
+            "Na chegada e em qualquer deterioração",
+            "Em cada turno e após mudanças",
+            "Na observação diária e nas transições",
+            "Qual é o próximo movimento?",
+            "Simulador de escalonamento",
+            "Nada é salvo ou transmitido",
+        ):
+            self.assertIn(required, self.html)
+        for required in (
+            "runInvestigation",
+            "runAgitation",
+            "Não espere CAM-ICU, ICDSC ou 4AT",
+            "RASS −4/−5 ou ausência de despertar",
+            "Volte aos degraus 1–3",
         ):
             self.assertIn(required, self.app)
 
@@ -190,6 +222,9 @@ class DeliriumModuleTests(unittest.TestCase):
             "Contenção física",
             "Estado epiléptico não convulsivo",
             "ambiente monitorizado, via aérea preparada",
+            "torsades",
+            "reação paradoxal",
+            "Atividade significativa e AVD graduadas",
         ):
             self.assertIn(required, self.html)
         for required in (
@@ -201,12 +236,13 @@ class DeliriumModuleTests(unittest.TestCase):
 
     def test_operational_checklists_are_complete_and_copyable(self) -> None:
         sessions = (
-            "Sessão 1 — Triagem",
+            "Sessão 1 — Emergência",
             "Sessão 2 — Avaliação na UTI",
             "Sessão 3 — Enfermaria",
             "Sessão 4 — Prevenção",
             "Sessão 5 — Agitação",
-            "Sessão 6 — Passagem",
+            "Sessão 6 — Contenção",
+            "Sessão 7 — Passagem",
         )
         for session in sessions:
             self.assertIn(session, self.checklist)
@@ -214,6 +250,58 @@ class DeliriumModuleTests(unittest.TestCase):
         self.assertIn("navigator.clipboard?.writeText", self.app)
         self.assertIn("document.execCommand", self.app)
         self.assertIn('button.textContent = "✅ Copiado"', self.app)
+
+    def test_ten_turbo_temi_images_are_integrated_accessibly(self) -> None:
+        images = sorted((MODULE / "assets/images").glob("*.png"))
+        self.assertEqual(len(images), 10)
+        self.assertTrue(all(image.stat().st_size > 500_000 for image in images))
+
+        tags = re.findall(r"<img\b[\s\S]*?>", self.html)
+        module_tags = [
+            tag for tag in tags if 'src="assets/images/' in tag
+        ]
+        self.assertEqual(len(module_tags), 10)
+        for tag in module_tags:
+            self.assertRegex(tag, r'\balt="[^"]{20,}"')
+            self.assertRegex(tag, r'\bwidth="\d+"')
+            self.assertRegex(tag, r'\bheight="\d+"')
+            self.assertIn('decoding="async"', tag)
+        self.assertEqual(
+            sum('loading="lazy"' in tag for tag in module_tags),
+            9,
+        )
+
+        manifest = load_json(
+            "01_Modulos_Clinicos/Delirium_UTI/module.manifest.json"
+        )
+        self.assertEqual(len(manifest["media"]["files"]), 10)
+        for filename in manifest["media"]["files"]:
+            self.assertTrue((MODULE / "assets/images" / filename).is_file())
+
+    def test_restraint_evidence_monitoring_and_brazilian_governance(self) -> None:
+        for required in (
+            "Contenção física/mecânica: último recurso, não rotina",
+            "único meio disponível",
+            "supervisão direta do enfermeiro",
+            "não fixa “15 minutos” como regra nacional",
+            "Não há resposta automática por cargo",
+            "responsabilidade médica é pessoal e não pode ser presumida",
+            "não é parecer jurídico",
+            "R2D2-ICU",
+            "41,6%",
+            "21.665",
+        ):
+            self.assertIn(required, self.html)
+        for source in (
+            "https://www.cofen.gov.br/resolucao-cofen-no-746-de-20-de-marco-de-2024/",
+            "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/lei/l15378.htm",
+            "https://sistemas.cfm.org.br/normas/visualizar/resolucoes/BR/2018/2217",
+            "https://pubmed.ncbi.nlm.nih.gov/40101313/",
+            "https://jamanetwork.com/journals/jama/article-abstract/2846726",
+        ):
+            self.assertIn(source, self.catalog)
+        self.assertNotIn("somente o médico responde", self.html.casefold())
+        self.assertNotIn("somente o enfermeiro responde", self.html.casefold())
 
     def test_catalog_is_valid_javascript_and_has_learning_depth(self) -> None:
         for script in (
@@ -249,11 +337,11 @@ console.log(JSON.stringify({
         counts = json.loads(result.stdout)
         self.assertEqual(counts["rass"], 10)
         self.assertGreaterEqual(counts["causes"], 8)
-        self.assertGreaterEqual(counts["flashcards"], 12)
-        self.assertGreaterEqual(counts["questions"], 10)
-        self.assertGreaterEqual(counts["cases"], 5)
-        self.assertEqual(counts["checklists"], 6)
-        self.assertGreaterEqual(counts["references"], 10)
+        self.assertGreaterEqual(counts["flashcards"], 15)
+        self.assertGreaterEqual(counts["questions"], 13)
+        self.assertGreaterEqual(counts["cases"], 7)
+        self.assertEqual(counts["checklists"], 7)
+        self.assertGreaterEqual(counts["references"], 17)
 
     def test_home_registry_manifest_graph_and_source_are_integrated(self) -> None:
         home = (ROOT / "index.html").read_text(encoding="utf-8")

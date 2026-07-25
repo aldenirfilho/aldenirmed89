@@ -3,7 +3,7 @@
 > Blocos prontos para copiar e colar no padrão de equipe. Não inserir dados
 > identificáveis de pacientes em canais não assistenciais.
 
-## 🚨 Sessão 1 — Triagem em 60 segundos
+## 🚑 Sessão 1 — Emergência e triagem em 60 segundos
 
 ```text
 [ ] Segurança imediata: paciente, equipe, dispositivos e via aérea
@@ -45,6 +45,7 @@
 [ ] Óculos, aparelho auditivo, prótese e comunicação disponíveis
 [ ] Mobilização segura e redução de dispositivos desnecessários
 [ ] Hidratação, nutrição, oxigenação e trânsito intestinal revistos
+[ ] Atividade significativa e AVD graduadas; terapia ocupacional quando disponível
 [ ] Família envolvida em reorientação e metas quando apropriado
 ```
 
@@ -62,7 +63,20 @@
 [ ] Se sedação profunda for inevitável por risco imediato: ambiente monitorizado e via aérea preparada
 ```
 
-## 📣 Sessão 6 — Passagem e documentação
+## ⚖️ Sessão 6 — Contenção física/mecânica
+
+```text
+[ ] Risco imediato/iminente concreto descrito; contenção é o único meio disponível
+[ ] Alternativas menos restritivas tentadas ou justificadamente inviáveis
+[ ] Supervisão direta do enfermeiro e protocolo institucional acionado
+[ ] Menor restrição e menor tempo; alvo e critério de retirada definidos
+[ ] Monitorar ABC, consciência, posição, pele, perfusão, função distal e conforto
+[ ] Registrar motivo, início, avaliações, eventos, monitorização e término
+[ ] Reavaliar para retirar assim que o risco cessar; tratar a causa em paralelo
+[ ] Comunicar intercorrência e acionar governança/jurídico se houver conflito ou dano
+```
+
+## 📣 Sessão 7 — Passagem e documentação
 
 ```text
 [ ] Basal cognitivo e funcional + fonte da informação
