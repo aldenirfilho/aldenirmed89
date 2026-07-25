@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "delirium-uti-enfermaria-turbo",
+  "title": "Delirium na UTI e Enfermaria — Diagnóstico, Prevenção e Controle",
+  "shortTitle": "Delirium UTI",
+  "emoji": "🧠",
+  "entrypoint": "index.html",
+  "href": "01_Modulos_Clinicos/Delirium_UTI/index.html",
+  "version": "1.0.0-rc.1",
+  "status": "em-revisao-medica",
+  "clinicalReviewRequired": true,
+  "publication": {
+    "mode": "public-preview",
+    "publicPreview": true,
+    "clinicalReviewOngoing": true,
+    "purpose": "educacional-e-apoio-cognitivo",
+    "authorizedAt": "2026-07-25"
+  },
+  "updatedAt": "2026-07-25",
+  "category": [
+    "Medicina Intensiva",
+    "Clínica Médica",
+    "Enfermaria",
+    "Neurointensivismo",
+    "TEMI"
+  ],
+  "keywords": [
+    "delirium",
+    "CAM-ICU",
+    "ICDSC",
+    "4AT",
+    "RASS",
+    "PRE-DELIRIC",
+    "ABCDEF",
+    "agitação",
+    "sedação",
+    "TEMI"
+  ],
+  "features": [
+    "Fluxo Plantão 60 s do reconhecimento à reavaliação",
+    "Calculadoras educacionais RASS, CAM-ICU, ICDSC e 4AT",
+    "Comparação entre UTI, recuperação e enfermaria",
+    "Varredura etiológica, diferenciais e red flags neurológicas",
+    "Bundle ABCDEF e prevenção multicomponente",
+    "Algoritmo de agitação perigosa ou refratária",
+    "Tabela farmacológica com indicações, limites e monitorização",
+    "Checklists operacionais copiáveis sem dados de pacientes",
+    "Flashcards, questões e casos Turbo TEMI",
+    "Visualização clara, impressão e navegação por teclado",
+    "HTML, CSS e JavaScript puros; sem backend, telemetria ou dependências externas"
+  ],
+  "pluginContract": {
+    "global": "window.ANTIGRAVITY_DELIRIUM",
+    "genericGlobal": "window.ANTIGRAVITY_CRITICAL_MODULE",
+    "event": "antigravity:delirium-ready",
+    "collections": [
+      "rass",
+      "causes",
+      "flashcards",
+      "questions",
+      "cases",
+      "checklists",
+      "references"
+    ],
+    "extensionRule": "Conteúdo didático adicional entra em data/catalog.js; regras clínicas essenciais permanecem visíveis no HTML."
+  },
+  "privacy": {
+    "networkRuntime": false,
+    "cloud": false,
+    "telemetry": false,
+    "patientData": false,
+    "localStorage": [
+      "preferência global de tema",
+      "progresso educacional de flashcards e questões"
+    ]
+  },
+  "safetyNotice": "Conteúdo educacional e apoio cognitivo. Scores rastreiam e estratificam, mas não substituem diagnóstico clínico, avaliação de causas, protocolo institucional, monitorização nem dupla checagem farmacológica.",
+  "reviewGate": {
+    "owner": "Dr. Aldenir Rocha",
+    "requiredBeforePublish": [
+      "validar fluxo RASS, CAM-ICU, ICDSC e 4AT com a equipe multiprofissional",
+      "adaptar periodicidade de rastreio e documentação ao prontuário local",
+      "revisar contraindicações e monitorização de sedativos e antipsicóticos",
+      "confirmar protocolo institucional para abstinência e agitação com risco imediato",
+      "revisar questões, casos, referências e data de atualização",
+      "mudar status para ativo somente após homologação médica"
+    ]
+  }
+}

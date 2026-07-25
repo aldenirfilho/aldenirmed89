@@ -44,6 +44,8 @@ SURFACES = {
         ("respiracritSystemTheme", "handleRespiraCritSystemThemeChange"),
     "01_Modulos_Clinicos/Reumatologia_Critica/index.html":
         ("systemTheme", "handleSystemThemeChange"),
+    "01_Modulos_Clinicos/Delirium_UTI/assets/app.js":
+        ("systemTheme", "handleSystemThemeChange"),
     "01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/pwa.js":
         ("systemTheme", "handleSystemThemeChange"),
 }

@@ -22,6 +22,7 @@ EXPECTED_MODULE_ENTRYPOINTS = {
     "14_SAPS3_Calculator/index.html",
     "01_Modulos_Clinicos/Hematologia_Critica/index.html",
     "01_Modulos_Clinicos/Reumatologia_Critica/index.html",
+    "01_Modulos_Clinicos/Delirium_UTI/index.html",
 }
 
 
@@ -39,7 +40,7 @@ class ClarityHomeCoverageTests(unittest.TestCase):
 
     def test_all_home_module_entrypoints_are_covered(self):
         self.assertEqual(self.entrypoints, EXPECTED_MODULE_ENTRYPOINTS)
-        self.assertEqual(len(self.entrypoints), 15)
+        self.assertEqual(len(self.entrypoints), 16)
 
     def test_every_module_has_global_clarity_and_accessible_control(self):
         for relative_path in sorted(self.entrypoints):
@@ -68,6 +69,9 @@ class ClarityHomeCoverageTests(unittest.TestCase):
                 sibling_styles = entrypoint.parent / "styles.css"
                 if sibling_styles.is_file():
                     sources.append(sibling_styles.read_text(encoding="utf-8"))
+                asset_styles = entrypoint.parent / "assets/styles.css"
+                if asset_styles.is_file():
+                    sources.append(asset_styles.read_text(encoding="utf-8"))
                 combined = "\n".join(sources).casefold()
                 self.assertIn("@media print", combined)
                 self.assertRegex(combined, r"(?:background|--bg)\s*:\s*#(?:fff|ffffff)\b")
@@ -80,6 +84,12 @@ class ClarityHomeCoverageTests(unittest.TestCase):
                 sibling_controller = entrypoint.parent / "pwa.js"
                 if sibling_controller.is_file():
                     sources.append(sibling_controller.read_text(encoding="utf-8"))
+                for asset_script in (
+                    entrypoint.parent / "assets/theme-bootstrap.js",
+                    entrypoint.parent / "assets/app.js",
+                ):
+                    if asset_script.is_file():
+                        sources.append(asset_script.read_text(encoding="utf-8"))
                 combined = "\n".join(sources)
                 self.assertIn("prefers-color-scheme: light", combined)
                 self.assertRegex(

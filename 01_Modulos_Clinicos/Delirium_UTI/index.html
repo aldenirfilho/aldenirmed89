@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-module="delirium" data-global-theme-key="antigravity:a11y:v1" data-legacy-theme-key="delirium-theme" data-dark-theme-color="#07101d">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07101d">
+  <meta name="color-scheme" content="dark light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Delirium na UTI e enfermaria: RASS, CAM-ICU, ICDSC, 4AT, prevenção ABCDEF, investigação e agitação refratária em módulo Turbo TEMI.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'">
+  <title>Delirium na UTI e Enfermaria — Turbo TEMI</title>
+  <script src="assets/theme-bootstrap.js"></script>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="../../index.html" aria-label="Voltar ao portal Antigravity">
+        <span class="brand-mark" aria-hidden="true">🧠</span>
+        <span>
+          <strong>Delirium UTI/Enfermaria</strong>
+          <small>Antigravity · Turbo TEMI</small>
+        </span>
+      </a>
+
+      <button class="menu-button" id="menuToggle" type="button" aria-expanded="false" aria-controls="moduleNav">
+        ☰ <span>Menu</span>
+      </button>
+
+      <nav class="nav-links" id="moduleNav" aria-label="Navegação do módulo">
+        <a href="#plantao">Plantão 60 s</a>
+        <a href="#escalas">Escalas</a>
+        <a href="#prevencao">Prevenção</a>
+        <a href="#agitacao">Agitação refratária</a>
+        <a href="#checklists">Checklists</a>
+        <button class="icon-button" id="printButton" type="button" title="Imprimir ou salvar em PDF">🖨️ <span>PDF</span></button>
+        <button class="icon-button" id="focusToggle" type="button" aria-pressed="false" title="Alternar modo foco">🎯 <span>Foco</span></button>
+        <button class="icon-button" id="themeToggle" data-clarity-toggle type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco" title="Ativar visualização clara">☀️ <span>Clara</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="review-strip" role="status">
+    <div class="wrap">
+      <strong>🛡️ Prévia clínica em revisão</strong>
+      <span>Apoio cognitivo educacional: score positivo não substitui diagnóstico, etiologia, monitorização ou protocolo institucional.</span>
+      <a href="#gate-revisao">Abrir gate médico</a>
+    </div>
+  </div>
+
+  <main id="conteudo" tabindex="-1">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">🧠 UTI · Enfermaria · Segurança · TEMI</div>
+          <h1>Delirium:<br><span>reconheça cedo.</span></h1>
+          <p class="hero-lead">
+            Disfunção cerebral aguda, flutuante e geralmente multifatorial.
+            O objetivo não é apenas “acalmar”: é detectar desatenção, proteger
+            o paciente, localizar causas tratáveis e reduzir carga de sedação,
+            imobilidade e desorganização ambiental.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#plantao">🚨 Estou no plantão</a>
+            <a class="button" href="#escalas">🧮 Aplicar escalas</a>
+            <a class="button danger" href="#agitacao">🔥 Agitação perigosa</a>
+          </div>
+          <p class="hero-note">
+            Conteúdo adulto · sem dados de pacientes · sem rede ou telemetria ·
+            atualizado com SCCM PADIS 2018/2025 e NICE 2023.
+          </p>
+        </div>
+
+        <aside class="hero-panel" aria-labelledby="gate-title">
+          <div class="panel-head">
+            <div>
+              <span class="kicker">// lógica à beira-leito</span>
+              <h2 id="gate-title">Gate UTI em 4 movimentos</h2>
+            </div>
+            <span class="status-dot">offline</span>
+          </div>
+          <ol class="gate-list">
+            <li>
+              <span class="gate-number">1</span>
+              <span><strong>Consciência</strong><span>RASS: há coma/sedação profunda?</span></span>
+            </li>
+            <li>
+              <span class="gate-number">2</span>
+              <span><strong>Rastreio</strong><span>CAM-ICU/ICDSC quando avaliável.</span></span>
+            </li>
+            <li>
+              <span class="gate-number">3</span>
+              <span><strong>Etiologia</strong><span>Ameaças imediatas, causas e mimetizadores.</span></span>
+            </li>
+            <li>
+              <span class="gate-number">4</span>
+              <span><strong>Intervenção</strong><span>ABCDEF + alvo de sedação + reavaliação.</span></span>
+            </li>
+          </ol>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="plantao" aria-labelledby="plantao-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// plantão 60 segundos</span>
+            <h2 id="plantao-title">Primeiro estabilize. Depois nomeie.</h2>
+            <p>Agitação, sonolência ou “confusão” são sinais. Delirium é uma síndrome clínica que exige mudança aguda/flutuação, desatenção e explicação médica provável.</p>
+          </div>
+          <span class="badge amber">🚨 tempo-dependente</span>
+        </div>
+
+        <div class="flow" aria-label="Fluxo rápido de delirium">
+          <article class="flow-step"><b>0 · SEGURANÇA</b><span>Paciente, equipe, via aérea e dispositivos.</span></article>
+          <article class="flow-step"><b>1 · ABC + GLICOSE</b><span>O₂/CO₂, perfusão, temperatura e glicemia.</span></article>
+          <article class="flow-step"><b>2 · DOR/RASS</b><span>Trate desconforto; defina vigília e sedação.</span></article>
+          <article class="flow-step"><b>3 · RASTREIO</b><span>CAM-ICU/ICDSC na UTI; 4AT na enfermaria.</span></article>
+          <article class="flow-step"><b>4 · CAUSAS</b><span>Infecção, drogas, retenção, metabolismo, SNC.</span></article>
+          <article class="flow-step"><b>5 · ABCDEF</b><span>Reduza fatores, mobilize, envolva família, reavalie.</span></article>
+        </div>
+
+        <div class="three-col mt-18">
+          <article class="card danger-card">
+            <h3>🔴 Ameaças nos primeiros 5 minutos</h3>
+            <ul>
+              <li>Hipoxemia, hipercapnia ou falência de via aérea.</li>
+              <li>Hipoglicemia, choque, sepse ou hipertermia grave.</li>
+              <li>Novo déficit focal, trauma, crise ou rebaixamento abrupto.</li>
+              <li>Abstinência grave, toxidrome ou síndrome serotoninérgica/NMS.</li>
+            </ul>
+          </article>
+          <article class="card warning-card">
+            <h3>🟠 Causas simples que doem</h3>
+            <ul>
+              <li>Dor, dispneia, sede, posição desconfortável.</li>
+              <li>Retenção urinária, fecaloma, constipação ou náusea.</li>
+              <li>Óculos/aparelho auditivo ausentes e barreira de linguagem.</li>
+              <li>Tubo, máscara, cateter, ruído e interrupções noturnas.</li>
+            </ul>
+          </article>
+          <article class="card success-card">
+            <h3>🟢 Frase pronta para o round</h3>
+            <p>
+              “Mudança aguda e flutuante em relação ao basal, fenótipo ___,
+              RASS ___, rastreio ___ às ___h. Causas prioritárias: ___.
+              Intervenções iniciadas: ___; reavaliar em ___.”
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="diagnostico" aria-labelledby="diagnostico-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// configuração clínica</span>
+            <h2 id="diagnostico-title">Como o delirium se configura</h2>
+            <p>É uma síndrome, não um exame e não um sinônimo de demência. O diagnóstico final integra história, observação seriada, instrumento validado e evidência de causa fisiológica.</p>
+          </div>
+          <span class="badge green">🧩 diagnóstico clínico</span>
+        </div>
+
+        <div class="two-col">
+          <article class="card">
+            <h3>🧠 Núcleo diagnóstico em cinco ideias</h3>
+            <ol>
+              <li><strong>Atenção e consciência alteradas:</strong> dificuldade de manter, focar ou mudar atenção, com menor orientação ambiental.</li>
+              <li><strong>Início agudo/subagudo:</strong> horas a poucos dias, diferente do basal.</li>
+              <li><strong>Curso flutuante:</strong> intensidade varia ao longo do dia.</li>
+              <li><strong>Outra alteração cognitiva:</strong> memória, linguagem, percepção, pensamento ou visuoespacial.</li>
+              <li><strong>Causa provável:</strong> condição médica, intoxicação/abstinência, medicamento, exposição ou combinação.</li>
+            </ol>
+          </article>
+          <article class="card">
+            <h3>🎭 Fenótipos motores</h3>
+            <ul>
+              <li><strong>Hiperativo:</strong> inquietação, agressividade, alucinações, retirada de dispositivos.</li>
+              <li><strong>Hipoativo:</strong> retraimento, lentificação, sonolência, baixa mobilidade/ingesta — o mais fácil de perder.</li>
+              <li><strong>Misto:</strong> alternância entre hiperatividade e hipoatividade.</li>
+            </ul>
+            <p><strong>Pegadinha TEMI:</strong> fenótipo motor descreve apresentação, não causa, gravidade ou indicação automática de fármaco.</p>
+          </article>
+        </div>
+
+        <div class="table-wrap mt-18" tabindex="0" aria-label="Tabela diferencial de delirium">
+          <table>
+            <thead>
+              <tr><th>Condição</th><th>Início/curso</th><th>Atenção</th><th>Pista prática</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Delirium</strong></td><td>Agudo, flutuante</td><td>Tipicamente comprometida</td><td>Alteração do basal + causa médica/droga provável.</td></tr>
+              <tr><td><strong>Demência</strong></td><td>Meses/anos, progressivo</td><td>Pode estar preservada no início</td><td>Delirium pode sobrepor; se dúvida, trate delirium primeiro.</td></tr>
+              <tr><td><strong>Depressão</strong></td><td>Semanas/meses</td><td>Variável, esforço reduzido</td><td>Humor/anedonia; não explica oscilação abrupta de vigília.</td></tr>
+              <tr><td><strong>Afasia</strong></td><td>Frequentemente abrupto</td><td>Pode parecer desatenção</td><td>Déficit linguístico focal; procurar AVC.</td></tr>
+              <tr><td><strong>Catatonia</strong></td><td>Variável</td><td>Difícil de testar</td><td>Estupor/excitação, negativismo, posturas, ecolalia/eco­praxia.</td></tr>
+              <tr><td><strong>Estado epiléptico não convulsivo</strong></td><td>Agudo/flutuante</td><td>Comprometida</td><td>Movimentos sutis, olhar fixo ou quadro inexplicado; considerar EEG.</td></tr>
+              <tr><td><strong>Psicose primária</strong></td><td>Variável</td><td>Geralmente melhor preservada</td><td>Nível de consciência costuma ser estável; primeiro exclua causa orgânica.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="escalas" aria-labelledby="escalas-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// instrumentos à beira-leito</span>
+            <h2 id="escalas-title">RASS → CAM-ICU/ICDSC · 4AT na enfermaria</h2>
+            <p>Use o instrumento certo no momento certo. As calculadoras abaixo são educacionais, não armazenam respostas e não transformam rastreio em diagnóstico.</p>
+          </div>
+          <span class="badge">⌨️ interativo</span>
+        </div>
+
+        <div class="scale-grid">
+          <article class="scale-card" id="rass-tool">
+            <h3>1 · RASS — vigília/agitação</h3>
+            <p class="scale-intro">Observe. Se não alerta, chame pelo nome e peça abertura ocular; se não houver resposta, use estímulo físico. Escolha o nível mais fiel.</p>
+            <div class="scale-options" id="rassOptions" role="group" aria-label="Selecionar escore RASS"></div>
+            <div class="scale-result" id="rassResult" role="status" aria-live="polite">
+              <strong>Selecione um escore.</strong>
+              O RASS é o gate de consciência; não diagnostica delirium.
+            </div>
+          </article>
+
+          <article class="scale-card" id="cam-tool">
+            <h3>2 · CAM-ICU (iCAM-ICU) — estado atual</h3>
+            <p class="scale-intro">Aplicável inclusive em paciente intubado, desde que desperte o suficiente. RASS −4/−5 = não avaliável.</p>
+            <div class="assessment-grid">
+              <div class="field">
+                <label for="camRass">RASS atual</label>
+                <select id="camRass">
+                  <option value="">Selecione</option>
+                  <option value="4">+4</option><option value="3">+3</option><option value="2">+2</option>
+                  <option value="1">+1</option><option value="0">0</option><option value="-1">−1</option>
+                  <option value="-2">−2</option><option value="-3">−3</option>
+                  <option value="-4">−4</option><option value="-5">−5</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="camContext">Contexto</label>
+                <select id="camContext">
+                  <option value="uti">UTI/ventilação</option>
+                  <option value="recovery">Recuperação pós-anestésica</option>
+                </select>
+              </div>
+            </div>
+            <fieldset class="check-group mt-12">
+              <legend>Características do CAM-ICU</legend>
+              <label class="check-row"><input id="camF1" type="checkbox"> <span><strong>1.</strong> Início agudo ou curso flutuante</span></label>
+              <label class="check-row"><input id="camF2" type="checkbox"> <span><strong>2.</strong> Desatenção no teste auditivo/visual</span></label>
+              <label class="check-row"><input id="camF4" type="checkbox"> <span><strong>4.</strong> Pensamento desorganizado</span></label>
+            </fieldset>
+            <button class="button primary mt-14" id="camCalculate" type="button">Calcular CAM-ICU</button>
+            <div class="scale-result" id="camResult" role="status" aria-live="polite">
+              <strong>Fórmula:</strong> 1 + 2 + (3 ou 4). A característica 3 é nível de consciência alterado (RASS diferente de 0).
+            </div>
+          </article>
+
+          <article class="scale-card" id="icdsc-tool">
+            <h3>3 · ICDSC — janela do turno</h3>
+            <p class="scale-intro">Oito itens observados ao longo da janela clínica. Some 1 ponto por item presente.</p>
+            <fieldset class="check-group icdsc-grid" id="icdscItems">
+              <legend>Itens do ICDSC</legend>
+              <label class="check-row"><input type="checkbox"> Nível de consciência alterado</label>
+              <label class="check-row"><input type="checkbox"> Desatenção</label>
+              <label class="check-row"><input type="checkbox"> Desorientação</label>
+              <label class="check-row"><input type="checkbox"> Alucinação, delírio ou psicose</label>
+              <label class="check-row"><input type="checkbox"> Agitação ou retardo psicomotor</label>
+              <label class="check-row"><input type="checkbox"> Humor ou fala inadequados</label>
+              <label class="check-row"><input type="checkbox"> Alteração sono–vigília</label>
+              <label class="check-row"><input type="checkbox"> Flutuação dos sintomas</label>
+            </fieldset>
+            <div class="scale-result" id="icdscResult" role="status" aria-live="polite">
+              <strong>ICDSC 0/8</strong>
+              0: sem sinal; 1–3: alterações/subsindrômico; ≥4: rastreio positivo.
+            </div>
+          </article>
+
+          <article class="scale-card" id="fourat-tool">
+            <h3>4 · 4AT — enfermaria em ~2 minutos</h3>
+            <p class="scale-intro">Use quando houver indicadores de delirium fora da terapia intensiva. Em crítica/recuperação, NICE prioriza CAM-ICU ou ICDSC.</p>
+            <div class="assessment-grid">
+              <div class="field">
+                <label for="fourAlertness">1. Alerta</label>
+                <select id="fourAlertness"><option value="0">Normal (0)</option><option value="4">Claramente anormal (4)</option></select>
+              </div>
+              <div class="field">
+                <label for="fourAmt">2. AMT4: idade, nascimento, local, ano</label>
+                <select id="fourAmt"><option value="0">Sem erro (0)</option><option value="1">1 erro (1)</option><option value="2">≥2 erros/não testável (2)</option></select>
+              </div>
+              <div class="field">
+                <label for="fourAttention">3. Meses de trás para frente</label>
+                <select id="fourAttention"><option value="0">≥7 corretos (0)</option><option value="1">&lt;7/recusa (1)</option><option value="2">Não testável (2)</option></select>
+              </div>
+              <div class="field">
+                <label for="fourAcute">4. Mudança aguda/flutuação</label>
+                <select id="fourAcute"><option value="0">Não (0)</option><option value="4">Sim (4)</option></select>
+              </div>
+            </div>
+            <div class="scale-result" id="fouratResult" role="status" aria-live="polite">
+              <strong>4AT 0/12</strong>
+              0 não exclui definitivamente; 1–3 sugere comprometimento cognitivo; ≥4 sugere possível delirium.
+            </div>
+          </article>
+
+          <article class="scale-card wide">
+            <h3>Comparador: em que momento aplicar?</h3>
+            <div class="table-wrap" tabindex="0" aria-label="Comparação de instrumentos">
+              <table>
+                <thead><tr><th>Ferramenta</th><th>Onde/quando</th><th>Saída</th><th>Não confundir</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>RASS</strong></td><td>Antes do rastreio e ao titular sedação.</td><td>+4 a −5</td><td>Mede agitação/vigília, não delirium.</td></tr>
+                  <tr><td><strong>CAM-ICU</strong></td><td>UTI/recuperação; avaliação pontual quando RASS ≥−3.</td><td>Positivo, negativo ou não avaliável</td><td>Não registrar “negativo” em coma profundo.</td></tr>
+                  <tr><td><strong>ICDSC</strong></td><td>UTI; incorpora observações ao longo do turno.</td><td>0–8; ≥4 positivo</td><td>1–3 não é normalidade garantida.</td></tr>
+                  <tr><td><strong>4AT</strong></td><td>Enfermaria, emergência, perioperatório e transições quando houver indicadores.</td><td>0–12; ≥4 possível delirium</td><td>Rastreio positivo requer diagnóstico clínico.</td></tr>
+                  <tr><td><strong>PRE-DELIRIC</strong></td><td>Primeiras 24 h de UTI para estimar risco.</td><td>Probabilidade</td><td>Prediz risco; não identifica delirium atual.</td></tr>
+                  <tr><td><strong>E-PRE-DELIRIC</strong></td><td>Na admissão, antes dos dados de 24 h.</td><td>Probabilidade</td><td>Precisa validação/calibração local.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="clinical-note"><strong>Rotina prática:</strong> observar diariamente e sempre que houver mudança. A periodicidade exata deve seguir o protocolo local e a carga do paciente; evitar repetir testes cognitivos muitas vezes ao dia por períodos longos sem indicação.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="causas" aria-labelledby="causas-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// varredura etiológica</span>
+            <h2 id="causas-title">Delirium quase sempre é multifatorial</h2>
+            <p>Não existe “painel de delirium” universal. Exames, imagem, EEG e líquor são dirigidos pelo contexto, red flags e probabilidade pré-teste.</p>
+          </div>
+          <span class="badge">🔎 causas tratáveis</span>
+        </div>
+        <div class="cause-grid" id="causeGrid"></div>
+        <div class="two-col mt-18">
+          <article class="card">
+            <h3>🧪 Exames comuns — somente se fizerem sentido</h3>
+            <p>Glicemia, hemograma, eletrólitos, Ca/Mg, ureia/creatinina, função hepática, gasometria, urina/culturas, ECG e radiografia podem ser úteis conforme história e exame. Rever ativamente prescrições, últimas doses e suspensão abrupta.</p>
+          </article>
+          <article class="card danger-card">
+            <h3>🧠 Quando ampliar para SNC</h3>
+            <p>Novo déficit focal, cefaleia intensa, trauma/anticoagulação, rebaixamento desproporcional, crise suspeita, febre/rigidez, imunossupressão ou quadro inexplicado sustentam TC/RM, EEG ou líquor conforme estabilidade e hipótese.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="prevencao" aria-labelledby="prevencao-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// prevenir é tratar risco</span>
+            <h2 id="prevencao-title">ABCDEF + ambiente + função</h2>
+            <p>O pacote mais consistente é multicomponente: reduzir sedação desnecessária, organizar sono/vigília, devolver mobilidade e sentidos e envolver família.</p>
+          </div>
+          <span class="badge green">🛡️ bundle diário</span>
+        </div>
+
+        <div class="bundle-grid">
+          <article class="bundle-card"><span class="bundle-letter">A</span><h3>A · Avaliar e tratar dor</h3><p>Auto-relato quando possível; CPOT/BPS quando não. Analgesia adequada sem confundir agitação com “falta de opioide”.</p></article>
+          <article class="bundle-card"><span class="bundle-letter">B</span><h3>B · SAT + SBT</h3><p>Despertar e respiração espontânea coordenados quando elegíveis, com segurança e metas explícitas.</p></article>
+          <article class="bundle-card"><span class="bundle-letter">C</span><h3>C · Escolha de sedação</h3><p>Alvo leve sempre que possível; reduzir benzodiazepínicos sem indicação específica e revisar acúmulo/interações.</p></article>
+          <article class="bundle-card"><span class="bundle-letter">D</span><h3>D · Delirium</h3><p>Rastrear, documentar, procurar causas, reorientar e reavaliar resposta às intervenções.</p></article>
+          <article class="bundle-card"><span class="bundle-letter">E</span><h3>E · Exercício/mobilidade</h3><p>Mobilização progressiva quando estabilidade cardiovascular, respiratória e neurológica permitirem.</p></article>
+          <article class="bundle-card"><span class="bundle-letter">F</span><h3>F · Família</h3><p>Informação, voz familiar, orientação e participação coerente com preferências, segurança e rotina assistencial.</p></article>
+        </div>
+
+        <div class="table-wrap mt-20" tabindex="0" aria-label="Tabela de prevenção do delirium">
+          <table>
+            <thead><tr><th>Domínio</th><th>Fazer</th><th>Evitar</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Cognição</strong></td><td>Nome, local, motivo, relógio/calendário, comunicação simples.</td><td>Informações conflitantes, mudança de equipe/quarto sem necessidade.</td></tr>
+              <tr><td><strong>Sono</strong></td><td>Dia claro/ativo; noite silenciosa; agrupar cuidados quando seguro.</td><td>Acordar por rotinas sem benefício e luz/ruído contínuos.</td></tr>
+              <tr><td><strong>Sensorial</strong></td><td>Óculos, audição, prótese e intérprete.</td><td>Rotular como “confuso” sem corrigir barreiras.</td></tr>
+              <tr><td><strong>Mobilidade</strong></td><td>Sentar, ortostatismo, marcha e fisioterapia conforme estabilidade.</td><td>Imobilidade e dispositivos sem indicação atual.</td></tr>
+              <tr><td><strong>Fármacos</strong></td><td>Revisão diária de sedativos, anticolinérgicos e polifarmácia.</td><td>Antipsicótico ou benzodiazepínico profilático de rotina.</td></tr>
+              <tr><td><strong>Fisiologia</strong></td><td>Oxigenação, hidratação, nutrição, trânsito, dor e infecção.</td><td>“Tratar o score” sem tratar o organismo.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="terapeutica" aria-labelledby="terapeutica-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// terapêutica com evidência e limites</span>
+            <h2 id="terapeutica-title">Não existe “remédio do delirium” universal</h2>
+            <p>Trate causas e sofrimento, não o rótulo. Fármacos podem ter papel situacional, mas também prolongar sedação, causar hipotensão, arritmia e efeitos extrapiramidais.</p>
+          </div>
+          <span class="badge amber">💊 dupla checagem</span>
+        </div>
+
+        <div class="table-wrap" tabindex="0" aria-label="Tabela terapêutica do delirium">
+          <table>
+            <thead><tr><th>Estratégia</th><th>Quando considerar</th><th>O que não promete</th><th>Monitorar/evitar</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Correção etiológica + ABCDEF</strong></td>
+                <td>Todos os pacientes, personalizada.</td>
+                <td>Resposta instantânea se múltiplos fatores persistirem.</td>
+                <td>Metas, resposta e novas causas diariamente.</td>
+              </tr>
+              <tr>
+                <td><strong>Dexmedetomidina</strong></td>
+                <td>VM com delirium agitado impedindo desmame/extubação; ou sedação quando leveza/redução de delirium é prioridade, conforme protocolo.</td>
+                <td>Não é profilaxia universal nem substitui causa.</td>
+                <td>Bradicardia, hipotensão, alvo RASS e retirada.</td>
+              </tr>
+              <tr>
+                <td><strong>Propofol</strong></td>
+                <td>Sedação de paciente ventilado quando indicada e titulada.</td>
+                <td>Não é tratamento específico do delirium.</td>
+                <td>Hipotensão, triglicerídeos, dose/duração e síndrome de infusão.</td>
+              </tr>
+              <tr>
+                <td><strong>Haloperidol/antipsicótico</strong></td>
+                <td>Curto prazo para sofrimento intenso ou risco a si/outros após desescalada e correção de causas, conforme protocolo.</td>
+                <td>Não encurta delirium de rotina; SCCM 2025 não recomenda a favor nem contra por evidência baixa.</td>
+                <td>QTc, K/Mg, interações, EPS/NMS; evitar/cautela em Parkinson e corpos de Lewy.</td>
+              </tr>
+              <tr>
+                <td><strong>Benzodiazepínico</strong></td>
+                <td>Abstinência de álcool/benzodiazepínico, convulsão ou indicação específica.</td>
+                <td>Não é sedativo padrão do delirium comum.</td>
+                <td>Depressão respiratória, acúmulo e piora paradoxal; exposição é fator modificável associado.</td>
+              </tr>
+              <tr>
+                <td><strong>Melatonina</strong></td>
+                <td>SCCM 2025 sugere sobre não usar, com baixa certeza; adaptar ao contexto e protocolo.</td>
+                <td>Não substitui organização do sono e não “cura” delirium.</td>
+                <td>Interações, sonolência e real benefício individual.</td>
+              </tr>
+              <tr>
+                <td><strong>Contenção física</strong></td>
+                <td>Somente último recurso para risco imediato, menor restrição e menor tempo.</td>
+                <td>Não tem eficácia segura comprovada para prevenir retirada de dispositivos.</td>
+                <td>Agitação, lesão, isquemia, aspiração, trauma e reavaliação frequente.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="clinical-note">
+          <strong>Leitura crítica:</strong> MIND-USA não mostrou aumento de dias
+          vivos sem delirium/coma com haloperidol ou ziprasidona. Isso não elimina
+          controle sintomático excepcional; impede vender antipsicótico como
+          terapia etiológica ou rotina automática.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="agitacao" aria-labelledby="agitacao-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// agitação perigosa ou refratária</span>
+            <h2 id="agitacao-title">Acalmar com segurança sem apagar o diagnóstico</h2>
+            <p>Refratária significa que segurança, desescalada e causas prioritárias foram abordadas — não apenas que a primeira medicação “não funcionou”.</p>
+          </div>
+          <span class="badge amber">🔥 escalonamento</span>
+        </div>
+
+        <div class="algorithm">
+          <article class="algorithm-step"><div><h3>Ative ajuda e organize o ambiente</h3><p>Saída livre, equipe suficiente, uma pessoa fala, voz baixa, frases curtas, reduzir público/ruído e retirar objetos perigosos.</p></div></article>
+          <article class="algorithm-step"><div><h3>Trate ameaças em paralelo</h3><p>O₂/CO₂, glicemia, choque, temperatura, dor, retenção, abstinência, falha ventilatória e dispositivos. Não espere o score para estabilizar.</p></div></article>
+          <article class="algorithm-step"><div><h3>Defina RASS, delirium e alvo</h3><p>RASS + CAM-ICU/ICDSC quando avaliável. Pergunte: qual comportamento precisa cessar e qual nível de consciência ainda é seguro?</p></div></article>
+          <article class="algorithm-step"><div><h3>Escolha por indicação, não por hábito</h3><p>VM + agitação impedindo extubação: considerar dexmedetomidina. Sofrimento/risco persistente fora desse cenário: antipsicótico curto e cauteloso pode ser considerado conforme protocolo e contraindicações.</p></div></article>
+          <article class="algorithm-step"><div><h3>Se “não responde”, reabra o diagnóstico</h3><p>Abstinência, crise não convulsiva, AVC/hemorragia, infecção SNC, toxidrome, NMS/serotonina, catatonia, hipoxemia/hipercapnia e dor oculta.</p></div></article>
+          <article class="algorithm-step"><div><h3>Se sedação profunda for inevitável</h3><p>Trate como intervenção de alto risco: ambiente monitorizado, via aérea preparada, alvo e prazo definidos, revisão frequente e plano de redução.</p></div></article>
+        </div>
+
+        <div class="two-col mt-18">
+          <article class="card danger-card">
+            <h3>⛔ Antes de antipsicótico</h3>
+            <ul>
+              <li>Corrigir K/Mg e revisar QTc, interações e outros pró-arrítmicos.</li>
+              <li>Procurar Parkinson, demência por corpos de Lewy e sintomas extrapiramidais.</li>
+              <li>Definir indicação sintomática, menor exposição e momento de suspender.</li>
+              <li>Não somar fármacos sedativos sem reavaliar via aérea/hemodinâmica.</li>
+            </ul>
+          </article>
+          <article class="card warning-card">
+            <h3>🧩 Chamar apoio especializado</h3>
+            <ul>
+              <li>Neurologia: foco, crise/EEG, coma inexplicado.</li>
+              <li>Psiquiatria/geriatria: catatonia, psicose, demência complexa, sintomas graves.</li>
+              <li>Farmácia clínica: interações, acúmulo, QT e desprescrição.</li>
+              <li>Fisioterapia/enfermagem/família: mobilidade, dispositivos, orientação e sono.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="checklists" aria-labelledby="checklists-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// padrão de equipe</span>
+            <h2 id="checklists-title">Mini checklists operacionais por sessão</h2>
+            <p>Copie e cole no canal da equipe, rotina de round ou documento institucional. Os blocos não incluem nome, leito ou dado clínico real.</p>
+          </div>
+          <span class="badge green">📋 copy/paste</span>
+        </div>
+        <div class="checklist-grid" id="checklistGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="turbo" aria-labelledby="turbo-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// recuperação ativa</span>
+            <h2 id="turbo-title">Turbo TEMI: flashcards, questões e casos</h2>
+            <p>Treino curto, feedback imediato e progresso somente local. Nenhuma resposta clínica é transmitida.</p>
+          </div>
+          <span class="badge">🏆 modo prova</span>
+        </div>
+
+        <div class="study-layout">
+          <article class="study-card">
+            <h3>⚡ Flashcard</h3>
+            <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="Flashcard. Pressione Enter para revelar a resposta.">
+              <span class="flashcard-label">PERGUNTA</span>
+              <h4 id="flashcardQuestion">Carregando…</h4>
+              <p class="flashcard-answer" id="flashcardAnswer" hidden></p>
+              <span class="flashcard-hint" id="flashcardHint">Clique ou pressione Enter para revelar</span>
+            </div>
+            <div class="study-controls">
+              <button class="button" id="flashPrev" type="button">← Anterior</button>
+              <span id="flashPosition">1/1</span>
+              <button class="button primary" id="flashNext" type="button">Próximo →</button>
+            </div>
+          </article>
+
+          <article class="study-card">
+            <h3>🎯 Questão TEMI</h3>
+            <p id="quizQuestion"></p>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div class="quiz-feedback" id="quizFeedback" hidden role="status" aria-live="polite"></div>
+            <div class="study-controls">
+              <button class="button" id="quizPrev" type="button">← Anterior</button>
+              <span id="quizPosition">1/1</span>
+              <button class="button primary" id="quizNext" type="button">Próxima →</button>
+            </div>
+          </article>
+        </div>
+
+        <article class="study-card mt-18">
+          <h3 id="caseTitle">🧠 Caso clínico</h3>
+          <p class="case-vignette" id="caseVignette"></p>
+          <p id="casePrompt"></p>
+          <button class="button primary" id="caseReveal" type="button">Revelar raciocínio</button>
+          <div class="case-answer" id="caseAnswer" hidden></div>
+          <div class="study-controls">
+            <button class="button" id="casePrev" type="button">← Caso anterior</button>
+            <span id="casePosition">1/1</span>
+            <button class="button primary" id="caseNext" type="button">Próximo caso →</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section alt" id="fontes" aria-labelledby="fontes-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">// rastreabilidade</span>
+            <h2 id="fontes-title">Fontes primárias e instrumentos oficiais</h2>
+            <p>Links para conferência. A evidência muda; data, população, protocolo local e julgamento clínico continuam obrigatórios.</p>
+          </div>
+          <span class="badge green">📚 conferir origem</span>
+        </div>
+        <div class="reference-grid" id="referenceGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="gate-revisao" aria-labelledby="gate-revisao-title">
+      <div class="wrap review-card">
+        <div>
+          <span class="kicker">// gate antes de ativar</span>
+          <h2 id="gate-revisao-title">Revisão médica obrigatória</h2>
+          <p>O módulo está funcional e testável como prévia, mas permanece em revisão clínica até o Dr. Aldenir homologar conteúdo e adaptação institucional.</p>
+        </div>
+        <ul>
+          <li>Validar RASS, CAM-ICU, ICDSC e 4AT com enfermagem e equipe médica.</li>
+          <li>Definir horários de rastreio, documentação e plano de reavaliação.</li>
+          <li>Revisar protocolo de abstinência, antipsicóticos, sedação e QTc.</li>
+          <li>Confirmar fluxo para EEG, neuroimagem, neurologia, psiquiatria e geriatria.</li>
+          <li>Revisar casos/questões e alterar o manifesto para “ativo” somente após aceite.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div><strong>🧠 Delirium UTI/Enfermaria</strong><p>Versão 1.0.0-rc.1 · 25/07/2026.</p></div>
+      <div><strong>🔒 Privacidade local</strong><p>Sem nuvem, cadastro, telemetria ou persistência de avaliações.</p></div>
+      <div><strong>⌨️ Atalhos</strong><p><kbd>T</kbd> tema · <kbd>F</kbd> foco · <kbd>/</kbd> escalas</p></div>
+    </div>
+  </footer>
+
+  <button class="back-top" id="backTop" type="button" aria-label="Voltar ao topo">↑</button>
+  <div class="live-region" id="liveRegion" aria-live="polite"></div>
+
+  <script src="data/catalog.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

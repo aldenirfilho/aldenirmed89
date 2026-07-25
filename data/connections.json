@@ -1,7 +1,7 @@
 {
   "updatedAt": "2026-07-25T00:00:00-03:00",
   "version": "4.2-unified",
-  "description": "Mapa vivo organizado da Enciclopédia: portal, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, AVC, Hematologia Crítica, Reumatologia Crítica e macrotemas de UTI.",
+  "description": "Mapa vivo organizado da Enciclopédia: portal, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, AVC, Hematologia Crítica, Reumatologia Crítica, Delirium UTI/Enfermaria e macrotemas de UTI.",
   "legend": {
     "hub": "Nó central do projeto",
     "biblioteca": "Base de documentos e curadoria IA",
@@ -869,6 +869,56 @@
       "body": "Doença intersticial rapidamente progressiva associada a miopatias.",
       "x": 37,
       "y": 64
+    },
+    {
+      "id": "delirium-uti",
+      "label": "🧠 Delirium UTI/Enfermaria",
+      "type": "module",
+      "url": "01_Modulos_Clinicos/Delirium_UTI/index.html",
+      "status": "em_revisao",
+      "body": "Identificação, escalas, prevenção ABCDEF, terapêutica e agitação refratária.",
+      "x": 66,
+      "y": 45
+    },
+    {
+      "id": "rass-cam-icu",
+      "label": "🧮 RASS / CAM-ICU",
+      "type": "tool",
+      "url": "01_Modulos_Clinicos/Delirium_UTI/index.html#escalas",
+      "status": "em_revisao",
+      "body": "Gate de vigília e rastreio pontual do delirium em terapia intensiva.",
+      "x": 71,
+      "y": 42
+    },
+    {
+      "id": "icdsc-4at",
+      "label": "📋 ICDSC / 4AT",
+      "type": "tool",
+      "url": "01_Modulos_Clinicos/Delirium_UTI/index.html#escalas",
+      "status": "em_revisao",
+      "body": "Observação ao longo do turno na UTI e rastreio rápido na enfermaria.",
+      "x": 70,
+      "y": 49
+    },
+    {
+      "id": "delirium-prevencao",
+      "label": "🛡️ Prevenção ABCDEF",
+      "type": "topic",
+      "url": "01_Modulos_Clinicos/Delirium_UTI/index.html#prevencao",
+      "status": "em_revisao",
+      "body": "Dor, sedação, despertar/desmame, mobilidade, sono, sentidos e família.",
+      "x": 62,
+      "y": 40
+    },
+    {
+      "id": "delirium-agitacao",
+      "label": "🔥 Agitação refratária",
+      "type": "topic",
+      "url": "01_Modulos_Clinicos/Delirium_UTI/index.html#agitacao",
+      "status": "em_revisao",
+      "body": "Segurança, causas, desescalada, fármacos situacionais e mimetizadores.",
+      "x": 62,
+      "y": 50
     }
   ],
   "edges": [
@@ -1664,6 +1714,46 @@
       "from": "pulmao-rim-reuma",
       "to": "sepse-choque",
       "relation": "mimetizador-critico"
+    },
+    {
+      "from": "home",
+      "to": "delirium-uti",
+      "relation": "modulo-em-revisao"
+    },
+    {
+      "from": "delirium-uti",
+      "to": "rass-cam-icu",
+      "relation": "rastreio-uti"
+    },
+    {
+      "from": "delirium-uti",
+      "to": "icdsc-4at",
+      "relation": "rastreio-por-contexto"
+    },
+    {
+      "from": "delirium-uti",
+      "to": "delirium-prevencao",
+      "relation": "prevencao-multicomponente"
+    },
+    {
+      "from": "delirium-uti",
+      "to": "delirium-agitacao",
+      "relation": "manejo-sintomatico"
+    },
+    {
+      "from": "delirium-uti",
+      "to": "banco-temi",
+      "relation": "treino-ativo"
+    },
+    {
+      "from": "delirium-agitacao",
+      "to": "vm-sdra",
+      "relation": "desmame-e-sedacao"
+    },
+    {
+      "from": "delirium-uti",
+      "to": "sepse-choque",
+      "relation": "causa-e-mimetizador"
     }
   ],
   "links": []

@@ -423,7 +423,7 @@ class AccessiblePwaTests(unittest.TestCase):
         builder.validate_clinical_publication(ROOT)
         builder.validate_public_downloads(ROOT)
 
-        for module in ("Hematologia_Critica", "Reumatologia_Critica"):
+        for module in ("Hematologia_Critica", "Reumatologia_Critica", "Delirium_UTI"):
             manifest = load_json(f"01_Modulos_Clinicos/{module}/module.manifest.json")
             self.assertEqual(manifest["status"], "em-revisao-medica")
             self.assertEqual(manifest["publication"]["mode"], "public-preview")
