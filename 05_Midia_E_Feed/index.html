@@ -136,6 +136,7 @@
       flex: 0 0 auto;
       font-size: 24px;
     }
+    .logo img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
     .brand strong {
       display: block;
       letter-spacing: -.03em;
@@ -413,6 +414,80 @@
       margin-bottom: 12px;
       font-size: .94rem;
     }
+    .image-studio {
+      display: grid;
+      grid-template-columns: minmax(0, .85fr) minmax(320px, 1.15fr);
+      gap: 14px;
+      align-items: stretch;
+      margin: 14px 0;
+      scroll-margin-top: 86px;
+    }
+    .studio-copy {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56,189,248,.14), transparent 20rem),
+        rgba(15,23,42,.62);
+    }
+    .studio-copy h2 { margin: 7px 0 8px; letter-spacing: -.035em; }
+    .studio-copy p { margin: 0; color: #cbd5e1; line-height: 1.52; }
+    .studio-steps {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+    .studio-steps b { color: var(--text); }
+    .drop-zone {
+      width: 100%;
+      border: 2px dashed rgba(56,189,248,.48);
+      border-radius: 22px;
+      min-height: 220px;
+      padding: 22px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 10px;
+      text-align: center;
+      color: var(--text);
+      font: inherit;
+      cursor: pointer;
+      background: rgba(2,6,23,.5);
+      transition: border-color .15s ease, background .15s ease, transform .15s ease;
+    }
+    .drop-zone:hover,
+    .drop-zone.drag-active {
+      border-color: var(--gold);
+      background: rgba(56,189,248,.11);
+      transform: translateY(-2px);
+    }
+    .drop-zone-icon { font-size: 2.5rem; line-height: 1; }
+    .drop-zone strong { font-size: 1.08rem; }
+    .drop-zone p { margin: 0; color: var(--muted); line-height: 1.45; }
+    .studio-status {
+      min-height: 1.35em;
+      color: #bae6fd;
+      font-size: .82rem;
+    }
+    .studio-privacy {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #bbf7d0 !important;
+      font-weight: 700;
+      font-size: .82rem;
+    }
+    .file-guidance {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: .78rem;
+      line-height: 1.4;
+    }
     .clinical-notice {
       border: 1px solid rgba(248,113,113,.38);
       background: rgba(127,29,29,.18);
@@ -427,6 +502,7 @@
       .topbar-inner { align-items: flex-start; }
       .nav-actions { display: none; }
       .hero { grid-template-columns: 1fr; }
+      .image-studio { grid-template-columns: 1fr; }
       .toolbar { grid-template-columns: 1fr; }
       .metrics { grid-template-columns: repeat(2, 1fr); }
     }
@@ -623,7 +699,9 @@
     html.a11y-light .glass,
     html.a11y-light .card,
     html.a11y-light .focus-controls,
-    html.a11y-light .help-box {
+    html.a11y-light .help-box,
+    html.a11y-light .studio-copy,
+    html.a11y-light .drop-zone {
       background: #ffffff;
       color: var(--text);
     }
@@ -656,6 +734,7 @@
     html.a11y-light .focus-counter,
     html.a11y-light .view-mode-indicator { color: #005b6b; }
     html.a11y-light .hero p,
+    html.a11y-light .studio-copy p,
     html.a11y-light .tag,
     html.a11y-light .explain,
     html.a11y-light .feed-progress,
@@ -694,6 +773,16 @@
       color: #8a1c31;
       border-color: #b4233f;
     }
+    html.a11y-light .drop-zone {
+      border-color: #006b7d;
+    }
+    html.a11y-light .drop-zone:hover,
+    html.a11y-light .drop-zone.drag-active {
+      background: #e5f4f6;
+      border-color: #855400;
+    }
+    html.a11y-light .studio-status { color: #005b6b; }
+    html.a11y-light .studio-privacy { color: #087a55 !important; }
     html.a11y-light .study-prompt {
       color: #334e68;
       background: linear-gradient(135deg, rgba(0,107,125,.08), rgba(89,70,199,.07));
@@ -703,6 +792,15 @@
       color: #005b6b;
       border-color: #006b7d;
       background: #e5f4f6;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
     @media print {
       html, html.a11y-light, html.a11y-contrast {
@@ -722,7 +820,7 @@
         --shadow: none;
       }
       .topbar, .toolbar, .theme-strip, .floating, dialog, .install-hint,
-      .feed-progress, .focus-controls, .card .actions, .hero .actions { display: none !important; }
+      .feed-progress, .focus-controls, .card .actions, .hero .actions, .image-studio { display: none !important; }
       body { background: #fff !important; color: var(--text) !important; padding: 0; }
       body::before { display: none !important; }
       .wrap { width: 100%; padding: 0; }
@@ -756,13 +854,13 @@
 </head>
 
 <body>
-  <input id="imageInput" type="file" accept="image/*" multiple class="hidden" />
+  <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple class="hidden" />
   <input id="backupInput" type="file" accept=".json,application/json" class="hidden" />
 
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="../index.html">
-        <div class="logo">🖼️</div>
+        <div class="logo"><img src="../assets/icons/antigravity-consultas-64.png" alt="" width="44" height="44" /></div>
         <span>
           <strong>Card Feed Médico</strong>
           <small>Enciclopédia • UTI • TEMI • IA</small>
@@ -792,7 +890,7 @@
           tags, status de revisão e conexão direta com a Enciclopédia Médica Intensiva.
         </p>
         <div class="actions">
-          <button class="btn primary" id="btnImport">➕ Importar imagens locais</button>
+          <button class="btn primary" id="btnImport">➕ Abrir oficina de imagens</button>
           <button class="btn" id="btnBackup">📥 Importar backup</button>
           <button class="btn" id="btnExport">📤 Exportar backup</button>
           <button class="btn gold" id="btnReview">🔁 Modo revisão</button>
@@ -825,6 +923,33 @@
       ainda não foram validados contra diretrizes atuais. Não use um card isoladamente para
       decidir conduta; confirme a fonte vigente e o protocolo institucional.
     </div>
+
+    <section class="image-studio" id="imageStudio" aria-labelledby="imageStudioTitle">
+      <div class="studio-copy">
+        <span class="eyebrow">🛰️ Oficina local plugável</span>
+        <h2 id="imageStudioTitle">Adicione agora. Edite quando quiser.</h2>
+        <p>
+          Cada imagem vira um card local persistente. Depois, use <b>Editar local</b> para
+          ajustar título, tema, tags, explicação, notas e status de revisão.
+        </p>
+        <ul class="studio-steps">
+          <li><b>1.</b> Arraste ou selecione PNG, JPG, WEBP ou GIF.</li>
+          <li><b>2.</b> O tema inicial é sugerido pelo nome do arquivo.</li>
+          <li><b>3.</b> Edite, estude, baixe ou exporte o backup quando desejar.</li>
+        </ul>
+      </div>
+      <button class="drop-zone" id="imageDropZone" type="button"
+        aria-label="Adicionar imagens locais ao Card Feed arrastando arquivos ou abrindo o seletor">
+        <span class="drop-zone-icon" aria-hidden="true">🖼️</span>
+        <strong>Arraste imagens para esta área</strong>
+        <p>ou toque para escolher arquivos neste dispositivo</p>
+        <span class="btn primary" aria-hidden="true">Selecionar imagens</span>
+        <span class="studio-status" id="studioStatus" role="status" aria-live="polite">
+          Até 24 imagens por vez e 12 MB por imagem.
+        </span>
+        <span class="studio-privacy">🔒 Fica apenas neste dispositivo. Nenhum upload.</span>
+      </button>
+    </section>
 
     <section class="toolbar">
       <input id="search" class="field" aria-label="Buscar cards" placeholder="🔎 Buscar por tema, título, tag, comentário..." />
@@ -887,6 +1012,10 @@
         <label>Explicação / comentário <textarea id="editExplanation"></textarea></label>
         <label>Notas pessoais <textarea id="editNotes"></textarea></label>
         <label>Fonte / origem <input id="editSource" class="field" /></label>
+        <label>Substituir imagem
+          <input id="editImageInput" class="field" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+          <span class="file-guidance">Opcional. A imagem anterior permanece até você salvar uma substituta válida.</span>
+        </label>
         <label>Status
           <select id="editStatus" class="select">
             <option value="novo">Novo</option>
@@ -902,6 +1031,7 @@
       </div>
       <div class="modal-actions">
         <button type="button" class="btn danger" id="btnDelete">🗑️ Apagar local</button>
+        <button type="button" class="btn" id="btnDownloadImage">⬇️ Baixar imagem</button>
         <button type="button" class="btn gold" id="btnFavorite">⭐ Favorito</button>
         <button type="button" class="btn" id="btnMarkReview">🔁 Revisar</button>
         <button type="submit" class="btn primary">💾 Salvar</button>
@@ -977,6 +1107,9 @@
     const DARK_THEME_COLOR = "#08111f";
     const CONTRAST_THEME_COLOR = "#000000";
     const LIGHT_THEME_COLOR = "#ffffff";
+    const ALLOWED_IMAGE_TYPES = new Set(["image/png", "image/jpeg", "image/webp", "image/gif"]);
+    const MAX_IMAGE_BYTES = 12 * 1024 * 1024;
+    const MAX_BATCH_FILES = 24;
     const LIBRARY_TO_FEED_THEME = Object.freeze({
       "uti-geral": "uti-geral",
       "sepse-choque": "sepse-choque",
@@ -1519,11 +1652,73 @@
       });
     }
 
+    function formatBytes(bytes) {
+      if (!Number.isFinite(bytes) || bytes <= 0) return "0 MB";
+      if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(1).replace(".", ",")} MB`;
+    }
+
+    async function hasExpectedImageSignature(file) {
+      const bytes = new Uint8Array(await file.slice(0, 12).arrayBuffer());
+      if (file.type === "image/png") {
+        return bytes.length >= 8 && [137,80,78,71,13,10,26,10].every((value, index) => bytes[index] === value);
+      }
+      if (file.type === "image/jpeg") {
+        return bytes.length >= 3 && bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
+      }
+      if (file.type === "image/webp") {
+        return bytes.length >= 12 &&
+          String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
+          String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
+      }
+      if (file.type === "image/gif") {
+        const signature = String.fromCharCode(...bytes.slice(0, 6));
+        return signature === "GIF87a" || signature === "GIF89a";
+      }
+      return false;
+    }
+
+    async function validateImageFile(file) {
+      if (!file || !ALLOWED_IMAGE_TYPES.has(file.type)) return "formato não permitido";
+      if (!file.size) return "arquivo vazio";
+      if (file.size > MAX_IMAGE_BYTES) return `excede ${formatBytes(MAX_IMAGE_BYTES)}`;
+      if (!(await hasExpectedImageSignature(file))) return "assinatura do arquivo incompatível";
+      return "";
+    }
+
+    async function updateStudioStatus(message = "") {
+      const status = $("studioStatus");
+      if (!status) return;
+      const storedBytes = localCards.reduce((total, card) => {
+        if (Number.isFinite(card.imageSize)) return total + card.imageSize;
+        if (typeof card.imageData === "string") return total + Math.round(card.imageData.length * .75);
+        return total;
+      }, 0);
+      let quotaText = "";
+      if (navigator.storage?.estimate) {
+        try {
+          const estimate = await navigator.storage.estimate();
+          if (estimate.quota) {
+            quotaText = ` • navegador: ${formatBytes(estimate.usage || 0)} de ${formatBytes(estimate.quota)}`;
+          }
+        } catch (_) {}
+      }
+      status.textContent = message || `${localCards.length} card(s) local(is) • imagens: ${formatBytes(storedBytes)}${quotaText}`;
+    }
+
     async function importImages(files) {
       if (!files?.length) return;
+      const incoming = Array.from(files);
+      const selected = incoming.slice(0, MAX_BATCH_FILES);
       let count = 0;
-      for (const file of files) {
-        if (!file.type.startsWith("image/")) continue;
+      const rejected = [];
+      await updateStudioStatus("Processando imagens localmente…");
+      for (const file of selected) {
+        const invalidReason = await validateImageFile(file);
+        if (invalidReason) {
+          rejected.push(`${file.name}: ${invalidReason}`);
+          continue;
+        }
         const theme = inferTheme(file.name);
         const card = {
           id: uid(),
@@ -1537,6 +1732,8 @@
           favorite: false,
           imageData: await fileToDataURL(file),
           imageName: file.name,
+          imageType: file.type,
+          imageSize: file.size,
           createdAt: nowISO(),
           updatedAt: nowISO(),
           origin: "local"
@@ -1545,7 +1742,12 @@
         count++;
       }
       await refresh();
-      toast(`✅ ${count} imagem(ns) importada(s) localmente.`);
+      $("imageInput").value = "";
+      const rejectedTotal = rejected.length + Math.max(0, incoming.length - selected.length);
+      const result = `✅ ${count} imagem(ns) adicionada(s)${rejectedTotal ? ` • ${rejectedTotal} rejeitada(s)` : ""}.`;
+      await updateStudioStatus(result);
+      if (rejected.length) console.warn("Imagens rejeitadas:", rejected);
+      toast(result);
     }
 
     async function importBackup(file) {
@@ -1788,6 +1990,7 @@
             <button type="button" class="btn small gold" data-fav="${esc(c.id)}" aria-label="${c.favorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}">${c.favorite ? "⭐" : "☆"}</button>
             <button type="button" class="btn small" data-review="${esc(c.id)}">🔁 Revisar</button>
             <button type="button" class="btn small" data-copy="${esc(c.id)}">📋 Copiar resumo</button>
+            ${image ? `<button type="button" class="btn small" data-download="${esc(c.id)}">⬇️ Baixar imagem</button>` : ""}
             ${studyMode ? "" : `<button type="button" class="btn small green" data-status="${esc(c.id)}" data-value="dominado">✅ Dominei</button>`}
             ${hiddenCards.includes(c.id)
               ? `<button type="button" class="btn small restore-card" data-restore="${esc(c.id)}">♻️ Restaurar</button>`
@@ -1903,13 +2106,14 @@
     }
 
     async function handleFeedAction(event) {
-      const target = event.target instanceof Element ? event.target.closest("[data-edit], [data-view], [data-fav], [data-review], [data-copy], [data-status], [data-study-rating], [data-classify], [data-hide], [data-restore]") : null;
+      const target = event.target instanceof Element ? event.target.closest("[data-edit], [data-view], [data-fav], [data-review], [data-copy], [data-download], [data-status], [data-study-rating], [data-classify], [data-hide], [data-restore]") : null;
       if (!target || !$("feed").contains(target)) return;
       if (target.dataset.edit) return openEdit(target.dataset.edit);
       if (target.dataset.view) return openViewer(target.dataset.view);
       if (target.dataset.fav) return toggleFavorite(target.dataset.fav);
       if (target.dataset.review) return markReview(target.dataset.review);
       if (target.dataset.copy) return copySummary(target.dataset.copy);
+      if (target.dataset.download) return downloadCardImage(target.dataset.download);
       if (target.dataset.status) return quickStatus(target.dataset.status, target.dataset.value);
       if (target.dataset.studyRating) return rateStudyCard(target.dataset.studyRating, target.dataset.value);
       if (target.dataset.classify) return openClassify(target.dataset.classify);
@@ -2093,6 +2297,34 @@
       $("viewerDialog").showModal();
     }
 
+    function downloadCardImage(id) {
+      const c = getCard(id);
+      const imageSource = c?.imageData || c?.imageUrl || "";
+      if (!c || !imageSource) {
+        toast("Este card não possui imagem para baixar.");
+        return;
+      }
+      const extensionByType = {
+        "image/png": ".png",
+        "image/jpeg": ".jpg",
+        "image/webp": ".webp",
+        "image/gif": ".gif"
+      };
+      let filename = String(c.imageName || c.title || "card-antigravity")
+        .replace(/[\u0000-\u001f<>:\"/\\|?*]/g, "-")
+        .trim()
+        .slice(0, 120) || "card-antigravity";
+      if (!/\.[a-z0-9]{2,5}$/i.test(filename)) filename += extensionByType[c.imageType] || ".png";
+      const link = document.createElement("a");
+      link.href = imageSource;
+      link.download = filename;
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      toast("⬇️ Imagem preparada para download.");
+    }
+
     function openEdit(id) {
       const c = getCard(id);
       if (!c) return;
@@ -2104,14 +2336,32 @@
       $("editNotes").value = c.notes || "";
       $("editSource").value = c.source || "";
       $("editStatus").value = c.status || "novo";
+      $("editImageInput").value = "";
       $("editDialog").showModal();
     }
 
     async function saveEdit() {
       const original = getCard($("editId").value);
-      if (!original) return;
+      if (!original) return false;
+      const replacement = $("editImageInput").files?.[0];
+      let replacementData = {};
+      if (replacement) {
+        const invalidReason = await validateImageFile(replacement);
+        if (invalidReason) {
+          toast(`❌ Imagem não substituída: ${invalidReason}.`);
+          return false;
+        }
+        replacementData = {
+          imageData: await fileToDataURL(replacement),
+          imageUrl: "",
+          imageName: replacement.name,
+          imageType: replacement.type,
+          imageSize: replacement.size
+        };
+      }
       const c = {
         ...original,
+        ...replacementData,
         title: $("editTitle").value.trim() || original.title,
         theme: $("editTheme").value || "uti-geral",
         tags: $("editTags").value.split(",").map(x => x.trim()).filter(Boolean),
@@ -2125,6 +2375,7 @@
       await putLocal(c);
       await refresh();
       toast("💾 Edição salva localmente.");
+      return true;
     }
 
     async function toggleFavorite(id) {
@@ -2174,12 +2425,38 @@
     async function refresh() {
       await loadLocalData();
       render();
+      await updateStudioStatus();
     }
 
     function wire() {
-      $("btnImport").onclick = () => $("imageInput").click();
+      const dropZone = $("imageDropZone");
+      const selectImages = () => $("imageInput").click();
+      const queueImageImport = files => importImages(files).catch(error => {
+        console.error(error);
+        updateStudioStatus("❌ Não foi possível salvar as imagens. Verifique o espaço disponível.");
+        toast("❌ Falha ao salvar imagens localmente.");
+      });
+      $("btnImport").onclick = () => {
+        $("imageStudio").scrollIntoView({ behavior: "smooth", block: "center" });
+        selectImages();
+      };
       $("btnFloating").onclick = () => $("imageInput").click();
-      $("imageInput").onchange = e => importImages(e.target.files);
+      $("imageInput").onchange = e => queueImageImport(e.target.files);
+      dropZone.onclick = selectImages;
+      for (const eventName of ["dragenter", "dragover"]) {
+        dropZone.addEventListener(eventName, event => {
+          event.preventDefault();
+          dropZone.classList.add("drag-active");
+        });
+      }
+      dropZone.addEventListener("dragleave", event => {
+        if (!dropZone.contains(event.relatedTarget)) dropZone.classList.remove("drag-active");
+      });
+      dropZone.addEventListener("drop", event => {
+        event.preventDefault();
+        dropZone.classList.remove("drag-active");
+        queueImageImport(event.dataTransfer?.files);
+      });
       $("btnBackup").onclick = () => $("backupInput").click();
       $("backupInput").onchange = e => importBackup(e.target.files[0]);
       $("btnExport").onclick = exportBackup;
@@ -2206,8 +2483,12 @@
       $("btnPreviousCard").onclick = () => moveFocus(-1);
       $("btnNextCard").onclick = () => moveFocus(1);
       $("btnRevealStudy").onclick = toggleStudyAnswer;
-      $("editForm").onsubmit = async e => { e.preventDefault(); await saveEdit(); $("editDialog").close(); };
+      $("editForm").onsubmit = async e => {
+        e.preventDefault();
+        if (await saveEdit()) $("editDialog").close();
+      };
       $("btnDelete").onclick = deleteCurrent;
+      $("btnDownloadImage").onclick = () => downloadCardImage($("editId").value);
       $("btnFavorite").onclick = async () => { await toggleFavorite($("editId").value); $("editDialog").close(); };
       $("btnMarkReview").onclick = async () => { await markReview($("editId").value); $("editDialog").close(); };
       $("feed").addEventListener("click", event => {
@@ -2237,6 +2518,7 @@
       applyInitialQuery();
       wire();
       render();
+      await updateStudioStatus();
       toast("🧠 Card Feed Médico carregado.");
     }
 
