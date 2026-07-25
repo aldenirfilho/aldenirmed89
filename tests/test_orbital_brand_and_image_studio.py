@@ -46,12 +46,12 @@ class OrbitalBrandTests(unittest.TestCase):
             self.assertEqual((width, height), (1024, 1024))
             self.assertIn(color_type, {4, 6}, f"{filename} precisa preservar transparência")
 
-    def test_launch_animation_runs_five_seconds_once_and_respects_reduced_motion(self) -> None:
+    def test_mission_portal_runs_five_seconds_once_and_respects_reduced_motion(self) -> None:
         home = (ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertIn("animation:orbital-launch 5s", home)
-        self.assertIn("animation:orbital-launch-scan 5s", home)
-        self.assertIn("@keyframes orbital-launch", home)
-        self.assertIn("@keyframes orbital-launch-scan", home)
+        self.assertIn("const MISSION_DURATION=5000", home)
+        self.assertIn("animation:mission-progress 5s", home)
+        self.assertIn("@keyframes mission-card-liftoff", home)
+        self.assertIn("@keyframes mission-star-drive", home)
         self.assertNotIn("animation-iteration-count:infinite", home)
         self.assertIn("@media(prefers-reduced-motion:reduce)", home)
         self.assertIn("html.a11y-reduce-motion *", home)
