@@ -957,17 +957,24 @@
     <section class="knowledge-forge" id="knowledgeForge" aria-labelledby="knowledgeForgeTitle">
       <div class="forge-head">
         <div class="forge-head-copy">
-          <span class="eyebrow">🧠 Knowledge Forge · produção ativa</span>
-          <h2 id="knowledgeForgeTitle">A imagem inicia a investigação — não encerra a resposta.</h2>
+          <span class="eyebrow">🧠 Knowledge Forge Pro · app local de produção ativa</span>
+          <h2 id="knowledgeForgeTitle">Seu laboratório completo para transformar evidência em conhecimento.</h2>
           <p>
             Converta imagens do GPT e outros geradores em projetos autorais: recorte e anote,
             extraia texto localmente e produza modelos, mapas, decisões e microaulas criticáveis.
           </p>
         </div>
         <div class="forge-head-actions">
+          <button class="btn primary" type="button" id="btnForgeNew">➕ Novo projeto por imagens</button>
+          <button class="btn" type="button" id="btnForgeGallery">🕸️ Galeria causal</button>
+          <a class="btn" href="../02_Biblioteca_IA_Engine/index.html">📚 Estudar na Biblioteca</a>
           <button class="btn primary" type="button" id="btnForgeExport">📦 Backup ZIP completo</button>
           <button class="btn" type="button" id="btnForgeImport">↩️ Restaurar ZIP</button>
+          <input id="forgeImageInput" type="file" multiple
+            accept=".png,.jpg,.jpeg,.webp,.gif,.bmp,.avif,image/png,image/jpeg,image/webp,image/gif,image/bmp,image/avif"
+            class="hidden" />
           <input id="forgeZipInput" type="file" accept=".zip,application/zip" class="hidden" />
+          <input id="forgePeerInput" type="file" accept=".json,application/json" class="hidden" />
         </div>
       </div>
       <div class="forge-metrics" aria-label="Métricas dos projetos de conhecimento">
@@ -975,11 +982,21 @@
         <div class="forge-metric"><b id="forgeStatProduced">0</b><span>artefatos produzidos</span></div>
         <div class="forge-metric"><b id="forgeStatTeachable">0</b><span>sínteses ensináveis</span></div>
         <div class="forge-metric"><b id="forgeStatOcr">0</b><span>projetos com OCR</span></div>
+        <div class="forge-metric"><b id="forgeStatCards">0</b><span>cards produtivos</span></div>
+        <div class="forge-metric"><b id="forgeStatSources">0</b><span>fontes vinculadas</span></div>
       </div>
       <p class="forge-principle">
         <b>Princípio orbital:</b> não complete uma frase. Produza uma estrutura que possa ser
         testada, contrariada, ensinada e melhorada.
       </p>
+      <div class="forge-capabilities" aria-label="Capacidades da Forja">
+        <span>🖼️ PNG · JPG · WebP · GIF · BMP · AVIF</span>
+        <span>📐 qualquer proporção, até 80 megapixels</span>
+        <span>🗃️ Anki · CSV · Markdown · HTML · JSON</span>
+        <span>📄 impressão pronta para PDF</span>
+        <span>🤝 revisão por arquivo, sem conta</span>
+        <span>📚 fontes rastreáveis da Biblioteca</span>
+      </div>
       <div class="forge-projects" id="forgeProjects" aria-live="polite"></div>
       <p id="forgeBackupStatus" class="studio-status" role="status" aria-live="polite"></p>
     </section>
@@ -1047,6 +1064,14 @@
           aria-selected="false" aria-controls="forgePanelOcr" tabindex="-1">2 · OCR local</button>
         <button class="btn small forge-tab" type="button" role="tab" data-forge-tab="missions"
           aria-selected="false" aria-controls="forgePanelMissions" tabindex="-1">3 · Produzir conhecimento</button>
+        <button class="btn small forge-tab" type="button" role="tab" data-forge-tab="cards"
+          aria-selected="false" aria-controls="forgePanelCards" tabindex="-1">4 · Cards e TEMI</button>
+        <button class="btn small forge-tab" type="button" role="tab" data-forge-tab="sources"
+          aria-selected="false" aria-controls="forgePanelSources" tabindex="-1">5 · Artigos e fontes</button>
+        <button class="btn small forge-tab" type="button" role="tab" data-forge-tab="peer"
+          aria-selected="false" aria-controls="forgePanelPeer" tabindex="-1">6 · Revisão por pares</button>
+        <button class="btn small forge-tab" type="button" role="tab" data-forge-tab="export"
+          aria-selected="false" aria-controls="forgePanelExport" tabindex="-1">7 · Exportar</button>
       </div>
 
       <section class="forge-tabpanel" id="forgePanelImage" role="tabpanel" data-forge-panel="image">
@@ -1054,6 +1079,14 @@
           Nome do projeto
           <input class="field" id="forgeProjectTitle" maxlength="180" />
         </label>
+        <div class="forge-attachments-head">
+          <div>
+            <b>🖼️ Imagens do projeto</b>
+            <small>Várias proporções e dimensões; a edição sempre preserva o original.</small>
+          </div>
+          <button class="btn small" type="button" id="btnForgeAddImages">＋ Anexar imagens</button>
+        </div>
+        <div class="forge-attachments" id="forgeAttachments" aria-label="Imagens anexadas"></div>
         <div class="forge-image-layout">
           <div class="forge-canvas-shell">
             <canvas id="forgeCanvas" width="960" height="540" role="img"
@@ -1086,6 +1119,8 @@
             <div class="forge-editor-tools">
               <button class="btn" type="button" id="btnForgeUndo">↶ Desfazer</button>
               <button class="btn" type="button" id="btnForgeReset">♻️ Original</button>
+              <button class="btn" type="button" id="btnForgeFit">↔️ Ajustar</button>
+              <button class="btn" type="button" id="btnForgeActual">1:1 100%</button>
             </div>
             <p class="forge-editor-status" id="forgeEditorStatus" role="status" aria-live="polite"></p>
           </aside>
@@ -1122,12 +1157,124 @@
         </div>
         <div class="forge-missions" id="forgeMissions"></div>
       </section>
+
+      <section class="forge-tabpanel" id="forgePanelCards" role="tabpanel" data-forge-panel="cards" hidden>
+        <div class="forge-panel-head">
+          <div>
+            <h3>🎯 Cards produtivos e desafios TEMI</h3>
+            <p>O verso é uma produção sua, sustentada por evidência. A Forja não inventa conteúdo clínico ausente.</p>
+          </div>
+          <div class="forge-head-actions">
+            <button class="btn primary" type="button" id="btnForgeGenerateCards">Gerar dos artefatos</button>
+            <button class="btn gold" type="button" id="btnForgeGenerateTemi">Gerar desafios TEMI</button>
+          </div>
+        </div>
+        <div class="forge-cards-grid" id="forgeCards"></div>
+        <div class="forge-temi-grid" id="forgeTemiChallenges"></div>
+      </section>
+
+      <section class="forge-tabpanel" id="forgePanelSources" role="tabpanel" data-forge-panel="sources" hidden>
+        <div class="forge-panel-head">
+          <div>
+            <h3>📚 Artigos e Biblioteca conectada</h3>
+            <p>Vincule documentos do acervo, abra a leitura focada e mantenha título, caminho e SHA-256 junto ao projeto.</p>
+          </div>
+          <a class="btn" href="../02_Biblioteca_IA_Engine/index.html" target="_blank" rel="noopener">Abrir Biblioteca completa</a>
+        </div>
+        <label class="forge-source-search">
+          Buscar no catálogo local
+          <input class="field" id="forgeLibrarySearch" maxlength="180"
+            placeholder="Ex.: ventilação, PTT, vasculite, choque…" />
+        </label>
+        <div class="forge-source-columns">
+          <div>
+            <h4>Resultados</h4>
+            <div class="forge-source-results" id="forgeLibraryResults"></div>
+          </div>
+          <div>
+            <h4>Fontes vinculadas</h4>
+            <div class="forge-source-results" id="forgeLinkedSources"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="forge-tabpanel" id="forgePanelPeer" role="tabpanel" data-forge-panel="peer" hidden>
+        <div class="forge-panel-head">
+          <div>
+            <h3>🤝 Revisão por pares sem nuvem</h3>
+            <p>Exporte um pacote, envie ao colega e importe a resposta. Identificação por apelido é suficiente.</p>
+          </div>
+          <div class="forge-head-actions">
+            <button class="btn" type="button" id="btnForgePeerPacket">Exportar pacote</button>
+            <button class="btn" type="button" id="btnForgePeerImport">Importar pacote/resposta</button>
+          </div>
+        </div>
+        <div class="forge-peer-form">
+          <label>Revisor ou apelido <input class="field" id="forgePeerName" maxlength="80" /></label>
+          <label>Evidência <select class="select" id="forgePeerEvidence"></select></label>
+          <label>Coerência <select class="select" id="forgePeerCoherence"></select></label>
+          <label>Incerteza explícita <select class="select" id="forgePeerUncertainty"></select></label>
+          <label>Capacidade de ensinar <select class="select" id="forgePeerTeachability"></select></label>
+          <label class="forge-peer-wide">Ponto forte
+            <textarea id="forgePeerStrength" maxlength="4000"></textarea>
+          </label>
+          <label class="forge-peer-wide">Crítica construtiva
+            <textarea id="forgePeerCritique" maxlength="4000"></textarea>
+          </label>
+          <label class="forge-peer-wide">Próximo teste recomendado
+            <textarea id="forgePeerNextTest" maxlength="4000"></textarea>
+          </label>
+          <label>Decisão
+            <select class="select" id="forgePeerDecision">
+              <option value="revise">Revisar e reenviar</option>
+              <option value="testable">Apto para teste</option>
+              <option value="teachable">Apto para ensinar</option>
+            </select>
+          </label>
+          <button class="btn primary forge-peer-save" type="button" id="btnForgePeerSave">Salvar revisão</button>
+        </div>
+        <div class="forge-reviews" id="forgePeerReviews"></div>
+      </section>
+
+      <section class="forge-tabpanel" id="forgePanelExport" role="tabpanel" data-forge-panel="export" hidden>
+        <div class="forge-panel-head">
+          <div>
+            <h3>📤 Salvar onde quiser</h3>
+            <p>Exporte o projeto inteiro ou apenas os cards. O PDF usa o diálogo seguro de impressão do dispositivo.</p>
+          </div>
+        </div>
+        <div class="forge-export-grid">
+          <button class="forge-export-card" type="button" data-forge-export="anki"><b>🗃️ Kit Anki ZIP</b><span>TSV importável + mídia + instruções</span></button>
+          <button class="forge-export-card" type="button" data-forge-export="pdf"><b>📄 PDF</b><span>Relatório visual imprimível</span></button>
+          <button class="forge-export-card" type="button" data-forge-export="csv"><b>📊 CSV</b><span>Cards para planilhas</span></button>
+          <button class="forge-export-card" type="button" data-forge-export="markdown"><b>📝 Markdown</b><span>Projeto legível e portátil</span></button>
+          <button class="forge-export-card" type="button" data-forge-export="html"><b>🌐 HTML</b><span>Relatório independente</span></button>
+          <button class="forge-export-card" type="button" data-forge-export="json"><b>🧬 JSON</b><span>Dados estruturados completos</span></button>
+        </div>
+        <p id="forgeExportStatus" class="forge-editor-status" role="status" aria-live="polite"></p>
+      </section>
     </div>
     <div class="modal-actions">
       <div class="forge-dialog-actions">
         <span class="forge-save-status" id="forgeSaveStatus" role="status" aria-live="polite"></span>
         <button class="btn primary" type="button" id="btnForgeSave">💾 Salvar projeto local</button>
       </div>
+    </div>
+  </dialog>
+
+  <dialog id="forgeGalleryDialog" class="forge-gallery-dialog" aria-labelledby="forgeGalleryTitle">
+    <div class="modal-head">
+      <div>
+        <strong id="forgeGalleryTitle">🕸️ Galeria de mapas causais</strong>
+        <small>Gatilho → mecanismo → achados → decisão → desfecho</small>
+      </div>
+      <button class="btn small" type="button" id="btnForgeGalleryClose" aria-label="Fechar galeria">✕</button>
+    </div>
+    <div class="modal-body">
+      <label>Filtrar mapas
+        <input class="field" id="forgeGallerySearch" maxlength="180" placeholder="Buscar projeto ou etapa causal…" />
+      </label>
+      <div class="forge-causal-gallery" id="forgeCausalGallery"></div>
     </div>
   </dialog>
 
@@ -1215,7 +1362,7 @@
       <div class="help-box"><b>5) Cinco visualizações</b><br/>A rolagem contínua é o padrão e carrega os cards em lotes leves. O botão <code>📐 Visualização</code> alterna entre Grade, Feed contínuo, Compacto, Carrossel e Estudo. No Carrossel/Estudo, use ←/→ ou deslize para navegar.</div>
       <div class="help-box"><b>6) Estudo ativo</b><br/>No modo Estudo, observe primeiro a imagem, revele a explicação e avalie como <code>Difícil</code>, <code>Aprendendo</code> ou <code>Dominei</code>. A próxima revisão fica salva neste navegador em 1, 3 ou 14 dias.</div>
       <div class="help-box"><b>7) Revisão e conexões</b><br/>Use <code>🎲 Sortear card</code>, os filtros rápidos e <code>🔗 Explorar tema</code> para saltar à Biblioteca, POCUS, TEMI ou calculadoras.</div>
-      <div class="help-box"><b>8) Forja de Conhecimento</b><br/>Em um card com imagem, toque em <code>🧠 Forjar conhecimento</code>. Recorte e anote, execute OCR local e produza cinco artefatos: evidências, modelos concorrentes, mapa causal, decisão e síntese ensinável.</div>
+      <div class="help-box"><b>8) App Forjador de Conhecimento</b><br/>Inicie por um card ou por até 12 imagens PNG, JPG, WebP, GIF, BMP ou AVIF. Produza artefatos, vincule artigos, gere cards e desafios TEMI fundamentados, solicite revisão por pares e exporte para Anki, PDF, CSV, Markdown, HTML ou JSON.</div>
       <div class="help-box help-warning"><b>⚠️ Limitação</b><br/>Cards locais ficam neste navegador (IndexedDB). Para sincronizar, exporte backup JSON ou envie imagens para <code>assets/cards/</code> + cadastre em <code>data/cards.json</code>.</div>
     </div>
   </dialog>

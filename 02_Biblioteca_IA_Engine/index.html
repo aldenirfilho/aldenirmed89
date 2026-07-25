@@ -752,6 +752,32 @@
         </div>
         <p class="reader-highlights-help">* PDF gera uma folha de anotações imprimível; escolha “Salvar como PDF”. Não aplica overlay ao arquivo original.</p>
       </section>
+      <section class="reader-highlights-panel library-forge-builder" aria-labelledby="libraryForgeHeading">
+        <div class="reader-highlights-heading">
+          <h4 id="libraryForgeHeading">🧠 Card produtivo na Forja</h4>
+          <span class="reader-highlight-count" id="libraryForgeQueueCount">0</span>
+        </div>
+        <p class="reader-highlights-help">
+          Produza a resposta em suas palavras. A evidência vem dos destaques deste documento;
+          sem evidência literal, nenhum card é salvo.
+        </p>
+        <label>Desafio de recuperação
+          <textarea id="libraryForgePrompt" maxlength="1200"
+            placeholder="Ex.: Reconstrua o mecanismo e diga qual dado mudaria sua decisão."></textarea>
+        </label>
+        <label>Sua produção
+          <textarea id="libraryForgeAnswer" maxlength="8000"
+            placeholder="Explique, compare, modele ou decida — não copie o trecho."></textarea>
+        </label>
+        <label>Tags
+          <input id="libraryForgeTags" maxlength="400" placeholder="TEMI, tema, mecanismo…" />
+        </label>
+        <div class="reader-export-row">
+          <button type="button" id="libraryForgeSave" class="btn btn-primary" onclick="saveLibraryCardToForge()">Salvar na Forja</button>
+          <a class="btn btn-secondary" href="../05_Midia_E_Feed/index.html?forge=intake#knowledgeForge" target="_blank" rel="noopener">Abrir Forja</a>
+        </div>
+        <p class="reader-highlights-help" id="libraryForgeStatus" role="status" aria-live="polite"></p>
+      </section>
       <h4>🔗 Continuar no ecossistema</h4>
       <div class="connections-list" id="previewConnections"></div>
       <h4>📚 Relacionados</h4>
@@ -904,8 +930,94 @@ let currentFormatFilter = 'todos';
 let currentOriginFilter = 'todos';
 let currentView = 'catalogo';
 const STUDY_STORAGE_KEY = 'biblioteca_estudo_v1';
+const FORGE_INTAKE_KEY = 'antigravity_forge_intake_v1';
 const LOCAL_MUTABLE_FIELDS = ["title","resumo","theme","tags","status","ia_origem","origin","origem","updatedAt"];
 const EDITORIAL_FIELDS = ["title","resumo","tags","ia_origem","data","createdAt","authorshipStatus","authorshipEvidence","license","privacyReviewStatus","clinicalReviewStatus","reviewedAt"];
+
+function readForgeIntakeQueue() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(FORGE_INTAKE_KEY) || '[]');
+    return Array.isArray(parsed) ? parsed.slice(-100) : [];
+  } catch {
+    return [];
+  }
+}
+
+function updateForgeQueueCount() {
+  const count = document.getElementById('libraryForgeQueueCount');
+  if (count) count.textContent = String(readForgeIntakeQueue().length);
+}
+
+function primeLibraryForgeBuilder(item) {
+  const prompt = document.getElementById('libraryForgePrompt');
+  const answer = document.getElementById('libraryForgeAnswer');
+  const tags = document.getElementById('libraryForgeTags');
+  const status = document.getElementById('libraryForgeStatus');
+  if (prompt) {
+    prompt.value = `Reconstrua o modelo causal ou decisório de “${String(item?.title || 'este documento').slice(0, 180)}” e indique qual evidência mudaria sua conclusão.`;
+  }
+  if (answer) answer.value = '';
+  if (tags) {
+    tags.value = ['TEMI', item?.theme, ...(Array.isArray(item?.tags) ? item.tags.slice(0, 4) : [])]
+      .filter(Boolean).join(', ');
+  }
+  if (status) status.textContent = 'Destaque um trecho, produza sua resposta e salve.';
+  updateForgeQueueCount();
+}
+
+function saveLibraryCardToForge() {
+  const status = document.getElementById('libraryForgeStatus');
+  const prompt = String(document.getElementById('libraryForgePrompt')?.value || '').trim();
+  const answer = String(document.getElementById('libraryForgeAnswer')?.value || '').trim();
+  const tags = String(document.getElementById('libraryForgeTags')?.value || '')
+    .split(',').map(tag => tag.trim()).filter(Boolean).slice(0, 20);
+  const payload = focusedReader?.exportPayload?.();
+  const highlights = Array.isArray(payload?.highlights) ? payload.highlights : [];
+  const evidence = highlights.map(item => item.quote).filter(Boolean).join('\n\n').slice(0, 12000);
+  if (!currentPreviewItem || evidence.length < 20) {
+    if (status) status.textContent = '⚠️ Selecione e destaque ao menos uma evidência literal antes de salvar.';
+    return;
+  }
+  if (prompt.length < 20 || answer.length < 40) {
+    if (status) status.textContent = '⚠️ Escreva um desafio claro e uma produção autoral com pelo menos 40 caracteres.';
+    return;
+  }
+  const stamp = new Date().toISOString();
+  const random = crypto.getRandomValues(new Uint32Array(1))[0].toString(36);
+  const source = {
+    id: String(currentPreviewItem.id || currentPreviewItem.path || '').slice(0, 240),
+    title: String(currentPreviewItem.title || currentPreviewItem.name || 'Documento da Biblioteca').slice(0, 240),
+    path: String(currentPreviewItem.path || '').slice(0, 1200),
+    sourceSha256: String(currentPreviewItem.sourceSha256 || '').slice(0, 64),
+    theme: String(currentPreviewItem.theme || '').slice(0, 120),
+    origin: String(currentPreviewItem.origin || '').slice(0, 120)
+  };
+  const queue = readForgeIntakeQueue();
+  queue.push({
+    schema: 'antigravity-library-forge-intake-v1',
+    id: `intake_${Date.now().toString(36)}_${random}`,
+    createdAt: stamp,
+    source,
+    card: {
+      id: `card_${Date.now().toString(36)}_${random}`,
+      front: prompt.slice(0, 1200),
+      back: answer.slice(0, 8000),
+      evidence,
+      sourceId: source.id,
+      tags,
+      createdAt: stamp
+    }
+  });
+  try {
+    localStorage.setItem(FORGE_INTAKE_KEY, JSON.stringify(queue.slice(-100)));
+    if (status) status.textContent = '✅ Card produtivo salvo localmente para a Forja.';
+    const answerField = document.getElementById('libraryForgeAnswer');
+    if (answerField) answerField.value = '';
+    updateForgeQueueCount();
+  } catch {
+    if (status) status.textContent = '❌ Espaço local insuficiente. Exporte ou limpe itens antigos da Forja.';
+  }
+}
 
 // Lógica de URL base dinâmica
 function getBaseUrl() {
@@ -2548,6 +2660,7 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
   previewOverlay.classList.add('open');
   setReaderMobileToolsExpanded(!isReaderMobileLayout());
   populateStudyPanel(currentPreviewItem);
+  primeLibraryForgeBuilder(currentPreviewItem);
   renderCurrentPreview('clean');
   setTimeout(() => document.getElementById('previewClose')?.focus(), 0);
 

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "card-feed-medico-";
-const CACHE_NAME = `${CACHE_PREFIX}v6`;
+const CACHE_NAME = `${CACHE_PREFIX}v7`;
 const CORE_ASSETS = [
   "./",
   "./index.html",

@@ -141,7 +141,7 @@ class CardFeedClarityTests(unittest.TestCase):
 
     def test_service_worker_cache_is_bumped_and_old_versions_are_cleaned(self) -> None:
         service_worker = (FEED / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v6`', service_worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v7`', service_worker)
         self.assertIn('event.request.headers.has("range")', service_worker)
         self.assertIn("event.respondWith(fetch(event.request))", service_worker)
         self.assertIn("k.startsWith(CACHE_PREFIX) && k !== CACHE_NAME", service_worker)

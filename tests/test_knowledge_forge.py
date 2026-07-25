@@ -21,7 +21,7 @@ class KnowledgeForgeContractTests(unittest.TestCase):
     def test_feed_exposes_productive_projects_instead_of_completion_cards(self) -> None:
         markers = (
             'id="knowledgeForge"',
-            "A imagem inicia a investigação — não encerra a resposta.",
+            "Seu laboratório completo para transformar evidência em conhecimento.",
             "não complete uma frase",
             'data-forge="${esc(c.id)}"',
             "🧠 Forjar conhecimento",
@@ -109,7 +109,7 @@ class KnowledgeForgeContractTests(unittest.TestCase):
             self.assertGreater(path.stat().st_size, minimum_size, relative)
         self.assertEqual((VENDOR / "lang/por.traineddata.gz").read_bytes()[:2], b"\x1f\x8b")
         self.assertEqual((VENDOR / "lang/eng.traineddata.gz").read_bytes()[:2], b"\x1f\x8b")
-        self.assertIn('CACHE_NAME = `${CACHE_PREFIX}v6`', SERVICE_WORKER)
+        self.assertIn('CACHE_NAME = `${CACHE_PREFIX}v7`', SERVICE_WORKER)
         for relative in (
             "assets/knowledge-forge.css",
             "assets/knowledge-forge.js",
