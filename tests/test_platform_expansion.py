@@ -28,6 +28,10 @@ def png_size(relative: str) -> tuple[int, int]:
     return struct.unpack(">II", payload[16:24])
 
 
+def sha256(relative: str) -> str:
+    return hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
+
+
 def load_download_checksums() -> dict[str, str]:
     result: dict[str, str] = {}
     manifest = ROOT / "downloads/SHA256SUMS.txt"
@@ -98,8 +102,11 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("const SHELL_ASSETS", worker)
         self.assertIn("Promise.allSettled", worker)
 
-        self.assertEqual(png_size("assets/icons/antigravity-consultas-192.png"), (192, 192))
-        self.assertEqual(png_size("assets/icons/antigravity-consultas-512.png"), (512, 512))
+        for size in (32, 64, 192, 512, 1024):
+            self.assertEqual(
+                png_size(f"assets/icons/antigravity-consultas-{size}.png"),
+                (size, size),
+            )
         self.assertEqual(png_size("assets/icons/apple-touch-icon.png"), (180, 180))
         for size in (120, 152, 167, 180, 1024):
             self.assertEqual(
@@ -111,7 +118,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="Antigravity"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v5`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v6`', worker)
         self.assertIn('new URL("./downloads/", self.registration.scope)', worker)
         self.assertIn('cache: "no-store"', worker)
         self.assertIn("networkOnlyDownload(request)", worker)
@@ -123,6 +130,58 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn('href="docs_usuario/OPERACAO_CONTINUA/"', home)
         self.assertIn("Baixar atalho opcional", home)
         self.assertIn("não contém .app, script ou instalador", home)
+
+    def test_a_orbital_identity_replaces_legacy_cross_assets(self) -> None:
+        home = (ROOT / "index.html").read_text(encoding="utf-8")
+        expected_master = (
+            "1b0332baa08c1e9aebc98868ad2714a1a7c6b035302d28699fd052de5e324850"
+        )
+        legacy_hashes = {
+            "44135464a2514d8b35ed01c3a6674425f98cb35ce4e88b582c43c23eecddc477",
+            "4be52ad4471b1686af846fdef431ceee9c369d0fb0c98d3f3512227d2ec20489",
+            "cf98e8fe91f626ca81db185b0e2046b49dd845dc4018def45dd49c0b40eab5f4",
+            "8a2d35b0f93ee9a85a8d95ae0d8ea0bab7a2e0cf8739e87d4c09c0b2437955b3",
+        }
+        master_aliases = (
+            "assets/brand/antigravity-a-orbital-master.png",
+            "assets/icons/antigravity-consultas-1024.png",
+            "assets/icons/ios/apple-touch-icon-1024.png",
+            "assets/img/logo.png",
+            "logo_concept_3_book_1778036997285.png",
+            "public_site/assets/img/logo.png",
+            "public_site/logo_concept_3_book_1778036997285.png",
+        )
+
+        for relative in master_aliases:
+            self.assertEqual(png_size(relative), (1024, 1024))
+            self.assertEqual(sha256(relative), expected_master)
+        for relative in (
+            *master_aliases,
+            "favicon.ico",
+            "windows/Antigravity-Consultas-Windows/app/AntigravityConsultas.ico",
+        ):
+            self.assertNotIn(sha256(relative), legacy_hashes)
+
+        favicon = (ROOT / "favicon.ico").read_bytes()
+        windows_icon = (
+            ROOT
+            / "windows/Antigravity-Consultas-Windows/app/AntigravityConsultas.ico"
+        ).read_bytes()
+        self.assertEqual(favicon[:4], b"\x00\x00\x01\x00")
+        self.assertEqual(int.from_bytes(favicon[4:6], "little"), 7)
+        self.assertEqual(windows_icon, favicon)
+        self.assertIn(
+            'aria-label="Antigravity Consultas — início"',
+            home,
+        )
+        self.assertIn(
+            'src="./assets/icons/antigravity-consultas-64.png" alt=""',
+            home,
+        )
+        self.assertNotIn(
+            'src="logo_concept_3_book_1778036997285.png"',
+            home,
+        )
 
     def test_public_download_showcase_is_visible_and_complete(self) -> None:
         home = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -331,6 +390,12 @@ class OperationalPackageTests(unittest.TestCase):
 
         with zipfile.ZipFile(archive) as package:
             names = set(package.namelist())
+            for size in (120, 152, 167, 180, 1024):
+                filename = f"apple-touch-icon-{size}.png"
+                self.assertEqual(
+                    package.read(filename),
+                    (ROOT / f"assets/icons/ios/{filename}").read_bytes(),
+                )
         self.assertEqual(
             names,
             {
@@ -371,6 +436,13 @@ class OperationalPackageTests(unittest.TestCase):
         self.assertEqual(names, expected_files)
         self.assertEqual(icon[:4], b"\x00\x00\x01\x00")
         self.assertEqual(int.from_bytes(icon[4:6], "little"), 7)
+        self.assertEqual(
+            icon,
+            (
+                ROOT
+                / "windows/Antigravity-Consultas-Windows/app/AntigravityConsultas.ico"
+            ).read_bytes(),
+        )
         self.assertIn(
             "https://aldenirfilho.github.io/antigravity-consultas/",
             scripts,

@@ -41,7 +41,7 @@ Ele não altera navegador, registro global, políticas, firewall ou programas.
 | `app/Instalar.ps1` | copia a pequena carga local e cria atalhos |
 | `app/Desinstalar.ps1` | remove somente os artefatos conhecidos |
 | `app/Abrir-Antigravity.cmd` | abre exclusivamente o site oficial |
-| `app/AntigravityConsultas.ico` | ícone multirresolução dos atalhos (16–256 px) |
+| `app/AntigravityConsultas.ico` | ícone A Orbital multirresolução dos atalhos (16–256 px) |
 
 Os scripts são texto aberto: podem ser inspecionados no Bloco de Notas antes da
 execução.

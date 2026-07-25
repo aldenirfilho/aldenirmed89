@@ -32,6 +32,13 @@ Se **Adicionar à Tela de Início** não aparecer, role até o fim, toque em
 Todos os arquivos são PNG quadrados, sem texto pequeno e derivados da mesma
 identidade visual.
 
+## 🚀 Identidade A Orbital
+
+O emblema oficial usa um **A em ascensão**, uma órbita ciano aberta e um único
+ponto de missão âmbar. Não utiliza cruz, livro, ECG nem outro símbolo
+hospitalar. A composição foi mantida simples para continuar reconhecível no
+Dock, na Tela de Início e em tamanhos pequenos.
+
 ## 🧠 Regra TDAH-friendly
 
 Use o atalho como **porta única de entrada**:
