@@ -1622,15 +1622,20 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    root = ensure_safe_root(args.root)
-    output_dir = (
-        args.output_dir
-        if args.output_dir.is_absolute()
-        else root / args.output_dir
-    )
-    previous_json = args.previous_json
-    if previous_json is not None and not previous_json.is_absolute():
-        previous_json = root / previous_json
+    try:
+        root = ensure_safe_root(args.root)
+        output_candidate = (
+            args.output_dir
+            if args.output_dir.is_absolute()
+            else root / args.output_dir
+        )
+        output_dir = ensure_under(root, output_candidate)
+        previous_json = args.previous_json
+        if previous_json is not None and not previous_json.is_absolute():
+            previous_json = root / previous_json
+    except (OSError, ValueError) as exc:
+        print(f"ERRO DE CONFIGURAÇÃO: {exc}", file=sys.stderr)
+        return 2
     try:
         report = run(
             root,

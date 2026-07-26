@@ -99,6 +99,26 @@ class WeeklyProtectiveReviewTests(unittest.TestCase):
         self.assertNotIn("github_pat_", output)
         self.assertIn("[REDACTED]", output)
 
+    def test_main_rejects_output_outside_root_without_writing(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary) / "repository"
+            root.mkdir()
+            outside = Path(temporary) / "outside-report"
+
+            exit_code = WEEKLY.main(
+                [
+                    "--root",
+                    str(root),
+                    "--output-dir",
+                    str(outside),
+                    "--skip-full-tests",
+                    "--skip-live",
+                ]
+            )
+
+            self.assertEqual(exit_code, 2)
+            self.assertFalse(outside.exists())
+
     def test_public_surface_checks_local_routes_zip_and_checksum(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -308,6 +328,21 @@ class WeeklyProtectiveReviewTests(unittest.TestCase):
             workflow,
         )
         self.assertIn("const summaryComment =", workflow)
+        self.assertIn("fs.mkdirSync('weekly-protective-review'", workflow)
+        self.assertIn(
+            "'weekly-protective-review/laudo-semanal.json'",
+            workflow,
+        )
+        self.assertIn(
+            "'weekly-protective-review/laudo-semanal.md',\n"
+            "                markdown,",
+            workflow,
+        )
+        self.assertNotIn("markdown + '\\n'", workflow)
+        self.assertLess(
+            workflow.index("Criar ou atualizar a issue única da semana"),
+            workflow.index("Arquivar laudos e evidência oficial"),
+        )
         self.assertNotIn("git push", workflow)
         self.assertNotIn("git commit", workflow)
         self.assertNotIn("--refresh", workflow)

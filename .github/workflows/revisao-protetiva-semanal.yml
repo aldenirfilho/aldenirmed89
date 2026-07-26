@@ -135,18 +135,6 @@ jobs:
             cat weekly-protective-review/laudo-semanal.md
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Arquivar laudos e evidência oficial
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: laudo-protetivo-semanal-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            weekly-protective-review/laudo-semanal.md
-            weekly-protective-review/laudo-semanal.json
-            weekly-protective-review/fontes-oficiais.json
-          if-no-files-found: warn
-          retention-days: 90
-
       - name: Criar ou atualizar a issue única da semana
         if: always()
         uses: actions/github-script@v8
@@ -218,6 +206,20 @@ jobs:
                 '> Isto não é interpretação jurídica nem confirmação de violação.'
               ].join('\n');
               jsonText = JSON.stringify(report, null, 2) + '\n';
+              fs.mkdirSync('weekly-protective-review', {
+                recursive: true,
+                mode: 0o700
+              });
+              fs.writeFileSync(
+                'weekly-protective-review/laudo-semanal.json',
+                jsonText,
+                {encoding: 'utf8', mode: 0o600}
+              );
+              fs.writeFileSync(
+                'weekly-protective-review/laudo-semanal.md',
+                markdown,
+                {encoding: 'utf8', mode: 0o600}
+              );
               core.warning(`Fallback da issue usado: ${error.message}`);
             }
 
@@ -302,6 +304,18 @@ jobs:
               });
               core.info(`Issue semanal #${created.data.number} criada.`);
             }
+
+      - name: Arquivar laudos e evidência oficial
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: laudo-protetivo-semanal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            weekly-protective-review/laudo-semanal.md
+            weekly-protective-review/laudo-semanal.json
+            weekly-protective-review/fontes-oficiais.json
+          if-no-files-found: warn
+          retention-days: 90
 
       - name: Sinalizar achado alto, crítico ou laudo ausente
         if: always()
