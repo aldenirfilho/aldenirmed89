@@ -11,6 +11,18 @@ manifestações sem expor dados da tripulação.
 - estado honesto `—` para métricas ainda não conectadas;
 - preparação do texto de uma manifestação, sem simular envio.
 
+### Matriz rápida
+
+| Estado | O que significa |
+|---|---|
+| **Funciona** | Navegação, temas, modo claro/escuro e preferências armazenadas neste navegador. |
+| **Preparado** | Formulários, adaptador, banco/RLS e automação dry-run existem como base técnica, mas ainda não foram homologados contra serviços reais. |
+| **Bloqueado** | Login, boletim, métricas, protocolos, conversa, diretório e área owner dependem de backend, gateways e controles antiabuso reais. |
+
+O idioma e os avisos são preferências preparadas; ainda não traduzem esta
+página nem disparam notificações. O perfil público fica desabilitado enquanto
+não houver mural e infraestrutura revisados.
+
 Sem um serviço seguro configurado, **não** há criação de conta, envio de e-mail,
 protocolo, conversa ou contagem real. Isso evita senhas falsas e números
 inventados.
@@ -20,7 +32,8 @@ inventados.
 - total agregado de assinantes ativos;
 - total agregado de visualizações;
 - visualizações agregadas por seção;
-- perfis básicos somente quando cada pessoa fizer opt-in explícito.
+- futuramente, perfis básicos somente quando existir mural ativo e cada pessoa
+  fizer opt-in explícito.
 
 E-mail, UUID, assinatura individual, histórico de navegação, manifestações e
 respostas nunca pertencem à área pública.
@@ -48,10 +61,12 @@ Antes do envio, a pessoa escolhe obrigatoriamente:
 6. reclamação;
 7. outra — com especificação obrigatória.
 
-A manifestação pode ser identificada ou anônima. No modo anônimo, o servidor
-gera protocolo e chave secreta; ambos devem ser guardados para acompanhar e
-responder na conversa da página. É uma conversa assíncrona, não um chat em tempo
-real nem uma promessa de resposta automática.
+A manifestação pode ser identificada ou anônima. No modo anônimo, o navegador
+gera localmente uma chave secreta aleatória e a envia ao gateway apenas para que
+seu hash seja associado à manifestação; o servidor gera o protocolo. A chave é
+mostrada uma vez e não é persistida pela página. Protocolo e chave devem ser
+guardados para acompanhar e responder na conversa. É uma conversa assíncrona,
+não um chat em tempo real nem uma promessa de resposta automática.
 
 O e-mail institucional só aparece quando um endereço oficial monitorado for
 configurado. Enquanto isso, a interface informa `Canal de e-mail em

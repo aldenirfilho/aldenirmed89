@@ -129,9 +129,12 @@ Defina um SLA humano somente quando a equipe tiver capacidade real.
 
 ## 5. Métricas de visualização
 
-`record_section_view` deduplica seção/sessão/dia e armazena um hash efêmero, sem
-IP. Os papéis `anon` e `authenticated` não podem executar esse RPC nem inserir
-na tabela. Configure `analyticsEndpoint` para uma Edge Function HTTPS cuja
+O frontend cria um `pageSessionId` aleatório por carregamento do documento e o
+reutiliza em qualquer registro feito durante esse carregamento.
+`record_section_view` deduplica seção/carregamento/dia e armazena somente um hash
+efêmero, sem IP; recarregar a página inicia uma nova visualização. Os papéis
+`anon` e `authenticated` não podem executar esse RPC nem inserir na tabela.
+Configure `analyticsEndpoint` para uma Edge Function HTTPS cuja
 origem esteja em `allowedApiOrigins`. Somente essa função, validando a allowlist
 de `Origin` e aplicando rate limit, chama o RPC como `service_role`. Se o
 endpoint estiver vazio ou falhar, o frontend não registra nada e nunca cria

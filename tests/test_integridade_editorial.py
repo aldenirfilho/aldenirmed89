@@ -164,7 +164,7 @@ class IntegridadeEditorialTests(unittest.TestCase):
             normalize("esta página estática não possui formulário de cadastro"),
             self.plain,
         )
-        self.assertIn("../18_Centro_Tripulacao/index.html?canal=manifestacao#manifestacao", self.html)
+        self.assertIn("../18_Centro_Tripulacao/index.html?canal=manifestacao#listening", self.html)
         self.assertIn(
             normalize(
                 "O canal institucional e o e-mail definitivo só devem ser anunciados "

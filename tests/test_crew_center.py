@@ -96,6 +96,31 @@ class CrewCenterTests(unittest.TestCase):
         for mode in ('value="light"', 'value="dark"', 'value="system"'):
             self.assertIn(mode, self.html)
 
+    def test_prepared_capabilities_are_labeled_and_public_profile_is_fail_closed(self) -> None:
+        for marker in (
+            "Preferência preparada: a tradução completa deste Centro ainda não está ativa.",
+            "Preferência preparada: marcar esta opção ainda não envia alertas nem e-mails.",
+            'id="publicProfileStatus"',
+            "ainda não existe mural público ativo",
+        ):
+            self.assertIn(marker, self.html)
+        self.assertIn("config.enablePublicProfiles === true", self.app)
+        self.assertIn("publicProfileCheckbox.disabled = !publicProfilesEnabled;", self.app)
+        self.assertIn("publicProfileCheckbox.checked = false;", self.app)
+
+    def test_deep_link_aliases_resolve_to_gated_canonical_views(self) -> None:
+        for marker in (
+            'listeningPanel: "listening"',
+            'manifestacao: "listening"',
+            'ownerNotebook: "admin"',
+            'const LISTENING_CHANNELS = new Set(["manifestacao", "correcao", "uso-indevido"])',
+            "requestedViewFromLocation()",
+            'if (LISTENING_CHANNELS.has(channel)) return "listening";',
+        ):
+            self.assertIn(marker, self.app)
+        self.assertIn('id="adminContent" hidden', self.html)
+        self.assertIn("if (!state.isAdmin)", self.app)
+
     def test_auth_password_and_admin_directory_are_privacy_first(self) -> None:
         self.assertIn('type="password"', self.html)
         self.assertIn('autocomplete="current-password"', self.html)
@@ -117,6 +142,32 @@ class CrewCenterTests(unittest.TestCase):
             self.app,
             r"(localStorage|sessionStorage)\.setItem\([^)]*password",
         )
+
+    def test_sign_out_clears_session_keys_and_sensitive_dom(self) -> None:
+        for marker in (
+            "state.subscriptionRows = [];",
+            "state.activeThread = null;",
+            "state.adminActiveThread = null;",
+            'state.adapter.setAccessToken("")',
+            'byId("protocolValue").textContent = "";',
+            'byId("anonymousKeyValue").textContent = "";',
+            'byId("sessionIdentity").textContent = "";',
+            'byId("adminDirectoryBody").replaceChildren();',
+            'byId("threadMessages").replaceChildren(',
+            'byId("adminThreadMessages").replaceChildren(',
+            'byId("ownerDocumentsList").replaceChildren(',
+            'byId("credentialList").replaceChildren();',
+        ):
+            self.assertIn(marker, self.app)
+        self.assertNotIn("innerHTML", self.app)
+
+    def test_reset_removes_both_preference_keys_and_applies_defaults(self) -> None:
+        reset_block = self.app.split(
+            'byId("resetLocalPreferences").addEventListener("click", () => {', 1
+        )[1].split("});", 1)[0]
+        self.assertIn("removeStorage(localStorage, PREFERENCES_KEY);", reset_block)
+        self.assertIn("removeStorage(localStorage, A11Y_PREFERENCES_KEY);", reset_block)
+        self.assertIn("fillPreferences(DEFAULT_PREFERENCES);", reset_block)
 
     def test_adapter_restricts_origins_and_uses_text_nodes(self) -> None:
         for marker in (
@@ -149,6 +200,33 @@ class CrewCenterTests(unittest.TestCase):
             self.assertIn(marker, self.html + self.app + self.schema)
         self.assertIn("active_subscription_requires_consent", self.schema)
         self.assertIn("unsubscribe_newsletter", self.schema)
+
+    def test_metrics_page_session_and_admin_filter_are_bounded(self) -> None:
+        self.assertIn("const PAGE_SESSION_ID = (() => {", self.app)
+        self.assertEqual(self.app.count("pageSessionId: PAGE_SESSION_ID"), 1)
+        self.assertIn(
+            "`record_section_view` deduplica seção/carregamento/dia",
+            self.backend_docs,
+        )
+        self.assertIn(
+            "recarregar a página inicia uma nova visualização",
+            self.backend_docs,
+        )
+        self.assertIn(
+            'state.connected && payload && payload.status === "connected"',
+            self.app,
+        )
+        self.assertIn(
+            "state.subscriptionRows = Array.isArray(subscriptions) ? subscriptions : [];",
+            self.app,
+        )
+        filter_block = self.app.split(
+            'byId("directorySearch").addEventListener("input", (event) => {', 1
+        )[1].split(
+            'byId("manifestationCategory").addEventListener', 1
+        )[0]
+        self.assertIn("state.subscriptionRows", filter_block)
+        self.assertNotIn("getAdminSubscriptions", filter_block)
 
     def test_listening_portal_has_categories_protocol_and_async_thread(self) -> None:
         for category in (

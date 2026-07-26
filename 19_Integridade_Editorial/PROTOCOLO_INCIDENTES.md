@@ -67,11 +67,10 @@ segurança, propriedade intelectual ou jurídica.
 ## Canais
 
 - Manifestação geral:
-  `../18_Centro_Tripulacao/index.html?canal=manifestacao#manifestacao`
+  `../18_Centro_Tripulacao/index.html?canal=manifestacao#listening`
 - Correção:
-  `../18_Centro_Tripulacao/index.html?canal=correcao#manifestacao`
+  `../18_Centro_Tripulacao/index.html?canal=correcao#listening`
 - Possível uso indevido:
-  `../18_Centro_Tripulacao/index.html?canal=uso-indevido#manifestacao`
+  `../18_Centro_Tripulacao/index.html?canal=uso-indevido#listening`
 
 O e-mail institucional só deve ser divulgado depois de configurado e testado.
-

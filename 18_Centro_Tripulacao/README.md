@@ -33,6 +33,18 @@ O repositório vem deliberadamente em `mode: "disconnected"`. Portanto:
 
 O arquivo `data/public-metrics.json` declara explicitamente esse estado.
 
+### Matriz de capacidade atual
+
+| Estado | Capacidades |
+|---|---|
+| **Funciona agora** | Navegação entre painéis, visualização clara/escura, perfis visuais, preferências locais, layout responsivo e indicadores honestos `—` no modo desconectado. |
+| **Preparado no código** | Adaptador de autenticação, perfis, assinatura, métricas, diretório, manifestações, Caderno privado, esquema SQL/RLS e template dry-run do boletim. Esses caminhos ainda precisam de homologação real. |
+| **Bloqueado até infraestrutura segura** | Contas, e-mails, números reais, protocolos, conversas, telemetria, diretório administrativo, documentos owner e verificação de credenciais. Não há Edge Functions, CAPTCHA, rate limit ou provedor de e-mail configurados. |
+
+Idioma e notificações são preferências preparadas: ainda não traduzem este
+Centro nem enviam alertas. Enquanto `enablePublicProfiles` for `false`, o opt-in
+de perfil público permanece desabilitado e nenhum mural é apresentado.
+
 Tema e perfil visual respeitam a preferência global
 `antigravity:a11y:v1`: modo `light`, `dark` ou `system` e os mesmos IDs de
 perfil usados pela Home. O botão **Claro/Escuro** no cabeçalho também atualiza

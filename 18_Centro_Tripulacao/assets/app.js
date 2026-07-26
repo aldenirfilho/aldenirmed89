@@ -39,9 +39,26 @@
     "agradecimento", "sugestao", "contribuicao", "informacao",
     "notificacao", "reclamacao", "outra"
   ]);
+  const VIEW_ALIASES = Object.freeze({
+    public: "public",
+    mission: "public",
+    listening: "listening",
+    listeningPanel: "listening",
+    manifestacao: "listening",
+    settings: "settings",
+    settingsPanel: "settings",
+    admin: "admin",
+    ownerNotebook: "admin"
+  });
+  const LISTENING_CHANNELS = new Set(["manifestacao", "correcao", "uso-indevido"]);
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const PROTOCOL_PATTERN = /^AG-\d{4}-[A-F0-9]{16}$/;
   const config = Object.freeze(window.ANTIGRAVITY_CREW_CONFIG || {});
+  const PAGE_SESSION_ID = (() => {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+  })();
 
   const byId = (id) => document.getElementById(id);
   const text = (value) => document.createTextNode(String(value ?? ""));
@@ -252,7 +269,7 @@
         },
         body: JSON.stringify({
           sectionSlug: cleanText(sectionSlug, 80),
-          pageSessionId: crypto.randomUUID()
+          pageSessionId: PAGE_SESSION_ID
         }),
         cache: "no-store",
         credentials: "omit",
@@ -452,6 +469,7 @@
     isOwner: false,
     authMode: "signin",
     directoryRows: [],
+    subscriptionRows: [],
     manifestationRows: [],
     adminManifestationRows: [],
     ownerDocumentRows: [],
@@ -536,6 +554,7 @@
     byId("displayName").value = safe.displayName;
     byId("occupation").value = safe.occupation;
     applyTheme(safe.theme, safe.colorMode);
+    configurePreparedCapabilities();
   }
 
   function getPreferencesFromForm() {
@@ -550,10 +569,42 @@
     });
   }
 
+  function normalizeViewName(viewName) {
+    return VIEW_ALIASES[cleanText(viewName, 40)] || "public";
+  }
+
+  function requestedViewFromLocation() {
+    const hashView = window.location.hash.replace(/^#/, "");
+    if (hashView && VIEW_ALIASES[cleanText(hashView, 40)]) {
+      return normalizeViewName(hashView);
+    }
+    let channel = "";
+    try {
+      channel = cleanText(new URLSearchParams(window.location.search).get("canal"), 40);
+    } catch (_error) {
+      channel = "";
+    }
+    if (LISTENING_CHANNELS.has(channel)) return "listening";
+    return "public";
+  }
+
+  function configurePreparedCapabilities() {
+    const publicProfileCheckbox = byId("publicProfilePreference");
+    const publicProfileStatus = byId("publicProfileStatus");
+    const publicProfilesEnabled = config.enablePublicProfiles === true;
+    publicProfileCheckbox.disabled = !publicProfilesEnabled;
+    if (!publicProfilesEnabled) {
+      publicProfileCheckbox.checked = false;
+      publicProfileStatus.textContent =
+        "Preferência preparada, mas ainda não existe mural público ativo. Nenhum perfil será publicado.";
+    } else {
+      publicProfileStatus.textContent =
+        "Opt-in disponível. A publicação continua condicionada ao serviço seguro e à revogação imediata.";
+    }
+  }
+
   function showView(viewName) {
-    const validView = ["public", "listening", "settings", "admin"].includes(viewName)
-      ? viewName
-      : "public";
+    const validView = normalizeViewName(viewName);
     const panels = {
       public: byId("publicPanel"),
       listening: byId("listeningPanel"),
@@ -646,7 +697,8 @@
   }
 
   function renderMetrics(payload) {
-    const connectedMetrics = payload && payload.status === "connected";
+    const connectedMetrics =
+      state.connected && payload && payload.status === "connected";
     const subscriberCount = connectedMetrics
       ? metricNumber(payload.subscriberCount)
       : null;
@@ -736,27 +788,83 @@
   }
 
   function clearSession() {
+    const localPreferences = loadLocalPreferences();
     state.session = null;
     state.profile = null;
     state.isAdmin = false;
     state.isOwner = false;
     state.directoryRows = [];
+    state.subscriptionRows = [];
     state.manifestationRows = [];
     state.adminManifestationRows = [];
     state.ownerDocumentRows = [];
     state.ownerCredentialRows = [];
+    state.activeThread = null;
+    state.adminActiveThread = null;
     if (state.adapter) state.adapter.setAccessToken("");
+
+    [
+      "authForm",
+      "newsletterForm",
+      "manifestationForm",
+      "anonymousLookupForm",
+      "crewReplyForm",
+      "adminReplyForm",
+      "ownerDocumentForm",
+      "credentialSubmissionForm"
+    ].forEach((formId) => byId(formId).reset());
+
+    fillPreferences({
+      ...localPreferences,
+      displayName: "",
+      occupation: ""
+    });
     byId("signedOutContent").hidden = false;
     byId("signedInContent").hidden = true;
+    byId("sessionIdentity").textContent = "";
+    byId("roleDescription").textContent = "";
     byId("adminContent").hidden = true;
     byId("adminGate").hidden = false;
-    byId("subscribeButton").disabled = true;
-    byId("unsubscribeButton").disabled = true;
     byId("adminDirectoryBody").replaceChildren();
     byId("adminInboxList").replaceChildren();
+    byId("conversationList").replaceChildren();
+    byId("threadMessages").replaceChildren(
+      makeElement("p", "Selecione uma manifestação ou consulte um protocolo anônimo.", "empty-state")
+    );
+    byId("adminThreadMessages").replaceChildren(
+      makeElement("p", "Selecione uma manifestação para ler e responder.", "empty-state")
+    );
+    byId("ownerDocumentsList").replaceChildren(
+      makeElement("p", "Nenhum documento carregado.", "empty-state")
+    );
+    byId("credentialList").replaceChildren();
+    byId("protocolResult").hidden = true;
+    byId("protocolValue").textContent = "";
+    byId("anonymousKeyValue").hidden = true;
+    byId("anonymousKeyValue").textContent = "";
+    byId("anonymousKeyNotice").textContent = "";
+    byId("otherCategoryField").hidden = true;
+    byId("manifestationOtherCategory").required = false;
+    byId("crewReplyForm").hidden = true;
+    byId("adminReplyForm").hidden = true;
     byId("ownerNotebook").hidden = true;
     byId("ownerDocumentFields").disabled = true;
     byId("credentialFields").disabled = true;
+    byId("conversationStatus").textContent = "Nenhuma conversa carregada";
+    byId("directoryCount").textContent = "0 registros";
+    byId("adminInboxCount").textContent = "0 manifestações";
+    byId("adminUserCount").textContent = "—";
+    byId("adminSubscriberCount").textContent = "—";
+    byId("adminViewCount").textContent = "—";
+    byId("directorySearch").value = "";
+    [
+      "manifestationMessageStatus",
+      "newsletterMessage",
+      "adminMessage",
+      "ownerDocumentMessage",
+      "credentialMessage"
+    ].forEach((messageId) => setMessage(byId(messageId), ""));
+    setConnectedControls();
   }
 
   async function handleAuthSubmit(event) {
@@ -912,9 +1020,9 @@
         state.adapter.getAdminManifestations()
       ]);
       state.directoryRows = Array.isArray(profiles) ? profiles : [];
-      const subscriptionRows = Array.isArray(subscriptions) ? subscriptions : [];
+      state.subscriptionRows = Array.isArray(subscriptions) ? subscriptions : [];
       state.adminManifestationRows = Array.isArray(manifestations) ? manifestations : [];
-      renderDirectory(state.directoryRows, subscriptionRows);
+      renderDirectory(state.directoryRows, state.subscriptionRows);
       renderAdminMetrics(Array.isArray(metrics) ? metrics[0] || {} : metrics || {});
       renderAdminInbox(state.adminManifestationRows);
       setMessage(byId("adminMessage"), "Dados administrativos carregados após autorização do servidor.", "success");
@@ -1524,6 +1632,7 @@
     });
     byId("resetLocalPreferences").addEventListener("click", () => {
       removeStorage(localStorage, PREFERENCES_KEY);
+      removeStorage(localStorage, A11Y_PREFERENCES_KEY);
       fillPreferences(DEFAULT_PREFERENCES);
       setMessage(byId("preferencesMessage"), "Preferências locais restauradas.", "success");
     });
@@ -1531,15 +1640,11 @@
     byId("unsubscribeButton").addEventListener("click", unsubscribeNewsletter);
     byId("directorySearch").addEventListener("input", (event) => {
       if (!state.session || !state.isAdmin) return;
-      state.adapter.getAdminSubscriptions().then((subscriptions) => {
-        renderDirectory(
-          state.directoryRows,
-          Array.isArray(subscriptions) ? subscriptions : [],
-          event.target.value
-        );
-      }).catch(() => {
-        setMessage(byId("adminMessage"), "Não foi possível atualizar o filtro.", "error");
-      });
+      renderDirectory(
+        state.directoryRows,
+        state.subscriptionRows,
+        event.target.value
+      );
     });
     byId("manifestationCategory").addEventListener("change", (event) => {
       const isOther = event.target.value === "outra";
@@ -1555,8 +1660,7 @@
     byId("clearOwnerDocument").addEventListener("click", clearOwnerDocumentForm);
     byId("credentialSubmissionForm").addEventListener("submit", submitOwnerCredential);
     window.addEventListener("hashchange", () => {
-      const requested = window.location.hash.replace("#", "");
-      showView(requested || "public");
+      showView(requestedViewFromLocation());
     });
   }
 
@@ -1588,8 +1692,7 @@
     }
     setConnectedControls();
     await loadPublicMetrics();
-    const requested = window.location.hash.replace("#", "");
-    showView(requested || "public");
+    showView(requestedViewFromLocation());
     const colorSchemeMedia = window.matchMedia("(prefers-color-scheme: light)");
     const syncSystemTheme = () => {
       const preferences = getPreferencesFromForm();
