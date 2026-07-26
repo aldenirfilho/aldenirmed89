@@ -39,38 +39,23 @@ class CardFeedRecoveryTests(unittest.TestCase):
             self.assertNotIn("/inbox/", image_url.casefold())
             self.assertTrue((FEED / image_url).is_file(), image_url)
 
-    def test_recovery_manifest_records_optimization_and_quarantine(self) -> None:
-        manifest = load_json("05_Midia_E_Feed/data/recovery_manifest.json")
-        summary = manifest["summary"]
-        self.assertEqual(summary["sourceFiles"], 257)
-        self.assertEqual(summary["publishedFiles"], 220)
-        self.assertEqual(summary["deduplicatedFiles"], 36)
-        self.assertEqual(summary["quarantinedSourceFiles"], 1)
-        self.assertEqual(summary["missingLegacyReferences"], 0)
-        self.assertLess(summary["publicBytes"], summary["originalBytes"] // 5)
-        self.assertEqual(
-            manifest["inventorySha256"],
-            "6684542494db23bd796ff7f0a0dec56735e5c77f8da345207044668304232a03",
-        )
-
     def test_historical_recovery_tool_is_fail_closed(self) -> None:
         source = (ROOT / "scripts_admin/prepare_card_feed_recovery.py").read_text(encoding="utf-8")
         self.assertIn("--acknowledge-historical-batch-2026-07-21", source)
+        self.assertIn("--private-audit-output", source)
+        self.assertIn("deve ficar fora do repositório público", source)
         self.assertIn("EXPECTED_SOURCE_FILES = 257", source)
         self.assertIn("EXPECTED_LEGACY_CARDS = 198", source)
         self.assertIn("EXPECTED_LEGACY_IMAGE_REFS = 195", source)
         self.assertIn("EXPECTED_INVENTORY_SHA256", source)
 
     def test_known_outdated_clinical_asset_is_quarantined(self) -> None:
-        manifest = load_json("05_Midia_E_Feed/data/recovery_manifest.json")
-        matches = [
-            item for item in manifest["files"]
-            if item.get("sourceFilename") == "protocolo_emergencia_hipotermia_bradicardia.svg"
-        ]
-        self.assertEqual(len(matches), 1)
-        self.assertEqual(matches[0]["status"], "quarantined")
-        self.assertEqual(matches[0]["publicPath"], "")
-        self.assertIn("desatualizadas", matches[0]["quarantineReason"])
+        source = (ROOT / "scripts_admin/prepare_card_feed_recovery.py").read_text(encoding="utf-8")
+        self.assertIn(
+            "a1f5c6b454fdd06aaeb55df958023cf140cb4c6a404622169beeb53ed0a69e38",
+            source,
+        )
+        self.assertIn("doses desatualizadas", source)
         self.assertFalse(any("hipotermia-bradicardia" in path.as_posix() for path in PUBLIC_ROOT.rglob("*")))
 
     def test_public_index_matches_approved_directory(self) -> None:

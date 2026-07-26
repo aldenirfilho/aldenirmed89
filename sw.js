@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v12`;
+const CACHE_NAME = `${CACHE_PREFIX}v13`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",

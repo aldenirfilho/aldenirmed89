@@ -209,7 +209,8 @@ class FocusedReaderStaticTests(unittest.TestCase):
         self.assertIn("mode === 'original' && ext === 'pdf'", INDEX)
         self.assertIn("mode === 'original' && ['md', 'markdown'].includes(ext)", INDEX)
         self.assertIn("Fonte Markdown original exibida como texto escapado", INDEX)
-        self.assertIn("Leitura limpa converte texto e estrutura", INDEX)
+        self.assertIn("Prévia HTML auditada em modo somente leitura", INDEX)
+        self.assertIn("O arquivo binário original não integra o site público", INDEX)
         self.assertIn("PDF original, sem conversão", INDEX)
         self.assertIn("Destaques e sublinhados são aplicados somente à leitura limpa", INDEX)
         self.assertNotIn("allow-scripts", INDEX.split("function resetPreviewFrame", 1)[1])
@@ -233,7 +234,8 @@ class FocusedReaderStaticTests(unittest.TestCase):
             "function previewMessage", 1
         )[0]
         self.assertIn("mode === 'trusted'", reset)
-        self.assertIn("allow-downloads allow-same-origin", reset)
+        self.assertIn("allow-same-origin", reset)
+        self.assertNotIn("allow-downloads allow-same-origin", reset)
         self.assertIn("allow-downloads allow-popups", reset)
         self.assertNotIn("allow-scripts", reset)
         self.assertNotIn("allow-forms", reset)
@@ -256,6 +258,9 @@ class FocusedReaderStaticTests(unittest.TestCase):
         self.assertIn("sourceSha256 !== itemSha256", validator)
         self.assertIn("/^[0-9a-f]{64}$/.test(previewSha256)", validator)
         self.assertIn("entry.browserIndependent !== true", validator)
+        self.assertIn("entry.status !== 'ready'", validator)
+        self.assertIn("entry.publicationMode !== 'preview-only'", validator)
+        self.assertIn("item.originalPublic !== false", validator)
         self.assertIn("entry.documentId", validator)
 
     def test_generated_and_inline_surfaces_have_explicit_reader_root(self) -> None:

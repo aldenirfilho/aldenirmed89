@@ -181,7 +181,46 @@ class LibraryPreviewBuilderTests(unittest.TestCase):
             self.assertIn("<table>", preview)
             self.assertNotIn("<script>", preview.casefold())
             self.assertIn("default-src 'none'", preview)
+            self.assertNotRegex(preview.casefold(), r"<a\b|href\s*=")
             self.assertEqual(BUILDER.sha256_file(preview_path), item["previewSha256"])
+            self.assertEqual(execute_quiet(library, check=True)[0], 0)
+
+    def test_editorial_issue_replaces_preview_with_unlinked_placeholder(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            library, source = make_library(Path(temporary))
+            write_docx(
+                source,
+                marker=(
+                    "Aldenir Rocha de Oliveira Filho médico mestre "
+                    "CRM-CE 12345"
+                ),
+            )
+
+            code, _, error = execute_quiet(library, check=False)
+            self.assertEqual(code, 0, error)
+            index = json.loads(
+                (library / "data/biblioteca_previews.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            item = index["items"][0]
+            preview = (library / item["previewPath"]).read_text(encoding="utf-8")
+
+            self.assertEqual(index["version"], "library-previews-v5")
+            self.assertEqual(item["status"], "review-blocked")
+            self.assertEqual(
+                item["riskCodes"],
+                ["PROFESSIONAL_CLAIM_UNVERIFIED"],
+            )
+            self.assertEqual(
+                item["renderer"],
+                "editorial-review-placeholder-v1",
+            )
+            self.assertIn("Conteúdo em revisão editorial", preview)
+            self.assertNotRegex(preview.casefold(), r"<a\b|href\s*=")
+            self.assertNotIn("Documento_Autoral.docx", preview)
+            self.assertNotIn("CRM-CE 12345", preview)
+            self.assertTrue(source.is_file())
             self.assertEqual(execute_quiet(library, check=True)[0], 0)
 
     def test_generates_browser_independent_pdf_preview(self) -> None:
@@ -201,14 +240,70 @@ class LibraryPreviewBuilderTests(unittest.TestCase):
             preview = (library / pdf_item["previewPath"]).read_text(encoding="utf-8")
 
             self.assertTrue(pdf_item["browserIndependent"])
-            self.assertIn("Prévia local independente do leitor PDF do navegador", preview)
-            self.assertIn("Baixar o PDF original", preview)
             self.assertNotIn("<iframe", preview.casefold())
             self.assertIn("default-src 'none'", preview)
-            if BUILDER.available_command("pdftoppm") and BUILDER.available_command("pdftotext"):
+            if pdf_item["status"] == "review-blocked":
+                self.assertIn(
+                    "PDF_FULL_CONTENT_NOT_AUDITED",
+                    pdf_item["riskCodes"],
+                )
+                if (
+                    int(pdf_item["stats"].get("nativeVisibleCharacters") or 0) <= 0
+                    and not bool(pdf_item["stats"].get("ocrReady"))
+                ):
+                    self.assertIn(
+                        "PREVIEW_TEXT_EXTRACTION_UNAVAILABLE",
+                        pdf_item["riskCodes"],
+                    )
+                self.assertIn("Conteúdo em revisão editorial", preview)
+                self.assertNotRegex(preview.casefold(), r"<a\b|href\s*=")
+            if (
+                pdf_item["status"] != "review-blocked"
+                and BUILDER.available_command("pdftoppm")
+                and BUILDER.available_command("pdftotext")
+            ):
                 self.assertIn("data:image/jpeg;base64,", preview)
                 self.assertGreater(pdf_item["stats"]["coverBytes"], 0)
             self.assertEqual(execute_quiet(library, check=True)[0], 0)
+
+    def test_pdf_with_extractable_text_is_still_structurally_blocked(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            library, _ = make_library(Path(temporary))
+            add_pdf_to_library(library)
+            stats = {
+                "coverBytes": 0,
+                "nativeVisibleCharacters": 240,
+                "nativeTextPages": 1,
+                "ocrRequired": False,
+                "ocrReady": False,
+            }
+            with mock.patch.object(
+                BUILDER,
+                "render_pdf_content",
+                return_value=(
+                    "<p>Texto integralmente extraível nesta prévia.</p>",
+                    stats,
+                    True,
+                ),
+            ):
+                code, _, error = execute_quiet(library, check=False)
+
+            self.assertEqual(code, 0, error)
+            index = json.loads(
+                (library / "data/biblioteca_previews.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            pdf_item = next(
+                item for item in index["items"] if item["previewFormat"] == "pdf"
+            )
+            preview = (library / pdf_item["previewPath"]).read_text(encoding="utf-8")
+            self.assertEqual(pdf_item["status"], "review-blocked")
+            self.assertEqual(
+                pdf_item["riskCodes"],
+                ["PDF_FULL_CONTENT_NOT_AUDITED"],
+            )
+            self.assertNotRegex(preview.casefold(), r"<a\b|href\s*=")
 
     def test_pdf_native_metrics_ignore_page_separators_and_require_ocr(self) -> None:
         source = Path("Imagem_sem_texto.pdf")
@@ -296,16 +391,25 @@ class LibraryPreviewBuilderTests(unittest.TestCase):
             pdf_item = next(item for item in index["items"] if item["previewFormat"] == "pdf")
             preview = (library / pdf_item["previewPath"]).read_text(encoding="utf-8")
 
-            self.assertEqual(index["version"], "library-previews-v4")
+            self.assertEqual(index["version"], "library-previews-v5")
             self.assertEqual(index["ocrRequiredDocuments"], 1)
             self.assertEqual(index["ocrUniqueJobs"], 1)
             self.assertEqual(index["ocrReadyDocuments"], 0)
             self.assertEqual(index["ocrFailedDocuments"], 1)
-            self.assertEqual(pdf_item["status"], "ocr-required")
+            self.assertEqual(pdf_item["status"], "review-blocked")
+            self.assertEqual(
+                pdf_item["riskCodes"],
+                [
+                    "PDF_FULL_CONTENT_NOT_AUDITED",
+                    "PREVIEW_OCR_REQUIRED",
+                    "PREVIEW_TEXT_EXTRACTION_UNAVAILABLE",
+                ],
+            )
             self.assertTrue(pdf_item["stats"]["ocrRequired"])
             self.assertFalse(pdf_item["stats"]["ocrReady"])
-            self.assertIn("OCR necessário", preview)
-            self.assertNotIn("páginas de texto extraído", preview)
+            self.assertIn("Conteúdo em revisão editorial", preview)
+            self.assertNotRegex(preview.casefold(), r"<a\b|href\s*=")
+            self.assertNotIn("OCR necessário", preview)
 
     def test_ocr_makes_rasterized_pdf_searchable_and_reuses_sha_cache(self) -> None:
         cache = {}
@@ -522,10 +626,18 @@ class LibraryPreviewBuilderTests(unittest.TestCase):
             )
             preview = (library / pages_item["previewPath"]).read_text(encoding="utf-8")
 
-            self.assertEqual(pages_item["renderer"], "pages-quicklook-image-v1")
+            self.assertEqual(
+                pages_item["renderer"],
+                "editorial-review-placeholder-v1",
+            )
+            self.assertEqual(pages_item["status"], "review-blocked")
+            self.assertEqual(
+                pages_item["riskCodes"],
+                ["PAGES_FULL_CONTENT_NOT_AUDITED"],
+            )
             self.assertEqual(pages_item["stats"]["previewAsset"], "preview-web.jpg")
-            self.assertIn("data:image/jpeg;base64,", preview)
-            self.assertIn("Baixar o PAGES original", preview)
+            self.assertNotIn("data:image/jpeg;base64,", preview)
+            self.assertNotRegex(preview.casefold(), r"<a\b|href\s*=")
             self.assertNotIn("Index/Document.iwa", preview)
             self.assertEqual(execute_quiet(library, check=True)[0], 0)
 

@@ -143,7 +143,8 @@ class WebSecurityRegressionTests(unittest.TestCase):
     def test_biblioteca_catalog_and_preview_escape_untrusted_data(self) -> None:
         source = (ROOT / "02_Biblioteca_IA_Engine/index.html").read_text(encoding="utf-8")
         self.assertIn('sandbox="allow-downloads allow-popups"', source)
-        self.assertIn("? 'allow-downloads allow-same-origin'", source)
+        self.assertIn("? 'allow-same-origin'", source)
+        self.assertNotIn("allow-downloads allow-same-origin", source)
         self.assertNotIn("allow-forms", source)
         self.assertIn("function escapeHTML(value)", source)
         self.assertIn("function inlineToken(value)", source)

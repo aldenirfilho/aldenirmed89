@@ -1450,6 +1450,9 @@ function renderGrid() {
     const pathToken = inlineToken(normalizePath(i.path));
     const idToken = inlineToken(i.id);
     const downloadPath = safeEncodePath(i.path);
+    const originalAction = i.originalPublic === false
+      ? ''
+      : `<a href="${downloadPath}" download class="btn btn-secondary" onclick="event.stopPropagation()">⬇️ Baixar</a>`;
     const cardClass = String(i.tipo || '').replace(/[^a-z0-9_-]/gi, '');
     return `
       <div class="card ${cardClass}" onclick="abrirPreview('${pathToken}', '${titleToken}')">
@@ -1472,7 +1475,7 @@ function renderGrid() {
           <button class="btn btn-primary" onclick="event.stopPropagation(); abrirPreview('${pathToken}', '${titleToken}')">👁️ Ver</button>
           <button class="btn btn-secondary" onclick="event.stopPropagation(); abrirPreview('${pathToken}', '${titleToken}', true)">🧠 Estudar</button>
           <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirClassify(decodeInlineToken('${idToken}'))">📂</button>
-          <a href="${downloadPath}" download class="btn btn-secondary" onclick="event.stopPropagation()">⬇️ Baixar</a>
+          ${originalAction}
           <button class="btn btn-delete" title="Ocultar do catálogo" onclick="marcarParaExcluir(decodeInlineToken('${idToken}'), event)">🗑️ Ocultar</button>
         </div>
       </div>
@@ -1521,6 +1524,9 @@ function renderTriagem() {
     const formatLabel = i.formatoLabel || i.formatLabel || i.formato || i.tipo || 'Formato';
     const originLabel = i.origemLabel || i.originLabel || i.origem || i.origin || 'Origem';
     const downloadPath = safeEncodePath(i.path);
+    const originalAction = i.originalPublic === false
+      ? ''
+      : `<a href="${downloadPath}" download class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation()">⬇️</a>`;
     return `
     <div class="card ${String(i.tipo || '').replace(/[^a-z0-9_-]/gi, '')}" style="border-style:dashed; border-width:2px">
       <span class="inbox-badge">📥 INBOX</span>
@@ -1534,7 +1540,7 @@ function renderTriagem() {
       <div class="card-actions" style="margin-top:auto; display:flex; gap:5px">
         <button class="btn btn-triagem" style="flex:1" onclick="event.stopPropagation(); abrirClassify(decodeInlineToken('${idToken}'))">📂 Classificar</button>
         <button class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation(); abrirPreview('${pathToken}', '${titleToken}')">👁️</button>
-        <a href="${downloadPath}" download class="btn btn-secondary" style="padding:0.5rem" onclick="event.stopPropagation()">⬇️</a>
+        ${originalAction}
         <button class="btn btn-delete" style="padding:0.5rem" title="Ocultar do catálogo" onclick="marcarParaExcluir(decodeInlineToken('${idToken}'), event)">🗑️</button>
       </div>
     </div>
@@ -2154,15 +2160,17 @@ function resetPreviewFrame(mode = 'isolated') {
   frame.setAttribute(
     'sandbox',
     mode === 'trusted'
-      ? 'allow-downloads allow-same-origin'
+      ? 'allow-same-origin'
       : 'allow-downloads allow-popups'
   );
   return frame;
 }
 
 function previewMessage(title, message, href, actionLabel = '⬇️ Baixar arquivo') {
-  const safeHref = escapeHTML(href || '#');
-  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:system-ui;padding:clamp(1.5rem,5vw,4rem);background:#0f172a;color:#e2e8f0;line-height:1.6;text-align:center"><h2 style="color:#00d4ff">${escapeHTML(title)}</h2><p>${escapeHTML(message)}</p><a href="${safeHref}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:1rem;padding:.75rem 1rem;background:#00d4ff;color:#07111f;text-decoration:none;border-radius:8px;font-weight:700">${escapeHTML(actionLabel)}</a></body></html>`;
+  const action = href
+    ? `<a href="${escapeHTML(href)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:1rem;padding:.75rem 1rem;background:#00d4ff;color:#07111f;text-decoration:none;border-radius:8px;font-weight:700">${escapeHTML(actionLabel)}</a>`
+    : '';
+  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:system-ui;padding:clamp(1.5rem,5vw,4rem);background:#0f172a;color:#e2e8f0;line-height:1.6;text-align:center"><h2 style="color:#00d4ff">${escapeHTML(title)}</h2><p>${escapeHTML(message)}</p>${action}</body></html>`;
 }
 
 function findGeneratedPreviewEntry(path) {
@@ -2192,6 +2200,13 @@ function validateTrustedPreview(entry, path, item, extension) {
   if (sourcePath !== path || !/^[0-9a-f]{64}$/.test(sourceSha256) || sourceSha256 !== itemSha256) return null;
   if (!/^[0-9a-f]{64}$/.test(previewSha256) || entry.browserIndependent !== true) return null;
   if (previewFormat !== extension) return null;
+  if (entry.status !== 'ready') return null;
+  if (extension === 'docx' && (
+    entry.publicationMode !== 'preview-only'
+    || entry.originalPublic !== false
+    || item.publicationMode !== 'preview-only'
+    || item.originalPublic !== false
+  )) return null;
   if (entry.documentId && item.id && String(entry.documentId) !== String(item.id)) return null;
   return { ...entry, previewPath, sourcePath, sourceSha256, previewSha256 };
 }
@@ -2429,11 +2444,15 @@ function setPreviewModeActive(mode) {
   }
 }
 
-function configurePreviewModes(ext) {
+function isPreviewOnlyItem(item) {
+  return item?.publicationMode === 'preview-only' && item?.originalPublic === false;
+}
+
+function configurePreviewModes(ext, previewOnly = false) {
   const clean = document.getElementById('previewCleanView');
   const original = document.getElementById('previewOriginalView');
   const supportsClean = ['pdf', 'docx', 'md', 'markdown', 'txt', 'csv', 'tsv', 'pages'].includes(ext);
-  const supportsEmbeddedOriginal = ext === 'pdf' || ['md', 'markdown'].includes(ext);
+  const supportsEmbeddedOriginal = !previewOnly && (ext === 'pdf' || ['md', 'markdown'].includes(ext));
   clean.hidden = !supportsClean;
   original.hidden = !supportsEmbeddedOriginal;
   original.textContent = ext === 'pdf' ? '📄 PDF original' : '⌨️ Fonte original';
@@ -2445,7 +2464,7 @@ function configurePreviewModes(ext) {
 function renderCurrentPreview(mode = 'clean') {
   const context = currentPreviewContext;
   if (!context || !currentPreviewItem) return;
-  const { ext, path, encodedRelative, fullUrl, title } = context;
+  const { ext, path, encodedRelative, fullUrl, title, previewOnly } = context;
   const loadToken = ++previewLoadToken;
   const frame = resetPreviewFrame('isolated');
   focusedReader?.beginDocument(currentPreviewItem);
@@ -2453,6 +2472,20 @@ function renderCurrentPreview(mode = 'clean') {
   setReaderMobileSection(mobileReader ? 'document' : null);
   if (mode === 'clean' && mobileReader) focusedReader?.setFocused(true);
   setPreviewModeActive(mode);
+
+  if (previewOnly) {
+    setPreviewFormatHelp('Prévia HTML auditada em modo somente leitura. O arquivo binário original não integra o site público.');
+    const generated = findGeneratedPreviewEntry(path);
+    if (mode !== 'clean' || ext !== 'docx' || !setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
+      focusedReader?.disable('Prévia auditada indisponível; nenhum acesso ao arquivo original é oferecido.');
+      frame.srcdoc = previewMessage(
+        'Prévia indisponível',
+        'Este material permanece protegido até que uma prévia HTML auditada e íntegra esteja disponível.',
+        ''
+      );
+    }
+    return;
+  }
 
   if (mode === 'original' && ext === 'pdf') {
     focusedReader?.disable('PDF original em modo somente leitura. Volte à leitura limpa para pesquisar e anotar.');
@@ -2487,11 +2520,11 @@ function renderCurrentPreview(mode = 'clean') {
       );
     }
   } else if (ext === 'docx') {
-    setPreviewFormatHelp('Leitura limpa converte texto e estrutura para acessibilidade; não promete fidelidade de paginação. Para o Word original, use “Abrir original” ou “Baixar”. Office Online é externo e recebe a URL pública do arquivo.');
+    setPreviewFormatHelp('Documento Word indisponível no site público sem uma prévia HTML auditada.');
     const generated = findGeneratedPreviewEntry(path);
     if (!setTrustedGeneratedPreview(generated, path, currentPreviewItem, ext, loadToken)) {
       focusedReader?.disable('Prévia local não validada por caminho e SHA; leitor focado bloqueado.');
-      frame.srcdoc = previewMessage('Word preservado', 'A prévia local ainda não foi gerada para este arquivo. Abra no Word/Pages ou use o Office Online.', fullUrl, '📝 Abrir documento');
+      frame.srcdoc = previewMessage('Prévia indisponível', 'O material permanece protegido até a homologação de uma prévia HTML auditada.', '');
     }
   } else if (['doc','xlsx','xls','pptx','ppt'].includes(ext)) {
     setPreviewFormatHelp('Formato original preservado. Este navegador não possui renderizador local seguro; use abrir, baixar ou o serviço externo Office Online.');
@@ -2535,6 +2568,7 @@ function showPreviewClean() {
 
 function showPreviewOriginal() {
   if (!currentPreviewContext) return;
+  if (currentPreviewContext.previewOnly) return;
   if (!['pdf', 'md', 'markdown'].includes(currentPreviewContext.ext)) return;
   renderCurrentPreview('original');
 }
@@ -2641,21 +2675,36 @@ function abrirPreview(encodedPath, titulo, focusStudy = false) {
   currentPreviewItem = (catalog.items || []).find(item => normalizePath(item.path) === path) || {
     id: path, path, title, filename: path.split('/').pop(), theme: 'uti-geral', tipo: ext
   };
-  currentPreviewContext = { path, encodedRelative, fullUrl, ext, title };
+  const previewOnly = isPreviewOnlyItem(currentPreviewItem);
+  currentPreviewContext = { path, encodedRelative, fullUrl, ext, title, previewOnly };
   const previewOverlay = document.getElementById('previewOverlay');
   const previewWasOpen = previewOverlay.classList.contains('open');
   if (!previewWasOpen) {
     previewReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   }
   document.getElementById('previewTitle').textContent = title;
-  document.getElementById('previewDirect').href = fullUrl;
-  document.getElementById('previewDownload').href = fullUrl;
+  const directLink = document.getElementById('previewDirect');
+  const downloadLink = document.getElementById('previewDownload');
+  for (const link of [directLink, downloadLink, officeLink]) {
+    link.hidden = previewOnly;
+    link.setAttribute('aria-disabled', previewOnly ? 'true' : 'false');
+    if (previewOnly) {
+      link.removeAttribute('href');
+      link.setAttribute('tabindex', '-1');
+    } else {
+      link.removeAttribute('tabindex');
+    }
+  }
+  if (!previewOnly) {
+    directLink.href = fullUrl;
+    downloadLink.href = fullUrl;
+  }
   officeLink.style.display = 'none';
-  if (ext === 'docx' || ['doc','xlsx','xls','pptx','ppt'].includes(ext)) {
+  if (!previewOnly && (ext === 'docx' || ['doc','xlsx','xls','pptx','ppt'].includes(ext))) {
     officeLink.href = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(fullUrl);
     if (!isLocalHost) officeLink.style.display = 'inline-flex';
   }
-  configurePreviewModes(ext);
+  configurePreviewModes(ext, previewOnly);
   if (!previewWasOpen) setPreviewModalEnvironment(true);
   previewOverlay.classList.add('open');
   setReaderMobileToolsExpanded(!isReaderMobileLayout());

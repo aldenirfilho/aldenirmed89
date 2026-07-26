@@ -19,12 +19,19 @@ import stat
 import sys
 import unicodedata
 import zipfile
+from collections import Counter
 from pathlib import Path, PurePosixPath
+from typing import NamedTuple
 
 try:
     from svg_safety import validate_svg_file
 except ModuleNotFoundError:  # import via unittest/importlib a partir da raiz
     from scripts_admin.svg_safety import validate_svg_file
+
+try:
+    from editorial_gate import scan_file as scan_editorial_file
+except ModuleNotFoundError:  # import via unittest/importlib a partir da raiz
+    from scripts_admin.editorial_gate import scan_file as scan_editorial_file
 
 
 REQUIRED = (
@@ -88,6 +95,18 @@ OPTIONAL = (
 
 BLOCKED_SUFFIXES = (".bak", ".tmp", ".command", ".py", ".pyc", ".sh")
 LIBRARY_ACERVO_PREFIX = "02_Biblioteca_IA_Engine/acervo/"
+LIBRARY_ROOT_PREFIX = "02_Biblioteca_IA_Engine/"
+LIBRARY_PREVIEW_INDEX = (
+    "02_Biblioteca_IA_Engine/data/biblioteca_previews.json"
+)
+LIBRARY_PREVIEW_INDEX_VERSION = "library-previews-v5"
+LIBRARY_PREVIEW_EXTENSIONS = {"docx", "pdf", "pages"}
+LIBRARY_DIRECT_TEXT_EXTENSIONS = {"csv", "md", "markdown", "txt"}
+PUBLIC_EMPTY_CANDIDATE_INDEXES = (
+    "02_Biblioteca_IA_Engine/data/biblioteca_card_candidates.json",
+    "02_Biblioteca_IA_Engine/data/biblioteca_temi_question_candidates.json",
+    "05_Midia_E_Feed/data/cards_patch_biblioteca.json",
+)
 LIBRARY_PRIVATE_PARTS = {"juridico-financeiro", "_private", "inbox"}
 CARD_PUBLIC_PREFIX = "05_Midia_E_Feed/assets/cards/public/"
 CARD_PUBLIC_INDEX = "05_Midia_E_Feed/data/public.json"
@@ -97,6 +116,12 @@ EDITORIAL_DATA_PREFIX = "data/editorial/"
 EDITORIAL_PUBLIC_FILES = {
     "data/editorial/editorial-provenance.json",
 }
+PUBLIC_BUILD_EXCLUSIONS = frozenset(
+    {
+        "01_UpDown_Hub/content/reumatologia/les-manifestacoes/metadata.json",
+        "05_Midia_E_Feed/data/recovery_manifest.json",
+    }
+)
 PUBLIC_DOWNLOADS = (
     "downloads/Antigravity-Consultas-macOS.zip",
     "downloads/Antigravity-Consultas-Windows.zip",
@@ -107,8 +132,24 @@ DOWNLOAD_ARCHIVE_LIMIT = 512
 DOWNLOAD_UNCOMPRESSED_LIMIT = 64 * 1024 * 1024
 
 
+class LibraryPublicationPlan(NamedTuple):
+    public_acervo_allowlist: frozenset[str]
+    excluded_repository_paths: frozenset[str]
+    blocked_source_paths: frozenset[str]
+    blocked_document_ids: frozenset[str]
+    preview_only_source_paths: frozenset[str]
+
+
 def is_within(child: Path, parent: Path) -> bool:
     return child == parent or parent in child.parents
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def canonical_relative(value: str) -> str:
@@ -173,6 +214,195 @@ def load_library_acervo_allowlist(root: Path) -> set[str]:
     return allowlist
 
 
+def _load_json_object(path: Path, label: str) -> dict:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError(f"{label} ausente ou inválido.") from exc
+    if not isinstance(payload, dict):
+        raise ValueError(f"{label} precisa ser um objeto JSON.")
+    return payload
+
+
+def load_library_publication_plan(
+    root: Path,
+    manifest_allowlist: set[str],
+) -> LibraryPublicationPlan:
+    """Deriva a allowlist pública dos resultados fail-closed dos previews."""
+
+    index = _load_json_object(root / LIBRARY_PREVIEW_INDEX, "Índice de previews")
+    if index.get("version") != LIBRARY_PREVIEW_INDEX_VERSION:
+        raise ValueError(
+            "Índice de previews sem revisão editorial atual; execute "
+            "scripts_admin/build_library_previews.py antes do builder público."
+        )
+    items = index.get("items")
+    if not isinstance(items, list):
+        raise ValueError("Índice de previews precisa conter a lista 'items'.")
+
+    manifest = _load_json_object(
+        root / "02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json",
+        "Manifesto canônico da Biblioteca",
+    )
+    policy = _load_json_object(
+        root / "data/editorial/policy.json",
+        "Política editorial",
+    )
+    text_extensions = {
+        str(value).casefold()
+        for value in policy.get("scanning", {}).get("textExtensions", [])
+        if isinstance(value, str)
+    }
+    manifest_by_source: dict[str, dict] = {}
+    expected_preview_sources: set[str] = set()
+    public_originals: set[str] = set()
+    preview_only_sources: set[str] = set()
+    blocked_sources: set[str] = set()
+    blocked_ids: set[str] = set()
+    excluded: set[str] = set()
+    for record in manifest.get("files", []):
+        if not isinstance(record, dict) or not isinstance(record.get("path"), str):
+            raise ValueError("Manifesto canônico contém registro inválido.")
+        source_path = canonical_relative(record["path"])
+        manifest_by_source[source_path] = record
+        extension = str(record.get("extension", "")).casefold()
+        repository_path = canonical_relative(LIBRARY_ROOT_PREFIX + source_path)
+        declared_sha = str(record.get("sourceSha256") or "").casefold()
+        source_file = root / repository_path
+        if (
+            repository_path not in manifest_allowlist
+            or source_file.is_symlink()
+            or not source_file.is_file()
+            or not re.fullmatch(r"[0-9a-f]{64}", declared_sha)
+        ):
+            raise ValueError(f"Fonte canônica inválida: {source_path}")
+        if sha256_file(source_file) != declared_sha:
+            raise ValueError(f"SHA-256 físico divergente: {source_path}")
+
+        if extension in LIBRARY_PREVIEW_EXTENSIONS:
+            expected_preview_sources.add(source_path)
+            # Binários Office/PDF/Pages nunca integram o artefato público. Um
+            # DOCX aprovado pode publicar apenas a prévia HTML auditada.
+            excluded.add(repository_path)
+            continue
+
+        # Formatos sem preview só podem sair quando o próprio arquivo textual
+        # pertence à allowlist do gate e não produz nenhum alerta crítico.
+        directly_gateable = (
+            extension in LIBRARY_DIRECT_TEXT_EXTENSIONS
+            and f".{extension}" in text_extensions
+        )
+        direct_issues = (
+            scan_editorial_file(
+                root,
+                source_file,
+                policy,
+                None,
+                require_registration=False,
+            )
+            if directly_gateable
+            else []
+        )
+        if not directly_gateable or direct_issues:
+            blocked_sources.add(source_path)
+            blocked_ids.add(str(record.get("id") or ""))
+            excluded.add(repository_path)
+        else:
+            public_originals.add(repository_path)
+
+    seen_sources: set[str] = set()
+    seen_previews: set[str] = set()
+    preview_pattern = re.compile(
+        r"^previews/(?:docx|pdf|pages)-[0-9a-f]{20}\.html$"
+    )
+    risk_pattern = re.compile(r"^[A-Z][A-Z0-9_]{2,}$")
+
+    for item in items:
+        if not isinstance(item, dict):
+            raise ValueError("Índice de previews contém registro inválido.")
+        source_path = canonical_relative(str(item.get("sourcePath") or ""))
+        preview_path = canonical_relative(str(item.get("previewPath") or ""))
+        source_sha = str(item.get("sourceSha256") or "").casefold()
+        preview_sha = str(item.get("previewSha256") or "").casefold()
+        record = manifest_by_source.get(source_path)
+        if (
+            record is None
+            or source_path in seen_sources
+            or preview_path in seen_previews
+            or not preview_pattern.fullmatch(preview_path)
+            or source_sha != str(record.get("sourceSha256") or "").casefold()
+            or not re.fullmatch(r"[0-9a-f]{64}", preview_sha)
+        ):
+            raise ValueError("Índice de previews diverge do manifesto canônico.")
+        preview_file = root / LIBRARY_ROOT_PREFIX / preview_path
+        if (
+            preview_file.is_symlink()
+            or not preview_file.is_file()
+            or hashlib.sha256(preview_file.read_bytes()).hexdigest() != preview_sha
+        ):
+            raise ValueError(f"Preview ausente ou adulterado: {preview_path}")
+        seen_sources.add(source_path)
+        seen_previews.add(preview_path)
+
+        status = str(item.get("status") or "").casefold()
+        preview_format = str(item.get("previewFormat") or "").casefold()
+        source_extension = str(record.get("extension") or "").casefold()
+        identity_matches = str(item.get("documentId") or "") == str(
+            record.get("id") or ""
+        )
+        explicitly_approved_preview = (
+            identity_matches
+            and source_extension == "docx"
+            and preview_format == "docx"
+            and status == "ready"
+        )
+        # PDFs e Pages permanecem bloqueados independentemente da prévia. Todo
+        # formato, status ou identidade desconhecida/mismatched falha fechado.
+        unsafe_preview = (
+            source_extension in {"pdf", "pages"}
+            or not explicitly_approved_preview
+        )
+        if not unsafe_preview:
+            approved_html = preview_file.read_text(encoding="utf-8")
+            if re.search(r"(?i)<a\b|href\s*=", approved_html):
+                raise ValueError(
+                    f"Preview DOCX aprovado contém link para original: {preview_path}"
+                )
+            preview_only_sources.add(source_path)
+            continue
+        if status == "review-blocked":
+            risk_codes = item.get("riskCodes")
+            if (
+                not isinstance(risk_codes, list)
+                or not risk_codes
+                or risk_codes != sorted(set(risk_codes))
+                or any(
+                    not isinstance(code, str) or not risk_pattern.fullmatch(code)
+                    for code in risk_codes
+                )
+            ):
+                raise ValueError(f"Preview bloqueado sem riskCodes válidos: {preview_path}")
+            placeholder = preview_file.read_text(encoding="utf-8")
+            if re.search(r"(?i)<a\b|href\s*=", placeholder):
+                raise ValueError(f"Placeholder bloqueado contém link: {preview_path}")
+        blocked_sources.add(source_path)
+        blocked_ids.add(str(record.get("id") or ""))
+        excluded.add(canonical_relative(LIBRARY_ROOT_PREFIX + source_path))
+        excluded.add(canonical_relative(LIBRARY_ROOT_PREFIX + preview_path))
+
+    if seen_sources != expected_preview_sources:
+        raise ValueError("Cobertura editorial dos previews está incompleta.")
+
+    public_acervo = frozenset(manifest_allowlist & public_originals)
+    return LibraryPublicationPlan(
+        public_acervo_allowlist=public_acervo,
+        excluded_repository_paths=frozenset(excluded),
+        blocked_source_paths=frozenset(blocked_sources),
+        blocked_document_ids=frozenset(value for value in blocked_ids if value),
+        preview_only_source_paths=frozenset(preview_only_sources),
+    )
+
+
 def validate_library_acervo(root: Path, allowlist: set[str]) -> None:
     """Falha fechado se o acervo físico contém algo fora do manifesto."""
 
@@ -209,6 +439,225 @@ def validate_library_acervo(root: Path, allowlist: set[str]) -> None:
             "Arquivo aprovado seria omitido pelo filtro público: "
             + ", ".join(blocked_allowlisted[:3])
         )
+
+
+def _json_bytes(payload: object) -> bytes:
+    return (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+
+
+def _write_public_json(site: Path, relative: str, payload: object) -> None:
+    destination = site / relative
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_bytes(_json_bytes(payload))
+
+
+def write_public_library_metadata(
+    root: Path,
+    site: Path,
+    plan: LibraryPublicationPlan,
+) -> None:
+    """Publica somente metadados que apontam para documentos liberados."""
+
+    blocked_paths = set(plan.blocked_source_paths)
+    blocked_ids = set(plan.blocked_document_ids)
+    preview_only_paths = set(plan.preview_only_source_paths)
+
+    def sanitize_record(item: dict, path_key: str = "path") -> dict:
+        record = dict(item)
+        source_path = canonical_relative(str(record.get(path_key) or ""))
+        preview_only = source_path in preview_only_paths
+        record["publicationMode"] = (
+            "preview-only" if preview_only else "original-public"
+        )
+        record["originalPublic"] = not preview_only
+        return record
+
+    manifest_relative = (
+        "02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json"
+    )
+    manifest = _load_json_object(root / manifest_relative, "Manifesto da Biblioteca")
+    all_files = [
+        item for item in manifest.get("files", []) if isinstance(item, dict)
+    ]
+    files = [
+        sanitize_record(item)
+        for item in all_files
+        if item.get("path") not in blocked_paths
+    ]
+    manifest["files"] = files
+    manifest["totalFiles"] = len(files)
+    origin_counts = Counter(str(item.get("origin") or "") for item in files)
+    for partition in manifest.get("partitions", []):
+        if isinstance(partition, dict):
+            extensions = {
+                str(extension).casefold()
+                for extension in partition.get("extensions", [])
+                if isinstance(extension, str)
+            }
+            partition["count"] = sum(
+                str(item.get("extension") or "").casefold() in extensions
+                for item in files
+            )
+    for origin in manifest.get("origins", []):
+        if isinstance(origin, dict):
+            origin["count"] = origin_counts[str(origin.get("id") or "")]
+    manifest_bytes = _json_bytes(manifest)
+    manifest_destination = site / manifest_relative
+    manifest_destination.parent.mkdir(parents=True, exist_ok=True)
+    manifest_destination.write_bytes(manifest_bytes)
+
+    for relative, list_key, count_key in (
+        (
+            "02_Biblioteca_IA_Engine/data/biblioteca_catalogo.json",
+            "items",
+            "totalFiles",
+        ),
+        (
+            "02_Biblioteca_IA_Engine/data/biblioteca_inbox_manifest_auto.json",
+            "files",
+            "totalFiles",
+        ),
+    ):
+        payload = _load_json_object(root / relative, Path(relative).name)
+        records = [
+            sanitize_record(item)
+            for item in payload.get(list_key, [])
+            if isinstance(item, dict) and item.get("path") not in blocked_paths
+        ]
+        payload[list_key] = records
+        payload[count_key] = len(records)
+        _write_public_json(site, relative, payload)
+
+    previews_relative = LIBRARY_PREVIEW_INDEX
+    previews = _load_json_object(root / previews_relative, "Índice de previews")
+    preview_items = [
+        sanitize_record(item, "sourcePath")
+        for item in previews.get("items", [])
+        if isinstance(item, dict)
+        and item.get("status") != "review-blocked"
+        and item.get("sourcePath") not in blocked_paths
+    ]
+    previews["items"] = preview_items
+    previews["sourceManifestSha256"] = hashlib.sha256(manifest_bytes).hexdigest()
+    previews["sourceManifestUpdatedAt"] = manifest.get("updatedAt")
+    previews["manifestDocuments"] = len(files)
+    previews["previewableDocuments"] = len(preview_items)
+    previews["generatedPreviews"] = len(preview_items)
+    previews["generatedByExtension"] = {
+        extension: sum(
+            item.get("previewFormat") == extension for item in preview_items
+        )
+        for extension in ("docx", "pages", "pdf")
+    }
+    ocr_items = [
+        item
+        for item in preview_items
+        if item.get("previewFormat") == "pdf"
+        and isinstance(item.get("stats"), dict)
+        and bool(item["stats"].get("ocrRequired"))
+    ]
+    unique_ocr = {
+        str(item.get("sourceSha256")): item["stats"] for item in ocr_items
+    }
+    previews["ocrRequiredDocuments"] = len(ocr_items)
+    previews["ocrUniqueJobs"] = len(unique_ocr)
+    previews["ocrReadyDocuments"] = sum(
+        bool(item["stats"].get("ocrReady")) for item in ocr_items
+    )
+    previews["ocrFailedDocuments"] = sum(
+        not bool(item["stats"].get("ocrReady")) for item in ocr_items
+    )
+    previews["ocrPages"] = sum(
+        int(stats.get("ocrPages") or 0)
+        for stats in unique_ocr.values()
+        if bool(stats.get("ocrReady"))
+    )
+    _write_public_json(site, previews_relative, previews)
+
+    brain_relative = (
+        "02_Biblioteca_IA_Engine/data/biblioteca_brain_connections.json"
+    )
+    brain = _load_json_object(root / brain_relative, "Índice de conexões")
+    removed_node_ids = {
+        str(node.get("id"))
+        for node in brain.get("nodes", [])
+        if isinstance(node, dict)
+        and (
+            node.get("sourceId") in blocked_ids
+            or str(node.get("path") or "").removeprefix(LIBRARY_ROOT_PREFIX)
+            in blocked_paths
+        )
+    }
+    nodes = [
+        node
+        for node in brain.get("nodes", [])
+        if isinstance(node, dict) and str(node.get("id")) not in removed_node_ids
+    ]
+    edges = [
+        edge
+        for edge in brain.get("edges", [])
+        if isinstance(edge, dict)
+        and str(edge.get("from")) not in removed_node_ids
+        and str(edge.get("to")) not in removed_node_ids
+    ]
+    brain["nodes"] = nodes
+    brain["edges"] = edges
+    brain["stats"] = {
+        "themes": sum(node.get("type") == "theme" for node in nodes),
+        "documents": sum(node.get("type") == "document" for node in nodes),
+        "nodes": len(nodes),
+        "edges": len(edges),
+    }
+    _write_public_json(site, brain_relative, brain)
+
+    duplicates_relative = (
+        "02_Biblioteca_IA_Engine/data/biblioteca_duplicados.json"
+    )
+    duplicates = _load_json_object(root / duplicates_relative, "Índice de duplicados")
+    for key in ("exactDuplicates", "renditionFamilies"):
+        groups = []
+        for group in duplicates.get(key, []):
+            if not isinstance(group, dict):
+                continue
+            remaining = [
+                item
+                for item in group.get("items", [])
+                if isinstance(item, dict)
+                and item.get("id") not in blocked_ids
+                and item.get("path") not in blocked_paths
+            ]
+            if len(remaining) < 2:
+                continue
+            group["items"] = remaining
+            group["count"] = len(remaining)
+            if key == "renditionFamilies":
+                group["extensions"] = sorted(
+                    {
+                        str(item.get("extension"))
+                        for item in remaining
+                        if item.get("extension")
+                    }
+                )
+            groups.append(group)
+        duplicates[key] = groups
+    duplicates["summary"] = {
+        "publicDocuments": len(files),
+        "exactDuplicateGroups": len(duplicates.get("exactDuplicates", [])),
+        "renditionFamilies": len(duplicates.get("renditionFamilies", [])),
+    }
+    _write_public_json(site, duplicates_relative, duplicates)
+
+    # Estes três arquivos são filas de candidatos incompletos, não catálogos
+    # homologados. A lista vazia preserva o schema/consumidores sem publicar
+    # conteúdo derivado ainda não aprovado.
+    for relative in PUBLIC_EMPTY_CANDIDATE_INDEXES:
+        try:
+            candidates = json.loads((root / relative).read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise ValueError(f"Índice derivado ausente ou inválido: {relative}") from exc
+        if not isinstance(candidates, list):
+            raise ValueError(f"Índice derivado precisa ser uma lista: {relative}")
+        _write_public_json(site, relative, [])
 
 
 def load_card_public_allowlist(root: Path) -> set[str]:
@@ -414,7 +863,12 @@ def copy_entry(
     relative: str,
     library_allowlist: set[str],
     card_allowlist: set[str],
+    dynamic_exclusions: frozenset[str] = frozenset(),
 ) -> None:
+    canonical = canonical_relative(relative)
+    if canonical in PUBLIC_BUILD_EXCLUSIONS or canonical in dynamic_exclusions:
+        return
+
     source = root / relative
     destination = site / relative
     if should_skip(root, source):
@@ -430,9 +884,9 @@ def copy_entry(
                     child.relative_to(root).as_posix(),
                     library_allowlist,
                     card_allowlist,
+                    dynamic_exclusions,
                 )
     elif source.is_file():
-        canonical = canonical_relative(relative)
         if canonical.startswith(LIBRARY_ACERVO_PREFIX) and canonical not in library_allowlist:
             raise ValueError(f"Arquivo da Biblioteca fora da allowlist: {relative}")
         if canonical.startswith(CARD_PUBLIC_PREFIX) and canonical not in card_allowlist:
@@ -523,8 +977,10 @@ def build(root: Path, site: Path) -> int:
             print(f"   - {relative}")
         return 1
 
-    library_allowlist = load_library_acervo_allowlist(root)
-    validate_library_acervo(root, library_allowlist)
+    library_manifest_allowlist = load_library_acervo_allowlist(root)
+    validate_library_acervo(root, library_manifest_allowlist)
+    library_plan = load_library_publication_plan(root, library_manifest_allowlist)
+    library_allowlist = set(library_plan.public_acervo_allowlist)
     card_allowlist = load_card_public_allowlist(root)
     card_conflicts = validate_card_public_assets(root, card_allowlist)
     validate_clinical_publication(root)
@@ -535,15 +991,44 @@ def build(root: Path, site: Path) -> int:
     site.mkdir(parents=True)
 
     for relative in REQUIRED:
-        copy_entry(root, site, relative, library_allowlist, card_allowlist)
+        copy_entry(
+            root,
+            site,
+            relative,
+            library_allowlist,
+            card_allowlist,
+            library_plan.excluded_repository_paths,
+        )
     for relative in OPTIONAL:
         if (root / relative).exists():
-            copy_entry(root, site, relative, library_allowlist, card_allowlist)
+            copy_entry(
+                root,
+                site,
+                relative,
+                library_allowlist,
+                card_allowlist,
+                library_plan.excluded_repository_paths,
+            )
     for relative in PUBLIC_DOWNLOADS:
-        copy_entry(root, site, relative, library_allowlist, card_allowlist)
+        copy_entry(
+            root,
+            site,
+            relative,
+            library_allowlist,
+            card_allowlist,
+            library_plan.excluded_repository_paths,
+        )
     for logo in sorted(root.glob("logo_concept*.png")):
-        copy_entry(root, site, logo.name, library_allowlist, card_allowlist)
+        copy_entry(
+            root,
+            site,
+            logo.name,
+            library_allowlist,
+            card_allowlist,
+            library_plan.excluded_repository_paths,
+        )
 
+    write_public_library_metadata(root, site, library_plan)
     (site / ".nojekyll").touch(exist_ok=True)
     attributed = inject_editorial_attribution(site)
     normalize_permissions(site)

@@ -212,6 +212,46 @@ class EditorialGateConfigurationTests(unittest.TestCase):
             },
         )
 
+    def test_public_root_maps_artifact_path_to_registered_source_path(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            site = root / "site"
+            site.mkdir()
+            public_path = "claim.html"
+            (site / public_path).write_text(
+                "Aldenir Rocha de Oliveira Filho, médico mestre.",
+                encoding="utf-8",
+            )
+            registry = copy.deepcopy(self.registry)
+            item = valid_medical_item(public_path)
+            item["professionalClaims"] = [
+                {
+                    "claim": "Médico mestre",
+                    "verification": {
+                        "type": "documento institucional",
+                        "reference": "https://example.org/verificacao",
+                        "checkedAt": "2026-07-25",
+                    },
+                }
+            ]
+            registry["items"].append(item)
+            registry_path = root / "registry.json"
+            registry_path.write_text(
+                json.dumps(registry, ensure_ascii=False),
+                encoding="utf-8",
+            )
+
+            issues, summary = self.guard.run_check(
+                root,
+                POLICY_PATH,
+                registry_path,
+                PROVENANCE_PATH,
+                public_roots=[site],
+            )
+
+            self.assertEqual(issues, [])
+            self.assertEqual(summary["publicTextFilesScanned"], 1)
+
 
 class EditorialContentScannerTests(unittest.TestCase):
     @classmethod
@@ -349,9 +389,6 @@ class EditorialContentScannerTests(unittest.TestCase):
                 "SENSITIVE_PHONE"
             },
             "05_Midia_E_Feed/data/cards.json": {"SENSITIVE_PHONE"},
-            "05_Midia_E_Feed/data/recovery_manifest.json": {
-                "SENSITIVE_PHONE"
-            },
         }
         for relative_path, unexpected_codes in cases.items():
             with self.subTest(path=relative_path):

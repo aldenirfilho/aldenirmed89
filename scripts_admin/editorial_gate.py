@@ -1008,7 +1008,7 @@ def run_check(
             continue
         for path in _iter_public_text_files(public_root, policy):
             scanned_public += 1
-            relative = path.resolve().relative_to(root).as_posix()
+            relative = path.resolve().relative_to(public_root.resolve()).as_posix()
             issues.extend(
                 scan_file(
                     root,

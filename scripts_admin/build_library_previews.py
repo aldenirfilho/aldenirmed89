@@ -35,8 +35,12 @@ import unicodedata
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
-from urllib.parse import quote
 from xml.etree import ElementTree as ET
+
+try:
+    from editorial_gate import scan_text as scan_editorial_text
+except ModuleNotFoundError:  # import via unittest/importlib a partir da raiz
+    from scripts_admin.editorial_gate import scan_text as scan_editorial_text
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,6 +48,7 @@ DEFAULT_LIBRARY_ROOT = ROOT / "02_Biblioteca_IA_Engine"
 MANIFEST_RELATIVE = Path("data/biblioteca_documentos_manifest.json")
 INDEX_RELATIVE = Path("data/biblioteca_previews.json")
 PREVIEW_DIR_RELATIVE = Path("previews")
+EDITORIAL_POLICY_RELATIVE = Path("data/editorial/policy.json")
 PRIVATE_SEGMENTS = {"_private", "inbox", "juridico-financeiro"}
 MAX_DOCUMENT_XML_BYTES = 64 * 1024 * 1024
 MAX_PDF_TEXT_PAGES = 80
@@ -62,7 +67,9 @@ OCR_CACHE_LANGUAGES = ("por", "eng")
 OCR_ENGINE_LABEL = f"tesseract-{'+'.join(OCR_CACHE_LANGUAGES)}"
 OCR_TESSERACT_PSM = 6
 MAX_OCR_CACHE_ENTRY_BYTES = 8 * 1024 * 1024
-INDEX_RENDERER_VERSION = "library-safe-html-v4"
+INDEX_RENDERER_VERSION = "library-safe-html-v5"
+INDEX_VERSION = "library-previews-v5"
+REVIEW_PLACEHOLDER_RENDERER = "editorial-review-placeholder-v1"
 DOCX_RENDERER_VERSION = "docx-stdlib-xml-v1"
 PDF_RENDERER_VERSION = "pdf-local-cover-text-ocr-v3"
 PAGES_RENDERER_VERSION = "pages-quicklook-image-v1"
@@ -321,6 +328,30 @@ def load_manifest(library_root: Path) -> tuple[dict, bytes]:
     if not isinstance(payload, dict) or not isinstance(payload.get("files"), list):
         raise PreviewBuildError("O manifesto precisa conter uma lista 'files'.")
     return payload, raw
+
+
+def load_editorial_policy(library_root: Path) -> dict:
+    """Carrega a mesma política fail-closed usada pelo gate de publicação."""
+
+    candidates = (
+        library_root.resolve().parent / EDITORIAL_POLICY_RELATIVE,
+        ROOT / EDITORIAL_POLICY_RELATIVE,
+    )
+    for policy_path in candidates:
+        try:
+            payload = json.loads(policy_path.read_text(encoding="utf-8"))
+        except FileNotFoundError:
+            continue
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise PreviewBuildError(
+                f"Política editorial inválida para os previews: {policy_path}"
+            ) from exc
+        if isinstance(payload, dict):
+            return payload
+        raise PreviewBuildError(
+            f"Política editorial não é um objeto JSON: {policy_path}"
+        )
+    raise PreviewBuildError("Política editorial ausente; previews bloqueados por segurança.")
 
 
 def canonical_preview_path(raw_path: object, expected_extension: str) -> PurePosixPath:
@@ -1010,7 +1041,6 @@ def render_page(
     safe_source = html.escape(source_path)
     safe_notice = html.escape(notice)
     safe_content_label = html.escape(content_label)
-    original_href = "../" + quote(source_path, safe="/")
     page = f"""<!doctype html>
 <html lang="pt-BR">
 <head>
@@ -1035,8 +1065,6 @@ def render_page(
     .table-wrap{{overflow:auto;margin:1rem 0;border:1px solid var(--line);border-radius:10px}}
     table{{border-collapse:collapse;width:100%;min-width:420px}}
     td{{border:1px solid var(--line);padding:.65rem;vertical-align:top}}
-    a{{color:var(--accent)}}
-    .download{{display:inline-block;margin-top:.7rem;padding:.65rem .9rem;border:1px solid var(--accent);border-radius:9px;text-decoration:none;font-weight:700}}
     .empty{{color:var(--muted);font-style:italic}}
     .pdf-cover{{margin:0 auto 2rem;text-align:center}}
     .pdf-cover img{{display:block;max-width:100%;height:auto;margin:auto;border:1px solid var(--line);border-radius:8px;box-shadow:0 12px 30px #0007}}
@@ -1052,7 +1080,6 @@ def render_page(
     <div class="notice" role="note">⚠️ {safe_notice}</div>
     <h1>{safe_title}</h1>
     <p class="meta">Fonte: {safe_source}<br>SHA-256: {source_sha256}</p>
-    <p><a class="download" href="{original_href}" download>⬇️ Baixar o {html.escape(format_label)} original</a></p>
     <article data-reader-content="true" aria-label="{safe_content_label}">
       {content}
     </article>
@@ -1061,6 +1088,79 @@ def render_page(
 </html>
 """
     return page.encode("utf-8")
+
+
+def render_review_blocked_placeholder() -> bytes:
+    """Gera um aviso inerte, sem título, path, hash ou link para o original."""
+
+    page = """<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>Conteúdo em revisão editorial</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1220;--card:#111c30;--text:#e5edf8;--muted:#a8b6ca;--line:#334866;--accent:#38bdf8}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    main{width:min(680px,calc(100% - 2rem));padding:clamp(1.25rem,5vw,2.5rem);background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px #0006}
+    h1{margin-top:0;color:var(--accent);font-size:clamp(1.45rem,5vw,2rem)}
+    p{margin-bottom:0;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <main role="status" aria-live="polite">
+    <h1>🛡️ Conteúdo em revisão editorial</h1>
+    <p>Este material permanece preservado na área de trabalho do proprietário, mas não está disponível na edição pública enquanto a revisão de segurança não for concluída.</p>
+  </main>
+</body>
+</html>
+"""
+    return page.encode("utf-8")
+
+
+def editorial_risk_codes(page: bytes, policy: dict, display_path: str) -> list[str]:
+    """Aplica integralmente o scanner crítico, sem exigir registro incremental."""
+
+    try:
+        text = page.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise PreviewBuildError("Preview gerado fora de UTF-8.") from exc
+    issues = scan_editorial_text(
+        text,
+        display_path,
+        policy,
+        None,
+        require_registration=False,
+    )
+    return sorted({issue.code for issue in issues})
+
+
+def extraction_risk_codes(
+    extension: str,
+    status: str,
+    stats: dict[str, object],
+) -> list[str]:
+    """Bloqueia formatos cujo conteúdo não pôde ser submetido ao gate textual."""
+
+    risks: set[str] = set()
+    if status == "degraded":
+        risks.add("PREVIEW_EXTRACTION_DEGRADED")
+    if extension == "pdf":
+        # A prévia cobre no máximo uma representação parcial. Até existir uma
+        # aprovação integral explícita do binário, nenhum PDF é publicável.
+        risks.add("PDF_FULL_CONTENT_NOT_AUDITED")
+        if status == "ocr-required":
+            risks.add("PREVIEW_OCR_REQUIRED")
+        if (
+            int(stats.get("nativeVisibleCharacters") or 0) <= 0
+            and not bool(stats.get("ocrReady"))
+        ):
+            risks.add("PREVIEW_TEXT_EXTRACTION_UNAVAILABLE")
+    elif extension == "pages":
+        risks.add("PAGES_FULL_CONTENT_NOT_AUDITED")
+    return sorted(risks)
 
 
 def preview_name(source_path: str, extension: str) -> str:
@@ -1078,6 +1178,7 @@ def build_plan(
     if persistent_ocr_cache_root is None:
         persistent_ocr_cache_root = default_ocr_cache_root(library_root)
     manifest, manifest_bytes = load_manifest(library_root)
+    editorial_policy = load_editorial_policy(library_root)
     raw_files = manifest["files"]
     artifacts: list[PreviewArtifact] = []
     ocr_cache: dict[str, OcrResult] = {}
@@ -1187,6 +1288,30 @@ def build_plan(
             content_label=content_label,
         )
         preview_path = (PREVIEW_DIR_RELATIVE / filename).as_posix()
+        risk_codes = sorted(
+            {
+                *editorial_risk_codes(
+                    page,
+                    editorial_policy,
+                    preview_path,
+                ),
+                *extraction_risk_codes(extension, status, stats),
+            }
+        )
+        if risk_codes:
+            page = render_review_blocked_placeholder()
+            placeholder_risks = editorial_risk_codes(
+                page,
+                editorial_policy,
+                preview_path,
+            )
+            if placeholder_risks:
+                raise PreviewBuildError(
+                    "Placeholder editorial reprovado pelo próprio gate: "
+                    + ", ".join(placeholder_risks)
+                )
+            status = "review-blocked"
+            renderer = REVIEW_PLACEHOLDER_RENDERER
         metadata: dict[str, object] = {
             "documentId": document_id,
             "sourcePath": source_path,
@@ -1200,6 +1325,8 @@ def build_plan(
             "browserIndependent": True,
             "stats": stats,
         }
+        if risk_codes:
+            metadata["riskCodes"] = risk_codes
         artifacts.append(PreviewArtifact(filename=filename, html_bytes=page, metadata=metadata))
 
     artifacts.sort(key=lambda item: str(item.metadata["sourcePath"]).casefold())
@@ -1221,7 +1348,7 @@ def build_plan(
         ocr_unique_jobs.setdefault(source_sha, artifact.metadata["stats"])
 
     index = {
-        "version": "library-previews-v4",
+        "version": INDEX_VERSION,
         "renderer": INDEX_RENDERER_VERSION,
         "sourceManifest": MANIFEST_RELATIVE.as_posix(),
         "sourceManifestSha256": sha256_bytes(manifest_bytes),

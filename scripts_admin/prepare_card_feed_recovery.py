@@ -12,6 +12,7 @@ Exemplo:
     python3 scripts_admin/prepare_card_feed_recovery.py \
       --source-dir /caminho/privado/assets/cards/inbox \
       --legacy-cards /caminho/privado/data/cards.json \
+      --private-audit-output /caminho/privado/recovery_manifest.json \
       --acknowledge-historical-batch-2026-07-21
 
 O ambiente precisa de Pillow com suporte a WebP. No Codex Desktop, use o Python
@@ -40,7 +41,6 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_ROOT = ROOT / "05_Midia_E_Feed/assets/cards/public"
 RECOVERED_ROOT = PUBLIC_ROOT / "recovered"
 CARDS_OUTPUT = ROOT / "05_Midia_E_Feed/data/cards.json"
-RECOVERY_MANIFEST = ROOT / "05_Midia_E_Feed/data/recovery_manifest.json"
 SUPPORTED = {".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif", ".svg"}
 RASTER = SUPPORTED - {".svg"}
 BLOCKED_SVG_TAGS = {"script", "foreignobject", "iframe", "object", "embed", "audio", "video"}
@@ -313,6 +313,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Recupera e otimiza o Card Feed autoral.")
     parser.add_argument("--source-dir", required=True, type=Path)
     parser.add_argument("--legacy-cards", required=True, type=Path)
+    parser.add_argument(
+        "--private-audit-output",
+        required=True,
+        type=Path,
+        help="Destino do manifesto completo fora do repositório público.",
+    )
     parser.add_argument("--max-edge", type=int, default=1600)
     parser.add_argument("--quality", type=int, default=88)
     parser.add_argument(
@@ -329,6 +335,14 @@ def main() -> int:
 
     source_dir = args.source_dir.resolve()
     legacy_cards = args.legacy_cards.resolve()
+    private_audit_output = args.private_audit_output.expanduser().resolve()
+    try:
+        private_audit_output.relative_to(ROOT.resolve())
+    except ValueError:
+        pass
+    else:
+        print("❌ --private-audit-output deve ficar fora do repositório público.")
+        return 1
     if not source_dir.is_dir():
         print(f"❌ Diretório de origem inexistente: {source_dir}")
         return 1
@@ -501,7 +515,7 @@ def main() -> int:
         "files": entries,
     }
     write_json(CARDS_OUTPUT, cards)
-    write_json(RECOVERY_MANIFEST, payload)
+    write_json(private_audit_output, payload)
 
     print(f"✅ Fontes autorais processadas: {len(entries)}")
     print(f"✅ Arquivos públicos únicos: {len(unique_entries)}")
