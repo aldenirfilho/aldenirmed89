@@ -1,0 +1,324 @@
+name: Revisão Protetiva Semanal
+
+on:
+  schedule:
+    # Segunda-feira, 08:00 em Fortaleza (UTC-03:00).
+    - cron: '0 11 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: revisao-protetiva-semanal
+  cancel-in-progress: false
+
+jobs:
+  laudo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout somente leitura
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Recuperar resumo comparável da última revisão
+        id: previous
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const prefix = '[Laudo semanal] Revisão protetiva ';
+            const marker = /<!-- antigravity-weekly-summary-base64:([A-Za-z0-9+/=]+) -->/;
+            const severities = ['crítico', 'alto', 'médio', 'baixo'];
+            const isValidSummary = value =>
+              value &&
+              value.schemaVersion ===
+                'antigravity-weekly-protective-review-v1' &&
+              /^\d{4}-W(?:0[1-9]|[1-4]\d|5[0-3])$/.test(value.weekId) &&
+              typeof value.generatedAt === 'string' &&
+              Number.isFinite(Date.parse(value.generatedAt)) &&
+              typeof value.overallStatus === 'string' &&
+              value.severityCounts &&
+              severities.every(key =>
+                Number.isInteger(value.severityCounts[key]) &&
+                value.severityCounts[key] >= 0
+              ) &&
+              Array.isArray(value.findingFingerprints) &&
+              value.findingFingerprints.length <= 500 &&
+              value.findingFingerprints.every(item =>
+                typeof item === 'string' && /^[0-9a-f]{20}$/.test(item)
+              ) &&
+              typeof value.commit === 'string' &&
+              (
+                value.commit === 'unknown' ||
+                /^[0-9a-f]{7,64}$/i.test(value.commit)
+              );
+            const issues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'all',
+                per_page: 100
+              }
+            );
+            const previous = issues
+              .filter(issue =>
+                !issue.pull_request &&
+                issue.user?.login === 'github-actions[bot]' &&
+                issue.title.startsWith(prefix) &&
+                marker.test(issue.body || '')
+              )
+              .sort((a, b) =>
+                new Date(b.updated_at).getTime() -
+                new Date(a.updated_at).getTime()
+              )[0];
+            if (!previous) {
+              core.notice('Primeira revisão: sem resumo semanal anterior.');
+              return;
+            }
+            const match = (previous.body || '').match(marker);
+            try {
+              const decoded = Buffer.from(match[1], 'base64').toString('utf8');
+              const summary = JSON.parse(decoded);
+              if (!isValidSummary(summary)) {
+                throw new Error('schema do resumo anterior inválido');
+              }
+              fs.writeFileSync(
+                'previous-weekly-summary.json',
+                JSON.stringify(summary, null, 2) + '\n',
+                {encoding: 'utf8', mode: 0o600}
+              );
+              core.info(`Resumo anterior recuperado da issue #${previous.number}.`);
+            } catch (error) {
+              core.warning(
+                `Resumo anterior inválido; comparação será limitada: ${error.message}`
+              );
+            }
+
+      - name: Executar revisão sem corrigir ou publicar
+        id: audit
+        shell: bash
+        run: |
+          set +e
+          previous_args=()
+          if [ -s previous-weekly-summary.json ]; then
+            previous_args=(--previous-json previous-weekly-summary.json)
+          fi
+          python3 scripts_admin/weekly_protective_review.py \
+            --root . \
+            --output-dir weekly-protective-review \
+            --site-base-url \
+              https://aldenirfilho.github.io/antigravity-consultas/ \
+            "${previous_args[@]}"
+          exit_code=$?
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          if [ -s weekly-protective-review/laudo-semanal.json ]; then
+            echo "report_present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "report_present=false" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Publicar extrato no resumo da execução
+        if: always() && steps.audit.outputs.report_present == 'true'
+        shell: bash
+        run: |
+          {
+            echo "## Revisão protetiva semanal"
+            echo
+            cat weekly-protective-review/laudo-semanal.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Arquivar laudos e evidência oficial
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: laudo-protetivo-semanal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            weekly-protective-review/laudo-semanal.md
+            weekly-protective-review/laudo-semanal.json
+            weekly-protective-review/fontes-oficiais.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Criar ou atualizar a issue única da semana
+        if: always()
+        uses: actions/github-script@v8
+        env:
+          SCRIPT_EXIT_CODE: ${{ steps.audit.outputs.exit_code }}
+          REPORT_PRESENT: ${{ steps.audit.outputs.report_present }}
+        with:
+          script: |
+            const fs = require('fs');
+            const crypto = require('crypto');
+            const prefix = '[Laudo semanal] Revisão protetiva ';
+            const embeddedSummaryPattern =
+              /<!-- antigravity-weekly-summary-base64:[A-Za-z0-9+/=]+ -->/;
+            const runUrl =
+              `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}` +
+              `/actions/runs/${context.runId}`;
+            let report;
+            let markdown;
+            let jsonText;
+            try {
+              jsonText = fs.readFileSync(
+                'weekly-protective-review/laudo-semanal.json',
+                'utf8'
+              );
+              report = JSON.parse(jsonText);
+              markdown = fs.readFileSync(
+                'weekly-protective-review/laudo-semanal.md',
+                'utf8'
+              );
+            } catch (error) {
+              const now = new Date();
+              const fortaleza = new Date(now.getTime() - 3 * 60 * 60 * 1000);
+              const isoDate = new Date(Date.UTC(
+                fortaleza.getUTCFullYear(),
+                fortaleza.getUTCMonth(),
+                fortaleza.getUTCDate()
+              ));
+              const isoDay = isoDate.getUTCDay() || 7;
+              isoDate.setUTCDate(isoDate.getUTCDate() + 4 - isoDay);
+              const isoYear = isoDate.getUTCFullYear();
+              const oneJan = new Date(Date.UTC(isoYear, 0, 1));
+              const week = Math.ceil(
+                (((isoDate - oneJan) / 86400000) + 1) / 7
+              );
+              report = {
+                schemaVersion: 'antigravity-weekly-protective-review-v1',
+                period: {
+                  weekId: `${isoYear}-W${String(week).padStart(2, '0')}`
+                },
+                generatedAt: now.toISOString(),
+                summary: {
+                  overallStatus: 'revisão_humana_prioritária',
+                  severityCounts: {
+                    'crítico': 1,
+                    'alto': 0,
+                    'médio': 0,
+                    'baixo': 0
+                  }
+                },
+                findings: [],
+                execution: {commit: context.sha}
+              };
+              markdown = [
+                '# Laudo semanal incompleto',
+                '',
+                'A automação não produziu os dois arquivos de laudo esperados.',
+                'Revisão humana prioritária é obrigatória.',
+                '',
+                '> Isto não é interpretação jurídica nem confirmação de violação.'
+              ].join('\n');
+              jsonText = JSON.stringify(report, null, 2) + '\n';
+              core.warning(`Fallback da issue usado: ${error.message}`);
+            }
+
+            const weekId = String(report.period?.weekId || 'semana-desconhecida');
+            const title = `${prefix}${weekId}`;
+            const jsonSha256 = crypto
+              .createHash('sha256')
+              .update(jsonText, 'utf8')
+              .digest('hex');
+            const markdownSha256 = crypto
+              .createHash('sha256')
+              .update(markdown, 'utf8')
+              .digest('hex');
+            const comparisonToken = report.comparisonToken || {
+              schemaVersion: report.schemaVersion,
+              weekId,
+              generatedAt: report.generatedAt,
+              overallStatus: report.summary?.overallStatus,
+              severityCounts: report.summary?.severityCounts || {},
+              findingFingerprints: (report.findings || [])
+                .map(item => item.fingerprint)
+                .filter(Boolean),
+              commit: report.execution?.commit || context.sha
+            };
+            const encoded = Buffer
+              .from(JSON.stringify(comparisonToken), 'utf8')
+              .toString('base64');
+            const header = [
+              `- [Execução e artefatos](${runUrl})`,
+              `- Commit: \`${report.execution?.commit || context.sha}\``,
+              `- Código do script: \`${process.env.SCRIPT_EXIT_CODE || 'ausente'}\``,
+              `- SHA-256 do JSON: \`${jsonSha256}\``,
+              `- SHA-256 do Markdown: \`${markdownSha256}\``,
+              '',
+              '> A issue publica somente um extrato técnico-editorial sanitizado. Não é parecer ' +
+                'jurídico, certificação, aprovação automática ou violação confirmada.',
+              ''
+            ].join('\n');
+            const summaryComment =
+              `<!-- antigravity-weekly-summary-base64:${encoded} -->`;
+            const maxMarkdown =
+              54000 - header.length - summaryComment.length;
+            const safeMarkdown = markdown.length > maxMarkdown
+              ? markdown.slice(0, maxMarkdown) +
+                '\n\n_Extrato truncado; consulte o artefato integral._\n'
+              : markdown;
+            const body = `${header}${safeMarkdown}\n\n${summaryComment}`;
+
+            const issues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'all',
+                per_page: 100
+              }
+            );
+            const existing = issues
+              .filter(issue =>
+                !issue.pull_request &&
+                issue.user?.login === 'github-actions[bot]' &&
+                issue.title === title &&
+                embeddedSummaryPattern.test(issue.body || '')
+              )
+              .sort((a, b) => b.number - a.number)[0];
+            if (existing) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                title,
+                body,
+                state: 'open'
+              });
+              core.info(`Issue semanal #${existing.number} atualizada.`);
+            } else {
+              const created = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body
+              });
+              core.info(`Issue semanal #${created.data.number} criada.`);
+            }
+
+      - name: Sinalizar achado alto, crítico ou laudo ausente
+        if: always()
+        shell: bash
+        run: |
+          if [ ! -s weekly-protective-review/laudo-semanal.json ]; then
+            echo "Laudo JSON ausente; revisão humana prioritária."
+            exit 1
+          fi
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(
+              Path("weekly-protective-review/laudo-semanal.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          raise SystemExit(int(report.get("recommendedExitCode", 1)))
+          PY

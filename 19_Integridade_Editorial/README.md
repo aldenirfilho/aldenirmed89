@@ -58,6 +58,8 @@ ideias, métodos, fatos ou conteúdo científico.
   ao artefato público;
 - `PROTOCOLO_INCIDENTES.md`: contenção, preservação, avaliação, correção,
   comunicação e aprendizado;
+- `REVISAO_PROTETIVA_SEMANAL.md`: rotina semanal de testes, inventário
+  heurístico, verificação de rotas/downloads, laudo e issue histórica;
 - `data/revision-log.json`: feed público exclusivamente de revisões
   `public-approved`;
 - `data/legal-sources.json`: baseline técnico das fontes oficiais monitoradas.
@@ -101,5 +103,9 @@ Ao revisar a política:
    absoluta.
 
 O workflow diário apenas detecta alteração, indisponibilidade ou
-redirecionamento inesperado e abre uma pendência de revisão. Ele nunca publica
-interpretação jurídica automaticamente.
+redirecionamento inesperado e abre uma pendência de revisão. O workflow semanal
+reúne essa evidência com testes, gates, inventário legado, rotas e downloads,
+gera laudo Markdown/JSON e mantém uma issue por semana. Nenhum deles publica
+interpretação jurídica, correção, baseline, commit ou conteúdo no site
+automaticamente; o semanal publica somente o extrato sanitizado do laudo na
+issue e preserva os arquivos no GitHub Actions.
