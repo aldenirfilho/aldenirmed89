@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-07-25T00:00:00-03:00",
-  "version": "4.2-unified",
-  "description": "Mapa vivo organizado da Enciclopédia: portal, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, AVC, Hematologia Crítica, Reumatologia Crítica, Delirium UTI/Enfermaria e macrotemas de UTI.",
+  "updatedAt": "2026-07-25T21:55:11",
+  "version": "4.4-unified",
+  "description": "Mapa vivo organizado da Enciclopédia: Home, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos e macrotemas de UTI.",
   "legend": {
     "hub": "Nó central do projeto",
     "biblioteca": "Base de documentos e curadoria IA",
@@ -10,7 +10,8 @@
     "tool": "Ferramenta/calculadora",
     "module": "Módulo clínico ativo",
     "topic": "Subtema clínico",
-    "theme": "Tema/macrotema"
+    "theme": "Tema/macrotema",
+    "channel": "Canal discreto de transparência e memória editorial"
   },
   "nodes": [
     {
@@ -21,6 +22,66 @@
       "y": 50,
       "type": "hub",
       "url": "index.html",
+      "status": "ativo"
+    },
+    {
+      "id": "portal-vivo",
+      "label": "🛰️ Portal Vivo",
+      "body": "Feed opcional de UPGRADEs, correções e evolução operacional da plataforma.",
+      "x": 42,
+      "y": 34,
+      "type": "hub",
+      "url": "17_Portal_Vivo/index.html",
+      "status": "ativo"
+    },
+    {
+      "id": "centro-tripulacao",
+      "label": "🧑‍🚀 Centro da Tripulação",
+      "body": "Assinatura consentida, métricas agregadas, preferências e manifestações protegidas.",
+      "x": 58,
+      "y": 34,
+      "type": "hub",
+      "url": "18_Centro_Tripulacao/index.html",
+      "status": "ativo"
+    },
+    {
+      "id": "integridade-editorial",
+      "label": "🛡️ Integridade Editorial",
+      "body": "Gate de publicação, documentação protetiva, direitos, privacidade, correções, proveniência e monitoramento oficial.",
+      "x": 44,
+      "y": 84,
+      "type": "channel",
+      "url": "19_Integridade_Editorial/index.html",
+      "status": "ativo"
+    },
+    {
+      "id": "conheca-aldenir",
+      "label": "✦ Conheça Aldenir",
+      "body": "Canal público discreto de reflexões, ideias, história e relatos previamente aprovados.",
+      "x": 56,
+      "y": 84,
+      "type": "channel",
+      "url": "20_Conheca_Aldenir/index.html",
+      "status": "ativo"
+    },
+    {
+      "id": "radar-diario",
+      "label": "📡 Radar Diário",
+      "body": "Portal clínico cronológico para ciência, saúde global, estudo e produtividade.",
+      "x": 42,
+      "y": 66,
+      "type": "hub",
+      "url": "15_Radar_Cientifico/index.html",
+      "status": "ativo"
+    },
+    {
+      "id": "diretorio-medico",
+      "label": "🌐 Diretório Médico",
+      "body": "Catálogo permanente de fontes médicas nacionais e internacionais verificáveis.",
+      "x": 58,
+      "y": 66,
+      "type": "hub",
+      "url": "16_Diretorio_Medico/index.html",
       "status": "ativo"
     },
     {
@@ -922,6 +983,51 @@
     }
   ],
   "edges": [
+    {
+      "from": "home",
+      "to": "portal-vivo",
+      "relation": "upgrade-da-plataforma"
+    },
+    {
+      "from": "home",
+      "to": "centro-tripulacao",
+      "relation": "comunicacao-da-tripulacao"
+    },
+    {
+      "from": "home",
+      "to": "integridade-editorial",
+      "relation": "responsabilidade-e-protecao"
+    },
+    {
+      "from": "home",
+      "to": "conheca-aldenir",
+      "relation": "memoria-editorial-discreta"
+    },
+    {
+      "from": "integridade-editorial",
+      "to": "centro-tripulacao",
+      "relation": "manifestacoes-e-correcoes"
+    },
+    {
+      "from": "conheca-aldenir",
+      "to": "centro-tripulacao",
+      "relation": "rascunhos-restritos"
+    },
+    {
+      "from": "conheca-aldenir",
+      "to": "integridade-editorial",
+      "relation": "revisao-antes-da-publicacao"
+    },
+    {
+      "from": "home",
+      "to": "radar-diario",
+      "relation": "atualizacao-cientifica"
+    },
+    {
+      "from": "home",
+      "to": "diretorio-medico",
+      "relation": "fontes-verificaveis"
+    },
     {
       "from": "home",
       "to": "biblioteca-ia",

@@ -49,6 +49,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Setup Pages
         if: github.event_name != 'pull_request'
@@ -86,6 +88,9 @@ jobs:
       - name: Validar manifests e paths antes do deploy
         run: |
           set -e
+          BASE_SHA="${{ github.event.pull_request.base.sha || github.event.before || github.sha }}"
+          python3 scripts_admin/editorial_gate.py --check --json
+          python3 scripts_admin/editorial_gate.py --check --changed-since "$BASE_SHA" --json
           python3 -m unittest discover -s tests -p 'test_*.py' -v
           node tests/validate_clinical_catalogs.js
           python3 scripts_admin/check_static_manifests.py
@@ -138,9 +143,46 @@ jobs:
           test -s site/17_Portal_Vivo/data/posts.js
           test -s site/17_Portal_Vivo/data/posts.json
           test -s site/17_Portal_Vivo/data/publication-history.json
+          test -s site/18_Centro_Tripulacao/index.html
+          test -s site/18_Centro_Tripulacao/config.example.js
+          test -s site/18_Centro_Tripulacao/README.md
+          test -s site/18_Centro_Tripulacao/ATIVAR_BACKEND.md
+          test -s site/18_Centro_Tripulacao/assets/app.js
+          test -s site/18_Centro_Tripulacao/assets/styles.css
+          test -s site/18_Centro_Tripulacao/data/public-metrics.json
+          test -s site/18_Centro_Tripulacao/scripts/supabase-schema.sql
+          test -s site/18_Centro_Tripulacao/automation/README.md
+          test -s site/19_Integridade_Editorial/index.html
+          test -s site/19_Integridade_Editorial/README.md
+          test -s site/19_Integridade_Editorial/DOCUMENTACAO_PROTETIVA.md
+          test -s site/19_Integridade_Editorial/CHECKLIST_PUBLICACAO.md
+          test -s site/19_Integridade_Editorial/PROTOCOLO_INCIDENTES.md
+          test -s site/19_Integridade_Editorial/data/revision-log.json
+          test -s site/19_Integridade_Editorial/data/legal-sources.json
+          test -s site/20_Conheca_Aldenir/index.html
+          test -s site/20_Conheca_Aldenir/README.md
+          test -s site/20_Conheca_Aldenir/config.js
+          test -s site/20_Conheca_Aldenir/config.example.js
+          test -s site/20_Conheca_Aldenir/assets/styles.css
+          test -s site/20_Conheca_Aldenir/assets/app.js
+          test -s site/20_Conheca_Aldenir/data/content/public-documents.json
+          test -s site/20_Conheca_Aldenir/data/content/public-feed.json
+          test -s site/assets/editorial-attribution.css
+          test -s site/data/editorial/editorial-provenance.json
+          test ! -e site/data/editorial/registry.json
+          test ! -e site/data/editorial/policy.json
+          test -s site/data/theme-catalog.json
+          test -s site/en/index.html
+          test -s site/en/assets/theme.css
+          test -s site/en/assets/theme.js
+          test -s site/en/radar/index.html
+          test -s site/en/radar/app.js
+          test -s site/en/radar/radar.css
+          test -s site/en/radar/data/radar.en.js
           test -s site/docs_usuario/ALIMENTAR_CONTEUDO_SITE.md
           test -s site/docs_usuario/RADAR_CIENTIFICO_OPERACAO.md
           test -s site/docs_usuario/PORTAL_VIVO_PUBLICACAO.md
+          test -s site/docs_usuario/CENTRO_TRIPULACAO.md
           test -s site/docs_usuario/OPERACAO_CONTINUA.md
           test -s site/docs_usuario/ACESSO_DOCK_MAC.md
           test -s site/docs_usuario/ACESSO_WINDOWS.md
@@ -151,6 +193,7 @@ jobs:
           test -s site/docs_usuario/ALIMENTAR_CONTEUDO_SITE/index.html
           test -s site/docs_usuario/RADAR_CIENTIFICO_OPERACAO/index.html
           test -s site/docs_usuario/PORTAL_VIVO_PUBLICACAO/index.html
+          test -s site/docs_usuario/CENTRO_TRIPULACAO/index.html
           test -s site/docs_usuario/OPERACAO_CONTINUA/index.html
           test -s site/docs_usuario/ACESSO_DOCK_MAC/index.html
           test -s site/docs_usuario/ACESSO_WINDOWS/index.html

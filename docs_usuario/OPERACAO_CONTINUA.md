@@ -5,7 +5,7 @@ privacidade, rastreabilidade ou segurança clínica.
 
 > **Precisa saber o arquivo e o comando exatos de cada seção?** Abra o guia
 > detalhado **“Como alimentar cada seção do Antigravity Consultas”** na Central
-> de Guias. Ele cobre individualmente Home, Portal de UPGRADE, 2 Estações,
+> de Guias. Ele cobre individualmente Home, 2 Portais, 2 Estações,
 > 16 módulos/apps, TEMI, Mapa Vivo, documentos e publicação.
 
 ## 🚦 Fluxo rápido em sete passos
@@ -31,6 +31,12 @@ verificação de repetição, o destino é a **Estação Radar Diário**.
 O **Portal Vivo** recebe somente UPGRADEs da plataforma: novas funções,
 correções, melhorias de interface, estações atualizadas e marcos operacionais.
 O agente `antigravity-publicar-portal` valida esse registro antes da publicação.
+
+O **Centro da Tripulação** é uma superfície operacional separada. Contagens
+públicas devem ser agregadas e verificáveis; diretório, e-mails e conversas
+ficam restritos ao comando autenticado. Login, boletim e manifestações reais só
+podem ser ativados depois de configurar o backend e revisar as políticas de
+acesso. O modo desconectado nunca deve inventar conta, envio ou número.
 
 ## 💻📱 Manter os acessos de Mac, Windows e iPhone
 
@@ -327,6 +333,32 @@ antimicrobianos na disfunção renal, ventilação e POCUS orientado por síndro
 Cada produto deve nascer em uma Pull Request própria.
 
 ## ✅ Validação completa antes do push
+
+### Gate editorial e canais público/privado
+
+Todo arquivo público novo ou alterado precisa constar de
+`data/editorial/registry.json` com classificação, direitos, aprovação, data e
+revisor. Conteúdo clínico ou científico usa `public-cited`, fontes rastreáveis e
+revisão humana declarada.
+
+```bash
+python3 scripts_admin/editorial_gate.py --check --json
+python3 scripts_admin/editorial_gate.py --check --changed-since origin/main --json
+```
+
+Use o fluxo correto:
+
+- rascunho pessoal, beta ou credencial ainda não verificada: Caderno do
+  Idealizador autenticado, classe `restricted-owner`;
+- reflexão, relato ou biografia aprovada: feed
+  `20_Conheca_Aldenir/data/content/public-feed.json`;
+- política, correção, direitos e histórico aprovado:
+  `19_Integridade_Editorial/data/revision-log.json`;
+- suspeita de segredo, privacidade, difamação, direito incerto ou risco clínico:
+  `quarantine`, sem publicação.
+
+O monitor jurídico diário só detecta mudanças em fontes oficiais e abre
+pendência de revisão. Nunca publique automaticamente uma interpretação legal.
 
 Execute na raiz:
 

@@ -8,7 +8,7 @@ compatibilidade offline.
 |---|---|
 | Versão | 1.0 |
 | Atualizado em | 25 de julho de 2026 |
-| Escopo | Home, Portal de UPGRADE, 2 Estações, 16 módulos/apps + Mapa Vivo, hubs editoriais, TEMI, guias, imagens, downloads e GitHub Pages |
+| Escopo | Home, 2 Portais, 2 Estações, 16 módulos/apps + Mapa Vivo, hubs editoriais, TEMI, guias, imagens, downloads e GitHub Pages |
 
 > **Regra central:** conteúdo novo começa privado. Só chega ao site depois de autoria/licença, privacidade e revisão clínica humana.
 
@@ -41,6 +41,7 @@ PRIVADO → 3 GATES → FONTE CANÔNICA → GERADOR → DIFF
 | Quero adicionar | Fonte canônica | Atualização principal |
 |---|---|---|
 | UPGRADE, correção ou nova função da plataforma | `17_Portal_Vivo/data/posts.json` | Compositor → agente `antigravity-publicar-portal` → publicador validado |
+| Assinatura, métricas agregadas, diretório administrativo ou manifestação | `18_Centro_Tripulacao/` | Interface pública → backend seguro configurado → RLS → revisão de privacidade |
 | Artigo, notícia clínica ou observação de estudo enviada pelo chat | `15_Radar_Cientifico/data/radar.js` | Auditoria da fonte → síntese Turbo TEMI → Estação Radar Diário |
 | Produto, equipamento ou promoção útil | `15_Radar_Cientifico/data/radar.js` + `assets/products/` | `product-watch` → preço datado → especificações/limites → par de imagens → canal Produtividade & Compras |
 | Texto, botão ou cartão da Home | `index.html` | Edição manual + testes |
@@ -71,7 +72,7 @@ PRIVADO → 3 GATES → FONTE CANÔNICA → GERADOR → DIFF
 - Não copie integralmente livros, cursos, artigos ou imagens de terceiros.
 - Prefira síntese própria, algoritmo original, comentário e referência oficial.
 - Registre a fonte e a data de consulta quando houver recomendação clínica.
-- Se a licença estiver incerta, mantenha o item no inbox privado.
+- Se os direitos de uso ainda não estiverem documentalmente resolvidos, mantenha o item no inbox privado.
 
 ### Gate 2 — privacidade e LGPD
 
@@ -170,7 +171,7 @@ index.html
 5. Atualize textos e links do bloco `#downloads` em `index.html`.
 6. Faça homologação física no sistema operacional antes de afirmar suporte.
 
-### Os 20 cartões — 1 Portal + 2 Estações + 16 módulos/apps + Mapa Vivo
+### Os 21 cartões — 2 Portais + 2 Estações + 16 módulos/apps + Mapa Vivo
 
 Cada cartão é um link com classe `module-card` e possui:
 
@@ -184,7 +185,9 @@ chamada para ação
 ```
 
 O **Portal Vivo** apresenta exclusivamente os UPGRADEs, correções e marcos de
-evolução da plataforma. As duas áreas permanentes e independentes são a
+evolução da plataforma. O **Centro da Tripulação** reúne assinatura consentida,
+métricas agregadas, preferências e manifestações; dados de usuários aparecem
+somente no comando autenticado. As duas áreas permanentes e independentes são a
 **Estação Radar Diário**, destino do conteúdo clínico e de estudo recebido pelo
 chat, e a **Estação Diretório Médico**, catálogo de fontes verificáveis.
 
@@ -1338,3 +1341,37 @@ incidente de privacidade e providencie remoção especializada/rotação.
 - [ ] PR revisado;
 - [ ] deploy verde;
 - [ ] rota pública conferida.
+
+## 🛡️ Alimentar os dois canais finais
+
+### Integridade Jurídica e Responsabilidade Editorial
+
+Atualizações públicas aprovadas entram em:
+
+```text
+19_Integridade_Editorial/data/revision-log.json
+```
+
+Antes de adicionar uma entrada:
+
+- confira a fonte oficial e a data;
+- diferencie texto normativo de interpretação;
+- registre versão, resumo e referências;
+- mantenha `status: public-approved` somente após revisão humana;
+- nunca copie alerta automático diretamente para o público;
+- atualize, quando necessário, o dossiê, o checklist e o protocolo de
+  incidentes da estação.
+
+### Conheça Aldenir
+
+Rascunhos ficam no Caderno do Idealizador autenticado. Apenas uma versão
+conscientemente aprovada entra em:
+
+```text
+20_Conheca_Aldenir/data/content/public-feed.json
+```
+
+Conteúdo factual precisa de referência HTTPS. Credenciais, títulos, história
+pessoal sensível e dados de terceiros aguardam comprovação, consentimento e
+revisão. O filtro do navegador é defesa adicional; ele não substitui o gate do
+repositório.

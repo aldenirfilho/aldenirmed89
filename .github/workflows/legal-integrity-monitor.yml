@@ -1,0 +1,156 @@
+name: Monitor de Integridade Jurídica
+
+on:
+  schedule:
+    - cron: '17 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: legal-integrity-monitor
+  cancel-in-progress: false
+
+jobs:
+  check-official-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - name: Checkout somente leitura
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Comparar fontes oficiais sem alterar baselines
+        id: monitor
+        shell: bash
+        run: |
+          set -uo pipefail
+          python3 scripts_admin/check_legal_sources.py \
+            --check \
+            --report legal-integrity-report.json
+          exit_code=$?
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          if [ ! -s legal-integrity-report.json ]; then
+            echo "report_missing=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "report_missing=false" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Arquivar relatório técnico
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legal-integrity-report-${{ github.run_id }}
+          path: legal-integrity-report.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Abrir ou atualizar uma issue de revisão humana
+        if: >-
+          always() &&
+          (steps.monitor.outputs.exit_code != '0' ||
+          steps.monitor.outputs.report_missing == 'true')
+        uses: actions/github-script@v8
+        env:
+          MONITOR_EXIT_CODE: ${{ steps.monitor.outputs.exit_code }}
+          REPORT_MISSING: ${{ steps.monitor.outputs.report_missing }}
+        with:
+          script: |
+            const fs = require('fs');
+            const title = '[Revisão humana] Monitor jurídico-editorial';
+            let report;
+            if (fs.existsSync('legal-integrity-report.json')) {
+              report = JSON.parse(
+                fs.readFileSync('legal-integrity-report.json', 'utf8')
+              );
+            } else {
+              report = {
+                checkedAt: new Date().toISOString(),
+                overallStatus: 'review_required',
+                results: [{
+                  id: 'monitor',
+                  title: 'Execução do monitor',
+                  status: 'report_missing',
+                  message: 'O processo não produziu o relatório JSON esperado.'
+                }]
+              };
+            }
+
+            const reviewItems = (report.results || []).filter(
+              item => item.status !== 'unchanged'
+            );
+            const escapeCell = value => String(value ?? '')
+              .replaceAll('|', '\\|')
+              .replaceAll('\r', ' ')
+              .replaceAll('\n', ' ')
+              .slice(0, 900);
+            const rows = reviewItems.length
+              ? reviewItems.map(item =>
+                  `| ${escapeCell(item.id)} | ${escapeCell(item.status)} | ` +
+                  `${escapeCell(item.message || 'Comparar baseline e fonte oficial.')} |`
+                ).join('\n')
+              : '| monitor | execução_inconclusiva | Revisar o artefato técnico. |';
+            const runUrl =
+              `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}` +
+              `/actions/runs/${context.runId}`;
+            const body = [
+              '## Revisão humana obrigatória',
+              '',
+              `- Consulta UTC: \`${escapeCell(report.checkedAt)}\``,
+              `- Estado: \`${escapeCell(report.overallStatus)}\``,
+              `- Código do monitor: \`${escapeCell(process.env.MONITOR_EXIT_CODE || 'ausente')}\``,
+              `- [Execução e artefato JSON](${runUrl})`,
+              '',
+              '| Fonte | Estado técnico | Motivo/próxima ação |',
+              '|---|---|---|',
+              rows,
+              '',
+              '> Este alerta detecta disponibilidade ou mudança textual. ' +
+              'Não interpreta a lei, não aprova conteúdo e não autoriza publicação.',
+              '',
+              '### Procedimento',
+              '',
+              '1. Abrir a URL oficial indicada no relatório.',
+              '2. Comparar a alteração com o baseline e avaliar o impacto editorial.',
+              '3. Registrar a decisão humana nesta issue.',
+              '4. Se apropriado, atualizar somente a fonte revisada com `--refresh`, ' +
+              '`--source`, `--reviewer` e `--reviewed-at` explícitos.',
+              '',
+              'O workflow não faz commit, não altera baseline e não publica conteúdo.'
+            ].join('\n');
+
+            const issues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'all',
+                per_page: 100
+              }
+            );
+            const existing = issues
+              .filter(issue => !issue.pull_request && issue.title === title)
+              .sort((a, b) => b.number - a.number)[0];
+
+            if (existing) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                title,
+                body,
+                state: 'open'
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body
+              });
+            }

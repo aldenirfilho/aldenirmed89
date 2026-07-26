@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#07101d"/>
+  <meta name="description" content="Política pública de documentação, integridade editorial, correções, privacidade e direitos de uso do Antigravity Consultas."/>
+  <title>Documentação e Integridade Editorial · Antigravity</title>
+  <link rel="icon" href="../assets/icons/antigravity-consultas-64.png"/>
+  <script>
+    (function(){
+      try{
+        var prefs=JSON.parse(localStorage.getItem("antigravity:a11y:v1")||"{}");
+        var light=prefs.theme==="light"||(prefs.theme==="system"&&matchMedia("(prefers-color-scheme: light)").matches);
+        document.documentElement.classList.toggle("a11y-light",light);
+      }catch(_){}
+    })();
+  </script>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#050b14;--panel:#0a1626;--panel2:#0d1d31;--line:#223850;
+      --text:#eef8ff;--soft:#a9bfd1;--cyan:#48e8ff;--violet:#aa91ff;
+      --amber:#ffd166;--green:#58e0a8;--red:#ff8198;--ink:#07101d;
+      --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+      --shadow:0 24px 70px rgba(0,0,0,.28);
+    }
+    html.a11y-light{
+      color-scheme:light;
+      --bg:#f3f7fa;--panel:#fff;--panel2:#eaf2f7;--line:#a9bfd0;
+      --text:#10263b;--soft:#3b566d;--cyan:#006d7a;--violet:#6046a8;
+      --amber:#805500;--green:#08764c;--red:#ad253d;--ink:#fff;
+      --shadow:0 20px 50px rgba(34,56,80,.12);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:84px}
+    body{
+      margin:0;min-height:100vh;color:var(--text);font-family:var(--sans);
+      background:
+        radial-gradient(circle at 8% 0,rgba(72,232,255,.11),transparent 28%),
+        radial-gradient(circle at 93% 8%,rgba(170,145,255,.09),transparent 32%),
+        var(--bg);
+    }
+    a{color:inherit}
+    button,select{font:inherit}
+    button{cursor:pointer}
+    :focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+    .skip{
+      position:fixed;z-index:100;left:14px;top:-70px;padding:11px 15px;
+      border-radius:10px;background:#fff;color:#000;font-weight:850;
+    }
+    .skip:focus{top:14px}
+    header{
+      position:sticky;z-index:30;top:0;border-bottom:1px solid rgba(72,232,255,.14);
+      background:rgba(5,11,20,.88);backdrop-filter:blur(18px);
+    }
+    .a11y-light header{background:rgba(255,255,255,.92)}
+    .nav{
+      width:min(1560px,100%);min-height:68px;margin:auto;padding:10px clamp(16px,3vw,42px);
+      display:flex;align-items:center;gap:14px;
+    }
+    .brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-weight:900}
+    .brand img{width:40px;height:40px;border-radius:12px}
+    .brand small{display:block;color:var(--soft);font:650 .66rem var(--mono)}
+    .nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+    .nav-link,.button{
+      display:inline-flex;align-items:center;justify-content:center;min-height:42px;
+      padding:9px 13px;border:1px solid var(--line);border-radius:11px;
+      background:rgba(13,29,49,.78);color:var(--text);font-weight:830;text-decoration:none;
+    }
+    .a11y-light .nav-link,.a11y-light .button{background:#fff}
+    .nav-link:hover,.button:hover{border-color:var(--cyan)}
+    main{width:min(1560px,100%);margin:auto;padding:clamp(30px,5vw,76px) clamp(16px,3vw,42px) 86px}
+    .hero{
+      display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);
+      gap:clamp(22px,4vw,54px);align-items:end;
+    }
+    .eyebrow{
+      color:var(--cyan);font:850 .71rem var(--mono);letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+    h1{
+      max-width:980px;margin:15px 0 20px;font-size:clamp(2.55rem,6.3vw,6.4rem);
+      line-height:.9;letter-spacing:-.067em;
+    }
+    .lead{max-width:900px;margin:0;color:var(--soft);font-size:clamp(1rem,1.7vw,1.25rem);line-height:1.62}
+    .seal-card{
+      position:relative;overflow:hidden;border:1px solid rgba(72,232,255,.28);
+      border-radius:22px;padding:23px;background:linear-gradient(150deg,var(--panel2),var(--panel));
+      box-shadow:var(--shadow);
+    }
+    .seal-card::before{
+      content:"";position:absolute;right:-70px;top:-70px;width:170px;height:170px;
+      border:1px solid rgba(72,232,255,.24);border-radius:50%;
+      box-shadow:0 0 0 24px rgba(72,232,255,.03),0 0 0 49px rgba(170,145,255,.025);
+    }
+    .seal{
+      position:relative;display:inline-flex;padding:7px 10px;border:1px solid rgba(72,232,255,.38);
+      border-radius:999px;color:var(--cyan);font:850 .65rem var(--mono);letter-spacing:.12em;
+    }
+    .seal-card h2{position:relative;margin:18px 0 9px;font-size:1.35rem}
+    .seal-card p{position:relative;color:var(--soft);line-height:1.52;margin:0}
+    .meta-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}
+    .meta{
+      border:1px solid var(--line);border-radius:12px;padding:10px;background:rgba(5,11,20,.25);
+    }
+    .meta strong{display:block;color:var(--text);font-size:.84rem}
+    .meta span{color:var(--soft);font:650 .66rem var(--mono)}
+    .notice{
+      margin:clamp(28px,5vw,56px) 0 18px;padding:17px 19px;border:1px solid rgba(255,209,102,.35);
+      border-radius:15px;background:rgba(255,209,102,.07);line-height:1.55;color:var(--text);
+    }
+    .notice strong{color:var(--amber)}
+    .quick-nav{
+      display:flex;gap:8px;flex-wrap:wrap;margin:17px 0 46px;padding-bottom:19px;
+      border-bottom:1px solid var(--line);
+    }
+    .quick-nav a{
+      padding:7px 10px;border:1px solid var(--line);border-radius:999px;
+      color:var(--soft);font:760 .71rem var(--mono);text-decoration:none;
+    }
+    .quick-nav a:hover{color:var(--text);border-color:var(--cyan)}
+    .section{margin-top:clamp(52px,7vw,92px)}
+    .section-head{max-width:920px;margin-bottom:24px}
+    .section-kicker{color:var(--cyan);font:800 .68rem var(--mono);letter-spacing:.15em;text-transform:uppercase}
+    h2.section-title{margin:10px 0 12px;font-size:clamp(1.8rem,3.7vw,3.7rem);letter-spacing:-.045em;line-height:1}
+    .section-intro{margin:0;color:var(--soft);line-height:1.6}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .card{
+      min-width:0;padding:20px;border:1px solid var(--line);border-radius:18px;
+      background:linear-gradient(150deg,var(--panel2),var(--panel));
+    }
+    .card h3{margin:0 0 9px;font-size:1.05rem}
+    .card p,.card li{color:var(--soft);line-height:1.55}
+    .card p{margin:8px 0}
+    .card ul,.card ol{padding-left:1.18rem;margin:11px 0 0}
+    .card li+li{margin-top:7px}
+    .num{
+      display:grid;place-items:center;width:33px;height:33px;margin-bottom:15px;
+      border:1px solid rgba(72,232,255,.35);border-radius:10px;color:var(--cyan);
+      font:850 .72rem var(--mono);background:rgba(72,232,255,.05);
+    }
+    .status-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+    .tag{
+      display:inline-flex;padding:5px 8px;border:1px solid var(--line);border-radius:999px;
+      color:var(--soft);font:750 .64rem var(--mono);
+    }
+    .tag.ok{color:var(--green)}.tag.hold{color:var(--amber)}.tag.stop{color:var(--red)}
+    .gate{
+      border:1px solid rgba(72,232,255,.28);border-radius:22px;padding:clamp(18px,3vw,30px);
+      background:linear-gradient(145deg,rgba(72,232,255,.055),rgba(170,145,255,.04)),var(--panel);
+      box-shadow:var(--shadow);
+    }
+    .gate-note{
+      display:flex;gap:10px;align-items:flex-start;margin-bottom:22px;padding:12px 14px;
+      border:1px solid var(--line);border-radius:12px;color:var(--soft);line-height:1.45;
+    }
+    .gate-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+    .gate-item{
+      display:grid;grid-template-columns:minmax(0,1fr) minmax(132px,.34fr);gap:12px;
+      align-items:center;border:1px solid var(--line);border-radius:13px;padding:13px;
+      background:rgba(5,11,20,.22);
+    }
+    .gate-item label{font-weight:780;line-height:1.35}
+    .gate-item small{display:block;margin-top:4px;color:var(--soft);font-weight:550;line-height:1.35}
+    select{
+      width:100%;min-height:42px;border:1px solid var(--line);border-radius:10px;
+      padding:8px 10px;background:var(--panel2);color:var(--text);
+    }
+    .gate-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+    .button.primary{border-color:rgba(72,232,255,.5);background:var(--cyan);color:#021018}
+    .button.ghost{background:transparent}
+    .gate-result{
+      display:none;margin-top:16px;padding:15px 17px;border-radius:13px;border:1px solid var(--line);
+      line-height:1.5;
+    }
+    .gate-result[data-state="stop"]{display:block;border-color:rgba(255,129,152,.45);background:rgba(255,129,152,.08)}
+    .gate-result[data-state="hold"]{display:block;border-color:rgba(255,209,102,.45);background:rgba(255,209,102,.08)}
+    .gate-result[data-state="review"]{display:block;border-color:rgba(88,224,168,.45);background:rgba(88,224,168,.08)}
+    .policy-steps{counter-reset:policy}
+    .policy-step{position:relative;padding-left:54px}
+    .policy-step::before{
+      counter-increment:policy;content:counter(policy);position:absolute;left:0;top:0;
+      display:grid;place-items:center;width:38px;height:38px;border-radius:12px;
+      border:1px solid rgba(72,232,255,.35);color:var(--cyan);font:850 .73rem var(--mono);
+    }
+    details{border-top:1px solid var(--line);padding:15px 0}
+    details:last-child{border-bottom:1px solid var(--line)}
+    summary{cursor:pointer;font-weight:820}
+    details p,details li{color:var(--soft);line-height:1.55}
+    .license-table{width:100%;border-collapse:collapse;margin-top:16px}
+    .license-table th,.license-table td{padding:13px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    .license-table th{color:var(--cyan);font:800 .69rem var(--mono);text-transform:uppercase}
+    .license-table td{color:var(--soft);line-height:1.45}
+    .license-table td:first-child{color:var(--text);font-weight:800}
+    .source-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+    .source{
+      display:block;padding:17px;border:1px solid var(--line);border-radius:15px;
+      background:var(--panel);text-decoration:none;
+    }
+    .source:hover{border-color:var(--cyan)}
+    .source strong{display:block;margin-bottom:7px}
+    .source span{display:block;color:var(--soft);font-size:.82rem;line-height:1.45}
+    .source code{display:inline-block;margin-top:10px;color:var(--cyan);font:700 .63rem var(--mono)}
+    .living-feed{display:grid;gap:11px}
+    .living-entry{
+      display:grid;grid-template-columns:minmax(112px,.22fr) minmax(0,1fr);gap:16px;
+      padding:18px;border:1px solid var(--line);border-radius:15px;background:var(--panel);
+    }
+    .living-entry time,.living-entry .feed-status{
+      color:var(--cyan);font:760 .66rem var(--mono);letter-spacing:.04em;
+    }
+    .living-entry h3{margin:4px 0 7px;font-size:1rem}
+    .living-entry p{margin:0;color:var(--soft);line-height:1.52}
+    .doc-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-top:15px}
+    .doc-link{
+      display:block;padding:16px;border:1px solid var(--line);border-radius:14px;
+      background:rgba(5,11,20,.2);text-decoration:none;
+    }
+    .doc-link:hover{border-color:var(--cyan)}
+    .doc-link strong{display:block;margin-bottom:6px}
+    .doc-link span{color:var(--soft);font-size:.82rem;line-height:1.45}
+    .monitor-status{
+      margin:18px 0 0;padding:12px 14px;border:1px solid var(--line);
+      border-radius:12px;background:rgba(5,11,20,.22);color:var(--soft);
+      font:720 .72rem/1.45 var(--mono);
+    }
+    .contact{
+      display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      gap:18px;align-items:center;border:1px solid rgba(72,232,255,.32);
+      border-radius:22px;padding:clamp(22px,4vw,38px);background:
+        linear-gradient(135deg,rgba(72,232,255,.07),rgba(170,145,255,.07)),var(--panel);
+    }
+    .contact h2{margin:0 0 10px;font-size:clamp(1.6rem,3vw,3rem);letter-spacing:-.04em}
+    .contact p{margin:0;color:var(--soft);line-height:1.55}
+    .contact-actions{display:grid;gap:9px}
+    .identity{
+      margin-top:clamp(54px,8vw,104px);padding-top:24px;border-top:1px solid var(--line);
+      display:flex;align-items:flex-start;justify-content:space-between;gap:22px;color:var(--soft);
+    }
+    .identity strong{color:var(--text)}
+    .identity-copy{max-width:970px;line-height:1.55;font-size:.84rem}
+    .identity-seal{white-space:nowrap;color:var(--cyan);font:780 .61rem var(--mono);letter-spacing:.09em}
+    .fine-print{margin-top:12px;color:var(--soft);font-size:.76rem;line-height:1.5}
+    @media(max-width:1050px){
+      .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .gate-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:780px){
+      .hero,.contact{grid-template-columns:1fr}
+      .grid,.grid.two,.source-list,.doc-links{grid-template-columns:1fr}
+      .nav-actions .optional{display:none}
+      .identity{display:grid}
+      .identity-seal{white-space:normal}
+      .living-entry{grid-template-columns:1fr}
+    }
+    @media(max-width:560px){
+      h1{font-size:2.65rem}
+      .brand small{display:none}
+      .nav-link{padding-inline:10px}
+      .gate-item{grid-template-columns:1fr}
+      .meta-grid{grid-template-columns:1fr}
+      .license-table,.license-table tbody,.license-table tr,.license-table th,.license-table td{display:block}
+      .license-table thead{position:absolute;clip:rect(0 0 0 0);clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+      .license-table tr{padding:12px 0;border-bottom:1px solid var(--line)}
+      .license-table td{padding:4px 0;border:0}
+      .license-table td::before{content:attr(data-label);display:block;color:var(--cyan);font:750 .61rem var(--mono)}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+    @media print{
+      :root,.a11y-light{color-scheme:light;--bg:#fff;--panel:#fff;--panel2:#fff;--line:#aaa;--text:#111;--soft:#333;--cyan:#075e69}
+      header,.quick-nav,.gate-actions,.contact-actions,.theme-control{display:none!important}
+      body{background:#fff}.hero{grid-template-columns:1fr}.seal-card,.gate,.card,.contact{box-shadow:none;background:#fff;break-inside:avoid}
+      main{width:100%;padding:0}.section{margin-top:32px}.grid{grid-template-columns:repeat(2,1fr)}
+      a{text-decoration:none}.source code{color:#333}.gate-result{display:block}
+    }
+  </style>
+</head>
+<body data-policy-version="1.0.0">
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <header>
+    <nav class="nav" aria-label="Navegação da integridade editorial">
+      <a class="brand" href="../index.html">
+        <img src="../assets/icons/antigravity-consultas-64.png" alt=""/>
+        <span>ANTIGRAVITY<small>Integridade editorial</small></span>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link optional" href="../18_Centro_Tripulacao/index.html">🛰️ Centro da Tripulação</a>
+        <button class="nav-link theme-control" id="themeToggle" type="button" aria-label="Ativar visualização clara" aria-pressed="false">☀️ Claro</button>
+        <a class="nav-link" href="../index.html">← Central</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero" aria-labelledby="pageTitle">
+      <div>
+        <div class="eyebrow">Estação pública · transparência antes da publicação</div>
+        <h1 id="pageTitle">Documentação e Integridade Editorial.</h1>
+        <p class="lead">
+          Regras públicas para separar rascunho de conteúdo publicável, registrar fontes, corrigir falhas,
+          respeitar privacidade e atribuir a produção editorial com discrição. Esta estação orienta o processo;
+          não é assessoria jurídica, registro autoral, certificação nem promessa de ausência de risco.
+        </p>
+      </div>
+      <aside class="seal-card" aria-label="Identificador e versão da política">
+        <span class="seal">ATV · TURBO TEMI · ALD 360</span>
+        <h2>Identificador editorial interno</h2>
+        <p>
+          Ajuda a reconhecer a origem editorial e a versão de um material. Não é marca registrada,
+          certificação oficial ou mecanismo que impeça cópia.
+        </p>
+        <div class="meta-grid">
+          <div class="meta"><strong>Política 1.0.0</strong><span>versão pública</span></div>
+          <div class="meta"><strong><time datetime="2026-07-25">25 jul 2026</time></strong><span>última revisão</span></div>
+          <div class="meta"><strong>Gate humano</strong><span>decisão final</span></div>
+          <div class="meta"><strong>Histórico preservado</strong><span>correções rastreáveis</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <aside class="notice" aria-label="Limites desta política">
+      <strong>Limite honesto:</strong> política editorial, avisos, autoria declarada, hashes e histórico Git
+      podem aumentar transparência e rastreabilidade, mas não constituem prova jurídica absoluta, não impedem
+      cópia ou fraude e não garantem evitar reclamações ou processos. Dúvidas concretas exigem análise
+      profissional qualificada conforme o contexto.
+    </aside>
+
+    <nav class="quick-nav" aria-label="Atalhos desta página">
+      <a href="#gate">Gate de publicação</a>
+      <a href="#clinica">Segurança clínica</a>
+      <a href="#politica">Política editorial</a>
+      <a href="#correcoes">Correções</a>
+      <a href="#privacidade">Privacidade</a>
+      <a href="#direitos">Direitos de uso</a>
+      <a href="#autoria">Autoria</a>
+      <a href="#fontes">Fontes oficiais</a>
+      <a href="#monitoramento">Proteção contínua</a>
+      <a href="#contato">Manifestação</a>
+    </nav>
+
+    <section class="section" id="gate" aria-labelledby="gateTitle">
+      <div class="section-head">
+        <div class="section-kicker">01 · separação público / privado</div>
+        <h2 class="section-title" id="gateTitle">Gate editorial local.</h2>
+        <p class="section-intro">
+          Classifique cada item antes de encaminhá-lo à revisão humana. “Não” interrompe a publicação;
+          “não conferido” mantém o material privado. O painel funciona somente neste navegador, não envia
+          respostas e não substitui auditoria clínica, ética, jurídica ou de privacidade.
+        </p>
+      </div>
+      <div class="gate">
+        <div class="gate-note">
+          <span aria-hidden="true">🛡️</span>
+          <span><strong>Regra de contenção:</strong> na dúvida, preservar o rascunho na área privada e publicar apenas depois de sanar o risco com evidência documentada.</span>
+        </div>
+        <form id="editorialGate" novalidate>
+          <div class="gate-grid">
+            <div class="gate-item">
+              <label for="gateAuthorship">Autoria e permissão
+                <small>Há evidência de autoria própria ou autorização/licença compatível?</small>
+              </label>
+              <select id="gateAuthorship" data-gate>
+                <option value="pending">Não conferido</option><option value="yes">Sim</option><option value="no">Não</option>
+              </select>
+            </div>
+            <div class="gate-item">
+              <label for="gateSources">Fontes e referências
+                <small>As afirmações relevantes têm fonte legítima, rastreável e atualizada?</small>
+              </label>
+              <select id="gateSources" data-gate>
+                <option value="pending">Não conferido</option><option value="yes">Sim</option><option value="no">Não</option>
+              </select>
+            </div>
+            <div class="gate-item">
+              <label for="gateClinical">Revisão clínica humana
+                <small>Conteúdo clínico foi revisado quanto a contexto, limites e risco?</small>
+              </label>
+              <select id="gateClinical" data-gate>
+                <option value="pending">Não conferido</option><option value="yes">Sim</option><option value="no">Não</option>
+              </select>
+            </div>
+            <div class="gate-item">
+              <label for="gatePrivacy">Privacidade e consentimento
+                <small>Não há dado identificável/sensível indevido e consentimentos necessários existem?</small>
+              </label>
+              <select id="gatePrivacy" data-gate>
+                <option value="pending">Não conferido</option><option value="yes">Sim</option><option value="no">Não</option>
+              </select>
+            </div>
+            <div class="gate-item">
+              <label for="gateEthics">Ética e apresentação
+                <small>Sem sensacionalismo, superioridade, promessa de resultado ou credencial não verificada?</small>
+              </label>
+              <select id="gateEthics" data-gate>
+                <option value="pending">Não conferido</option><option value="yes">Sim</option><option value="no">Não</option>
+              </select>
+            </div>
+            <div class="gate-item">
+              <label for="gateConflicts">Conflitos e relações comerciais
+                <small>Publicidade, afiliação, patrocínio e limitações foram informados com clareza?</small>
+              </label>
+              <select id="gateConflicts" data-gate>
+                <option value="pending">Não conferido</option><option value="yes">Sim</option><option value="no">Não</option>
+              </select>
+            </div>
+          </div>
+          <div class="gate-actions">
+            <button class="button primary" type="submit">Avaliar encaminhamento</button>
+            <button class="button ghost" id="gateReset" type="reset">Limpar avaliação</button>
+            <button class="button ghost" type="button" onclick="window.print()">Imprimir política</button>
+          </div>
+          <div class="gate-result" id="gateResult" role="status" aria-live="polite">
+            Selecione uma resposta em cada critério.
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section" id="clinica" aria-labelledby="clinicalTitle">
+      <div class="section-head">
+        <div class="section-kicker">02 · educação clínica responsável</div>
+        <h2 class="section-title" id="clinicalTitle">Informar não é prescrever.</h2>
+        <p class="section-intro">
+          O Antigravity é uma plataforma educacional. Conteúdo, calculadoras, scores, flashcards, imagens e
+          alertas não substituem avaliação individual, julgamento clínico, protocolo local, bula, diretriz
+          atualizada, consulta presencial ou assistência de emergência.
+        </p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="num">A</div>
+          <h3>Antes de usar</h3>
+          <ul>
+            <li>Confira população, contraindicações, unidade, data e versão.</li>
+            <li>Abra a referência primária quando a decisão for relevante.</li>
+            <li>Adapte ao contexto, recursos e protocolo institucional.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="num">B</div>
+          <h3>Em situações graves</h3>
+          <ul>
+            <li>Priorize estabilização, equipe assistencial e fluxos locais.</li>
+            <li>Não atrase cuidado tempo-dependente para consultar esta plataforma.</li>
+            <li>Trate conteúdos desatualizados ou ambíguos como indisponíveis.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="num">C</div>
+          <h3>Publicação médica sóbria</h3>
+          <ul>
+            <li>Sem promessa de resultado, exclusividade ou superioridade.</li>
+            <li>Imagens e relatos exigem privacidade, contexto educativo e direitos de uso.</li>
+            <li>Identificação profissional só após verificação e conforme norma aplicável.</li>
+          </ul>
+        </article>
+      </div>
+      <p class="monitor-status" id="legalMonitorStatus" role="status" aria-live="polite">
+        Estado técnico das fontes: carregando o baseline público…
+      </p>
+    </section>
+
+    <section class="section" id="politica" aria-labelledby="policyTitle">
+      <div class="section-head">
+        <div class="section-kicker">03 · ciclo editorial</div>
+        <h2 class="section-title" id="policyTitle">Da origem ao histórico.</h2>
+        <p class="section-intro">
+          Cada publicação deve permitir que o leitor entenda o que foi produzido, com qual base, em que data,
+          por quem foi revisado e quais limitações permanecem.
+        </p>
+      </div>
+      <div class="grid two policy-steps">
+        <article class="card policy-step">
+          <h3>Triagem de origem</h3>
+          <p>Classificar como autoral, contribuição autorizada, material sob licença, domínio público ou apenas referência externa. Sem prova suficiente, manter privado.</p>
+        </article>
+        <article class="card policy-step">
+          <h3>Pesquisa e síntese</h3>
+          <p>Priorizar fontes primárias e oficiais, preservar o sentido, evitar transcrição extensa e distinguir evidência de interpretação editorial.</p>
+        </article>
+        <article class="card policy-step">
+          <h3>Revisão proporcional ao risco</h3>
+          <p>Quanto maior a consequência clínica, ética, financeira ou jurídica, maior a exigência de revisão humana, data, referências e limites explícitos.</p>
+        </article>
+        <article class="card policy-step">
+          <h3>Publicação identificável</h3>
+          <p>Registrar título, versão, data de revisão, fontes, autoria/contribuição, conflitos e estado editorial sem declarar uma certificação inexistente.</p>
+        </article>
+        <article class="card policy-step">
+          <h3>Monitoramento e correção</h3>
+          <p>Receber alertas, verificar a procedência e corrigir com nota proporcional. Conteúdo potencialmente perigoso pode ser isolado durante a apuração.</p>
+        </article>
+        <article class="card policy-step">
+          <h3>Arquivo auditável</h3>
+          <p>Preservar versões e justificativas quando lícito e seguro. Hash e Git apoiam rastreabilidade técnica, mas não resolvem sozinhos autoria ou disputa jurídica.</p>
+        </article>
+      </div>
+      <div class="status-row" aria-label="Estados editoriais recomendados">
+        <span class="tag ok">PUBLICADO · revisão concluída</span>
+        <span class="tag hold">EM REVISÃO · não usar como versão final</span>
+        <span class="tag stop">RESTRITO · somente área privada</span>
+        <span class="tag">CORRIGIDO · histórico disponível</span>
+        <span class="tag">ARQUIVADO · não atual</span>
+      </div>
+    </section>
+
+    <section class="section" id="correcoes" aria-labelledby="correctionsTitle">
+      <div class="section-head">
+        <div class="section-kicker">04 · política de correções</div>
+        <h2 class="section-title" id="correctionsTitle">Corrigir com contexto, não esconder.</h2>
+        <p class="section-intro">Relatos recebidos são triados por impacto, verificabilidade e urgência. A pessoa que comunica pode escolher identificação ou anonimato no canal apropriado.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>Ajuste editorial</h3>
+          <p>Ortografia, legibilidade, link ou formatação sem mudança de sentido. Corrigir e atualizar a data quando relevante.</p>
+        </article>
+        <article class="card">
+          <h3>Correção material</h3>
+          <p>Erro que altera entendimento, dado, recomendação ou atribuição. Exibir nota de correção, data, escopo e referência substituta.</p>
+        </article>
+        <article class="card">
+          <h3>Restrição ou retirada</h3>
+          <p>Risco relevante, privacidade, fraude, ausência de direito de uso ou conteúdo clínico inseguro. Isolar durante apuração e explicar publicamente o necessário sem ampliar o dano.</p>
+        </article>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>Uso de ferramentas de IA</h3>
+        <p>
+          IA pode apoiar organização, tradução, busca e redação, mas não assume responsabilidade editorial.
+          Referências, números, credenciais, autoria, consentimento e recomendações clínicas precisam de
+          conferência humana. Conteúdo clínico novo ou corrigido não deve ser publicado automaticamente.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="privacidade" aria-labelledby="privacyTitle">
+      <div class="section-head">
+        <div class="section-kicker">05 · privacidade por necessidade</div>
+        <h2 class="section-title" id="privacyTitle">Coletar menos. Explicar melhor.</h2>
+        <p class="section-intro">
+          Esta página estática não possui formulário de cadastro e não envia a avaliação do gate.
+          Quando o Centro da Tripulação estiver conectado a um backend seguro, o aviso de privacidade deverá
+          identificar finalidade, base aplicável, retenção, compartilhamento, segurança, contato e direitos.
+        </p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>Manifestação</h3>
+          <p>Pode ser anônima ou identificada. Solicitar somente o mínimo para responder; desencorajar nomes de pacientes, prontuários, imagens clínicas e outros dados sensíveis.</p>
+        </article>
+        <article class="card">
+          <h3>Diretório de tripulantes</h3>
+          <p>Dados pessoais não devem ser expostos publicamente. Área administrativa exige autenticação, autorização, registro de acesso e finalidade legítima.</p>
+        </article>
+        <article class="card">
+          <h3>Controle do titular</h3>
+          <p>Disponibilizar canal claro para confirmação, acesso, correção, eliminação quando aplicável, informação e revogação de consentimento.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="direitos" aria-labelledby="rightsTitle">
+      <div class="section-head">
+        <div class="section-kicker">06 · direitos de uso e atribuição</div>
+        <h2 class="section-title" id="rightsTitle">Leitura gratuita; licença ainda não escolhida.</h2>
+        <p class="section-intro">
+          Até decisão formal documentada, o conteúdo editorial original da plataforma é disponibilizado
+          gratuitamente para leitura, com direitos reservados. Links podem ser compartilhados e citações
+          breves devem indicar autor e origem, observados os limites legais. Reprodução extensa, adaptação,
+          redistribuição ou uso comercial exigem análise e autorização quando não houver licença específica.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Escopo e exceções</h3>
+        <ul>
+          <li>Fontes, logotipos, artigos, imagens e componentes de terceiros permanecem sujeitos aos respectivos titulares e termos.</li>
+          <li>Código de terceiros e dependências de software preservam suas licenças próprias.</li>
+          <li>A proteção autoral alcança a forma original de expressão; ideias, métodos, sistemas, fatos e conteúdo científico/técnico como tais não se tornam exclusivos por aparecerem aqui.</li>
+          <li>Omitir um nome não transfere direitos; atribuição editorial tampouco elimina direitos de colaboradores ou terceiros.</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:14px;overflow-x:auto">
+        <h3>Opções para uma decisão futura — nenhuma está ativa</h3>
+        <table class="license-table">
+          <thead><tr><th>Opção</th><th>Possível finalidade</th><th>Decisão necessária</th></tr></thead>
+          <tbody>
+            <tr>
+              <td data-label="Opção">Direitos reservados</td>
+              <td data-label="Possível finalidade">Manter controle enquanto autoria, contribuições e permissões são organizadas.</td>
+              <td data-label="Decisão necessária">É o estado editorial atual para conteúdo original sem licença específica.</td>
+            </tr>
+            <tr>
+              <td data-label="Opção">CC BY 4.0</td>
+              <td data-label="Possível finalidade">Permitir reutilização e adaptação com atribuição, inclusive comercial.</td>
+              <td data-label="Decisão necessária">Separar conteúdo próprio de terceiros e aceitar a natureza irrevogável para cópias licenciadas.</td>
+            </tr>
+            <tr>
+              <td data-label="Opção">CC BY-NC 4.0</td>
+              <td data-label="Possível finalidade">Permitir reutilização com atribuição, restringindo usos comerciais conforme os termos.</td>
+              <td data-label="Decisão necessária">Avaliar ambiguidades de “não comercial”, compatibilidade e objetivos de disseminação.</td>
+            </tr>
+            <tr>
+              <td data-label="Opção">Permissão educacional própria</td>
+              <td data-label="Possível finalidade">Definir por escrito usos específicos, atribuição, versões e pedidos de autorização.</td>
+              <td data-label="Decisão necessária">Revisão jurídica e texto claro; não chamar de Creative Commons.</td>
+            </tr>
+            <tr>
+              <td data-label="Opção">Licença de software separada</td>
+              <td data-label="Possível finalidade">Tratar código de modo distinto de textos, imagens e bases editoriais.</td>
+              <td data-label="Decisão necessária">Inventário de dependências, contribuições e compatibilidade de licenças.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="fine-print">
+          Nenhuma licença Creative Commons está ativa por esta página. A Creative Commons recomenda licença
+          de software adequada, e não uma licença CC, para programas. Uma escolha futura deve identificar
+          exatamente as obras cobertas e excluir materiais sem titularidade ou permissão comprovada.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="autoria" aria-labelledby="authorshipTitle">
+      <div class="section-head">
+        <div class="section-kicker">07 · responsabilidade sem protagonismo excessivo</div>
+        <h2 class="section-title" id="authorshipTitle">Canal da Curadoria.</h2>
+        <p class="section-intro">
+          “Curadoria responsável” identifica a função de cuidar da coerência, manutenção e prestação de
+          contas da plataforma — não uma posição de superioridade. Biografia, currículo, relatos pessoais,
+          experiências ou reflexões só devem ser publicados separadamente após revisão factual, consentimento
+          e decisão consciente de privacidade.
+        </p>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>Atribuição pública discreta</h3>
+          <p>
+            Funções editoriais declaradas na plataforma: <strong>Aldenir Rocha de Oliveira Filho</strong> —
+            idealizador, editor, criador, codificador, produtor, atualizador e patrocinador independente.
+          </p>
+          <p>Essa atribuição não declara exclusividade sobre fatos, ideias, métodos, fontes, software ou contribuições de terceiros.</p>
+        </article>
+        <article class="card">
+          <h3>Proveniência recomendada</h3>
+          <p>Para cada obra autoral relevante: título, autor/contribuidores, data, versão, hash do arquivo, fontes, licença/estado de direitos e histórico de correções.</p>
+          <p>O identificador <span class="seal">ATV · TURBO TEMI · ALD 360</span> é editorial e deve permanecer discreto.</p>
+        </article>
+        <article class="card">
+          <h3>Processo de padrão profissional</h3>
+          <p>
+            A produção é independente, mas segue processo editorial documentado: pesquisa rastreável,
+            síntese, revisão humana, controle de versão, conflitos declarados, correção e auditoria.
+          </p>
+          <p>“Padrão profissional” descreve o processo; não cria certificação, especialidade ou credencial não verificada.</p>
+        </article>
+        <article class="card">
+          <h3>Perfil separado e consciente</h3>
+          <p>
+            A apresentação pública do idealizador fica em canal próprio, discreto e versionado. Rascunhos,
+            documentos pessoais e alegações profissionais aguardam aprovação e comprovação no ambiente restrito.
+          </p>
+          <p><a href="../20_Conheca_Aldenir/index.html">Conheça Aldenir, idealizador Antigravity →</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="fontes" aria-labelledby="sourcesTitle">
+      <div class="section-head">
+        <div class="section-kicker">08 · base normativa consultada</div>
+        <h2 class="section-title" id="sourcesTitle">Fontes oficiais, não atalhos.</h2>
+        <p class="section-intro">
+          Links consultados em <time datetime="2026-07-25">25 de julho de 2026</time>. A lista orienta esta
+          política geral e não substitui interpretação profissional nem verificação de alterações posteriores.
+        </p>
+      </div>
+      <div class="source-list">
+        <a class="source" href="https://www.planalto.gov.br/ccivil_03/leis/l9610.htm" target="_blank" rel="noopener noreferrer">
+          <strong>Lei nº 9.610/1998 · Presidência da República</strong>
+          <span>Direitos autorais: obras protegidas, itens não protegidos, autoria, registro, direitos morais, citações e transferências.</span>
+          <code>planalto.gov.br · fonte oficial</code>
+        </a>
+        <a class="source" href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm" target="_blank" rel="noopener noreferrer">
+          <strong>Lei nº 13.709/2018 · LGPD</strong>
+          <span>Princípios, requisitos de tratamento, transparência, segurança, prevenção e direitos do titular.</span>
+          <code>planalto.gov.br · texto compilado oficial</code>
+        </a>
+        <a class="source" href="https://sistemas.cfm.org.br/normas/visualizar/resolucoes/BR/2023/2336" target="_blank" rel="noopener noreferrer">
+          <strong>Resolução CFM nº 2.336/2023</strong>
+          <span>Norma oficial sobre publicidade e propaganda médicas.</span>
+          <code>sistemas.cfm.org.br · fonte oficial</code>
+        </a>
+        <a class="source" href="https://publicidademedica.cfm.org.br/" target="_blank" rel="noopener noreferrer">
+          <strong>Manual de Publicidade Médica · CFM</strong>
+          <span>Orientações oficiais, identificação, exemplos e perguntas frequentes sobre a resolução vigente.</span>
+          <code>publicidademedica.cfm.org.br · fonte oficial</code>
+        </a>
+        <a class="source" href="https://www.gov.br/bn/pt-br/atuacao/direitos-autorais-1/direitos-autorais" target="_blank" rel="noopener noreferrer">
+          <strong>Registro de obras intelectuais · Fundação Biblioteca Nacional</strong>
+          <span>Serviço oficial para registro facultativo de obras; informa finalidade, procedimentos e limites do registro.</span>
+          <code>gov.br/bn · fonte oficial</code>
+        </a>
+        <a class="source" href="https://www.gov.br/inpi/pt-br/servicos/marcas" target="_blank" rel="noopener noreferrer">
+          <strong>Marcas · Instituto Nacional da Propriedade Industrial</strong>
+          <span>Portal oficial para busca, classificação, pedido, acompanhamento e prevenção de fraude relacionada a marcas.</span>
+          <code>gov.br/inpi · fonte oficial</code>
+        </a>
+        <a class="source" href="https://creativecommons.org/chooser/" target="_blank" rel="noopener noreferrer" lang="en">
+          <strong>Creative Commons License Chooser</strong>
+          <span>Ferramenta oficial para comparar licenças e registrar atribuição; alerta para a escolha consciente e para software.</span>
+          <code>creativecommons.org · fonte oficial</code>
+        </a>
+        <a class="source" href="https://creativecommons.org/faq/" target="_blank" rel="noopener noreferrer" lang="en">
+          <strong>Creative Commons FAQ</strong>
+          <span>Explica, entre outros limites, a irrevogabilidade das licenças para materiais já recebidos sob seus termos.</span>
+          <code>creativecommons.org · fonte oficial</code>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="monitoramento" aria-labelledby="monitorTitle">
+      <div class="section-head">
+        <div class="section-kicker">09 · documentação viva e prevenção contínua</div>
+        <h2 class="section-title" id="monitorTitle">Automatizar a vigilância, preservar a decisão humana.</h2>
+        <p class="section-intro">
+          A proteção funciona em cada mudança: arquivos novos entram em registro editorial; suspeitas ficam
+          em quarentena; o artefato público nasce de uma lista permitida; e fontes oficiais são monitoradas
+          diariamente. Alteração normativa abre uma pendência de revisão — nunca uma interpretação publicada
+          automaticamente.
+        </p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="num">G</div>
+          <h3>Gate incremental</h3>
+          <p>Bloqueia publicação nova sem classificação, autoria/direitos, aprovação, data e revisor. Conteúdo médico exige classe citada, fontes e revisão clínica humana declarada.</p>
+        </article>
+        <article class="card">
+          <div class="num">M</div>
+          <h3>Monitor oficial diário</h3>
+          <p>Compara versões normalizadas de fontes allowlisted por HTTPS. Mudança, falha ou redirecionamento inesperado gera relatório e issue de revisão, sem alterar a página.</p>
+        </article>
+        <article class="card">
+          <div class="num">P</div>
+          <h3>Proveniência verificável</h3>
+          <p>Arquivos autorais selecionados podem receber SHA-256, versão, data e commit explícitos. O registro ajuda a demonstrar integridade e cronologia, sem prometer força probatória absoluta.</p>
+        </article>
+        <article class="card">
+          <div class="num">I</div>
+          <h3>Resposta a incidentes</h3>
+          <p>Suspeita de privacidade, fraude, plágio, difamação, erro clínico ou direito incerto interrompe a publicação, preserva evidência técnica e encaminha revisão proporcional.</p>
+        </article>
+        <article class="card">
+          <div class="num">R</div>
+          <h3>Registro e marca — vias externas</h3>
+          <p>Quando estratégico, registro de obra na Biblioteca Nacional e pedido de marca no INPI são procedimentos oficiais separados; o sistema apenas organiza documentação para eventual protocolo.</p>
+        </article>
+        <article class="card">
+          <div class="num">L</div>
+          <h3>Licenças por obra</h3>
+          <p>Gratuidade não equivale a domínio público. Cada texto, imagem, código ou contribuição mantém estado de direitos próprio; nenhuma licença aberta é presumida.</p>
+        </article>
+      </div>
+
+      <div class="doc-links" aria-label="Documentação protetiva operacional">
+        <a class="doc-link" href="DOCUMENTACAO_PROTETIVA.md">
+          <strong>📚 Dossiê protetivo</strong>
+          <span>Matriz de riscos, autoria, direitos, privacidade, IA, publicidade e registros externos.</span>
+        </a>
+        <a class="doc-link" href="CHECKLIST_PUBLICACAO.md">
+          <strong>✅ Checklist de publicação</strong>
+          <span>Decisão fail-closed para conteúdo geral, clínico, pessoal, comercial e de terceiros.</span>
+        </a>
+        <a class="doc-link" href="PROTOCOLO_INCIDENTES.md">
+          <strong>🚨 Protocolo de incidentes</strong>
+          <span>Contenção, preservação, avaliação, correção, comunicação e aprendizado.</span>
+        </a>
+      </div>
+
+      <div class="section-head" style="margin-top:36px">
+        <div class="section-kicker">histórico público aprovado</div>
+        <h2 class="section-title" style="font-size:clamp(1.45rem,3vw,2.6rem)">Feed de integridade.</h2>
+        <p class="section-intro">Somente revisões aprovadas entram aqui. Alertas automáticos permanecem como pendência privada até verificação humana.</p>
+      </div>
+      <div class="living-feed" id="integrityFeed" aria-live="polite">
+        <article class="living-entry">
+          <div><time datetime="2026-07-25">25 jul 2026</time><div class="feed-status">BASELINE</div></div>
+          <div><h3>Política 1.0.0 implantada</h3><p>Gate público/privado, correções, privacidade, direitos, atribuição, proveniência e monitoramento oficial documentados.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section contact" id="contato" aria-labelledby="contactTitle">
+      <div>
+        <div class="section-kicker">10 · escuta e prestação de contas</div>
+        <h2 id="contactTitle">Aponte erro, risco ou uso indevido.</h2>
+        <p>
+          Use o Centro da Tripulação para agradecimento, sugestão, contribuição, informação, notificação ou
+          outra manifestação especificada. Antes de enviar, remova dados clínicos identificáveis. O canal
+          institucional e o e-mail definitivo só devem ser anunciados quando estiverem realmente configurados.
+        </p>
+      </div>
+      <div class="contact-actions">
+        <a class="button primary" href="../18_Centro_Tripulacao/index.html?canal=manifestacao#manifestacao">Abrir canal de manifestação</a>
+        <a class="button" href="../18_Centro_Tripulacao/index.html?canal=correcao#manifestacao">Solicitar correção</a>
+        <a class="button" href="../18_Centro_Tripulacao/index.html?canal=uso-indevido#manifestacao">Notificar possível uso indevido</a>
+      </div>
+    </section>
+
+    <!-- antigravity-editorial-attribution:v1 -->
+    <footer class="identity" id="creditos" data-editorial-attribution="ATV-ALD-360">
+      <div class="identity-copy">
+        <strong>Antigravity Consultas · responsabilidade editorial independente.</strong><br/>
+        Idealização, edição, criação, codificação, produção, atualização e patrocínio independente declarados
+        por Aldenir Rocha de Oliveira Filho. Conteúdos e componentes de terceiros permanecem atribuídos aos
+        respectivos titulares. Última revisão desta política:
+        <time datetime="2026-07-25">25 de julho de 2026</time>.
+      </div>
+      <div class="identity-seal">ATV · TURBO TEMI · ALD 360</div>
+    </footer>
+  </main>
+
+  <script>
+    (function(){
+      "use strict";
+      const gate=document.getElementById("editorialGate");
+      const result=document.getElementById("gateResult");
+      const reset=document.getElementById("gateReset");
+      const themeToggle=document.getElementById("themeToggle");
+      const themeKey="antigravity:a11y:v1";
+      const systemLight=window.matchMedia("(prefers-color-scheme: light)");
+
+      function readPrefs(){
+        try{return {...JSON.parse(localStorage.getItem(themeKey)||"{}")}}catch(_){return {}}
+      }
+      function isLight(prefs){
+        return prefs.theme==="light"||(prefs.theme==="system"&&systemLight.matches);
+      }
+      function drawTheme(){
+        const light=isLight(readPrefs());
+        document.documentElement.classList.toggle("a11y-light",light);
+        themeToggle.setAttribute("aria-pressed",String(light));
+        themeToggle.setAttribute("aria-label",light?"Ativar visualização escura":"Ativar visualização clara");
+        themeToggle.textContent=light?"🌌 Escuro":"☀️ Claro";
+      }
+      themeToggle.addEventListener("click",function(){
+        const prefs=readPrefs();
+        prefs.theme=isLight(prefs)?"dark":"light";
+        try{localStorage.setItem(themeKey,JSON.stringify(prefs))}catch(_){}
+        drawTheme();
+      });
+      systemLight.addEventListener?.("change",drawTheme);
+      drawTheme();
+
+      gate.addEventListener("submit",function(event){
+        event.preventDefault();
+        const values=[...gate.querySelectorAll("[data-gate]")].map(field=>field.value);
+        if(values.includes("no")){
+          result.dataset.state="stop";
+          result.innerHTML="<strong>Bloqueio editorial.</strong> Há pelo menos um critério incompatível. Não encaminhe à versão pública; isole o material na área privada, registre o motivo e resolva o risco antes de nova avaliação.";
+          return;
+        }
+        if(values.includes("pending")){
+          result.dataset.state="hold";
+          result.innerHTML="<strong>Revisão pendente.</strong> Um ou mais critérios ainda não foram conferidos. Mantenha o material privado e reúna evidências; ausência de informação não equivale a aprovação.";
+          return;
+        }
+        result.dataset.state="review";
+        result.innerHTML="<strong>Elegível para revisão final humana.</strong> O checklist foi preenchido, mas isso não constitui aprovação clínica, ética ou jurídica. Registre a revisão, a versão e as evidências antes de publicar.";
+      });
+      reset.addEventListener("click",function(){
+        result.removeAttribute("data-state");
+        result.textContent="Selecione uma resposta em cada critério.";
+      });
+
+      const feed=document.getElementById("integrityFeed");
+      const monitorStatus=document.getElementById("legalMonitorStatus");
+      const formatDate=value=>{
+        const parts=String(value||"").split("-");
+        return parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:String(value||"");
+      };
+      function renderApprovedFeed(payload){
+        const entries=Array.isArray(payload?.entries)
+          ?payload.entries.filter(entry=>entry&&entry.status==="public-approved")
+          :[];
+        if(!entries.length)return;
+        entries.sort((a,b)=>String(b.publishedAt).localeCompare(String(a.publishedAt)));
+        feed.replaceChildren(...entries.map(entry=>{
+          const article=document.createElement("article");
+          article.className="living-entry";
+          const meta=document.createElement("div");
+          const time=document.createElement("time");
+          time.dateTime=String(entry.publishedAt||"");
+          time.textContent=formatDate(entry.publishedAt);
+          const status=document.createElement("div");
+          status.className="feed-status";
+          status.textContent=`${String(entry.type||"ATUALIZAÇÃO").toUpperCase()} · V${entry.version||"—"}`;
+          meta.append(time,status);
+          const copy=document.createElement("div");
+          const title=document.createElement("h3");
+          title.textContent=String(entry.title||"Atualização editorial");
+          const summary=document.createElement("p");
+          summary.textContent=String(entry.summary||"");
+          copy.append(title,summary);
+          article.append(meta,copy);
+          return article;
+        }));
+      }
+      fetch("data/revision-log.json",{cache:"no-store"})
+        .then(response=>{
+          if(!response.ok)throw new Error("feed indisponível");
+          return response.json();
+        })
+        .then(renderApprovedFeed)
+        .catch(()=>{/* o baseline HTML permanece visível e autossuficiente */});
+      fetch("data/legal-sources.json",{cache:"no-store"})
+        .then(response=>{
+          if(!response.ok)throw new Error("catálogo indisponível");
+          return response.json();
+        })
+        .then(payload=>{
+          const sources=Array.isArray(payload?.sources)?payload.sources:[];
+          const issued=sources.filter(source=>source?.baselineState==="issued").length;
+          const pending=sources.length-issued;
+          monitorStatus.textContent=
+            `Baseline técnico público: ${issued}/${sources.length} fonte(s) emitida(s); `+
+            `${pending} aguardando conferência. Mudanças exigem revisão humana.`;
+        })
+        .catch(()=>{
+          monitorStatus.textContent=
+            "Baseline técnico indisponível neste momento; tratar como revisão pendente.";
+        });
+    })();
+  </script>
+</body>
+</html>

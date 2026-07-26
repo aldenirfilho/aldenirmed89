@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import posixpath
 import re
 import shutil
 import stat
@@ -44,7 +45,11 @@ REQUIRED = (
     "15_Radar_Cientifico",
     "16_Diretorio_Medico",
     "17_Portal_Vivo",
+    "18_Centro_Tripulacao",
+    "19_Integridade_Editorial",
+    "20_Conheca_Aldenir",
     "01_Modulos_Clinicos",
+    "en",
     "questoes",
     "apps",
     "desafios",
@@ -87,6 +92,10 @@ CARD_PUBLIC_PREFIX = "05_Midia_E_Feed/assets/cards/public/"
 CARD_PUBLIC_INDEX = "05_Midia_E_Feed/data/public.json"
 CARD_ASSET_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".svg"}
 NON_PUBLIC_ADMIN_NAMES = {".gitkeep"}
+EDITORIAL_DATA_PREFIX = "data/editorial/"
+EDITORIAL_PUBLIC_FILES = {
+    "data/editorial/editorial-provenance.json",
+}
 PUBLIC_DOWNLOADS = (
     "downloads/Antigravity-Consultas-macOS.zip",
     "downloads/Antigravity-Consultas-Windows.zip",
@@ -129,6 +138,8 @@ def should_skip(root: Path, candidate: Path) -> bool:
     if name in {".ds_store", "thumbs.db", *NON_PUBLIC_ADMIN_NAMES} or name.endswith(BLOCKED_SUFFIXES):
         return True
     if any(part.lower() == "_private" for part in candidate.parts):
+        return True
+    if normalized.startswith(EDITORIAL_DATA_PREFIX) and relative not in EDITORIAL_PUBLIC_FILES:
         return True
     if "antigravity_repo_pack" in normalized:
         return True
@@ -435,6 +446,67 @@ def normalize_permissions(site: Path) -> None:
         path.chmod(mode)
 
 
+EDITORIAL_ATTRIBUTION_MARKER = "antigravity-editorial-attribution:v1"
+
+
+def inject_editorial_attribution(site: Path) -> int:
+    """Acrescenta atribuição editorial discreta em todo HTML do artefato.
+
+    A injeção acontece somente no artefato público. Assim, páginas antigas e
+    módulos independentes recebem a mesma referência sem uma reescrita massiva
+    dos arquivos-fonte. O bloco distingue a plataforma/curadoria das obras de
+    terceiros e aponta para os dois canais de transparência.
+    """
+
+    updated = 0
+    for html_path in sorted(site.rglob("*.html")):
+        try:
+            html = html_path.read_text(encoding="utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError(
+                f"HTML público sem codificação UTF-8: {html_path.relative_to(site)}"
+            ) from exc
+        if EDITORIAL_ATTRIBUTION_MARKER in html:
+            continue
+
+        relative = html_path.relative_to(site)
+        parent = relative.parent.as_posix()
+        root_prefix = posixpath.relpath(".", start=parent or ".")
+        if root_prefix == ".":
+            root_prefix = ""
+        else:
+            root_prefix += "/"
+
+        integrity_href = f"{root_prefix}19_Integridade_Editorial/"
+        profile_href = f"{root_prefix}20_Conheca_Aldenir/"
+        css_href = f"{root_prefix}assets/editorial-attribution.css"
+        block = f"""
+<!-- {EDITORIAL_ATTRIBUTION_MARKER} -->
+<link rel="stylesheet" href="{css_href}">
+<footer class="antigravity-editorial-attribution" data-editorial-attribution="ATV-ALD-360">
+  <p class="antigravity-editorial-attribution__mark">ATV · TURBO TEMI · ALD 360</p>
+  <p>
+    Idealização da plataforma e responsabilidade editorial:
+    <strong>Aldenir Rocha de Oliveira Filho</strong> · editor, criador,
+    codificador, produtor, atualizador e patrocinador independente.
+    <a href="{integrity_href}">Integridade editorial</a> ·
+    <a href="{profile_href}">Conheça o idealizador</a>
+  </p>
+  <p class="antigravity-editorial-attribution__scope">
+    A atribuição refere-se à plataforma e à curadoria original; fontes,
+    marcas e obras de terceiros permanecem creditadas aos respectivos titulares.
+  </p>
+</footer>"""
+        closing_body = re.search(r"</body\s*>", html, flags=re.IGNORECASE)
+        if closing_body:
+            html = html[: closing_body.start()] + block + "\n" + html[closing_body.start() :]
+        else:
+            html = html.rstrip() + "\n" + block + "\n"
+        html_path.write_text(html, encoding="utf-8")
+        updated += 1
+    return updated
+
+
 def build(root: Path, site: Path) -> int:
     root = root.resolve()
     site = site.resolve()
@@ -472,10 +544,12 @@ def build(root: Path, site: Path) -> int:
         copy_entry(root, site, logo.name, library_allowlist, card_allowlist)
 
     (site / ".nojekyll").touch(exist_ok=True)
+    attributed = inject_editorial_attribution(site)
     normalize_permissions(site)
     total = sum(path.stat().st_size for path in site.rglob("*") if path.is_file())
     count = sum(1 for path in site.rglob("*") if path.is_file())
     print(f"✅ Artefato montado: {count} arquivo(s), {total / 1024 / 1024:.1f} MiB.")
+    print(f"🛡️ Atribuição editorial aplicada a {attributed} página(s) HTML.")
     if card_conflicts:
         print(
             f"🛡️ Cópias de conflito preservadas localmente e excluídas do site: "

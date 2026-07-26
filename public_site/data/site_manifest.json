@@ -1,7 +1,7 @@
 {
   "updatedAt": "2026-07-25",
   "project": "Enciclopédia Médica Intensiva & Medicina Interna",
-  "version": "manifest-canonico-v4",
+  "version": "manifest-canonico-v6",
   "stack": "html-css-js-json-static",
   "hubs": {
     "home": "index.html",
@@ -16,7 +16,11 @@
     "delirium": "01_Modulos_Clinicos/Delirium_UTI/index.html",
     "radar": "15_Radar_Cientifico/index.html",
     "diretorio": "16_Diretorio_Medico/index.html",
-    "portal": "17_Portal_Vivo/index.html"
+    "portal": "17_Portal_Vivo/index.html",
+    "tripulacao": "18_Centro_Tripulacao/index.html",
+    "integridade": "19_Integridade_Editorial/index.html",
+    "idealizador": "20_Conheca_Aldenir/index.html",
+    "english": "en/index.html"
   },
   "canonicalRoutes": {
     "home": "index.html",
@@ -39,6 +43,11 @@
     "radar_cientifico": "15_Radar_Cientifico/index.html",
     "diretorio_medico": "16_Diretorio_Medico/index.html",
     "portal_vivo": "17_Portal_Vivo/index.html",
+    "centro_tripulacao": "18_Centro_Tripulacao/index.html",
+    "integridade_editorial": "19_Integridade_Editorial/index.html",
+    "conheca_aldenir": "20_Conheca_Aldenir/index.html",
+    "english_home": "en/index.html",
+    "english_radar": "en/radar/index.html",
     "mapa": "data/connections.json"
   },
   "legacyRoutes": [
@@ -59,7 +68,15 @@
     "radarHistory": "15_Radar_Cientifico/data/radar-history.json",
     "medicalDirectory": "16_Diretorio_Medico/data/sites.js",
     "portalPosts": "17_Portal_Vivo/data/posts.json",
-    "portalHistory": "17_Portal_Vivo/data/publication-history.json"
+    "portalHistory": "17_Portal_Vivo/data/publication-history.json",
+    "crewPublicMetrics": "18_Centro_Tripulacao/data/public-metrics.json",
+    "editorialRevisionLog": "19_Integridade_Editorial/data/revision-log.json",
+    "legalSourceMonitor": "19_Integridade_Editorial/data/legal-sources.json",
+    "editorialProvenance": "data/editorial/editorial-provenance.json",
+    "idealizerPublicFeed": "20_Conheca_Aldenir/data/content/public-feed.json",
+    "idealizerPublicDocuments": "20_Conheca_Aldenir/data/content/public-documents.json",
+    "themeCatalog": "data/theme-catalog.json",
+    "englishRadarData": "en/radar/data/radar.en.js"
   },
   "modules": [
     { "id": "updown", "path": "01_UpDown_Hub/index.html", "label": "UpDown Hub" },
@@ -97,6 +114,26 @@
       "path": "17_Portal_Vivo/index.html",
       "label": "Portal Vivo Antigravity",
       "purpose": "Feed opcional das atualizações, entregas e UPGRADE da plataforma completa."
+    },
+    {
+      "id": "centro_tripulacao",
+      "path": "18_Centro_Tripulacao/index.html",
+      "label": "Centro da Tripulação",
+      "purpose": "Portal seguro de assinatura, preferências, métricas agregadas, comunicação contínua e manifestações da tripulação."
+    }
+  ],
+  "channels": [
+    {
+      "id": "integridade_editorial",
+      "path": "19_Integridade_Editorial/index.html",
+      "label": "Integridade Jurídica e Responsabilidade Editorial",
+      "purpose": "Documentação pública, gate fail-closed, direitos, privacidade, correções, proveniência e monitoramento contínuo de fontes oficiais."
+    },
+    {
+      "id": "conheca_aldenir",
+      "path": "20_Conheca_Aldenir/index.html",
+      "label": "Conheça Aldenir — idealizador Antigravity",
+      "purpose": "Canal público discreto para biografia, reflexões e relatos aprovados; rascunhos pessoais permanecem no ambiente autenticado."
     }
   ]
 }

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "editorial-policy-v1",
+  "policyId": "atv-turbo-temi-ald360-fail-closed",
+  "effectiveDate": "2026-07-25",
+  "language": "pt-BR",
+  "failClosed": true,
+  "defaultDecision": "quarantine",
+  "classes": {
+    "public-approved": {
+      "public": true,
+      "description": "Conteúdo geral com revisão editorial, direitos e autorização documentados. Não substitui public-cited quando houver afirmação médica, científica ou profissional verificável."
+    },
+    "public-cited": {
+      "public": true,
+      "description": "Conteúdo médico, científico ou factual com fontes rastreáveis, datas, revisão humana e limites de inferência documentados."
+    },
+    "restricted-owner": {
+      "public": false,
+      "description": "Conteúdo pessoal, beta, administrativo ou do proprietário. Só pode existir em superfície autenticada e autorizada."
+    },
+    "quarantine": {
+      "public": false,
+      "description": "Conteúdo duvidoso, incompleto ou pendente de revisão. É o destino obrigatório de qualquer incerteza."
+    },
+    "rejected": {
+      "public": false,
+      "description": "Conteúdo cuja publicação foi recusada. Não pode ser copiado para saída pública."
+    }
+  },
+  "publicRules": {
+    "allowedClasses": [
+      "public-approved",
+      "public-cited"
+    ],
+    "requiredForAll": [
+      "reviewer",
+      "reviewedAt",
+      "ownerApproval",
+      "rights"
+    ],
+    "requiredForMedical": [
+      "public-cited",
+      "clinicalReviewer",
+      "sources"
+    ],
+    "forbiddenStatuses": [
+      "beta",
+      "draft",
+      "personal",
+      "private",
+      "restricted-owner",
+      "quarantine",
+      "rejected"
+    ],
+    "minimumSourceFields": [
+      "title",
+      "url",
+      "publishedAtOrAccessedAt"
+    ],
+    "professionalClaimsNeedVerification": true,
+    "personalDataNeedPurposeAndConsent": true,
+    "uncertainRightsDecision": "quarantine",
+    "defamationSuspicionDecision": "quarantine"
+  },
+  "scanning": {
+    "maxTextFileBytes": 4194304,
+    "textExtensions": [
+      ".css",
+      ".csv",
+      ".html",
+      ".js",
+      ".json",
+      ".md",
+      ".mjs",
+      ".svg",
+      ".txt",
+      ".xml",
+      ".yaml",
+      ".yml"
+    ],
+    "nonPublicSourcePrefixes": [
+      ".git/",
+      ".github/",
+      "data/editorial/",
+      "public_site/",
+      "scripts_admin/",
+      "tests/"
+    ],
+    "publicContactAllowlist": []
+  },
+  "provenance": {
+    "mark": "ATV · TURBO TEMI · ALD 360",
+    "author": "Aldenir Rocha de Oliveira Filho",
+    "freeAccessIsNotPublicDomain": true,
+    "hashIsNotAbsoluteLegalProof": true
+  },
+  "legalNotice": "Este controle editorial automatizado reduz exposição acidental, mas não garante ausência de litígio, não constitui parecer jurídico e não substitui revisão clínica, editorial, de privacidade, propriedade intelectual ou advocatícia quando necessária."
+}

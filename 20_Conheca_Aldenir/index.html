@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-theme-mode="dark" data-visual-profile="aerospace" data-a11y-storage-key="antigravity:a11y:v1">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="color-scheme" content="dark light"/>
+  <meta name="theme-color" content="#061526"/>
+  <title>Conheça Aldenir · Idealizador Antigravity</title>
+  <meta name="description" content="Canal público e discreto de reflexões, ideias e relatos aprovados de Aldenir Rocha de Oliveira Filho, idealizador Antigravity."/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'"/>
+  <link rel="icon" href="../assets/icons/antigravity-consultas-64.png"/>
+  <link rel="stylesheet" href="./assets/styles.css"/>
+  <script src="./config.js" defer></script>
+  <script src="./assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir ao conteúdo principal</a>
+
+  <header class="mission-header">
+    <a class="brand" href="../" aria-label="Antigravity — página inicial">
+      <img src="../assets/icons/antigravity-consultas-64.png" alt="" width="42" height="42"/>
+      <span><strong>ANTIGRAVITY</strong><small>Conheça o idealizador</small></span>
+    </a>
+    <nav class="top-nav" aria-label="Navegação deste canal">
+      <a href="../">Home</a>
+      <a href="../18_Centro_Tripulacao/">Centro da Tripulação</a>
+      <a href="../19_Integridade_Editorial/">Integridade editorial</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="pageTitle">
+      <div class="hero-copy">
+        <p class="eyebrow">CANAL PÚBLICO · CONTEÚDO REVISADO</p>
+        <h1 id="pageTitle">Conheça Aldenir</h1>
+        <p class="hero-lead">Um espaço discreto para quem quiser conhecer as ideias, reflexões e experiências que ajudam a orientar a construção da missão Antigravity.</p>
+        <div class="identity-line" aria-label="Identificação editorial">
+          <span class="identity-orb" aria-hidden="true"></span>
+          <p><strong>Aldenir Rocha de Oliveira Filho</strong><small>Idealizador e responsável editorial da Antigravity</small></p>
+        </div>
+        <div class="hero-actions">
+          <a class="primary-action" href="#documentos">Ver documentos públicos</a>
+          <a class="secondary-action" href="#publicacoes">Abrir blog</a>
+          <a class="secondary-action" href="#revisao">Como funciona a revisão</a>
+        </div>
+      </div>
+
+      <aside class="mission-card" aria-labelledby="missionCardTitle">
+        <div class="mission-symbol" aria-hidden="true">
+          <span class="orbit orbit-one"></span>
+          <span class="orbit orbit-two"></span>
+          <img src="../assets/icons/antigravity-consultas-192.png" alt="" width="116" height="116"/>
+        </div>
+        <p class="eyebrow">RESPONSABILIDADE, NÃO PROTAGONISMO</p>
+        <h2 id="missionCardTitle">A missão permanece no centro</h2>
+        <p>Este canal registra contexto e memória editorial sem transformar a trajetória pessoal no foco da plataforma.</p>
+      </aside>
+    </section>
+
+    <section class="channel-purpose" aria-labelledby="purposeTitle">
+      <div>
+        <p class="eyebrow">MEMÓRIA EDITORIAL</p>
+        <h2 id="purposeTitle">O que pode aparecer aqui</h2>
+      </div>
+      <ul class="purpose-grid">
+        <li><span aria-hidden="true">◌</span><strong>Reflexões e insights</strong><small>Ideias apresentadas com contexto, limites e data.</small></li>
+        <li><span aria-hidden="true">⌁</span><strong>Relatos e história</strong><small>Somente o que estiver revisado e adequado à exposição pública.</small></li>
+        <li><span aria-hidden="true">◇</span><strong>Promessas públicas</strong><small>Compromissos editoriais que possam ser acompanhados com transparência.</small></li>
+      </ul>
+    </section>
+
+    <section id="revisao" class="review-guard" aria-labelledby="reviewTitle">
+      <div class="guard-icon" aria-hidden="true">🔒</div>
+      <div>
+        <p class="eyebrow">FILTRO DE PUBLICAÇÃO</p>
+        <h2 id="reviewTitle">Pessoal não significa automaticamente público</h2>
+        <p>Rascunhos, conteúdos privados e relatos sensíveis vivem no <strong>Caderno do Idealizador</strong>, dentro da área autenticada do Centro da Tripulação. Eles só entram neste feed depois de revisão editorial, verificação de referências quando houver afirmações factuais e aprovação explícita para publicação.</p>
+        <a href="../18_Centro_Tripulacao/#ownerNotebook">Conhecer a separação entre o caderno privado e o canal público →</a>
+      </div>
+    </section>
+
+    <section id="documentos" class="documents-section" aria-labelledby="documentsTitle">
+      <header class="section-heading">
+        <div>
+          <p class="eyebrow">ARQUIVO PESSOAL PÚBLICO</p>
+          <h2 id="documentsTitle">Documentos públicos</h2>
+          <p>Apresentações e registros pessoais que passaram por revisão e foram aprovados para exposição pública.</p>
+        </div>
+        <span id="documentsStatus" class="status-pill" role="status" aria-live="polite">Carregando documentos aprovados…</span>
+      </header>
+
+      <div class="document-categories" aria-label="Categorias previstas para documentos públicos">
+        <span>Apresentação</span>
+        <span>Biografia</span>
+        <span>Currículo</span>
+        <span>História</span>
+        <span>Experiência profissional</span>
+        <span>Relatos</span>
+        <span>Manifestações</span>
+      </div>
+
+      <div id="documentsList" class="documents-list" aria-live="polite" aria-busy="true"></div>
+      <p id="documentsEmpty" class="feed-message" hidden>Ainda não há documentos aprovados nesta categoria pública.</p>
+      <p id="documentsError" class="feed-message error" role="alert" hidden>Os documentos públicos não puderam ser carregados. Nenhum currículo, biografia ou fato alternativo foi inventado.</p>
+      <p class="document-safety-note">Ausência de documento significa “ainda não publicado”; não autoriza preencher lacunas com suposições. Conteúdo factual ou credencial só aparece após verificação documentada e referências HTTPS.</p>
+    </section>
+
+    <section id="publicacoes" class="feed-section" aria-labelledby="feedTitle">
+      <header class="section-heading">
+        <div>
+          <p class="eyebrow">BLOG · REGISTRO CRONOLÓGICO</p>
+          <h2 id="feedTitle">Blog e feed público contínuo</h2>
+          <p>Somente publicações aprovadas são carregadas nesta página. Todo rascunho nasce e permanece no Caderno do Idealizador privado até revisão explícita.</p>
+        </div>
+        <span id="feedStatus" class="status-pill" role="status" aria-live="polite">Carregando feed aprovado…</span>
+      </header>
+
+      <form class="feed-tools" id="feedTools" role="search">
+        <label>
+          <span>Buscar no canal</span>
+          <input id="feedSearch" type="search" inputmode="search" autocomplete="off" maxlength="120" placeholder="Título, ideia ou palavra-chave"/>
+        </label>
+        <label>
+          <span>Categoria</span>
+          <select id="categoryFilter">
+            <option value="all">Todas as categorias</option>
+            <option value="reflexoes">Reflexões</option>
+            <option value="ideias">Ideias</option>
+            <option value="insights">Insights</option>
+            <option value="promessas-publicas">Promessas públicas</option>
+            <option value="relatos">Relatos</option>
+            <option value="manifestacoes">Manifestações</option>
+            <option value="historia-biografia">História e biografia</option>
+          </select>
+        </label>
+        <button type="reset" id="clearFilters">Limpar filtros</button>
+      </form>
+
+      <noscript>
+        <p class="feed-message">Ative o JavaScript para carregar o feed público aprovado. Nenhum conteúdo privado é incorporado nesta página.</p>
+      </noscript>
+      <div id="feedList" class="feed-list" aria-live="polite" aria-busy="true"></div>
+      <p id="emptyState" class="feed-message" hidden>Nenhuma publicação aprovada corresponde aos filtros escolhidos.</p>
+      <p id="feedError" class="feed-message error" role="alert" hidden>O feed aprovado não pôde ser carregado. Nenhum conteúdo alternativo foi inventado.</p>
+      <button type="button" id="loadMore" class="load-more" hidden>Carregar publicações anteriores</button>
+    </section>
+
+    <section id="conversa" class="conversation-section" aria-labelledby="conversationTitle">
+      <header class="section-heading">
+        <div>
+          <p class="eyebrow">CANAL DIRETO · CONVERSA ASSÍNCRONA</p>
+          <h2 id="conversationTitle">Conversa com o idealizador</h2>
+          <p>Um espaço futuro para conversas pessoais, produtivas e científicas com assinantes — separado do atendimento geral da plataforma.</p>
+        </div>
+        <span id="conversationStatus" class="status-pill offline" role="status" aria-live="polite">Canal direto ainda não conectado</span>
+      </header>
+
+      <div class="channel-difference">
+        <article>
+          <span aria-hidden="true">◉</span>
+          <div>
+            <strong>Centro da Tripulação</strong>
+            <p>Recebe sugestões, críticas, pedidos, reclamações e contribuições relacionadas à plataforma Antigravity.</p>
+            <a href="../18_Centro_Tripulacao/#listeningPanel">Falar sobre a plataforma →</a>
+          </div>
+        </article>
+        <article>
+          <span aria-hidden="true">◎</span>
+          <div>
+            <strong>Conversa com o idealizador</strong>
+            <p>Reservada a perguntas pessoais adequadas, produtividade, relatos e contribuições operacionais ou científicas dirigidas ao idealizador.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="contact-identity" aria-label="Situação do e-mail institucional">
+        <div>
+          <span class="identity-orb" aria-hidden="true"></span>
+          <p><strong id="suggestedEmailIdentity">Identidade sugerida: AldenGrav360</strong><small id="contactEmailStatus">E-mail institucional em ativação — nenhum endereço foi publicado.</small></p>
+        </div>
+        <span class="privacy-pill">Sem envio no modo desconectado</span>
+      </div>
+
+      <div class="conversation-grid">
+        <section class="conversation-card" aria-labelledby="newConversationTitle">
+          <p class="eyebrow">NOVA CONVERSA</p>
+          <h3 id="newConversationTitle">Enviar mensagem</h3>
+          <p class="form-intro">O formulário permanece bloqueado até existir um gateway seguro configurado. Quando ativado, o envio será limitado e dependerá de consentimento explícito.</p>
+          <form id="conversationForm" novalidate>
+            <label for="conversationCategory">Categoria</label>
+            <select id="conversationCategory" name="category" required disabled>
+              <option value="">Selecione…</option>
+              <option value="pergunta">Pergunta</option>
+              <option value="contato-pessoal">Contato pessoal</option>
+              <option value="produtividade">Produtividade</option>
+              <option value="contribuicao-operacional">Contribuição operacional</option>
+              <option value="contribuicao-cientifica">Contribuição científica</option>
+              <option value="relato">Relato</option>
+            </select>
+
+            <label for="subscriberName">Como deseja ser chamado</label>
+            <input id="subscriberName" name="displayName" type="text" autocomplete="name" maxlength="80" disabled/>
+
+            <label for="subscriberEmail">E-mail do assinante</label>
+            <input id="subscriberEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required disabled/>
+
+            <label for="conversationSubject">Assunto</label>
+            <input id="conversationSubject" name="subject" type="text" minlength="4" maxlength="140" required disabled/>
+
+            <label for="conversationBody">Mensagem</label>
+            <textarea id="conversationBody" name="message" minlength="20" maxlength="3000" rows="8" required disabled></textarea>
+            <p class="field-help">Máximo de 3.000 caracteres. Não envie urgências, dados clínicos identificáveis, senhas ou documentos pessoais sensíveis.</p>
+
+            <label class="consent-row">
+              <input id="rightsConsent" type="checkbox" required disabled/>
+              <span>Declaro que o texto e os materiais enviados são meus ou tenho direito/licença para compartilhá-los. Não enviarei obra de terceiro sem autorização.</span>
+            </label>
+            <label class="consent-row">
+              <input id="privacyConsent" type="checkbox" required disabled/>
+              <span>Confirmo que não incluí dados identificáveis de pacientes e autorizo o tratamento da mensagem exclusivamente para análise e resposta desta conversa.</span>
+            </label>
+
+            <button id="conversationSubmit" class="primary-action form-button" type="submit" disabled>Enviar ao canal direto</button>
+          </form>
+          <p id="conversationMessage" class="form-message" role="status" aria-live="polite">Serviço desativado: nada será enviado.</p>
+        </section>
+
+        <aside class="conversation-side">
+          <section class="conversation-card" aria-labelledby="threadAccessTitle">
+            <p class="eyebrow">ACOMPANHAMENTO</p>
+            <h3 id="threadAccessTitle">Abrir conversa assíncrona</h3>
+            <p class="form-intro">Quando o gateway estiver ativo, use o protocolo e o código de acesso temporário enviados pelo serviço. O código não é salvo nesta página.</p>
+            <form id="threadLookupForm" novalidate>
+              <label for="threadProtocol">Protocolo</label>
+              <input id="threadProtocol" type="text" autocomplete="off" minlength="8" maxlength="40" disabled/>
+              <label for="threadAccessCode">Código de acesso temporário</label>
+              <input id="threadAccessCode" type="password" autocomplete="one-time-code" minlength="8" maxlength="128" disabled/>
+              <button id="threadLookupSubmit" class="secondary-action form-button" type="submit" disabled>Abrir thread</button>
+            </form>
+            <p id="threadLookupMessage" class="form-message" role="status" aria-live="polite"></p>
+          </section>
+
+          <section class="conversation-card thread-card" aria-labelledby="threadTitle">
+            <div class="thread-heading">
+              <div>
+                <p class="eyebrow">THREAD</p>
+                <h3 id="threadTitle">Mensagens e respostas</h3>
+              </div>
+              <span id="threadProtocolLabel"></span>
+            </div>
+            <div id="threadMessages" class="thread-messages" aria-live="polite">
+              <p class="thread-empty">A resposta do idealizador aparecerá aqui somente após autenticação do protocolo por um gateway ativo.</p>
+            </div>
+          </section>
+
+          <section class="conversation-rules" aria-labelledby="conversationRulesTitle">
+            <h3 id="conversationRulesTitle">Limites do canal</h3>
+            <ul>
+              <li>Não é atendimento médico, emergência ou consulta clínica.</li>
+              <li>Uma tentativa por minuto neste dispositivo; o servidor deverá aplicar limites próprios.</li>
+              <li>Nenhum token, segredo ou código de acesso é persistido no navegador.</li>
+              <li>Materiais de terceiros exigem autorização ou licença compatível.</li>
+              <li>Dados clínicos identificáveis de pacientes são proibidos.</li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+    </section>
+
+    <aside class="boundary-note" aria-labelledby="boundaryTitle">
+      <div>
+        <p class="eyebrow">DOIS CANAIS, DUAS FINALIDADES</p>
+        <h2 id="boundaryTitle">Memória pessoal e integridade editorial permanecem separadas</h2>
+      </div>
+      <p>Este espaço apresenta ideias e trajetória aprovadas para leitura pública. Políticas, referências, correções, direitos e responsabilidades da plataforma ficam no canal próprio de Integridade Editorial.</p>
+      <a href="../19_Integridade_Editorial/">Abrir Integridade Editorial →</a>
+    </aside>
+  </main>
+
+  <!-- antigravity-editorial-attribution:v1 -->
+  <footer class="site-footer" data-editorial-attribution="ATV-ALD-360">
+    <div class="editorial-seal" aria-label="Marca editorial Antigravity">
+      <img src="../assets/icons/antigravity-consultas-64.png" alt="" width="22" height="22"/>
+      <span>ATV · TURBO TEMI · ALD 360</span>
+    </div>
+    <p>Idealização da plataforma e responsabilidade editorial: Aldenir Rocha de Oliveira Filho · editor, criador, codificador, produtor, atualizador e patrocinador independente.</p>
+    <p>A atribuição refere-se à plataforma e à curadoria original; obras e marcas de terceiros permanecem creditadas aos respectivos titulares.</p>
+    <nav aria-label="Links finais">
+      <a href="../">Antigravity</a>
+      <a href="../19_Integridade_Editorial/">Documentação e integridade</a>
+      <a href="../18_Centro_Tripulacao/">Centro da Tripulação</a>
+    </nav>
+  </footer>
+</body>
+</html>

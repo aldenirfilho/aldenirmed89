@@ -13,7 +13,7 @@ Checa:
     1. JSON válido em todos os manifests principais
     2. Rotas canônicas existem como arquivos reais
     3. Aliases apontam para destinos existentes
-    4. Módulos, estações e portais do site_manifest existem
+    4. Módulos, estações, portais e canais do site_manifest existem
     5. Legacy routes do site_manifest existem (origem e destino)
     6. mainLinks do home-manifest existem
     7. Resumo final com contagem de erros
@@ -182,7 +182,7 @@ def check_route_aliases():
 
 
 def check_content_surfaces():
-    print("\n📦 4. Módulos, estações e portais do site_manifest")
+    print("\n📦 4. Módulos, estações, portais e canais do site_manifest")
     print("─" * 60)
     data, err = load_json(MANIFESTS["site_manifest"])
     if err:
@@ -193,6 +193,7 @@ def check_content_surfaces():
         ("modules", "módulo"),
         ("stations", "estação"),
         ("portals", "portal"),
+        ("channels", "canal"),
     )
     if not any(data.get(key) for key, _ in groups):
         log_warn("Nenhuma superfície encontrada em site_manifest.json")

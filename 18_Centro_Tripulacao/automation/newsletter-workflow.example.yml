@@ -1,0 +1,27 @@
+# TEMPLATE INATIVO: mover para .github/workflows somente após homologação humana.
+name: Antigravity newsletter dry-run
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  consent-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Auditar lista consentida sem enviar
+        env:
+          SUPABASE_URL: ${{ secrets.CREW_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.CREW_SUPABASE_SERVICE_ROLE_KEY }}
+          SITE_URL: ${{ vars.CREW_SITE_URL }}
+          NEWSLETTER_FROM: ${{ vars.CREW_NEWSLETTER_FROM }}
+          UNSUBSCRIBE_BASE_URL: ${{ vars.CREW_UNSUBSCRIBE_BASE_URL }}
+        run: node 18_Centro_Tripulacao/automation/send_daily_newsletter.mjs
+

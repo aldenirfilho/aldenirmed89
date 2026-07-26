@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-theme-mode="dark" data-visual-profile="aerospace" data-a11y-storage-key="antigravity:a11y:v1">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="color-scheme" content="dark light"/>
+  <meta name="theme-color" content="#061526"/>
+  <title>Centro da Tripulação · Antigravity</title>
+  <meta name="description" content="Portal de tripulantes, assinatura consentida, preferências e métricas agregadas da missão Antigravity."/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'"/>
+  <link rel="icon" href="../assets/icons/antigravity-consultas-64.png"/>
+  <link rel="stylesheet" href="./assets/styles.css"/>
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir ao conteúdo principal</a>
+
+  <header class="mission-header">
+    <a class="brand" href="../" aria-label="Antigravity — página inicial">
+      <img src="../assets/icons/antigravity-consultas-64.png" alt="" width="44" height="44"/>
+      <span><strong>ANTIGRAVITY</strong><small>Centro da Tripulação</small></span>
+    </a>
+    <nav class="view-nav" aria-label="Áreas do Centro da Tripulação">
+      <button type="button" class="nav-button is-active" data-view="public" aria-pressed="true">Missão</button>
+      <button type="button" class="nav-button" data-view="listening" aria-pressed="false">💬 Escuta</button>
+      <button type="button" class="nav-button" data-view="settings" aria-pressed="false">⚙ Preferências</button>
+      <button type="button" class="nav-button" data-view="admin" aria-pressed="false">🔒 Comando</button>
+    </nav>
+    <button id="clarityToggle" class="clarity-toggle" type="button" aria-label="Ativar visualização clara" aria-pressed="false">☀️ Claro</button>
+    <a class="home-link" href="../">← Home</a>
+  </header>
+
+  <main id="main" class="page-shell">
+    <noscript>
+      <p class="notice danger">Este portal precisa de JavaScript para autenticação e preferências. Nenhuma conta foi acessada.</p>
+    </noscript>
+
+    <section id="serviceStatus" class="service-status pending" role="status" aria-live="polite">
+      <span class="status-orb" aria-hidden="true"></span>
+      <div>
+        <strong>Verificando conexão segura…</strong>
+        <p>Os números só aparecem quando vierem de uma fonte configurada e auditável.</p>
+      </div>
+    </section>
+
+    <section id="publicPanel" class="view-panel" aria-labelledby="crewTitle">
+      <div class="hero-grid">
+        <article class="hero-copy">
+          <p class="eyebrow">MISSÃO AEROESPACIAL · APRENDIZADO CONTÍNUO</p>
+          <h1 id="crewTitle">Tripulantes em busca de conhecimento científico</h1>
+          <p class="hero-lead">Um ponto de encontro para acompanhar o alcance da plataforma, escolher como receber atualizações e manter sua identidade de tripulante — com privacidade desde o projeto.</p>
+          <div class="hero-actions">
+            <button type="button" id="joinMission" class="primary-button">Entrar ou criar conta</button>
+            <button type="button" class="secondary-button" data-view="settings">Personalizar experiência</button>
+          </div>
+          <ul class="trust-list" aria-label="Compromissos de privacidade">
+            <li>🔐 Senha enviada somente por TLS ao provedor de autenticação</li>
+            <li>✉️ E-mail diário somente após consentimento explícito</li>
+            <li>👤 Perfil público separado e sempre opcional</li>
+          </ul>
+        </article>
+        <aside class="mission-orbit" aria-label="Identidade da missão">
+          <span class="orbit orbit-a" aria-hidden="true"></span>
+          <span class="orbit orbit-b" aria-hidden="true"></span>
+          <img src="../assets/icons/antigravity-consultas-192.png" alt="Emblema orbital Antigravity" width="150" height="150"/>
+          <strong>TRIPULAÇÃO</strong>
+          <small>Ciência · Disciplina · Continuidade</small>
+        </aside>
+      </div>
+
+      <section class="section-block" aria-labelledby="metricsTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">TELEMETRIA PÚBLICA</p>
+            <h2 id="metricsTitle">Alcance agregado da missão</h2>
+          </div>
+          <p id="metricsCheckedAt" class="checked-at">Fonte ainda não verificada</p>
+        </div>
+        <div class="metric-grid">
+          <article class="metric-card">
+            <span>Assinantes ativos</span>
+            <strong id="subscriberCount" aria-live="polite">—</strong>
+            <small>Somente consentimentos ativos</small>
+          </article>
+          <article class="metric-card">
+            <span>Visualizações gerais</span>
+            <strong id="totalViews" aria-live="polite">—</strong>
+            <small>Contagem agregada, sem exibir histórico individual</small>
+          </article>
+          <article class="metric-card">
+            <span>Estações monitoradas</span>
+            <strong id="sectionCount" aria-live="polite">—</strong>
+            <small>Detalhamento por seção abaixo</small>
+          </article>
+        </div>
+        <div class="table-card">
+          <div class="table-title">
+            <h3>Visualizações por seção</h3>
+            <span id="metricsMode">Sem conexão</span>
+          </div>
+          <div class="responsive-table">
+            <table>
+              <thead><tr><th scope="col">Seção</th><th scope="col">Visualizações</th><th scope="col">Atualização</th></tr></thead>
+              <tbody id="sectionMetricsBody">
+                <tr><td colspan="3">Serviço ainda não conectado; nenhum número foi estimado.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <div class="public-grid">
+        <section id="authCard" class="panel-card" aria-labelledby="authTitle">
+          <div class="card-heading">
+            <span class="card-icon" aria-hidden="true">🛰️</span>
+            <div><p class="eyebrow">CANAL DE ACESSO</p><h2 id="authTitle">Conta de tripulante</h2></div>
+          </div>
+          <div id="signedOutContent">
+            <p class="card-copy">Entre com e-mail e senha ou solicite seu cadastro. No modo desconectado, o portal não simula uma conta.</p>
+            <div class="auth-tabs" role="tablist" aria-label="Tipo de acesso">
+              <button type="button" id="signInTab" role="tab" aria-selected="true" data-auth-mode="signin">Entrar</button>
+              <button type="button" id="signUpTab" role="tab" aria-selected="false" data-auth-mode="signup">Criar conta</button>
+            </div>
+            <form id="authForm" novalidate>
+              <label for="authEmail">E-mail</label>
+              <input id="authEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required/>
+              <label for="authPassword">Senha</label>
+              <input id="authPassword" name="password" type="password" autocomplete="current-password" minlength="10" maxlength="128" required/>
+              <p class="field-help">A senha não é gravada por esta página nem incluída em registros.</p>
+              <button id="authSubmit" class="primary-button full-width" type="submit">Entrar com segurança</button>
+            </form>
+          </div>
+          <div id="signedInContent" hidden>
+            <p class="identity-line">Conectado como <strong id="sessionIdentity"></strong></p>
+            <p id="roleDescription" class="card-copy"></p>
+            <button type="button" id="signOutButton" class="secondary-button">Encerrar sessão</button>
+          </div>
+          <p id="authMessage" class="form-message" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="panel-card" aria-labelledby="newsletterTitle">
+          <div class="card-heading">
+            <span class="card-icon" aria-hidden="true">📡</span>
+            <div><p class="eyebrow">BOLETIM DA MISSÃO</p><h2 id="newsletterTitle">Atualizações por e-mail</h2></div>
+          </div>
+          <p class="card-copy">Receba o resumo diário somente se autorizar. Cancelamento disponível a qualquer momento, sem afetar sua conta.</p>
+          <form id="newsletterForm">
+            <label class="consent-row">
+              <input id="newsletterConsent" type="checkbox" required/>
+              <span>Autorizo o envio de atualizações científicas e operacionais para o e-mail da minha conta.</span>
+            </label>
+            <label for="newsletterFrequency">Frequência</label>
+            <select id="newsletterFrequency" name="frequency">
+              <option value="daily">Diária</option>
+            </select>
+            <div class="button-row">
+              <button type="submit" id="subscribeButton" class="primary-button">Assinar boletim</button>
+              <button type="button" id="unsubscribeButton" class="danger-button">Cancelar assinatura</button>
+            </div>
+          </form>
+          <p id="newsletterMessage" class="form-message" role="status" aria-live="polite"></p>
+        </section>
+      </div>
+    </section>
+
+    <section id="listeningPanel" class="view-panel" aria-labelledby="listeningTitle" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PORTAL DE ESCUTA · CONVERSA ASSÍNCRONA</p>
+          <h1 id="listeningTitle">Sua manifestação faz parte da missão</h1>
+        </div>
+        <span class="privacy-pill">Anônima ou identificada</span>
+      </div>
+      <p class="listening-lead">Use este canal geral da plataforma para comentários, sugestões, pedidos, críticas, apoio, informação ou contribuição. A equipe pode responder pela conversa desta página; não é chat em tempo real e não há promessa de resposta automática.</p>
+      <div class="notice" role="note">
+        <strong>Contribua com conteúdo próprio ou autorizado.</strong>
+        <p>Não envie obras, documentos, imagens ou produções de outras pessoas ou empresas sem licença, permissão ou direito aplicável. Não inclua dados de pacientes, prontuários, segredos, credenciais ou informação pessoal desnecessária. Para conversa pessoal com o idealizador, use o canal “Conheça Aldenir”.</p>
+      </div>
+      <div class="listening-grid">
+        <section class="panel-card" aria-labelledby="manifestationFormTitle">
+          <div class="card-heading">
+            <span class="card-icon" aria-hidden="true">📨</span>
+            <div><p class="eyebrow">NOVA MENSAGEM</p><h2 id="manifestationFormTitle">Registrar manifestação</h2></div>
+          </div>
+          <form id="manifestationForm" novalidate>
+            <label for="manifestationCategory">Categoria obrigatória</label>
+            <select id="manifestationCategory" name="category" required>
+              <option value="">Selecione uma categoria…</option>
+              <option value="agradecimento">Agradecimento</option>
+              <option value="sugestao">Sugestão</option>
+              <option value="contribuicao">Contribuição</option>
+              <option value="informacao">Informação</option>
+              <option value="notificacao">Notificação</option>
+              <option value="reclamacao">Reclamação</option>
+              <option value="outra">Outra</option>
+            </select>
+            <div id="otherCategoryField" hidden>
+              <label for="manifestationOtherCategory">Especifique a categoria</label>
+              <input id="manifestationOtherCategory" name="otherCategory" type="text" maxlength="80"/>
+            </div>
+            <fieldset class="identity-choice">
+              <legend>Como deseja enviar?</legend>
+              <label><input type="radio" name="identityMode" value="anonymous" checked/> Anônima</label>
+              <label><input type="radio" name="identityMode" value="identified"/> Identificada pela conta</label>
+            </fieldset>
+            <label for="manifestationSubject">Assunto</label>
+            <input id="manifestationSubject" name="subject" type="text" minlength="4" maxlength="140" required/>
+            <label for="manifestationMessage">Mensagem</label>
+            <textarea id="manifestationMessage" name="message" minlength="10" maxlength="5000" rows="8" required></textarea>
+            <label class="consent-row">
+              <input id="manifestationConsent" type="checkbox" required/>
+              <span>Confirmo que li a explicação deste canal e autorizo o tratamento desta mensagem para análise e resposta. Não incluirei dados clínicos identificáveis de pacientes.</span>
+            </label>
+            <label class="consent-row">
+              <input id="contactConsent" type="checkbox"/>
+              <span>Autorizo contato pelo e-mail da minha conta, se eu optar por envio identificado.</span>
+            </label>
+            <button id="submitManifestation" type="submit" class="primary-button full-width">Gerar protocolo e enviar</button>
+          </form>
+          <p id="manifestationMessageStatus" class="form-message" role="status" aria-live="polite"></p>
+          <div id="protocolResult" class="protocol-result" hidden>
+            <strong>Protocolo gerado</strong>
+            <code id="protocolValue"></code>
+            <p id="anonymousKeyNotice"></p>
+            <code id="anonymousKeyValue" hidden></code>
+            <button id="copyProtocolButton" type="button" class="secondary-button">Copiar dados de acompanhamento</button>
+          </div>
+        </section>
+
+        <aside class="listening-side">
+          <section class="panel-card">
+            <div class="card-heading"><span class="card-icon" aria-hidden="true">✉️</span><div><h2>Outros canais</h2></div></div>
+            <p id="institutionalEmailStatus" class="card-copy">Canal de e-mail em configuração.</p>
+            <p class="field-help">O endereço só será exibido depois de configurado oficialmente; esta página não inventa contatos.</p>
+          </section>
+          <section class="panel-card">
+            <div class="card-heading"><span class="card-icon" aria-hidden="true">🧭</span><div><h2>Acompanhar conversa</h2></div></div>
+            <p class="card-copy">Manifestação identificada: entre na conta. Manifestação anônima: use o protocolo e a chave secreta recebidos no envio.</p>
+            <form id="anonymousLookupForm">
+              <label for="lookupProtocol">Protocolo</label>
+              <input id="lookupProtocol" type="text" maxlength="32" placeholder="AG-2026-XXXXXXXX"/>
+              <label for="lookupKey">Chave secreta</label>
+              <input id="lookupKey" type="password" maxlength="128" autocomplete="off"/>
+              <button type="submit" class="secondary-button full-width">Abrir conversa anônima</button>
+            </form>
+          </section>
+        </aside>
+      </div>
+      <section class="table-card conversation-card" aria-labelledby="conversationTitle">
+        <div class="table-title">
+          <h2 id="conversationTitle">Minhas conversas</h2>
+          <span id="conversationStatus">Nenhuma conversa carregada</span>
+        </div>
+        <div class="conversation-layout">
+          <div id="conversationList" class="conversation-list" aria-label="Lista de manifestações"></div>
+          <div class="thread-pane">
+            <div id="threadMessages" class="thread-messages" aria-live="polite">
+              <p class="empty-state">Selecione uma manifestação ou consulte um protocolo anônimo.</p>
+            </div>
+            <form id="crewReplyForm" class="reply-form" hidden>
+              <label for="crewReplyBody">Adicionar mensagem à conversa</label>
+              <textarea id="crewReplyBody" minlength="2" maxlength="3000" rows="4"></textarea>
+              <button type="submit" class="primary-button">Enviar mensagem</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section id="settingsPanel" class="view-panel" aria-labelledby="settingsTitle" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow">CONFIGURAÇÃO PESSOAL</p><h1 id="settingsTitle">Preferências do tripulante</h1></div>
+        <span class="privacy-pill">Salvas localmente quando desconectado</span>
+      </div>
+      <form id="preferencesForm" class="settings-grid">
+        <section class="panel-card">
+          <div class="card-heading"><span class="card-icon" aria-hidden="true">🎨</span><div><h2>Aparência e idioma</h2></div></div>
+          <label for="themePreference">Perfil visual preferido</label>
+          <select id="themePreference" name="theme">
+            <option value="aerospace">Aeroespacial</option>
+            <option value="aerospace-light">Claro aeroespacial</option>
+            <option value="rustic-light">Claro rústico conservador</option>
+            <option value="dark">Dark</option>
+            <option value="minimal">Minimal</option>
+            <option value="sepia">Sépia</option>
+            <option value="oceanic">Oceânico</option>
+            <option value="green">Verde clínico</option>
+            <option value="natural">Natural</option>
+            <option value="forest">Floresta</option>
+            <option value="wizard-academy">Academia arcana autoral</option>
+            <option value="comic-hero">Herói editorial autoral</option>
+            <option value="modern-serious">Moderno sério</option>
+          </select>
+          <label for="colorModePreference">Modo de cor</label>
+          <select id="colorModePreference" name="colorMode">
+            <option value="dark">Escuro</option>
+            <option value="light">Claro</option>
+            <option value="system">Seguir o sistema</option>
+          </select>
+          <label for="languagePreference">Idioma</label>
+          <select id="languagePreference" name="language">
+            <option value="pt-BR">Português</option>
+            <option value="en">English</option>
+          </select>
+        </section>
+        <section class="panel-card">
+          <div class="card-heading"><span class="card-icon" aria-hidden="true">🔔</span><div><h2>Comunicação</h2></div></div>
+          <label class="consent-row">
+            <input id="notificationPreference" type="checkbox"/>
+            <span>Quero receber avisos no portal sobre atualizações relevantes.</span>
+          </label>
+          <label class="consent-row">
+            <input id="publicProfilePreference" type="checkbox"/>
+            <span>Permito um perfil público básico no mural da tripulação.</span>
+          </label>
+          <p class="field-help">Opt-in separado: nunca torna e-mail, assinatura ou histórico de visualização públicos.</p>
+        </section>
+        <section class="panel-card profile-card">
+          <div class="card-heading"><span class="card-icon" aria-hidden="true">👤</span><div><h2>Perfil básico</h2></div></div>
+          <label for="displayName">Nome de exibição</label>
+          <input id="displayName" name="displayName" type="text" maxlength="80" autocomplete="nickname"/>
+          <label for="occupation">Atuação</label>
+          <input id="occupation" name="occupation" type="text" maxlength="100" placeholder="Ex.: médico intensivista, estudante"/>
+        </section>
+        <div class="settings-actions">
+          <button type="submit" class="primary-button">Salvar preferências</button>
+          <button type="button" id="resetLocalPreferences" class="secondary-button">Restaurar padrão local</button>
+          <p id="preferencesMessage" class="form-message" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </section>
+
+    <section id="adminPanel" class="view-panel" aria-labelledby="adminTitle" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow">ACESSO RESTRITO</p><h1 id="adminTitle">Comando da Tripulação</h1></div>
+        <span class="admin-pill">ADMIN</span>
+      </div>
+      <div id="adminGate" class="notice">
+        <strong>Diretório protegido.</strong>
+        <p>O conteúdo administrativo só é solicitado ao servidor depois de uma sessão válida e da confirmação da função de administrador.</p>
+      </div>
+      <div id="adminContent" hidden>
+        <div class="metric-grid admin-metrics">
+          <article class="metric-card"><span>Usuários cadastrados</span><strong id="adminUserCount">—</strong><small>Contagem administrativa</small></article>
+          <article class="metric-card"><span>Assinantes ativos</span><strong id="adminSubscriberCount">—</strong><small>Consentimento vigente</small></article>
+          <article class="metric-card"><span>Visualizações agregadas</span><strong id="adminViewCount">—</strong><small>Sem expor trilha individual</small></article>
+        </div>
+        <section class="table-card" aria-labelledby="directoryTitle">
+          <div class="table-title"><h2 id="directoryTitle">Diretório administrativo de tripulantes</h2><span id="directoryCount">0 registros</span></div>
+          <div class="directory-tools">
+            <label for="directorySearch">Pesquisar diretório</label>
+            <input id="directorySearch" type="search" placeholder="Nome, atuação, idioma ou status"/>
+          </div>
+          <div class="responsive-table">
+            <table>
+              <thead>
+                <tr><th scope="col">Tripulante</th><th scope="col">Contato privado</th><th scope="col">Preferências</th><th scope="col">Boletim</th><th scope="col">Cadastro</th></tr>
+              </thead>
+              <tbody id="adminDirectoryBody"></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="table-card admin-inbox" aria-labelledby="adminInboxTitle">
+          <div class="table-title">
+            <h2 id="adminInboxTitle">Caixa de manifestações</h2>
+            <span id="adminInboxCount">0 manifestações</span>
+          </div>
+          <div class="conversation-layout">
+            <div id="adminInboxList" class="conversation-list" aria-label="Manifestações recebidas"></div>
+            <div class="thread-pane">
+              <div id="adminThreadMessages" class="thread-messages">
+                <p class="empty-state">Selecione uma manifestação para ler e responder.</p>
+              </div>
+              <form id="adminReplyForm" class="reply-form" hidden>
+                <label for="adminReplyBody">Resposta da equipe</label>
+                <textarea id="adminReplyBody" minlength="2" maxlength="3000" rows="4"></textarea>
+                <button type="submit" class="primary-button">Responder</button>
+              </form>
+            </div>
+          </div>
+        </section>
+        <section id="ownerNotebook" class="owner-notebook" aria-labelledby="ownerNotebookTitle" hidden>
+          <div class="owner-heading">
+            <div>
+              <p class="eyebrow">OWNER · ÁREA PRIVADA</p>
+              <h2 id="ownerNotebookTitle">Caderno do Idealizador</h2>
+              <p>Responsabilidade editorial, memória institucional e rascunhos privados — sem transformar experiência pessoal em superioridade ou autoridade automática.</p>
+            </div>
+            <span>Privado por padrão</span>
+          </div>
+          <div class="notice owner-warning">
+            <strong>GitHub Pages não protege arquivos estáticos.</strong>
+            <p>Biografias, relatos, documentos e credenciais devem permanecer no backend privado. O status “publicação aprovada” não publica nada sozinho.</p>
+          </div>
+          <div class="owner-grid">
+            <form id="ownerDocumentForm" class="panel-card" novalidate>
+              <div class="card-heading"><span class="card-icon" aria-hidden="true">📓</span><div><h3>Documento editorial privado</h3></div></div>
+              <fieldset id="ownerDocumentFields" disabled>
+                <input id="ownerDocumentId" type="hidden"/>
+                <label for="ownerDocumentTitle">Título</label>
+                <input id="ownerDocumentTitle" type="text" minlength="4" maxlength="160" required/>
+                <label for="ownerDocumentCategory">Categoria</label>
+                <select id="ownerDocumentCategory" required>
+                  <option value="biografia">Biografia</option>
+                  <option value="curriculo">Currículo</option>
+                  <option value="historia">História</option>
+                  <option value="experiencia">Experiência</option>
+                  <option value="reflexao">Reflexão</option>
+                  <option value="posicao">Posição</option>
+                  <option value="explicacao">Explicação</option>
+                  <option value="legado">Legado</option>
+                </select>
+                <label for="ownerDocumentStatus">Estado editorial</label>
+                <select id="ownerDocumentStatus" required>
+                  <option value="draft">Rascunho</option>
+                  <option value="review">Em revisão</option>
+                  <option value="private">Privado consolidado</option>
+                  <option value="publish-approved">Publicação aprovada — ainda privada</option>
+                </select>
+                <label for="ownerDocumentSummary">Resumo interno</label>
+                <textarea id="ownerDocumentSummary" maxlength="600" rows="3"></textarea>
+                <label for="ownerDocumentBody">Conteúdo privado</label>
+                <textarea id="ownerDocumentBody" minlength="10" maxlength="30000" rows="10" required></textarea>
+                <label for="ownerEditorialNote">Nota de responsabilidade editorial</label>
+                <textarea id="ownerEditorialNote" maxlength="2000" rows="4" placeholder="Contexto, limites, fontes, conflitos ou revisão necessária."></textarea>
+                <label for="ownerPublicationWorkflow">Referência do workflow editorial</label>
+                <input id="ownerPublicationWorkflow" type="text" maxlength="200" placeholder="Obrigatória apenas em “publicação aprovada”."/>
+                <div class="button-row">
+                  <button type="submit" class="primary-button">Salvar no backend privado</button>
+                  <button id="clearOwnerDocument" type="button" class="secondary-button">Novo rascunho</button>
+                </div>
+              </fieldset>
+              <p id="ownerDocumentMessage" class="form-message" role="status" aria-live="polite"></p>
+            </form>
+            <section class="panel-card" aria-labelledby="ownerDocumentsListTitle">
+              <div class="card-heading"><span class="card-icon" aria-hidden="true">🗃️</span><div><h3 id="ownerDocumentsListTitle">Cadernos privados</h3></div></div>
+              <div id="ownerDocumentsList" class="owner-document-list">
+                <p class="empty-state">Nenhum documento carregado.</p>
+              </div>
+            </section>
+          </div>
+          <section class="panel-card credential-panel" aria-labelledby="credentialTitle">
+            <div class="card-heading"><span class="card-icon" aria-hidden="true">🔎</span><div><h3 id="credentialTitle">Credenciais · verificação separada</h3></div></div>
+            <p class="card-copy">Uma alegação curricular não se torna “verificada” por constar no Caderno. O owner pode somente encaminhar metadados para revisão; a confirmação exige processo independente no backend.</p>
+            <form id="credentialSubmissionForm" class="credential-form">
+              <fieldset id="credentialFields" disabled>
+                <label for="credentialType">Tipo de credencial</label>
+                <input id="credentialType" type="text" maxlength="100" required/>
+                <label for="credentialTitleClaim">Título alegado</label>
+                <input id="credentialTitleClaim" type="text" maxlength="180" required/>
+                <label for="credentialIssuer">Instituição emissora</label>
+                <input id="credentialIssuer" type="text" maxlength="180" required/>
+                <label for="credentialReference">Referência privada</label>
+                <input id="credentialReference" type="text" maxlength="500" placeholder="Identificador interno ou URL privada; não use arquivo público."/>
+                <button type="submit" class="secondary-button">Encaminhar para verificação</button>
+              </fieldset>
+            </form>
+            <p id="credentialMessage" class="form-message" role="status" aria-live="polite"></p>
+            <div id="credentialList" class="credential-list"></div>
+          </section>
+        </section>
+        <p class="notice privacy-notice">Dados básicos são exibidos somente para operação legítima da missão. Não exporte, compartilhe ou use para finalidade diferente do consentimento informado.</p>
+      </div>
+      <p id="adminMessage" class="form-message" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="mission-footer">
+    <p><strong>Antigravity · Centro da Tripulação</strong> — ciência, continuidade e privacidade.</p>
+    <p>Este portal não substitui avaliação clínica nem cria conta sem uma conexão de autenticação real.</p>
+  </footer>
+
+  <script src="./config.example.js"></script>
+  <script src="./assets/app.js" defer></script>
+</body>
+</html>

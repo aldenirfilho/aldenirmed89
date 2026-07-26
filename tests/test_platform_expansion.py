@@ -118,7 +118,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="Antigravity"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v9`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v11`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
@@ -302,7 +302,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertLess(modules_start, pipeline_start)
         self.assertEqual(
             home[portal_start:stations_start].count('class="module-card'),
-            1,
+            2,
         )
         self.assertEqual(
             home[stations_start:modules_start].count('class="module-card'),
@@ -318,6 +318,7 @@ class AccessiblePwaTests(unittest.TestCase):
         for marker in (
             "Portal Vivo · UPGRADE",
             "UPGRADE contínuo do Antigravity",
+            "Centro da Tripulação",
             "Estações Antigravity",
             "Estação Radar Diário",
             "Estação Diretório Médico",
@@ -607,8 +608,8 @@ class OperationalPackageTests(unittest.TestCase):
         ):
             self.assertIn(expected, operation)
         for expected in (
-            "Os 20 cartões",
-            "1 Portal + 2 Estações + 16 módulos/apps + Mapa Vivo",
+            "Os 21 cartões",
+            "2 Portais + 2 Estações + 16 módulos/apps + Mapa Vivo",
             "Estação Radar Diário",
             "Estação Diretório Médico",
             "01_UpDown_Hub/content/",
@@ -652,6 +653,7 @@ class OperationalPackageTests(unittest.TestCase):
             "ACESSO_DOCK_MAC": "ACESSO_DOCK_MAC.md",
             "ACESSO_WINDOWS": "ACESSO_WINDOWS.md",
             "ACESSO_IPHONE": "ACESSO_IPHONE.md",
+            "CENTRO_TRIPULACAO": "CENTRO_TRIPULACAO.md",
         }
         for route, markdown in expected.items():
             page = (guide_root / route / "index.html").read_text(encoding="utf-8")

@@ -25,8 +25,15 @@
 /* Restaura tema e largura antes da primeira pintura para evitar saltos visuais. */
 (function(){
   let mode='dark';
+  let visualProfile='aerospace';
   let wide=true;
   let contrast=false;
+  const profileModes={
+    aerospace:'dark','aerospace-light':'light','rustic-light':'light',
+    dark:'dark',minimal:'light',sepia:'light',oceanic:'dark',green:'dark',
+    natural:'light',forest:'dark','wizard-academy':'dark',
+    'comic-hero':'dark','modern-serious':'light'
+  };
   try{
     if(sessionStorage.getItem('antigravity:mission-intro:v1')==='seen'){
       document.documentElement.classList.add('mission-returning');
@@ -36,12 +43,19 @@
     const saved=JSON.parse(localStorage.getItem('antigravity:a11y:v1')||'{}');
     if(['dark','light','system'].includes(saved.theme)) mode=saved.theme;
     else if(saved.clarity===true) mode='light';
+    if(Object.prototype.hasOwnProperty.call(profileModes,saved.visualProfile)){
+      visualProfile=saved.visualProfile;
+      if(mode!=='system')mode=profileModes[visualProfile];
+    }else{
+      visualProfile=mode==='light'?'aerospace-light':'aerospace';
+    }
     wide=saved.wide!==false;
     contrast=saved.contrast===true;
     if(saved.motion===true) document.documentElement.classList.add('a11y-reduce-motion');
   }catch(_){}
   const systemLight=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;
   const resolved=mode==='system'?(systemLight?'light':'dark'):mode;
+  document.documentElement.dataset.visualProfile=contrast?'contrast':visualProfile;
   document.documentElement.dataset.themeMode=mode;
   document.documentElement.dataset.theme=contrast?'dark':resolved;
   document.documentElement.style.colorScheme=contrast?'dark':resolved;
@@ -61,6 +75,7 @@
 <link rel="apple-touch-icon" href="./assets/icons/ios/apple-touch-icon-152.png" sizes="152x152"/>
 <link rel="apple-touch-icon" href="./assets/icons/ios/apple-touch-icon-120.png" sizes="120x120"/>
 <link rel="manifest" href="./manifest.webmanifest"/>
+<link rel="stylesheet" href="./assets/editorial-attribution.css"/>
 <link rel="preload" as="image" href="./assets/brand/antigravity-social-card.png" fetchpriority="high"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -236,6 +251,167 @@ html[data-theme="light"] .temi-stat-big{
   -webkit-background-clip:text;background-clip:text;
 }
 html[data-theme="light"] .temi-section .btn-primary{color:#fff!important}
+
+/* ── PERFIS VISUAIS · AEROESPACIAL É O PADRÃO ───── */
+html[data-visual-profile="dark"]{
+  --bg:#0d0f12;--bg2:#171a1f;--bg3:#20252c;
+  --surf:rgba(255,255,255,.055);--surf-h:rgba(255,255,255,.1);
+  --brd:#343a43;--brd-h:#59616c;--text:#f2f4f7;--muted:#8d96a3;--soft:#b8c0ca;
+  --cyan:#66a3ff;--cyan-d:rgba(102,163,255,.13);
+  --violet:#ac91eb;--vio-d:rgba(172,145,235,.13);
+  --green:#62c99a;--grn-d:rgba(98,201,154,.12);
+  --yellow:#f0a95a;--yel-d:rgba(240,169,90,.13);
+  --header-bg:rgba(13,15,18,.92);--panel-head-bg:rgba(23,26,31,.97);
+  --download-card-bg:rgba(23,26,31,.82);--download-card-hover:#20252c;
+  --cockpit-bg:rgba(13,15,18,.72);--grid-dot:rgba(255,255,255,.045);
+}
+html[data-visual-profile="minimal"]{
+  --bg:#f8fafc;--bg2:#f1f5f9;--bg3:#fff;
+  --surf:rgba(15,23,42,.035);--surf-h:rgba(15,23,42,.07);
+  --brd:#dbe3ec;--brd-h:#94a3b8;--text:#111827;--muted:#64748b;--soft:#475569;
+  --cyan:#2563eb;--cyan-d:rgba(37,99,235,.08);
+  --violet:#4f46e5;--vio-d:rgba(79,70,229,.08);
+  --green:#15803d;--grn-d:rgba(21,128,61,.08);
+  --yellow:#854d0e;--yel-d:rgba(133,77,14,.08);
+  --red:#b91c1c;--red-d:rgba(185,28,28,.08);
+  --r:9px;--r-lg:13px;--r-xl:18px;--shadow:0 10px 28px rgba(15,23,42,.08);
+  --header-bg:rgba(255,255,255,.96);--panel-head-bg:#fff;
+  --download-card-bg:#fff;--download-card-hover:#f8fafc;
+  --cockpit-bg:#fff;--grid-dot:rgba(15,23,42,.04);
+}
+html[data-visual-profile="sepia"]{
+  --bg:#f3e7cf;--bg2:#ead9b9;--bg3:#fbf1dc;
+  --surf:rgba(59,45,32,.045);--surf-h:rgba(59,45,32,.085);
+  --brd:#cbb28a;--brd-h:#967a54;--text:#3b2d20;--muted:#74604d;--soft:#5f4b39;
+  --cyan:#8a4f2b;--cyan-d:rgba(138,79,43,.1);
+  --violet:#765272;--vio-d:rgba(118,82,114,.1);
+  --green:#4f6b4f;--grn-d:rgba(79,107,79,.1);
+  --yellow:#8c651b;--yel-d:rgba(140,101,27,.1);
+  --red:#9a3e32;--red-d:rgba(154,62,50,.1);
+  --font-head:Georgia,'Times New Roman',serif;--r:10px;--r-lg:16px;--r-xl:22px;
+  --shadow:0 16px 38px rgba(74,50,27,.12);
+  --header-bg:rgba(251,241,220,.94);--panel-head-bg:rgba(251,241,220,.97);
+  --download-card-bg:rgba(251,241,220,.84);--download-card-hover:#fff7e8;
+  --cockpit-bg:rgba(251,241,220,.72);--grid-dot:rgba(59,45,32,.08);
+}
+html[data-visual-profile="rustic-light"]{
+  --bg:#f4efe3;--bg2:#e8ddca;--bg3:#fffaf0;
+  --surf:rgba(45,40,31,.04);--surf-h:rgba(45,40,31,.085);
+  --brd:#cdbb9d;--brd-h:#8d7552;--text:#2d281f;--muted:#6d6253;--soft:#51483c;
+  --cyan:#725533;--cyan-d:rgba(114,85,51,.1);
+  --violet:#75566e;--vio-d:rgba(117,86,110,.1);
+  --green:#536b43;--grn-d:rgba(83,107,67,.1);
+  --yellow:#9a5d2c;--yel-d:rgba(154,93,44,.1);
+  --red:#913b32;--red-d:rgba(145,59,50,.1);
+  --font-head:Georgia,'Times New Roman',serif;--r:8px;--r-lg:13px;--r-xl:18px;
+  --shadow:0 16px 40px rgba(77,55,31,.13);
+  --header-bg:rgba(255,250,240,.94);--panel-head-bg:rgba(255,250,240,.97);
+  --download-card-bg:rgba(255,250,240,.86);--download-card-hover:#fffdf7;
+  --cockpit-bg:rgba(255,250,240,.74);--grid-dot:rgba(45,40,31,.08);
+}
+html[data-visual-profile="oceanic"]{
+  --bg:#031b24;--bg2:#082c38;--bg3:#0d3d4c;
+  --surf:rgba(239,252,255,.055);--surf-h:rgba(239,252,255,.1);
+  --brd:#1f6673;--brd-h:#3995a2;--text:#effcff;--muted:#77aeb8;--soft:#b1d7dd;
+  --cyan:#2ed7d1;--cyan-d:rgba(46,215,209,.13);
+  --violet:#8b9fe8;--vio-d:rgba(139,159,232,.13);
+  --green:#62d49e;--grn-d:rgba(98,212,158,.12);
+  --yellow:#ffc857;--yel-d:rgba(255,200,87,.13);
+  --header-bg:rgba(3,27,36,.9);--panel-head-bg:rgba(8,44,56,.97);
+  --download-card-bg:rgba(8,44,56,.8);--download-card-hover:#0d3d4c;
+  --cockpit-bg:rgba(3,27,36,.66);--grid-dot:rgba(46,215,209,.07);
+}
+html[data-visual-profile="green"]{
+  --bg:#061711;--bg2:#0d281e;--bg3:#14382a;
+  --surf:rgba(241,255,248,.055);--surf-h:rgba(241,255,248,.1);
+  --brd:#28684d;--brd-h:#41956f;--text:#f1fff8;--muted:#79a98e;--soft:#b6dbc6;
+  --cyan:#48d597;--cyan-d:rgba(72,213,151,.13);
+  --violet:#a69ce5;--vio-d:rgba(166,156,229,.12);
+  --green:#70e7a9;--grn-d:rgba(112,231,169,.12);
+  --yellow:#e9ba5b;--yel-d:rgba(233,186,91,.13);
+  --header-bg:rgba(6,23,17,.91);--panel-head-bg:rgba(13,40,30,.97);
+  --download-card-bg:rgba(13,40,30,.82);--download-card-hover:#14382a;
+  --cockpit-bg:rgba(6,23,17,.68);--grid-dot:rgba(72,213,151,.065);
+}
+html[data-visual-profile="natural"]{
+  --bg:#f2f4ea;--bg2:#e5ead8;--bg3:#fbfcf7;
+  --surf:rgba(38,49,38,.04);--surf-h:rgba(38,49,38,.085);
+  --brd:#bdc9ae;--brd-h:#7e9270;--text:#263126;--muted:#64705f;--soft:#465541;
+  --cyan:#547a54;--cyan-d:rgba(84,122,84,.1);
+  --violet:#76607a;--vio-d:rgba(118,96,122,.1);
+  --green:#4d7b50;--grn-d:rgba(77,123,80,.1);
+  --yellow:#a2683c;--yel-d:rgba(162,104,60,.1);
+  --red:#a2443f;--red-d:rgba(162,68,63,.1);
+  --shadow:0 16px 38px rgba(50,65,44,.11);
+  --header-bg:rgba(251,252,247,.94);--panel-head-bg:rgba(251,252,247,.97);
+  --download-card-bg:rgba(251,252,247,.84);--download-card-hover:#fff;
+  --cockpit-bg:rgba(251,252,247,.72);--grid-dot:rgba(38,49,38,.07);
+}
+html[data-visual-profile="forest"]{
+  --bg:#07130c;--bg2:#10251a;--bg3:#193524;
+  --surf:rgba(240,250,239,.055);--surf-h:rgba(240,250,239,.1);
+  --brd:#315c3c;--brd-h:#51815d;--text:#f0faef;--muted:#78967d;--soft:#b5cab7;
+  --cyan:#7bcf78;--cyan-d:rgba(123,207,120,.13);
+  --violet:#b49bd2;--vio-d:rgba(180,155,210,.12);
+  --green:#88db82;--grn-d:rgba(136,219,130,.12);
+  --yellow:#d4a95f;--yel-d:rgba(212,169,95,.13);
+  --header-bg:rgba(7,19,12,.91);--panel-head-bg:rgba(16,37,26,.97);
+  --download-card-bg:rgba(16,37,26,.82);--download-card-hover:#193524;
+  --cockpit-bg:rgba(7,19,12,.68);--grid-dot:rgba(123,207,120,.065);
+}
+html[data-visual-profile="wizard-academy"]{
+  --bg:#170f24;--bg2:#281b3b;--bg3:#38264f;
+  --surf:rgba(255,248,232,.055);--surf-h:rgba(255,248,232,.1);
+  --brd:#644c7b;--brd-h:#8e72a5;--text:#fff8e8;--muted:#a996b7;--soft:#d3c3dd;
+  --cyan:#d4ad58;--cyan-d:rgba(212,173,88,.13);
+  --violet:#9b84d7;--vio-d:rgba(155,132,215,.14);
+  --green:#78b890;--grn-d:rgba(120,184,144,.12);
+  --yellow:#e2bc67;--yel-d:rgba(226,188,103,.13);
+  --font-head:Georgia,'Times New Roman',serif;
+  --header-bg:rgba(23,15,36,.92);--panel-head-bg:rgba(40,27,59,.97);
+  --download-card-bg:rgba(40,27,59,.82);--download-card-hover:#38264f;
+  --cockpit-bg:rgba(23,15,36,.7);--grid-dot:rgba(212,173,88,.075);
+}
+html[data-visual-profile="comic-hero"]{
+  --bg:#101729;--bg2:#1a2640;--bg3:#273658;
+  --surf:rgba(255,253,245,.06);--surf-h:rgba(255,253,245,.11);
+  --brd:#435477;--brd-h:#7086ae;--text:#fffdf5;--muted:#91a3bf;--soft:#c8d3e4;
+  --cyan:#ffd04a;--cyan-d:rgba(255,208,74,.14);
+  --violet:#6ea2ff;--vio-d:rgba(110,162,255,.14);
+  --green:#69d29c;--grn-d:rgba(105,210,156,.12);
+  --yellow:#ffd04a;--yel-d:rgba(255,208,74,.14);
+  --red:#e34d59;--red-d:rgba(227,77,89,.14);
+  --r:10px;--r-lg:16px;--r-xl:22px;
+  --header-bg:rgba(16,23,41,.92);--panel-head-bg:rgba(26,38,64,.97);
+  --download-card-bg:rgba(26,38,64,.82);--download-card-hover:#273658;
+  --cockpit-bg:rgba(16,23,41,.68);--grid-dot:rgba(255,208,74,.075);
+}
+html[data-visual-profile="modern-serious"]{
+  --bg:#eef1f5;--bg2:#e3e8ef;--bg3:#fff;
+  --surf:rgba(21,32,51,.04);--surf-h:rgba(21,32,51,.08);
+  --brd:#c3ccd8;--brd-h:#8794a6;--text:#152033;--muted:#5c687a;--soft:#3e4c61;
+  --cyan:#244f88;--cyan-d:rgba(36,79,136,.1);
+  --violet:#5a4d8b;--vio-d:rgba(90,77,139,.1);
+  --green:#287052;--grn-d:rgba(40,112,82,.1);
+  --yellow:#8a5b2f;--yel-d:rgba(138,91,47,.1);
+  --red:#9d343c;--red-d:rgba(157,52,60,.1);
+  --r:7px;--r-lg:12px;--r-xl:17px;--shadow:0 14px 34px rgba(21,32,51,.11);
+  --header-bg:rgba(255,255,255,.95);--panel-head-bg:rgba(255,255,255,.98);
+  --download-card-bg:rgba(255,255,255,.88);--download-card-hover:#fff;
+  --cockpit-bg:rgba(255,255,255,.76);--grid-dot:rgba(21,32,51,.055);
+}
+html[data-visual-profile="minimal"] .orbs{display:none}
+html[data-visual-profile="rustic-light"] body::before,
+html[data-visual-profile="sepia"] body::before{
+  background-image:
+    linear-gradient(rgba(69,50,30,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(69,50,30,.025) 1px,transparent 1px);
+  background-size:36px 36px;
+}
+html[data-visual-profile="comic-hero"] body::before{
+  background-image:radial-gradient(circle,var(--grid-dot) 1.5px,transparent 1.5px);
+  background-size:24px 24px;
+}
 
 /* ── BACKGROUND: dot grid + animated orbs ─────────── */
 body::before{
@@ -476,12 +652,241 @@ html.mission-returning .mission-emblem{
 .mission-emblem:hover,.mission-emblem:focus-visible{
   box-shadow:0 18px 48px rgba(0,0,0,.46),0 0 36px rgba(62,232,255,.42);
 }
+
+/* ── CLUSTER DE COMANDO · ÁUDIO + FUTUROS CONTROLES ─ */
+.corner-command-cluster{
+  position:fixed;z-index:210;top:calc(76px + env(safe-area-inset-top));
+  right:max(16px,calc(env(safe-area-inset-right) + 12px));
+  display:flex;align-items:flex-start;justify-content:flex-end;gap:10px;
+  max-width:calc(100vw - 24px);pointer-events:none;
+}
+.corner-command-cluster > *{pointer-events:auto}
+.corner-command-cluster .mission-emblem{
+  position:relative;z-index:1;top:auto;right:auto;flex:0 0 auto;
+}
+.sound-console{position:relative;z-index:3;flex:0 0 auto}
+.sound-console-toggle{
+  position:relative;width:58px;height:58px;display:grid;place-items:center;
+  padding:0;border:1px solid rgba(62,232,255,.42);border-radius:20px;
+  color:#dff9ff;background:linear-gradient(145deg,rgba(5,25,50,.96),rgba(10,17,38,.96));
+  box-shadow:0 16px 44px rgba(0,0,0,.42),0 0 26px rgba(62,232,255,.18);
+  cursor:pointer;overflow:hidden;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.sound-console-toggle::after{
+  content:"";position:absolute;inset:auto 10px 7px;height:2px;border-radius:999px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.5;
+}
+.sound-console-toggle:hover,.sound-console-toggle[aria-expanded="true"]{
+  transform:translateY(-1px);border-color:#7dd3fc;
+  box-shadow:0 18px 48px rgba(0,0,0,.46),0 0 34px rgba(62,232,255,.36);
+}
+.sound-buds-icon{width:38px;height:32px;filter:drop-shadow(0 0 8px rgba(62,232,255,.26))}
+.sound-buds-icon path{fill:none;stroke:currentColor;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round}
+.sound-buds-icon .bud-accent{stroke:var(--cyan)}
+.sound-console.is-playing .sound-console-toggle{
+  border-color:var(--green);box-shadow:0 18px 48px rgba(0,0,0,.46),0 0 34px rgba(78,240,161,.3);
+}
+.sound-console.is-playing .sound-console-toggle::after{animation:sound-signal 1.25s ease-in-out infinite}
+.sound-console.is-muted .sound-console-toggle{color:var(--muted);border-color:var(--brd-h)}
+@keyframes sound-signal{
+  0%,100%{opacity:.26;transform:scaleX(.35)}
+  50%{opacity:1;transform:scaleX(1)}
+}
+.sound-console-panel{
+  position:absolute;top:calc(100% + 10px);right:0;width:min(360px,calc(100vw - 24px));
+  max-height:calc(100vh - 158px);max-height:calc(100dvh - 158px - env(safe-area-inset-bottom));
+  overflow:auto;overscroll-behavior:contain;padding:16px;
+  border:1px solid rgba(62,232,255,.3);border-radius:20px;
+  background:
+    radial-gradient(circle at 100% 0,rgba(62,232,255,.12),transparent 38%),
+    linear-gradient(150deg,rgba(5,20,41,.98),rgba(3,11,25,.98));
+  color:#e9f7ff;box-shadow:0 26px 72px rgba(0,0,0,.62),0 0 34px rgba(62,232,255,.12);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.sound-console-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.sound-console-kicker{
+  display:block;margin-bottom:3px;color:#7dd3fc;font:700 .62rem var(--font-mono);
+  letter-spacing:.16em;text-transform:uppercase;
+}
+.sound-console-title{margin:0;color:#fff;font:800 1.08rem var(--font-head)}
+.sound-console-close{
+  width:38px;height:38px;display:grid;place-items:center;flex:0 0 38px;padding:0;
+  border:1px solid rgba(125,211,252,.24);border-radius:11px;
+  background:rgba(255,255,255,.055);color:#dbeafe;cursor:pointer;
+}
+.sound-console-close:hover{border-color:#7dd3fc;color:#fff}
+.sound-volume-row{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;
+  padding:10px 11px;margin-bottom:12px;border:1px solid rgba(125,211,252,.18);
+  border-radius:13px;background:rgba(4,17,38,.7);
+}
+.sound-volume-row label{font:700 .68rem var(--font-mono);color:#b8d8f4}
+.sound-volume{
+  width:100%;min-width:0;accent-color:#3ee8ff;cursor:pointer;
+}
+.sound-volume-value{min-width:3.4ch;text-align:right;color:#7dd3fc;font:700 .68rem var(--font-mono)}
+.sound-landscape-fieldset{min-width:0;margin:0 0 12px;padding:0;border:0}
+.sound-landscape-fieldset legend{
+  margin-bottom:8px;color:#b8d8f4;font:700 .66rem var(--font-mono);
+  letter-spacing:.09em;text-transform:uppercase;
+}
+.sound-landscapes{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.sound-landscape{
+  min-height:48px;padding:8px 9px;border:1px solid rgba(125,211,252,.2);border-radius:12px;
+  background:rgba(255,255,255,.045);color:#c9def0;text-align:left;
+  font-size:.76rem;font-weight:700;line-height:1.2;cursor:pointer;
+}
+.sound-landscape:hover{border-color:#7dd3fc;color:#fff}
+.sound-landscape[aria-pressed="true"]{
+  border-color:#3ee8ff;background:rgba(62,232,255,.15);color:#fff;
+  box-shadow:inset 0 0 18px rgba(62,232,255,.06);
+}
+.sound-landscape small{display:block;margin-top:3px;color:#87a7c4;font:500 .61rem var(--font-mono)}
+.sound-thunder{
+  display:flex;align-items:center;gap:9px;min-height:42px;margin:-3px 0 12px;padding:8px 10px;
+  border:1px solid rgba(255,209,102,.2);border-radius:11px;
+  color:#d9e8f5;background:rgba(255,209,102,.055);font-size:.75rem;
+}
+.sound-thunder input{width:18px;height:18px;accent-color:#ffd166}
+.sound-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.sound-action{
+  min-height:43px;padding:8px 7px;border:1px solid rgba(125,211,252,.24);
+  border-radius:11px;background:rgba(255,255,255,.05);color:#dbeafe;
+  font-size:.72rem;font-weight:800;cursor:pointer;
+}
+.sound-action:hover{border-color:#7dd3fc;color:#fff}
+.sound-action.primary{border-color:transparent;background:linear-gradient(135deg,#34d8f5,#9b86ff);color:#020b17}
+.sound-action[aria-pressed="true"]{border-color:#ff8a8a;color:#ffb4b4;background:rgba(255,96,96,.12)}
+.sound-console-status{
+  min-height:2.5em;margin:10px 2px 0;color:#9dbbd4;
+  font:500 .64rem/1.4 var(--font-mono);
+}
+html[data-theme="light"] .sound-console-toggle{
+  color:#173b56;background:linear-gradient(145deg,#fff,#eaf5fb);
+  border-color:#94b9cd;box-shadow:0 16px 42px rgba(16,38,59,.2);
+}
+html[data-theme="light"] .sound-console-panel{
+  color:#10263b;border-color:#94b9cd;
+  background:
+    radial-gradient(circle at 100% 0,rgba(0,111,125,.11),transparent 38%),
+    linear-gradient(150deg,rgba(255,255,255,.99),rgba(239,247,251,.99));
+  box-shadow:0 24px 64px rgba(16,38,59,.24);
+}
+html[data-theme="light"] .sound-console-title{color:#10263b}
+html[data-theme="light"] .sound-console-kicker,
+html[data-theme="light"] .sound-volume-value{color:#006f7d}
+html[data-theme="light"] .sound-console-close,
+html[data-theme="light"] .sound-action,
+html[data-theme="light"] .sound-landscape{
+  color:#294860;background:rgba(255,255,255,.82);border-color:#b7cbd9;
+}
+html[data-theme="light"] .sound-volume-row{background:rgba(255,255,255,.8);border-color:#b7cbd9}
+html[data-theme="light"] .sound-volume-row label,
+html[data-theme="light"] .sound-landscape-fieldset legend{color:#334f67}
+html[data-theme="light"] .sound-landscape[aria-pressed="true"]{
+  color:#063949;border-color:#006f7d;background:rgba(0,111,125,.1);
+}
+html[data-theme="light"] .sound-landscape small,
+html[data-theme="light"] .sound-console-status{color:#536b7d}
+html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-color:#d7bd74}
+.settings-console{position:relative;z-index:4;flex:0 0 auto}
+.quick-command{
+  width:58px;height:58px;display:grid;place-items:center;padding:0;
+  border:1px solid var(--brd-h);border-radius:20px;
+  color:var(--text);background:var(--panel-head-bg);
+  box-shadow:0 16px 44px rgba(0,0,0,.3);
+  cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.quick-command:hover,.quick-command[aria-expanded="true"]{
+  transform:translateY(-1px);border-color:var(--cyan);
+  box-shadow:0 18px 48px rgba(0,0,0,.34),0 0 28px var(--cyan-d);
+}
+.quick-command svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8}
+.command-language{
+  width:58px;height:58px;display:grid;place-items:center;flex:0 0 auto;
+  border:1px solid var(--brd-h);border-radius:20px;background:var(--panel-head-bg);
+  color:var(--cyan);font:800 .74rem var(--font-mono);letter-spacing:.08em;
+  box-shadow:0 16px 44px rgba(0,0,0,.3);
+}
+.command-language:hover{border-color:var(--cyan);background:var(--surf-h)}
+.settings-console-panel{
+  position:absolute;top:calc(100% + 10px);right:0;width:min(470px,calc(100vw - 24px));
+  max-height:calc(100vh - 158px);max-height:calc(100dvh - 158px - env(safe-area-inset-bottom));
+  overflow:auto;overscroll-behavior:contain;padding:18px;
+  border:1px solid var(--brd-h);border-radius:20px;
+  background:
+    radial-gradient(circle at 100% 0,var(--cyan-d),transparent 38%),
+    var(--panel-head-bg);
+  color:var(--text);box-shadow:0 26px 72px rgba(0,0,0,.48);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.settings-console-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.settings-console-kicker{
+  display:block;margin-bottom:3px;color:var(--cyan);
+  font:700 .62rem var(--font-mono);letter-spacing:.16em;text-transform:uppercase;
+}
+.settings-console-title{margin:0;font:800 1.1rem var(--font-head)}
+.settings-console-close{
+  width:38px;height:38px;display:grid;place-items:center;flex:0 0 38px;padding:0;
+  border:1px solid var(--brd);border-radius:11px;background:var(--surf);color:var(--text);cursor:pointer;
+}
+.settings-current{
+  margin:12px 0;padding:10px 12px;border:1px solid var(--brd);border-radius:12px;
+  background:var(--surf);color:var(--soft);font-size:.78rem;line-height:1.45;
+}
+.settings-current strong{color:var(--text)}
+.theme-options{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+  margin:8px 0 14px;
+}
+.theme-option{
+  display:grid;grid-template-columns:auto 1fr;align-items:center;gap:9px;min-width:0;
+  min-height:54px;padding:8px 10px;border:1px solid var(--brd);border-radius:12px;
+  background:var(--surf);color:var(--text);text-align:left;cursor:pointer;
+}
+.theme-option:hover{border-color:var(--cyan)}
+.theme-option[aria-pressed="true"]{
+  border-color:var(--cyan);background:var(--cyan-d);box-shadow:inset 0 0 18px var(--cyan-d);
+}
+.theme-option-icon{font-size:1.25rem}
+.theme-option-copy{min-width:0}
+.theme-option-copy strong{display:block;font-size:.77rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.theme-option-copy small{display:block;margin-top:2px;color:var(--muted);font:.58rem var(--font-mono)}
+.settings-links{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.settings-link{
+  display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px 10px;
+  border:1px solid var(--brd);border-radius:11px;background:var(--surf);
+  color:var(--text);font-size:.72rem;font-weight:800;text-align:center;
+}
+.settings-link.primary{border-color:transparent;background:linear-gradient(135deg,var(--cyan),var(--violet));color:var(--on-accent)}
+.settings-note{margin:11px 2px 0;color:var(--muted);font:.62rem/1.45 var(--font-mono)}
 @media(max-width:768px){
   .mission-intro{align-items:center}
   .mission-card-shell{width:min(96vw,760px)}
   .mission-title{font-size:clamp(1.25rem,7vw,1.8rem)}
   .mission-choice{width:min(100%,320px)}
-  .mission-emblem{top:calc(122px + env(safe-area-inset-top));right:10px;width:58px;border-radius:18px}
+  .corner-command-cluster{
+    top:calc(110px + env(safe-area-inset-top));
+    right:max(10px,calc(env(safe-area-inset-right) + 8px));gap:7px;
+  }
+  .mission-emblem{top:calc(122px + env(safe-area-inset-top));right:10px;width:54px;border-radius:17px}
+  .corner-command-cluster .mission-emblem{top:auto;right:auto}
+  .sound-console-toggle{width:54px;height:54px;border-radius:17px}
+  .quick-command,.command-language{width:54px;height:54px;border-radius:17px}
+  .sound-console-panel,.settings-console-panel{
+    position:fixed;
+    top:calc(174px + env(safe-area-inset-top));
+    left:calc(10px + env(safe-area-inset-left));
+    right:calc(10px + env(safe-area-inset-right));
+    width:auto;
+    max-height:calc(100dvh - 184px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+  .corner-command-cluster .mission-emblem{display:none}
+}
+@media(max-width:480px){
+  .corner-command-cluster{max-width:calc(100vw - 20px)}
+  .theme-options{grid-template-columns:1fr}
+  .settings-links{grid-template-columns:1fr}
 }
 @media(max-height:700px){
   .mission-stage{gap:10px}
@@ -748,7 +1153,8 @@ html.mission-returning .mission-emblem{
 }
 .portal-grid{
   display:grid;
-  grid-template-columns:minmax(0,1fr);
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
   margin-top:34px;
 }
 .stations-grid{
@@ -1559,6 +1965,7 @@ html.mission-returning .mission-emblem{
     print-color-adjust:exact;-webkit-print-color-adjust:exact;
   }
   body::before,.orbs,.floaters,.a11y-panel,.overlay,#drawer,.mission-intro,.mission-emblem,
+  .corner-command-cluster,
   .pipeline-connector::after,.view-controls{display:none!important}
   header{position:static;background:#fff!important;border-bottom:1px solid var(--brd)}
   .nav{height:auto;padding:10px 0}
@@ -1644,7 +2051,11 @@ html.mission-returning .mission-emblem{
   .nav-download{min-height:38px;padding:7px 10px}
   .nav-download-full{display:none}
   .nav-download-short{display:inline}
-  .hero h1{font-size:2.2rem}
+  .hero h1{
+    font-size:min(2.2rem,8.2vw);
+    overflow-wrap:normal;
+    hyphens:manual;
+  }
   .download-showcase{padding:24px 18px;border-radius:22px}
   .download-head{display:block}
   .download-ready{margin-top:16px}
@@ -1682,7 +2093,7 @@ html.mission-returning .mission-emblem{
   }
 }
 @media(max-width:620px){
-  .modules-grid,.stations-grid{grid-template-columns:1fr}
+  .modules-grid,.stations-grid,.portal-grid{grid-template-columns:1fr}
   .portal-card{padding:25px 22px}
   .view-controls{width:100%;align-items:stretch}
   .view-controls-label{width:100%;padding:2px 4px}
@@ -1715,9 +2126,9 @@ html.mission-returning .mission-emblem{
         Dez segundos para organizar o foco, entrar em ritmo e estudar com propósito.
       </p>
       <div class="mission-sound-picker" role="group" aria-label="Escolher tema sonoro da missão">
-        <button class="mission-sound-theme" type="button" data-mission-sound="honra" aria-pressed="true">🛡️ Honra orbital</button>
+        <button class="mission-sound-theme" type="button" data-mission-sound="honra" aria-pressed="true">🛰️ Impulso orbital</button>
         <button class="mission-sound-theme" type="button" data-mission-sound="foco" aria-pressed="false">🧠 Foco tático</button>
-        <button class="mission-sound-theme" type="button" data-mission-sound="vigor" aria-pressed="false">🔥 Vigor épico</button>
+        <button class="mission-sound-theme" type="button" data-mission-sound="vigor" aria-pressed="false">⚡ Impacto épico</button>
       </div>
       <div class="mission-choices">
         <button class="mission-choice primary" id="missionStartSound" type="button">
@@ -1739,11 +2150,113 @@ html.mission-returning .mission-emblem{
     </div>
   </div>
 </section>
-<button class="mission-emblem" id="missionEmblem" type="button"
-  aria-label="Repetir abertura da missão e escolher o som"
-  title="Repetir abertura da missão" aria-hidden="true" tabindex="-1">
-  <img src="./assets/icons/antigravity-consultas-192.png" alt="" width="78" height="78"/>
-</button>
+<div class="corner-command-cluster" id="cornerCommandCluster"
+  aria-label="Comandos rápidos da plataforma">
+  <button class="mission-emblem" id="missionEmblem" type="button"
+    aria-label="Repetir abertura da missão e escolher o som"
+    title="Repetir abertura da missão" aria-hidden="true" tabindex="-1">
+    <img src="./assets/icons/antigravity-consultas-192.png" alt="" width="78" height="78"/>
+  </button>
+
+  <aside class="sound-console" id="soundConsole" aria-label="Console sonoro Antigravity">
+    <button class="sound-console-toggle" id="soundConsoleToggle" type="button"
+      aria-label="Abrir console sonoro" aria-controls="soundConsolePanel"
+      aria-expanded="false" title="Console sonoro">
+      <svg class="sound-buds-icon" viewBox="0 0 52 40" aria-hidden="true" focusable="false">
+        <path d="M17 6c-5.2 0-8.8 3.5-8.8 8.4 0 3.4 2 6.3 5.4 7.4v10.7c0 2.2 1.3 3.5 3.2 3.5s3.2-1.3 3.2-3.5V17.9"/>
+        <path class="bud-accent" d="M17 10.2c-2.8 0-4.6 1.7-4.6 4.1 0 2.3 1.8 4 4.6 4"/>
+        <path d="M35 6c5.2 0 8.8 3.5 8.8 8.4 0 3.4-2 6.3-5.4 7.4v10.7c0 2.2-1.3 3.5-3.2 3.5S32 34.7 32 32.5V17.9"/>
+        <path class="bud-accent" d="M35 10.2c2.8 0 4.6 1.7 4.6 4.1 0 2.3-1.8 4-4.6 4"/>
+      </svg>
+    </button>
+
+    <section class="sound-console-panel" id="soundConsolePanel" role="dialog"
+      aria-modal="false" aria-labelledby="soundConsoleTitle" hidden>
+      <div class="sound-console-head">
+        <div>
+          <span class="sound-console-kicker">Áudio local · sem telemetria</span>
+          <h2 class="sound-console-title" id="soundConsoleTitle">Paisagens de foco</h2>
+        </div>
+        <button class="sound-console-close" id="soundConsoleClose" type="button"
+          aria-label="Fechar console sonoro">✕</button>
+      </div>
+
+      <div class="sound-volume-row">
+        <label for="soundVolume">Volume</label>
+        <input class="sound-volume" id="soundVolume" type="range" min="0" max="100"
+          step="1" value="68" aria-describedby="soundVolumeValue"/>
+        <output class="sound-volume-value" id="soundVolumeValue" for="soundVolume">68%</output>
+      </div>
+
+      <fieldset class="sound-landscape-fieldset">
+        <legend>Escolha uma paisagem</legend>
+        <div class="sound-landscapes" id="soundLandscapes">
+          <button class="sound-landscape" type="button" data-audio-landscape="launch"
+            aria-pressed="true">🚀 Lançamento<small>trilha atual · 10 s</small></button>
+          <button class="sound-landscape" type="button" data-audio-landscape="electric"
+            aria-pressed="false">⚡ Elétrico<small>energia generativa</small></button>
+          <button class="sound-landscape" type="button" data-audio-landscape="supersonic"
+            aria-pressed="false">🛸 Supersônica<small>batida de propulsão</small></button>
+          <button class="sound-landscape" type="button" data-audio-landscape="calm"
+            aria-pressed="false">🌙 Calma<small>camada ambiental</small></button>
+          <button class="sound-landscape" type="button" data-audio-landscape="rain"
+            aria-pressed="false">🌧️ Chuva<small>contínua e estável</small></button>
+        </div>
+      </fieldset>
+
+      <label class="sound-thunder" id="soundThunderRow" hidden>
+        <input id="soundThunder" type="checkbox" checked/>
+        Trovões ocasionais (opcional)
+      </label>
+
+      <div class="sound-actions">
+        <button class="sound-action primary" id="soundPlay" type="button">▶ Ouvir</button>
+        <button class="sound-action" id="soundMute" type="button"
+          aria-pressed="false">🔇 Silêncio</button>
+        <button class="sound-action" id="soundStop" type="button">■ Parar</button>
+      </div>
+      <p class="sound-console-status" id="soundConsoleStatus" role="status"
+        aria-live="polite">Som desligado. Pressione “Ouvir” para iniciar.</p>
+    </section>
+  </aside>
+
+  <aside class="settings-console" id="settingsConsole" aria-label="Configurações Antigravity">
+    <button class="quick-command" id="settingsConsoleToggle" type="button"
+      aria-label="Abrir configurações" aria-controls="settingsConsolePanel"
+      aria-expanded="false" title="Configurações">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <path d="M13.2 4.3h5.6l.8 3a10.2 10.2 0 0 1 2.2 1.3l3-.8 2.8 4.8-2.2 2.2a10.8 10.8 0 0 1 0 2.5l2.2 2.2-2.8 4.8-3-.8a10.2 10.2 0 0 1-2.2 1.3l-.8 3h-5.6l-.8-3a10.2 10.2 0 0 1-2.2-1.3l-3 .8-2.8-4.8 2.2-2.2a10.8 10.8 0 0 1 0-2.5l-2.2-2.2 2.8-4.8 3 .8a10.2 10.2 0 0 1 2.2-1.3l.8-3Z"/>
+        <circle cx="16" cy="16" r="4.2"/>
+      </svg>
+    </button>
+    <section class="settings-console-panel" id="settingsConsolePanel" role="dialog"
+      aria-modal="false" aria-labelledby="settingsConsoleTitle" hidden>
+      <div class="settings-console-head">
+        <div>
+          <span class="settings-console-kicker">Central pessoal</span>
+          <h2 class="settings-console-title" id="settingsConsoleTitle">Configurações</h2>
+        </div>
+        <button class="settings-console-close" id="settingsConsoleClose" type="button"
+          aria-label="Fechar configurações">✕</button>
+      </div>
+      <p class="settings-current">
+        Tema atual: <strong id="settingsCurrentTheme">Aeroespacial</strong>.
+        O padrão oficial da missão permanece aeroespacial.
+      </p>
+      <div class="theme-options" id="themeOptions" role="group" aria-label="Perfis visuais"></div>
+      <div class="settings-links">
+        <a class="settings-link primary" href="18_Centro_Tripulacao/index.html">🧑‍🚀 Centro da Tripulação</a>
+        <a class="settings-link" href="en/index.html" hreflang="en" lang="en">EN · English</a>
+        <button class="settings-link" id="settingsAccessibility" type="button">♿ Acessibilidade detalhada</button>
+        <a class="settings-link" href="docs_usuario/index.html">🧭 Guias de operação</a>
+      </div>
+      <p class="settings-note">A preferência fica neste dispositivo. Ao entrar no Centro da Tripulação, a sincronização segura depende da conexão do serviço de contas.</p>
+    </section>
+  </aside>
+
+  <a class="command-language" href="en/index.html" hreflang="en" lang="en"
+    aria-label="Open the English version" title="English version">EN</a>
+</div>
 
 <!-- Animated background orbs -->
 <div class="orbs" aria-hidden="true">
@@ -1962,13 +2475,13 @@ html.mission-returning .mission-emblem{
   </div>
 </section>
 
-<!-- ── PORTAL DE UPGRADE ───────────────────────────── -->
+<!-- ── PORTAIS DA MISSÃO ───────────────────────────── -->
 <section id="portal-upgrade" class="portal-section" aria-labelledby="portal-heading">
   <div class="shell">
     <div class="reveal section-intro">
-      <div class="section-label">// evolução da plataforma</div>
-      <h2 class="section-title" id="portal-heading">Portal Vivo · UPGRADE 🛰️</h2>
-      <p class="section-sub">Feed opcional dedicado ao que mudou no Antigravity: novas funções, melhorias, estações atualizadas e histórico operacional da plataforma.</p>
+      <div class="section-label">// comunicação e evolução da plataforma</div>
+      <h2 class="section-title" id="portal-heading">Portais Antigravity 🛰️</h2>
+      <p class="section-sub">O Portal Vivo registra o que mudou. O Centro da Tripulação organiza assinatura, preferências, métricas agregadas e comunicação protegida com os tripulantes.</p>
     </div>
     <div class="portal-grid">
 
@@ -1983,6 +2496,19 @@ html.mission-returning .mission-emblem{
           <span class="module-tag">UPGRADE</span>
         </div>
         <span class="module-link" style="color:var(--violet)">Ver upgrades</span>
+      </a>
+
+      <a class="module-card portal-card mod-cyan reveal" href="18_Centro_Tripulacao/index.html" aria-label="Abrir Centro da Tripulação">
+        <div class="module-icon">🧑‍🚀</div>
+        <span class="card-state">Portal da tripulação</span>
+        <h3>Centro da Tripulação</h3>
+        <p>Acompanhe o alcance agregado da missão, personalize sua experiência e use o canal de manifestações. O diretório com dados básicos permanece restrito ao comando autenticado.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">Assinatura consentida</span>
+          <span class="module-tag">Métricas agregadas</span>
+          <span class="module-tag">Privacidade</span>
+        </div>
+        <span class="module-link" style="color:var(--cyan)">Entrar no centro</span>
       </a>
 
     </div>
@@ -2685,7 +3211,7 @@ html.mission-returning .mission-emblem{
     <div class="footer-grid">
       <div class="footer-brand">
         <strong>Enciclopédia Médica Intensiva &amp; Medicina Interna</strong>
-        <p>Um projeto vivo para organizar, conectar e transformar conhecimento médico em decisão clínica segura. Dr. Aldenir Rocha — CRM-CE 16587.</p>
+        <p>Um projeto vivo para organizar, conectar e transformar conhecimento médico em apoio cognitivo, estudo e decisão clínica mais segura.</p>
       </div>
       <div class="footer-col">
         <h4>Portal, estações e módulos</h4>
@@ -2719,6 +3245,8 @@ html.mission-returning .mission-emblem{
         <a href="#downloads">⬇️ Apps para Mac, Windows e iPhone</a>
         <a href="https://github.com/aldenirfilho/antigravity-consultas">GitHub Repository</a>
         <a href="https://github.com/aldenirfilho/antigravity-consultas#readme">Documentação</a>
+        <a href="19_Integridade_Editorial/index.html">🛡️ Integridade e responsabilidade editorial</a>
+        <a href="20_Conheca_Aldenir/index.html">✦ Conheça Aldenir, idealizador</a>
         <a href="#roadmap">Roadmap</a>
         <a href="#pipeline">Como funciona</a>
       </div>
@@ -2728,6 +3256,22 @@ html.mission-returning .mission-emblem{
       <span style="font-family:var(--font-mono)">Conteúdo autoral · Uso educacional · Não substitui raciocínio clínico individual</span>
     </div>
   </div>
+</footer>
+
+<!-- antigravity-editorial-attribution:v1 -->
+<footer class="antigravity-editorial-attribution" data-editorial-attribution="ATV-ALD-360">
+  <p class="antigravity-editorial-attribution__mark">ATV · TURBO TEMI · ALD 360</p>
+  <p>
+    Idealização da plataforma e responsabilidade editorial:
+    <strong>Aldenir Rocha de Oliveira Filho</strong> · editor, criador,
+    codificador, produtor, atualizador e patrocinador independente.
+    <a href="19_Integridade_Editorial/index.html">Integridade editorial</a> ·
+    <a href="20_Conheca_Aldenir/index.html">Conheça o idealizador</a>
+  </p>
+  <p class="antigravity-editorial-attribution__scope">
+    A atribuição refere-se à plataforma e à curadoria original; fontes,
+    marcas e obras de terceiros permanecem creditadas aos respectivos titulares.
+  </p>
 </footer>
 
 <!-- ── DRAWER ──────────────────────────────────────── -->
@@ -2820,6 +3364,372 @@ html.mission-returning .mission-emblem{
 <script>
 (function(){
 
+/* ── CONSOLE SONORO · WEB AUDIO LOCAL ───────────── */
+const AUDIO_PREFS_KEY='antigravity:audio-console:v1';
+const AUDIO_LANDSCAPES=['launch','electric','supersonic','calm','rain'];
+const soundConsole=document.getElementById('soundConsole');
+const soundConsoleToggle=document.getElementById('soundConsoleToggle');
+const soundConsolePanel=document.getElementById('soundConsolePanel');
+const soundConsoleClose=document.getElementById('soundConsoleClose');
+const soundVolume=document.getElementById('soundVolume');
+const soundVolumeValue=document.getElementById('soundVolumeValue');
+const soundPlay=document.getElementById('soundPlay');
+const soundMute=document.getElementById('soundMute');
+const soundStop=document.getElementById('soundStop');
+const soundThunder=document.getElementById('soundThunder');
+const soundThunderRow=document.getElementById('soundThunderRow');
+const soundConsoleStatus=document.getElementById('soundConsoleStatus');
+const soundLandscapeButtons=[...document.querySelectorAll('[data-audio-landscape]')];
+let audioPrefs=readAudioPrefs();
+let soundAudioContext=null;
+let soundMasterGain=null;
+let soundPlayingLandscape=null;
+let soundTimers=[];
+let missionOutputGain=null;
+let missionOutputBase=.86;
+
+function readAudioPrefs(){
+  let parsed={};
+  try{
+    const candidate=JSON.parse(localStorage.getItem(AUDIO_PREFS_KEY)||'{}');
+    if(candidate&&typeof candidate==='object'&&!Array.isArray(candidate))parsed=candidate;
+  }catch(_){}
+  const volume=Number.isFinite(Number(parsed.volume))
+    ?Math.min(100,Math.max(0,Math.round(Number(parsed.volume))))
+    :78;
+  return{
+    volume,
+    muted:parsed.muted===true,
+    landscape:AUDIO_LANDSCAPES.includes(parsed.landscape)?parsed.landscape:'launch',
+    thunder:parsed.thunder!==false
+  };
+}
+function persistAudioPrefs(){
+  try{localStorage.setItem(AUDIO_PREFS_KEY,JSON.stringify(audioPrefs))}catch(_){}
+}
+function audioGain(base=1){
+  return audioPrefs.muted?0:base*(audioPrefs.volume/100);
+}
+function setSoundStatus(message){
+  if(soundConsoleStatus)soundConsoleStatus.textContent=message;
+}
+function syncSoundMasterGains(){
+  const now=soundAudioContext?.currentTime||0;
+  if(soundMasterGain&&soundAudioContext?.state!=='closed'){
+    soundMasterGain.gain.cancelScheduledValues(now);
+    soundMasterGain.gain.setTargetAtTime(audioGain(.7),now,.025);
+  }
+  if(missionOutputGain&&missionAudioContext?.state!=='closed'){
+    const missionNow=missionAudioContext.currentTime;
+    missionOutputGain.gain.cancelScheduledValues(missionNow);
+    missionOutputGain.gain.setTargetAtTime(audioGain(missionOutputBase),missionNow,.025);
+  }
+}
+function updateAudioConsoleUI(){
+  if(!soundConsole)return;
+  soundConsole.classList.toggle('is-playing',Boolean(soundPlayingLandscape));
+  soundConsole.classList.toggle('is-muted',audioPrefs.muted||audioPrefs.volume===0);
+  soundVolume.value=String(audioPrefs.volume);
+  soundVolumeValue.textContent=`${audioPrefs.volume}%`;
+  soundMute.setAttribute('aria-pressed',String(audioPrefs.muted));
+  soundMute.textContent=audioPrefs.muted?'🔊 Reativar':'🔇 Silêncio';
+  soundLandscapeButtons.forEach(button=>{
+    button.setAttribute('aria-pressed',String(button.dataset.audioLandscape===audioPrefs.landscape));
+  });
+  soundThunder.checked=audioPrefs.thunder;
+  soundThunderRow.hidden=audioPrefs.landscape!=='rain';
+}
+function setSoundConsole(open,{returnFocus=true}={}){
+  if(!soundConsolePanel||!soundConsoleToggle)return;
+  soundConsolePanel.hidden=!open;
+  soundConsoleToggle.setAttribute('aria-expanded',String(open));
+  soundConsoleToggle.setAttribute('aria-label',open?'Fechar console sonoro':'Abrir console sonoro');
+  if(open){
+    soundConsoleClose.focus();
+  }else if(returnFocus){
+    soundConsoleToggle.focus();
+  }
+}
+function clearSoundTimers(){
+  soundTimers.forEach(timer=>{
+    window.clearTimeout(timer);
+    window.clearInterval(timer);
+  });
+  soundTimers=[];
+}
+function stopAmbientSound({announce=true}={}){
+  clearSoundTimers();
+  const wasLaunch=soundPlayingLandscape==='launch';
+  soundPlayingLandscape=null;
+  if(soundAudioContext){
+    const context=soundAudioContext;
+    soundAudioContext=null;
+    soundMasterGain=null;
+    if(context.state!=='closed')context.close().catch(()=>{});
+  }
+  if(wasLaunch&&typeof stopMissionAudio==='function')stopMissionAudio();
+  updateAudioConsoleUI();
+  if(announce)setSoundStatus('Som interrompido. Suas preferências continuam salvas neste dispositivo.');
+}
+function makeNoiseBuffer(context,duration=2){
+  const buffer=context.createBuffer(1,Math.ceil(context.sampleRate*duration),context.sampleRate);
+  const data=buffer.getChannelData(0);
+  let last=0;
+  for(let index=0;index<data.length;index+=1){
+    const white=(Math.random()*2)-1;
+    last=(last*.985)+(white*.015);
+    data[index]=(white*.62)+(last*.38);
+  }
+  return buffer;
+}
+function connectSoundOutput(context){
+  const master=context.createGain();
+  const limiter=context.createDynamicsCompressor();
+  master.gain.setValueAtTime(audioGain(.7),context.currentTime);
+  limiter.threshold.value=-13;
+  limiter.knee.value=5;
+  limiter.ratio.value=10;
+  limiter.attack.value=.004;
+  limiter.release.value=.2;
+  master.connect(limiter).connect(context.destination);
+  soundMasterGain=master;
+  return master;
+}
+async function createSoundContext(){
+  const AudioEngine=window.AudioContext||window.webkitAudioContext;
+  if(!AudioEngine)throw new Error('Web Audio indisponível');
+  const context=new AudioEngine();
+  soundAudioContext=context;
+  if(context.state==='suspended')await context.resume();
+  if(soundAudioContext!==context||context.state==='closed')throw new Error('Contexto encerrado');
+  return{context,master:connectSoundOutput(context)};
+}
+function soundTone(context,target,{frequency,when,duration=.3,level=.08,type='sine',endFrequency=null}){
+  const oscillator=context.createOscillator();
+  const gain=context.createGain();
+  oscillator.type=type;
+  oscillator.frequency.setValueAtTime(frequency,when);
+  if(endFrequency)oscillator.frequency.exponentialRampToValueAtTime(endFrequency,when+duration);
+  gain.gain.setValueAtTime(.0001,when);
+  gain.gain.exponentialRampToValueAtTime(level,when+.018);
+  gain.gain.exponentialRampToValueAtTime(.0001,when+duration);
+  oscillator.connect(gain).connect(target);
+  oscillator.start(when);
+  oscillator.stop(when+duration+.025);
+}
+function soundNoiseBurst(context,target,{when,duration=.11,level=.07,frequency=4200,type='highpass'}){
+  const source=context.createBufferSource();
+  const filter=context.createBiquadFilter();
+  const gain=context.createGain();
+  source.buffer=makeNoiseBuffer(context,Math.max(.16,duration+.04));
+  filter.type=type;
+  filter.frequency.setValueAtTime(frequency,when);
+  gain.gain.setValueAtTime(.0001,when);
+  gain.gain.exponentialRampToValueAtTime(level,when+.008);
+  gain.gain.exponentialRampToValueAtTime(.0001,when+duration);
+  source.connect(filter).connect(gain).connect(target);
+  source.start(when);
+  source.stop(when+duration+.03);
+}
+function startElectricLandscape(context,master){
+  const pad=context.createGain();
+  const filter=context.createBiquadFilter();
+  pad.gain.value=.11;
+  filter.type='lowpass';
+  filter.frequency.value=1050;
+  filter.Q.value=1.4;
+  pad.connect(filter).connect(master);
+  [82.41,123.47,164.81].forEach((frequency,index)=>{
+    const oscillator=context.createOscillator();
+    oscillator.type=index===0?'sine':'sawtooth';
+    oscillator.frequency.value=frequency;
+    oscillator.detune.value=(index-1)*4;
+    oscillator.connect(pad);
+    oscillator.start();
+  });
+  const notes=[329.63,392,493.88,587.33,493.88,659.25,587.33,392];
+  let step=0;
+  const pulse=()=>{
+    if(soundAudioContext!==context||context.state==='closed')return;
+    const when=context.currentTime+.025;
+    soundTone(context,master,{
+      frequency:notes[step%notes.length],when,duration:.24,level:.075,type:'sawtooth',
+      endFrequency:notes[step%notes.length]*1.012
+    });
+    if(step%4===0)soundTone(context,master,{frequency:64,when,duration:.34,level:.11,type:'sine',endFrequency:42});
+    step+=1;
+  };
+  pulse();
+  soundTimers.push(window.setInterval(pulse,345));
+}
+function startSupersonicLandscape(context,master){
+  const propulsion=context.createOscillator();
+  const propulsionFilter=context.createBiquadFilter();
+  const propulsionGain=context.createGain();
+  propulsion.type='sawtooth';
+  propulsion.frequency.value=48;
+  propulsionFilter.type='lowpass';
+  propulsionFilter.frequency.value=180;
+  propulsionGain.gain.value=.105;
+  propulsion.connect(propulsionFilter).connect(propulsionGain).connect(master);
+  propulsion.start();
+  let step=0;
+  const beat=()=>{
+    if(soundAudioContext!==context||context.state==='closed')return;
+    const when=context.currentTime+.025;
+    if(step%4===0||step%4===2){
+      soundTone(context,master,{frequency:118,when,duration:.26,level:.2,type:'sine',endFrequency:43});
+    }
+    if(step%8===4)soundNoiseBurst(context,master,{when,duration:.18,level:.1,frequency:1250,type:'bandpass'});
+    soundNoiseBurst(context,master,{when,duration:.055,level:step%2?.035:.055,frequency:6100});
+    if(step%4===3){
+      soundTone(context,master,{frequency:246.94,when,duration:.16,level:.045,type:'square',endFrequency:329.63});
+    }
+    step=(step+1)%16;
+  };
+  beat();
+  soundTimers.push(window.setInterval(beat,203));
+}
+function startCalmLandscape(context,master){
+  const pad=context.createGain();
+  const filter=context.createBiquadFilter();
+  const lfo=context.createOscillator();
+  const lfoGain=context.createGain();
+  pad.gain.value=.13;
+  filter.type='lowpass';
+  filter.frequency.value=820;
+  filter.Q.value=.8;
+  pad.connect(filter).connect(master);
+  lfo.type='sine';
+  lfo.frequency.value=.075;
+  lfoGain.gain.value=.035;
+  lfo.connect(lfoGain).connect(pad.gain);
+  lfo.start();
+  [110,164.81,220,329.63].forEach((frequency,index)=>{
+    const oscillator=context.createOscillator();
+    const gain=context.createGain();
+    oscillator.type=index<2?'sine':'triangle';
+    oscillator.frequency.value=frequency;
+    oscillator.detune.value=(index-1.5)*3;
+    gain.gain.value=.24/(index+1);
+    oscillator.connect(gain).connect(pad);
+    oscillator.start();
+  });
+  let note=0;
+  const breathe=()=>{
+    if(soundAudioContext!==context||context.state==='closed')return;
+    const frequencies=[440,493.88,392,329.63];
+    soundTone(context,master,{
+      frequency:frequencies[note%frequencies.length],when:context.currentTime+.04,
+      duration:2.7,level:.032,type:'sine'
+    });
+    note+=1;
+  };
+  breathe();
+  soundTimers.push(window.setInterval(breathe,5100));
+}
+function createThunder(context,master){
+  if(!audioPrefs.thunder||soundPlayingLandscape!=='rain'||soundAudioContext!==context)return;
+  const when=context.currentTime+.02;
+  const source=context.createBufferSource();
+  const lowpass=context.createBiquadFilter();
+  const gain=context.createGain();
+  source.buffer=makeNoiseBuffer(context,4.2);
+  lowpass.type='lowpass';
+  lowpass.frequency.setValueAtTime(180,when);
+  lowpass.frequency.exponentialRampToValueAtTime(72,when+3.8);
+  gain.gain.setValueAtTime(.0001,when);
+  gain.gain.exponentialRampToValueAtTime(.24,when+.055);
+  gain.gain.exponentialRampToValueAtTime(.065,when+.42);
+  gain.gain.exponentialRampToValueAtTime(.0001,when+3.9);
+  source.connect(lowpass).connect(gain).connect(master);
+  source.start(when);
+  source.stop(when+4.1);
+  soundTone(context,master,{frequency:62,when,duration:2.4,level:.16,type:'sine',endFrequency:34});
+}
+function scheduleThunder(context,master,{first=false}={}){
+  if(!audioPrefs.thunder||soundPlayingLandscape!=='rain')return;
+  const delay=first?7000:18000+Math.round(Math.random()*18000);
+  const timer=window.setTimeout(()=>{
+    createThunder(context,master);
+    scheduleThunder(context,master);
+  },delay);
+  soundTimers.push(timer);
+}
+function startRainLandscape(context,master){
+  const source=context.createBufferSource();
+  const highpass=context.createBiquadFilter();
+  const lowpass=context.createBiquadFilter();
+  const gain=context.createGain();
+  source.buffer=makeNoiseBuffer(context,5);
+  source.loop=true;
+  highpass.type='highpass';
+  highpass.frequency.value=430;
+  lowpass.type='lowpass';
+  lowpass.frequency.value=7200;
+  gain.gain.value=.26;
+  source.connect(highpass).connect(lowpass).connect(gain).connect(master);
+  source.start();
+  const drops=()=>{
+    if(soundAudioContext!==context||context.state==='closed')return;
+    const when=context.currentTime+.03;
+    [0,.12,.29].forEach((offset,index)=>{
+      soundNoiseBurst(context,master,{
+        when:when+offset,duration:.035+(index*.008),level:.014+(Math.random()*.012),
+        frequency:4800+(Math.random()*2800)
+      });
+    });
+  };
+  drops();
+  soundTimers.push(window.setInterval(drops,1100));
+  scheduleThunder(context,master,{first:true});
+}
+async function startSelectedSound(){
+  stopAmbientSound({announce:false});
+  stopMissionAudio();
+  if(audioPrefs.muted){
+    audioPrefs.muted=false;
+    persistAudioPrefs();
+  }
+  if(audioPrefs.volume===0){
+    setSoundStatus('Volume em 0%. Ajuste a barra antes de iniciar.');
+    updateAudioConsoleUI();
+    return;
+  }
+  const landscape=audioPrefs.landscape;
+  soundPlayingLandscape=landscape;
+  updateAudioConsoleUI();
+  try{
+    if(landscape==='launch'){
+      await playMissionSound({compact:false,theme:missionSoundTheme});
+      setSoundStatus('Lançamento em reprodução por 10 segundos.');
+      soundTimers.push(window.setTimeout(()=>{
+        if(soundPlayingLandscape!=='launch')return;
+        soundPlayingLandscape=null;
+        stopMissionAudio();
+        updateAudioConsoleUI();
+        setSoundStatus('Lançamento concluído. Selecione “Ouvir” para repetir.');
+      },10150));
+      return;
+    }
+    const {context,master}=await createSoundContext();
+    if(landscape==='electric')startElectricLandscape(context,master);
+    if(landscape==='supersonic')startSupersonicLandscape(context,master);
+    if(landscape==='calm')startCalmLandscape(context,master);
+    if(landscape==='rain')startRainLandscape(context,master);
+    const labels={
+      electric:'Elétrico empolgante',
+      supersonic:'Batida supersônica',
+      calm:'Paisagem calma',
+      rain:`Chuva contínua${audioPrefs.thunder?' com trovões ocasionais':' sem trovões'}`
+    };
+    setSoundStatus(`${labels[landscape]} em reprodução. Áudio gerado localmente.`);
+  }catch(_){
+    stopAmbientSound({announce:false});
+    setSoundStatus('Seu navegador bloqueou o áudio. Pressione “Ouvir” novamente.');
+  }
+}
+
 /* ── PORTAL DE MISSÃO · 10 SEGUNDOS ────────────── */
 const MISSION_INTRO_KEY='antigravity:mission-intro:v1';
 const MISSION_SOUND_KEY='antigravity:mission-sound-theme:v1';
@@ -2881,11 +3791,12 @@ function stopMissionAudio(){
   if(!missionAudioContext)return;
   const context=missionAudioContext;
   missionAudioContext=null;
+  missionOutputGain=null;
   context.close().catch(()=>{});
 }
 async function playMissionSound({compact=false,theme='honra'}={}){
   const AudioEngine=window.AudioContext||window.webkitAudioContext;
-  if(!AudioEngine)return;
+  if(!AudioEngine||audioPrefs.muted||audioPrefs.volume===0)return;
   stopMissionAudio();
   let context=null;
   try{
@@ -2928,7 +3839,10 @@ async function playMissionSound({compact=false,theme='honra'}={}){
     limiter.ratio.value=16;
     limiter.attack.value=.003;
     limiter.release.value=.22;
-    output.gain.setValueAtTime(.86,start);
+    missionOutputBase=.86;
+    missionOutputGain=output;
+    // Base histórica: output.gain.setValueAtTime(.86,start)
+    output.gain.setValueAtTime(audioGain(missionOutputBase),start);
     master.connect(limiter).connect(output).connect(context.destination);
 
     const impact=(when,frequency=68,level=.24)=>{
@@ -3109,7 +4023,10 @@ function launchMission(withSound){
   missionIntro.classList.remove('is-finishing');
   missionIntro.classList.add('is-launching');
   setMissionStatus('IGNIÇÃO AUTORIZADA','T−10,0');
-  if(withSound)playMissionSound({compact:missionHasReducedMotion(),theme:missionSoundTheme});
+  if(withSound){
+    stopAmbientSound({announce:false});
+    playMissionSound({compact:missionHasReducedMotion(),theme:missionSoundTheme});
+  }
 
   if(missionHasReducedMotion()){
     setMissionStatus('MISSÃO INICIADA','T+0,0');
@@ -3194,6 +4111,85 @@ if(missionIntro&&missionEmblem){
     }
   });
 }
+
+if(soundConsole){
+  updateAudioConsoleUI();
+  soundConsoleToggle.addEventListener('click',()=>{
+    setSoundConsole(soundConsolePanel.hidden);
+  });
+  soundConsoleClose.addEventListener('click',()=>setSoundConsole(false));
+  soundLandscapeButtons.forEach(button=>{
+    button.addEventListener('click',()=>{
+      const landscape=button.dataset.audioLandscape;
+      if(!AUDIO_LANDSCAPES.includes(landscape))return;
+      const wasPlaying=Boolean(soundPlayingLandscape);
+      if(wasPlaying)stopAmbientSound({announce:false});
+      audioPrefs.landscape=landscape;
+      persistAudioPrefs();
+      updateAudioConsoleUI();
+      const labels={
+        launch:'Lançamento de 10 segundos',
+        electric:'Elétrico empolgante',
+        supersonic:'Batida supersônica',
+        calm:'Paisagem calma',
+        rain:'Chuva contínua'
+      };
+      setSoundStatus(`${labels[landscape]} selecionado${wasPlaying?'; reprodução anterior interrompida':''}. Pressione “Ouvir”.`);
+    });
+  });
+  soundVolume.addEventListener('input',()=>{
+    audioPrefs.volume=Math.min(100,Math.max(0,Number(soundVolume.value)||0));
+    persistAudioPrefs();
+    syncSoundMasterGains();
+    updateAudioConsoleUI();
+    setSoundStatus(audioPrefs.volume===0
+      ?'Volume em 0%. O áudio permanece silencioso.'
+      :`Volume ajustado para ${audioPrefs.volume}%.`);
+  });
+  soundMute.addEventListener('click',()=>{
+    audioPrefs.muted=!audioPrefs.muted;
+    persistAudioPrefs();
+    if(audioPrefs.muted){
+      stopAmbientSound({announce:false});
+      stopMissionAudio();
+      setSoundStatus('Silêncio ativado. Nenhum áudio está em reprodução.');
+    }else{
+      setSoundStatus('Silêncio desativado. Pressione “Ouvir” para iniciar — sem reprodução automática.');
+    }
+    updateAudioConsoleUI();
+  });
+  soundStop.addEventListener('click',()=>{
+    stopAmbientSound({announce:false});
+    stopMissionAudio();
+    setSoundStatus('Tudo parado. A paisagem selecionada permanece salva.');
+  });
+  soundPlay.addEventListener('click',startSelectedSound);
+  soundThunder.addEventListener('change',()=>{
+    audioPrefs.thunder=soundThunder.checked;
+    persistAudioPrefs();
+    clearSoundTimers();
+    if(soundPlayingLandscape==='rain'&&soundAudioContext&&soundMasterGain&&audioPrefs.thunder){
+      scheduleThunder(soundAudioContext,soundMasterGain,{first:true});
+    }
+    setSoundStatus(audioPrefs.thunder
+      ?'Trovões ocasionais ativados para a chuva.'
+      :'Chuva contínua sem trovões.');
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&!soundConsolePanel.hidden){
+      event.preventDefault();
+      setSoundConsole(false);
+    }
+  });
+  document.addEventListener('pointerdown',event=>{
+    if(soundConsolePanel.hidden||soundConsole.contains(event.target))return;
+    setSoundConsole(false,{returnFocus:false});
+  });
+}
+window.addEventListener('pagehide',()=>{
+  stopAmbientSound({announce:false});
+  stopMissionAudio();
+});
 
 /* ── DATA: topic drawer content ─────────────────── */
 const TOPICS = {
@@ -3764,6 +4760,22 @@ const themeColorMeta=document.querySelector('meta[name="theme-color"]');
 const appleStatusMeta=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
 const systemTheme=window.matchMedia('(prefers-color-scheme: light)');
 const a11yKey='antigravity:a11y:v1';
+const VISUAL_PROFILES=[
+  {id:'aerospace',label:'Aeroespacial',icon:'🚀',mode:'dark',note:'padrão oficial'},
+  {id:'aerospace-light',label:'Aeroespacial claro',icon:'🛰️',mode:'light',note:'cabine diurna'},
+  {id:'rustic-light',label:'Claro rústico',icon:'📜',mode:'light',note:'sóbrio e conservador'},
+  {id:'dark',label:'Escuro essencial',icon:'🌑',mode:'dark',note:'neutro e direto'},
+  {id:'minimal',label:'Minimal',icon:'▫️',mode:'light',note:'menos ruído'},
+  {id:'sepia',label:'Sépia',icon:'🗂️',mode:'light',note:'leitura clássica'},
+  {id:'oceanic',label:'Oceânico',icon:'🌊',mode:'dark',note:'azul e turquesa'},
+  {id:'green',label:'Verde clínico',icon:'🟢',mode:'dark',note:'monitor técnico'},
+  {id:'natural',label:'Natural',icon:'🍃',mode:'light',note:'mineral e vegetal'},
+  {id:'forest',label:'Floresta',icon:'🌲',mode:'dark',note:'foco silencioso'},
+  {id:'wizard-academy',label:'Academia arcana',icon:'🔮',mode:'dark',note:'fantasia autoral'},
+  {id:'comic-hero',label:'Herói editorial',icon:'⚡',mode:'dark',note:'quadrinhos autorais'},
+  {id:'modern-serious',label:'Moderno sério',icon:'🏛️',mode:'light',note:'institucional'}
+];
+const PROFILE_BY_ID=new Map(VISUAL_PROFILES.map(profile=>[profile.id,profile]));
 function readA11yPrefs(raw){
   let saved={};
   try{
@@ -3771,7 +4783,8 @@ function readA11yPrefs(raw){
     if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed))saved=parsed;
   }catch(_){}
   const normalized={
-    large:false,contrast:false,motion:false,theme:'dark',wide:true,...saved
+    large:false,contrast:false,motion:false,theme:'dark',wide:true,
+    visualProfile:'aerospace',...saved
   };
   if(!['dark','light','system'].includes(normalized.theme)){
     normalized.theme=saved.clarity===true?'light':'dark';
@@ -3780,6 +4793,11 @@ function readA11yPrefs(raw){
   normalized.contrast=saved.contrast===true;
   normalized.motion=saved.motion===true;
   normalized.wide=saved.wide!==false;
+  if(!PROFILE_BY_ID.has(normalized.visualProfile)){
+    normalized.visualProfile=normalized.theme==='light'?'aerospace-light':'aerospace';
+  }else if(normalized.theme!=='system'){
+    normalized.theme=PROFILE_BY_ID.get(normalized.visualProfile).mode;
+  }
   return normalized;
 }
 let a11yPrefs=readA11yPrefs();
@@ -3795,6 +4813,7 @@ function applyA11y({persist=true}={}){
   root.classList.toggle('a11y-contrast',contrastActive);
   root.classList.toggle('a11y-reduce-motion',Boolean(a11yPrefs.motion));
   root.classList.toggle('layout-focus',!Boolean(a11yPrefs.wide));
+  root.dataset.visualProfile=contrastActive?'contrast':a11yPrefs.visualProfile;
   root.dataset.themeMode=a11yPrefs.theme;
   root.dataset.theme=contrastActive?'dark':resolvedTheme;
   root.style.colorScheme=contrastActive?'dark':resolvedTheme;
@@ -3814,6 +4833,12 @@ function applyA11y({persist=true}={}){
   document.querySelectorAll('[data-layout-wide]').forEach(btn=>{
     btn.setAttribute('aria-pressed',String(Boolean(a11yPrefs.wide)));
   });
+  document.querySelectorAll('button[data-visual-profile]').forEach(btn=>{
+    btn.setAttribute('aria-pressed',String(btn.dataset.visualProfile===a11yPrefs.visualProfile));
+  });
+  const currentProfile=PROFILE_BY_ID.get(a11yPrefs.visualProfile)||VISUAL_PROFILES[0];
+  const currentThemeLabel=document.getElementById('settingsCurrentTheme');
+  if(currentThemeLabel)currentThemeLabel.textContent=currentProfile.label;
   if(persist){
     try{localStorage.setItem(a11yKey,JSON.stringify(a11yPrefs))}catch(_){}
   }
@@ -3840,7 +4865,12 @@ document.querySelectorAll('[data-theme-select]').forEach(select=>{
   select.addEventListener('change',()=>{
     if(!['dark','light','system'].includes(select.value))return;
     a11yPrefs.theme=select.value;
-    if(select.value==='light')a11yPrefs.contrast=false;
+    if(select.value==='light'){
+      a11yPrefs.visualProfile='aerospace-light';
+      a11yPrefs.contrast=false;
+    }else{
+      a11yPrefs.visualProfile='aerospace';
+    }
     applyA11y();
   });
 });
@@ -3874,6 +4904,67 @@ a11yPanel.addEventListener('keydown',e=>{
   });
 });
 a11yPanel.querySelector('a[href="#downloads"]').addEventListener('click',()=>setA11yPanel(false));
+
+/* ── CONFIGURAÇÕES RÁPIDAS + CATÁLOGO DE TEMAS ───── */
+const settingsConsoleToggle=document.getElementById('settingsConsoleToggle');
+const settingsConsolePanel=document.getElementById('settingsConsolePanel');
+const settingsConsoleClose=document.getElementById('settingsConsoleClose');
+const settingsAccessibility=document.getElementById('settingsAccessibility');
+const themeOptions=document.getElementById('themeOptions');
+function setSettingsPanel(open,{focus=true}={}){
+  if(!settingsConsolePanel||!settingsConsoleToggle)return;
+  settingsConsolePanel.hidden=!open;
+  settingsConsoleToggle.setAttribute('aria-expanded',String(open));
+  settingsConsoleToggle.setAttribute('aria-label',open?'Fechar configurações':'Abrir configurações');
+  if(open){
+    if(typeof setSoundConsole==='function')setSoundConsole(false,{returnFocus:false});
+    settingsConsolePanel.scrollTop=0;
+    if(focus)settingsConsoleClose.focus();
+  }else if(focus){
+    settingsConsoleToggle.focus();
+  }
+}
+if(themeOptions){
+  themeOptions.innerHTML=VISUAL_PROFILES.map(profile=>`
+    <button class="theme-option" type="button" data-visual-profile="${profile.id}"
+      aria-pressed="false" title="${profile.label}">
+      <span class="theme-option-icon" aria-hidden="true">${profile.icon}</span>
+      <span class="theme-option-copy"><strong>${profile.label}</strong><small>${profile.note}</small></span>
+    </button>
+  `).join('');
+  themeOptions.querySelectorAll('[data-visual-profile]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const profile=PROFILE_BY_ID.get(button.dataset.visualProfile);
+      if(!profile)return;
+      a11yPrefs.visualProfile=profile.id;
+      a11yPrefs.theme=profile.mode;
+      a11yPrefs.contrast=false;
+      applyA11y();
+    });
+  });
+}
+settingsConsoleToggle?.addEventListener('click',()=>setSettingsPanel(settingsConsolePanel.hidden));
+settingsConsoleClose?.addEventListener('click',()=>setSettingsPanel(false));
+soundConsoleToggle?.addEventListener('click',()=>{
+  if(settingsConsolePanel&&!settingsConsolePanel.hidden)setSettingsPanel(false,{focus:false});
+});
+settingsAccessibility?.addEventListener('click',()=>{
+  setSettingsPanel(false,{focus:false});
+  setA11yPanel(true);
+});
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&settingsConsolePanel&&!settingsConsolePanel.hidden){
+    event.preventDefault();
+    setSettingsPanel(false);
+  }
+});
+document.addEventListener('pointerdown',event=>{
+  if(
+    settingsConsolePanel&&
+    !settingsConsolePanel.hidden&&
+    !document.getElementById('settingsConsole')?.contains(event.target)
+  )setSettingsPanel(false,{focus:false});
+});
 window.addEventListener('storage',event=>{
   if(event.key!==a11yKey)return;
   a11yPrefs=readA11yPrefs(event.newValue);
