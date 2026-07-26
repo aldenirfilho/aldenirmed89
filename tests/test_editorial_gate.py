@@ -251,6 +251,113 @@ class EditorialContentScannerTests(unittest.TestCase):
         self.assertIn("SENSITIVE_PATIENT_ID", codes)
         self.assertIn("SENSITIVE_EMAIL", codes)
 
+    def test_formatted_and_unformatted_cpf_and_phone_are_blocked(self):
+        cases = {
+            "cpf formatado": ("CPF 123.456.789-09", "SENSITIVE_CPF"),
+            "cpf sem formatação": ("CPF 12345678909", "SENSITIVE_CPF"),
+            "celular formatado": ("Telefone (85) 99999-1234", "SENSITIVE_PHONE"),
+            "celular sem formatação": ("Telefone 85999991234", "SENSITIVE_PHONE"),
+            "celular isolado": ("85999991234", "SENSITIVE_PHONE"),
+            "celular com país": ("Telefone +55 (85) 99999-1234", "SENSITIVE_PHONE"),
+            "fixo formatado": ("Telefone (85) 3234-5678", "SENSITIVE_PHONE"),
+            "fixo sem formatação": ("Telefone 8532345678", "SENSITIVE_PHONE"),
+            "fixo isolado": ("8532345678", "SENSITIVE_PHONE"),
+            "celular em código": ("customer=85999991234;", "SENSITIVE_PHONE"),
+            "fixo em código": ("customer=8532345678;", "SENSITIVE_PHONE"),
+            "lista identificada": (
+                "const telefones=[8532345678,8532345679];",
+                "SENSITIVE_PHONE",
+            ),
+        }
+        for label, (text, expected_code) in cases.items():
+            with self.subTest(label=label):
+                self.assertIn(expected_code, self.codes(text))
+
+    def test_real_patient_ids_are_blocked_but_generic_terms_are_not(self):
+        for text in (
+            "prontuário 123456",
+            "paciente: ABC-123",
+            "registro do paciente #ZX-9876",
+            "cartão SUS: 898001234567890",
+        ):
+            with self.subTest(text=text):
+                self.assertIn("SENSITIVE_PATIENT_ID", self.codes(text))
+
+        generic_or_template_values = (
+            "Prontuário ausente, genérico ou contraditório.",
+            "Adaptar a documentação ao prontuário local.",
+            "Consulte o prontuário completo do paciente.",
+            "Integração com Prontuário Eletrônico (EHR).",
+            "Documentar no prontuário quando uma IA for utilizada.",
+            "modelos-prontuario-dnar-plantao-docx",
+            "nota-medica-dnar-lsv-prontuario-pdf",
+        )
+        for text in generic_or_template_values:
+            with self.subTest(text=text):
+                self.assertNotIn("SENSITIVE_PATIENT_ID", self.codes(text))
+
+    def test_real_corpus_hash_ids_and_minified_numbers_are_not_sensitive(self):
+        cases = {
+            "cpf dentro de sha256": (
+                "sourceSha256: 1253c1a875f0228cd4ecaabf40141368926d644e91c78dddb",
+                "SENSITIVE_CPF",
+            ),
+            "telefone aparente dentro de sha256": (
+                "assetSha256: 6c2b5c3da785bf9ff82af49dd80a6b079d7837528231cc3a",
+                "SENSITIVE_PHONE",
+            ),
+            "telefone aparente dentro de id": (
+                "id: doc-0093218630fa1289",
+                "SENSITIVE_PHONE",
+            ),
+            "telefone aparente dentro de nome de arquivo": (
+                "ecg-cascata-isquemica-4-2071298696.webp",
+                "SENSITIVE_PHONE",
+            ),
+            "constantes em lista minificada": (
+                "var y=[0,2125561021,2428444049,2227061214];",
+                "SENSITIVE_PHONE",
+            ),
+            "limite inteiro em expressão minificada": (
+                "if(2147483648<a)return!1;var l=2147483647;",
+                "SENSITIVE_PHONE",
+            ),
+        }
+        for label, (text, unexpected_code) in cases.items():
+            with self.subTest(label=label):
+                self.assertNotIn(unexpected_code, self.codes(text))
+
+    def test_audited_corpus_files_do_not_emit_false_sensitive_codes(self):
+        cases = {
+            "01_Modulos_Clinicos/Delirium_UTI/index.html": {
+                "SENSITIVE_PATIENT_ID"
+            },
+            "02_Biblioteca_IA_Engine/acervo/gestao-ia-produtividade/"
+            "guia_ia_medicos_clinicos_intensivistas.md": {
+                "SENSITIVE_PATIENT_ID"
+            },
+            "02_Biblioteca_IA_Engine/data/biblioteca_catalogo.json": {
+                "SENSITIVE_CPF",
+                "SENSITIVE_PHONE",
+                "SENSITIVE_PATIENT_ID",
+            },
+            "02_Biblioteca_IA_Engine/data/biblioteca_brain_connections.json": {
+                "SENSITIVE_PHONE",
+                "SENSITIVE_PATIENT_ID",
+            },
+            "05_Midia_E_Feed/assets/vendor/tesseract/worker.min.js": {
+                "SENSITIVE_PHONE"
+            },
+            "05_Midia_E_Feed/data/cards.json": {"SENSITIVE_PHONE"},
+            "05_Midia_E_Feed/data/recovery_manifest.json": {
+                "SENSITIVE_PHONE"
+            },
+        }
+        for relative_path, unexpected_codes in cases.items():
+            with self.subTest(path=relative_path):
+                text = (ROOT / relative_path).read_text(encoding="utf-8")
+                self.assertTrue(unexpected_codes.isdisjoint(self.codes(text)))
+
     def test_beta_personal_content_in_public_output_is_blocked(self):
         codes = self.codes('{"status": "beta", "audience": "personal"}')
         self.assertIn("RESTRICTED_STATUS_PUBLIC", codes)

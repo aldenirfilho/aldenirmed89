@@ -97,12 +97,36 @@ SECRET_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
 )
 
 CPF_RE = re.compile(
-    r"(?<!\d)(?:\d{3}[.\s-]\d{3}[.\s-]\d{3}[-\s]\d{2}|\d{11})(?!\d)"
+    r"""(?x)
+    (?<![\w.-])
+    (?:\d{3}[.\s-]\d{3}[.\s-]\d{3}[-\s]\d{2}|\d{11})
+    (?![\w-]|\.[A-Za-z0-9])
+    """
 )
-PHONE_RE = re.compile(r"(?<!\d)(?:\+?55\s*)?\(?\d{2}\)?[\s-]?9?\d{4}[\s-]?\d{4}(?!\d)")
+BRAZIL_DDD_RE = (
+    r"(?:1[1-9]|2[12478]|3[1-578]|4[1-9]|5[1-5]|"
+    r"6[1-9]|7[134579]|8[1-9]|9[1-9])"
+)
+PHONE_RE = re.compile(
+    rf"""(?x)
+    (?<![\w.-])
+    (?:\+?55[\s.-]*)?
+    (?:\({BRAZIL_DDD_RE}\)|{BRAZIL_DDD_RE})[\s.-]*
+    (?:9\d{{4}}[\s-]?\d{{4}}|[2-5]\d{{3}}[\s-]?\d{{4}})
+    (?![\w-]|\.[A-Za-z0-9])
+    """
+)
 EMAIL_RE = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I)
 PATIENT_ID_RE = re.compile(
-    r"(?i)\b(?:prontu[aá]rio|registro\s+do\s+paciente|cart[aã]o\s+sus)\s*[:#-]?\s*[A-Z0-9.-]{4,}"
+    r"""(?ix)
+    (?<![\w-])
+    (?:registro\s+do\s+paciente|cart[aã]o\s+sus|prontu[aá]rio|paciente)
+    (?:\s*[:#]\s*|\s+)
+    (?=[A-Z0-9.-]{4,}(?![\w-]|\.[A-Z0-9]))
+    (?=[A-Z0-9.-]*\d)
+    [A-Z0-9]+(?:[.-][A-Z0-9]+)*
+    (?![\w-]|\.[A-Z0-9])
+    """
 )
 PROFESSIONAL_CLAIM_PATTERNS = (
     re.compile(r"(?i)\beu\s+sou\s+(?:m[eé]dico|especialista|mestre|doutor)"),
@@ -201,6 +225,47 @@ def _contains_valid_cpf(text: str) -> bool:
                 break
         if valid:
             return True
+    return False
+
+
+def _contains_brazilian_phone(text: str) -> bool:
+    """Detecta telefone plausível sem confundir hashes e código minificado.
+
+    O padrão exige DDD brasileiro e prefixo compatível com celular atual ou
+    telefone fixo. A verificação de contexto ignora apenas inteiros isolados
+    em listas numéricas minificadas; números formatados e telefones escritos
+    sem formatação em texto comum continuam bloqueados.
+    """
+
+    for match in PHONE_RE.finditer(text):
+        value = match.group(0)
+        if re.fullmatch(r"\d{10,13}", value):
+            before = text[match.start() - 1] if match.start() else ""
+            after = text[match.end()] if match.end() < len(text) else ""
+            nearby_label = re.search(
+                r"(?i)(?:telefones?|phones?|fones?|celular|whats(?:app)?|contato)\W{0,24}$",
+                text[max(0, match.start() - 48) : match.start()],
+            )
+            if (
+                before
+                and after
+                and not nearby_label
+                and before in "[,"
+                and after in ",]}"
+            ):
+                continue
+            integer_limits = {"2147483647", "2147483648"}
+            code_operators = "=<>?*/%^&|"
+            if (
+                value in integer_limits
+                and not nearby_label
+                and (
+                    (before and before in code_operators)
+                    or (after and after in code_operators)
+                )
+            ):
+                continue
+        return True
     return False
 
 
@@ -674,7 +739,7 @@ def scan_text(
             issues.append(Issue(code, "Possível segredo/credencial em conteúdo público", path))
     if _contains_valid_cpf(text):
         issues.append(Issue("SENSITIVE_CPF", "Possível CPF em conteúdo público", path))
-    if PHONE_RE.search(text):
+    if _contains_brazilian_phone(text):
         issues.append(Issue("SENSITIVE_PHONE", "Possível telefone pessoal em conteúdo público", path))
     if PATIENT_ID_RE.search(text):
         issues.append(
