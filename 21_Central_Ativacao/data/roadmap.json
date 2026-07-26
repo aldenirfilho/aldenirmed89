@@ -1,0 +1,1215 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-07-25",
+  "language": "pt-BR",
+  "title": "Central de Ativação e Próximas Etapas",
+  "summary": "Roteiro público e operacional da missão Antigravity. O status da plataforma vem deste arquivo versionado; marcações pessoais da interface ficam somente no dispositivo e não comprovam uma entrega.",
+  "statusOrder": [
+    "live",
+    "ready",
+    "owner-action",
+    "blocked",
+    "planned"
+  ],
+  "statusLabels": {
+    "live": "No ar",
+    "ready": "Pronto para executar",
+    "owner-action": "Precisa de você",
+    "blocked": "Bloqueado por dependência",
+    "planned": "Planejado"
+  },
+  "actorLabels": {
+    "owner": "Proprietário",
+    "codex": "Codex",
+    "joint": "Proprietário + Codex"
+  },
+  "backendGate": {
+    "decision": "NO-GO",
+    "status": "blocked",
+    "scope": "Login, assinatura, métricas reais, diretório administrativo, manifestações, respostas, caderno privado e boletim.",
+    "reason": "O Centro da Tripulação permanece deliberadamente desconectado. Ainda não há projeto de homologação confirmado, conta institucional aprovada, gateways protegidos nem evidência de testes de RLS por papel.",
+    "unlockCriteria": [
+      "E-mail institucional real, monitorado e protegido por MFA.",
+      "Projeto Supabase exclusivo de homologação criado pelo proprietário.",
+      "Confirmação de e-mail e URLs de redirecionamento restritas configuradas.",
+      "Esquema revisado e RLS testada como anônimo, tripulante comum, administrador e proprietário.",
+      "Gateway de métricas e gateway de manifestações com origem permitida, limitação de requisições e proteção contra abuso.",
+      "Nenhuma sb_secret_, chave legada service_role, senha, chave privada, código de MFA ou segredo presente no frontend, Git, issue ou chat.",
+      "Homologação funcional e de privacidade concluída antes de alterar o modo para connected.",
+      "Aprovação humana explícita para a publicação da configuração pública."
+    ],
+    "publicState": "Enquanto qualquer critério estiver pendente, a interface deve continuar exibindo estado desconectado e valores não verificados como —."
+  },
+  "items": [
+    {
+      "id": "p0-email-institucional",
+      "phase": "P0",
+      "priority": 0,
+      "title": "Criar o e-mail institucional real",
+      "status": "owner-action",
+      "actor": "owner",
+      "summary": "Primeira microação recomendada. O endereço só deve aparecer no site depois de existir, estar monitorado e ser aprovado como canal público.",
+      "dependsOn": [],
+      "estimatedTime": "15–20 min",
+      "ownerSteps": [
+        "Escolha um provedor confiável e crie uma caixa exclusiva para a plataforma.",
+        "Use o nome institucional aprovado; AldenGrav360 é apenas uma sugestão de identidade, não um endereço existente.",
+        "Ative MFA e registre os meios de recuperação em local privado.",
+        "Envie uma mensagem de teste e confirme que consegue receber e responder.",
+        "Decida explicitamente se o endereço pode ser mostrado ao público."
+      ],
+      "codexSteps": [
+        "Manter a interface com a mensagem Canal de e-mail em configuração até a confirmação.",
+        "Inserir somente o endereço público confirmado em uma entrega separada e auditável."
+      ],
+      "sendToCodex": [
+        "O endereço completo somente depois de criado e aprovado para exibição pública.",
+        "A frase: E-MAIL INSTITUCIONAL CRIADO E TESTADO.",
+        "Se ele ainda não puder ser público, envie apenas: E-MAIL CRIADO, EXIBIÇÃO PÚBLICA AINDA NÃO AUTORIZADA."
+      ],
+      "doNotShare": [
+        "Senha da caixa.",
+        "Código de MFA.",
+        "Códigos de recuperação.",
+        "Cookie, token de sessão ou link de redefinição.",
+        "Endereço pessoal usado para recuperação."
+      ],
+      "completionCriteria": [
+        "Caixa criada e acessível.",
+        "MFA ativo.",
+        "Teste de envio e recebimento concluído.",
+        "Decisão sobre exibição pública registrada."
+      ],
+      "microActions": [
+        {
+          "id": "p0-criar-caixa",
+          "label": "Criar a caixa exclusiva",
+          "actor": "owner",
+          "estimatedTime": "8 min",
+          "completionCriterion": "O proprietário consegue entrar na caixa sem usar uma conta compartilhada.",
+          "doNotShare": [
+            "Senha",
+            "código de MFA"
+          ]
+        },
+        {
+          "id": "p0-ativar-mfa",
+          "label": "Ativar MFA e recuperação",
+          "actor": "owner",
+          "estimatedTime": "5 min",
+          "completionCriterion": "MFA confirmado e códigos de recuperação guardados fora do projeto.",
+          "doNotShare": [
+            "Códigos de recuperação",
+            "telefone ou e-mail pessoal de recuperação"
+          ]
+        },
+        {
+          "id": "p0-testar-email",
+          "label": "Testar e autorizar o uso público",
+          "actor": "owner",
+          "estimatedTime": "5 min",
+          "completionCriterion": "Mensagem de teste recebida e autorização de exibição definida.",
+          "doNotShare": [
+            "Cabeçalhos completos de e-mail",
+            "dados pessoais desnecessários"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "Lei nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais",
+          "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p0-homologacao-supabase",
+      "phase": "P0",
+      "priority": 0,
+      "title": "Criar o projeto de homologação",
+      "status": "owner-action",
+      "actor": "owner",
+      "summary": "A ativação começa em ambiente de teste. Produção permanece em NO-GO até que os controles sejam comprovados.",
+      "dependsOn": [
+        "p0-email-institucional"
+      ],
+      "estimatedTime": "20–30 min",
+      "ownerSteps": [
+        "Crie um projeto Supabase dedicado à homologação, separado de qualquer outro sistema.",
+        "Gere uma senha forte para o banco e guarde-a em gerenciador de senhas.",
+        "Mantenha autenticação por e-mail com confirmação obrigatória.",
+        "Cadastre somente os domínios oficiais HTTPS e um localhost específico para testes nas URLs permitidas.",
+        "Ative proteção contra senhas vazadas e limite tentativas quando disponível.",
+        "Não aplique ainda atalhos que concedam acesso direto a tabelas ou RPCs."
+      ],
+      "codexSteps": [
+        "Revisar os valores públicos e preparar a configuração de homologação.",
+        "Revisar o esquema antes da execução.",
+        "Preparar uma matriz de testes por papel sem pedir segredos."
+      ],
+      "sendToCodex": [
+        "URL pública do projeto, no formato https://SEU-PROJETO.supabase.co.",
+        "Chave pública sb_publishable_… somente depois da revisão de RLS e quando a integração de homologação for autorizada.",
+        "Confirmação textual de que a verificação de e-mail está ativa.",
+        "Confirmação textual das origens cadastradas, sem screenshots que revelem segredos."
+      ],
+      "doNotShare": [
+        "Senha do banco.",
+        "Service-role.",
+        "JWT secret.",
+        "Chave privada ou segredo de provedor.",
+        "Código de MFA ou recuperação.",
+        "Dump do banco ou dados reais.",
+        "Arquivo .env."
+      ],
+      "completionCriteria": [
+        "Projeto de homologação existe e está separado de produção.",
+        "Confirmação de e-mail está ativa.",
+        "URLs permitidas estão restritas.",
+        "Os únicos valores preparados para frontend são URL e chave sb_publishable_… pública."
+      ],
+      "microActions": [
+        {
+          "id": "p0-criar-homologacao",
+          "label": "Criar projeto isolado de homologação",
+          "actor": "owner",
+          "estimatedTime": "10 min",
+          "completionCriterion": "Projeto de teste criado sem importar dados reais.",
+          "doNotShare": [
+            "Senha do banco",
+            "service-role"
+          ]
+        },
+        {
+          "id": "p0-configurar-auth",
+          "label": "Configurar autenticação e redirecionamentos",
+          "actor": "owner",
+          "estimatedTime": "10 min",
+          "completionCriterion": "Confirmação de e-mail ativa e origens limitadas aos endereços autorizados.",
+          "doNotShare": [
+            "Cookies de sessão",
+            "links de confirmação ainda válidos"
+          ]
+        },
+        {
+          "id": "p0-handoff-publico",
+          "label": "Fazer o handoff público mínimo",
+          "actor": "owner",
+          "estimatedTime": "5 min",
+          "completionCriterion": "Somente URL pública, chave sb_publishable_… autorizada e confirmações não sensíveis foram separadas para o Codex.",
+          "doNotShare": [
+            "service-role",
+            "senha",
+            "arquivo .env"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "Supabase Auth",
+          "url": "https://supabase.com/docs/guides/auth",
+          "kind": "official"
+        },
+        {
+          "title": "Supabase — autenticação por senha",
+          "url": "https://supabase.com/docs/guides/auth/passwords",
+          "kind": "official"
+        },
+        {
+          "title": "Supabase — configuração geral de autenticação",
+          "url": "https://supabase.com/docs/guides/auth/general-configuration",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p0-revisao-rls",
+      "phase": "P0",
+      "priority": 0,
+      "title": "Revisar esquema, RLS e configuração pública",
+      "status": "ready",
+      "actor": "codex",
+      "summary": "O código e o esquema já existem, mas precisam ser reavaliados contra o projeto real de homologação antes de qualquer conexão.",
+      "dependsOn": [
+        "p0-homologacao-supabase"
+      ],
+      "estimatedTime": "30–45 min",
+      "ownerSteps": [
+        "Confirmar que o projeto criado é apenas de homologação.",
+        "Disponibilizar somente os valores públicos autorizados.",
+        "Executar no painel as etapas que exigem presença do proprietário, seguindo orientação tela a tela."
+      ],
+      "codexSteps": [
+        "Revisar 18_Centro_Tripulacao/scripts/supabase-schema.sql.",
+        "Revisar CSP, allowedAppOrigins e allowedApiOrigins.",
+        "Preparar configuração separada de homologação sem publicar segredos.",
+        "Executar os testes locais e produzir checklist de RLS por papel.",
+        "Interromper a entrega se encontrar concessão ampla, segredo ou rota não permitida."
+      ],
+      "doNotShare": [
+        "Service-role.",
+        "Senha do banco.",
+        "Segredo de CAPTCHA.",
+        "Chave de provedor de e-mail.",
+        "Token de sessão."
+      ],
+      "completionCriteria": [
+        "Diff revisável e sem segredos.",
+        "CSP e allowlists restritas às origens necessárias.",
+        "RLS declarada para todas as tabelas expostas.",
+        "Plano de teste por papel pronto.",
+        "Modo público ainda permanece disconnected."
+      ],
+      "microActions": [
+        {
+          "id": "p0-revisar-esquema",
+          "label": "Revisar esquema e concessões",
+          "actor": "codex",
+          "estimatedTime": "15 min",
+          "completionCriterion": "Nenhuma tabela ou RPC sensível fica exposta sem política e papel explícitos."
+        },
+        {
+          "id": "p0-preparar-configuracao",
+          "label": "Preparar configuração de homologação",
+          "actor": "codex",
+          "estimatedTime": "15 min",
+          "completionCriterion": "Configuração contém somente valores públicos e origens exatas."
+        },
+        {
+          "id": "p0-gerar-matriz-testes",
+          "label": "Gerar matriz de testes",
+          "actor": "codex",
+          "estimatedTime": "10 min",
+          "completionCriterion": "Matriz cobre anônimo, tripulante, administrador e proprietário."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Supabase — Row Level Security",
+          "url": "https://supabase.com/docs/guides/database/postgres/row-level-security",
+          "kind": "official"
+        },
+        {
+          "title": "Supabase — segurança dos produtos",
+          "url": "https://supabase.com/docs/guides/security/product-security",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p0-gateways-protegidos",
+      "phase": "P0",
+      "priority": 0,
+      "title": "Construir gateways protegidos",
+      "status": "blocked",
+      "actor": "joint",
+      "summary": "Métricas e manifestações não podem chamar RPCs privilegiados diretamente do navegador. Esta etapa espera o projeto de homologação e a revisão P0-03.",
+      "dependsOn": [
+        "p0-homologacao-supabase",
+        "p0-revisao-rls"
+      ],
+      "estimatedTime": "60–90 min",
+      "ownerSteps": [
+        "Criar no provedor os segredos exigidos pela função, sem copiá-los para o chat.",
+        "Configurar CAPTCHA acessível e confirmar a origem oficial.",
+        "Autorizar somente endpoints de homologação.",
+        "Definir retenção e capacidade humana de resposta antes de abrir o canal."
+      ],
+      "codexSteps": [
+        "Implementar gateways de métricas e manifestações com validação estrita de origem.",
+        "Aplicar limite de requisições e respostas de erro sem enumeração.",
+        "Validar usuário identificado no servidor e ignorar UUID/e-mail enviados pelo corpo.",
+        "Manter telemetria e envio desativados em caso de falha."
+      ],
+      "doNotShare": [
+        "Service-role.",
+        "Segredo do CAPTCHA.",
+        "Chave do provedor de e-mail.",
+        "Salt ou chave de hash.",
+        "Logs com identificadores.",
+        "Token bearer."
+      ],
+      "completionCriteria": [
+        "Gateways usam HTTPS e origem exata.",
+        "RPCs privilegiados continuam inacessíveis ao navegador.",
+        "Proteção contra abuso testada.",
+        "Falha de gateway preserva o modo seguro.",
+        "Retenção e resposta humana estão definidas."
+      ],
+      "microActions": [
+        {
+          "id": "p0-configurar-segredos",
+          "label": "Configurar segredos no provedor",
+          "actor": "owner",
+          "estimatedTime": "10 min",
+          "completionCriterion": "Segredos existem somente no cofre do provedor e não no repositório.",
+          "doNotShare": [
+            "Todos os valores dos segredos",
+            "screenshots do cofre"
+          ]
+        },
+        {
+          "id": "p0-implementar-gateways",
+          "label": "Implementar gateways fail-closed",
+          "actor": "codex",
+          "estimatedTime": "45 min",
+          "completionCriterion": "Chamadas inválidas, excessivas ou de origem não permitida são recusadas sem revelar dados."
+        },
+        {
+          "id": "p0-testar-abuso",
+          "label": "Testar abuso e indisponibilidade",
+          "actor": "joint",
+          "estimatedTime": "20 min",
+          "completionCriterion": "A interface não inventa protocolo, envio ou contagem quando o serviço falha."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Supabase — guia de segurança",
+          "url": "https://supabase.com/docs/guides/security",
+          "kind": "official"
+        },
+        {
+          "title": "GitHub Actions — referência de segredos",
+          "url": "https://docs.github.com/en/actions/reference/security/secrets",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p0-homologacao-final",
+      "phase": "P0",
+      "priority": 0,
+      "title": "Homologar antes de conectar",
+      "status": "blocked",
+      "actor": "joint",
+      "summary": "O modo connected só pode ser publicado depois de testes negativos e positivos documentados.",
+      "dependsOn": [
+        "p0-revisao-rls",
+        "p0-gateways-protegidos"
+      ],
+      "estimatedTime": "45–60 min",
+      "ownerSteps": [
+        "Criar contas de teste separadas para tripulante, administrador e proprietário.",
+        "Confirmar login, logout, verificação de e-mail e cancelamento.",
+        "Tentar acessos indevidos previstos pela matriz e registrar apenas o resultado, sem tokens.",
+        "Autorizar explicitamente a ativação somente se todos os critérios passarem."
+      ],
+      "codexSteps": [
+        "Executar suíte local e testes de integração permitidos.",
+        "Revisar logs sanitizados e resultados por papel.",
+        "Preparar Pull Request curta para alterar o modo.",
+        "Manter NO-GO se houver qualquer falha de isolamento, privacidade ou revogação."
+      ],
+      "doNotShare": [
+        "Senha das contas de teste.",
+        "Access token.",
+        "Refresh token.",
+        "UUID completo em issue pública.",
+        "Chave de protocolo anônimo.",
+        "Exportação do diretório."
+      ],
+      "completionCriteria": [
+        "Anônimo não lista informações restritas.",
+        "Tripulante lê somente os próprios registros.",
+        "Administrador não recebe privilégios de proprietário.",
+        "Cancelamento e exclusão funcionam.",
+        "Logs não contêm segredos nem contato privado.",
+        "Aprovação humana de GO registrada."
+      ],
+      "microActions": [
+        {
+          "id": "p0-testar-papeis",
+          "label": "Testar quatro papéis",
+          "actor": "joint",
+          "estimatedTime": "25 min",
+          "completionCriterion": "A matriz registra resultado esperado e observado para cada papel."
+        },
+        {
+          "id": "p0-testar-revogacao",
+          "label": "Testar falhas e revogação",
+          "actor": "joint",
+          "estimatedTime": "15 min",
+          "completionCriterion": "Sessão encerrada, consentimento cancelado e gateway indisponível resultam em negação segura."
+        },
+        {
+          "id": "p0-emitir-decisao",
+          "label": "Emitir decisão GO ou manter NO-GO",
+          "actor": "owner",
+          "estimatedTime": "5 min",
+          "completionCriterion": "Decisão humana explícita e datada, sem ambiguidade.",
+          "doNotShare": [
+            "Credenciais usadas nos testes",
+            "logs brutos"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "Supabase — Row Level Security",
+          "url": "https://supabase.com/docs/guides/database/postgres/row-level-security",
+          "kind": "official"
+        },
+        {
+          "title": "GitHub Actions — ambientes e proteção de deploy",
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p1-radar-manual",
+      "phase": "P1",
+      "priority": 1,
+      "title": "Publicação manual assistida no Radar",
+      "status": "live",
+      "actor": "joint",
+      "summary": "O fluxo seguro já pode começar sem API: fonte original, síntese, auditoria, imagens referenciadas, aprovação humana e publicação por Pull Request.",
+      "dependsOn": [],
+      "estimatedTime": "10–25 min por destaque",
+      "ownerSteps": [
+        "Envie a URL específica da fonte e escreva PUBLICAR NO RADAR.",
+        "Explique em uma frase por que o item merece destaque.",
+        "Revise o rascunho, as limitações e as referências.",
+        "Autorize a publicação com a frase APROVADO PARA PUBLICAR."
+      ],
+      "codexSteps": [
+        "Verificar data, autoria, fonte e repetição.",
+        "Produzir síntese em português com referência rastreável.",
+        "Preparar versões widescreen e card quando houver imagem útil.",
+        "Rodar gates, publicar em lote curto e conferir o site."
+      ],
+      "doNotShare": [
+        "Dados clínicos identificáveis.",
+        "Obra integral de terceiros sem autorização.",
+        "Conteúdo cuja origem ou direito de uso seja incerto.",
+        "Credencial de base fechada.",
+        "Link privado com token."
+      ],
+      "completionCriteria": [
+        "Fonte específica e data conferidas.",
+        "Item não repetido.",
+        "Síntese e imagem correspondem à mesma informação.",
+        "Limitação e status de revisão visíveis.",
+        "Aprovação humana anterior à publicação."
+      ],
+      "microActions": [
+        {
+          "id": "p1-enviar-fonte",
+          "label": "Enviar fonte específica",
+          "actor": "owner",
+          "estimatedTime": "2 min",
+          "completionCriterion": "URL identifica o artigo, documento ou notícia, e não apenas a página inicial.",
+          "doNotShare": [
+            "Token de acesso",
+            "dados clínicos identificáveis"
+          ]
+        },
+        {
+          "id": "p1-auditar-destaque",
+          "label": "Produzir e auditar o destaque",
+          "actor": "codex",
+          "estimatedTime": "10–20 min",
+          "completionCriterion": "Rascunho tem síntese, fonte, data, utilidade, limite e status de revisão."
+        },
+        {
+          "id": "p1-aprovar-publicacao",
+          "label": "Dar aprovação editorial",
+          "actor": "owner",
+          "estimatedTime": "3 min",
+          "completionCriterion": "A frase APROVADO PARA PUBLICAR foi enviada após a leitura do rascunho.",
+          "doNotShare": [
+            "Informações privadas durante a aprovação"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "Resolução CFM nº 2.336/2023",
+          "url": "https://sistemas.cfm.org.br/normas/visualizar/resolucoes/BR/2023/2336",
+          "kind": "official"
+        },
+        {
+          "title": "Manual de Publicidade Médica do CFM",
+          "url": "https://publicidademedica.cfm.org.br/",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p1-revisao-semanal",
+      "phase": "P1",
+      "priority": 1,
+      "title": "Revisão protetiva semanal",
+      "status": "live",
+      "actor": "codex",
+      "summary": "A rotina semanal produz laudo técnico-editorial e inventário de sinais. Ela não confirma infração e não corrige automaticamente.",
+      "dependsOn": [],
+      "estimatedTime": "5–20 min por execução automática semanal",
+      "ownerSteps": [
+        "Abrir o extrato quando houver aviso ou no momento reservado da semana.",
+        "Priorizar achados altos ou críticos.",
+        "Escolher corrigir, isolar, documentar ou solicitar revisão especializada."
+      ],
+      "codexSteps": [
+        "Executar testes, gates, fontes oficiais, rotas, downloads e inventário heurístico.",
+        "Publicar somente o extrato sanitizado e os artefatos técnicos previstos.",
+        "Não alterar conteúdo, baseline ou interpretação legal automaticamente."
+      ],
+      "doNotShare": [
+        "Segredo ou conteúdo privado em issue pública.",
+        "Dados pessoais em comentário do laudo.",
+        "Conclusão jurídica não revisada como se fosse fato."
+      ],
+      "completionCriteria": [
+        "Workflow agendado e acionável manualmente.",
+        "Laudo e hashes produzidos.",
+        "Achados classificados como sinais para revisão.",
+        "Extrato público sem dados restritos."
+      ],
+      "microActions": [
+        {
+          "id": "p1-executar-auditoria",
+          "label": "Executar auditoria semanal",
+          "actor": "codex",
+          "estimatedTime": "5–15 min automáticos",
+          "completionCriterion": "Laudo JSON, Markdown e fontes oficiais são gerados ou a execução sinaliza falha."
+        },
+        {
+          "id": "p1-publicar-extrato",
+          "label": "Publicar extrato sanitizado",
+          "actor": "codex",
+          "estimatedTime": "2–5 min automáticos",
+          "completionCriterion": "A issue semanal contém resumo, comparação e hashes, sem material privado."
+        }
+      ],
+      "sources": [
+        {
+          "title": "GitHub Actions — eventos agendados",
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule",
+          "kind": "official"
+        },
+        {
+          "title": "Lei nº 9.610/1998 — Direitos Autorais",
+          "url": "https://www.planalto.gov.br/ccivil_03/leis/l9610.htm",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p1-triagem-semanal",
+      "phase": "P1",
+      "priority": 1,
+      "title": "Triar o laudo em um bloco de 15 minutos",
+      "status": "ready",
+      "actor": "owner",
+      "summary": "A automação detecta; o proprietário decide. A meta é tomar uma decisão por achado prioritário, não resolver tudo de uma vez.",
+      "dependsOn": [
+        "p1-revisao-semanal"
+      ],
+      "estimatedTime": "15 min por semana",
+      "ownerSteps": [
+        "Abra a issue da semana e leia primeiro o resumo.",
+        "Trate altos e críticos antes dos demais.",
+        "Para cada item, escolha apenas uma ação: CORRIGIR, ISOLAR, DOCUMENTAR ou REVISÃO ESPECIALIZADA.",
+        "Não cole material privado na issue.",
+        "Envie ao Codex apenas o número da issue, o identificador do achado e a decisão."
+      ],
+      "codexSteps": [
+        "Transformar a decisão em uma entrega curta e reversível.",
+        "Rodar os testes proporcionais ao risco.",
+        "Registrar o resultado sem declarar imunidade jurídica."
+      ],
+      "sendToCodex": [
+        "Número público da issue semanal.",
+        "Identificador do achado.",
+        "Uma das quatro decisões previstas.",
+        "Contexto adicional somente se não for sensível."
+      ],
+      "doNotShare": [
+        "Documento pessoal.",
+        "Credencial.",
+        "Dados clínicos identificáveis.",
+        "Conversa privada.",
+        "Parecer jurídico confidencial.",
+        "Logs brutos com tokens."
+      ],
+      "completionCriteria": [
+        "Todos os achados altos ou críticos receberam decisão.",
+        "Itens duvidosos foram isolados antes de nova publicação.",
+        "Correções foram separadas em entregas rastreáveis."
+      ],
+      "microActions": [
+        {
+          "id": "p1-ler-prioritarios",
+          "label": "Ler somente o resumo e os prioritários",
+          "actor": "owner",
+          "estimatedTime": "5 min",
+          "completionCriterion": "Altos e críticos foram identificados sem abrir material desnecessário.",
+          "doNotShare": [
+            "Conteúdo privado"
+          ]
+        },
+        {
+          "id": "p1-decidir-achados",
+          "label": "Escolher uma decisão por achado",
+          "actor": "owner",
+          "estimatedTime": "7 min",
+          "completionCriterion": "Cada achado prioritário tem uma ação inequívoca.",
+          "doNotShare": [
+            "Fundamentação confidencial"
+          ]
+        },
+        {
+          "id": "p1-enviar-decisoes",
+          "label": "Enviar a lista mínima ao Codex",
+          "actor": "owner",
+          "estimatedTime": "3 min",
+          "completionCriterion": "Mensagem contém apenas issue, achado e decisão.",
+          "doNotShare": [
+            "Anexos privados",
+            "segredos"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "GitHub — gerenciamento de execuções de workflow",
+          "url": "https://docs.github.com/en/actions/how-tos/manage-workflow-runs",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p1-limite-automacao",
+      "phase": "P1",
+      "priority": 1,
+      "title": "Decidir o limite da automação diária",
+      "status": "owner-action",
+      "actor": "owner",
+      "summary": "A recomendação é automatizar coleta e rascunho, nunca publicação clínica autônoma. Custos e credenciais precisam de autorização separada.",
+      "dependsOn": [
+        "p1-radar-manual"
+      ],
+      "estimatedTime": "10 min",
+      "ownerSteps": [
+        "Escolha RASCUNHO DIÁRIO COM REVISÃO HUMANA como padrão recomendado.",
+        "Defina um teto mensal de custo antes de criar qualquer chave paga.",
+        "Confirme que a publicação final continuará exigindo aprovação humana.",
+        "Autorize ou adie a criação segura da chave de API."
+      ],
+      "codexSteps": [
+        "Apresentar estimativa e desenho do fluxo antes de solicitar uma chave.",
+        "Usar o fluxo seguro da plataforma para criação/configuração da chave.",
+        "Implementar deduplicação, prioridade, data e fonte.",
+        "Falhar fechado quando não houver fonte elegível."
+      ],
+      "sendToCodex": [
+        "A decisão: RASCUNHO DIÁRIO COM REVISÃO HUMANA ou ADIAR.",
+        "O teto de custo como faixa opcional, sem dados bancários.",
+        "A quantidade máxima de rascunhos diários."
+      ],
+      "doNotShare": [
+        "Chave da OpenAI.",
+        "Chave de qualquer provedor.",
+        "Dados de cartão.",
+        "Senha da conta.",
+        "Código de MFA.",
+        "Arquivo .env."
+      ],
+      "completionCriteria": [
+        "Modelo draft-only escolhido ou automação adiada.",
+        "Teto de custo definido.",
+        "Publicação humana obrigatória confirmada.",
+        "Canal seguro para segredo definido."
+      ],
+      "microActions": [
+        {
+          "id": "p1-escolher-draft-only",
+          "label": "Escolher draft-only ou adiar",
+          "actor": "owner",
+          "estimatedTime": "3 min",
+          "completionCriterion": "A decisão contém uma das duas opções previstas.",
+          "doNotShare": [
+            "Chave de API"
+          ]
+        },
+        {
+          "id": "p1-definir-limites",
+          "label": "Definir teto e volume",
+          "actor": "owner",
+          "estimatedTime": "4 min",
+          "completionCriterion": "Há limite mensal e máximo de rascunhos, sem informação financeira sensível.",
+          "doNotShare": [
+            "Dados bancários",
+            "cartão"
+          ]
+        },
+        {
+          "id": "p1-autorizar-configuracao",
+          "label": "Autorizar configuração segura",
+          "actor": "owner",
+          "estimatedTime": "3 min",
+          "completionCriterion": "Autorização não contém o valor de nenhuma chave.",
+          "doNotShare": [
+            "Token",
+            "segredo"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "OpenAI API — quickstart e configuração de chave",
+          "url": "https://platform.openai.com/docs/quickstart",
+          "kind": "official"
+        },
+        {
+          "title": "GitHub Actions — uso seguro",
+          "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p1-automacao-rascunho",
+      "phase": "P1",
+      "priority": 1,
+      "title": "Construir automação diária em modo rascunho",
+      "status": "blocked",
+      "actor": "codex",
+      "summary": "Bloqueada até P1-04. A rotina deverá coletar, deduplicar, priorizar e produzir rascunhos, sem publicar automaticamente.",
+      "dependsOn": [
+        "p1-limite-automacao"
+      ],
+      "estimatedTime": "2–4 h",
+      "ownerSteps": [
+        "Usar o fluxo seguro indicado para criar e armazenar a chave.",
+        "Aprovar o primeiro lote de homologação.",
+        "Revogar imediatamente qualquer chave que tenha sido exposta."
+      ],
+      "codexSteps": [
+        "Criar workflow com execução manual e agendada.",
+        "Fixar limites, deduplicação e ausência de conteúdo elegível como resultado válido.",
+        "Gerar artefato de rascunho para revisão, sem commit automático.",
+        "Registrar fontes, data, motivo de prioridade e limitações.",
+        "Testar repetição, falha de rede, limite de custo e segredo ausente."
+      ],
+      "doNotShare": [
+        "Chave da OpenAI em chat, arquivo ou log.",
+        "Credencial de fonte fechada.",
+        "Cookie de assinatura.",
+        "Dados clínicos identificáveis."
+      ],
+      "completionCriteria": [
+        "Execução sem segredo falha de forma segura.",
+        "Nenhum rascunho é publicado automaticamente.",
+        "Itens repetidos são recusados.",
+        "Toda entrada contém fonte e data.",
+        "Limites de volume e custo são aplicados.",
+        "Primeiro lote foi revisado por humano."
+      ],
+      "microActions": [
+        {
+          "id": "p1-implementar-coleta",
+          "label": "Implementar coleta e deduplicação",
+          "actor": "codex",
+          "estimatedTime": "60 min",
+          "completionCriterion": "Fontes repetidas e entradas sem referência elegível não geram rascunho."
+        },
+        {
+          "id": "p1-implementar-rascunho",
+          "label": "Implementar artefato draft-only",
+          "actor": "codex",
+          "estimatedTime": "60 min",
+          "completionCriterion": "Saída exige revisão e não modifica a branch pública."
+        },
+        {
+          "id": "p1-homologar-automacao",
+          "label": "Homologar limites e falhas",
+          "actor": "joint",
+          "estimatedTime": "45 min",
+          "completionCriterion": "Testes cobrem segredo ausente, rede, repetição e teto de volume."
+        }
+      ],
+      "sources": [
+        {
+          "title": "GitHub Actions — eventos que disparam workflows",
+          "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows",
+          "kind": "official"
+        },
+        {
+          "title": "GitHub Actions — referência de segredos",
+          "url": "https://docs.github.com/en/actions/reference/security/secrets",
+          "kind": "official"
+        },
+        {
+          "title": "OpenAI API — quickstart",
+          "url": "https://platform.openai.com/docs/quickstart",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p2-escolher-modulo",
+      "phase": "P2",
+      "priority": 2,
+      "title": "Escolher o próximo módulo clínico",
+      "status": "owner-action",
+      "actor": "owner",
+      "summary": "Escolha uma única frente para evitar dispersão. Ordem sugerida: Sepse e Choque, AKI/TRS, Infectologia ou Endócrino-metabólico.",
+      "dependsOn": [],
+      "estimatedTime": "5 min",
+      "ownerSteps": [
+        "Escolha apenas um código: SEPSE, AKI-TRS, INFECTO ou ENDOCRINO.",
+        "Se houver protocolo local autorizado, informe apenas o título e a versão.",
+        "Indique o objetivo principal: plantão, prova ou ambos.",
+        "Confirme quem fará a revisão humana antes da publicação."
+      ],
+      "codexSteps": [
+        "Propor escopo mínimo e produtos didáticos do módulo escolhido.",
+        "Buscar e citar fontes primárias/autoridades vigentes.",
+        "Construir em branch separada e manter status de revisão até aprovação."
+      ],
+      "sendToCodex": [
+        "Um código entre SEPSE, AKI-TRS, INFECTO ou ENDOCRINO.",
+        "Objetivo: PLANTÃO, PROVA ou AMBOS.",
+        "Título e versão de protocolo local autorizado, sem o documento se houver restrição."
+      ],
+      "doNotShare": [
+        "Dados clínicos identificáveis.",
+        "Protocolo institucional restrito sem autorização.",
+        "Documento fechado de terceiros.",
+        "Credencial de acesso.",
+        "Caso real reidentificável."
+      ],
+      "completionCriteria": [
+        "Um único módulo escolhido.",
+        "Objetivo e público definidos.",
+        "Fontes autorizadas identificadas.",
+        "Responsável pela revisão definido."
+      ],
+      "microActions": [
+        {
+          "id": "p2-selecionar-codigo",
+          "label": "Escolher um código de módulo",
+          "actor": "owner",
+          "estimatedTime": "1 min",
+          "completionCriterion": "Somente um dos quatro códigos foi escolhido.",
+          "doNotShare": [
+            "Dados clínicos identificáveis"
+          ]
+        },
+        {
+          "id": "p2-definir-objetivo",
+          "label": "Definir objetivo e revisão",
+          "actor": "owner",
+          "estimatedTime": "3 min",
+          "completionCriterion": "Objetivo e responsável por revisão foram informados.",
+          "doNotShare": [
+            "Credencial profissional não verificada como fato público"
+          ]
+        },
+        {
+          "id": "p2-enviar-comando",
+          "label": "Enviar o comando mínimo",
+          "actor": "owner",
+          "estimatedTime": "1 min",
+          "completionCriterion": "Mensagem contém código, objetivo e informação de revisão, sem anexos restritos.",
+          "doNotShare": [
+            "Documento protegido sem autorização"
+          ]
+        }
+      ],
+      "sources": []
+    },
+    {
+      "id": "p2-construir-modulo",
+      "phase": "P2",
+      "priority": 2,
+      "title": "Construir o módulo escolhido em lote curto",
+      "status": "planned",
+      "actor": "codex",
+      "summary": "Será executado somente após P2-01, com conteúdo dirigido por dados, produtos Turbo TEMI, acessibilidade e revisão humana.",
+      "dependsOn": [
+        "p2-escolher-modulo"
+      ],
+      "estimatedTime": "1–2 ciclos de implementação",
+      "ownerSteps": [
+        "Responder dúvidas factuais que mudem o escopo.",
+        "Revisar conteúdo e testes clínicos antes da publicação.",
+        "Autorizar o merge somente após conferir limites e fontes."
+      ],
+      "codexSteps": [
+        "Definir contrato mínimo e catálogo de conteúdo.",
+        "Criar modo rápido, diagnóstico difícil, questões, flashcards e alertas.",
+        "Testar campos, teclado, contraste, mobile e redução de movimento.",
+        "Registrar fontes e revisão no gate editorial.",
+        "Publicar em Pull Request exclusiva."
+      ],
+      "doNotShare": [
+        "Dados clínicos identificáveis.",
+        "Material protegido sem direito de uso.",
+        "Credenciais.",
+        "Conclusão maior que a fonte."
+      ],
+      "completionCriteria": [
+        "Catálogo separado da interface.",
+        "Fontes rastreáveis.",
+        "Produtos didáticos funcionais.",
+        "Testes automatizados e homologação visual aprovados.",
+        "Revisão humana documentada."
+      ],
+      "microActions": [
+        {
+          "id": "p2-definir-catalogo",
+          "label": "Definir catálogo e contrato",
+          "actor": "codex",
+          "estimatedTime": "30 min",
+          "completionCriterion": "Dados, limites, fontes e estados de revisão estão separados da interface."
+        },
+        {
+          "id": "p2-construir-produtos",
+          "label": "Construir produtos didáticos",
+          "actor": "codex",
+          "estimatedTime": "1 ciclo",
+          "completionCriterion": "Produtos definidos no escopo funcionam sem backend obrigatório."
+        },
+        {
+          "id": "p2-revisar-publicar",
+          "label": "Revisar e publicar",
+          "actor": "joint",
+          "estimatedTime": "30–60 min",
+          "completionCriterion": "Testes e revisão humana passam antes do merge."
+        }
+      ],
+      "sources": []
+    },
+    {
+      "id": "p2-protecao-formal",
+      "phase": "P2",
+      "priority": 2,
+      "title": "Preparar proteção formal de marca e obras",
+      "status": "planned",
+      "actor": "owner",
+      "summary": "O repositório mantém autoria, datas e hashes, mas registro formal e aconselhamento jurídico são atos externos e humanos.",
+      "dependsOn": [],
+      "estimatedTime": "Decisão de 20 min; execução externa variável",
+      "ownerSteps": [
+        "Escolha quais elementos deseja avaliar para registro: nome, logotipo, código, textos ou conjunto editorial.",
+        "Solicite inventário datado e pacote com checksums ao Codex.",
+        "Consulte os procedimentos oficiais e, se necessário, profissional habilitado.",
+        "Faça protocolo e pagamento somente nos canais oficiais.",
+        "Guarde comprovantes em armazenamento privado, não no site público."
+      ],
+      "codexSteps": [
+        "Gerar inventário factual, pacote datado e checksums.",
+        "Separar obras próprias de marcas, fontes e materiais de terceiros.",
+        "Não prometer exclusividade, imunidade ou êxito de registro."
+      ],
+      "sendToCodex": [
+        "Lista dos elementos que deseja inventariar.",
+        "Confirmação de que quer um pacote técnico, não um parecer jurídico.",
+        "Número público do protocolo somente se desejar registrá-lo editorialmente."
+      ],
+      "doNotShare": [
+        "Documento de identidade.",
+        "Comprovante de residência.",
+        "Dados de pagamento.",
+        "Procuração.",
+        "Recibo completo com dados pessoais.",
+        "Parecer jurídico confidencial."
+      ],
+      "completionCriteria": [
+        "Escopo de proteção escolhido.",
+        "Inventário e checksums preparados.",
+        "Obras de terceiros separadas.",
+        "Protocolo externo, se realizado, guardado com privacidade."
+      ],
+      "microActions": [
+        {
+          "id": "p2-escolher-protecao",
+          "label": "Escolher o escopo",
+          "actor": "owner",
+          "estimatedTime": "10 min",
+          "completionCriterion": "Lista distingue nome, marca, código e obras editoriais.",
+          "doNotShare": [
+            "Documentos pessoais"
+          ]
+        },
+        {
+          "id": "p2-solicitar-inventario",
+          "label": "Solicitar inventário técnico",
+          "actor": "owner",
+          "estimatedTime": "2 min",
+          "completionCriterion": "Pedido limita-se ao pacote técnico e seus checksums.",
+          "doNotShare": [
+            "Parecer confidencial"
+          ]
+        },
+        {
+          "id": "p2-executar-registro",
+          "label": "Executar procedimento oficial",
+          "actor": "owner",
+          "estimatedTime": "20–120 min",
+          "completionCriterion": "Protocolo foi realizado no canal oficial ou a decisão de adiar foi registrada.",
+          "doNotShare": [
+            "Pagamento",
+            "documento de identidade",
+            "procuração"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "title": "Lei nº 9.610/1998 — Direitos Autorais",
+          "url": "https://www.planalto.gov.br/ccivil_03/leis/l9610.htm",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "p2-apps-nativos",
+      "phase": "P2",
+      "priority": 2,
+      "title": "Avaliar aplicativos nativos assinados",
+      "status": "planned",
+      "actor": "joint",
+      "summary": "Os pacotes atuais são acessos facilitados. Aplicativos nativos exigem contas, certificados, revisão de privacidade e custo externo.",
+      "dependsOn": [
+        "p0-homologacao-final"
+      ],
+      "estimatedTime": "Planejamento de 30 min; desenvolvimento posterior",
+      "ownerSteps": [
+        "Decidir quais plataformas realmente justificam aplicativo nativo.",
+        "Aprovar previamente custos de contas e certificados.",
+        "Criar contas oficiais diretamente nos fornecedores.",
+        "Guardar chaves privadas em cofre próprio."
+      ],
+      "codexSteps": [
+        "Comparar PWA, wrapper assinado e aplicativo nativo.",
+        "Propor o menor escopo útil e reversível.",
+        "Não pedir exportação de chave privada para chat ou Git.",
+        "Testar instalação física antes de declarar homologação."
+      ],
+      "doNotShare": [
+        "Chave privada de assinatura.",
+        "Certificado com segredo exportável.",
+        "Senha de conta de desenvolvedor.",
+        "Código de MFA.",
+        "Dados de pagamento."
+      ],
+      "completionCriteria": [
+        "Necessidade por plataforma demonstrada.",
+        "Custos aprovados.",
+        "Conta oficial criada pelo proprietário.",
+        "Plano de assinatura, atualização e desinstalação definido."
+      ],
+      "microActions": [
+        {
+          "id": "p2-escolher-plataformas",
+          "label": "Escolher plataformas prioritárias",
+          "actor": "owner",
+          "estimatedTime": "10 min",
+          "completionCriterion": "Há uma ordem clara entre macOS, Windows e iOS.",
+          "doNotShare": [
+            "Credencial de loja"
+          ]
+        },
+        {
+          "id": "p2-comparar-formatos",
+          "label": "Comparar formatos de distribuição",
+          "actor": "codex",
+          "estimatedTime": "20 min",
+          "completionCriterion": "Comparação cobre custo, assinatura, atualização, privacidade e manutenção."
+        },
+        {
+          "id": "p2-autorizar-plataforma",
+          "label": "Autorizar uma plataforma por vez",
+          "actor": "owner",
+          "estimatedTime": "5 min",
+          "completionCriterion": "A autorização identifica uma plataforma e um limite de custo.",
+          "doNotShare": [
+            "Dados de pagamento",
+            "chave privada"
+          ]
+        }
+      ],
+      "sources": []
+    },
+    {
+      "id": "p2-versao-ingles",
+      "phase": "P2",
+      "priority": 2,
+      "title": "Expandir a versão em inglês",
+      "status": "planned",
+      "actor": "joint",
+      "summary": "A tradução deve seguir a fonte estável em português, preservar referências e receber revisão antes de ampliar rotas.",
+      "dependsOn": [
+        "p1-radar-manual"
+      ],
+      "estimatedTime": "60–180 min por lote de páginas",
+      "ownerSteps": [
+        "Escolha um lote pequeno de páginas prioritárias.",
+        "Defina se a revisão será apenas linguística ou também clínica.",
+        "Aprove cada lote antes da publicação."
+      ],
+      "codexSteps": [
+        "Traduzir sem ampliar alegações.",
+        "Preservar fontes, datas, limites e estado de revisão.",
+        "Testar rotas, idioma, tema e responsividade.",
+        "Publicar um lote por Pull Request."
+      ],
+      "doNotShare": [
+        "Documento restrito.",
+        "Material protegido sem autorização.",
+        "Dados clínicos identificáveis."
+      ],
+      "completionCriteria": [
+        "Lote prioritário definido.",
+        "Fonte em português estabilizada.",
+        "Revisão adequada ao conteúdo concluída.",
+        "Rotas e metadados em inglês testados."
+      ],
+      "microActions": [
+        {
+          "id": "p2-escolher-lote-ingles",
+          "label": "Escolher lote inicial",
+          "actor": "owner",
+          "estimatedTime": "5 min",
+          "completionCriterion": "Foram escolhidas no máximo três páginas.",
+          "doNotShare": [
+            "Conteúdo restrito"
+          ]
+        },
+        {
+          "id": "p2-traduzir-lote",
+          "label": "Traduzir e preservar proveniência",
+          "actor": "codex",
+          "estimatedTime": "30–120 min",
+          "completionCriterion": "Texto traduzido mantém fontes, datas e limites do original."
+        },
+        {
+          "id": "p2-publicar-lote-ingles",
+          "label": "Revisar e publicar o lote",
+          "actor": "joint",
+          "estimatedTime": "20–40 min",
+          "completionCriterion": "Revisão e testes passam antes do merge."
+        }
+      ],
+      "sources": []
+    }
+  ],
+  "ownerHandoffTemplate": {
+    "title": "Resposta mínima para continuar a P0",
+    "lines": [
+      "ETAPA P0",
+      "E-mail institucional criado e testado: SIM ou NÃO",
+      "Exibição pública do e-mail autorizada: SIM, NÃO ou DEPOIS",
+      "Projeto Supabase de homologação criado: SIM ou NÃO",
+      "Confirmação de e-mail ativa: SIM ou NÃO",
+      "Quero continuar com orientação tela a tela: SIM"
+    ],
+    "warning": "Não inclua senha, service-role, chave de API, código de MFA, token, arquivo .env ou dados pessoais desnecessários."
+  }
+}

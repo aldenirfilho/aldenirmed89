@@ -1782,6 +1782,13 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
 .status-done{background:var(--grn-d);color:var(--green);border:1px solid rgba(78,240,161,.2)}
 .status-active{background:var(--cyan-d);color:var(--cyan);border:1px solid rgba(62,232,255,.2)}
 .status-next{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--brd)}
+.roadmap-actions{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  margin-top:22px;padding:20px 22px;border:1px solid rgba(62,232,255,.25);
+  border-radius:var(--r-lg);background:linear-gradient(135deg,var(--cyan-d),rgba(169,140,255,.08));
+}
+.roadmap-actions p{margin:0;color:var(--soft);max-width:72ch}
+.roadmap-actions .btn{flex:0 0 auto}
 
 /* ── SAFETY BANNER ────────────────────────────────── */
 .safety-banner{
@@ -2078,6 +2085,8 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   .timeline::before{left:29px;right:auto;top:18px;bottom:18px;width:2px;height:auto}
   .phase{padding:22px 18px 22px 62px}
   .phase-dot{left:18px;top:22px}
+  .roadmap-actions{align-items:flex-start;flex-direction:column}
+  .roadmap-actions .btn{width:100%;justify-content:center}
   .dsf-tabs{flex-wrap:wrap}
   input,select,textarea,.map-search,.mnem-search{font-size:16px}
   .a11y-panel{
@@ -3148,16 +3157,16 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   <div class="shell">
     <div class="reveal section-intro">
       <div class="section-label">// evolução do projeto</div>
-      <h2 class="section-title" id="road-heading">Roadmap 🧗</h2>
-      <p class="section-sub">Construção incremental — primeiro a base sólida, depois escala e inteligência.</p>
+      <h2 class="section-title" id="road-heading">Roadmap operacional 🧭</h2>
+      <p class="section-sub">Estado real, responsabilidades separadas e uma próxima ação por vez. Marcação local nunca substitui homologação.</p>
     </div>
     <div class="timeline" role="list">
 
       <div class="phase" role="listitem">
         <div class="phase-dot" style="border-color:var(--green);color:var(--green)">✓</div>
         <div class="phase-body">
-          <h3>Fase 1 — Fundação visual e infraestrutura</h3>
-          <p>Homepage, Biblioteca IA indexada, UpDown Hub, Calculadoras e Card Feed no ar.</p>
+          <h3>Fase 1 — Fundação publicada</h3>
+          <p>Home, Portais, Estações, Biblioteca, Feed, módulos críticos, apps e guias públicos versionados.</p>
           <span class="phase-status status-done">● Concluído</span>
         </div>
       </div>
@@ -3165,30 +3174,35 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
       <div class="phase" role="listitem">
         <div class="phase-dot" style="border-color:var(--cyan);color:var(--cyan)">2</div>
         <div class="phase-body">
-          <h3>Fase 2 — Conteúdo clínico profundo</h3>
-          <p>AVC Agudo, CAD na UTI, LES (3 facetas) publicados. Pipeline editorial ativo. Mapa Vivo com conexões reais.</p>
-          <span class="phase-status status-active">◉ Em andamento</span>
+          <h3>Fase 2 — Segurança e operação honesta</h3>
+          <p>Gates editoriais, revisão semanal, estados desconectados, rotas seguras e proteção de dados sem simular serviços.</p>
+          <span class="phase-status status-done">● Concluído</span>
         </div>
       </div>
 
       <div class="phase" role="listitem">
         <div class="phase-dot" style="border-color:var(--violet);color:var(--violet)">3</div>
         <div class="phase-body">
-          <h3>Fase 3 — Banco TEMI expandido e simulações</h3>
-          <p>50+ questões comentadas, simulados cronometrados, flashcards com SRS, módulos de Sepse e Ventilação Mecânica.</p>
-          <span class="phase-status status-next">○ Próxima fase</span>
+          <h3>Fase 3 — Decisões e homologação</h3>
+          <p>Origem autenticada, regras de cadastro, métricas públicas, privacidade, Supabase de teste, MFA, CAPTCHA e e-mail institucional.</p>
+          <span class="phase-status status-active">◉ Depende de decisões</span>
         </div>
       </div>
 
       <div class="phase" role="listitem">
         <div class="phase-dot" style="border-color:var(--yellow);color:var(--yellow)">4</div>
         <div class="phase-body">
-          <h3>Fase 4 — Busca semântica global e monetização</h3>
-          <p>Motor de busca full-text em todos os módulos. Conteúdo premium para residentes e acesso institucional.</p>
-          <span class="phase-status status-next">○ Planejada</span>
+          <h3>Fase 4 — Piloto e expansão contínua</h3>
+          <p>Testes reais de RLS, conta owner com MFA, piloto restrito, manifestações, boletim e só então escala de conteúdo e tripulação.</p>
+          <span class="phase-status status-next">○ Após homologação</span>
         </div>
       </div>
 
+    </div>
+
+    <div class="roadmap-actions reveal">
+      <p><strong>Quer saber exatamente o que fazer agora?</strong> A Central de Ativação divide o plano em blocos de 5–20 minutos, mostra os cuidados com credenciais e gera um retorno seguro para o Codex.</p>
+      <a class="btn btn-primary" href="21_Central_Ativacao/index.html">🚀 Abrir Central de Ativação</a>
     </div>
 
     <!-- Safety banner -->
@@ -3247,7 +3261,8 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
         <a href="https://github.com/aldenirfilho/antigravity-consultas#readme">Documentação</a>
         <a href="19_Integridade_Editorial/index.html">🛡️ Integridade e responsabilidade editorial</a>
         <a href="20_Conheca_Aldenir/index.html">✦ Conheça Aldenir, idealizador</a>
-        <a href="#roadmap">Roadmap</a>
+        <a href="21_Central_Ativacao/index.html">🚀 Central de Ativação</a>
+        <a href="#roadmap">Resumo do roadmap</a>
         <a href="#pipeline">Como funciona</a>
       </div>
     </div>
@@ -3266,7 +3281,8 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
     <strong>Aldenir Rocha de Oliveira Filho</strong> · editor, criador,
     codificador, produtor, atualizador e patrocinador independente.
     <a href="19_Integridade_Editorial/index.html">Integridade editorial</a> ·
-    <a href="20_Conheca_Aldenir/index.html">Conheça o idealizador</a>
+    <a href="20_Conheca_Aldenir/index.html">Conheça o idealizador</a> ·
+    <a href="21_Central_Ativacao/index.html">Próximas etapas</a>
   </p>
   <p class="antigravity-editorial-attribution__scope">
     A atribuição refere-se à plataforma e à curadoria original; fontes,

@@ -48,6 +48,7 @@ REQUIRED = (
     "18_Centro_Tripulacao",
     "19_Integridade_Editorial",
     "20_Conheca_Aldenir",
+    "21_Central_Ativacao",
     "01_Modulos_Clinicos",
     "en",
     "questoes",

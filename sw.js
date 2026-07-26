@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v11`;
+const CACHE_NAME = `${CACHE_PREFIX}v12`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -39,6 +39,10 @@ const WARM_ASSETS = [
   "./20_Conheca_Aldenir/assets/app.js",
   "./20_Conheca_Aldenir/data/content/public-documents.json",
   "./20_Conheca_Aldenir/data/content/public-feed.json",
+  "./21_Central_Ativacao/index.html",
+  "./21_Central_Ativacao/assets/app.js",
+  "./21_Central_Ativacao/assets/styles.css",
+  "./21_Central_Ativacao/data/roadmap.json",
   "./assets/editorial-attribution.css",
   "./data/editorial/editorial-provenance.json",
   "./data/theme-catalog.json",
@@ -69,6 +73,8 @@ const WARM_ASSETS = [
   "./docs_usuario/PORTAL_VIVO_PUBLICACAO.md",
   "./docs_usuario/CENTRO_TRIPULACAO/index.html",
   "./docs_usuario/CENTRO_TRIPULACAO.md",
+  "./docs_usuario/PROXIMAS_ETAPAS/index.html",
+  "./docs_usuario/PROXIMAS_ETAPAS.md",
   "./docs_usuario/ACESSO_DOCK_MAC/index.html",
   "./docs_usuario/ACESSO_DOCK_MAC.md",
   "./docs_usuario/ACESSO_WINDOWS/index.html",

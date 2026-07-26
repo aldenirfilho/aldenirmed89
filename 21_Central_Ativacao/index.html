@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="color-scheme" content="dark light"/>
+  <meta name="theme-color" content="#061526"/>
+  <title>Central de Ativação e Próximas Etapas · Antigravity</title>
+  <meta name="description" content="Roadmap operacional TDAH-friendly do Antigravity, com microações, responsabilidades e critérios de conclusão verificáveis."/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'"/>
+  <link rel="icon" href="../assets/icons/antigravity-consultas-64.png" type="image/png"/>
+  <link rel="stylesheet" href="./assets/styles.css"/>
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para as próximas etapas</a>
+
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="Antigravity — página inicial">
+      <img src="../assets/icons/antigravity-consultas-64.png" alt="" width="42" height="42"/>
+      <span><strong>ANTIGRAVITY</strong><small>Central de Ativação</small></span>
+    </a>
+    <nav aria-label="Navegação da Central">
+      <a href="../18_Centro_Tripulacao/">Centro da Tripulação</a>
+      <a href="../docs_usuario/PROXIMAS_ETAPAS/">Guia completo</a>
+      <a href="../19_Integridade_Editorial/">Integridade</a>
+    </nav>
+    <button id="themeButton" class="icon-button" type="button" aria-label="Ativar visualização clara" aria-pressed="false">☀️ Claro</button>
+    <a class="home-link" href="../">← Home</a>
+  </header>
+
+  <main id="main" class="page-shell">
+    <noscript>
+      <p class="notice danger">A lista interativa precisa de JavaScript. O guia textual continua disponível em “Guia completo”.</p>
+    </noscript>
+
+    <section class="hero" aria-labelledby="pageTitle">
+      <div class="hero-copy">
+        <p class="eyebrow">COMANDO OPERACIONAL · SEM PRESSA · SEM SEGREDOS</p>
+        <h1 id="pageTitle">Faça só a próxima coisa certa.</h1>
+        <p class="lead">O sistema separa o que já está no ar, o que o Codex consegue executar e o que depende de uma decisão sua. Marcar uma caixa registra apenas progresso neste navegador — não ativa serviços nem comprova homologação.</p>
+        <div class="hero-actions">
+          <button id="focusNextButton" class="primary-button" type="button" disabled>🎯 Focar na próxima microação</button>
+          <button id="copyReturnButton" class="secondary-button" type="button" disabled>📋 Copiar retorno seguro</button>
+          <button id="exportButton" class="secondary-button" type="button" disabled>⬇️ Exportar progresso</button>
+          <button id="printButton" class="ghost-button" type="button">🖨️ Imprimir</button>
+        </div>
+      </div>
+      <aside class="mission-status" aria-labelledby="missionStatusTitle">
+        <span class="status-orbit" aria-hidden="true"></span>
+        <p class="eyebrow">STATUS DA MISSÃO</p>
+        <h2 id="missionStatusTitle">Carregando plano verificado…</h2>
+        <p id="roadmapMeta">Nenhuma tarefa foi marcada ainda.</p>
+        <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
+        <strong id="progressLabel">0% do progresso local</strong>
+      </aside>
+    </section>
+
+    <section class="security-banner" role="note" aria-labelledby="securityTitle">
+      <div aria-hidden="true">🔐</div>
+      <div>
+        <h2 id="securityTitle">Pare antes de colar qualquer segredo</h2>
+        <p>Nunca envie por chat, GitHub ou formulário público: senha, chave <code>sb_secret_…</code>, <code>service_role</code>, token de e-mail, segredo do CAPTCHA, chave privada ou conexão do banco. A chave pública <code>sb_publishable_…</code> só entra depois de RLS e homologação.</p>
+      </div>
+    </section>
+
+    <section class="next-action" aria-labelledby="nextActionTitle">
+      <div>
+        <p class="eyebrow">AGORA · UMA AÇÃO</p>
+        <h2 id="nextActionTitle">Aguardando o roadmap…</h2>
+        <p id="nextActionText">O plano público ainda está sendo carregado.</p>
+      </div>
+      <div class="next-meta">
+        <span id="nextActor">—</span>
+        <strong id="nextTime">—</strong>
+      </div>
+    </section>
+
+    <section class="dashboard" aria-labelledby="dashboardTitle">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PAINEL DE CONTROLE</p>
+          <h2 id="dashboardTitle">Etapas por responsabilidade</h2>
+        </div>
+        <p>O estado público vem do arquivo versionado. As caixas locais servem apenas como apoio de atenção.</p>
+      </div>
+      <div class="metrics" aria-label="Resumo do roadmap">
+        <article><span>No ar</span><strong id="liveCount">—</strong></article>
+        <article><span>Pronto</span><strong id="readyCount">—</strong></article>
+        <article><span>Precisa de você</span><strong id="ownerCount">—</strong></article>
+        <article><span>Bloqueado/Depois</span><strong id="laterCount">—</strong></article>
+      </div>
+      <div class="filter-bar" role="group" aria-label="Filtrar próximas etapas">
+        <button type="button" class="filter-button is-active" data-filter="now" aria-pressed="true">⚡ Agora</button>
+        <button type="button" class="filter-button" data-filter="owner" aria-pressed="false">👤 Depende de mim</button>
+        <button type="button" class="filter-button" data-filter="codex" aria-pressed="false">🤖 Codex executa</button>
+        <button type="button" class="filter-button" data-filter="done" aria-pressed="false">✅ Concluído</button>
+        <button type="button" class="filter-button" data-filter="all" aria-pressed="false">🗺️ Tudo</button>
+      </div>
+      <p id="loadStatus" class="load-status" role="status" aria-live="polite">Carregando etapas verificadas…</p>
+      <div id="roadmapList" class="roadmap-list" aria-busy="true"></div>
+    </section>
+
+    <section id="focusPanel" class="focus-panel" aria-labelledby="focusTitle" hidden>
+      <div class="focus-head">
+        <div>
+          <p class="eyebrow">MODO FOCO · 15 MINUTOS</p>
+          <h2 id="focusTitle">Uma microação por vez</h2>
+        </div>
+        <button id="closeFocusButton" class="icon-button" type="button">Fechar foco</button>
+      </div>
+      <p id="focusTaskTitle" class="focus-task">—</p>
+      <p id="focusActionText" class="focus-action">—</p>
+      <strong id="focusTimer" class="focus-timer" aria-live="polite">15:00</strong>
+      <div class="focus-actions">
+        <button id="timerStartButton" class="primary-button" type="button">▶ Iniciar</button>
+        <button id="timerPauseButton" class="secondary-button" type="button" disabled>⏸ Pausar</button>
+        <button id="timerResetButton" class="ghost-button" type="button">↺ Reiniciar</button>
+      </div>
+      <p>Ao terminar, marque a microação no cartão correspondente. O cronômetro não envia nem grava dados.</p>
+    </section>
+
+    <section class="handoff" aria-labelledby="handoffTitle">
+      <div>
+        <p class="eyebrow">RETORNO PARA O CODEX</p>
+        <h2 id="handoffTitle">Diga o que concluiu, não envie credenciais.</h2>
+        <p>O botão “Copiar retorno seguro” gera somente IDs de tarefas e decisões sem valores privados. Se precisar fornecer configuração pública, use apenas os campos explicitamente classificados como públicos no guia.</p>
+      </div>
+      <button id="resetButton" class="danger-button" type="button" disabled>Apagar progresso local</button>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Central de Ativação Antigravity</strong> · roteiro operacional público, sem telemetria e sem backend.</p>
+    <p>Idealização e curadoria editorial: Aldenir Rocha de Oliveira Filho · ATV · TURBO TEMI · ALD 360.</p>
+  </footer>
+
+  <script src="./assets/app.js" defer></script>
+</body>
+</html>

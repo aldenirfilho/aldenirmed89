@@ -1,7 +1,7 @@
 {
   "updatedAt": "2026-07-25T21:55:11",
-  "version": "4.4-unified",
-  "description": "Mapa vivo organizado da Enciclopédia: Home, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos e macrotemas de UTI.",
+  "version": "4.5-activation",
+  "description": "Mapa vivo organizado da Enciclopédia: Home, Central de Ativação, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos e macrotemas de UTI.",
   "legend": {
     "hub": "Nó central do projeto",
     "biblioteca": "Base de documentos e curadoria IA",
@@ -22,6 +22,16 @@
       "y": 50,
       "type": "hub",
       "url": "index.html",
+      "status": "ativo"
+    },
+    {
+      "id": "central-ativacao",
+      "label": "🚀 Central de Ativação",
+      "body": "Roadmap operacional TDAH-friendly com microações, responsáveis, dependências, critérios verificáveis e retorno seguro ao Codex.",
+      "x": 50,
+      "y": 34,
+      "type": "hub",
+      "url": "21_Central_Ativacao/index.html",
       "status": "ativo"
     },
     {
@@ -983,6 +993,31 @@
     }
   ],
   "edges": [
+    {
+      "from": "home",
+      "to": "central-ativacao",
+      "relation": "proximas-etapas"
+    },
+    {
+      "from": "central-ativacao",
+      "to": "centro-tripulacao",
+      "relation": "homologacao-segura"
+    },
+    {
+      "from": "central-ativacao",
+      "to": "radar-diario",
+      "relation": "operacao-continua"
+    },
+    {
+      "from": "central-ativacao",
+      "to": "integridade-editorial",
+      "relation": "gate-e-revisao"
+    },
+    {
+      "from": "central-ativacao",
+      "to": "banco-temi",
+      "relation": "expansao-didatica"
+    },
     {
       "from": "home",
       "to": "portal-vivo",

@@ -91,6 +91,7 @@ jobs:
           BASE_SHA="${{ github.event.pull_request.base.sha || github.event.before || github.sha }}"
           python3 scripts_admin/editorial_gate.py --check --json
           python3 scripts_admin/editorial_gate.py --check --changed-since "$BASE_SHA" --json
+          python3 scripts_admin/validate_activation_roadmap.py --json
           python3 -m unittest discover -s tests -p 'test_*.py' -v
           node tests/validate_clinical_catalogs.js
           python3 scripts_admin/check_static_manifests.py
@@ -167,6 +168,10 @@ jobs:
           test -s site/20_Conheca_Aldenir/assets/app.js
           test -s site/20_Conheca_Aldenir/data/content/public-documents.json
           test -s site/20_Conheca_Aldenir/data/content/public-feed.json
+          test -s site/21_Central_Ativacao/index.html
+          test -s site/21_Central_Ativacao/assets/app.js
+          test -s site/21_Central_Ativacao/assets/styles.css
+          test -s site/21_Central_Ativacao/data/roadmap.json
           test -s site/assets/editorial-attribution.css
           test -s site/data/editorial/editorial-provenance.json
           test ! -e site/data/editorial/registry.json
@@ -183,6 +188,7 @@ jobs:
           test -s site/docs_usuario/RADAR_CIENTIFICO_OPERACAO.md
           test -s site/docs_usuario/PORTAL_VIVO_PUBLICACAO.md
           test -s site/docs_usuario/CENTRO_TRIPULACAO.md
+          test -s site/docs_usuario/PROXIMAS_ETAPAS.md
           test -s site/docs_usuario/OPERACAO_CONTINUA.md
           test -s site/docs_usuario/ACESSO_DOCK_MAC.md
           test -s site/docs_usuario/ACESSO_WINDOWS.md
@@ -194,6 +200,7 @@ jobs:
           test -s site/docs_usuario/RADAR_CIENTIFICO_OPERACAO/index.html
           test -s site/docs_usuario/PORTAL_VIVO_PUBLICACAO/index.html
           test -s site/docs_usuario/CENTRO_TRIPULACAO/index.html
+          test -s site/docs_usuario/PROXIMAS_ETAPAS/index.html
           test -s site/docs_usuario/OPERACAO_CONTINUA/index.html
           test -s site/docs_usuario/ACESSO_DOCK_MAC/index.html
           test -s site/docs_usuario/ACESSO_WINDOWS/index.html
