@@ -82,30 +82,170 @@ class ScientificRadarTests(unittest.TestCase):
             (RADAR / "data/radar-history.json").read_text(encoding="utf-8")
         )
 
-    def test_daily_edition_has_unique_evidence_and_exactly_ten_visuals(self):
+    def test_radar_v2_has_unique_evidence_and_exactly_ten_visuals(self):
+        self.assertEqual(self.radar["schemaVersion"], "radar-v2")
         scientific = self.radar["scientific"]
         visuals = self.radar["visuals"]
         self.assertGreaterEqual(len(scientific), 10)
         self.assertEqual(len({item["id"] for item in scientific}), len(scientific))
         self.assertEqual(len(visuals), 10)
         self.assertEqual(len({item["id"] for item in visuals}), 10)
+        item_ids = {
+            item["id"]
+            for group in ("scientific", "geopolitics", "commercial")
+            for item in self.radar[group]
+        }
+        visual_files = set()
         for visual in visuals:
+            self.assertIn(visual["itemId"], item_ids)
             self.assertTrue(visual["source"])
             self.assertTrue(visual["date"])
             self.assertTrue(visual["sourceUrl"].startswith("https://"))
-            relative = visual["file"].removeprefix("./")
-            self.assertTrue((RADAR / relative).is_file(), relative)
+            self.assertGreaterEqual(len(visual["alt"]), 40)
+            self.assertEqual(
+                set(visual["transcript"]),
+                {"question", "evidence", "practice", "limit"},
+            )
+            self.assertTrue(all(visual["transcript"].values()))
+            self.assertEqual(visual["file"], visual["cardFile"])
+            self.assertNotEqual(visual["cardFile"], visual["wideFile"])
+            for field in ("cardFile", "wideFile"):
+                relative = visual[field].removeprefix("./")
+                visual_files.add(relative)
+                self.assertTrue((RADAR / relative).is_file(), relative)
+        self.assertEqual(len(visual_files), 20)
 
-    def test_visuals_render_clickable_citations_with_official_origin_icons(self):
+    def test_commercial_channel_has_three_referenced_visual_pairs_and_safeguards(self):
+        commercial = self.radar["commercial"]
+        product_visuals = self.radar["productVisuals"]
+        self.assertEqual(len(commercial), 3)
+        self.assertEqual(len(product_visuals), 3)
+        self.assertEqual(len({item["id"] for item in commercial}), 3)
+        self.assertEqual(len({item["id"] for item in product_visuals}), 3)
+        commercial_ids = {item["id"] for item in commercial}
+        product_files = set()
+        for item in commercial:
+            self.assertEqual(item["section"], "commercial")
+            self.assertFalse(item["commerce"]["affiliate"])
+            self.assertTrue(item["price"]["checkedAt"])
+            self.assertTrue(item["price"]["availability"])
+            self.assertIn("garant", (item["summary"] + item["caveat"] + str(item["commerce"])).casefold())
+            self.assertNotIn("%", item["commerce"]["possibleBenefit"])
+        for visual in product_visuals:
+            self.assertIn(visual["itemId"], commercial_ids)
+            self.assertEqual(visual["file"], visual["cardFile"])
+            self.assertNotEqual(visual["cardFile"], visual["wideFile"])
+            self.assertTrue(visual["sourceUrl"].startswith("https://"))
+            for field in ("cardFile", "wideFile"):
+                relative = visual[field].removeprefix("./")
+                product_files.add(relative)
+                self.assertTrue((RADAR / relative).is_file(), relative)
+        self.assertEqual(len(product_files), 6)
+
+    def test_items_separate_source_editorial_and_audit_dates(self):
+        expected_sections = {
+            "scientific": "scientific",
+            "geopolitics": "context",
+            "commercial": "commercial",
+        }
+        for group in ("scientific", "geopolitics", "commercial"):
+            for item in self.radar[group]:
+                self.assertEqual(item["section"], expected_sections[group])
+                for field in (
+                    "sourcePublishedAt",
+                    "editorialPublishedAt",
+                    "checkedAt",
+                ):
+                    self.assertRegex(
+                        item[field],
+                        r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}-03:00$",
+                    )
+                self.assertTrue(item["sourcePublishedAt"] <= item["checkedAt"])
+                self.assertTrue(item["editorialPublishedAt"] <= item["checkedAt"])
+                didactic = item["didactic"]
+                for field in (
+                    "clinicalQuestion",
+                    "design",
+                    "population",
+                    "mainResult",
+                    "clinicalMeaning",
+                    "practiceToday",
+                    "doNotInfer",
+                    "temiHook",
+                    "memoryAnchor",
+                    "caveats",
+                ):
+                    self.assertTrue(didactic[field], f"{item['id']} sem {field}")
+
+    def test_editions_are_chronological_and_reference_existing_content(self):
+        editions = self.radar["editions"]
+        self.assertGreaterEqual(len(editions), 1)
+        self.assertEqual(
+            [item["date"] for item in editions],
+            sorted((item["date"] for item in editions), reverse=True),
+        )
+        all_ids = {
+            item["id"]
+            for group in ("scientific", "geopolitics", "commercial")
+            for item in self.radar[group]
+        }
+        visual_ids = {item["id"] for item in self.radar["visuals"]}
+        for edition in editions:
+            self.assertTrue(set(edition["itemIds"]).issubset(all_ids))
+            self.assertEqual(len(edition["visualIds"]), 10)
+            self.assertEqual(edition["visualPairCount"], 10)
+            self.assertEqual(edition["visualAssetCount"], 20)
+            self.assertTrue(set(edition["visualIds"]).issubset(visual_ids))
+            self.assertEqual(edition["productVisualPairCount"], 3)
+            self.assertEqual(edition["productVisualAssetCount"], 6)
+
+    def test_visuals_render_clickable_citations_and_semantic_transcripts(self):
         for marker in (
-            'className="visual-source"',
-            "item.sourceUrl",
-            "item.source",
-            "item.date",
+            'class="visual-source"',
+            "visual.sourceUrl",
+            "visual.source",
+            "visual.sourcePublishedAt",
             "/favicon.ico",
-            "Síntese visual",
+            'aria-label="Transcrição didática do visual"',
+            "visual.alt||visual.title",
+            'class="visual-picture visual-picture-auto"',
+            '<source media="(min-width: 921px)"',
         ):
             self.assertIn(marker, self.html)
+
+    def test_radar_is_a_searchable_chronological_station(self):
+        for marker in (
+            "Estação Radar Diário",
+            'id="search"',
+            'id="todayButton"',
+            'id="previousButton"',
+            'id="nextButton"',
+            'id="allDatesButton"',
+            'id="dateSelect"',
+            'id="topicSelect"',
+            'class="date-group"',
+            "<time datetime=",
+            "editorialPublishedAt",
+            "sourcePublishedAt",
+            "checkedAt",
+            'id="loadMore"',
+            "IntersectionObserver",
+            'data-visual-mode="auto"',
+            'data-visual-mode="wide"',
+            'data-visual-mode="card"',
+            'data-section="commercial"',
+            "Produtividade &amp; compras",
+            'class="commerce-panel"',
+            "sem link afiliado",
+            "Impacto na rotina do médico/estudante",
+            "antigravity:radar-visual-mode:v1",
+        ):
+            self.assertIn(marker, self.html)
+        self.assertNotIn("Bloco 1", self.html)
+        self.assertNotIn("Bloco 2", self.html)
+        self.assertNotIn("honra" + " e vigor", self.html.casefold())
+        self.assertEqual(self.html.count("const colorSchemeMedia"), 1)
+        self.assertNotIn("const systemTheme", self.html)
 
     def test_spotify_connection_is_explicit_local_and_without_autoplay(self):
         self.assertEqual(len(self.radar["spotify"]), 3)
@@ -117,7 +257,7 @@ class ScientificRadarTests(unittest.TestCase):
         )
         for marker in (
             "antigravity:spotify-playlist:v1",
-            "Compartilhar → Copiar link da playlist",
+            "Compartilhar → Copiar link",
             "Salvar e abrir",
             'parsed.hostname!=="open.spotify.com"',
             '["playlist","album","track","episode","show"].includes(spotifyKind)',
@@ -140,7 +280,7 @@ class ScientificRadarTests(unittest.TestCase):
         history_ids = set(self.history["publishedIds"])
         current_ids = {
             item["id"]
-            for group in ("scientific", "geopolitics")
+            for group in ("scientific", "geopolitics", "commercial")
             for item in self.radar[group]
         }
         self.assertTrue(current_ids.issubset(history_ids))

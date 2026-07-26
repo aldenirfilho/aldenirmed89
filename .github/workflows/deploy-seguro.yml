@@ -130,7 +130,8 @@ jobs:
           test -s site/15_Radar_Cientifico/index.html
           test -s site/15_Radar_Cientifico/data/radar.js
           test -s site/15_Radar_Cientifico/data/radar-history.json
-          test "$(find site/15_Radar_Cientifico/assets/cards -type f -name '*.png' | wc -l)" -eq 10
+          test "$(find site/15_Radar_Cientifico/assets/cards -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 20
+          test "$(find site/15_Radar_Cientifico/assets/products -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 6
           test -s site/16_Diretorio_Medico/index.html
           test -s site/16_Diretorio_Medico/data/sites.js
           test -s site/17_Portal_Vivo/index.html

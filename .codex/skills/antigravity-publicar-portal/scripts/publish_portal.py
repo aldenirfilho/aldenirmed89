@@ -25,10 +25,27 @@ ALLOWED_TYPES = {
     "clinical-news",
     "health-policy",
     "study-note",
+    "product-watch",
     "system-upgrade",
 }
 ALLOWED_REVIEW = {"pending", "confirmed", "not-required"}
+TARGET_RADAR = "radar-diario"
+TARGET_PORTAL = "portal-vivo-upgrade"
+DESTINATION_LABELS = {
+    TARGET_RADAR: "Estação Radar Diário — conteúdo clínico/estudo do chat",
+    TARGET_PORTAL: "Portal Vivo — UPGRADE da plataforma",
+}
 TRACKING_KEYS = {"fbclid", "gclid", "mc_cid", "mc_eid", "ref", "source"}
+LANDING_PATHS = {
+    "",
+    "articles",
+    "content",
+    "home",
+    "latest",
+    "news",
+    "noticias",
+    "readme",
+}
 DIRECTIVE_RE = re.compile(
     r"\b(prescreva|administre|infunda|inicie|suspenda|dose\s+de|mg/kg|mcg/kg)\b",
     re.IGNORECASE,
@@ -73,6 +90,75 @@ def normalized_text(value: str) -> str:
     )
 
 
+def normalized_doi(value: object) -> str:
+    if not isinstance(value, str):
+        return ""
+    doi = value.strip().casefold()
+    doi = re.sub(r"^https?://(?:dx\.)?doi\.org/", "", doi)
+    doi = re.sub(r"^doi:\s*", "", doi)
+    return doi if re.fullmatch(r"10\.\d{4,9}/\S+", doi) else ""
+
+
+def normalized_pmid(value: object) -> str:
+    if isinstance(value, int):
+        value = str(value)
+    if not isinstance(value, str):
+        return ""
+    match = re.fullmatch(r"\s*(?:pmid:\s*)?(\d{5,10})\s*", value, re.IGNORECASE)
+    return match.group(1) if match else ""
+
+
+def source_identity(post: dict) -> str:
+    """Identifica a publicação, sem confundir domínio ou landing page com artigo."""
+    source = post.get("source") if isinstance(post.get("source"), dict) else {}
+    url = source.get("url", "")
+
+    doi = normalized_doi(source.get("doi") or post.get("doi"))
+    if not doi and isinstance(url, str):
+        split = urlsplit(url)
+        if split.netloc.casefold() in {"doi.org", "dx.doi.org"}:
+            doi = normalized_doi(split.path.lstrip("/"))
+        elif "/doi/" in split.path.casefold():
+            doi = normalized_doi(
+                split.path[split.path.casefold().index("/doi/") + len("/doi/") :]
+            )
+    if doi:
+        return f"doi:{doi}"
+
+    pmid = normalized_pmid(source.get("pmid") or post.get("pmid"))
+    if not pmid and isinstance(url, str):
+        match = re.search(
+            r"pubmed\.ncbi\.nlm\.nih\.gov/(\d{5,10})(?:/|$)",
+            url,
+            re.IGNORECASE,
+        )
+        pmid = match.group(1) if match else ""
+    if pmid:
+        return f"pmid:{pmid}"
+
+    publication_id = source.get("id") or post.get("sourceId")
+    if isinstance(publication_id, str) and publication_id.strip():
+        return f"source-id:{normalized_text(publication_id)}"
+
+    if isinstance(url, str) and url.startswith("../"):
+        return f"internal:{url.rstrip('/')}"
+
+    canonical = canonical_url(str(url))
+    split = urlsplit(canonical)
+    path_parts = [part.casefold() for part in split.path.split("/") if part]
+    is_landing = (
+        not split.query
+        and (
+            not path_parts
+            or (len(path_parts) == 1 and path_parts[0] in LANDING_PATHS)
+        )
+    )
+    if is_landing:
+        title = normalized_text(str(post.get("title", "")))
+        return f"landing:{canonical}|title:{title}"
+    return f"url:{canonical}"
+
+
 def require_text(container: dict, key: str, minimum: int, maximum: int) -> str:
     value = container.get(key)
     if not isinstance(value, str):
@@ -95,8 +181,20 @@ def require_iso(value: object, key: str) -> str:
 
 def validate_post(raw: dict) -> dict:
     post = json.loads(json.dumps(raw, ensure_ascii=False))
+    target = post.get("target")
+    if target not in DESTINATION_LABELS:
+        raise ValueError("Destino inválido; informe target radar-diario ou portal-vivo-upgrade.")
+    expected_destination = DESTINATION_LABELS[target]
+    if post.get("destination") != expected_destination:
+        raise ValueError(
+            f"destination deve corresponder ao destino selecionado: {expected_destination}"
+        )
     if post.get("type") not in ALLOWED_TYPES:
         raise ValueError("Tipo de publicação não permitido.")
+    if target == TARGET_PORTAL and post["type"] != "system-upgrade":
+        raise ValueError("Portal Vivo aceita somente publicações system-upgrade.")
+    if target == TARGET_RADAR and post["type"] == "system-upgrade":
+        raise ValueError("UPGRADE da plataforma deve ser enviado ao Portal Vivo.")
     if post.get("priority") not in {1, 2, 3}:
         raise ValueError("Prioridade precisa ser 1, 2 ou 3.")
 
@@ -116,6 +214,18 @@ def validate_post(raw: dict) -> dict:
         require_text(source, "url", 3, 1500),
         allow_internal=post["type"] == "system-upgrade",
     )
+    if source.get("doi") is not None:
+        doi = normalized_doi(source.get("doi"))
+        if not doi:
+            raise ValueError("source.doi inválido.")
+        source["doi"] = doi
+    if source.get("pmid") is not None:
+        pmid = normalized_pmid(source.get("pmid"))
+        if not pmid:
+            raise ValueError("source.pmid inválido.")
+        source["pmid"] = pmid
+    if source.get("id") is not None:
+        source["id"] = require_text(source, "id", 2, 160)
     require_iso(source.get("date"), "source.date")
     source["checkedAt"] = require_iso(source.get("checkedAt"), "source.checkedAt")
 
@@ -166,10 +276,12 @@ def validate_post(raw: dict) -> dict:
             "Texto com dose ou ordem terapêutica exige revisão clínica confirmada."
         )
 
-    digest = hashlib.sha256(source["url"].encode()).hexdigest()[:16]
+    identity = source_identity(post)
+    digest = hashlib.sha256(identity.encode()).hexdigest()[:16]
     date = post["publishedAt"][:10]
     slug = re.sub(r"[^a-z0-9]+", "-", normalized_text(post["title"])).strip("-")[:52]
     post["id"] = post.get("id") or f"{date}-{slug}-{digest[:8]}"
+    post["sourceIdentity"] = identity
     post["sourceHash"] = f"sha256:{digest}"
     return post
 
@@ -189,11 +301,13 @@ def validate_store(payload: dict, history: dict) -> None:
         raise ValueError("posts.json precisa conter a lista posts.")
     validated = [validate_post(item) for item in posts]
     ids = [item["id"] for item in validated]
-    urls = [item["source"]["url"] for item in validated]
+    identities = [item["sourceIdentity"] for item in validated]
     if len(ids) != len(set(ids)):
         raise ValueError("ID duplicado no Portal.")
-    if len(urls) != len(set(urls)):
-        raise ValueError("Fonte duplicada no Portal.")
+    if any(item["target"] != TARGET_PORTAL for item in validated):
+        raise ValueError("posts.json do Portal Vivo aceita somente target portal-vivo-upgrade.")
+    if len(identities) != len(set(identities)):
+        raise ValueError("Publicação-fonte duplicada no Portal.")
     if not set(ids).issubset(set(history.get("publishedIds", []))):
         raise ValueError("Histórico não contém todos os IDs publicados.")
 
@@ -202,19 +316,18 @@ def publish(input_path: Path) -> str:
     payload = load_json(POSTS_PATH)
     history = load_json(HISTORY_PATH)
     post = validate_post(load_json(input_path))
-    existing_ids = {item["id"] for item in payload["posts"]}
-    existing_urls = {
-        canonical_url(
-            item["source"]["url"],
-            allow_internal=item.get("type") == "system-upgrade",
+    if post["target"] != TARGET_PORTAL:
+        raise ValueError(
+            "Destino Estação Radar Diário validado, mas não pode ser publicado "
+            "pelo armazenamento do Portal Vivo."
         )
-        for item in payload["posts"]
-    }
+    existing_ids = {item["id"] for item in payload["posts"]}
+    existing_identities = {source_identity(item) for item in payload["posts"]}
     history_hashes = set(history.get("sourceHashes", []))
     if post["id"] in existing_ids:
         raise ValueError(f"Publicação já existe: {post['id']}")
-    if post["source"]["url"] in existing_urls:
-        raise ValueError("A fonte já possui publicação manual no Portal.")
+    if post["sourceIdentity"] in existing_identities:
+        raise ValueError("A publicação-fonte já possui entrada no Portal.")
     if post["sourceHash"] in history_hashes:
         raise ValueError("A fonte está no histórico antirrepetição.")
 

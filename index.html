@@ -424,12 +424,12 @@ body.mission-locked{overflow:hidden}
   background:linear-gradient(90deg,#38d9f5,#9b86ff 66%,#ffd166);
   box-shadow:0 0 18px rgba(62,232,255,.7);
 }
-.mission-intro.is-launching::before{animation:mission-star-drive 5s ease-in both}
-.mission-intro.is-launching .mission-card-shell{animation:mission-card-liftoff 3.45s cubic-bezier(.2,.72,.2,1) both}
-.mission-intro.is-launching .mission-card-shell::after{animation:mission-card-scan 2.6s .5s ease-in-out both}
+.mission-intro.is-launching::before{animation:mission-star-drive 10s ease-in both}
+.mission-intro.is-launching .mission-card-shell{animation:mission-card-liftoff 7s cubic-bezier(.2,.72,.2,1) both}
+.mission-intro.is-launching .mission-card-shell::after{animation:mission-card-scan 4.8s .7s ease-in-out both}
 .mission-intro.is-launching .mission-briefing{opacity:0;transform:translateY(10px)}
 .mission-intro.is-launching .mission-telemetry{opacity:1;transform:none;transition:.35s .12s ease}
-.mission-intro.is-launching .mission-progress-bar{animation:mission-progress 5s linear both}
+.mission-intro.is-launching .mission-progress-bar{animation:mission-progress 10s linear both}
 .mission-intro.is-finishing{animation:mission-curtain .38s ease both}
 @keyframes mission-star-drive{
   0%{transform:scale(1);filter:blur(0)}
@@ -738,7 +738,25 @@ html.mission-returning .mission-emblem{
 }
 @keyframes drawecg{to{stroke-dashoffset:0}}
 
-/* ── MODULES SECTION ──────────────────────────────── */
+/* ── PORTAL, ESTAÇÕES E MÓDULOS ──────────────────── */
+.portal-section{padding-bottom:48px}
+.stations-section{
+  padding:64px 0;
+  border-top:1px solid var(--brd);
+  border-bottom:1px solid var(--brd);
+  background:linear-gradient(100deg,rgba(62,232,255,.035),rgba(169,140,255,.045));
+}
+.portal-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  margin-top:34px;
+}
+.stations-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:34px;
+}
 .modules-grid{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -767,6 +785,36 @@ html.mission-returning .mission-emblem{
   box-shadow:0 16px 50px rgba(0,0,0,.3),0 0 0 1px var(--accent,var(--cyan));
 }
 .module-card:hover::before{opacity:1}
+.portal-card{
+  min-height:220px;
+  padding:32px;
+  border-color:rgba(169,140,255,.38);
+}
+.portal-card p{
+  max-width:980px;
+  display:block;
+  -webkit-line-clamp:unset;
+  line-clamp:unset;
+  overflow:visible;
+}
+.station-card{
+  min-height:245px;
+  border-width:2px;
+}
+.card-state{
+  display:inline-flex;
+  width:max-content;
+  margin-bottom:12px;
+  border:1px solid currentColor;
+  border-radius:999px;
+  padding:4px 9px;
+  color:var(--accent,var(--cyan));
+  font-family:var(--font-mono);
+  font-size:.62rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
 .module-icon{
   width:44px;height:44px;border-radius:12px;
   display:grid;place-items:center;font-size:1.3rem;
@@ -1634,7 +1682,8 @@ html.mission-returning .mission-emblem{
   }
 }
 @media(max-width:620px){
-  .modules-grid{grid-template-columns:1fr}
+  .modules-grid,.stations-grid{grid-template-columns:1fr}
+  .portal-card{padding:25px 22px}
   .view-controls{width:100%;align-items:stretch}
   .view-controls-label{width:100%;padding:2px 4px}
   .view-select{flex:1;min-width:0}
@@ -1661,9 +1710,9 @@ html.mission-returning .mission-emblem{
     </div>
     <div class="mission-briefing">
       <span class="mission-kicker">Portal de missão · Antigravity</span>
-      <h1 class="mission-title" id="missionTitle">Com honra e vigor. A missão começa agora.</h1>
+      <h1 class="mission-title" id="missionTitle">A missão começa agora.</h1>
       <p class="mission-subtitle" id="missionSubtitle">
-        Cinco segundos para sair da inércia, entrar em órbita e estudar com propósito.
+        Dez segundos para organizar o foco, entrar em ritmo e estudar com propósito.
       </p>
       <div class="mission-sound-picker" role="group" aria-label="Escolher tema sonoro da missão">
         <button class="mission-sound-theme" type="button" data-mission-sound="honra" aria-pressed="true">🛡️ Honra orbital</button>
@@ -1682,7 +1731,7 @@ html.mission-returning .mission-emblem{
     <div class="mission-telemetry" aria-live="polite">
       <div class="mission-status">
         <span id="missionStatus">SISTEMAS EM ESPERA</span>
-        <span id="missionCountdown">T−5,0</span>
+        <span id="missionCountdown">T−10,0</span>
       </div>
       <div class="mission-progress" aria-hidden="true">
         <span class="mission-progress-bar"></span>
@@ -1711,10 +1760,10 @@ html.mission-returning .mission-emblem{
         <span class="brand-subtitle">Intensiva &amp; Medicina Interna</span>
       </div>
     </a>
-    <div class="nav-links" role="navigation" aria-label="Módulos principais">
-      <a href="17_Portal_Vivo/index.html" class="accent">🛰️ Portal vivo</a>
-      <a href="15_Radar_Cientifico/index.html" class="accent">📡 Radar diário</a>
-      <a href="16_Diretorio_Medico/index.html">🌐 Sites médicos</a>
+    <div class="nav-links" role="navigation" aria-label="Navegação principal">
+      <a href="17_Portal_Vivo/index.html" class="accent">🛰️ Portal UPGRADE</a>
+      <a href="15_Radar_Cientifico/index.html" class="accent">📡 Estação Radar</a>
+      <a href="16_Diretorio_Medico/index.html">🌐 Estação Diretório</a>
       <a href="01_UpDown_Hub/index.html" class="accent">↕️ UpDown Hub</a>
       <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras</a>
       <a href="05_Midia_E_Feed/index.html">🖼️ Card Feed</a>
@@ -1754,8 +1803,8 @@ html.mission-returning .mission-emblem{
         Plataforma médica interativa, continuamente atualizada e pensada para decisão real — da beira-leito da UTI à prova de título TEMI. Conteúdo autoral, didático e rastreável por raciocínio clínico.
       </p>
       <div class="hero-btns">
-        <a class="btn btn-primary" href="17_Portal_Vivo/index.html">🛰️ Ver atualizações em fluxo</a>
-        <a class="btn btn-primary" href="15_Radar_Cientifico/index.html">📡 Briefing científico de hoje</a>
+        <a class="btn btn-primary" href="17_Portal_Vivo/index.html">🛰️ Ver UPGRADEs da plataforma</a>
+        <a class="btn btn-primary" href="15_Radar_Cientifico/index.html">📡 Estudar atualizações clínicas</a>
         <a class="btn btn-primary" href="01_UpDown_Hub/index.html">↕️ Abrir UpDown Hub</a>
         <a class="btn btn-ghost" href="#downloads">⬇️ Baixar apps</a>
         <a class="btn btn-ghost" href="#modulos">⬛ Ver todos os módulos</a>
@@ -1913,51 +1962,82 @@ html.mission-returning .mission-emblem{
   </div>
 </section>
 
-<!-- ── MÓDULOS ─────────────────────────────────────── -->
-<section id="modulos" aria-labelledby="mod-heading">
+<!-- ── PORTAL DE UPGRADE ───────────────────────────── -->
+<section id="portal-upgrade" class="portal-section" aria-labelledby="portal-heading">
   <div class="shell">
     <div class="reveal section-intro">
-      <div class="section-label">// módulos do projeto</div>
-      <h2 class="section-title" id="mod-heading">O ecossistema Antigravity 🧬</h2>
-      <p class="section-sub">Módulos interconectados — do Portal Vivo e do acervo bruto às emergências hematológicas, simulado de prova, ebooks, transcrições e POCUS.</p>
+      <div class="section-label">// evolução da plataforma</div>
+      <h2 class="section-title" id="portal-heading">Portal Vivo · UPGRADE 🛰️</h2>
+      <p class="section-sub">Feed opcional dedicado ao que mudou no Antigravity: novas funções, melhorias, estações atualizadas e histórico operacional da plataforma.</p>
     </div>
-    <div class="modules-grid">
+    <div class="portal-grid">
 
-      <a class="module-card mod-violet reveal" href="17_Portal_Vivo/index.html" aria-label="Abrir Portal Vivo opcional">
+      <a class="module-card portal-card mod-violet reveal" href="17_Portal_Vivo/index.html" aria-label="Abrir Portal Vivo de UPGRADE da plataforma">
         <div class="module-icon">🛰️</div>
-        <h3>Portal Vivo <small style="font-size:.58rem;color:var(--violet);letter-spacing:.09em">OPCIONAL</small></h3>
-        <p>Feed contínuo de ciência, notícias, destaques emergentes e evolução do Antigravity, com publicação manual assistida pelo chat.</p>
+        <span class="card-state">Portal opcional</span>
+        <h3>UPGRADE contínuo do Antigravity</h3>
+        <p>Acompanhe novas ferramentas, correções, sessões atualizadas e marcos de evolução do sistema. O conteúdo clínico e de estudo recebido pelo chat segue para a Estação Radar Diário.</p>
         <div class="module-tag-row">
-          <span class="module-tag">Rolagem contínua</span>
-          <span class="module-tag">Turbo TEMI</span>
+          <span class="module-tag">Evolução da plataforma</span>
+          <span class="module-tag">Histórico operacional</span>
           <span class="module-tag">UPGRADE</span>
         </div>
-        <span class="module-link" style="color:var(--violet)">Abrir portal</span>
+        <span class="module-link" style="color:var(--violet)">Ver upgrades</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="15_Radar_Cientifico/index.html" aria-label="Abrir Radar Científico diário">
+    </div>
+  </div>
+</section>
+
+<!-- ── ESTAÇÕES ANTIGRAVITY ───────────────────────── -->
+<section id="estacoes" class="stations-section" aria-labelledby="stations-heading">
+  <div class="shell">
+    <div class="reveal section-intro">
+      <div class="section-label">// destinos permanentes</div>
+      <h2 class="section-title" id="stations-heading">Estações Antigravity 📡</h2>
+      <p class="section-sub">Duas áreas independentes e sempre acessíveis: uma recebe conteúdo clínico e estudo; a outra organiza as fontes médicas verificáveis.</p>
+    </div>
+    <div class="stations-grid">
+
+      <a class="module-card station-card mod-cyan reveal" href="15_Radar_Cientifico/index.html" aria-label="Abrir Estação Radar Diário">
         <div class="module-icon">📡</div>
-        <h3>Radar Científico Diário</h3>
-        <p>Briefing priorizado, artigos de alto impacto, saúde global e brasileira, 10 mapas visuais e foco TEMI sem repetição.</p>
+        <span class="card-state">Estação clínica</span>
+        <h3>Estação Radar Diário</h3>
+        <p>Destino dos conteúdos clínicos, artigos e observações de estudo enviados pelo chat, organizados por data, relevância, fonte e aplicação Turbo TEMI.</p>
         <div class="module-tag-row">
+          <span class="module-tag">Conteúdo clínico do chat</span>
           <span class="module-tag">Atualização diária</span>
-          <span class="module-tag">10 visuais</span>
-          <span class="module-tag">Spotify + foco</span>
+          <span class="module-tag">Estudo + TEMI</span>
         </div>
-        <span class="module-link" style="color:var(--cyan)">Abrir radar</span>
+        <span class="module-link" style="color:var(--cyan)">Entrar na estação</span>
       </a>
 
-      <a class="module-card mod-violet reveal" href="16_Diretorio_Medico/index.html" aria-label="Abrir Diretório Médico mundial">
+      <a class="module-card station-card mod-violet reveal" href="16_Diretorio_Medico/index.html" aria-label="Abrir Estação Diretório Médico">
         <div class="module-icon">🌐</div>
-        <h3>Diretório Médico Mundial</h3>
+        <span class="card-state">Estação de fontes</span>
+        <h3>Estação Diretório Médico</h3>
         <p>Mais de 250 fontes nacionais e internacionais filtráveis por área, região, prioridade e tipo de acesso.</p>
         <div class="module-tag-row">
           <span class="module-tag">Fontes verificáveis</span>
           <span class="module-tag">Brasil + Ceará</span>
           <span class="module-tag">POCUS · UTI · IA</span>
         </div>
-        <span class="module-link" style="color:var(--violet)">Explorar fontes</span>
+        <span class="module-link" style="color:var(--violet)">Entrar na estação</span>
       </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── MÓDULOS E APPS ─────────────────────────────── -->
+<section id="modulos" aria-labelledby="mod-heading">
+  <div class="shell">
+    <div class="reveal section-intro">
+      <div class="section-label">// ferramentas do ecossistema</div>
+      <h2 class="section-title" id="mod-heading">Módulos e apps Antigravity 🧬</h2>
+      <p class="section-sub">Dezesseis ferramentas interconectadas para conteúdo autoral, decisão clínica, treinamento TEMI, ventilação, emergências, imagem e consulta rápida.</p>
+    </div>
+    <div class="modules-grid">
 
       <a class="module-card mod-green reveal" href="01_UpDown_Hub/index.html" aria-label="Abrir UpDown Hub">
         <div class="module-icon">↕️</div>
@@ -2608,10 +2688,10 @@ html.mission-returning .mission-emblem{
         <p>Um projeto vivo para organizar, conectar e transformar conhecimento médico em decisão clínica segura. Dr. Aldenir Rocha — CRM-CE 16587.</p>
       </div>
       <div class="footer-col">
-        <h4>Módulos</h4>
-        <a href="17_Portal_Vivo/index.html">🛰️ Portal Vivo</a>
-        <a href="15_Radar_Cientifico/index.html">📡 Radar Científico Diário</a>
-        <a href="16_Diretorio_Medico/index.html">🌐 Diretório Médico Mundial</a>
+        <h4>Portal, estações e módulos</h4>
+        <a href="17_Portal_Vivo/index.html">🛰️ Portal Vivo · UPGRADE</a>
+        <a href="15_Radar_Cientifico/index.html">📡 Estação Radar Diário</a>
+        <a href="16_Diretorio_Medico/index.html">🌐 Estação Diretório Médico</a>
         <a href="01_UpDown_Hub/index.html">↕️ UpDown Hub</a>
         <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca IA</a>
         <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras UTI</a>
@@ -2721,7 +2801,7 @@ html.mission-returning .mission-emblem{
       <span>🧭 Alimentar cada seção do site</span><span aria-hidden="true">→</span>
     </a>
     <a class="a11y-link" href="docs_usuario/RADAR_CIENTIFICO_OPERACAO/">
-      <span>📡 Operar o Radar Científico</span><span aria-hidden="true">→</span>
+      <span>📡 Operar a Estação Radar Diário</span><span aria-hidden="true">→</span>
     </a>
     <a class="a11y-link" href="docs_usuario/PORTAL_VIVO_PUBLICACAO/">
       <span>🛰️ Publicar no Portal Vivo</span><span aria-hidden="true">→</span>
@@ -2740,10 +2820,10 @@ html.mission-returning .mission-emblem{
 <script>
 (function(){
 
-/* ── PORTAL DE MISSÃO · 5 SEGUNDOS ─────────────── */
+/* ── PORTAL DE MISSÃO · 10 SEGUNDOS ────────────── */
 const MISSION_INTRO_KEY='antigravity:mission-intro:v1';
 const MISSION_SOUND_KEY='antigravity:mission-sound-theme:v1';
-const MISSION_DURATION=5000;
+const MISSION_DURATION=10000;
 const missionIntro=document.getElementById('missionIntro');
 const missionCore=document.getElementById('missionCore');
 const missionEmblem=document.getElementById('missionEmblem');
@@ -2803,111 +2883,173 @@ function stopMissionAudio(){
   missionAudioContext=null;
   context.close().catch(()=>{});
 }
-function playMissionSound({compact=false,theme='honra'}={}){
+async function playMissionSound({compact=false,theme='honra'}={}){
   const AudioEngine=window.AudioContext||window.webkitAudioContext;
   if(!AudioEngine)return;
   stopMissionAudio();
+  let context=null;
   try{
-    const context=new AudioEngine();
+    context=new AudioEngine();
     missionAudioContext=context;
-    if(context.state==='suspended')context.resume().catch(()=>{});
-    const start=context.currentTime+.025;
+    if(context.state==='suspended')await context.resume();
+    if(missionAudioContext!==context||context.state==='closed')return;
+    const start=context.currentTime+.035;
     const profile={
-      honra:{master:.145,wave:'sawtooth',riserStart:88,riserEnd:410,noise:.042},
-      foco:{master:.092,wave:'triangle',riserStart:132,riserEnd:286,noise:.018},
-      vigor:{master:.165,wave:'sawtooth',riserStart:72,riserEnd:520,noise:.05}
-    }[theme]||{master:.145,wave:'sawtooth',riserStart:88,riserEnd:410,noise:.042};
-    const duration=compact?.55:5.05;
-    const master=context.createGain();
-    const compressor=context.createDynamicsCompressor();
-    master.gain.setValueAtTime(.0001,start);
-    master.gain.exponentialRampToValueAtTime(compact?.08:profile.master,start+.08);
-    master.gain.setValueAtTime(compact?.08:profile.master,start+Math.max(.12,duration-.28));
-    master.gain.exponentialRampToValueAtTime(.0001,start+duration);
-    compressor.threshold.value=-18;
-    compressor.knee.value=16;
-    compressor.ratio.value=4;
-    compressor.attack.value=.01;
-    compressor.release.value=.24;
-    master.connect(compressor).connect(context.destination);
-
-    const impact=(when,frequency=68,level=.2)=>{
-      const oscillator=context.createOscillator();
-      const gain=context.createGain();
-      oscillator.type='sine';
-      oscillator.frequency.setValueAtTime(frequency,when);
-      oscillator.frequency.exponentialRampToValueAtTime(Math.max(32,frequency*.52),when+.44);
-      gain.gain.setValueAtTime(.0001,when);
-      gain.gain.exponentialRampToValueAtTime(level,when+.018);
-      gain.gain.exponentialRampToValueAtTime(.0001,when+.48);
-      oscillator.connect(gain).connect(master);
-      oscillator.start(when);
-      oscillator.stop(when+.52);
+      honra:{
+        master:.68,wave:'sawtooth',riserStart:96,riserEnd:480,noise:.06,
+        harmony:[[196,246.94,293.66,392],[261.63,329.63,392,523.25]],
+        motif:[392,440,523.25,659.25]
+      },
+      foco:{
+        master:.58,wave:'triangle',riserStart:132,riserEnd:330,noise:.035,
+        harmony:[[174.61,220,261.63,349.23],[220,261.63,329.63,440]],
+        motif:[329.63,392,440,523.25]
+      },
+      vigor:{
+        master:.72,wave:'sawtooth',riserStart:82,riserEnd:620,noise:.075,
+        harmony:[[196,246.94,293.66,392],[246.94,311.13,369.99,493.88]],
+        motif:[392,493.88,587.33,739.99]
+      }
+    }[theme]||{
+      master:.68,wave:'sawtooth',riserStart:96,riserEnd:480,noise:.06,
+      harmony:[[196,246.94,293.66,392],[261.63,329.63,392,523.25]],
+      motif:[392,440,523.25,659.25]
     };
-    impact(start,compact?82:(theme==='foco'?96:62),compact?.14:theme==='vigor'?.25:.2);
-    if(!compact){
-      const impacts=theme==='foco'
-        ? [[1.5,110,.1],[3.72,82,.14]]
-        : theme==='vigor'
-          ? [[.62,74,.18],[1.28,88,.16],[2.06,64,.2],[3.12,55,.26],[3.82,82,.22],[4.42,110,.2]]
-          : [[.82,74,.16],[1.62,82,.14],[3.26,55,.24],[4.18,96,.2]];
-      impacts.forEach(([offset,frequency,level])=>impact(start+offset,frequency,level));
+    const duration=compact?.74:10.05;
+    const master=context.createGain();
+    const limiter=context.createDynamicsCompressor();
+    const output=context.createGain();
+    master.gain.setValueAtTime(.0001,start);
+    master.gain.exponentialRampToValueAtTime(compact?.42:profile.master,start+.035);
+    master.gain.setValueAtTime(compact?.42:profile.master,start+Math.max(.12,duration-.55));
+    master.gain.exponentialRampToValueAtTime(.0001,start+duration);
+    limiter.threshold.value=-12;
+    limiter.knee.value=0;
+    limiter.ratio.value=16;
+    limiter.attack.value=.003;
+    limiter.release.value=.22;
+    output.gain.setValueAtTime(.86,start);
+    master.connect(limiter).connect(output).connect(context.destination);
+
+    const impact=(when,frequency=68,level=.24)=>{
+      const body=context.createOscillator();
+      const bodyGain=context.createGain();
+      body.type='sine';
+      body.frequency.setValueAtTime(frequency,when);
+      body.frequency.exponentialRampToValueAtTime(Math.max(36,frequency*.54),when+.54);
+      bodyGain.gain.setValueAtTime(.0001,when);
+      bodyGain.gain.exponentialRampToValueAtTime(level,when+.018);
+      bodyGain.gain.exponentialRampToValueAtTime(.0001,when+.58);
+      body.connect(bodyGain).connect(master);
+      body.start(when);
+      body.stop(when+.62);
+
+      const presence=context.createOscillator();
+      const presenceGain=context.createGain();
+      presence.type='triangle';
+      presence.frequency.setValueAtTime(frequency*3.2,when);
+      presence.frequency.exponentialRampToValueAtTime(frequency*1.45,when+.34);
+      presenceGain.gain.setValueAtTime(.0001,when);
+      presenceGain.gain.exponentialRampToValueAtTime(level*.34,when+.012);
+      presenceGain.gain.exponentialRampToValueAtTime(.0001,when+.4);
+      presence.connect(presenceGain).connect(master);
+      presence.start(when);
+      presence.stop(when+.44);
+    };
+
+    const chime=(when,frequency,level=.07,hold=.52)=>{
+      const tone=context.createOscillator();
+      const gain=context.createGain();
+      tone.type='triangle';
+      tone.frequency.setValueAtTime(frequency,when);
+      gain.gain.setValueAtTime(.0001,when);
+      gain.gain.exponentialRampToValueAtTime(level,when+.025);
+      gain.gain.exponentialRampToValueAtTime(.0001,when+hold);
+      tone.connect(gain).connect(master);
+      tone.start(when);
+      tone.stop(when+hold+.03);
+    };
+
+    const chord=(frequencies,when,hold,level)=>{
+      frequencies.forEach((frequency,index)=>{
+        const tone=context.createOscillator();
+        const gain=context.createGain();
+        const toneStart=when+(index*.045);
+        const releaseAt=Math.min(start+duration-.025,when+hold);
+        tone.type=index%2?'triangle':'sine';
+        tone.frequency.setValueAtTime(frequency,toneStart);
+        gain.gain.setValueAtTime(.0001,toneStart);
+        gain.gain.exponentialRampToValueAtTime(level/(1+(index*.18)),toneStart+.2);
+        gain.gain.exponentialRampToValueAtTime(.0001,releaseAt);
+        tone.connect(gain).connect(master);
+        tone.start(toneStart);
+        tone.stop(releaseAt+.02);
+      });
+    };
+
+    impact(start+.05,compact?108:(theme==='foco'?104:68),compact?.2:theme==='vigor'?.3:.27);
+    if(compact){
+      chime(start+.13,523.25,.08,.46);
+      return;
     }
+
+    const impacts=theme==='foco'
+      ? [[2.3,112,.17],[5.25,92,.2],[8.65,82,.24]]
+      : theme==='vigor'
+        ? [[.9,76,.2],[1.85,90,.19],[3.25,66,.23],[4.8,58,.3],[6.35,84,.25],[7.9,68,.29],[9.05,116,.27]]
+        : [[1.15,76,.2],[2.55,84,.18],[4.15,66,.24],[6.2,58,.28],[8.05,82,.26],[9.1,112,.24]];
+    impacts.forEach(([offset,frequency,level])=>impact(start+offset,frequency,level));
 
     const riser=context.createOscillator();
     const riserFilter=context.createBiquadFilter();
     const riserGain=context.createGain();
     riser.type=profile.wave;
-    riser.frequency.setValueAtTime(compact?150:profile.riserStart,start);
-    riser.frequency.exponentialRampToValueAtTime(compact?260:profile.riserEnd,start+Math.max(.35,duration-.62));
+    riser.frequency.setValueAtTime(profile.riserStart,start);
+    riser.frequency.exponentialRampToValueAtTime(profile.riserEnd,start+duration-.68);
     riserFilter.type='lowpass';
-    riserFilter.frequency.setValueAtTime(540,start);
-    riserFilter.frequency.exponentialRampToValueAtTime(3200,start+Math.max(.35,duration-.62));
+    riserFilter.frequency.setValueAtTime(620,start);
+    riserFilter.frequency.exponentialRampToValueAtTime(4800,start+duration-.7);
     riserGain.gain.setValueAtTime(.0001,start);
-    riserGain.gain.exponentialRampToValueAtTime(compact?.018:.032,start+.12);
+    riserGain.gain.exponentialRampToValueAtTime(.055,start+.18);
+    riserGain.gain.setValueAtTime(.055,start+duration-.78);
     riserGain.gain.exponentialRampToValueAtTime(.0001,start+duration);
     riser.connect(riserFilter).connect(riserGain).connect(master);
     riser.start(start);
     riser.stop(start+duration);
 
-    if(!compact){
-      const noiseBuffer=context.createBuffer(1,Math.ceil(context.sampleRate*4.7),context.sampleRate);
-      const noise=noiseBuffer.getChannelData(0);
-      for(let index=0;index<noise.length;index+=1){
-        noise[index]=(Math.random()*2-1)*(index/noise.length);
-      }
-      const noiseSource=context.createBufferSource();
-      const noiseFilter=context.createBiquadFilter();
-      const noiseGain=context.createGain();
-      noiseSource.buffer=noiseBuffer;
-      noiseFilter.type='bandpass';
-      noiseFilter.Q.value=1.2;
-      noiseFilter.frequency.setValueAtTime(180,start);
-      noiseFilter.frequency.exponentialRampToValueAtTime(5200,start+4.4);
-      noiseGain.gain.setValueAtTime(.0001,start);
-      noiseGain.gain.exponentialRampToValueAtTime(profile.noise,start+2.8);
-      noiseGain.gain.exponentialRampToValueAtTime(.0001,start+4.72);
-      noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
-      noiseSource.start(start);
-      noiseSource.stop(start+4.74);
-
-      const chord=theme==='foco'?[130.81,196,261.63]:theme==='vigor'?[98,146.83,220]:[110,164.81,220];
-      chord.forEach((frequency,index)=>{
-        const tone=context.createOscillator();
-        const toneGain=context.createGain();
-        const chordStart=start+3.72+(index*.035);
-        tone.type=index===1?'triangle':'sine';
-        tone.frequency.value=frequency;
-        toneGain.gain.setValueAtTime(.0001,chordStart);
-        toneGain.gain.exponentialRampToValueAtTime(.047-(index*.008),chordStart+.2);
-        toneGain.gain.exponentialRampToValueAtTime(.0001,start+5.02);
-        tone.connect(toneGain).connect(master);
-        tone.start(chordStart);
-        tone.stop(start+5.04);
-      });
+    const noiseDuration=duration-.16;
+    const noiseBuffer=context.createBuffer(1,Math.ceil(context.sampleRate*noiseDuration),context.sampleRate);
+    const noise=noiseBuffer.getChannelData(0);
+    for(let index=0;index<noise.length;index+=1){
+      const progress=index/noise.length;
+      noise[index]=(Math.random()*2-1)*(.18+(progress*.82));
     }
+    const noiseSource=context.createBufferSource();
+    const noiseFilter=context.createBiquadFilter();
+    const noiseGain=context.createGain();
+    noiseSource.buffer=noiseBuffer;
+    noiseFilter.type='bandpass';
+    noiseFilter.Q.value=1.1;
+    noiseFilter.frequency.setValueAtTime(240,start);
+    noiseFilter.frequency.exponentialRampToValueAtTime(6200,start+duration-.62);
+    noiseGain.gain.setValueAtTime(.0001,start);
+    noiseGain.gain.exponentialRampToValueAtTime(profile.noise,start+(duration*.58));
+    noiseGain.gain.exponentialRampToValueAtTime(.0001,start+duration-.18);
+    noiseSource.connect(noiseFilter).connect(noiseGain).connect(master);
+    noiseSource.start(start);
+    noiseSource.stop(start+noiseDuration);
+
+    chord(profile.harmony[0],start+4.15,2.25,.058);
+    profile.motif.forEach((frequency,index)=>{
+      chime(start+6.38+(index*.42),frequency,.072+(index*.004),.64);
+    });
+    chord(profile.harmony[1],start+7.62,2.38,.072);
   }catch(_){
-    stopMissionAudio();
+    if(context&&missionAudioContext===context){
+      stopMissionAudio();
+    }else if(context&&context.state!=='closed'){
+      context.close().catch(()=>{});
+    }
   }
 }
 function finishMission({immediate=false,remember=true,focus=true}={}){
@@ -2954,7 +3096,7 @@ function openMissionPortal(){
   missionCore?.removeAttribute('style');
   missionStartSound.disabled=false;
   missionStartSilent.disabled=false;
-  setMissionStatus('SISTEMAS EM ESPERA','T−5,0');
+  setMissionStatus('SISTEMAS EM ESPERA','T−10,0');
   document.body.classList.add('mission-locked');
   window.requestAnimationFrame(()=>missionStartSound.focus());
 }
@@ -2966,7 +3108,7 @@ function launchMission(withSound){
   document.body.classList.add('mission-locked');
   missionIntro.classList.remove('is-finishing');
   missionIntro.classList.add('is-launching');
-  setMissionStatus('IGNIÇÃO AUTORIZADA','T−5,0');
+  setMissionStatus('IGNIÇÃO AUTORIZADA','T−10,0');
   if(withSound)playMissionSound({compact:missionHasReducedMotion(),theme:missionSoundTheme});
 
   if(missionHasReducedMotion()){
@@ -2983,10 +3125,11 @@ function launchMission(withSound){
   },100);
   missionTimers.push(countdownTimer);
   [
-    [900,'VETOR DE ASCENSÃO','T−4,1'],
-    [2050,'INSERÇÃO ORBITAL','T−3,0'],
-    [3250,'ALVO TRAVADO','T−1,8'],
-    [4300,'HONRA · VIGOR · PROPÓSITO','T−0,7']
+    [1200,'VETOR DE ASCENSÃO','T−8,8'],
+    [3300,'INSERÇÃO ORBITAL','T−6,7'],
+    [5500,'ALVO TRAVADO','T−4,5'],
+    [7600,'FOCO ESTABILIZADO','T−2,4'],
+    [9200,'MISSÃO PRONTA · PROPÓSITO DEFINIDO','T−0,8']
   ].forEach(([delay,label,countdown])=>{
     missionLater(()=>setMissionStatus(label,countdown),delay);
   });

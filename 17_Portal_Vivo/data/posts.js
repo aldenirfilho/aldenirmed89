@@ -9,6 +9,8 @@ window.ANTIGRAVITY_PORTAL={
   "posts": [
     {
       "id": "upgrade-portal-vivo-2026-07-25",
+      "destination": "Portal Vivo — UPGRADE da plataforma",
+      "target": "portal-vivo-upgrade",
       "type": "system-upgrade",
       "category": "Sistema Antigravity",
       "priority": 1,
@@ -42,6 +44,8 @@ window.ANTIGRAVITY_PORTAL={
     },
     {
       "id": "upgrade-radar-referenciado-2026-07-25",
+      "destination": "Portal Vivo — UPGRADE da plataforma",
+      "target": "portal-vivo-upgrade",
       "type": "system-upgrade",
       "category": "Radar Científico",
       "priority": 1,
@@ -75,6 +79,8 @@ window.ANTIGRAVITY_PORTAL={
     },
     {
       "id": "upgrade-diretorio-medico-2026-07-25",
+      "destination": "Portal Vivo — UPGRADE da plataforma",
+      "target": "portal-vivo-upgrade",
       "type": "system-upgrade",
       "category": "Diretório Médico",
       "priority": 2,

@@ -286,6 +286,60 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("let vis = query ? allNodes", home)
         self.assertIn("typeToGroup[n.type] || 'outros'", home)
 
+    def test_portal_stations_and_modules_have_distinct_visual_taxonomy(self) -> None:
+        home = (ROOT / "index.html").read_text(encoding="utf-8")
+        directory = (
+            ROOT / "16_Diretorio_Medico/index.html"
+        ).read_text(encoding="utf-8")
+        guides = (ROOT / "docs_usuario/index.html").read_text(encoding="utf-8")
+
+        portal_start = home.index('id="portal-upgrade"')
+        stations_start = home.index('id="estacoes"')
+        modules_start = home.index('id="modulos"')
+        pipeline_start = home.index('id="pipeline"')
+        self.assertLess(portal_start, stations_start)
+        self.assertLess(stations_start, modules_start)
+        self.assertLess(modules_start, pipeline_start)
+        self.assertEqual(
+            home[portal_start:stations_start].count('class="module-card'),
+            1,
+        )
+        self.assertEqual(
+            home[stations_start:modules_start].count('class="module-card'),
+            2,
+        )
+        self.assertEqual(
+            home[modules_start:home.index("<!-- ── DECK DE MISSÕES CRÍTICAS")].count(
+                'class="module-card'
+            ),
+            17,  # 16 módulos/apps + Mapa Vivo
+        )
+
+        for marker in (
+            "Portal Vivo · UPGRADE",
+            "UPGRADE contínuo do Antigravity",
+            "Estações Antigravity",
+            "Estação Radar Diário",
+            "Estação Diretório Médico",
+            "Módulos e apps Antigravity",
+            "Conteúdo clínico do chat",
+            'class="stations-grid"',
+            'aria-label="Navegação principal"',
+        ):
+            self.assertIn(marker, home)
+
+        for marker in (
+            "<title>Estação Diretório Médico · Antigravity</title>",
+            "Navegação da Estação Diretório Médico",
+            "<small>Estação Diretório Médico</small>",
+            "📡 Estação Radar Diário",
+            '<h1 id="title">Estação Diretório Médico.</h1>',
+        ):
+            self.assertIn(marker, directory)
+
+        self.assertIn("Publicar UPGRADE no Portal Vivo", guides)
+        self.assertIn("Operar a Estação Radar Diário", guides)
+
     def test_light_and_flexible_view_controls_are_persistent(self) -> None:
         home = (ROOT / "index.html").read_text(encoding="utf-8")
 
@@ -554,6 +608,9 @@ class OperationalPackageTests(unittest.TestCase):
             self.assertIn(expected, operation)
         for expected in (
             "Os 20 cartões",
+            "1 Portal + 2 Estações + 16 módulos/apps + Mapa Vivo",
+            "Estação Radar Diário",
+            "Estação Diretório Médico",
             "01_UpDown_Hub/content/",
             "update_library_publication_baseline.py --approve",
             "scan_card_feed.py",

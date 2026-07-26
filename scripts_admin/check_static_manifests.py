@@ -13,7 +13,7 @@ Checa:
     1. JSON válido em todos os manifests principais
     2. Rotas canônicas existem como arquivos reais
     3. Aliases apontam para destinos existentes
-    4. Módulos do site_manifest existem
+    4. Módulos, estações e portais do site_manifest existem
     5. Legacy routes do site_manifest existem (origem e destino)
     6. mainLinks do home-manifest existem
     7. Resumo final com contagem de erros
@@ -178,38 +178,47 @@ def check_route_aliases():
             log_warn(f"Wrapper de origem ausente: {frm} (esperado para redirect)")
 
 
-# ── Checagem 4: Módulos do site_manifest existem ─────────────────────────
+# ── Checagem 4: Superfícies do site_manifest existem ─────────────────────
 
 
-def check_modules():
-    print("\n📦 4. Módulos do site_manifest")
+def check_content_surfaces():
+    print("\n📦 4. Módulos, estações e portais do site_manifest")
     print("─" * 60)
     data, err = load_json(MANIFESTS["site_manifest"])
     if err:
-        log_err(f"Não foi possível checar módulos: {err}")
+        log_err(f"Não foi possível checar superfícies: {err}")
         return
 
-    modules = data.get("modules", [])
-    if not modules:
-        log_warn("Nenhum módulo encontrado em site_manifest.json")
+    groups = (
+        ("modules", "módulo"),
+        ("stations", "estação"),
+        ("portals", "portal"),
+    )
+    if not any(data.get(key) for key, _ in groups):
+        log_warn("Nenhuma superfície encontrada em site_manifest.json")
         return
 
     ids_seen = set()
-    for mod in modules:
-        mod_id = mod.get("id", "?")
-        mod_path = mod.get("path", "?")
-        mod_label = mod.get("label", "?")
+    for key, singular in groups:
+        entries = data.get(key, [])
+        if not entries:
+            log_warn(f"Nenhum {singular} encontrado em {key}")
+            continue
+        for entry in entries:
+            entry_id = entry.get("id", "?")
+            entry_path = entry.get("path", "?")
+            entry_label = entry.get("label", "?")
 
-        # Checar duplicidade de IDs
-        if mod_id in ids_seen:
-            log_err(f"ID duplicado: {mod_id}")
-        ids_seen.add(mod_id)
+            if entry_id in ids_seen:
+                log_err(f"ID duplicado entre superfícies: {entry_id}")
+            ids_seen.add(entry_id)
 
-        # Checar existência
-        if path_exists(mod_path):
-            log_ok(f"{mod_id}: {mod_path} ({mod_label})")
-        else:
-            log_err(f"{mod_id}: {mod_path} ({mod_label}) → NÃO EXISTE")
+            if path_exists(entry_path):
+                log_ok(f"{singular} {entry_id}: {entry_path} ({entry_label})")
+            else:
+                log_err(
+                    f"{singular} {entry_id}: {entry_path} ({entry_label}) → NÃO EXISTE"
+                )
 
 
 # ── Checagem 5: Legacy routes existem ────────────────────────────────────
@@ -350,7 +359,7 @@ def main():
     check_json_validity()
     check_canonical_routes()
     check_route_aliases()
-    check_modules()
+    check_content_surfaces()
     check_legacy_routes()
     check_home_manifest()
     check_public_site_consistency()

@@ -5,8 +5,8 @@ privacidade, rastreabilidade ou segurança clínica.
 
 > **Precisa saber o arquivo e o comando exatos de cada seção?** Abra o guia
 > detalhado **“Como alimentar cada seção do Antigravity Consultas”** na Central
-> de Guias. Ele cobre individualmente Home, 19 módulos, hubs, apps,
-> calculadoras, TEMI, Mapa Vivo, documentos e publicação.
+> de Guias. Ele cobre individualmente Home, Portal de UPGRADE, 2 Estações,
+> 16 módulos/apps, TEMI, Mapa Vivo, documentos e publicação.
 
 ## 🚦 Fluxo rápido em sete passos
 
@@ -24,10 +24,13 @@ privacidade, rastreabilidade ou segurança clínica.
 > arquivos pessoais, finanças, documentos jurídicos ou dados de pacientes com
 > uma atualização clínica.
 
-Para um artigo, notícia ou percepção surgida durante o estudo, use o compositor
-do **Portal Vivo**. Ele gera um pacote para o chat; o agente
-`antigravity-publicar-portal` confere a fonte, aplica o formato Turbo TEMI,
-verifica repetição e publica somente após os portões editoriais.
+Para um artigo, notícia clínica ou percepção surgida durante o estudo, envie o
+material pelo chat com a fonte original. Após auditoria, síntese Turbo TEMI e
+verificação de repetição, o destino é a **Estação Radar Diário**.
+
+O **Portal Vivo** recebe somente UPGRADEs da plataforma: novas funções,
+correções, melhorias de interface, estações atualizadas e marcos operacionais.
+O agente `antigravity-publicar-portal` valida esse registro antes da publicação.
 
 ## 💻📱 Manter os acessos de Mac, Windows e iPhone
 

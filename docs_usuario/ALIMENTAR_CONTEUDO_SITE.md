@@ -8,7 +8,7 @@ compatibilidade offline.
 |---|---|
 | Versão | 1.0 |
 | Atualizado em | 25 de julho de 2026 |
-| Escopo | Home, 19 módulos + Mapa Vivo, hubs editoriais, apps clínicos, TEMI, guias, imagens, downloads e GitHub Pages |
+| Escopo | Home, Portal de UPGRADE, 2 Estações, 16 módulos/apps + Mapa Vivo, hubs editoriais, TEMI, guias, imagens, downloads e GitHub Pages |
 
 > **Regra central:** conteúdo novo começa privado. Só chega ao site depois de autoria/licença, privacidade e revisão clínica humana.
 
@@ -40,7 +40,9 @@ PRIVADO → 3 GATES → FONTE CANÔNICA → GERADOR → DIFF
 
 | Quero adicionar | Fonte canônica | Atualização principal |
 |---|---|---|
-| Notícia, artigo ou destaque emergente no Portal Vivo | `17_Portal_Vivo/data/posts.json` | Compositor → agente `antigravity-publicar-portal` → publicador validado |
+| UPGRADE, correção ou nova função da plataforma | `17_Portal_Vivo/data/posts.json` | Compositor → agente `antigravity-publicar-portal` → publicador validado |
+| Artigo, notícia clínica ou observação de estudo enviada pelo chat | `15_Radar_Cientifico/data/radar.js` | Auditoria da fonte → síntese Turbo TEMI → Estação Radar Diário |
+| Produto, equipamento ou promoção útil | `15_Radar_Cientifico/data/radar.js` + `assets/products/` | `product-watch` → preço datado → especificações/limites → par de imagens → canal Produtividade & Compras |
 | Texto, botão ou cartão da Home | `index.html` | Edição manual + testes |
 | Estudo clínico estruturado | `01_UpDown_Hub/content/` | Registro em `01_UpDown_Hub/registry.json` |
 | PDF, DOCX ou documento pesquisável | `02_Biblioteca_IA_Engine/acervo/` | Baseline → scanner → previews |
@@ -168,7 +170,7 @@ index.html
 5. Atualize textos e links do bloco `#downloads` em `index.html`.
 6. Faça homologação física no sistema operacional antes de afirmar suporte.
 
-### Os 20 cartões — 19 módulos + Mapa Vivo
+### Os 20 cartões — 1 Portal + 2 Estações + 16 módulos/apps + Mapa Vivo
 
 Cada cartão é um link com classe `module-card` e possui:
 
@@ -181,11 +183,15 @@ tags
 chamada para ação
 ```
 
-Os 19 módulos são Portal Vivo, Radar Científico, Diretório Médico, UpDown, Biblioteca,
-Calculadoras, RespiraSense,
-RespiraCrit, Simulador TEMI, Card Feed, Ebooks, Questões Comentadas,
-Transcrições, POCUS, RenalDose, SAPS 3, Hematologia, Reumatologia e Delirium.
-O 20º cartão visual é o **Mapa Vivo**, que abre a seção `#mapa` da Home.
+O **Portal Vivo** apresenta exclusivamente os UPGRADEs, correções e marcos de
+evolução da plataforma. As duas áreas permanentes e independentes são a
+**Estação Radar Diário**, destino do conteúdo clínico e de estudo recebido pelo
+chat, e a **Estação Diretório Médico**, catálogo de fontes verificáveis.
+
+Os 16 módulos/apps são UpDown, Biblioteca, Calculadoras, RespiraSense,
+RespiraCrit, Delirium, Simulador TEMI, Card Feed, Ebooks, Questões Comentadas,
+Transcrições, POCUS, RenalDose, SAPS 3, Hematologia e Reumatologia. O último
+cartão visual é o **Mapa Vivo**, que abre a seção `#mapa` da Home.
 
 Ao criar ou alterar um cartão:
 

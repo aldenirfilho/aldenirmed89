@@ -62,17 +62,21 @@ class PortalVivoTests(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         self.assertTrue(set(ids).issubset(self.history["publishedIds"]))
 
-    def test_feed_is_continuous_optional_and_merges_daily_radar(self):
+    def test_feed_is_continuous_optional_and_keeps_platform_upgrades_separate(self):
         for marker in (
-            "../15_Radar_Cientifico/data/radar.js",
             "IntersectionObserver",
             'id="sentinel"',
             "renderNext",
             "continue rolando",
             "Portal opcional",
-            "não substitui",
+            "Conteúdo clínico e estudo ficam na Estação Radar Diário",
+            "Portal Vivo preserva o histórico de UPGRADE",
         ):
             self.assertIn(marker.casefold(), self.html.casefold())
+        self.assertNotIn(
+            '<script src="../15_Radar_Cientifico/data/radar.js"></script>',
+            self.html,
+        )
 
     def test_manual_composer_is_private_structured_and_chat_ready(self):
         for marker in (
@@ -82,6 +86,12 @@ class PortalVivoTests(unittest.TestCase):
             'id="auditDraft"',
             'id="copyDraft"',
             'id="downloadDraft"',
+            'id="draftTarget"',
+            'value="radar-diario" selected',
+            "Estação Radar Diário — conteúdo clínico/estudo do chat",
+            "Portal Vivo — UPGRADE da plataforma",
+            "destination:DESTINATIONS[target]",
+            "target,sourceUrl",
             "$antigravity-publicar-portal",
             "RASCUNHO LOCAL · NÃO PUBLICADO",
             "no navegador",
@@ -100,6 +110,12 @@ class PortalVivoTests(unittest.TestCase):
 
     def test_every_manual_post_has_turbo_source_and_audit(self):
         for post in self.posts["posts"]:
+            self.assertEqual(post["target"], "portal-vivo-upgrade")
+            self.assertEqual(
+                post["destination"],
+                "Portal Vivo — UPGRADE da plataforma",
+            )
+            self.assertEqual(post["type"], "system-upgrade")
             self.assertIn(post["type"], self.publisher.ALLOWED_TYPES)
             self.assertIn(post["priority"], {1, 2, 3})
             self.assertTrue(post["source"]["url"])
@@ -111,6 +127,8 @@ class PortalVivoTests(unittest.TestCase):
 
     def test_publisher_accepts_grounded_post_and_rejects_unsafe_directive(self):
         base = {
+            "destination": "Estação Radar Diário — conteúdo clínico/estudo do chat",
+            "target": "radar-diario",
             "type": "evidence-summary",
             "category": "Terapia Intensiva",
             "priority": 1,
@@ -146,6 +164,7 @@ class PortalVivoTests(unittest.TestCase):
         }
         validated = self.publisher.validate_post(base)
         self.assertTrue(validated["source"]["url"].endswith("/article"))
+        self.assertEqual(validated["target"], "radar-diario")
         self.assertTrue(validated["id"])
         unsafe = json.loads(json.dumps(base))
         unsafe["turbo"]["clinicalImpact"] = (
@@ -156,13 +175,15 @@ class PortalVivoTests(unittest.TestCase):
 
     def test_publisher_updates_json_js_and_antiduplication_history(self):
         post = {
-            "type": "study-note",
-            "category": "POCUS",
+            "destination": "Portal Vivo — UPGRADE da plataforma",
+            "target": "portal-vivo-upgrade",
+            "type": "system-upgrade",
+            "category": "Sistema Antigravity",
             "priority": 2,
-            "title": "Nota de estudo sobre integração do POCUS na avaliação",
+            "title": "Nova melhoria operacional no compositor do Antigravity",
             "summary": (
-                "Registro educacional rastreável para organizar uma pergunta "
-                "de estudo sem apresentar a observação como protocolo clínico."
+                "O compositor passou a declarar o destino da publicação para "
+                "evitar que conteúdo clínico seja enviado ao feed de upgrades."
             ),
             "publishedAt": "2026-07-25T21:30:00-03:00",
             "source": {
@@ -172,18 +193,18 @@ class PortalVivoTests(unittest.TestCase):
                 "checkedAt": "2026-07-25T21:30:00-03:00",
             },
             "turbo": {
-                "clinicalImpact": "Estrutura a pergunta antes da leitura aprofundada.",
-                "temiHook": "Revisar indicação, técnica, limitações e integração clínica.",
-                "memoryAnchor": "JANELA → ACHADO → CONTEXTO",
+                "clinicalImpact": "Reduz erros editoriais e mantém cada estação com função clara.",
+                "temiHook": "A Estação Radar concentra estudo; o Portal registra evolução.",
+                "memoryAnchor": "DESTINO → AUDITORIA → PUBLICAÇÃO",
                 "takeaways": [
-                    "Documentar a pergunta clínica.",
-                    "Integrar o achado ao contexto e às limitações.",
+                    "Destino explícito no pacote.",
+                    "UPGRADE permanece no Portal Vivo.",
                 ],
-                "caveat": "A nota não substitui treinamento nem validação do achado.",
+                "caveat": "O envio ao chat ainda exige auditoria e integração segura.",
             },
             "audit": {
                 "sourceChecked": True,
-                "clinicalReview": "pending",
+                "clinicalReview": "not-required",
                 "noDirectPatientData": True,
                 "reviewedAt": "2026-07-25T21:30:00-03:00",
                 "reviewedBy": "Teste Antigravity",
@@ -225,6 +246,135 @@ class PortalVivoTests(unittest.TestCase):
             self.assertEqual(updated["posts"][0]["id"], post_id)
             self.assertIn(post_id, history["publishedIds"])
             self.assertIn("window.ANTIGRAVITY_PORTAL=", js_path.read_text())
+
+    def test_radar_destination_validates_but_cannot_publish_into_portal_store(self):
+        post = {
+            "destination": "Estação Radar Diário — conteúdo clínico/estudo do chat",
+            "target": "radar-diario",
+            "type": "study-note",
+            "category": "POCUS",
+            "priority": 2,
+            "title": "Nota clínica destinada à Estação Radar Diário",
+            "summary": (
+                "Conteúdo educacional rastreável que deve permanecer separado "
+                "do feed de melhorias operacionais da plataforma Antigravity."
+            ),
+            "publishedAt": "2026-07-25T21:40:00-03:00",
+            "source": {
+                "name": "Fonte clínica",
+                "url": "https://example.org/article/radar-only",
+                "date": "2026-07-25",
+                "checkedAt": "2026-07-25T21:40:00-03:00",
+            },
+            "turbo": {
+                "clinicalImpact": "Organiza uma pergunta clínica para revisão posterior.",
+                "temiHook": "Revisar indicação, técnica e limitações do método.",
+                "memoryAnchor": "RADAR → ESTUDO",
+                "takeaways": [
+                    "Preservar a fonte específica.",
+                    "Separar estudo de UPGRADE.",
+                ],
+                "caveat": "Não substitui avaliação clínica nem protocolo local.",
+            },
+            "audit": {
+                "sourceChecked": True,
+                "clinicalReview": "pending",
+                "noDirectPatientData": True,
+                "reviewedAt": "2026-07-25T21:40:00-03:00",
+                "reviewedBy": "Teste Antigravity",
+            },
+        }
+        validated = self.publisher.validate_post(post)
+        self.assertEqual(validated["target"], "radar-diario")
+        with tempfile.TemporaryDirectory() as directory:
+            input_path = Path(directory) / "radar.json"
+            input_path.write_text(
+                json.dumps(post, ensure_ascii=False), encoding="utf-8"
+            )
+            with self.assertRaisesRegex(ValueError, "Estação Radar Diário"):
+                self.publisher.publish(input_path)
+
+    def test_source_identity_uses_doi_pmid_or_id_not_landing_domain(self):
+        base = {
+            "destination": "Portal Vivo — UPGRADE da plataforma",
+            "target": "portal-vivo-upgrade",
+            "type": "system-upgrade",
+            "category": "Sistema Antigravity",
+            "priority": 2,
+            "title": "Primeiro upgrade publicado pela mesma página institucional",
+            "summary": (
+                "Primeira atualização independente publicada em uma página "
+                "institucional que também hospeda outras notícias do sistema."
+            ),
+            "publishedAt": "2026-07-25T22:00:00-03:00",
+            "source": {
+                "name": "Fonte institucional",
+                "url": "https://example.org/news",
+                "id": "upgrade-alpha",
+                "date": "2026-07-25",
+                "checkedAt": "2026-07-25T22:00:00-03:00",
+            },
+            "turbo": {
+                "clinicalImpact": "Mantém o histórico de mudanças separado e rastreável.",
+                "temiHook": "Distinguir atualização editorial de conteúdo clínico.",
+                "memoryAnchor": "ID ESPECÍFICO",
+                "takeaways": [
+                    "Uma identidade por notícia.",
+                    "O domínio não define duplicidade.",
+                ],
+                "caveat": "O identificador editorial precisa permanecer estável.",
+            },
+            "audit": {
+                "sourceChecked": True,
+                "clinicalReview": "not-required",
+                "noDirectPatientData": True,
+                "reviewedAt": "2026-07-25T22:00:00-03:00",
+                "reviewedBy": "Teste Antigravity",
+            },
+        }
+        other = json.loads(json.dumps(base))
+        other["title"] = "Segundo upgrade publicado pela mesma página institucional"
+        other["source"]["id"] = "upgrade-beta"
+        first = self.publisher.validate_post(base)
+        second = self.publisher.validate_post(other)
+        self.assertNotEqual(first["sourceIdentity"], second["sourceIdentity"])
+        self.assertNotEqual(first["sourceHash"], second["sourceHash"])
+
+        landing_first = json.loads(json.dumps(base))
+        landing_first["source"].pop("id")
+        landing_second = json.loads(json.dumps(landing_first))
+        landing_second["title"] = (
+            "Outra notícia independente publicada pela mesma landing page"
+        )
+        self.assertNotEqual(
+            self.publisher.validate_post(landing_first)["sourceIdentity"],
+            self.publisher.validate_post(landing_second)["sourceIdentity"],
+        )
+
+        doi_copy = json.loads(json.dumps(base))
+        doi_copy["source"].pop("id")
+        doi_copy["source"]["doi"] = "10.1000/same-publication"
+        doi_copy["source"]["url"] = "https://journal.example/article-one"
+        doi_mirror = json.loads(json.dumps(doi_copy))
+        doi_mirror["source"]["url"] = "https://doi.org/10.1000/same-publication"
+        self.assertEqual(
+            self.publisher.validate_post(doi_copy)["sourceIdentity"],
+            self.publisher.validate_post(doi_mirror)["sourceIdentity"],
+        )
+
+        pmid_copy = json.loads(json.dumps(base))
+        pmid_copy["source"].pop("id")
+        pmid_copy["source"]["pmid"] = "42476363"
+        pmid_copy["source"]["url"] = "https://journal.example/pocus-review"
+        pmid_mirror = json.loads(json.dumps(pmid_copy))
+        pmid_mirror["source"].pop("pmid")
+        pmid_mirror["source"]["url"] = (
+            "https://pubmed.ncbi.nlm.nih.gov/42476363/?utm_source=test"
+        )
+        self.assertEqual(
+            self.publisher.validate_post(pmid_copy)["sourceIdentity"],
+            self.publisher.validate_post(pmid_mirror)["sourceIdentity"],
+        )
 
     def test_public_architecture_and_home_are_connected(self):
         manifest = json.loads(

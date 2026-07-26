@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="dark light"/>
   <meta name="theme-color" content="#06111f"/>
   <title>Portal Vivo · Antigravity</title>
-  <meta name="description" content="Portal opcional de atualizações médicas, Radar Científico, destaques emergentes e upgrades do sistema Antigravity."/>
+  <meta name="description" content="Portal opcional de upgrades, novas estações e atualizações operacionais da plataforma Antigravity."/>
   <link rel="icon" href="../assets/icons/antigravity-consultas-64.png"/>
   <style>
     :root{
@@ -220,17 +220,15 @@
         <div class="rail-title"><h2>Central de notícias</h2><span>opcional</span></div>
         <nav class="nav-list">
           <button class="active" type="button" data-filter="all">◉ Todas</button>
-          <button type="button" data-filter="scientific">🔬 Ciência</button>
-          <button type="button" data-filter="policy">🌍 Saúde & política</button>
           <button type="button" data-filter="upgrade">⬆ UPGRADE</button>
-          <a href="../15_Radar_Cientifico/">📡 Radar completo</a>
-          <a href="../16_Diretorio_Medico/">🌐 Diretório médico</a>
+          <a href="../15_Radar_Cientifico/">📡 Estação Radar Diário</a>
+          <a href="../16_Diretorio_Medico/">🌐 Estação Diretório Médico</a>
           <a href="../05_Midia_E_Feed/">🖼️ Card Feed</a>
         </nav>
       </section>
       <section class="rail-card">
         <div class="rail-title"><h2>Publicação rápida</h2><span>3 passos</span></div>
-        <p class="small-note">1. Cole a fonte e sua observação.<br/>2. Audite e gere o pacote.<br/>3. Cole no chat para o agente editar, converter e publicar.</p>
+        <p class="small-note">1. Escolha a estação de destino.<br/>2. Cole a fonte e sua observação.<br/>3. Audite e envie o pacote ao agente.</p>
         <button class="primary-btn" id="openComposerRail" type="button" style="width:100%;margin-top:12px">Preparar destaque</button>
       </section>
       <section class="rail-card privacy-note">
@@ -241,26 +239,23 @@
 
     <section class="main-feed" aria-labelledby="portalTitle">
       <div class="welcome">
-        <div class="eyebrow">Portal opcional · conhecimento em movimento</div>
-        <h1 id="portalTitle">O que mudou e o que merece sua atenção.</h1>
-        <p>Um fluxo único para ciência, saúde, TEMI e evolução do sistema. Ele não substitui os módulos atuais; cada destaque preserva fonte, data, limitação e aplicação prática.</p>
+        <div class="eyebrow">Portal opcional · evolução da plataforma</div>
+        <h1 id="portalTitle">O que mudou no sistema Antigravity.</h1>
+        <p>Um feed contínuo de novas estações, recursos e melhorias operacionais. Conteúdo clínico e estudo ficam na Estação Radar Diário; o Portal Vivo preserva o histórico de UPGRADE sem substituir nenhuma estação.</p>
         <div class="welcome-actions">
           <button class="primary-btn" id="welcomeComposer" type="button">＋ Postar pelo chat</button>
-          <a class="ghost-btn" href="../15_Radar_Cientifico/" style="text-decoration:none">Abrir briefing diário</a>
+          <a class="ghost-btn" href="../15_Radar_Cientifico/" style="text-decoration:none">Abrir Estação Radar Diário</a>
         </div>
       </div>
       <div class="status-row" aria-label="Estado editorial">
         <span class="status-chip live">Portal operacional</span>
         <span class="status-chip" id="postCount">Carregando publicações…</span>
-        <span class="status-chip">Fontes rastreáveis</span>
+        <span class="status-chip">UPGRADES rastreáveis</span>
         <span class="status-chip">Sem dados de pacientes</span>
       </div>
       <div class="filters" role="toolbar" aria-label="Filtros rápidos">
         <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">Tudo</button>
-        <button class="filter-btn" type="button" data-filter="scientific" aria-pressed="false">🔬 Científico</button>
-        <button class="filter-btn" type="button" data-filter="policy" aria-pressed="false">🌍 Saúde</button>
         <button class="filter-btn" type="button" data-filter="upgrade" aria-pressed="false">⬆ UPGRADE</button>
-        <button class="filter-btn" type="button" data-filter="temi" aria-pressed="false">🎯 TEMI</button>
         <button class="filter-btn" type="button" data-filter="saved" aria-pressed="false">🔖 Salvos</button>
       </div>
       <div class="feed" id="feed" aria-live="polite"></div>
@@ -275,7 +270,7 @@
       </section>
       <section class="rail-card">
         <div class="rail-title"><h2>Regra editorial</h2><span>Turbo TEMI</span></div>
-        <p class="small-note">Relevância antes de volume. Evidência antes de opinião. Data e fonte sempre visíveis. Incerteza não é escondida.</p>
+        <p class="small-note">UPGRADE real antes de volume. Data, destino e mudança sempre visíveis. Conteúdo clínico pertence à Estação Radar Diário.</p>
         <a class="ghost-btn" href="../docs_usuario/PORTAL_VIVO_PUBLICACAO/" style="display:block;text-decoration:none;text-align:center;margin-top:12px">Manual de publicação</a>
       </section>
     </aside>
@@ -284,18 +279,26 @@
   <div class="composer-backdrop" id="composer" role="dialog" aria-modal="true" aria-labelledby="composerTitle">
     <section class="composer-card">
       <div class="composer-head">
-        <div><div class="eyebrow">Entrada manual segura</div><h2 id="composerTitle">Preparar uma publicação</h2><p>O portal não guarda senha do GitHub. Ele prepara um pacote estruturado para você colar no chat e o agente publicar com auditoria.</p></div>
+        <div><div class="eyebrow">Entrada manual segura</div><h2 id="composerTitle">Preparar uma publicação</h2><p>Escolha primeiro a estação. O navegador não guarda senha do GitHub; ele cria um pacote com destino explícito para o agente auditar e publicar no local correto.</p></div>
         <button class="close-btn" id="closeComposer" type="button" aria-label="Fechar">✕</button>
       </div>
       <form id="composerForm">
         <div class="form-grid">
+          <div class="field full">
+            <label for="draftTarget">Destino da publicação *</label>
+            <select id="draftTarget" required>
+              <option value="radar-diario" selected>Estação Radar Diário — conteúdo clínico/estudo do chat</option>
+              <option value="portal-vivo-upgrade">Portal Vivo — UPGRADE da plataforma</option>
+            </select>
+            <p class="small-note" id="destinationHint">Padrão para artigos, notícias clínicas, notas de estudo, conteúdo TEMI e produtos úteis a auditar.</p>
+          </div>
           <div class="field full"><label for="draftSource">Link da fonte *</label><input id="draftSource" type="url" required placeholder="https://revista.org/artigo-ou-documento"/></div>
           <div class="field"><label for="draftSourceName">Revista, site ou instituição *</label><input id="draftSourceName" required maxlength="100" placeholder="Ex.: PubMed, AMIB, Ministério da Saúde"/></div>
-          <div class="field"><label for="draftCategory">Categoria</label><select id="draftCategory"><option>Terapia Intensiva</option><option>Clínica Médica</option><option>POCUS</option><option>Hematologia</option><option>Reumatologia</option><option>Cuidados Paliativos</option><option>IA em Saúde</option><option>Saúde Brasil</option><option>TEMI</option><option>Sistema Antigravity</option></select></div>
+          <div class="field"><label for="draftCategory">Categoria</label><select id="draftCategory"><option>Terapia Intensiva</option><option>Clínica Médica</option><option>POCUS</option><option>Hematologia</option><option>Reumatologia</option><option>Cuidados Paliativos</option><option>IA em Saúde</option><option>Saúde Brasil</option><option>TEMI</option><option>Produtividade &amp; Compras</option><option>Sistema Antigravity</option></select></div>
           <div class="field full"><label for="draftTitle">Título provisório *</label><input id="draftTitle" required minlength="12" maxlength="140" placeholder="O que aconteceu, sem exagero"/></div>
           <div class="field full"><label for="draftNote">Sua observação de estudo *</label><textarea id="draftNote" required minlength="40" maxlength="2400" placeholder="O que você percebeu, por que importa e o que gostaria de destacar. Não inclua nome, prontuário ou qualquer dado de paciente."></textarea></div>
           <div class="field"><label for="draftPriority">Prioridade</label><select id="draftPriority"><option value="1">1 · Alta / emergente</option><option value="2" selected>2 · Relevante</option><option value="3">3 · Aprofundamento</option></select></div>
-          <div class="field"><label for="draftType">Tipo</label><select id="draftType"><option value="evidence-summary">Artigo / evidência</option><option value="clinical-news">Notícia clínica</option><option value="health-policy">Saúde pública / política</option><option value="study-note">Nota de estudo</option><option value="system-upgrade">UPGRADE do sistema</option></select></div>
+          <div class="field"><label for="draftType">Tipo</label><select id="draftType"><option value="evidence-summary">Artigo / evidência</option><option value="clinical-news">Notícia clínica</option><option value="health-policy">Saúde pública / política</option><option value="study-note">Nota de estudo</option><option value="product-watch">Produto / promoção auditada</option><option value="system-upgrade">UPGRADE do sistema</option></select></div>
         </div>
         <div class="composer-actions">
           <button class="ghost-btn" id="auditDraft" type="button">✓ Auditar rascunho</button>
@@ -308,14 +311,12 @@
     </section>
   </div>
 
-  <script src="../15_Radar_Cientifico/data/radar.js"></script>
   <script src="./data/posts.js"></script>
   <script>
   "use strict";
   (() => {
     const $=id=>document.getElementById(id);
     const portal=window.ANTIGRAVITY_PORTAL||{posts:[],upgrades:[]};
-    const radar=window.ANTIGRAVITY_RADAR||{scientific:[],geopolitics:[]};
     const STORAGE={
       theme:"antigravity:theme:v1",saved:"antigravity:portal-saved:v1",
       reviewed:"antigravity:portal-reviewed:v1",notes:"antigravity:portal-notes:v1",
@@ -338,24 +339,31 @@
       try{return `${new URL(value).origin}/favicon.ico`}catch(_){return "../assets/icons/antigravity-consultas-64.png"}
     };
     const esc=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
-    const radarScientific=(radar.scientific||[]).map(item=>({
-      id:`radar-${item.id}`,type:"evidence-summary",category:item.topic||"Radar Científico",
-      priority:item.priority||2,title:item.title,summary:item.summary,publishedAt:`${item.date}T12:00:00-03:00`,
-      source:{name:item.source,url:item.url,date:item.date,checkedAt:radar.generatedAt},
-      turbo:{clinicalImpact:item.why||"Atualização relevante para prática e estudo.",temiHook:`Revise desenho, população, desfecho e limitações em ${item.topic||"Medicina"}.`,memoryAnchor:(item.topic||"EVIDÊNCIA").toUpperCase(),takeaways:[item.why||"Conferir aplicabilidade clínica.",item.caveat||"Ler o texto completo."],caveat:item.caveat||"Confirme o texto integral e o protocolo local."},
-      audit:{sourceChecked:true,clinicalReview:"pending",noDirectPatientData:true,reviewedAt:radar.generatedAt,reviewedBy:"Radar Antigravity"},origin:"scientific"
-    }));
-    const radarPolicy=(radar.geopolitics||[]).map(item=>({
-      id:`radar-${item.id}`,type:"health-policy",category:item.topic||"Saúde",
-      priority:item.priority||2,title:item.title,summary:item.summary,publishedAt:`${item.date}T10:00:00-03:00`,
-      source:{name:item.source,url:item.url,date:item.date,checkedAt:radar.generatedAt},
-      turbo:{clinicalImpact:"Acompanhar efeitos para assistência, organização, vigilância ou formação médica.",temiHook:"Conecte o fato à organização do SUS, epidemiologia e capacidade de resposta.",memoryAnchor:(item.topic||"SAÚDE").toUpperCase(),takeaways:["Identifique o impacto local e temporal.","Confirme atualizações no canal institucional."],caveat:"Notícia institucional não equivale a evidência de efetividade clínica."},
-      audit:{sourceChecked:true,clinicalReview:"not-required",noDirectPatientData:true,reviewedAt:radar.generatedAt,reviewedBy:"Radar Antigravity"},origin:"policy"
-    }));
-    const manual=(portal.posts||[]).map(item=>({...item,origin:item.type==="system-upgrade"?"upgrade":"manual"}));
+    const normalized=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("pt-BR").replace(/\s+/g," ").trim();
+    const canonicalExternal=value=>{
+      try{
+        const url=new URL(value),tracking=["fbclid","gclid","mc_cid","mc_eid","ref","source"];
+        [...url.searchParams.keys()].forEach(key=>{if(key.toLowerCase().startsWith("utm_")||tracking.includes(key.toLowerCase()))url.searchParams.delete(key)});
+        url.hash="";url.hostname=url.hostname.toLowerCase();url.pathname=url.pathname.replace(/\/+$/,"")||"/";
+        return url.href;
+      }catch(_){return safeUrl(value)}
+    };
+    function publicationKey(item){
+      const source=item.source||{},url=canonicalExternal(source.url||"");
+      const doi=normalized(source.doi||item.doi||"").replace(/^https?:\/\/(dx\.)?doi\.org\//,"").replace(/^doi:\s*/,"");
+      if(doi)return `doi:${doi}`;
+      const pmid=String(source.pmid||item.pmid||"").match(/\d{5,10}/)?.[0]||String(url).match(/pubmed\.ncbi\.nlm\.nih\.gov\/(\d{5,10})/)?.[1];
+      if(pmid)return `pmid:${pmid}`;
+      if(source.id||item.sourceId)return `source-id:${normalized(source.id||item.sourceId)}`;
+      const landing=/^https:\/\/[^/]+\/?(?:news|noticias|articles|content|latest|home|readme)?\/?(?:\?.*)?$/i.test(url);
+      return landing?`landing:${url}|${normalized(item.title)}`:`url:${url}`;
+    }
+    const manual=(portal.posts||[])
+      .filter(item=>item.target==="portal-vivo-upgrade"||item.type==="system-upgrade")
+      .map(item=>({...item,origin:"upgrade"}));
     const seen=new Set();
-    const all=[...manual,...radarScientific,...radarPolicy].filter(item=>{
-      const key=safeUrl(item.source?.url)||item.id;if(seen.has(key))return false;seen.add(key);return true;
+    const all=manual.filter(item=>{
+      const key=publicationKey(item);if(seen.has(key))return false;seen.add(key);return true;
     }).sort((a,b)=>asDate(b.publishedAt)-asDate(a.publishedAt)||a.priority-b.priority);
 
     function matches(item){
@@ -364,9 +372,6 @@
       if(filter==="all")return true;
       if(filter==="saved")return saved.has(item.id);
       if(filter==="upgrade")return item.type==="system-upgrade";
-      if(filter==="scientific")return item.origin==="scientific"||item.type==="evidence-summary";
-      if(filter==="policy")return item.origin==="policy"||item.type==="health-policy";
-      if(filter==="temi")return hay.includes("temi")||hay.includes("prova");
       return true;
     }
     function auditLabel(item){
@@ -451,8 +456,22 @@
     $("closeComposer").addEventListener("click",closeComposer);
     composer.addEventListener("click",event=>{if(event.target===composer)closeComposer()});
     document.addEventListener("keydown",event=>{if(event.key==="Escape"&&composer.classList.contains("open"))closeComposer()});
+    const DESTINATIONS={
+      "radar-diario":"Estação Radar Diário — conteúdo clínico/estudo do chat",
+      "portal-vivo-upgrade":"Portal Vivo — UPGRADE da plataforma"
+    };
+    function syncDestination(){
+      const target=$("draftTarget").value,isPortal=target==="portal-vivo-upgrade";
+      $("destinationHint").textContent=isPortal
+        ?"Use somente para novas estações, recursos, correções e melhorias operacionais do Antigravity."
+        :"Padrão para artigos, notícias clínicas, notas de estudo, conteúdo TEMI e produtos úteis a auditar.";
+      if(isPortal){$("draftType").value="system-upgrade";$("draftCategory").value="Sistema Antigravity"}
+      else if($("draftType").value==="system-upgrade"){$("draftType").value="study-note";$("draftCategory").value="Terapia Intensiva"}
+    }
+    $("draftTarget").addEventListener("change",syncDestination);syncDestination();
     function draft(){
-      return {sourceUrl:$("draftSource").value.trim(),sourceName:$("draftSourceName").value.trim(),category:$("draftCategory").value,title:$("draftTitle").value.trim(),note:$("draftNote").value.trim(),priority:Number($("draftPriority").value),type:$("draftType").value,createdAt:new Date().toISOString(),request:"formatar-auditar-converter-publicar"};
+      const target=$("draftTarget").value;
+      return {destination:DESTINATIONS[target],target,sourceUrl:$("draftSource").value.trim(),sourceName:$("draftSourceName").value.trim(),category:$("draftCategory").value,title:$("draftTitle").value.trim(),note:$("draftNote").value.trim(),priority:Number($("draftPriority").value),type:$("draftType").value,createdAt:new Date().toISOString(),request:"formatar-auditar-converter-publicar"};
     }
     function auditDraft(){
       const item=draft(),problems=[];
@@ -460,18 +479,20 @@
       if(item.sourceName.length<2)problems.push("Informe a revista, site ou instituição.");
       if(item.title.length<12)problems.push("O título precisa explicar melhor o destaque.");
       if(item.note.length<40)problems.push("Acrescente contexto à sua observação.");
+      if(item.target==="portal-vivo-upgrade"&&item.type!=="system-upgrade")problems.push("O Portal Vivo aceita apenas UPGRADE da plataforma.");
+      if(item.target==="radar-diario"&&item.type==="system-upgrade")problems.push("Conteúdo clínico/estudo deve usar um tipo do Radar, não UPGRADE.");
       if(/\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/i.test(`${item.title} ${item.note}`))problems.push("Remova possível CPF ou e-mail.");
       const result=$("auditResult");result.className=`audit-result ${problems.length?"error":"ok"}`;
       result.innerHTML=problems.length?`<strong>Corrija antes de enviar:</strong><br/>${problems.map(problem=>`• ${esc(problem)}`).join("<br/>")}`:"<strong>Rascunho local aprovado.</strong><br/>✓ Fonte HTTPS · ✓ Sem identificador óbvio · ✓ Contexto mínimo. O agente ainda verificará a fonte, duplicidade, proporcionalidade e segurança clínica.";
       return problems.length===0?item:null;
     }
     function chatPrompt(item){
-      return `Use $antigravity-publicar-portal no repositório Antigravity Consultas para auditar, editar, converter em Turbo TEMI e PUBLICAR este destaque no Portal Vivo.\n\nDADOS DO RASCUNHO:\n${JSON.stringify(item,null,2)}\n\nRegras: confira a fonte original; procure DOI/PMID e fonte primária; não invente números; separe fato, interpretação e incerteza; verifique duplicidade; não inclua dados de paciente; mantenha tudo em português; rotule revisão clínica pendente quando aplicável; execute os testes, publique pelo fluxo seguro do GitHub e confirme o link público.`;
+      return `Use $antigravity-publicar-portal no repositório Antigravity Consultas para auditar, editar, converter e PUBLICAR no destino declarado: ${item.destination} (${item.target}).\n\nDADOS DO RASCUNHO:\n${JSON.stringify(item,null,2)}\n\nRegras: respeite destination/target; conteúdo clínico, de estudo ou product-watch vai para a Estação Radar Diário; somente UPGRADE da plataforma vai para o Portal Vivo; confira a fonte original; procure DOI/PMID/ID e fonte primária; não invente números; separe fato, interpretação e incerteza; em produto, registre preço e horário, especificações, vendedor, garantia, uso, limites, alternativa de não comprar e proíba promessa de rendimento; deduplique pelo identificador específico da publicação, não pelo domínio; não inclua dados de paciente; mantenha tudo em português; rotule revisão clínica pendente quando aplicável; execute os testes, publique pelo fluxo seguro do GitHub e confirme o link público.`;
     }
     $("auditDraft").addEventListener("click",auditDraft);
     $("copyDraft").addEventListener("click",async()=>{const item=auditDraft();if(!item)return;try{await navigator.clipboard.writeText(chatPrompt(item));$("auditResult").innerHTML="<strong>Pacote copiado.</strong><br/>Cole agora no chat do Codex/ChatGPT. O agente fará a conferência editorial e a publicação."; $("auditResult").className="audit-result ok"}catch(_){$("auditResult").textContent="O navegador bloqueou a cópia. Use Baixar JSON e anexe o arquivo ao chat."}});
-    $("downloadDraft").addEventListener("click",()=>{const item=auditDraft();if(!item)return;const blob=new Blob([JSON.stringify(item,null,2)],{type:"application/json"}),link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download=`antigravity-portal-${Date.now()}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000)});
-    $("previewDraft").addEventListener("click",()=>{const item=auditDraft();if(!item)return;const local={id:`local-${Date.now()}`,type:item.type,category:item.category,priority:item.priority,title:item.title,summary:item.note,publishedAt:item.createdAt,source:{name:item.sourceName,url:item.sourceUrl,date:item.createdAt.slice(0,10)},turbo:{clinicalImpact:"O agente completará a aplicabilidade após conferir a fonte.",temiHook:"O agente criará o gancho TEMI proporcional à evidência.",memoryAnchor:"RASCUNHO LOCAL",takeaways:["Fonte ainda será auditada.","Conteúdo ainda não está publicado."],caveat:"Prévia privada; não usar para decisão clínica."},audit:{clinicalReview:"pending"}};const wrapper=document.createElement("div");wrapper.innerHTML=postHTML(local);const article=wrapper.firstElementChild;article.classList.add("local-draft");article.querySelector(".source-meta").insertAdjacentHTML("beforeend",'<div class="local-label">RASCUNHO LOCAL · NÃO PUBLICADO</div>');$("feed").prepend(article);closeComposer();article.scrollIntoView({behavior:"smooth",block:"start"})});
+    $("downloadDraft").addEventListener("click",()=>{const item=auditDraft();if(!item)return;const blob=new Blob([JSON.stringify(item,null,2)],{type:"application/json"}),link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download=`antigravity-${item.target}-${Date.now()}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000)});
+    $("previewDraft").addEventListener("click",()=>{const item=auditDraft();if(!item)return;const local={id:`local-${Date.now()}`,destination:item.destination,target:item.target,type:item.type,category:item.category,priority:item.priority,title:item.title,summary:item.note,publishedAt:item.createdAt,source:{name:item.sourceName,url:item.sourceUrl,date:item.createdAt.slice(0,10)},turbo:{clinicalImpact:"O agente completará a aplicabilidade após conferir a fonte.",temiHook:"O agente criará o gancho TEMI proporcional à evidência.",memoryAnchor:"RASCUNHO LOCAL",takeaways:["Fonte ainda será auditada.","Conteúdo ainda não está publicado."],caveat:"Prévia privada; não usar para decisão clínica."},audit:{clinicalReview:"pending"}};const wrapper=document.createElement("div");wrapper.innerHTML=postHTML(local);const article=wrapper.firstElementChild;article.classList.add("local-draft");article.querySelector(".source-meta").insertAdjacentHTML("beforeend",`<div class="local-label">${esc(item.destination)} · RASCUNHO LOCAL · NÃO PUBLICADO</div>`);$("feed").prepend(article);closeComposer();article.scrollIntoView({behavior:"smooth",block:"start"})});
     form.addEventListener("submit",event=>event.preventDefault());
     renderUpgrades();resetFeed();
   })();

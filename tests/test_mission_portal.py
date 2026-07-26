@@ -21,9 +21,11 @@ class MissionPortalTests(unittest.TestCase):
             'id="missionCore"',
             'id="missionEmblem"',
             'src="./assets/icons/antigravity-consultas-192.png"',
-            "Com honra e vigor. A missão começa agora.",
+            "A missão começa agora.",
         ):
             self.assertIn(marker, HOME)
+        self.assertNotIn("com honra e vigor", HOME.casefold())
+        self.assertNotIn("honra · vigor", HOME.casefold())
 
     def test_sound_requires_an_explicit_choice_and_stays_local(self) -> None:
         for marker in (
@@ -33,11 +35,29 @@ class MissionPortalTests(unittest.TestCase):
             "context.createOscillator()",
             "context.createBuffer(",
             "playMissionSound({compact:missionHasReducedMotion(),theme:missionSoundTheme})",
+            "async function playMissionSound",
+            "await context.resume()",
         ):
             self.assertIn(marker, HOME)
         self.assertNotIn("<audio autoplay", HOME.lower())
         self.assertNotIn("new Audio(", HOME)
         self.assertNotIn("fetch('./assets/audio", HOME)
+
+    def test_sound_is_audible_ten_seconds_and_peak_limited(self) -> None:
+        for marker in (
+            "const duration=compact?.74:10.05",
+            "master:.68",
+            "master:.58",
+            "master:.72",
+            "const limiter=context.createDynamicsCompressor()",
+            "limiter.threshold.value=-12",
+            "limiter.ratio.value=16",
+            "output.gain.setValueAtTime(.86,start)",
+            "master.connect(limiter).connect(output).connect(context.destination)",
+            "presence.frequency.setValueAtTime(frequency*3.2,when)",
+            "chord(profile.harmony[1],start+7.62,2.38,.072)",
+        ):
+            self.assertIn(marker, HOME)
 
     def test_three_sound_themes_are_selectable_and_persistent(self) -> None:
         for marker in (
@@ -49,14 +69,17 @@ class MissionPortalTests(unittest.TestCase):
         ):
             self.assertIn(marker, HOME)
 
-    def test_five_second_flight_lands_on_the_replay_emblem(self) -> None:
+    def test_ten_second_flight_lands_on_the_replay_emblem(self) -> None:
         for marker in (
-            "const MISSION_DURATION=5000",
+            "const MISSION_DURATION=10000",
             "missionCore.getBoundingClientRect()",
             "missionEmblem.getBoundingClientRect()",
             "duration:MISSION_DURATION",
             "missionLater(()=>finishMission(),MISSION_DURATION)",
-            "animation:mission-progress 5s linear both",
+            "animation:mission-progress 10s linear both",
+            "animation:mission-star-drive 10s ease-in both",
+            "Dez segundos para organizar o foco",
+            "T−10,0",
         ):
             self.assertIn(marker, HOME)
 
@@ -94,7 +117,7 @@ class MissionPortalTests(unittest.TestCase):
 
     def test_portal_does_not_add_telemetry_or_remote_audio(self) -> None:
         portal_source = HOME[
-            HOME.index("/* ── PORTAL DE MISSÃO · 5 SEGUNDOS"):
+            HOME.index("/* ── PORTAL DE MISSÃO · 10 SEGUNDOS"):
             HOME.index("/* ── DATA: topic drawer content")
         ]
         self.assertNotIn("sendBeacon", portal_source)
