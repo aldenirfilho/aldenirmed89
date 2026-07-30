@@ -1,0 +1,723 @@
+{
+  "version": "1.0",
+  "id": "acra-pocus-choque-piloto-v1",
+  "title": "POCUS no choque indiferenciado",
+  "subtitle": "Bomba · Tanque · Tubos · Perfusão em micropartículas ativas",
+  "mode": "tutorial",
+  "summary": "Piloto ACRA para organizar o POCUS como exame focado, seriado e integrado ao contexto clínico. O objetivo é reconhecer fenótipos de choque, testar hipóteses e escolher o próximo dado útil — sem transformar um achado isolado em diagnóstico ou prescrição.",
+  "critical": [
+    {
+      "id": "critical-educational-scope",
+      "severity": "danger",
+      "title": "Apoio educacional — não é protocolo assistencial",
+      "text": "POCUS complementa, mas não substitui, ABCDE, história, exame físico, monitorização, exames formais e julgamento clínico. Instabilidade exige estabilização simultânea e protocolo institucional."
+    },
+    {
+      "id": "critical-single-sign",
+      "severity": "warning",
+      "title": "Nunca feche o choque por um único sinal",
+      "text": "VCI, B-lines, hipercinesia, dilatação do VD ou ausência de deslizamento pleural não devem ser interpretados isoladamente. Combine janelas, qualidade da imagem, probabilidade pré-teste e evolução seriada."
+    },
+    {
+      "id": "critical-review-status",
+      "severity": "info",
+      "title": "Piloto em revisão médica",
+      "text": "Os casos interativos são sintéticos e não contêm dados de pacientes. O atlas usa figuras reais desidentificadas, publicadas sob CC BY 4.0 e apresentadas como exemplos representativos. Conteúdo destinado a estudo TEMI e treino cognitivo; revisão clínica humana final permanece pendente."
+    }
+  ],
+  "components": [
+    {
+      "type": "callout",
+      "id": "component-m0-essence",
+      "title": "M0 · Essência em 30 segundos",
+      "tone": "info",
+      "text": "Pergunta-mãe: qual fenótipo explica melhor a hipoperfusão agora? Examine Bomba (VE, VD, pericárdio), Tanque (congestão e pistas de responsividade), Tubos (aorta, trombose e obstrução) e Pulmão; integre perfusão e repita quando a fisiologia mudar."
+    },
+    {
+      "type": "keyValueGrid",
+      "id": "component-method-acra",
+      "title": "Como funciona a micropartícula ACRA",
+      "items": [
+        {
+          "id": "grid-objective",
+          "label": "🎯 Objetivo",
+          "value": "Uma pergunta clínica pequena e explícita."
+        },
+        {
+          "id": "grid-input",
+          "label": "👀 Entrada",
+          "value": "Poucos dados essenciais, com contexto e qualidade da janela."
+        },
+        {
+          "id": "grid-action",
+          "label": "🖐️ Ação",
+          "value": "Observar, escolher, comparar ou recuperar da memória."
+        },
+        {
+          "id": "grid-evidence",
+          "label": "🔬 Evidência",
+          "value": "Síntese curta ligada a fonte primária."
+        },
+        {
+          "id": "grid-stop",
+          "label": "🛑 Critério de parada",
+          "value": "Saber quando o achado é insuficiente ou exige escalonamento."
+        },
+        {
+          "id": "grid-next",
+          "label": "➡️ Próximo passo",
+          "value": "Uma ação cognitiva clara para manter o fluxo."
+        }
+      ]
+    },
+    {
+      "type": "numberedSteps",
+      "id": "component-m1-mechanism",
+      "title": "M1 · Mecanismo: varredura orientada por hipótese",
+      "items": [
+        {
+          "id": "step-safety",
+          "title": "ABCDE e segurança primeiro",
+          "text": "Reconheça a instabilidade, inicie suporte e defina a pergunta focal. O ultrassom acontece em paralelo, sem atrasar intervenções tempo-dependentes."
+        },
+        {
+          "id": "step-pump",
+          "title": "Bomba",
+          "text": "Avalie função global do VE, tamanho e função do VD, derrame pericárdico e sinais de interação ventricular. Descreva o que vê antes de nomear a causa."
+        },
+        {
+          "id": "step-tank",
+          "title": "Tanque",
+          "text": "Procure sinais de congestão e, quando a pergunta for fluido-responsividade, prefira mudança dinâmica do débito ou VTI a marcadores estáticos isolados."
+        },
+        {
+          "id": "step-pipes",
+          "title": "Tubos",
+          "text": "Interrogue aorta e território venoso conforme hipótese e competência técnica. Um exame focal negativo não exclui dissecção, aneurisma, trombose ou embolia."
+        },
+        {
+          "id": "step-lung",
+          "title": "Pulmão",
+          "text": "Integre perfil A/B, consolidação, derrame e sinais pleurais. Distribuição, simetria e contexto importam mais que um artefato isolado."
+        },
+        {
+          "id": "step-perfusion",
+          "title": "Perfusão e reavaliação",
+          "text": "Confronte o fenótipo ultrassonográfico com perfusão periférica, pressão, lactato em tendência e resposta às intervenções; documente incerteza e repita o exame."
+        }
+      ]
+    },
+    {
+      "type": "tabs",
+      "id": "component-m2-phenotypes",
+      "title": "M2 · Fenótipos: compare antes de concluir",
+      "items": [
+        {
+          "id": "tab-hypovolemic",
+          "label": "Hipovolêmico",
+          "content": [
+            {
+              "type": "bulletList",
+              "items": [
+                "Cavidades podem parecer pequenas e hiperdinâmicas, mas isso não prova responsividade a fluidos.",
+                "Pulmão frequentemente sem síndrome intersticial difusa; procure a causa da perda.",
+                "Teste dinâmico e resposta seriada são mais úteis que VCI isolada."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tab-cardiogenic",
+          "label": "Cardiogênico",
+          "content": [
+            {
+              "type": "bulletList",
+              "items": [
+                "Disfunção do VE, complicação mecânica ou valvopatia podem orientar o fenótipo.",
+                "B-lines bilaterais apoiam congestão, mas não são específicas de edema cardiogênico.",
+                "Fenótipos mistos são comuns; avalie VD, pericárdio e perfusão."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tab-obstructive",
+          "label": "Obstrutivo",
+          "content": [
+            {
+              "type": "bulletList",
+              "items": [
+                "Tamponamento exige derrame, repercussão hemodinâmica e contexto — derrame sozinho não basta.",
+                "Dilatação ou disfunção do VD aumenta suspeita de sobrecarga, mas não confirma TEP.",
+                "Ausência de lung sliding exige técnica correta e diferenciais; lung point é mais específico quando presente."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tab-distributive",
+          "label": "Distributivo",
+          "content": [
+            {
+              "type": "bulletList",
+              "items": [
+                "VE hiperdinâmico pode coexistir com disfunção miocárdica séptica ou vasoplegia.",
+                "Busque foco, avalie pulmão e considere perfis evolutivos ao longo da ressuscitação.",
+                "POCUS auxilia a gestão hemodinâmica, mas não substitui controle do foco e tratamento da causa."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tab-mixed",
+          "label": "Misto",
+          "content": [
+            {
+              "type": "bulletList",
+              "items": [
+                "É o fenótipo mais fácil de perder quando se força uma única etiqueta.",
+                "Registre achados convergentes, discordantes e a hipótese dominante neste momento.",
+                "Após cada intervenção relevante, reavalie Bomba, Pulmão e perfusão."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "comparisonTable",
+      "id": "component-m2-signals",
+      "title": "Sinal observado × inferência segura",
+      "columns": [
+        {
+          "id": "column-observation",
+          "label": "O que o sinal apoia"
+        },
+        {
+          "id": "column-limit",
+          "label": "O que ele não prova"
+        },
+        {
+          "id": "column-next-test",
+          "label": "Próximo dado útil"
+        }
+      ],
+      "rows": [
+        {
+          "id": "row-ivc",
+          "label": "VCI pequena/colabável",
+          "cells": [
+            "Baixa pressão atrial direita em contexto selecionado.",
+            "Hipovolemia ou resposta a volume, isoladamente.",
+            "VTI/débito com manobra dinâmica e resposta clínica."
+          ]
+        },
+        {
+          "id": "row-b-lines",
+          "label": "B-lines bilaterais",
+          "cells": [
+            "Síndrome intersticial/alveolar conforme distribuição.",
+            "Edema cardiogênico como causa única.",
+            "Ecocardiografia, pleura, padrão focal/difuso e história."
+          ]
+        },
+        {
+          "id": "row-rv",
+          "label": "VD dilatado/disfuncional",
+          "cells": [
+            "Sobrecarga aguda ou crônica do VD.",
+            "TEP agudo sem integração clínica.",
+            "ECG, comparação prévia, Doppler e imagem confirmatória."
+          ]
+        },
+        {
+          "id": "row-sliding",
+          "label": "Lung sliding ausente",
+          "cells": [
+            "Possível desacoplamento pleural.",
+            "Pneumotórax de forma automática.",
+            "Lung point, pulso pulmonar, B-lines e contexto."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "thresholdTable",
+      "id": "component-m2-dynamic",
+      "title": "Limiar é pista — não sentença",
+      "rows": [
+        {
+          "id": "threshold-plr-vti",
+          "metric": "Variação do VTI após elevação passiva das pernas",
+          "operator": ">=",
+          "value": "10",
+          "meaning": "Pode apoiar responsividade a fluidos quando técnica, ritmo, janela e manobra são adequados; interprete no contexto.",
+          "unit": "%"
+        },
+        {
+          "id": "threshold-ppv",
+          "metric": "Variação da pressão de pulso",
+          "operator": ">=",
+          "value": "13",
+          "meaning": "Zona frequentemente usada em condições estritas; perde validade com ventilação espontânea, arritmia, baixo volume corrente e outras violações.",
+          "unit": "%"
+        },
+        {
+          "id": "threshold-vexus",
+          "metric": "VExUS grave",
+          "operator": "=",
+          "value": "grau 3",
+          "meaning": "Sinaliza congestão venosa importante no modelo original; não é alvo terapêutico universal e requer validação no cenário clínico.",
+          "unit": "grau"
+        }
+      ]
+    },
+    {
+      "type": "checklist",
+      "id": "component-m3-scan",
+      "title": "M3 · Aplicação: checklist de aquisição e síntese",
+      "items": [
+        {
+          "id": "check-question",
+          "label": "Declare a pergunta focal antes de encostar o transdutor",
+          "details": "Ex.: há fenótipo obstrutivo? Há congestão? Uma manobra dinâmica altera o VTI?",
+          "initiallyChecked": false
+        },
+        {
+          "id": "check-quality",
+          "label": "Classifique a qualidade de cada janela",
+          "details": "Adequada, limitada ou não obtida; evite transformar imagem ruim em achado negativo.",
+          "initiallyChecked": false
+        },
+        {
+          "id": "check-pump",
+          "label": "Bomba: VE, VD e pericárdio",
+          "details": "Use mais de uma janela quando possível e descreva achados antes da etiologia.",
+          "initiallyChecked": false
+        },
+        {
+          "id": "check-tank",
+          "label": "Tanque: congestão e teste dinâmico quando indicado",
+          "details": "Não use a VCI como botão automático de fluidos.",
+          "initiallyChecked": false
+        },
+        {
+          "id": "check-pipes-lung",
+          "label": "Tubos e Pulmão conforme a hipótese",
+          "details": "Aorta, veias, pleura, interstício, consolidação e derrame são selecionados pela pergunta clínica.",
+          "initiallyChecked": false
+        },
+        {
+          "id": "check-synthesis",
+          "label": "Escreva fenótipo + incerteza + próximo passo",
+          "details": "Ex.: cardiogênico provável, janela do VD limitada; correlacionar ECG e ecocardiograma formal.",
+          "initiallyChecked": false
+        },
+        {
+          "id": "check-reassess",
+          "label": "Defina quando repetir",
+          "details": "Após intervenção relevante, deterioração, mudança ventilatória/hemodinâmica ou discordância clínica.",
+          "initiallyChecked": false
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "id": "component-m3-case",
+      "title": "Caso sintético progressivo · abra uma etapa por vez",
+      "items": [
+        {
+          "id": "case-stage-1",
+          "label": "1 · Entrada",
+          "content": [
+            {
+              "type": "paragraph",
+              "text": "Pessoa adulta com dispneia, extremidades frias, taquicardia e pressão reduzida. Antes do POCUS: faça ABCDE, monitorize, obtenha acessos e formule hipóteses tempo-dependentes."
+            },
+            {
+              "type": "bulletList",
+              "items": [
+                "Recupere: quais três fenótipos você não pode perder?",
+                "Escolha: qual janela responde primeiro à hipótese mais perigosa?"
+              ]
+            }
+          ],
+          "initiallyOpen": true
+        },
+        {
+          "id": "case-stage-2",
+          "label": "2 · Primeiras janelas",
+          "content": [
+            {
+              "type": "paragraph",
+              "text": "Paraesternal limitada; apical mostra VD aumentado e VE aparentemente hiperdinâmico. Pulmão sem B-lines difusas. Isso eleva a suspeita de sobrecarga do VD, mas ainda não fecha TEP."
+            },
+            {
+              "type": "bulletList",
+              "items": [
+                "Procure derrame pericárdico, sinais pleurais e diagnósticos alternativos.",
+                "Confronte com ECG, história, probabilidade pré-teste e imagem confirmatória quando segura."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "case-stage-3",
+          "label": "3 · Discordância",
+          "content": [
+            {
+              "type": "paragraph",
+              "text": "Há febre e consolidação focal com broncograma; o fenótipo pode ser misto: vasoplegia/infeção com repercussão do VD por doença pulmonar ou TEP concomitante. Evite ancoragem."
+            },
+            {
+              "type": "bulletList",
+              "items": [
+                "Declare quais dados favorecem e quais enfraquecem cada hipótese.",
+                "Escolha um exame ou manobra capaz de mudar a conduta."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "case-stage-4",
+          "label": "4 · Reavaliação",
+          "content": [
+            {
+              "type": "paragraph",
+              "text": "Após suporte inicial, reavalie perfusão, função biventricular e pulmão. Documente se o fenótipo mudou, se a incerteza diminuiu e qual dado ainda falta."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "id": "component-m4-pitfalls",
+      "title": "M4 · Armadilhas de plantão",
+      "items": [
+        {
+          "id": "pitfall-ivc",
+          "title": "VCI = botão de volume",
+          "text": "Erro: converter diâmetro/colapsabilidade em prescrição. Correção: contexto ventilatório, pressão abdominal, função direita e teste dinâmico.",
+          "tone": "warning"
+        },
+        {
+          "id": "pitfall-hyperdynamic",
+          "title": "VE hiperdinâmico = hipovolemia",
+          "text": "Erro: esquecer vasoplegia e catecolaminas. Correção: avaliar débito, perfusão, história e resposta a manobra.",
+          "tone": "warning"
+        },
+        {
+          "id": "pitfall-rv",
+          "title": "VD dilatado = TEP",
+          "text": "Erro: ignorar doença pulmonar crônica, hipertensão pulmonar e ventilação. Correção: temporalidade, sinais associados e confirmação.",
+          "tone": "danger"
+        },
+        {
+          "id": "pitfall-blines",
+          "title": "B-lines = edema cardiogênico",
+          "text": "Erro: não considerar pneumonia, SDRA, fibrose e contusão. Correção: distribuição, pleura, consolidação e Bomba.",
+          "tone": "warning"
+        },
+        {
+          "id": "pitfall-negative",
+          "title": "Exame limitado = exame negativo",
+          "text": "Erro: confundir janela não obtida com ausência de doença. Correção: documentar limitação e escalar para imagem formal.",
+          "tone": "danger"
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "id": "component-m5-recall",
+      "title": "M5 · Recuperação ativa — responda antes de ver o comentário",
+      "questions": [
+        {
+          "id": "question-vci",
+          "prompt": "Em choque, uma VCI pequena e muito colabável permite concluir que a pessoa responderá a fluidos?",
+          "options": [
+            {
+              "id": "option-vci-yes",
+              "label": "Sim, é suficiente"
+            },
+            {
+              "id": "option-vci-no",
+              "label": "Não; é uma pista dependente do contexto"
+            },
+            {
+              "id": "option-vci-ignore",
+              "label": "Nunca tem qualquer utilidade"
+            }
+          ],
+          "correctOptionId": "option-vci-no",
+          "feedback": "Correto: a VCI é influenciada por ventilação, pressão abdominal, função direita e outros fatores. Quando apropriado, prefira mudança dinâmica de débito/VTI e resposta clínica."
+        },
+        {
+          "id": "question-rv",
+          "prompt": "VD dilatado em paciente instável confirma TEP agudo?",
+          "options": [
+            {
+              "id": "option-rv-confirm",
+              "label": "Confirma sozinho"
+            },
+            {
+              "id": "option-rv-support",
+              "label": "Apoia sobrecarga do VD, mas exige integração"
+            },
+            {
+              "id": "option-rv-excludes",
+              "label": "Exclui choque distributivo"
+            }
+          ],
+          "correctOptionId": "option-rv-support",
+          "feedback": "Dilatação/disfunção do VD não é específica de TEP agudo. Compare com exames prévios, contexto pulmonar, sinais associados e teste confirmatório."
+        },
+        {
+          "id": "question-blines",
+          "prompt": "Qual interpretação é mais segura para B-lines bilaterais?",
+          "options": [
+            {
+              "id": "option-blines-edema",
+              "label": "Edema cardiogênico confirmado"
+            },
+            {
+              "id": "option-blines-interstitial",
+              "label": "Síndrome intersticial/alveolar a contextualizar"
+            },
+            {
+              "id": "option-blines-pe",
+              "label": "TEP excluído"
+            }
+          ],
+          "correctOptionId": "option-blines-interstitial",
+          "feedback": "B-lines indicam perda de aeração/síndrome intersticial, mas a etiologia depende de distribuição, pleura, consolidações, coração e clínica."
+        },
+        {
+          "id": "question-dynamic",
+          "prompt": "Quando a pergunta é fluido-responsividade, qual estratégia é preferível?",
+          "options": [
+            {
+              "id": "option-dynamic-ivc",
+              "label": "Usar somente o diâmetro da VCI"
+            },
+            {
+              "id": "option-dynamic-change",
+              "label": "Observar mudança dinâmica do débito/VTI quando válida"
+            },
+            {
+              "id": "option-dynamic-bp",
+              "label": "Usar somente a pressão arterial"
+            }
+          ],
+          "correctOptionId": "option-dynamic-change",
+          "feedback": "Diretrizes hemodinâmicas favorecem variáveis dinâmicas sobre marcadores estáticos, respeitando condições de validade e objetivo clínico."
+        },
+        {
+          "id": "question-loop",
+          "prompt": "Qual frase resume melhor o uso de POCUS no choque?",
+          "options": [
+            {
+              "id": "option-loop-once",
+              "label": "Um exame único define a etiologia final"
+            },
+            {
+              "id": "option-loop-serial",
+              "label": "Hipótese → exame focal → integração → ação → reavaliação"
+            },
+            {
+              "id": "option-loop-replace",
+              "label": "Substitui ecocardiografia formal e exames confirmatórios"
+            }
+          ],
+          "correctOptionId": "option-loop-serial",
+          "feedback": "POCUS é mais seguro como processo iterativo. A fisiologia muda, os fenótipos podem ser mistos e exames formais continuam necessários quando a pergunta excede o foco."
+        }
+      ]
+    },
+    {
+      "type": "checklist",
+      "id": "component-m6-resume",
+      "title": "M6 · Retomada espaçada",
+      "items": [
+        {
+          "id": "resume-now",
+          "label": "Agora · diga sem olhar: Bomba, Tanque, Tubos, Pulmão, Perfusão",
+          "details": "Meta: recuperar a sequência e uma limitação de cada bloco.",
+          "initiallyChecked": false
+        },
+        {
+          "id": "resume-24h",
+          "label": "Em 24 horas · refaça as 5 questões",
+          "details": "Dê prioridade aos erros e explique por que as alternativas erradas são perigosas.",
+          "initiallyChecked": false
+        },
+        {
+          "id": "resume-7d",
+          "label": "Em 7 dias · reconstrua o caso sintético",
+          "details": "Escreva fenótipo, dado discordante, próximo teste e momento de reavaliação.",
+          "initiallyChecked": false
+        },
+        {
+          "id": "resume-30d",
+          "label": "Em 30 dias · simulação de 90 segundos",
+          "details": "Faça a sequência completa em voz alta, com critério de parada e pedido de ajuda.",
+          "initiallyChecked": false
+        }
+      ]
+    },
+    {
+      "type": "progress",
+      "id": "component-progress",
+      "title": "Seu percurso ACRA",
+      "current": 1,
+      "total": 7,
+      "label": "Piloto inicial: M0–M6"
+    },
+    {
+      "type": "sources",
+      "id": "component-sources",
+      "title": "Fontes primárias e recomendações",
+      "sourceIds": [
+        "source-sccm-ccus",
+        "source-esicm-shock",
+        "source-focusecho",
+        "source-lus-update",
+        "source-rush-meta",
+        "source-vexus",
+        "source-real-pocus-shock",
+        "source-retrieval",
+        "source-distributed",
+        "source-microlearning"
+      ]
+    },
+    {
+      "type": "followupActions",
+      "id": "component-followup",
+      "title": "Próximas ações sugeridas",
+      "actionIds": [
+        "action-review-errors",
+        "action-deepen-lung",
+        "action-compare-shock",
+        "action-next-module"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "action-review-errors",
+      "kind": "review",
+      "label": "Revisar meus erros",
+      "prompt": "Reabra a recuperação ativa, identifique as respostas incorretas e explique cada armadilha em uma frase.",
+      "contextComponentIds": [
+        "component-m5-recall",
+        "component-m4-pitfalls"
+      ],
+      "requiresPreview": true
+    },
+    {
+      "id": "action-deepen-lung",
+      "kind": "deepen",
+      "label": "Aprofundar Pulmão",
+      "prompt": "Revise B-lines, consolidação, derrame, lung sliding, lung point e as limitações diagnósticas de cada sinal.",
+      "contextComponentIds": [
+        "component-m1-mechanism",
+        "component-m2-signals"
+      ],
+      "requiresPreview": true
+    },
+    {
+      "id": "action-compare-shock",
+      "kind": "compare",
+      "label": "Comparar fenótipos",
+      "prompt": "Compare choque hipovolêmico, cardiogênico, obstrutivo, distributivo e misto usando Bomba, Tanque, Tubos, Pulmão e perfusão.",
+      "contextComponentIds": [
+        "component-m2-phenotypes",
+        "component-m2-signals"
+      ],
+      "requiresPreview": true
+    },
+    {
+      "id": "action-next-module",
+      "kind": "continueResearch",
+      "label": "Sugerir próximo piloto",
+      "prompt": "Planeje a próxima micropartícula ACRA em POCUS pulmonar ou avaliação de fluido-responsividade, mantendo o mesmo contrato educacional.",
+      "contextComponentIds": [
+        "component-method-acra",
+        "component-m6-resume"
+      ],
+      "requiresPreview": true
+    }
+  ],
+  "sources": [
+    {
+      "id": "source-sccm-ccus",
+      "title": "Guidelines for the Appropriate Use of Bedside General and Cardiac Ultrasonography in the Evaluation of Critically Ill Patients: 2024 Focused Update",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39982182/",
+      "publisher": "Society of Critical Care Medicine",
+      "publishedAt": "2025-02-20"
+    },
+    {
+      "id": "source-esicm-shock",
+      "title": "ESICM guidelines on circulatory shock and hemodynamic monitoring 2025",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41236566/",
+      "publisher": "European Society of Intensive Care Medicine",
+      "publishedAt": "2025-11-19"
+    },
+    {
+      "id": "source-focusecho",
+      "title": "International evidence-based recommendations for focused cardiac ultrasound",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24951446/",
+      "publisher": "Journal of the American Society of Echocardiography",
+      "publishedAt": "2014-06-20"
+    },
+    {
+      "id": "source-lus-update",
+      "title": "International evidence-based recommendations for point-of-care lung ultrasound: focused update",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42257880/",
+      "publisher": "Intensive Care Medicine",
+      "publishedAt": "2026-06-16"
+    },
+    {
+      "id": "source-rush-meta",
+      "title": "Diagnostic accuracy of Rapid Ultrasound in Shock (RUSH) Exam: systematic review and meta-analysis",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30696496/",
+      "publisher": "Bulletin of Emergency and Trauma",
+      "publishedAt": "2018-01-01"
+    },
+    {
+      "id": "source-vexus",
+      "title": "The venous excess ultrasound grading system and acute kidney injury in cardiac surgery",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32270297/",
+      "publisher": "The Ultrasound Journal",
+      "publishedAt": "2020-04-09"
+    },
+    {
+      "id": "source-real-pocus-shock",
+      "title": "The diagnostic capabilities of the combined cardiac and lung point of care ultrasound in shocked patients at the emergency department",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9554831/",
+      "publisher": "European Journal of Radiology Open",
+      "publishedAt": "2022-10-08"
+    },
+    {
+      "id": "source-retrieval",
+      "title": "Test-enhanced learning: taking memory tests improves long-term retention",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16507066/",
+      "publisher": "Psychological Science",
+      "publishedAt": "2006-03-01"
+    },
+    {
+      "id": "source-distributed",
+      "title": "Distributed practice in verbal recall tasks: a review and quantitative synthesis",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16719566/",
+      "publisher": "Psychological Bulletin",
+      "publishedAt": "2006-05-01"
+    },
+    {
+      "id": "source-microlearning",
+      "title": "Microlearning in health professions education: a scoping review",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31339105/",
+      "publisher": "Medical Teacher",
+      "publishedAt": "2019-07-24"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "antigravity-acra-module-v1",
+  "moduleId": "microparticulas-ativas-acra",
+  "title": "Micropartículas de Aprendizagem Ativa ACRA",
+  "version": "1.0.0-piloto",
+  "updatedAt": "2026-07-30",
+  "status": "em-revisao-medica",
+  "entrypoint": "index.html",
+  "artifact": "data/pocus-choque-acra.json",
+  "publication": {
+    "mode": "public-preview",
+    "publicPreview": true,
+    "clinicalReviewOngoing": true,
+    "purpose": "educacional-e-apoio-cognitivo",
+    "authorizedAt": "2026-07-30"
+  },
+  "method": {
+    "name": "ACRA microparticulado ativo",
+    "contract": "nexus-artifact-v1.0",
+    "layers": [
+      "M0 essência",
+      "M1 mecanismo",
+      "M2 decisões",
+      "M3 aplicação",
+      "M4 armadilhas",
+      "M5 recuperação ativa",
+      "M6 retomada espaçada"
+    ],
+    "cycle": "pergunta → observação → escolha → feedback → retomada"
+  },
+  "pilot": {
+    "topic": "POCUS no choque indiferenciado",
+    "estimatedMinutes": "18–25",
+    "syntheticCasesOnly": true
+  },
+  "visualGeneration": {
+    "enabled": true,
+    "mode": "authoring-time-static-publication",
+    "scope": "somente mapa alegórico explicitamente não diagnóstico",
+    "catalog": "data/visual-assets.json",
+    "runtimeApi": false,
+    "publicCredentials": false,
+    "clinicalReviewRequired": true
+  },
+  "realPocusAtlas": {
+    "enabled": true,
+    "images": 4,
+    "patientDerived": true,
+    "identifiablePatientData": false,
+    "pixelModification": false,
+    "license": "CC BY 4.0",
+    "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9554831/",
+    "didacticContract": "Janela → Veja → Interprete → Armadilha → Próximo passo → Fonte/licença"
+  },
+  "privacy": {
+    "network": "somente links de fontes acionados pelo usuário",
+    "cloud": false,
+    "telemetry": false,
+    "patientData": false,
+    "localStorage": [
+      "preferência de tema",
+      "checklists",
+      "respostas e progresso"
+    ]
+  },
+  "reviewGate": {
+    "clinicalStatus": "pending",
+    "requiredBeforeActive": [
+      "revisar limitações e comentários clínicos",
+      "confirmar referências e datas",
+      "homologar interface em celular e desktop",
+      "validar compatibilidade do artefato no renderizador ACRA original"
+    ]
+  }
+}

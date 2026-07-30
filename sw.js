@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v14`;
+const CACHE_NAME = `${CACHE_PREFIX}v15`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -43,6 +43,18 @@ const WARM_ASSETS = [
   "./21_Central_Ativacao/assets/app.js",
   "./21_Central_Ativacao/assets/styles.css",
   "./21_Central_Ativacao/data/roadmap.json",
+  "./22_Microparticulas_Ativas_ACRA/index.html",
+  "./22_Microparticulas_Ativas_ACRA/assets/theme-bootstrap.js",
+  "./22_Microparticulas_Ativas_ACRA/assets/styles.css",
+  "./22_Microparticulas_Ativas_ACRA/assets/app.js",
+  "./22_Microparticulas_Ativas_ACRA/assets/visuals/pocus-choque-mapa-acra-v1.jpg",
+  "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/ausencia-sliding-barcode.jpg",
+  "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/choque-cardiogenico-ve-b-lines.jpg",
+  "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/choque-obstrutivo-vd-dilatado.jpg",
+  "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/derrame-pericardico-swinging-heart.jpg",
+  "./22_Microparticulas_Ativas_ACRA/data/pocus-choque-acra.json",
+  "./22_Microparticulas_Ativas_ACRA/data/visual-assets.json",
+  "./22_Microparticulas_Ativas_ACRA/module.manifest.json",
   "./assets/editorial-attribution.css",
   "./data/editorial/editorial-provenance.json",
   "./data/theme-catalog.json",

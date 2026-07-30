@@ -85,3 +85,60 @@ data, fonte e URL. Evitar figura decorativa, texto excessivo, logotipo dominante
 ou reprodução não autorizada de figura do artigo. Cada imagem publicada no
 Radar precisa de um par: widescreen mais completo e card vertical
 autossuficiente. Produtos também seguem esse contrato.
+
+### Motor visual GPT no fluxo editorial
+
+Quando a tarefa ganhar clareza com uma imagem original, usar a skill `imagegen`
+no momento de autoria e publicar somente o arquivo estático final. A geração
+entra diretamente na pasta pública do módulo ou da estação, mas nunca contorna
+o gate editorial:
+
+1. Gerar uma imagem conceitual original, sem reproduzir figura de artigo,
+   marca, paciente, dado identificável, prescrição ou alegação diagnóstica.
+2. Evitar texto incorporado à imagem; título, legenda, rótulos e ressalvas ficam
+   no HTML acessível. Imagem clínica sintética deve ser rotulada como conceitual
+   e não pode simular evidência diagnóstica real sem validação específica.
+3. Inspecionar visualmente anatomia, artefatos, texto acidental e aderência ao
+   tema. Rejeitar a imagem em caso de ambiguidade clinicamente perigosa.
+4. Salvar a versão escolhida em caminho versionado `assets/visuals/`, otimizar
+   para web e registrar caminho, dimensões, formato, SHA-256, texto alternativo,
+   legenda, resumo do prompt, origem gerada, direitos e revisão pendente em
+   `data/visual-assets.json`.
+5. Integrar a imagem ao HTML com `width`, `height`, `loading="lazy"`,
+   `decoding="async"`, texto alternativo e legenda. Atualizar cache offline,
+   manifestos, registro editorial e testes quando aplicável.
+6. Não usar chave OpenAI, chamada de geração, upload automático, telemetria ou
+   API do motor visual no JavaScript público. O navegador recebe apenas o asset
+   revisado; geração e publicação acontecem no fluxo Git auditável.
+7. Publicar no site apenas após builder, gate de privacidade, revisão do diff e
+   fluxo Git do projeto. “Diretamente” significa integrar no destino público da
+   tarefa, sem criar uma galeria paralela e sem ignorar a revisão humana.
+
+### Regra de realidade clínica para imagens POCUS
+
+Em conteúdo didático de POCUS, a imagem que ensina um achado deve representar
+ultrassom real, desidentificado e com origem, licença e atribuição documentadas.
+Imagem gerada por IA nunca pode ser apresentada como exame real, evidência
+diagnóstica ou substituto de aquisição dinâmica.
+
+1. Reservar arte gerada para mapas conceituais, anatomia alegórica, fluxos e
+   ambientação. Rotular no próprio HTML como “alegórica”, “conceitual” e
+   “não diagnóstica”.
+2. Obter ultrassom didático real apenas de fonte pública autorizada ou acervo
+   próprio com consentimento e desidentificação verificáveis. Registrar artigo,
+   figura, autores, URL, licença, dimensões, bytes e SHA-256.
+3. Preservar os pixels clínicos originais. Não usar geração, preenchimento,
+   reconstrução ou retoque por IA. Crop ou redimensionamento não diagnóstico só
+   é permitido quando a licença autoriza e a versão original continua
+   rastreável.
+4. Colocar anotações editoriais fora da imagem, em HTML/CSS acessível ou overlay
+   determinístico revisável. Não ocultar marcadores, escalas ou limitações
+   relevantes da figura-fonte.
+5. Tornar cada visual didático autossuficiente no padrão Turbo TEMI:
+   **Janela → Veja → Interprete → Armadilha → Próximo passo → Fonte/licença**.
+6. Distinguir “imagem real publicada” de “ground truth diagnóstico”: uma figura
+   representativa apoia reconhecimento de padrão, mas não valida diagnóstico
+   isolado nem substitui vídeo, técnica, contexto hemodinâmico ou supervisão.
+7. Manter o módulo em revisão médica e bloquear publicação ativa se identidade,
+   direitos, desidentificação, fidelidade do arquivo ou leitura clínica não
+   puderem ser confirmados.

@@ -56,6 +56,7 @@ REQUIRED = (
     "19_Integridade_Editorial",
     "20_Conheca_Aldenir",
     "21_Central_Ativacao",
+    "22_Microparticulas_Ativas_ACRA",
     "01_Modulos_Clinicos",
     "en",
     "questoes",
