@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v15`;
+const CACHE_NAME = `${CACHE_PREFIX}v17`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -52,7 +52,12 @@ const WARM_ASSETS = [
   "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/choque-cardiogenico-ve-b-lines.jpg",
   "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/choque-obstrutivo-vd-dilatado.jpg",
   "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/derrame-pericardico-swinging-heart.jpg",
+  "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/expansao/efast-morrison-normal-hemoperitonio.jpg",
+  "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/expansao/fluido-doppler-carotideo-seriado.jpg",
+  "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/expansao/pulmao-padroes-essenciais.jpg",
+  "./22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/expansao/tvp-veia-femoral-nao-compressivel.jpg",
   "./22_Microparticulas_Ativas_ACRA/data/pocus-choque-acra.json",
+  "./22_Microparticulas_Ativas_ACRA/data/ios-widget-formats.json",
   "./22_Microparticulas_Ativas_ACRA/data/visual-assets.json",
   "./22_Microparticulas_Ativas_ACRA/module.manifest.json",
   "./assets/editorial-attribution.css",

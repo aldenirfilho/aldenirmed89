@@ -4,6 +4,7 @@
   const artifactUrl = "data/pocus-choque-acra.json";
   const progressKey = "antigravity:acra:pocus-shock:v1";
   const themeKey = "antigravity:a11y:v1";
+  const widgetPreferenceKey = "antigravity:acra:widget-size:v1";
   const allowedComponentTypes = new Set([
     "callout",
     "tabs",
@@ -614,9 +615,191 @@
     });
   }
 
+  function configureStudyDrawer() {
+    const drawer = document.getElementById("study-drawer");
+    const backdrop = document.getElementById("drawer-backdrop");
+    const toggle = document.getElementById("study-drawer-toggle");
+    const closeButton = document.getElementById("study-drawer-close");
+    if (!drawer || !backdrop || !toggle || !closeButton) return;
+
+    let returnFocus = toggle;
+
+    function closeDrawer() {
+      if (drawer.hidden) return;
+      drawer.hidden = true;
+      backdrop.hidden = true;
+      drawer.setAttribute("aria-hidden", "true");
+      toggle.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("drawer-open");
+      returnFocus.focus();
+    }
+
+    function openDrawer() {
+      returnFocus =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : toggle;
+      drawer.hidden = false;
+      backdrop.hidden = false;
+      drawer.setAttribute("aria-hidden", "false");
+      toggle.setAttribute("aria-expanded", "true");
+      document.body.classList.add("drawer-open");
+      closeButton.focus();
+    }
+
+    toggle.addEventListener("click", () => {
+      if (drawer.hidden) openDrawer();
+      else closeDrawer();
+    });
+    closeButton.addEventListener("click", closeDrawer);
+    backdrop.addEventListener("click", closeDrawer);
+    drawer
+      .querySelectorAll("[data-close-drawer]")
+      .forEach((link) => link.addEventListener("click", closeDrawer));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !drawer.hidden) closeDrawer();
+    });
+  }
+
+  function configureWidgets() {
+    const allowedSizes = new Set(["small", "medium", "large"]);
+    const buttons = Array.from(
+      document.querySelectorAll("[data-widget-size]")
+    );
+    const panels = Array.from(
+      document.querySelectorAll("[data-widget-panel]")
+    );
+    if (!buttons.length || !panels.length) return;
+
+    function selectWidget(size, persist) {
+      const safeSize = allowedSizes.has(size) ? size : "small";
+      buttons.forEach((button) => {
+        button.setAttribute(
+          "aria-pressed",
+          String(button.dataset.widgetSize === safeSize)
+        );
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.widgetPanel !== safeSize;
+      });
+      if (persist) {
+        try {
+          localStorage.setItem(widgetPreferenceKey, safeSize);
+        } catch (_) {
+          // O seletor continua funcional sem persistência.
+        }
+      }
+    }
+
+    let initialSize = "small";
+    try {
+      const stored = localStorage.getItem(widgetPreferenceKey);
+      if (stored && allowedSizes.has(stored)) initialSize = stored;
+    } catch (_) {
+      // Preferência indisponível; usa formato pequeno.
+    }
+    selectWidget(initialSize, false);
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        selectWidget(button.dataset.widgetSize, true);
+      });
+    });
+  }
+
+  function configurePocusViewer() {
+    const dialog = document.getElementById("pocus-viewer");
+    const viewerImage = document.getElementById("pocus-viewer-image");
+    const viewerTitle = document.getElementById("pocus-viewer-title");
+    const viewerCaption = document.getElementById("pocus-viewer-caption");
+    const closeButton = document.getElementById("pocus-viewer-close");
+    const zoomOut = document.getElementById("pocus-zoom-out");
+    const zoomIn = document.getElementById("pocus-zoom-in");
+    const zoomReset = document.getElementById("pocus-zoom-reset");
+    const zoomValue = document.getElementById("pocus-zoom-value");
+    if (
+      !dialog ||
+      !viewerImage ||
+      !viewerTitle ||
+      !viewerCaption ||
+      !closeButton ||
+      !zoomOut ||
+      !zoomIn ||
+      !zoomReset ||
+      !zoomValue
+    ) {
+      return;
+    }
+
+    let zoom = 1;
+    let returnFocus = null;
+
+    function updateZoom(nextZoom) {
+      zoom = Math.min(3, Math.max(1, nextZoom));
+      viewerImage.style.width = `${Math.round(zoom * 100)}%`;
+      zoomValue.textContent = `${Math.round(zoom * 100)}%`;
+      zoomOut.disabled = zoom <= 1;
+      zoomIn.disabled = zoom >= 3;
+    }
+
+    function closeViewer() {
+      if (dialog.open) dialog.close();
+    }
+
+    function openViewer(trigger, sourceImage) {
+      const card = sourceImage.closest(".pocus-card, .expansion-card");
+      const label = card?.querySelector("h3, .phenotype-badge");
+      const caption = sourceImage.closest("figure")?.querySelector("figcaption");
+      returnFocus = trigger;
+      viewerTitle.textContent = label?.textContent?.trim() || "Imagem POCUS";
+      viewerCaption.textContent =
+        caption?.textContent?.trim() || sourceImage.alt;
+      viewerImage.src = sourceImage.currentSrc || sourceImage.src;
+      viewerImage.alt = sourceImage.alt;
+      updateZoom(1);
+      if (typeof dialog.showModal === "function") dialog.showModal();
+      else dialog.setAttribute("open", "");
+      closeButton.focus();
+    }
+
+    document
+      .querySelectorAll(".pocus-image img, .expansion-figure img")
+      .forEach((sourceImage) => {
+        const trigger = element("button", "pocus-zoom-trigger");
+        trigger.type = "button";
+        trigger.setAttribute(
+          "aria-label",
+          `Ampliar imagem: ${sourceImage.alt}`
+        );
+        sourceImage.parentNode.insertBefore(trigger, sourceImage);
+        trigger.append(sourceImage);
+        trigger.addEventListener("click", () => {
+          openViewer(trigger, sourceImage);
+        });
+      });
+
+    zoomOut.addEventListener("click", () => updateZoom(zoom - 0.25));
+    zoomIn.addEventListener("click", () => updateZoom(zoom + 0.25));
+    zoomReset.addEventListener("click", () => updateZoom(1));
+    closeButton.addEventListener("click", closeViewer);
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      closeViewer();
+    });
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) closeViewer();
+    });
+    dialog.addEventListener("close", () => {
+      viewerImage.removeAttribute("src");
+      if (returnFocus) returnFocus.focus();
+    });
+  }
+
   async function start() {
     configureTheme();
     configureFocusMode();
+    configureStudyDrawer();
+    configureWidgets();
+    configurePocusViewer();
     const status = document.getElementById("artifact-status");
     const target = document.getElementById("artifact-components");
 
