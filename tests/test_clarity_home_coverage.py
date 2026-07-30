@@ -22,6 +22,8 @@ EXPECTED_MODULE_ENTRYPOINTS = {
     "14_SAPS3_Calculator/index.html",
     "01_Modulos_Clinicos/Hematologia_Critica/index.html",
     "01_Modulos_Clinicos/Reumatologia_Critica/index.html",
+    "01_Modulos_Clinicos/Infectologia_Critica/index.html",
+    "01_Modulos_Clinicos/Pneumologia_Critica/index.html",
     "01_Modulos_Clinicos/Delirium_UTI/index.html",
     "15_Radar_Cientifico/index.html",
     "16_Diretorio_Medico/index.html",
@@ -44,7 +46,19 @@ class ClarityHomeCoverageTests(unittest.TestCase):
 
     def test_all_home_module_entrypoints_are_covered(self):
         self.assertEqual(self.entrypoints, EXPECTED_MODULE_ENTRYPOINTS)
-        self.assertEqual(len(self.entrypoints), 20)
+        self.assertEqual(len(self.entrypoints), 22)
+
+    @staticmethod
+    def _linked_local_sources(entrypoint, html, attribute, suffix):
+        sources = []
+        pattern = rf'<(?:link|script)\b[^>]*\b{attribute}="([^"]+)"[^>]*>'
+        for reference in re.findall(pattern, html, flags=re.IGNORECASE):
+            if reference.startswith(("http:", "https:", "//", "data:")):
+                continue
+            linked = (entrypoint.parent / reference.split("?", 1)[0]).resolve()
+            if linked.suffix == suffix and linked.is_file():
+                sources.append(linked.read_text(encoding="utf-8"))
+        return sources
 
     def test_every_module_has_global_clarity_and_accessible_control(self):
         for relative_path in sorted(self.entrypoints):
@@ -76,6 +90,9 @@ class ClarityHomeCoverageTests(unittest.TestCase):
                 asset_styles = entrypoint.parent / "assets/styles.css"
                 if asset_styles.is_file():
                     sources.append(asset_styles.read_text(encoding="utf-8"))
+                sources.extend(
+                    self._linked_local_sources(entrypoint, sources[0], "href", ".css")
+                )
                 combined = "\n".join(sources).casefold()
                 self.assertIn("@media print", combined)
                 self.assertRegex(combined, r"(?:background|--bg)\s*:\s*#(?:fff|ffffff)\b")
@@ -94,6 +111,9 @@ class ClarityHomeCoverageTests(unittest.TestCase):
                 ):
                     if asset_script.is_file():
                         sources.append(asset_script.read_text(encoding="utf-8"))
+                sources.extend(
+                    self._linked_local_sources(entrypoint, sources[0], "src", ".js")
+                )
                 combined = "\n".join(sources)
                 self.assertIn("prefers-color-scheme: light", combined)
                 self.assertRegex(

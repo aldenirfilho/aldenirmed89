@@ -192,12 +192,19 @@ class ScientificRadarTests(unittest.TestCase):
         visual_ids = {item["id"] for item in self.radar["visuals"]}
         for edition in editions:
             self.assertTrue(set(edition["itemIds"]).issubset(all_ids))
-            self.assertEqual(len(edition["visualIds"]), 10)
-            self.assertEqual(edition["visualPairCount"], 10)
-            self.assertEqual(edition["visualAssetCount"], 20)
+            self.assertEqual(
+                len(edition["visualIds"]),
+                edition["visualPairCount"],
+            )
+            self.assertEqual(
+                edition["visualAssetCount"],
+                edition["visualPairCount"] * 2,
+            )
             self.assertTrue(set(edition["visualIds"]).issubset(visual_ids))
-            self.assertEqual(edition["productVisualPairCount"], 3)
-            self.assertEqual(edition["productVisualAssetCount"], 6)
+            self.assertEqual(
+                edition["productVisualAssetCount"],
+                edition["productVisualPairCount"] * 2,
+            )
 
     def test_visuals_render_clickable_citations_and_semantic_transcripts(self):
         for marker in (

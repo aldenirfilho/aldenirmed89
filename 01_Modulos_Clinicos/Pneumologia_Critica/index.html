@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-specialty="pneumologia" data-preference-key="antigravity:a11y:v1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Módulo prático e interativo de Pneumologia Crítica para UTI, plantão e preparação TEMI.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Pneumologia Crítica — Antigravity</title>
+  <script src="../_shared_critical/assets/critical-theme.js"></script>
+  <link rel="stylesheet" href="../_shared_critical/assets/critical.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topbar">
+    <a class="brand" href="../../index.html"><span class="brand-mark" id="moduleEmoji">🫁</span><span>Antigravity · Módulo Crítico</span></a>
+    <div class="top-actions">
+      <button id="themeToggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara" title="Alternar visualização clara/escura">☀️</button>
+      <button id="printModule" type="button">🖨️ Imprimir</button>
+    </div>
+  </header>
+  <div class="hero">
+    <div class="eyebrow" id="moduleKicker">Plantão + Turbo TEMI</div>
+    <h1 id="moduleTitle">Pneumologia Crítica</h1>
+    <p id="moduleSubtitle"></p>
+    <div class="status-row">
+      <span class="status review-strip">🩺 Prévia pública · revisão médica em andamento</span>
+      <span class="status safe">🔒 Local · offline · sem telemetria</span>
+      <span class="status" id="moduleVersion"></span>
+    </div>
+    <nav class="module-nav" aria-label="Seções do módulo">
+      <a href="#plantao">⚡ Plantão 60 s</a><a href="#emergencias">🚨 Emergências</a>
+      <a href="#fluxos">🧭 Fluxos</a><a href="#comparacoes">🔬 Diferenciais</a>
+      <a href="#ferramentas">🧮 P/F + PBW</a><a href="#temi">🏆 Turbo TEMI</a>
+      <a href="#casos">🧩 Casos</a><a href="#flashcards">🧠 Flashcards</a><a href="#fontes">📚 Fontes</a>
+    </nav>
+    <div class="focus-box" aria-label="Sprint de foco">
+      <div><strong>⏱️ Sprint TDAH de 12 min</strong><div id="focusStatus" class="meta">Escolha um bloco e foque apenas nele.</div></div>
+      <div class="focus-time" id="focusTime">12:00</div>
+      <div class="flash-actions"><button id="focusStart" type="button">▶ Iniciar</button><button id="focusReset" type="button">↺ Zerar</button></div>
+    </div>
+  </div>
+  <main id="conteudo">
+    <section id="plantao"><div class="section-head"><div><div class="kicker">Plantão 60 s</div><h2>Primeiros movimentos seguros</h2></div></div><div id="quickGrid" class="grid quick-grid"></div></section>
+    <section id="emergencias"><div class="section-head"><div><div class="kicker">Reconhecimento e ação</div><h2>Emergências pneumológicas críticas</h2><p>Busque pelo fenótipo; abra o card para a primeira hora, exames decisivos e armadilhas.</p></div><span id="emergencyCount" class="meta"></span></div><div class="toolbar"><input id="emergencySearch" type="search" placeholder="Buscar síndrome, mecânica ou suporte…" aria-label="Buscar emergência"><select id="emergencyCategory" aria-label="Filtrar por eixo"></select></div><div id="emergencyGrid" class="grid three"></div><div id="emergencyEmpty" class="empty">Nenhum cenário encontrado.</div></section>
+    <section id="fluxos"><div class="section-head"><div><div class="kicker">Decisão por etapas</div><h2>Fluxos práticos</h2></div></div><div id="pathwayGrid" class="grid two"></div></section>
+    <section id="comparacoes"><div class="section-head"><div><div class="kicker">Diagnóstico difícil</div><h2>Comparações de alto rendimento</h2></div></div><div id="comparisonGrid" class="grid"></div></section>
+    <section id="conceitos"><div class="section-head"><div><div class="kicker">Fundamentos</div><h2>Conceitos essenciais</h2></div></div><div id="conceptGrid" class="grid three"></div></section>
+    <section id="mnemonicos"><div class="section-head"><div><div class="kicker">Memória operacional</div><h2>Mnemônicos com limites explícitos</h2></div></div><div id="mnemonicGrid" class="grid three"></div></section>
+    <section id="alertas"><div class="section-head"><div><div class="kicker">Segurança cognitiva</div><h2>Armadilhas que mudam conduta</h2></div></div><div id="alertGrid" class="grid three"></div></section>
+    <section id="ferramentas"><div class="section-head"><div><div class="kicker">Apoio cognitivo</div><h2>Relação P/F e peso corporal predito</h2></div></div><div id="calculatorGrid" class="grid"></div></section>
+    <section id="temi"><div class="section-head"><div><div class="kicker">ABCDE comentado</div><h2>Questões Turbo TEMI</h2></div></div><div id="questionGrid" class="grid two"></div></section>
+    <section id="casos"><div class="section-head"><div><div class="kicker">Transferência para a prática</div><h2>Casos clínicos interativos</h2></div></div><div id="caseGrid" class="grid two"></div></section>
+    <section id="flashcards"><div class="section-head"><div><div class="kicker">Recordação ativa</div><h2>Flashcards de plantão</h2></div><span id="flashProgress" class="flash-progress"></span></div><article id="flashCard" class="card flashcard" tabindex="0" role="button" aria-label="Revelar flashcard"></article><div class="flash-actions"><button id="flashNext" type="button">Próximo + registrar revisão →</button><button id="flashReset" type="button">Zerar progresso local</button></div></section>
+    <section id="fontes"><div class="section-head"><div><div class="kicker">Rastreabilidade</div><h2>Fontes primárias e diretrizes</h2></div></div><div class="notice" id="moduleSafety"></div><ol id="referenceList"></ol></section>
+  </main>
+  <footer><p>Conteúdo educacional para estudo e apoio cognitivo. Decisões reais exigem avaliação clínica, gasometria/mecânica contextualizadas, protocolos institucionais e revisão humana.</p></footer>
+  <script src="data/catalog.js"></script>
+  <script src="../_shared_critical/assets/critical.js"></script>
+</body>
+</html>

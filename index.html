@@ -4,9 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Enciclopédia Médica Intensiva & Medicina Interna</title>
-<meta name="description" content="Plataforma médica interativa para Medicina Intensiva, UTI, emergência, Hematologia Crítica, Reumatologia Crítica, Clínica Médica avançada e preparação TEMI/R3."/>
+<meta name="description" content="Plataforma médica interativa para Medicina Intensiva, UTI, emergência, Infectologia, Pneumologia, Hematologia, Reumatologia e preparação TEMI/R3."/>
 <meta property="og:title" content="Enciclopédia Médica Intensiva & Medicina Interna"/>
-<meta property="og:description" content="Central clínica: UpDowns, Hematologia e Reumatologia Críticas, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo."/>
+<meta property="og:description" content="Central clínica: módulos críticos de Infectologia, Pneumologia, Hematologia e Reumatologia, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo."/>
 <meta property="og:url" content="https://aldenirfilho.github.io/antigravity-consultas/"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://aldenirfilho.github.io/antigravity-consultas/assets/brand/antigravity-social-card.png"/>
@@ -2770,6 +2770,30 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
         <span class="module-link">Abrir plataforma</span>
       </a>
 
+      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Infectologia_Critica/index.html" aria-label="Abrir Infectologia Crítica">
+        <div class="module-icon">🦠</div>
+        <h3>Infectologia Crítica</h3>
+        <p>Sepse, controle do foco, PAV, meningite, imunossupressão, Gram-negativos resistentes e stewardship em decisões práticas.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">10 emergências</span>
+          <span class="module-tag">qSOFA contextual</span>
+          <span class="module-tag">Turbo TEMI</span>
+        </div>
+        <span class="module-link">Abrir módulo interativo</span>
+      </a>
+
+      <a class="module-card mod-blue reveal" href="01_Modulos_Clinicos/Pneumologia_Critica/index.html" aria-label="Abrir Pneumologia Crítica">
+        <div class="module-icon">🫁</div>
+        <h3>Pneumologia Crítica</h3>
+        <p>Hipoxemia, SDRA, ventilação protetora, DPOC, asma, hemoptise, TEP, pleura e desmame com fisiologia aplicada.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">10 emergências</span>
+          <span class="module-tag">P/F + peso predito</span>
+          <span class="module-tag">Turbo TEMI</span>
+        </div>
+        <span class="module-link">Abrir módulo interativo</span>
+      </a>
+
       <div class="module-card mod-muted reveal" aria-label="Mapa Vivo de Conexões">
         <div class="module-icon">🕸️</div>
         <h3>Mapa Vivo</h3>
@@ -2996,22 +3020,18 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
     <div class="reveal section-intro">
       <div class="section-label">// técnicas cognitivas</div>
       <h2 class="section-title" id="mnem-heading">Mnemônicos Clínicos Rápidos 🧩</h2>
-      <p class="section-sub">Ferramentas cognitivas para UTI e beira-leito. Pesquise, filtre por tema, ative o <strong>Modo Treino</strong> para memorizar por recordação ativa e clique em qualquer card para os detalhes clínicos completos.</p>
+      <p class="section-sub">Uma prévia leve com <strong>3 mnemônicos por vez</strong>, alternados ao longo do dia. Clique no card para revisar ou abra a seção oficial para pesquisar, filtrar e treinar o acervo completo.</p>
     </div>
 
     <div class="mnem-controls reveal">
-      <input id="mnemSearch" class="mnem-search" type="search" placeholder="🔎 Buscar mnemônico, tema ou tag…" aria-label="Buscar mnemônicos"/>
-      <button class="mnem-train-toggle" id="mnemTrainToggle" aria-pressed="false" title="Esconde os significados — clique em cada letra para revelar (recordação ativa)">🧠 Modo Treino</button>
+      <button class="mnem-train-toggle" id="mnemPrev" type="button" aria-label="Mostrar trio anterior">← Trio anterior</button>
+      <button class="mnem-train-toggle" id="mnemNext" type="button" aria-label="Mostrar próximos três mnemônicos">Alternar 3 →</button>
+      <a class="dsf-admin-link" href="mnemonicos/">🧠 Abrir seção completa de mnemônicos →</a>
     </div>
-    <div class="mnem-filters" id="mnemFilters" role="group" aria-label="Filtrar por categoria"></div>
     <div class="mnem-count" id="mnemCount" aria-live="polite"></div>
 
     <div id="mnem-grid" class="mnem-grid" role="list"></div>
     <div class="mnem-empty" id="mnemEmpty" style="display:none">Nenhum mnemônico encontrado para este filtro.</div>
-
-    <div style="text-align:right;margin-top:18px">
-      <span class="mnem-howto">➕ Para adicionar: solte um <code>.md</code> em <code>11_MNEMONICOS/</code> e dê push — aparece aqui automaticamente.</span>
-    </div>
 
   </div>
 </section>
@@ -3022,7 +3042,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
     <div class="reveal section-intro">
       <div class="section-label">// banco de desafios</div>
       <h2 class="section-title" id="dsf-heading">Desafios Clínicos 🏋️</h2>
-      <p class="section-sub">Casos, questões e dúvidas do dia a dia — colados direto dos chats e eternizados aqui. Dois ramos: Medicina Intensiva (TEMI) e Clínica Médica Avançada (R3).</p>
+      <p class="section-sub">Uma prévia com <strong>3 desafios por vez</strong>, alternados ao longo do dia. Escolha TEMI ou R3; o banco completo permanece na seção oficial.</p>
     </div>
     <div style="margin-top:40px">
       <div class="dsf-tabs" role="tablist" aria-label="Selecionar ramo clínico">
@@ -3037,8 +3057,11 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
           🩺 R3 — Clínica Médica Avançada
         </button>
       </div>
-      <div id="dsf-filters" class="dsf-filters"
-        role="group" aria-label="Filtrar por tag"></div>
+      <div class="dsf-filters">
+        <button class="dsf-chip" id="dsfPrev" type="button">← Trio anterior</button>
+        <button class="dsf-chip" id="dsfNext" type="button">Alternar 3 →</button>
+        <span id="dsfPreviewCount" class="mnem-count" aria-live="polite"></span>
+      </div>
       <div id="dsf-grid" class="dsf-grid" role="list"></div>
       <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px">
         <a class="dsf-admin-link" href="desafios/">
@@ -3247,6 +3270,8 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
         <a href="09_POCUS_Hub/index.html">🔊 POCUS Hub</a>
         <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia Crítica</a>
         <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Reumatologia Crítica</a>
+        <a href="01_Modulos_Clinicos/Infectologia_Critica/index.html">🦠 Infectologia Crítica</a>
+        <a href="01_Modulos_Clinicos/Pneumologia_Critica/index.html">🫁 Pneumologia Crítica</a>
       </div>
       <div class="footer-col">
         <h4>Conteúdo</h4>
@@ -4382,11 +4407,12 @@ function escHtml(s){
     .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-/* ── DESAFIOS CLÍNICOS — loader ──────────────────── */
+/* ── DESAFIOS CLÍNICOS — prévia rotativa de 3 ───── */
 (async function(){
   let dsfData={temi:[],r3:[]};
   let activeTab='temi';
-  let activeTag=null;
+  const offsets={temi:null,r3:null};
+  let rotateTimer=null;
 
   try{
     const res=await fetch('data/desafios.json?t='+Date.now());
@@ -4399,32 +4425,23 @@ function escHtml(s){
       .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  function dailyOffset(length){
+    if(!length) return 0;
+    const now=new Date();
+    const dayKey=Number(`${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`);
+    return dayKey%length;
+  }
+  function trio(items,offset){
+    if(items.length<=3) return items;
+    return Array.from({length:3},(_,index)=>items[(offset+index)%items.length]);
+  }
+
   function renderDesafios(){
     const branch=dsfData[activeTab]||[];
-    const items=activeTag
-      ?branch.filter(d=>d.tags&&d.tags.includes(activeTag))
-      :branch;
     const color=activeTab==='temi'?'var(--cyan)':'var(--green)';
 
-    const allTags=[...new Set(branch.flatMap(d=>d.tags||[]))];
-    const filtersEl=document.getElementById('dsf-filters');
-    if(allTags.length){
-      filtersEl.innerHTML=allTags.map(t=>
-        `<button class="dsf-chip${activeTag===t?' active':''}"
-          data-tag="${escH(t)}" style="--dsf-c:${color}">${escH(t)}</button>`
-      ).join('');
-      filtersEl.querySelectorAll('.dsf-chip').forEach(c=>{
-        c.addEventListener('click',()=>{
-          activeTag=activeTag===c.dataset.tag?null:c.dataset.tag;
-          renderDesafios();
-        });
-      });
-    } else {
-      filtersEl.innerHTML='';
-    }
-
     const grid=document.getElementById('dsf-grid');
-    if(!items.length){
+    if(!branch.length){
       grid.innerHTML=`<div class="dsf-empty">
         <p>Nenhum desafio neste ramo ainda.</p>
         <a href="admin/desafios.html">✎ Abrir editor e adicionar →</a>
@@ -4432,12 +4449,14 @@ function escHtml(s){
       return;
     }
 
-    const sorted=[...items].sort((a,b)=>
+    const sorted=[...branch].sort((a,b)=>
       (b.featured?1:0)-(a.featured?1:0)||b.date.localeCompare(a.date)
     );
+    if(offsets[activeTab]===null) offsets[activeTab]=dailyOffset(sorted.length);
+    const visible=trio(sorted,offsets[activeTab]);
     const diffLabel={basica:'Básica',media:'Média',alta:'Alta'};
 
-    grid.innerHTML=sorted.map(d=>`
+    grid.innerHTML=visible.map(d=>`
       <a class="dsf-card reveal"
         href="desafios/?b=${encodeURIComponent(activeTab)}&id=${encodeURIComponent(String(d.id||''))}"
         style="--dsf-c:${color}"
@@ -4458,6 +4477,7 @@ function escHtml(s){
     `).join('');
 
     grid.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    document.getElementById('dsfPreviewCount').textContent=`${visible.length} de ${sorted.length} · alternância automática pausada durante interação`;
   }
 
   document.querySelectorAll('.dsf-tab').forEach(tab=>{
@@ -4469,15 +4489,33 @@ function escHtml(s){
       tab.classList.add('active');
       tab.setAttribute('aria-selected','true');
       activeTab=tab.dataset.branch;
-      activeTag=null;
       renderDesafios();
     });
   });
 
+  function move(direction){
+    const length=(dsfData[activeTab]||[]).length;
+    if(!length) return;
+    offsets[activeTab]=(offsets[activeTab]+direction*3+length)%length;
+    renderDesafios();
+  }
+  document.getElementById('dsfPrev')?.addEventListener('click',()=>move(-1));
+  document.getElementById('dsfNext')?.addEventListener('click',()=>move(1));
+  const section=document.getElementById('desafios');
+  const startRotation=()=>{
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||rotateTimer) return;
+    rotateTimer=setInterval(()=>move(1),25000);
+  };
+  const stopRotation=()=>{if(rotateTimer){clearInterval(rotateTimer);rotateTimer=null;}};
+  section?.addEventListener('mouseenter',stopRotation);
+  section?.addEventListener('mouseleave',startRotation);
+  section?.addEventListener('focusin',stopRotation);
+  section?.addEventListener('focusout',startRotation);
   renderDesafios();
+  startRotation();
 })();
 
-/* ── MNEMÔNICOS CLÍNICOS — loader interativo ──────── */
+/* ── MNEMÔNICOS CLÍNICOS — prévia rotativa de 3 ──── */
 (async function(){
   const grid = document.getElementById('mnem-grid');
   if (!grid) return;
@@ -4488,15 +4526,10 @@ function escHtml(s){
     if (res.ok) list = (await res.json()).mnemonicos || [];
   } catch(e){ console.error('Erro ao carregar mnemônicos:', e); }
 
-  const searchEl  = document.getElementById('mnemSearch');
-  const filtersEl = document.getElementById('mnemFilters');
   const countEl   = document.getElementById('mnemCount');
   const emptyEl   = document.getElementById('mnemEmpty');
-  const trainBtn  = document.getElementById('mnemTrainToggle');
-
-  let query = '';
-  let activeCat = 'all';
-  let trainMode = false;
+  let offset = 0;
+  let rotateTimer = null;
 
   function escH(s){
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
@@ -4514,30 +4547,16 @@ function escHtml(s){
     };
   });
 
-  // Texto puro p/ busca e cópia
-  function plainLetters(m){
-    if(!m.letters) return '';
-    return Object.entries(m.letters)
-      .filter(([k])=>k!=='letterSep')
-      .map(([k,v])=> k==='sepText' ? stripTags(v) : `${k} — ${stripTags(v)}`)
-      .join('\n');
+  function dailyOffset(length){
+    if(!length) return 0;
+    const now=new Date();
+    const dayKey=Number(`${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`);
+    return dayKey%length;
   }
-  function copyText(m){
-    return `${m.emoji||''} ${m.title}\n${'─'.repeat(Math.min(m.title.length+3,40))}\n${plainLetters(m)}`.trim();
+  function trio(items,start){
+    if(items.length<=3) return items;
+    return Array.from({length:3},(_,index)=>items[(start+index)%items.length]);
   }
-
-  // ── Filtros de categoria ────────────────────────────
-  const cats = [...new Set(list.map(m => m.category).filter(Boolean))];
-  filtersEl.innerHTML =
-    `<button class="mnem-chip active" data-cat="all">Todos (${list.length})</button>` +
-    cats.map(c => `<button class="mnem-chip" data-cat="${escH(c)}">${escH(c)}</button>`).join('');
-  filtersEl.querySelectorAll('.mnem-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      activeCat = chip.dataset.cat;
-      filtersEl.querySelectorAll('.mnem-chip').forEach(c => c.classList.toggle('active', c===chip));
-      render();
-    });
-  });
 
   // ── Letras de um card ───────────────────────────────
   function lettersHtml(m){
@@ -4545,35 +4564,27 @@ function escHtml(s){
     return Object.entries(m.letters).map(([k,v]) => {
       if (k === 'letterSep') return '';
       if (k === 'sepText')  return `<div class="mnem-sep">⮕ ${escH(stripTags(v))}</div>`;
-      const interactive=trainMode?' tabindex="0" role="button" aria-pressed="false"':'';
-      return `<div class="mnem-line"${interactive}><span class="letter">${escH(k)}</span><span class="ltxt">${escH(stripTags(v))}</span></div>`;
+      return `<div class="mnem-line"><span class="letter">${escH(k)}</span><span class="ltxt">${escH(stripTags(v))}</span></div>`;
     }).join('');
   }
 
   // ── Render ──────────────────────────────────────────
   function render(){
-    const q = query.toLowerCase();
-    const items = list.filter(m => {
-      const okCat = activeCat === 'all' || m.category === activeCat;
-      const hay = (m.title + ' ' + (m.category||'') + ' ' + (m.tags||[]).join(' ') + ' ' + plainLetters(m)).toLowerCase();
-      return okCat && (!q || hay.includes(q));
-    });
+    const visible=trio(list,offset);
+    countEl.textContent = `${visible.length} de ${list.length} · trio rotativo; acervo completo no link oficial`;
+    emptyEl.style.display = visible.length ? 'none' : 'block';
 
-    countEl.textContent = `${items.length} de ${list.length} mnemônico(s)` + (trainMode ? ' · 🧠 modo treino ativo' : '');
-    emptyEl.style.display = items.length ? 'none' : 'block';
-
-    grid.innerHTML = items.map(m => `
-      <article class="mnem-card reveal${trainMode?' train-mode':''}" data-mnem="${escH(m.id)}"
+    grid.innerHTML = visible.map(m => `
+      <article class="mnem-card reveal" data-mnem="${escH(m.id)}"
         style="--mc:${m.color || 'var(--cyan)'}" role="listitem" tabindex="0"
         aria-label="${escH(m.title)}">
-        <button class="mnem-copy" title="Copiar mnemônico" aria-label="Copiar">⧉</button>
         <div class="mnem-card-header">
           <span class="mnem-emoji">${escH(m.emoji || '🏥')}</span>
           <h3>${escH(m.title)}</h3>
         </div>
         <div class="mnem-cat">// ${escH(m.category || 'UTI')}</div>
         <div class="mnem-letters">${lettersHtml(m)}</div>
-        <div class="mnem-hover-hint">${trainMode ? 'Clique nas letras para revelar · card para detalhes' : 'Clique para ver detalhes clínicos →'}</div>
+        <div class="mnem-hover-hint">Clique para ver detalhes clínicos →</div>
       </article>
     `).join('');
 
@@ -4582,52 +4593,37 @@ function escHtml(s){
 
   // ── Interações (event delegation) ──────────────────
   grid.addEventListener('click', e => {
-    const copyBtn = e.target.closest('.mnem-copy');
     const card = e.target.closest('.mnem-card');
     if (!card) return;
-    const m = list.find(x => x.id === card.dataset.mnem);
-
-    if (copyBtn) {
-      e.stopPropagation();
-      if (m) navigator.clipboard?.writeText(copyText(m)).then(() => {
-        copyBtn.textContent = '✓';
-        setTimeout(() => { copyBtn.textContent = '⧉'; }, 1200);
-      });
-      return;
-    }
-    if (trainMode) {
-      const line = e.target.closest('.mnem-line');
-      if (line) {
-        line.classList.toggle('revealed');
-        line.setAttribute('aria-pressed',String(line.classList.contains('revealed')));
-        return;
-      }
-    }
     openDrawer(card.dataset.mnem, true);
   });
   grid.addEventListener('keydown', e => {
-    const line=e.target.closest('.mnem-line');
-    if(trainMode&&line&&(e.key==='Enter'||e.key===' ')){
-      e.preventDefault();
-      line.classList.toggle('revealed');
-      line.setAttribute('aria-pressed',String(line.classList.contains('revealed')));
-      return;
-    }
     if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('mnem-card')) {
       e.preventDefault();
       openDrawer(e.target.dataset.mnem, true);
     }
   });
 
-  // ── Busca + Modo treino ─────────────────────────────
-  searchEl?.addEventListener('input', () => { query = searchEl.value; render(); });
-  trainBtn?.addEventListener('click', () => {
-    trainMode = !trainMode;
-    trainBtn.setAttribute('aria-pressed', String(trainMode));
+  function move(direction){
+    if(!list.length) return;
+    offset=(offset+direction*3+list.length)%list.length;
     render();
-  });
-
+  }
+  offset=dailyOffset(list.length);
+  document.getElementById('mnemPrev')?.addEventListener('click',()=>move(-1));
+  document.getElementById('mnemNext')?.addEventListener('click',()=>move(1));
+  const section=document.getElementById('mnemonicos');
+  const startRotation=()=>{
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||rotateTimer) return;
+    rotateTimer=setInterval(()=>move(1),25000);
+  };
+  const stopRotation=()=>{if(rotateTimer){clearInterval(rotateTimer);rotateTimer=null;}};
+  section?.addEventListener('mouseenter',stopRotation);
+  section?.addEventListener('mouseleave',startRotation);
+  section?.addEventListener('focusin',stopRotation);
+  section?.addEventListener('focusout',startRotation);
   render();
+  startRotation();
 })();
 
 /* ── MAPA VIVO — grafo data-driven (connections.json) ─ */

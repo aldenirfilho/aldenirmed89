@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Acervo oficial de mnemônicos clínicos Antigravity para UTI, Clínica Médica e preparação TEMI.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Mnemônicos Clínicos — Antigravity</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#acervo">Pular para o acervo</a>
+  <header>
+    <a href="../index.html">← Portal Antigravity</a>
+    <button id="themeToggle" type="button" aria-pressed="false">☀️ Contraste</button>
+  </header>
+  <main id="acervo">
+    <section class="hero">
+      <div class="kicker">🧩 Seção oficial · recordação ativa</div>
+      <h1>Mnemônicos Clínicos Rápidos</h1>
+      <p>Pesquise todo o acervo, filtre por categoria e use o modo treino para revelar uma letra por vez. A página inicial mostra apenas três; aqui ficam todos.</p>
+      <div class="notice">🩺 Conteúdo educacional em revisão contínua. Confirme metas, doses e condutas em diretrizes e protocolos institucionais vigentes.</div>
+    </section>
+    <section>
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Buscar tema, letra ou tag…" aria-label="Buscar mnemônicos">
+        <select id="category" aria-label="Filtrar por categoria"><option value="">Todas as categorias</option></select>
+        <button id="trainMode" type="button" aria-pressed="false">🧠 Modo treino</button>
+      </div>
+      <p id="count" class="count" aria-live="polite"></p>
+      <div id="grid" class="grid" role="list"></div>
+      <div id="empty" class="empty" hidden>Nenhum mnemônico corresponde à busca.</div>
+    </section>
+  </main>
+  <dialog id="reader">
+    <button id="closeReader" class="close" type="button" aria-label="Fechar">✕</button>
+    <div id="readerBody"></div>
+  </dialog>
+  <footer>🔒 Funciona localmente e não envia progresso ou conteúdo para servidores externos.</footer>
+  <script src="app.js"></script>
+</body>
+</html>

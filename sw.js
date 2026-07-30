@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v13`;
+const CACHE_NAME = `${CACHE_PREFIX}v14`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -60,6 +60,16 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/Reumatologia_Critica/index.html",
   "./01_Modulos_Clinicos/Reumatologia_Critica/assets/theme.css",
   "./01_Modulos_Clinicos/Reumatologia_Critica/data/catalog.js",
+  "./01_Modulos_Clinicos/Infectologia_Critica/index.html",
+  "./01_Modulos_Clinicos/Infectologia_Critica/data/catalog.js",
+  "./01_Modulos_Clinicos/Pneumologia_Critica/index.html",
+  "./01_Modulos_Clinicos/Pneumologia_Critica/data/catalog.js",
+  "./01_Modulos_Clinicos/_shared_critical/assets/critical.css",
+  "./01_Modulos_Clinicos/_shared_critical/assets/critical-theme.js",
+  "./01_Modulos_Clinicos/_shared_critical/assets/critical.js",
+  "./mnemonicos/index.html",
+  "./mnemonicos/styles.css",
+  "./mnemonicos/app.js",
   "./docs_usuario/index.html",
   "./docs_usuario/guide-reader.css",
   "./docs_usuario/guide-reader.js",

@@ -39,6 +39,42 @@ const MODULES = [
       cases: 12,
       references: 27
     }
+  },
+  {
+    label: "Infectologia Crítica",
+    file: "01_Modulos_Clinicos/Infectologia_Critica/data/catalog.js",
+    global: "ANTIGRAVITY_INFECTOLOGY",
+    minimum: {
+      emergencies: 10,
+      pathways: 5,
+      comparisons: 4,
+      concepts: 10,
+      mnemonics: 8,
+      alerts: 8,
+      calculators: 1,
+      questions: 10,
+      flashcards: 18,
+      cases: 6,
+      references: 12
+    }
+  },
+  {
+    label: "Pneumologia Crítica",
+    file: "01_Modulos_Clinicos/Pneumologia_Critica/data/catalog.js",
+    global: "ANTIGRAVITY_PULMONOLOGY",
+    minimum: {
+      emergencies: 10,
+      pathways: 5,
+      comparisons: 4,
+      concepts: 10,
+      mnemonics: 8,
+      alerts: 8,
+      calculators: 1,
+      questions: 10,
+      flashcards: 18,
+      cases: 6,
+      references: 14
+    }
   }
 ];
 

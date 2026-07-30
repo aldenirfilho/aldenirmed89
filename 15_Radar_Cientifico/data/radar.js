@@ -18,8 +18,89 @@
 
 const RADAR_GENERATED_AT="2026-07-25T22:40:00-03:00";
 const EDITORIAL_DAY="2026-07-25";
+const CURRENT_RADAR_GENERATED_AT="2026-07-30T11:30:00-03:00";
+const CURRENT_EDITORIAL_DAY="2026-07-30";
+
+const currentScientific=[
+  {
+    id:"doi:10.1007/s00134-026-08361-1",section:"scientific",priority:1,date:"2026-03-23",
+    sourcePublishedAt:"2026-03-23T09:00:00-03:00",editorialPublishedAt:"2026-07-30T11:29:00-03:00",checkedAt:CURRENT_RADAR_GENERATED_AT,
+    target:"radar-diario",destination:"Estação Radar Diário — conteúdo clínico/estudo do chat",
+    kind:"Diretriz internacional",evidenceLevel:"Diretriz multidisciplinar com GRADE",access:"aberto",topic:"Sepse",
+    title:"Surviving Sepsis Campaign 2026: 129 declarações e mais stewardship",
+    source:"Intensive Care Medicine · SCCM/ESICM",url:"https://doi.org/10.1007/s00134-026-08361-1",
+    summary:"A atualização 2026 reúne 129 declarações, incluindo 46 novas, e amplia o foco em ressuscitação individualizada, controle do foco, antimicrobianos, descalonamento e duração proporcional quando o controle anatômico é adequado.",
+    why:"É a referência internacional mais atual para organizar sepse e choque séptico sem confundir bundle inicial com tratamento rígido e igual para todos.",
+    caveat:"Diretriz extensa e heterogênea: força e certeza variam por recomendação; recursos, fenótipo, foco e protocolo local continuam determinantes.",
+    didactic:{
+      clinicalQuestion:"O que a atualização 2026 muda na organização prática da sepse e do choque séptico?",
+      design:"Diretriz internacional multidisciplinar baseada em revisão sistemática, GRADE e consenso para boas práticas.",
+      population:"Adultos com sepse ou choque séptico em diferentes cenários assistenciais.",
+      mainResult:"Foram publicadas 129 declarações, 46 novas, com maior detalhamento de diagnóstico, ressuscitação, antimicrobianos, controle do foco e stewardship.",
+      clinicalMeaning:"O manejo deve avançar em ciclos: reconhecer e estabilizar, tratar causa, medir resposta/tolerância e retirar intervenções que deixaram de ser necessárias.",
+      practiceToday:"Documente fenótipo, amostras úteis, terapia empírica, plano de controle do foco e um checkpoint explícito para fluido, vasopressor, espectro e duração.",
+      doNotInfer:"Não transformar qualquer recomendação condicional em meta universal, nem usar qSOFA isoladamente para rastrear ou excluir sepse.",
+      temiHook:"Separe medida inicial, reavaliação hemodinâmica, controle do foco e descalonamento.",
+      memoryAnchor:"REANIMAR → CONTROLAR FOCO → REAVALIAR → DESCALONAR",
+      caveats:["A certeza da evidência não é uniforme.","A implementação depende de recursos e epidemiologia local."]
+    },
+    turbo:{question:"O que muda em 2026?",evidence:"129 declarações; 46 novas.",practice:"Reavaliar em ciclos e controlar o foco.",limits:"Sem prescrição universal.",temi:"Bundle não é piloto automático.",memoryAnchor:"FOCO + REAVALIAÇÃO"},
+    audit:{reviewStatus:"pending",editorialReviewer:"Codex",clinicalReviewer:null,reviewedAt:null,dataClass:"none",riskNotes:"Síntese educacional sem prescrição individual."}
+  },
+  {
+    id:"doi:10.1093/cid/ciae403",section:"scientific",priority:1,date:"2024-08-07",
+    sourcePublishedAt:"2024-08-07T09:00:00-03:00",editorialPublishedAt:"2026-07-30T11:28:00-03:00",checkedAt:CURRENT_RADAR_GENERATED_AT,
+    target:"radar-diario",destination:"Estação Radar Diário — conteúdo clínico/estudo do chat",
+    kind:"Guidance de sociedade",evidenceLevel:"Síntese de evidências e opinião especializada",access:"aberto",topic:"Resistência antimicrobiana",
+    title:"IDSA: Gram-negativo resistente exige mecanismo, sítio e síndrome",
+    source:"Clinical Infectious Diseases · IDSA",url:"https://doi.org/10.1093/cid/ciae403",
+    summary:"A orientação organiza o tratamento de ESBL-E, AmpC-E, CRE, DTR Pseudomonas, CRAB e Stenotrophomonas. O eixo prático é confirmar infecção, identificar mecanismo provável, considerar sítio/gravidade e evitar combinações ou espectro sem justificativa.",
+    why:"Evita a simplificação perigosa de tratar todos os Gram-negativos resistentes como um único problema ou toda cultura como infecção.",
+    caveat:"É guidance dos EUA; suscetibilidade, mecanismos, disponibilidade de fármacos e epidemiologia precisam ser adaptados à realidade local.",
+    didactic:{
+      clinicalQuestion:"Como converter um antibiograma resistente em decisão terapêutica proporcional e segura?",
+      design:"Guidance oficial atualizado a partir de revisão de estudos, dados microbiológicos e consenso especializado.",
+      population:"Pacientes com infecções suspeitas ou confirmadas por Gram-negativos com resistência relevante.",
+      mainResult:"As recomendações são estruturadas por organismo/mecanismo e sítio, com preferência por agentes ativos de melhor evidência e desestímulo a combinações reflexas quando há opção adequada.",
+      clinicalMeaning:"Antes do fármaco vêm quatro perguntas: há infecção real, qual o sítio, qual o mecanismo e o foco está controlado?",
+      practiceToday:"Revise culturas atuais e prévias, qualidade da amostra, mecanismo provável, função orgânica, PK/PD e necessidade de controle do foco com infectologia/farmácia.",
+      doNotInfer:"Não escolher esquema apenas pelo nome da bactéria, nem tratar colonização de via aérea/urina sem síndrome.",
+      temiHook:"Atividade in vitro não substitui diagnóstico de infecção nem controle do foco.",
+      memoryAnchor:"DOENÇA? → MECANISMO → SÍTIO → EXPOSIÇÃO → FOCO",
+      caveats:["Ecologia predominantemente norte-americana.","Novos estudos e disponibilidade regional podem mudar escolhas."]
+    },
+    turbo:{question:"Cultura resistente é igual a infecção?",evidence:"Guidance separa mecanismos e síndromes.",practice:"Confirme foco e atividade no sítio.",limits:"Adapte à ecologia local.",temi:"Colonização ≠ infecção.",memoryAnchor:"MECANISMO + SÍTIO"},
+    audit:{reviewStatus:"pending",editorialReviewer:"Codex",clinicalReviewer:null,reviewedAt:null,dataClass:"none",riskNotes:"Não fornece esquema ou dose universal."}
+  },
+  {
+    id:"pmid:41841715",section:"scientific",priority:1,date:"2026-03-17",
+    sourcePublishedAt:"2026-03-17T09:00:00-03:00",editorialPublishedAt:"2026-07-30T11:27:00-03:00",checkedAt:CURRENT_RADAR_GENERATED_AT,
+    target:"radar-diario",destination:"Estação Radar Diário — conteúdo clínico/estudo do chat",
+    kind:"Ensaio clínico randomizado",evidenceLevel:"ECR multicêntrico aberto",access:"aberto",topic:"Pneumologia crítica",
+    title:"SOHO: alto fluxo não reduziu mortalidade, mas reduziu modestamente intubação",
+    source:"New England Journal of Medicine · PubMed",url:"https://pubmed.ncbi.nlm.nih.gov/41841715/",
+    summary:"Entre 1.110 pacientes analisados com insuficiência respiratória hipoxêmica aguda, a mortalidade em 28 dias foi 14,6% nos dois grupos. A intubação ocorreu em 42,4% com alto fluxo e 48,4% com oxigênio padrão.",
+    why:"Atualiza a conversa sobre alto fluxo: o dispositivo pode reduzir modestamente intubação, mas não demonstrou ganho de sobrevida no desfecho primário.",
+    caveat:"O estudo excluiu pacientes com hipercapnia, choque, edema cardiogênico, encefalopatia ou necessidade imediata de intubação; extrapolação pode atrasar escalada.",
+    didactic:{
+      clinicalQuestion:"O alto fluxo reduz mortalidade ou intubação na insuficiência respiratória hipoxêmica aguda?",
+      design:"Ensaio multicêntrico, aberto, randomizado, comparando alto fluxo com oxigênio padrão.",
+      population:"1.110 adultos analisados com P/F ≤200, taquipneia e infiltrado pulmonar, sem necessidade imediata de intubação.",
+      mainResult:"Mortalidade em 28 dias idêntica (14,6%); intubação modestamente menor com alto fluxo (42,4% vs 48,4%).",
+      clinicalMeaning:"Alto fluxo é uma estratégia de suporte, não garantia de sobrevida nem autorização para prolongar tentativa em falha.",
+      practiceToday:"Defina alvo, monitorize esforço, frequência, consciência, hemodinâmica e trajetória, e escreva gatilhos de intubação antes do teste.",
+      doNotInfer:"Não aplicar o resultado a choque, hipercapnia ou necessidade imediata de via aérea; não usar SpO₂ isolada para declarar sucesso.",
+      temiHook:"Dispositivo é parte da estratégia; critérios de falha protegem contra atraso de intubação.",
+      memoryAnchor:"OXIGENOU ≠ RESOLVEU O ESFORÇO",
+      caveats:["Ensaio aberto.","Diferença de intubação foi pequena e mortalidade não mudou."]
+    },
+    turbo:{question:"Alto fluxo salva vidas?",evidence:"Mortalidade igual; intubação um pouco menor.",practice:"Use com gatilhos de falha.",limits:"População selecionada.",temi:"SpO₂ não mede fadiga.",memoryAnchor:"TRAJETÓRIA > FOTO"},
+    audit:{reviewStatus:"pending",editorialReviewer:"Codex",clinicalReviewer:null,reviewedAt:null,dataClass:"none",riskNotes:"Aplicabilidade limitada à população estudada."}
+  }
+];
 
 const scientific=[
+  ...currentScientific,
   {
     id:"pmid:42469838",section:"scientific",priority:1,date:"2026-07-17",
     sourcePublishedAt:"2026-07-17T12:00:00-03:00",editorialPublishedAt:"2026-07-25T22:39:00-03:00",checkedAt:RADAR_GENERATED_AT,
@@ -600,25 +681,32 @@ const spotify=[
 
 window.ANTIGRAVITY_RADAR={
   schemaVersion:"radar-v2",
-  editionId:"2026-07-25",
-  editionDate:EDITORIAL_DAY,
-  generatedAt:RADAR_GENERATED_AT,
-  updatedAt:RADAR_GENERATED_AT,
-  lastScanAt:RADAR_GENERATED_AT,
+  editionId:"2026-07-30",
+  editionDate:CURRENT_EDITORIAL_DAY,
+  generatedAt:CURRENT_RADAR_GENERATED_AT,
+  updatedAt:CURRENT_RADAR_GENERATED_AT,
+  lastScanAt:CURRENT_RADAR_GENERATED_AT,
   timezone:"America/Fortaleza",
   freshnessPolicy:"A edição abre todos os dias. Se não houver publicação relevante do próprio dia, o Radar mostra a fonte mais recente disponível sem alterar sua data original. Preço e estoque comercial sempre exibem o horário da conferência.",
   editorialNote:"Prioridade combina gravidade, aplicabilidade em UTI/Clínica, recência e qualidade da fonte. Ciência, contexto e comércio permanecem separados. Conteúdo comercial não é afiliado, não promete resultado e exige conferência de preço, vendedor, garantia e necessidade real.",
   commercialPolicy:"Sem links afiliados. Preço é snapshot, nunca promessa. Produto só entra com problema de uso, especificações conferíveis, limite, segurança e alternativa de não comprar.",
   priorities:[
-    "TEMI: candidato já inscrito deve conferir documentos, status e comprovante antes de 31/07; prazo operacional vem antes de conteúdo novo.",
-    "Na hipertensão intra-abdominal, um PLR negativo perde confiabilidade: diferencie responsividade, necessidade e tolerância a fluidos.",
-    "Fumaça e alertas globais só entram quando traduzidos em anamnese, triagem, vigilância e impacto real na rotina."
+    "Sepse 2026: trate a primeira hora como início de ciclos de reavaliação — estabilização, foco, microbiologia e stewardship.",
+    "Resistência: cultura não é sinônimo de infecção; mecanismo, sítio e controle do foco vêm antes da escalada automática.",
+    "Hipoxemia: alto fluxo pode reduzir modestamente intubação em pacientes selecionados, mas esforço e trajetória definem falha."
   ],
   editions:[
     {
+      id:"2026-07-30",date:CURRENT_EDITORIAL_DAY,label:"Edição de 30 de julho de 2026",
+      generatedAt:CURRENT_RADAR_GENERATED_AT,lastUpdatedAt:CURRENT_RADAR_GENERATED_AT,
+      itemIds:currentScientific.map(item=>item.id),
+      visualIds:[],visualPairCount:0,visualAssetCount:0,
+      commercialIds:[],productVisualIds:[],productVisualPairCount:0,productVisualAssetCount:0
+    },
+    {
       id:"2026-07-25",date:EDITORIAL_DAY,label:"Edição de 25 de julho de 2026",
       generatedAt:RADAR_GENERATED_AT,lastUpdatedAt:RADAR_GENERATED_AT,
-      itemIds:[...scientific,...geopolitics,...commercial].map(item=>item.id),
+      itemIds:[...scientific.filter(item=>!currentScientific.some(current=>current.id===item.id)),...geopolitics,...commercial].map(item=>item.id),
       visualIds:visuals.map(item=>item.id),visualPairCount:10,visualAssetCount:20,
       commercialIds:commercial.map(item=>item.id),
       productVisualIds:productVisuals.map(item=>item.id),productVisualPairCount:3,productVisualAssetCount:6
