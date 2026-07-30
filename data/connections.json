@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-07-30T11:30:00-03:00",
-  "version": "4.5-activation",
-  "description": "Mapa vivo organizado da Enciclopédia: Home, Central de Ativação, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos e macrotemas de UTI.",
+  "updatedAt": "2026-07-30T02:42:50-03:00",
+  "version": "4.6-acra-microparticles",
+  "description": "Mapa vivo organizado da Enciclopédia: Home, Central de Ativação, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos, Micropartículas Ativas ACRA e macrotemas de UTI.",
   "legend": {
     "hub": "Nó central do projeto",
     "biblioteca": "Base de documentos e curadoria IA",
@@ -271,8 +271,18 @@
       "x": 38.76251975251044,
       "y": 45.79060126772456,
       "type": "theme",
-      "url": "#",
-      "status": "planejado"
+      "url": "09_POCUS_Hub/index.html",
+      "status": "ativo"
+    },
+    {
+      "id": "microparticulas-acra",
+      "label": "🧬 Micropartículas ACRA",
+      "body": "Aprendizagem ativa em M0–M6 com piloto POCUS no choque, caso sintético, recuperação e retomada espaçada.",
+      "x": 31.5,
+      "y": 49.5,
+      "type": "module",
+      "url": "22_Microparticulas_Ativas_ACRA/index.html",
+      "status": "em_revisao"
     },
     {
       "id": "familia-paciente",
@@ -1257,6 +1267,26 @@
       "from": "pocus-usg",
       "to": "vm-sdra",
       "relation": "pulmao"
+    },
+    {
+      "from": "home",
+      "to": "microparticulas-acra",
+      "relation": "aprendizagem-ativa"
+    },
+    {
+      "from": "microparticulas-acra",
+      "to": "pocus-usg",
+      "relation": "piloto-pocus"
+    },
+    {
+      "from": "microparticulas-acra",
+      "to": "banco-temi",
+      "relation": "recuperacao-ativa"
+    },
+    {
+      "from": "microparticulas-acra",
+      "to": "sepse-choque",
+      "relation": "fenotipos-de-choque"
     },
     {
       "from": "brain-protocolo-ipcs-cvc-uti-temi",

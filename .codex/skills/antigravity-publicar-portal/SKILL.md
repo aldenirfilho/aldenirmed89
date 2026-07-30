@@ -85,3 +85,31 @@ data, fonte e URL. Evitar figura decorativa, texto excessivo, logotipo dominante
 ou reprodução não autorizada de figura do artigo. Cada imagem publicada no
 Radar precisa de um par: widescreen mais completo e card vertical
 autossuficiente. Produtos também seguem esse contrato.
+
+### Motor visual GPT no fluxo editorial
+
+Quando a tarefa ganhar clareza com uma imagem original, usar a skill `imagegen`
+no momento de autoria e publicar somente o arquivo estático final. A geração
+entra diretamente na pasta pública do módulo ou da estação, mas nunca contorna
+o gate editorial:
+
+1. Gerar uma imagem conceitual original, sem reproduzir figura de artigo,
+   marca, paciente, dado identificável, prescrição ou alegação diagnóstica.
+2. Evitar texto incorporado à imagem; título, legenda, rótulos e ressalvas ficam
+   no HTML acessível. Imagem clínica sintética deve ser rotulada como conceitual
+   e não pode simular evidência diagnóstica real sem validação específica.
+3. Inspecionar visualmente anatomia, artefatos, texto acidental e aderência ao
+   tema. Rejeitar a imagem em caso de ambiguidade clinicamente perigosa.
+4. Salvar a versão escolhida em caminho versionado `assets/visuals/`, otimizar
+   para web e registrar caminho, dimensões, formato, SHA-256, texto alternativo,
+   legenda, resumo do prompt, origem gerada, direitos e revisão pendente em
+   `data/visual-assets.json`.
+5. Integrar a imagem ao HTML com `width`, `height`, `loading="lazy"`,
+   `decoding="async"`, texto alternativo e legenda. Atualizar cache offline,
+   manifestos, registro editorial e testes quando aplicável.
+6. Não usar chave OpenAI, chamada de geração, upload automático, telemetria ou
+   API do motor visual no JavaScript público. O navegador recebe apenas o asset
+   revisado; geração e publicação acontecem no fluxo Git auditável.
+7. Publicar no site apenas após builder, gate de privacidade, revisão do diff e
+   fluxo Git do projeto. “Diretamente” significa integrar no destino público da
+   tarefa, sem criar uma galeria paralela e sem ignorar a revisão humana.
