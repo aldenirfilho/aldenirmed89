@@ -65,6 +65,16 @@ class DailyUpdatePlannerTests(unittest.TestCase):
             self.config["selectionPolicy"]["mode"],
             "balanced-deterministic-random",
         )
+        evolution = self.config["continuousEvolution"]
+        self.assertEqual(evolution["mode"], "weekly-expansion-sprint")
+        self.assertEqual(evolution["expansionWeekday"], 4)
+        self.assertEqual(evolution["cycleWeeks"], 6)
+        self.assertEqual(len(evolution["stages"]), 6)
+        self.assertEqual(len(evolution["candidates"]), 8)
+        self.assertEqual(
+            {candidate["type"] for candidate in evolution["candidates"]},
+            {"app", "section"},
+        )
         minimum = self.config["selectionPolicy"]["minimumSectionsPerLane"]
         for lane in self.config["lanes"]:
             self.assertGreaterEqual(
@@ -172,6 +182,8 @@ class DailyUpdatePlannerTests(unittest.TestCase):
             }
             self.assertTrue(continuous_routes.isdisjoint(selected_routes))
             for item in plan["selections"]:
+                if item["kind"] != "maintenance":
+                    continue
                 counts.setdefault(item["laneId"], Counter())[
                     item["sectionId"]
                 ] += 1
@@ -189,14 +201,62 @@ class DailyUpdatePlannerTests(unittest.TestCase):
                 f"cobertura desigual na trilha {lane['id']}: {lane_counts}",
             )
 
+    def test_friday_expansion_advances_one_candidate_over_six_weeks(self) -> None:
+        plans = PLANNER.generate_schedule(
+            self.config,
+            start=date(2026, 7, 31),
+            days=43,
+            last_updates=self.last_updates,
+        )
+        fridays = [
+            plan
+            for plan in plans
+            if date.fromisoformat(plan["date"]).weekday() == 4
+        ]
+        self.assertEqual(len(fridays), 7)
+        self.assertEqual(
+            {
+                plan["expansionSprint"]["candidate"]["id"]
+                for plan in fridays[:6]
+            },
+            {"sepse-choque-turbo"},
+        )
+        self.assertEqual(
+            [plan["expansionSprint"]["week"] for plan in fridays[:6]],
+            [1, 2, 3, 4, 5, 6],
+        )
+        self.assertEqual(
+            fridays[6]["expansionSprint"]["candidate"]["id"],
+            "aki-trs-turbo",
+        )
+        self.assertEqual(fridays[6]["expansionSprint"]["week"], 1)
+        for plan in fridays:
+            self.assertEqual(plan["planMode"], "weekly-expansion-sprint")
+            self.assertEqual(
+                {item["kind"] for item in plan["selections"]},
+                {"expansion"},
+            )
+            self.assertEqual(
+                sum(item["minutes"] for item in plan["selections"]),
+                42,
+            )
+            self.assertEqual(
+                {item["laneId"] for item in plan["selections"]},
+                {"conteudo-temi", "design-tdah", "performance-qualidade"},
+            )
+
     def test_markdown_exposes_timebox_routes_and_safety_gate(self) -> None:
         plans = PLANNER.generate_schedule(
             self.config,
-            start=date(2026, 7, 29),
-            days=1,
+            start=date(2026, 7, 30),
+            days=2,
             last_updates=self.last_updates,
         )
-        markdown = PLANNER.render_markdown(plans)
+        queue = PLANNER.project_expansion_queue(
+            self.config,
+            reference=date(2026, 7, 30),
+        )
+        markdown = PLANNER.render_markdown(plans, queue)
         self.assertIn("60 minutos", markdown)
         self.assertIn("Tempo total:** 60 minutos", markdown)
         self.assertIn("balanced-deterministic-random", markdown)
@@ -213,8 +273,11 @@ class DailyUpdatePlannerTests(unittest.TestCase):
         self.assertIn("Radar Diário", markdown)
         self.assertIn("Portal Vivo", markdown)
         self.assertIn("minuto 60", markdown)
-        for item in plans[0]["selections"]:
-            self.assertIn(item["route"], markdown)
+        self.assertIn("Sprint semanal de expansão", markdown)
+        self.assertIn("Sepse e Choque Séptico", markdown)
+        self.assertIn("Fila de novos apps e seções sugeridas", markdown)
+        self.assertIn("AKI e Terapia Renal Substitutiva", markdown)
+        self.assertIn("Rota futura", markdown)
 
     def test_fortaleza_date_is_used_near_utc_midnight(self) -> None:
         self.assertEqual(
@@ -260,6 +323,10 @@ class DailyUpdatePlannerTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         payload = json.loads(completed.stdout)
         self.assertEqual(len(payload["plans"]), 7)
+        self.assertEqual(len(payload["expansionQueue"]), 8)
+        self.assertTrue(
+            any(plan["expansionSprint"] for plan in payload["plans"])
+        )
         self.assertEqual(before, after)
 
     def test_guide_requires_codex_choice_and_clinical_review(self) -> None:
@@ -276,6 +343,10 @@ class DailyUpdatePlannerTests(unittest.TestCase):
             "Conteúdo Turbo TEMI",
             "Design TDAH-friendly",
             "Performance mensurável",
+            "sexta-feira de expansão",
+            "Fila sugerida de novos apps e seções",
+            "Sepse e Choque Séptico",
+            "TEMI Sprint 10",
             "uma aba, um cronômetro e uma entrega por vez",
             "não publica nada sozinho",
             "assistência",

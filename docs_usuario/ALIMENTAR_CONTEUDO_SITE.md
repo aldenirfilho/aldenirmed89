@@ -47,6 +47,10 @@ performance mensurável. Radar Diário, Integridade/privacidade e Portal Vivo
 também recebem uma checagem contínua obrigatória. O roteiro completo está em
 [`ROTINA_DIARIA_30_MIN.md`](ROTINA_DIARIA_30_MIN.md).
 
+Às sextas, os três pilares formam um sprint de expansão dentro dos mesmos 60
+minutos. O cronograma mostra a etapa atual e a fila de novos módulos, apps e
+seções sugeridos; nenhuma rota pública é criada antes dos gates e da revisão.
+
 ## 🗺️ Escolha rápida do destino
 
 | Quero adicionar | Fonte canônica | Atualização principal |

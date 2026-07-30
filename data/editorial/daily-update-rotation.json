@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "antigravity-daily-update-rotation-v2",
-  "updatedAt": "2026-07-29",
+  "schemaVersion": "antigravity-daily-update-rotation-v3",
+  "updatedAt": "2026-07-30",
   "timezone": "America/Fortaleza",
   "maxMinutes": 60,
   "validationMinutes": 8,
@@ -35,11 +35,174 @@
   ],
   "selectionPolicy": {
     "mode": "balanced-deterministic-random",
-    "seedNamespace": "antigravity-rotina-60-v2",
+    "seedNamespace": "antigravity-rotina-60-v3",
     "forecastCooldownDays": 6,
     "gitCooldownDays": 5,
     "minimumSectionsPerLane": 7,
     "fairnessWindowDays": 42
+  },
+  "continuousEvolution": {
+    "mode": "weekly-expansion-sprint",
+    "epoch": "2026-07-27",
+    "expansionWeekday": 4,
+    "cycleWeeks": 6,
+    "workspaceRoute": "21_Central_Ativacao/index.html",
+    "rules": [
+      "A sexta de expansão substitui as três escolhas randômicas, sem aumentar os 60 minutos.",
+      "Nenhuma rota nova é ativada antes de não duplicação, fonte, privacidade, testes e revisão humana.",
+      "Apps permanecem locais, offline e sem dados de paciente, telemetria ou API externa por padrão.",
+      "Conteúdo clínico novo permanece educacional ou em revisão até homologação médica humana."
+    ],
+    "stages": [
+      {
+        "week": 1,
+        "id": "descoberta",
+        "label": "Problema, público e não duplicação",
+        "pillarTasks": {
+          "conteudo-temi": "Definir a pergunta educacional e conferir se o tema já existe em módulos, apps, Radar ou roadmap.",
+          "design-tdah": "Mapear uma jornada curta com uma ação principal e o menor número possível de telas.",
+          "performance-qualidade": "Inventariar componentes reutilizáveis, riscos, dados e limites técnicos antes de criar arquivos."
+        },
+        "exitGate": "Problema real, público, não objetivo, dependências e ausência de duplicação documentados."
+      },
+      {
+        "week": 2,
+        "id": "evidencia-arquitetura",
+        "label": "Evidência, conteúdo e arquitetura",
+        "pillarTasks": {
+          "conteudo-temi": "Montar o esqueleto Turbo TEMI e a matriz de fontes sem transformar evidência em protocolo.",
+          "design-tdah": "Definir hierarquia, navegação, estados vazios e sequência de recuperação ativa.",
+          "performance-qualidade": "Definir contrato de dados local, orçamento de assets e testes mínimos de segurança."
+        },
+        "exitGate": "Fontes, estrutura, dados locais e critérios de aceite definidos antes do código."
+      },
+      {
+        "week": 3,
+        "id": "prototipo-tdah",
+        "label": "Protótipo TDAH-friendly",
+        "pillarTasks": {
+          "conteudo-temi": "Criar uma amostra curta com pergunta ativa, âncora de memória e ressalva clínica.",
+          "design-tdah": "Criar o fluxo responsivo com foco visível, teclado, contraste e alvos de toque.",
+          "performance-qualidade": "Preparar uma casca estática local e medir o custo inicial sem integrar ao portal."
+        },
+        "exitGate": "Protótipo navegável, escaneável e ainda isolado da publicação definitiva."
+      },
+      {
+        "week": 4,
+        "id": "mvp-local",
+        "label": "MVP local e reversível",
+        "pillarTasks": {
+          "conteudo-temi": "Integrar somente a primeira unidade de conteúdo rastreável e marcar revisão pendente quando aplicável.",
+          "design-tdah": "Implementar estados principal, vazio, erro e conclusão sem ampliar o escopo visual.",
+          "performance-qualidade": "Construir o MVP offline, sem credenciais, rede ou persistência de dados identificáveis."
+        },
+        "exitGate": "MVP local funciona sem rede, não contém dados privados e pode ser removido em um único revert."
+      },
+      {
+        "week": 5,
+        "id": "qualidade",
+        "label": "Performance, acessibilidade e testes",
+        "pillarTasks": {
+          "conteudo-temi": "Revisar coerência, limitações, linguagem educacional e status da revisão clínica.",
+          "design-tdah": "Homologar teclado, foco, mobile, alto contraste, redução de movimento e impressão.",
+          "performance-qualidade": "Medir antes/depois, remover gargalo comprovado e criar testes de regressão e privacidade."
+        },
+        "exitGate": "Métrica ou contrato automatizado registrado, sem regressão conhecida nem alegação não comprovada."
+      },
+      {
+        "week": 6,
+        "id": "integracao-revisao",
+        "label": "Integração, revisão humana e publicação",
+        "pillarTasks": {
+          "conteudo-temi": "Fechar fontes e solicitar revisão humana explícita antes de qualquer recomendação clínica definitiva.",
+          "design-tdah": "Comparar visualmente desktop e celular e anexar evidência quando houver mudança de interface.",
+          "performance-qualidade": "Integrar manifest, rotas, cache, gates e builder; preparar PR curto com reversão."
+        },
+        "exitGate": "Revisão humana, testes, privacidade, manifests, build público e plano de reversão documentados."
+      }
+    ],
+    "candidates": [
+      {
+        "id": "sepse-choque-turbo",
+        "type": "section",
+        "title": "Sepse e Choque Séptico — Turbo TEMI",
+        "priority": 5,
+        "proposedRoute": "01_Modulos_Clinicos/Sepse_Choque/index.html",
+        "reason": "É a primeira frente sugerida pela Central de Ativação e tema central da prática intensiva e do TEMI.",
+        "deliverable": "Módulo educacional com reconhecimento, hemodinâmica, antimicrobianos, casos e recuperação ativa.",
+        "safetyGate": "Revisão médica humana obrigatória; nenhuma dose ou meta vira protocolo universal."
+      },
+      {
+        "id": "aki-trs-turbo",
+        "type": "section",
+        "title": "AKI e Terapia Renal Substitutiva",
+        "priority": 5,
+        "proposedRoute": "01_Modulos_Clinicos/AKI_TRS/index.html",
+        "reason": "Complementa o RenalDose com raciocínio de lesão renal, indicação, modalidade e complicações da TRS.",
+        "deliverable": "Módulo Turbo TEMI com casos, critérios, modalidades, armadilhas e integração renal.",
+        "safetyGate": "Parâmetros de TRS exigem fonte, unidade, contexto e revisão humana; sem prescrição individual."
+      },
+      {
+        "id": "infectologia-stewardship",
+        "type": "section",
+        "title": "Infectologia e Stewardship na UTI",
+        "priority": 5,
+        "proposedRoute": "01_Modulos_Clinicos/Infectologia_Stewardship/index.html",
+        "reason": "Conecta sepse, culturas, foco, descalonamento e RenalDose sem duplicar o catálogo de doses.",
+        "deliverable": "Trilha educacional de decisão, coleta, espectro, reavaliação e segurança antimicrobiana.",
+        "safetyGate": "Antimicrobianos dependem de epidemiologia e protocolo local; revisão clínica obrigatória."
+      },
+      {
+        "id": "endocrino-metabolico-uti",
+        "type": "section",
+        "title": "Endócrino-metabólico na UTI",
+        "priority": 4,
+        "proposedRoute": "01_Modulos_Clinicos/Endocrino_Metabolico/index.html",
+        "reason": "Organiza emergências glicêmicas, tireoidianas, adrenais e distúrbios metabólicos sem duplicar a gasometria do RespiraSense.",
+        "deliverable": "Módulo de emergências endócrinas e metabolismo com fluxos, casos e questões TEMI.",
+        "safetyGate": "Doses, reposições e metas exigem revisão humana e aviso de protocolo local."
+      },
+      {
+        "id": "temi-sprint-10",
+        "type": "app",
+        "title": "TEMI Sprint 10",
+        "priority": 4,
+        "proposedRoute": "03_Calculadoras_E_Apps/TEMI_Sprint_10/index.html",
+        "reason": "Transforma o banco existente em sessões curtas de dez minutos, adequadas ao TDAH e ao plantão.",
+        "deliverable": "App offline de dez questões, feedback, revisão espaçada e exportação local sem identidade.",
+        "safetyGate": "Questões precisam de fonte e revisão; progresso permanece somente no dispositivo."
+      },
+      {
+        "id": "painel-progresso-temi",
+        "type": "app",
+        "title": "Painel Local de Progresso TEMI",
+        "priority": 3,
+        "proposedRoute": "03_Calculadoras_E_Apps/Progresso_TEMI/index.html",
+        "reason": "Mostra cobertura, revisões atrasadas e próximos blocos sem depender de conta, nuvem ou telemetria.",
+        "deliverable": "Painel local com mapa de domínio, sequência de revisão e exportação manual.",
+        "safetyGate": "Sem login, sincronização externa ou perfil comportamental; dados locais apagáveis e exportáveis."
+      },
+      {
+        "id": "simulador-casos-temi",
+        "type": "app",
+        "title": "Simulador de Casos TEMI",
+        "priority": 4,
+        "proposedRoute": "03_Calculadoras_E_Apps/Simulador_Casos_TEMI/index.html",
+        "reason": "Integra módulos já revisados em casos ramificados com feedback de raciocínio, sem usar pacientes reais.",
+        "deliverable": "Simulador offline com pistas progressivas, debriefing e links para fontes canônicas.",
+        "safetyGate": "Casos fictícios, sem identificadores; respostas educacionais não substituem decisão assistencial."
+      },
+      {
+        "id": "comunicacao-cuidados-proporcionais",
+        "type": "section",
+        "title": "Comunicação e Cuidados Proporcionais na UTI",
+        "priority": 4,
+        "proposedRoute": "01_Modulos_Clinicos/Comunicacao_Cuidados_Proporcionais/index.html",
+        "reason": "Amplia preparação TEMI e prática diária em comunicação, prognóstico, reunião familiar e proporcionalidade.",
+        "deliverable": "Módulo com roteiros, conflitos, capacidade, diretivas, casos e limites éticos.",
+        "safetyGate": "Conteúdo educacional sujeito a revisão clínica, ética e jurídica; nunca usar dados familiares reais."
+      }
+    ]
   },
   "lanes": [
     {

@@ -45,6 +45,43 @@ O planejador combina:
 Assim, áreas populares não monopolizam a rotina e seções menos visíveis voltam
 ao cronograma de forma homogênea ao longo do tempo.
 
+## 🚀 Sexta-feira de expansão
+
+Às sextas, os mesmos 42 minutos dos três pilares deixam de sortear seções
+existentes e avançam uma única proposta de novo app ou seção. O pulso contínuo
+e a validação permanecem iguais; o total continua em **60 minutos**.
+
+Cada candidato recebe seis sextas-feiras:
+
+| Semana | Etapa | Resultado esperado |
+|---|---|---|
+| 1 | Problema e não duplicação | público, objetivo, limites e dependências |
+| 2 | Evidência e arquitetura | fontes, conteúdo, navegação e contrato de dados |
+| 3 | Protótipo TDAH-friendly | fluxo curto, teclado, mobile e casca local |
+| 4 | MVP local | primeira versão offline, isolada e reversível |
+| 5 | Qualidade | acessibilidade, performance, privacidade e testes |
+| 6 | Integração e revisão | revisão humana, manifests, builder, PR e reversão |
+
+Isso não autoriza criação automática de uma rota pública. A proposta só avança
+quando o gate da etapa anterior estiver documentado.
+
+## 🧭 Fila sugerida de novos apps e seções
+
+| Ciclo de seis semanas | Tipo | Candidato | Objetivo |
+|---|---|---|---|
+| 27/07–06/09/2026 | Seção | Sepse e Choque Séptico — Turbo TEMI | módulo clínico prioritário já sugerido pela Central de Ativação |
+| 07/09–18/10/2026 | Seção | AKI e Terapia Renal Substitutiva | ampliar raciocínio renal sem duplicar o RenalDose |
+| 19/10–29/11/2026 | Seção | Infectologia e Stewardship na UTI | ligar foco, culturas, espectro e reavaliação |
+| 30/11/2026–10/01/2027 | Seção | Endócrino-metabólico na UTI | emergências endócrinas sem duplicar a gasometria do RespiraSense |
+| 11/01–21/02/2027 | App | TEMI Sprint 10 | dez questões em sessão curta, offline e TDAH-friendly |
+| 22/02–04/04/2027 | App | Painel Local de Progresso TEMI | mostrar cobertura sem conta, nuvem ou telemetria |
+| 05/04–16/05/2027 | App | Simulador de Casos TEMI | casos fictícios ramificados com debriefing |
+| 17/05–27/06/2027 | Seção | Comunicação e Cuidados Proporcionais | prática TEMI, reunião familiar, ética e proporcionalidade |
+
+O planejador recalcula essa fila pela data e a apresenta no cronograma. Caso um
+candidato deixe de ser necessário, ele deve ser substituído na configuração,
+com justificativa, sem apagar o histórico dos ciclos anteriores.
+
 ## 🔁 Pulso contínuo obrigatório
 
 Três tópicos não participam do sorteio: são considerados diariamente.
@@ -149,6 +186,9 @@ publicação.
 Não transformar estudo isolado em protocolo. Não usar dados reais ou
 identificáveis de paciente.
 
+> **Na sexta-feira de expansão:** este bloco trabalha a etapa de conteúdo do
+> candidato do ciclo, em vez de uma seção randômica.
+
 ### Minuto 28–40 — Design TDAH-friendly
 
 - **28–30:** observar a tela em desktop e largura móvel.
@@ -156,6 +196,9 @@ identificáveis de paciente.
 - **37–40:** conferir teclado, foco, contraste e alvo de toque.
 
 Não iniciar uma reforma visual ampla. Clareza vem antes de decoração.
+
+> **Na sexta-feira de expansão:** este bloco trabalha a jornada, o protótipo ou
+> a homologação visual do candidato.
 
 ### Minuto 40–52 — Performance e qualidade
 
@@ -165,6 +208,9 @@ Não iniciar uma reforma visual ampla. Clareza vem antes de decoração.
 
 Se não houver medida confiável, criar o teste primeiro e deixar a otimização
 para outra sessão.
+
+> **Na sexta-feira de expansão:** este bloco trabalha viabilidade, MVP local,
+> performance, privacidade, testes ou integração conforme a semana do ciclo.
 
 ### Minuto 52–60 — Validação e publicação
 
@@ -232,6 +278,8 @@ Uma sessão diária termina quando:
 - o diff não contém dados privados nem arquivos acidentais;
 - conteúdo clínico novo tem fonte e status de revisão;
 - performance tem medida antes/depois ou contrato automatizado;
+- a sexta de expansão, quando aplicável, respeitou o gate da etapa e não criou
+  rota pública prematura;
 - os testes realmente executados foram documentados;
 - ideias extras ficaram estacionadas sem ampliar o escopo.
 
