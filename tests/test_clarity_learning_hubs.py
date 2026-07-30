@@ -189,6 +189,17 @@ class LearningHubsClarityTests(unittest.TestCase):
                 for marker in markers:
                     self.assertIn(marker, source)
 
+    def test_updown_quick_routes_are_canonical_and_keyboard_native(self) -> None:
+        source = self.sources[ROOT / "01_UpDown_Hub" / "index.html"]
+        for route in (
+            "../02_Biblioteca_IA_Engine/index.html",
+            "../03_Calculadoras_E_Apps/index.html",
+            "../05_Midia_E_Feed/index.html",
+        ):
+            self.assertIn(f'href="{route}"', source)
+        self.assertEqual(source.count('<a class="card hub-card"'), 3)
+        self.assertNotIn('class="card hub-card" onclick=', source)
+
 
 if __name__ == "__main__":
     unittest.main()

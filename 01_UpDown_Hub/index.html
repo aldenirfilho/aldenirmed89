@@ -40,6 +40,9 @@
       margin: 2rem 0;
     }
     .hub-card {
+      display: block;
+      color: inherit;
+      text-decoration: none;
       padding: 2rem;
       text-align: center;
       transition: transform 0.3s ease, border-color 0.3s ease;
@@ -255,9 +258,9 @@
     <a class="brand" href="../index.html">🧠 <span>Enciclomedia Antigravity</span></a>
     <nav>
       <a href="../index.html">🏠 Home</a>
-      <a href="../biblioteca/index.html">📚 Biblioteca</a>
-      <a href="../imagens/index.html">🖼️ Imagens</a>
-      <a href="../apps/index.html">📱 Apps</a>
+      <a href="../02_Biblioteca_IA_Engine/index.html">📚 Biblioteca</a>
+      <a href="../05_Midia_E_Feed/index.html">🖼️ Imagens</a>
+      <a href="../03_Calculadoras_E_Apps/index.html">📱 Apps</a>
       <button class="clarity-toggle" id="clarity-toggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco" title="Ativar visualização clara">
         <span aria-hidden="true">☀️</span><span class="clarity-label">Visualização clara</span>
       </button>
@@ -276,7 +279,7 @@
         </p>
         <div class="nav-links-hub">
           <a class="btn primary" href="#catalogo">📚 Explorar UpDowns</a>
-          <a class="btn" href="../apps/index.html">📱 Clinical Apps</a>
+          <a class="btn" href="../03_Calculadoras_E_Apps/index.html">📱 Clinical Apps</a>
         </div>
       </div>
       <aside class="panel">
@@ -301,21 +304,21 @@
 
     <!-- CARDS DE ACESSO RÁPIDO -->
     <section class="hub-nav">
-      <div class="card hub-card" onclick="location.href='#catalogo'">
+      <a class="card hub-card" href="#catalogo">
         <i>↕️</i>
         <h2>UpDowns</h2>
         <p>Conteúdo didático transformado, flashcards e questões para estudo.</p>
-      </div>
-      <div class="card hub-card" onclick="location.href='../biblioteca/index.html'">
+      </a>
+      <a class="card hub-card" href="../02_Biblioteca_IA_Engine/index.html">
         <i>📚</i>
         <h2>Biblioteca</h2>
         <p>Fontes originais, PDFs, diretrizes e artigos de referência rastreáveis.</p>
-      </div>
-      <div class="card hub-card" onclick="location.href='../imagens/index.html'">
+      </a>
+      <a class="card hub-card" href="../05_Midia_E_Feed/index.html">
         <i>🖼️</i>
         <h2>Galeria</h2>
         <p>Mapas mentais, fluxogramas, cards de bolso e infográficos de alta resolução.</p>
-      </div>
+      </a>
     </section>
 
     <!-- CATÁLOGO DIPLICADO -->

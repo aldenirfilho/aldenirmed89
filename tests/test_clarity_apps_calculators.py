@@ -135,6 +135,17 @@ class AppsCalculatorsClarityTests(unittest.TestCase):
                     f"cabeçalho móvel sem quebra segura: {path}",
                 )
 
+    def test_central_explains_rounding_and_interpretation_limits(self) -> None:
+        source = self.sources[ROOT / "03_Calculadoras_E_Apps/index.html"]
+        for marker in (
+            'role="note"',
+            'aria-label="Segurança clínica e interpretação dos resultados"',
+            "resultado é uma conversão matemática dos valores digitados",
+            "arredondamento exibido não valida peso, unidade, concentração, população ou indicação",
+            "Não copie o resultado diretamente para uma prescrição",
+        ):
+            self.assertIn(marker, source)
+
 
 if __name__ == "__main__":
     unittest.main()

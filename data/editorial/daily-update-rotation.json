@@ -1,0 +1,421 @@
+{
+  "schemaVersion": "antigravity-daily-update-rotation-v1",
+  "updatedAt": "2026-07-29",
+  "timezone": "America/Fortaleza",
+  "maxMinutes": 29,
+  "validationMinutes": 4,
+  "lanes": [
+    {
+      "id": "clinica-temi",
+      "label": "Clínica e TEMI",
+      "emoji": "🩺",
+      "minutes": 11,
+      "rotationOffset": 0,
+      "goal": "Aprimorar um único ponto clínico de alto valor, com fonte e revisão humana."
+    },
+    {
+      "id": "estudo-ativo",
+      "label": "Estudo ativo",
+      "emoji": "🧠",
+      "minutes": 8,
+      "rotationOffset": 3,
+      "goal": "Converter conhecimento já sustentado em recuperação ativa e revisão rápida."
+    },
+    {
+      "id": "portal-vivo",
+      "label": "Sustentação do portal",
+      "emoji": "🛰️",
+      "minutes": 6,
+      "rotationOffset": 5,
+      "goal": "Manter navegação, curadoria, documentação e qualidade editorial uniformes."
+    }
+  ],
+  "sections": [
+    {
+      "id": "avc-agudo",
+      "lane": "clinica-temi",
+      "label": "AVC Agudo",
+      "route": "01_Modulos_Clinicos/AVC_Agudo/avc.html",
+      "paths": [
+        "01_Modulos_Clinicos/AVC_Agudo"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Revisar um ponto de decisão do fluxo de reperfusão e registrar a fonte primária.",
+        "Aprimorar uma pérola sobre neuroimagem ou metas pressóricas sem criar prescrição universal.",
+        "Revisar um alerta de segurança e criar uma pergunta curta de recuperação ativa."
+      ]
+    },
+    {
+      "id": "ventilacao-mecanica",
+      "lane": "clinica-temi",
+      "label": "Ventilação Mecânica",
+      "route": "01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html",
+      "paths": [
+        "01_Modulos_Clinicos/Ventilacao_Mecanica"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Revisar um conceito de ventilação protetora e explicitar limites e população.",
+        "Aprimorar uma explicação de mecânica respiratória com uma âncora TEMI.",
+        "Verificar uma unidade, fórmula ou alerta de segurança em RespiraCrit ou RespiraSense."
+      ]
+    },
+    {
+      "id": "delirium-uti",
+      "lane": "clinica-temi",
+      "label": "Delirium UTI/Enfermaria",
+      "route": "01_Modulos_Clinicos/Delirium_UTI/index.html",
+      "paths": [
+        "01_Modulos_Clinicos/Delirium_UTI"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Revisar uma etapa RASS/CAM-ICU e manter o fluxo escaneável à beira-leito.",
+        "Aprimorar uma medida não farmacológica do bundle ABCDEF com fonte.",
+        "Revisar um alerta sobre contenção ou risco farmacológico sem ordem terapêutica imperativa."
+      ]
+    },
+    {
+      "id": "hematologia-critica",
+      "lane": "clinica-temi",
+      "label": "Hematologia Crítica",
+      "route": "01_Modulos_Clinicos/Hematologia_Critica/index.html",
+      "paths": [
+        "01_Modulos_Clinicos/Hematologia_Critica"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Aprimorar um discriminador entre PTT, SHU/TMA, CIVD ou HIT.",
+        "Revisar um sinal de alarme hematológico e registrar desenho e limitação da fonte.",
+        "Criar uma pérola TEMI de diagnóstico diferencial sem converter evidência em protocolo."
+      ]
+    },
+    {
+      "id": "reumatologia-critica",
+      "lane": "clinica-temi",
+      "label": "Reumatologia Crítica",
+      "route": "01_Modulos_Clinicos/Reumatologia_Critica/index.html",
+      "paths": [
+        "01_Modulos_Clinicos/Reumatologia_Critica",
+        "les-autoanticorpos"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Revisar um autoanticorpo no contexto clínico e reduzir risco de interpretação isolada.",
+        "Aprimorar um diferencial de manifestação grave do LES ou vasculite.",
+        "Criar uma pergunta TEMI sobre padrão clínico-laboratorial com ressalva diagnóstica."
+      ]
+    },
+    {
+      "id": "renaldose",
+      "lane": "clinica-temi",
+      "label": "RenalDose e antimicrobianos",
+      "route": "13_RenalDose_Antimicrobianos/index.html",
+      "paths": [
+        "13_RenalDose_Antimicrobianos"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Revisar uma regra de ajuste renal e explicitar dependência de protocolo e modalidade dialítica.",
+        "Verificar unidade, intervalo e alerta de uma entrada sem publicar dose universal.",
+        "Aprimorar uma nota sobre AKI/TRS com foco em segurança e validação local."
+      ]
+    },
+    {
+      "id": "pocus",
+      "lane": "clinica-temi",
+      "label": "POCUS Hub",
+      "route": "09_POCUS_Hub/index.html",
+      "paths": [
+        "09_POCUS_Hub"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Aprimorar uma janela, artefato ou limitação de POCUS com uma imagem autorizada ou esquema próprio.",
+        "Revisar uma integração POCUS-hemodinâmica sem inferir conduta isoladamente.",
+        "Criar uma pergunta de reconhecimento de padrão com limitação explícita."
+      ]
+    },
+    {
+      "id": "hsa-neurocritica",
+      "lane": "clinica-temi",
+      "label": "HSA e Neurocrítica",
+      "route": "01_Modulos_Clinicos/HSA_Projeto_Aprendizagem/index.html",
+      "paths": [
+        "01_Modulos_Clinicos/HSA_Projeto_Aprendizagem"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Revisar um ponto de reconhecimento ou complicação da HSA com fonte primária.",
+        "Aprimorar um bloco de vigilância neurocrítica em formato TDAH-friendly.",
+        "Criar uma questão curta sobre vasoespasmo, hidrocefalia ou ressangramento."
+      ]
+    },
+    {
+      "id": "calculadoras-clinicas",
+      "lane": "clinica-temi",
+      "label": "Calculadoras e Apps clínicos",
+      "route": "03_Calculadoras_E_Apps/index.html",
+      "paths": [
+        "03_Calculadoras_E_Apps",
+        "calculadoras"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Verificar uma fórmula, unidade e caso-limite sem alterar múltiplas calculadoras.",
+        "Aprimorar um aviso sobre população, arredondamento ou interpretação do resultado.",
+        "Criar um teste curto para um cálculo clínico de alto risco."
+      ]
+    },
+    {
+      "id": "banco-temi",
+      "lane": "estudo-ativo",
+      "label": "Banco de Questões TEMI",
+      "route": "questoes/index.html",
+      "paths": [
+        "questoes",
+        "02_Banco_Questoes_TEMI"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Adicionar ou aprimorar uma questão comentada baseada em conteúdo já revisado.",
+        "Revisar uma alternativa distratora e explicar por que está errada.",
+        "Criar uma pérola pós-questão com fonte, limitação e objetivo TEMI."
+      ]
+    },
+    {
+      "id": "questoes-comentadas",
+      "lane": "estudo-ativo",
+      "label": "Questões Comentadas",
+      "route": "07_Questoes_Comentadas/index.html",
+      "paths": [
+        "07_Questoes_Comentadas"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Aprimorar uma questão comentada com raciocínio em três passos.",
+        "Criar um mini-OSCE ou caso fictício totalmente descaracterizado.",
+        "Converter um ponto clínico já revisado em pergunta de recuperação ativa."
+      ]
+    },
+    {
+      "id": "desafios",
+      "lane": "estudo-ativo",
+      "label": "Desafios TEMI/R3",
+      "route": "desafios/index.html",
+      "paths": [
+        "10_DESAFIOS",
+        "desafios"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Criar um desafio de uma decisão com resposta curta e justificativa.",
+        "Aprimorar um desafio existente para reduzir ambiguidade.",
+        "Adicionar uma pista progressiva sem revelar a resposta de imediato."
+      ]
+    },
+    {
+      "id": "mnemonicos",
+      "lane": "estudo-ativo",
+      "label": "Mnemônicos",
+      "route": "index.html#mnemonicos",
+      "paths": [
+        "11_MNEMONICOS"
+      ],
+      "priority": 3,
+      "microTasks": [
+        "Criar um mnemônico curto somente para conteúdo clinicamente revisado.",
+        "Revisar um mnemônico para evitar simplificação perigosa.",
+        "Acrescentar uma ressalva que delimite quando o mnemônico não se aplica."
+      ]
+    },
+    {
+      "id": "card-feed",
+      "lane": "estudo-ativo",
+      "label": "Card Feed Médico",
+      "route": "05_Midia_E_Feed/index.html",
+      "paths": [
+        "05_Midia_E_Feed"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Transformar um conceito já revisado em card vertical autossuficiente.",
+        "Aprimorar a legibilidade de um card preservando fonte e direitos de uso.",
+        "Criar uma âncora visual própria, sem copiar figura protegida de artigo."
+      ]
+    },
+    {
+      "id": "updown",
+      "lane": "estudo-ativo",
+      "label": "UpDown Hub",
+      "route": "01_UpDown_Hub/index.html",
+      "paths": [
+        "01_UpDown_Hub"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Aprimorar um resumo em blocos curtos e registrar a fonte.",
+        "Converter um tópico longo em cinco pontos de alto rendimento TEMI.",
+        "Revisar links e conexão temática de um conteúdo já homologado."
+      ]
+    },
+    {
+      "id": "biblioteca",
+      "lane": "estudo-ativo",
+      "label": "Biblioteca IA",
+      "route": "02_Biblioteca_IA_Engine/index.html",
+      "paths": [
+        "02_Biblioteca_IA_Engine"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Catalogar um único documento autorizado sem publicar o binário original.",
+        "Aprimorar título, resumo, tags ou proveniência de um item já aprovado.",
+        "Revisar um preview HTML pelo gate fail-closed."
+      ]
+    },
+    {
+      "id": "transcricoes",
+      "lane": "estudo-ativo",
+      "label": "Transcrições",
+      "route": "08_Transcricoes/index.html",
+      "paths": [
+        "08_Transcricoes"
+      ],
+      "priority": 2,
+      "microTasks": [
+        "Converter um trecho autorizado em síntese própria de alto rendimento.",
+        "Revisar autoria, licença e anonimização de um item antes de promover.",
+        "Criar marcadores de estudo para uma transcrição já aprovada."
+      ]
+    },
+    {
+      "id": "radar-diario",
+      "lane": "portal-vivo",
+      "label": "Estação Radar Diário",
+      "route": "15_Radar_Cientifico/index.html",
+      "paths": [
+        "15_Radar_Cientifico"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Auditar e sintetizar uma única fonte primária no formato Turbo TEMI.",
+        "Revisar duplicidade por DOI, PMID ou URL canônica antes de incluir item.",
+        "Atualizar a ressalva, desenho ou limitação de uma entrada existente."
+      ]
+    },
+    {
+      "id": "diretorio-medico",
+      "lane": "portal-vivo",
+      "label": "Diretório Médico",
+      "route": "16_Diretorio_Medico/index.html",
+      "paths": [
+        "16_Diretorio_Medico"
+      ],
+      "priority": 3,
+      "microTasks": [
+        "Verificar um link oficial e atualizar descrição ou disponibilidade.",
+        "Adicionar uma fonte primária institucional ainda ausente.",
+        "Remover ambiguidade de categoria sem recomendar fonte não auditada."
+      ]
+    },
+    {
+      "id": "portal-vivo-upgrade",
+      "lane": "portal-vivo",
+      "label": "Portal Vivo — UPGRADE",
+      "route": "17_Portal_Vivo/index.html",
+      "paths": [
+        "17_Portal_Vivo"
+      ],
+      "priority": 3,
+      "microTasks": [
+        "Registrar uma melhoria técnica realmente entregue, sem exagerar resultado.",
+        "Revisar o histórico antirrepetição e uma entrada operacional.",
+        "Aprimorar clareza de um UPGRADE já publicado e preservar rastreabilidade."
+      ]
+    },
+    {
+      "id": "integridade-editorial",
+      "lane": "portal-vivo",
+      "label": "Integridade Editorial",
+      "route": "19_Integridade_Editorial/index.html",
+      "paths": [
+        "19_Integridade_Editorial",
+        "data/editorial"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Revisar um gate de privacidade, autoria ou revisão clínica.",
+        "Verificar uma fonte oficial cadastrada sem declarar conformidade jurídica.",
+        "Aprimorar um aviso editorial ou plano de reversão."
+      ]
+    },
+    {
+      "id": "central-ativacao",
+      "lane": "portal-vivo",
+      "label": "Central de Ativação",
+      "route": "21_Central_Ativacao/index.html",
+      "paths": [
+        "21_Central_Ativacao"
+      ],
+      "priority": 3,
+      "microTasks": [
+        "Atualizar uma próxima etapa com responsável e critério de conclusão.",
+        "Remover uma pendência já resolvida sem inventar homologação.",
+        "Reduzir uma tarefa ampla para uma microação TDAH-friendly."
+      ]
+    },
+    {
+      "id": "home-mapa",
+      "lane": "portal-vivo",
+      "label": "Home e Mapa Vivo",
+      "route": "index.html#mapa",
+      "paths": [
+        "index.html",
+        "data/connections.json",
+        "data/topics.json",
+        "06_Infra_Site_E_Assets"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Revisar um link, cartão ou conexão temática sem alterar o conteúdo clínico.",
+        "Aprimorar a clareza de uma via de aprendizagem em uma frase.",
+        "Verificar uma rota nova e sua representação no Mapa Vivo."
+      ]
+    },
+    {
+      "id": "guias-operacionais",
+      "lane": "portal-vivo",
+      "label": "Guias operacionais",
+      "route": "docs_usuario/index.html",
+      "paths": [
+        "docs_usuario"
+      ],
+      "priority": 3,
+      "microTasks": [
+        "Aprimorar um passo do manual para reduzir carga cognitiva.",
+        "Atualizar uma instrução obsoleta e preservar o fallback Markdown.",
+        "Revisar um guia no celular, teclado e modo de alto contraste."
+      ]
+    },
+    {
+      "id": "offline-acessibilidade",
+      "lane": "portal-vivo",
+      "label": "Offline e acessibilidade",
+      "route": "index.html#a11yPanel",
+      "paths": [
+        "sw.js",
+        "manifest.webmanifest",
+        "assets/css",
+        "assets/js"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Revisar um fluxo por teclado, foco ou leitor de tela.",
+        "Verificar uma rota essencial no cache offline sem aumentar permissões.",
+        "Aprimorar contraste, redução de movimento ou impressão sem mudar a identidade."
+      ]
+    }
+  ]
+}

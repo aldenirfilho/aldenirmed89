@@ -237,6 +237,18 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("-webkit-overflow-scrolling:touch", home)
         self.assertIn("touch-action:pan-y", home)
         self.assertIn("a11yPanel.scrollTo({", home)
+        self.assertIn(
+            'id="a11yAnnouncement" role="status" aria-live="polite"',
+            home,
+        )
+        self.assertIn(
+            "'Painel de acessibilidade aberto. Use Tab para navegar pelas opções.'",
+            home,
+        )
+        self.assertIn(
+            'href="docs_usuario/ROTINA_DIARIA_30_MIN/"',
+            home,
+        )
         self.assertIn("env(safe-area-inset-bottom)", home)
         self.assertIn("env(safe-area-inset-right)", home)
         self.assertIn("html{scroll-behavior:smooth;overflow-x:hidden}", home)
@@ -649,6 +661,7 @@ class OperationalPackageTests(unittest.TestCase):
 
         expected = {
             "ALIMENTAR_CONTEUDO_SITE": "ALIMENTAR_CONTEUDO_SITE.md",
+            "ROTINA_DIARIA_30_MIN": "ROTINA_DIARIA_30_MIN.md",
             "OPERACAO_CONTINUA": "OPERACAO_CONTINUA.md",
             "ACESSO_DOCK_MAC": "ACESSO_DOCK_MAC.md",
             "ACESSO_WINDOWS": "ACESSO_WINDOWS.md",

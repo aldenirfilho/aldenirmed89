@@ -67,6 +67,8 @@ const WARM_ASSETS = [
   "./docs_usuario/OPERACAO_CONTINUA.md",
   "./docs_usuario/ALIMENTAR_CONTEUDO_SITE/index.html",
   "./docs_usuario/ALIMENTAR_CONTEUDO_SITE.md",
+  "./docs_usuario/ROTINA_DIARIA_30_MIN/index.html",
+  "./docs_usuario/ROTINA_DIARIA_30_MIN.md",
   "./docs_usuario/RADAR_CIENTIFICO_OPERACAO/index.html",
   "./docs_usuario/RADAR_CIENTIFICO_OPERACAO.md",
   "./docs_usuario/PORTAL_VIVO_PUBLICACAO/index.html",

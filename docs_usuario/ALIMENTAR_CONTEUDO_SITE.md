@@ -36,6 +36,16 @@ PRIVADO → 3 GATES → FONTE CANÔNICA → GERADOR → DIFF
         → TESTES → ALLOWLIST → PREVIEW → PR → MAIN → PAGES → HOMOLOGAÇÃO
 ```
 
+### ⏱️ Se você tem somente 29 minutos
+
+Não escolha manualmente uma seção. Peça ao Codex: **“Execute a Rotina
+Antigravity de hoje, com no máximo 29 minutos.”**
+
+O planejador `scripts_admin/plan_daily_updates.py` seleciona automaticamente
+uma seção clínica/TEMI, uma seção de estudo ativo e uma área de sustentação do
+portal. O roteiro completo está em
+[`ROTINA_DIARIA_30_MIN.md`](ROTINA_DIARIA_30_MIN.md).
+
 ## 🗺️ Escolha rápida do destino
 
 | Quero adicionar | Fonte canônica | Atualização principal |
