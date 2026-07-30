@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Escolhe uma rotina diária Antigravity uniforme, dinâmica e menor que 30 min.
+"""Escolhe uma rotina diária Antigravity equilibrada de 60 minutos.
 
 O planejador é deliberadamente somente leitura. Ele usa a data de Fortaleza,
-o rodízio configurado e o histórico Git de cada seção. Não edita conteúdo,
-não registra publicação e não acessa a rede.
+um rodízio pseudoaleatório reproduzível, o histórico Git de cada seção e uma
+sexta-feira de expansão em ciclos de seis semanas. Não edita conteúdo, não
+registra publicação e não acessa a rede.
 """
 
 from __future__ import annotations
@@ -20,9 +21,11 @@ from typing import Any, Iterable, Sequence
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
-SCHEMA_VERSION = "antigravity-daily-update-plan-v1"
+SCHEMA_VERSION = "antigravity-daily-update-plan-v3"
+CONFIG_SCHEMA_VERSION = "antigravity-daily-update-rotation-v3"
 DEFAULT_CONFIG = Path("data/editorial/daily-update-rotation.json")
 FORTALEZA = "America/Fortaleza"
+EXPANSION_MODE = "weekly-expansion-sprint"
 WEEKDAYS = (
     "segunda-feira",
     "terça-feira",
@@ -54,6 +57,8 @@ class Selection:
     lane_id: str
     lane_label: str
     lane_emoji: str
+    quality_focus: str
+    definition_of_done: str
     minutes: int
     section_id: str
     section_label: str
@@ -63,6 +68,8 @@ class Selection:
     last_git_update: str | None
     staleness_days: int | None
     score: float
+    balance_cycle: int
+    balance_slot: int
 
 
 def load_json(path: Path) -> Any:
@@ -107,36 +114,244 @@ def stable_number(*parts: str, modulo: int) -> int:
     return int.from_bytes(digest[:8], "big") % modulo
 
 
+def validate_continuous_evolution(
+    root: Path,
+    evolution: Any,
+    lane_ids: Sequence[str],
+) -> None:
+    if not isinstance(evolution, dict):
+        raise ValueError("continuousEvolution precisa ser um objeto.")
+    required = {
+        "mode",
+        "epoch",
+        "expansionWeekday",
+        "cycleWeeks",
+        "workspaceRoute",
+        "rules",
+        "stages",
+        "candidates",
+    }
+    missing = sorted(required - evolution.keys())
+    if missing:
+        raise ValueError(
+            "Cronograma de evolução incompleto: " + ", ".join(missing)
+        )
+    if evolution["mode"] != EXPANSION_MODE:
+        raise ValueError(f"Modo de expansão obrigatório: {EXPANSION_MODE}.")
+    try:
+        date.fromisoformat(str(evolution["epoch"]))
+    except ValueError as exc:
+        raise ValueError("epoch da evolução precisa usar AAAA-MM-DD.") from exc
+    weekday = evolution["expansionWeekday"]
+    if not isinstance(weekday, int) or not 0 <= weekday <= 6:
+        raise ValueError("expansionWeekday precisa estar entre 0 e 6.")
+    cycle_weeks = evolution["cycleWeeks"]
+    if not isinstance(cycle_weeks, int) or cycle_weeks < 2:
+        raise ValueError("cycleWeeks precisa ser inteiro maior ou igual a 2.")
+    workspace_route = str(evolution["workspaceRoute"]).split("#", 1)[0]
+    if (
+        not workspace_route
+        or not resolve_under(root, Path(workspace_route)).is_file()
+    ):
+        raise ValueError("workspaceRoute da expansão não existe.")
+    rules = evolution["rules"]
+    if (
+        not isinstance(rules, list)
+        or len(rules) < 3
+        or not all(isinstance(item, str) and item.strip() for item in rules)
+    ):
+        raise ValueError("A evolução precisa de ao menos três regras explícitas.")
+
+    stages = evolution["stages"]
+    if not isinstance(stages, list) or len(stages) != cycle_weeks:
+        raise ValueError("Cada semana do ciclo precisa de uma etapa.")
+    expected_lane_ids = set(lane_ids)
+    stage_ids: set[str] = set()
+    stage_weeks: set[int] = set()
+    for stage in stages:
+        stage_id = stage.get("id")
+        stage_week = stage.get("week")
+        if (
+            not isinstance(stage_id, str)
+            or not stage_id
+            or stage_id in stage_ids
+        ):
+            raise ValueError("Cada etapa de expansão precisa de id único.")
+        if (
+            not isinstance(stage_week, int)
+            or not 1 <= stage_week <= cycle_weeks
+            or stage_week in stage_weeks
+        ):
+            raise ValueError("Semanas das etapas precisam ser únicas e sequenciais.")
+        stage_ids.add(stage_id)
+        stage_weeks.add(stage_week)
+        for field in ("label", "exitGate"):
+            if not isinstance(stage.get(field), str) or not stage[field].strip():
+                raise ValueError(f"Campo {field} ausente na etapa {stage_id}.")
+        pillar_tasks = stage.get("pillarTasks")
+        if (
+            not isinstance(pillar_tasks, dict)
+            or set(pillar_tasks) != expected_lane_ids
+            or not all(
+                isinstance(task, str) and task.strip()
+                for task in pillar_tasks.values()
+            )
+        ):
+            raise ValueError(
+                f"Etapa {stage_id} precisa de uma tarefa por pilar."
+            )
+    if stage_weeks != set(range(1, cycle_weeks + 1)):
+        raise ValueError("Etapas de expansão precisam cobrir todas as semanas.")
+
+    candidates = evolution["candidates"]
+    if not isinstance(candidates, list) or len(candidates) < cycle_weeks:
+        raise ValueError(
+            "A fila de expansão precisa ter ao menos um ciclo de candidatos."
+        )
+    candidate_ids: set[str] = set()
+    proposed_routes: set[str] = set()
+    for candidate in candidates:
+        candidate_id = candidate.get("id")
+        if (
+            not isinstance(candidate_id, str)
+            or not candidate_id
+            or candidate_id in candidate_ids
+        ):
+            raise ValueError("Cada candidato precisa de id único.")
+        candidate_ids.add(candidate_id)
+        if candidate.get("type") not in {"app", "section"}:
+            raise ValueError(f"Tipo inválido no candidato {candidate_id}.")
+        if not 1 <= int(candidate.get("priority", 0)) <= 5:
+            raise ValueError(f"Prioridade inválida no candidato {candidate_id}.")
+        for field in ("title", "reason", "deliverable", "safetyGate"):
+            if not isinstance(candidate.get(field), str) or not candidate[field].strip():
+                raise ValueError(
+                    f"Campo {field} ausente no candidato {candidate_id}."
+                )
+        proposed_route = candidate.get("proposedRoute")
+        if not isinstance(proposed_route, str) or not proposed_route.endswith(
+            "/index.html"
+        ):
+            raise ValueError(
+                f"Rota proposta inválida no candidato {candidate_id}."
+            )
+        proposed_path = Path(proposed_route)
+        if proposed_path.is_absolute() or ".." in proposed_path.parts:
+            raise ValueError(
+                f"Rota proposta insegura no candidato {candidate_id}."
+            )
+        resolve_under(root, proposed_path)
+        if proposed_route in proposed_routes:
+            raise ValueError(f"Rota proposta duplicada: {proposed_route}")
+        proposed_routes.add(proposed_route)
+
+
 def validate_config(root: Path, config: dict[str, Any]) -> None:
     required = {
         "schemaVersion",
         "timezone",
         "maxMinutes",
         "validationMinutes",
+        "continuousPulse",
+        "selectionPolicy",
+        "continuousEvolution",
         "lanes",
         "sections",
     }
     missing = sorted(required - config.keys())
     if missing:
         raise ValueError("Configuração incompleta: " + ", ".join(missing))
+    if config["schemaVersion"] != CONFIG_SCHEMA_VERSION:
+        raise ValueError(f"schemaVersion obrigatória: {CONFIG_SCHEMA_VERSION}")
     if config["timezone"] != FORTALEZA:
         raise ValueError(f"Fuso obrigatório: {FORTALEZA}")
-    if not isinstance(config["maxMinutes"], int) or config["maxMinutes"] >= 30:
-        raise ValueError("maxMinutes precisa ser inteiro menor que 30.")
-    if not isinstance(config["validationMinutes"], int):
-        raise ValueError("validationMinutes precisa ser inteiro.")
+    if config["maxMinutes"] != 60:
+        raise ValueError("maxMinutes precisa ser exatamente 60.")
+    if config["validationMinutes"] != 8:
+        raise ValueError("validationMinutes precisa ser exatamente 8.")
+
+    continuous_pulse = config["continuousPulse"]
+    if not isinstance(continuous_pulse, list) or len(continuous_pulse) != 3:
+        raise ValueError("continuousPulse precisa ter exatamente três tópicos.")
+    pulse_ids: set[str] = set()
+    for item in continuous_pulse:
+        item_id = item.get("id")
+        if not isinstance(item_id, str) or not item_id or item_id in pulse_ids:
+            raise ValueError("Tópico contínuo precisa de id único.")
+        pulse_ids.add(item_id)
+        for field in ("label", "emoji", "task", "definitionOfDone"):
+            if not isinstance(item.get(field), str) or not item[field].strip():
+                raise ValueError(
+                    f"Campo {field} ausente no tópico contínuo {item_id}."
+                )
+        if not isinstance(item.get("minutes"), int) or item["minutes"] < 1:
+            raise ValueError(f"Tempo inválido no tópico contínuo {item_id}.")
+        pulse_route = str(item.get("route", "")).split("#", 1)[0]
+        if not pulse_route or not resolve_under(root, Path(pulse_route)).is_file():
+            raise ValueError(f"Rota contínua inexistente em {item_id}.")
+    if sum(item["minutes"] for item in continuous_pulse) != 10:
+        raise ValueError("O pulso contínuo precisa totalizar 10 minutos.")
+
+    policy = config["selectionPolicy"]
+    if not isinstance(policy, dict):
+        raise ValueError("selectionPolicy precisa ser um objeto.")
+    required_policy = {
+        "mode",
+        "seedNamespace",
+        "forecastCooldownDays",
+        "gitCooldownDays",
+        "minimumSectionsPerLane",
+        "fairnessWindowDays",
+    }
+    missing_policy = sorted(required_policy - policy.keys())
+    if missing_policy:
+        raise ValueError(
+            "Política de seleção incompleta: " + ", ".join(missing_policy)
+        )
+    if policy["mode"] != "balanced-deterministic-random":
+        raise ValueError("Modo de seleção precisa ser balanceado e reproduzível.")
+    if not isinstance(policy["seedNamespace"], str) or not policy["seedNamespace"]:
+        raise ValueError("seedNamespace precisa ser texto não vazio.")
+    for key in (
+        "forecastCooldownDays",
+        "gitCooldownDays",
+        "minimumSectionsPerLane",
+        "fairnessWindowDays",
+    ):
+        if not isinstance(policy[key], int) or policy[key] < 1:
+            raise ValueError(f"{key} precisa ser inteiro positivo.")
 
     lanes = config["lanes"]
     sections = config["sections"]
     lane_ids = [lane.get("id") for lane in lanes]
     if len(lane_ids) != 3 or len(set(lane_ids)) != 3:
         raise ValueError("A rotina precisa ter exatamente três trilhas únicas.")
+    if set(lane_ids) != {
+        "conteudo-temi",
+        "design-tdah",
+        "performance-qualidade",
+    }:
+        raise ValueError(
+            "As trilhas obrigatórias são conteúdo, design e performance."
+        )
     if (
         sum(int(lane.get("minutes", 0)) for lane in lanes)
+        + sum(int(item["minutes"]) for item in continuous_pulse)
         + config["validationMinutes"]
         != config["maxMinutes"]
     ):
         raise ValueError("A soma das trilhas e validação deve igualar maxMinutes.")
+    for lane in lanes:
+        for field in ("label", "emoji", "goal", "qualityFocus", "definitionOfDone"):
+            if not isinstance(lane.get(field), str) or not lane[field].strip():
+                raise ValueError(
+                    f"Campo {field} ausente na trilha {lane.get('id')}."
+                )
+    validate_continuous_evolution(
+        root,
+        config["continuousEvolution"],
+        lane_ids,
+    )
 
     section_ids: set[str] = set()
     route_errors: list[str] = []
@@ -153,6 +368,13 @@ def validate_config(root: Path, config: dict[str, Any]) -> None:
             raise ValueError(f"Prioridade inválida em {item_id}.")
         if not item.get("microTasks"):
             raise ValueError(f"Sem microtarefas em {item_id}.")
+        if len(item["microTasks"]) < 3 or not all(
+            isinstance(task, str) and task.strip()
+            for task in item["microTasks"]
+        ):
+            raise ValueError(
+                f"{item_id} precisa de pelo menos três microtarefas válidas."
+            )
         route = str(item.get("route", "")).split("#", 1)[0]
         if not route or not resolve_under(root, Path(route)).is_file():
             route_errors.append(f"{item_id}: {route}")
@@ -166,6 +388,13 @@ def validate_config(root: Path, config: dict[str, Any]) -> None:
                 )
     if route_errors:
         raise ValueError("Rotas inexistentes: " + "; ".join(route_errors))
+    for lane_id in lane_ids:
+        lane_total = sum(item["lane"] == lane_id for item in sections)
+        if lane_total < policy["minimumSectionsPerLane"]:
+            raise ValueError(
+                f"Trilha {lane_id} precisa de ao menos "
+                f"{policy['minimumSectionsPerLane']} seções."
+            )
 
 
 def git_last_update(root: Path, paths: Sequence[str]) -> date | None:
@@ -212,32 +441,90 @@ def staleness_days(today: date, last_update: date | None) -> int | None:
     return max(0, (today - last_update).days)
 
 
-def choose_task(section: dict[str, Any], day: date) -> str:
+def choose_task(
+    section: dict[str, Any],
+    day: date,
+    seed_namespace: str,
+) -> str:
     tasks = section["microTasks"]
-    index = stable_number(day.isoformat(), section["id"], modulo=len(tasks))
+    index = stable_number(
+        seed_namespace,
+        "microtask",
+        day.isoformat(),
+        section["id"],
+        modulo=len(tasks),
+    )
     return str(tasks[index])
+
+
+def balanced_rotation(
+    lane: dict[str, Any],
+    roster: Sequence[dict[str, Any]],
+    *,
+    day: date,
+    seed_namespace: str,
+) -> tuple[dict[str, int], int, int]:
+    roster_size = len(roster)
+    adjusted_ordinal = day.toordinal() + int(lane.get("rotationOffset", 0))
+    cycle = adjusted_ordinal // roster_size
+    slot = adjusted_ordinal % roster_size
+    ordered = sorted(
+        roster,
+        key=lambda section: (
+            stable_number(
+                seed_namespace,
+                "cycle",
+                lane["id"],
+                str(cycle),
+                section["id"],
+                modulo=2**63 - 1,
+            ),
+            section["id"],
+        ),
+    )
+    positions = {
+        section["id"]: index
+        for index, section in enumerate(ordered)
+    }
+    ranks = {
+        section_id: (position - slot) % roster_size
+        for section_id, position in positions.items()
+    }
+    return ranks, cycle, slot
 
 
 def score_section(
     section: dict[str, Any],
     *,
     day: date,
-    roster_index: int,
-    pivot: int,
+    lane_id: str,
+    rotation_rank: int,
     roster_size: int,
     last_update: date | None,
     recently_planned: set[str],
+    seed_namespace: str,
+    git_cooldown_days: int,
+    planned_count: int,
 ) -> float:
-    circular_distance = (roster_index - pivot) % roster_size
-    rotation_score = (roster_size - circular_distance) * 24
+    rotation_score = (roster_size - rotation_rank) * 100
     stale = staleness_days(day, last_update)
-    stale_score = 18 if stale is None else min(stale, 180) / 10
-    priority_score = int(section["priority"]) * 4
+    stale_score = 40 if stale is None else min(stale, 365) / 7
+    priority_score = int(section["priority"]) * 5
     daily_variety = stable_number(
-        day.isoformat(), section["id"], modulo=7
+        seed_namespace,
+        "daily-jitter",
+        day.isoformat(),
+        lane_id,
+        section["id"],
+        modulo=1_000,
+    ) / 100
+    recent_penalty = 20_000 if section["id"] in recently_planned else 0
+    git_cooldown = (
+        10_000
+        if stale is not None and stale < git_cooldown_days
+        else 0
     )
-    recent_penalty = 1_000 if section["id"] in recently_planned else 0
-    git_cooldown = 600 if stale is not None and stale < 3 else 0
+    coverage_penalty = planned_count * 2_000
     return (
         rotation_score
         + stale_score
@@ -245,6 +532,7 @@ def score_section(
         + daily_variety
         - recent_penalty
         - git_cooldown
+        - coverage_penalty
     )
 
 
@@ -255,23 +543,42 @@ def choose_lane_section(
     day: date,
     last_updates: dict[str, date | None],
     recently_planned: set[str],
+    excluded_routes: set[str],
+    policy: dict[str, Any],
+    planned_counts: dict[str, int],
 ) -> Selection:
     roster = [item for item in sections if item["lane"] == lane["id"]]
     if not roster:
         raise ValueError(f"Trilha sem seções: {lane['id']}")
-    pivot = (
-        day.toordinal() + int(lane.get("rotationOffset", 0))
-    ) % len(roster)
+    seed_namespace = str(policy["seedNamespace"])
+    ranks, cycle, slot = balanced_rotation(
+        lane,
+        roster,
+        day=day,
+        seed_namespace=seed_namespace,
+    )
+    candidates = [
+        item
+        for item in roster
+        if str(item["route"]).split("#", 1)[0] not in excluded_routes
+    ]
+    if not candidates:
+        raise ValueError(
+            f"Trilha {lane['id']} sem rota livre após aplicar o pulso diário."
+        )
     scored = []
-    for index, section in enumerate(roster):
+    for section in candidates:
         score = score_section(
             section,
             day=day,
-            roster_index=index,
-            pivot=pivot,
+            lane_id=lane["id"],
+            rotation_rank=ranks[section["id"]],
             roster_size=len(roster),
             last_update=last_updates.get(section["id"]),
             recently_planned=recently_planned,
+            seed_namespace=seed_namespace,
+            git_cooldown_days=int(policy["gitCooldownDays"]),
+            planned_count=planned_counts.get(section["id"], 0),
         )
         scored.append((score, section["id"], section))
     score, _, chosen = max(scored, key=lambda item: (item[0], item[1]))
@@ -281,16 +588,129 @@ def choose_lane_section(
         lane_id=lane["id"],
         lane_label=lane["label"],
         lane_emoji=lane["emoji"],
+        quality_focus=lane["qualityFocus"],
+        definition_of_done=lane["definitionOfDone"],
         minutes=int(lane["minutes"]),
         section_id=chosen["id"],
         section_label=chosen["label"],
         route=chosen["route"],
-        task=choose_task(chosen, day),
+        task=choose_task(chosen, day, seed_namespace),
         priority=int(chosen["priority"]),
         last_git_update=last_update.isoformat() if last_update else None,
         staleness_days=stale,
         score=round(score, 2),
+        balance_cycle=cycle,
+        balance_slot=slot,
     )
+
+
+def expansion_state(config: dict[str, Any], day: date) -> dict[str, Any]:
+    evolution = config["continuousEvolution"]
+    epoch = date.fromisoformat(evolution["epoch"])
+    cycle_days = int(evolution["cycleWeeks"]) * 7
+    days_since_epoch = max(0, (day - epoch).days)
+    cycle_index = days_since_epoch // cycle_days
+    week_index = (days_since_epoch % cycle_days) // 7
+    cycle_start = epoch + timedelta(days=cycle_index * cycle_days)
+    sprint_date = (
+        cycle_start
+        + timedelta(days=week_index * 7)
+        + timedelta(days=int(evolution["expansionWeekday"]))
+    )
+    candidate = evolution["candidates"][
+        cycle_index % len(evolution["candidates"])
+    ]
+    stage = next(
+        item
+        for item in evolution["stages"]
+        if int(item["week"]) == week_index + 1
+    )
+    return {
+        "mode": evolution["mode"],
+        "isSprintDay": day >= epoch and day == sprint_date,
+        "scheduledDate": sprint_date.isoformat(),
+        "cycle": cycle_index + 1,
+        "cycleStart": cycle_start.isoformat(),
+        "cycleEnd": (
+            cycle_start + timedelta(days=cycle_days - 1)
+        ).isoformat(),
+        "week": week_index + 1,
+        "workspaceRoute": evolution["workspaceRoute"],
+        "rules": evolution["rules"],
+        "candidate": candidate,
+        "stage": stage,
+    }
+
+
+def build_expansion_selections(
+    config: dict[str, Any],
+    state: dict[str, Any],
+) -> list[dict[str, Any]]:
+    candidate = state["candidate"]
+    stage = state["stage"]
+    workspace = (
+        f"{state['workspaceRoute']}#expansion-{candidate['id']}"
+    )
+    return [
+        {
+            "kind": "expansion",
+            "laneId": lane["id"],
+            "laneLabel": lane["label"],
+            "laneEmoji": lane["emoji"],
+            "qualityFocus": lane["qualityFocus"],
+            "definitionOfDone": stage["exitGate"],
+            "minutes": int(lane["minutes"]),
+            "sectionId": (
+                f"expansion:{candidate['id']}:{stage['id']}:{lane['id']}"
+            ),
+            "sectionLabel": candidate["title"],
+            "route": workspace,
+            "proposedRoute": candidate["proposedRoute"],
+            "task": stage["pillarTasks"][lane["id"]],
+            "priority": int(candidate["priority"]),
+            "lastGitUpdate": None,
+            "stalenessDays": None,
+            "score": 0,
+            "balanceCycle": int(state["cycle"]),
+            "balanceSlot": int(state["week"]),
+            "expansionStageId": stage["id"],
+            "expansionStageLabel": stage["label"],
+            "candidateType": candidate["type"],
+            "safetyGate": candidate["safetyGate"],
+        }
+        for lane in config["lanes"]
+    ]
+
+
+def project_expansion_queue(
+    config: dict[str, Any],
+    *,
+    reference: date,
+) -> list[dict[str, Any]]:
+    evolution = config["continuousEvolution"]
+    epoch = date.fromisoformat(evolution["epoch"])
+    cycle_days = int(evolution["cycleWeeks"]) * 7
+    first_cycle = (
+        0
+        if reference < epoch
+        else (reference - epoch).days // cycle_days
+    )
+    queue = []
+    for offset in range(len(evolution["candidates"])):
+        cycle_index = first_cycle + offset
+        candidate = evolution["candidates"][
+            cycle_index % len(evolution["candidates"])
+        ]
+        start = epoch + timedelta(days=cycle_index * cycle_days)
+        queue.append(
+            {
+                "cycle": cycle_index + 1,
+                "start": start.isoformat(),
+                "end": (start + timedelta(days=cycle_days - 1)).isoformat(),
+                **candidate,
+            }
+        )
+    return queue
 
 
 def generate_schedule(
@@ -300,30 +720,81 @@ def generate_schedule(
     days: int,
     last_updates: dict[str, date | None],
 ) -> list[dict[str, Any]]:
-    if not 1 <= days <= 31:
-        raise ValueError("days deve estar entre 1 e 31.")
+    if not 1 <= days <= 62:
+        raise ValueError("days deve estar entre 1 e 62.")
     recent_by_lane: dict[str, list[str]] = {
         lane["id"]: [] for lane in config["lanes"]
     }
+    planned_counts_by_lane: dict[str, dict[str, int]] = {
+        lane["id"]: {} for lane in config["lanes"]
+    }
+    policy = config["selectionPolicy"]
     schedule = []
     for offset in range(days):
         current_day = start + timedelta(days=offset)
-        selections = []
-        for lane in config["lanes"]:
-            lane_sections = [
-                item for item in config["sections"] if item["lane"] == lane["id"]
-            ]
-            cooldown_size = min(5, max(0, len(lane_sections) - 1))
-            recent = set(recent_by_lane[lane["id"]][-cooldown_size:])
-            selection = choose_lane_section(
-                lane,
-                config["sections"],
-                day=current_day,
-                last_updates=last_updates,
-                recently_planned=recent,
+        evolution = expansion_state(config, current_day)
+        serialized_selections: list[dict[str, Any]]
+        if evolution["isSprintDay"]:
+            serialized_selections = build_expansion_selections(
+                config,
+                evolution,
             )
-            selections.append(selection)
-            recent_by_lane[lane["id"]].append(selection.section_id)
+        else:
+            selections = []
+            selected_routes: set[str] = {
+                str(item["route"]).split("#", 1)[0]
+                for item in config["continuousPulse"]
+            }
+            for lane in config["lanes"]:
+                lane_sections = [
+                    item
+                    for item in config["sections"]
+                    if item["lane"] == lane["id"]
+                ]
+                cooldown_size = min(
+                    int(policy["forecastCooldownDays"]),
+                    max(0, len(lane_sections) - 1),
+                )
+                recent = set(recent_by_lane[lane["id"]][-cooldown_size:])
+                selection = choose_lane_section(
+                    lane,
+                    config["sections"],
+                    day=current_day,
+                    last_updates=last_updates,
+                    recently_planned=recent,
+                    excluded_routes=selected_routes,
+                    policy=policy,
+                    planned_counts=planned_counts_by_lane[lane["id"]],
+                )
+                selections.append(selection)
+                recent_by_lane[lane["id"]].append(selection.section_id)
+                lane_counts = planned_counts_by_lane[lane["id"]]
+                lane_counts[selection.section_id] = (
+                    lane_counts.get(selection.section_id, 0) + 1
+                )
+                selected_routes.add(selection.route.split("#", 1)[0])
+            serialized_selections = [
+                {
+                    "kind": "maintenance",
+                    "laneId": item.lane_id,
+                    "laneLabel": item.lane_label,
+                    "laneEmoji": item.lane_emoji,
+                    "qualityFocus": item.quality_focus,
+                    "definitionOfDone": item.definition_of_done,
+                    "minutes": item.minutes,
+                    "sectionId": item.section_id,
+                    "sectionLabel": item.section_label,
+                    "route": item.route,
+                    "task": item.task,
+                    "priority": item.priority,
+                    "lastGitUpdate": item.last_git_update,
+                    "stalenessDays": item.staleness_days,
+                    "score": item.score,
+                    "balanceCycle": item.balance_cycle,
+                    "balanceSlot": item.balance_slot,
+                }
+                for item in selections
+            ]
         schedule.append(
             {
                 "schemaVersion": SCHEMA_VERSION,
@@ -331,23 +802,23 @@ def generate_schedule(
                 "timezone": config["timezone"],
                 "totalMinutes": config["maxMinutes"],
                 "validationMinutes": config["validationMinutes"],
-                "selections": [
-                    {
-                        "laneId": item.lane_id,
-                        "laneLabel": item.lane_label,
-                        "laneEmoji": item.lane_emoji,
-                        "minutes": item.minutes,
-                        "sectionId": item.section_id,
-                        "sectionLabel": item.section_label,
-                        "route": item.route,
-                        "task": item.task,
-                        "priority": item.priority,
-                        "lastGitUpdate": item.last_git_update,
-                        "stalenessDays": item.staleness_days,
-                        "score": item.score,
-                    }
-                    for item in selections
-                ],
+                "continuousMinutes": sum(
+                    int(item["minutes"])
+                    for item in config["continuousPulse"]
+                ),
+                "continuousPulse": config["continuousPulse"],
+                "selectionMode": policy["mode"],
+                "planMode": (
+                    evolution["mode"]
+                    if evolution["isSprintDay"]
+                    else policy["mode"]
+                ),
+                "fairnessWindowDays": policy["fairnessWindowDays"],
+                "expansionSpotlight": evolution,
+                "expansionSprint": (
+                    evolution if evolution["isSprintDay"] else None
+                ),
+                "selections": serialized_selections,
             }
         )
     return schedule
@@ -369,15 +840,56 @@ def reason_for(item: dict[str, Any]) -> str:
         freshness = "há 1 dia sem atualização"
     else:
         freshness = f"há {item['stalenessDays']} dias sem atualização"
-    return f"prioridade {item['priority']}/5; {freshness}"
+    return (
+        f"prioridade {item['priority']}/5; {freshness}; "
+        f"rodízio pseudoaleatório auditável no ciclo "
+        f"{item['balanceCycle']}, posição {item['balanceSlot']}"
+    )
 
 
-def render_markdown(schedule: Sequence[dict[str, Any]]) -> str:
+def render_expansion_queue(queue: Sequence[dict[str, Any]]) -> list[str]:
+    if not queue:
+        return []
     lines = [
-        "# 🛰️ Cronograma diário Antigravity — máximo de 29 minutos",
+        "## 🚀 Fila de novos apps e seções sugeridas",
         "",
-        "> O Codex escolhe as seções. Interrompa a rotina se houver necessidade "
-        "assistencial; paciente e plantão têm prioridade.",
+        "Cada candidato recebe seis sextas-feiras: descoberta, evidência, "
+        "protótipo, MVP local, qualidade e integração. A fila é sugestão "
+        "auditável; nenhuma rota é ativada automaticamente.",
+        "",
+    ]
+    for item in queue:
+        start = date.fromisoformat(item["start"])
+        end = date.fromisoformat(item["end"])
+        kind = "App" if item["type"] == "app" else "Seção"
+        lines.extend(
+            [
+                f"### Ciclo {item['cycle']} · {kind} · {item['title']}",
+                "",
+                f"- **Janela:** {start.strftime('%d/%m/%Y')}–"
+                f"{end.strftime('%d/%m/%Y')}",
+                f"- **Prioridade:** {item['priority']}/5",
+                f"- **Por que entra:** {item['reason']}",
+                f"- **Entrega pretendida:** {item['deliverable']}",
+                f"- **Rota proposta:** `{item['proposedRoute']}`",
+                f"- **Gate:** {item['safetyGate']}",
+                "",
+            ]
+        )
+    return lines
+
+
+def render_markdown(
+    schedule: Sequence[dict[str, Any]],
+    expansion_queue: Sequence[dict[str, Any]] = (),
+) -> str:
+    lines = [
+        "# 🛰️ Cronograma diário Antigravity — 60 minutos",
+        "",
+        "> O Codex escolhe as seções por rodízio pseudoaleatório equilibrado. "
+        "Interrompa a rotina se houver necessidade assistencial; paciente e "
+        "plantão têm prioridade. Às sextas, os mesmos três pilares avançam "
+        "uma expansão sem aumentar o tempo.",
         "",
     ]
     for plan in schedule:
@@ -388,25 +900,102 @@ def render_markdown(schedule: Sequence[dict[str, Any]]) -> str:
                 "",
                 f"**Tempo total:** {plan['totalMinutes']} minutos · "
                 f"**Fuso:** {plan['timezone']}",
+                f"**Modo:** {plan['planMode']} · "
+                f"**Janela de equilíbrio:** {plan['fairnessWindowDays']} dias",
+                f"**Expansão em foco:** "
+                f"{plan['expansionSpotlight']['candidate']['title']} · "
+                f"semana {plan['expansionSpotlight']['week']}/6 · "
+                f"{plan['expansionSpotlight']['stage']['label']} · "
+                f"sprint em {plan['expansionSpotlight']['scheduledDate']}",
                 "",
             ]
         )
         elapsed = 0
-        for number, item in enumerate(plan["selections"], start=1):
+        lines.extend(
+            [
+                f"### 🔁 Pulso contínuo diário — "
+                f"{plan['continuousMinutes']} min",
+                "",
+                "Estes tópicos são verificados todos os dias. A checagem pode "
+                "terminar em decisão explícita de não publicar.",
+                "",
+            ]
+        )
+        for item in plan["continuousPulse"]:
             start_minute = elapsed
             elapsed += int(item["minutes"])
             lines.extend(
                 [
-                    f"### {number}. {item['laneEmoji']} "
-                    f"{item['sectionLabel']} — {item['minutes']} min",
+                    f"#### {item['emoji']} {item['label']} — "
+                    f"{item['minutes']} min",
                     "",
                     f"- **Janela:** minuto {start_minute}–{elapsed}",
-                    f"- **Microentrega:** {item['task']}",
+                    f"- **Checagem:** {item['task']}",
+                    f"- **Pronto quando:** {item['definitionOfDone']}",
                     f"- **Rota:** `{item['route']}`",
-                    f"- **Motivo da escolha:** {reason_for(item)}.",
                     "",
                 ]
             )
+        sprint = plan["expansionSprint"]
+        if sprint:
+            candidate = sprint["candidate"]
+            stage = sprint["stage"]
+            kind = "App" if candidate["type"] == "app" else "Seção"
+            lines.extend(
+                [
+                    "### 🚀 Sprint semanal de expansão — 42 min",
+                    "",
+                    f"- **Candidato:** {kind} · {candidate['title']}",
+                    f"- **Etapa:** semana {sprint['week']}/6 · "
+                    f"{stage['label']}",
+                    f"- **Por que agora:** {candidate['reason']}",
+                    f"- **Rota proposta:** `{candidate['proposedRoute']}`",
+                    f"- **Base de trabalho:** `{sprint['workspaceRoute']}`",
+                    f"- **Gate de segurança:** {candidate['safetyGate']}",
+                    "- **Regra:** substitui as três escolhas randômicas desta "
+                    "sexta-feira; o total continua em 60 minutos.",
+                    "",
+                ]
+            )
+        else:
+            lines.extend(
+                [
+                    "### 🎲 Atualizações randômicas equilibradas",
+                    "",
+                ]
+            )
+        for number, item in enumerate(plan["selections"], start=1):
+            start_minute = elapsed
+            elapsed += int(item["minutes"])
+            item_lines = [
+                f"### {number}. {item['laneEmoji']} "
+                f"{item['sectionLabel']} — {item['minutes']} min",
+                "",
+                f"- **Janela:** minuto {start_minute}–{elapsed}",
+                f"- **Pilar:** {item['qualityFocus']}",
+                f"- **Microentrega:** {item['task']}",
+                f"- **Pronto quando:** {item['definitionOfDone']}",
+                f"- **Rota de trabalho:** `{item['route']}`",
+            ]
+            if item["kind"] == "expansion":
+                item_lines.extend(
+                    [
+                        f"- **Rota futura:** `{item['proposedRoute']}`",
+                        f"- **Etapa:** {item['expansionStageLabel']}",
+                    ]
+                )
+            else:
+                item_lines.append(
+                    f"- **Motivo da escolha:** {reason_for(item)}."
+                )
+            item_lines.extend(
+                [
+                    "- **Regra TDAH:** uma aba, um cronômetro e uma entrega; "
+                    "ideias extras vão para o estacionamento.",
+                    "",
+                ]
+            )
+            lines.extend(item_lines)
         final_end = elapsed + int(plan["validationMinutes"])
         lines.extend(
             [
@@ -416,18 +1005,21 @@ def render_markdown(schedule: Sequence[dict[str, Any]]) -> str:
                 f"- **Janela:** minuto {elapsed}–{final_end}",
                 "- Revisar o diff e garantir zero dados identificáveis, "
                 "credenciais ou arquivos privados.",
-                "- Executar o teste relacionado, o portão de publicação e o "
-                "builder público.",
+                "- Confirmar fonte e ressalva do conteúdo, hierarquia e teclado "
+                "do design, e medida antes/depois da performance.",
+                "- Executar os testes relacionados, o portão editorial, o "
+                "portão de publicação e o builder público.",
                 "- Conteúdo clínico novo exige fonte e revisão humana; sem isso, "
                 "fica em revisão e não vira protocolo.",
                 "- Registrar no Radar Diário achados clínicos/estudo; registrar "
                 "no Portal Vivo apenas UPGRADEs realmente entregues.",
                 "",
-                "**Critério de parada:** uma microentrega por seção. Não ampliar "
-                "o escopo mesmo que reste tempo.",
+                "**Critério de parada:** uma microentrega por pilar. Encerrar no "
+                "minuto 60 e estacionar qualquer ampliação de escopo.",
                 "",
             ]
         )
+    lines.extend(render_expansion_queue(expansion_queue))
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -435,7 +1027,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Escolhe automaticamente três seções do Antigravity para uma "
-            "rotina diária menor que 30 minutos."
+            "rotina diária de 60 minutos: conteúdo, design e performance; "
+            "às sextas, avança um sprint de expansão dentro do mesmo tempo."
         )
     )
     parser.add_argument("--root", type=Path, default=Path("."))
@@ -465,6 +1058,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             days=args.days,
             last_updates=last_updates,
         )
+        expansion_queue = project_expansion_queue(
+            config,
+            reference=start,
+        )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"❌ Não foi possível gerar o cronograma: {exc}", file=sys.stderr)
         return 2
@@ -472,13 +1069,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.format == "json":
         print(
             json.dumps(
-                {"schemaVersion": SCHEMA_VERSION, "plans": schedule},
+                {
+                    "schemaVersion": SCHEMA_VERSION,
+                    "plans": schedule,
+                    "expansionQueue": expansion_queue,
+                },
                 ensure_ascii=False,
                 indent=2,
             )
         )
     else:
-        print(render_markdown(schedule), end="")
+        print(render_markdown(schedule, expansion_queue), end="")
     return 0
 
 

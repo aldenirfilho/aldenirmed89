@@ -249,6 +249,7 @@ class AccessiblePwaTests(unittest.TestCase):
             'href="docs_usuario/ROTINA_DIARIA_30_MIN/"',
             home,
         )
+        self.assertIn("Rotina diária de 60 minutos", home)
         self.assertIn("env(safe-area-inset-bottom)", home)
         self.assertIn("env(safe-area-inset-right)", home)
         self.assertIn("html{scroll-behavior:smooth;overflow-x:hidden}", home)
@@ -676,6 +677,7 @@ class OperationalPackageTests(unittest.TestCase):
             self.assertIn(f'href="../{markdown}"', page)
             self.assertIn(f"./{route}/", hub)
             self.assertIn(f"./docs_usuario/{route}/index.html", worker)
+        self.assertIn("Rotina diária de 60 minutos", hub)
 
         feeding_page = (
             guide_root / "ALIMENTAR_CONTEUDO_SITE" / "index.html"
