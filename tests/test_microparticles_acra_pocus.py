@@ -37,6 +37,9 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
         cls.visuals = json.loads(
             (MODULE / "data/visual-assets.json").read_text(encoding="utf-8")
         )
+        cls.widgets = json.loads(
+            (MODULE / "data/ios-widget-formats.json").read_text(encoding="utf-8")
+        )
 
     def test_acra_v1_closed_component_contract(self):
         self.assertEqual(self.artifact["version"], "1.0")
@@ -122,6 +125,72 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
         self.assertTrue(self.manifest["visualGeneration"]["enabled"])
         self.assertFalse(self.manifest["visualGeneration"]["runtimeApi"])
         self.assertFalse(self.manifest["visualGeneration"]["publicCredentials"])
+        self.assertEqual(self.manifest["realPocusAtlas"]["images"], 8)
+        self.assertEqual(
+            self.manifest["expansion"]["tracks"],
+            [
+                "POCUS pulmonar",
+                "fluido-responsividade",
+                "TEP/TVP",
+                "FAST/eFAST",
+            ],
+        )
+        self.assertEqual(self.manifest["expansion"]["activeRecallPrompts"], 4)
+        iphone = self.manifest["iphoneExperience"]
+        self.assertTrue(iphone["enabled"])
+        self.assertTrue(iphone["viewportSafeArea"])
+        self.assertGreaterEqual(iphone["minimumTouchTargetPt"], 44)
+        self.assertTrue(iphone["studyDrawer"])
+        self.assertTrue(iphone["pocusImageViewer"]["enabled"])
+        self.assertFalse(iphone["pocusImageViewer"]["pixelModification"])
+        self.assertFalse(iphone["nativeWidgetKitExtension"])
+        self.assertTrue(iphone["offline"])
+
+    def test_iphone_drawer_image_viewer_and_widgets_are_explicit(self):
+        for marker in (
+            "viewport-fit=cover",
+            'id="study-drawer"',
+            'role="dialog"',
+            'id="pocus-viewer"',
+            'id="acra-widgets"',
+            'data-widget-panel="small"',
+            'data-widget-panel="medium"',
+            'data-widget-panel="large"',
+            "o site estático não instala widgets nativos sozinho",
+        ):
+            self.assertIn(marker, self.html)
+        for marker in (
+            "configureStudyDrawer",
+            "configurePocusViewer",
+            "configureWidgets",
+            "dialog.showModal",
+            "antigravity:acra:widget-size:v1",
+        ):
+            self.assertIn(marker, self.app)
+        self.assertIn("env(safe-area-inset-bottom)", self.styles)
+        self.assertIn("min-height: 44px", self.styles)
+        self.assertIn("touch-action: pan-x pan-y pinch-zoom", self.styles)
+
+    def test_widget_catalog_is_local_private_and_honest_about_widgetkit(self):
+        self.assertEqual(
+            self.widgets["schemaVersion"],
+            "antigravity-ios-widget-formats-v1",
+        )
+        delivery = self.widgets["delivery"]
+        self.assertTrue(delivery["webAppPreview"])
+        self.assertFalse(delivery["nativeWidgetKitExtension"])
+        self.assertTrue(delivery["requiresNativeWrapperForHomeScreenWidgets"])
+        self.assertTrue(delivery["offline"])
+        self.assertFalse(delivery["cloud"])
+        self.assertFalse(delivery["telemetry"])
+        self.assertFalse(delivery["patientData"])
+        self.assertEqual(
+            [item["widgetKitFamily"] for item in self.widgets["families"]],
+            ["systemSmall", "systemMedium", "systemLarge"],
+        )
+        for item in self.widgets["families"]:
+            self.assertTrue(item["deepLink"].startswith("#"))
+            self.assertIn(item["webSelector"].strip("[]"), self.html)
 
     def test_gpt_visual_asset_is_versioned_optimized_and_accessible(self):
         self.assertFalse(self.visuals["pipeline"]["publicRuntimeGeneration"])
@@ -158,16 +227,40 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
             for asset in self.visuals["assets"]
             if asset["origin"] == "published-clinical-image"
         ]
-        self.assertEqual(len(real_assets), 4)
-        expected_hashes = {
-            "choque-cardiogenico-ve-b-lines.jpg":
+        self.assertEqual(len(real_assets), 8)
+        expected_assets = {
+            "choque-cardiogenico-ve-b-lines.jpg": (
                 "1858970c9d0eb90579fe31e59bd27e5e0ff281d151798f135026e39fb88bf4d0",
-            "choque-obstrutivo-vd-dilatado.jpg":
+                "https://pmc.ncbi.nlm.nih.gov/articles/PMC9554831/",
+            ),
+            "choque-obstrutivo-vd-dilatado.jpg": (
                 "04451d594c9fd6ef518fa29b0058408d606a8b73acb582be1e6bb5e75f9cd983",
-            "derrame-pericardico-swinging-heart.jpg":
+                "https://pmc.ncbi.nlm.nih.gov/articles/PMC9554831/",
+            ),
+            "derrame-pericardico-swinging-heart.jpg": (
                 "407094eaedce69ad1f8de6b01b0ffe0325aecf4c4f68439182664221ac5f6241",
-            "ausencia-sliding-barcode.jpg":
+                "https://pmc.ncbi.nlm.nih.gov/articles/PMC9554831/",
+            ),
+            "ausencia-sliding-barcode.jpg": (
                 "99f459d92bc81f3f576e9dad453e579ed08ddea8849038aeb0b86b7b194ace3c",
+                "https://pmc.ncbi.nlm.nih.gov/articles/PMC9554831/",
+            ),
+            "pulmao-padroes-essenciais.jpg": (
+                "7bf2a920a8cebe1ab38c39766661416161369420eda408170c9fc5e8d0820521",
+                "https://pmc.ncbi.nlm.nih.gov/articles/PMC11674558/",
+            ),
+            "fluido-doppler-carotideo-seriado.jpg": (
+                "cb8519e88c8cb6536d430e52d76b809a659e23c4f69fd2af2a4b9df6768106b6",
+                "https://pmc.ncbi.nlm.nih.gov/articles/PMC10055706/",
+            ),
+            "tvp-veia-femoral-nao-compressivel.jpg": (
+                "12e972c3f4587be04f9a3bcb2e846f0f93ae366349e0270341929821bd01682a",
+                "https://pmc.ncbi.nlm.nih.gov/articles/PMC11720716/",
+            ),
+            "efast-morrison-normal-hemoperitonio.jpg": (
+                "0a9a915b58da038221ce9610baa9478b2c6e35f0eb601c611ad5469da61952d6",
+                "https://pmc.ncbi.nlm.nih.gov/articles/PMC10298902/",
+            ),
         }
 
         for asset in real_assets:
@@ -178,7 +271,7 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
             self.assertEqual(actual_hash, asset["sha256"])
             self.assertEqual(
                 actual_hash,
-                expected_hashes[image.name],
+                expected_assets[image.name][0],
             )
             self.assertTrue(asset["patientDerived"])
             self.assertFalse(asset["patientData"])
@@ -194,8 +287,9 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
             )
             self.assertEqual(
                 asset["sourceUrl"],
-                "https://pmc.ncbi.nlm.nih.gov/articles/PMC9554831/",
+                expected_assets[image.name][1],
             )
+            self.assertTrue(asset["sourceAssetUrl"].startswith("https://"))
             self.assertIn("sem alteração de pixels", asset["fileFidelity"])
             self.assertIn(f'src="{asset["path"]}"', self.html)
             self.assertIn(f'alt="{asset["alt"]}"', self.html)
@@ -208,8 +302,14 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
             "⚠️ ARMADILHA",
             "➡️ PRÓXIMO PASSO",
             "CC BY 4.0",
+            "EXPANSÃO 01",
+            "POCUS pulmonar",
+            "Fluido-responsividade",
+            "TEP/TVP",
+            "FAST/eFAST",
         ):
             self.assertIn(marker, self.html)
+        self.assertEqual(self.html.count('class="active-challenge"'), 4)
         self.assertIn(
             "ultrassom real, desidentificado, licenciado e preservado",
             self.visuals["pipeline"]["didacticPocusPolicy"],
@@ -241,6 +341,10 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
         self.assertIn('"22_Microparticulas_Ativas_ACRA"', builder)
         self.assertIn(
             "./22_Microparticulas_Ativas_ACRA/data/pocus-choque-acra.json",
+            worker,
+        )
+        self.assertIn(
+            "./22_Microparticulas_Ativas_ACRA/data/ios-widget-formats.json",
             worker,
         )
         self.assertIn(

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "antigravity-ios-widget-formats-v1",
+  "moduleId": "microparticulas-ativas-acra",
+  "updatedAt": "2026-07-30",
+  "delivery": {
+    "webAppPreview": true,
+    "nativeWidgetKitExtension": false,
+    "requiresNativeWrapperForHomeScreenWidgets": true,
+    "offline": true,
+    "cloud": false,
+    "telemetry": false,
+    "patientData": false
+  },
+  "designContract": {
+    "minimumTouchTargetPt": 44,
+    "safeAreaAware": true,
+    "supportsDarkAndLightThemes": true,
+    "contentModel": "Turbo TEMI e TDAH-friendly",
+    "clinicalImagePolicy": "Somente imagens reais licenciadas, desidentificadas e sem alteração de pixels; ampliar não modifica o arquivo."
+  },
+  "families": [
+    {
+      "id": "acra-small",
+      "widgetKitFamily": "systemSmall",
+      "role": "M0-essencia",
+      "estimatedSeconds": 30,
+      "title": "30 segundos",
+      "prompt": "Descreva a imagem antes de diagnosticar.",
+      "deepLink": "#trilha-pulmao",
+      "webSelector": "[data-widget-panel=\"small\"]"
+    },
+    {
+      "id": "acra-medium",
+      "widgetKitFamily": "systemMedium",
+      "role": "revisao-rapida",
+      "estimatedSeconds": 90,
+      "title": "Janela → Veja → Limite",
+      "prompt": "Nomeie a janela, descreva o sinal e declare a armadilha.",
+      "deepLink": "#trilha-fluido",
+      "webSelector": "[data-widget-panel=\"medium\"]"
+    },
+    {
+      "id": "acra-large",
+      "widgetKitFamily": "systemLarge",
+      "role": "atlas-critico",
+      "estimatedSeconds": 180,
+      "title": "Escolha uma trilha",
+      "prompt": "Pulmonar, fluido-responsividade, TEP/TVP ou FAST/eFAST.",
+      "deepLink": "#atlas-expandido",
+      "webSelector": "[data-widget-panel=\"large\"]"
+    }
+  ],
+  "futureNativeExtension": {
+    "status": "not-implemented",
+    "recommendedComponents": [
+      "WidgetKit",
+      "AppIntent",
+      "TimelineProvider",
+      "deep links para as trilhas do módulo"
+    ],
+    "reviewRequired": [
+      "homologar conteúdo em iPhone físico",
+      "validar atualização da timeline sem rede",
+      "confirmar que nenhum dado clínico ou pessoal entra no widget"
+    ]
+  }
+}

@@ -2,13 +2,19 @@
 <html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07121f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ACRA POCUS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
   <meta
     name="description"
     content="Micropartículas de Aprendizagem Ativa ACRA: piloto interativo de POCUS no choque indiferenciado, em formato Turbo TEMI e TDAH-friendly."
   >
   <title>Micropartículas Ativas ACRA · POCUS no choque</title>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
   <script src="assets/theme-bootstrap.js"></script>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
@@ -29,8 +35,48 @@
         aria-label="Ativar visualização clara"
         aria-pressed="false"
       >☀️ Modo claro</button>
+      <button
+        id="study-drawer-toggle"
+        class="ghost-button drawer-toggle"
+        type="button"
+        aria-controls="study-drawer"
+        aria-expanded="false"
+      >☰ Guia</button>
     </nav>
   </header>
+
+  <div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+  <aside
+    id="study-drawer"
+    class="study-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="study-drawer-title"
+    aria-hidden="true"
+    hidden
+  >
+    <header class="study-drawer-head">
+      <div>
+        <span class="section-kicker">HIDEBAR ACRA</span>
+        <h2 id="study-drawer-title">Navegação de plantão</h2>
+      </div>
+      <button id="study-drawer-close" class="icon-button" type="button" aria-label="Fechar guia">×</button>
+    </header>
+    <nav class="study-drawer-nav" aria-label="Atalhos do estudo">
+      <a href="#atlas-expandido" data-close-drawer>🔬 Atlas expandido</a>
+      <a href="#trilha-pulmao" data-close-drawer>🫁 Pulmonar</a>
+      <a href="#trilha-fluido" data-close-drawer>💧 Fluido-responsividade</a>
+      <a href="#trilha-tvp" data-close-drawer>🦵 TEP/TVP</a>
+      <a href="#trilha-efast" data-close-drawer>🚑 FAST/eFAST</a>
+      <a href="#acra-widgets" data-close-drawer>📲 Widgets ACRA</a>
+      <a href="#metodologia" data-close-drawer>🧠 Metodologia</a>
+      <a href="#artefato" data-close-drawer>▶ Piloto interativo</a>
+    </nav>
+    <div class="study-drawer-note">
+      <strong>🔒 Local-first</strong>
+      <span>Preferências e progresso ficam neste aparelho. Sem telemetria.</span>
+    </div>
+  </aside>
 
   <main id="conteudo">
     <section class="hero shell" aria-labelledby="page-title">
@@ -44,6 +90,7 @@
         </p>
         <div class="hero-actions">
           <a class="primary-button" href="#artefato">▶ Iniciar piloto POCUS</a>
+          <a class="secondary-button" href="#atlas-expandido">🔬 Atlas expandido</a>
           <a class="secondary-button" href="#metodologia">🧠 Entender o método</a>
         </div>
         <ul class="hero-facts" aria-label="Características do piloto">
@@ -113,7 +160,7 @@
               src="assets/visuals/real-pocus-ccby/choque-cardiogenico-ve-b-lines.jpg"
               width="565"
               height="289"
-              loading="lazy"
+              loading="eager"
               decoding="async"
               alt="Figura clínica real em dois painéis: à esquerda, janela cardíaca paraesternal e modo M com EPSS; à direita, ultrassom pulmonar com múltiplas linhas B verticais."
             >
@@ -145,7 +192,7 @@
               src="assets/visuals/real-pocus-ccby/choque-obstrutivo-vd-dilatado.jpg"
               width="565"
               height="196"
-              loading="lazy"
+              loading="eager"
               decoding="async"
               alt="Figura clínica real em dois painéis ecocardiográficos: vistas paraesternal longitudinal e transversal com o ventrículo direito marcado e dilatado."
             >
@@ -177,7 +224,7 @@
               src="assets/visuals/real-pocus-ccby/derrame-pericardico-swinging-heart.jpg"
               width="376"
               height="459"
-              loading="lazy"
+              loading="eager"
               decoding="async"
               alt="Figura clínica real de ecocardiografia com grande coleção anecoica pericárdica ao redor do coração e marcação de movimento pendular."
             >
@@ -209,7 +256,7 @@
               src="assets/visuals/real-pocus-ccby/ausencia-sliding-barcode.jpg"
               width="376"
               height="266"
-              loading="lazy"
+              loading="eager"
               decoding="async"
               alt="Figura clínica real de ultrassom pulmonar: modo B sem deslizamento pleural e modo M com padrão de linhas paralelas conhecido como sinal do código de barras."
             >
@@ -237,6 +284,287 @@
         aquisição dinâmica, controle de qualidade, integração hemodinâmica nem
         supervisão por profissional competente.
       </p>
+    </section>
+
+    <section id="atlas-expandido" class="atlas-expansion shell" aria-labelledby="atlas-expansion-title">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">EXPANSÃO 01 · 4 TRILHAS · 4 TESTES ATIVOS</span>
+          <h2 id="atlas-expansion-title">Do padrão visual à decisão segura</h2>
+        </div>
+        <p>
+          Pulmão, resposta dinâmica, tromboembolismo venoso e trauma em
+          micropartículas independentes. Primeiro descreva; depois interprete.
+        </p>
+      </div>
+
+      <nav class="track-nav" aria-label="Trilhas do atlas POCUS expandido">
+        <a href="#trilha-pulmao">🫁 Pulmonar</a>
+        <a href="#trilha-fluido">💧 Fluido-responsividade</a>
+        <a href="#trilha-tvp">🦵 TEP/TVP</a>
+        <a href="#trilha-efast">🚑 FAST/eFAST</a>
+      </nav>
+
+      <div class="expansion-intro" role="note">
+        <strong>⚡ Regra de 10 segundos</strong>
+        <span>
+          Nomeie a janela → descreva o que vê → declare a limitação → só então
+          conecte o achado à probabilidade clínica.
+        </span>
+      </div>
+
+      <div class="expansion-grid">
+        <article id="trilha-pulmao" class="expansion-card">
+          <header class="expansion-card-head">
+            <div>
+              <span class="track-index">TRILHA 01</span>
+              <h3>POCUS pulmonar · cinco padrões essenciais</h3>
+            </div>
+            <span class="status-pill">🫁 morfologia ≠ etiologia</span>
+          </header>
+          <figure class="expansion-figure">
+            <img
+              src="assets/visuals/real-pocus-ccby/expansao/pulmao-padroes-essenciais.jpg"
+              width="739"
+              height="547"
+              loading="lazy"
+              decoding="async"
+              alt="Figura clínica real em cinco painéis: linha A, linhas B não confluentes, linhas B confluentes, consolidação subpleural e consolidação extensa com broncograma aéreo."
+            >
+            <figcaption>
+              A · linhas A. B · linhas B não confluentes. C · linhas B
+              confluentes. D · consolidação subpleural. E · consolidação extensa
+              com broncograma aéreo.
+            </figcaption>
+          </figure>
+          <dl class="temi-read">
+            <div><dt>🪟 JANELA</dt><dd>Varredura pulmonar longitudinal ou transversal, comparando regiões e lados com ajuste consistente.</dd></div>
+            <div><dt>👁️ VEJA</dt><dd>Observe a progressão da aeração preservada para artefatos verticais e, depois, tecido pulmonar consolidado visível.</dd></div>
+            <div><dt>🧠 INTERPRETE</dt><dd>Linhas B apoiam síndrome intersticial/alveolar; consolidação indica perda de aeração. A etiologia continua dependente de distribuição, pleura, broncograma e contexto.</dd></div>
+            <div><dt>⚠️ ARMADILHA</dt><dd>“Linha B = edema” e “consolidação = pneumonia” são atalhos inseguros. SDRA, fibrose, contusão e atelectasia podem compartilhar padrões.</dd></div>
+            <div><dt>➡️ PRÓXIMO PASSO</dt><dd>Mapeie extensão e simetria, procure derrame e alterações pleurais, integre coração/perfusão e repita após mudança clínica relevante.</dd></div>
+          </dl>
+          <details class="active-challenge">
+            <summary>🧠 Teste de 20 s · o que a imagem não responde?</summary>
+            <p>
+              Ela não define sozinha a causa das linhas B ou da consolidação.
+              O ganho vem da distribuição, dos sinais associados e da integração
+              clínica — não da “imagem bonita” isolada.
+            </p>
+          </details>
+          <p class="source-line">
+            Fonte visual: Hsu et al., 2024, Figura 2 ·
+            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11674558/" target="_blank" rel="noopener noreferrer">artigo original</a> ·
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
+          </p>
+        </article>
+
+        <article id="trilha-fluido" class="expansion-card">
+          <header class="expansion-card-head">
+            <div>
+              <span class="track-index">TRILHA 02</span>
+              <h3>Fluido-responsividade · mudança, não fotografia</h3>
+            </div>
+            <span class="status-pill">💧 teste dinâmico</span>
+          </header>
+          <figure class="expansion-figure">
+            <img
+              src="assets/visuals/real-pocus-ccby/expansao/fluido-doppler-carotideo-seriado.jpg"
+              width="765"
+              height="626"
+              loading="lazy"
+              decoding="async"
+              alt="Figura clínica real em dois painéis com Doppler espectral da carótida antes e depois de bolus, mostrando tempo de fluxo carotídeo corrigido de 301 e 335 milissegundos."
+            >
+            <figcaption>
+              Exemplo publicado: Doppler carotídeo seriado antes e depois de
+              250 mL, com aumento do tempo de fluxo corrigido de 301 para 335 ms.
+            </figcaption>
+          </figure>
+          <dl class="temi-read">
+            <div><dt>🪟 JANELA</dt><dd>Carótida comum em eixo longitudinal com Doppler espectral alinhado; repetir no mesmo vaso e com técnica comparável.</dd></div>
+            <div><dt>👁️ VEJA</dt><dd>No exemplo do artigo, a duração sistólica corrigida aumentou após a manobra de volume. O dado útil é a mudança seriada, não um número estático isolado.</dd></div>
+            <div><dt>🧠 INTERPRETE</dt><dd>Uma mudança coerente pode apoiar reserva de pré-carga no cenário estudado; não transforma o tempo de fluxo carotídeo em limiar universal de fluidos.</dd></div>
+            <div><dt>⚠️ ARMADILHA</dt><dd>Arritmia, frequência cardíaca, ângulo, local da amostra, ventilação e técnica alteram a medida. Fluido-responsividade também não significa automaticamente benefício clínico do volume.</dd></div>
+            <div><dt>➡️ PRÓXIMO PASSO</dt><dd>Prefira uma manobra reversível e um marcador dinâmico validado localmente — por exemplo PLR com VTI/débito — e verifique tolerância, perfusão e congestão.</dd></div>
+          </dl>
+          <details class="active-challenge">
+            <summary>🧠 Teste de 20 s · responsivo significa “dar volume”?</summary>
+            <p>
+              Não necessariamente. A pergunta seguinte é se há indicação,
+              segurança e provável benefício. Responsividade, necessidade e
+              tolerância são três decisões diferentes.
+            </p>
+          </details>
+          <p class="source-line">
+            Fonte visual: Gibson et al., 2023, Figura 2 ·
+            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10055706/" target="_blank" rel="noopener noreferrer">artigo original</a> ·
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
+            Contexto fisiológico:
+            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10655855/" target="_blank" rel="noopener noreferrer">revisão de ecocardiografia crítica</a>.
+          </p>
+        </article>
+
+        <article id="trilha-tvp" class="expansion-card">
+          <header class="expansion-card-head">
+            <div>
+              <span class="track-index">TRILHA 03</span>
+              <h3>TEP/TVP · compressibilidade antes do rótulo</h3>
+            </div>
+            <span class="status-pill">🦵 território venoso</span>
+          </header>
+          <figure class="expansion-figure">
+            <img
+              src="assets/visuals/real-pocus-ccby/expansao/tvp-veia-femoral-nao-compressivel.jpg"
+              width="759"
+              height="492"
+              loading="lazy"
+              decoding="async"
+              alt="Figura clínica real em dois painéis da região femoral: sem compressão e sob compressão, com persistência do lúmen da veia femoral profunda trombosada."
+            >
+            <figcaption>
+              Veia femoral profunda antes e durante compressão: permanece com
+              lúmen residual no exemplo publicado de TVP.
+            </figcaption>
+          </figure>
+          <dl class="temi-read">
+            <div><dt>🪟 JANELA</dt><dd>Região femoral proximal em eixo transversal, identificando artéria e veias antes de aplicar compressão perpendicular.</dd></div>
+            <div><dt>👁️ VEJA</dt><dd>O lúmen venoso não desaparece com a compressão; o artigo registra diâmetro residual de 4,9 mm versus 6,4 mm sem compressão.</dd></div>
+            <div><dt>🧠 INTERPRETE</dt><dd>Não compressibilidade venosa apoia TVP no segmento examinado. Em suspeita de TEP, aumenta a evidência de tromboembolismo venoso, mas não localiza nem confirma êmbolo pulmonar.</dd></div>
+            <div><dt>⚠️ ARMADILHA</dt><dd>Confundir artéria/veia, comprimir fora do eixo, examinar poucos segmentos ou ignorar alterações crônicas pode gerar falso resultado.</dd></div>
+            <div><dt>➡️ PRÓXIMO PASSO</dt><dd>Documente nível e qualidade, complete o protocolo local e integre probabilidade pré-teste, estabilidade, imagem confirmatória e risco terapêutico.</dd></div>
+          </dl>
+          <details class="active-challenge">
+            <summary>🧠 Teste de 20 s · TVP no POCUS confirma TEP?</summary>
+            <p>
+              Não. Confirma ou apoia trombose no território examinado quando a
+              técnica é adequada. A conclusão sobre TEP depende do cenário e do
+              percurso diagnóstico completo.
+            </p>
+          </details>
+          <p class="source-line">
+            Fonte visual: D’Oria et al., 2025, Figura 1 ·
+            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11720716/" target="_blank" rel="noopener noreferrer">artigo original</a> ·
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
+          </p>
+        </article>
+
+        <article id="trilha-efast" class="expansion-card">
+          <header class="expansion-card-head">
+            <div>
+              <span class="track-index">TRILHA 04</span>
+              <h3>FAST/eFAST · líquido livre no contexto do trauma</h3>
+            </div>
+            <span class="status-pill">🚑 janela hepatorrenal</span>
+          </header>
+          <figure class="expansion-figure expansion-figure--wide">
+            <img
+              src="assets/visuals/real-pocus-ccby/expansao/efast-morrison-normal-hemoperitonio.jpg"
+              width="765"
+              height="298"
+              loading="lazy"
+              decoding="async"
+              alt="Figura clínica real em dois painéis do espaço de Morrison: imagem normal à esquerda e coleção hipoecoica compatível com hemoperitônio entre fígado e rim à direita."
+            >
+            <figcaption>
+              A · espaço de Morrison sem líquido livre. B · coleção hipoecoica
+              hepatorrenal em exemplo de hemoperitônio.
+            </figcaption>
+          </figure>
+          <dl class="temi-read">
+            <div><dt>🪟 JANELA</dt><dd>Quadrante superior direito, varrendo fígado, rim direito, recesso hepatorrenal, polo inferior e transição pleural.</dd></div>
+            <div><dt>👁️ VEJA</dt><dd>No painel B, há faixa hipoecoica separando fígado e rim; o painel A oferece o contraste normal sem coleção.</dd></div>
+            <div><dt>🧠 INTERPRETE</dt><dd>Em trauma, líquido livre nessa janela apoia hemoperitônio. O FAST detecta líquido; não define sozinho a origem, a lesão de órgão ou o volume total.</dd></div>
+            <div><dt>⚠️ ARMADILHA</dt><dd>FAST negativo não exclui sangramento pequeno, precoce ou retroperitoneal. Ascite, líquido fisiológico e janela incompleta exigem contexto.</dd></div>
+            <div><dt>➡️ PRÓXIMO PASSO</dt><dd>Integre imediatamente ao ABCDE e ao protocolo de trauma; repita se necessário e use imagem definitiva quando a estabilidade e a pergunta clínica permitirem.</dd></div>
+          </dl>
+          <details class="active-challenge">
+            <summary>🧠 Teste de 20 s · FAST negativo encerra a investigação?</summary>
+            <p>
+              Não. O exame é focal, dependente do tempo, do volume e da
+              aquisição. Instabilidade ou suspeita persistente exige reavaliação
+              e escalonamento sem falsa tranquilização.
+            </p>
+          </details>
+          <p class="source-line">
+            Fonte visual: Jeong et al., 2023, Figura 1 ·
+            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10298902/" target="_blank" rel="noopener noreferrer">artigo original</a> ·
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
+          </p>
+        </article>
+      </div>
+
+      <p class="atlas-safety">
+        <strong>Estado editorial:</strong> expansão em revisão clínica humana.
+        As imagens são reais, desidentificadas, copiadas sem alteração de pixels
+        e publicadas como prévia educacional — não como protocolo assistencial.
+      </p>
+    </section>
+
+    <section id="acra-widgets" class="widget-lab shell" aria-labelledby="widget-lab-title">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">IPHONE · WIDGETS ACRA · TOQUE ≥ 44 PX</span>
+          <h2 id="widget-lab-title">Três formatos para retomar sem atrito</h2>
+        </div>
+        <p>
+          Pré-visualizações funcionais dentro do app web. Cada formato abre uma
+          trilha e mantém o conteúdo clínico no mesmo fluxo local e auditável.
+        </p>
+      </div>
+
+      <div class="widget-size-picker" role="group" aria-label="Escolher formato do widget">
+        <button type="button" data-widget-size="small" aria-pressed="true">Pequeno</button>
+        <button type="button" data-widget-size="medium" aria-pressed="false">Médio</button>
+        <button type="button" data-widget-size="large" aria-pressed="false">Grande</button>
+      </div>
+
+      <div class="widget-stage" aria-live="polite">
+        <article class="acra-widget acra-widget--small" data-widget-panel="small">
+          <span class="widget-eyebrow">ACRA · M0</span>
+          <strong>30 segundos</strong>
+          <p>Descreva a imagem antes de diagnosticar.</p>
+          <a href="#trilha-pulmao">🫁 Abrir foco</a>
+        </article>
+
+        <article class="acra-widget acra-widget--medium" data-widget-panel="medium" hidden>
+          <div>
+            <span class="widget-eyebrow">ACRA · REVISÃO RÁPIDA</span>
+            <strong>Janela → Veja → Limite</strong>
+          </div>
+          <ol>
+            <li>Nomeie a janela</li>
+            <li>Descreva o sinal</li>
+            <li>Declare a armadilha</li>
+          </ol>
+          <a href="#trilha-fluido">💧 Treinar dinâmica</a>
+        </article>
+
+        <article class="acra-widget acra-widget--large" data-widget-panel="large" hidden>
+          <div class="widget-large-head">
+            <div>
+              <span class="widget-eyebrow">ACRA · ATLAS CRÍTICO</span>
+              <strong>Escolha uma trilha</strong>
+            </div>
+            <span>4 módulos</span>
+          </div>
+          <div class="widget-track-grid">
+            <a href="#trilha-pulmao">🫁<span>Pulmonar</span></a>
+            <a href="#trilha-fluido">💧<span>Fluido</span></a>
+            <a href="#trilha-tvp">🦵<span>TEP/TVP</span></a>
+            <a href="#trilha-efast">🚑<span>eFAST</span></a>
+          </div>
+          <p>Retomada sugerida: 1 trilha agora · 1 teste ativo em 24 h.</p>
+        </article>
+      </div>
+
+      <div class="widget-platform-note" role="note">
+        <strong>📲 Pronto no app web instalado.</strong>
+        <span>
+          O catálogo também documenta os formatos para uma futura extensão
+          WidgetKit nativa; o site estático não instala widgets nativos sozinho.
+        </span>
+      </div>
     </section>
 
     <section class="visual-map shell" aria-labelledby="visual-map-title">
@@ -371,6 +699,30 @@
       <div id="artifact-components" class="component-stack"></div>
     </section>
   </main>
+
+  <dialog id="pocus-viewer" class="pocus-viewer" aria-labelledby="pocus-viewer-title">
+    <div class="pocus-viewer-head">
+      <div>
+        <span class="section-kicker">USG REAL · VISUALIZAÇÃO DIDÁTICA</span>
+        <h2 id="pocus-viewer-title">Imagem POCUS</h2>
+      </div>
+      <button id="pocus-viewer-close" class="icon-button" type="button" aria-label="Fechar imagem">×</button>
+    </div>
+    <div class="pocus-viewer-canvas">
+      <img id="pocus-viewer-image" alt="">
+    </div>
+    <p id="pocus-viewer-caption" class="pocus-viewer-caption"></p>
+    <div class="pocus-viewer-controls" aria-label="Controles de ampliação">
+      <button id="pocus-zoom-out" type="button" aria-label="Reduzir imagem">−</button>
+      <output id="pocus-zoom-value" for="pocus-zoom-out pocus-zoom-in">100%</output>
+      <button id="pocus-zoom-in" type="button" aria-label="Ampliar imagem">+</button>
+      <button id="pocus-zoom-reset" type="button">Ajustar</button>
+    </div>
+    <p class="pocus-viewer-safety">
+      Pixels originais preservados. A ampliação é apenas visual e não substitui
+      aquisição dinâmica, controle de qualidade ou revisão clínica.
+    </p>
+  </dialog>
 
   <footer class="site-footer">
     <div class="shell footer-grid">
