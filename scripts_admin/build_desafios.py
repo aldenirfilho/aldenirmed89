@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Converte arquivos .md da pasta 10_DESAFIOS/ em data/desafios.json.
+Converte arquivos .md e pacotes .json da pasta 10_DESAFIOS/ em
+data/desafios.json.
 
 Estrutura de pastas suportada:
   10_DESAFIOS/arquivo.md         → 1 desafio (branch detectado por conteúdo)
@@ -246,6 +247,63 @@ def is_file_sourced(entry):
     return src.startswith("10_DESAFIOS")
 
 
+def load_json_packs():
+    """Carrega desafios estruturados em pacotes JSON versionados."""
+    packed = {"temi": [], "r3": []}
+    pack_files = sorted(
+        filename
+        for filename in os.listdir(DESAFIOS_DIR)
+        if filename.lower().endswith(".json") and not filename.startswith(".")
+    )
+    for filename in pack_files:
+        filepath = os.path.join(DESAFIOS_DIR, filename)
+        with open(filepath, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+        for branch in ("temi", "r3"):
+            entries = payload.get(branch, [])
+            if not isinstance(entries, list):
+                raise ValueError(f"{filename}: {branch} deve ser uma lista")
+            for raw in entries:
+                if not isinstance(raw, dict):
+                    raise ValueError(f"{filename}: desafio deve ser um objeto")
+                missing = [
+                    key for key in ("id", "title", "excerpt", "content")
+                    if not raw.get(key)
+                ]
+                if missing:
+                    raise ValueError(
+                        f"{filename}: campos ausentes em {branch}: "
+                        + ", ".join(missing)
+                    )
+                entry = {
+                    "id": slugify(str(raw["id"])),
+                    "title": str(raw["title"]).strip(),
+                    "excerpt": str(raw["excerpt"]).strip(),
+                    "content": str(raw["content"]).strip(),
+                    "tags": [str(tag) for tag in raw.get("tags", [])][:8],
+                    "tema": str(raw.get("tema") or "").strip(),
+                    "observacoes": str(raw.get("observacoes") or "").strip(),
+                    "date": str(raw.get("date") or datetime.now().strftime("%Y-%m-%d")),
+                    "difficulty": str(
+                        raw.get("difficulty") or ("alta" if branch == "temi" else "media")
+                    ),
+                    "parts": 1,
+                    "featured": bool(raw.get("featured", False)),
+                    "sourceRefs": [str(ref) for ref in raw.get("sourceRefs", [])],
+                    "reviewStatus": str(
+                        raw.get("reviewStatus") or "revisao-medica-pendente"
+                    ),
+                    "source": (
+                        f"{os.path.relpath(filepath, ROOT_DIR)}"
+                        f"#{branch}/{slugify(str(raw['id']))}"
+                    ),
+                    "editorial": raw.get("editorial") or payload.get("editorial", {}),
+                }
+                packed[branch].append(entry)
+                print(f"   ✅  [{branch.upper()}] {entry['title'][:60]} · pacote")
+    return packed
+
+
 # Campos de CURADORIA: definidos no editor admin (ou direto no JSON) e
 # PRESERVADOS a cada rebuild. O .md continua dono de title/content/excerpt/date.
 CURATED_FIELDS = ("difficulty", "tags", "tema", "observacoes", "featured")
@@ -300,6 +358,18 @@ def build():
         extra = f" ({entry['parts']} partes)" if entry["parts"] > 1 else ""
         print(f"   ✅  [{branch.upper()}] {entry['title'][:60]}{extra}")
 
+    packed = load_json_packs()
+    file_temi.extend(packed["temi"])
+    file_r3.extend(packed["r3"])
+
+    for branch, entries in (("TEMI", file_temi), ("R3", file_r3)):
+        ids = [entry["id"] for entry in entries]
+        duplicates = sorted({entry_id for entry_id in ids if ids.count(entry_id) > 1})
+        if duplicates:
+            raise ValueError(
+                f"IDs duplicados em {branch}: " + ", ".join(duplicates)
+            )
+
     def merge(file_list, manual_list):
         ids = {e["id"] for e in file_list}
         return file_list + [m for m in manual_list if m.get("id") not in ids]
@@ -308,7 +378,7 @@ def build():
     r3 = merge(file_r3, manual_r3)
 
     output = {
-        "version": "1.0",
+        "version": "2.0",
         "updated": datetime.now().strftime("%Y-%m-%d"),
         "temi": temi,
         "r3": r3,

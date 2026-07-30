@@ -1,0 +1,902 @@
+{
+  "version": "1.0",
+  "updated": "2026-07-30",
+  "target": "radar-diario",
+  "destination": "Estação Radar Diário — conteúdo clínico/estudo do chat",
+  "editorial": {
+    "status": "revisao-medica-pendente",
+    "audience": "médicos e candidatos ao TEMI",
+    "purpose": "apoio educacional; não substitui protocolo local ou julgamento clínico",
+    "patientData": false
+  },
+  "sources": {
+    "SSC2026": "https://doi.org/10.1007/s00134-026-08361-1",
+    "SCCM_RSI_2023": "https://www.sccm.org/clinical-resources/guidelines/guidelines/guidelines-rapid-sequence-intubation",
+    "ATS_ARDS_2024": "https://pubmed.ncbi.nlm.nih.gov/38032683/",
+    "ARDSNET_ARMA": "https://pubmed.ncbi.nlm.nih.gov/10793162/",
+    "PROSEVA": "https://pubmed.ncbi.nlm.nih.gov/23688302/",
+    "ROSE": "https://pubmed.ncbi.nlm.nih.gov/31112383/",
+    "ART": "https://pubmed.ncbi.nlm.nih.gov/28973363/",
+    "PREOXI": "https://pubmed.ncbi.nlm.nih.gov/38869091/",
+    "DEVICE": "https://pubmed.ncbi.nlm.nih.gov/37326325/",
+    "PREVENT": "https://pubmed.ncbi.nlm.nih.gov/30779528/",
+    "SOAP_II": "https://pubmed.ncbi.nlm.nih.gov/20200382/",
+    "VASST": "https://pubmed.ncbi.nlm.nih.gov/18305265/",
+    "VANISH": "https://pubmed.ncbi.nlm.nih.gov/27483065/",
+    "SEPSISPAM": "https://pubmed.ncbi.nlm.nih.gov/24635770/",
+    "TRIAL_65": "https://pubmed.ncbi.nlm.nih.gov/32049269/",
+    "ATHOS_3": "https://pubmed.ncbi.nlm.nih.gov/28528561/",
+    "ANDROMEDA_SHOCK": "https://pubmed.ncbi.nlm.nih.gov/30772908/",
+    "CLASSIC": "https://pubmed.ncbi.nlm.nih.gov/35709019/",
+    "CLOVERS": "https://pubmed.ncbi.nlm.nih.gov/36688507/",
+    "VEXUS": "https://pubmed.ncbi.nlm.nih.gov/32270297/",
+    "SHOC_ED": "https://pubmed.ncbi.nlm.nih.gov/32968565/"
+  },
+  "mnemonicos": [
+    {
+      "id": "rush-pump-tank-pipes",
+      "title": "RUSH — Pump, Tank, Pipes",
+      "emoji": "🫀",
+      "color": "var(--cyan)",
+      "category": "POCUS e choque",
+      "tags": ["POCUS", "RUSH", "choque", "hemodinâmica"],
+      "letters": {
+        "PUMP": "coração: função global, VD, pericárdio",
+        "TANK": "volume/congestão: pulmão, VCI e cavidades",
+        "PIPES": "aorta e sistema venoso"
+      },
+      "content": "## Gancho TEMI\nRUSH organiza o POCUS do choque em **bomba, tanque e tubos**. Integre os achados ao exame, tendência hemodinâmica e contexto; um corte isolado não define etiologia.\n\n> Segurança: POCUS complementa, não substitui, a avaliação clínica.",
+      "sourceRefs": ["SHOC_ED"],
+      "evidenceType": "protocolo-diagnostico"
+    },
+    {
+      "id": "blue-a-b-c-profile",
+      "title": "BLUE — perfis pulmonares",
+      "emoji": "🫁",
+      "color": "var(--blue)",
+      "category": "POCUS e choque",
+      "tags": ["POCUS", "BLUE", "pulmão", "dispneia"],
+      "letters": {
+        "A": "linhas A + deslizamento: padrão aerado",
+        "B": "linhas B anteriores difusas: síndrome intersticial",
+        "C": "consolidação anterior",
+        "PLAPS": "derrame ou consolidação posterolateral"
+      },
+      "content": "## Gancho TEMI\nNo BLUE, perfis ultrassonográficos estreitam o diferencial da insuficiência respiratória. **B-lines são síndrome, não diagnóstico etiológico**; podem ocorrer em edema, inflamação e outras condições.",
+      "sourceRefs": ["SHOC_ED"],
+      "evidenceType": "protocolo-diagnostico"
+    },
+    {
+      "id": "falls-fluid-until-b-lines",
+      "title": "FALLS — fluido até o pulmão sinalizar",
+      "emoji": "💧",
+      "color": "var(--cyan)",
+      "category": "POCUS e choque",
+      "tags": ["POCUS", "FALLS", "fluidos", "linhas B"],
+      "letters": {
+        "F": "Fluid",
+        "A": "Administration",
+        "L": "Limited by",
+        "L2": "Lung",
+        "S": "Sonography"
+      },
+      "content": "## Gancho TEMI\nO FALLS usa o aparecimento de linhas B como sinal para interromper uma estratégia de fluidos. É uma **heurística**, não autorização para bolus automáticos; reavalie responsividade, tolerância e congestão.",
+      "sourceRefs": ["SHOC_ED"],
+      "evidenceType": "heuristica"
+    },
+    {
+      "id": "vexus-cava-dopplers",
+      "title": "VExUS — CAVA + 3 Dopplers",
+      "emoji": "🌊",
+      "color": "var(--violet)",
+      "category": "POCUS e choque",
+      "tags": ["VExUS", "congestão", "Doppler", "AKI"],
+      "letters": {
+        "CAVA": "VCI dilatada abre a avaliação",
+        "H": "veia Hepática",
+        "P": "veia Porta",
+        "R": "veia Renal intraparenquimatosa"
+      },
+      "content": "## Gancho TEMI\nVExUS combina VCI e Dopplers venosos para graduar congestão. O estudo de desenvolvimento associou congestão grave a AKI após cirurgia cardíaca; **não é ensaio de tratamento** e não deve ser usado isoladamente para retirar fluido.",
+      "sourceRefs": ["VEXUS"],
+      "evidenceType": "coorte-desenvolvimento"
+    },
+    {
+      "id": "dope-deterioracao-ventilador",
+      "title": "DOPE — deterioração súbita no ventilador",
+      "emoji": "🚨",
+      "color": "var(--red)",
+      "category": "Ventilação e via aérea",
+      "tags": ["ventilador", "IOT", "hipoxemia", "emergência"],
+      "letters": {
+        "D": "Deslocamento do tubo",
+        "O": "Obstrução do tubo/circuito",
+        "P": "Pneumotórax",
+        "E": "Equipamento com falha"
+      },
+      "content": "## Gancho TEMI\nQueda abrupta de saturação/ventilação após IOT: cheque **DOPE** em paralelo com ABCDE, capnografia e exame. Se o equipamento for suspeito, ventile manualmente com estratégia segura enquanto investiga.",
+      "sourceRefs": ["SCCM_RSI_2023"],
+      "evidenceType": "checklist-seguranca"
+    },
+    {
+      "id": "dopes-empilhamento",
+      "title": "DOPES — acrescente Stacking",
+      "emoji": "🫁",
+      "color": "var(--orange)",
+      "category": "Ventilação e via aérea",
+      "tags": ["ventilador", "auto-PEEP", "asma", "DPOC"],
+      "letters": {
+        "D": "Deslocamento",
+        "O": "Obstrução",
+        "P": "Pneumotórax",
+        "E": "Equipamento",
+        "S": "Stacking: aprisionamento aéreo/auto-PEEP"
+      },
+      "content": "## Gancho TEMI\nEm asma/DPOC ventilados, o **S** lembra empilhamento respiratório. Curva fluxo-tempo que não retorna à linha de base sugere expiração incompleta; corrija a mecânica conforme protocolo e contexto.",
+      "sourceRefs": ["ATS_ARDS_2024"],
+      "evidenceType": "checklist-seguranca"
+    },
+    {
+      "id": "lemon-via-aerea",
+      "title": "LEMON — laringoscopia difícil",
+      "emoji": "🍋",
+      "color": "var(--yellow)",
+      "category": "Ventilação e via aérea",
+      "tags": ["IOT", "via aérea difícil", "laringoscopia"],
+      "letters": {
+        "L": "Look externally",
+        "E": "Evaluate regra 3-3-2",
+        "M": "Mallampati",
+        "O": "Obstruction",
+        "N": "Neck mobility"
+      },
+      "content": "## Gancho TEMI\nLEMON estrutura a inspeção anatômica, mas não captura todo o risco fisiológico do paciente crítico. Antecipe plano A/B/C, operador, dispositivo, oxigenação e resgate.",
+      "sourceRefs": ["SCCM_RSI_2023"],
+      "evidenceType": "preditor-clinico"
+    },
+    {
+      "id": "moans-ventilacao-mascara",
+      "title": "MOANS — máscara difícil",
+      "emoji": "😷",
+      "color": "var(--orange)",
+      "category": "Ventilação e via aérea",
+      "tags": ["IOT", "máscara", "ventilação"],
+      "letters": {
+        "M": "Mask seal ruim",
+        "O": "Obesity/Obstruction",
+        "A": "Age avançada",
+        "N": "No teeth",
+        "S": "Stiff lungs"
+      },
+      "content": "## Gancho TEMI\nMOANS antecipa ventilação difícil com máscara. Use como gatilho para otimizar posição, cânulas, técnica a duas mãos e dispositivo de resgate conforme treinamento.",
+      "sourceRefs": ["PREVENT", "SCCM_RSI_2023"],
+      "evidenceType": "preditor-clinico"
+    },
+    {
+      "id": "rods-dispositivo-supraglotico",
+      "title": "RODS — supraglótico difícil",
+      "emoji": "🛟",
+      "color": "var(--violet)",
+      "category": "Ventilação e via aérea",
+      "tags": ["IOT", "supraglótico", "resgate"],
+      "letters": {
+        "R": "Restricted mouth opening",
+        "O": "Obstruction/Obesity",
+        "D": "Distorted airway",
+        "S": "Stiff lungs/cervical spine"
+      },
+      "content": "## Gancho TEMI\nRODS sinaliza dificuldade para dispositivo supraglótico. Um resgate previsto é mais seguro que improvisação: confirme tamanhos, sucção e acesso a via aérea cirúrgica.",
+      "sourceRefs": ["SCCM_RSI_2023"],
+      "evidenceType": "preditor-clinico"
+    },
+    {
+      "id": "heaven-via-aerea-fisiologica",
+      "title": "HEAVEN — dificuldade fisiológica",
+      "emoji": "🌌",
+      "color": "var(--cyan)",
+      "category": "Ventilação e via aérea",
+      "tags": ["IOT", "hipoxemia", "choque", "fisiologia"],
+      "letters": {
+        "H": "Hypoxemia",
+        "E": "Extremes of size",
+        "A": "Anatomic challenge",
+        "V": "Vomit/blood/fluid",
+        "E2": "Exsanguination",
+        "N": "Neck mobility"
+      },
+      "content": "## Gancho TEMI\nHEAVEN lembra que a IOT pode ser tecnicamente fácil e fisiologicamente catastrófica. Oxigenação, perfusão e plano de resgate devem ser preparados antes da indução quando houver tempo.",
+      "sourceRefs": ["SCCM_RSI_2023"],
+      "evidenceType": "preditor-clinico"
+    },
+    {
+      "id": "macocha-uti",
+      "title": "MACOCHA — IOT difícil na UTI",
+      "emoji": "🧮",
+      "color": "var(--yellow)",
+      "category": "Ventilação e via aérea",
+      "tags": ["MACOCHA", "IOT", "UTI", "via aérea difícil"],
+      "letters": {
+        "MA": "Mallampati e Apneia obstrutiva",
+        "CO": "Cervical mobility e Opening da boca",
+        "CHA": "Coma, Hipoxemia e operador não Anestesiologista"
+      },
+      "content": "## Gancho TEMI\nMACOCHA combina anatomia, fisiologia e contexto do operador para estimar dificuldade na UTI. Não substitui avaliação dinâmica nem plano de via aérea difícil.",
+      "sourceRefs": ["SCCM_RSI_2023"],
+      "evidenceType": "escore-preditivo"
+    },
+    {
+      "id": "preoxi-pressao-preoxigenacao",
+      "title": "PREOXI — Pressão antes da IOT hipoxêmica",
+      "emoji": "🫧",
+      "color": "var(--blue)",
+      "category": "Trials de UTI",
+      "tags": ["PREOXI", "IOT", "VNI", "hipoxemia"],
+      "letters": {
+        "PRE": "Pré-oxigene",
+        "O": "com Oxigênio",
+        "XI": "sob pressão quando a hipoxemia é grave"
+      },
+      "content": "## Trial em uma frase\nNo PREOXI, VNI para pré-oxigenação reduziu hipoxemia durante IOT versus máscara de oxigênio em adultos críticos. Aplique critérios, contraindicações e protocolo local; não extrapole a pacientes excluídos.",
+      "sourceRefs": ["PREOXI", "SCCM_RSI_2023"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "device-video-primeira-passagem",
+      "title": "DEVICE — Vídeo vence na primeira passagem",
+      "emoji": "📹",
+      "color": "var(--violet)",
+      "category": "Trials de UTI",
+      "tags": ["DEVICE", "videolaringoscopia", "IOT"],
+      "letters": {
+        "D": "Direct versus",
+        "EVI": "video laryngoscope",
+        "CE": "critically ill emergency"
+      },
+      "content": "## Trial em uma frase\nNo DEVICE, videolaringoscopia aumentou sucesso na primeira tentativa em adultos críticos. O benefício depende de equipamento, lâmina, contaminação da via aérea e experiência do operador.",
+      "sourceRefs": ["DEVICE"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "prevent-bvm-entre-inducao-laringoscopia",
+      "title": "PreVent — Ventile entre indução e laringoscopia",
+      "emoji": "🎈",
+      "color": "var(--blue)",
+      "category": "Trials de UTI",
+      "tags": ["PreVent", "bolsa-válvula-máscara", "IOT"],
+      "letters": {
+        "PRE": "Previna hipoxemia",
+        "VENT": "Ventilando com bolsa-máscara"
+      },
+      "content": "## Trial em uma frase\nNo PreVent, ventilação bolsa-máscara entre indução e laringoscopia reduziu hipoxemia grave sem aumento demonstrado de aspiração. Individualize quando houver vômito, sangue ou alto risco de regurgitação.",
+      "sourceRefs": ["PREVENT"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "arma-6-30",
+      "title": "ARMA — 6 e 30 protegem o pulmão",
+      "emoji": "🛡️",
+      "color": "var(--green)",
+      "category": "Trials de UTI",
+      "tags": ["ARDSNet", "ARMA", "SDRA", "volume corrente"],
+      "letters": {
+        "6": "volume corrente inicial próximo de 6 mL/kg de peso predito",
+        "30": "pressão de platô abaixo de 30 cmH₂O",
+        "PBW": "peso predito, não peso real"
+      },
+      "content": "## Trial em uma frase\nO ARDSNet ARMA reduziu mortalidade com menor volume corrente e limitação de pressão na SDRA. O alvo é uma estratégia protetora ajustada por gasometria, mecânica e protocolo.",
+      "sourceRefs": ["ARDSNET_ARMA", "ATS_ARDS_2024"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "proseva-prona-16h",
+      "title": "PROSEVA — Prona cedo e prolongada",
+      "emoji": "🔄",
+      "color": "var(--green)",
+      "category": "Trials de UTI",
+      "tags": ["PROSEVA", "prona", "SDRA"],
+      "letters": {
+        "PRO": "Prona",
+        "SEV": "na SDRA severa",
+        "A": "ao menos 16 horas por sessão no ensaio"
+      },
+      "content": "## Trial em uma frase\nPROSEVA mostrou benefício de mortalidade com prona precoce e sessões prolongadas em SDRA grave, dentro de equipe experiente e ventilação protetora.",
+      "sourceRefs": ["PROSEVA", "ATS_ARDS_2024"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "rose-paralisia-nao-rotina",
+      "title": "ROSE — Rotina de bloqueio não floresceu",
+      "emoji": "🌹",
+      "color": "var(--red)",
+      "category": "Trials de UTI",
+      "tags": ["ROSE", "bloqueio neuromuscular", "SDRA"],
+      "letters": {
+        "R": "Routine",
+        "O": "early paralysis",
+        "SE": "Sem vantagem de mortalidade sobre sedação mais leve"
+      },
+      "content": "## Trial em uma frase\nROSE não demonstrou benefício de mortalidade para bloqueio neuromuscular precoce rotineiro com sedação profunda. A diretriz ATS 2024 mantém uso condicional em SDRA grave selecionada, não automático.",
+      "sourceRefs": ["ROSE", "ATS_ARDS_2024"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "art-recrutamento-agressivo",
+      "title": "ART — Aggressive Recruitment Troubled",
+      "emoji": "⚠️",
+      "color": "var(--red)",
+      "category": "Trials de UTI",
+      "tags": ["ART", "recrutamento", "PEEP", "SDRA"],
+      "letters": {
+        "A": "Aggressive",
+        "R": "Recruitment",
+        "T": "Titrated PEEP trouxe dano no ensaio"
+      },
+      "content": "## Trial em uma frase\nNo ART, recrutamento agressivo seguido de PEEP titulada aumentou mortalidade versus estratégia de PEEP baixa. Não confunda PEEP individualizada com manobra agressiva rotineira.",
+      "sourceRefs": ["ART", "ATS_ARDS_2024"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "abcdef-liberacao-uti",
+      "title": "ABCDEF — libertação da UTI",
+      "emoji": "🕊️",
+      "color": "var(--green)",
+      "category": "Cuidados gerais UTI",
+      "tags": ["ABCDEF", "delirium", "mobilidade", "família"],
+      "letters": {
+        "A": "Assess, prevent and manage pain",
+        "B": "Both SAT and SBT",
+        "C": "Choice of analgesia/sedation",
+        "D": "Delirium assess, prevent, manage",
+        "E": "Early mobility",
+        "F": "Family engagement"
+      },
+      "content": "## Gancho TEMI\nABCDEF reúne medidas interdependentes de libertação da ventilação e cuidado centrado na pessoa. É bundle multiprofissional, não checklist isolado.",
+      "sourceRefs": [],
+      "evidenceType": "bundle-assistencial"
+    },
+    {
+      "id": "wake-up-breathe",
+      "title": "WAKE UP + BREATHE — SAT/SBT",
+      "emoji": "⏰",
+      "color": "var(--yellow)",
+      "category": "Cuidados gerais UTI",
+      "tags": ["SAT", "SBT", "desmame", "sedação"],
+      "letters": {
+        "WAKE": "teste de despertar quando seguro",
+        "BREATHE": "teste de respiração espontânea",
+        "PAIR": "parear decisões reduz atraso evitável"
+      },
+      "content": "## Gancho TEMI\nParear SAT e SBT ajuda a identificar prontidão para reduzir sedação e suporte. Antes, aplique critérios de segurança e documente por que o teste foi realizado ou adiado.",
+      "sourceRefs": [],
+      "evidenceType": "bundle-assistencial"
+    },
+    {
+      "id": "soap-ii-nora-nao-dopa",
+      "title": "SOAP II — NORA, não DOPA",
+      "emoji": "🧼",
+      "color": "var(--red)",
+      "category": "Trials de UTI",
+      "tags": ["SOAP II", "noradrenalina", "dopamina", "choque"],
+      "letters": {
+        "NORA": "noradrenalina como referência",
+        "DOPA": "dopamina gerou mais arritmias",
+        "II": "segunda escolha não significa equivalência"
+      },
+      "content": "## Trial em uma frase\nSOAP II não mostrou diferença global significativa de mortalidade, mas dopamina causou mais arritmias e teve sinal de dano no choque cardiogênico.",
+      "sourceRefs": ["SOAP_II"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "vasst-add-on-nao-superior",
+      "title": "VASST — Vasopressina soma, não supera",
+      "emoji": "➕",
+      "color": "var(--violet)",
+      "category": "Trials de UTI",
+      "tags": ["VASST", "vasopressina", "choque séptico"],
+      "letters": {
+        "VAS": "Vasopressina",
+        "ST": "Somada à terapia",
+        "MORT": "sem redução global de mortalidade"
+      },
+      "content": "## Trial em uma frase\nVASST comparou vasopressina em baixa dose com noradrenalina adicional e não reduziu a mortalidade global. Subgrupos são geradores de hipótese.",
+      "sourceRefs": ["VASST", "SSC2026"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "vanish-nao-substitui-nora",
+      "title": "VANISH — Vasopressina não substitui NORA",
+      "emoji": "🫥",
+      "color": "var(--violet)",
+      "category": "Trials de UTI",
+      "tags": ["VANISH", "vasopressina", "rim"],
+      "letters": {
+        "VA": "Vasopressina antecipada",
+        "NISH": "não melhorou dias livres de falência renal",
+        "RRT": "menos TRR foi achado secundário"
+      },
+      "content": "## Trial em uma frase\nVANISH não sustentou substituir noradrenalina por vasopressina como início rotineiro. Menor uso de TRR foi secundário e não equivale a benefício de mortalidade.",
+      "sourceRefs": ["VANISH"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "sepsispam-65-primeiro",
+      "title": "SEPSISPAM — 65 primeiro, personalize depois",
+      "emoji": "🎯",
+      "color": "var(--yellow)",
+      "category": "Trials de UTI",
+      "tags": ["SEPSISPAM", "PAM", "choque séptico"],
+      "letters": {
+        "65": "alvo inicial usual",
+        "80–85": "não reduziu mortalidade global",
+        "HAS": "hipertensão crônica pode modificar alvo renal"
+      },
+      "content": "## Trial em uma frase\nSEPSISPAM não mostrou vantagem de mortalidade com PAM 80–85 versus 65–70 mmHg e observou mais fibrilação atrial no alvo alto. Individualize perfusão e comorbidades.",
+      "sourceRefs": ["SEPSISPAM", "SSC2026"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "trial-65-permissive",
+      "title": "65 Trial — permissivo sem vitória estatística",
+      "emoji": "6️⃣",
+      "color": "var(--yellow)",
+      "category": "Trials de UTI",
+      "tags": ["65 Trial", "PAM", "idosos", "vasopressor"],
+      "letters": {
+        "AGE": "pacientes com 65 anos ou mais",
+        "MAP": "alvo permissivo 60–65",
+        "OUT": "sem redução estatística da mortalidade em 90 dias"
+      },
+      "content": "## Trial em uma frase\nNo 65 Trial, hipotensão permissiva reduziu exposição a vasopressor, mas não reduziu significativamente mortalidade em 90 dias. Não generalize para qualquer choque ou paciente jovem.",
+      "sourceRefs": ["TRIAL_65"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "athos-3-pressao-nao-sobrevida",
+      "title": "ATHOS-3 — Ang II levanta pressão, não prova sobrevida",
+      "emoji": "⬆️",
+      "color": "var(--orange)",
+      "category": "Trials de UTI",
+      "tags": ["ATHOS-3", "angiotensina II", "choque vasodilatado"],
+      "letters": {
+        "ANG": "angiotensina II",
+        "MAP": "resposta pressórica em 3 horas",
+        "MORT": "mortalidade não foi reduzida de forma significativa"
+      },
+      "content": "## Trial em uma frase\nATHOS-3 demonstrou resposta pressórica em choque vasodilatado refratário, mas não comprovou redução de mortalidade. Considere custo, trombose, seleção e protocolo.",
+      "sourceRefs": ["ATHOS_3"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "andromeda-crt",
+      "title": "ANDROMEDA — CRT antes de perseguir lactato",
+      "emoji": "🖐️",
+      "color": "var(--cyan)",
+      "category": "Trials de UTI",
+      "tags": ["ANDROMEDA-SHOCK", "TEC", "lactato", "sepse"],
+      "letters": {
+        "CRT": "tempo de enchimento capilar",
+        "SOFA": "menos disfunção orgânica no grupo periférico",
+        "P06": "mortalidade primária não cruzou significância"
+      },
+      "content": "## Trial em uma frase\nANDROMEDA-SHOCK não reduziu significativamente a mortalidade em 28 dias, mas apoiou TEC como alvo simples e mostrou menos disfunção orgânica. Lactato continua útil, com cinética não exclusiva de hipóxia.",
+      "sourceRefs": ["ANDROMEDA_SHOCK", "SSC2026"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "clovers-sem-extremos",
+      "title": "CLOVERS — nem fluido nem vasopressor vencem sozinhos",
+      "emoji": "🍀",
+      "color": "var(--green)",
+      "category": "Trials de UTI",
+      "tags": ["CLOVERS", "fluidos", "vasopressores", "sepse"],
+      "letters": {
+        "CLO": "comparou estratégia restritiva",
+        "VERS": "versus liberal",
+        "90D": "sem diferença de mortalidade até alta/90 dias"
+      },
+      "content": "## Trial em uma frase\nCLOVERS não mostrou superioridade entre estratégia restritiva precoce com vasopressor e estratégia liberal de fluidos após volume inicial. O paciente e a fase importam.",
+      "sourceRefs": ["CLOVERS", "SSC2026"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "classic-restricao-sem-mortalidade",
+      "title": "CLASSIC — Restrição não reduziu mortalidade",
+      "emoji": "🥛",
+      "color": "var(--blue)",
+      "category": "Trials de UTI",
+      "tags": ["CLASSIC", "fluidos", "choque séptico"],
+      "letters": {
+        "CLASSIC": "conservative versus standard fluid",
+        "90D": "mortalidade semelhante",
+        "PHASE": "após pelo menos 1 litro e já na UTI"
+      },
+      "content": "## Trial em uma frase\nCLASSIC reduziu volume administrado, mas não reduziu mortalidade em 90 dias. O resultado não justifica privação de fluido quando há indicação.",
+      "sourceRefs": ["CLASSIC", "SSC2026"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "adrenal-shock-faster-not-mortality",
+      "title": "ADRENAL — choque sai antes, mortalidade não",
+      "emoji": "⏳",
+      "color": "var(--orange)",
+      "category": "Trials de UTI",
+      "tags": ["ADRENAL", "hidrocortisona", "choque séptico"],
+      "letters": {
+        "A": "Adjunctive",
+        "DRENAL": "hidrocortisona em choque séptico",
+        "OUT": "reversão mais rápida sem redução de mortalidade em 90 dias"
+      },
+      "content": "## Trial em uma frase\nADRENAL encontrou resolução mais rápida do choque com hidrocortisona, sem redução significativa da mortalidade em 90 dias. Use conforme choque refratário, diretriz e protocolo.",
+      "sourceRefs": ["SSC2026"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "aprochss-hidro-fludro",
+      "title": "APROCCHSS — HIDRO + FLUDRO reduziu 90 dias",
+      "emoji": "🧪",
+      "color": "var(--green)",
+      "category": "Trials de UTI",
+      "tags": ["APROCCHSS", "hidrocortisona", "fludrocortisona", "sepse"],
+      "letters": {
+        "H": "Hidrocortisona",
+        "F": "Fludrocortisona",
+        "90": "redução de mortalidade em 90 dias no ensaio"
+      },
+      "content": "## Trial em uma frase\nAPROCCHSS encontrou menor mortalidade em 90 dias com hidrocortisona mais fludrocortisona. Diferenças de desenho e regime explicam parte do contraste com ADRENAL; siga a diretriz vigente.",
+      "sourceRefs": ["SSC2026"],
+      "evidenceType": "ensaio-randomizado"
+    },
+    {
+      "id": "hs-ts-pcr",
+      "title": "Hs e Ts — causas reversíveis da PCR",
+      "emoji": "❤️‍🩹",
+      "color": "var(--red)",
+      "category": "Clínica Médica",
+      "tags": ["PCR", "ACLS", "causas reversíveis"],
+      "letters": {
+        "Hs": "hipóxia, hipovolemia, H+ acidose, hipo/hipercalemia, hipotermia",
+        "Ts": "tensão no tórax, tamponamento, toxinas, trombose coronária/pulmonar"
+      },
+      "content": "## Gancho clínico\nDurante PCR, procure causas reversíveis sem interromper compressões de qualidade. POCUS pode ajudar quando não prolonga a pausa.",
+      "sourceRefs": [],
+      "evidenceType": "algoritmo"
+    },
+    {
+      "id": "aeiou-dialise",
+      "title": "AEIOU — indicações clássicas de TRR",
+      "emoji": "🩸",
+      "color": "var(--blue)",
+      "category": "Clínica Médica",
+      "tags": ["TRR", "diálise", "AKI"],
+      "letters": {
+        "A": "Acidose refratária",
+        "E": "Eletrólitos ameaçadores",
+        "I": "Intoxicações dializáveis",
+        "O": "Overload refratário",
+        "U": "Uremia complicada"
+      },
+      "content": "## Gancho clínico\nAEIOU resume indicações, mas a decisão depende de gravidade, tendência, reversibilidade e contexto. Creatinina isolada não determina TRR.",
+      "sourceRefs": [],
+      "evidenceType": "checklist"
+    },
+    {
+      "id": "kdigo-0-3-7",
+      "title": "KDIGO — 0,3 / 1,5 / 7",
+      "emoji": "🫘",
+      "color": "var(--cyan)",
+      "category": "Clínica Médica",
+      "tags": ["KDIGO", "AKI", "creatinina", "diurese"],
+      "letters": {
+        "0,3": "aumento de creatinina ≥0,3 mg/dL em 48 h",
+        "1,5": "≥1,5 vez o basal em 7 dias",
+        "7": "janela temporal do critério relativo"
+      },
+      "content": "## Gancho clínico\nAKI é definida por creatinina **ou diurese**. O estágio exige verificar ambos e usar o pior; ausência de creatinina basal exige estimativa cautelosa.",
+      "sourceRefs": [],
+      "evidenceType": "definicao"
+    },
+    {
+      "id": "gold-mark-acidose",
+      "title": "GOLD MARK — acidose com ânion gap",
+      "emoji": "🧯",
+      "color": "var(--yellow)",
+      "category": "Clínica Médica",
+      "tags": ["acidose", "ânion gap", "toxicologia"],
+      "letters": {
+        "G": "Glicóis",
+        "O": "Oxoprolina",
+        "L": "L-lactato",
+        "D": "D-lactato",
+        "M": "Metanol",
+        "A": "Aspirina",
+        "R": "Renal failure",
+        "K": "Ketoacidosis"
+      },
+      "content": "## Gancho clínico\nGOLD MARK atualiza o antigo MUDPILES. Corrija o ânion gap pela albumina e investigue contexto, osmolaridade, cetonas e lactato.",
+      "sourceRefs": [],
+      "evidenceType": "diferencial"
+    },
+    {
+      "id": "kult-hipercalemia-ecg",
+      "title": "KULT — ECG da hipercalemia",
+      "emoji": "⚡",
+      "color": "var(--red)",
+      "category": "Clínica Médica",
+      "tags": ["hipercalemia", "ECG", "arritmia"],
+      "letters": {
+        "K": "K alto",
+        "U": "onda U some; T fica apiculada",
+        "L": "intervalos alongam e P achata",
+        "T": "traçado alarga até padrão sine-wave"
+      },
+      "content": "## Gancho clínico\nAlterações não seguem sempre ordem previsível e ECG normal não exclui risco. Valor, velocidade de subida, sintomas e contexto renal guiam urgência.",
+      "sourceRefs": [],
+      "evidenceType": "padrao-eletrocardiografico"
+    },
+    {
+      "id": "whipple-triade",
+      "title": "WHIPPLE — tríade da hipoglicemia",
+      "emoji": "🍬",
+      "color": "var(--orange)",
+      "category": "Clínica Médica",
+      "tags": ["hipoglicemia", "Whipple", "endocrinologia"],
+      "letters": {
+        "SINT": "sintomas compatíveis",
+        "LOW": "glicose baixa documentada",
+        "RELIEF": "melhora após correção"
+      },
+      "content": "## Gancho clínico\nA tríade confirma que os sintomas acompanham hipoglicemia verdadeira. Em paciente grave, trate primeiro quando necessário e investigue causa depois.",
+      "sourceRefs": [],
+      "evidenceType": "criterio-diagnostico"
+    },
+    {
+      "id": "cad-close-the-gap",
+      "title": "CAD — feche o GAP, não só a glicose",
+      "emoji": "🧪",
+      "color": "var(--violet)",
+      "category": "Clínica Médica",
+      "tags": ["CAD", "cetoacidose", "ânion gap", "insulina"],
+      "letters": {
+        "K": "K⁺ define segurança antes/durante insulina",
+        "GAP": "ânion gap/cetonemia acompanha resolução",
+        "DEX": "dextrose permite manter insulina quando glicose cai"
+      },
+      "content": "## Gancho clínico\nNa CAD, normalizar glicose não significa resolver cetose. Reavalie potássio, acidose/cetonemia, volume e gatilho conforme protocolo local.",
+      "sourceRefs": [],
+      "evidenceType": "algoritmo"
+    },
+    {
+      "id": "curb-65-pneumonia",
+      "title": "CURB-65 — gravidade da pneumonia",
+      "emoji": "🫁",
+      "color": "var(--green)",
+      "category": "Clínica Médica",
+      "tags": ["CURB-65", "pneumonia", "gravidade"],
+      "letters": {
+        "C": "Confusão",
+        "U": "Ureia elevada",
+        "R": "Respiração ≥30",
+        "B": "Blood pressure baixa",
+        "65": "idade ≥65"
+      },
+      "content": "## Gancho clínico\nCURB-65 ajuda na estratificação, mas não substitui avaliação de hipoxemia, choque, suporte domiciliar ou critérios de pneumonia grave/UTI.",
+      "sourceRefs": [],
+      "evidenceType": "escore-prognostico"
+    },
+    {
+      "id": "light-exsudato",
+      "title": "LIGHT — exsudato se 1 acender",
+      "emoji": "💡",
+      "color": "var(--yellow)",
+      "category": "Clínica Médica",
+      "tags": ["derrame pleural", "Light", "exsudato"],
+      "letters": {
+        "P/S": "proteína pleural/sérica >0,5",
+        "LDH": "LDH pleural/sérica >0,6",
+        "2/3": "LDH pleural >2/3 do limite superior sérico"
+      },
+      "content": "## Gancho clínico\nBasta um critério de Light para classificar exsudato. Diurético pode gerar pseudoexsudato; interprete gradientes e contexto.",
+      "sourceRefs": [],
+      "evidenceType": "criterio-diagnostico"
+    },
+    {
+      "id": "cha2ds2-vasc",
+      "title": "CHA₂DS₂-VASc — risco tromboembólico",
+      "emoji": "🫀",
+      "color": "var(--cyan)",
+      "category": "Clínica Médica",
+      "tags": ["fibrilação atrial", "CHA2DS2-VASc", "AVC"],
+      "letters": {
+        "C": "insuficiência Cardíaca",
+        "H": "Hipertensão",
+        "A2": "Age ≥75 vale 2",
+        "D": "Diabetes",
+        "S2": "Stroke/TIA/tromboembolismo vale 2",
+        "V": "doença Vascular",
+        "A": "Age 65–74",
+        "Sc": "categoria sexo"
+      },
+      "content": "## Gancho clínico\nO escore estima risco em FA não valvar, mas indicação de anticoagulação depende da diretriz vigente, sexo como modificador, valvopatia e decisão compartilhada.",
+      "sourceRefs": [],
+      "evidenceType": "escore-prognostico"
+    },
+    {
+      "id": "has-bled-revisar-riscos",
+      "title": "HAS-BLED — corrija o corrigível",
+      "emoji": "🩸",
+      "color": "var(--red)",
+      "category": "Clínica Médica",
+      "tags": ["HAS-BLED", "anticoagulação", "sangramento"],
+      "letters": {
+        "H": "Hypertension",
+        "A": "Abnormal renal/liver",
+        "S": "Stroke",
+        "B": "Bleeding",
+        "L": "Labile INR",
+        "E": "Elderly",
+        "D": "Drugs/alcohol"
+      },
+      "content": "## Gancho clínico\nHAS-BLED alto pede revisão e seguimento dos fatores modificáveis; **não é veto automático** à anticoagulação.",
+      "sourceRefs": [],
+      "evidenceType": "escore-prognostico"
+    },
+    {
+      "id": "heart-dor-toracica",
+      "title": "HEART — dor torácica em 5 peças",
+      "emoji": "❤️",
+      "color": "var(--orange)",
+      "category": "Clínica Médica",
+      "tags": ["HEART", "síndrome coronariana", "troponina"],
+      "letters": {
+        "H": "History",
+        "E": "ECG",
+        "A": "Age",
+        "R": "Risk factors",
+        "T": "Troponin"
+      },
+      "content": "## Gancho clínico\nHEART estratifica dor torácica suspeita, integrado a troponina seriada e protocolo validado. ECG isquêmico ou instabilidade ultrapassam o escore.",
+      "sourceRefs": [],
+      "evidenceType": "escore-prognostico"
+    },
+    {
+      "id": "perc-oito-negativos",
+      "title": "PERC — 8 zeros para não testar",
+      "emoji": "🫁",
+      "color": "var(--green)",
+      "category": "Clínica Médica",
+      "tags": ["PERC", "TEP", "probabilidade pré-teste"],
+      "letters": {
+        "AGE": "idade <50",
+        "PULSE": "FC <100",
+        "SAT": "SpO₂ ≥95%",
+        "NO": "sem hemoptise, estrogênio, TVP/TEP prévio, edema unilateral ou cirurgia/trauma recente"
+      },
+      "content": "## Gancho clínico\nPERC só exclui TEP quando a probabilidade clínica já é **baixa** e todos os itens são negativos. Não aplique em probabilidade intermediária/alta.",
+      "sourceRefs": [],
+      "evidenceType": "regra-exclusao"
+    },
+    {
+      "id": "years-tep",
+      "title": "YEARS — 3 perguntas mudam o D-dímero",
+      "emoji": "📅",
+      "color": "var(--violet)",
+      "category": "Clínica Médica",
+      "tags": ["YEARS", "TEP", "D-dímero"],
+      "letters": {
+        "DVT": "sinais clínicos de TVP",
+        "HEM": "hemoptise",
+        "MOST": "TEP é o diagnóstico mais provável"
+      },
+      "content": "## Gancho clínico\nYEARS ajusta o limiar de D-dímero conforme três itens clínicos. Use somente no algoritmo validado e respeite gestação, anticoagulação e instabilidade.",
+      "sourceRefs": [],
+      "evidenceType": "algoritmo-diagnostico"
+    },
+    {
+      "id": "hints-vertigem",
+      "title": "HINTS — Head, Nystagmus, Skew",
+      "emoji": "👁️",
+      "color": "var(--cyan)",
+      "category": "Clínica Médica",
+      "tags": ["HINTS", "vertigem", "AVC"],
+      "letters": {
+        "HI": "Head Impulse",
+        "N": "Nystagmus",
+        "TS": "Test of Skew"
+      },
+      "content": "## Gancho clínico\nHINTS aplica-se à **síndrome vestibular aguda contínua**, com nistagmo espontâneo, em examinador treinado. Não use em tontura episódica ou paciente assintomático.",
+      "sourceRefs": [],
+      "evidenceType": "exame-diagnostico"
+    },
+    {
+      "id": "be-fast-avc",
+      "title": "BE-FAST — AVC além da face",
+      "emoji": "🧠",
+      "color": "var(--red)",
+      "category": "Clínica Médica",
+      "tags": ["BE-FAST", "AVC", "reconhecimento"],
+      "letters": {
+        "B": "Balance",
+        "E": "Eyes",
+        "F": "Face",
+        "A": "Arm",
+        "S": "Speech",
+        "T": "Time"
+      },
+      "content": "## Gancho clínico\nBE-FAST amplia o reconhecimento para sinais posteriores. Glicemia e último horário bem conhecido entram cedo no fluxo, sem atrasar imagem.",
+      "sourceRefs": [],
+      "evidenceType": "triagem"
+    },
+    {
+      "id": "snoop10-cefaleia",
+      "title": "SNOOP10 — bandeiras vermelhas da cefaleia",
+      "emoji": "🚩",
+      "color": "var(--red)",
+      "category": "Clínica Médica",
+      "tags": ["SNOOP10", "cefaleia", "red flags"],
+      "letters": {
+        "S": "Systemic symptoms/disease",
+        "N": "Neurologic deficit",
+        "O": "Onset súbito",
+        "O2": "Older age no início",
+        "P": "Pattern change/positional/papiledema/precipitada"
+      },
+      "content": "## Gancho clínico\nSNOOP10 é mapa de alerta, não escore de exclusão. Início em trovoada, déficit, febre/imunossupressão, papiledema ou mudança de padrão exigem investigação dirigida.",
+      "sourceRefs": [],
+      "evidenceType": "red-flags"
+    },
+    {
+      "id": "aims65-hemorragia-digestiva",
+      "title": "AIMS65 — HDA e risco hospitalar",
+      "emoji": "🩸",
+      "color": "var(--orange)",
+      "category": "Clínica Médica",
+      "tags": ["AIMS65", "hemorragia digestiva", "prognóstico"],
+      "letters": {
+        "A": "Albumina baixa",
+        "I": "INR elevado",
+        "M": "Mental status alterado",
+        "S": "Systolic pressure baixa",
+        "65": "idade ≥65"
+      },
+      "content": "## Gancho clínico\nAIMS65 estima risco, mas não substitui ABCDE, resposta à ressuscitação, Glasgow-Blatchford e avaliação endoscópica.",
+      "sourceRefs": [],
+      "evidenceType": "escore-prognostico"
+    },
+    {
+      "id": "glasgow-blatchford",
+      "title": "GBS — quem pode ser muito baixo risco",
+      "emoji": "🏠",
+      "color": "var(--green)",
+      "category": "Clínica Médica",
+      "tags": ["Glasgow-Blatchford", "HDA", "endoscopia"],
+      "letters": {
+        "LAB": "ureia e hemoglobina",
+        "VITAL": "pressão e pulso",
+        "CLIN": "melena, síncope, fígado e coração"
+      },
+      "content": "## Gancho clínico\nGlasgow-Blatchford é pré-endoscópico e identifica baixo risco em protocolos validados. Instabilidade ou sangramento ativo sempre prevalecem.",
+      "sourceRefs": [],
+      "evidenceType": "escore-prognostico"
+    },
+    {
+      "id": "damnit-v-delirium",
+      "title": "DAMNIT-V — causas de delirium",
+      "emoji": "🧩",
+      "color": "var(--violet)",
+      "category": "Clínica Médica",
+      "tags": ["delirium", "diferencial", "causas reversíveis"],
+      "letters": {
+        "D": "Drugs",
+        "A": "Alcohol",
+        "M": "Metabolic",
+        "N": "Neurologic",
+        "I": "Infection",
+        "T": "Trauma",
+        "V": "Vascular"
+      },
+      "content": "## Gancho clínico\nDAMNIT-V organiza causas, mas o primeiro passo é confirmar delirium, revisar fármacos, dor, retenção, hipóxia, glicemia e ambiente. Trate causa, não apenas agitação.",
+      "sourceRefs": [],
+      "evidenceType": "diferencial"
+    }
+  ]
+}
