@@ -36,14 +36,15 @@ PRIVADO → 3 GATES → FONTE CANÔNICA → GERADOR → DIFF
         → TESTES → ALLOWLIST → PREVIEW → PR → MAIN → PAGES → HOMOLOGAÇÃO
 ```
 
-### ⏱️ Se você tem somente 29 minutos
+### ⏱️ Se você tem 1 hora
 
 Não escolha manualmente uma seção. Peça ao Codex: **“Execute a Rotina
-Antigravity de hoje, com no máximo 29 minutos.”**
+Antigravity de hoje, com 60 minutos.”**
 
 O planejador `scripts_admin/plan_daily_updates.py` seleciona automaticamente
-uma seção clínica/TEMI, uma seção de estudo ativo e uma área de sustentação do
-portal. O roteiro completo está em
+uma seção de conteúdo Turbo TEMI, uma de design TDAH-friendly e uma de
+performance mensurável. Radar Diário, Integridade/privacidade e Portal Vivo
+também recebem uma checagem contínua obrigatória. O roteiro completo está em
 [`ROTINA_DIARIA_30_MIN.md`](ROTINA_DIARIA_30_MIN.md).
 
 ## 🗺️ Escolha rápida do destino

@@ -1,39 +1,82 @@
 {
-  "schemaVersion": "antigravity-daily-update-rotation-v1",
+  "schemaVersion": "antigravity-daily-update-rotation-v2",
   "updatedAt": "2026-07-29",
   "timezone": "America/Fortaleza",
-  "maxMinutes": 29,
-  "validationMinutes": 4,
+  "maxMinutes": 60,
+  "validationMinutes": 8,
+  "continuousPulse": [
+    {
+      "id": "radar-diario-continuo",
+      "label": "Radar Diário",
+      "emoji": "📡",
+      "minutes": 6,
+      "route": "15_Radar_Cientifico/index.html",
+      "task": "Verificar fonte primária nova, duplicidade e relevância; publicar somente achado sustentado ou registrar que não houve atualização segura.",
+      "definitionOfDone": "Fonte e identidade conferidas; edição atualizada ou decisão explícita de não publicar."
+    },
+    {
+      "id": "integridade-continua",
+      "label": "Integridade e privacidade",
+      "emoji": "🛡️",
+      "minutes": 2,
+      "route": "19_Integridade_Editorial/index.html",
+      "task": "Verificar dados identificáveis, credenciais, revisão pendente e alertas dos gates.",
+      "definitionOfDone": "Nenhum risco novo ignorado; bloqueio ou pendência documentado quando necessário."
+    },
+    {
+      "id": "portal-vivo-continuo",
+      "label": "Portal Vivo",
+      "emoji": "🛰️",
+      "minutes": 2,
+      "route": "17_Portal_Vivo/index.html",
+      "task": "Conferir histórico antirrepetição e registrar somente UPGRADE realmente entregue.",
+      "definitionOfDone": "Histórico conferido; UPGRADE real registrado ou nenhuma publicação artificial criada."
+    }
+  ],
+  "selectionPolicy": {
+    "mode": "balanced-deterministic-random",
+    "seedNamespace": "antigravity-rotina-60-v2",
+    "forecastCooldownDays": 6,
+    "gitCooldownDays": 5,
+    "minimumSectionsPerLane": 7,
+    "fairnessWindowDays": 42
+  },
   "lanes": [
     {
-      "id": "clinica-temi",
-      "label": "Clínica e TEMI",
-      "emoji": "🩺",
-      "minutes": 11,
-      "rotationOffset": 0,
-      "goal": "Aprimorar um único ponto clínico de alto valor, com fonte e revisão humana."
-    },
-    {
-      "id": "estudo-ativo",
-      "label": "Estudo ativo",
+      "id": "conteudo-temi",
+      "label": "Conteúdo Turbo TEMI",
       "emoji": "🧠",
-      "minutes": 8,
-      "rotationOffset": 3,
-      "goal": "Converter conhecimento já sustentado em recuperação ativa e revisão rápida."
+      "minutes": 18,
+      "rotationOffset": 0,
+      "goal": "Aprimorar uma microentrega de conteúdo com fonte, gancho de prova, âncora de memória e ressalva.",
+      "qualityFocus": "conteúdo",
+      "definitionOfDone": "Uma ideia de alto rendimento, 2 a 5 pontos, uma pergunta ativa, fonte e limite clínico explícito."
     },
     {
-      "id": "portal-vivo",
-      "label": "Sustentação do portal",
-      "emoji": "🛰️",
-      "minutes": 6,
+      "id": "design-tdah",
+      "label": "Design TDAH-friendly",
+      "emoji": "🎨",
+      "minutes": 12,
+      "rotationOffset": 3,
+      "goal": "Reduzir carga cognitiva e tornar uma superfície mais escaneável, acessível e responsiva.",
+      "qualityFocus": "design",
+      "definitionOfDone": "Hierarquia clara, foco visível, alvo de toque adequado, contraste preservado e nenhuma decoração sem função."
+    },
+    {
+      "id": "performance-qualidade",
+      "label": "Performance e qualidade",
+      "emoji": "⚡",
+      "minutes": 12,
       "rotationOffset": 5,
-      "goal": "Manter navegação, curadoria, documentação e qualidade editorial uniformes."
+      "goal": "Medir e melhorar um gargalo real sem aumentar rede, permissões ou risco de regressão.",
+      "qualityFocus": "performance",
+      "definitionOfDone": "Métrica antes/depois ou contrato automatizado, melhoria pequena e reversível, sem regressão funcional."
     }
   ],
   "sections": [
     {
       "id": "avc-agudo",
-      "lane": "clinica-temi",
+      "lane": "conteudo-temi",
       "label": "AVC Agudo",
       "route": "01_Modulos_Clinicos/AVC_Agudo/avc.html",
       "paths": [
@@ -48,7 +91,7 @@
     },
     {
       "id": "ventilacao-mecanica",
-      "lane": "clinica-temi",
+      "lane": "conteudo-temi",
       "label": "Ventilação Mecânica",
       "route": "01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html",
       "paths": [
@@ -63,7 +106,7 @@
     },
     {
       "id": "delirium-uti",
-      "lane": "clinica-temi",
+      "lane": "conteudo-temi",
       "label": "Delirium UTI/Enfermaria",
       "route": "01_Modulos_Clinicos/Delirium_UTI/index.html",
       "paths": [
@@ -78,7 +121,7 @@
     },
     {
       "id": "hematologia-critica",
-      "lane": "clinica-temi",
+      "lane": "conteudo-temi",
       "label": "Hematologia Crítica",
       "route": "01_Modulos_Clinicos/Hematologia_Critica/index.html",
       "paths": [
@@ -93,7 +136,7 @@
     },
     {
       "id": "reumatologia-critica",
-      "lane": "clinica-temi",
+      "lane": "conteudo-temi",
       "label": "Reumatologia Crítica",
       "route": "01_Modulos_Clinicos/Reumatologia_Critica/index.html",
       "paths": [
@@ -109,7 +152,7 @@
     },
     {
       "id": "renaldose",
-      "lane": "clinica-temi",
+      "lane": "conteudo-temi",
       "label": "RenalDose e antimicrobianos",
       "route": "13_RenalDose_Antimicrobianos/index.html",
       "paths": [
@@ -124,7 +167,7 @@
     },
     {
       "id": "pocus",
-      "lane": "clinica-temi",
+      "lane": "conteudo-temi",
       "label": "POCUS Hub",
       "route": "09_POCUS_Hub/index.html",
       "paths": [
@@ -139,7 +182,7 @@
     },
     {
       "id": "hsa-neurocritica",
-      "lane": "clinica-temi",
+      "lane": "conteudo-temi",
       "label": "HSA e Neurocrítica",
       "route": "01_Modulos_Clinicos/HSA_Projeto_Aprendizagem/index.html",
       "paths": [
@@ -154,7 +197,7 @@
     },
     {
       "id": "calculadoras-clinicas",
-      "lane": "clinica-temi",
+      "lane": "conteudo-temi",
       "label": "Calculadoras e Apps clínicos",
       "route": "03_Calculadoras_E_Apps/index.html",
       "paths": [
@@ -170,7 +213,7 @@
     },
     {
       "id": "banco-temi",
-      "lane": "estudo-ativo",
+      "lane": "conteudo-temi",
       "label": "Banco de Questões TEMI",
       "route": "questoes/index.html",
       "paths": [
@@ -186,7 +229,7 @@
     },
     {
       "id": "questoes-comentadas",
-      "lane": "estudo-ativo",
+      "lane": "conteudo-temi",
       "label": "Questões Comentadas",
       "route": "07_Questoes_Comentadas/index.html",
       "paths": [
@@ -201,7 +244,7 @@
     },
     {
       "id": "desafios",
-      "lane": "estudo-ativo",
+      "lane": "conteudo-temi",
       "label": "Desafios TEMI/R3",
       "route": "desafios/index.html",
       "paths": [
@@ -217,7 +260,7 @@
     },
     {
       "id": "mnemonicos",
-      "lane": "estudo-ativo",
+      "lane": "conteudo-temi",
       "label": "Mnemônicos",
       "route": "index.html#mnemonicos",
       "paths": [
@@ -232,7 +275,7 @@
     },
     {
       "id": "card-feed",
-      "lane": "estudo-ativo",
+      "lane": "design-tdah",
       "label": "Card Feed Médico",
       "route": "05_Midia_E_Feed/index.html",
       "paths": [
@@ -240,14 +283,14 @@
       ],
       "priority": 4,
       "microTasks": [
-        "Transformar um conceito já revisado em card vertical autossuficiente.",
-        "Aprimorar a legibilidade de um card preservando fonte e direitos de uso.",
-        "Criar uma âncora visual própria, sem copiar figura protegida de artigo."
+        "Aprimorar a hierarquia de um card para leitura em cinco segundos, preservando fonte e direitos.",
+        "Reduzir ruído visual no feed e manter título, mensagem central e ressalva escaneáveis.",
+        "Revisar responsividade, foco e alvos de toque de um fluxo sem adicionar decoração."
       ]
     },
     {
       "id": "updown",
-      "lane": "estudo-ativo",
+      "lane": "design-tdah",
       "label": "UpDown Hub",
       "route": "01_UpDown_Hub/index.html",
       "paths": [
@@ -255,14 +298,14 @@
       ],
       "priority": 4,
       "microTasks": [
-        "Aprimorar um resumo em blocos curtos e registrar a fonte.",
-        "Converter um tópico longo em cinco pontos de alto rendimento TEMI.",
-        "Revisar links e conexão temática de um conteúdo já homologado."
+        "Reorganizar uma superfície em blocos curtos com uma ação principal evidente.",
+        "Aprimorar foco, teclado e alvos de toque dos cartões sem alterar o conteúdo clínico.",
+        "Reduzir densidade visual de uma rota preservando identidade, contraste e navegação."
       ]
     },
     {
       "id": "biblioteca",
-      "lane": "estudo-ativo",
+      "lane": "design-tdah",
       "label": "Biblioteca IA",
       "route": "02_Biblioteca_IA_Engine/index.html",
       "paths": [
@@ -270,14 +313,14 @@
       ],
       "priority": 4,
       "microTasks": [
-        "Catalogar um único documento autorizado sem publicar o binário original.",
-        "Aprimorar título, resumo, tags ou proveniência de um item já aprovado.",
-        "Revisar um preview HTML pelo gate fail-closed."
+        "Aprimorar a hierarquia visual de busca, filtros e previews sem expor binários originais.",
+        "Reduzir carga cognitiva de um estado vazio, erro ou revisão pendente.",
+        "Revisar teclado, foco e responsividade de um fluxo da Biblioteca."
       ]
     },
     {
       "id": "transcricoes",
-      "lane": "estudo-ativo",
+      "lane": "design-tdah",
       "label": "Transcrições",
       "route": "08_Transcricoes/index.html",
       "paths": [
@@ -285,29 +328,29 @@
       ],
       "priority": 2,
       "microTasks": [
-        "Converter um trecho autorizado em síntese própria de alto rendimento.",
-        "Revisar autoria, licença e anonimização de um item antes de promover.",
-        "Criar marcadores de estudo para uma transcrição já aprovada."
+        "Aprimorar a leitura longa com largura, ritmo, marcadores e progresso visíveis.",
+        "Reorganizar controles de estudo para uma ação principal e poucas escolhas por vez.",
+        "Revisar estados de foco, impressão e tela móvel de uma transcrição autorizada."
       ]
     },
     {
-      "id": "radar-diario",
-      "lane": "portal-vivo",
-      "label": "Estação Radar Diário",
-      "route": "15_Radar_Cientifico/index.html",
+      "id": "ebooks-intensiva",
+      "lane": "conteudo-temi",
+      "label": "E-books de Terapia Intensiva",
+      "route": "04_Ebooks_Intensiva_Clinica/index.html",
       "paths": [
-        "15_Radar_Cientifico"
+        "04_Ebooks_Intensiva_Clinica"
       ],
-      "priority": 5,
+      "priority": 3,
       "microTasks": [
-        "Auditar e sintetizar uma única fonte primária no formato Turbo TEMI.",
-        "Revisar duplicidade por DOI, PMID ou URL canônica antes de incluir item.",
-        "Atualizar a ressalva, desenho ou limitação de uma entrada existente."
+        "Aprimorar a síntese Turbo TEMI de um capítulo já autorizado, sem reproduzir texto protegido.",
+        "Revisar objetivos, pérolas de prova e aplicação clínica de uma leitura existente.",
+        "Atualizar autoria, edição, origem e limitações de um material já catalogado."
       ]
     },
     {
       "id": "diretorio-medico",
-      "lane": "portal-vivo",
+      "lane": "design-tdah",
       "label": "Diretório Médico",
       "route": "16_Diretorio_Medico/index.html",
       "paths": [
@@ -315,45 +358,44 @@
       ],
       "priority": 3,
       "microTasks": [
-        "Verificar um link oficial e atualizar descrição ou disponibilidade.",
-        "Adicionar uma fonte primária institucional ainda ausente.",
-        "Remover ambiguidade de categoria sem recomendar fonte não auditada."
+        "Aprimorar filtros e cartões para comparação rápida por área, acesso e região.",
+        "Reduzir ambiguidade visual de categorias sem recomendar fonte não auditada.",
+        "Revisar responsividade, foco e estado vazio do diretório."
       ]
     },
     {
-      "id": "portal-vivo-upgrade",
-      "lane": "portal-vivo",
-      "label": "Portal Vivo — UPGRADE",
-      "route": "17_Portal_Vivo/index.html",
+      "id": "centro-tripulacao-performance",
+      "lane": "performance-qualidade",
+      "label": "Performance do Centro de Tripulação",
+      "route": "18_Centro_Tripulacao/index.html",
       "paths": [
-        "17_Portal_Vivo"
+        "18_Centro_Tripulacao"
       ],
       "priority": 3,
       "microTasks": [
-        "Registrar uma melhoria técnica realmente entregue, sem exagerar resultado.",
-        "Revisar o histórico antirrepetição e uma entrada operacional.",
-        "Aprimorar clareza de um UPGRADE já publicado e preservar rastreabilidade."
+        "Medir renderização ou filtragem do painel e reduzir uma operação repetida.",
+        "Criar um teste de estabilidade para estado local, filtros ou atualização de cartões.",
+        "Aprimorar carregamento progressivo preservando contexto, privacidade e rastreabilidade."
       ]
     },
     {
-      "id": "integridade-editorial",
-      "lane": "portal-vivo",
-      "label": "Integridade Editorial",
-      "route": "19_Integridade_Editorial/index.html",
+      "id": "conheca-aldenir-performance",
+      "lane": "performance-qualidade",
+      "label": "Performance do Conheça Aldenir",
+      "route": "20_Conheca_Aldenir/index.html",
       "paths": [
-        "19_Integridade_Editorial",
-        "data/editorial"
+        "20_Conheca_Aldenir"
       ],
-      "priority": 5,
+      "priority": 3,
       "microTasks": [
-        "Revisar um gate de privacidade, autoria ou revisão clínica.",
-        "Verificar uma fonte oficial cadastrada sem declarar conformidade jurídica.",
-        "Aprimorar um aviso editorial ou plano de reversão."
+        "Medir abertura, filtragem ou renderização do canal público e reduzir trabalho repetido.",
+        "Aprimorar carregamento da navegação sem ampliar exposição de informações pessoais.",
+        "Criar um teste de estabilidade para conteúdo aprovado, foco ou impressão."
       ]
     },
     {
       "id": "central-ativacao",
-      "lane": "portal-vivo",
+      "lane": "performance-qualidade",
       "label": "Central de Ativação",
       "route": "21_Central_Ativacao/index.html",
       "paths": [
@@ -361,14 +403,14 @@
       ],
       "priority": 3,
       "microTasks": [
-        "Atualizar uma próxima etapa com responsável e critério de conclusão.",
-        "Remover uma pendência já resolvida sem inventar homologação.",
-        "Reduzir uma tarefa ampla para uma microação TDAH-friendly."
+        "Medir inicialização ou atualização do roadmap e evitar uma renderização desnecessária.",
+        "Criar um teste de estabilidade para dependências, progresso ou armazenamento local.",
+        "Reduzir trabalho de DOM preservando a leitura TDAH-friendly das próximas etapas."
       ]
     },
     {
       "id": "home-mapa",
-      "lane": "portal-vivo",
+      "lane": "design-tdah",
       "label": "Home e Mapa Vivo",
       "route": "index.html#mapa",
       "paths": [
@@ -386,7 +428,7 @@
     },
     {
       "id": "guias-operacionais",
-      "lane": "portal-vivo",
+      "lane": "design-tdah",
       "label": "Guias operacionais",
       "route": "docs_usuario/index.html",
       "paths": [
@@ -401,7 +443,7 @@
     },
     {
       "id": "offline-acessibilidade",
-      "lane": "portal-vivo",
+      "lane": "performance-qualidade",
       "label": "Offline e acessibilidade",
       "route": "index.html#a11yPanel",
       "paths": [
@@ -415,6 +457,104 @@
         "Revisar um fluxo por teclado, foco ou leitor de tela.",
         "Verificar uma rota essencial no cache offline sem aumentar permissões.",
         "Aprimorar contraste, redução de movimento ou impressão sem mudar a identidade."
+      ]
+    },
+    {
+      "id": "performance-build-rotas",
+      "lane": "performance-qualidade",
+      "label": "Builder, rotas e deploy",
+      "route": "en/index.html",
+      "paths": [
+        "scripts_admin/build_public_site.py",
+        "scripts/validate_routes.py",
+        ".github/workflows/deploy-seguro.yml",
+        "en"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Medir uma etapa lenta do builder e otimizar somente o gargalo confirmado.",
+        "Reduzir trabalho duplicado em uma validação sem enfraquecer o modo fail-closed.",
+        "Criar ou aprimorar um contrato automatizado para rota, cache ou artefato público."
+      ]
+    },
+    {
+      "id": "performance-biblioteca",
+      "lane": "performance-qualidade",
+      "label": "Performance da Biblioteca IA",
+      "route": "02_Biblioteca_IA_Engine/index.html",
+      "paths": [
+        "02_Biblioteca_IA_Engine"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Medir custo de busca, filtro ou renderização e reduzir um trabalho repetido.",
+        "Aprimorar carregamento progressivo sem expor binários ou conteúdo não homologado.",
+        "Criar um teste de estabilidade para catálogo, preview ou estado local."
+      ]
+    },
+    {
+      "id": "performance-calculadoras",
+      "lane": "performance-qualidade",
+      "label": "Performance das Calculadoras",
+      "route": "03_Calculadoras_E_Apps/index.html",
+      "paths": [
+        "03_Calculadoras_E_Apps",
+        "calculadoras"
+      ],
+      "priority": 5,
+      "microTasks": [
+        "Medir e reduzir uma recomputação ou atualização visual desnecessária sem alterar fórmulas.",
+        "Aprimorar resposta de teclado e validação de entrada com um teste de regressão.",
+        "Reduzir custo de inicialização preservando unidades, arredondamento e avisos de segurança."
+      ]
+    },
+    {
+      "id": "performance-card-feed",
+      "lane": "performance-qualidade",
+      "label": "Performance do Card Feed",
+      "route": "05_Midia_E_Feed/index.html",
+      "paths": [
+        "05_Midia_E_Feed"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Medir renderização incremental e reduzir um gargalo de rolagem ou filtro.",
+        "Aprimorar lazy loading e prioridades de imagem sem buscar ativos externos.",
+        "Reduzir trabalho de DOM mantendo navegação por teclado e estado local."
+      ]
+    },
+    {
+      "id": "performance-guide-reader",
+      "lane": "performance-qualidade",
+      "label": "Performance do leitor de guias",
+      "route": "docs_usuario/index.html",
+      "paths": [
+        "docs_usuario/index.html",
+        "docs_usuario/guide-reader.js",
+        "docs_usuario/guide-reader.css"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Medir abertura, busca ou troca de guia e eliminar uma operação duplicada.",
+        "Aprimorar renderização progressiva preservando teclado, foco e leitura local.",
+        "Criar um teste de desempenho funcional para filtro, histórico ou impressão."
+      ]
+    },
+    {
+      "id": "performance-home-assets",
+      "lane": "performance-qualidade",
+      "label": "Performance da Home e assets",
+      "route": "index.html",
+      "paths": [
+        "index.html",
+        "06_Infra_Site_E_Assets",
+        "assets"
+      ],
+      "priority": 4,
+      "microTasks": [
+        "Medir peso ou custo de inicialização e reduzir um ativo ou caminho crítico comprovado.",
+        "Aprimorar carregamento de scripts e estilos sem causar flash de tema ou perda offline.",
+        "Criar um limite automatizado para evitar regressão de bytes, rotas ou inicialização."
       ]
     }
   ]

@@ -1,41 +1,109 @@
-# 🛰️ Rotina Diária Antigravity — 29 minutos
+# 🛰️ Rotina Diária Antigravity — 60 minutos
 
 O Codex escolhe automaticamente as seções do dia. Você não precisa decidir o
 tema, organizar a ordem nem abrir o Mac Pro.
 
 > **Comando único para usar no chat:** “Execute a Rotina Antigravity de hoje,
-> com no máximo 29 minutos.”
+> com 60 minutos.”
+
+> O endereço deste arquivo mantém `ROTINA_DIARIA_30_MIN` por compatibilidade
+> com links e instalações antigas. A rotina vigente dura **60 minutos**.
 
 ## 🎯 O que acontece todos os dias
 
-O planejador escolhe três seções diferentes:
+O planejador mantém três tópicos contínuos e escolhe três seções diferentes para
+os pilares randômicos:
 
-1. **🩺 Clínica e TEMI — 11 minutos:** um único ponto clínico de alto valor.
-2. **🧠 Estudo ativo — 8 minutos:** questão, desafio, card, mnemônico ou resumo.
-3. **🛰️ Sustentação do portal — 6 minutos:** Radar, links, navegação,
-   documentação, acessibilidade ou integridade.
-4. **🛡️ Validação — 4 minutos:** diff, privacidade, teste relacionado, builder e
-   decisão de publicação.
+1. **🔁 Pulso contínuo — 10 minutos:** Radar Diário, Integridade/privacidade e
+   Portal Vivo são verificados em todas as sessões.
+2. **🧠 Conteúdo Turbo TEMI — 18 minutos:** uma microentrega com fonte, gancho
+   de prova, recuperação ativa e ressalva clínica.
+3. **🎨 Design TDAH-friendly — 12 minutos:** hierarquia, escaneabilidade,
+   responsividade, teclado e redução de carga cognitiva.
+4. **⚡ Performance e qualidade — 12 minutos:** um gargalo medido, uma melhoria
+   reversível e um teste ou comparação antes/depois.
+5. **🛡️ Validação e publicação — 8 minutos:** diff, privacidade, gate
+   editorial, testes relacionados e builder.
 
-**Total máximo: 29 minutos.**
+**Total máximo: 60 minutos.**
 
-## 🧠 Como o Codex escolhe
+## 🎲 Como o Codex escolhe
 
-A escolha não é aleatória. O planejador combina:
+A seleção é **pseudoaleatória, auditável e equilibrada**. Isso significa que
+ela varia diariamente, mas pode ser reproduzida para revisão.
 
-- rodízio diário entre as seções da mesma trilha;
-- prioridade clínica e importância para o TEMI;
+O planejador combina:
+
+- uma permutação diferente e reproduzível em cada ciclo de cada pilar;
+- prioridade clínica, valor para o TEMI e impacto operacional;
 - tempo desde a última alteração registrada no Git;
-- penalidade para seção atualizada nos últimos três dias;
-- bloqueio de repetição no cronograma dos cinco dias anteriores;
-- pequena variação determinística pela data.
+- penalidade para seção alterada nos últimos cinco dias;
+- bloqueio de repetição nas seis seleções anteriores de cada pilar;
+- prevenção de escolher a mesma rota em dois pilares no mesmo dia;
+- janela de equilíbrio de 42 dias para monitorar cobertura.
 
-Isso mantém o site dinâmico sem abandonar seções menos chamativas.
+Assim, áreas populares não monopolizam a rotina e seções menos visíveis voltam
+ao cronograma de forma homogênea ao longo do tempo.
+
+## 🔁 Pulso contínuo obrigatório
+
+Três tópicos não participam do sorteio: são considerados diariamente.
+
+### 📡 Radar Diário — 6 minutos
+
+- procurar uma fonte primária nova e relevante;
+- verificar duplicidade por DOI, PMID, identificador ou URL canônica;
+- publicar somente se houver achado sustentado;
+- quando não houver atualização segura, registrar a decisão de não publicar.
+
+### 🛡️ Integridade e privacidade — 2 minutos
+
+- verificar dados identificáveis, credenciais e conteúdo em revisão;
+- observar alertas dos gates e não flexibilizar bloqueios para ganhar tempo.
+
+### 🛰️ Portal Vivo — 2 minutos
+
+- conferir o histórico antirrepetição;
+- registrar somente UPGRADE realmente entregue;
+- não criar publicação artificial para preencher o calendário.
+
+## 🧠 Contrato Turbo TEMI + TDAH
+
+### Conteúdo Turbo TEMI
+
+Uma entrega de conteúdo termina com:
+
+- impacto clínico ou educacional em uma frase;
+- gancho de prova ou pergunta de recuperação;
+- âncora visual ou mnemônica própria;
+- dois a cinco pontos de alto rendimento;
+- fonte, população, desenho ou limitação quando aplicável;
+- ressalva: não substituir protocolo local nem decisão assistencial.
+
+### Design TDAH-friendly
+
+Uma entrega de design termina com:
+
+- uma ação principal evidente;
+- blocos curtos e hierarquia legível em cinco segundos;
+- foco visível, teclado e alvos de toque adequados;
+- contraste, modo claro/escuro, mobile e impressão preservados;
+- nenhum elemento decorativo sem função de aprendizagem.
+
+### Performance mensurável
+
+Uma entrega de performance termina com:
+
+- hipótese e métrica antes da alteração;
+- uma única otimização pequena e reversível;
+- medida ou contrato automatizado depois da alteração;
+- zero aumento de permissões, telemetria ou dependência externa;
+- nenhuma mudança silenciosa em fórmula, dado clínico ou compatibilidade.
 
 ## 📅 Cronograma vivo
 
-O cronograma não fica congelado numa tabela semanal. Ele é recalculado a cada
-dia conforme o estado atual do projeto.
+O cronograma é recalculado diariamente conforme data, ciclo equilibrado e
+histórico real do projeto.
 
 Para gerar somente hoje:
 
@@ -60,45 +128,70 @@ python3 scripts_admin/plan_daily_updates.py \
 
 O planejador é somente leitura: não modifica o site, não usa rede e não publica nada sozinho.
 
-## ⏱️ Mini-roteiro diário
+## ⏱️ Mini-roteiro diário de 1 hora
 
-### Minuto 0–11 — Clínica e TEMI
+### Minuto 0–10 — Pulso contínuo
 
-- Abrir somente a seção escolhida.
-- Selecionar um único ponto de decisão, alerta ou conceito.
-- Conferir uma fonte primária ou diretriz oficial quando houver afirmação nova.
-- Fazer uma microentrega: um bloco, uma pérola ou uma correção.
-- Não transformar estudo isolado em protocolo.
+- **0–6:** Radar Diário.
+- **6–8:** Integridade e privacidade.
+- **8–10:** Portal Vivo e histórico antirrepetição.
 
-### Minuto 11–19 — Estudo ativo
+Uma checagem sem novidade relevante também é conclusão válida. Não force uma
+publicação.
 
-- Transformar conhecimento já sustentado em uma única atividade.
-- Preferir questão comentada, pergunta de recuperação, mini-OSCE, mnemônico com
-  ressalva ou card autossuficiente.
-- Registrar fonte e limitação.
-- Não usar dados reais ou identificáveis de paciente.
+### Minuto 10–28 — Conteúdo Turbo TEMI
 
-### Minuto 19–25 — Sustentação do portal
+- **10–12:** abrir somente a rota escolhida e iniciar o cronômetro.
+- **12–22:** revisar ou criar uma única microentrega.
+- **22–26:** acrescentar fonte, gancho de prova, âncora e ressalva.
+- **26–28:** reler como intensivista em plantão e parar.
 
-- Executar somente a microtarefa escolhida.
-- Revisar um link, uma rota, uma descrição, uma entrada do Radar ou um aviso
-  editorial.
-- Não abrir uma reforma visual ampla.
+Não transformar estudo isolado em protocolo. Não usar dados reais ou
+identificáveis de paciente.
 
-### Minuto 25–29 — Validação
+### Minuto 28–40 — Design TDAH-friendly
 
-- Revisar o diff.
-- Confirmar autoria/licença, privacidade e revisão clínica.
-- Executar teste relacionado, portão de publicação e builder.
-- Se qualquer gate falhar, manter em revisão e não publicar.
-- Parar no minuto 29, mesmo que existam outras boas ideias.
+- **28–30:** observar a tela em desktop e largura móvel.
+- **30–37:** corrigir apenas uma barreira de hierarquia ou interação.
+- **37–40:** conferir teclado, foco, contraste e alvo de toque.
+
+Não iniciar uma reforma visual ampla. Clareza vem antes de decoração.
+
+### Minuto 40–52 — Performance e qualidade
+
+- **40–43:** medir o estado atual ou definir um contrato objetivo.
+- **43–49:** executar uma única melhoria reversível.
+- **49–52:** repetir a medida ou o teste e documentar o resultado real.
+
+Se não houver medida confiável, criar o teste primeiro e deixar a otimização
+para outra sessão.
+
+### Minuto 52–60 — Validação e publicação
+
+- revisar o diff e remover qualquer arquivo acidental;
+- confirmar autoria, licença, privacidade e status de revisão clínica;
+- executar os testes diretamente relacionados;
+- executar gate editorial, portão de publicação e builder;
+- registrar no Radar conteúdo clínico/estudo e no Portal Vivo somente UPGRADE
+  operacional realmente entregue;
+- encerrar no minuto 60.
+
+## 🚦 Semáforo de foco
+
+- **🟢 Executar agora:** a microentrega escolhida para o pilar atual.
+- **🟡 Estacionar:** melhoria útil fora do timebox.
+- **🔴 Bloquear:** dado identificável, credencial, fonte incerta, dose
+  imperativa sem revisão ou mudança ampla sem teste.
+
+Use uma aba, um cronômetro e uma entrega por vez. Não abra o próximo pilar
+antes de fechar o atual.
 
 ## 🛡️ Regras de publicação
 
 ### Conteúdo clínico ou de estudo
 
 - Destino editorial: **Estação Radar Diário**.
-- Identidade de publicação: DOI, PMID, identificador editorial ou URL canônica.
+- Identidade: DOI, PMID, identificador editorial ou URL canônica.
 - Informar desenho, achado, relevância e limitação.
 - Rotular preprint e revisão clínica pendente.
 - Conteúdo educacional não substitui protocolo local nem decisão assistencial.
@@ -107,12 +200,12 @@ O planejador é somente leitura: não modifica o site, não usa rede e não publ
 
 - Destino editorial: **Portal Vivo — UPGRADE**.
 - Publicar somente recurso, correção ou integração realmente entregue.
-- Não prometer automação, segurança ou resultado que não tenha sido validado.
+- Informar a métrica executada; não prometer velocidade ou segurança sem
+  evidência.
 
 ### Módulo clínico
 
-- Alterar diretamente a fonte canônica do módulo somente com sustentação e
-  revisão clínica humana.
+- Alterar a fonte canônica somente com sustentação e revisão clínica humana.
 - Sem revisão, a descoberta pode entrar no Radar como estudo, mas não como
   recomendação operacional definitiva.
 
@@ -122,33 +215,36 @@ Se surgir qualquer necessidade assistencial:
 
 1. interrompa imediatamente a rotina;
 2. cuide do paciente;
-3. retome depois a partir da seção em que parou;
+3. retome depois a partir do pilar em que parou;
 4. não use informação identificável do caso real como conteúdo do site.
 
-O cronograma é uma ferramenta de estudo e manutenção, nunca uma prioridade
-acima da assistência.
+O cronograma é ferramenta de estudo e manutenção, nunca prioridade acima da
+assistência.
 
-## ✅ Definição de uma sessão concluída
+## ✅ Definição de sessão concluída
 
 Uma sessão diária termina quando:
 
-- três microentregas ou menos foram executadas;
+- Radar, Integridade e Portal Vivo foram verificados sem publicação artificial;
+- uma microentrega de conteúdo, uma de design e uma de performance foram
+  encerradas ou justificadamente bloqueadas;
 - nenhuma seção excedeu seu orçamento;
 - o diff não contém dados privados nem arquivos acidentais;
 - conteúdo clínico novo tem fonte e status de revisão;
+- performance tem medida antes/depois ou contrato automatizado;
 - os testes realmente executados foram documentados;
-- a próxima ideia ficou anotada, sem ampliar o escopo atual.
+- ideias extras ficaram estacionadas sem ampliar o escopo.
 
-## 🔄 Uniformidade semanal
+## 🔄 Uniformidade ao longo do tempo
 
-Ao longo da semana, o sistema procura cobrir:
+Em até 42 dias, o sistema procura distribuir atenção entre:
 
-- módulos clínicos críticos;
-- recuperação ativa para TEMI;
-- Radar e fontes científicas;
-- Biblioteca e materiais autorizados;
-- navegação, acessibilidade e operação offline;
-- integridade editorial e privacidade.
+- módulos clínicos críticos e recuperação ativa TEMI;
+- hubs, Biblioteca, Radar, Portal e Diretório;
+- hierarquia visual, mobile, teclado e acessibilidade;
+- carregamento, renderização, assets, cache offline, rotas e builders;
+- integridade editorial, privacidade e reversibilidade.
 
-Uma atualização curta e rastreável por dia é preferível a uma grande reforma
-difícil de revisar.
+O objetivo não é mexer em tudo todos os dias. É produzir três melhorias
+pequenas, coerentes e verificáveis, mantendo o projeto vivo sem criar uma
+reforma impossível de revisar.
