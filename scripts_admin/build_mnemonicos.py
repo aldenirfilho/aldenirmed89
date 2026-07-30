@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Compilador automático de mnemônicos clínicos para a Enciclopédia Médica.
-Varre o diretório 11_MNEMONICOS/ e compila todos os arquivos .md em data/mnemonicos.json.
+Varre o diretório 11_MNEMONICOS/ e compila arquivos .md e pacotes .json em
+data/mnemonicos.json.
 """
 
 import os
@@ -12,6 +13,62 @@ from datetime import datetime
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MNEMONICOS_DIR = os.path.join(ROOT_DIR, "11_MNEMONICOS")
 OUTPUT_JSON = os.path.join(ROOT_DIR, "data", "mnemonicos.json")
+
+
+def normalize_pack_entry(entry, source, pack_editorial):
+    """Valida e normaliza uma entrada de pacote JSON."""
+    if not isinstance(entry, dict):
+        raise ValueError("cada mnemônico do pacote deve ser um objeto")
+
+    required = ("id", "title", "letters")
+    missing = [key for key in required if not entry.get(key)]
+    if missing:
+        raise ValueError(f"campos obrigatórios ausentes: {', '.join(missing)}")
+    if not isinstance(entry["letters"], dict) or not entry["letters"]:
+        raise ValueError("letters deve ser um objeto não vazio")
+
+    normalized = {
+        "id": str(entry["id"]).strip(),
+        "title": str(entry["title"]).strip(),
+        "emoji": str(entry.get("emoji") or "🏥"),
+        "color": str(entry.get("color") or "var(--cyan)"),
+        "category": str(entry.get("category") or "UTI"),
+        "tags": [str(tag) for tag in entry.get("tags", ["UTI"])],
+        "letters": {str(key): str(value) for key, value in entry["letters"].items()},
+        "content": str(entry.get("content") or "").strip(),
+        "source": source,
+        "sourceRefs": [str(ref) for ref in entry.get("sourceRefs", [])],
+        "evidenceType": str(entry.get("evidenceType") or "conceito"),
+        "reviewStatus": str(
+            entry.get("reviewStatus") or "revisao-medica-pendente"
+        ),
+        "editorial": entry.get("editorial") or pack_editorial,
+    }
+    return normalized
+
+
+def load_json_packs():
+    """Carrega catálogos JSON versionados dentro de 11_MNEMONICOS/."""
+    entries = []
+    pack_files = sorted(
+        filename
+        for filename in os.listdir(MNEMONICOS_DIR)
+        if filename.lower().endswith(".json") and not filename.startswith(".")
+    )
+    for filename in pack_files:
+        filepath = os.path.join(MNEMONICOS_DIR, filename)
+        with open(filepath, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+        raw_entries = payload.get("mnemonicos", [])
+        if not isinstance(raw_entries, list):
+            raise ValueError(f"{filename}: mnemonicos deve ser uma lista")
+        source = os.path.relpath(filepath, ROOT_DIR)
+        editorial = payload.get("editorial", {})
+        for raw_entry in raw_entries:
+            entry = normalize_pack_entry(raw_entry, source, editorial)
+            entries.append(entry)
+            print(f"   ✅ [{entry['id']}] {entry['title']} · pacote")
+    return entries
 
 
 def parse_yaml_frontmatter(file_content: str) -> tuple[dict, str]:
@@ -115,8 +172,22 @@ def build():
             print(f"   ❌ Erro ao parsear {filename}: {e}")
 
     # Escrever no JSON de saída
+    mnemonicos.extend(load_json_packs())
+
+    seen = set()
+    duplicates = set()
+    for entry in mnemonicos:
+        entry_id = entry["id"]
+        if entry_id in seen:
+            duplicates.add(entry_id)
+        seen.add(entry_id)
+    if duplicates:
+        raise ValueError(
+            "IDs de mnemônicos duplicados: " + ", ".join(sorted(duplicates))
+        )
+
     output_data = {
-        "version": "1.0",
+        "version": "2.0",
         "updated": datetime.now().strftime("%Y-%m-%d"),
         "mnemonicos": mnemonicos
     }

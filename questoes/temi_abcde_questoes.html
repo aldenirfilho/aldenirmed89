@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprint TEMI — 50 questões ABCDE | Antigravity</title>
+  <meta name="description" content="50 questões comentadas de POCUS, ventilação mecânica, IOT, drogas vasoativas e sepse, com revisão ABCDE item a item." />
+  <meta name="theme-color" content="#06101d" />
+  <meta name="color-scheme" content="dark light" />
+  <script>
+    (() => {
+      try {
+        const prefs = JSON.parse(localStorage.getItem("antigravity:a11y:v1") || "{}");
+        const light = prefs.contrast !== true && (
+          prefs.theme === "light" ||
+          (prefs.theme === "system" && matchMedia("(prefers-color-scheme: light)").matches) ||
+          (!["dark", "light", "system"].includes(prefs.theme) && prefs.clarity === true)
+        );
+        document.documentElement.classList.toggle("a11y-light", light);
+      } catch (_) {}
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg:#06101d;--bg2:#0a1929;--panel:rgba(255,255,255,.075);
+      --panel2:rgba(255,255,255,.115);--border:rgba(255,255,255,.15);
+      --text:#f7f9fc;--soft:#dbe6f5;--muted:#aab7cb;--cyan:#43e8ff;
+      --blue:#6aa9ff;--violet:#a78bfa;--green:#54f0a2;--yellow:#ffd166;
+      --orange:#ffad4f;--red:#ff6464;--radius:24px;--shadow:0 26px 80px rgba(0,0,0,.34);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;min-height:100vh;color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 5%,rgba(67,232,255,.17),transparent 30rem),
+        radial-gradient(circle at 90% 8%,rgba(167,139,250,.17),transparent 34rem),
+        linear-gradient(145deg,#030913,var(--bg) 48%,var(--bg2));
+    }
+    body::before{
+      content:"";position:fixed;inset:0;pointer-events:none;opacity:.28;
+      background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+      background-size:44px 44px;
+    }
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{
+      outline:3px solid var(--yellow);outline-offset:3px;
+    }
+    .page{position:relative;z-index:1;max-width:1380px;margin:auto;padding:18px 22px 70px}
+    .topbar{
+      position:sticky;top:10px;z-index:50;display:flex;align-items:center;
+      justify-content:space-between;gap:16px;padding:13px 15px;margin-bottom:18px;
+      border:1px solid var(--border);border-radius:22px;background:rgba(5,12,22,.82);
+      backdrop-filter:blur(18px);box-shadow:0 16px 50px rgba(0,0,0,.28);
+    }
+    .brand{display:flex;gap:11px;align-items:center}
+    .logo{width:46px;height:46px;display:grid;place-items:center;border-radius:16px;
+      background:linear-gradient(135deg,rgba(67,232,255,.22),rgba(167,139,250,.22));
+      border:1px solid var(--border);font-size:1.45rem}
+    .brand strong{display:block}.brand small{display:block;color:var(--muted);margin-top:2px}
+    .nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 13px;
+      border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.065);
+      color:var(--soft);font-weight:800;cursor:pointer;transition:.18s;
+    }
+    .btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.11)}
+    .btn.primary{border:0;color:#03131e;background:linear-gradient(135deg,var(--cyan),var(--green))}
+    .btn.warn{border-color:rgba(255,209,102,.28);color:#ffe8a9}
+    .breadcrumb{padding:11px 15px;margin-bottom:18px;border:1px solid rgba(255,255,255,.1);
+      border-radius:18px;background:rgba(255,255,255,.045);color:var(--muted)}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-bottom:18px}
+    .glass{border:1px solid var(--border);border-radius:var(--radius);
+      background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.04));
+      box-shadow:var(--shadow);backdrop-filter:blur(16px)}
+    .hero-main{padding:30px}
+    .eyebrow{display:inline-flex;padding:7px 11px;border-radius:999px;border:1px solid rgba(67,232,255,.24);
+      color:#e2fbff;background:rgba(67,232,255,.08);font-size:.82rem;font-weight:850}
+    h1{font-size:clamp(2.3rem,6vw,5.3rem);line-height:.92;letter-spacing:-.07em;margin:18px 0 15px}
+    .gradient{background:linear-gradient(90deg,#fff,#dffaff 35%,var(--cyan) 62%,var(--violet));
+      -webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{font-size:1.08rem;line-height:1.7;color:var(--soft);max-width:850px}
+    .notice{margin-top:18px;padding:14px;border-left:4px solid var(--yellow);border-radius:12px;
+      color:#fff2c9;background:rgba(255,209,102,.08);line-height:1.55}
+    .stats{padding:20px;display:grid;gap:12px}
+    .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .stat{padding:15px;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(0,0,0,.14)}
+    .stat b{display:block;font-size:1.9rem;color:var(--cyan)}.stat span{color:var(--muted);font-size:.84rem}
+    .progress{height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+    .progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));transition:.2s}
+    .progress-text{color:var(--muted);font-size:.9rem}
+    .controls{display:grid;grid-template-columns:1.35fr .7fr .7fr auto;gap:10px;margin:18px 0 12px}
+    .control{width:100%;padding:12px 13px;border:1px solid var(--border);border-radius:15px;
+      color:var(--text);background:rgba(0,0,0,.23)}
+    .block-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+    .block-tab{padding:9px 12px;border:1px solid var(--border);border-radius:999px;
+      color:var(--soft);background:rgba(255,255,255,.055);font-weight:800;cursor:pointer}
+    .block-tab.active{border-color:var(--tab-color,var(--cyan));box-shadow:inset 0 0 0 1px var(--tab-color,var(--cyan));
+      background:color-mix(in srgb,var(--tab-color,var(--cyan)) 14%,transparent)}
+    .result{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:12px 0;color:var(--muted)}
+    .questions{display:grid;gap:14px}
+    .q-card{overflow:hidden;border:1px solid var(--border);border-radius:22px;background:var(--panel);box-shadow:0 15px 45px rgba(0,0,0,.22)}
+    .q-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:16px 18px;
+      border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
+    .badges{display:flex;gap:7px;flex-wrap:wrap}
+    .badge{display:inline-flex;padding:6px 9px;border:1px solid var(--border);border-radius:999px;
+      font-size:.75rem;font-weight:850;color:var(--soft);background:rgba(0,0,0,.17)}
+    .badge.block{border-color:var(--block-color);color:var(--block-color)}
+    .q-body{padding:18px}
+    .stem{margin:0 0 14px;font-size:1.04rem;line-height:1.65}
+    .options{display:grid;gap:8px}
+    .option{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;padding:11px;border:1px solid rgba(255,255,255,.1);
+      border-radius:14px;background:rgba(0,0,0,.14);line-height:1.45}
+    .letter{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;
+      color:#e7fcff;background:rgba(67,232,255,.1);border:1px solid rgba(67,232,255,.24);font-weight:950}
+    .answer{display:none;margin-top:14px;padding:15px;border:1px solid rgba(84,240,162,.25);
+      border-radius:17px;background:rgba(84,240,162,.065)}
+    .answer.open{display:block}
+    .answer h3{margin:0 0 10px;color:#dffff0}
+    .rationales{display:grid;gap:8px;margin-top:12px}
+    .rationale{display:grid;grid-template-columns:34px minmax(0,1fr);gap:9px;padding:10px;border-radius:13px;
+      background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.08);line-height:1.5;color:var(--soft)}
+    .rationale.correct{border-color:rgba(84,240,162,.35);background:rgba(84,240,162,.08)}
+    .rationale .letter{color:var(--muted);background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)}
+    .rationale.correct .letter{color:#062216;background:var(--green);border-color:var(--green)}
+    .synthesis,.pearl{padding:11px 12px;border-radius:13px;line-height:1.55}
+    .synthesis{margin-top:12px;background:rgba(67,232,255,.07);border-left:3px solid var(--cyan)}
+    .pearl{margin-top:8px;background:rgba(167,139,250,.08);border-left:3px solid var(--violet);font-weight:780}
+    .sources{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+    .source{font-size:.76rem;padding:6px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.13);
+      color:#dffaff;background:rgba(67,232,255,.065)}
+    .q-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+    .source-panel{margin-top:24px;padding:22px}
+    .source-panel h2{margin-top:0}
+    .source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .source-row{padding:11px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(0,0,0,.13)}
+    .source-row a{color:var(--cyan);font-weight:800}.source-row small{display:block;color:var(--muted);margin-top:4px}
+    .footer{margin-top:25px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);color:var(--muted);line-height:1.6}
+    .empty{padding:35px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:20px}
+    html.a11y-light{
+      color-scheme:light;--bg:#f5f8fc;--bg2:#edf3f9;--panel:#fff;--panel2:#f5f8fc;
+      --border:#c9d5e2;--text:#102033;--soft:#2d4055;--muted:#5f7183;--shadow:0 18px 50px rgba(18,45,68,.12)
+    }
+    html.a11y-light body{background:linear-gradient(145deg,#fff,var(--bg2))}
+    html.a11y-light body::before{opacity:.08}
+    html.a11y-light .topbar{background:rgba(255,255,255,.93)}
+    html.a11y-light .control,html.a11y-light .option,html.a11y-light .rationale,
+    html.a11y-light .stat,html.a11y-light .source-row{background:#fff}
+    @media(max-width:920px){.hero{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.topbar{position:relative;top:0}}
+    @media(max-width:620px){.page{padding:10px 10px 60px}.topbar{align-items:flex-start;flex-direction:column}.nav{justify-content:flex-start}
+      .controls,.stat-grid,.source-grid{grid-template-columns:1fr}.hero-main{padding:22px}.q-head{display:block}.q-head .btn{margin-top:10px;width:100%}}
+    @media print{body{background:#fff;color:#000}.topbar,.controls,.block-tabs,.q-actions{display:none!important}
+      .page{max-width:none;padding:0}.glass,.q-card,.source-panel{box-shadow:none;background:#fff;color:#000}.answer{display:block!important}
+      .stem,.rationale,.synthesis,.pearl,.footer{color:#111}.q-card{break-inside:avoid}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <header class="topbar">
+      <a class="brand" href="#top">
+        <span class="logo">🏆</span>
+        <span><strong>Sprint TEMI ABCDE</strong><small>50 questões · 5 blocos · comentário A–E</small></span>
+      </a>
+      <nav class="nav">
+        <a class="btn" href="index.html">← Bancos TEMI</a>
+        <a class="btn" href="../index.html#temi">⌂ Início</a>
+        <button class="btn" id="clarityToggle" type="button">☀️ Visualização clara</button>
+        <button class="btn" type="button" onclick="window.print()">🖨️ Imprimir</button>
+      </nav>
+    </header>
+
+    <div class="breadcrumb">Antigravity › Preparação TEMI › <strong>POCUS · VM · IOT · DVA · Sepse</strong></div>
+
+    <section class="hero">
+      <article class="glass hero-main">
+        <span class="eyebrow">⚡ Turbo TEMI · TDAH-friendly · revisão ativa</span>
+        <h1><span class="gradient">50 questões</span><br />ABCDE item a item</h1>
+        <p class="lead">Dez questões por bloco, com cada alternativa explicada separadamente. Filtre, revele somente quando decidir e marque o que já revisou neste navegador.</p>
+        <div class="notice"><strong>🛡️ Segurança:</strong> conteúdo educacional em revisão médica. Não é prescrição nem protocolo assistencial; confirme diretrizes, treinamento prático e regras institucionais.</div>
+      </article>
+      <aside class="glass stats" aria-label="Progresso do banco">
+        <div class="stat-grid">
+          <div class="stat"><b id="totalQ">50</b><span>questões</span></div>
+          <div class="stat"><b id="visibleQ">50</b><span>visíveis</span></div>
+          <div class="stat"><b id="reviewedQ">0</b><span>revisadas</span></div>
+          <div class="stat"><b>5×10</b><span>blocos homogêneos</span></div>
+        </div>
+        <div class="progress"><i id="progressBar"></i></div>
+        <div class="progress-text" id="progressText">0% revisado neste navegador</div>
+        <button class="btn warn" id="resetProgress" type="button">↻ Zerar meu progresso</button>
+      </aside>
+    </section>
+
+    <section aria-label="Filtros das questões">
+      <div class="controls">
+        <input class="control" id="searchInput" type="search" placeholder="🔎 Buscar trial, conceito ou palavra-chave…" />
+        <select class="control" id="difficultyFilter" aria-label="Filtrar dificuldade">
+          <option value="">Todas as dificuldades</option>
+          <option value="Médio">Médio</option>
+          <option value="Difícil">Difícil</option>
+        </select>
+        <select class="control" id="statusFilter" aria-label="Filtrar revisão">
+          <option value="">Todas</option>
+          <option value="pending">Pendentes</option>
+          <option value="reviewed">Revisadas</option>
+        </select>
+        <button class="btn" id="showAll" type="button">👁️ Mostrar comentários</button>
+      </div>
+      <div class="block-tabs" id="blockTabs" role="tablist" aria-label="Blocos temáticos"></div>
+      <div class="result"><span id="resultText">50 questões</span><span>Atalho mental: escolha → justifique → revele → revise.</span></div>
+    </section>
+
+    <section class="questions" id="questions" aria-live="polite"></section>
+
+    <section class="glass source-panel" id="fontes">
+      <h2>🔬 Fontes e trials auditados</h2>
+      <p class="lead">Cada questão aponta para as fontes usadas. Trial negativo ou neutro não significa “tratamento proibido”; significa que a pergunta clínica, a população e o desfecho precisam ser respeitados.</p>
+      <div class="source-grid" id="sourceGrid"></div>
+    </section>
+
+    <footer class="footer">
+      <strong>Revisão humana obrigatória:</strong> conteúdo autoral educacional, sem dados de pacientes. Antes de uso assistencial, conferir publicação original, diretriz vigente, contraindicações, disponibilidade e protocolo local.
+    </footer>
+  </main>
+
+  <script src="data/qbank_temi_abcde.js"></script>
+  <script>
+    (() => {
+      "use strict";
+      const bank = TEMI_ABCDE_QBANK;
+      const $ = id => document.getElementById(id);
+      const questionsEl = $("questions");
+      const searchInput = $("searchInput");
+      const difficultyFilter = $("difficultyFilter");
+      const statusFilter = $("statusFilter");
+      const blockTabs = $("blockTabs");
+      const keyPrefix = "antigravity:temi-abcde:reviewed:";
+      let activeBlock = "";
+      let showAllAnswers = false;
+
+      const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      })[char]);
+      const normalize = value => String(value ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const reviewed = id => localStorage.getItem(keyPrefix + id) === "1";
+      const blockMeta = id => bank.blocks.find(block => block.id === id) || {label:id,icon:"📚",color:"#43e8ff"};
+
+      function filteredQuestions() {
+        const term = normalize(searchInput.value);
+        return bank.questions.filter(question => {
+          const haystack = normalize([
+            question.id, question.block, question.difficulty, question.stem,
+            ...question.tags, ...Object.values(question.options),
+            ...Object.values(question.rationales), question.synthesis, question.pearl,
+            ...question.sourceRefs
+          ].join(" "));
+          if (term && !haystack.includes(term)) return false;
+          if (activeBlock && question.block !== activeBlock) return false;
+          if (difficultyFilter.value && question.difficulty !== difficultyFilter.value) return false;
+          if (statusFilter.value === "reviewed" && !reviewed(question.id)) return false;
+          if (statusFilter.value === "pending" && reviewed(question.id)) return false;
+          return true;
+        });
+      }
+
+      function sourceLinks(question) {
+        return question.sourceRefs.map(ref => {
+          const source = bank.sources[ref];
+          if (!source) return "";
+          return `<a class="source" href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(ref)} · ${esc(source.design)}</a>`;
+        }).join("");
+      }
+
+      function card(question, index) {
+        const block = blockMeta(question.block);
+        const answerOpen = showAllAnswers || reviewed(question.id);
+        const options = Object.entries(question.options).map(([letter, text]) =>
+          `<div class="option"><span class="letter">${letter}</span><span>${esc(text)}</span></div>`
+        ).join("");
+        const rationales = Object.entries(question.rationales).map(([letter, text]) =>
+          `<div class="rationale ${letter === question.answer ? "correct" : ""}">
+            <span class="letter">${letter}</span><span>${esc(text)}</span>
+          </div>`
+        ).join("");
+        return `<article class="q-card" id="${esc(question.id)}" style="--block-color:${esc(block.color)}">
+          <header class="q-head">
+            <div class="badges">
+              <span class="badge">${String(index + 1).padStart(2, "0")}</span>
+              <span class="badge block">${esc(block.icon)} ${esc(block.label)}</span>
+              <span class="badge">${esc(question.difficulty)}</span>
+              <span class="badge">${esc(question.id)}</span>
+            </div>
+            <button class="btn" type="button" data-toggle="${esc(question.id)}">${answerOpen ? "Ocultar ABCDE" : "Revelar ABCDE"}</button>
+          </header>
+          <div class="q-body">
+            <p class="stem">${esc(question.stem)}</p>
+            <div class="options">${options}</div>
+            <div class="answer ${answerOpen ? "open" : ""}" id="answer-${esc(question.id)}">
+              <h3>✅ Gabarito: alternativa ${esc(question.answer)}</h3>
+              <div class="rationales">${rationales}</div>
+              <div class="synthesis"><strong>Síntese:</strong> ${esc(question.synthesis)}</div>
+              <div class="pearl">${esc(question.pearl)}</div>
+              <div class="sources">${sourceLinks(question)}</div>
+              <div class="q-actions">
+                <button class="btn primary" type="button" data-review="${esc(question.id)}">${reviewed(question.id) ? "Revisada ✓" : "Marcar como revisada"}</button>
+                <button class="btn" type="button" data-copy="${esc(question.id)}">⧉ Copiar questão</button>
+              </div>
+            </div>
+          </div>
+        </article>`;
+      }
+
+      function updateProgress() {
+        const done = bank.questions.filter(question => reviewed(question.id)).length;
+        const percent = Math.round(done / bank.questions.length * 100);
+        $("reviewedQ").textContent = done;
+        $("progressBar").style.width = `${percent}%`;
+        $("progressText").textContent = `${percent}% revisado neste navegador`;
+      }
+
+      function render() {
+        const list = filteredQuestions();
+        $("visibleQ").textContent = list.length;
+        $("resultText").textContent = `${list.length} de ${bank.questions.length} questões`;
+        questionsEl.innerHTML = list.length
+          ? list.map(card).join("")
+          : `<div class="empty">Nenhuma questão encontrada. Limpe os filtros e tente novamente.</div>`;
+
+        questionsEl.querySelectorAll("[data-toggle]").forEach(button => {
+          button.addEventListener("click", () => {
+            const box = $("answer-" + button.dataset.toggle);
+            box.classList.toggle("open");
+            button.textContent = box.classList.contains("open") ? "Ocultar ABCDE" : "Revelar ABCDE";
+          });
+        });
+        questionsEl.querySelectorAll("[data-review]").forEach(button => {
+          button.addEventListener("click", () => {
+            const key = keyPrefix + button.dataset.review;
+            localStorage.setItem(key, localStorage.getItem(key) === "1" ? "0" : "1");
+            render();
+          });
+        });
+        questionsEl.querySelectorAll("[data-copy]").forEach(button => {
+          button.addEventListener("click", async () => {
+            const question = bank.questions.find(item => item.id === button.dataset.copy);
+            const text = [
+              `${question.id} — ${question.stem}`,
+              ...Object.entries(question.options).map(([letter, option]) => `${letter}) ${option}`),
+              `Gabarito: ${question.answer}`,
+              ...Object.entries(question.rationales).map(([letter, rationale]) => `${letter}: ${rationale}`),
+              question.synthesis,
+              question.pearl
+            ].join("\n");
+            try {
+              await navigator.clipboard.writeText(text);
+              button.textContent = "Copiado ✓";
+            } catch (_) {
+              button.textContent = "Cópia indisponível";
+            }
+          });
+        });
+        updateProgress();
+      }
+
+      blockTabs.innerHTML = [
+        `<button class="block-tab active" type="button" data-block="" style="--tab-color:var(--cyan)">✨ Todos (50)</button>`,
+        ...bank.blocks.map(block =>
+          `<button class="block-tab" type="button" data-block="${esc(block.id)}" style="--tab-color:${esc(block.color)}">${esc(block.icon)} ${esc(block.label)} (10)</button>`
+        )
+      ].join("");
+      blockTabs.querySelectorAll("[data-block]").forEach(button => {
+        button.addEventListener("click", () => {
+          activeBlock = button.dataset.block;
+          blockTabs.querySelectorAll("[data-block]").forEach(item => item.classList.toggle("active", item === button));
+          render();
+        });
+      });
+      [searchInput, difficultyFilter, statusFilter].forEach(control => {
+        control.addEventListener(control === searchInput ? "input" : "change", render);
+      });
+      $("showAll").addEventListener("click", () => {
+        showAllAnswers = !showAllAnswers;
+        $("showAll").textContent = showAllAnswers ? "🙈 Ocultar comentários" : "👁️ Mostrar comentários";
+        render();
+      });
+      $("resetProgress").addEventListener("click", () => {
+        bank.questions.forEach(question => localStorage.removeItem(keyPrefix + question.id));
+        render();
+      });
+
+      $("sourceGrid").innerHTML = Object.entries(bank.sources).map(([id, source]) =>
+        `<div class="source-row"><a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(id)} — ${esc(source.label)}</a><small>${esc(source.design)}</small></div>`
+      ).join("");
+
+      const clarityToggle = $("clarityToggle");
+      clarityToggle.addEventListener("click", () => {
+        const root = document.documentElement;
+        const light = !root.classList.contains("a11y-light");
+        root.classList.toggle("a11y-light", light);
+        try {
+          const current = JSON.parse(localStorage.getItem("antigravity:a11y:v1") || "{}");
+          localStorage.setItem("antigravity:a11y:v1", JSON.stringify({...current, clarity:light, theme:light ? "light" : "dark", contrast:false}));
+        } catch (_) {}
+        clarityToggle.textContent = light ? "🌙 Modo espacial" : "☀️ Visualização clara";
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>

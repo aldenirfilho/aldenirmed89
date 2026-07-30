@@ -12,6 +12,9 @@ const HUB_DATA = {
     "edema-cerebral": { "label": "Edema Cerebral", "url": "", "status": "planejado" },
     "delirium-uti": { "label": "Delirium em UTI", "url": "", "status": "planejado" },
     "disfagia": { "label": "Disfagia", "url": "", "status": "planejado" },
+    "pocus": { "label": "POCUS", "url": "../09_POCUS_Hub/index.html", "status": "ativo" },
+    "intubacao-orotraqueal": { "label": "Intubação Orotraqueal", "url": "", "status": "planejado" },
+    "drogas-vasoativas": { "label": "Drogas Vasoativas", "url": "", "status": "planejado" },
     "sepse": { "label": "Sepse", "url": "", "status": "planejado" },
     "ventilacao-mecanica": { "label": "Ventilação Mecânica", "url": "", "status": "planejado" },
     "choque": { "label": "Choque", "url": "", "status": "planejado" }
@@ -33,6 +36,21 @@ const HUB_DATA = {
         "avc-agudo", "trombolise-avc", "trombectomia-avc", "neuroimagem-avc", "hipertensao-emergencia", "fibrilacao-atrial", "anticoagulacao", "hemorragia-intracraniana", "edema-cerebral", "disfagia", "delirium-uti"
       ],
       "keywords": ["AVC", "trombolise", "trombectomia", "NIHSS", "ASPECTS", "pressao arterial", "neuroimagem", "TEMI"]
+    },
+    {
+      "id": "qbank-temi-abcde-50",
+      "title": "Sprint TEMI — POCUS, VM, IOT, DVA e Sepse",
+      "icon": "⚡",
+      "status": "ativo",
+      "domain": "multi",
+      "difficultyProfile": "Médio → Difícil",
+      "questions": 50,
+      "comments": 250,
+      "estimatedTime": "5 blocos de 25–35 min",
+      "url": "temi_abcde_questoes.html",
+      "description": "Cinco blocos homogêneos de 10 questões, com comentário separado das alternativas A, B, C, D e E e fontes primárias.",
+      "relatedTopics": ["pocus", "ventilacao-mecanica", "intubacao-orotraqueal", "drogas-vasoativas", "sepse", "choque"],
+      "keywords": ["POCUS", "ventilacao mecanica", "IOT", "drogas vasoativas", "sepse", "ABCDE", "TEMI", "trials"]
     },
     {
       "id": "qbank-temi-sepse",
