@@ -127,8 +127,13 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
         self.assertFalse(self.visuals["pipeline"]["publicRuntimeGeneration"])
         self.assertFalse(self.visuals["pipeline"]["publicApiKey"])
         self.assertTrue(self.visuals["pipeline"]["failClosed"])
-        self.assertEqual(len(self.visuals["assets"]), 1)
-        asset = self.visuals["assets"][0]
+        generated = [
+            asset
+            for asset in self.visuals["assets"]
+            if asset["origin"] == "original-generated"
+        ]
+        self.assertEqual(len(generated), 1)
+        asset = generated[0]
         image = MODULE / asset["path"]
         self.assertTrue(image.is_file())
         self.assertLess(image.stat().st_size, 400_000)
@@ -147,6 +152,69 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
         self.assertIn('loading="lazy"', self.html)
         self.assertIn('decoding="async"', self.html)
 
+    def test_real_pocus_assets_are_licensed_unmodified_and_self_contained(self):
+        real_assets = [
+            asset
+            for asset in self.visuals["assets"]
+            if asset["origin"] == "published-clinical-image"
+        ]
+        self.assertEqual(len(real_assets), 4)
+        expected_hashes = {
+            "choque-cardiogenico-ve-b-lines.jpg":
+                "1858970c9d0eb90579fe31e59bd27e5e0ff281d151798f135026e39fb88bf4d0",
+            "choque-obstrutivo-vd-dilatado.jpg":
+                "04451d594c9fd6ef518fa29b0058408d606a8b73acb582be1e6bb5e75f9cd983",
+            "derrame-pericardico-swinging-heart.jpg":
+                "407094eaedce69ad1f8de6b01b0ffe0325aecf4c4f68439182664221ac5f6241",
+            "ausencia-sliding-barcode.jpg":
+                "99f459d92bc81f3f576e9dad453e579ed08ddea8849038aeb0b86b7b194ace3c",
+        }
+
+        for asset in real_assets:
+            image = MODULE / asset["path"]
+            self.assertTrue(image.is_file())
+            self.assertEqual(image.stat().st_size, asset["bytes"])
+            actual_hash = hashlib.sha256(image.read_bytes()).hexdigest()
+            self.assertEqual(actual_hash, asset["sha256"])
+            self.assertEqual(
+                actual_hash,
+                expected_hashes[image.name],
+            )
+            self.assertTrue(asset["patientDerived"])
+            self.assertFalse(asset["patientData"])
+            self.assertFalse(asset["identifiablePatientData"])
+            self.assertTrue(asset["realUltrasound"])
+            self.assertFalse(asset["generativeModification"])
+            self.assertFalse(asset["clinicalGroundTruth"])
+            self.assertTrue(asset["publishedClinicalContext"])
+            self.assertEqual(asset["rightsBasis"], "CC-BY-4.0")
+            self.assertEqual(
+                asset["licenseUrl"],
+                "https://creativecommons.org/licenses/by/4.0/",
+            )
+            self.assertEqual(
+                asset["sourceUrl"],
+                "https://pmc.ncbi.nlm.nih.gov/articles/PMC9554831/",
+            )
+            self.assertIn("sem alteração de pixels", asset["fileFidelity"])
+            self.assertIn(f'src="{asset["path"]}"', self.html)
+            self.assertIn(f'alt="{asset["alt"]}"', self.html)
+
+        for marker in (
+            "Pixels clínicos reais — sem geração ou retoque por IA",
+            "🪟 JANELA",
+            "👁️ VEJA",
+            "🧠 INTERPRETE",
+            "⚠️ ARMADILHA",
+            "➡️ PRÓXIMO PASSO",
+            "CC BY 4.0",
+        ):
+            self.assertIn(marker, self.html)
+        self.assertIn(
+            "ultrassom real, desidentificado, licenciado e preservado",
+            self.visuals["pipeline"]["didacticPocusPolicy"],
+        )
+
     def test_publication_skill_keeps_visual_generation_out_of_browser(self):
         skill = (
             ROOT / ".codex/skills/antigravity-publicar-portal/SKILL.md"
@@ -155,6 +223,10 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
         self.assertIn("usar a skill `imagegen`", skill)
         self.assertIn("Não usar chave OpenAI", skill)
         self.assertIn("fluxo Git auditável", skill)
+        self.assertIn("Regra de realidade clínica para imagens POCUS", skill)
+        self.assertIn("Janela → Veja → Interprete → Armadilha", skill)
+        self.assertIn("Preservar os pixels clínicos originais", skill)
+        self.assertIn("Imagem gerada por IA nunca pode", skill)
 
     def test_home_and_public_build_include_the_module(self):
         home = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -176,6 +248,11 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
             "pocus-choque-mapa-acra-v1.jpg",
             worker,
         )
+        for asset in self.visuals["assets"]:
+            self.assertIn(
+                f'./22_Microparticulas_Ativas_ACRA/{asset["path"]}',
+                worker,
+            )
         self.assertEqual(
             site_manifest["canonicalRoutes"]["microparticulas_acra"],
             "22_Microparticulas_Ativas_ACRA/index.html",

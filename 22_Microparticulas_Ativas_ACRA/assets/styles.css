@@ -336,6 +336,155 @@ h1 span {
   color: var(--muted);
 }
 
+.real-pocus {
+  padding-top: 100px;
+}
+
+.real-pocus-notice {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px 18px;
+  color: var(--muted);
+  border: 1px solid color-mix(in srgb, var(--green) 38%, transparent);
+  border-radius: var(--radius-small);
+  background: color-mix(in srgb, var(--green) 7%, var(--surface));
+}
+
+.real-pocus-notice strong {
+  color: var(--green);
+}
+
+.pocus-atlas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.pocus-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.16);
+}
+
+.pocus-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 17px;
+  border-bottom: 1px solid var(--line);
+}
+
+.real-badge,
+.phenotype-badge {
+  display: inline-flex;
+  padding: 6px 9px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.real-badge {
+  color: var(--green);
+  border: 1px solid color-mix(in srgb, var(--green) 35%, transparent);
+  background: color-mix(in srgb, var(--green) 8%, transparent);
+}
+
+.phenotype-badge {
+  color: var(--cyan);
+  background: color-mix(in srgb, var(--cyan) 8%, transparent);
+}
+
+.pocus-image {
+  display: grid;
+  min-height: 310px;
+  place-items: center;
+  margin: 0;
+  padding: 18px;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.24)),
+    #02060a;
+}
+
+.pocus-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+}
+
+.pocus-image--portrait img {
+  width: auto;
+  max-width: 100%;
+}
+
+.pocus-image figcaption {
+  width: 100%;
+  margin-top: 12px;
+  color: #d8e7f1;
+  font-size: 0.78rem;
+  text-align: left;
+}
+
+.temi-read {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0 18px;
+}
+
+.temi-read div {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.temi-read dt,
+.temi-read dd {
+  margin: 0;
+}
+
+.temi-read dt {
+  color: var(--cyan);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+
+.temi-read dd {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.source-line {
+  margin: 0;
+  padding: 15px 18px 18px;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.atlas-safety {
+  margin: 22px 0 0;
+  padding: 15px 17px;
+  color: var(--muted);
+  border-left: 3px solid var(--yellow);
+  background: color-mix(in srgb, var(--yellow) 6%, var(--surface));
+}
+
+.atlas-safety strong {
+  color: var(--yellow);
+}
+
 .visual-map {
   padding-top: 92px;
 }
@@ -1194,9 +1343,27 @@ body.focus-active .artifact-section {
   }
 
   .safety-grid,
+  .real-pocus-notice,
   .section-heading {
     grid-template-columns: 1fr;
     gap: 8px;
+  }
+
+  .real-pocus {
+    padding-top: 70px;
+  }
+
+  .pocus-atlas {
+    grid-template-columns: 1fr;
+  }
+
+  .pocus-image {
+    min-height: 0;
+  }
+
+  .temi-read div {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 
   .method,
@@ -1300,6 +1467,7 @@ body.focus-active .artifact-section {
   .component,
   .mission-card,
   .method-notes article,
+  .pocus-card,
   .visual-figure {
     break-inside: avoid;
     box-shadow: none;

@@ -113,3 +113,32 @@ o gate editorial:
 7. Publicar no site apenas após builder, gate de privacidade, revisão do diff e
    fluxo Git do projeto. “Diretamente” significa integrar no destino público da
    tarefa, sem criar uma galeria paralela e sem ignorar a revisão humana.
+
+### Regra de realidade clínica para imagens POCUS
+
+Em conteúdo didático de POCUS, a imagem que ensina um achado deve representar
+ultrassom real, desidentificado e com origem, licença e atribuição documentadas.
+Imagem gerada por IA nunca pode ser apresentada como exame real, evidência
+diagnóstica ou substituto de aquisição dinâmica.
+
+1. Reservar arte gerada para mapas conceituais, anatomia alegórica, fluxos e
+   ambientação. Rotular no próprio HTML como “alegórica”, “conceitual” e
+   “não diagnóstica”.
+2. Obter ultrassom didático real apenas de fonte pública autorizada ou acervo
+   próprio com consentimento e desidentificação verificáveis. Registrar artigo,
+   figura, autores, URL, licença, dimensões, bytes e SHA-256.
+3. Preservar os pixels clínicos originais. Não usar geração, preenchimento,
+   reconstrução ou retoque por IA. Crop ou redimensionamento não diagnóstico só
+   é permitido quando a licença autoriza e a versão original continua
+   rastreável.
+4. Colocar anotações editoriais fora da imagem, em HTML/CSS acessível ou overlay
+   determinístico revisável. Não ocultar marcadores, escalas ou limitações
+   relevantes da figura-fonte.
+5. Tornar cada visual didático autossuficiente no padrão Turbo TEMI:
+   **Janela → Veja → Interprete → Armadilha → Próximo passo → Fonte/licença**.
+6. Distinguir “imagem real publicada” de “ground truth diagnóstico”: uma figura
+   representativa apoia reconhecimento de padrão, mas não valida diagnóstico
+   isolado nem substitui vídeo, técnica, contexto hemodinâmico ou supervisão.
+7. Manter o módulo em revisão médica e bloquear publicação ativa se identidade,
+   direitos, desidentificação, fidelidade do arquivo ou leitura clínica não
+   puderem ser confirmados.
