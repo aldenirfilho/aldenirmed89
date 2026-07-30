@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v17`;
+const CACHE_NAME = `${CACHE_PREFIX}v18`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -16,6 +16,7 @@ const WARM_ASSETS = [
   "./15_Radar_Cientifico/index.html",
   "./15_Radar_Cientifico/data/radar.js",
   "./15_Radar_Cientifico/data/radar-history.json",
+  "./15_Radar_Cientifico/data/radar-widget-feed.json",
   "./16_Diretorio_Medico/index.html",
   "./16_Diretorio_Medico/data/sites.js",
   "./17_Portal_Vivo/index.html",

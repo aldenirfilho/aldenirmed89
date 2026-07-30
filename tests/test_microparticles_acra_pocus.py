@@ -144,6 +144,10 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
         self.assertTrue(iphone["pocusImageViewer"]["enabled"])
         self.assertFalse(iphone["pocusImageViewer"]["pixelModification"])
         self.assertFalse(iphone["nativeWidgetKitExtension"])
+        companion = iphone["nativeRadarWidgetKitCompanion"]
+        self.assertTrue(companion["sourceReady"])
+        self.assertFalse(companion["installed"])
+        self.assertEqual(companion["status"], "source-ready-signing-pending")
         self.assertTrue(iphone["offline"])
 
     def test_iphone_drawer_image_viewer_and_widgets_are_explicit(self):
@@ -156,7 +160,8 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
             'data-widget-panel="small"',
             'data-widget-panel="medium"',
             'data-widget-panel="large"',
-            "o site estático não instala widgets nativos sozinho",
+            "WidgetKit nativo “Radar Diário” já tem código-fonte",
+            "a instalação exige Xcode, equipe Apple, App Group e assinatura",
         ):
             self.assertIn(marker, self.html)
         for marker in (
@@ -179,6 +184,9 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
         delivery = self.widgets["delivery"]
         self.assertTrue(delivery["webAppPreview"])
         self.assertFalse(delivery["nativeWidgetKitExtension"])
+        self.assertTrue(delivery["nativeRadarWidgetKitCompanionSource"])
+        self.assertFalse(delivery["nativeRadarWidgetKitCompanionInstalled"])
+        self.assertTrue(delivery["requiresAppleSigning"])
         self.assertTrue(delivery["requiresNativeWrapperForHomeScreenWidgets"])
         self.assertTrue(delivery["offline"])
         self.assertFalse(delivery["cloud"])
@@ -191,6 +199,11 @@ class MicroparticlesAcraPocusTests(unittest.TestCase):
         for item in self.widgets["families"]:
             self.assertTrue(item["deepLink"].startswith("#"))
             self.assertIn(item["webSelector"].strip("[]"), self.html)
+        companion = self.widgets["nativeRadarCompanion"]
+        self.assertEqual(companion["name"], "Radar Diário")
+        self.assertEqual(companion["status"], "source-ready-signing-pending")
+        self.assertIn("WidgetKit", companion["implementedComponents"])
+        self.assertIn("permanecem prévias web", companion["scopeNote"])
 
     def test_gpt_visual_asset_is_versioned_optimized_and_accessible(self):
         self.assertFalse(self.visuals["pipeline"]["publicRuntimeGeneration"])

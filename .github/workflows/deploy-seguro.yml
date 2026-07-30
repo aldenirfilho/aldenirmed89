@@ -97,6 +97,7 @@ jobs:
           python3 scripts_admin/check_static_manifests.py
           python3 scripts_admin/update_library_publication_baseline.py --check
           python3 scripts_admin/build_library_previews.py --check
+          node scripts_admin/build_radar_widget_feed.mjs --check
           python3 scripts_admin/validar_paths.py --check
           python3 scripts/validate_routes.py
           python3 scripts_admin/publication_guard.py check-repository .
@@ -137,6 +138,7 @@ jobs:
           test -s site/15_Radar_Cientifico/index.html
           test -s site/15_Radar_Cientifico/data/radar.js
           test -s site/15_Radar_Cientifico/data/radar-history.json
+          test -s site/15_Radar_Cientifico/data/radar-widget-feed.json
           test "$(find site/15_Radar_Cientifico/assets/cards -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 20
           test "$(find site/15_Radar_Cientifico/assets/products -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 6
           test -s site/16_Diretorio_Medico/index.html
