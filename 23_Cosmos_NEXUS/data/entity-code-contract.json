@@ -20,7 +20,7 @@
     {"entity":"audit","prefix":"AUD###","pattern":"AUD###-{SCOPE}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256 do artefato + resultados dos três pilares + revisão técnica","catalog":"ledger público somente para auditorias P0; detalhes sensíveis permanecem privados"},
     {"entity":"homologation","prefix":"HOM###","pattern":"HOM###-{SCOPE}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256(scope|test_report_hash|reviewer|reviewed_at)","catalog":"data/execution-ledger.json"},
     {"entity":"tombstone","prefix":"TOM###","pattern":"TOM###-{SCOPE}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256 do manifesto imutável de membros e hashes","catalog":"data/tombstone-manifest.json"},
-    {"entity":"final-product","prefix":"TAF###","pattern":"TAF###-{UNIVERSE}-{BLOCK}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256(product_code|homologation_code|tombstone_code|artifact_root_hash)","catalog":"data/product-catalog.json"},
+    {"entity":"final-product","prefix":"TAF###","pattern":"TAF###-{UNIVERSE}-{BLOCK}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256(product_code|audit_code|homologation_code|tombstone_code|artifact_root_hash)","catalog":"data/product-catalog.json"},
     {"entity":"publication-event","prefix":"PUB###","pattern":"PUB###-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256(TAF_code|owner_command|commit_sha|deploy_run)","catalog":"data/execution-ledger.json"}
   ],
   "globalRules": [

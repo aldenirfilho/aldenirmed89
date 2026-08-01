@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v21`;
+const CACHE_NAME = `${CACHE_PREFIX}v22`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -108,6 +108,8 @@ const WARM_ASSETS = [
   "./23_Cosmos_NEXUS/data/living-organism-contract.json",
   "./23_Cosmos_NEXUS/data/governance-code-contract.json",
   "./23_Cosmos_NEXUS/data/execution-ledger.json",
+  "./23_Cosmos_NEXUS/data/homologation-reports.json",
+  "./23_Cosmos_NEXUS/data/tombstone-manifest.json",
   "./23_Cosmos_NEXUS/data/daily-update-contract.json",
   "./23_Cosmos_NEXUS/data/editorial-audit-contract.json",
   "./23_Cosmos_NEXUS/blocks/01_evolucao/items.json",
@@ -127,6 +129,7 @@ const WARM_ASSETS = [
   "./23_Cosmos_NEXUS/blocks/_schemas/private-intake.schema.json",
   "./23_Cosmos_NEXUS/blocks/_templates/item.template.json",
   "./23_Cosmos_NEXUS/module.manifest.json",
+  "./23_Cosmos_NEXUS/releases/nexus-cosmos-20260801.release.json",
   "./23_Cosmos_NEXUS/products/maquina-turbo-temi-360x/index.html",
   "./23_Cosmos_NEXUS/products/maquina-turbo-temi-360x/styles.css",
   "./23_Cosmos_NEXUS/products/maquina-turbo-temi-360x/product.manifest.json",

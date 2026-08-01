@@ -9,6 +9,7 @@ liberados com ``PUBLICAR {TAF###-EXATO}`` na sessão corrente.
 from __future__ import annotations
 
 import argparse
+import copy
 import fcntl
 import hashlib
 import json
@@ -97,6 +98,34 @@ MAX_DOCX_MEMBERS = 5000
 MAX_DOCX_COMPRESSION_RATIO = 200
 SAFE_INTAKE_KINDS = {"auto", "gpt-word", "gpt-pdf", "gpt-image"}
 CONTROL_CHARS = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
+ZERO_HASH = "0" * 64
+HOM = re.compile(r"^HOM###[A-Z0-9-]+$")
+TOM = re.compile(r"^TOM###[A-Z0-9-]+$")
+PRC = re.compile(r"^PRC###[A-Z0-9-]+$")
+AUD = re.compile(r"^AUD###[A-Z0-9-]+$")
+RELEASE_CONFIRMATIONS = {
+    "safariMacOS",
+    "safariIPhone",
+    "clinicalReview",
+    "rightsReview",
+}
+UMBRELLA_RELEASE_SCHEMA = "antigravity-umbrella-release-manifest-v1"
+UMBRELLA_INVENTORY_POLICY = "explicit-closed-list-v1"
+UMBRELLA_ROOT_ALGORITHM = "sha256:path-tab-sha256-tab-bytes-lf:sort-path:v1"
+UMBRELLA_FILE_SUFFIXES = {
+    ".css",
+    ".csv",
+    ".html",
+    ".js",
+    ".json",
+    ".md",
+    ".mjs",
+    ".pdf",
+    ".txt",
+    ".xml",
+}
+UMBRELLA_IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp"}
+MAX_RELEASE_MEMBERS = 5000
 
 
 class ContractError(ValueError):
@@ -769,6 +798,1433 @@ def sync_plan(queue_dir: Path = PRIVATE_QUEUE) -> dict:
     }
 
 
+def _json_bytes(value: dict) -> bytes:
+    return (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+
+
+def _canonical_sha256(value: object) -> str:
+    payload = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _load_json_path(path: Path, label: str) -> dict:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ContractError(f"{label} ausente ou inválido") from exc
+    if not isinstance(value, dict):
+        raise ContractError(f"{label} precisa ser objeto JSON")
+    return value
+
+
+def _aware_timestamp(value: str, field: str) -> str:
+    normalized = _safe_text(value, field, 48)
+    try:
+        parsed = datetime.fromisoformat(normalized.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ContractError(f"{field} precisa ser timestamp ISO-8601") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ContractError(f"{field} precisa informar fuso horário")
+    return normalized
+
+
+def _reject_sensitive_public_text(value: str, field: str) -> str:
+    normalized = _safe_text(value, field, 600)
+    lowered = normalized.casefold()
+    forbidden = (
+        "/users/",
+        "\\users\\",
+        "authorization: bearer",
+        "password=",
+        "passwd=",
+        "token=",
+        "access_token",
+        "ghp_",
+        "github_pat_",
+        "sk-",
+    )
+    if any(marker in lowered for marker in forbidden):
+        raise ContractError(f"{field} contém caminho privado ou possível segredo")
+    if re.search(r"https?://\S+[?&][^\s=]+=", normalized, flags=re.IGNORECASE):
+        raise ContractError(f"{field} contém URL com parâmetros potencialmente sensíveis")
+    return normalized
+
+
+def _validate_release_evidence(
+    path: Path,
+    product_code: str,
+    audit_code: str,
+    artifact_root: str,
+) -> tuple[dict, str]:
+    try:
+        status_value = path.lstat()
+    except OSError as exc:
+        raise ContractError("evidência de homologação ausente") from exc
+    if stat.S_ISLNK(status_value.st_mode) or not stat.S_ISREG(status_value.st_mode):
+        raise ContractError("evidência de homologação precisa ser arquivo regular")
+    if status_value.st_size < 2 or status_value.st_size > 256 * 1024:
+        raise ContractError("evidência de homologação excede o limite seguro")
+    evidence = _load_json_path(path, "evidência de homologação")
+    allowed = {
+        "schemaVersion",
+        "productCode",
+        "reviewer",
+        "reviewedAt",
+        "confirmations",
+        "auditBinding",
+        "testRuns",
+        "notes",
+    }
+    if set(evidence) - allowed:
+        raise ContractError("evidência contém campos não contratados")
+    if evidence.get("schemaVersion") != "antigravity-release-evidence-v1":
+        raise ContractError("schema da evidência de homologação é incompatível")
+    if evidence.get("productCode") != product_code:
+        raise ContractError("evidência aponta para outro produto")
+    evidence["reviewer"] = _reject_sensitive_public_text(
+        evidence.get("reviewer", ""), "reviewer"
+    )
+    evidence["reviewedAt"] = _aware_timestamp(
+        evidence.get("reviewedAt", ""), "reviewedAt"
+    )
+
+    confirmations = evidence.get("confirmations")
+    if not isinstance(confirmations, dict) or set(confirmations) != RELEASE_CONFIRMATIONS:
+        raise ContractError("evidência precisa conter as quatro confirmações de homologação")
+    failed = sorted(
+        key for key, value in confirmations.items() if value != "PASS"
+    )
+    if failed:
+        raise ContractError("homologação não aprovada: " + ", ".join(failed))
+
+    audit_binding = evidence.get("auditBinding")
+    if not isinstance(audit_binding, dict) or set(audit_binding) != {
+        "auditCode", "artifactRootSha256", "status"
+    }:
+        raise ContractError("evidência precisa vincular AUD### ao root físico atual")
+    if (
+        audit_binding.get("auditCode") != audit_code
+        or audit_binding.get("artifactRootSha256") != artifact_root
+        or audit_binding.get("status") != "PASS"
+    ):
+        raise ContractError("reauditoria não está vinculada ao lote físico atual")
+
+    test_runs = evidence.get("testRuns")
+    if not isinstance(test_runs, list) or not test_runs or len(test_runs) > 50:
+        raise ContractError("evidência precisa registrar ao menos um teste executado")
+    test_ids: set[str] = set()
+    for item in test_runs:
+        if not isinstance(item, dict) or set(item) != {
+            "id", "command", "status", "summary", "executedAt"
+        }:
+            raise ContractError("registro de teste possui campos inválidos")
+        test_id = token(str(item.get("id", "")), "testRuns.id")
+        if test_id in test_ids:
+            raise ContractError("registro de teste duplicado")
+        test_ids.add(test_id)
+        item["id"] = test_id
+        item["command"] = _reject_sensitive_public_text(
+            str(item.get("command", "")), "testRuns.command"
+        )
+        item["summary"] = _reject_sensitive_public_text(
+            str(item.get("summary", "")), "testRuns.summary"
+        )
+        item["executedAt"] = _aware_timestamp(
+            str(item.get("executedAt", "")), "testRuns.executedAt"
+        )
+        if item.get("status") != "PASS":
+            raise ContractError(f"teste {test_id} não possui resultado PASS")
+
+    notes = evidence.get("notes", [])
+    if not isinstance(notes, list) or len(notes) > 20:
+        raise ContractError("notes precisa ser lista curta")
+    evidence["notes"] = [
+        _reject_sensitive_public_text(str(note), "notes") for note in notes
+    ]
+    return evidence, sha256_file(path)
+
+
+def _relative_regular_file(base: Path, relative: str, root: Path) -> Path:
+    if not isinstance(relative, str) or not relative or "\\" in relative:
+        raise ContractError("membro do produto possui path inválido")
+    relative_path = Path(relative)
+    if relative_path.is_absolute() or any(part in {"", ".", ".."} for part in relative_path.parts):
+        raise ContractError(f"membro do produto escapa do diretório: {relative}")
+    candidate = base / relative_path
+    current = base
+    for part in relative_path.parts:
+        current = current / part
+        try:
+            current_status = current.lstat()
+        except OSError as exc:
+            raise ContractError(f"membro materializado ausente: {relative}") from exc
+        if stat.S_ISLNK(current_status.st_mode):
+            raise ContractError(f"membro materializado não pode ser symlink: {relative}")
+    if not candidate.is_file():
+        raise ContractError(f"membro materializado não é arquivo: {relative}")
+    try:
+        candidate.resolve(strict=True).relative_to(root.resolve(strict=True))
+    except (OSError, ValueError) as exc:
+        raise ContractError(f"membro materializado está fora do projeto: {relative}") from exc
+    return candidate
+
+
+def _validate_release_html_state(path: Path) -> None:
+    try:
+        page_text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        raise ContractError("HTML tombável ausente ou inválido") from exc
+    normalized_page = (
+        unicodedata.normalize("NFKD", page_text)
+        .encode("ascii", "ignore")
+        .decode()
+        .casefold()
+    )
+    transient_markers = {
+        "candidate_public",
+        "candidato publico",
+        "estado candidato",
+        "sem taf",
+        "sem hom",
+        "ainda nao e aceite",
+        "nao publicada",
+        "nao representa aceite ou publicacao",
+    }
+    found = sorted(marker for marker in transient_markers if marker in normalized_page)
+    if found:
+        raise ContractError(
+            "HTML ainda contém estado editorial transitório: " + ", ".join(found)
+        )
+
+
+def _umbrella_release_artifact_inventory(
+    root: Path,
+    manifest_path: Path,
+    manifest: dict,
+) -> tuple[list[dict], str]:
+    """Valida um lote guarda-chuva explícito, P0 e limitado ao repositório."""
+
+    allowed_manifest_fields = {
+        "schemaVersion",
+        "identity",
+        "classification",
+        "publication",
+        "memberRoot",
+        "members",
+        "bundle",
+        "audit",
+        "releasePreparation",
+    }
+    extra_manifest_fields = sorted(set(manifest) - allowed_manifest_fields)
+    if extra_manifest_fields:
+        raise ContractError(
+            "manifesto guarda-chuva contém campos não contratados: "
+            + ", ".join(extra_manifest_fields)
+        )
+
+    member_root_value = manifest.get("memberRoot")
+    if (
+        not isinstance(member_root_value, str)
+        or not member_root_value
+        or "\\" in member_root_value
+    ):
+        raise ContractError("memberRoot do guarda-chuva é inválido")
+    repository_wide = member_root_value == "."
+    member_root = Path(member_root_value)
+    if not repository_wide and (
+        member_root.is_absolute()
+        or any(part in {"", ".", ".."} for part in member_root.parts)
+        or member_root.as_posix() != member_root_value
+    ):
+        raise ContractError(
+            "memberRoot precisa ser '.' ou caminho normalizado relativo ao repositório"
+        )
+    current = root
+    for part in member_root.parts:
+        current = current / part
+        try:
+            current_status = current.lstat()
+        except OSError as exc:
+            raise ContractError("memberRoot materializado está ausente") from exc
+        if stat.S_ISLNK(current_status.st_mode):
+            raise ContractError("memberRoot não pode atravessar symlink")
+    if not current.is_dir():
+        raise ContractError("memberRoot precisa apontar para diretório regular")
+
+    declared_members = manifest.get("members")
+    if (
+        not isinstance(declared_members, list)
+        or not declared_members
+        or len(declared_members) > MAX_RELEASE_MEMBERS
+    ):
+        raise ContractError("members do guarda-chuva precisa ser lista não vazia e limitada")
+
+    manifest_relative = manifest_path.relative_to(root).as_posix()
+    mutable_governance_paths = {
+        "23_Cosmos_NEXUS/module.manifest.json",
+        "23_Cosmos_NEXUS/data/product-catalog.json",
+        "23_Cosmos_NEXUS/data/execution-ledger.json",
+        "23_Cosmos_NEXUS/data/tombstone-manifest.json",
+        "23_Cosmos_NEXUS/data/homologation-reports.json",
+    }
+    seen_paths: set[str] = set()
+    image_codes: set[str] = set()
+    members: list[dict] = []
+    declared_paths: list[str] = []
+    for member in declared_members:
+        if not isinstance(member, dict):
+            raise ContractError("membro do guarda-chuva precisa ser objeto JSON")
+        kind = member.get("kind")
+        expected_fields = (
+            {"path", "kind", "sha256", "bytes", "catalogCode"}
+            if kind == "image"
+            else {"path", "kind", "sha256", "bytes"}
+        )
+        if set(member) != expected_fields or kind not in {"file", "image"}:
+            raise ContractError("membro do guarda-chuva possui campos ou kind inválidos")
+
+        relative = member.get("path")
+        if not isinstance(relative, str):
+            raise ContractError("membro do guarda-chuva possui path inválido")
+        relative_path = Path(relative)
+        if relative_path.as_posix() != relative:
+            raise ContractError(f"membro possui path não normalizado: {relative}")
+        if not repository_wide:
+            try:
+                relative_path.relative_to(member_root)
+            except ValueError as exc:
+                raise ContractError(f"membro está fora de memberRoot: {relative}") from exc
+        if any(part.startswith(".") for part in relative_path.parts):
+            raise ContractError(f"membro oculto ou privado não pode ser tombado: {relative}")
+        if (
+            relative == manifest_relative
+            or relative in mutable_governance_paths
+            or relative.startswith("23_Cosmos_NEXUS/data/release-reports/")
+        ):
+            raise ContractError(f"metadado de governança mutável não pode ser membro: {relative}")
+        if relative in seen_paths:
+            raise ContractError(f"membro duplicado no guarda-chuva: {relative}")
+        seen_paths.add(relative)
+        declared_paths.append(relative)
+
+        path = _relative_regular_file(root, relative, root)
+        actual_hash = sha256_file(path)
+        actual_size = path.stat().st_size
+        if (
+            not HEX64.fullmatch(str(member.get("sha256", "")))
+            or member.get("sha256") != actual_hash
+            or not isinstance(member.get("bytes"), int)
+            or isinstance(member.get("bytes"), bool)
+            or member.get("bytes") != actual_size
+            or actual_size > MAX_FILE_BYTES
+        ):
+            raise ContractError(f"membro diverge dos bytes reais: {relative}")
+
+        suffix = path.suffix.casefold()
+        if kind == "image":
+            if suffix not in UMBRELLA_IMAGE_SUFFIXES:
+                raise ContractError(f"kind image possui formato não permitido: {relative}")
+            code = member.get("catalogCode", "")
+            if (
+                not IMG.fullmatch(code)
+                or not code.endswith(actual_hash[:8].upper())
+                or code in image_codes
+            ):
+                raise ContractError(f"imagem não possui ####IMG único e coerente: {relative}")
+            image_codes.add(code)
+            validate_materialized_file(path, "gpt-image", suffix)
+        else:
+            if suffix not in UMBRELLA_FILE_SUFFIXES:
+                raise ContractError(f"arquivo guarda-chuva possui formato não permitido: {relative}")
+            if suffix == ".pdf":
+                validate_materialized_file(path, "gpt-pdf", suffix)
+            elif suffix == ".html":
+                _validate_release_html_state(path)
+            elif suffix == ".json":
+                try:
+                    json.loads(path.read_text(encoding="utf-8"))
+                except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+                    raise ContractError(f"JSON tombável inválido: {relative}") from exc
+
+        record = {
+            "path": relative,
+            "sha256": actual_hash,
+            "bytes": actual_size,
+            "kind": kind,
+        }
+        if kind == "image":
+            record["catalogCode"] = member["catalogCode"]
+        members.append(record)
+
+    if declared_paths != sorted(declared_paths):
+        raise ContractError("members do guarda-chuva precisa estar ordenado por path")
+
+    root_lines = "".join(
+        f"{member['path']}\t{member['sha256']}\t{member['bytes']}\n"
+        for member in members
+    )
+    artifact_root = hashlib.sha256(root_lines.encode("utf-8")).hexdigest()
+    bundle = manifest.get("bundle")
+    expected_bundle_fields = {
+        "inventoryPolicy",
+        "memberRootAlgorithm",
+        "memberCount",
+        "totalBytes",
+        "aggregateSha256",
+    }
+    if not isinstance(bundle, dict) or set(bundle) != expected_bundle_fields:
+        raise ContractError("bundle do guarda-chuva possui campos inválidos")
+    if (
+        bundle.get("inventoryPolicy") != UMBRELLA_INVENTORY_POLICY
+        or bundle.get("memberRootAlgorithm") != UMBRELLA_ROOT_ALGORITHM
+        or bundle.get("memberCount") != len(members)
+        or bundle.get("totalBytes") != sum(member["bytes"] for member in members)
+        or bundle.get("aggregateSha256") != artifact_root
+    ):
+        raise ContractError("bundle do guarda-chuva diverge do inventário físico")
+
+    identity = manifest.get("identity", {})
+    audit = manifest.get("audit", {})
+    audit_evidence = audit.get("auditEvidenceSha256")
+    audit_input = "|".join(
+        [
+            identity.get("productCode", ""),
+            artifact_root,
+            "patient:passed",
+            "rights:passed",
+            "science:passed",
+            "technical:passed",
+            "links:passed",
+        ]
+    )
+    expected_evidence = hashlib.sha256(audit_input.encode("utf-8")).hexdigest()
+    if (
+        audit_evidence != expected_evidence
+        or not AUD.fullmatch(identity.get("auditCode", ""))
+        or not identity.get("auditCode", "").endswith(expected_evidence[:8].upper())
+    ):
+        raise ContractError("AUD### do guarda-chuva não corresponde ao bundle atual")
+    return members, artifact_root
+
+
+def _release_artifact_inventory(
+    root: Path,
+    manifest_path: Path,
+    manifest: dict,
+) -> tuple[list[dict], str]:
+    if manifest.get("schemaVersion") == UMBRELLA_RELEASE_SCHEMA:
+        return _umbrella_release_artifact_inventory(root, manifest_path, manifest)
+    base = manifest_path.parent
+    entrypoints = manifest.get("entrypoints")
+    if not isinstance(entrypoints, dict) or set(entrypoints) != {
+        "page", "styles", "references"
+    }:
+        raise ContractError("manifesto candidato precisa declarar page, styles e references")
+    declared: dict[str, Path] = {}
+    for kind, relative in entrypoints.items():
+        path = _relative_regular_file(base, relative, root)
+        if relative in declared:
+            raise ContractError("entrypoint duplicado no manifesto candidato")
+        declared[relative] = path
+        if kind == "page":
+            try:
+                page_text = path.read_text(encoding="utf-8")
+            except (OSError, UnicodeDecodeError) as exc:
+                raise ContractError("entrypoint HTML ausente ou inválido") from exc
+            normalized_page = (
+                unicodedata.normalize("NFKD", page_text)
+                .encode("ascii", "ignore")
+                .decode()
+                .casefold()
+            )
+            transient_markers = {
+                "candidate_public",
+                "candidato publico",
+                "estado candidato",
+                "sem taf",
+                "sem hom",
+                "ainda nao e aceite",
+                "nao publicada",
+                "nao representa aceite ou publicacao",
+            }
+            found = sorted(marker for marker in transient_markers if marker in normalized_page)
+            if found:
+                raise ContractError(
+                    "HTML ainda contém estado editorial transitório: " + ", ".join(found)
+                )
+
+    assets = manifest.get("assets")
+    if not isinstance(assets, list) or not assets:
+        raise ContractError("manifesto candidato não possui assets tombáveis")
+    asset_codes: set[str] = set()
+    for asset in assets:
+        if not isinstance(asset, dict):
+            raise ContractError("asset do manifesto candidato é inválido")
+        relative = asset.get("path")
+        path = _relative_regular_file(base, relative, root)
+        if relative in declared:
+            raise ContractError(f"membro declarado mais de uma vez: {relative}")
+        declared[relative] = path
+        actual_hash = sha256_file(path)
+        actual_size = path.stat().st_size
+        if asset.get("sha256") != actual_hash or asset.get("bytes") != actual_size:
+            raise ContractError(f"asset diverge dos bytes reais: {relative}")
+        code = asset.get("catalogCode", "")
+        if not IMG.fullmatch(code) or not code.endswith(actual_hash[:8].upper()):
+            raise ContractError(f"asset não possui ####IMG coerente: {relative}")
+        if code in asset_codes:
+            raise ContractError("manifesto candidato contém ####IMG duplicado")
+        asset_codes.add(code)
+        suffix = path.suffix.casefold()
+        if suffix in {".png", ".jpg", ".jpeg", ".webp"}:
+            validate_materialized_file(path, "gpt-image", suffix)
+        if suffix == ".png" and isinstance(asset.get("width"), int) and isinstance(asset.get("height"), int):
+            with path.open("rb") as source:
+                source.seek(16)
+                dimensions = (
+                    int.from_bytes(source.read(4), "big"),
+                    int.from_bytes(source.read(4), "big"),
+                )
+            if dimensions != (asset["width"], asset["height"]):
+                raise ContractError(f"dimensões do PNG divergentes: {relative}")
+
+    bundle = manifest.get("bundle")
+    if not isinstance(bundle, dict):
+        raise ContractError("manifesto candidato não possui bundle verificável")
+    if bundle.get("assetCount") != len(assets) or bundle.get("totalBytes") != sum(
+        asset.get("bytes", -1) for asset in assets
+    ):
+        raise ContractError("contagem ou bytes agregados do bundle divergem")
+    if "assetCatalogAlgorithm" in bundle and "assetRootAlgorithm" not in bundle:
+        aggregate_input = "".join(
+            f"{asset['slot']}\t{asset['sha256']}\t{asset['bytes']}\n"
+            for asset in sorted(assets, key=lambda value: value["slot"])
+        )
+    elif "assetRootAlgorithm" in bundle and "assetCatalogAlgorithm" not in bundle:
+        aggregate_input = "|".join(sorted(asset["sha256"] for asset in assets))
+    else:
+        raise ContractError("bundle precisa declarar um único algoritmo agregado conhecido")
+    aggregate_hash = hashlib.sha256(aggregate_input.encode("utf-8")).hexdigest()
+    if bundle.get("aggregateSha256") != aggregate_hash:
+        raise ContractError("aggregateSha256 do bundle diverge dos assets reais")
+
+    audit = manifest.get("audit", {})
+    audit_evidence = audit.get("auditEvidenceSha256")
+    if audit_evidence is not None:
+        identity = manifest.get("identity", {})
+        audit_input = "|".join(
+            [
+                identity.get("productCode", ""),
+                aggregate_hash,
+                "patient:passed",
+                "rights:passed",
+                "science:passed",
+                "technical:passed",
+                "links:passed",
+            ]
+        )
+        expected_evidence = hashlib.sha256(audit_input.encode("utf-8")).hexdigest()
+        if (
+            audit_evidence != expected_evidence
+            or not identity.get("auditCode", "").endswith(expected_evidence[:8].upper())
+        ):
+            raise ContractError("AUD### ou auditEvidenceSha256 não corresponde ao bundle atual")
+
+    actual = {
+        path.relative_to(base).as_posix()
+        for path in base.rglob("*")
+        if path.is_file() and path != manifest_path
+    }
+    if actual != set(declared):
+        missing = sorted(set(declared) - actual)
+        extra = sorted(actual - set(declared))
+        detail = []
+        if missing:
+            detail.append("ausentes=" + ",".join(missing))
+        if extra:
+            detail.append("não declarados=" + ",".join(extra))
+        raise ContractError("lote físico não coincide com o manifesto: " + "; ".join(detail))
+
+    members = []
+    for relative, path in sorted(declared.items()):
+        members.append(
+            {
+                "path": path.relative_to(root).as_posix(),
+                "sha256": sha256_file(path),
+                "bytes": path.stat().st_size,
+            }
+        )
+    root_lines = "".join(
+        f"{member['path']}\t{member['sha256']}\t{member['bytes']}\n"
+        for member in members
+    )
+    return members, hashlib.sha256(root_lines.encode("utf-8")).hexdigest()
+
+
+def _event_hash(event: dict) -> str:
+    payload = dict(event)
+    payload.pop("eventHash", None)
+    return _canonical_sha256(payload)
+
+
+def _validate_execution_ledger(ledger: dict) -> str:
+    events = ledger.get("events")
+    if not isinstance(events, list):
+        raise ContractError("ledger de execução não possui events")
+    previous = ZERO_HASH
+    codes: set[str] = set()
+    for index, event in enumerate(events):
+        if not isinstance(event, dict):
+            raise ContractError(f"evento inválido no ledger: {index}")
+        missing = {
+            "code",
+            "type",
+            "subjectCode",
+            "timestamp",
+            "inputHash",
+            "outputHash",
+            "result",
+            "evidence",
+            "previousEventHash",
+            "eventHash",
+        } - set(event)
+        if missing:
+            raise ContractError(
+                f"evento {index} incompleto: " + ", ".join(sorted(missing))
+            )
+        code = event.get("code", "")
+        if code in codes or not any(
+            regex.fullmatch(code) for regex in (PRC, AUD, HOM, TOM, TAF)
+        ):
+            raise ContractError(f"code inválido ou duplicado no ledger: {code}")
+        codes.add(code)
+        if not AGX.fullmatch(event.get("subjectCode", "")):
+            raise ContractError(f"subjectCode inválido no ledger: {code}")
+        _aware_timestamp(event.get("timestamp", ""), f"timestamp do evento {code}")
+        if not HEX64.fullmatch(event.get("inputHash", "")) or not HEX64.fullmatch(
+            event.get("outputHash", "")
+        ):
+            raise ContractError(f"inputHash/outputHash inválido no ledger: {code}")
+        if not isinstance(event.get("evidence"), dict):
+            raise ContractError(f"evidence inválida no ledger: {code}")
+        if event.get("previousEventHash") != previous:
+            raise ContractError(f"cadeia append-only rompida no evento {code}")
+        calculated = _event_hash(event)
+        if event.get("eventHash") != calculated:
+            raise ContractError(f"hash do evento divergente no ledger: {code}")
+        previous = calculated
+    head = ledger.get("ledgerHeadSha256", ZERO_HASH)
+    if head != previous:
+        raise ContractError("ledgerHeadSha256 diverge da cadeia de eventos")
+    return previous
+
+
+def _append_ledger_event(ledger: dict, event: dict) -> None:
+    previous = _validate_execution_ledger(ledger)
+    if any(item.get("code") == event.get("code") for item in ledger["events"]):
+        raise ContractError(f"ledger já contém o código {event.get('code')}")
+    record = copy.deepcopy(event)
+    record["previousEventHash"] = previous
+    record["eventHash"] = _event_hash(record)
+    ledger["events"].append(record)
+    ledger["ledgerHeadSha256"] = record["eventHash"]
+
+
+def _transactional_json_update(
+    updates: dict[Path, dict],
+    post_validate,
+    *,
+    fail_after: int | None = None,
+) -> None:
+    """Substitui um conjunto de JSONs sob uma única janela de rollback."""
+
+    originals: dict[Path, tuple[bytes, int] | None] = {}
+    staged: dict[Path, Path] = {}
+    created_directories: list[Path] = []
+    replaced: list[Path] = []
+    try:
+        for path, value in updates.items():
+            missing = []
+            parent = path.parent
+            while not parent.exists():
+                missing.append(parent)
+                parent = parent.parent
+            for directory in reversed(missing):
+                directory.mkdir(mode=0o755)
+                created_directories.append(directory)
+            if path.exists():
+                status_value = path.lstat()
+                if stat.S_ISLNK(status_value.st_mode) or not stat.S_ISREG(status_value.st_mode):
+                    raise ContractError(f"destino transacional inseguro: {path.name}")
+                originals[path] = (path.read_bytes(), stat.S_IMODE(status_value.st_mode))
+            else:
+                originals[path] = None
+            temporary = path.parent / f".{path.name}.{os.getpid()}.{secrets.token_hex(8)}.tmp"
+            descriptor = os.open(
+                str(temporary), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644
+            )
+            try:
+                payload = _json_bytes(value)
+                view = memoryview(payload)
+                while view:
+                    written = os.write(descriptor, view)
+                    view = view[written:]
+                os.fsync(descriptor)
+            finally:
+                os.close(descriptor)
+            staged[path] = temporary
+
+        for index, (path, temporary) in enumerate(staged.items(), start=1):
+            os.replace(temporary, path)
+            replaced.append(path)
+            if fail_after is not None and index >= fail_after:
+                raise OSError("falha transacional injetada para teste")
+        for parent in {path.parent for path in updates}:
+            descriptor = os.open(str(parent), os.O_RDONLY)
+            try:
+                os.fsync(descriptor)
+            finally:
+                os.close(descriptor)
+        post_validate()
+    except Exception:
+        for path in reversed(replaced):
+            original = originals[path]
+            if original is None:
+                path.unlink(missing_ok=True)
+                continue
+            payload, mode = original
+            temporary = path.parent / f".{path.name}.{os.getpid()}.{secrets.token_hex(8)}.rollback"
+            descriptor = os.open(
+                str(temporary), os.O_WRONLY | os.O_CREAT | os.O_EXCL, mode
+            )
+            try:
+                view = memoryview(payload)
+                while view:
+                    written = os.write(descriptor, view)
+                    view = view[written:]
+                os.fsync(descriptor)
+            finally:
+                os.close(descriptor)
+            os.replace(temporary, path)
+            os.chmod(path, mode)
+        for temporary in staged.values():
+            temporary.unlink(missing_ok=True)
+        for directory in reversed(created_directories):
+            try:
+                directory.rmdir()
+            except OSError:
+                pass
+        raise
+    finally:
+        for temporary in staged.values():
+            temporary.unlink(missing_ok=True)
+
+
+def _release_code_parts(code: str, prefix: str) -> tuple[str, str, int, str]:
+    match = re.fullmatch(
+        rf"{re.escape(prefix)}-(.+)-(\d{{8}})-(\d{{4}})-([A-F0-9]{{8}})",
+        code,
+    )
+    if not match:
+        raise ContractError(f"código {prefix} inválido: {code}")
+    return match.group(1), match.group(2), int(match.group(3)), match.group(4)
+
+
+def _validate_candidate_for_release(product: dict, manifest: dict) -> None:
+    identity = manifest.get("identity", {})
+    if manifest.get("schemaVersion") not in {
+        "antigravity-candidate-product-manifest-v1",
+        UMBRELLA_RELEASE_SCHEMA,
+    }:
+        raise ContractError("produto não usa manifesto candidato homologável")
+    if identity.get("productCode") != product.get("productCode"):
+        raise ContractError("catálogo e manifesto divergem no ####AGX")
+    audit_code = identity.get("auditCode")
+    if not AUD.fullmatch(audit_code or "") or product.get("auditCode") != audit_code:
+        raise ContractError("produto não possui AUD### coerente")
+    classification = manifest.get("classification", {})
+    if not (
+        classification.get("privacy") == "P0"
+        and classification.get("patientData") is False
+        and classification.get("publicEligible") is True
+    ):
+        raise ContractError("somente produto P0, sem paciente e elegível pode ser preparado")
+    publication = manifest.get("publication", {})
+    if publication.get("officialPublication") is not False or product.get("published") is not False:
+        raise ContractError("produto já publicado não pode ser repreparado")
+    if publication.get("finalAcceptanceCode") is not None:
+        raise ContractError("manifesto já possui aceite final; use a validação idempotente")
+    audit = manifest.get("audit", {})
+    if audit.get("outcome") != "PASS":
+        raise ContractError("auditoria do produto não está aprovada")
+    required_audit = {
+        "patientExposure",
+        "rightsReview",
+        "scientificGrounding",
+        "technicalReview",
+        "linkCheck",
+    }
+    failed = sorted(
+        field
+        for field in required_audit
+        if audit.get(field, {}).get("status") not in {"passed", "corrected-and-rechecked"}
+    )
+    if failed:
+        raise ContractError("auditoria incompleta: " + ", ".join(failed))
+    if product.get("gates", {}).get("automatedTechnical") not in {
+        "APROVADO_LOCAL", "APROVADO"
+    }:
+        raise ContractError("gate técnico automatizado do catálogo não está aprovado")
+    if product.get("gates", {}).get("ownerUnlock") != "AUSENTE":
+        raise ContractError("owner unlock não deve anteceder o TAF###")
+
+
+def _default_tombstone_manifest() -> dict:
+    return {
+        "schemaVersion": "antigravity-tombstone-manifest-v1",
+        "version": "1.0.0",
+        "updatedAt": None,
+        "items": [],
+        "rules": [
+            "Membros tombados são arquivos físicos declarados no manifesto candidato ou guarda-chuva.",
+            "O manifesto-fonte é metadado de governança mutável e não integra o artifactRootSha256.",
+            "TOM### e TAF### preparados não publicam, não fazem merge e não liberam GitHub Pages.",
+        ],
+    }
+
+
+def _default_homologation_reports() -> dict:
+    return {
+        "schemaVersion": "antigravity-homologation-reports-v1",
+        "version": "1.0.0",
+        "updatedAt": None,
+        "items": [],
+        "rules": [
+            "Relatórios aprovados são acrescentados; registros anteriores não são editados.",
+            "HOM### registra homologação, mas não autoriza merge, Pages ou publicação.",
+        ],
+    }
+
+
+def validate_release_state(root: Path = ROOT) -> dict:
+    root = root.resolve(strict=True)
+    data = root / "23_Cosmos_NEXUS/data"
+    catalog = _load_json_path(data / "product-catalog.json", "catálogo de produtos")
+    ledger = _load_json_path(data / "execution-ledger.json", "ledger de execução")
+    head = _validate_execution_ledger(ledger)
+    tombstone_path = data / "tombstone-manifest.json"
+    tombstones = (
+        _load_json_path(tombstone_path, "manifesto de tombamento")
+        if tombstone_path.exists()
+        else _default_tombstone_manifest()
+    )
+    items = tombstones.get("items")
+    if not isinstance(items, list):
+        raise ContractError("manifesto de tombamento não possui items")
+    tomb_codes = [
+        item.get("tombstoneCode") if isinstance(item, dict) else None
+        for item in items
+    ]
+    if (
+        any(not TOM.fullmatch(code or "") for code in tomb_codes)
+        or len(tomb_codes) != len(set(tomb_codes))
+    ):
+        raise ContractError("manifesto de tombamento possui TOM### ausente ou duplicado")
+    tomb_by_code = {item["tombstoneCode"]: item for item in items}
+    prepared = 0
+    ledger_codes = {event.get("code") for event in ledger.get("events", [])}
+    for product in catalog.get("items", []):
+        taf_code = product.get("tafCode")
+        if taf_code is None:
+            continue
+        prepared += 1
+        if not TAF.fullmatch(taf_code):
+            raise ContractError("catálogo contém TAF### inválido")
+        hom_code = product.get("homologationCode", "")
+        tom_code = product.get("tombstoneCode", "")
+        audit_code = product.get("auditCode", "")
+        procedure_code = product.get("releasePreparation", {}).get("procedureCode", "")
+        if not HOM.fullmatch(hom_code) or not TOM.fullmatch(tom_code) or not AUD.fullmatch(audit_code) or not PRC.fullmatch(procedure_code):
+            raise ContractError(f"cadeia de aceite incompleta: {product.get('productCode')}")
+        if not {
+            audit_code, hom_code, tom_code, taf_code, procedure_code
+        }.issubset(ledger_codes):
+            raise ContractError("ledger não contém toda a cadeia PRC/AUD/HOM/TOM/TAF")
+        audit_events = [
+            event for event in ledger.get("events", [])
+            if event.get("code") == audit_code
+        ]
+        if (
+            len(audit_events) != 1
+            or audit_events[0].get("subjectCode") != product.get("productCode")
+            or audit_events[0].get("inputHash") != product.get(
+                "releasePreparation", {}
+            ).get("artifactRootSha256")
+            or audit_events[0].get("result") != "PASS_BOUND_TO_CURRENT_ARTIFACT_ROOT"
+        ):
+            raise ContractError("AUD### do ledger não está vinculado ao root atual")
+        tombstone = tomb_by_code.get(tom_code)
+        if not tombstone or tombstone.get("productCode") != product.get("productCode"):
+            raise ContractError("TOM### não aponta para o mesmo produto")
+        source_path = _relative_regular_file(root, product["source"]["path"], root)
+        manifest = _load_json_path(source_path, "manifesto do produto preparado")
+        if sha256_file(source_path) != product["source"].get("sha256"):
+            raise ContractError("catálogo diverge do manifesto preparado")
+        members, artifact_root = _release_artifact_inventory(root, source_path, manifest)
+        if tombstone.get("members") != members or tombstone.get("artifactRootSha256") != artifact_root:
+            raise ContractError("TOM### diverge dos artefatos físicos atuais")
+        release = product.get("releasePreparation", {})
+        report_path = _relative_regular_file(root, release.get("homologationReport", ""), root)
+        report_collection = _load_json_path(report_path, "relatórios de homologação")
+        reports = [
+            item for item in report_collection.get("items", [])
+            if isinstance(item, dict) and item.get("homologationCode") == hom_code
+        ]
+        if len(reports) != 1:
+            raise ContractError("HOM### não resolve um único relatório de homologação")
+        report = reports[0]
+        report_core = report.get("report")
+        if not isinstance(report_core, dict) or report.get("reportSha256") != _canonical_sha256(report_core):
+            raise ContractError("hash do relatório de homologação diverge")
+        if (
+            report.get("procedureCode") != procedure_code
+            or report.get("homologationCode") != hom_code
+            or report.get("tombstoneCode") != tom_code
+            or report.get("tafCode") != taf_code
+            or report_core.get("productCode") != product.get("productCode")
+            or report_core.get("auditCode") != audit_code
+            or report_core.get("artifactRootSha256") != artifact_root
+            or report_core.get("memberCount") != len(members)
+            or report_core.get("outcome") != "PASS"
+            or report.get("publication", {}).get("status") != "LOCKED"
+            or report.get("publication", {}).get("officialPublication") is not False
+        ):
+            raise ContractError("relatório de homologação não fecha a mesma cadeia")
+        hom_scope, hom_date, hom_sequence, _ = _release_code_parts(hom_code, "HOM###")
+        expected_hom = (
+            f"HOM###-{hom_scope}-{hom_date}-{hom_sequence:04d}-"
+            f"{digest8(hom_scope, report['reportSha256'], report_core['reviewer'], report_core['reviewedAt'])}"
+        )
+        if hom_code != expected_hom:
+            raise ContractError("HOM### diverge do relatório")
+        tom_scope, tom_date, tom_sequence, _ = _release_code_parts(tom_code, "TOM###")
+        expected_tom = (
+            f"TOM###-{tom_scope}-{tom_date}-{tom_sequence:04d}-"
+            f"{digest8(tom_scope, artifact_root, str(len(members)), tombstone['frozenAt'])}"
+        )
+        if tom_code != expected_tom:
+            raise ContractError("TOM### diverge do manifesto congelado")
+        expected_scope = token(
+            f"{product.get('universe')}-{product.get('block')}", "scope"
+        )
+        taf_match = re.fullmatch(
+            r"TAF###-(U1|U2|U3|MUX)-"
+            r"(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|MICRO|IMGT|PROD|REFS|AUDIT|EXT)-"
+            r"(\d{8})-(\d{4})-([A-F0-9]{8})",
+            taf_code,
+        )
+        if taf_match is None:
+            raise ContractError("TAF### inválido")
+        if (
+            hom_scope != expected_scope
+            or tom_scope != expected_scope
+            or tombstone.get("scope") != expected_scope
+            or taf_match.group(1) != product.get("universe")
+            or taf_match.group(2) != product.get("block")
+            or not (
+                hom_date == tom_date == taf_match.group(3)
+                and hom_sequence == tom_sequence == int(taf_match.group(4))
+            )
+        ):
+            raise ContractError("PRC/HOM/TOM/TAF divergem no escopo, data ou sequência")
+        taf_suffix = digest8(
+            product["productCode"], audit_code, hom_code, tom_code, artifact_root
+        )
+        if not taf_code.endswith(taf_suffix):
+            raise ContractError("TAF### diverge da cadeia de aceite")
+        if (
+            release.get("artifactRootSha256") != artifact_root
+            or release.get("memberCount") != len(members)
+            or release.get("sourceEvidenceSha256") != report_core.get("sourceEvidenceSha256")
+            or tombstone.get("auditCode") != audit_code
+            or tombstone.get("homologationCode") != hom_code
+            or tombstone.get("tafCode") != taf_code
+            or tombstone.get("publication") != "LOCKED"
+        ):
+            raise ContractError("catálogo, relatório e tombstone divergem")
+        publication = manifest.get("publication", {})
+        if (
+            publication.get("finalAcceptanceCode") != taf_code
+            or publication.get("officialPublication") is not False
+            or publication.get("officialPublicationCode") is not None
+            or publication.get("requiredCommand") != f"PUBLICAR {taf_code}"
+            or product.get("published") is not False
+            or product.get("gates", {}).get("ownerUnlock") != "AUSENTE"
+        ):
+            raise ContractError("TAF### preparado contornou a trava de publicação")
+    return {
+        "status": "OK",
+        "preparedReleases": prepared,
+        "ledgerEvents": len(ledger.get("events", [])),
+        "ledgerHeadSha256": head,
+        "publication": "LOCKED",
+    }
+
+
+def release_inventory(product_code: str, root: Path = ROOT) -> dict:
+    """Calcula o root físico e fornece um modelo PENDING sem alterar arquivos."""
+
+    root = root.resolve(strict=True)
+    if not AGX.fullmatch(product_code):
+        raise ContractError("product-code ####AGX válido é obrigatório")
+    catalog = _load_json_path(
+        root / "23_Cosmos_NEXUS/data/product-catalog.json",
+        "catálogo de produtos",
+    )
+    products = [
+        item for item in catalog.get("items", [])
+        if item.get("productCode") == product_code
+    ]
+    if len(products) != 1:
+        raise ContractError("product-code não resolve um único item do catálogo")
+    product = products[0]
+    manifest_path = _relative_regular_file(root, product["source"]["path"], root)
+    if sha256_file(manifest_path) != product["source"].get("sha256"):
+        raise ContractError("hash do manifesto candidato diverge do catálogo")
+    manifest = _load_json_path(manifest_path, "manifesto candidato")
+    members, artifact_root = _release_artifact_inventory(
+        root, manifest_path, manifest
+    )
+    return {
+        "schemaVersion": "antigravity-release-inventory-v1",
+        "productCode": product_code,
+        "auditCode": product.get("auditCode"),
+        "artifactRootSha256": artifact_root,
+        "memberCount": len(members),
+        "members": members,
+        "publication": "LOCKED",
+        "evidenceTemplate": {
+            "schemaVersion": "antigravity-release-evidence-v1",
+            "productCode": product_code,
+            "reviewer": "PREENCHER",
+            "reviewedAt": "PREENCHER_ISO8601_COM_FUSO",
+            "confirmations": {
+                "safariMacOS": "PENDING",
+                "safariIPhone": "PENDING",
+                "clinicalReview": "PENDING",
+                "rightsReview": "PENDING",
+            },
+            "auditBinding": {
+                "auditCode": product.get("auditCode"),
+                "artifactRootSha256": artifact_root,
+                "status": "PENDING",
+            },
+            "testRuns": [],
+            "notes": [],
+        },
+    }
+
+
+def prepare_release(
+    product_code: str,
+    evidence_path: Path,
+    release_date: str,
+    sequence: int,
+    *,
+    root: Path = ROOT,
+    fail_after: int | None = None,
+) -> dict:
+    """Prepara PRC/HOM/TOM/TAF de modo transacional, sem publicar nada."""
+
+    root = root.resolve(strict=True)
+    if not AGX.fullmatch(product_code):
+        raise ContractError("product-code ####AGX válido é obrigatório")
+    date_code = _parse_calendar_date(release_date)
+    if sequence < 1 or sequence > 9999:
+        raise ContractError("sequence deve estar entre 1 e 9999")
+    sequence_code = f"{sequence:04d}"
+    data = root / "23_Cosmos_NEXUS/data"
+    private_locks = root / ".nexus-sync-private/release-locks"
+    _secure_directory(private_locks.parent)
+    _secure_directory(private_locks)
+    lock_path = private_locks / f"{hashlib.sha256(product_code.encode()).hexdigest()}.lock"
+    lock_fd = os.open(str(lock_path), os.O_RDWR | os.O_CREAT, 0o600)
+    os.chmod(lock_path, 0o600)
+    fcntl.flock(lock_fd, fcntl.LOCK_EX)
+    try:
+        catalog_path = data / "product-catalog.json"
+        ledger_path = data / "execution-ledger.json"
+        module_path = root / "23_Cosmos_NEXUS/module.manifest.json"
+        catalog = _load_json_path(catalog_path, "catálogo de produtos")
+        ledger = _load_json_path(ledger_path, "ledger de execução")
+        _validate_execution_ledger(ledger)
+        products = [
+            item for item in catalog.get("items", [])
+            if item.get("productCode") == product_code
+        ]
+        if len(products) != 1:
+            raise ContractError("product-code não resolve um único item do catálogo")
+        product = products[0]
+        manifest_path = _relative_regular_file(root, product["source"]["path"], root)
+        manifest = _load_json_path(manifest_path, "manifesto candidato")
+        if sha256_file(manifest_path) != product["source"].get("sha256"):
+            raise ContractError("hash do manifesto candidato diverge do catálogo")
+        members, artifact_root = _release_artifact_inventory(root, manifest_path, manifest)
+        evidence, evidence_hash = _validate_release_evidence(
+            evidence_path,
+            product_code,
+            product.get("auditCode", ""),
+            artifact_root,
+        )
+
+        if product.get("tafCode") is not None:
+            state = validate_release_state(root)
+            release = product.get("releasePreparation", {})
+            if (
+                release.get("artifactRootSha256") != artifact_root
+                or release.get("sourceEvidenceSha256") != evidence_hash
+            ):
+                raise ContractError("produto já tombado mudou; crie nova versão e novo ####AGX")
+            return {
+                "status": "ALREADY_PREPARED",
+                "idempotent": True,
+                "productCode": product_code,
+                "procedureCode": release.get("procedureCode"),
+                "homologationCode": product.get("homologationCode"),
+                "tombstoneCode": product.get("tombstoneCode"),
+                "tafCode": product.get("tafCode"),
+                "artifactRootSha256": artifact_root,
+                "memberCount": len(members),
+                "publication": state["publication"],
+                "requiredCommand": f"PUBLICAR {product.get('tafCode')}",
+            }
+
+        _validate_candidate_for_release(product, manifest)
+        now = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+        scope = token(f"{product['universe']}-{product['block']}", "scope")
+        report_core = {
+            "schemaVersion": "antigravity-homologation-report-v1",
+            "productCode": product_code,
+            "auditCode": product["auditCode"],
+            "reviewer": evidence["reviewer"],
+            "reviewedAt": evidence["reviewedAt"],
+            "sourceEvidenceSha256": evidence_hash,
+            "confirmations": evidence["confirmations"],
+            "auditBinding": evidence["auditBinding"],
+            "testRuns": evidence["testRuns"],
+            "notes": evidence["notes"],
+            "artifactRootSha256": artifact_root,
+            "memberCount": len(members),
+            "auditOutcome": manifest["audit"]["outcome"],
+            "outcome": "PASS",
+        }
+        report_hash = _canonical_sha256(report_core)
+        hom_suffix = digest8(
+            scope, report_hash, evidence["reviewer"], evidence["reviewedAt"]
+        )
+        hom_code = f"HOM###-{scope}-{date_code}-{sequence_code}-{hom_suffix}"
+        tom_suffix = digest8(scope, artifact_root, str(len(members)), now)
+        tom_code = f"TOM###-{scope}-{date_code}-{sequence_code}-{tom_suffix}"
+        taf_suffix = digest8(
+            product_code,
+            product["auditCode"],
+            hom_code,
+            tom_code,
+            artifact_root,
+        )
+        taf_code = (
+            f"TAF###-{product['universe']}-{product['block']}-"
+            f"{date_code}-{sequence_code}-{taf_suffix}"
+        )
+        output_hash = _canonical_sha256(
+            {
+                "reportSha256": report_hash,
+                "artifactRootSha256": artifact_root,
+                "homologationCode": hom_code,
+                "tombstoneCode": tom_code,
+                "tafCode": taf_code,
+            }
+        )
+        input_hash = sha256_file(manifest_path)
+        procedure_suffix = digest8(
+            "PREPARAR-RELEASE", product_code, input_hash, output_hash, now
+        )
+        procedure_code = (
+            f"PRC###-PREPARAR-RELEASE-{date_code}-{sequence_code}-{procedure_suffix}"
+        )
+        report_relative = Path("23_Cosmos_NEXUS/data/homologation-reports.json")
+        report_path = root / report_relative
+        report_payload = {
+            "schemaVersion": "antigravity-homologation-record-v1",
+            "report": report_core,
+            "reportSha256": report_hash,
+            "procedureCode": procedure_code,
+            "homologationCode": hom_code,
+            "tombstoneCode": tom_code,
+            "tafCode": taf_code,
+            "preparedAt": now,
+            "publication": {
+                "status": "LOCKED",
+                "officialPublication": False,
+                "requiredCommand": f"PUBLICAR {taf_code}",
+            },
+        }
+        report_collection = (
+            _load_json_path(report_path, "relatórios de homologação")
+            if report_path.exists()
+            else _default_homologation_reports()
+        )
+        if any(
+            item.get("homologationCode") == hom_code
+            or item.get("report", {}).get("productCode") == product_code
+            for item in report_collection.get("items", [])
+        ):
+            raise ContractError("coleção de homologação já contém o produto ou HOM###")
+        report_collection["items"].append(report_payload)
+        report_collection["updatedAt"] = now
+
+        tombstone_path = data / "tombstone-manifest.json"
+        tombstones = (
+            _load_json_path(tombstone_path, "manifesto de tombamento")
+            if tombstone_path.exists()
+            else _default_tombstone_manifest()
+        )
+        if any(
+            item.get("tombstoneCode") == tom_code
+            or item.get("productCode") == product_code
+            for item in tombstones.get("items", [])
+        ):
+            raise ContractError("manifesto de tombamento já contém o produto ou TOM###")
+        tombstone_record = {
+            "tombstoneCode": tom_code,
+            "productCode": product_code,
+            "auditCode": product["auditCode"],
+            "homologationCode": hom_code,
+            "tafCode": taf_code,
+            "scope": scope,
+            "frozenAt": now,
+            "artifactRootAlgorithm": "SHA256 de path, SHA-256 e bytes separados por tabulação, ordenados por path e terminados por nova linha",
+            "artifactRootSha256": artifact_root,
+            "memberCount": len(members),
+            "members": members,
+            "excludedGovernanceMetadata": [
+                manifest_path.relative_to(root).as_posix()
+            ],
+            "publication": "LOCKED",
+        }
+        tombstones["items"].append(tombstone_record)
+        tombstones["updatedAt"] = now
+
+        manifest_next = copy.deepcopy(manifest)
+        manifest_next["publication"].update(
+            {
+                "status": "release-prepared",
+                "officialPublication": False,
+                "finalAcceptanceCode": taf_code,
+                "officialPublicationCode": None,
+                "ownerPublicationAuthorization": False,
+                "requiredCommand": f"PUBLICAR {taf_code}",
+            }
+        )
+        manifest_next["releasePreparation"] = {
+            "procedureCode": procedure_code,
+            "homologationCode": hom_code,
+            "homologationReport": report_relative.as_posix(),
+            "tombstoneCode": tom_code,
+            "tafCode": taf_code,
+            "artifactRootSha256": artifact_root,
+            "memberCount": len(members),
+            "sourceEvidenceSha256": evidence_hash,
+            "preparedAt": now,
+            "publication": "LOCKED",
+        }
+        manifest_next_hash = hashlib.sha256(_json_bytes(manifest_next)).hexdigest()
+
+        catalog_next = copy.deepcopy(catalog)
+        target = next(
+            item for item in catalog_next["items"]
+            if item.get("productCode") == product_code
+        )
+        target.update(
+            {
+                "status": "TAF_PREPARED",
+                "homologationCode": hom_code,
+                "tombstoneCode": tom_code,
+                "tafCode": taf_code,
+                "published": False,
+                "releasePreparation": {
+                    "procedureCode": procedure_code,
+                    "homologationReport": report_relative.as_posix(),
+                    "artifactRootSha256": artifact_root,
+                    "memberCount": len(members),
+                    "sourceEvidenceSha256": evidence_hash,
+                    "preparedAt": now,
+                },
+            }
+        )
+        target["source"]["sha256"] = manifest_next_hash
+        target["gates"].update(
+            {
+                "automatedTechnical": "APROVADO",
+                "humanVisual": "APROVADO",
+                "clinical": "APROVADO",
+                "rights": "APROVADO",
+                "ownerUnlock": "AUSENTE",
+            }
+        )
+        catalog_next["updatedAt"] = now
+
+        module_next = _load_json_path(module_path, "manifesto do módulo NEXUS")
+        module_next.setdefault("data", {}).update(
+            {
+                "homologationReports": "data/homologation-reports.json",
+                "tombstones": "data/tombstone-manifest.json",
+            }
+        )
+        candidates = [
+            item for item in module_next.get("candidateProducts", [])
+            if item.get("productCode") == product_code
+        ]
+        if len(candidates) != 1:
+            raise ContractError("manifesto NEXUS não resolve o produto candidato")
+        candidates[0].update(
+            {
+                "status": "release-prepared",
+                "tafCode": taf_code,
+                "officialPublication": False,
+            }
+        )
+        module_source = module_path.relative_to(root).as_posix()
+        module_catalog_items = [
+            item for item in catalog_next.get("items", [])
+            if item.get("source", {}).get("path") == module_source
+        ]
+        if len(module_catalog_items) > 1:
+            raise ContractError("catálogo possui manifesto NEXUS duplicado")
+        if module_catalog_items:
+            module_catalog_items[0]["source"]["sha256"] = hashlib.sha256(
+                _json_bytes(module_next)
+            ).hexdigest()
+
+        ledger_next = copy.deepcopy(ledger)
+        ledger_next.setdefault("ledgerHeadSha256", ZERO_HASH)
+        common_evidence = {
+            "artifactRootSha256": artifact_root,
+            "homologationReport": report_relative.as_posix(),
+            "publication": "LOCKED",
+        }
+        release_events = [
+            {
+                "code": procedure_code,
+                "type": "RELEASE_PREPARATION",
+                "subjectCode": product_code,
+                "timestamp": now,
+                "inputHash": input_hash,
+                "outputHash": output_hash,
+                "result": "PASS_PREPARED_NOT_PUBLISHED",
+                "evidence": common_evidence,
+            },
+            {
+                "code": product["auditCode"],
+                "type": "AUDIT_BOUND_TO_RELEASE_ROOT",
+                "subjectCode": product_code,
+                "timestamp": now,
+                "inputHash": artifact_root,
+                "outputHash": manifest.get("audit", {}).get(
+                    "auditEvidenceSha256",
+                    _canonical_sha256(evidence["auditBinding"]),
+                ),
+                "result": "PASS_BOUND_TO_CURRENT_ARTIFACT_ROOT",
+                "evidence": {
+                    **common_evidence,
+                    "auditBinding": evidence["auditBinding"],
+                },
+            },
+            {
+                "code": hom_code,
+                "type": "HOMOLOGATION",
+                "subjectCode": product_code,
+                "timestamp": now,
+                "inputHash": evidence_hash,
+                "outputHash": report_hash,
+                "result": "PASS",
+                "evidence": common_evidence,
+            },
+            {
+                "code": tom_code,
+                "type": "TOMBSTONE",
+                "subjectCode": product_code,
+                "timestamp": now,
+                "inputHash": report_hash,
+                "outputHash": artifact_root,
+                "result": "FROZEN_NOT_PUBLISHED",
+                "evidence": common_evidence,
+            },
+            {
+                "code": taf_code,
+                "type": "FINAL_ACCEPTANCE_PREPARED",
+                "subjectCode": product_code,
+                "timestamp": now,
+                "inputHash": artifact_root,
+                "outputHash": hashlib.sha256(taf_code.encode("utf-8")).hexdigest(),
+                "result": "PREPARED_AWAITING_LITERAL_OWNER_COMMAND",
+                "evidence": {
+                    **common_evidence,
+                    "requiredCommand": f"PUBLICAR {taf_code}",
+                },
+            },
+        ]
+        existing_ledger_codes = {
+            event.get("code") for event in ledger_next.get("events", [])
+        }
+        for event in release_events:
+            if event["code"] == product["auditCode"] and event["code"] in existing_ledger_codes:
+                continue
+            _append_ledger_event(ledger_next, event)
+        ledger_next.update(
+            {
+                "updatedAt": now,
+                "status": "release-prepared-publication-locked",
+            }
+        )
+
+        updates = {
+            report_path: report_collection,
+            tombstone_path: tombstones,
+            manifest_path: manifest_next,
+            module_path: module_next,
+            catalog_path: catalog_next,
+            ledger_path: ledger_next,
+        }
+        _transactional_json_update(
+            updates,
+            lambda: validate_release_state(root),
+            fail_after=fail_after,
+        )
+        return {
+            "status": "PREPARED",
+            "idempotent": False,
+            "productCode": product_code,
+            "procedureCode": procedure_code,
+            "homologationCode": hom_code,
+            "tombstoneCode": tom_code,
+            "tafCode": taf_code,
+            "artifactRootSha256": artifact_root,
+            "memberCount": len(members),
+            "homologationReport": report_relative.as_posix(),
+            "publication": "LOCKED",
+            "requiredCommand": f"PUBLICAR {taf_code}",
+        }
+    finally:
+        fcntl.flock(lock_fd, fcntl.LOCK_UN)
+        os.close(lock_fd)
+
+
 def _validate_block_item(item: dict, block_id: str, schema: dict, relations: set[str]) -> None:
     """Validação fail-closed dos invariantes editoriais usados na árvore pública."""
 
@@ -1004,6 +2460,10 @@ def validate() -> dict:
         raise ContractError("Etapas do ciclo não são contínuas")
     if [stage.get("id") for stage in lifecycle[-4:]] != ["homologation", "tombstone", "owner-unlock", "publish"]:
         raise ContractError("Fecho HOM → TOM/TAF → autorização → PUB ausente")
+    if payloads["governance-code-contract.json"].get("hashInputs", {}).get(
+        "TAF###"
+    ) != "product_code|audit_code|homologation_code|tombstone_code|artifact_root_sha256":
+        raise ContractError("TAF### precisa vincular explicitamente o AUD###")
 
     products = payloads["product-catalog.json"].get("items", [])
     product_codes = [item.get("productCode") for item in products]
@@ -1017,6 +2477,8 @@ def validate() -> dict:
         if product.get("published") and not product.get("tafCode"):
             raise ContractError("Produto publicado sem TAF###")
 
+    release_state = validate_release_state(ROOT)
+
     return {
         "status": "OK",
         "universes": 3,
@@ -1029,6 +2491,8 @@ def validate() -> dict:
         "auditPillars": len(pillar_ids),
         "privateDomains": sum(1 for value in DOMAINS.values() if value["private"]),
         "lifecycleStages": len(lifecycle),
+        "preparedReleases": release_state["preparedReleases"],
+        "ledgerEvents": release_state["ledgerEvents"],
         "publication": "LOCKED",
     }
 
@@ -1184,6 +2648,27 @@ def parser() -> argparse.ArgumentParser:
     intake.add_argument("--date", default=date.today().isoformat())
     intake.add_argument("--sequence", type=int)
     sub.add_parser("sync-plan", help="listar pendências sem revelar paths ou títulos")
+    release = sub.add_parser(
+        "prepare-release",
+        help="preparar PRC/HOM/TOM/TAF transacionalmente, sem publicar",
+    )
+    release.add_argument("--product-code", required=True)
+    release.add_argument(
+        "--evidence",
+        required=True,
+        help="JSON público e estrito com testes e confirmações humanas",
+    )
+    release.add_argument("--date", default=date.today().isoformat())
+    release.add_argument("--sequence", required=True, type=int)
+    sub.add_parser(
+        "validate-release",
+        help="validar ledger, relatórios, tombstones e TAF sem publicar",
+    )
+    inventory = sub.add_parser(
+        "release-inventory",
+        help="calcular membros/root e modelo de evidência PENDING sem gravar",
+    )
+    inventory.add_argument("--product-code", required=True)
     return root
 
 
@@ -1219,6 +2704,24 @@ def main() -> int:
             print(json.dumps(public_result, ensure_ascii=False, indent=2))
         elif args.command == "sync-plan":
             print(json.dumps(sync_plan(), ensure_ascii=False, indent=2))
+        elif args.command == "prepare-release":
+            result = prepare_release(
+                args.product_code,
+                Path(args.evidence).expanduser(),
+                args.date,
+                args.sequence,
+            )
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == "validate-release":
+            print(json.dumps(validate_release_state(), ensure_ascii=False, indent=2))
+        elif args.command == "release-inventory":
+            print(
+                json.dumps(
+                    release_inventory(args.product_code),
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
     except ContractError as exc:
         print(f"BLOQUEADO: {exc}", file=sys.stderr)
         return 2

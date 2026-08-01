@@ -2,9 +2,9 @@
   "schemaVersion": "antigravity-cosmos-module-v1",
   "moduleId": "nexus-cosmos",
   "title": "NEXUS Cosmos — Fusão dos Universos",
-  "version": "1.2.0-local-station",
+  "version": "1.3.0-release-station",
   "updatedAt": "2026-08-01",
-  "status": "pre-visualizacao-local-em-revisao",
+  "status": "release-preparation-locked",
   "entrypoint": "index.html",
   "classification": "operation",
   "data": {
@@ -35,13 +35,17 @@
     "blockItemSchema": "blocks/_schemas/block-item.schema.json",
     "privateIntakeSchema": "blocks/_schemas/private-intake.schema.json",
     "blockItemTemplate": "blocks/_templates/item.template.json",
-    "globalGraph": "../data/connections.json"
+    "globalGraph": "../data/connections.json",
+    "homologationReports": "data/homologation-reports.json",
+    "tombstones": "data/tombstone-manifest.json"
   },
   "publication": {
-    "mode": "local-preview",
+    "mode": "release-preparation",
     "publicPreview": false,
     "published": false,
-    "tafIssued": false,
+    "tafIssued": true,
+    "stationTafCode": "TAF###-MUX-EXT-20260801-0003-6445E9A3",
+    "requiredCommand": "PUBLICAR TAF###-MUX-EXT-20260801-0003-6445E9A3",
     "ownerPublicationAuthorization": false,
     "clinicalReviewOngoing": true,
     "purpose": "engenharia-cognitiva-educacional-e-apoio-a-revisao-humana",
@@ -50,8 +54,17 @@
   },
   "draftSync": {
     "automatic": true,
-    "surfaces": ["notion-private", "google-drive-private", "github-draft-branch"],
-    "neverAutomatic": ["main", "merge", "github-pages", "official-site"]
+    "surfaces": [
+      "notion-private",
+      "google-drive-private",
+      "github-draft-branch"
+    ],
+    "neverAutomatic": [
+      "main",
+      "merge",
+      "github-pages",
+      "official-site"
+    ]
   },
   "architecture": {
     "blockCount": 13,
@@ -94,6 +107,17 @@
   },
   "candidateProducts": [
     {
+      "id": "nexus-cosmos-fusao-dos-universos",
+      "productCode": "####AGX-MUX-EXT-20260731-0001-847D3013",
+      "title": "NEXUS Cosmos — Estação estável 2026-08-01",
+      "route": "index.html",
+      "manifest": "releases/nexus-cosmos-20260801.release.json",
+      "registry": "../data/editorial/registry.json",
+      "status": "release-prepared",
+      "officialPublication": false,
+      "tafCode": "TAF###-MUX-EXT-20260801-0003-6445E9A3"
+    },
+    {
       "id": "maquina-turbo-temi-360x",
       "productCode": "####AGX-MUX-PROD-20260801-0001-D0394A79",
       "title": "Máquina Turbo TEMI 360X — Atlas operacional",
@@ -101,8 +125,9 @@
       "manifest": "products/maquina-turbo-temi-360x/product.manifest.json",
       "references": "products/maquina-turbo-temi-360x/references.json",
       "registry": "blocks/10_produtos_turbo_temi/items.json",
-      "status": "candidate-public",
-      "officialPublication": false
+      "status": "release-prepared",
+      "officialPublication": false,
+      "tafCode": "TAF###-MUX-PROD-20260801-0001-3B26350F"
     },
     {
       "id": "biblioteca-visual-cosmica",
@@ -112,8 +137,9 @@
       "manifest": "products/biblioteca-visual-cosmica/product.manifest.json",
       "references": "products/biblioteca-visual-cosmica/references.json",
       "registry": "blocks/09_imagens_turbo_temi/items.json",
-      "status": "candidate-public",
-      "officialPublication": false
+      "status": "release-prepared",
+      "officialPublication": false,
+      "tafCode": "TAF###-U3-IMGT-20260801-0002-23F72FD1"
     }
   ],
   "audit": {
@@ -136,7 +162,11 @@
     "additionalCandidateImages": 2,
     "runtimeGeneration": false,
     "metadataStripped": true,
-    "pixelStreamPreserved": true,
+    "pixelStreamPreserved": false,
+    "correctedJpegSlotsRecoded": [
+      13,
+      15
+    ],
     "sourceAndDerivativeIntegritySeparated": true,
     "lazyLoading": true
   },
@@ -147,9 +177,24 @@
     "patientData": false,
     "clinicalDemo": "inteiramente sintético",
     "privateBoundary": {
-      "universes": ["PRV-PER", "PRV-JUR", "PRV-FIN", "PRV-ADM", "PRV-TEC"],
-      "allowedSurfaces": ["local", "notion-private", "google-drive-private"],
-      "blockedSurfaces": ["github", "public-library", "public-live-map", "official-site"],
+      "universes": [
+        "PRV-PER",
+        "PRV-JUR",
+        "PRV-FIN",
+        "PRV-ADM",
+        "PRV-TEC"
+      ],
+      "allowedSurfaces": [
+        "local",
+        "notion-private",
+        "google-drive-private"
+      ],
+      "blockedSurfaces": [
+        "github",
+        "public-library",
+        "public-live-map",
+        "official-site"
+      ],
       "publicRepresentation": "abstract-boundary-only-without-title-person-value-case-or-link"
     },
     "localStorage": [
@@ -159,14 +204,11 @@
     ]
   },
   "reviewGate": {
-    "clinicalStatus": "pending",
+    "clinicalStatus": "radar-2026-08-01-reviewed",
     "publicationStatus": "blocked-by-owner-until-explicit-authorization",
     "requiredBeforePublication": [
-      "revisão médica humana do caso sintético e dos textos",
-      "atestado de direitos das 20 imagens derivadas",
-      "AUD### aprovado nos pilares paciente, direitos e respaldo científico",
-      "homologação no Chrome macOS e Safari iPhone físico",
-      "comparação visual desktop e mobile",
+      "manter os bytes tombados sem alteração após a emissão do TOM###",
+      "concluir a validação automatizada da cadeia no commit preparado",
       "comando PUBLICAR acompanhado do TAF### exato"
     ]
   }

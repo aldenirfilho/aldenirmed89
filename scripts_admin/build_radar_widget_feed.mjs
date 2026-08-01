@@ -29,6 +29,18 @@ function slugFor(itemId) {
     .replace(/^-+|-+$/g, "");
 }
 
+function nonEmptyString(value) {
+  return typeof value === "string" && Boolean(value.trim());
+}
+
+function validReviewDate(value) {
+  return (
+    nonEmptyString(value) &&
+    /^\d{4}-\d{2}-\d{2}(?:T.*)?$/.test(value) &&
+    !Number.isNaN(Date.parse(value))
+  );
+}
+
 function loadRadar() {
   const context = { window: {} };
   vm.createContext(context);
@@ -76,9 +88,20 @@ function buildFeed(radar) {
       temiHook: didactic.temiHook,
       memoryAnchor: didactic.memoryAnchor || item.topic,
       reviewStatus: item.audit?.reviewStatus || "pending",
+      clinicalReviewer: item.audit?.clinicalReviewer || null,
+      reviewedAt: item.audit?.reviewedAt || null,
+      reviewEvidence: item.audit?.reviewEvidence || null,
       deepLink: `${publicBase}#radar-${slugFor(item.id)}`,
     };
   });
+  const reviewedItemCount = items.filter(
+    (item) =>
+      item.reviewStatus === "reviewed" &&
+      nonEmptyString(item.clinicalReviewer) &&
+      validReviewDate(item.reviewedAt) &&
+      nonEmptyString(item.reviewEvidence),
+  ).length;
+  const clinicalReviewConfirmed = reviewedItemCount === items.length;
   const contentHash = crypto
     .createHash("sha256")
     .update(JSON.stringify(items))
@@ -100,9 +123,16 @@ function buildFeed(radar) {
       network: "leitura HTTPS do GitHub Pages oficial",
     },
     safety: {
-      status: "prévia educacional em revisão clínica",
+      status: clinicalReviewConfirmed
+        ? "conteúdo educacional com revisão clínica humana confirmada"
+        : "prévia educacional em revisão clínica",
+      clinicalReview: {
+        status: clinicalReviewConfirmed ? "reviewed" : "pending",
+        reviewedItemCount,
+        totalItemCount: items.length,
+      },
       disclaimer:
-        "Apoio educacional. Não substitui avaliação clínica, protocolo local ou revisão humana.",
+        "Apoio educacional. Não substitui avaliação clínica, protocolo local ou julgamento profissional.",
     },
     items,
   };

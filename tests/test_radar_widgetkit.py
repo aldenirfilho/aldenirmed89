@@ -74,6 +74,28 @@ class RadarWidgetKitTests(unittest.TestCase):
             self.assertTrue(item["takeaway"])
             self.assertTrue(item["doNotInfer"])
 
+    def test_current_edition_records_confirmed_clinical_review(self):
+        self.assertEqual(
+            self.feed["safety"]["status"],
+            "conteúdo educacional com revisão clínica humana confirmada",
+        )
+        self.assertEqual(
+            self.feed["safety"]["clinicalReview"],
+            {
+                "status": "reviewed",
+                "reviewedItemCount": 3,
+                "totalItemCount": 3,
+            },
+        )
+        for item in self.feed["items"]:
+            self.assertEqual(item["reviewStatus"], "reviewed")
+            self.assertEqual(item["clinicalReviewer"], "Proprietário")
+            self.assertEqual(item["reviewedAt"], "2026-08-01")
+            self.assertEqual(
+                item["reviewEvidence"],
+                "Revisão clínica confirmada pelo proprietário em 2026-08-01.",
+            )
+
     def test_radar_page_exposes_stable_anchors_and_widget_guide(self):
         self.assertIn("const storyAnchor=", self.radar_html)
         self.assertIn('id="${esc(storyAnchor)}"', self.radar_html)

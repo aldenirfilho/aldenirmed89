@@ -47,7 +47,7 @@ const currentScientific=[
       caveats:["Desenho pré–pós sujeito a confundimento temporal.","População pediátrica e programas locais heterogêneos."]
     },
     turbo:{question:"Menos cultura significou menos antibiótico?",evidence:"Culturas caíram 16%; antibióticos ficaram estáveis.",practice:"Colha somente se o resultado puder mudar a decisão.",limits:"PICU e desenho pré–pós.",temi:"Colonização não é VAP.",memoryAnchor:"TESTAR COM PROPÓSITO"},
-    audit:{reviewStatus:"pending",editorialReviewer:"Codex",clinicalReviewer:null,reviewedAt:null,dataClass:"none",riskNotes:"Segunda checagem editorial concluída; síntese autoral, sem dados de paciente ou figura de terceiros; revisão clínica humana pendente."}
+    audit:{reviewStatus:"reviewed",editorialReviewer:"Codex",clinicalReviewer:"Proprietário",reviewedAt:"2026-08-01",reviewEvidence:"Revisão clínica confirmada pelo proprietário em 2026-08-01.",dataClass:"none",riskNotes:"Segunda checagem editorial concluída; síntese autoral, sem dados de paciente ou figura de terceiros; revisão clínica humana confirmada pelo proprietário em 2026-08-01."}
   },
   {
     id:"doi:10.1038/s41598-026-63797-1",section:"scientific",priority:1,date:"2026-07-31",
@@ -72,7 +72,7 @@ const currentScientific=[
       caveats:["Amostra de um único centro e sem validação externa.","HACOR foi medido depois da retirada e o cutoff nasceu na própria coorte."]
     },
     turbo:{question:"HACOR sozinho decide reintubação?",evidence:"AUC 0,816 em 150 pacientes.",practice:"Use como parte da reavaliação pós-retirada.",limits:"Unicêntrico e sem validação externa.",temi:"Escore não substitui falha clínica.",memoryAnchor:"TRAJETÓRIA > CUTOFF"},
-    audit:{reviewStatus:"pending",editorialReviewer:"Codex",clinicalReviewer:null,reviewedAt:null,dataClass:"none",riskNotes:"Segunda checagem editorial concluída; síntese autoral baseada na fonte primária aberta; nenhuma figura reutilizada; revisão clínica humana pendente."}
+    audit:{reviewStatus:"reviewed",editorialReviewer:"Codex",clinicalReviewer:"Proprietário",reviewedAt:"2026-08-01",reviewEvidence:"Revisão clínica confirmada pelo proprietário em 2026-08-01.",dataClass:"none",riskNotes:"Segunda checagem editorial concluída; síntese autoral baseada na fonte primária aberta; nenhuma figura reutilizada; revisão clínica humana confirmada pelo proprietário em 2026-08-01."}
   },
   {
     id:"doi:10.1111/1742-6723.70318",section:"scientific",priority:1,date:"2026-07-31",
@@ -97,7 +97,7 @@ const currentScientific=[
       caveats:["Coorte retrospectiva sem controle não exposto.","Diferenças basais e seleção da amostra permitem confundimento residual."]
     },
     turbo:{question:"A dose única causou LRA?",evidence:"DRC: 30,9% vs 13,4%; OR ajustada 2,88.",practice:"Pese necessidade, risco renal e monitorização.",limits:"Sem grupo não exposto e sem causalidade.",temi:"Associação não prescreve.",memoryAnchor:"RISCO BASAL PRIMEIRO"},
-    audit:{reviewStatus:"pending",editorialReviewer:"Codex",clinicalReviewer:null,reviewedAt:null,dataClass:"none",riskNotes:"Segunda checagem editorial concluída; fonte Wiley citada sem reprodução de texto, tabela ou imagem; revisão clínica humana pendente."}
+    audit:{reviewStatus:"reviewed",editorialReviewer:"Codex",clinicalReviewer:"Proprietário",reviewedAt:"2026-08-01",reviewEvidence:"Revisão clínica confirmada pelo proprietário em 2026-08-01.",dataClass:"none",riskNotes:"Segunda checagem editorial concluída; fonte Wiley citada sem reprodução de texto, tabela ou imagem; revisão clínica humana confirmada pelo proprietário em 2026-08-01."}
   }
 ];
 

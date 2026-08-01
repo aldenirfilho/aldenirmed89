@@ -6,7 +6,7 @@
     {
       "id": "maquina-turbo-temi-360x",
       "productCode": "####AGX-MUX-PROD-20260801-0001-D0394A79",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "Máquina Turbo TEMI 360X — Atlas operacional",
       "summary": "Sessão visual e TDAH-friendly que organiza oito etapas do fluxo educacional — Word, PDF, imagens 16:9, ACRA, HTML, questões, aprendizagem ativa e pacote final — sob um único manifesto, hashes verificáveis, referências metodológicas e auditoria de privacidade, direitos e respaldo técnico. Não contém paciente, conduta clínica ou certificação de conteúdo futuro.",
       "contentClass": "non-clinical",
@@ -20,9 +20,9 @@
         "###CONSTELACAO:ACRA",
         "###CONSTELACAO:QUESTOES",
         "###BLOCO:PRODUTOS_TURBO_TEMI",
-        "###STATUS:CANDIDATE_PUBLIC",
+        "###STATUS:RELEASE_LOCKED",
         "###PRIVACIDADE:P0",
-        "###MATURIDADE:CANDIDATA",
+        "###MATURIDADE:AUDITADA",
         "###DOMINIO:MED"
       ],
       "topicTags": [
@@ -44,7 +44,7 @@
         "sourceIds": ["@TURBOTEMI"],
         "reviewStatus": "reviewed",
         "reviewer": "Codex — segunda checagem técnica e editorial",
-        "reviewedAt": "2026-08-01T02:20:58-03:00"
+        "reviewedAt": "2026-08-01T15:38:55-03:00"
       },
     "render": {
         "status": "candidate-public",
@@ -65,8 +65,8 @@
     },
     "assetCodes": [
       {"code": "####IMG-20260801-0001-78267207", "path": "products/maquina-turbo-temi-360x/assets/12-apostila-word.png", "sha256": "782672077a3b48dbeec8415b84bf375387ef231275d65b0b282dab78040a3cc9", "publicationStatus": "candidate-public"},
-      {"code": "####IMG-20260801-0002-43EDC7FB", "path": "products/maquina-turbo-temi-360x/assets/13-pdf-final.png", "sha256": "43edc7fb0512e1504bb0845138ba083d0741d91bff30fddfe8ce7f84fdb61b6d", "publicationStatus": "candidate-public"},
-      {"code": "####IMG-20260801-0003-1C4C820E", "path": "products/maquina-turbo-temi-360x/assets/15-imagens-premium-16-9.png", "sha256": "1c4c820e31af2062cd7c1b1689689525bda1dacf9820e0ecd95a50a570a37e92", "publicationStatus": "candidate-public"},
+      {"code": "####IMG-20260801-0009-D75624CC", "path": "products/maquina-turbo-temi-360x/assets/13-pdf-final.png", "sha256": "d75624ccf6f206a0b514a8cd9373124b3b1858589d322bfd81898cbc54ce08e9", "publicationStatus": "candidate-public", "supersedes": "####IMG-20260801-0002-43EDC7FB"},
+      {"code": "####IMG-20260801-0010-45A5FFDD", "path": "products/maquina-turbo-temi-360x/assets/15-imagens-premium-16-9.png", "sha256": "45a5ffdddb477c43f74b3abeb64f7d82d4b00d042a6679bed89ed7a3a37612ba", "publicationStatus": "candidate-public", "supersedes": "####IMG-20260801-0003-1C4C820E"},
       {"code": "####IMG-20260801-0004-11C59EEA", "path": "products/maquina-turbo-temi-360x/assets/16-acra-cognitivo.png", "sha256": "11c59eea30f76ff78594014ec691e38e3d3bab5d4d90eae37082e25245bf770e", "publicationStatus": "candidate-public"},
       {"code": "####IMG-20260801-0005-A00372CF", "path": "products/maquina-turbo-temi-360x/assets/17-html-antigravity.png", "sha256": "a00372cff8f7cccf83af9a86c84669c570473411e3d9b89c322aa84511f59d8c", "publicationStatus": "candidate-public"},
       {"code": "####IMG-20260801-0006-168B3ED6", "path": "products/maquina-turbo-temi-360x/assets/18-questoes-temi-n1-n5.png", "sha256": "168b3ed6343941458868dfee69cb71eca9b6eca7624e13d36880de76f95ea85f", "publicationStatus": "candidate-public"},
@@ -145,7 +145,7 @@
         {"targetId": "questoes", "relation": "TREINA", "reason": "Conecta elaboração de questões, evocação e feedback."}
       ],
       "audit": {
-        "auditCode": "AUD###-PROD-20260801-0001-CD1356A6",
+        "auditCode": "AUD###-PROD-20260801-0002-2EB68C7B",
         "patientExposure": "passed",
         "rightsReview": "passed",
         "scientificGrounding": "passed",
@@ -157,7 +157,7 @@
           "from": "maquina-turbo-temi-360x",
           "relation": "FUNDE_EM",
           "to": "nexus",
-          "evidenceIds": ["sha256:b18a5fa8e2fb74b8ba7069b17fc8a346066ecc969a97e0a8eaba96d72b667e76"],
+          "evidenceIds": ["sha256:a0acae202fb3eafee1982fa6c748d8ff38b102043735c425906ad6cdc620472a"],
           "reviewStatus": "reviewed"
         },
         {
@@ -206,7 +206,7 @@
           "from": "block-audit",
           "relation": "AUDITA",
           "to": "maquina-turbo-temi-360x",
-          "evidenceIds": ["AUD###-PROD-20260801-0001-CD1356A6"],
+          "evidenceIds": ["AUD###-PROD-20260801-0002-2EB68C7B"],
           "reviewStatus": "reviewed"
         },
         {

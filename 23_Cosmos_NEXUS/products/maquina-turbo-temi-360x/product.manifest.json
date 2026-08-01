@@ -4,11 +4,11 @@
     "id": "maquina-turbo-temi-360x",
     "semanticKey": "maquina-turbo-temi-360x",
     "title": "Máquina Turbo TEMI 360X — Atlas operacional",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "createdAt": "2026-08-01",
     "productCode": "####AGX-MUX-PROD-20260801-0001-D0394A79",
     "productUid": "d0394a798530f260bb8fd46f65e6d4111053531d0eb9b79c5a309842d52b8375",
-    "auditCode": "AUD###-PROD-20260801-0001-CD1356A6"
+    "auditCode": "AUD###-PROD-20260801-0002-2EB68C7B"
   },
   "classification": {
     "contentClass": "non-clinical",
@@ -18,11 +18,14 @@
     "publicEligible": true
   },
   "publication": {
-    "status": "candidate-public",
+    "status": "release-prepared",
     "officialPublication": false,
-    "finalAcceptanceCode": null,
+    "finalAcceptanceCode": "TAF###-MUX-PROD-20260801-0001-3B26350F",
     "officialPublicationCode": null,
-    "releaseBoundary": "Conteúdo apto a compor a revisão pública em branch e PR rascunho; não constitui aceite final, merge, Pages ou publicação oficial."
+    "authorizationMode": "LITERAL_OWNER_COMMAND",
+    "releaseBoundary": "Publicação oficial bloqueada. Consulte product.manifest.json para HOM/TOM/TAF. Exige o comando literal correspondente.",
+    "ownerPublicationAuthorization": false,
+    "requiredCommand": "PUBLICAR TAF###-MUX-PROD-20260801-0001-3B26350F"
   },
   "provenance": {
     "origin": "Projeto GPT @TURBOTEMI do proprietário",
@@ -41,10 +44,10 @@
   },
   "bundle": {
     "assetCatalogAlgorithm": "SHA256 de linhas UTF-8 ordenadas por slot; cada linha reúne slot, SHA-256 e bytes, separados por tabulação e terminados por nova linha.",
-    "aggregateSha256": "b18a5fa8e2fb74b8ba7069b17fc8a346066ecc969a97e0a8eaba96d72b667e76",
+    "aggregateSha256": "a0acae202fb3eafee1982fa6c748d8ff38b102043735c425906ad6cdc620472a",
     "productUidAlgorithm": "SHA256(NFC(aggregate_sha256|produtos-turbo-temi|maquina-turbo-temi-360x|P0))",
     "assetCount": 8,
-    "totalBytes": 14022323
+    "totalBytes": 14128716
   },
   "assets": [
     {
@@ -62,29 +65,29 @@
     },
     {
       "slot": 13,
-      "catalogCode": "####IMG-20260801-0002-43EDC7FB",
+      "catalogCode": "####IMG-20260801-0009-D75624CC",
       "publicationStatus": "candidate-public",
       "path": "assets/13-pdf-final.png",
       "title": "PDF final",
       "mime": "image/png",
       "width": 1672,
       "height": 941,
-      "bytes": 1594746,
-      "sha256": "43edc7fb0512e1504bb0845138ba083d0741d91bff30fddfe8ce7f84fdb61b6d",
-      "alt": "Fluxograma de conversão de uma fonte fechada em PDF final, com pontos de inspeção visual e decisão de aprovação ou correção."
+      "bytes": 1676073,
+      "sha256": "d75624ccf6f206a0b514a8cd9373124b3b1858589d322bfd81898cbc54ce08e9",
+      "alt": "Infográfico conceitual do fluxo de conversão de uma fonte fechada para PDF, incluindo revisão estruturada, decisão humana de aprovar ou corrigir e retorno da falha à fonte."
     },
     {
       "slot": 15,
-      "catalogCode": "####IMG-20260801-0003-1C4C820E",
+      "catalogCode": "####IMG-20260801-0010-45A5FFDD",
       "publicationStatus": "candidate-public",
       "path": "assets/15-imagens-premium-16-9.png",
       "title": "Imagens premium 16:9",
       "mime": "image/png",
       "width": 1672,
       "height": 941,
-      "bytes": 1770306,
-      "sha256": "1c4c820e31af2062cd7c1b1689689525bda1dacf9820e0ecd95a50a570a37e92",
-      "alt": "Fluxograma de criação de imagens 16 por 9, do objetivo e plano visual à renderização e validação editorial."
+      "bytes": 1795372,
+      "sha256": "45a5ffdddb477c43f74b3abeb64f7d82d4b00d042a6679bed89ed7a3a37612ba",
+      "alt": "Infográfico conceitual da criação de uma imagem didática 16:9, do objetivo e plano visual à renderização, revisão editorial e entrega como arquivo independente."
     },
     {
       "slot": 16,
@@ -164,27 +167,42 @@
   ],
   "audit": {
     "reviewer": "Codex — segunda checagem técnica e editorial",
-    "reviewedAt": "2026-08-01T02:20:58-03:00",
-    "auditCodeAlgorithm": "AUD###-PROD-20260801-0001- + primeiros 8 hex maiúsculos de SHA256(productCode|aggregateSha256|patient:passed|rights:passed|science:passed|technical:passed|links:passed)",
-    "auditEvidenceSha256": "cd1356a60eb7279dfc6358fad71aa2e608af096f7a34553a9cc36d2b4f47658c",
+    "reviewedAt": "2026-08-01T15:38:55-03:00",
+    "auditCodeAlgorithm": "AUD###-PROD-20260801-0002- + primeiros 8 hex maiúsculos de SHA256(productCode|aggregateSha256|patient:passed|rights:passed|science:passed|technical:passed|links:passed)",
+    "auditEvidenceSha256": "2eb68c7b6bbd7a57ef85e796f98b4beb97d420b7a6792ba69717ce0e1fec2ce0",
     "patientExposure": {
       "status": "passed",
       "evidence": "Inspeção visual dos oito assets e inspeção de chunks PNG: sem pessoa, paciente, rosto, pulseira, tela clínica, voz, identificador, EXIF ou campo textual pessoal."
     },
     "rightsReview": {
       "status": "passed",
-      "evidence": "Autorização do proprietário para outputs de seus projetos GPT e proveniência C2PA preservada. Não foi reproduzida figura de terceiro. Palavras e glifos que lembram formatos de software são referências nominativas e ilustrativas ao fluxo, sem alegação de afiliação, patrocínio, certificação ou licença de marca.",
+      "evidence": "Direitos para publicação das 20 imagens do atlas confirmados pelo proprietário em 2026-08-01; proveniência C2PA estrutural preservada nos PNGs. Não foi reproduzida figura de terceiro. Palavras e glifos que lembram formatos de software são referências nominativas e ilustrativas ao fluxo, sem alegação de afiliação, patrocínio, certificação ou licença de marca.",
       "reuseBoundary": "Uso autorizado neste projeto. Marcas eventualmente referidas pertencem a seus titulares; este manifesto não concede licença de marca nem licença geral de reutilização externa."
     },
     "scientificGrounding": {
       "status": "passed",
       "scope": "Somente fundamentos educacionais e de acessibilidade.",
-      "evidenceIds": ["ref-pubmed-16507066", "ref-pubmed-16719566", "ref-pubmed-31339105", "ref-w3c-wcag22"],
+      "evidenceIds": [
+        "ref-pubmed-16507066",
+        "ref-pubmed-16719566",
+        "ref-pubmed-31339105",
+        "ref-w3c-wcag22"
+      ],
       "clinicalClaims": false
     },
     "technicalReview": {
       "status": "passed",
-      "checks": ["assinaturas PNG", "dimensões", "bytes", "SHA-256", "caminhos relativos", "HTML semântico", "CSP local", "layout responsivo", "alternativas textuais"]
+      "checks": [
+        "assinaturas PNG",
+        "dimensões",
+        "bytes",
+        "SHA-256",
+        "caminhos relativos",
+        "HTML semântico",
+        "CSP local",
+        "layout responsivo",
+        "alternativas textuais"
+      ]
     },
     "linkCheck": {
       "status": "passed",
@@ -192,16 +210,33 @@
       "scope": "três páginas oficiais PubMed e a recomendação oficial WCAG 2.2"
     },
     "editorialCorrections": [
-      "PASS, inspeção 100% e precisão científica foram rotulados como metas ilustrativas, não certificações.",
+      "A imagem 13 substituiu inspeção 100% e PASS/FAIL por revisão estruturada, aprovar/corrigir e revisão humana explícita.",
+      "A imagem 15 substituiu precisão científica e PASS por fidelidade às fontes, texto conferido e ilustração conceitual não diagnóstica.",
       "N1–N5 foi rotulado como escala editorial interna, não taxonomia validada.",
       "A página declara que conteúdos clínicos futuros exigem referências próprias e nova revisão.",
       "Assets 11 e 14 não entraram no pacote por pendências de alegação e versão."
     ],
-    "outcome": "PASS"
+    "outcome": "PASS",
+    "supersededEvidence": [
+      {
+        "version": "1.0.0",
+        "auditCode": "AUD###-PROD-20260801-0001-CD1356A6",
+        "aggregateSha256": "b18a5fa8e2fb74b8ba7069b17fc8a346066ecc969a97e0a8eaba96d72b667e76",
+        "reason": "Substituído pela correção editorial e visual dos slots 13 e 15; preservado apenas para rastreabilidade."
+      }
+    ]
   },
   "graph": {
-    "universeIds": ["u2", "u3"],
-    "constellationIds": ["apostilas", "imagens", "acra", "questoes"],
+    "universeIds": [
+      "u2",
+      "u3"
+    ],
+    "constellationIds": [
+      "apostilas",
+      "imagens",
+      "acra",
+      "questoes"
+    ],
     "blockId": "produtos-turbo-temi",
     "structuralTags": [
       "###UNIVERSO:MUX",
@@ -210,16 +245,36 @@
       "###CONSTELACAO:ACRA",
       "###CONSTELACAO:QUESTOES",
       "###BLOCO:PRODUTOS_TURBO_TEMI",
-      "###STATUS:CANDIDATE_PUBLIC",
+      "###STATUS:RELEASE_LOCKED",
       "###PRIVACIDADE:P0",
-      "###MATURIDADE:CANDIDATA",
+      "###MATURIDADE:AUDITADA",
       "###DOMINIO:MED"
     ],
-    "topicTags": ["#TurboTEMI", "#AprendizagemAtiva", "#Microaprendizagem", "#RecuperacaoAtiva", "#RepeticaoEspacada", "#Acessibilidade", "#FluxoEditorial"]
+    "topicTags": [
+      "#TurboTEMI",
+      "#AprendizagemAtiva",
+      "#Microaprendizagem",
+      "#RecuperacaoAtiva",
+      "#RepeticaoEspacada",
+      "#Acessibilidade",
+      "#FluxoEditorial"
+    ]
   },
   "entrypoints": {
     "page": "index.html",
     "styles": "styles.css",
     "references": "references.json"
+  },
+  "releasePreparation": {
+    "procedureCode": "PRC###-PREPARAR-RELEASE-20260801-0001-DB995238",
+    "homologationCode": "HOM###-MUX-PROD-20260801-0001-539A45F1",
+    "homologationReport": "23_Cosmos_NEXUS/data/homologation-reports.json",
+    "tombstoneCode": "TOM###-MUX-PROD-20260801-0001-4496BFAB",
+    "tafCode": "TAF###-MUX-PROD-20260801-0001-3B26350F",
+    "artifactRootSha256": "6e41a807793da96074bdae3d0f9cff2c3b923a2425f3b3b380b57b8f1df22db3",
+    "memberCount": 11,
+    "sourceEvidenceSha256": "3ef83b394e76f8312b1ca9d5db7502fcd9aff6bb8296ff1dc55eaf34ed80fe6a",
+    "preparedAt": "2026-08-01T18:49:59Z",
+    "publication": "LOCKED"
   }
 }

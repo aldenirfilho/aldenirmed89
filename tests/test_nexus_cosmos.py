@@ -648,7 +648,15 @@ class NexusCosmosTests(unittest.TestCase):
         self.assertEqual(manifest["bundle"]["assetCount"], 2)
         self.assertEqual(len(manifest["assets"]), 2)
         self.assertFalse(manifest["publication"]["officialPublication"])
-        self.assertIsNone(manifest["publication"]["finalAcceptanceCode"])
+        self.assertRegex(
+            manifest["publication"]["finalAcceptanceCode"],
+            r"^TAF###-U3-IMGT-\d{8}-\d{4}-[A-F0-9]{8}$",
+        )
+        self.assertEqual(
+            manifest["publication"]["requiredCommand"],
+            f'PUBLICAR {manifest["publication"]["finalAcceptanceCode"]}',
+        )
+        self.assertFalse(manifest["publication"]["ownerPublicationAuthorization"])
         self.assertEqual(
             manifest["publication"]["authorizationMode"],
             "LITERAL_OWNER_COMMAND",
@@ -732,9 +740,9 @@ class NexusCosmosTests(unittest.TestCase):
         for marker in (
             "default-src 'self'",
             'class="skip-link"',
-            "PRÉVIA LOCAL · NÃO PUBLICADA",
+            "PUBLICAÇÃO OFICIAL BLOQUEADA",
             "CASO 100% SINTÉTICO",
-            "REVISÃO MÉDICA HUMANA PENDENTE",
+            "RADAR 01/08 · REVISÃO CONFIRMADA",
             "prefers-reduced-motion",
             "PUBLICAR TAF###",
         ):
@@ -747,7 +755,7 @@ class NexusCosmosTests(unittest.TestCase):
         self.assertTrue(any(item["href"] == "23_Cosmos_NEXUS/" for item in self.home_manifest["mainLinks"]))
         self.assertIn('"23_Cosmos_NEXUS",', read("scripts_admin/build_public_site.py"))
         worker = read("sw.js")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v21`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v22`', worker)
         self.assertIn('"./23_Cosmos_NEXUS/index.html"', worker)
         for block in self.blocks["blocks"]:
             self.assertIn(f'"./23_Cosmos_NEXUS/{block["ingestionPath"]}"', worker)
@@ -789,7 +797,7 @@ class NexusCosmosTests(unittest.TestCase):
         with self.assertRaisesRegex(self.bus.ContractError, "imagem IMGT"):
             self.bus.issue_code(args)
 
-    def test_station_catalogs_candidates_without_premature_taf(self) -> None:
+    def test_station_catalogs_prepared_taf_without_publication(self) -> None:
         products = {
             item["semanticKey"]: item for item in self.product_catalog["items"]
         }
@@ -807,10 +815,20 @@ class NexusCosmosTests(unittest.TestCase):
         for product in products.values():
             self.assertRegex(product["productCode"], r"^####AGX-")
             self.assertIn(product["graphNode"], graph_nodes)
-            self.assertIsNone(product["homologationCode"])
-            self.assertIsNone(product["tombstoneCode"])
-            self.assertIsNone(product["tafCode"])
+            self.assertRegex(product["homologationCode"], r"^HOM###-")
+            self.assertRegex(product["tombstoneCode"], r"^TOM###-")
+            self.assertRegex(product["tafCode"], r"^TAF###-")
+            self.assertEqual(product["status"], "TAF_PREPARED")
             self.assertFalse(product["published"])
+            self.assertEqual(product["gates"]["ownerUnlock"], "AUSENTE")
+            self.assertEqual(
+                product["releasePreparation"]["artifactRootSha256"],
+                next(
+                    item["artifactRootSha256"]
+                    for item in load("23_Cosmos_NEXUS/data/tombstone-manifest.json")["items"]
+                    if item["productCode"] == product["productCode"]
+                ),
+            )
             source = ROOT / product["source"]["path"]
             self.assertEqual(
                 hashlib.sha256(source.read_bytes()).hexdigest(),
