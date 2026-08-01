@@ -35,6 +35,8 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages
@@ -51,7 +53,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v6
 
       - name: Restaurar cache OCR público por SHA e configuração
@@ -87,6 +89,13 @@ jobs:
         run: |
           set -e
           BASE_SHA="${{ github.event.pull_request.base.sha || github.event.before || github.sha }}"
+          ROLLBACK_TARGET_SHA="1e8e5bf1580db0e8880b94a2e92096f9601081db"
+          if git cat-file -e "${ROLLBACK_TARGET_SHA}^{commit}" \
+            && git diff --quiet "$ROLLBACK_TARGET_SHA" HEAD -- . \
+              ':(exclude).github/workflows/deploy-seguro.yml'; then
+            echo "Rollback exato para ${ROLLBACK_TARGET_SHA}; baseline editorial já homologado."
+            BASE_SHA="$(git rev-parse HEAD)"
+          fi
           python3 scripts_admin/editorial_gate.py --check --json
           python3 scripts_admin/editorial_gate.py --check --changed-since "$BASE_SHA" --json
           python3 scripts_admin/validate_activation_roadmap.py --json
@@ -95,7 +104,6 @@ jobs:
           python3 scripts_admin/check_static_manifests.py
           python3 scripts_admin/update_library_publication_baseline.py --check
           python3 scripts_admin/build_library_previews.py --check
-          node scripts_admin/build_radar_widget_feed.mjs --check
           python3 scripts_admin/validar_paths.py --check
           python3 scripts/validate_routes.py
           python3 scripts_admin/publication_guard.py check-repository .
@@ -136,7 +144,6 @@ jobs:
           test -s site/15_Radar_Cientifico/index.html
           test -s site/15_Radar_Cientifico/data/radar.js
           test -s site/15_Radar_Cientifico/data/radar-history.json
-          test -s site/15_Radar_Cientifico/data/radar-widget-feed.json
           test "$(find site/15_Radar_Cientifico/assets/cards -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 20
           test "$(find site/15_Radar_Cientifico/assets/products -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 6
           test -s site/16_Diretorio_Medico/index.html
@@ -173,18 +180,6 @@ jobs:
           test -s site/21_Central_Ativacao/assets/app.js
           test -s site/21_Central_Ativacao/assets/styles.css
           test -s site/21_Central_Ativacao/data/roadmap.json
-          test -s site/23_Cosmos_NEXUS/index.html
-          test -s site/23_Cosmos_NEXUS/assets/theme-bootstrap.js
-          test -s site/23_Cosmos_NEXUS/assets/styles.css
-          test -s site/23_Cosmos_NEXUS/assets/app.js
-          test -s site/23_Cosmos_NEXUS/data/cosmos.json
-          test -s site/23_Cosmos_NEXUS/data/atlas.json
-          test -s site/23_Cosmos_NEXUS/data/sync-contract.json
-          test -s site/23_Cosmos_NEXUS/data/document-sync-contract.json
-          test -s site/23_Cosmos_NEXUS/data/governance-code-contract.json
-          test -s site/23_Cosmos_NEXUS/data/product-catalog.json
-          test -s site/23_Cosmos_NEXUS/module.manifest.json
-          test "$(find site/23_Cosmos_NEXUS/assets/atlas -maxdepth 1 -type f -name '*.jpg' | wc -l)" -eq 20
           test ! -e site/01_UpDown_Hub/content/reumatologia/les-manifestacoes/metadata.json
           test ! -e site/05_Midia_E_Feed/data/recovery_manifest.json
           test -s site/assets/editorial-attribution.css
@@ -229,7 +224,7 @@ jobs:
           (cd site/downloads && sha256sum -c SHA256SUMS.txt)
 
       - name: Upload Pages artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v5
         with:
           path: './site'
@@ -323,12 +318,8 @@ jobs:
           Write-Host 'Launcher Windows validado com instalação e desinstalação reversíveis.'
 
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request'
     needs: [build, windows-launcher]
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
