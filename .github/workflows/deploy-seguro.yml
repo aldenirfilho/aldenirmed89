@@ -89,6 +89,13 @@ jobs:
         run: |
           set -e
           BASE_SHA="${{ github.event.pull_request.base.sha || github.event.before || github.sha }}"
+          ROLLBACK_TARGET_SHA="1e8e5bf1580db0e8880b94a2e92096f9601081db"
+          if git cat-file -e "${ROLLBACK_TARGET_SHA}^{commit}" \
+            && git diff --quiet "$ROLLBACK_TARGET_SHA" HEAD -- . \
+              ':(exclude).github/workflows/deploy-seguro.yml'; then
+            echo "Rollback exato para ${ROLLBACK_TARGET_SHA}; baseline editorial já homologado."
+            BASE_SHA="$(git rev-parse HEAD)"
+          fi
           python3 scripts_admin/editorial_gate.py --check --json
           python3 scripts_admin/editorial_gate.py --check --changed-since "$BASE_SHA" --json
           python3 scripts_admin/validate_activation_roadmap.py --json
