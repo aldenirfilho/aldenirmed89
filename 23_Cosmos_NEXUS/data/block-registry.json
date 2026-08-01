@@ -1,14 +1,15 @@
 {
   "schemaVersion": "antigravity-cosmos-block-registry-v1",
-  "version": "1.0.0",
-  "updatedAt": "2026-07-31",
+  "version": "1.1.0",
+  "updatedAt": "2026-08-01",
   "status": "ready-for-local-ingestion",
   "ingestionContract": {
     "schema": "blocks/_schemas/block-item.schema.json",
     "template": "blocks/_templates/item.template.json",
     "publicRule": "Somente P0 público, sintético/desidentificado, sem dados de paciente e com revisão registrada.",
     "privateRule": "P1–P3 não entram nesta árvore pública; rotear apenas a superfície privada autorizada.",
-    "graphRule": "Cada item válido precisa declarar universos, constelações, ###TAGs e arestas propostas."
+    "graphRule": "Cada item válido precisa declarar universos, constelações, ###TAGs e arestas propostas.",
+    "auditRule": "Todo candidato público passa pelos gates paciente, direitos autorais, respaldo científico e integridade técnica."
   },
   "blocks": [
     {
@@ -124,6 +125,86 @@
       "statusLabel": "pronto · 0 itens"
     },
     {
+      "id": "estudo-microparticulado",
+      "code": "#estudo-microparticulado",
+      "title": "Estudo microparticulado renderizado",
+      "icon": "🧬",
+      "directory": "blocks/08_estudo_microparticulado/",
+      "ingestionPath": "blocks/08_estudo_microparticulado/items.json",
+      "purpose": "Receber somente uma micropartícula pública fechada M0–M9, autocontida, 100% respondida, corrigida, justificada e referenciada, sem acompanhamento posterior.",
+      "universes": ["u2", "u3"],
+      "constellations": ["acra", "temas", "questoes"],
+      "inputKinds": ["modulo-concluido-pelo-proprietario", "tema-validado", "microparticula-fechada", "fonte-canonica"],
+      "outputKinds": ["microparticula-fechada-M0-M9", "respostas-corrigidas", "justificativas", "referencias"],
+      "privacyCeilingPublic": "P0",
+      "status": "ready-empty",
+      "statusLabel": "pronto · 0 itens"
+    },
+    {
+      "id": "imagens-turbo-temi",
+      "code": "#imagens-turbo-temi",
+      "title": "Imagens Turbo TEMI",
+      "icon": "🎨",
+      "directory": "blocks/09_imagens_turbo_temi/",
+      "ingestionPath": "blocks/09_imagens_turbo_temi/items.json",
+      "purpose": "Gerar e catalogar pares widescreen/card, alt, legenda, direitos, dimensões e hash sem copiar figuras de terceiros.",
+      "universes": ["u2", "u3"],
+      "constellations": ["imagens", "acra"],
+      "inputKinds": ["brief-visual", "produto-validado", "imagem-gerada", "asset-licenciado"],
+      "outputKinds": ["widescreen", "card-vertical", "infografico", "manifesto-visual"],
+      "privacyCeilingPublic": "P0",
+      "status": "ready-empty",
+      "statusLabel": "pronto · 0 itens"
+    },
+    {
+      "id": "produtos-turbo-temi",
+      "code": "#produtos-turbo-temi",
+      "title": "Produtos Turbo TEMI",
+      "icon": "📦",
+      "directory": "blocks/10_produtos_turbo_temi/",
+      "ingestionPath": "blocks/10_produtos_turbo_temi/items.json",
+      "purpose": "Empacotar Word, PDF, HTML, apresentação, questão, imagem e derivados sob uma fonte, versão e manifesto comuns.",
+      "universes": ["u2", "u3"],
+      "constellations": ["apostilas", "imagens", "questoes", "acra"],
+      "inputKinds": ["produto-gpt", "documento", "imagem", "pacote-educacional"],
+      "outputKinds": ["produto-catalogado", "preview-fail-closed", "manifesto", "pacote-verificado"],
+      "privacyCeilingPublic": "P0",
+      "status": "ready-empty",
+      "statusLabel": "pronto · 0 itens"
+    },
+    {
+      "id": "referencias-evidencias",
+      "code": "#referencias-evidencias",
+      "title": "Referências e evidências",
+      "icon": "🔬",
+      "directory": "blocks/11_referencias_evidencias/",
+      "ingestionPath": "blocks/11_referencias_evidencias/items.json",
+      "purpose": "Resolver DOI, PMID, diretriz e URL oficial; separar desenho, achado, limitação e aplicabilidade antes da fusão.",
+      "universes": ["u1", "u2", "u3"],
+      "constellations": ["temas", "apostilas", "arsenal"],
+      "inputKinds": ["doi", "pmid", "diretriz", "url-oficial", "artigo"],
+      "outputKinds": ["referencia-canonica", "tabela-evidencia", "links-estudo", "lacuna-cientifica"],
+      "privacyCeilingPublic": "P0",
+      "status": "ready-empty",
+      "statusLabel": "pronto · 0 itens"
+    },
+    {
+      "id": "auditoria-publicacao",
+      "code": "#auditoria-publicacao",
+      "title": "Auditoria e publicação",
+      "icon": "🛡️",
+      "directory": "blocks/12_auditoria_publicacao/",
+      "ingestionPath": "blocks/12_auditoria_publicacao/items.json",
+      "purpose": "Executar a segunda checagem de paciente, direitos e respaldo científico, registrar AUD### e bloquear qualquer promoção incompleta.",
+      "universes": ["u1", "u2", "u3"],
+      "constellations": ["evolucoes", "temas", "imagens", "apostilas", "arsenal", "questoes"],
+      "inputKinds": ["produto-candidato", "imagem-candidata", "documento-candidato", "edicao-radar"],
+      "outputKinds": ["AUD###", "correcao-sanitizada", "plano-referencias", "bloqueio", "candidato-homologacao"],
+      "privacyCeilingPublic": "P0",
+      "status": "ready-empty",
+      "statusLabel": "pronto · 0 itens"
+    },
+    {
       "id": "extensoes",
       "code": "#extensoes",
       "title": "Portas para novos diretórios",
@@ -145,19 +226,19 @@
       "id":"u1-session","code":"U1","title":"Humano–Clínico","icon":"🫀","color":"#48dcff",
       "purpose":"Transformar evolução e contexto em tempo, prioridade, ação e reavaliação sem apagar incerteza.",
       "route":["capturar corte temporal","separar fato/inferência/lacuna","priorizar P0–Pn","ligar ação a alvo e prazo","reavaliar e versionar"],
-      "blocks":["#evolucao","#plano-terapeutico","#motor-visual","#tutor"]
+      "blocks":["#evolucao","#plano-terapeutico","#motor-visual","#referencias-evidencias","#auditoria-publicacao","#tutor"]
     },
     {
       "id":"u2-session","code":"U2","title":"Médico–Arsenal","icon":"🧰","color":"#ff63d8",
       "purpose":"Conectar tema, mecanismo, evidência, ferramenta, opção, limite e protocolo oficial.",
       "route":["extrair tema/TAG","mapear mecanismo e risco","localizar fonte canônica","selecionar arsenal pertinente","devolver limite e contingência"],
-      "blocks":["#plano-terapeutico","#motor-visual","#turbo-temi","#refinaria-temi","#tutor"]
+      "blocks":["#plano-terapeutico","#motor-visual","#turbo-temi","#estudo-microparticulado","#referencias-evidencias","#auditoria-publicacao","#refinaria-temi","#tutor"]
     },
     {
       "id":"u3-session","code":"U3","title":"Didático–Cognitivo","icon":"🧠","color":"#a8ff78",
       "purpose":"Converter o núcleo em representação, tentativa, feedback, produto e retomada recuperável.",
       "route":["definir competência","escolher representação","exigir tentativa","entregar feedback","programar D0/D1/D7/D30"],
-      "blocks":["#motor-visual","#organizador-estudos","#turbo-temi","#refinaria-temi","#tutor"]
+      "blocks":["#motor-visual","#organizador-estudos","#turbo-temi","#estudo-microparticulado","#imagens-turbo-temi","#produtos-turbo-temi","#referencias-evidencias","#auditoria-publicacao","#refinaria-temi","#tutor"]
     }
   ]
 }

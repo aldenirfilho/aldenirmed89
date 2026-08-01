@@ -300,8 +300,10 @@
       .forEach((tag) => tagBox.append(textElement("span", "", tag)));
     const constellation = runtime.cosmos.constellations.find((item) => item.id === node.id);
     const link = $("#inspector-link");
-    if (constellation) {
-      link.href = constellation.href;
+    const destination = node.href || constellation?.href;
+    if (destination) {
+      link.href = destination;
+      link.textContent = node.href ? "Abrir sessão candidata →" : "Abrir esta constelação →";
       link.hidden = false;
     } else {
       link.hidden = true;

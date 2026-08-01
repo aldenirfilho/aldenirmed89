@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "antigravity-project-sync-v1",
+  "version": "1.3.0",
+  "updatedAt": "2026-08-01",
+  "timezone": "America/Fortaleza",
+  "purpose": "Transformar pastas de projetos GPT em uma fila idempotente de produtos auditáveis sem mover, renomear ou publicar as fontes.",
+  "semanticCommand": "NEXUS PROJETO: dominio=<dominio> | raiz=<pasta> | janela=<data-ou-intervalo> | modo=sincronizar-rascunho",
+  "continuousMode": "inventariar -> deduplicar -> classificar -> auditar -> codificar -> renderizar -> topografar -> sincronizar superfícies permitidas -> checkpoint",
+  "discovery": {
+    "supportedMaterializedKinds": ["DOCX", "PDF", "PNG", "JPEG", "WEBP"],
+    "nonProductKinds": ["cache", "headers", "snapshot remoto", ".DS_Store", "worktree temporária", "log sem produto"],
+    "sourceRule": "arquivo materializado e estável; conversa sem bytes não é produto publicável",
+    "dateRule": "usar data da sessão/geração registrada, nunca mtime isolado como prova de autoria"
+  },
+  "sourceProjectPolicies": [
+    {
+      "alias": "@TURBOTEMI",
+      "publicProjection": "produtos didáticos P0, imagens autorais/geradas, questões e artefatos multiformato após auditoria",
+      "generatedImagePolicy": "cada imagem gerada é um produto independente com ####IMG, SHA-256, alt, direitos, auditoria e vínculo ao ####AGX pai",
+      "privateByDefault": ["casos reais", "anexos identificáveis", "fontes sem licença"],
+      "requiredBlock": "produtos-turbo-temi"
+    },
+    {
+      "alias": "#EVOLUCOES",
+      "publicProjection": "somente método, template ou caso 100% sintético/generalizado e cientificamente referenciado",
+      "generatedImagePolicy": "imagem só é produto público após remoção de paciente/caso reconhecível, generalização educacional, ####IMG e auditoria tríplice",
+      "privateByDefault": ["evolução de paciente real", "CASE-IR real", "cronologia clínica reconhecível", "arquivo original"],
+      "requiredBlock": "evolucao"
+    },
+    {
+      "alias": "#PLANOTERAPEUTICO",
+      "publicProjection": "somente algoritmo ou guia educacional generalizado, sem dados ou singularidade de caso real",
+      "generatedImagePolicy": "imagem só é produto público quando generalizada, sem prescrição/caso reidentificável, com ####IMG, referência pertinente e auditoria tríplice",
+      "privateByDefault": ["plano individual", "prescrição", "nome em arquivo", "combinação clínica reidentificável"],
+      "requiredBlock": "plano-terapeutico"
+    },
+    {
+      "alias": "@ORGANIZACAODEESTUDO",
+      "publicProjection": "exclusivamente modelo microparticulado fechado, preenchido e corrigido em 100%, sem estado pessoal",
+      "privateByDefault": ["SCALT", "avaliação pessoal", "desempenho", "posição curricular individual", "cronograma pessoal", "monitor de seguimento", "alça de recuperação"],
+      "requiredBlock": "estudo-microparticulado",
+      "ownerCompletionGate": {
+        "requiredStatus": "MODULE_COMPLETED_BY_OWNER",
+        "trigger": "declaração explícita do proprietário somente após concluir integralmente o módulo",
+        "beforeCompletion": "PRIVATE_WORK_IN_PROGRESS",
+        "partialPublication": false,
+        "extractorAction": "recortar o módulo concluído, remover estado pessoal e reconstruir um único modelo limpo, fechado, autocontido, com perguntas e respostas corretas"
+      },
+      "generatedImageException": {
+        "scope": "somente imagens geradas no projeto @ORGANIZACAODEESTUDO",
+        "waitsForModuleCompletion": false,
+        "parallelBlock": "imagens-turbo-temi",
+        "catalogCode": "####IMG-{YYYYMMDD}-{SEQ4}-{HASH8}",
+        "publicationAuthorization": "STANDING_OWNER_AUTHORIZATION_2026-08-01",
+        "requiredGates": ["P0", "paciente", "direitos", "respaldo científico quando aplicável", "integridade técnica", "alt", "SHA-256", "auditoria visual"],
+        "futureRelation": "vincular posteriormente ao modelo microparticulado completo sem bloquear a imagem"
+      },
+      "publicConditions": [
+        "conclusão integral do módulo confirmada explicitamente pelo proprietário",
+        "todas as respostas corretas e justificadas",
+        "fonte científica pertinente verificada",
+        "bloco autossuficiente e fechado",
+        "sem dashboard, progresso, ranking, agenda, monitor ou repetição programada",
+        "auditoria tríplice e revisão técnica aprovadas"
+      ]
+    },
+    {
+      "alias": "@TEMI360XINFINIT",
+      "domain": "clinical-educational",
+      "defaultPrivacy": "P1",
+      "canonicalLot": "temi360xinfinit-biblioteca-visual",
+      "canonicalLotRole": "DERIVA",
+      "publicProjection": "face conceitual que deriva conteúdos clínico-educacionais para o lote web canônico compartilhado",
+      "generatedImagePolicy": "a imagem conserva o mesmo ####IMG e SHA-256 quando também for apresentada por @BIBLIOTECAVISUAL; o alias adicional é proveniência, não um novo produto",
+      "privateByDefault": ["material bruto", "dados clínicos identificáveis", "fontes sem licença", "conteúdo sem respaldo científico"],
+      "requiredBlock": "produtos-turbo-temi",
+      "candidateGate": {
+        "targetPrivacy": "P0",
+        "requiredAuditPillars": ["patient-exposure", "copyright-rights", "scientific-grounding"],
+        "finalOwnerAuthorization": "PUBLICAR {TAF###-EXATO}",
+        "standingAuthorization": false
+      }
+    },
+    {
+      "alias": "@BIBLIOTECAVISUAL",
+      "domain": "clinical-educational",
+      "defaultPrivacy": "P1",
+      "canonicalLot": "temi360xinfinit-biblioteca-visual",
+      "canonicalLotRole": "REPRESENTA",
+      "publicProjection": "face visual que representa e apresenta o mesmo lote web canônico derivado por @TEMI360XINFINIT",
+      "generatedImagePolicy": "a apresentação visual reutiliza o ####IMG e o SHA-256 do lote canônico; não recodifica, não duplica bytes e não cria produto paralelo",
+      "privateByDefault": ["material bruto", "dados clínicos identificáveis", "fontes sem licença", "conteúdo sem respaldo científico"],
+      "requiredBlock": "imagens-turbo-temi",
+      "candidateGate": {
+        "targetPrivacy": "P0",
+        "requiredAuditPillars": ["patient-exposure", "copyright-rights", "scientific-grounding"],
+        "finalOwnerAuthorization": "PUBLICAR {TAF###-EXATO}",
+        "standingAuthorization": false
+      }
+    }
+  ],
+  "canonicalLots": [
+    {
+      "id": "temi360xinfinit-biblioteca-visual",
+      "domain": "clinical-educational",
+      "aliases": ["@TEMI360XINFINIT", "@BIBLIOTECAVISUAL"],
+      "roles": {
+        "@TEMI360XINFINIT": "DERIVA",
+        "@BIBLIOTECAVISUAL": "REPRESENTA"
+      },
+      "defaultPrivacy": "P1",
+      "candidatePrivacy": "P0",
+      "identityPolicy": {
+        "singleProductCode": true,
+        "singleImageCodePerSha256": true,
+        "duplicateCodesAcrossFaces": false,
+        "sourceAliasesAreProvenanceOnly": true
+      },
+      "publicationGate": {
+        "requiredAuditPillars": ["patient-exposure", "copyright-rights", "scientific-grounding"],
+        "unlockCommand": "PUBLICAR {TAF###-EXATO}",
+        "standingAuthorization": false,
+        "exception": "nenhuma; a autorização permanente de 2026-08-01 pertence somente às imagens de @ORGANIZACAODEESTUDO"
+      }
+    }
+  ],
+  "codes": {
+    "project": "####PRJ-{DOMAIN}-{HASH10}",
+    "session": "####SES-{YYYYMMDD}-{SEQ4}-{HASH8}",
+    "artifact": "####SRC/####DOC/####PDF/####IMG",
+    "product": "####AGX-{UNIVERSE}-{BLOCK}-{YYYYMMDD}-{SEQ4}-{HASH8}",
+    "audit": "AUD###-{SCOPE}-{YYYYMMDD}-{SEQ4}-{HASH8}",
+    "procedure": "PRC###-{ACTION}-{YYYYMMDD}-{SEQ4}-{HASH8}"
+  },
+  "gates": [
+    "arquivo íntegro e hash verificado",
+    "domínio e privacidade confirmados",
+    "quando a fonte for @ORGANIZACAODEESTUDO, módulo integralmente concluído pelo proprietário antes da extração pública",
+    "auditoria de paciente, direitos e ciência",
+    "destino sem ambiguidade",
+    "renderização acessível",
+    "###TAGs e arestas válidas"
+  ],
+  "syncPolicy": {
+    "privateDomains": "Notion e Drive privados; nunca GitHub nem site",
+    "publicEligibleDomains": "branch codex/nexus-sync-* e PR rascunho somente após P0 e gates",
+    "officialPublication": "somente PUBLICAR {TAF###-EXATO} na sessão atual após nova auditoria, salvo a autorização permanente e estritamente limitada às imagens geradas de @ORGANIZACAODEESTUDO registrada em 2026-08-01",
+    "organizationStudyImageException": "imagem P0 auditada pode seguir pela área paralela e ser publicada sem aguardar a conclusão do módulo; o texto, respostas, SCALT e avaliações não herdam esta exceção"
+  },
+  "imageProductRule": "Toda imagem gerada nos projetos catalogados é uma entidade própria: recebe ####IMG derivado do SHA-256 dos bytes servidos, estado de publicação, alt, proveniência, auditoria e relação com o ####AGX pai; quando dois aliases forem faces do mesmo lote, o mesmo hash conserva um único ####IMG.",
+  "sourceBoundary": "Metadados públicos usam apenas aliases dos projetos. IDs internos do ChatGPT, links privados e histórico pessoal permanecem no cofre local/privado.",
+  "noSourceMutation": true,
+  "failClosed": true
+}

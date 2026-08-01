@@ -30,15 +30,21 @@ COSMOS = ROOT / "23_Cosmos_NEXUS"
 DATA = COSMOS / "data"
 HEX64 = re.compile(r"^[a-f0-9]{64}$")
 AGX = re.compile(
-    r"^####AGX-(U1|U2|U3|MUX)-(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|EXT)-"
+    r"^####AGX-(U1|U2|U3|MUX)-"
+    r"(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|MICRO|IMGT|PROD|REFS|AUDIT|EXT)-"
     r"[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$"
 )
 TAF = re.compile(
-    r"^TAF###-(U1|U2|U3|MUX)-(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|EXT)-"
+    r"^TAF###-(U1|U2|U3|MUX)-"
+    r"(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|MICRO|IMGT|PROD|REFS|AUDIT|EXT)-"
     r"[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$"
 )
+IMG = re.compile(r"^####IMG-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$")
 UNIVERSES = {"U1", "U2", "U3", "MUX"}
-BLOCKS = {"EVO", "PLAN", "VIS", "STUDY", "TEMI", "REFINE", "TUTOR", "EXT"}
+BLOCKS = {
+    "EVO", "PLAN", "VIS", "STUDY", "TEMI", "REFINE", "TUTOR",
+    "MICRO", "IMGT", "PROD", "REFS", "AUDIT", "EXT",
+}
 BLOCK_ALIASES = {
     "evolucao": "EVO",
     "plano-terapeutico": "PLAN",
@@ -47,8 +53,30 @@ BLOCK_ALIASES = {
     "turbo-temi": "TEMI",
     "refinaria-temi": "REFINE",
     "tutor": "TUTOR",
+    "estudo-microparticulado": "MICRO",
+    "imagens-turbo-temi": "IMGT",
+    "produtos-turbo-temi": "PROD",
+    "referencias-evidencias": "REFS",
+    "auditoria-publicacao": "AUDIT",
     "extensao": "EXT",
 }
+DOMAINS = {
+    "clinical-educational": {"code": "MED", "private": False},
+    "personal": {"code": "PER", "private": True},
+    "legal": {"code": "JUR", "private": True},
+    "financial": {"code": "FIN", "private": True},
+    "administrative": {"code": "ADM", "private": True},
+    "technology-ecosystem": {"code": "TEC", "private": True},
+}
+SOURCE_PROJECTS = {
+    "@TURBOTEMI",
+    "#EVOLUCOES",
+    "#PLANOTERAPEUTICO",
+    "@ORGANIZACAODEESTUDO",
+    "@BIBLIOTECAVISUAL",
+    "@TEMI360XINFINIT",
+}
+ORGANIZATION_STUDY_PROJECT = "@ORGANIZACAODEESTUDO"
 AUTO_KIND_BY_SUFFIX = {
     ".docx": "gpt-word",
     ".pdf": "gpt-pdf",
@@ -445,6 +473,32 @@ def enqueue_intake(args: argparse.Namespace, queue_dir: Path = PRIVATE_QUEUE) ->
     privacy = args.privacy.upper()
     if privacy not in {"P0", "P1", "P2", "P3"}:
         raise ContractError("privacy deve ser P0, P1, P2 ou P3")
+    source_project = getattr(args, "source_project", None)
+    owner_completed_module = bool(getattr(args, "owner_completed_module", False))
+    if source_project is not None and source_project not in SOURCE_PROJECTS:
+        raise ContractError("source-project não pertence ao escopo editorial autorizado")
+    if owner_completed_module and source_project != ORGANIZATION_STUDY_PROJECT:
+        raise ContractError(
+            "owner-completed-module só se aplica ao projeto @ORGANIZACAODEESTUDO"
+        )
+    if source_project == ORGANIZATION_STUDY_PROJECT:
+        if block not in {"MICRO", "IMGT"}:
+            raise ContractError(
+                "@ORGANIZACAODEESTUDO só pode gerar projeção pública em estudo-microparticulado ou imagens-turbo-temi"
+            )
+        if block == "MICRO" and privacy == "P0" and not owner_completed_module:
+            raise ContractError(
+                "P0 bloqueado: o proprietário ainda não confirmou a conclusão integral do módulo"
+            )
+    independent_organization_study_image = (
+        source_project == ORGANIZATION_STUDY_PROJECT and block == "IMGT"
+    )
+    domain = getattr(args, "domain", "clinical-educational")
+    domain_contract = DOMAINS.get(domain)
+    if not domain_contract:
+        raise ContractError(f"domínio desconhecido: {domain}")
+    domain_code = domain_contract["code"]
+    private_domain = bool(domain_contract["private"])
 
     title = _safe_text(args.title or source.stem, "título", 160)
     objective = _safe_text(args.objective, "objetivo", 240)
@@ -473,7 +527,7 @@ def enqueue_intake(args: argparse.Namespace, queue_dir: Path = PRIVATE_QUEUE) ->
     if not semantic_key:
         raise ContractError("título não produz chave semântica válida")
     intent_uid = hashlib.sha256(
-        f"Antigravity_Consultas|{kind}|{universe}|{block_key}|{semantic_key}".encode("utf-8")
+        f"Antigravity_Consultas|{domain}|{source_project or 'sem-projeto'}|{kind}|{universe}|{block_key}|{semantic_key}".encode("utf-8")
     ).hexdigest()
     idempotency_key = hashlib.sha256(f"{artifact_hash}|{intent_uid}".encode("utf-8")).hexdigest()
 
@@ -491,6 +545,11 @@ def enqueue_intake(args: argparse.Namespace, queue_dir: Path = PRIVATE_QUEUE) ->
                 if entry.get("privacy") != privacy:
                     duplicate["queueResult"] = "REVIEW_REQUIRED_PRIVACY_CHANGE"
                     duplicate["requestedPrivacy"] = privacy
+                elif (
+                    entry.get("moduleCompletion", {}).get("ownerCompletionRecorded", False)
+                    != owner_completed_module
+                ):
+                    duplicate["queueResult"] = "REVIEW_REQUIRED_MODULE_COMPLETION_CHANGE"
                 else:
                     duplicate["queueResult"] = "SKIP_DUPLICATE"
                 return duplicate
@@ -512,22 +571,39 @@ def enqueue_intake(args: argparse.Namespace, queue_dir: Path = PRIVATE_QUEUE) ->
         entity_prefix = ENTITY_PREFIX_BY_KIND[kind]
         entity_code = f"####{entity_prefix}-{intake_date}-{sequence}-{artifact_hash[:8].upper()}"
         product_uid = hashlib.sha256(
-            f"{artifact_hash}|{block_key}|{semantic_key}|{privacy}".encode("utf-8")
+            f"{artifact_hash}|{domain}|{block_key}|{semantic_key}|{privacy}".encode("utf-8")
         ).hexdigest()
         product_code = f"####AGX-{universe}-{block}-{intake_date}-{sequence}-{product_uid[:8].upper()}"
+        project_suffix = hashlib.sha256(
+            f"{domain}|{semantic_key}".encode("utf-8")
+        ).hexdigest()[:10].upper()
+        project_code = f"####PRJ-{domain_code}-{project_suffix}"
         procedure_suffix = digest8("ACOPLAR", product_code, artifact_hash, idempotency_key, timestamp)
         procedure_code = f"PRC###-ACOPLAR-{intake_date}-{sequence}-{procedure_suffix}"
         session_suffix = digest8(objective, product_code, intake_date, sequence)
         session_code = f"####SES-{intake_date}-{sequence}-{session_suffix}"
         route_item = route_matches[0]
         receipt_file = f"{idempotency_key}.json"
-        if privacy in {"P2", "P3"}:
+        if private_domain:
+            drive_state = _surface_state("PENDING_ON_DEMAND", "destino privado do domínio + hash remoto")
+            notion_state = _surface_state("PENDING_ON_DEMAND", "comando explícito + página privada canônica")
+        elif privacy in {"P2", "P3"}:
             drive_state = _surface_state("BLOCKED_PRIVATE_TARGET", "destino clínico privado precisa ser mapeado")
             notion_state = _surface_state("BLOCKED_PRIVATE_TARGET", "base clínica privada precisa ser mapeada")
         else:
             drive_state = _surface_state("PENDING", "pasta privada canônica + hash remoto")
             notion_state = _surface_state("PENDING", "página canônica + UID idempotente")
         public_gate = "privacidade + direitos + metadados + revisão humana"
+        if source_project == ORGANIZATION_STUDY_PROJECT and block == "MICRO":
+            public_gate = (
+                "MODULE_COMPLETED_BY_OWNER + extração de modelo limpo fechado + "
+                + public_gate
+            )
+        elif independent_organization_study_image:
+            public_gate = (
+                "STANDING_OWNER_AUTHORIZATION_2026-08-01 + ####IMG + paciente + "
+                "direitos + ciência quando aplicável + integridade técnica + alt + SHA-256"
+            )
         entry = {
             "schemaVersion": "antigravity-nexus-private-intake-v2",
             "revision": 1,
@@ -546,13 +622,33 @@ def enqueue_intake(args: argparse.Namespace, queue_dir: Path = PRIVATE_QUEUE) ->
             "semanticKey": semantic_key,
             "procedureCode": procedure_code,
             "sessionCode": session_code,
+            "projectCode": project_code,
+            "sourceProjectAlias": source_project,
+            "moduleCompletion": {
+                "status": (
+                    "INDEPENDENT_IMAGE_LANE"
+                    if independent_organization_study_image
+                    else (
+                    "MODULE_COMPLETED_BY_OWNER"
+                    if owner_completed_module
+                    else "PRIVATE_WORK_IN_PROGRESS"
+                    )
+                ),
+                "ownerCompletionRecorded": owner_completed_module,
+                "publicExtractionAllowed": (
+                    owner_completed_module or independent_organization_study_image
+                ),
+            },
             "title": title,
             "objective": objective,
             "kind": kind,
             "block": block,
             "universe": universe,
             "privacy": privacy,
+            "domain": domain,
+            "domainCode": domain_code,
             "structuralTags": [
+                f"###DOMINIO:{domain_code}",
                 f"###UNIVERSO:{universe}",
                 f"###BLOCO:{block}",
                 "###STATUS:RASCUNHO",
@@ -575,23 +671,42 @@ def enqueue_intake(args: argparse.Namespace, queue_dir: Path = PRIVATE_QUEUE) ->
                 "drive": drive_state,
                 "notion": notion_state,
                 "githubDraft": _surface_state(
-                    "BLOCKED_PRIVATE" if privacy != "P0" else "BLOCKED_GATES",
-                    public_gate,
+                    "BLOCKED_PRIVATE_DOMAIN" if private_domain else (
+                        "BLOCKED_PRIVATE" if privacy != "P0" else "BLOCKED_GATES"
+                    ),
+                    "domínio não público" if private_domain else public_gate,
                 ),
                 "library": _surface_state(
-                    "BLOCKED_PRIVATE" if privacy != "P0" else "BLOCKED_GATES",
-                    public_gate + " + preview fail-closed",
+                    "BLOCKED_PRIVATE_DOMAIN" if private_domain else (
+                        "BLOCKED_PRIVATE" if privacy != "P0" else "BLOCKED_GATES"
+                    ),
+                    "domínio não público" if private_domain else public_gate + " + preview fail-closed",
                 ),
                 "officialSite": _surface_state(
-                    "LOCKED",
-                    "HOM### + TOM### + TAF### + comando literal do proprietário",
+                    "BLOCKED_PRIVATE_DOMAIN" if private_domain else (
+                        "BLOCKED_GATES_STANDING_AUTH"
+                        if independent_organization_study_image and privacy == "P0"
+                        else "LOCKED"
+                    ),
+                    "domínio não público" if private_domain else (
+                        (
+                            "AUD### + HOM### + TOM### + TAF### + autorização permanente exclusiva da imagem"
+                            if independent_organization_study_image
+                            else "AUD### + HOM### + TOM### + TAF### + comando literal do proprietário"
+                        )
+                    ),
                 ),
             },
             "attestations": {
                 "privacyReviewed": False,
+                "patientExposureReviewed": False,
                 "rightsReviewed": False,
                 "metadataSanitized": False,
                 "clinicalReviewed": False,
+                "scientificGroundingReviewed": False,
+                "technicalReviewed": False,
+                "ownerModuleCompletionRecorded": owner_completed_module,
+                "auditCode": None,
             },
             "events": [
                 {
@@ -605,6 +720,11 @@ def enqueue_intake(args: argparse.Namespace, queue_dir: Path = PRIVATE_QUEUE) ->
             "publication": {
                 "status": "LOCKED",
                 "requiredCommand": "PUBLICAR {TAF###-EXATO}",
+                "authorizationMode": (
+                    "STANDING_OWNER_AUTHORIZATION_2026-08-01"
+                    if independent_organization_study_image
+                    else "LITERAL_OWNER_COMMAND"
+                ),
                 "tafCode": None,
             },
         }
@@ -629,9 +749,11 @@ def sync_plan(queue_dir: Path = PRIVATE_QUEUE) -> dict:
             {
                 "receiptFile": entry.get("receiptFile"),
                 "entityCode": entry.get("entityCode"),
+                "projectCode": entry.get("projectCode"),
                 "productCode": entry.get("productCode"),
                 "procedureCode": entry.get("procedureCode"),
                 "privacy": entry.get("privacy"),
+                "domain": entry.get("domain", "clinical-educational"),
                 "surfaceStates": {
                     name: value.get("status") if isinstance(value, dict) else "INVALID"
                     for name, value in surfaces.items()
@@ -647,6 +769,139 @@ def sync_plan(queue_dir: Path = PRIVATE_QUEUE) -> dict:
     }
 
 
+def _validate_block_item(item: dict, block_id: str, schema: dict, relations: set[str]) -> None:
+    """Validação fail-closed dos invariantes editoriais usados na árvore pública."""
+
+    required = set(schema.get("required", []))
+    properties = set(schema.get("properties", {}))
+    if not required or not required.issubset(properties):
+        raise ContractError("schema de bloco exige campos ausentes em properties")
+    missing = sorted(required - set(item))
+    if missing:
+        raise ContractError(f"item {item.get('id', '?')} sem campos: {', '.join(missing)}")
+    extra = sorted(set(item) - properties)
+    if extra:
+        raise ContractError(f"item {item.get('id', '?')} contém campos não contratados: {', '.join(extra)}")
+    if item.get("blockId") != block_id:
+        raise ContractError(f"item {item.get('id', '?')} diverge do bloco {block_id}")
+    if not AGX.fullmatch(item.get("productCode", "")):
+        raise ContractError(f"item {item.get('id', '?')} possui ####AGX inválido")
+
+    render_statuses = set(
+        schema["properties"]["render"]["properties"]["status"].get("enum", [])
+    )
+    if item.get("render", {}).get("status") not in render_statuses:
+        raise ContractError(f"item {item.get('id', '?')} possui render.status inválido")
+
+    privacy = item.get("privacy", {})
+    audit = item.get("audit", {})
+    public_eligible = privacy.get("publicEligible") is True
+    if public_eligible:
+        if privacy.get("classification") != "P0" or privacy.get("patientData") is not False:
+            raise ContractError(f"item {item.get('id', '?')} tenta publicar privacidade incompatível")
+        if audit.get("patientExposure") not in {"passed", "corrected"}:
+            raise ContractError(f"item {item.get('id', '?')} sem gate de paciente")
+        for field in ("rightsReview", "technicalReview", "linkCheck"):
+            if audit.get(field) != "passed":
+                raise ContractError(f"item {item.get('id', '?')} sem gate {field}")
+
+        image_paths = {
+            artifact.get("path")
+            for artifact in item.get("render", {}).get("artifacts", [])
+            if artifact.get("kind") == "image"
+        }
+        if image_paths:
+            asset_codes = item.get("assetCodes")
+            if not isinstance(asset_codes, list) or len(asset_codes) != len(image_paths):
+                raise ContractError(
+                    f"item {item.get('id', '?')} precisa catalogar cada imagem com ####IMG"
+                )
+            coded_paths = {asset.get("path") for asset in asset_codes}
+            codes = [asset.get("code") for asset in asset_codes]
+            if coded_paths != image_paths or len(codes) != len(set(codes)):
+                raise ContractError(
+                    f"item {item.get('id', '?')} possui catálogo de imagens incompleto ou duplicado"
+                )
+            for asset in asset_codes:
+                code = asset.get("code", "")
+                digest = asset.get("sha256", "")
+                if not IMG.fullmatch(code) or not HEX64.fullmatch(digest):
+                    raise ContractError(
+                        f"item {item.get('id', '?')} possui código ou hash de imagem inválido"
+                    )
+                if not code.endswith(digest[:8].upper()):
+                    raise ContractError(
+                        f"item {item.get('id', '?')} usa ####IMG divergente dos bytes servidos"
+                    )
+                if asset.get("publicationStatus") not in {"candidate-public", "published"}:
+                    raise ContractError(
+                        f"item {item.get('id', '?')} contém imagem pública sem estado catalogável"
+                    )
+
+    if item.get("contentClass") in {"clinical", "mixed"}:
+        references = item.get("references", [])
+        strong_roles = {reference.get("role") for reference in references}
+        if not strong_roles.intersection({"primary", "guideline", "official"}):
+            raise ContractError(f"item clínico {item.get('id', '?')} sem referência forte")
+        if audit.get("scientificGrounding") != "passed":
+            raise ContractError(f"item clínico {item.get('id', '?')} sem gate científico")
+
+    if block_id == "estudo-microparticulado" and public_eligible:
+        closed = item.get("closedMicroparticle")
+        if not isinstance(closed, dict):
+            raise ContractError(
+                f"micropartícula pública {item.get('id', '?')} sem contrato de fechamento"
+            )
+        required_true = {
+            "cleanPublicModel",
+            "allPromptsAnswered",
+            "answersCorrected",
+            "answersJustified",
+            "selfContained",
+            "personalStateRemoved",
+        }
+        invalid_true = sorted(field for field in required_true if closed.get(field) is not True)
+        if invalid_true:
+            raise ContractError(
+                f"micropartícula pública {item.get('id', '?')} incompleta: "
+                + ", ".join(invalid_true)
+            )
+        if closed.get("ownerCompletionStatus") != "MODULE_COMPLETED_BY_OWNER":
+            raise ContractError(
+                f"micropartícula pública {item.get('id', '?')} sem conclusão integral do proprietário"
+            )
+        if closed.get("extractionStatus") != "extracted-clean-model":
+            raise ContractError(
+                f"micropartícula pública {item.get('id', '?')} não foi extraída como modelo limpo"
+            )
+        if closed.get("followUpMonitor") is not False or closed.get("recoveryLoop") is not False:
+            raise ContractError(
+                f"micropartícula pública {item.get('id', '?')} contém monitor ou alça de recuperação"
+            )
+        references = item.get("references", [])
+        reference_roles = {reference.get("role") for reference in references}
+        if not reference_roles.intersection({"primary", "guideline", "official", "methodology"}):
+            raise ContractError(
+                f"micropartícula pública {item.get('id', '?')} sem referência científica pertinente"
+            )
+        if item.get("provenance", {}).get("reviewStatus") != "reviewed":
+            raise ContractError(
+                f"micropartícula pública {item.get('id', '?')} sem revisão de proveniência"
+            )
+        if item.get("render", {}).get("status") not in {"candidate-public", "published"}:
+            raise ContractError(
+                f"micropartícula pública {item.get('id', '?')} ainda não é um bloco fechado renderizado"
+            )
+        if audit.get("scientificGrounding") != "passed":
+            raise ContractError(
+                f"micropartícula pública {item.get('id', '?')} sem gate científico"
+            )
+
+    for edge in item.get("edges", []):
+        if edge.get("relation") not in relations:
+            raise ContractError(f"item {item.get('id', '?')} usa relação fora do vocabulário")
+
+
 def validate() -> dict:
     required = [
         "cosmos.json", "atlas.json", "block-registry.json", "tag-topology.json",
@@ -655,6 +910,8 @@ def validate() -> dict:
         "governance-code-contract.json", "sync-contract.json", "content-routing.json",
         "document-sync-contract.json", "living-organism-contract.json",
         "execution-ledger.json", "daily-update-contract.json",
+        "editorial-audit-contract.json", "project-domain-routing.json",
+        "project-sync-contract.json",
     ]
     payloads = {name: load_json(DATA / name) for name in required}
 
@@ -671,14 +928,36 @@ def validate() -> dict:
     if len(cosmos.get("universes", [])) != 3 or len(cosmos.get("constellations", [])) != 7:
         raise ContractError("O organismo exige exatamente 3 universos e 7 constelações")
 
+    topology = payloads["tag-topology.json"]
+    relations = set(topology.get("relations", []))
+    graph_relations = {edge.get("relation") for edge in edges}
+    if not graph_relations.issubset(relations):
+        missing_relations = ", ".join(sorted(graph_relations - relations))
+        raise ContractError(f"Relações do grafo fora do vocabulário: {missing_relations}")
+
+    schema = load_json(COSMOS / "blocks/_schemas/block-item.schema.json")
+    template = load_json(COSMOS / "blocks/_templates/item.template.json")
+
     blocks = payloads["block-registry.json"].get("blocks", [])
-    if len(blocks) != 8 or len({item.get("id") for item in blocks}) != 8:
-        raise ContractError("Registro deve conter 7 blocos ativos e 1 porta de extensões")
+    expected_blocks = {
+        "evolucao", "plano-terapeutico", "motor-visual", "organizador-estudos",
+        "turbo-temi", "refinaria-temi", "tutor", "estudo-microparticulado",
+        "imagens-turbo-temi", "produtos-turbo-temi", "referencias-evidencias",
+        "auditoria-publicacao", "extensoes",
+    }
+    block_ids = {item.get("id") for item in blocks}
+    if block_ids != expected_blocks or len(blocks) != len(expected_blocks):
+        raise ContractError("Registro de blocos está incompleto ou duplicado")
     for block in blocks:
         path = COSMOS / block["ingestionPath"]
         items = load_json(path).get("items")
         if not isinstance(items, list):
             raise ContractError(f"items inválido: {path.relative_to(ROOT)}")
+        for item in items:
+            if not isinstance(item, dict):
+                raise ContractError(f"item não é objeto: {path.relative_to(ROOT)}")
+            _validate_block_item(item, block["id"], schema, relations)
+    _validate_block_item(template, "evolucao", schema, relations)
 
     atlas = payloads["atlas.json"].get("items", [])
     image_codes: set[str] = set()
@@ -697,6 +976,20 @@ def validate() -> dict:
         raw = path.read_bytes()
         if b"Exif\x00\x00" in raw or b"Photoshop 3.0" in raw or b"http://ns.adobe.com/xap/1.0/" in raw:
             raise ContractError(f"Metadado sensível residual: {path.relative_to(ROOT)}")
+
+    audit_contract = payloads["editorial-audit-contract.json"]
+    pillar_ids = [pillar.get("id") for pillar in audit_contract.get("pillars", [])]
+    if pillar_ids != ["patient-exposure", "copyright-rights", "scientific-grounding"]:
+        raise ContractError("Auditoria editorial precisa manter os três pilares na ordem canônica")
+
+    domain_contract = payloads["project-domain-routing.json"]
+    domains = {item.get("id"): item for item in domain_contract.get("domains", [])}
+    if set(domains) != set(DOMAINS):
+        raise ContractError("Roteamento de domínios está incompleto")
+    for domain_id, config in domains.items():
+        if DOMAINS[domain_id]["private"]:
+            if config.get("githubEligible") is not False or config.get("officialSiteEligible") is not False:
+                raise ContractError(f"Domínio privado {domain_id} permite superfície pública")
 
     sync = payloads["sync-contract.json"]
     if not sync.get("publicationLock", {}).get("lockedByDefault"):
@@ -732,6 +1025,9 @@ def validate() -> dict:
         "localEdges": len(edges),
         "blocks": len(blocks),
         "images": len(atlas),
+        "imageRights": payloads["atlas.json"].get("rights", {}).get("publicationAttestation"),
+        "auditPillars": len(pillar_ids),
+        "privateDomains": sum(1 for value in DOMAINS.values() if value["private"]),
         "lifecycleStages": len(lifecycle),
         "publication": "LOCKED",
     }
@@ -754,6 +1050,10 @@ def issue_code(args: argparse.Namespace) -> str:
         scope = token(args.scope, "scope")
         suffix = digest8(scope, args.subject, artifact, date, sequence)
         return f"HOM###-{scope}-{date}-{sequence}-{suffix}"
+    if args.kind == "audit":
+        scope = token(args.scope, "scope")
+        suffix = digest8(scope, args.subject, artifact, date, sequence)
+        return f"AUD###-{scope}-{date}-{sequence}-{suffix}"
     if args.kind == "tombstone":
         scope = token(args.scope, "scope")
         suffix = digest8(scope, args.subject, artifact, date, sequence)
@@ -767,18 +1067,45 @@ def issue_code(args: argparse.Namespace) -> str:
             raise ContractError("product-code ####AGX válido é obrigatório")
         if not re.fullmatch(r"HOM###[A-Z0-9-]+", args.homologation_code or ""):
             raise ContractError("homologation-code HOM### válido é obrigatório")
+        if not re.fullmatch(r"AUD###[A-Z0-9-]+", args.audit_code or ""):
+            raise ContractError("audit-code AUD### válido é obrigatório")
         if not re.fullmatch(r"TOM###[A-Z0-9-]+", args.tombstone_code or ""):
             raise ContractError("tombstone-code TOM### válido é obrigatório")
-        suffix = digest8(args.product_code, args.homologation_code, args.tombstone_code, artifact)
+        suffix = digest8(
+            args.product_code,
+            args.audit_code,
+            args.homologation_code,
+            args.tombstone_code,
+            artifact,
+        )
         return f"TAF###-{universe}-{block}-{date}-{sequence}-{suffix}"
     if args.kind == "publication":
         final_code = args.final_product_code or ""
         if not TAF.fullmatch(final_code):
             raise ContractError("final-product-code TAF### válido é obrigatório")
-        expected = f"PUBLICAR {final_code}"
-        if args.owner_command != expected:
-            raise ContractError(f"autorização literal exigida: {expected}")
-        suffix = digest8(final_code, args.owner_command, artifact, args.subject)
+        authorization_mode = getattr(
+            args, "authorization_mode", "literal-owner-command"
+        )
+        if authorization_mode == "standing-organization-study-image":
+            if getattr(args, "source_project", None) != ORGANIZATION_STUDY_PROJECT:
+                raise ContractError(
+                    "autorização permanente só vale para @ORGANIZACAODEESTUDO"
+                )
+            if not re.fullmatch(r"TAF###-(U1|U2|U3|MUX)-IMGT-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}", final_code):
+                raise ContractError(
+                    "autorização permanente só vale para TAF### de imagem IMGT"
+                )
+            if not IMG.fullmatch(args.subject):
+                raise ContractError(
+                    "autorização permanente exige uma imagem ####IMG catalogada como subject"
+                )
+            authorization_evidence = "STANDING_OWNER_AUTHORIZATION_2026-08-01"
+        else:
+            expected = f"PUBLICAR {final_code}"
+            if args.owner_command != expected:
+                raise ContractError(f"autorização literal exigida: {expected}")
+            authorization_evidence = args.owner_command
+        suffix = digest8(final_code, authorization_evidence, artifact, args.subject)
         return f"PUB###-{date}-{sequence}-{suffix}"
     raise ContractError(f"kind desconhecido: {args.kind}")
 
@@ -800,7 +1127,7 @@ def parser() -> argparse.ArgumentParser:
     route_parser.add_argument("--kind", required=True)
 
     code = sub.add_parser("code", help="gerar código verificável sem gravar ou publicar")
-    code.add_argument("--kind", required=True, choices=["procedure", "homologation", "tombstone", "final-product", "publication"])
+    code.add_argument("--kind", required=True, choices=["procedure", "audit", "homologation", "tombstone", "final-product", "publication"])
     code.add_argument("--date", required=True)
     code.add_argument("--sequence", required=True, type=int)
     code.add_argument("--subject", required=True)
@@ -811,9 +1138,16 @@ def parser() -> argparse.ArgumentParser:
     code.add_argument("--block", default="EXT")
     code.add_argument("--product-code")
     code.add_argument("--homologation-code")
+    code.add_argument("--audit-code")
     code.add_argument("--tombstone-code")
     code.add_argument("--final-product-code")
     code.add_argument("--owner-command")
+    code.add_argument(
+        "--authorization-mode",
+        default="literal-owner-command",
+        choices=["literal-owner-command", "standing-organization-study-image"],
+    )
+    code.add_argument("--source-project", choices=sorted(SOURCE_PROJECTS))
 
     intake = sub.add_parser(
         "intake",
@@ -833,6 +1167,17 @@ def parser() -> argparse.ArgumentParser:
         help="tipo seguro de documento/imagem ou auto",
     )
     intake.add_argument("--universe", default="MUX")
+    intake.add_argument("--domain", default="clinical-educational", choices=sorted(DOMAINS))
+    intake.add_argument(
+        "--source-project",
+        choices=sorted(SOURCE_PROJECTS),
+        help="alias público do projeto-fonte; IDs internos nunca entram no recibo público",
+    )
+    intake.add_argument(
+        "--owner-completed-module",
+        action="store_true",
+        help="registra conclusão integral declarada pelo proprietário para @ORGANIZACAODEESTUDO",
+    )
     intake.add_argument("--privacy", default="P1", help="P1 privado por padrão; use P0 somente após revisão")
     intake.add_argument("--title")
     intake.add_argument("--objective", default="catalogar-renderizar-sincronizar-rascunho")
@@ -857,9 +1202,11 @@ def main() -> int:
                 "queueResult": result.get("queueResult"),
                 "receiptFile": result.get("receiptFile"),
                 "entityCode": result.get("entityCode"),
+                "projectCode": result.get("projectCode"),
                 "productCode": result.get("productCode"),
                 "procedureCode": result.get("procedureCode"),
                 "privacy": result.get("privacy"),
+                "domain": result.get("domain"),
                 "surfaceStates": {
                     name: value.get("status")
                     for name, value in result.get("surfaces", {}).items()

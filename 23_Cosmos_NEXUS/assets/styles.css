@@ -450,6 +450,34 @@ code { font-family: var(--mono); font-size: .88em; }
 .coupling-status { display: inline-block; margin-top: 13px; color: var(--green); font-family: var(--mono); font-size: .6rem; }
 .coupling-card[data-status="reserved-empty"] .coupling-status { color: var(--gold); }
 
+.candidate-products-panel { margin-top: 48px; padding-top: 42px; border-top: 1px solid var(--line); }
+.candidate-products-panel > .section-heading { margin-bottom: 22px; }
+.candidate-product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: 14px; }
+.candidate-product-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 9px 14px;
+  min-height: 290px;
+  padding: 24px;
+  border: 1px solid var(--product-accent, var(--line-bright));
+  border-radius: var(--radius);
+  background: radial-gradient(circle at 92% 8%, var(--product-glow, rgba(72,220,255,.12)), transparent 42%), var(--panel);
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+}
+.candidate-product-card.machine { --product-accent: rgba(168,255,120,.42); --product-glow: rgba(168,255,120,.1); }
+.candidate-product-card.visual { --product-accent: rgba(139,124,255,.5); --product-glow: rgba(139,124,255,.15); }
+.candidate-product-card:hover, .candidate-product-card:focus-visible { translate: 0 -3px; box-shadow: var(--shadow); }
+.candidate-product-icon { display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid var(--product-accent); border-radius: 14px; background: rgba(0,0,0,.18); font-size: 1.45rem; }
+.candidate-product-state { align-self: center; color: var(--gold); font-family: var(--mono); font-size: .65rem; font-weight: 800; letter-spacing: .06em; }
+.candidate-product-card h3, .candidate-product-card p, .candidate-product-card code, .candidate-product-card small { grid-column: 1 / -1; }
+.candidate-product-card h3 { margin: 12px 0 0; font-size: clamp(1.35rem, 3vw, 2rem); }
+.candidate-product-card p { margin: 0; color: var(--muted); font-size: .85rem; }
+.candidate-product-card code { align-self: end; padding: 10px; border-radius: 9px; background: rgba(0,0,0,.2); color: #c6eefd; font-size: .64rem; overflow-wrap: anywhere; }
+.candidate-product-card small { color: var(--cyan); font-weight: 800; }
+
 .topology-panel { display: grid; grid-template-columns: .8fr 1.2fr; gap: 30px; align-items: center; margin-top: 22px; padding: 26px; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255,255,255,.025); }
 .topology-panel h3, .feeding-protocol h3, .surface-routing h3 { margin: 0; font-size: clamp(1.35rem, 3vw, 2rem); }
 .topology-panel p:last-child, .surface-routing p:last-child { color: var(--muted); }

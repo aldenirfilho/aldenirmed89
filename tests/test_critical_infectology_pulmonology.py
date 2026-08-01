@@ -76,9 +76,12 @@ class CriticalModulesTests(unittest.TestCase):
     def test_radar_has_new_dated_edition_and_unique_ids(self):
         history = json.loads((ROOT / "15_Radar_Cientifico/data/radar-history.json").read_text(encoding="utf-8"))
         radar = (ROOT / "15_Radar_Cientifico/data/radar.js").read_text(encoding="utf-8")
-        self.assertEqual(history["currentEditionId"], "2026-07-30")
+        self.assertEqual(history["currentEditionId"], "2026-08-01")
         self.assertEqual(history["editions"][0]["scientificCount"], 3)
         for item_id in (
+            "doi:10.1001/jamanetworkopen.2026.26547",
+            "doi:10.1038/s41598-026-63797-1",
+            "doi:10.1111/1742-6723.70318",
             "doi:10.1007/s00134-026-08361-1",
             "doi:10.1093/cid/ciae403",
             "pmid:41841715",
@@ -86,7 +89,8 @@ class CriticalModulesTests(unittest.TestCase):
             self.assertIn(item_id, history["publishedIds"])
             self.assertIn(item_id, radar)
         self.assertEqual(len(history["publishedIds"]), len(set(history["publishedIds"])))
-        self.assertIn('editionId:"2026-07-30"', radar)
+        self.assertIn('editionId:"2026-08-01"', radar)
+        self.assertIn('id:"2026-07-30"', radar)
         self.assertIn('audit:{reviewStatus:"pending"', radar)
 
     def test_no_obvious_identifiable_patient_data(self):

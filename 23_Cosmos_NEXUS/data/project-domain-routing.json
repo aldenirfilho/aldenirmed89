@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "antigravity-project-domain-routing-v1",
+  "version": "1.0.0",
+  "updatedAt": "2026-08-01",
+  "purpose": "Roteamento personalizado de projetos GPT sem confundir sincronização privada, rascunho público e publicação oficial.",
+  "classificationRule": "O domínio deve vir de manifesto ou confirmação explícita; nunca inferir destino público apenas pelo nome da pasta.",
+  "domains": [
+    {
+      "id": "clinical-educational",
+      "code": "MED",
+      "label": "Clínico, científico e educacional",
+      "universeBridge": ["U1", "U2", "U3"],
+      "defaultPrivacy": "P1",
+      "allowedSurfaces": ["local", "notion", "google-drive", "github-draft"],
+      "officialSiteEligible": true,
+      "conditions": ["P0", "auditoria tríplice aprovada", "referências", "HOM###", "TOM###", "TAF###", "owner unlock"]
+    },
+    {
+      "id": "personal",
+      "code": "PER",
+      "label": "Desenvolvimento pessoal e familiar",
+      "privateUniverse": "PRV-PER",
+      "defaultPrivacy": "P2",
+      "allowedSurfaces": ["local", "notion", "google-drive"],
+      "officialSiteEligible": false,
+      "githubEligible": false
+    },
+    {
+      "id": "legal",
+      "code": "JUR",
+      "label": "Jurídico e proteção documental",
+      "privateUniverse": "PRV-JUR",
+      "defaultPrivacy": "P3",
+      "allowedSurfaces": ["local", "notion", "google-drive"],
+      "officialSiteEligible": false,
+      "githubEligible": false
+    },
+    {
+      "id": "financial",
+      "code": "FIN",
+      "label": "Financeiro e patrimônio",
+      "privateUniverse": "PRV-FIN",
+      "defaultPrivacy": "P3",
+      "allowedSurfaces": ["local", "notion", "google-drive"],
+      "officialSiteEligible": false,
+      "githubEligible": false
+    },
+    {
+      "id": "administrative",
+      "code": "ADM",
+      "label": "Administrativo e organização executiva",
+      "privateUniverse": "PRV-ADM",
+      "defaultPrivacy": "P2",
+      "allowedSurfaces": ["local", "notion", "google-drive"],
+      "officialSiteEligible": false,
+      "githubEligible": false
+    },
+    {
+      "id": "technology-ecosystem",
+      "code": "TEC",
+      "label": "Ecossistema tecnológico privado",
+      "privateUniverse": "PRV-TEC",
+      "defaultPrivacy": "P1",
+      "allowedSurfaces": ["local", "notion", "google-drive"],
+      "officialSiteEligible": false,
+      "githubEligible": false
+    }
+  ],
+  "privateGraphRule": "PRV-PER, PRV-JUR, PRV-FIN, PRV-ADM e PRV-TEC vivem somente no cofre privado. O Mapa Vivo público pode exibir apenas o nó abstrato de limite privado, sem conteúdo, título de projeto, pessoa, valor, processo ou link.",
+  "personalization": {
+    "privateOnly": ["objetivos pessoais", "família", "processos", "valores", "contas", "rotinas", "documentos", "links privados"],
+    "notionRepresentation": "nó privado com resumo, TAGs, relações, estado e próxima ação",
+    "driveRepresentation": "bytes originais, checksum e pacote de recuperação",
+    "githubRepresentation": "nenhuma",
+    "siteRepresentation": "nenhuma"
+  },
+  "ambiguousDestination": "QUARANTINED",
+  "publicationCommand": "PUBLICAR {TAF###-EXATO}"
+}

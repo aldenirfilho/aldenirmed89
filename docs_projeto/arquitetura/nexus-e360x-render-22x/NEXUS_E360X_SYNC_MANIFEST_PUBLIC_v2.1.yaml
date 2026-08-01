@@ -1,13 +1,13 @@
 manifest_id: nexus-e360x-u3-public-sync-v2.1
-version: "2.1.0"
-date: "2026-07-31"
+version: "2.1.1"
+date: "2026-08-01"
 operation: additive_only
 source_of_truth:
   semantic_graph: notion_private
   original_bytes: google_drive_private
   public_code_and_schemas: github
-  doctrine: confluence
-  execution: jira
+  doctrine: local_versioned_markdown
+  execution: local_backlog_and_github_draft_pr
   visualization: antigravity_and_sites
 privacy:
   fail_closed: true
@@ -52,14 +52,46 @@ surfaces:
     platforms:
       - notion
       - google_drive
-      - atlassian
       - figma
     link_policy: omitted_from_public_manifest
     access_policy: owner_or_workspace_only
-  atlassian_keys:
-    jira_project: KAN
-    epic: KAN-4
-    implementation: KAN-11
+  retired_accounts:
+    airtable:
+      account_state: RETIRED_ACCOUNT
+      routing_state: BLOCKED
+      active_route: false
+      replacement: repository_structured_data_or_authorized_private_notion
+    asana:
+      account_state: RETIRED_ACCOUNT
+      routing_state: BLOCKED
+      active_route: false
+      replacement: local_markdown_backlog
+    confluence:
+      account_state: RETIRED_ACCOUNT
+      routing_state: BLOCKED
+      active_route: false
+      replacement: local_versioned_markdown
+    jira:
+      account_state: RETIRED_ACCOUNT
+      routing_state: BLOCKED
+      active_route: false
+      replacement: local_backlog_and_github_draft_pr_checklist
+  automation_policy:
+    fail_closed: true
+    prohibited_destinations:
+      - airtable
+      - asana
+      - confluence
+      - jira
+    automatic_reactivation: forbidden
+  historical_records:
+    retention: historical_trace_only
+    routing_active: false
+    atlassian_keys:
+      status: BLOCKED
+      public_identifiers: REDACTED
+      record_count: 3
+      private_lookup: local_vault_only
   github:
     repository: aldenirfilho/antigravity-consultas
     path: docs_projeto/arquitetura/nexus-e360x-render-22x

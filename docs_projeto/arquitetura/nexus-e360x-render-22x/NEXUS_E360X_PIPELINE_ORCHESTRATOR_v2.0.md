@@ -30,8 +30,8 @@ RENDER CLÍNICO 23X: <texto bruto, anexos ou referências>
 |---|---|
 | captura clínica privada | Notion e armazenamento privado autorizado |
 | schema, testes e código | GitHub |
-| doutrina e decisões | Confluence |
-| tarefas e aceite | Jira |
+| doutrina e decisões | Markdown local versionado; GitHub apenas em branch/PR autorizados |
+| tarefas e aceite | backlog Markdown local e checklist do PR rascunho |
 | diagrama e interface | Visualize/Figma |
 | métricas estruturadas | Data Analytics |
 | mídia e originais | Google Drive privado |
@@ -48,9 +48,30 @@ chamadas artificiais, conceder permissões ou publicar automaticamente.
 - **Notion privado:** nó clínico canônico, transcript, TAG# e relações.
 - **Drive privado:** fontes e mídia com SHA-256.
 - **GitHub:** contratos públicos, código, testes e exemplos sintéticos.
-- **Confluence:** arquitetura e norma operacional desidentificada.
-- **Jira:** backlog, aceite, responsáveis e bloqueios.
+- **Markdown local versionado:** arquitetura, norma operacional e decisões.
+- **Backlog local:** aceite, responsáveis e bloqueios; quando autorizado, o
+  checklist pode ser espelhado em um PR rascunho do GitHub.
 - **Sites:** visualização pública sintética ou desidentificada.
+
+## Downgrade preventivo de contas encerradas
+
+Desde 2026-08-01, Airtable, Asana, Confluence e Jira não são superfícies de
+manutenção do Antigravity. As quatro contas estão em `RETIRED_ACCOUNT`, com
+roteamento `BLOCKED`, sem automação ativa, escrita, leitura ou sincronização.
+
+| Serviço aposentado | Estado | Substituição ativa |
+|---|---|---|
+| Airtable | `RETIRED_ACCOUNT / BLOCKED` | dados estruturados no repositório ou Notion privado autorizado |
+| Asana | `RETIRED_ACCOUNT / BLOCKED` | backlog Markdown local |
+| Confluence | `RETIRED_ACCOUNT / BLOCKED` | documentação Markdown local versionada |
+| Jira | `RETIRED_ACCOUNT / BLOCKED` | backlog local e checklist de PR rascunho |
+
+As referências anteriores a Confluence/Jira permanecem somente como registro
+histórico redigido no manifesto; identificadores externos ficam apenas no cofre
+local privado. Elas não podem ser usadas para descobrir credenciais,
+criar tarefas, atualizar páginas ou reativar integrações. Uma eventual
+reativação exige nova decisão explícita do proprietário e nova revisão de
+privacidade; nunca ocorre por fallback automático.
 
 ## Idempotência
 

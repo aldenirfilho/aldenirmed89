@@ -1,11 +1,11 @@
 {
   "schemaVersion": "antigravity-cosmos-product-code-v1",
   "version": "1.1.0",
-  "updatedAt": "2026-07-31",
+  "updatedAt": "2026-08-01",
   "humanPattern": "####AGX-{UNIVERSE}-{BLOCK}-{YYYYMMDD}-{SEQUENCE4}-{HASH8}",
-  "regex": "^####AGX-(U1|U2|U3|MUX)-(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|EXT)-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$",
+  "regex": "^####AGX-(U1|U2|U3|MUX)-(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|MICRO|IMGT|PROD|REFS|AUDIT|EXT)-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$",
   "universeCodes": {"u1":"U1","u2":"U2","u3":"U3","multi":"MUX"},
-  "blockCodes": {"evolucao":"EVO","plano-terapeutico":"PLAN","motor-visual":"VIS","organizador-estudos":"STUDY","turbo-temi":"TEMI","refinaria-temi":"REFINE","tutor":"TUTOR","extensoes":"EXT"},
+  "blockCodes": {"evolucao":"EVO","plano-terapeutico":"PLAN","motor-visual":"VIS","organizador-estudos":"STUDY","turbo-temi":"TEMI","refinaria-temi":"REFINE","tutor":"TUTOR","estudo-microparticulado":"MICRO","imagens-turbo-temi":"IMGT","produtos-turbo-temi":"PROD","referencias-evidencias":"REFS","auditoria-publicacao":"AUDIT","extensoes":"EXT"},
   "uidAlgorithm": "SHA256(NFC(source_sha256|block_id|semantic_key|privacy_class))",
   "hash8": "oito primeiros caracteres hexadecimais do product_uid, em maiúsculas",
   "sequenceAuthority": "data/product-catalog.json por data e bloco",
@@ -14,8 +14,8 @@
     "prefix": "TAF###",
     "meaning": "Termo de Aceite Final do produto homologado e tombado",
     "pattern": "TAF###-{UNIVERSE}-{BLOCK}-{YYYYMMDD}-{SEQUENCE4}-{HASH8}",
-    "regex": "^TAF###-(U1|U2|U3|MUX)-(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|EXT)-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$",
-    "generationGate": "HOM### aprovado + TOM### do manifesto imutável + zero bloqueador",
+    "regex": "^TAF###-(U1|U2|U3|MUX)-(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|MICRO|IMGT|PROD|REFS|AUDIT|EXT)-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$",
+    "generationGate": "AUD### aprovado + HOM### aprovado + TOM### do manifesto imutável + zero bloqueador",
     "publicationCommand": "PUBLICAR {TAF###-EXATO}"
   },
   "rules": [

@@ -2,8 +2,8 @@
   "schemaVersion": "antigravity-cosmos-module-v1",
   "moduleId": "nexus-cosmos",
   "title": "NEXUS Cosmos — Fusão dos Universos",
-  "version": "1.1.0-local-station",
-  "updatedAt": "2026-07-31",
+  "version": "1.2.0-local-station",
+  "updatedAt": "2026-08-01",
   "status": "pre-visualizacao-local-em-revisao",
   "entrypoint": "index.html",
   "classification": "operation",
@@ -12,24 +12,37 @@
     "atlas": "data/atlas.json",
     "history": "data/ecosystem-history.json",
     "blocks": "data/block-registry.json",
+    "commandContract": "data/command-contract.json",
     "tagTopology": "data/tag-topology.json",
+    "tagCatalog": "data/tag-catalog.json",
     "renderRecipes": "data/render-recipes.json",
+    "renderDemo": "data/render-demo.json",
     "productLifecycle": "data/product-lifecycle.json",
     "productCatalog": "data/product-catalog.json",
+    "productCodes": "data/product-code-contract.json",
     "entityCodes": "data/entity-code-contract.json",
     "governanceCodes": "data/governance-code-contract.json",
     "syncContract": "data/sync-contract.json",
+    "projectSync": "data/project-sync-contract.json",
+    "projectDomainRouting": "data/project-domain-routing.json",
+    "surfaceRouting": "data/surface-routing.json",
     "contentRouting": "data/content-routing.json",
     "documentSync": "data/document-sync-contract.json",
     "livingOrganism": "data/living-organism-contract.json",
     "executionLedger": "data/execution-ledger.json",
     "dailyUpdate": "data/daily-update-contract.json",
+    "editorialAudit": "data/editorial-audit-contract.json",
+    "blockItemSchema": "blocks/_schemas/block-item.schema.json",
+    "privateIntakeSchema": "blocks/_schemas/private-intake.schema.json",
+    "blockItemTemplate": "blocks/_templates/item.template.json",
     "globalGraph": "../data/connections.json"
   },
   "publication": {
     "mode": "local-preview",
     "publicPreview": false,
     "published": false,
+    "tafIssued": false,
+    "ownerPublicationAuthorization": false,
     "clinicalReviewOngoing": true,
     "purpose": "engenharia-cognitiva-educacional-e-apoio-a-revisao-humana",
     "canonicalSource": "https://aldenirfilho.github.io/antigravity-consultas/",
@@ -41,6 +54,22 @@
     "neverAutomatic": ["main", "merge", "github-pages", "official-site"]
   },
   "architecture": {
+    "blockCount": 13,
+    "blocks": [
+      "#evolucao",
+      "#plano-terapeutico",
+      "#motor-visual",
+      "#organizador-estudos",
+      "#turbo-temi",
+      "#refinaria-temi",
+      "#tutor",
+      "#estudo-microparticulado",
+      "#imagens-turbo-temi",
+      "#produtos-turbo-temi",
+      "#referencias-evidencias",
+      "#auditoria-publicacao",
+      "#extensoes"
+    ],
     "universes": [
       "U1 Humano-Clínico",
       "U2 Médico-Arsenal",
@@ -63,9 +92,48 @@
     ],
     "renderContract": "AÇÃO → ALVO → PRAZO → REAVALIAÇÃO → GATILHO → CONTINGÊNCIA"
   },
+  "candidateProducts": [
+    {
+      "id": "maquina-turbo-temi-360x",
+      "productCode": "####AGX-MUX-PROD-20260801-0001-D0394A79",
+      "title": "Máquina Turbo TEMI 360X — Atlas operacional",
+      "route": "products/maquina-turbo-temi-360x/index.html",
+      "manifest": "products/maquina-turbo-temi-360x/product.manifest.json",
+      "references": "products/maquina-turbo-temi-360x/references.json",
+      "registry": "blocks/10_produtos_turbo_temi/items.json",
+      "status": "candidate-public",
+      "officialPublication": false
+    },
+    {
+      "id": "biblioteca-visual-cosmica",
+      "productCode": "####AGX-U3-IMGT-20260801-0001-2C0470E6",
+      "title": "Biblioteca Visual Cósmica",
+      "route": "products/biblioteca-visual-cosmica/index.html",
+      "manifest": "products/biblioteca-visual-cosmica/product.manifest.json",
+      "references": "products/biblioteca-visual-cosmica/references.json",
+      "registry": "blocks/09_imagens_turbo_temi/items.json",
+      "status": "candidate-public",
+      "officialPublication": false
+    }
+  ],
+  "audit": {
+    "mandatory": true,
+    "codePattern": "AUD###-{SCOPE}-{YYYYMMDD}-{SEQ4}-{HASH8}",
+    "defaultOutcome": "BLOCKED_UNTIL_REVIEWED",
+    "pillars": [
+      "exposição de paciente",
+      "direitos autorais e licença",
+      "respaldo científico e fidelidade técnica"
+    ],
+    "technicalIntegrityRequired": true,
+    "failClosed": true,
+    "createsTaf": false,
+    "releasesPublication": false
+  },
   "visualAssets": {
     "catalog": "data/atlas.json",
     "count": 20,
+    "additionalCandidateImages": 2,
     "runtimeGeneration": false,
     "metadataStripped": true,
     "pixelStreamPreserved": true,
@@ -78,6 +146,12 @@
     "telemetry": false,
     "patientData": false,
     "clinicalDemo": "inteiramente sintético",
+    "privateBoundary": {
+      "universes": ["PRV-PER", "PRV-JUR", "PRV-FIN", "PRV-ADM", "PRV-TEC"],
+      "allowedSurfaces": ["local", "notion-private", "google-drive-private"],
+      "blockedSurfaces": ["github", "public-library", "public-live-map", "official-site"],
+      "publicRepresentation": "abstract-boundary-only-without-title-person-value-case-or-link"
+    },
     "localStorage": [
       "último nó visitado",
       "imagens estudadas",
@@ -90,6 +164,7 @@
     "requiredBeforePublication": [
       "revisão médica humana do caso sintético e dos textos",
       "atestado de direitos das 20 imagens derivadas",
+      "AUD### aprovado nos pilares paciente, direitos e respaldo científico",
       "homologação no Chrome macOS e Safari iPhone físico",
       "comparação visual desktop e mobile",
       "comando PUBLICAR acompanhado do TAF### exato"

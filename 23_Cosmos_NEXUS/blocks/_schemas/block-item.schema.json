@@ -4,37 +4,152 @@
   "title": "NEXUS Cosmos Block Item",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "productCode", "version", "title", "summary", "blockId", "universeIds", "constellationIds", "structuralTags", "topicTags", "privacy", "provenance", "render", "references", "studyLinks", "internalConnections", "audit", "edges"],
+  "required": ["id", "productCode", "version", "title", "summary", "contentClass", "blockId", "universeIds", "constellationIds", "structuralTags", "topicTags", "privacy", "provenance", "render", "references", "studyLinks", "internalConnections", "audit", "edges"],
   "properties": {
-    "id": {"type":"string","pattern":"^[a-z0-9][a-z0-9._-]{5,95}$"},
-    "productCode": {"type":"string","pattern":"^####AGX-(U1|U2|U3|MUX)-(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|EXT)-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$"},
-    "version": {"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+$"},
-    "title": {"type":"string","minLength":4,"maxLength":160},
-    "summary": {"type":"string","minLength":10,"maxLength":1200},
-    "blockId": {"enum":["evolucao","plano-terapeutico","motor-visual","organizador-estudos","turbo-temi","refinaria-temi","tutor","extensoes"]},
-    "universeIds": {"type":"array","minItems":1,"uniqueItems":true,"items":{"enum":["u1","u2","u3"]}},
-    "constellationIds": {"type":"array","minItems":1,"uniqueItems":true,"items":{"enum":["evolucoes","temas","imagens","acra","apostilas","arsenal","questoes"]}},
-    "structuralTags": {"type":"array","minItems":5,"uniqueItems":true,"items":{"type":"string","pattern":"^###(UNIVERSO|CONSTELACAO|BLOCO|STATUS|PRIVACIDADE|MATURIDADE):[A-Z0-9_-]+$"}},
-    "topicTags": {"type":"array","uniqueItems":true,"items":{"type":"string","pattern":"^#[A-Za-zÀ-ÿ0-9_-]+$"}},
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{5,95}$"},
+    "productCode": {"type": "string", "pattern": "^####AGX-(U1|U2|U3|MUX)-(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|MICRO|IMGT|PROD|REFS|AUDIT|EXT)-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "title": {"type": "string", "minLength": 4, "maxLength": 160},
+    "summary": {"type": "string", "minLength": 10, "maxLength": 1200},
+    "contentClass": {"enum": ["clinical", "mixed", "non-clinical"]},
+    "blockId": {"enum": ["evolucao", "plano-terapeutico", "motor-visual", "organizador-estudos", "turbo-temi", "refinaria-temi", "tutor", "estudo-microparticulado", "imagens-turbo-temi", "produtos-turbo-temi", "referencias-evidencias", "auditoria-publicacao", "extensoes"]},
+    "universeIds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["u1", "u2", "u3"]}},
+    "constellationIds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["evolucoes", "temas", "imagens", "acra", "apostilas", "arsenal", "questoes"]}},
+    "structuralTags": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string", "pattern": "^###(UNIVERSO|CONSTELACAO|BLOCO|STATUS|PRIVACIDADE|MATURIDADE|DOMINIO):[A-Z0-9_-]+$"}},
+    "topicTags": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^#[A-Za-zÀ-ÿ0-9_-]+$"}},
     "privacy": {
-      "type":"object","additionalProperties":false,"required":["classification","synthetic","patientData","publicEligible"],
-      "properties":{"classification":{"enum":["P0","P1","P2","P3"]},"synthetic":{"type":"boolean"},"patientData":{"type":"boolean"},"publicEligible":{"type":"boolean"}}
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "synthetic", "patientData", "publicEligible"],
+      "properties": {
+        "classification": {"enum": ["P0", "P1", "P2", "P3"]},
+        "synthetic": {"type": "boolean"},
+        "patientData": {"type": "boolean"},
+        "publicEligible": {"type": "boolean"}
+      }
     },
     "provenance": {
-      "type":"object","additionalProperties":false,"required":["sourceIds","reviewStatus"],
-      "properties":{"sourceIds":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string"}},"reviewStatus":{"enum":["pending","reviewed","blocked"]},"reviewer":{"type":["string","null"]},"reviewedAt":{"type":["string","null"],"format":"date-time"}}
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceIds", "reviewStatus"],
+      "properties": {
+        "sourceIds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "reviewStatus": {"enum": ["pending", "reviewed", "blocked"]},
+        "reviewer": {"type": ["string", "null"]},
+        "reviewedAt": {"type": ["string", "null"], "format": "date-time"}
+      }
     },
     "render": {
-      "type":"object","additionalProperties":false,"required":["status","artifacts"],
-      "properties":{"status":{"enum":["draft","review","approved-local","candidate-public","published","blocked"]},"artifacts":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["kind","path"],"properties":{"kind":{"type":"string"},"path":{"type":"string","pattern":"^(?!/)(?!.*\\.\\.).+$"}}}}
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "artifacts"],
+      "properties": {
+        "status": {"enum": ["draft", "review", "approved-local", "candidate-public", "published", "blocked"]},
+        "artifacts": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["kind", "path"], "properties": {"kind": {"type": "string"}, "path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+$"}}}}
+      }
     },
-    "references": {"type":"array","items":{"type":"object","additionalProperties":false,"required":["id","title","url","role","verifiedAt"],"properties":{"id":{"type":"string"},"title":{"type":"string"},"url":{"type":"string","format":"uri"},"role":{"enum":["primary","guideline","methodology","support"]},"verifiedAt":{"type":"string","format":"date"}}}},
-    "studyLinks": {"type":"array","items":{"type":"object","additionalProperties":false,"required":["title","url","reason","status","verifiedAt"],"properties":{"title":{"type":"string"},"url":{"type":"string","format":"uri"},"reason":{"type":"string"},"status":{"enum":["suggested","reviewed","blocked"]},"verifiedAt":{"type":"string","format":"date"}}}},
-    "internalConnections": {"type":"array","items":{"type":"object","additionalProperties":false,"required":["targetId","relation","reason"],"properties":{"targetId":{"type":"string"},"relation":{"type":"string"},"reason":{"type":"string"}}}},
-    "audit": {"type":"object","additionalProperties":false,"required":["qrStatus","clinicalReview","rightsReview","linkCheck"],"properties":{"qrStatus":{"enum":["pending","passed","blocked"]},"clinicalReview":{"enum":["pending","passed","not-applicable","blocked"]},"rightsReview":{"enum":["pending","passed","blocked"]},"linkCheck":{"enum":["pending","passed","blocked"]}}},
+    "references": {
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": false, "required": ["id", "title", "url", "role", "verifiedAt"], "properties": {"id": {"type": "string"}, "title": {"type": "string"}, "url": {"type": "string", "format": "uri"}, "role": {"enum": ["primary", "guideline", "official", "methodology", "support"]}, "verifiedAt": {"type": "string", "format": "date"}}}
+    },
+    "studyLinks": {
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": false, "required": ["title", "url", "reason", "status", "verifiedAt"], "properties": {"title": {"type": "string"}, "url": {"type": "string", "format": "uri"}, "reason": {"type": "string"}, "status": {"enum": ["suggested", "reviewed", "blocked"]}, "verifiedAt": {"type": "string", "format": "date"}}}
+    },
+    "internalConnections": {
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": false, "required": ["targetId", "relation", "reason"], "properties": {"targetId": {"type": "string"}, "relation": {"type": "string"}, "reason": {"type": "string"}}}
+    },
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["auditCode", "patientExposure", "rightsReview", "scientificGrounding", "technicalReview", "linkCheck"],
+      "properties": {
+        "auditCode": {"type": ["string", "null"], "pattern": "^AUD###[A-Z0-9-]*$"},
+        "patientExposure": {"enum": ["pending", "passed", "corrected", "blocked"]},
+        "rightsReview": {"enum": ["pending", "passed", "blocked"]},
+        "scientificGrounding": {"enum": ["pending", "passed", "not-applicable", "blocked"]},
+        "technicalReview": {"enum": ["pending", "passed", "blocked"]},
+        "linkCheck": {"enum": ["pending", "passed", "blocked"]}
+      }
+    },
+    "closedMicroparticle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ownerCompletionStatus", "cleanPublicModel", "extractionStatus", "allPromptsAnswered", "answersCorrected", "answersJustified", "selfContained", "personalStateRemoved", "followUpMonitor", "recoveryLoop"],
+      "properties": {
+        "ownerCompletionStatus": {"enum": ["not-recorded", "MODULE_COMPLETED_BY_OWNER"]},
+        "cleanPublicModel": {"type": "boolean"},
+        "extractionStatus": {"enum": ["not-started", "extracted-clean-model"]},
+        "allPromptsAnswered": {"type": "boolean"},
+        "answersCorrected": {"type": "boolean"},
+        "answersJustified": {"type": "boolean"},
+        "selfContained": {"type": "boolean"},
+        "personalStateRemoved": {"type": "boolean"},
+        "followUpMonitor": {"type": "boolean"},
+        "recoveryLoop": {"type": "boolean"}
+      }
+    },
+    "assetCodes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "path", "sha256", "publicationStatus"],
+        "properties": {
+          "code": {"type": "string", "pattern": "^####IMG-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$"},
+          "path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+\\.(png|jpe?g|webp)$"},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "publicationStatus": {"enum": ["draft-private", "candidate-public", "published"]}
+        }
+      }
+    },
     "edges": {
-      "type":"array","items":{"type":"object","additionalProperties":false,"required":["from","relation","to","evidenceIds","reviewStatus"],"properties":{"from":{"type":"string"},"relation":{"enum":["FUNDE_EM","DERIVA","REPRESENTA","ALIMENTA","EVIDENCIA","ACIONA","TREINA","REFINA","TUTORIA","REAVALIA","BLOQUEIA","SUBSTITUI"]},"to":{"type":"string"},"evidenceIds":{"type":"array","minItems":1,"items":{"type":"string"}},"reviewStatus":{"enum":["proposed","reviewed","rejected"]}}}
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": false, "required": ["from", "relation", "to", "evidenceIds", "reviewStatus"], "properties": {"from": {"type": "string"}, "relation": {"enum": ["ACIONA", "AGENDA", "ALIMENTA", "ANCORA", "APROFUNDA", "AUDITA", "BLOQUEIA", "COMPRIME", "CONTEXTUALIZA", "DERIVA", "DOCUMENTA", "EMPACOTA", "ENSINA", "EVIDENCIA", "EXTRAI", "FUNDE_EM", "MICROPARTICULA", "ORQUESTRA", "REAVALIA", "REFERENCIA", "REFINA", "RENDERIZA", "REPRESENTA", "RETORNA_AO_CASO", "SUBSTITUI", "SUSTENTA", "TESTA", "TOPOGRAFA", "TREINA", "TUTORIA"]}, "to": {"type": "string"}, "evidenceIds": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "reviewStatus": {"enum": ["proposed", "reviewed", "rejected"]}}}
     }
-  }
-}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"contentClass": {"enum": ["clinical", "mixed"]}}, "required": ["contentClass"]},
+      "then": {"properties": {"references": {"minItems": 1}, "audit": {"properties": {"scientificGrounding": {"const": "passed"}}}}}
+    },
+    {
+      "if": {"properties": {"privacy": {"properties": {"publicEligible": {"const": true}}}}},
+      "then": {"properties": {"privacy": {"properties": {"classification": {"const": "P0"}, "patientData": {"const": false}}}, "audit": {"properties": {"patientExposure": {"enum": ["passed", "corrected"]}, "rightsReview": {"const": "passed"}, "technicalReview": {"const": "passed"}, "linkCheck": {"const": "passed"}}}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "blockId": {"const": "estudo-microparticulado"},
+          "privacy": {"properties": {"publicEligible": {"const": true}}}
+        },
+        "required": ["blockId", "privacy"]
+      },
+      "then": {
+        "required": ["closedMicroparticle"],
+        "properties": {
+          "references": {"minItems": 1},
+          "provenance": {"properties": {"reviewStatus": {"const": "reviewed"}}},
+          "render": {"properties": {"status": {"enum": ["candidate-public", "published"]}}},
+          "audit": {"properties": {"scientificGrounding": {"const": "passed"}}},
+          "closedMicroparticle": {
+            "properties": {
+              "ownerCompletionStatus": {"const": "MODULE_COMPLETED_BY_OWNER"},
+              "cleanPublicModel": {"const": true},
+              "extractionStatus": {"const": "extracted-clean-model"},
+              "allPromptsAnswered": {"const": true},
+              "answersCorrected": {"const": true},
+              "answersJustified": {"const": true},
+              "selfContained": {"const": true},
+              "personalStateRemoved": {"const": true},
+              "followUpMonitor": {"const": false},
+              "recoveryLoop": {"const": false}
+            }
+          }
+        }
+      }
+    }
+  ]
 }
