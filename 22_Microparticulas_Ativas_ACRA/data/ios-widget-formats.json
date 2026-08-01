@@ -5,9 +5,6 @@
   "delivery": {
     "webAppPreview": true,
     "nativeWidgetKitExtension": false,
-    "nativeRadarWidgetKitCompanionSource": true,
-    "nativeRadarWidgetKitCompanionInstalled": false,
-    "requiresAppleSigning": true,
     "requiresNativeWrapperForHomeScreenWidgets": true,
     "offline": true,
     "cloud": false,
@@ -53,23 +50,18 @@
       "webSelector": "[data-widget-panel=\"large\"]"
     }
   ],
-  "nativeRadarCompanion": {
-    "name": "Radar Diário",
-    "status": "source-ready-signing-pending",
-    "project": "../../ios/AntigravityRadar/AntigravityRadar.xcodeproj",
-    "appGroup": "group.com.aldenirfilho.antigravity.radar",
-    "implementedComponents": [
+  "futureNativeExtension": {
+    "status": "not-implemented",
+    "recommendedComponents": [
       "WidgetKit",
+      "AppIntent",
       "TimelineProvider",
-      "deep links para a Estação Radar",
-      "cache compartilhado e fallback offline"
+      "deep links para as trilhas do módulo"
     ],
     "reviewRequired": [
-      "selecionar a equipe Apple e assinar os dois targets",
       "homologar conteúdo em iPhone físico",
       "validar atualização da timeline sem rede",
       "confirmar que nenhum dado clínico ou pessoal entra no widget"
-    ],
-    "scopeNote": "O companion nativo publica o Radar Diário. Os três formatos ACRA desta página permanecem prévias web e não são declarados como widgets POCUS nativos."
+    ]
   }
 }

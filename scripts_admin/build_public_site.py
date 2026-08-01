@@ -57,7 +57,6 @@ REQUIRED = (
     "20_Conheca_Aldenir",
     "21_Central_Ativacao",
     "22_Microparticulas_Ativas_ACRA",
-    "23_Cosmos_NEXUS",
     "01_Modulos_Clinicos",
     "en",
     "questoes",
