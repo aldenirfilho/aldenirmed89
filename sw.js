@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v18`;
+const CACHE_NAME = `${CACHE_PREFIX}v19`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -61,6 +61,28 @@ const WARM_ASSETS = [
   "./22_Microparticulas_Ativas_ACRA/data/ios-widget-formats.json",
   "./22_Microparticulas_Ativas_ACRA/data/visual-assets.json",
   "./22_Microparticulas_Ativas_ACRA/module.manifest.json",
+  "./23_Cosmos_NEXUS/index.html",
+  "./23_Cosmos_NEXUS/assets/theme-bootstrap.js",
+  "./23_Cosmos_NEXUS/assets/styles.css",
+  "./23_Cosmos_NEXUS/assets/app.js",
+  "./23_Cosmos_NEXUS/assets/atlas/01-maquina-turbo-temi-360x.jpg",
+  "./23_Cosmos_NEXUS/assets/atlas/05-orquestra-de-motores.jpg",
+  "./23_Cosmos_NEXUS/assets/atlas/07-decisao-clinica-em-camadas.jpg",
+  "./23_Cosmos_NEXUS/assets/atlas/16-acra-cognitivo.jpg",
+  "./23_Cosmos_NEXUS/assets/atlas/18-questoes-temi-n1-n5.jpg",
+  "./23_Cosmos_NEXUS/data/cosmos.json",
+  "./23_Cosmos_NEXUS/data/atlas.json",
+  "./23_Cosmos_NEXUS/data/block-registry.json",
+  "./23_Cosmos_NEXUS/data/tag-topology.json",
+  "./23_Cosmos_NEXUS/data/render-recipes.json",
+  "./23_Cosmos_NEXUS/data/product-lifecycle.json",
+  "./23_Cosmos_NEXUS/data/product-catalog.json",
+  "./23_Cosmos_NEXUS/data/sync-contract.json",
+  "./23_Cosmos_NEXUS/data/content-routing.json",
+  "./23_Cosmos_NEXUS/data/document-sync-contract.json",
+  "./23_Cosmos_NEXUS/data/living-organism-contract.json",
+  "./23_Cosmos_NEXUS/data/governance-code-contract.json",
+  "./23_Cosmos_NEXUS/module.manifest.json",
   "./assets/editorial-attribution.css",
   "./data/editorial/editorial-provenance.json",
   "./data/theme-catalog.json",

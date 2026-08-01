@@ -1,0 +1,242 @@
+{
+  "schemaVersion": "antigravity-nexus-cosmos-v1",
+  "version": "1.0.0-local-station",
+  "updatedAt": "2026-07-31T13:00:00-03:00",
+  "status": "local-preview-review-pending",
+  "title": "Fusão dos Cosmos e dos Universos",
+  "thesis": "No centro, o tema. Ao redor, sete formas de compreendê-lo, agir, reavaliar e aprender.",
+  "universes": [
+    {
+      "id": "u1",
+      "code": "U1",
+      "name": "Humano–Clínico",
+      "icon": "🫀",
+      "color": "#48dcff",
+      "summary": "Contexto, evolução, tempo, incerteza, prioridades P0–Pn e reavaliação.",
+      "question": "O que mudou, o que ameaça e o que precisa ser revisto?"
+    },
+    {
+      "id": "u2",
+      "code": "U2",
+      "name": "Médico–Arsenal",
+      "icon": "🧰",
+      "color": "#ff63d8",
+      "summary": "Temas, mecanismos, fontes, ferramentas, opções e limites de execução.",
+      "question": "Que conhecimento e que arsenal sustentam a próxima decisão?"
+    },
+    {
+      "id": "u3",
+      "code": "U3",
+      "name": "Didático–Cognitivo",
+      "icon": "🧠",
+      "color": "#a8ff78",
+      "summary": "Imagens, ACRA, micropartículas, questões e retomada espaçada.",
+      "question": "Como transformar a experiência em competência recuperável?"
+    }
+  ],
+  "constellations": [
+    {
+      "id": "evolucoes",
+      "name": "Evoluções",
+      "icon": "📈",
+      "color": "#48dcff",
+      "universes": ["u1", "u2"],
+      "portalImage": "assets/atlas/07-decisao-clinica-em-camadas.jpg",
+      "href": "#evolucao",
+      "summary": "CASE-IR, cronologia, deltas, P0–Pn, tendências, lacunas e reavaliação."
+    },
+    {
+      "id": "temas",
+      "name": "Temas",
+      "icon": "🧭",
+      "color": "#8b7cff",
+      "universes": ["u1", "u2", "u3"],
+      "portalImage": "assets/atlas/03-curadoria-80-20.jpg",
+      "href": "../01_UpDown_Hub/index.html",
+      "summary": "Mecanismos, padrões, riscos, diferenciais e TAGs semânticas conectadas."
+    },
+    {
+      "id": "imagens",
+      "name": "Imagens",
+      "icon": "🖼️",
+      "color": "#55f0c2",
+      "universes": ["u1", "u2", "u3"],
+      "portalImage": "assets/atlas/15-imagens-premium-16-9.jpg",
+      "href": "#atlas",
+      "summary": "Atlas visual, achados, limitações, anotação didática e recuperação por imagem."
+    },
+    {
+      "id": "acra",
+      "name": "ACRA",
+      "icon": "🧬",
+      "color": "#a8ff78",
+      "universes": ["u2", "u3"],
+      "portalImage": "assets/atlas/16-acra-cognitivo.jpg",
+      "href": "../22_Microparticulas_Ativas_ACRA/index.html",
+      "summary": "Micropartículas, tentativa antes do feedback, correção e retomada."
+    },
+    {
+      "id": "apostilas",
+      "name": "Apostilas",
+      "icon": "📚",
+      "color": "#ffd166",
+      "universes": ["u2", "u3"],
+      "portalImage": "assets/atlas/12-apostila-word.jpg",
+      "href": "../02_Biblioteca_IA_Engine/index.html",
+      "summary": "Fonte canônica, biblioteca, e-books, protocolos e derivações rastreáveis."
+    },
+    {
+      "id": "arsenal",
+      "name": "Arsenal",
+      "icon": "🧰",
+      "color": "#ff8f70",
+      "universes": ["u1", "u2"],
+      "portalImage": "assets/atlas/05-orquestra-de-motores.jpg",
+      "href": "../03_Calculadoras_E_Apps/index.html",
+      "summary": "Ferramentas, monitorização, opções, segurança e caminhos para protocolos oficiais."
+    },
+    {
+      "id": "questoes",
+      "name": "Questões",
+      "icon": "🏆",
+      "color": "#ff63d8",
+      "universes": ["u2", "u3"],
+      "portalImage": "assets/atlas/18-questoes-temi-n1-n5.jpg",
+      "href": "../questoes/index.html",
+      "summary": "Recuperação ativa, casos ramificados, discriminação e treino TEMI N1–N5."
+    }
+  ],
+  "lenses": [
+    {
+      "id": "fusion",
+      "label": "Fusão completa",
+      "constellations": ["evolucoes", "temas", "imagens", "acra", "apostilas", "arsenal", "questoes"]
+    },
+    {
+      "id": "evolution",
+      "label": "Evolução → tema",
+      "constellations": ["evolucoes", "temas", "imagens", "arsenal"]
+    },
+    {
+      "id": "action",
+      "label": "Tema → ação",
+      "constellations": ["temas", "imagens", "arsenal", "acra"]
+    },
+    {
+      "id": "learning",
+      "label": "Aprender → reter",
+      "constellations": ["temas", "imagens", "acra", "apostilas", "questoes"]
+    }
+  ],
+  "nodes": [
+    {"id":"nexus","label":"NEXUS","icon":"✦","kind":"core","universeIds":["u1","u2","u3"],"constellationIds":["evolucoes","temas","imagens","acra","apostilas","arsenal","questoes"],"summary":"Núcleo de fusão semântica, renderização progressiva e governança.","status":"local-preview","x":50,"y":50},
+    {"id":"u1","label":"U1 Humano–Clínico","icon":"🫀","kind":"universe","universeIds":["u1"],"constellationIds":["evolucoes","temas","imagens","arsenal"],"summary":"Tempo, pessoa, evolução, prioridades e reavaliação.","status":"active-contract","x":26,"y":24},
+    {"id":"u2","label":"U2 Médico–Arsenal","icon":"🧰","kind":"universe","universeIds":["u2"],"constellationIds":["temas","imagens","acra","apostilas","arsenal","questoes"],"summary":"Conhecimento, ferramentas, opções e limites.","status":"active-contract","x":74,"y":24},
+    {"id":"u3","label":"U3 Didático–Cognitivo","icon":"🧠","kind":"universe","universeIds":["u3"],"constellationIds":["temas","imagens","acra","apostilas","questoes"],"summary":"Representações, treino, feedback e memória.","status":"active-contract","x":50,"y":82},
+    {"id":"evolucoes","label":"Evoluções","icon":"📈","kind":"constellation","universeIds":["u1","u2"],"constellationIds":["evolucoes"],"summary":"Cronologia, deltas, P0–Pn, incerteza e plano de reavaliação.","status":"implemented","x":50,"y":9},
+    {"id":"temas","label":"Temas","icon":"🧭","kind":"constellation","universeIds":["u1","u2","u3"],"constellationIds":["temas"],"summary":"TAGs, mecanismos, padrões e relações clínicas.","status":"implemented","x":75,"y":16},
+    {"id":"imagens","label":"Imagens","icon":"🖼️","kind":"constellation","universeIds":["u1","u2","u3"],"constellationIds":["imagens"],"summary":"Atlas, achados, limitações e âncoras visuais.","status":"implemented","x":89,"y":47},
+    {"id":"acra","label":"ACRA","icon":"🧬","kind":"constellation","universeIds":["u2","u3"],"constellationIds":["acra"],"summary":"Micropartículas, feedback e retomada espaçada.","status":"implemented","x":77,"y":78},
+    {"id":"apostilas","label":"Apostilas","icon":"📚","kind":"constellation","universeIds":["u2","u3"],"constellationIds":["apostilas"],"summary":"Fontes, documentos e derivações versionadas.","status":"implemented","x":50,"y":92},
+    {"id":"arsenal","label":"Arsenal","icon":"🧰","kind":"constellation","universeIds":["u1","u2"],"constellationIds":["arsenal"],"summary":"Ferramentas e opções sujeitas a protocolo e revisão.","status":"implemented","x":23,"y":78},
+    {"id":"questoes","label":"Questões","icon":"🏆","kind":"constellation","universeIds":["u2","u3"],"constellationIds":["questoes"],"summary":"Treino TEMI, discriminação, evocação e transferência.","status":"implemented","x":11,"y":47},
+    {"id":"block-evolucao","label":"#evolução","icon":"📈","kind":"engine","universeIds":["u1","u2"],"constellationIds":["evolucoes","temas"],"summary":"Motor de tempo, delta, certeza, P0–Pn e reavaliação.","status":"ready-empty","x":41,"y":35},
+    {"id":"block-plano","label":"#plano terapêutico","icon":"🧭","kind":"engine","universeIds":["u1","u2"],"constellationIds":["evolucoes","temas","arsenal"],"summary":"Motor problema→ação→alvo→prazo→gatilho→contingência.","status":"ready-empty","x":59,"y":35},
+    {"id":"block-visual","label":"#motor visual","icon":"🖼️","kind":"engine","universeIds":["u1","u2","u3"],"constellationIds":["imagens","evolucoes","temas"],"summary":"Escolhe a representação que conserva a relação do conteúdo.","status":"ready-empty","x":66,"y":49},
+    {"id":"block-estudos","label":"#organizador","icon":"🗓️","kind":"engine","universeIds":["u3"],"constellationIds":["acra","apostilas","questoes"],"summary":"Converte lacunas em sessões e retomadas executáveis.","status":"ready-empty","x":61,"y":63},
+    {"id":"block-turbo","label":"#turbo TEMI","icon":"🚀","kind":"engine","universeIds":["u2","u3"],"constellationIds":["imagens","acra","apostilas","questoes"],"summary":"Deriva produtos multiformato de uma fonte canônica comum.","status":"ready-empty","x":50,"y":69},
+    {"id":"block-refinaria","label":"#refinaria","icon":"⚗️","kind":"engine","universeIds":["u2","u3"],"constellationIds":["temas","acra","questoes"],"summary":"Audita QR0–QR8, cobertura, redundância e prontidão.","status":"ready-empty","x":39,"y":63},
+    {"id":"block-tutor","label":"#tutor","icon":"🧑‍🏫","kind":"engine","universeIds":["u1","u2","u3"],"constellationIds":["evolucoes","temas","acra","questoes"],"summary":"Orquestra tentativa, pistas, feedback, reteste e próxima ação.","status":"ready-empty","x":34,"y":49},
+    {"id":"tag-deposito","label":"### Depósito TAG","icon":"#","kind":"registry","universeIds":["u1","u2","u3"],"constellationIds":["evolucoes","temas","imagens","acra","apostilas","arsenal","questoes"],"summary":"Topologia estrutural, maturidade, privacidade e arestas propostas.","status":"ready","x":50,"y":27}
+  ],
+  "edges": [
+    {"from":"nexus","to":"u1","relation":"FUNDE_EM"},
+    {"from":"nexus","to":"u2","relation":"FUNDE_EM"},
+    {"from":"nexus","to":"u3","relation":"FUNDE_EM"},
+    {"from":"u1","to":"u2","relation":"CONTEXTUALIZA"},
+    {"from":"u2","to":"u3","relation":"ENSINA"},
+    {"from":"u3","to":"u1","relation":"RETORNA_AO_CASO"},
+    {"from":"nexus","to":"evolucoes","relation":"RENDERIZA"},
+    {"from":"nexus","to":"temas","relation":"DERIVA"},
+    {"from":"nexus","to":"imagens","relation":"REPRESENTA"},
+    {"from":"nexus","to":"acra","relation":"MICROPARTICULA"},
+    {"from":"nexus","to":"apostilas","relation":"DOCUMENTA"},
+    {"from":"nexus","to":"arsenal","relation":"ACIONA"},
+    {"from":"nexus","to":"questoes","relation":"TREINA"},
+    {"from":"evolucoes","to":"temas","relation":"EXTRAI"},
+    {"from":"temas","to":"imagens","relation":"ANCORA"},
+    {"from":"imagens","to":"acra","relation":"COMPRIME"},
+    {"from":"acra","to":"apostilas","relation":"APROFUNDA"},
+    {"from":"apostilas","to":"arsenal","relation":"SUSTENTA"},
+    {"from":"arsenal","to":"questoes","relation":"TESTA"},
+    {"from":"questoes","to":"evolucoes","relation":"REAVALIA"},
+    {"from":"nexus","to":"tag-deposito","relation":"TOPOGRAFA"},
+    {"from":"nexus","to":"block-evolucao","relation":"ORQUESTRA"},
+    {"from":"nexus","to":"block-plano","relation":"ORQUESTRA"},
+    {"from":"nexus","to":"block-visual","relation":"ORQUESTRA"},
+    {"from":"nexus","to":"block-estudos","relation":"ORQUESTRA"},
+    {"from":"nexus","to":"block-turbo","relation":"ORQUESTRA"},
+    {"from":"nexus","to":"block-refinaria","relation":"ORQUESTRA"},
+    {"from":"nexus","to":"block-tutor","relation":"ORQUESTRA"},
+    {"from":"block-evolucao","to":"evolucoes","relation":"RENDERIZA"},
+    {"from":"block-plano","to":"arsenal","relation":"ACIONA"},
+    {"from":"block-visual","to":"imagens","relation":"REPRESENTA"},
+    {"from":"block-estudos","to":"acra","relation":"AGENDA"},
+    {"from":"block-turbo","to":"questoes","relation":"DERIVA"},
+    {"from":"block-turbo","to":"apostilas","relation":"DERIVA"},
+    {"from":"block-refinaria","to":"questoes","relation":"REFINA"},
+    {"from":"block-tutor","to":"acra","relation":"TUTORIA"},
+    {"from":"block-evolucao","to":"tag-deposito","relation":"TOPOGRAFA"},
+    {"from":"block-plano","to":"tag-deposito","relation":"TOPOGRAFA"},
+    {"from":"block-visual","to":"tag-deposito","relation":"TOPOGRAFA"},
+    {"from":"block-estudos","to":"tag-deposito","relation":"TOPOGRAFA"},
+    {"from":"block-turbo","to":"tag-deposito","relation":"TOPOGRAFA"},
+    {"from":"block-refinaria","to":"tag-deposito","relation":"TOPOGRAFA"},
+    {"from":"block-tutor","to":"tag-deposito","relation":"TOPOGRAFA"}
+  ],
+  "renderDepths": [
+    {"id":"radar","label":"Radar 10 s","budget":"10 segundos","purpose":"Mostrar P0/P1, mudança, próxima ação e lacuna crítica.","output":["ameaça","mudança","ação","revisão"]},
+    {"id":"route","label":"Rota 60 s","budget":"60 segundos","purpose":"Percorrer evolução, tema, imagem, arsenal e pendências.","output":["timeline","prioridades","suportes","pendências"]},
+    {"id":"complete","label":"Cosmos completo","budget":"sob demanda","purpose":"Recuperar os 23 módulos, TAGs, proveniência e relações.","output":["23 módulos","QR0–QR8","TAG#","fontes"]},
+    {"id":"learning","label":"Aprendizagem","budget":"focal","purpose":"Converter o caso em imagens, ACRA, questões e retomada.","output":["micropartícula","questão","feedback","D0/D1/D7/D30"]}
+  ],
+  "syntheticEvolution": {
+    "id": "case-ir-synthetic-001",
+    "privacy": "synthetic-no-patient-data",
+    "title": "Demonstração sintética: instabilidade com mecanismo ainda incerto",
+    "disclaimer": "Exemplo educacional. Não contém paciente real, não prescreve conduta e exige julgamento clínico e protocolo local.",
+    "stages": [
+      {"id":"capture","time":"T0","label":"Captura","state":"novo","certainty":"fato sintético","summary":"Sinais de instabilidade são capturados com corte temporal e lacunas explícitas.","action":"Confirmar ameaça e qualidade dos dados.","target":"prioridade P0/P1 definida","deadline":"imediato no exercício","reassessment":"após dados mínimos","trigger":"deterioração simulada","contingency":"escalar revisão humana"},
+      {"id":"decode","time":"T+1","label":"ARACNE Decode","state":"ativo","certainty":"inferência separada","summary":"Fatos, hipóteses, ausências e conflitos deixam de competir no mesmo parágrafo.","action":"Normalizar átomos clínicos no CASE-IR.","target":"cronologia e certeza visíveis","deadline":"antes da renderização","reassessment":"QR0–QR3","trigger":"fonte conflitante","contingency":"bloquear conclusão"},
+      {"id":"prioritize","time":"T+2","label":"P0–Pn","state":"ativo","certainty":"priorização educacional","summary":"O problema é ligado à evidência, interpretação, risco e janela de reavaliação.","action":"Construir lista priorizada e lacunas.","target":"uma próxima ação verificável","deadline":"Radar 10 s","reassessment":"por mudança de estado","trigger":"novo dado relevante","contingency":"reordenar prioridades"},
+      {"id":"fuse","time":"T+3","label":"Fusão temática","state":"incerto","certainty":"mapa de hipóteses","summary":"Temas, imagens, fontes e arsenal são conectados sem apagar a incerteza.","action":"Selecionar somente recursos pertinentes.","target":"rota transversal sem duplicação","deadline":"Caso 60 s","reassessment":"QR4–QR7","trigger":"lacuna de fonte","contingency":"marcar lacuna, não inventar"},
+      {"id":"reassess","time":"T+4","label":"Reavaliação","state":"em-revisao","certainty":"resultado do exercício","summary":"Alvo, prazo, gatilho e contingência fecham o ciclo e abrem a próxima versão.","action":"Comparar estado com o alvo definido.","target":"delta e próxima decisão explícitos","deadline":"prazo definido no caso","reassessment":"nova revisão CASE-IR","trigger":"alvo não atingido","contingency":"reabrir análise humana"},
+      {"id":"learn","time":"D0→D30","label":"Aprendizagem","state":"planejado","certainty":"método educacional","summary":"O mesmo núcleo gera imagem, ACRA e questão para recuperação ativa e transferência.","action":"Tentar antes do feedback e programar retomada.","target":"competência recuperável","deadline":"D0, D1, D7 e D30","reassessment":"desempenho na evocação","trigger":"erro recorrente","contingency":"nova micropartícula focal"}
+    ]
+  },
+  "qualityGates": [
+    "QR0 Fidelidade",
+    "QR1 Tempo",
+    "QR2 Incerteza",
+    "QR3 Hierarquia",
+    "QR4 Compreensão",
+    "QR5 Execução",
+    "QR6 Carga cognitiva",
+    "QR7 Acessibilidade",
+    "QR8 Transferência"
+  ],
+  "pipeline": [
+    "FONTE",
+    "GATE",
+    "ARACNE",
+    "CASE-IR",
+    "TAG#",
+    "R-ENGINE",
+    "RADAR 10 s",
+    "CASO 60 s",
+    "23 MÓDULOS",
+    "ACRA",
+    "GRAFO",
+    "REAVALIAÇÃO"
+  ]
+}

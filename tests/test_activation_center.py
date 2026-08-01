@@ -96,15 +96,13 @@ class ActivationCenterTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, self.app)
 
-    def test_manifest_routes_match_and_do_not_create_a_third_portal(self) -> None:
-        self.assertEqual(
+    def test_canonical_manifest_evolves_without_rewriting_legacy_mirror(self) -> None:
+        self.assertNotEqual(
             self.site_manifest["version"],
             self.public_manifest["version"],
         )
-        self.assertEqual(
-            self.site_manifest["canonicalRoutes"],
-            self.public_manifest["canonicalRoutes"],
-        )
+        self.assertIn("nexus_cosmos", self.site_manifest["canonicalRoutes"])
+        self.assertNotIn("nexus_cosmos", self.public_manifest["canonicalRoutes"])
         self.assertEqual(
             self.site_manifest["canonicalRoutes"]["central_ativacao"],
             "21_Central_Ativacao/index.html",
@@ -144,7 +142,7 @@ class ActivationCenterTests(unittest.TestCase):
         guides = read("docs_usuario/index.html")
         workflow = read(".github/workflows/deploy-seguro.yml")
         self.assertIn('"21_Central_Ativacao",', builder)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v18`', self.worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v19`', self.worker)
         for asset in (
             "./21_Central_Ativacao/index.html",
             "./21_Central_Ativacao/assets/app.js",

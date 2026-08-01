@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "antigravity-cosmos-product-code-v1",
+  "version": "1.1.0",
+  "updatedAt": "2026-07-31",
+  "humanPattern": "####AGX-{UNIVERSE}-{BLOCK}-{YYYYMMDD}-{SEQUENCE4}-{HASH8}",
+  "regex": "^####AGX-(U1|U2|U3|MUX)-(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|EXT)-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$",
+  "universeCodes": {"u1":"U1","u2":"U2","u3":"U3","multi":"MUX"},
+  "blockCodes": {"evolucao":"EVO","plano-terapeutico":"PLAN","motor-visual":"VIS","organizador-estudos":"STUDY","turbo-temi":"TEMI","refinaria-temi":"REFINE","tutor":"TUTOR","extensoes":"EXT"},
+  "uidAlgorithm": "SHA256(NFC(source_sha256|block_id|semantic_key|privacy_class))",
+  "hash8": "oito primeiros caracteres hexadecimais do product_uid, em maiúsculas",
+  "sequenceAuthority": "data/product-catalog.json por data e bloco",
+  "example": "####AGX-MUX-VIS-20260731-0001-A1B2C3D4",
+  "finalProductCode": {
+    "prefix": "TAF###",
+    "meaning": "Termo de Aceite Final do produto homologado e tombado",
+    "pattern": "TAF###-{UNIVERSE}-{BLOCK}-{YYYYMMDD}-{SEQUENCE4}-{HASH8}",
+    "regex": "^TAF###-(U1|U2|U3|MUX)-(EVO|PLAN|VIS|STUDY|TEMI|REFINE|TUTOR|EXT)-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$",
+    "generationGate": "HOM### aprovado + TOM### do manifesto imutável + zero bloqueador",
+    "publicationCommand": "PUBLICAR {TAF###-EXATO}"
+  },
+  "rules": [
+    "O código é atribuído ao produto inicial antes do registro no Notion.",
+    "O código nunca é reciclado, mesmo quando um produto é rejeitado ou depreciado.",
+    "Versões mantêm o mesmo código e incrementam o campo version.",
+    "Derivados registram parentProductCode e recebem código próprio quando possuem ciclo de vida independente.",
+    "O ####AGX acompanha o rascunho; o TAF### identifica a versão final homologada e tombada.",
+    "O código aparece no manifesto, Notion, Drive, GitHub, página, referências e checkpoint.",
+    "IDs privados de Notion/Drive não entram no catálogo público."
+  ]
+}

@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-default-theme="dark" data-contrast="normal">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07111f">
+  <meta name="antigravity-preference-key" content="antigravity:a11y:v1">
+  <meta name="description" content="NEXUS Cosmos: fusão navegável dos universos Humano-Clínico, Médico-Arsenal e Didático-Cognitivo no ecossistema Antigravity.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; connect-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>NEXUS Cosmos · Fusão dos Universos | Antigravity</title>
+  <script src="assets/theme-bootstrap.js"></script>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <a class="skip-link skip-map" href="#grafo">Pular para o grafo</a>
+
+  <header class="topbar" aria-label="Navegação principal">
+    <a class="brand" href="../index.html" aria-label="Voltar ao Antigravity Consultas">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span><strong>ANTIGRAVITY</strong><small>NEXUS COSMOS · ESTAÇÃO LOCAL</small></span>
+    </a>
+    <nav class="topnav" aria-label="Seções da estação">
+      <a href="#grafo">Grafo</a>
+      <a href="#acoplagem">Acoplar</a>
+      <a href="#evolucao">Render 23X</a>
+      <a href="#atlas">Atlas</a>
+      <a href="../index.html#mapa">Mapa Vivo</a>
+    </nav>
+    <button class="icon-button" id="theme-toggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco" title="Ativar visualização clara">☀</button>
+  </header>
+
+  <div class="review-strip" role="status">
+    <span>🔒 PRÉVIA LOCAL · NÃO PUBLICADA</span>
+    <span>🧪 CASO 100% SINTÉTICO</span>
+    <span>🩺 REVISÃO MÉDICA HUMANA PENDENTE</span>
+  </div>
+
+  <main id="conteudo">
+    <section class="hero" aria-labelledby="hero-title">
+      <img class="hero-image" src="assets/atlas/01-maquina-turbo-temi-360x.jpg" width="1400" height="788" alt="Máquina Turbo TEMI 360X conectando cérebro, ciência, monitorização e ciclo de decisão." fetchpriority="high">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-content shell">
+        <p class="eyebrow">NEXUS 23X · ENGENHARIA COGNITIVA MÉDICA</p>
+        <h1 id="hero-title">Fusão dos <span>Cosmos</span></h1>
+        <p class="hero-thesis">No centro, o tema. Ao redor, sete formas de compreender, agir, reavaliar e aprender — sem perder tempo, incerteza, fonte ou contexto.</p>
+        <div class="hero-actions" aria-label="Ações principais">
+          <a class="button primary" href="#grafo">🌌 Explorar Cosmos</a>
+          <a class="button" href="#evolucao">⚡ Render 23X</a>
+          <a class="button" href="#atlas">🖼️ Abrir atlas</a>
+        </div>
+        <button class="continue-button" id="continue-button" type="button" hidden>↻ Continuar de onde parei</button>
+      </div>
+      <div class="hero-metrics shell" aria-label="Indicadores da integração">
+        <div><strong>3</strong><span>universos preservados</span></div>
+        <div><strong>7</strong><span>constelações transversais</span></div>
+        <div><strong>23</strong><span>módulos de render</span></div>
+        <div><strong id="metric-global-nodes">—</strong><span>nós no Mapa Vivo</span></div>
+        <div><strong id="metric-global-edges">—</strong><span>interconexões globais</span></div>
+      </div>
+    </section>
+
+    <section class="section shell" aria-labelledby="universes-title">
+      <div class="section-heading">
+        <p class="eyebrow">A BASE ONTOLÓGICA NÃO MUDA</p>
+        <h2 id="universes-title">Três universos, uma memória comum</h2>
+        <p>U1, U2 e U3 permanecem como as três lentes fundamentais. As constelações cruzam essas lentes sem duplicar o conhecimento.</p>
+      </div>
+      <div class="universe-grid" id="universe-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="section section-graph" id="grafo" aria-labelledby="graph-title">
+      <div class="shell">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">MAPA ORBITAL DETERMINÍSTICO</p>
+            <h2 id="graph-title">Um grafo que vira rota</h2>
+            <p>Selecione uma lente. O NEXUS mostra apenas as relações úteis para a tarefa atual e mantém uma lista semântica equivalente.</p>
+          </div>
+          <div class="live-chip"><span class="pulse" aria-hidden="true"></span> conectado a <code>data/connections.json</code></div>
+        </div>
+
+        <div class="lens-bar" id="lens-bar" role="toolbar" aria-label="Lentes do grafo"></div>
+        <div class="graph-toolbar" aria-label="Controles do grafo">
+          <div class="segmented" role="tablist" aria-label="Representação do grafo">
+            <button id="tab-map" class="active" role="tab" aria-selected="true" aria-controls="map-panel" type="button">Mapa</button>
+            <button id="tab-list" role="tab" aria-selected="false" aria-controls="list-panel" type="button">Lista</button>
+          </div>
+          <div class="graph-actions">
+            <button type="button" id="zoom-out" aria-label="Reduzir grafo">−</button>
+            <button type="button" id="zoom-reset" aria-label="Restaurar enquadramento">100%</button>
+            <button type="button" id="zoom-in" aria-label="Ampliar grafo">+</button>
+          </div>
+        </div>
+
+        <div class="graph-layout">
+          <div class="graph-panel" id="map-panel" role="tabpanel" aria-labelledby="tab-map">
+            <div class="graph-stage" id="graph-stage" aria-label="Grafo orbital interativo; arraste para mover e use os botões para zoom">
+              <div class="graph-world" id="graph-world">
+                <canvas id="graph-canvas" aria-hidden="true"></canvas>
+                <div id="graph-nodes" class="graph-nodes"></div>
+              </div>
+            </div>
+          </div>
+          <div class="graph-panel graph-list-panel" id="list-panel" role="tabpanel" aria-labelledby="tab-list" hidden>
+            <ul id="graph-list" class="graph-list"></ul>
+          </div>
+          <aside class="node-inspector" id="node-inspector" aria-live="polite">
+            <p class="inspector-kicker">NÓ ATIVO</p>
+            <div class="inspector-icon" id="inspector-icon" aria-hidden="true">✦</div>
+            <h3 id="inspector-title">NEXUS</h3>
+            <p id="inspector-summary">Selecione um universo ou constelação para abrir sua rota.</p>
+            <div id="inspector-tags" class="tag-row"></div>
+            <a id="inspector-link" class="text-link" href="#constelacoes" hidden>Abrir esta constelação →</a>
+          </aside>
+        </div>
+        <p class="interaction-status" id="interaction-status" aria-live="polite">Fusão completa ativa.</p>
+      </div>
+    </section>
+
+    <section class="section shell" id="constelacoes" aria-labelledby="constellations-title">
+      <div class="section-heading">
+        <p class="eyebrow">SETE ROTAS, O MESMO NÚCLEO</p>
+        <h2 id="constellations-title">Constelações navegacionais</h2>
+        <p>Cada portal responde a uma necessidade cognitiva diferente e retorna ao mesmo tema versionado.</p>
+      </div>
+      <div class="constellation-grid" id="constellation-grid"></div>
+    </section>
+
+    <section class="section coupling-section" id="acoplagem" aria-labelledby="coupling-title">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">BARRAMENTO PRONTO PARA ALIMENTAÇÃO</p>
+          <h2 id="coupling-title">Acoplar hoje. Fundir sem perder a origem.</h2>
+          <p>Sete motores iniciais, uma porta de extensões, schema comum e topologia <code>###TAG</code>. Cada entrada já nasce localizável em U1, U2 e/ou U3 e preparada para gerar arestas revisáveis.</p>
+        </div>
+
+        <div class="command-console" aria-labelledby="command-title">
+          <div class="command-header">
+            <div><p class="eyebrow">COMANDO ÚNICO</p><h3 id="command-title">NEXUS COSMOS</h3></div>
+            <div class="command-modes"><span>PREPARAR · padrão local</span><span>SINCRONIZAR · autorizado</span><span>PUBLICAR · gate explícito</span></div>
+          </div>
+          <code id="command-syntax">NEXUS ACOPLAR: #bloco | fonte=&lt;arquivo-ou-link&gt; | objetivo=&lt;resultado&gt;</code>
+          <div class="command-actions">
+            <button id="copy-command" type="button">Copiar comando-base</button>
+            <span id="copy-status" aria-live="polite">Nenhuma ação externa é executada por este botão.</span>
+          </div>
+        </div>
+
+        <div class="coupling-grid" id="coupling-grid" aria-live="polite"></div>
+
+        <div class="topology-panel">
+          <div>
+            <p class="eyebrow">TOPOLOGIA FUSIONAL</p>
+            <h3>###TAG situa; #TAG nomeia</h3>
+            <p>As TAGs triplas descrevem onde e em que estado o item vive. As TAGs simples descrevem o assunto. Nenhuma aresta vira definitiva antes da revisão humana.</p>
+          </div>
+          <div class="tag-examples" id="tag-examples"></div>
+        </div>
+
+        <div class="universe-sessions" id="universe-sessions" aria-label="Sessões por universo-grafo"></div>
+
+        <div class="feeding-protocol">
+          <div>
+            <p class="eyebrow">VIA COMUM DE CADA SESSÃO</p>
+            <h3>Protocolo de inserção alimentativa</h3>
+          </div>
+          <ol id="lifecycle-flow" aria-label="Ciclo oficial do produto"></ol>
+        </div>
+
+        <div class="code-contract">
+          <div><p class="eyebrow">IDENTIDADE IMUTÁVEL</p><h3>Todo objeto e procedimento recebe código</h3><p>Pacientes usam código privado aleatório e nunca entram no catálogo público. O rascunho recebe ####AGX; cada ação recebe PRC###; homologação recebe HOM###; tombamento recebe TOM###; só então nasce o TAF### final.</p><p>Código desta estação: <code>####AGX-MUX-EXT-20260731-0001-847D3013</code> · TAF ainda não emitido.</p></div>
+          <code>PUBLICAR TAF###-{UNIVERSO}-{BLOCO}-{DATA}-{SEQUÊNCIA}-{HASH8}</code>
+          <div class="code-types"><span>####PAT · privado</span><span>####IMG · bytes</span><span>####AGX · rascunho</span><span>PRC### · procedimento</span><span>HOM### · homologação</span><span>TOM### · tombamento</span><span>TAF### · produto final</span><span>PUB### · publicação</span></div>
+        </div>
+
+        <div class="surface-routing" aria-labelledby="surface-title">
+          <div><p class="eyebrow">ROTEAMENTO POR AUTORIDADE</p><h3 id="surface-title">Local → Notion → Drive → GitHub rascunho ⛔ Site</h3><p>As quatro primeiras superfícies sincronizam automaticamente por chave idempotente. Main e site oficial permanecem travados até <code>PUBLICAR TAF###-…</code>. P1–P3 nunca atravessam o limite público.</p></div>
+          <div class="surface-grid" id="surface-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section renderer-section" id="motor-render" aria-labelledby="renderer-title">
+      <div class="shell">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">MOTOR VISUAL TURBO TEMI</p>
+            <h2 id="renderer-title">Uma fonte, múltiplas renderizações fiéis</h2>
+            <p>Timeline, tabela, gráfico, imagem, ACRA, produto Turbo TEMI e subgrafo são vistas do mesmo núcleo — nunca cópias desconectadas.</p>
+          </div>
+          <span class="safety-badge">demo sintética · revisão pendente</span>
+        </div>
+        <div class="recipe-tabs" id="recipe-tabs" role="tablist" aria-label="Receitas de renderização"></div>
+        <article class="render-stage" id="render-stage" role="tabpanel" aria-live="polite">
+          <header><div><p class="eyebrow" id="render-kicker">RECEITA</p><h3 id="render-stage-title">Carregando motor…</h3></div><span id="render-stage-fallback"></span></header>
+          <div id="render-output" class="render-output"></div>
+        </article>
+        <div class="render-contract-line"><span>FONTE ÚNICA</span><b>→</b><span>RECEITA VISUAL</span><b>→</b><span>QR0–QR8</span><b>→</b><span>###TAG + ARESTAS</span><b>→</b><span>FUSÃO CÓSMICA</span></div>
+      </div>
+    </section>
+
+    <section class="section render-section" id="evolucao" aria-labelledby="render-title">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">EVOLUÇÃO → CASE-IR → AÇÃO → REAVALIAÇÃO</p>
+          <h2 id="render-title">Render clínico progressivo 23X</h2>
+          <p>O mesmo núcleo sintético é reconstruído em quatro profundidades. Completude significa recuperar tudo quando necessário — não despejar tudo ao mesmo tempo.</p>
+        </div>
+        <div class="depth-grid" id="depth-grid"></div>
+
+        <div class="evolution-lab">
+          <div class="lab-header">
+            <div>
+              <p class="eyebrow">LABORATÓRIO SINTÉTICO</p>
+              <h3>Análise de uma evolução sem paciente real</h3>
+            </div>
+            <span class="safety-badge">educacional · não prescritivo</span>
+          </div>
+          <p class="lab-disclaimer" id="evolution-disclaimer"></p>
+          <div class="timeline" id="evolution-timeline" role="tablist" aria-label="Etapas da evolução sintética"></div>
+          <article class="evolution-card" id="evolution-card" aria-live="polite">
+            <div class="evolution-meta"><span id="evolution-time">T0</span><span id="evolution-state">novo</span><span id="evolution-certainty">fato sintético</span></div>
+            <h4 id="evolution-title">Captura</h4>
+            <p id="evolution-summary"></p>
+            <div class="action-contract" aria-label="Contrato de ação do exemplo sintético">
+              <div><span>AÇÃO</span><strong id="action-value">—</strong></div>
+              <div><span>ALVO</span><strong id="target-value">—</strong></div>
+              <div><span>PRAZO</span><strong id="deadline-value">—</strong></div>
+              <div><span>REAVALIAÇÃO</span><strong id="reassessment-value">—</strong></div>
+              <div><span>GATILHO</span><strong id="trigger-value">—</strong></div>
+              <div><span>CONTINGÊNCIA</span><strong id="contingency-value">—</strong></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="history-panel" aria-labelledby="history-title">
+          <div>
+            <p class="eyebrow">COSMIC DIFF</p>
+            <h3 id="history-title">Evolução da própria plataforma</h3>
+            <p>Compara snapshots observados; nenhum crescimento é inferido quando não há evidência.</p>
+          </div>
+          <div id="history-diff" class="diff-grid" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="atlas" aria-labelledby="atlas-title">
+      <div class="section-heading split-heading">
+        <div>
+          <p class="eyebrow">ATLAS VISUAL 1–20</p>
+          <h2 id="atlas-title">Imagens que viram memória, pergunta e conexão</h2>
+          <p>Vinte derivados JPEG sanitizados, com proporção preservada e integridade física distinta da fonte PNG declarada.</p>
+        </div>
+        <div class="atlas-progress"><strong id="atlas-seen">0</strong><span>/ 20 estudadas neste navegador</span></div>
+      </div>
+      <div class="atlas-controls">
+        <label class="search-box"><span class="sr-only">Pesquisar no atlas</span><input id="atlas-search" type="search" placeholder="Pesquisar título, grupo ou TAG#…" autocomplete="off"></label>
+        <div class="filter-bar" id="atlas-filters" role="toolbar" aria-label="Filtrar atlas"></div>
+      </div>
+      <div class="atlas-grid" id="atlas-grid" aria-live="polite"></div>
+      <p class="empty-state" id="atlas-empty" hidden>Nenhuma imagem corresponde a este filtro.</p>
+    </section>
+
+    <section class="section architecture-section" id="engenharia" aria-labelledby="architecture-title">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">DA FONTE À COMPETÊNCIA</p>
+          <h2 id="architecture-title">Arquitetura de funcionamento</h2>
+          <p>O motor separa fatos, inferências, lacunas e sugestões; só então escolhe a representação, conecta o grafo e cria aprendizagem.</p>
+        </div>
+        <ol class="pipeline" id="pipeline" aria-label="Pipeline NEXUS 23X"></ol>
+        <div class="architecture-grid">
+          <article>
+            <span class="article-number">01</span>
+            <h3>Fonte e Gate</h3>
+            <p>Inventário, identidade, corte temporal, privacidade e proveniência entram antes de qualquer síntese.</p>
+          </article>
+          <article>
+            <span class="article-number">02</span>
+            <h3>ARACNE + CASE-IR</h3>
+            <p>O texto linear vira átomos com tempo, certeza, prioridade, origem e relações explícitas.</p>
+          </article>
+          <article>
+            <span class="article-number">03</span>
+            <h3>R-ENGINE + 23X</h3>
+            <p>A relação decide a forma: timeline, matriz, algoritmo, imagem, checklist, passagem ou grafo TAG.</p>
+          </article>
+          <article>
+            <span class="article-number">04</span>
+            <h3>ACRA + Retorno</h3>
+            <p>Tentativa, feedback, correção e retomada transformam o mesmo caso em competência recuperável.</p>
+          </article>
+        </div>
+
+        <details class="modules-details">
+          <summary>Ver os 23 módulos canônicos do Render 23X</summary>
+          <ol class="modules-list">
+            <li>Identificação, contexto e corte temporal.</li><li>Diagnósticos confirmados.</li><li>Hipóteses e dúvidas diagnósticas.</li><li>Lista hierarquizada P0–Pn.</li><li>Cronologia visual.</li><li>Estado clínico atual e suportes.</li><li>Exame físico por sistemas.</li><li>Laboratório, tendências e lacunas.</li><li>Imagens, localização e limitações.</li><li>Análise crítica integrativa.</li><li>Auditoria da prescrição e segurança.</li><li>Checklist essencial.</li><li>Exames a solicitar, repetir ou evitar.</li><li>Condutas priorizadas por problema.</li><li>Alertas e riscos silenciosos.</li><li>Assuntos derivados para estudo.</li><li>Pérolas e armadilhas clínicas.</li><li>Pendências, dependências e responsáveis.</li><li>Conduta mais urgente agora.</li><li>Síntese executiva e passagem.</li><li>Nome canônico sugerido.</li><li>Plano de reavaliação, gatilhos e contingências.</li><li>Depósito TAG estruturado.</li>
+          </ol>
+        </details>
+
+        <div class="quality-gates" id="quality-gates" aria-label="Gates QR0 a QR8"></div>
+      </div>
+    </section>
+
+    <section class="section shell" id="potencial" aria-labelledby="potential-title">
+      <div class="section-heading">
+        <p class="eyebrow">POTENCIAL — A VALIDAR PROSPECTIVAMENTE</p>
+        <h2 id="potential-title">Engenharia cognitiva aplicada à medicina</h2>
+        <p>Esta arquitetura não promete desfecho clínico. Ela cria condições testáveis para reduzir perda de contexto, tornar incerteza visível e fechar o ciclo entre decisão, execução, reavaliação e estudo.</p>
+      </div>
+      <div class="potential-grid">
+        <article><span>⚡</span><h3>Compressão com rastreabilidade</h3><p>Radar 10 s e Caso 60 s apontam para o conjunto completo, sem apagar fonte ou lacuna.</p></article>
+        <article><span>🧭</span><h3>Prioridade executável</h3><p>P0–Pn e o contrato Ação→Alvo→Prazo→Reavaliação convertem intenção em item verificável.</p></article>
+        <article><span>🕸️</span><h3>Memória relacional</h3><p>TAGs e arestas conectam mecanismos, imagens, arsenal e questões sem duplicar o nó-tema.</p></article>
+        <article><span>🧠</span><h3>Aprendizagem no fluxo</h3><p>Erros e dúvidas viram micropartículas, perguntas e retomadas com feedback após tentativa.</p></article>
+        <article><span>🛡️</span><h3>Segurança observável</h3><p>Fato, inferência, conflito e ausência permanecem classes distintas; QR0–QR8 bloqueiam atalhos frágeis.</p></article>
+        <article><span>📈</span><h3>Evolução mensurável</h3><p>Snapshots permitem medir cobertura, órfãos, revisão e interconexões sem fabricar tendência.</p></article>
+      </div>
+    </section>
+
+    <section class="section bridge-section" aria-labelledby="bridge-title">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">PONTES VERIFICADAS E CONTROLADAS</p>
+          <h2 id="bridge-title">Interconexão com o ecossistema</h2>
+          <p>A fonte primária continua sendo o site canônico e o repositório GitHub. Observatórios externos permanecem apenas como links autenticados, sem sincronização automática.</p>
+        </div>
+        <div class="bridge-grid">
+          <a href="../index.html#mapa"><span>🕸️</span><strong>Mapa Vivo canônico</strong><small>Grafo global data-driven</small></a>
+          <a href="https://aldenirfilho.github.io/antigravity-consultas/"><span>🌐</span><strong>Site canônico</strong><small>GitHub Pages · fonte primária</small></a>
+          <a href="https://github.com/aldenirfilho/antigravity-consultas"><span>⌘</span><strong>Repositório GitHub</strong><small>Código, contratos e histórico</small></a>
+          <a href="https://github.com/aldenirfilho/antigravity-consultas/commit/35afb8e"><span>🧬</span><strong>Braço 23X preservado</strong><small>Commit-fonte 35afb8e</small></a>
+          <a href="https://antigravity-consultas.aldenirmed.chatgpt.site/mapa-vivo"><span>🔐</span><strong>Observatório Mapa Vivo</strong><small>ChatGPT Sites · acesso autenticado</small></a>
+          <a href="https://antigravity-consultas.aldenirmed.chatgpt.site/biblioteca-visual"><span>🔐</span><strong>Observatório visual</strong><small>ChatGPT Sites · acesso autenticado</small></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="safety-callout shell" aria-labelledby="safety-title">
+      <div class="safety-icon" aria-hidden="true">🛡️</div>
+      <div><h2 id="safety-title">Limite clínico deliberado</h2><p>O NEXUS organiza informação e apoio cognitivo; não substitui avaliação à beira-leito, julgamento clínico, protocolo institucional, fonte oficial, supervisão ou revisão médica humana. Nesta estação, todo caso é sintético e nenhuma dose ou prescrição universal é gerada.</p></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <div><strong>NEXUS COSMOS</strong><p>Estação local de engenharia cognitiva Antigravity.</p></div>
+      <div><span>Estado: prévia local</span><span>Versão: 1.0.0</span><span>Atualização: 31/07/2026</span></div>
+      <a href="../index.html">← Voltar ao Antigravity</a>
+    </div>
+  </footer>
+
+  <dialog id="atlas-dialog" class="atlas-dialog" aria-labelledby="dialog-title">
+    <button class="dialog-close" id="dialog-close" type="button" aria-label="Fechar imagem">×</button>
+    <div class="dialog-media"><img id="dialog-image" alt="" width="1400" height="788"></div>
+    <div class="dialog-content">
+      <p class="eyebrow" id="dialog-id"></p>
+      <h2 id="dialog-title"></h2>
+      <p id="dialog-legend"></p>
+      <div class="recall-box"><strong>Recuperação ativa</strong><p id="dialog-question"></p><button id="dialog-reveal" type="button">Mostrar síntese</button><p id="dialog-answer" hidden></p></div>
+      <dl class="integrity-list">
+        <div><dt>Derivado servido</dt><dd id="dialog-asset-integrity"></dd></div>
+        <div><dt>Fonte declarada</dt><dd id="dialog-source-integrity"></dd></div>
+      </dl>
+    </div>
+  </dialog>
+
+  <noscript><div class="noscript">Esta estação precisa de JavaScript local para o grafo e o atlas. Os links canônicos continuam disponíveis na navegação superior.</div></noscript>
+</body>
+</html>

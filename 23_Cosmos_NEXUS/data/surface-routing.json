@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "antigravity-cosmos-surface-routing-v1",
+  "version": "1.1.0",
+  "updatedAt": "2026-07-31",
+  "defaultMode": "automatic-draft-sync-publication-locked",
+  "surfaces": [
+    {
+      "id":"local","label":"Estação local","authority":"working-tree","connector":"filesystem",
+      "accepts":["P0-sintetico","contratos","previews","planos-de-sync"],"automatic":true,"externalWrite":false
+    },
+    {
+      "id":"notion","label":"Notion privado","authority":"nó clínico e operação privada","connector":"notion-plugin",
+      "accepts":["P1","P2","P3","CASE-IR","transcript","TAGs","planos"],"automatic":true,"requires":["workspace e página-raiz previamente registrados","idempotency_key","revisão de privacidade fail-closed"]
+    },
+    {
+      "id":"google-drive","label":"Google Drive privado","authority":"fontes, mídia e originais","connector":"google-drive-plugin",
+      "accepts":["originais","mídia","pacotes","checksums","backups"],"automatic":true,"requires":["pasta-raiz previamente registrada","idempotency_key e SHA-256","direitos e classificação"]
+    },
+    {
+      "id":"github","label":"Repositório GitHub","authority":"código, contratos e rascunhos versionados","connector":"github-plugin",
+      "accepts":["P0 revisado","código","testes","exemplos sintéticos","previews aprovados"],"automatic":true,"requires":["gate editorial","testes","branch codex/nexus-sync-* ou PR rascunho","proibição de push automático em main"]
+    },
+    {
+      "id":"official-site","label":"Publicação oficial","authority":"GitHub Pages canônico","connector":"sites-or-github-pages",
+      "accepts":["release P0 aprovada"],"automatic":false,"requires":["ownerApproval","clinicalReview","rightsAttestation","publicationGuard","comando PUBLICAR TAF###-... do proprietário na sessão corrente"]
+    }
+  ],
+  "routingByBlock": {
+    "evolucao":["local","notion"],
+    "plano-terapeutico":["local","notion"],
+    "motor-visual":["local","google-drive","github","official-site"],
+    "organizador-estudos":["local","notion","google-drive"],
+    "turbo-temi":["local","google-drive","github","official-site"],
+    "refinaria-temi":["local","notion","github"],
+    "tutor":["local","notion"],
+    "extensoes":["local"]
+  },
+  "hardStops": [
+    "Notion, Drive e GitHub sincronizam rascunhos automaticamente apenas em destinos previamente registrados e por chave idempotente.",
+    "A sincronização automática do GitHub nunca atualiza main, nunca habilita auto-merge e nunca dispara Pages.",
+    "A publicação oficial permanece bloqueada até o comando PUBLICAR acompanhado do TAF### exato.",
+    "Nenhum dado clínico identificável em GitHub, Sites ou arquivos públicos.",
+    "Nenhuma credencial, token ou link privado é persistido nesta árvore.",
+    "Falha em identidade, fonte, revisão, direitos ou testes encerra o fluxo em BLOQUEADO."
+  ]
+}

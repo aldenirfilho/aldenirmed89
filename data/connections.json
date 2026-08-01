@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-07-30T02:42:50-03:00",
-  "version": "4.6-acra-microparticles",
-  "description": "Mapa vivo organizado da Enciclopédia: Home, Central de Ativação, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos, Micropartículas Ativas ACRA e macrotemas de UTI.",
+  "updatedAt": "2026-07-31T12:00:00-03:00",
+  "version": "4.7-nexus-cosmos",
+  "description": "Mapa vivo organizado da Enciclopédia: Home, Central de Ativação, Portais da missão, Estações, canais de integridade, NEXUS Cosmos U1/U2/U3, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos, Micropartículas Ativas ACRA e macrotemas de UTI.",
   "legend": {
     "hub": "Nó central do projeto",
     "biblioteca": "Base de documentos e curadoria IA",
@@ -1000,6 +1000,56 @@
       "body": "Segurança, causas, desescalada, fármacos situacionais e mimetizadores.",
       "x": 62,
       "y": 50
+    },
+    {
+      "id": "nexus-cosmos",
+      "label": "🌌 NEXUS Cosmos",
+      "type": "hub",
+      "url": "23_Cosmos_NEXUS/index.html",
+      "status": "em_revisao",
+      "body": "Organismo vivo que funde U1, U2 e U3 em rotas visuais, produtos, aprendizagem ativa e sincronização governada.",
+      "x": 50,
+      "y": 18
+    },
+    {
+      "id": "nexus-u1-humano-clinico",
+      "label": "🫀 U1 Humano–Clínico",
+      "type": "theme",
+      "url": "23_Cosmos_NEXUS/index.html#universes-title",
+      "status": "em_revisao",
+      "body": "Tempo, contexto, problema, ação, resposta, incerteza e reavaliação.",
+      "x": 38,
+      "y": 20
+    },
+    {
+      "id": "nexus-u2-medico-arsenal",
+      "label": "🧰 U2 Médico–Arsenal",
+      "type": "theme",
+      "url": "23_Cosmos_NEXUS/index.html#universes-title",
+      "status": "em_revisao",
+      "body": "Mecanismos, evidência, ferramentas, protocolos, limites e contingências.",
+      "x": 62,
+      "y": 20
+    },
+    {
+      "id": "nexus-u3-didatico-cognitivo",
+      "label": "🧠 U3 Didático–Cognitivo",
+      "type": "theme",
+      "url": "23_Cosmos_NEXUS/index.html#universes-title",
+      "status": "em_revisao",
+      "body": "Representação, tentativa, feedback, produto, transferência e retomada.",
+      "x": 50,
+      "y": 8
+    },
+    {
+      "id": "nexus-tag-deposito",
+      "label": "# Depósito TAG",
+      "type": "tool",
+      "url": "23_Cosmos_NEXUS/index.html#acoplagem",
+      "status": "em_revisao",
+      "body": "Topografia ###TAG, códigos únicos, arestas propostas e portas para novos blocos.",
+      "x": 50,
+      "y": 28
     }
   ],
   "edges": [
@@ -1925,6 +1975,91 @@
       "from": "delirium-uti",
       "to": "sepse-choque",
       "relation": "causa-e-mimetizador"
+    },
+    {
+      "from": "home",
+      "to": "nexus-cosmos",
+      "relation": "organismo-cognitivo"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "nexus-u1-humano-clinico",
+      "relation": "funde-em"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "nexus-u2-medico-arsenal",
+      "relation": "funde-em"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "nexus-u3-didatico-cognitivo",
+      "relation": "funde-em"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "nexus-tag-deposito",
+      "relation": "topografa"
+    },
+    {
+      "from": "nexus-u1-humano-clinico",
+      "to": "nexus-u2-medico-arsenal",
+      "relation": "alimenta"
+    },
+    {
+      "from": "nexus-u2-medico-arsenal",
+      "to": "nexus-u3-didatico-cognitivo",
+      "relation": "renderiza"
+    },
+    {
+      "from": "nexus-u3-didatico-cognitivo",
+      "to": "nexus-u1-humano-clinico",
+      "relation": "reavalia"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "radar-diario",
+      "relation": "atualiza"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "biblioteca-ia",
+      "relation": "curadoria"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "banco-temi",
+      "relation": "treina"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "microparticulas-acra",
+      "relation": "ativa-aprendizagem"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "updown",
+      "relation": "aprofunda"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "integridade-editorial",
+      "relation": "audita"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "card-feed-medico",
+      "relation": "renderiza-visual"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "calculadoras-uti",
+      "relation": "aciona-arsenal"
+    },
+    {
+      "from": "nexus-cosmos",
+      "to": "pocus-usg",
+      "relation": "conecta-imagem"
     }
   ],
   "links": []

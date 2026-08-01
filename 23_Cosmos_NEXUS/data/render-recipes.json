@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "antigravity-cosmos-render-recipes-v1",
+  "version": "1.0.0",
+  "updatedAt": "2026-07-31",
+  "selectionRule": "A relação que precisa ser preservada escolhe a representação; preferência estética nunca substitui fidelidade.",
+  "recipes": [
+    {
+      "id":"radar","label":"Radar 10 s","icon":"⚡","preserves":["ameaça","prioridade","próxima ação","lacuna"],
+      "component":"priority-radar","requiredFields":["priority","change","action","gap","reassessment"],"fallback":"lista AGORA/DEPOIS/BLOQUEADO"
+    },
+    {
+      "id":"timeline","label":"Timeline de evolução","icon":"📈","preserves":["sequência","tempo","delta","tendência"],
+      "component":"proportional-timeline","requiredFields":["timestamp","event","certainty","sourceId"],"fallback":"tabela cronológica"
+    },
+    {
+      "id":"matrix","label":"Tabela comparativa","icon":"▦","preserves":["comparação","critério","diferença","limite"],
+      "component":"semantic-table","requiredFields":["columns","rows","caption"],"fallback":"lista por critério"
+    },
+    {
+      "id":"chart","label":"Gráfico de tendência","icon":"▥","preserves":["magnitude","tendência","cobertura","variação"],
+      "component":"accessible-bars","requiredFields":["title","points","unit","sourceId"],"fallback":"tabela de valores"
+    },
+    {
+      "id":"visual","label":"Motor visual","icon":"🖼️","preserves":["localização","mecanismo","padrão","âncora"],
+      "component":"image-with-contract","requiredFields":["src","alt","legend","limitations","sourceId","rights"],"fallback":"descrição textual integral"
+    },
+    {
+      "id":"acra","label":"ACRA renderizado","icon":"🧬","preserves":["tentativa","feedback","correção","retomada"],
+      "component":"active-recall","requiredFields":["prompt","answer","trap","transfer","reviewSchedule"],"fallback":"pergunta e resposta em texto"
+    },
+    {
+      "id":"turbo","label":"Produto Turbo TEMI","icon":"🚀","preserves":["fonte comum","competência","nível","derivação"],
+      "component":"product-forge","requiredFields":["canonicalSourceId","objective","outputs","qualityGates"],"fallback":"manifesto de produtos"
+    },
+    {
+      "id":"graph","label":"Subgrafo fusional","icon":"🕸️","preserves":["interconexão","proveniência","universo","reuso"],
+      "component":"focused-neighborhood","requiredFields":["nodes","edges","structuralTags"],"fallback":"lista de arestas"
+    }
+  ],
+  "qualityContract": {
+    "required":["QR0 Fidelidade","QR1 Tempo","QR2 Incerteza","QR3 Hierarquia","QR4 Compreensão","QR5 Execução","QR6 Carga cognitiva","QR7 Acessibilidade","QR8 Transferência"],
+    "publicationRule":"Qualquer falha mantém o produto em rascunho ou bloqueado."
+  }
+}
