@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "antigravity-cosmos-sync-v1",
+  "version": "1.1.0",
+  "updatedAt": "2026-07-31",
+  "mode": "automatic-draft-sync-publication-locked",
+  "privateQueue": ".nexus-sync-private/queue/",
+  "triggerPolicy": [
+    "ao encerrar cada sessão com produto novo ou alterado",
+    "ao anexar imagem ou produto",
+    "na reconciliação recorrente",
+    "antes e depois de homologação ou tombamento"
+  ],
+  "surfaces": [
+    {
+      "id": "gpt-codex",
+      "role": "captura, síntese, renderização e checkpoint",
+      "automatic": true
+    },
+    {
+      "id": "google-drive",
+      "role": "bytes originais, mídia, fontes autorizadas e checksums",
+      "automatic": true,
+      "targetResolution": "buscar a pasta do projeto pelo nome canônico; falhar fechado em ambiguidade"
+    },
+    {
+      "id": "notion",
+      "role": "UID semântico, estado editorial, catálogo, nós e arestas",
+      "automatic": true,
+      "targetResolution": "buscar o hub NEXUS/Antigravity registrado; falhar fechado em ambiguidade"
+    },
+    {
+      "id": "github",
+      "role": "schemas, código, testes e rascunho versionado",
+      "automatic": true,
+      "writeBoundary": "somente branch codex/nexus-sync-* e PR rascunho; sem main, merge ou auto-merge"
+    },
+    {
+      "id": "official-site",
+      "role": "publicação canônica",
+      "automatic": false,
+      "unlock": "PUBLICAR {TAF###-EXATO}"
+    }
+  ],
+  "idempotency": {
+    "artifactUid": "SHA256 dos bytes congelados no blob privado",
+    "intentUid": "SHA256(project|kind|universe|block|semantic_key)",
+    "logicalKey": "SHA256(artifactUid|intentUid)",
+    "renderKey": "SHA256(source_revision_ids|recipe@version|renderer_version|privacy_profile)",
+    "sameKeySameHash": "SKIP_DUPLICATE",
+    "sameKeyNewHash": "CREATE_REVISION",
+    "privacyChange": "REVIEW_REQUIRED_PRIVACY_CHANGE; não cria nova entidade nem promove automaticamente",
+    "authorityConflict": "QUARANTINED"
+  },
+  "privacy": {
+    "publicSurfaces": ["github", "official-site"],
+    "publicCeiling": "P0",
+    "patientRule": "identificadores e conteúdo P2/P3 permanecem fora do repositório e do site; destino privado precisa estar previamente mapeado",
+    "secretRule": "IDs privados, tokens e credenciais não são persistidos nos contratos públicos"
+  },
+  "publicationLock": {
+    "lockedByDefault": true,
+    "requiredChain": ["####AGX", "HOM###", "TOM###", "TAF###", "owner command", "revalidation"],
+    "forbiddenWithoutUnlock": ["push main", "merge", "auto-merge", "Pages deploy", "site publisher"]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "antigravity-cosmos-content-routing-v1",
+  "version": "1.2.0",
+  "updatedAt": "2026-08-01",
+  "routes": [
+    {"kind":"gpt-word","session":"#organizador-estudos","canonicalSection":"02_Biblioteca_IA_Engine","catalog":"02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json","destination":"02_Biblioteca_IA_Engine/acervo/produtos-gpt/word/","gate":"DOCX válido + P0 + preview fail-closed + direitos + revisão"},
+    {"kind":"gpt-pdf","session":"#organizador-estudos","canonicalSection":"02_Biblioteca_IA_Engine","catalog":"02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json","destination":"02_Biblioteca_IA_Engine/acervo/produtos-gpt/pdf/","gate":"PDF válido + P0 + preview fail-closed + direitos + revisão"},
+    {"kind":"gpt-image","session":"#motor-visual","canonicalSection":"route-by-function","catalog":"data/content-routing.json","destination":"Card Feed, ACRA/POCUS ou atlas NEXUS","gate":"imagem P0 + metadados sanitizados + direitos + alt + hash"},
+    {"kind":"atlas-turbo-temi","session":"#motor-visual","canonicalSection":"05_Midia_E_Feed","catalog":"05_Midia_E_Feed/data/cards.json","derivedCatalog":"05_Midia_E_Feed/data/public.json","destination":"05_Midia_E_Feed/assets/cards/public/nexus-cosmos-23x/","gate":"imagem P0 + direitos + hash + alt + revisão"},
+    {"kind":"visual-acra","session":"#turbo-temi","canonicalSection":"22_Microparticulas_Ativas_ACRA","catalog":"22_Microparticulas_Ativas_ACRA/data/visual-assets.json","destination":"22_Microparticulas_Ativas_ACRA/assets/visuals/","gate":"participa do ciclo M0–M6 + proveniência"},
+    {"kind":"imagem-pocus-real","session":"#motor-visual","canonicalSection":"22_Microparticulas_Ativas_ACRA","catalog":"22_Microparticulas_Ativas_ACRA/data/visual-assets.json","destination":"22_Microparticulas_Ativas_ACRA/assets/visuals/real-pocus-ccby/","gate":"sem PHI + pixel original + licença/atribuição + revisão humana"},
+    {"kind":"documento-temi","session":"#organizador-estudos","canonicalSection":"02_Biblioteca_IA_Engine","catalog":"02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json","destination":"02_Biblioteca_IA_Engine/acervo/temi-prova/","gate":"preview fail-closed + baseline + direitos"},
+    {"kind":"ebook-guia","session":"#turbo-temi","canonicalSection":"04_Ebooks_Intensiva_Clinica","catalog":"04_Ebooks_Intensiva_Clinica/data/catalogo.json","destination":"04_Ebooks_Intensiva_Clinica/public/","gate":"scanner + referências + revisão"},
+    {"kind":"questao-osce-anki","session":"#turbo-temi","canonicalSection":"07_Questoes_Comentadas","catalog":"07_Questoes_Comentadas/data/catalogo.json","destination":"07_Questoes_Comentadas/public/","gate":"gabarito inequívoco + racional + fonte"},
+    {"kind":"banco-temi-interativo","session":"#turbo-temi","canonicalSection":"questoes","catalog":"questoes/data/hub_qbanks.js","destination":"questoes/data/","gate":"schema do banco + revisão + teste"},
+    {"kind":"desafio-temi-r3","session":"#tutor","canonicalSection":"10_DESAFIOS","catalog":"data/desafios.json","destination":"10_DESAFIOS/","gate":"Markdown fonte + builder + teste"},
+    {"kind":"estudo-microparticulado-interno","session":"#organizador-estudos","canonicalSection":"22_Microparticulas_Ativas_ACRA","catalog":"22_Microparticulas_Ativas_ACRA/module.manifest.json","destination":"estrutura privada local/Notion/Drive","gate":"P1 privado; SCALT, avaliação, progresso, cronograma e ciclos pessoais nunca seguem para GitHub ou site"},
+    {"kind":"microparticula-fechada-publica","session":"#estudo-microparticulado","canonicalSection":"23_Cosmos_NEXUS/blocks/08_estudo_microparticulado","catalog":"23_Cosmos_NEXUS/blocks/08_estudo_microparticulado/items.json","destination":"sessão pública do produto aprovado","gate":"MODULE_COMPLETED_BY_OWNER + extração de um único modelo limpo + 100% respondida e corrigida + autossuficiente + referências + P0 + sem SCALT, estado pessoal, monitor ou alça de recuperação"},
+    {"kind":"imagem-turbo-temi","session":"#imagens-turbo-temi","canonicalSection":"route-by-function","catalog":"23_Cosmos_NEXUS/data/atlas.json","destination":"Card Feed, ACRA ou atlas NEXUS","gate":"P0 + paciente + direitos + alt + dimensões + SHA-256 + revisão visual"},
+    {"kind":"produto-turbo-temi","session":"#produtos-turbo-temi","canonicalSection":"route-by-format","catalog":"23_Cosmos_NEXUS/data/product-catalog.json","destination":"Biblioteca IA, Ebooks, Questões, ACRA ou Radar conforme o contrato","gate":"manifesto + preview + auditoria tríplice + testes"},
+    {"kind":"referencia-cientifica","session":"#referencias-evidencias","canonicalSection":"01_UpDown_Hub","catalog":"23_Cosmos_NEXUS/blocks/11_referencias_evidencias/items.json","destination":"produto + UpDown + links de estudo","gate":"DOI/PMID/URL oficial + desenho + achado + limitação + data"},
+    {"kind":"auditoria-editorial","session":"#auditoria-publicacao","canonicalSection":"19_Integridade_Editorial","catalog":"23_Cosmos_NEXUS/blocks/12_auditoria_publicacao/items.json","destination":"ledger e relatório de gate","gate":"paciente + direitos + ciência + técnica + AUD###"},
+    {"kind":"produto-comercial","session":"#radar-diario","canonicalSection":"15_Radar_Cientifico","catalog":"15_Radar_Cientifico/data/radar.js","destination":"15_Radar_Cientifico/assets/products/","gate":"preço datado/volátil + sem afiliação + card e widescreen"},
+    {"kind":"novo-tipo","session":"#extensoes","canonicalSection":"23_Cosmos_NEXUS/blocks/90_extensoes","catalog":"23_Cosmos_NEXUS/blocks/90_extensoes/items.json","destination":"quarentena até contrato","gate":"schema + universo + TAG + privacidade + rota + testes"}
+  ],
+  "command": "NEXUS ACOPLAR: #sessao | fonte=<arquivo-ou-link> | tipo=<kind> | objetivo=<resultado>",
+  "publicationCommand": "PUBLICAR {TAF###-EXATO}",
+  "rules": [
+    "Um artefato tem uma fonte física canônica; outras sessões apontam por relação.",
+    "Catálogo derivado nunca é editado manualmente.",
+    "Projetos pessoais, jurídicos, financeiros, administrativos e de ecossistema tecnológico usam somente rotas privadas sob demanda.",
+    "A sincronização de rascunho não equivale a publicação.",
+    "Qualquer destino ambíguo ou gate ausente termina em QUARANTINED.",
+    "No projeto @ORGANIZACAODEESTUDO, SCALT, avaliações e acompanhamento permanecem privados; somente a micropartícula fechada 100% correta pode ser projetada ao site."
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "antigravity-cosmos-command-v1",
+  "version": "1.5.0",
+  "command": "NEXUS COSMOS",
+  "syntax": "NEXUS ACOPLAR: #bloco | fonte=<arquivo-ou-link> | objetivo=<resultado>",
+  "localIntakeCommand": "python3 scripts_admin/nexus_cosmos.py intake --source <arquivo> --block <bloco>",
+  "projectCommand": "NEXUS PROJETO: dominio=<dominio> | raiz=<pasta> | janela=<data-ou-intervalo> | modo=sincronizar-rascunho",
+  "defaultAction": "sincronizar-rascunho",
+  "defaultDestination": "local+notion+drive+github-draft",
+  "publicationCommand": "PUBLICAR {TAF###-EXATO}",
+  "publicationRule": "Somente o comando final do proprietário, contendo o TAF### exato do lote homologado e tombado, libera main e GitHub Pages.",
+  "aliases": ["#evolucao", "#plano-terapeutico", "#motor-visual", "#organizador-estudos", "#turbo-temi", "#refinaria-temi", "#tutor", "#estudo-microparticulado", "#imagens-turbo-temi", "#produtos-turbo-temi", "#referencias-evidencias", "#auditoria-publicacao"],
+  "pipeline": [
+    "inventariar fonte",
+    "classificar privacidade",
+    "aplicar gates de paciente, direitos, ciência e integridade técnica",
+    "normalizar item pelo schema",
+    "topografar ###TAGs",
+    "propor arestas",
+    "renderizar produto",
+    "validar QR0–QR8",
+    "emitir AUD### para a segunda checagem concluída",
+    "gerar plano de sincronização",
+    "sincronizar automaticamente Notion, Drive e branch GitHub de rascunho",
+    "emitir PRC### para cada procedimento",
+    "emitir HOM### na homologação aprovada",
+    "emitir TOM### e TAF### no tombamento final",
+    "registrar checkpoint e próxima ação"
+  ],
+  "modes": {
+    "preparar": "Renderiza e valida localmente sem publicação.",
+    "sincronizar-rascunho": "Modo padrão: atualiza Notion, Drive e branch/PR rascunho do GitHub por chave idempotente; nunca publica o site.",
+    "homologar": "Executa testes e revisão humana registrada; emite HOM### somente sem bloqueadores.",
+    "tombar": "Congela o manifesto de hashes; emite TOM### e o TAF### final.",
+    "publicar": "Aceita apenas PUBLICAR {TAF###-EXATO}; revalida o lote e então permite main/Pages."
+  },
+  "projectProfiles": {
+    "@TURBOTEMI": "produto P0 auditado pode integrar branch/PR rascunho",
+    "#EVOLUCOES": "caso real privado; site recebe somente método/caso sintético generalizado",
+    "#PLANOTERAPEUTICO": "plano individual privado; site recebe somente guia educacional generalizado",
+    "@ORGANIZACAODEESTUDO": "SCALT, avaliações e qualquer módulo em andamento são privados; após conclusão integral explicitamente confirmada pelo proprietário, o sistema extrai um único modelo limpo de micropartícula fechada 100% correta, sem monitor ou alça de recuperação. Exceção exclusiva: imagens geradas recebem ####IMG e podem seguir pela área paralela sem esperar a conclusão do módulo."
+  },
+  "examples": [
+    "NEXUS ACOPLAR: #evolucao | fonte=caso-sintetico.json | objetivo=Radar 10 s + Render 23X",
+    "NEXUS ACOPLAR: #motor-visual | fonte=tema-validado.md | objetivo=imagem Turbo TEMI",
+    "NEXUS ACOPLAR: #turbo-temi | fonte=fonte-canonica.md | objetivo=questão N1–N5 + ACRA",
+    "NEXUS ACOPLAR: #estudo-microparticulado | fonte=tema-validado.md | objetivo=bloco M0–M9 fechado + respostas corrigidas + referências",
+    "NEXUS PROJETO: dominio=personal | raiz=<pasta> | janela=2026-08-01 | modo=sincronizar-rascunho",
+    "PUBLICAR TAF###-MUX-TEMI-20260731-0001-A1B2C3D4"
+  ]
+}

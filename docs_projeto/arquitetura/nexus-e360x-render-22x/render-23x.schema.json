@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aldenirmed.chatgpt.site/schemas/nexus/render-23x/2.1.0",
+  "title": "NEXUS U3 Clinical Render 23X",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_ir_id", "render_id", "screens", "modules", "quality_gates", "tag_depot"],
+  "properties": {
+    "case_ir_id": {"type": "string"},
+    "render_id": {"type": "string"},
+    "screens": {
+      "type": "object",
+      "required": ["radar_10s", "case_60s", "full_23", "active_learning"],
+      "properties": {
+        "radar_10s": {"type": "object"},
+        "case_60s": {"type": "object"},
+        "full_23": {"type": "object"},
+        "active_learning": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "modules": {
+      "type": "array",
+      "minItems": 23,
+      "maxItems": 23,
+      "items": {
+        "type": "object",
+        "required": ["number", "title", "status", "evidence_ids"],
+        "properties": {
+          "number": {"type": "integer", "minimum": 1, "maximum": 23},
+          "title": {"type": "string"},
+          "status": {"enum": ["complete", "partial", "missing", "not_applicable"]},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}},
+          "component": {
+            "enum": ["text", "timeline", "trend", "matrix", "diagram", "algorithm", "checklist", "alert", "image", "graph"]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "quality_gates": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {
+        "type": "object",
+        "required": ["gate", "status"],
+        "properties": {
+          "gate": {"pattern": "^QR[0-8]$"},
+          "status": {"enum": ["pass", "fail", "blocked", "needs_review"]},
+          "note": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "tag_depot": {
+      "type": "object",
+      "required": ["top5", "nucleares", "mecanismos", "arsenal", "contexto", "didaticas", "apoio", "candidatas", "rejeitadas"],
+      "properties": {
+        "top5": {"type": "array", "minItems": 1, "maxItems": 5, "items": {"$ref": "#/$defs/tag"}},
+        "nucleares": {"type": "array", "items": {"$ref": "#/$defs/tag"}},
+        "mecanismos": {"type": "array", "items": {"$ref": "#/$defs/tag"}},
+        "arsenal": {"type": "array", "items": {"$ref": "#/$defs/tag"}},
+        "contexto": {"type": "array", "items": {"$ref": "#/$defs/tag"}},
+        "didaticas": {"type": "array", "items": {"$ref": "#/$defs/tag"}},
+        "apoio": {"type": "array", "items": {"$ref": "#/$defs/tag"}},
+        "candidatas": {"type": "array", "items": {"$ref": "#/$defs/tag"}},
+        "rejeitadas": {"type": "array", "items": {"$ref": "#/$defs/tag"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "tag": {
+      "type": "object",
+      "required": ["tag_uid", "label", "type", "maturity", "evidence_ids", "universes", "privacy"],
+      "properties": {
+        "tag_uid": {"type": "string"},
+        "label": {"type": "string", "pattern": "^#[A-Za-z0-9_]+$"},
+        "type": {"type": "string"},
+        "maturity": {"enum": ["tombstoned", "candidate", "rejected"]},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}},
+        "universes": {"type": "array", "items": {"enum": ["U1", "U2", "U3"]}},
+        "privacy": {"enum": ["P0", "P1", "P2", "P3"]}
+      },
+      "additionalProperties": true
+    }
+  }
+}
+

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "antigravity-cosmos-entity-code-v1",
+  "version": "1.2.0",
+  "updatedAt": "2026-08-01",
+  "purpose": "Garantir identidade única, deduplicação e rastreabilidade sem expor identidade clínica.",
+  "entities": [
+    {"entity":"project","prefix":"####PRJ","pattern":"####PRJ-{DOMAIN}-{HASH10}","identity":"SHA-256 do domínio + identificador semântico privado; título e path nunca entram no catálogo público","catalog":"registro privado de projetos"},
+    {"entity":"source","prefix":"####SRC","pattern":"####SRC-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256 dos bytes + tipo + timestamp da fonte","catalog":"privado ou P0 conforme classificação"},
+    {"entity":"patient","prefix":"####PAT","pattern":"####PAT-{RANDOM16}","identity":"identificador aleatório criptograficamente seguro; vínculo real somente em cofre privado","catalog":"NUNCA no GitHub, site ou catálogo público"},
+    {"entity":"case","prefix":"####CASE","pattern":"####CASE-{SYN|PRV}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"HMAC privado para caso real; SHA-256 permitido somente para caso sintético","catalog":"público apenas quando SYN"},
+    {"entity":"tag","prefix":"####TAG","pattern":"####TAG-{NAMESPACE}-{HASH10}","identity":"SHA-256 do rótulo canônico NFC + namespace + versão","catalog":"data/tag-catalog.json para TAGs P0"},
+    {"entity":"image","prefix":"####IMG","pattern":"####IMG-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256 dos bytes efetivamente servidos","catalog":"data/atlas.json para imagens P0"},
+    {"entity":"word-document","prefix":"####DOC","pattern":"####DOC-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256 dos bytes DOCX materializados","catalog":"Biblioteca IA + registro Notion"},
+    {"entity":"pdf-document","prefix":"####PDF","pattern":"####PDF-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256 dos bytes PDF materializados","catalog":"Biblioteca IA + registro Notion"},
+    {"entity":"educational-product","prefix":"####AGX","pattern":"####AGX-{UNIVERSE}-{BLOCK}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"product_uid do contrato de produto","catalog":"data/product-catalog.json"},
+    {"entity":"session","prefix":"####SES","pattern":"####SES-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256 do objetivo + janela + conjunto de produtos","catalog":"checkpoint da sessão"},
+    {"entity":"edge","prefix":"####EDG","pattern":"####EDG-{HASH12}","identity":"SHA-256(from|relation|to|qualifier)","catalog":"grafo correspondente"},
+    {"entity":"reference","prefix":"####REF","pattern":"####REF-{HASH12}","identity":"SHA-256 do identificador persistente canônico (DOI/PMID/URL oficial)","catalog":"produto e índice de referências"},
+    {"entity":"procedure","prefix":"PRC###","pattern":"PRC###-{ACTION}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256(action|subject|input_hash|output_hash|timestamp)","catalog":"data/execution-ledger.json"},
+    {"entity":"audit","prefix":"AUD###","pattern":"AUD###-{SCOPE}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256 do artefato + resultados dos três pilares + revisão técnica","catalog":"ledger público somente para auditorias P0; detalhes sensíveis permanecem privados"},
+    {"entity":"homologation","prefix":"HOM###","pattern":"HOM###-{SCOPE}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256(scope|test_report_hash|reviewer|reviewed_at)","catalog":"data/execution-ledger.json"},
+    {"entity":"tombstone","prefix":"TOM###","pattern":"TOM###-{SCOPE}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256 do manifesto imutável de membros e hashes","catalog":"data/tombstone-manifest.json"},
+    {"entity":"final-product","prefix":"TAF###","pattern":"TAF###-{UNIVERSE}-{BLOCK}-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256(product_code|audit_code|homologation_code|tombstone_code|artifact_root_hash)","catalog":"data/product-catalog.json"},
+    {"entity":"publication-event","prefix":"PUB###","pattern":"PUB###-{YYYYMMDD}-{SEQ4}-{HASH8}","identity":"SHA-256(TAF_code|owner_command|commit_sha|deploy_run)","catalog":"data/execution-ledger.json"}
+  ],
+  "globalRules": [
+    "Um código identifica uma entidade e nunca é reciclado.",
+    "Mudança de versão não muda o código raiz; derivado independente recebe código próprio e parentCode.",
+    "Hash exibido é sempre calculado sobre o objeto/arquivo realmente servido, nunca sobre um original diferente.",
+    "Código de paciente não incorpora nome, iniciais, nascimento, prontuário, instituição ou outro dado previsível.",
+    "Mapeamento paciente↔identidade real usa HMAC/segredo fora do repositório e fora do site.",
+    "Catálogos públicos aceitam apenas P0; qualquer P1–P3 bloqueia a anexação ao site.",
+    "Toda imagem gerada nos projetos editoriais autorizados é uma entidade-produto própria: recebe ####IMG derivado do SHA-256 dos bytes servidos e mantém vínculo com seu ####AGX pai."
+  ]
+}

@@ -281,11 +281,11 @@ def check_home_manifest():
             log_err(f"{title}: {href} → NÃO EXISTE")
 
 
-# ── Checagem 7: Consistência entre raiz e public_site ────────────────────
+# ── Checagem 7: Isolamento do espelho legado public_site ────────────────
 
 
 def check_public_site_consistency():
-    print("\n🔄 7. Consistência raiz vs public_site")
+    print("\n🧊 7. Isolamento raiz canônica vs public_site legado")
     print("─" * 60)
 
     # Comparar site_manifest
@@ -303,26 +303,28 @@ def check_public_site_consistency():
     pub_version = pub_data.get("version", "?")
 
     if root_version == pub_version:
-        log_ok(f"site_manifest versão consistente: {root_version}")
+        log_warn(
+            "site_manifest legado ainda coincide com a raiz; public_site não é fonte canônica"
+        )
     else:
-        log_err(
-            f"site_manifest versão diverge: raiz={root_version} vs public={pub_version}"
+        log_ok(
+            f"versões separadas como esperado: raiz={root_version} vs legado={pub_version}"
         )
 
     root_routes = root_data.get("canonicalRoutes", {})
     pub_routes = pub_data.get("canonicalRoutes", {})
 
     if root_routes == pub_routes:
-        log_ok("canonicalRoutes idênticas entre raiz e public_site")
+        log_warn("canonicalRoutes ainda idênticas; o espelho legado permanece excluído do build")
     else:
-        log_err("canonicalRoutes DIVERGEM entre raiz e public_site")
+        log_ok("canonicalRoutes da raiz evoluem sem reescrever o espelho legado")
         # Mostrar diferenças
         all_keys = set(root_routes.keys()) | set(pub_routes.keys())
         for k in sorted(all_keys):
             rv = root_routes.get(k, "(ausente)")
             pv = pub_routes.get(k, "(ausente)")
             if rv != pv:
-                log_err(f"  {k}: raiz={rv} vs public={pv}")
+                log_warn(f"  legado congelado · {k}: raiz={rv} vs legado={pv}")
 
 
 # ── Checagem 8: dataSources existem ──────────────────────────────────────

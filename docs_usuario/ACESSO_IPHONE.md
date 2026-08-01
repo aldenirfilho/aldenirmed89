@@ -31,6 +31,50 @@ No iPhone, abra o **Safari** e acesse:
 ✅ O ícone aparecerá na Tela de Início. Ao tocá-lo, o site abrirá como app da
 web.
 
+## 🔄 Widget nativo “Radar Diário”
+
+O repositório também contém uma **extensão WidgetKit nativa**, separada do
+atalho web. Ela mostra até três itens da edição atual do Radar, alterna o foco
+a cada 20 minutos, solicita atualização a cada 60 minutos e abre diretamente o
+item correspondente no site.
+
+### O que já está pronto
+
+- app-contêiner SwiftUI e extensão WidgetKit;
+- tamanhos pequeno, médio e grande;
+- feed público sincronizado com a Estação Radar;
+- cache compartilhado e fallback offline;
+- sem conta, telemetria, credenciais ou dados de pacientes.
+
+### O que você precisa fazer no Mac com Xcode
+
+1. Instale ou abra o **Xcode completo** pela App Store.
+2. Baixe ou sincronize a pasta oficial do projeto pelo iCloud/GitHub.
+3. Abra
+   `ios/AntigravityRadar/AntigravityRadar.xcodeproj`.
+4. Na lateral do Xcode, selecione o projeto **AntigravityRadar**.
+5. Abra **Signing & Capabilities** no target **AntigravityRadar**.
+6. Em **Team**, selecione sua equipe Apple.
+7. Confirme o bundle ID `com.aldenirfilho.antigravity.radar`.
+8. Adicione **App Groups** e marque
+   `group.com.aldenirfilho.antigravity.radar`.
+9. Repita as etapas 5–8 no target **RadarDiarioWidget**, com o bundle ID
+   `com.aldenirfilho.antigravity.radar.widget` e o mesmo App Group.
+10. Conecte e desbloqueie o iPhone, autorize o Mac e selecione o aparelho como
+    destino.
+11. Execute o scheme **AntigravityRadar** uma vez.
+12. No iPhone, mantenha a Tela de Início pressionada → **Editar** →
+    **Adicionar Widget** → procure **Radar Diário**.
+13. Teste os três tamanhos e toque em cada item para confirmar o deep link.
+
+> A assinatura e a instalação física não podem ser concluídas automaticamente
+> sem sua equipe Apple e um iPhone conectado. O projeto está
+> `source-ready-signing-pending`: pronto em código, ainda não declarado como
+> instalado ou homologado.
+
+Código e instruções técnicas:
+<https://github.com/aldenirfilho/antigravity-consultas/tree/main/ios/AntigravityRadar>
+
 ### Se a opção não aparecer
 
 1. Role até o final da lista de compartilhamento.

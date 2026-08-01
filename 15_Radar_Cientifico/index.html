@@ -321,6 +321,7 @@
       <div class="nav-links">
         <a class="nav-link optional" href="../16_Diretorio_Medico/index.html">🧭 Estação Diretório</a>
         <a class="nav-link optional" href="../17_Portal_Vivo/index.html">🛰️ Portal Vivo</a>
+        <a class="nav-link optional" href="../docs_usuario/ACESSO_IPHONE/">📲 Widget iPhone</a>
         <a class="nav-link optional" href="#spotify">🎧 Spotify</a>
         <button class="nav-link" id="clarityToggle" type="button" aria-label="Ativar visualização clara" aria-pressed="false">☀️ Claro</button>
         <a class="nav-link" href="../index.html">← Central</a>
@@ -722,7 +723,8 @@
       const sectionLabels={scientific:"Ciência clínica",context:"Saúde e sistemas",commercial:"Produtividade & compras"};
       const questionLabel=item.section==="commercial"?"Decisão de compra":"Pergunta clínica";
       const resultLabel=item.section==="commercial"?"O que foi verificado":"Achado principal";
-      return `<article class="story ${visual?`with-visual visual-${state.visualMode}`:""}" data-item-id="${esc(item.id)}" data-section="${esc(item.section)}">
+      const storyAnchor=`radar-${String(item.id).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}`;
+      return `<article id="${esc(storyAnchor)}" class="story ${visual?`with-visual visual-${state.visualMode}`:""}" data-item-id="${esc(item.id)}" data-section="${esc(item.section)}">
         ${visualHTML(visual)}
         <div class="story-content">
           <div class="story-top">

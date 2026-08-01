@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "antigravity-cosmos-product-lifecycle-v1",
+  "version": "1.1.0",
+  "updatedAt": "2026-07-31",
+  "title": "Ciclo oficial de produto NEXUS Cosmos",
+  "rule": "O product_uid e o ####AGX nascem no rascunho; cada procedimento recebe PRC###; HOM### + TOM### geram o TAF### final; somente PUBLICAR {TAF###-EXATO} libera o site.",
+  "stages": [
+    {"order":1,"id":"raw","label":"Material bruto","icon":"📥","surface":"privada/autorizada","output":"fonte inventariada + SHA-256","gate":"identidade, direitos e privacidade"},
+    {"order":2,"id":"gpt-initial","label":"Renderização inicial GPT","icon":"✦","surface":"sessão de trabalho","output":"átomos + CASE-IR/brief inicial","gate":"fato, inferência, lacuna e sugestão separados"},
+    {"order":3,"id":"initial-product","label":"Produto inicial","icon":"🧩","surface":"estação local","output":"rascunho estruturado + ####code","gate":"schema + universos + bloco"},
+    {"order":4,"id":"notion","label":"Registro no Notion","icon":"◫","surface":"Notion privado","output":"nó semântico e estado editorial sincronizados","gate":"destino registrado + idempotência + privacidade"},
+    {"order":5,"id":"final-render","label":"Renderização final ilustrativa","icon":"🖼️","surface":"local + Drive privado","output":"imagem/tabela/gráfico/ACRA/produto + checksum","gate":"receita visual + direitos + acessibilidade"},
+    {"order":6,"id":"github-draft","label":"Sincronização GitHub rascunho","icon":"⌘","surface":"branch/PR rascunho","output":"código e contratos versionados","gate":"P0 + testes mínimos + nunca main"},
+    {"order":7,"id":"site-attach","label":"Anexação ao Antigravity","icon":"🧲","surface":"branch candidata","output":"rota e assets same-origin","gate":"P0, sintético/desidentificado, sem segredos"},
+    {"order":8,"id":"audit","label":"Auditoria","icon":"🛡️","surface":"CI + revisão humana","output":"QR0–QR8 + editorial + privacidade","gate":"zero bloqueador"},
+    {"order":9,"id":"graph-refine","label":"Refino das conexões","icon":"🕸️","surface":"grafo candidato","output":"arestas deduplicadas e justificadas","gate":"endpoints, evidência e relação válidos"},
+    {"order":10,"id":"topography","label":"Topografia e análise","icon":"#","surface":"Depósito TAG","output":"###TAGs + centralidade + órfãos + lacunas","gate":"universo, constelação, bloco, estado e privacidade"},
+    {"order":11,"id":"study-links","label":"Links sugeridos para estudo","icon":"🔭","surface":"produto e sessão","output":"links com motivo, estado e data de verificação","gate":"fonte confiável e link íntegro"},
+    {"order":12,"id":"references","label":"Referências principais","icon":"📚","surface":"produto canônico","output":"referências citadas e rastreáveis","gate":"fonte primária/autoridade preferida"},
+    {"order":13,"id":"site-connections","label":"Conexões internas do site","icon":"🔗","surface":"Mapa Vivo + sessão","output":"rotas bidirecionais e vizinhança focal","gate":"sem rota quebrada ou duplicação semântica"},
+    {"order":14,"id":"homologation","label":"Homologação","icon":"✅","surface":"testes + revisão humana","output":"HOM### + relatório assinado","gate":"escopo executado e zero bloqueador"},
+    {"order":15,"id":"tombstone","label":"Tombamento e aceite final","icon":"🪦","surface":"manifesto imutável","output":"TOM### + TAF###","gate":"mesmo ####AGX, AUD###, HOM### e root hash"},
+    {"order":16,"id":"owner-unlock","label":"Autorização final","icon":"🔑","surface":"sessão corrente","output":"PUBLICAR {TAF###-EXATO}","gate":"comando literal do proprietário"},
+    {"order":17,"id":"publish","label":"Publicação oficial","icon":"🚀","surface":"main + GitHub Pages","output":"PUB### + release pública + checkpoint","gate":"TAF### revalidado + guard + deploy concluído"}
+  ],
+  "failurePolicy": "Qualquer gate falho interrompe o ciclo, registra BLOQUEADO e preserva a última versão íntegra."
+}

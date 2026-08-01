@@ -18,13 +18,93 @@
 
 const RADAR_GENERATED_AT="2026-07-25T22:40:00-03:00";
 const EDITORIAL_DAY="2026-07-25";
-const CURRENT_RADAR_GENERATED_AT="2026-07-30T11:30:00-03:00";
-const CURRENT_EDITORIAL_DAY="2026-07-30";
+const RADAR_20260730_GENERATED_AT="2026-07-30T11:30:00-03:00";
+const EDITORIAL_DAY_20260730="2026-07-30";
+const CURRENT_RADAR_GENERATED_AT="2026-08-01T02:15:00-03:00";
+const CURRENT_EDITORIAL_DAY="2026-08-01";
 
 const currentScientific=[
   {
+    id:"doi:10.1001/jamanetworkopen.2026.26547",section:"scientific",priority:1,date:"2026-07-31",
+    sourcePublishedAt:"2026-07-31T12:00:00-03:00",editorialPublishedAt:"2026-08-01T02:14:00-03:00",checkedAt:CURRENT_RADAR_GENERATED_AT,
+    target:"radar-diario",destination:"Estação Radar Diário — conteúdo clínico/estudo do chat",
+    kind:"Coorte multicêntrica pré–pós",evidenceLevel:"Melhoria de qualidade multicêntrica observacional",access:"aberto",topic:"Stewardship diagnóstico",
+    title:"Menos culturas respiratórias na PICU, sem redução demonstrada de antibiótico",
+    source:"JAMA Network Open · PubMed",url:"https://doi.org/10.1001/jamanetworkopen.2026.26547",
+    summary:"Em 15 UTIs pediátricas, uma intervenção multidisciplinar com apoio à decisão reduziu em 16% a taxa mensal de culturas de aspirado endotraqueal, de 7,80 para 6,55 por 100 dias de ventilação. Início e dias de antibiótico permaneceram estáveis.",
+    why:"Mostra que stewardship diagnóstico pode reduzir coleta respiratória de baixo valor sem transformar toda secreção ou cultura em infecção associada à ventilação.",
+    caveat:"Estudo pediátrico, não randomizado e pré–pós; a redução de culturas não reduziu antibióticos e não demonstra benefício clínico causal.",
+    didactic:{
+      clinicalQuestion:"Apoio à decisão para aspirado endotraqueal reduz culturas e antibióticos em UTIs pediátricas?",
+      design:"Coorte multicêntrica pré–pós de melhoria de qualidade, com ajuste para sazonalidade, em 15 UTIs pediátricas.",
+      population:"Pacientes sob ventilação mecânica em UTIs pediátricas participantes da colaboração BrighT STAR entre 2019 e 2023.",
+      mainResult:"A taxa de culturas caiu 16% após a intervenção; início e dias de antibiótico não mudaram significativamente, assim como os desfechos de segurança avaliados.",
+      clinicalMeaning:"Reduzir exame de baixo valor é possível, mas menos coleta não garante automaticamente menor exposição antimicrobiana.",
+      practiceToday:"Antes de colher aspirado, explicite síndrome, qualidade da amostra, probabilidade pré-teste e como o resultado mudará a decisão; siga critérios e protocolo local.",
+      doNotInfer:"Não extrapolar para UTI adulta, não concluir que a estratégia reduz antibiótico e não usar ausência de cultura para excluir infecção.",
+      temiHook:"Stewardship começa antes do antibiótico: começa na pergunta e na amostra.",
+      memoryAnchor:"PERGUNTA → AMOSTRA → RESULTADO → DECISÃO",
+      caveats:["Desenho pré–pós sujeito a confundimento temporal.","População pediátrica e programas locais heterogêneos."]
+    },
+    turbo:{question:"Menos cultura significou menos antibiótico?",evidence:"Culturas caíram 16%; antibióticos ficaram estáveis.",practice:"Colha somente se o resultado puder mudar a decisão.",limits:"PICU e desenho pré–pós.",temi:"Colonização não é VAP.",memoryAnchor:"TESTAR COM PROPÓSITO"},
+    audit:{reviewStatus:"reviewed",editorialReviewer:"Codex",clinicalReviewer:"Proprietário",reviewedAt:"2026-08-01",reviewEvidence:"Revisão clínica confirmada pelo proprietário em 2026-08-01.",dataClass:"none",riskNotes:"Segunda checagem editorial concluída; síntese autoral, sem dados de paciente ou figura de terceiros; revisão clínica humana confirmada pelo proprietário em 2026-08-01."}
+  },
+  {
+    id:"doi:10.1038/s41598-026-63797-1",section:"scientific",priority:1,date:"2026-07-31",
+    sourcePublishedAt:"2026-07-31T12:00:00-03:00",editorialPublishedAt:"2026-08-01T02:13:00-03:00",checkedAt:CURRENT_RADAR_GENERATED_AT,
+    target:"radar-diario",destination:"Estação Radar Diário — conteúdo clínico/estudo do chat",
+    kind:"Estudo prospectivo observacional",evidenceLevel:"Coorte prospectiva unicêntrica de desempenho prognóstico",access:"aberto",topic:"Ventilação não invasiva",
+    title:"HACOR após retirada da VNI sinalizou falha, mas ainda não valida um protocolo",
+    source:"Scientific Reports · PubMed",url:"https://doi.org/10.1038/s41598-026-63797-1",
+    summary:"Entre 150 adultos avaliados após mais de 24 horas de VNI, 99 tiveram retirada bem-sucedida e 51 falharam. O HACOR medido uma hora após a retirada apresentou AUC de 0,816; idade, albumina, APACHE II e ventilação invasiva prévia também se associaram ao desfecho.",
+    why:"Reforça que a retirada da VNI exige observação estruturada da trajetória clínica e não apenas uma fotografia da gasometria.",
+    caveat:"Centro único, etiologias heterogêneas, ponto de corte derivado na mesma amostra e sem validação externa; o estudo não testou uma intervenção nem desfechos de longo prazo.",
+    didactic:{
+      clinicalQuestion:"O HACOR medido uma hora após retirar a VNI identifica pacientes com maior risco de falha?",
+      design:"Estudo prospectivo observacional, transversal, de centro único, com regressão multivariada e curva ROC.",
+      population:"150 adultos com insuficiência respiratória aguda, VNI por mais de 24 horas e critérios locais de prontidão para retirada.",
+      mainResult:"Houve 51 falhas em 48 horas; HACOR apresentou AUC 0,816, sensibilidade 69,7% e especificidade 74,5% no ponto de corte derivado localmente.",
+      clinicalMeaning:"Um escore pode organizar a vigilância após retirada, mas desempenho moderado não transforma o resultado em decisão automática.",
+      practiceToday:"Após retirar VNI, reavalie esforço, frequência, consciência, oxigenação, pH, hemodinâmica e trajetória; defina previamente critérios de reintervenção e escalada.",
+      doNotInfer:"Não usar o ponto de corte local como regra universal, não atrasar intubação em falha clínica e não extrapolar para populações não estudadas.",
+      temiHook:"Escore complementa a avaliação; trajetória e sinais de falha comandam a escalada.",
+      memoryAnchor:"1 HORA SEM VNI: ESFORÇO + TROCA + TRAJETÓRIA",
+      caveats:["Amostra de um único centro e sem validação externa.","HACOR foi medido depois da retirada e o cutoff nasceu na própria coorte."]
+    },
+    turbo:{question:"HACOR sozinho decide reintubação?",evidence:"AUC 0,816 em 150 pacientes.",practice:"Use como parte da reavaliação pós-retirada.",limits:"Unicêntrico e sem validação externa.",temi:"Escore não substitui falha clínica.",memoryAnchor:"TRAJETÓRIA > CUTOFF"},
+    audit:{reviewStatus:"reviewed",editorialReviewer:"Codex",clinicalReviewer:"Proprietário",reviewedAt:"2026-08-01",reviewEvidence:"Revisão clínica confirmada pelo proprietário em 2026-08-01.",dataClass:"none",riskNotes:"Segunda checagem editorial concluída; síntese autoral baseada na fonte primária aberta; nenhuma figura reutilizada; revisão clínica humana confirmada pelo proprietário em 2026-08-01."}
+  },
+  {
+    id:"doi:10.1111/1742-6723.70318",section:"scientific",priority:1,date:"2026-07-31",
+    sourcePublishedAt:"2026-07-31T12:00:00-03:00",editorialPublishedAt:"2026-08-01T02:12:00-03:00",checkedAt:CURRENT_RADAR_GENERATED_AT,
+    target:"radar-diario",destination:"Estação Radar Diário — conteúdo clínico/estudo do chat",
+    kind:"Coorte retrospectiva multicêntrica",evidenceLevel:"Associação observacional em quatro hospitais",access:"semiaberto",topic:"Segurança antimicrobiana",
+    title:"DRC marcou maior risco de LRA após dose única de aminoglicosídeo no PS",
+    source:"Emergency Medicine Australasia · PubMed",url:"https://doi.org/10.1111/1742-6723.70318",
+    summary:"Em 660 adultos que receberam uma dose de aminoglicosídeo no pronto-socorro, LRA em uma semana ocorreu em 30,9% dos pacientes com DRC e 13,4% dos sem DRC. A associação ajustada entre DRC e LRA foi OR 2,88.",
+    why:"Torna visível a vulnerabilidade renal antes de uma exposição empírica e favorece decisão proporcional, monitorização e revisão precoce da necessidade antimicrobiana.",
+    caveat:"Não houve grupo comparável sem aminoglicosídeo; pacientes com DRC eram mais idosos e tinham mais comorbidades. O estudo não prova que a dose única causou a LRA nem que outra estratégia seria superior.",
+    didactic:{
+      clinicalQuestion:"Pacientes com DRC apresentam mais LRA após uma dose empírica de aminoglicosídeo no pronto-socorro?",
+      design:"Coorte retrospectiva em quatro hospitais australianos, comparando pacientes expostos com e sem DRC.",
+      population:"660 adultos hospitalizados após receber gentamicina, tobramicina ou amicacina em dose única no pronto-socorro.",
+      mainResult:"LRA em uma semana foi mais frequente com DRC; a associação ajustada foi OR 2,88, sem diferença estatística demonstrada em mortalidade ou admissão em UTI.",
+      clinicalMeaning:"DRC identifica uma população de maior risco renal, mas a diferença entre grupos não isola o efeito causal do fármaco.",
+      practiceToday:"Antes da exposição, confirme síndrome, indicação, função renal, alternativas, microbiologia e plano de monitorização; adapte qualquer escolha ao protocolo local e à equipe assistente.",
+      doNotInfer:"Não considerar uma dose universalmente contraindicada na DRC, não atribuir toda LRA ao aminoglicosídeo e não trocar terapia apenas por esta associação.",
+      temiHook:"Risco basal, necessidade, exposição e monitorização são perguntas distintas.",
+      memoryAnchor:"DRC + EXPOSIÇÃO = VIGILÂNCIA, NÃO CAUSALIDADE",
+      caveats:["Coorte retrospectiva sem controle não exposto.","Diferenças basais e seleção da amostra permitem confundimento residual."]
+    },
+    turbo:{question:"A dose única causou LRA?",evidence:"DRC: 30,9% vs 13,4%; OR ajustada 2,88.",practice:"Pese necessidade, risco renal e monitorização.",limits:"Sem grupo não exposto e sem causalidade.",temi:"Associação não prescreve.",memoryAnchor:"RISCO BASAL PRIMEIRO"},
+    audit:{reviewStatus:"reviewed",editorialReviewer:"Codex",clinicalReviewer:"Proprietário",reviewedAt:"2026-08-01",reviewEvidence:"Revisão clínica confirmada pelo proprietário em 2026-08-01.",dataClass:"none",riskNotes:"Segunda checagem editorial concluída; fonte Wiley citada sem reprodução de texto, tabela ou imagem; revisão clínica humana confirmada pelo proprietário em 2026-08-01."}
+  }
+];
+
+const scientific20260730=[
+  {
     id:"doi:10.1007/s00134-026-08361-1",section:"scientific",priority:1,date:"2026-03-23",
-    sourcePublishedAt:"2026-03-23T09:00:00-03:00",editorialPublishedAt:"2026-07-30T11:29:00-03:00",checkedAt:CURRENT_RADAR_GENERATED_AT,
+    sourcePublishedAt:"2026-03-23T09:00:00-03:00",editorialPublishedAt:"2026-07-30T11:29:00-03:00",checkedAt:RADAR_20260730_GENERATED_AT,
     target:"radar-diario",destination:"Estação Radar Diário — conteúdo clínico/estudo do chat",
     kind:"Diretriz internacional",evidenceLevel:"Diretriz multidisciplinar com GRADE",access:"aberto",topic:"Sepse",
     title:"Surviving Sepsis Campaign 2026: 129 declarações e mais stewardship",
@@ -49,7 +129,7 @@ const currentScientific=[
   },
   {
     id:"doi:10.1093/cid/ciae403",section:"scientific",priority:1,date:"2024-08-07",
-    sourcePublishedAt:"2024-08-07T09:00:00-03:00",editorialPublishedAt:"2026-07-30T11:28:00-03:00",checkedAt:CURRENT_RADAR_GENERATED_AT,
+    sourcePublishedAt:"2024-08-07T09:00:00-03:00",editorialPublishedAt:"2026-07-30T11:28:00-03:00",checkedAt:RADAR_20260730_GENERATED_AT,
     target:"radar-diario",destination:"Estação Radar Diário — conteúdo clínico/estudo do chat",
     kind:"Guidance de sociedade",evidenceLevel:"Síntese de evidências e opinião especializada",access:"aberto",topic:"Resistência antimicrobiana",
     title:"IDSA: Gram-negativo resistente exige mecanismo, sítio e síndrome",
@@ -74,7 +154,7 @@ const currentScientific=[
   },
   {
     id:"pmid:41841715",section:"scientific",priority:1,date:"2026-03-17",
-    sourcePublishedAt:"2026-03-17T09:00:00-03:00",editorialPublishedAt:"2026-07-30T11:27:00-03:00",checkedAt:CURRENT_RADAR_GENERATED_AT,
+    sourcePublishedAt:"2026-03-17T09:00:00-03:00",editorialPublishedAt:"2026-07-30T11:27:00-03:00",checkedAt:RADAR_20260730_GENERATED_AT,
     target:"radar-diario",destination:"Estação Radar Diário — conteúdo clínico/estudo do chat",
     kind:"Ensaio clínico randomizado",evidenceLevel:"ECR multicêntrico aberto",access:"aberto",topic:"Pneumologia crítica",
     title:"SOHO: alto fluxo não reduziu mortalidade, mas reduziu modestamente intubação",
@@ -101,6 +181,7 @@ const currentScientific=[
 
 const scientific=[
   ...currentScientific,
+  ...scientific20260730,
   {
     id:"pmid:42469838",section:"scientific",priority:1,date:"2026-07-17",
     sourcePublishedAt:"2026-07-17T12:00:00-03:00",editorialPublishedAt:"2026-07-25T22:39:00-03:00",checkedAt:RADAR_GENERATED_AT,
@@ -681,7 +762,7 @@ const spotify=[
 
 window.ANTIGRAVITY_RADAR={
   schemaVersion:"radar-v2",
-  editionId:"2026-07-30",
+  editionId:"2026-08-01",
   editionDate:CURRENT_EDITORIAL_DAY,
   generatedAt:CURRENT_RADAR_GENERATED_AT,
   updatedAt:CURRENT_RADAR_GENERATED_AT,
@@ -691,22 +772,29 @@ window.ANTIGRAVITY_RADAR={
   editorialNote:"Prioridade combina gravidade, aplicabilidade em UTI/Clínica, recência e qualidade da fonte. Ciência, contexto e comércio permanecem separados. Conteúdo comercial não é afiliado, não promete resultado e exige conferência de preço, vendedor, garantia e necessidade real.",
   commercialPolicy:"Sem links afiliados. Preço é snapshot, nunca promessa. Produto só entra com problema de uso, especificações conferíveis, limite, segurança e alternativa de não comprar.",
   priorities:[
-    "Sepse 2026: trate a primeira hora como início de ciclos de reavaliação — estabilização, foco, microbiologia e stewardship.",
-    "Resistência: cultura não é sinônimo de infecção; mecanismo, sítio e controle do foco vêm antes da escalada automática.",
-    "Hipoxemia: alto fluxo pode reduzir modestamente intubação em pacientes selecionados, mas esforço e trajetória definem falha."
+    "Stewardship diagnóstico: menos culturas respiratórias não significou menos antibiótico; teste precisa começar por uma pergunta clínica.",
+    "VNI: HACOR após retirada pode organizar vigilância, mas trajetória clínica vale mais que um cutoff derivado em centro único.",
+    "Segurança renal: DRC marcou maior risco de LRA após dose única de aminoglicosídeo, sem demonstrar causalidade do fármaco."
   ],
   editions:[
     {
-      id:"2026-07-30",date:CURRENT_EDITORIAL_DAY,label:"Edição de 30 de julho de 2026",
+      id:"2026-08-01",date:CURRENT_EDITORIAL_DAY,label:"Edição de 1º de agosto de 2026",
       generatedAt:CURRENT_RADAR_GENERATED_AT,lastUpdatedAt:CURRENT_RADAR_GENERATED_AT,
       itemIds:currentScientific.map(item=>item.id),
       visualIds:[],visualPairCount:0,visualAssetCount:0,
       commercialIds:[],productVisualIds:[],productVisualPairCount:0,productVisualAssetCount:0
     },
     {
+      id:"2026-07-30",date:EDITORIAL_DAY_20260730,label:"Edição de 30 de julho de 2026",
+      generatedAt:RADAR_20260730_GENERATED_AT,lastUpdatedAt:RADAR_20260730_GENERATED_AT,
+      itemIds:scientific20260730.map(item=>item.id),
+      visualIds:[],visualPairCount:0,visualAssetCount:0,
+      commercialIds:[],productVisualIds:[],productVisualPairCount:0,productVisualAssetCount:0
+    },
+    {
       id:"2026-07-25",date:EDITORIAL_DAY,label:"Edição de 25 de julho de 2026",
       generatedAt:RADAR_GENERATED_AT,lastUpdatedAt:RADAR_GENERATED_AT,
-      itemIds:[...scientific.filter(item=>!currentScientific.some(current=>current.id===item.id)),...geopolitics,...commercial].map(item=>item.id),
+      itemIds:[...scientific.filter(item=>!currentScientific.some(current=>current.id===item.id)&&!scientific20260730.some(previous=>previous.id===item.id)),...geopolitics,...commercial].map(item=>item.id),
       visualIds:visuals.map(item=>item.id),visualPairCount:10,visualAssetCount:20,
       commercialIds:commercial.map(item=>item.id),
       productVisualIds:productVisuals.map(item=>item.id),productVisualPairCount:3,productVisualAssetCount:6
