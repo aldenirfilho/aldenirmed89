@@ -19,7 +19,7 @@ EXPECTED_MODULE_ENTRYPOINTS = {
     "08_Transcricoes/index.html",
     "09_POCUS_Hub/index.html",
     "22_Microparticulas_Ativas_ACRA/index.html",
-    "23_Cosmos_NEXUS/products/maquina-turbo-temi-360x/index.html",
+    "01_Modulos_Clinicos/Dermatologia_Critica/index.html",
     "13_RenalDose_Antimicrobianos/index.html",
     "14_SAPS3_Calculator/index.html",
     "01_Modulos_Clinicos/Hematologia_Critica/index.html",

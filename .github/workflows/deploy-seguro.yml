@@ -130,6 +130,11 @@ jobs:
           test -s site/assets/icons/ios/apple-touch-icon-1024.png
           test -s site/01_Modulos_Clinicos/Hematologia_Critica/index.html
           test -s site/01_Modulos_Clinicos/Reumatologia_Critica/index.html
+          test -s site/01_Modulos_Clinicos/Dermatologia_Critica/index.html
+          test -s site/01_Modulos_Clinicos/Dermatologia_Critica/assets/styles.css
+          test -s site/01_Modulos_Clinicos/Dermatologia_Critica/assets/app.js
+          test -s site/01_Modulos_Clinicos/Dermatologia_Critica/data/catalog.js
+          test ! -e site/01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json
           test -s site/01_Modulos_Clinicos/Delirium_UTI/index.html
           test -s site/01_Modulos_Clinicos/Delirium_UTI/CHECKLIST_OPERACIONAL.md
           test -s site/15_Radar_Cientifico/index.html
@@ -213,13 +218,7 @@ jobs:
           unzip -t site/downloads/Antigravity-Consultas-Windows.zip
           unzip -t site/downloads/Antigravity-Consultas-iPhone-Icones.zip
           (cd site/downloads && sha256sum -c SHA256SUMS.txt)
-          test -s site/23_Cosmos_NEXUS/products/maquina-turbo-temi-360x/index.html
-          test -s site/23_Cosmos_NEXUS/products/maquina-turbo-temi-360x/product.manifest.json
-          test -s site/23_Cosmos_NEXUS/products/maquina-turbo-temi-360x/release/release.json
-          test ! -e site/23_Cosmos_NEXUS/index.html
-          test ! -e site/23_Cosmos_NEXUS/data/atlas.json
-          test ! -e site/23_Cosmos_NEXUS/products/biblioteca-visual-cosmica
-          python3 scripts_admin/verify_unit_publication.py --public-root site
+          test ! -e site/23_Cosmos_NEXUS
 
       - name: Upload Pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

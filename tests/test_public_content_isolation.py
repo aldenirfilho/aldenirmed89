@@ -12,10 +12,14 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXCLUDED = {
+SOURCE_ONLY_EXCLUDED = {
+    "01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json",
+}
+ABSENT_INTERNAL = {
     "01_UpDown_Hub/content/reumatologia/les-manifestacoes/metadata.json",
     "05_Midia_E_Feed/data/recovery_manifest.json",
 }
+EXCLUDED = SOURCE_ONLY_EXCLUDED | ABSENT_INTERNAL
 
 
 def load_builder():
@@ -33,7 +37,7 @@ class PublicContentIsolationTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.builder = load_builder()
 
-    def test_builder_excludes_exactly_two_non_homologated_files(self) -> None:
+    def test_builder_excludes_all_explicitly_protected_files(self) -> None:
         self.assertEqual(set(self.builder.PUBLIC_BUILD_EXCLUSIONS), EXCLUDED)
 
     def test_copy_preserves_sources_and_adjacent_public_files(self) -> None:
@@ -41,6 +45,8 @@ class PublicContentIsolationTests(unittest.TestCase):
             root = Path(directory)
             site = root / "site"
             fixtures = {
+                "01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json":
+                    '{"status":"published","visibility":"source-only"}',
                 "01_UpDown_Hub/content/reumatologia/les-manifestacoes/metadata.json":
                     '{"state":"review"}',
                 "01_UpDown_Hub/content/reumatologia/les-manifestacoes/reader/metadata.json":
@@ -55,7 +61,11 @@ class PublicContentIsolationTests(unittest.TestCase):
                 source.parent.mkdir(parents=True, exist_ok=True)
                 source.write_text(payload, encoding="utf-8")
 
-            for top_level in ("01_UpDown_Hub", "05_Midia_E_Feed"):
+            for top_level in (
+                "01_Modulos_Clinicos",
+                "01_UpDown_Hub",
+                "05_Midia_E_Feed",
+            ):
                 self.builder.copy_entry(root, site, top_level, set(), set())
 
             for relative in EXCLUDED:
@@ -628,7 +638,7 @@ class PublicContentIsolationTests(unittest.TestCase):
 
     def test_service_worker_revokes_the_previous_public_cache(self) -> None:
         worker = (ROOT / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v17`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v18`', worker)
         self.assertNotIn('const CACHE_NAME = `${CACHE_PREFIX}v12`', worker)
         self.assertIn(
             "key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME",
@@ -647,7 +657,7 @@ class PublicContentIsolationTests(unittest.TestCase):
         self.assertIn("O arquivo binário original não integra o site público.", source)
 
     def test_internal_sources_are_absent_but_adjacent_public_files_remain(self) -> None:
-        for relative in EXCLUDED:
+        for relative in ABSENT_INTERNAL:
             self.assertFalse((ROOT / relative).exists())
         self.assertTrue(
             (
