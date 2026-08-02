@@ -100,13 +100,24 @@ def verify(public_root: Path) -> dict:
         raise VerificationError("comando literal divergente")
     if release_publication.get("requiredCommand") != f"PUBLICAR {taf_code}":
         raise VerificationError("release não exige o TAF literal")
+    expected_command = f"PUBLICAR {taf_code}"
     if (
-        publication.get("officialPublication") is not False
-        or publication.get("ownerPublicationAuthorization") is not False
+        publication.get("status") != "authorized-pending-deploy"
+        or publication.get("officialPublication") is not False
+        or publication.get("ownerPublicationAuthorization") is not True
         or publication.get("officialPublicationCode") is not None
-        or release_publication.get("status") != "LOCKED"
+        or publication.get("authorizationMode") != "LITERAL_OWNER_COMMAND"
+        or publication.get("authorizationEvidence") != expected_command
+        or release_publication.get("status") != "AUTHORIZED_PENDING_DEPLOY"
+        or release_publication.get("officialPublication") is not False
+        or release_publication.get("ownerPublicationAuthorization") is not True
+        or release_publication.get("officialPublicationCode") is not None
+        or release_publication.get("authorizationMode") != "LITERAL_OWNER_COMMAND"
+        or release_publication.get("authorizationEvidence") != expected_command
+        or release_publication.get("commitSha") is not None
+        or release_publication.get("deploymentId") is not None
     ):
-        raise VerificationError("publicação foi liberada antes do novo comando")
+        raise VerificationError("autorização literal pré-deploy inválida")
 
     expected_codes = {
         "auditCode": audit.get("auditCode"),
@@ -167,7 +178,7 @@ def verify(public_root: Path) -> dict:
         "memberCount": len(members),
         "imageCount": image_count,
         "localLinksChecked": local_links,
-        "publication": "LOCKED",
+        "publication": "AUTHORIZED_PENDING_DEPLOY",
         "scope": "maquina-turbo-temi-360x-only",
     }
 

@@ -21,7 +21,7 @@ class TurboTemiUnitPublicationTests(unittest.TestCase):
         self.assertNotIn("23_Cosmos_NEXUS", build_public_site.OPTIONAL)
         self.assertIn(PRODUCT_RELATIVE.as_posix(), build_public_site.OPTIONAL)
 
-    def test_manifest_stays_locked_for_the_new_literal_taf(self) -> None:
+    def test_manifest_records_literal_authorization_pending_deploy(self) -> None:
         manifest = json.loads(
             (PRODUCT / "product.manifest.json").read_text(encoding="utf-8")
         )
@@ -29,8 +29,11 @@ class TurboTemiUnitPublicationTests(unittest.TestCase):
         self.assertEqual(publication["finalAcceptanceCode"], EXPECTED_TAF)
         self.assertEqual(publication["requiredCommand"], f"PUBLICAR {EXPECTED_TAF}")
         self.assertFalse(publication["officialPublication"])
-        self.assertFalse(publication["ownerPublicationAuthorization"])
+        self.assertTrue(publication["ownerPublicationAuthorization"])
         self.assertIsNone(publication["officialPublicationCode"])
+        self.assertEqual(publication["status"], "authorized-pending-deploy")
+        self.assertEqual(publication["authorizationMode"], "LITERAL_OWNER_COMMAND")
+        self.assertEqual(publication["authorizationEvidence"], f"PUBLICAR {EXPECTED_TAF}")
         self.assertEqual(manifest["classification"]["privacy"], "P0")
         self.assertFalse(manifest["classification"]["patientData"])
 
@@ -48,7 +51,12 @@ class TurboTemiUnitPublicationTests(unittest.TestCase):
         )
         self.assertEqual(release["tafCode"], EXPECTED_TAF)
         self.assertEqual(release["memberCount"], 12)
-        self.assertEqual(release["publication"]["status"], "LOCKED")
+        publication = release["publication"]
+        self.assertEqual(publication["status"], "AUTHORIZED_PENDING_DEPLOY")
+        self.assertTrue(publication["ownerPublicationAuthorization"])
+        self.assertFalse(publication["officialPublication"])
+        self.assertIsNone(publication["officialPublicationCode"])
+        self.assertEqual(publication["authorizationEvidence"], f"PUBLICAR {EXPECTED_TAF}")
         excluded = set(release["scope"]["excluded"])
         self.assertIn("Biblioteca Visual Cósmica", excluded)
         self.assertIn("Atlas JPEG de 20 imagens", excluded)
