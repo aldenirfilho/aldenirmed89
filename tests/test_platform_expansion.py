@@ -325,7 +325,7 @@ class AccessiblePwaTests(unittest.TestCase):
             home[modules_start:home.index("<!-- ── DECK DE MISSÕES CRÍTICAS")].count(
                 'class="module-card'
             ),
-            20,  # 19 módulos/apps + Mapa Vivo
+            21,  # 20 módulos/apps + Mapa Vivo
         )
 
         for marker in (

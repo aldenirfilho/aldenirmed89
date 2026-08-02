@@ -92,6 +92,10 @@ OPTIONAL = (
     "updown",
     "calculadoras",
     "card-feed",
+    # Publicação unitária e fail-closed: somente a subárvore explicitamente
+    # homologada. Nunca allowlistar ``23_Cosmos_NEXUS`` inteiro neste gate,
+    # pois Atlas, Biblioteca Visual e estação fusional possuem TAFs próprios.
+    "23_Cosmos_NEXUS/products/maquina-turbo-temi-360x",
 )
 
 BLOCKED_SUFFIXES = (".bak", ".tmp", ".command", ".py", ".pyc", ".sh")

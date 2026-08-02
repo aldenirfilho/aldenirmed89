@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "antigravity-unit-publication-audit-v1",
+  "auditCode": "AUD###-PROD-20260801-0014-D939B589",
+  "productCode": "####AGX-MUX-PROD-20260801-0001-D0394A79",
+  "version": "1.2.0",
+  "reviewedAt": "2026-08-01T22:38:29-03:00",
+  "reviewer": "Codex — segunda checagem técnica e editorial",
+  "pillars": {
+    "patientExposure": {
+      "status": "PASS",
+      "evidence": "Oito PNGs sintéticos sem pessoa, paciente, rosto, pulseira, tela clínica, voz, identificador ou EXIF pessoal."
+    },
+    "rights": {
+      "status": "PASS",
+      "evidence": "Fonte autoral declarada Aldenir · ALD 360 GPT; geração GPT conforme ideias, direção criativa e curadoria de Aldenir; proveniência C2PA preservada; nenhuma figura de terceiro reproduzida."
+    },
+    "scientificGrounding": {
+      "status": "PASS",
+      "clinicalClaims": false,
+      "evidenceIds": [
+        "ref-pubmed-16507066",
+        "ref-pubmed-16719566",
+        "ref-pubmed-31339105",
+        "ref-w3c-wcag22"
+      ],
+      "boundary": "Produto educacional não clínico; conteúdo clínico futuro exige referências próprias e nova revisão."
+    }
+  },
+  "technicalReview": {
+    "status": "PASS",
+    "artifactProfile": "POST_BUILD_POST_SANITIZE",
+    "artifactRootSha256": "4e893b75ae67f5fba46a50be4ed6523e225a486061b8b889e7fe515dc5d7aeba",
+    "memberCount": 12,
+    "scope": "Somente a Máquina Turbo TEMI; Atlas, Biblioteca Visual e estação NEXUS permanecem ausentes do artefato oficial."
+  },
+  "sourceVerification": {
+    "status": "PASS",
+    "checkedAt": "2026-08-01T22:38:29-03:00",
+    "officialSources": [
+      "PubMed PMID 16507066",
+      "PubMed PMID 16719566",
+      "PubMed PMID 31339105",
+      "W3C WCAG 2.2"
+    ],
+    "boundary": "Referências sustentam somente aprendizagem e acessibilidade; não há alegação clínica neste produto."
+  },
+  "corrections": [
+    "Substituída a mensagem pública que ainda declarava publicação bloqueada.",
+    "Links de retorno apontam diretamente à home oficial, sem depender da estação NEXUS ainda bloqueada.",
+    "Versão elevada de 1.1.0 para 1.2.0 e topografia alterada para ###STATUS:PUBLIC_READY.",
+    "Builder allowlista somente a subárvore unitária deste produto.",
+    "Controle claro/escuro integrado à preferência global local antigravity:a11y:v1, sem telemetria.",
+    "CSS e JavaScript receberam URLs versionadas para impedir reaproveitamento do cache obsoleto do service worker."
+  ],
+  "outcome": "PASS"
+}
