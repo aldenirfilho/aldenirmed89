@@ -35,8 +35,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -53,7 +51,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Pages
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v6
 
       - name: Restaurar cache OCR público por SHA e configuração
@@ -89,13 +87,6 @@ jobs:
         run: |
           set -e
           BASE_SHA="${{ github.event.pull_request.base.sha || github.event.before || github.sha }}"
-          ROLLBACK_TARGET_SHA="1e8e5bf1580db0e8880b94a2e92096f9601081db"
-          if git cat-file -e "${ROLLBACK_TARGET_SHA}^{commit}" \
-            && git diff --quiet "$ROLLBACK_TARGET_SHA" HEAD -- . \
-              ':(exclude).github/workflows/deploy-seguro.yml'; then
-            echo "Rollback exato para ${ROLLBACK_TARGET_SHA}; baseline editorial já homologado."
-            BASE_SHA="$(git rev-parse HEAD)"
-          fi
           python3 scripts_admin/editorial_gate.py --check --json
           python3 scripts_admin/editorial_gate.py --check --changed-since "$BASE_SHA" --json
           python3 scripts_admin/validate_activation_roadmap.py --json
@@ -222,9 +213,16 @@ jobs:
           unzip -t site/downloads/Antigravity-Consultas-Windows.zip
           unzip -t site/downloads/Antigravity-Consultas-iPhone-Icones.zip
           (cd site/downloads && sha256sum -c SHA256SUMS.txt)
+          test -s site/23_Cosmos_NEXUS/products/maquina-turbo-temi-360x/index.html
+          test -s site/23_Cosmos_NEXUS/products/maquina-turbo-temi-360x/product.manifest.json
+          test -s site/23_Cosmos_NEXUS/products/maquina-turbo-temi-360x/release/release.json
+          test ! -e site/23_Cosmos_NEXUS/index.html
+          test ! -e site/23_Cosmos_NEXUS/data/atlas.json
+          test ! -e site/23_Cosmos_NEXUS/products/biblioteca-visual-cosmica
+          python3 scripts_admin/verify_unit_publication.py --public-root site
 
       - name: Upload Pages artifact
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v5
         with:
           path: './site'
@@ -318,8 +316,12 @@ jobs:
           Write-Host 'Launcher Windows validado com instalação e desinstalação reversíveis.'
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [build, windows-launcher]
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
