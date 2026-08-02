@@ -15,6 +15,7 @@ PRODUCT_RELATIVE = Path(
     "23_Cosmos_NEXUS/products/maquina-turbo-temi-360x"
 )
 TAF_PATTERN = re.compile(r"^TAF###-MUX-PROD-[0-9]{8}-[0-9]{4}-[A-F0-9]{8}$")
+PUB_PATTERN = re.compile(r"^PUB###-[0-9]{8}-[0-9]{4}-([A-F0-9]{8})$")
 
 
 class VerificationError(ValueError):
@@ -101,23 +102,52 @@ def verify(public_root: Path) -> dict:
     if release_publication.get("requiredCommand") != f"PUBLICAR {taf_code}":
         raise VerificationError("release não exige o TAF literal")
     expected_command = f"PUBLICAR {taf_code}"
+    publication_code = release_publication.get("officialPublicationCode")
+    publication_match = (
+        PUB_PATTERN.fullmatch(publication_code)
+        if isinstance(publication_code, str)
+        else None
+    )
+    commit_sha = release_publication.get("commitSha")
+    deployment_id = release_publication.get("deploymentId")
     if (
-        publication.get("status") != "authorized-pending-deploy"
-        or publication.get("officialPublication") is not False
+        publication.get("status") != "published"
+        or publication.get("officialPublication") is not True
         or publication.get("ownerPublicationAuthorization") is not True
-        or publication.get("officialPublicationCode") is not None
+        or publication.get("officialPublicationCode") != publication_code
         or publication.get("authorizationMode") != "LITERAL_OWNER_COMMAND"
         or publication.get("authorizationEvidence") != expected_command
-        or release_publication.get("status") != "AUTHORIZED_PENDING_DEPLOY"
-        or release_publication.get("officialPublication") is not False
+        or publication.get("commitSha") != commit_sha
+        or publication.get("deploymentId") != deployment_id
+        or release_publication.get("status") != "PUBLISHED"
+        or release_publication.get("officialPublication") is not True
         or release_publication.get("ownerPublicationAuthorization") is not True
-        or release_publication.get("officialPublicationCode") is not None
         or release_publication.get("authorizationMode") != "LITERAL_OWNER_COMMAND"
         or release_publication.get("authorizationEvidence") != expected_command
-        or release_publication.get("commitSha") is not None
-        or release_publication.get("deploymentId") is not None
+        or publication_match is None
+        or not isinstance(commit_sha, str)
+        or re.fullmatch(r"[0-9a-f]{40}", commit_sha) is None
+        or not isinstance(deployment_id, str)
+        or re.fullmatch(r"[0-9]+", deployment_id) is None
     ):
-        raise VerificationError("autorização literal pré-deploy inválida")
+        raise VerificationError("recibo de publicação oficial inválido")
+
+    publication_material = "|".join(
+        (taf_code, "LITERAL_OWNER_COMMAND", commit_sha, deployment_id)
+    )
+    expected_publication_suffix = hashlib.sha256(
+        publication_material.encode("utf-8")
+    ).hexdigest()[:8].upper()
+    if publication_match.group(1) != expected_publication_suffix:
+        raise VerificationError("PUB### diverge do TAF, commit ou deployment")
+
+    assets = manifest.get("assets")
+    if (
+        not isinstance(assets, list)
+        or len(assets) != 8
+        or any(asset.get("publicationStatus") != "published" for asset in assets)
+    ):
+        raise VerificationError("estado público das oito imagens é inválido")
 
     expected_codes = {
         "auditCode": audit.get("auditCode"),
@@ -178,7 +208,8 @@ def verify(public_root: Path) -> dict:
         "memberCount": len(members),
         "imageCount": image_count,
         "localLinksChecked": local_links,
-        "publication": "AUTHORIZED_PENDING_DEPLOY",
+        "publication": "PUBLISHED",
+        "publicationCode": publication_code,
         "scope": "maquina-turbo-temi-360x-only",
     }
 
