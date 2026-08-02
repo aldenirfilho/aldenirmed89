@@ -92,10 +92,6 @@ OPTIONAL = (
     "updown",
     "calculadoras",
     "card-feed",
-    # Publicação unitária e fail-closed: somente a subárvore explicitamente
-    # homologada. Nunca allowlistar ``23_Cosmos_NEXUS`` inteiro neste gate,
-    # pois Atlas, Biblioteca Visual e estação fusional possuem TAFs próprios.
-    "23_Cosmos_NEXUS/products/maquina-turbo-temi-360x",
 )
 
 BLOCKED_SUFFIXES = (".bak", ".tmp", ".command", ".py", ".pyc", ".sh")
@@ -123,6 +119,7 @@ EDITORIAL_PUBLIC_FILES = {
 }
 PUBLIC_BUILD_EXCLUSIONS = frozenset(
     {
+        "01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json",
         "01_UpDown_Hub/content/reumatologia/les-manifestacoes/metadata.json",
         "05_Midia_E_Feed/data/recovery_manifest.json",
     }
@@ -907,6 +904,11 @@ def normalize_permissions(site: Path) -> None:
 
 
 EDITORIAL_ATTRIBUTION_MARKER = "antigravity-editorial-attribution:v1"
+EDITORIAL_ATTRIBUTION_EXCLUSIONS = frozenset(
+    {
+        "01_Modulos_Clinicos/Dermatologia_Critica/index.html",
+    }
+)
 
 
 def inject_editorial_attribution(site: Path) -> int:
@@ -920,6 +922,9 @@ def inject_editorial_attribution(site: Path) -> int:
 
     updated = 0
     for html_path in sorted(site.rglob("*.html")):
+        relative = html_path.relative_to(site)
+        if relative.as_posix() in EDITORIAL_ATTRIBUTION_EXCLUSIONS:
+            continue
         try:
             html = html_path.read_text(encoding="utf-8")
         except UnicodeDecodeError as exc:
@@ -929,7 +934,6 @@ def inject_editorial_attribution(site: Path) -> int:
         if EDITORIAL_ATTRIBUTION_MARKER in html:
             continue
 
-        relative = html_path.relative_to(site)
         parent = relative.parent.as_posix()
         root_prefix = posixpath.relpath(".", start=parent or ".")
         if root_prefix == ".":

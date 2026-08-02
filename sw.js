@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v17`;
+const CACHE_NAME = `${CACHE_PREFIX}v18`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -81,6 +81,10 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/Infectologia_Critica/data/catalog.js",
   "./01_Modulos_Clinicos/Pneumologia_Critica/index.html",
   "./01_Modulos_Clinicos/Pneumologia_Critica/data/catalog.js",
+  "./01_Modulos_Clinicos/Dermatologia_Critica/index.html",
+  "./01_Modulos_Clinicos/Dermatologia_Critica/assets/styles.css",
+  "./01_Modulos_Clinicos/Dermatologia_Critica/assets/app.js",
+  "./01_Modulos_Clinicos/Dermatologia_Critica/data/catalog.js",
   "./01_Modulos_Clinicos/_shared_critical/assets/critical.css",
   "./01_Modulos_Clinicos/_shared_critical/assets/critical-theme.js",
   "./01_Modulos_Clinicos/_shared_critical/assets/critical.js",

@@ -59,6 +59,23 @@ class EditorialAttributionBuilderTests(unittest.TestCase):
             self.assertEqual(html.count(builder.EDITORIAL_ATTRIBUTION_MARKER), 1)
             self.assertTrue(html.endswith("</footer>\n"))
 
+    def test_does_not_inject_internal_attribution_code_into_dermatology(self):
+        builder = load_builder()
+        with tempfile.TemporaryDirectory() as directory:
+            site = Path(directory)
+            module = site / "01_Modulos_Clinicos" / "Dermatologia_Critica"
+            module.mkdir(parents=True)
+            page = module / "index.html"
+            page.write_text(
+                "<!doctype html><html><body><main>Dermatologia</main></body></html>",
+                encoding="utf-8",
+            )
+
+            self.assertEqual(builder.inject_editorial_attribution(site), 0)
+            html = page.read_text(encoding="utf-8")
+            self.assertNotIn(builder.EDITORIAL_ATTRIBUTION_MARKER, html)
+            self.assertNotIn("ATV-ALD-360", html)
+
     def test_public_css_exists_without_remote_dependencies(self):
         css = (ROOT / "assets" / "editorial-attribution.css").read_text(encoding="utf-8")
         self.assertIn(".antigravity-editorial-attribution", css)
