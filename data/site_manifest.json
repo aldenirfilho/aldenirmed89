@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-02",
+  "updatedAt": "2026-08-04",
   "project": "Enciclopédia Médica Intensiva & Medicina Interna",
-  "version": "manifest-canonico-v9",
+  "version": "manifest-canonico-v10",
   "stack": "html-css-js-json-static",
   "hubs": {
     "home": "index.html",
@@ -25,7 +25,8 @@
     "idealizador": "20_Conheca_Aldenir/index.html",
     "ativacao": "21_Central_Ativacao/index.html",
     "microparticulas_acra": "22_Microparticulas_Ativas_ACRA/index.html",
-    "english": "en/index.html"
+    "english": "en/index.html",
+    "sepse": "01_Modulos_Clinicos/Sepse_Choque_Septico/index.html"
   },
   "canonicalRoutes": {
     "home": "index.html",
@@ -58,13 +59,30 @@
     "microparticulas_acra": "22_Microparticulas_Ativas_ACRA/index.html",
     "english_home": "en/index.html",
     "english_radar": "en/radar/index.html",
-    "mapa": "data/connections.json"
+    "mapa": "data/connections.json",
+    "sepse_choque_septico": "01_Modulos_Clinicos/Sepse_Choque_Septico/index.html"
   },
   "legacyRoutes": [
-    { "from": "07_Estudos_Markdown/index.html", "to": "01_UpDown_Hub/index.html", "status": "wrapper-redirect" },
-    { "from": "05_Biblioteca_IA/index.html", "to": "02_Biblioteca_IA_Engine/index.html", "status": "wrapper-redirect" },
-    { "from": "03_Calculadoras_UTI/index.html", "to": "03_Calculadoras_E_Apps/index.html", "status": "wrapper-redirect" },
-    { "from": "06_Card_Feed_Medico/index.html", "to": "05_Midia_E_Feed/index.html", "status": "wrapper-redirect" }
+    {
+      "from": "07_Estudos_Markdown/index.html",
+      "to": "01_UpDown_Hub/index.html",
+      "status": "wrapper-redirect"
+    },
+    {
+      "from": "05_Biblioteca_IA/index.html",
+      "to": "02_Biblioteca_IA_Engine/index.html",
+      "status": "wrapper-redirect"
+    },
+    {
+      "from": "03_Calculadoras_UTI/index.html",
+      "to": "03_Calculadoras_E_Apps/index.html",
+      "status": "wrapper-redirect"
+    },
+    {
+      "from": "06_Card_Feed_Medico/index.html",
+      "to": "05_Midia_E_Feed/index.html",
+      "status": "wrapper-redirect"
+    }
   ],
   "dataSources": {
     "updownRegistry": "01_UpDown_Hub/registry.json",
@@ -95,24 +113,101 @@
     "englishRadarData": "en/radar/data/radar.en.js"
   },
   "modules": [
-    { "id": "updown", "path": "01_UpDown_Hub/index.html", "label": "UpDown Hub" },
-    { "id": "biblioteca", "path": "02_Biblioteca_IA_Engine/index.html", "label": "Biblioteca IA" },
-    { "id": "calculadoras", "path": "03_Calculadoras_E_Apps/index.html", "label": "Calculadoras UTI" },
-    { "id": "feed", "path": "05_Midia_E_Feed/index.html", "label": "Card Feed Médico" },
-    { "id": "banco_temi", "path": "questoes/index.html", "label": "Banco TEMI" },
-    { "id": "ebooks", "path": "04_Ebooks_Intensiva_Clinica/index.html", "label": "Ebooks Intensiva & Clínica" },
-    { "id": "questoes_comentadas", "path": "07_Questoes_Comentadas/index.html", "label": "Questões Comentadas" },
-    { "id": "transcricoes", "path": "08_Transcricoes/index.html", "label": "Transcrições" },
-    { "id": "pocus", "path": "09_POCUS_Hub/index.html", "label": "POCUS Hub" },
-    { "id": "microparticulas_acra", "path": "22_Microparticulas_Ativas_ACRA/index.html", "label": "Micropartículas Ativas ACRA" },
-    { "id": "hematologia_critica", "path": "01_Modulos_Clinicos/Hematologia_Critica/index.html", "label": "Hematologia Crítica" },
-    { "id": "reumatologia_critica", "path": "01_Modulos_Clinicos/Reumatologia_Critica/index.html", "label": "Reumatologia Crítica" },
-    { "id": "infectologia_critica", "path": "01_Modulos_Clinicos/Infectologia_Critica/index.html", "label": "Infectologia Crítica" },
-    { "id": "pneumologia_critica", "path": "01_Modulos_Clinicos/Pneumologia_Critica/index.html", "label": "Pneumologia Crítica" },
-    { "id": "dermatologia_critica", "path": "01_Modulos_Clinicos/Dermatologia_Critica/index.html", "label": "Dermatologia Crítica" },
-    { "id": "delirium_uti", "path": "01_Modulos_Clinicos/Delirium_UTI/index.html", "label": "Delirium UTI/Enfermaria" },
-    { "id": "respirasense", "path": "01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html", "label": "RespiraSense ICU" },
-    { "id": "respiracrit", "path": "01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html", "label": "RespiraCrit" }
+    {
+      "id": "updown",
+      "path": "01_UpDown_Hub/index.html",
+      "label": "UpDown Hub"
+    },
+    {
+      "id": "biblioteca",
+      "path": "02_Biblioteca_IA_Engine/index.html",
+      "label": "Biblioteca IA"
+    },
+    {
+      "id": "calculadoras",
+      "path": "03_Calculadoras_E_Apps/index.html",
+      "label": "Calculadoras UTI"
+    },
+    {
+      "id": "feed",
+      "path": "05_Midia_E_Feed/index.html",
+      "label": "Card Feed Médico"
+    },
+    {
+      "id": "banco_temi",
+      "path": "questoes/index.html",
+      "label": "Banco TEMI"
+    },
+    {
+      "id": "ebooks",
+      "path": "04_Ebooks_Intensiva_Clinica/index.html",
+      "label": "Ebooks Intensiva & Clínica"
+    },
+    {
+      "id": "questoes_comentadas",
+      "path": "07_Questoes_Comentadas/index.html",
+      "label": "Questões Comentadas"
+    },
+    {
+      "id": "transcricoes",
+      "path": "08_Transcricoes/index.html",
+      "label": "Transcrições"
+    },
+    {
+      "id": "pocus",
+      "path": "09_POCUS_Hub/index.html",
+      "label": "POCUS Hub"
+    },
+    {
+      "id": "microparticulas_acra",
+      "path": "22_Microparticulas_Ativas_ACRA/index.html",
+      "label": "Micropartículas Ativas ACRA"
+    },
+    {
+      "id": "hematologia_critica",
+      "path": "01_Modulos_Clinicos/Hematologia_Critica/index.html",
+      "label": "Hematologia Crítica"
+    },
+    {
+      "id": "reumatologia_critica",
+      "path": "01_Modulos_Clinicos/Reumatologia_Critica/index.html",
+      "label": "Reumatologia Crítica"
+    },
+    {
+      "id": "infectologia_critica",
+      "path": "01_Modulos_Clinicos/Infectologia_Critica/index.html",
+      "label": "Infectologia Crítica"
+    },
+    {
+      "id": "pneumologia_critica",
+      "path": "01_Modulos_Clinicos/Pneumologia_Critica/index.html",
+      "label": "Pneumologia Crítica"
+    },
+    {
+      "id": "dermatologia_critica",
+      "path": "01_Modulos_Clinicos/Dermatologia_Critica/index.html",
+      "label": "Dermatologia Crítica"
+    },
+    {
+      "id": "delirium_uti",
+      "path": "01_Modulos_Clinicos/Delirium_UTI/index.html",
+      "label": "Delirium UTI/Enfermaria"
+    },
+    {
+      "id": "respirasense",
+      "path": "01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html",
+      "label": "RespiraSense ICU"
+    },
+    {
+      "id": "respiracrit",
+      "path": "01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html",
+      "label": "RespiraCrit"
+    },
+    {
+      "id": "sepse_choque_septico",
+      "path": "01_Modulos_Clinicos/Sepse_Choque_Septico/index.html",
+      "label": "Sepse e Choque Séptico"
+    }
   ],
   "stations": [
     {

@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-preference-key="antigravity:a11y:v1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#12080b">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Sepse Ultra Expert: reconhecimento, antimicrobianos, controle do foco, hemodinâmica, fenótipos, choque refratário, recuperação e evidências SSC 2026.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'">
+  <title>Sepse e Choque Séptico — Antigravity Consultas</title>
+  <script src="assets/theme-bootstrap.js"></script>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="data/catalog.js" defer></script>
+  <script src="data/acra-bundle.js" defer></script>
+  <script src="assets/acra-runtime.js" defer></script>
+  <script src="assets/acra-controller.js" defer></script>
+  <script src="assets/acra-dialog-fix.js" defer></script>
+  <script src="assets/visual-runtime.js" defer></script>
+  <script src="assets/app.js" defer></script>
+</head>
+<body data-acra-controller>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <noscript><div class="noscript-warning" role="alert"><strong>JavaScript está desativado.</strong> O conteúdo estático permanece disponível, mas triagem, relógio, fenótipos, comparador, treino e referências interativas não funcionarão.</div></noscript>
+
+  <header class="topbar">
+    <div class="wrap nav-shell">
+      <a class="brand" href="../../index.html" aria-label="Voltar ao portal Antigravity Consultas">
+        <span class="brand-mark" aria-hidden="true">🦠</span>
+        <span><strong>Sepse Ultra Expert</strong><small>Antigravity · Turbo TEMI</small></span>
+      </a>
+      <button class="menu-button" id="menuToggle" type="button" aria-expanded="false" aria-controls="moduleNav">☰ <span>Menu</span></button>
+      <nav class="nav-links" id="moduleNav" aria-label="Navegação do módulo">
+        <a href="#suspeita">Suspeita</a>
+        <a href="#relogio">Relógio</a>
+        <a href="#infeccao">Infecção</a>
+        <a href="#hemodinamica">Hemodinâmica</a>
+        <a href="#fenotipos">Fenótipos</a>
+        <a href="#refrataria">Refratariedade</a>
+        <a href="#fronteira">Fronteira</a>
+        <a href="#recuperacao">Pós-sepse</a>
+        <button class="control-button" id="focusToggle" type="button" aria-pressed="false">🎯 Foco</button>
+        <button class="control-button" id="themeToggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco">☀️ Clara</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="review-strip" role="status">
+    <div class="wrap">
+      <strong>🛡️ Prévia pública educacional — revisão médica humana em andamento</strong>
+      <span>Não é protocolo assistencial · confirme protocolo institucional, microbiologia local, doses e resposta individual</span>
+    </div>
+  </div>
+
+  <aside class="acra-mode-dock" data-acra-mode-dock aria-labelledby="acra-mode-title">
+    <div class="wrap acra-mode-dock__inner">
+      <div>
+        <span class="eyebrow">Experiência ACRA opcional</span>
+        <strong id="acra-mode-title">Escolha o nível de apoio interativo</strong>
+      </div>
+      <div class="acra-mode-buttons" role="group" aria-label="Modo de experiência ACRA">
+        <button type="button" data-acra-mode="off" aria-pressed="false">SEM ACRA</button>
+        <button type="button" data-acra-mode="parcial" aria-pressed="true">PARCIAL</button>
+        <button type="button" data-acra-mode="auto" aria-pressed="false">AUTO</button>
+      </div>
+      <p class="acra-mode-status" data-acra-mode-status aria-live="polite"><strong>PARCIAL é o padrão:</strong> mostra os teasers e só abre um ACRA quando você solicitar. AUTO é opt-in.</p>
+    </div>
+  </aside>
+
+  <main id="conteudo" tabindex="-1">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Emergência · UTI · Enfermaria · TEMI</span>
+          <h1 id="hero-title">Pense.<br><em>Pode ser sepse.</em></h1>
+          <p class="hero-lead">Reconheça a disfunção orgânica, trate a infecção na janela correta, restaure perfusão sem automatismos e reavalie até a recuperação.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#suspeita">⚡ Triagem em 60 segundos</a>
+            <a class="button" href="#relogio">⏱️ Abrir relógio terapêutico</a>
+            <a class="button danger" href="#refrataria">🔥 Choque refratário</a>
+          </div>
+          <p class="microcopy">Apoio educacional para médicos. Não fecha diagnóstico, não substitui avaliação presencial, microbiologia local, protocolo institucional, farmácia clínica nem dupla checagem de doses.</p>
+        </div>
+
+        <aside class="mortality-card" aria-labelledby="burden-title">
+          <span class="live-label"><span class="pulse-dot" aria-hidden="true"></span> projeção desde 00:00 local</span>
+          <strong class="counter" id="deathCounter" aria-live="off">0</strong>
+          <h2 id="burden-title">mortes associadas à sepse estimadas hoje</h2>
+          <div class="counter-grid">
+            <div><b>≈58,6 mil</b><span>por dia</span></div>
+            <div><b>≈1,47 s</b><span>por morte</span></div>
+            <div><b>21,4 mi</b><span>em 2021</span></div>
+          </div>
+          <p class="burden-proof"><b>⚠️ Não é “apenas mais uma infecção”.</b> A <a href="https://www.who.int/news-room/fact-sheets/detail/sepsis" target="_blank" rel="noopener noreferrer">OMS</a> a descreve como uma das causas de morte mais frequentes no mundo. Nos EUA, o <a href="https://www.cdc.gov/sepsis/hcp/core-elements/index.html" target="_blank" rel="noopener noreferrer">CDC</a> a classifica entre as principais causas de hospitalização e mortalidade hospitalar, contribuindo para mais de um terço das mortes em hospitais. Prevenção de infecções e ação precoce podem evitar parte dessa carga.</p>
+          <p><strong>Projeção didática, não vigilância em tempo real.</strong> Conversão linear da estimativa GBD 2021; métodos e anos não devem ser misturados com a estimativa OMS 2017.</p>
+          <a href="#fontes">Ver fonte, cálculo e limitações →</a>
+        </aside>
+      </div>
+      <div class="wrap visual-grid visual-grid--2 hero-visual-grid">
+        <figure class="clinical-visual" data-visual-id="IMG-01" data-source-ids="ssc2026 sepsis3">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-01-pense-pode-ser-sepse-960.jpg"><source srcset="assets/images/optimized/img-01-pense-pode-ser-sepse-1672.jpg"><img src="assets/images/img-01-pense-pode-ser-sepse.png" width="1672" height="941" alt="Paciente hospitalizado deteriorando enquanto sinais clínicos convergem para suspeita de sepse" aria-describedby="caption-img-01 desc-img-01" loading="eager" decoding="async" fetchpriority="high"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-01" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-01"><strong>IMG-01 · Pense. Pode ser sepse.</strong><span>Deterioração inespecífica pode ser a primeira pista. Reconheça ameaça fisiológica e disfunção orgânica sem esperar um escore.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e Sepsis-3</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-01">A cena organiza pistas simultâneas de piora hospitalar ao redor de um relógio clínico. Ela representa um alerta conceitual, não um paciente real nem uma ferramenta diagnóstica autônoma.</p></details><a class="visual-full-link" href="assets/images/img-01-pense-pode-ser-sepse.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+        <figure class="clinical-visual" data-visual-id="IMG-02" data-source-ids="gbd2021 who2024">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-02-carga-global-960.jpg"><source srcset="assets/images/optimized/img-02-carga-global-1672.jpg"><img src="assets/images/img-02-carga-global.png" width="1672" height="941" alt="Mapa global destacando a carga modelada de mortes associadas à sepse em 2021" aria-describedby="caption-img-02 desc-img-02" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-02" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-02"><strong>IMG-02 · Carga global associada à sepse</strong><span>Os 21,4 milhões correspondem a estimativa modelada para 2021; não representam contador ou vigilância em tempo real.</span><span class="visual-source">Fontes: <a href="#fontes">GBD 2021 e OMS</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-02">O mapa comunica escala mundial e diferencia estimativa epidemiológica de contagem observada ao vivo. Ano, método e incerteza devem acompanhar qualquer reutilização do número.</p></details><a class="visual-full-link" href="assets/images/img-02-carga-global.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="command-band" aria-label="Sequência operacional central">
+      <div class="wrap command-grid">
+        <div><b>1 · Reconheça</b><span>Infecção possível + disfunção orgânica.</span></div>
+        <div><b>2 · Aja</b><span>Probabilidade, culturas, antimicrobiano e foco.</span></div>
+        <div><b>3 · Reavalie</b><span>Perfusão, resposta, tolerância e diagnóstico.</span></div>
+        <div><b>4 · Desescale</b><span>Espectro, fluidos, suportes e invasividade.</span></div>
+        <div><b>5 · Recupere</b><span>Alta segura, sequelas e seguimento.</span></div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="como-usar">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Pista de pouso cognitiva</span><h2>Como usar sem se perder</h2></div>
+          <p>Entre pela decisão que muda desfecho agora. O aprofundamento fica disponível sem bloquear a trilha rápida.</p>
+        </div>
+
+        <ol class="how-grid">
+          <li><a href="#suspeita"><b>1</b><span><strong>Paciente deteriorando?</strong>Faça a triagem e procure disfunção orgânica.</span></a></li>
+          <li><a href="#relogio"><b>2</b><span><strong>Suspeita sustentada?</strong>Siga a janela temporal e a probabilidade de infecção.</span></a></li>
+          <li><a href="#hemodinamica"><b>3</b><span><strong>Choque/hipoperfusão?</strong>Reavalie fluido, vasopressor e fenótipo.</span></a></li>
+          <li><a href="#refrataria"><b>4</b><span><strong>Não respondeu?</strong>Audite diagnóstico, foco, bomba, tanque e tubos.</span></a></li>
+          <li><a href="#recuperacao"><b>5</b><span><strong>Estabilizou?</strong>Desressuscite, desescale e planeje recuperação.</span></a></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="impacto">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Impacto transversal</span><h2>Muitas doenças. Um desfecho comum.</h2></div>
+          <p>Sepse não é uma especialidade isolada: é a convergência entre infecção, vulnerabilidade do hospedeiro e resposta desregulada.</p>
+        </div>
+
+        <figure class="clinical-visual" data-visual-id="IMG-03" data-source-ids="sepsis3 who2024">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-03-desfecho-transversal-960.jpg"><source srcset="assets/images/optimized/img-03-desfecho-transversal-1672.jpg"><img src="assets/images/img-03-desfecho-transversal.png" width="1672" height="941" alt="Especialidades e condições clínicas convergindo para infecção, sepse e diferentes desfechos" aria-describedby="caption-img-03 desc-img-03" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-03" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-03"><strong>IMG-03 · Muitas doenças, um desfecho comum</strong><span>Cardiologia, oncologia, reumatologia, pneumologia, nefrologia, cirurgia e obstetrícia podem convergir probabilisticamente para sepse.</span><span class="visual-source">Fontes: <a href="#fontes">Sepsis-3 e OMS</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-03">O fluxo mostra vulnerabilidades distintas chegando a infecção e resposta desregulada, seguidas de recuperação ou falência orgânica. As setas indicam caminhos possíveis, não causalidade inevitável.</p></details><a class="visual-full-link" href="assets/images/img-03-desfecho-transversal.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <div class="pathway-universe" aria-label="Fluxo de doenças até sepse e seus desfechos">
+          <div class="source-cloud" id="sepse-organ-systems-grid">
+            <span>🫀 Cardiovascular</span><span>🎗️ Oncologia</span><span>🧬 Reumatologia</span>
+            <span>🫁 Pneumologia</span><span>🧪 Nefrologia</span><span>🟤 Cirrose</span>
+            <span>🧠 Neurologia</span><span>🩺 Pós-operatório</span><span>🤰 Obstetrícia</span>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <div class="flow-stage infection">Infecção + hospedeiro vulnerável</div>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <div class="flow-stage dysregulation">Resposta desregulada → dano endotelial, microcirculatório, imune e metabólico</div>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <div class="outcome-grid">
+            <div class="flow-stage recover">Reconhecimento + tratamento oportunos<br><b>aumentam a chance de controle do foco e recuperação</b></div>
+            <div class="flow-stage collapse">Atraso, foco persistente ou fenótipo grave<br><b>podem levar a choque, VM, TRS e disfunção múltipla</b></div>
+          </div>
+        </div>
+
+        <div class="economic-shell">
+          <article>
+            <span class="eyebrow">Custo da trajetória</span>
+            <h3>Uma dose correta no momento certo não é “um comprimido milagroso”.</h3>
+            <p>É a combinação de antimicrobiano adequado — frequentemente intravenoso — dose de ataque, coleta útil, controle do foco e reavaliação. O comparador abaixo organiza custos locais; não estima causalidade nem substitui faturamento.</p>
+            <div class="evidence-note">A OMS cita custo hospitalar médio superior a US$ 32 mil por paciente em países de alta renda. Valores brasileiros variam por instituição, gravidade e método de custeio.</div>
+          </article>
+          <form class="cost-calculator" id="costForm">
+            <fieldset>
+              <legend>Trajetória oportuna — custos locais</legend>
+              <label>Enfermaria<input type="number" min="0" step="0.01" name="earlyWard" inputmode="decimal" placeholder="R$"></label>
+              <label>Antimicrobianos/exames<input type="number" min="0" step="0.01" name="earlyTreatment" inputmode="decimal" placeholder="R$"></label>
+              <label>Controle do foco<input type="number" min="0" step="0.01" name="earlySource" inputmode="decimal" placeholder="R$"></label>
+            </fieldset>
+            <fieldset>
+              <legend>Trajetória crítica — custos locais</legend>
+              <label>Diárias de UTI<input type="number" min="0" step="0.01" name="lateIcu" inputmode="decimal" placeholder="R$"></label>
+              <label>VM, TRS e nutrição<input type="number" min="0" step="0.01" name="lateSupport" inputmode="decimal" placeholder="R$"></label>
+              <label>Antimicrobianos/procedimentos<input type="number" min="0" step="0.01" name="lateTreatment" inputmode="decimal" placeholder="R$"></label>
+            </fieldset>
+            <div class="form-actions"><button class="button primary" type="submit">Comparar cenários</button><button class="button ghost" type="reset">Limpar</button></div>
+            <output class="cost-result" id="costResult" aria-live="polite">Preencha apenas valores conferidos da instituição.</output>
+          </form>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-04" data-source-ids="who2024">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-04-custo-do-atraso-960.jpg"><source srcset="assets/images/optimized/img-04-custo-do-atraso-1672.jpg"><img src="assets/images/img-04-custo-do-atraso.png" width="1672" height="941" alt="Comparação entre uma trajetória de cuidado oportuno e uma trajetória crítica com múltiplos suportes de UTI" aria-describedby="caption-img-04 desc-img-04" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-04" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-04"><strong>IMG-04 · Custo da trajetória clínica</strong><span>Cuidado oportuno é um pacote: antimicrobiano adequado, culturas úteis, controle do foco e reavaliação. A comparação não estima causalidade ou custo individual.</span><span class="visual-source">Fonte: <a href="#fontes">OMS</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-04">À esquerda, a imagem resume uma trajetória de menor complexidade; à direita, UTI, ventilação mecânica, terapia renal, nutrição e antimicrobianos complexos. O contraste é educacional e não afirma que uma única dose isolada evite todos esses recursos.</p></details><a class="visual-full-link" href="assets/images/img-04-custo-do-atraso.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="suspeita">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Ferramenta 1</span><h2>Triagem clínica em 60 segundos</h2></div>
+          <p>Não é calculadora diagnóstica. Identifica uma via de prioridade e obriga a procurar infecção, disfunção orgânica e mimetizadores em paralelo.</p>
+        </div>
+
+        <figure class="clinical-visual" data-visual-id="IMG-05" data-source-ids="sepsis3">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-05-triade-diagnostica-960.jpg"><source srcset="assets/images/optimized/img-05-triade-diagnostica-1672.jpg"><img src="assets/images/img-05-triade-diagnostica.png" width="1672" height="941" alt="Três camadas conectando infecção, disfunção orgânica aguda e ameaça à vida" aria-describedby="caption-img-05 desc-img-05" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-05" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-05"><strong>IMG-05 · Infecção, disfunção orgânica e ameaça à vida</strong><span>Infecção isolada não define sepse; procure disfunção orgânica aguda ameaçadora à vida.</span><span class="visual-source">Fonte: <a href="#fontes">Sepsis-3</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-05">O diagrama separa o contexto infeccioso da resposta desregulada e de sua expressão orgânica. A identificação é clínica e não deve aguardar a conclusão de uma pontuação.</p></details><a class="visual-full-link" href="assets/images/img-05-triade-diagnostica.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <figure class="clinical-visual" data-visual-id="IMG-41" data-source-ids="sepsis3 ssc2026">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-41-disfuncao-organica-sinal-entrada-960.jpg"><source srcset="assets/images/optimized/img-41-disfuncao-organica-sinal-entrada-1672.jpg"><img src="assets/images/img-41-disfuncao-organica-sinal-entrada.png" width="1672" height="941" alt="Mapa multiorgânico com manifestações cerebrais, respiratórias, circulatórias, renais, hepáticas e hematológicas de disfunção aguda" aria-describedby="caption-img-41 desc-img-41" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-41" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-41"><strong>IMG-41 · Disfunção orgânica: o sinal de entrada</strong><span>Nova confusão, hipoxemia, hipoperfusão, oligúria, hiperbilirrubinemia ou plaquetopenia podem ser a primeira expressão da síndrome; procure tendência e ameaça imediata.</span><span class="visual-source">Fontes: <a href="#fontes">Sepsis-3 e SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-41">Use a prancha para varrer seis sistemas sem esperar o SOFA completo. A alteração precisa ser aguda e contextualizada; nenhuma manifestação ou exame isolado confirma sepse, e estabilização, investigação etiológica e diferenciais seguem em paralelo.</p></details><a class="visual-full-link" href="assets/images/img-41-disfuncao-organica-sinal-entrada.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <div class="tool-layout">
+          <form class="triage-panel" id="triageForm">
+            <fieldset>
+              <legend>Contexto infeccioso</legend>
+              <label class="check-row"><input type="checkbox" name="infection"> Infecção possível, provável ou definida</label>
+              <label class="check-row"><input type="checkbox" name="risk"> Alto risco: imunossupressão, câncer, cirrose, DRC, idade avançada, gestação/puerpério, dispositivo ou pós-operatório</label>
+            </fieldset>
+            <fieldset>
+              <legend>Instabilidade/hipoperfusão</legend>
+              <label class="check-row critical"><input type="checkbox" name="shock"> Hipotensão importante, pele moteada/cinzentada, pulso fraco ou vasopressor</label>
+              <label class="check-row critical"><input type="checkbox" name="respiratory"> Hipoxemia, trabalho respiratório ou necessidade crescente de O₂</label>
+              <label class="check-row critical"><input type="checkbox" name="mental"> Alteração aguda da consciência</label>
+            </fieldset>
+            <fieldset>
+              <legend>Disfunção orgânica nova</legend>
+              <label class="check-row"><input type="checkbox" name="renal"> Oligúria ou piora renal</label>
+              <label class="check-row"><input type="checkbox" name="coagulation"> Plaquetopenia/coagulopatia nova</label>
+              <label class="check-row"><input type="checkbox" name="hepatic"> Hiperbilirrubinemia/disfunção hepática nova</label>
+              <label class="check-row"><input type="checkbox" name="perfusion"> Lactato elevado ou enchimento capilar alterado, contextualizados</label>
+            </fieldset>
+            <div class="form-actions"><button class="button primary" type="submit">Gerar prioridade</button><button class="button ghost" type="reset">Limpar</button></div>
+          </form>
+
+          <div class="triage-result" id="triageResult" aria-live="polite">
+            <span class="status-pill">Aguardando avaliação</span>
+            <h3>Comece pela fisiologia.</h3>
+            <p>Se houver instabilidade, inicie ABCDE, monitorização e suporte imediatamente. Não aguarde um escore.</p>
+          </div>
+        </div>
+
+        <div class="visual-grid visual-grid--2">
+          <figure class="clinical-visual" data-visual-id="IMG-06" data-source-ids="ssc2026 sepsis3">
+            <div class="visual-frame">
+              <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-06-rastreio-sem-ancoragem-960.jpg"><source srcset="assets/images/optimized/img-06-rastreio-sem-ancoragem-1672.jpg"><img src="assets/images/img-06-rastreio-sem-ancoragem.png" width="1672" height="941" alt="Comparação entre NEWS2, MEWS, SIRS, qSOFA e SOFA com suas funções clínicas" aria-describedby="caption-img-06 desc-img-06" loading="lazy" decoding="async"></picture>
+              <button class="visual-zoom" type="button" data-visual-target="IMG-06" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+            </div>
+            <figcaption id="caption-img-06"><strong>IMG-06 · Rastreie sem ancorar</strong><span>Escores são sensores e organizadores. Nenhum deles, isoladamente, diagnostica ou exclui sepse.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e Sepsis-3</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-06">NEWS2, MEWS e SIRS apoiam detecção de deterioração; qSOFA é alerta prognóstico contextual; SOFA quantifica disfunção. A estabilização e a busca etiológica seguem em paralelo.</p></details><a class="visual-full-link" href="assets/images/img-06-rastreio-sem-ancoragem.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+          </figure>
+          <figure class="clinical-visual" data-visual-id="IMG-07" data-source-ids="ssc2026">
+            <div class="visual-frame">
+              <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-07-mimetizadores-960.jpg"><source srcset="assets/images/optimized/img-07-mimetizadores-1672.jpg"><img src="assets/images/img-07-mimetizadores.png" width="1672" height="941" alt="Fluxo paralelo de sepse e diagnósticos críticos que podem imitar choque séptico" aria-describedby="caption-img-07 desc-img-07" loading="lazy" decoding="async"></picture>
+              <button class="visual-zoom" type="button" data-visual-target="IMG-07" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+            </div>
+            <figcaption id="caption-img-07"><strong>IMG-07 · Sepse e mimetizadores em paralelo</strong><span>Hemorragia, TEP, tamponamento, anafilaxia, crise adrenal, intoxicação e pancreatite devem permanecer ativos no diferencial.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-07">O fluxo mantém duas trilhas simultâneas: tratar a ameaça fisiológica e testar hipóteses infecciosas e não infecciosas. Uma resposta parcial não encerra a reavaliação diagnóstica.</p></details><a class="visual-full-link" href="assets/images/img-07-mimetizadores.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+          </figure>
+        </div>
+
+        <div class="definition-grid">
+          <article class="definition-card">
+            <span>Sepsis-3</span><h3>Sepse</h3>
+            <p>Disfunção orgânica ameaçadora à vida causada por resposta desregulada do hospedeiro à infecção. Operacionalmente, aumento agudo de SOFA ≥2 apoia a identificação — mas a decisão continua clínica.</p>
+          </article>
+          <article class="definition-card danger-card">
+            <span>Sepsis-3</span><h3>Choque séptico</h3>
+            <p>Subconjunto com vasopressor necessário para manter PAM ≥65 mmHg e lactato &gt;2 mmol/L apesar de ressuscitação volêmica adequada, na ausência de hipovolemia como explicação suficiente.</p>
+          </article>
+          <article class="definition-card">
+            <span>SSC 2026</span><h3>Rastreio</h3>
+            <p>NEWS/NEWS2, MEWS ou SIRS são preferidos ao qSOFA isolado. qSOFA é alerta prognóstico contextual, não ferramenta única para excluir ou diagnosticar sepse.</p>
+          </article>
+        </div>
+
+        <figure class="clinical-visual" data-visual-id="IMG-42" data-source-ids="sepsis3 ssc2026">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-42-foco-falencia-organica-960.jpg"><source srcset="assets/images/optimized/img-42-foco-falencia-organica-1672.jpg"><img src="assets/images/img-42-foco-falencia-organica.png" width="1672" height="941" alt="Cascata fisiopatológica da ativação imune à lesão endotelial, vasoplegia, imunotrombose e disfunção orgânica" aria-describedby="caption-img-42 desc-img-42" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-42" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-42"><strong>IMG-42 · Do foco à falência orgânica</strong><span>A sepse combina sinalização do patógeno e do dano, resposta imune, lesão endotelial/glicocálix, vasoplegia, permeabilidade e microcirculação heterogênea.</span><span class="visual-source">Fontes: <a href="#fontes">Sepsis-3 e SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-42">O modelo explica por que pressão, fluxo e oxigenação macroscópicos podem não representar toda a entrega e utilização tecidual. É um mapa conceitual: vias coexistem em intensidades variáveis, e nenhum biomarcador representa isoladamente a fisiopatologia de um paciente.</p></details><a class="visual-full-link" href="assets/images/img-42-foco-falencia-organica.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <div class="table-scroll">
+          <table>
+            <caption>Ferramentas: função correta e erro a evitar</caption>
+            <thead><tr><th scope="col">Ferramenta</th><th scope="col">Ajuda em</th><th scope="col">Não deve ser usada isoladamente para</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">NEWS2 / MEWS</th><td>Detectar deterioração fisiológica e acionar resposta</td><td>Determinar etiologia infecciosa</td></tr>
+              <tr><th scope="row">SIRS</th><td>Sensibilidade para resposta inflamatória</td><td>Distinguir infecção de causas não infecciosas</td></tr>
+              <tr><th scope="row">qSOFA</th><td>Alertar para maior risco fora da UTI</td><td>Rastrear sozinho ou excluir sepse</td></tr>
+              <tr><th scope="row">SOFA</th><td>Quantificar disfunção orgânica</td><td>Esperar pontuação completa antes de agir</td></tr>
+              <tr><th scope="row">Lactato</th><td>Contextualizar hipoperfusão/estresse e seguir tendência</td><td>Definir choque ou ordenar fluidos sozinho</td></tr>
+              <tr><th scope="row">Procalcitonina</th><td>Apoiar interrupção em cenários selecionados</td><td>Decidir isoladamente se inicia antimicrobiano</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <figure class="clinical-visual" data-visual-id="IMG-43" data-source-ids="ssc2026 sepsis3">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-43-exames-respondem-perguntas-960.jpg"><source srcset="assets/images/optimized/img-43-exames-respondem-perguntas-1672.jpg"><img src="assets/images/img-43-exames-respondem-perguntas.png" width="1672" height="941" alt="Exames agrupados pelas perguntas sobre disfunção orgânica, foco e patógeno, mimetizadores e tendência clínica" aria-describedby="caption-img-43 desc-img-43" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-43" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-43"><strong>IMG-43 · Exames que respondem perguntas</strong><span>Peça exames para localizar órgão em falha, foco/patógeno, mimetizador e tendência que modifica conduta — não para completar um pacote sem hipótese.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e Sepsis-3</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-43">Gasometria/lactato, hemograma, rim, fígado e coagulação dimensionam fisiologia; culturas e amostras dirigidas apoiam etiologia; ECG, POCUS e exames adicionais dependem do diferencial. Repita somente quando a tendência puder mudar suporte, diagnóstico ou desescalada.</p></details><a class="visual-full-link" href="assets/images/img-43-exames-respondem-perguntas.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <aside class="acra-slot" data-acra-plan-id="ACRA-SEPSE-01" data-acra-id="a01-acra-sepse-reconhecimento-v1" data-artifact-id="a01-acra-sepse-reconhecimento-v1" aria-labelledby="acra-title-01">
+          <div class="acra-slot__copy"><span class="acra-kicker">ACRA 01 · 7 camadas disponíveis</span><h3 id="acra-title-01">Pense, pode ser sepse</h3><p>Paciente de enfermaria com deterioração inespecífica. Treine ABCDE, infecção, disfunção orgânica, mimetizadores e prioridade de escalada.</p></div>
+          <div class="acra-slot__actions"><button class="button primary" type="button" data-acra-open data-acra-id="a01-acra-sepse-reconhecimento-v1" aria-controls="acraStage" aria-haspopup="dialog">Abrir ACRA 01</button><span data-acra-status aria-live="polite">Teaser convencional disponível; interação opcional.</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="relogio">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Ferramenta 2</span><h2>Relógio terapêutico</h2></div>
+          <p>Cada janela responde: o que não pode esperar, o que precisa ser confirmado e qual reavaliação encerra o ciclo.</p>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-08" data-source-ids="ssc2026 antibiotic-framework hemodynamic-guide">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-08-relogio-completo-960.jpg"><source srcset="assets/images/optimized/img-08-relogio-completo-1672.jpg"><img src="assets/images/reviewed/img-08-relogio-completo.png" width="1672" height="941" alt="Linha do tempo da sepse dos primeiros dez minutos ao período pós-agudo" aria-describedby="caption-img-08 desc-img-08" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-08" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-08"><strong>IMG-08 · Relógio terapêutico completo</strong><span>Janelas de 0–10 min, 10–60 min, 1–3 h, 3–6 h, 6–24 h, 24–72 h e pós-agudo, sempre com checkpoint.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-08">A linha do tempo associa ações urgentes a momentos de confirmação e reavaliação. As janelas organizam prioridade e não substituem julgamento clínico, protocolo local ou resposta individual.</p></details><a class="visual-full-link" href="assets/images/reviewed/img-08-relogio-completo.png" target="_blank" rel="noopener">Abrir PNG revisado</a></figcaption>
+        </figure>
+        <div class="timeline-tabs" id="timelineTabs" role="tablist" aria-label="Janelas do manejo da sepse"></div>
+        <article class="timeline-panel" id="timelinePanel" role="tabpanel"></article>
+        <figure class="clinical-visual" data-visual-id="IMG-09" data-source-ids="ssc2026 hemodynamic-guide">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-09-primeiros-dez-minutos-960.jpg"><source srcset="assets/images/optimized/img-09-primeiros-dez-minutos-1672.jpg"><img src="assets/images/img-09-primeiros-dez-minutos.png" width="1672" height="941" alt="Checklist dos primeiros dez minutos com ABCDE, monitorização, acesso, oxigenação e perfusão" aria-describedby="caption-img-09 desc-img-09" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-09" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-09"><strong>IMG-09 · Os primeiros dez minutos</strong><span>ABCDE, monitorização, acesso, perfusão, oxigenação e acionamento simultâneo vêm antes de completar escores.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-09">O painel prioriza estabilização fisiológica e organização de equipe. Coleta e investigação ocorrem sem transformar um escore em barreira para suporte imediato.</p></details><a class="visual-full-link" href="assets/images/img-09-primeiros-dez-minutos.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+        <div class="antibiotic-framework">
+          <article class="probability-card red"><span>Choque séptico ou sepse provável/definida</span><strong>Imediatamente, idealmente ≤1 h</strong><p>Culturas antes quando possível, sem atraso clinicamente relevante.</p></article>
+          <article class="probability-card amber"><span>Possível sepse sem choque</span><strong>Investigação rápida com limite temporal</strong><p>Persistindo preocupação infecciosa, antimicrobiano em até 3 h da suspeita inicial.</p></article>
+          <article class="probability-card green"><span>Baixa probabilidade de infecção, sem choque</span><strong>Pode diferir antimicrobiano</strong><p>Monitorização próxima, diagnóstico alternativo e gatilhos explícitos de reavaliação.</p></article>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-10" data-source-ids="ssc2026 antibiotic-framework">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-10-tempo-antimicrobiano-960.jpg"><source srcset="assets/images/optimized/img-10-tempo-antimicrobiano-1672.jpg"><img src="assets/images/img-10-tempo-antimicrobiano.png" width="1672" height="941" alt="Três trilhas de tempo do antimicrobiano conforme choque e probabilidade de infecção" aria-describedby="caption-img-10 desc-img-10" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-10" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-10"><strong>IMG-10 · Tempo de antimicrobiano por probabilidade</strong><span>Choque ou sepse provável/definida: imediatamente, idealmente ≤1 h. Possível sem choque: investigação limitada; baixa probabilidade e sem choque: diferimento vigiado.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-10">As três trilhas combinam gravidade e probabilidade, evitando tanto atraso no choque quanto prescrição automática em baixa probabilidade. Diferir exige vigilância próxima e gatilhos explícitos de reavaliação.</p></details><a class="visual-full-link" href="assets/images/img-10-tempo-antimicrobiano.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+        <aside class="acra-slot" data-acra-plan-id="ACRA-SEPSE-02" data-acra-id="a02-acra-sepse-relogio-antimicrobiano-v1" data-artifact-id="a02-acra-sepse-relogio-antimicrobiano-v1" aria-labelledby="acra-title-02">
+          <div class="acra-slot__copy"><span class="acra-kicker">ACRA 02 · 7 camadas disponíveis</span><h3 id="acra-title-02">O relógio do antimicrobiano</h3><p>Compare choque, sepse provável sem choque e infecção possível. Treine janela ideal de 1 hora, investigação limitada a 3 horas e diferimento monitorado.</p></div>
+          <div class="acra-slot__actions"><button class="button primary" type="button" data-acra-open data-acra-id="a02-acra-sepse-relogio-antimicrobiano-v1" aria-controls="acraStage" aria-haspopup="dialog">Abrir ACRA 02</button><span data-acra-status aria-live="polite">Teaser convencional disponível; interação opcional.</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="infeccao">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Trilha infecciosa</span><h2>Antimicrobiano é uma estratégia, não um reflexo</h2></div>
+          <p>Probabilidade, sítio, gravidade, exposições, culturas prévias, ecologia local, farmacocinética/farmacodinâmica e foco devem caber na primeira prescrição.</p>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-11" data-source-ids="ssc2026">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-11-culturas-sem-atraso-960.jpg"><source srcset="assets/images/optimized/img-11-culturas-sem-atraso-1672.jpg"><img src="assets/images/img-11-culturas-sem-atraso.png" width="1672" height="941" alt="Sequência para obter culturas úteis antes do antimicrobiano sem atraso relevante" aria-describedby="caption-img-11 desc-img-11" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-11" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-11"><strong>IMG-11 · Culturas úteis sem atrasar terapia</strong><span>Colete hemoculturas e amostras do foco antes do antimicrobiano quando viável, sem criar atraso clinicamente relevante.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-11">O fluxo mostra coleta, identificação adequada e início terapêutico em sequência coordenada. No choque ou alta probabilidade, a logística de cultura não deve paralisar a terapia.</p></details><a class="visual-full-link" href="assets/images/img-11-culturas-sem-atraso.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <figure class="clinical-visual" data-visual-id="IMG-45" data-source-ids="ssc2026 antibiotic-framework">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-45-escolha-empirica-camadas-960.jpg"><source srcset="assets/images/optimized/img-45-escolha-empirica-camadas-1672.jpg"><img src="assets/images/img-45-escolha-empirica-camadas.png" width="1672" height="941" alt="Cinco camadas para escolha antimicrobiana empírica por foco, gravidade, hospedeiro, microbiologia prévia e ecologia local" aria-describedby="caption-img-45 desc-img-45" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-45" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-45"><strong>IMG-45 · Escolha empírica em cinco camadas</strong><span>Cobertura adequada nasce da síndrome e da janela, mas precisa atravessar hospedeiro, culturas/colonização prévias, risco de resistência e antibiograma local.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e framework oficial de tempo do antimicrobiano</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-45">“Amplo” significa ativo contra os patógenos plausíveis daquele contexto, não espectro máximo automático. Agente, carga, via e combinações dependem de foco, gravidade, alergias, funções orgânicas, ecologia e protocolo; a revisão precoce é parte da prescrição inicial.</p></details><a class="visual-full-link" href="assets/images/img-45-escolha-empirica-camadas.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <div class="strategy-grid">
+          <article class="strategy-card"><b>1</b><h3>Probabilidade</h3><p>Classifique possível, provável ou definida; registre mimetizadores e o checkpoint de reavaliação.</p></article>
+          <article class="strategy-card"><b>2</b><h3>Foco</h3><p>Localize o sítio e identifique se há drenagem, desbridamento, retirada de dispositivo ou cirurgia.</p></article>
+          <article class="strategy-card"><b>3</b><h3>Hospedeiro</h3><p>Alergia, gestação, imunossupressão, função renal/hepática, peso, volume de distribuição e interações.</p></article>
+          <article class="strategy-card"><b>4</b><h3>Ecologia</h3><p>Colonização/infecção prévia, antimicrobianos, internação e prevalência local de resistência.</p></article>
+          <article class="strategy-card"><b>5</b><h3>Exposição</h3><p>Dose de ataque adequada; betalactâmico em manutenção por infusão prolongada após carga, conforme estabilidade e protocolo.</p></article>
+          <article class="strategy-card"><b>6</b><h3>Saída</h3><p>Revise em 24–48 h: diagnóstico, culturas, controle do foco, espectro, via e duração.</p></article>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-12" data-source-ids="ssc2026">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-12-pkpd-beta-lactamico-960.jpg"><source srcset="assets/images/optimized/img-12-pkpd-beta-lactamico-1672.jpg"><img src="assets/images/img-12-pkpd-beta-lactamico.png" width="1672" height="941" alt="Curvas conceituais de concentração de betalactâmico após carga e diferentes formas de manutenção" aria-describedby="caption-img-12 desc-img-12" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-12" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-12"><strong>IMG-12 · Carga, exposição e infusão prolongada</strong><span>Esquema conceitual de farmacocinética/farmacodinâmica; não é curva medida e não fornece dose, concentração ou alvo individual.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-12">A figura compara, sem unidades, a permanência da concentração acima da concentração inibitória mínima após dose de carga. Dose, diluição, função renal, peso, MIC e estabilidade devem seguir protocolo e farmácia clínica.</p></details><a class="visual-full-link" href="assets/images/img-12-pkpd-beta-lactamico.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <figure class="clinical-visual" data-visual-id="IMG-46" data-source-ids="ssc2026">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-46-dose-ataque-manutencao-960.jpg"><source srcset="assets/images/optimized/img-46-dose-ataque-manutencao-1672.jpg"><img src="assets/images/img-46-dose-ataque-manutencao.png" width="1672" height="941" alt="Comparação conceitual entre dose de ataque para atingir exposição cedo e manutenção ajustada à depuração" aria-describedby="caption-img-46 desc-img-46" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-46" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-46"><strong>IMG-46 · Dose de ataque não é manutenção</strong><span>Choque altera volume de distribuição e depuração; hiperfiltração, disfunções orgânicas, TRS e ECMO podem tornar a exposição imprevisível.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-46">A carga busca atingir exposição cedo; a manutenção acompanha depuração, órgão, suporte extracorpóreo, MIC e evolução. A prancha não informa dose: use protocolo, farmácia clínica, estabilidade de infusão e monitorização terapêutica quando indicada e disponível.</p></details><a class="visual-full-link" href="assets/images/img-46-dose-ataque-manutencao.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <figure class="clinical-visual" data-visual-id="IMG-47" data-source-ids="ssc2026">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-47-timeout-antimicrobiano-960.jpg"><source srcset="assets/images/optimized/img-47-timeout-antimicrobiano-1672.jpg"><img src="assets/images/img-47-timeout-antimicrobiano.png" width="1672" height="941" alt="Relógio de revisão antimicrobiana entre 24 e 72 horas com saídas manter, desescalar ou suspender" aria-describedby="caption-img-47 desc-img-47" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-47" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-47"><strong>IMG-47 · Time-out antimicrobiano em 24–72 horas</strong><span>Reabra probabilidade de infecção, resultados, controle do foco, mudanças do hospedeiro, espectro e duração; a saída pode ser manter, estreitar ou suspender.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-47">Desescalar é resposta a dados, não fracasso. Mesmo com culturas finais negativas, diagnóstico, trajetória e controle do foco podem sustentar redução ou suspensão; procalcitonina é complementar em situações selecionadas e nunca substitui avaliação clínica.</p></details><a class="visual-full-link" href="assets/images/img-47-timeout-antimicrobiano.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <div class="source-control-box">
+          <div><span class="eyebrow">Controle do foco</span><h3>O antibiótico não drena pus, não remove prótese infectada e não descomprime obstrução.</h3></div>
+          <ol>
+            <li>Defina a anatomia suspeita e a urgência.</li>
+            <li>Acione a equipe capaz de intervir cedo.</li>
+            <li>Estabilize o suficiente sem adiar indefinidamente.</li>
+            <li>Quando indicado, busque controle precoce — idealmente em até 6 h.</li>
+            <li>Confirme se o procedimento realmente controlou o foco.</li>
+          </ol>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-13" data-source-ids="ssc2026">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-13-controle-do-foco-960.jpg"><source srcset="assets/images/optimized/img-13-controle-do-foco-1672.jpg"><img src="assets/images/img-13-controle-do-foco.png" width="1672" height="941" alt="Abscesso, prótese infectada, obstrução e tecido necrótico associados a intervenções de controle do foco" aria-describedby="caption-img-13 desc-img-13" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-13" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-13"><strong>IMG-13 · Antibiótico não corrige anatomia</strong><span>Drenagem, retirada de dispositivo, descompressão ou desbridamento podem ser indispensáveis; quando indicado, busque controle precoce.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-13">Quatro padrões anatômicos são ligados às intervenções que efetivamente removem ou interrompem o foco. Estabilização e intervenção devem ser coordenadas, com confirmação posterior de eficácia.</p></details><a class="visual-full-link" href="assets/images/img-13-controle-do-foco.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <figure class="clinical-visual" data-visual-id="IMG-48" data-source-ids="ssc2026">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-48-controle-foco-circuito-960.jpg"><source srcset="assets/images/optimized/img-48-controle-foco-circuito-1672.jpg"><img src="assets/images/img-48-controle-foco-circuito.png" width="1672" height="941" alt="Circuito de controle do foco desde localização anatômica até confirmação da eficácia da intervenção" aria-describedby="caption-img-48 desc-img-48" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-48" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-48"><strong>IMG-48 · Controle do foco: feche o circuito</strong><span>Localize a anatomia, defina urgência/viabilidade, drene, desbride, remova ou descomprima e confirme se a fonte realmente foi controlada.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-48">Quando há fonte específica que requer intervenção, a SSC 2026 sugere controle precoce, idealmente em até 6 horas, com certeza muito baixa. Esse alvo é condicional: emergências não devem esperar, e modalidade, risco, logística e resposta permanecem individualizados.</p></details><a class="visual-full-link" href="assets/images/img-48-controle-foco-circuito.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <aside class="acra-slot" data-acra-plan-id="ACRA-SEPSE-03" data-acra-id="a03-acra-sepse-controle-foco-v1" data-artifact-id="a03-acra-sepse-controle-foco-v1" aria-labelledby="acra-title-03">
+          <div class="acra-slot__copy"><span class="acra-kicker">ACRA 03 · 7 camadas disponíveis</span><h3 id="acra-title-03">Antibiótico não drena pus</h3><p>Choque abdominal com coleção e resposta parcial. Treine anatomia, acionamento de equipe, controle precoce e confirmação da eficácia.</p></div>
+          <div class="acra-slot__actions"><button class="button primary" type="button" data-acra-open data-acra-id="a03-acra-sepse-controle-foco-v1" aria-controls="acraStage" aria-haspopup="dialog">Abrir ACRA 03</button><span data-acra-status aria-live="polite">Teaser convencional disponível; interação opcional.</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="hemodinamica">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Ressuscitação guiada por fisiologia</span><h2>Fluido, pressão e perfusão em ciclos curtos</h2></div>
+          <p>O objetivo não é “normalizar um número”: é restaurar perfusão sem induzir edema, congestão ou atraso de vasopressor.</p>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-14" data-source-ids="ssc2026 hemodynamic-guide">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-14-fluido-como-farmaco-960.jpg"><source srcset="assets/images/optimized/img-14-fluido-como-farmaco-1672.jpg"><img src="assets/images/img-14-fluido-como-farmaco.png" width="1672" height="941" alt="Modelo mental de fluido como fármaco com indicação, dose, resposta e toxicidade" aria-describedby="caption-img-14 desc-img-14" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-14" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-14"><strong>IMG-14 · Fluido como fármaco</strong><span>Em hipoperfusão induzida por sepse/choque, 30 mL/kg é ponto inicial condicional, não bolus universal cego. Lactato isolado não ordena expansão.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-14">O frasco é organizado como prescrição: indicação, quantidade inicial, efeito esperado e toxicidade. Cada novo ciclo depende de perfusão, responsividade e tolerância, especialmente diante de congestão.</p></details><a class="visual-full-link" href="assets/images/img-14-fluido-como-farmaco.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <figure class="clinical-visual" data-visual-id="IMG-49" data-source-ids="ssc2026 andromeda2 hemodynamic-guide">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-49-perfusao-mosaico-960.jpg"><source srcset="assets/images/optimized/img-49-perfusao-mosaico-1672.jpg"><img src="assets/images/img-49-perfusao-mosaico.png" width="1672" height="941" alt="Mosaico hemodinâmico integrando pressão, fluxo, microcirculação e metabolismo ou disfunção orgânica" aria-describedby="caption-img-49 desc-img-49" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-49" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-49"><strong>IMG-49 · Perfusão é um mosaico</strong><span>PAM, débito/volume sistólico, tempo de enchimento capilar/pele, lactato em tendência, diurese e estado mental respondem a camadas diferentes da perfusão.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026, ANDROMEDA-SHOCK-2 e guia hemodinâmico</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-49">Pressão adequada não garante fluxo; fluxo adequado não garante microcirculação. Escolha uma intervenção com alvo mensurável e confronte benefício, dano e tendência. O tempo de enchimento capilar é adjunto e não deve ser usado como oráculo isolado.</p></details><a class="visual-full-link" href="assets/images/img-49-perfusao-mosaico.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <div class="hemo-rules">
+          <article><span class="rule-tag strong">Recomendação forte</span><h3>Cristaloide como primeira linha</h3><p>A escolha de cristaloide é forte; preferir solução balanceada à salina 0,9% na maioria é recomendação condicional. Em traumatismo cranioencefálico, a SSC sugere salina 0,9%.</p></article>
+          <article><span class="rule-tag conditional">Condicional · baixa certeza</span><h3>≥30 mL/kg nas primeiras 3 h</h3><p>Para hipoperfusão induzida por sepse/choque, individualizando peso e contexto, com reavaliação frequente. Não é autorização para bolus repetidos cegamente.</p></article>
+          <article><span class="rule-tag strong">Recomendação forte</span><h3>Noradrenalina primeiro</h3><p>Noradrenalina é a primeira linha; a meta inicial usual de PAM 65 mmHg também é forte. Em ≥65 anos, considerar 60–65 mmHg é condicional, com baixa certeza.</p></article>
+          <article><span class="rule-tag conditional">Condicional</span><h3>Medidas dinâmicas</h3><p>Elevação passiva das pernas ou pequena prova com mudança de volume sistólico/pressão de pulso são preferíveis a marcadores estáticos isolados.</p></article>
+        </div>
+        <div class="reassessment-loop" aria-label="Ciclo de reavaliação hemodinâmica">
+          <div><b>1 · Perfusão</b><span>Consciência, pele/TEC, diurese, lactato e pressão.</span></div>
+          <div><b>2 · Responsividade</b><span>O débito/volume sistólico aumenta com manobra dinâmica?</span></div>
+          <div><b>3 · Tolerância</b><span>Congestão pulmonar/venosa, oxigenação, VD/VE e pressão abdominal.</span></div>
+          <div><b>4 · Intervenção</b><span>Fluido, vasopressor, inotrópico ou nenhuma expansão adicional.</span></div>
+          <div><b>5 · Repetir</b><span>Defina em minutos qual variável mostrará benefício ou dano.</span></div>
+        </div>
+
+        <figure class="clinical-visual" data-visual-id="IMG-44" data-source-ids="ssc2026 hemodynamic-guide">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-44-lactato-nao-bolus-960.jpg"><source srcset="assets/images/optimized/img-44-lactato-nao-bolus-1672.jpg"><img src="assets/images/img-44-lactato-nao-bolus.png" width="1672" height="941" alt="Mecanismos de elevação do lactato e sinais clínicos que devem contextualizar sua interpretação" aria-describedby="caption-img-44 desc-img-44" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-44" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-44"><strong>IMG-44 · Lactato alto não é bolus automático</strong><span>Disóxia, estímulo adrenérgico/glicólise, menor depuração hepática, convulsões, fármacos e metabolismo podem elevar lactato por mecanismos diferentes.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e guia hemodinâmico</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-44">Use tendência e leia junto com pele/enchimento capilar, estado mental, diurese, fluxo e trajetória. A SSC recomenda individualizar fluidos após o bolus inicial e não continuar expansão apenas até normalizar lactato.</p></details><a class="visual-full-link" href="assets/images/img-44-lactato-nao-bolus.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <div class="visual-grid visual-grid--2">
+          <figure class="clinical-visual" data-visual-id="IMG-15" data-source-ids="ssc2026 hemodynamic-guide">
+            <div class="visual-frame">
+              <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-15-responsividade-dinamica-960.jpg"><source srcset="assets/images/optimized/img-15-responsividade-dinamica-1672.jpg"><img src="assets/images/img-15-responsividade-dinamica.png" width="1672" height="941" alt="Elevação passiva das pernas e pequena prova de fluido avaliadas pela mudança no volume sistólico" aria-describedby="caption-img-15 desc-img-15" loading="lazy" decoding="async"></picture>
+              <button class="visual-zoom" type="button" data-visual-target="IMG-15" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+            </div>
+            <figcaption id="caption-img-15"><strong>IMG-15 · Responsividade dinâmica</strong><span>Responder a uma manobra não prova necessidade de fluido nem tolerância para recebê-lo.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-15">A elevação passiva das pernas e uma pequena prova de fluido são acompanhadas por variável de fluxo. O benefício só se torna útil quando há hipoperfusão tratável e ausência de toxicidade relevante.</p></details><a class="visual-full-link" href="assets/images/img-15-responsividade-dinamica.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+          </figure>
+          <figure class="clinical-visual" data-visual-id="IMG-50" data-source-ids="ssc2026 hemodynamic-guide">
+            <div class="visual-frame">
+              <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-50-prova-fluido-prazo-960.jpg"><source srcset="assets/images/optimized/img-50-prova-fluido-prazo-1672.jpg"><img src="assets/images/img-50-prova-fluido-prazo.png" width="1672" height="941" alt="Algoritmo de prova de fluido com indicação, teste reversível, medida de fluxo, tolerância e decisão" aria-describedby="caption-img-50 desc-img-50" loading="lazy" decoding="async"></picture>
+              <button class="visual-zoom" type="button" data-visual-target="IMG-50" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+            </div>
+            <figcaption id="caption-img-50"><strong>IMG-50 · Prova de fluido é pergunta com prazo</strong><span>Defina antes a hipoperfusão tratável, a manobra, a variável de fluxo, o benefício esperado e o dano que fará parar.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e guia hemodinâmico</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-50">Elevação passiva das pernas ou pequeno desafio avaliado por volume sistólico/fluxo pode mostrar responsividade. Responder não prova necessidade nem segurança: só administre quando houver alvo clínico e reavalie logo depois, sem repetir por inércia.</p></details><a class="visual-full-link" href="assets/images/img-50-prova-fluido-prazo.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+          </figure>
+          <figure class="clinical-visual" data-visual-id="IMG-16" data-source-ids="ssc2026 hemodynamic-guide">
+            <div class="visual-frame">
+              <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-16-tolerancia-congestao-960.jpg"><source srcset="assets/images/optimized/img-16-tolerancia-congestao-1672.jpg"><img src="assets/images/img-16-tolerancia-congestao.png" width="1672" height="941" alt="Sinais pulmonares, venosos, cardíacos, renais e abdominais de congestão após fluidos" aria-describedby="caption-img-16 desc-img-16" loading="lazy" decoding="async"></picture>
+              <button class="visual-zoom" type="button" data-visual-target="IMG-16" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+            </div>
+            <figcaption id="caption-img-16"><strong>IMG-16 · Quando o tanque transborda</strong><span>Congestão pulmonar ou venosa, disfunção de VD, piora renal e hipertensão abdominal reduzem tolerância a novos bolus.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-16">O esquema percorre órgãos expostos à sobrecarga. A decisão de interromper expansão depende do conjunto clínico, tendência e resposta, não de um único marcador estático.</p></details><a class="visual-full-link" href="assets/images/img-16-tolerancia-congestao.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+          </figure>
+        </div>
+
+        <figure class="clinical-visual" data-visual-id="IMG-51" data-source-ids="ssc2026 hemodynamic-guide">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-51-fluido-muda-papel-960.jpg"><source srcset="assets/images/optimized/img-51-fluido-muda-papel-1672.jpg"><img src="assets/images/img-51-fluido-muda-papel.png" width="1672" height="941" alt="Quatro momentos do fluido na sepse: resgate, reavaliação, estabilização e possível remoção ativa após a fase aguda" aria-describedby="caption-img-51 desc-img-51" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-51" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-51"><strong>IMG-51 · Fluido muda de papel com o tempo</strong><span>O cristaloide pode resgatar perfusão no choque, mas cada novo volume exige alvo, resposta e tolerância; após estabilização, evite acúmulo automático.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e guia hemodinâmico</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-51">Após a fase aguda, a SSC sugere remoção ativa no choque séptico quando sobrecarga, curso, função cardiorrespiratória e tolerância sustentarem essa decisão. Não inicie remoção durante vasopressor em escalada, hipoperfusão não corrigida ou necessidade contínua de expansão.</p></details><a class="visual-full-link" href="assets/images/img-51-fluido-muda-papel.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <div class="vasopressor-ladder">
+          <article><span>Degrau 1</span><h3>Noradrenalina</h3><p>Primeira linha. Na instabilidade grave, pode ser iniciada simultaneamente ao fluido individualizado. Acesso periférico pode evitar atraso, seguindo protocolo de segurança local.</p></article>
+          <article><span>Degrau 2</span><h3>Adicionar vasopressina</h3><p>Quando a dose de noradrenalina está escalando; estratégia poupadora de catecolamina, não substituto automático da primeira linha.</p></article>
+          <article><span>Degrau 3</span><h3>Adicionar adrenalina</h3><p>Se a PAM continuar inadequada com noradrenalina e vasopressina; interpretar lactato e efeitos adrenérgicos no contexto.</p></article>
+          <article><span>Fenótipo cardíaco</span><h3>Inotrópico</h3><p>Em disfunção cardíaca com hipoperfusão persistente apesar de volume e pressão adequados: dobutamina associada ou adrenalina isolada são opções condicionais.</p></article>
+        </div>
+        <div class="visual-grid visual-grid--3">
+          <figure class="clinical-visual" data-visual-id="IMG-17" data-source-ids="ssc2026 hemodynamic-guide">
+            <div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-17-escada-vasopressora-960.jpg"><source srcset="assets/images/optimized/img-17-escada-vasopressora-1672.jpg"><img src="assets/images/img-17-escada-vasopressora.png" width="1672" height="941" alt="Escada vasopressora da noradrenalina à combinação com vasopressina e adrenalina" aria-describedby="caption-img-17 desc-img-17" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-17" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div>
+            <figcaption id="caption-img-17"><strong>IMG-17 · Escada vasopressora</strong><span>Noradrenalina primeiro; considere vasopressina na escalada e adrenalina se a PAM persistir inadequada, sem limiar universal inventado.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-17">A escada representa sequência de princípios, não prescrição de dose. PAM, perfusão, efeitos adversos e fenótipo devem ser reavaliados a cada degrau.</p></details><a class="visual-full-link" href="assets/images/img-17-escada-vasopressora.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+          </figure>
+          <figure class="clinical-visual" data-visual-id="IMG-18" data-source-ids="ssc2026 hemodynamic-guide">
+            <div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-18-noradrenalina-periferica-960.jpg"><source srcset="assets/images/optimized/img-18-noradrenalina-periferica-1672.jpg"><img src="assets/images/reviewed/img-18-noradrenalina-periferica.png" width="1672" height="941" alt="Noradrenalina periférica em acesso pérvio, com sítio visível e monitorização frequente" aria-describedby="caption-img-18 desc-img-18" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-18" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div>
+            <figcaption id="caption-img-18"><strong>IMG-18 · Vasopressor periférico sem atraso</strong><span>Acesso periférico pérvio, sítio visível e monitorização frequente; reavalie a estratégia se o suporte persistir.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-18">O fluxo combina início sem atraso e vigilância do sítio. A SSC não estabelece regra universal de sítio, calibre, concentração, dose ou duração; siga protocolo institucional e reavalie a estratégia se o suporte persistir.</p></details><a class="visual-full-link" href="assets/images/reviewed/img-18-noradrenalina-periferica.png" target="_blank" rel="noopener">Abrir PNG revisado</a></figcaption>
+          </figure>
+          <figure class="clinical-visual" data-visual-id="IMG-19" data-source-ids="ssc2026 hemodynamic-guide">
+            <div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-19-alvos-pam-960.jpg"><source srcset="assets/images/optimized/img-19-alvos-pam-1672.jpg"><img src="assets/images/img-19-alvos-pam.png" width="1672" height="941" alt="Comparação entre alvo inicial geral de PAM 65 e faixa condicional de 60 a 65 em idosos" aria-describedby="caption-img-19 desc-img-19" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-19" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div>
+            <figcaption id="caption-img-19"><strong>IMG-19 · PAM: alvo inicial e individualização</strong><span>PAM 65 mmHg é alvo inicial geral; 60–65 mmHg em adultos ≥65 anos é consideração condicional de baixa certeza.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-19">As faixas são pontos de partida. Perfusão, doença vascular, tolerância, efeitos de catecolaminas e contexto individual orientam ajustes posteriores.</p></details><a class="visual-full-link" href="assets/images/img-19-alvos-pam.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+          </figure>
+        </div>
+
+        <figure class="clinical-visual" data-visual-id="IMG-52" data-source-ids="ssc2026 hemodynamic-guide">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-52-pam-ponto-partida-960.jpg"><source srcset="assets/images/optimized/img-52-pam-ponto-partida-1672.jpg"><img src="assets/images/img-52-pam-ponto-partida.png" width="1672" height="941" alt="Alvos iniciais de pressão arterial média e fatores clínicos para individualização no choque séptico" aria-describedby="caption-img-52 desc-img-52" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-52" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-52"><strong>IMG-52 · PAM: ponto de partida, não piloto automático</strong><span>A SSC 2026 recomenda alvo inicial de 65 mmHg em adultos com choque séptico e sugere 60–65 mmHg nos adultos com 65 anos ou mais.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e guia hemodinâmico</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-52">Titule em faixa e confronte perfusão, sintomas, autorregulação, órgãos vulneráveis e efeitos adversos. A recomendação para 60–65 mmHg em ≥65 anos é condicional e de baixa certeza; não transforme ponto de partida em alvo rígido universal.</p></details><a class="visual-full-link" href="assets/images/img-52-pam-ponto-partida.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <figure class="clinical-visual" data-visual-id="IMG-53" data-source-ids="ssc2026 hemodynamic-guide">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-53-vasopressor-alvo-efeito-toxicidade-960.jpg"><source srcset="assets/images/optimized/img-53-vasopressor-alvo-efeito-toxicidade-1672.jpg"><img src="assets/images/img-53-vasopressor-alvo-efeito-toxicidade.png" width="1672" height="941" alt="Escada vasopressora com alvo, efeitos sobre perfusão e sinais de toxicidade" aria-describedby="caption-img-53 desc-img-53" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-53" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-53"><strong>IMG-53 · Vasopressor: alvo, efeito e toxicidade</strong><span>Noradrenalina é primeira linha; com necessidade crescente, considere vasopressina; se a PAM continuar inadequada, considere adrenalina conforme contexto.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e guia hemodinâmico</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-53">A cada escalada, acompanhe PAM em faixa, perfusão e dano: arritmia, isquemia, hiperlactatemia, extremidades e sítio periférico. Não há limiar universal de dose no infográfico; vasopressor corrige pressão e não substitui foco, fluxo ou reavaliação de volume.</p></details><a class="visual-full-link" href="assets/images/img-53-vasopressor-alvo-efeito-toxicidade.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <figure class="clinical-visual" data-visual-id="IMG-54" data-source-ids="ssc2026">
+          <div class="visual-frame">
+            <picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-54-inotropico-quatro-portas-960.jpg"><source srcset="assets/images/optimized/img-54-inotropico-quatro-portas-1672.jpg"><img src="assets/images/img-54-inotropico-quatro-portas.png" width="1672" height="941" alt="Quatro condições antes de considerar inotrópico: hipoperfusão, volume adequado, pressão adequada e disfunção cardíaca" aria-describedby="caption-img-54 desc-img-54" loading="lazy" decoding="async"></picture>
+            <button class="visual-zoom" type="button" data-visual-target="IMG-54" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button>
+          </div>
+          <figcaption id="caption-img-54"><strong>IMG-54 · Inotrópico: quatro portas antes de usar</strong><span>Inotropia faz sentido quando hipoperfusão persiste apesar de volume e pressão adequados e há disfunção cardíaca compatível; fração de ejeção baixa isolada não basta.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-54">A SSC sugere dobutamina associada à noradrenalina ou adrenalina isolada, com certeza muito baixa. Defina alvo de fluxo/perfusão, monitore frequência, ritmo, pressão e isquemia e interrompa se não houver benefício ou surgir dano.</p></details><a class="visual-full-link" href="assets/images/img-54-inotropico-quatro-portas.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <div class="acra-slot-grid">
+          <aside class="acra-slot" data-acra-plan-id="ACRA-SEPSE-04" data-acra-id="acra-sepse-04-fluido-beneficio-ou-dano-v1" data-artifact-id="acra-sepse-04-fluido-beneficio-ou-dano-v1" aria-labelledby="acra-title-04"><div class="acra-slot__copy"><span class="acra-kicker">ACRA 04 · 7 camadas disponíveis</span><h3 id="acra-title-04">Fluido: benefício ou dano</h3><p>Separe necessidade, responsividade e tolerância em ciclos curtos diante de hipotensão e congestão progressiva.</p></div><div class="acra-slot__actions"><button class="button primary" type="button" data-acra-open data-acra-id="acra-sepse-04-fluido-beneficio-ou-dano-v1" aria-controls="acraStage" aria-haspopup="dialog">Abrir ACRA 04</button><span data-acra-status aria-live="polite">Teaser convencional disponível; interação opcional.</span></div></aside>
+          <aside class="acra-slot" data-acra-plan-id="ACRA-SEPSE-05" data-acra-id="acra-sepse-05-vasopressor-sem-atraso-v1" data-artifact-id="acra-sepse-05-vasopressor-sem-atraso-v1" aria-labelledby="acra-title-05"><div class="acra-slot__copy"><span class="acra-kicker">ACRA 05 · 7 camadas disponíveis</span><h3 id="acra-title-05">Vasopressor sem atraso</h3><p>Choque instável sem acesso central: treine início periférico seguro, PAM e escalada sem automatismo.</p></div><div class="acra-slot__actions"><button class="button primary" type="button" data-acra-open data-acra-id="acra-sepse-05-vasopressor-sem-atraso-v1" aria-controls="acraStage" aria-haspopup="dialog">Abrir ACRA 05</button><span data-acra-status aria-live="polite">Teaser convencional disponível; interação opcional.</span></div></aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="fenotipos">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Medicina de precisão com limites</span><h2>Fenótipos e endótipos</h2></div>
+          <p>Os perfis hemodinâmicos são rótulos operacionais didáticos para organizar o raciocínio — não constituem classificação validada nem protocolo oficial. SENECA e transcriptômica ensinam heterogeneidade, mas ainda não autorizam terapia automática à beira-leito.</p>
+        </div>
+
+        <figure class="clinical-visual" data-visual-id="IMG-20" data-source-ids="ssc2026 seneca transcriptomic">
+          <div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-20-tres-camadas-fenotipo-960.jpg"><source srcset="assets/images/optimized/img-20-tres-camadas-fenotipo-1672.jpg"><img src="assets/images/img-20-tres-camadas-fenotipo.png" width="1672" height="941" alt="Três camadas separando fisiologia hemodinâmica, fenótipos SENECA e endótipos transcriptômicos" aria-describedby="caption-img-20 desc-img-20" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-20" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div>
+          <figcaption id="caption-img-20"><strong>IMG-20 · Três camadas de fenotipagem</strong><span>Fisiologia é acionável hoje; SENECA é descritivo; CTS é investigacional. Nenhuma camada molecular autoriza prescrição automática.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026, SENECA e transcriptômica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-20">O mapa separa três níveis que frequentemente são confundidos. Sinais hemodinâmicos podem guiar reavaliação imediata, enquanto clusters retrospectivos e assinaturas moleculares permanecem instrumentos de pesquisa.</p></details><a class="visual-full-link" href="assets/images/img-20-tres-camadas-fenotipo.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+
+        <div class="layer-switcher" role="tablist" aria-label="Camadas de fenotipagem">
+          <button class="layer-button active" type="button" data-layer="hemodynamic" role="tab" aria-selected="true">🫀 Hemodinâmica</button>
+          <button class="layer-button" type="button" data-layer="seneca" role="tab" aria-selected="false">αβγδ SENECA</button>
+          <button class="layer-button" type="button" data-layer="molecular" role="tab" aria-selected="false">🧬 Molecular</button>
+        </div>
+        <div class="phenotype-buttons" id="phenotypeButtons" aria-label="Selecionar perfil"></div>
+        <article class="phenotype-detail" id="phenotypeDetail"></article>
+        <div class="visual-grid visual-grid--3">
+          <figure class="clinical-visual" data-visual-id="IMG-21" data-source-ids="ssc2026 hemodynamic-guide"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-21-fenotipo-vasoplegico-960.jpg"><source srcset="assets/images/optimized/img-21-fenotipo-vasoplegico-1672.jpg"><img src="assets/images/img-21-fenotipo-vasoplegico.png" width="1672" height="941" alt="Perfil vasoplégico com baixo tônus arterial e fluxo mal distribuído" aria-describedby="caption-img-21 desc-img-21" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-21" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-21"><strong>IMG-21 · Perfil vasoplégico</strong><span>Baixo tônus e pressão diastólica reduzida podem coexistir com fluxo inadequado; corrigir pressão não garante perfusão restaurada.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-21">O esquema combina vasodilatação, distribuição anormal de fluxo e dependência de vasopressor. A resposta deve ser confirmada por perfusão e não apenas pela PAM.</p></details><a class="visual-full-link" href="assets/images/img-21-fenotipo-vasoplegico.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-22" data-source-ids="ssc2026 hemodynamic-guide"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-22-baixa-pre-carga-960.jpg"><source srcset="assets/images/optimized/img-22-baixa-pre-carga-1672.jpg"><img src="assets/images/img-22-baixa-pre-carga.png" width="1672" height="941" alt="Curva de Frank-Starling demonstrando possível resposta de fluxo com vigilância de congestão" aria-describedby="caption-img-22 desc-img-22" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-22" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-22"><strong>IMG-22 · Baixa pré-carga responsiva</strong><span>Hipotensão ou VCI isolada não bastam; demonstre resposta dinâmica e vigie tolerância.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-22">A curva representa aumento mensurável de fluxo após uma manobra reversível ou pequena prova. Ainda é preciso demonstrar necessidade clínica e ausência de congestão limitante.</p></details><a class="visual-full-link" href="assets/images/img-22-baixa-pre-carga.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-23" data-source-ids="ssc2026 hemodynamic-guide"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-23-cardiomiopatia-septica-960.jpg"><source srcset="assets/images/optimized/img-23-cardiomiopatia-septica-1672.jpg"><img src="assets/images/img-23-cardiomiopatia-septica.png" width="1672" height="941" alt="Esquema conceitual de disfunção ventricular e acoplamento ventrículo-arterial na sepse" aria-describedby="caption-img-23 desc-img-23" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-23" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-23"><strong>IMG-23 · Perfil cardiomiopático</strong><span>Disfunção de VE ou VD e baixo fluxo podem persistir apesar da PAM; fração de ejeção isolada não indica inotrópico.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-23">O acoplamento ventrículo-arterial é apresentado como modelo conceitual, não como leitura de um dispositivo. Integre fluxo, perfusão, carga, eco e resposta antes de escolher intervenção.</p></details><a class="visual-full-link" href="assets/images/img-23-cardiomiopatia-septica.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-24" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-24-vd-obstrutivo-960.jpg"><source srcset="assets/images/optimized/img-24-vd-obstrutivo-1672.jpg"><img src="assets/images/img-24-vd-obstrutivo.png" width="1672" height="941" alt="Ventrículo direito dilatado e causas obstrutivas reversíveis que podem coexistir com infecção" aria-describedby="caption-img-24 desc-img-24" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-24" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-24"><strong>IMG-24 · VD e choque obstrutivo</strong><span>TEP, tamponamento, pneumotórax hipertensivo, auto-PEEP e pressão abdominal podem coexistir com infecção e mudar a prioridade.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-24">A figura reúne mecanismos distintos que aumentam carga de VD ou limitam retorno venoso. Eles não são intercambiáveis: exigem confirmação dirigida e tratamento causal específico durante a estabilização.</p></details><a class="visual-full-link" href="assets/images/img-24-vd-obstrutivo.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-25" data-source-ids="ssc2026 hemodynamic-guide"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-25-choque-misto-dinamico-960.jpg"><source srcset="assets/images/optimized/img-25-choque-misto-dinamico-1672.jpg"><img src="assets/images/img-25-choque-misto-dinamico.png" width="1672" height="941" alt="Perfis de choque sobrepostos mudando após fluido, intubação e vasopressor" aria-describedby="caption-img-25 desc-img-25" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-25" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-25"><strong>IMG-25 · Choque misto e dinâmico</strong><span>O perfil pode mudar após cada intervenção; reclassifique a fisiologia em vez de cristalizar um rótulo.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-25">As camadas vasoplégica, hipovolêmica, cardíaca e obstrutiva aparecem sobrepostas ao longo do tempo. Fluido, ventilação e vasopressor podem revelar ou agravar componentes diferentes.</p></details><a class="visual-full-link" href="assets/images/img-25-choque-misto-dinamico.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        </div>
+        <div class="research-warning"><b>⚠️ Linha vermelha:</b> não negar corticoide, vasopressor, antimicrobiano ou controle do foco com base em cluster retrospectivo. Endótipos moleculares permanecem ferramenta de pesquisa/estratificação de ensaios.</div>
+        <div class="visual-grid visual-grid--2">
+          <figure class="clinical-visual" data-visual-id="IMG-26" data-source-ids="seneca seneca-validation"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-26-seneca-alpha-beta-gamma-delta-960.jpg"><source srcset="assets/images/optimized/img-26-seneca-alpha-beta-gamma-delta-1672.jpg"><img src="assets/images/img-26-seneca-alpha-beta-gamma-delta.png" width="1672" height="941" alt="Quatro clusters SENECA alfa, beta, gama e delta com características descritivas" aria-describedby="caption-img-26 desc-img-26" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-26" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-26"><strong>IMG-26 · SENECA α β γ δ</strong><span>Clusters retrospectivos têm distribuição e prognóstico variáveis entre coortes; são descritivos, não prescritivos.</span><span class="visual-source">Fontes: <a href="#fontes">SENECA e validações</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-26">O painel resume características dos quatro agrupamentos originais e diferenças relativas de mortalidade. Ele não permite classificar com segurança um indivíduo nem selecionar tratamento à beira-leito.</p></details><a class="visual-full-link" href="assets/images/img-26-seneca-alpha-beta-gamma-delta.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-27" data-source-ids="transcriptomic"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-27-cts-transcriptomica-960.jpg"><source srcset="assets/images/optimized/img-27-cts-transcriptomica-1672.jpg"><img src="assets/images/img-27-cts-transcriptomica.png" width="1672" height="941" alt="Assinaturas transcriptômicas CTS1, CTS2 e CTS3 e suas vias biológicas predominantes" aria-describedby="caption-img-27 desc-img-27" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-27" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-27"><strong>IMG-27 · CTS1, CTS2 e CTS3</strong><span>Assinaturas moleculares investigacionais não possuem correspondência clínica simples nem protocolo terapêutico validado.</span><span class="visual-source">Fonte: <a href="#fontes">estudo transcriptômico</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-27">As vias de inflamação/endotélio, heme/fibrinólise e interferon/imunidade adaptativa são apresentadas como padrões de pesquisa. Um rótulo molecular não deve ser presumido por aparência clínica.</p></details><a class="visual-full-link" href="assets/images/img-27-cts-transcriptomica.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        </div>
+        <div class="acra-slot-grid">
+          <aside class="acra-slot" data-acra-plan-id="ACRA-SEPSE-06" data-acra-id="acra-sepse-06-fenotipo-muda-conduta-muda-v1" data-artifact-id="acra-sepse-06-fenotipo-muda-conduta-muda-v1" aria-labelledby="acra-title-06"><div class="acra-slot__copy"><span class="acra-kicker">ACRA 06 · 7 camadas disponíveis</span><h3 id="acra-title-06">Fenótipo muda, conduta muda</h3><p>Choque inicialmente vasoplégico revela falência de VD após intubação. Treine reclassificação seriada e evite volume cego.</p></div><div class="acra-slot__actions"><button class="button primary" type="button" data-acra-open data-acra-id="acra-sepse-06-fenotipo-muda-conduta-muda-v1" aria-controls="acraStage" aria-haspopup="dialog">Abrir ACRA 06</button><span data-acra-status aria-live="polite">Teaser convencional disponível; interação opcional.</span></div></aside>
+          <aside class="acra-slot" data-acra-plan-id="ACRA-SEPSE-07" data-acra-id="acra-sepse-07-v1" data-artifact-id="acra-sepse-07-v1" aria-labelledby="acra-title-07"><div class="acra-slot__copy"><span class="acra-kicker">ACRA 07 · 7 camadas disponíveis</span><h3 id="acra-title-07">SENECA e CTS sem extrapolação</h3><p>Diferencie descrição, prognóstico, predição e prescrição antes de aplicar clusters retrospectivos ou assinaturas presumidas.</p></div><div class="acra-slot__actions"><button class="button primary" type="button" data-acra-open data-acra-id="acra-sepse-07-v1" aria-controls="acraStage" aria-haspopup="dialog">Abrir ACRA 07</button><span data-acra-status aria-live="polite">Teaser convencional disponível; interação opcional.</span></div></aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="refrataria">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Ferramenta 3</span><h2>Choque refratário: auditoria antes do “resgate”</h2></div>
+          <p>Quanto maior a dose de vasopressor, maior a obrigação de reabrir o diagnóstico e procurar mecanismos simultâneos.</p>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-28" data-source-ids="ssc2026 hemodynamic-guide"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-28-auditoria-choque-refratario-960.jpg"><source srcset="assets/images/optimized/img-28-auditoria-choque-refratario-1672.jpg"><img src="assets/images/img-28-auditoria-choque-refratario.png" width="1672" height="941" alt="Circuito de oito domínios para auditar choque refratário antes de terapias de resgate" aria-describedby="caption-img-28 desc-img-28" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-28" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-28"><strong>IMG-28 · Oito domínios antes do resgate</strong><span>Reabra diagnóstico, foco, antimicrobiano, tanque, vasoplegia, bomba, tubos/pressões e metabolismo.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-28">O circuito fechado força revisão de causas reversíveis e erros de execução antes de medidas não padrão. Completar o checklist não autoriza automaticamente terapia de resgate.</p></details><a class="visual-full-link" href="assets/images/img-28-auditoria-choque-refratario.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        <div class="refractory-layout">
+          <form class="audit-panel" id="refractoryForm">
+            <fieldset>
+              <legend class="sr-only">Oito domínios da auditoria do choque refratário</legend>
+            <label class="audit-row"><input type="checkbox" name="diagnosis"><span><b>1 · Diagnóstico</b>Infecção é provável? Há hemorragia, anafilaxia, TEP, tamponamento, crise adrenal, intoxicação ou choque misto?</span></label>
+            <label class="audit-row"><input type="checkbox" name="source"><span><b>2 · Foco</b>Anatomia localizada, drenagem/desbridamento/dispositivo resolvidos e eficácia confirmada?</span></label>
+            <label class="audit-row"><input type="checkbox" name="antimicrobial"><span><b>3 · Antimicrobiano</b>Agente, carga, infusão, penetração, resistência e dose em TRS/ECMO revisados?</span></label>
+            <label class="audit-row"><input type="checkbox" name="volume"><span><b>4 · Tanque</b>Volume efetivo, responsividade e tolerância/congestão reavaliados?</span></label>
+            <label class="audit-row"><input type="checkbox" name="vasoplegia"><span><b>5 · Vasoplegia</b>PAM medida de forma confiável, acesso seguro e vasopressores racionalmente combinados?</span></label>
+            <label class="audit-row"><input type="checkbox" name="pump"><span><b>6 · Bomba</b>VE/VD, débito, isquemia, arritmia e cardiomiopatia séptica avaliados?</span></label>
+            <label class="audit-row"><input type="checkbox" name="tubes"><span><b>7 · Tubos/pressões</b>Auto-PEEP, pneumotórax, ventilação, pressão abdominal e obstrução excluídos?</span></label>
+            <label class="audit-row"><input type="checkbox" name="metabolic"><span><b>8 · Metabólico</b>Acidemia grave, cálcio, glicose, temperatura, hipóxia e insuficiência adrenal considerados?</span></label>
+            </fieldset>
+          </form>
+          <aside class="audit-result" id="auditResult" aria-live="polite">
+            <span class="status-pill">0 de 8 domínios revisados</span>
+            <h3>O choque “refratário” pode ser um choque incompletamente explicado.</h3>
+            <p>Marque um domínio somente depois de revisar dados e resposta. O checklist não autoriza terapia de resgate.</p>
+          </aside>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-55" data-source-ids="ssc2026 hemodynamic-guide">
+          <div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-55-intubacao-choque-crash-960.jpg"><source srcset="assets/images/optimized/img-55-intubacao-choque-crash-1672.jpg"><img src="assets/images/img-55-intubacao-choque-crash.png" width="1672" height="941" alt="Preparação hemodinâmica e respiratória para reduzir o risco de colapso peri-intubação no choque séptico" aria-describedby="caption-img-55 desc-img-55" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-55" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div>
+          <figcaption id="caption-img-55"><strong>IMG-55 · Intubação no choque: antecipe o crash</strong><span>A indução reduz o tônus simpático; a pressão positiva reduz o retorno venoso e pode aumentar a pós-carga do ventrículo direito. Prepare oxigenação, hemodinâmica, equipe e plano de resgate antes da apneia.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-55">Confirme tubo, circuito e ventilação. Se houver piora abrupta, procure pneumotórax hipertensivo, auto-PEEP, falência de ventrículo direito/TEP, hipovolemia relativa e vasoplegia. Não existe sequência universal de fármaco: anatomia, fisiologia, recursos e competência da equipe determinam a estratégia.</p></details><a class="visual-full-link" href="assets/images/img-55-intubacao-choque-crash.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption>
+        </figure>
+        <div class="visual-grid visual-grid--2">
+          <figure class="clinical-visual" data-visual-id="IMG-29" data-source-ids="ssc2026 hemodynamic-guide"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-29-lactato-persistente-960.jpg"><source srcset="assets/images/optimized/img-29-lactato-persistente-1672.jpg"><img src="assets/images/img-29-lactato-persistente.png" width="1672" height="941" alt="Múltiplos mecanismos possíveis para lactato persistentemente elevado" aria-describedby="caption-img-29 desc-img-29" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-29" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-29"><strong>IMG-29 · Lactato persistente tem múltiplos mecanismos</strong><span>Hipoperfusão, catecolaminas, depuração hepática, convulsão e metabolismo podem contribuir; não ordene fluido isoladamente.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e diretriz hemodinâmica</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-29">A figura abre o diferencial mecanístico de hiperlactatemia. Tendência, perfusão, fármacos, fígado e contexto neurológico devem ser integrados antes de intervir.</p></details><a class="visual-full-link" href="assets/images/img-29-lactato-persistente.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-30" data-source-ids="ssc2026 andromeda2"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-30-pocus-hemodinamica-integrada-960.jpg"><source srcset="assets/images/optimized/img-30-pocus-hemodinamica-integrada-1672.jpg"><img src="assets/images/img-30-pocus-hemodinamica-integrada.png" width="1672" height="941" alt="Mapa conceitual integrando POCUS de coração, pulmão, veias e abdome à avaliação clínica" aria-describedby="caption-img-30 desc-img-30" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-30" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-30"><strong>IMG-30 · POCUS integrado, não oráculo</strong><span>Esquema conceitual, não exame real. Nenhuma imagem isolada define volume, etiologia ou conduta.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e ANDROMEDA-SHOCK-2</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-30">Coração, pulmão, sistema venoso, abdome e resposta dinâmica são conectados à clínica. O resultado depende de aquisição, contexto, tendência e integração com outros dados.</p></details><a class="visual-full-link" href="assets/images/img-30-pocus-hemodinamica-integrada.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        </div>
+        <aside class="acra-slot" data-acra-plan-id="ACRA-SEPSE-08" data-acra-id="acra-sepse-08-v1" data-artifact-id="acra-sepse-08-v1" aria-labelledby="acra-title-08"><div class="acra-slot__copy"><span class="acra-kicker">ACRA 08 · 7 camadas disponíveis</span><h3 id="acra-title-08">Choque refratário: explique antes de resgatar</h3><p>Foco duvidoso, drenagem ineficaz, auto-PEEP e acidemia: audite oito domínios e priorize causas reversíveis.</p></div><div class="acra-slot__actions"><button class="button primary" type="button" data-acra-open data-acra-id="acra-sepse-08-v1" aria-controls="acraStage" aria-haspopup="dialog">Abrir ACRA 08</button><span data-acra-status aria-live="polite">Teaser convencional disponível; interação opcional.</span></div></aside>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="suporte">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Proteção de órgãos</span><h2>Suporte que não pode virar piloto automático</h2></div>
+          <p>O suporte compra tempo para antimicrobiano, controle do foco e recuperação — e também pode causar dano se o alvo não estiver explícito.</p>
+        </div>
+        <div class="organ-grid" id="organGrid"></div>
+        <div class="visual-grid visual-grid--2">
+          <figure class="clinical-visual" data-visual-id="IMG-31" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-31-suporte-respiratorio-960.jpg"><source srcset="assets/images/optimized/img-31-suporte-respiratorio-1672.jpg"><img src="assets/images/img-31-suporte-respiratorio.png" width="1672" height="941" alt="Sequência de suporte respiratório da cânula nasal de alto fluxo à ventilação protetora" aria-describedby="caption-img-31 desc-img-31" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-31" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-31"><strong>IMG-31 · Proteção respiratória</strong><span>CNAF em hipoxemia selecionada exige vigilância de falha; intube oportunamente e use ventilação protetora na SDRA.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-31">O fluxo conecta suporte não invasivo, gatilhos de falha e intubação sem atraso indevido. Na SDRA, o volume corrente usa peso corporal predito e a pressão de platô deve ser limitada.</p></details><a class="visual-full-link" href="assets/images/img-31-suporte-respiratorio.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-56" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-56-hipoxemia-escada-960.jpg"><source srcset="assets/images/optimized/img-56-hipoxemia-escada-1672.jpg"><img src="assets/images/img-56-hipoxemia-escada.png" width="1672" height="941" alt="Escada de suporte da hipoxemia na sepse com reavaliação e gatilhos de falha" aria-describedby="caption-img-56 desc-img-56" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-56" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-56"><strong>IMG-56 · Hipoxemia: escada com reavaliação</strong><span>Oxigênio convencional, cânula nasal de alto fluxo e prona acordada podem ocupar janelas selecionadas; trabalho respiratório, consciência, hemodinâmica e troca gasosa dizem se a estratégia está falhando.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-56">A prona acordada requer paciente tolerante e monitorizado; não se deve sedar apenas para mantê-la. Necessidade urgente de via aérea ou deterioração apesar do suporte exige intubação oportuna. A escada organiza reavaliação — não impõe que todo paciente percorra cada degrau.</p></details><a class="visual-full-link" href="assets/images/img-56-hipoxemia-escada.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-57" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-57-sdra-ventile-proteger-960.jpg"><source srcset="assets/images/optimized/img-57-sdra-ventile-proteger-1672.jpg"><img src="assets/images/img-57-sdra-ventile-proteger.png" width="1672" height="941" alt="Ventilação protetora e terapias adjuntas na síndrome do desconforto respiratório agudo associada à sepse" aria-describedby="caption-img-57 desc-img-57" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-57" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-57"><strong>IMG-57 · SDRA na sepse: ventile para proteger</strong><span>Volume corrente de 6 mL/kg de peso corporal predito e pressão de platô ≤ 30 cmH₂O são pilares. PEEP mais alta e prona prolongada dependem da gravidade e da tolerância.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-57">Na SDRA moderada a grave, prona por mais de 12 horas/dia e PEEP mais alta são opções condicionais. Evite escalada incremental indiscriminada de PEEP. ECMO venovenosa é resgate para hipoxemia refratária em centros experientes, após otimização das estratégias convencionais.</p></details><a class="visual-full-link" href="assets/images/img-57-sdra-ventile-proteger.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-32" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-32-rim-e-trs-960.jpg"><source srcset="assets/images/optimized/img-32-rim-e-trs-1672.jpg"><img src="assets/images/img-32-rim-e-trs.png" width="1672" height="941" alt="Avaliação renal, ajuste dinâmico de antimicrobianos e indicações estabelecidas de terapia renal substitutiva" aria-describedby="caption-img-32 desc-img-32" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-32" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-32"><strong>IMG-32 · Rim, dose e terapia renal</strong><span>Ajuste de dose é dinâmico; TRS segue indicações estabelecidas. Purificação extracorpórea de rotina não deve ser confundida com suporte renal.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-32">A imagem relaciona função renal variável, exposição antimicrobiana, nefrotóxicos e indicações clássicas de TRS. Técnicas experimentais de remoção de mediadores não são apresentadas como rotina.</p></details><a class="visual-full-link" href="assets/images/img-32-rim-e-trs.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-58" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-58-lra-trs-indicacao-960.jpg"><source srcset="assets/images/optimized/img-58-lra-trs-indicacao-1672.jpg"><img src="assets/images/img-58-lra-trs-indicacao.png" width="1672" height="941" alt="Avaliação da lesão renal aguda e início de terapia renal substitutiva somente quando houver indicação estabelecida" aria-describedby="caption-img-58 desc-img-58" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-58" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-58"><strong>IMG-58 · LRA na sepse: TRS por indicação</strong><span>Revise perfusão, congestão, obstrução, nefrotóxicos, dose de fármacos e tendência. Creatinina isolada não é ordem automática de terapia renal substitutiva.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-58">Inicie TRS quando houver indicação definitiva e contexto compatível; sem ela, a SSC sugere contra o início rotineiro. Modalidade contínua ou intermitente depende de hemodinâmica, objetivo, recursos e experiência. A decisão integra eletrólitos, acidobase, volume, toxinas, uremia e evolução.</p></details><a class="visual-full-link" href="assets/images/img-58-lra-trs-indicacao.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-59" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-59-bicarbonato-lactato-960.jpg"><source srcset="assets/images/optimized/img-59-bicarbonato-lactato-1672.jpg"><img src="assets/images/img-59-bicarbonato-lactato.png" width="1672" height="941" alt="Limites do bicarbonato na acidemia láctica e contexto específico de choque séptico com acidemia grave e lesão renal aguda" aria-describedby="caption-img-59 desc-img-59" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-59" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-59"><strong>IMG-59 · Bicarbonato não é borracha de lactato</strong><span>Não use bicarbonato apenas para melhorar hemodinâmica ou reduzir vasopressor na acidemia láctica. A exceção condicional exige choque séptico, pH ≤ 7,2 e LRA AKIN 2–3.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-59">A recomendação favorável nesse subgrupo tem certeza muito baixa; ela não substitui controle do foco, perfusão e suporte. Se usado, acompanhe pH, sódio, cálcio ionizado, CO₂/ventilação e balanço de volume, com alvo e reavaliação explícitos.</p></details><a class="visual-full-link" href="assets/images/img-59-bicarbonato-lactato.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-33" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-33-hematologia-960.jpg"><source srcset="assets/images/optimized/img-33-hematologia-1672.jpg"><img src="assets/images/img-33-hematologia.png" width="1672" height="941" alt="Estratégia transfusional restritiva contextualizada e tromboprofilaxia na sepse" aria-describedby="caption-img-33 desc-img-33" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-33" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-33"><strong>IMG-33 · Transfusão e tromboprofilaxia</strong><span>Estratégia restritiva é contextual; sangramento, isquemia, hipoxemia e procedimentos podem modificar a decisão.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-33">O painel separa transfusão de hemácias e prevenção de tromboembolismo venoso. Ambos exigem avaliação de contraindicações e risco individual, sem gatilho automático isolado.</p></details><a class="visual-full-link" href="assets/images/img-33-hematologia.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-34" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-34-nutricao-metabolismo-960.jpg"><source srcset="assets/images/optimized/img-34-nutricao-metabolismo-1672.jpg"><img src="assets/images/img-34-nutricao-metabolismo.png" width="1672" height="941" alt="Nutrição enteral precoce, controle glicêmico e riscos metabólicos na sepse" aria-describedby="caption-img-34 desc-img-34" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-34" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-34"><strong>IMG-34 · Nutrição e metabolismo</strong><span>Nutrição enteral precoce quando viável; evite sobrealimentação e hipoglicemia ao tratar hiperglicemia persistente.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-34">A imagem organiza início, tolerância gastrointestinal e monitorização metabólica. O plano deve ser individualizado à fase da doença e ao risco de aspiração, intolerância e distúrbios eletrolíticos.</p></details><a class="visual-full-link" href="assets/images/img-34-nutricao-metabolismo.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fronteira">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Resgate e fronteira terapêutica</span><h2>Evidência antes da sedução fisiológica</h2></div>
+          <p>“Off-label”, “evidência insuficiente” e “recomendado contra” não são sinônimos. Cada cartão mostra a categoria correta e o limite operacional.</p>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-35" data-source-ids="ssc2026 steroids2024"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-35-corticosteroide-choque-960.jpg"><source srcset="assets/images/optimized/img-35-corticosteroide-choque-1672.jpg"><img src="assets/images/img-35-corticosteroide-choque.png" width="1672" height="941" alt="Corticosteroide como opção condicional diante de necessidade persistente de vasopressor" aria-describedby="caption-img-35 desc-img-35" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-35" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-35"><strong>IMG-35 · Corticosteroide no choque persistente</strong><span>Posição condicional e de baixa certeza. Necessidade persistente de vasopressor exige contexto; evite esquemas curtos de dose muito alta.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e revisão de corticosteroides</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-35">A figura representa persistência do choque, não um limiar numérico universal. Monitore glicose, sódio, fraqueza, delirium e infecção, preservando revisão de foco e diagnóstico.</p></details><a class="visual-full-link" href="assets/images/img-35-corticosteroide-choque.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        <div class="filter-row" role="group" aria-label="Filtrar intervenções por posição da evidência">
+          <button class="filter-button active" type="button" data-filter="all">Todas</button>
+          <button class="filter-button" type="button" data-filter="supported">Apoiada</button>
+          <button class="filter-button" type="button" data-filter="insufficient">Insuficiente</button>
+          <button class="filter-button" type="button" data-filter="against">Contra rotina</button>
+        </div>
+        <div class="frontier-grid" id="frontierGrid"></div>
+        <div class="frontier-rule"><b>Protocolo de segurança para qualquer resgate não padrão:</b> mecanismo plausível não basta. Exija indicação explícita, alternativas esgotadas, contraindicações, interação, alvo mensurável, janela de reavaliação, critério de interrupção, discussão multidisciplinar e documentação do caráter não padrão.</div>
+        <div class="visual-grid visual-grid--2">
+          <figure class="clinical-visual" data-visual-id="IMG-36" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-36-escada-evidencia-fronteira-960.jpg"><source srcset="assets/images/optimized/img-36-escada-evidencia-fronteira-1672.jpg"><img src="assets/images/img-36-escada-evidencia-fronteira.png" width="1672" height="941" alt="Três níveis de evidência: prática apoiada, evidência insuficiente e recomendação contra rotina" aria-describedby="caption-img-36 desc-img-36" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-36" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-36"><strong>IMG-36 · Apoiada, insuficiente ou sugerida contra</strong><span>Off-label não significa benefício; ausência de recomendação também não equivale a recomendação favorável.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-36">A escada separa força e direção da evidência. Toda medida de fronteira exige explicitação de incerteza, alternativas, segurança, alvo, reavaliação e interrupção.</p></details><a class="visual-full-link" href="assets/images/img-36-escada-evidencia-fronteira.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+          <figure class="clinical-visual" data-visual-id="IMG-37" data-source-ids="ssc2026 methylene-fda"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-37-azul-metileno-seguranca-960.jpg"><source srcset="assets/images/optimized/img-37-azul-metileno-seguranca-1672.jpg"><img src="assets/images/img-37-azul-metileno-seguranca.png" width="1672" height="941" alt="Mecanismo e alertas de segurança do azul de metileno no contexto off-label de vasoplegia" aria-describedby="caption-img-37 desc-img-37" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-37" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-37"><strong>IMG-37 · Azul de metileno: evidência insuficiente</strong><span>Aumento pressórico não prova sobrevida. A SSC 2026 considera insuficiente a evidência para emitir recomendação; o rótulo FDA não inclui choque.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e rótulo FDA</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-37">Contraindicações do rótulo citado: deficiência de G6PD e hipersensibilidade. Alertas separados: síndrome serotoninérgica com fármacos serotonérgicos e opioides, risco de hemólise e possível subestimação da saturação pela oximetria de pulso. O conteúdo não fornece dose nem protocolo.</p></details><a class="visual-full-link" href="assets/images/img-37-azul-metileno-seguranca.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        </div>
+        <aside class="acra-slot" data-acra-plan-id="ACRA-SEPSE-09" data-acra-id="acra-sepse-09-v1" data-artifact-id="acra-sepse-09-v1" aria-labelledby="acra-title-09"><div class="acra-slot__copy"><span class="acra-kicker">ACRA 09 · 7 camadas disponíveis</span><h3 id="acra-title-09">Fronteira terapêutica e segurança off-label</h3><p>Discuta azul de metileno em vasoplegia extrema com fármaco serotonérgico: evidência insuficiente, hard stops e critérios de interrupção.</p></div><div class="acra-slot__actions"><button class="button primary" type="button" data-acra-open data-acra-id="acra-sepse-09-v1" aria-controls="acraStage" aria-haspopup="dialog">Abrir ACRA 09</button><span data-acra-status aria-live="polite">Teaser convencional disponível; interação opcional.</span></div></aside>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="recuperacao">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Depois da sobrevivência</span><h2>Resolver o choque não encerra a sepse</h2></div>
+          <p>Desressuscitação, desprescrição, reabilitação e transição segura são parte do tratamento — não apêndices da alta.</p>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-38" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-38-jornada-pos-sepse-960.jpg"><source srcset="assets/images/optimized/img-38-jornada-pos-sepse-1672.jpg"><img src="assets/images/img-38-jornada-pos-sepse.png" width="1672" height="941" alt="Jornada pós-sepse da estabilização à desressuscitação, reconstrução e transição" aria-describedby="caption-img-38 desc-img-38" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-38" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-38"><strong>IMG-38 · Da estabilização à reconstrução</strong><span>Mobilidade, nutrição/deglutição, cognição, saúde mental e reconciliação medicamentosa pertencem ao tratamento.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-38">A trajetória passa por estabilização, retirada segura de excessos, reconstrução funcional e transição responsável. Cada etapa registra sequelas, responsáveis, retornos e sinais de alarme.</p></details><a class="visual-full-link" href="assets/images/img-38-jornada-pos-sepse.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        <figure class="clinical-visual" data-visual-id="IMG-60" data-source-ids="ssc2026"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-60-alta-pos-sepse-intervencao-960.jpg"><source srcset="assets/images/optimized/img-60-alta-pos-sepse-intervencao-1672.jpg"><img src="assets/images/img-60-alta-pos-sepse-intervencao.png" width="1672" height="941" alt="Seis pilares para transição segura e recuperação após sepse" aria-describedby="caption-img-60 desc-img-60" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-60" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-60"><strong>IMG-60 · Alta pós-sepse é intervenção</strong><span>Diagnóstico/foco, medicamentos, função orgânica, mobilidade/nutrição, cognição/saúde mental e retornos/sinais de alarme formam uma única transição de cuidado.</span><span class="visual-source">Fonte: <a href="#fontes">SSC 2026</a>.</span><details class="visual-description" open><summary>Legenda Turbo TEMI — aplicação e limite</summary><p id="desc-img-60">O plano deve ser verbal e escrito, compreensível para paciente e família, com responsáveis e prazos. Comunicação em circuito fechado confirma que pendências, término de antimicrobianos, dispositivos, sequelas e critérios de retorno chegaram ao próximo ponto da rede.</p></details><a class="visual-full-link" href="assets/images/img-60-alta-pos-sepse-intervencao.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        <div class="recovery-track">
+          <article><span>Fase 1</span><h3>Estabilização</h3><ul><li>Foco e antimicrobiano controlados</li><li>Vasopressor e perfusão em queda sustentada</li><li>Nova disfunção identificada</li></ul></article>
+          <article><span>Fase 2</span><h3>Desressuscitação</h3><ul><li>Reavaliar balanço, peso, edema e congestão</li><li>Remoção ativa de fluido somente após fase aguda</li><li>Reduzir invasividade e sedação</li></ul></article>
+          <article><span>Fase 3</span><h3>Reconstrução</h3><ul><li>Mobilidade, nutrição, sono, cognição</li><li>Disfagia, fraqueza, dor e saúde mental</li><li>Reconciliação medicamentosa</li></ul></article>
+          <article><span>Fase 4</span><h3>Transição</h3><ul><li>Resumo verbal e escrito da sepse</li><li>Sequelas, retornos, sinais de alarme</li><li>Seguimento pós-doença crítica</li></ul></article>
+        </div>
+        <div class="discharge-checklist">
+          <h3>Checklist mínimo de alta pós-sepse</h3>
+          <div class="checklist-grid">
+            <label><input type="checkbox"> Diagnóstico, foco e microbiologia explicados</label>
+            <label><input type="checkbox"> Antimicrobianos: término, via e monitorização</label>
+            <label><input type="checkbox"> Medicamentos novos e suspensos reconciliados</label>
+            <label><input type="checkbox"> Função renal, hepática, hematológica e dispositivos</label>
+            <label><input type="checkbox"> Mobilidade, nutrição, deglutição e autocuidado</label>
+            <label><input type="checkbox"> Cognição, ansiedade, depressão e estresse pós-traumático</label>
+            <label><input type="checkbox"> Retornos, exames e responsáveis definidos</label>
+            <label><input type="checkbox"> Sinais de alarme fornecidos verbalmente e por escrito</label>
+          </div>
+        </div>
+        <aside class="acra-slot" data-acra-plan-id="ACRA-SEPSE-10" data-acra-id="acra-sepse-10-v1" data-artifact-id="acra-sepse-10-v1" aria-labelledby="acra-title-10"><div class="acra-slot__copy"><span class="acra-kicker">ACRA 10 · 7 camadas disponíveis</span><h3 id="acra-title-10">Sobreviver não é voltar ao basal</h3><p>Após ventilação prolongada, treine reconciliação, avaliação física, cognitiva e emocional, reabilitação e transição.</p></div><div class="acra-slot__actions"><button class="button primary" type="button" data-acra-open data-acra-id="acra-sepse-10-v1" aria-controls="acraStage" aria-haspopup="dialog">Abrir ACRA 10</button><span data-acra-status aria-live="polite">Teaser convencional disponível; interação opcional.</span></div></aside>
+      </div>
+    </section>
+
+    <section class="section" id="prevencao">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Sistema de defesa</span><h2>Prevenir, detectar e aprender</h2></div>
+          <p>Protocolos funcionam quando conectam assistência, enfermagem, farmácia, laboratório, controle de infecção, dados e transições.</p>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-39" data-source-ids="ssc2026 cdc-core ilas"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-39-sistema-prevencao-960.jpg"><source srcset="assets/images/optimized/img-39-sistema-prevencao-1672.jpg"><img src="assets/images/img-39-sistema-prevencao.png" width="1672" height="941" alt="Sistema hospitalar conectando prevenção, código sepse, stewardship, laboratório, farmácia, enfermagem e auditoria" aria-describedby="caption-img-39 desc-img-39" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-39" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-39"><strong>IMG-39 · Sistema hospitalar de prevenção e resposta</strong><span>Prevenir, detectar, tratar, auditar e aprender formam um circuito multiprofissional.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026, CDC e ILAS</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-39">O circuito conecta prevenção de infecções, acionamento, microbiologia, farmácia, stewardship e aprendizagem de sistema. Protocolos precisam de responsáveis e reavaliação, não apenas alertas.</p></details><a class="visual-full-link" href="assets/images/img-39-sistema-prevencao.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        <div class="prevention-grid">
+          <article><b>🛡️ Prevenção</b><p>Higiene, vacinação, cuidado de dispositivos, prevenção de infecção associada à assistência e tratamento precoce de infecções.</p></article>
+          <article><b>📣 Código sepse</b><p>Huddle multiprofissional com critérios, responsáveis, escalada, registro e auditoria; sugestão condicional da SSC 2026.</p></article>
+          <article><b>💊 Stewardship</b><p>Rapidez e responsabilidade coexistem: probabilidade, coleta adequada, terapia ativa e descalonamento planejado.</p></article>
+          <article><b>📊 Qualidade</b><p>Tempo de reconhecimento, antimicrobiano por estrato, foco, reavaliação, dano por fluido e desfechos ajustados.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="radar">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">IA + atualização contínua</span><h2>Radar Sepse com revisão humana</h2></div>
+          <p>A fase local não consulta rede nem publica automaticamente. O desenho futuro separa captura, crítica metodológica e aprovação médica.</p>
+        </div>
+        <figure class="clinical-visual" data-visual-id="IMG-40" data-source-ids="ssc2026 composer-llm"><div class="visual-frame"><picture><source media="(max-width: 960px)" srcset="assets/images/optimized/img-40-radar-ia-governada-960.jpg"><source srcset="assets/images/optimized/img-40-radar-ia-governada-1672.jpg"><img src="assets/images/img-40-radar-ia-governada.png" width="1672" height="941" alt="Pipeline governado de IA entre fontes oficiais, crítica metodológica, revisão médica e publicação aprovada" aria-describedby="caption-img-40 desc-img-40" loading="lazy" decoding="async"></picture><button class="visual-zoom" type="button" data-visual-target="IMG-40" aria-controls="visualDialog" aria-haspopup="dialog">⛶ Ampliar</button></div><figcaption id="caption-img-40"><strong>IMG-40 · Radar Sepse com IA governada</strong><span>IA pode capturar, deduplicar e resumir; nunca prescreve nem altera protocolo sem revisão humana.</span><span class="visual-source">Fontes: <a href="#fontes">SSC 2026 e estudo de apoio por LLM</a>.</span><details class="visual-description"><summary>Descrição clínica detalhada</summary><p id="desc-img-40">O pipeline separa fonte original, identidade documental, crítica metodológica, decisão editorial e card aprovado. O gate humano permanece obrigatório e nenhuma etapa local realiza publicação automática.</p></details><a class="visual-full-link" href="assets/images/img-40-radar-ia-governada.png" target="_blank" rel="noopener">Abrir PNG original</a></figcaption></figure>
+        <div class="radar-pipeline" aria-label="Fluxo futuro do Radar Sepse">
+          <div><b>1</b><span>Fontes permitidas</span><small>SCCM, ESICM, OMS, CDC, ILAS, PubMed, registros e reguladores</small></div>
+          <div><b>2</b><span>Deduplicação</span><small>DOI, PMID, registro e URL canônica</small></div>
+          <div><b>3</b><span>Crítica</span><small>Desenho, população, efeito, dano, aplicabilidade e limitações</small></div>
+          <div><b>4</b><span>Revisão médica</span><small>O que muda, o que não muda e grau de confiança</small></div>
+          <div><b>5</b><span>Radar Diário</span><small>Somente card estático aprovado; nunca prescrição automática</small></div>
+        </div>
+        <div class="ai-boundary">
+          <h3>IA clínica: onde ajuda e onde para</h3>
+          <div><p><b>Pode apoiar:</b> detectar padrões, ordenar risco, resumir trajetória, conferir pendências e vigiar deterioração.</p></div>
+          <div><p><b>Não pode assumir:</b> diagnóstico autônomo, escolha de antimicrobiano sem contexto, supressão de alerta sem responsável ou atualização direta de protocolo por estudo isolado.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="treino">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Turbo TEMI convencional</span><h2>Casos e questões de decisão</h2></div>
+          <p>O treino convencional permanece independente. Os dez ACRA M0–M6 são complementos opcionais e nunca ocultam esta trilha.</p>
+        </div>
+        <div class="training-tabs" role="tablist" aria-label="Modalidades de treino">
+          <button class="training-tab active" type="button" data-training="cases" role="tab" aria-selected="true">🩺 Casos sintéticos</button>
+          <button class="training-tab" type="button" data-training="questions" role="tab" aria-selected="false">🧠 Questões TEMI</button>
+        </div>
+        <div class="training-grid" id="trainingGrid"></div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="fontes">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Diretório oficial e rastreabilidade</span><h2>Documentos que sustentam o módulo</h2></div>
+          <p>Abra o documento original. Cada cartão informa o que a fonte sustenta e sua principal limitação de aplicação.</p>
+        </div>
+        <div class="reference-list" id="referenceList"></div>
+      </div>
+    </section>
+
+    <section class="section gate-section" id="transparencia-editorial">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Transparência editorial</span><h2>Como usar este guia com segurança</h2></div>
+        </div>
+        <div class="gate-grid">
+          <article><span>Finalidade</span><b>Educação e apoio cognitivo</b><strong class="gate-current">não fecha diagnóstico nem prescreve</strong></article>
+          <article><span>Evidência</span><b>SSC 2026, Sepsis-3 e fontes primárias</b><strong>links diretos e limitações visíveis</strong></article>
+          <article><span>Aplicação</span><b>Adultos na emergência, enfermaria e UTI</b><strong>individualize pela fisiologia e pelo contexto local</strong></article>
+          <article><span>Privacidade</span><b>Sem campos para dados de pacientes</b><strong>não insira informações identificáveis</strong></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="visual-dialog" id="visualDialog" aria-labelledby="visualDialogTitle" aria-describedby="visualDialogDescription">
+    <div class="dialog-shell">
+      <div class="dialog-toolbar"><span class="eyebrow">Visual didático ampliado</span><button class="dialog-close" type="button" data-dialog-close aria-label="Fechar imagem ampliada">× Fechar</button></div>
+      <h2 id="visualDialogTitle">Visual clínico</h2>
+      <p id="visualDialogDescription">Ampliação do infográfico selecionado. Consulte também a legenda e a descrição clínica textual.</p>
+      <img id="visualDialogImage" width="1672" height="941" alt="">
+    </div>
+  </dialog>
+
+  <dialog class="acra-stage" id="acraStage" data-acra-stage aria-labelledby="acraStageTitle">
+    <div class="dialog-shell acra-stage__shell">
+      <div class="dialog-toolbar"><span class="eyebrow">ACRA Sepse Ultra Expert</span><button class="dialog-close" type="button" data-acra-close aria-label="Fechar experiência ACRA">× Fechar</button></div>
+      <h2 id="acraStageTitle">Experiência ACRA</h2>
+      <div data-acra-stage-content><p>Selecione um dos dez ACRA para iniciar. O conteúdo clínico convencional permanece disponível fora deste diálogo.</p></div>
+      <div class="acra-stage__footer"><button class="button ghost" type="button" data-acra-clear>Limpar progresso local do ACRA</button><span data-acra-status aria-live="polite">Aguardando seleção.</span></div>
+    </div>
+  </dialog>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div><strong>Sepse Ultra Expert</strong><p>Prévia pública educacional com revisão médica humana em andamento. Não inserir dados identificáveis de pacientes. Atualização clínica de referência: 3 ago 2026.</p></div>
+      <div><a href="../../index.html">← Portal Antigravity</a><a href="#suspeita">Triagem 60 s</a><a href="#refrataria">Choque refratário</a><a href="#fontes">Referências</a></div>
+    </div>
+  </footer>
+</body>
+</html>

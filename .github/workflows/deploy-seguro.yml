@@ -135,6 +135,17 @@ jobs:
           test -s site/01_Modulos_Clinicos/Dermatologia_Critica/assets/app.js
           test -s site/01_Modulos_Clinicos/Dermatologia_Critica/data/catalog.js
           test ! -e site/01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json
+          test -s site/01_Modulos_Clinicos/Sepse_Choque_Septico/index.html
+          test -s site/01_Modulos_Clinicos/Sepse_Choque_Septico/assets/styles.css
+          test -s site/01_Modulos_Clinicos/Sepse_Choque_Septico/assets/app.js
+          test -s site/01_Modulos_Clinicos/Sepse_Choque_Septico/data/catalog.js
+          test "$(find site/01_Modulos_Clinicos/Sepse_Choque_Septico/assets/images -maxdepth 1 -type f -name 'img-*.png' | wc -l)" -eq 58
+          test "$(find site/01_Modulos_Clinicos/Sepse_Choque_Septico/assets/images/reviewed -maxdepth 1 -type f -name 'img-*.png' | wc -l)" -eq 2
+          test "$(find site/01_Modulos_Clinicos/Sepse_Choque_Septico/assets/images/optimized -maxdepth 1 -type f -name 'img-*.jpg' | wc -l)" -eq 120
+          test ! -e site/01_Modulos_Clinicos/Sepse_Choque_Septico/module.manifest.json
+          test ! -e site/01_Modulos_Clinicos/Sepse_Choque_Septico/specs
+          test ! -e site/01_Modulos_Clinicos/Sepse_Choque_Septico/acra
+          test ! -e site/01_Modulos_Clinicos/Sepse_Choque_Septico/PHASE4A_LOCAL_CHECKPOINT.md
           test -s site/01_Modulos_Clinicos/Delirium_UTI/index.html
           test -s site/01_Modulos_Clinicos/Delirium_UTI/CHECKLIST_OPERACIONAL.md
           test -s site/15_Radar_Cientifico/index.html
