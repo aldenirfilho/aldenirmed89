@@ -3,10 +3,49 @@
 // Gerado de data/posts.json; não editar manualmente.
 window.ANTIGRAVITY_PORTAL={
   "schemaVersion": "portal-vivo-v1",
-  "updatedAt": "2026-08-21T13:54:10-03:00",
+  "updatedAt": "2026-08-21T16:42:18-03:00",
   "timezone": "America/Fortaleza",
   "editorialPolicy": "Conteúdo educacional, rastreável e proporcional à evidência. Toda afirmação clínica deve apontar para fonte verificável e explicitar limitações.",
   "posts": [
+    {
+      "destination": "Portal Vivo — UPGRADE da plataforma",
+      "target": "portal-vivo-upgrade",
+      "type": "system-upgrade",
+      "category": "Educação médica · TEMI",
+      "priority": 1,
+      "title": "Almanaque ECG ganha 30 modelos visuais pesquisáveis",
+      "summary": "O Antigravity Consultas integra um almanaque de eletrocardiografia com 30 modelos visuais, busca por achado ou derivação, filtros clínicos, comparação lado a lado e ligação direta com a seção de síndrome coronariana aguda.",
+      "publishedAt": "2026-08-21T16:42:18-03:00",
+      "source": {
+        "name": "Almanaque ECG 360 × Turbo TEMI",
+        "url": "../01_Modulos_Clinicos/Almanaque_ECG/",
+        "id": "antigravity-almanaque-ecg-360-v1",
+        "date": "2026-08-21",
+        "checkedAt": "2026-08-21T16:42:18-03:00"
+      },
+      "turbo": {
+        "clinicalImpact": "Reduz a carga cognitiva ao organizar onde olhar, o que medir, quais padrões comparar e quando escalar uma alteração elétrica no plantão.",
+        "temiHook": "Revisa isquemia, bloqueios, taquiarritmias, eletrólitos, hipotermia, pericárdio, TEP e canalopatias por reconhecimento ativo e contraste visual.",
+        "memoryAnchor": "VEJA → DERIVAÇÃO → MEÇA → CONTEXTO → AÇÃO",
+        "takeaways": [
+          "Trinta modelos visuais ficam disponíveis em uma busca local",
+          "Dois padrões podem ser comparados lado a lado",
+          "Cada guia mostra derivação, medida, contexto, diferenciais e limites",
+          "A seção SCA possui acesso direto ao novo almanaque"
+        ],
+        "caveat": "O material é educacional, não analisa exames e não substitui suporte avançado, protocolo institucional, avaliação cardiológica ou decisão clínica individual."
+      },
+      "audit": {
+        "sourceChecked": true,
+        "clinicalReview": "not-required",
+        "noDirectPatientData": true,
+        "reviewedAt": "2026-08-21T16:42:18-03:00",
+        "reviewedBy": "Codex Antigravity"
+      },
+      "id": "2026-08-21-almanaque-ecg-ganha-30-modelos-visuais-pesquisaveis-02511484",
+      "sourceIdentity": "source-id:antigravity-almanaque-ecg-360-v1",
+      "sourceHash": "sha256:02511484d88fccd1"
+    },
     {
       "destination": "Portal Vivo — UPGRADE da plataforma",
       "target": "portal-vivo-upgrade",

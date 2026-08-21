@@ -119,6 +119,8 @@ EDITORIAL_PUBLIC_FILES = {
 }
 PUBLIC_BUILD_EXCLUSIONS = frozenset(
     {
+        "01_Modulos_Clinicos/Almanaque_ECG/module.manifest.json",
+        "01_Modulos_Clinicos/Almanaque_ECG/data/visual-assets.json",
         "01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json",
         "01_UpDown_Hub/content/reumatologia/les-manifestacoes/metadata.json",
         "05_Midia_E_Feed/data/recovery_manifest.json",

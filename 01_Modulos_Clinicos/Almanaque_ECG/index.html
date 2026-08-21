@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-preference-key="antigravity:a11y:v1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Almanaque ECG 360 × Turbo TEMI: 30 modelos visuais pesquisáveis para emergência, UTI e clínica médica, com comparação, conduta contextual e fontes.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Almanaque ECG 360 × Turbo TEMI — Antigravity Consultas</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="data/catalog.js" defer></script>
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="wrap nav-shell">
+      <a class="brand" href="../../index.html" aria-label="Voltar ao portal Antigravity Consultas">
+        <span class="brand-icon" aria-hidden="true">🫀</span>
+        <span><strong>Almanaque ECG</strong><small>360 × Turbo TEMI</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Navegação do almanaque">
+        <a href="#leitura-10s">Leitura 10 s</a>
+        <a href="#modelos">30 modelos</a>
+        <a href="#guias">Guias</a>
+        <a href="#fontes">Fontes</a>
+        <a href="../Sindrome_Coronariana_Aguda/index.html">SCA</a>
+        <button class="control-button" id="focusToggle" type="button" aria-pressed="false">🎯 Foco</button>
+        <button class="control-button" id="themeToggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara com fundo branco">☀️ Clara</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="status-strip" role="status">
+    <div class="wrap">
+      <strong>30 modelos visuais · busca local · comparação lado a lado</strong>
+      <span>Atualizado em 21 ago 2026 · sem upload · sem dados de pacientes</span>
+    </div>
+  </div>
+
+  <main id="conteudo">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Emergência · UTI · clínica médica · TEMI</span>
+          <h1>Veja o traçado. <em>Saiba onde olhar.</em></h1>
+          <p class="hero-lead">Um almanaque visual para localizar rapidamente a alteração, comparar padrões próximos e lembrar a próxima ação segura.</p>
+          <form class="hero-search" id="heroSearchForm" role="search">
+            <label for="heroSearch">O que você procura?</label>
+            <div class="search-row">
+              <input id="heroSearch" type="search" autocomplete="off" placeholder="Ex.: hipercalemia, BAVT, V2, QT longo, Wellens">
+              <button class="button button-primary" type="submit">Buscar</button>
+            </div>
+            <p>Busca por diagnóstico, achado, derivação, contexto ou conduta.</p>
+          </form>
+          <div class="hero-actions">
+            <a class="button" href="#modelos">Abrir todos os modelos</a>
+            <a class="button button-ghost" href="../Sindrome_Coronariana_Aguda/index.html#diagnostico">Ir para SCA + troponina</a>
+          </div>
+        </div>
+        <aside class="emergency-card" aria-label="Prioridade de segurança">
+          <span class="pulse" aria-hidden="true"></span>
+          <p>Antes de nomear o padrão:</p>
+          <strong>O paciente está instável?</strong>
+          <ul>
+            <li>Choque, dor isquêmica persistente, edema pulmonar, síncope ou alteração de consciência mudam a prioridade.</li>
+            <li>Confirme pulso e artefato antes de tratar apenas o monitor.</li>
+            <li>Use suporte avançado e protocolos locais quando houver deterioração.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section quick-section" id="leitura-10s">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Pista de pouso cognitiva</span><h2>Leitura em 10 segundos</h2></div>
+          <p>Uma ordem fixa reduz omissões. Depois, aprofunde somente o que muda a decisão.</p>
+        </div>
+        <ol class="quick-grid" id="quickGrid"></ol>
+        <div class="alert-line"><strong>Regra de ouro:</strong> alteração nova + sintomas compatíveis + dinâmica seriada costuma pesar mais que a aparência isolada.</div>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="modelos">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Almanaque visual</span><h2>30 modelos ECG</h2></div>
+          <p>Toque em <strong>Abrir guia</strong> para ver derivação, medida, contexto, diferenciais, terapêutica contextual, prevenção e limites.</p>
+        </div>
+
+        <div class="catalog-toolbar" aria-label="Ferramentas de busca e filtro">
+          <label class="catalog-search" for="catalogSearch">
+            <span>Busca ativa</span>
+            <input id="catalogSearch" type="search" autocomplete="off" placeholder="Digite um padrão, achado ou derivação">
+          </label>
+          <button class="button button-ghost" id="clearSearch" type="button">Limpar</button>
+        </div>
+        <div class="filter-row" id="filterRow" role="group" aria-label="Filtrar por categoria"></div>
+
+        <div class="result-status" aria-live="polite">
+          <strong id="resultCount">30 modelos</strong>
+          <span id="activeFilter">Todos os temas</span>
+        </div>
+
+        <div class="empty-state" id="emptyState" hidden>
+          <strong>Nenhum modelo encontrado.</strong>
+          <p>Tente um termo mais amplo, como “potássio”, “bloqueio”, “ST” ou “taquicardia”.</p>
+        </div>
+        <div class="pattern-grid" id="patternGrid"></div>
+      </div>
+    </section>
+
+    <aside class="compare-tray" id="compareTray" aria-live="polite" hidden>
+      <div>
+        <strong>Comparação rápida</strong>
+        <span id="compareSummary">Escolha dois modelos.</span>
+      </div>
+      <div class="tray-actions">
+        <button class="button button-primary" id="openCompare" type="button" disabled>Comparar agora</button>
+        <button class="button button-ghost" id="clearCompare" type="button">Limpar</button>
+      </div>
+    </aside>
+
+    <section class="section" id="guias">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Além dos 30 traçados</span><h2>Quatro guias de campo</h2></div>
+          <p>Cascata da isquemia, repolarização secundária, tóxicos e dispositivos em uma camada curta.</p>
+        </div>
+        <div class="field-grid" id="fieldGuideGrid"></div>
+      </div>
+    </section>
+
+    <section class="section section-tint safety-section" id="seguranca">
+      <div class="wrap safety-layout">
+        <div>
+          <span class="eyebrow">Limites de uso</span>
+          <h2>Material educacional, não prescrição</h2>
+        </div>
+        <div class="safety-copy">
+          <p><strong>Não substitui avaliação cardiológica, decisão clínica individual, suporte avançado, toxicologia, protocolo institucional nem regulação da rede.</strong></p>
+          <p>As ações são orientações contextuais e não fornecem escolha, dose, diluição ou esquema farmacológico. Confirme recomendações, contraindicações, função renal/hepática e recursos locais antes de tratar.</p>
+          <p>As imagens sintéticas ensinam morfologia e não representam a variabilidade completa da prática. Os quatro traçados reais são anonimizados e licenciados pelo PTB-XL sob CC BY 4.0.</p>
+          <p>Não inserir dados identificáveis de pacientes. Esta página não recebe, envia ou analisa exames.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fontes">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Rastreabilidade</span><h2>Diretrizes e fontes primárias</h2></div>
+          <p>As sínteses diferenciam achado eletrocardiográfico de decisão contextual. Protocolos locais continuam soberanos na operação.</p>
+        </div>
+        <div class="reference-grid" id="referenceGrid"></div>
+        <p class="license-note">Crédito dos traçados reais: Wagner P. et al., PTB-XL, PhysioNet v1.0.1, licença CC BY 4.0. Registros exibidos: 3, 959, 1733 e 13913. Traçados sintéticos: produção autoral educacional do Antigravity Consultas.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div><strong>Almanaque ECG 360 × Turbo TEMI</strong><p>Busca rápida, comparação e memória operacional para plantão e estudo.</p></div>
+      <div><a href="../../index.html">Portal Antigravity</a><a href="../Sindrome_Coronariana_Aguda/index.html">Síndrome Coronariana Aguda</a><a href="#leitura-10s">Voltar ao início</a></div>
+    </div>
+  </footer>
+
+  <dialog class="detail-dialog" id="detailDialog" aria-labelledby="detailTitle">
+    <form method="dialog" class="dialog-close-form"><button class="icon-button" type="submit" aria-label="Fechar guia">×</button></form>
+    <article id="detailContent"></article>
+  </dialog>
+
+  <dialog class="compare-dialog" id="compareDialog" aria-labelledby="compareTitle">
+    <form method="dialog" class="dialog-close-form"><button class="icon-button" type="submit" aria-label="Fechar comparação">×</button></form>
+    <div id="compareContent"></div>
+  </dialog>
+
+  <noscript><div class="noscript">Ative o JavaScript para usar busca, filtros e comparação. As imagens permanecem disponíveis na pasta pública do módulo.</div></noscript>
+</body>
+</html>
