@@ -118,7 +118,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="Antigravity"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v20`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v21`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
@@ -325,7 +325,7 @@ class AccessiblePwaTests(unittest.TestCase):
             home[modules_start:home.index("<!-- ── DECK DE MISSÕES CRÍTICAS")].count(
                 'class="module-card'
             ),
-            23,  # 22 módulos/apps + Mapa Vivo
+            24,  # 23 módulos/apps + Mapa Vivo
         )
 
         for marker in (

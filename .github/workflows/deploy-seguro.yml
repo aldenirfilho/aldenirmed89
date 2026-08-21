@@ -150,6 +150,13 @@ jobs:
           test -s site/01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/assets/styles.css
           test -s site/01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/assets/app.js
           test -s site/01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/data/catalog.js
+          test -s site/01_Modulos_Clinicos/Almanaque_ECG/index.html
+          test -s site/01_Modulos_Clinicos/Almanaque_ECG/assets/styles.css
+          test -s site/01_Modulos_Clinicos/Almanaque_ECG/assets/app.js
+          test -s site/01_Modulos_Clinicos/Almanaque_ECG/data/catalog.js
+          test "$(find site/01_Modulos_Clinicos/Almanaque_ECG/assets/images -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 30
+          test ! -e site/01_Modulos_Clinicos/Almanaque_ECG/module.manifest.json
+          test ! -e site/01_Modulos_Clinicos/Almanaque_ECG/data/visual-assets.json
           test -s site/01_Modulos_Clinicos/Delirium_UTI/index.html
           test -s site/01_Modulos_Clinicos/Delirium_UTI/CHECKLIST_OPERACIONAL.md
           test -s site/15_Radar_Cientifico/index.html

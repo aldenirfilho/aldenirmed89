@@ -13,6 +13,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ONLY_EXCLUDED = {
+    "01_Modulos_Clinicos/Almanaque_ECG/module.manifest.json",
+    "01_Modulos_Clinicos/Almanaque_ECG/data/visual-assets.json",
     "01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json",
 }
 ABSENT_INTERNAL = {
@@ -45,6 +47,10 @@ class PublicContentIsolationTests(unittest.TestCase):
             root = Path(directory)
             site = root / "site"
             fixtures = {
+                "01_Modulos_Clinicos/Almanaque_ECG/module.manifest.json":
+                    '{"status":"approved","visibility":"source-only"}',
+                "01_Modulos_Clinicos/Almanaque_ECG/data/visual-assets.json":
+                    '{"assets":[],"visibility":"source-only"}',
                 "01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json":
                     '{"status":"published","visibility":"source-only"}',
                 "01_UpDown_Hub/content/reumatologia/les-manifestacoes/metadata.json":
@@ -638,7 +644,7 @@ class PublicContentIsolationTests(unittest.TestCase):
 
     def test_service_worker_revokes_the_previous_public_cache(self) -> None:
         worker = (ROOT / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v20`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v21`', worker)
         self.assertNotIn('const CACHE_NAME = `${CACHE_PREFIX}v12`', worker)
         self.assertIn(
             "key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME",
