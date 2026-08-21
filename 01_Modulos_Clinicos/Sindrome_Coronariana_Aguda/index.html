@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-preference-key="antigravity:a11y:v1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#16090d">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Síndrome coronariana aguda para TEMI e plantão: reconhecimento, ECG, troponina, reperfusão, monitorização, complicações e papel do escore SYNTAX.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Síndrome Coronariana Aguda — Antigravity Consultas</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="data/catalog.js" defer></script>
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="wrap nav-shell">
+      <a class="brand" href="../../index.html" aria-label="Voltar ao portal Antigravity Consultas">
+        <span class="brand-icon" aria-hidden="true">❤️‍🩹</span>
+        <span><strong>SCA · TEMI</strong><small>Antigravity Consultas</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Navegação do módulo">
+        <a href="#como-usar">Comece</a>
+        <a href="#triagem">10 min</a>
+        <a href="#diagnostico">ECG + troponina</a>
+        <a href="#reperfusao">Reperfusão</a>
+        <a href="#internacao">Internação</a>
+        <a href="#syntax">SYNTAX</a>
+        <a href="#treino">Treino</a>
+        <button class="control-button" id="focusToggle" type="button" aria-pressed="false">🎯 Foco</button>
+        <button class="control-button" id="themeToggle" type="button" data-clarity-toggle aria-pressed="false" aria-label="Ativar visualização clara com fundo branco">☀️ Clara</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="official-strip" role="status">
+    <div class="wrap">
+      <strong>Educação médica baseada em diretrizes</strong>
+      <span>Atualizado em 21 ago 2026 · apoio ao TEMI · sem dados de pacientes</span>
+    </div>
+  </div>
+
+  <main id="conteudo">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Emergência · unidade coronariana · UTI · TEMI</span>
+          <h1>Reconheça a SCA. <em>Defina a via sem perder tempo.</em></h1>
+          <p class="hero-lead">Uma sequência operacional para síndrome coronariana aguda (SCA), incluindo infarto com supradesnivelamento de ST (IAMCSST/STEMI) e sem supradesnivelamento de ST (IAMSSST/NSTEMI).</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#triagem">⚡ Iniciar avaliação de 10 minutos</a>
+            <a class="button" href="#reperfusao">🫀 Abrir via de reperfusão</a>
+            <a class="button" href="#syntax">🧭 Entender o SYNTAX</a>
+          </div>
+          <p class="microcopy">Material educacional e apoio cognitivo. Não substitui avaliação cardiológica, julgamento clínico individual, protocolo institucional, regulação nem discussão com a hemodinâmica.</p>
+        </div>
+        <aside class="red-flag-card" aria-label="Regra de prioridade">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <p>A pergunta que organiza os primeiros minutos:</p>
+          <strong>Há oclusão coronariana provável ou instabilidade que exige estratégia invasiva imediata?</strong>
+          <ul>
+            <li>ECG em até 10 minutos e repetido se necessário.</li>
+            <li>Troponina não deve atrasar reperfusão no STEMI.</li>
+            <li>Choque muda a prioridade: tratar o vaso culpado primeiro.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="safety-band" aria-label="Quatro ações iniciais">
+      <div class="wrap safety-grid">
+        <div><b>1 · Reconheça</b><span>Sintomas, equivalentes anginosos, diagnósticos fatais alternativos e estabilidade.</span></div>
+        <div><b>2 · Registre</b><span>ECG de 12 derivações em até 10 min; repita e acrescente derivações quando indicado.</span></div>
+        <div><b>3 · Classifique</b><span>Via STEMI/oclusão, NSTE-ACS de muito alto risco, alto risco ou investigação seriada.</span></div>
+        <div><b>4 · Acione</b><span>Rede de reperfusão/hemodinâmica conforme tempo, risco, anatomia e regra local.</span></div>
+      </div>
+    </section>
+
+    <section class="section section-tint how-to-section" id="como-usar">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Pista de pouso cognitiva</span><h2>Use em cinco passos</h2></div>
+          <p>Comece pelo bloco que muda a decisão imediata. Aprofunde depois; não leia tudo antes de agir.</p>
+        </div>
+        <ol class="how-to-grid">
+          <li><a href="#triagem"><b>1</b><span><strong>Primeiros 10 min</strong>Estabilidade, ECG e via prioritária.</span></a></li>
+          <li><a href="#diagnostico"><b>2</b><span><strong>ECG + troponina</strong>Reconheça padrões e use deltas do ensaio.</span></a></li>
+          <li><a href="#reperfusao"><b>3</b><span><strong>Reperfusão</strong>Escolha a estratégia pelo contexto e pela rede.</span></a></li>
+          <li><a href="#internacao"><b>4</b><span><strong>Primeiras 24 h</strong>Monitore isquemia, arritmia e complicações.</span></a></li>
+          <li><a href="#syntax"><b>5</b><span><strong>Anatomia complexa</strong>Use SYNTAX dentro do Heart Team.</span></a></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="triagem">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Ferramenta 1</span><h2>Estratificador da via inicial</h2></div>
+          <p>Marque os achados presentes. O resultado ensina uma <strong>prioridade de fluxo</strong>; não confirma diagnóstico nem prescreve tratamento.</p>
+        </div>
+
+        <div class="tool-layout">
+          <form class="tool-panel" id="triageForm">
+            <fieldset>
+              <legend>Possível oclusão coronariana</legend>
+              <label class="check-row critical"><input type="checkbox" name="stemi"> Elevação persistente de ST ou equivalente de oclusão em contexto isquêmico</label>
+              <label class="check-row"><input type="checkbox" name="hardEcg"> Bloqueio de ramo/ritmo estimulado com alta suspeita clínica e ECG de difícil interpretação</label>
+            </fieldset>
+            <fieldset>
+              <legend>NSTE-ACS: critérios de muito alto risco</legend>
+              <label class="check-row critical"><input type="checkbox" name="shock"> Instabilidade hemodinâmica ou choque cardiogênico</label>
+              <label class="check-row critical"><input type="checkbox" name="pain"> Dor recorrente/contínua refratária ao tratamento clínico</label>
+              <label class="check-row critical"><input type="checkbox" name="arrhythmia"> Arritmia ameaçadora à vida ou parada após a apresentação</label>
+              <label class="check-row critical"><input type="checkbox" name="heartFailure"> Insuficiência cardíaca aguda atribuída à isquemia em curso</label>
+              <label class="check-row critical"><input type="checkbox" name="mechanical"> Suspeita de complicação mecânica</label>
+              <label class="check-row critical"><input type="checkbox" name="recurrentEcg"> Alterações dinâmicas recorrentes de ST/T com isquemia em curso</label>
+            </fieldset>
+            <fieldset>
+              <legend>NSTE-ACS: critérios de alto risco</legend>
+              <label class="check-row"><input type="checkbox" name="nstemi"> NSTEMI confirmado por algoritmo validado</label>
+              <label class="check-row"><input type="checkbox" name="grace"> GRACE &gt;140</label>
+              <label class="check-row"><input type="checkbox" name="transientSt"> Elevação transitória de ST</label>
+              <label class="check-row"><input type="checkbox" name="dynamicEcg"> Alterações dinâmicas de ST/T sem critério de muito alto risco</label>
+            </fieldset>
+            <div class="form-actions">
+              <button class="button button-primary" type="submit">Mostrar via prioritária</button>
+              <button class="button button-ghost" id="triageReset" type="reset">Limpar</button>
+            </div>
+          </form>
+
+          <div class="result-panel" id="triageResult" aria-live="polite">
+            <span class="result-state">Aguardando achados</span>
+            <h3>Comece pela estabilidade e pelo ECG.</h3>
+            <p>Se houver deterioração, acione suporte e rede de reperfusão sem esperar esta ferramenta.</p>
+          </div>
+        </div>
+
+        <div class="evidence-legend" aria-label="Legenda de evidência">
+          <span class="evidence-tag guideline">Diretriz</span><p>Recomendação formal de sociedade científica.</p>
+          <span class="evidence-tag evidence">Evidência</span><p>Resultado de estudo ou conjunto de estudos.</p>
+          <span class="evidence-tag individual">Individual</span><p>Depende de anatomia, comorbidades, risco e preferência.</p>
+          <span class="evidence-tag local">Regra local</span><p>Fluxo de transferência, disponibilidade, fármacos e tempos operacionais do serviço.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="diagnostico">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Ferramenta 2</span><h2>ECG e biomarcadores sem atalhos perigosos</h2></div>
+          <p>Selecione um cenário. O eletrocardiograma orienta a urgência; a troponina confirma lesão miocárdica dentro do contexto clínico.</p>
+        </div>
+        <div class="scenario-tabs" id="ecgTabs" role="tablist" aria-label="Cenários de ECG"></div>
+        <article class="scenario-panel" id="ecgPanel" role="tabpanel" aria-live="polite"></article>
+
+        <div class="biomarker-grid">
+          <article class="info-card">
+            <span class="evidence-tag guideline">Diretriz</span>
+            <h3>Troponina de alta sensibilidade</h3>
+            <p>É o biomarcador preferido. Use coleta seriada em uma via validada para o ensaio disponível — por exemplo, 0/1 h ou 0/2 h — com pontos de corte e delta específicos do laboratório.</p>
+          </article>
+          <article class="info-card">
+            <span class="evidence-tag individual">Contexto</span>
+            <h3>Lesão não é sinônimo de infarto tipo 1</h3>
+            <p>Elevação e variação de troponina indicam lesão aguda; o diagnóstico de infarto exige evidência de isquemia. Sepse, taquiarritmia, insuficiência cardíaca, miocardite e doença renal entram no diferencial.</p>
+          </article>
+          <article class="info-card danger-card">
+            <span class="evidence-tag guideline">Não atrasar</span>
+            <h3>STEMI é uma via de reperfusão</h3>
+            <p>Na apresentação compatível com STEMI/oclusão, não aguarde troponina, ecocardiograma completo ou outro teste que não mude imediatamente a estratégia.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="reperfusao">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Ferramenta 3</span><h2>Simulador educacional de reperfusão</h2></div>
+          <p>Responda sobre o cenário e a capacidade da rede. A saída separa diretriz de logística local.</p>
+        </div>
+
+        <div class="tool-layout">
+          <form class="tool-panel compact-form" id="reperfusionForm">
+            <fieldset>
+              <legend>1 · Via clínica</legend>
+              <label>Apresentação de trabalho
+                <select id="presentation" required>
+                  <option value="stemi">STEMI/equivalente de oclusão</option>
+                  <option value="nste-very-high">NSTE-ACS de muito alto risco</option>
+                  <option value="nste-high">NSTE-ACS de alto risco</option>
+                  <option value="uncertain">SCA ainda não confirmada</option>
+                </select>
+              </label>
+            </fieldset>
+            <fieldset id="stemiContext">
+              <legend>2 · Contexto do STEMI</legend>
+              <label class="check-row"><input id="earlyWindow" type="checkbox"> Dentro da janela precoce habitual para fibrinólise (em geral, até 12 h do início)</label>
+              <label class="check-row"><input id="pciInTime" type="checkbox"> ICP primária pode oferecer reperfusão em até 120 min do diagnóstico</label>
+              <label class="check-row"><input id="lyticContra" type="checkbox"> Há contraindicação à fibrinólise ou risco hemorrágico proibitivo</label>
+            </fieldset>
+            <fieldset>
+              <legend>3 · Gravidade</legend>
+              <label class="check-row critical"><input id="shockContext" type="checkbox"> Choque/instabilidade hemodinâmica</label>
+            </fieldset>
+            <button class="button button-primary" type="submit">Construir estratégia</button>
+          </form>
+
+          <div class="result-panel" id="reperfusionResult" aria-live="polite">
+            <span class="result-state">Cenário não processado</span>
+            <h3>Escolha a apresentação de trabalho.</h3>
+            <p>O relógio real depende do primeiro contato, do diagnóstico, da rede e da capacidade de transferência.</p>
+          </div>
+        </div>
+
+        <div class="warning-box"><b>⚠️ Segurança:</b> contraindicações, escolha e dose do fibrinolítico, antitrombóticos e terapia adjuvante devem seguir protocolo institucional atualizado. Esta página não calcula doses nem substitui contato com hemodinâmica/cardiologia.</div>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="internacao">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Primeiras horas e internação</span><h2>Monitorização que procura deterioração</h2></div>
+          <p>Abra uma janela de tempo. A rotina abaixo é um mapa de vigilância e precisa ser adaptada à gravidade e ao serviço.</p>
+        </div>
+        <div class="timeline-tabs" id="timelineTabs" role="tablist" aria-label="Janelas da internação"></div>
+        <article class="timeline-panel" id="timelinePanel" role="tabpanel" aria-live="polite"></article>
+
+        <div class="monitor-card">
+          <div>
+            <span class="evidence-tag guideline">Diretriz</span>
+            <h3>Telemetria/ECG contínuo</h3>
+            <p>Iniciar precocemente. Em pacientes de alto risco — incluindo todos com STEMI — monitorar arritmias e mudanças de ST por pelo menos 24 horas; prolongar conforme instabilidade, arritmia, fração de ejeção, reperfusão e complicações.</p>
+          </div>
+          <div>
+            <span class="evidence-tag guideline">Antes da alta</span>
+            <h3>Função ventricular esquerda</h3>
+            <p>Documentar a fração de ejeção. Ecocardiografia é emergencial se houver choque, instabilidade ou suspeita de complicação mecânica, sem atrasar reperfusão quando há oclusão provável.</p>
+          </div>
+        </div>
+
+        <div class="section-heading complications-heading">
+          <div><span class="eyebrow">Não perder</span><h2>Complicações precoces</h2></div>
+          <p>Selecione um cartão para ver pistas e a primeira resposta operacional.</p>
+        </div>
+        <div class="complication-grid" id="complicationGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="syntax">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Anatomia e Heart Team</span><h2>Onde o escore SYNTAX realmente entra</h2></div>
+          <p>Ele descreve complexidade anatômica após a angiografia. Não diagnostica SCA, não substitui risco cirúrgico e não deve atrasar reperfusão do vaso culpado.</p>
+        </div>
+
+        <div class="syntax-summary">
+          <article><b>1 · Depois da anatomia</b><span>Quantifica localização, número e complexidade das lesões coronarianas, sobretudo em doença de tronco e/ou múltiplos vasos.</span></article>
+          <article><b>2 · Dentro do Heart Team</b><span>Apoia discussão entre cardiologia clínica, hemodinâmica e cirurgia sobre ICP versus cirurgia de revascularização.</span></article>
+          <article><b>3 · Nunca sozinho</b><span>Combine com diabetes, função ventricular, fragilidade, risco cirúrgico, possibilidade de revascularização completa, preferências e experiência local.</span></article>
+        </div>
+
+        <div class="tool-layout syntax-tool">
+          <form class="tool-panel compact-form" id="syntaxForm">
+            <fieldset>
+              <legend>Cenário anatômico e clínico</legend>
+              <label class="check-row critical"><input type="checkbox" name="unstable"> Choque ou isquemia instável em curso</label>
+              <label class="check-row"><input type="checkbox" name="anatomyKnown"> Angiografia já definiu a anatomia</label>
+              <label class="check-row"><input type="checkbox" name="complexDisease"> Tronco da coronária esquerda e/ou doença de três vasos</label>
+              <label class="check-row"><input type="checkbox" name="highComplexity"> Anatomia difusa/complexa ou SYNTAX anatômico alto</label>
+              <label class="check-row"><input type="checkbox" name="clinicalFactors"> Diabetes, disfunção ventricular, fragilidade, risco cirúrgico ou outra comorbidade relevante</label>
+              <label class="check-row"><input type="checkbox" name="incompletePci"> Revascularização completa por ICP parece improvável</label>
+            </fieldset>
+            <button class="button button-primary" type="submit">Mostrar papel do SYNTAX</button>
+          </form>
+          <div class="result-panel" id="syntaxResult" aria-live="polite">
+            <span class="result-state">Aguardando cenário</span>
+            <h3>O escore é uma camada, não um veredito.</h3>
+            <p>Preencha o cenário para posicionar o SYNTAX no momento correto.</p>
+          </div>
+        </div>
+
+        <div class="syntax-caveats">
+          <article><h3>SYNTAX anatômico</h3><p>Gradua complexidade angiográfica. As faixas históricas mais usadas são baixa (≤22), intermediária (23–32) e alta (≥33), mas a aplicação depende da população e da decisão clínica.</p></article>
+          <article><h3>SYNTAX Score II 2020</h3><p>Combina anatomia e variáveis clínicas para estimar desfechos de longo prazo após ICP ou cirurgia em doença complexa. Apoia decisão compartilhada; não substitui validação externa, julgamento ou Heart Team.</p></article>
+          <article><h3>Limites</h3><p>Há variabilidade entre observadores; o estudo SYNTAX original usou stents de primeira geração. Tecnologia atual, fisiologia, imagem intracoronária e completude da revascularização também importam.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="treino">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Turbo TEMI</span><h2>Recuperação ativa de decisões</h2></div>
+          <p>Responda antes de revelar. O progresso fica somente neste navegador e não armazena dados clínicos.</p>
+        </div>
+        <div class="training-nav" role="tablist" aria-label="Modos de treino">
+          <button class="training-tab active" type="button" data-training="cases" role="tab" aria-selected="true">🩺 Casos</button>
+          <button class="training-tab" type="button" data-training="questions" role="tab" aria-selected="false">🧠 Questões</button>
+          <button class="training-tab" type="button" data-training="flashcards" role="tab" aria-selected="false">⚡ Flashcards</button>
+        </div>
+        <div class="training-shell">
+          <div class="progress-track" aria-label="Progresso"><progress id="trainingProgress" max="100" value="0">0%</progress></div>
+          <article id="trainingPanel" aria-live="polite"></article>
+          <div class="training-actions">
+            <button class="button" id="trainingPrev" type="button">← Anterior</button>
+            <button class="button button-primary" id="trainingNext" type="button">Próximo →</button>
+            <button class="button button-ghost" id="trainingReset" type="button">Reiniciar progresso local</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="referencias">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><span class="eyebrow">Transparência clínica</span><h2>Fontes primárias e diretrizes</h2></div>
+          <p>As metas apresentadas refletem diretrizes internacionais. Disponibilidade, regulação e protocolo farmacológico são locais.</p>
+        </div>
+        <div class="references-list" id="referencesList"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div><strong>Síndrome Coronariana Aguda · Turbo TEMI</strong><p>Educação médica e apoio cognitivo. Não inserir dados identificáveis de pacientes. Em caso real, priorize assistência, protocolo institucional e avaliação cardiológica.</p></div>
+      <div><a href="../../index.html">← Portal Antigravity</a><a href="#triagem">Primeiros 10 min</a><a href="#syntax">SYNTAX</a><a href="#referencias">Referências</a></div>
+    </div>
+  </footer>
+</body>
+</html>

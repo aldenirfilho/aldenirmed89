@@ -3,10 +3,49 @@
 // Gerado de data/posts.json; não editar manualmente.
 window.ANTIGRAVITY_PORTAL={
   "schemaVersion": "portal-vivo-v1",
-  "updatedAt": "2026-07-30T00:43:13-03:00",
+  "updatedAt": "2026-08-21T13:54:10-03:00",
   "timezone": "America/Fortaleza",
   "editorialPolicy": "Conteúdo educacional, rastreável e proporcional à evidência. Toda afirmação clínica deve apontar para fonte verificável e explicitar limitações.",
   "posts": [
+    {
+      "destination": "Portal Vivo — UPGRADE da plataforma",
+      "target": "portal-vivo-upgrade",
+      "type": "system-upgrade",
+      "category": "Educação médica · TEMI",
+      "priority": 1,
+      "title": "Nova seção interativa organiza a síndrome coronariana aguda",
+      "summary": "O Antigravity Consultas ganhou um módulo leve para revisar STEMI e NSTEMI em sequência operacional: primeiros 10 minutos, ECG, troponina, reperfusão, internação, complicações e papel do SYNTAX no Heart Team.",
+      "publishedAt": "2026-08-21T13:54:10-03:00",
+      "source": {
+        "name": "Síndrome Coronariana Aguda · Turbo TEMI",
+        "url": "../01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/",
+        "id": "antigravity-sca-temi-interativa-v1",
+        "date": "2026-08-21",
+        "checkedAt": "2026-08-21T13:54:10-03:00"
+      },
+      "turbo": {
+        "clinicalImpact": "Reduz a carga cognitiva ao separar reconhecimento, prioridade invasiva, logística de reperfusão, vigilância hospitalar e decisão anatômica.",
+        "temiHook": "Treina os contrastes mais cobrados: STEMI versus NSTEMI, ECG versus biomarcador, reperfusão imediata versus estratégia invasiva e anatomia versus decisão do Heart Team.",
+        "memoryAnchor": "10 MIN → VIA → VIGIAR → ANATOMIA",
+        "takeaways": [
+          "ECG em até 10 minutos organiza a via inicial",
+          "Troponina não deve atrasar reperfusão no STEMI",
+          "Choque prioriza revascularização do vaso culpado",
+          "SYNTAX apoia o Heart Team e não decide sozinho"
+        ],
+        "caveat": "A seção é educacional e não substitui protocolo institucional, avaliação cardiológica, regulação da rede ou decisão individual. Doses e esquemas farmacológicos não são calculados."
+      },
+      "audit": {
+        "sourceChecked": true,
+        "clinicalReview": "not-required",
+        "noDirectPatientData": true,
+        "reviewedAt": "2026-08-21T13:54:10-03:00",
+        "reviewedBy": "Codex Antigravity — publicação solicitada pelo proprietário"
+      },
+      "id": "2026-08-21-nova-secao-interativa-organiza-a-sindrome-coronarian-953e278e",
+      "sourceIdentity": "source-id:antigravity-sca-temi-interativa-v1",
+      "sourceHash": "sha256:953e278e8b9f2ee4"
+    },
     {
       "destination": "Portal Vivo — UPGRADE da plataforma",
       "target": "portal-vivo-upgrade",
