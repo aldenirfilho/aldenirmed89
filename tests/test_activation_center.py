@@ -144,7 +144,7 @@ class ActivationCenterTests(unittest.TestCase):
         guides = read("docs_usuario/index.html")
         workflow = read(".github/workflows/deploy-seguro.yml")
         self.assertIn('"21_Central_Ativacao",', builder)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v18`', self.worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v20`', self.worker)
         for asset in (
             "./21_Central_Ativacao/index.html",
             "./21_Central_Ativacao/assets/app.js",
