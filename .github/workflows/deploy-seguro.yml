@@ -154,7 +154,8 @@ jobs:
           test -s site/01_Modulos_Clinicos/Almanaque_ECG/assets/styles.css
           test -s site/01_Modulos_Clinicos/Almanaque_ECG/assets/app.js
           test -s site/01_Modulos_Clinicos/Almanaque_ECG/data/catalog.js
-          test "$(find site/01_Modulos_Clinicos/Almanaque_ECG/assets/images -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 30
+          test -s site/01_Modulos_Clinicos/Almanaque_ECG/data/catalog-31-60.js
+          test "$(find site/01_Modulos_Clinicos/Almanaque_ECG/assets/images -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 60
           test ! -e site/01_Modulos_Clinicos/Almanaque_ECG/module.manifest.json
           test ! -e site/01_Modulos_Clinicos/Almanaque_ECG/data/visual-assets.json
           test -s site/01_Modulos_Clinicos/Delirium_UTI/index.html

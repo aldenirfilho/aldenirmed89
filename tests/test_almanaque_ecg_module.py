@@ -13,12 +13,28 @@ RELATIVE = Path("01_Modulos_Clinicos/Almanaque_ECG")
 MODULE = ROOT / RELATIVE
 
 
-def load_catalog() -> dict:
-    source = (MODULE / "data/catalog.js").read_text(encoding="utf-8").strip()
-    prefix = "window.ECG_ALMANAC ="
+def load_catalog_file(filename: str, prefix: str) -> dict:
+    source = (MODULE / filename).read_text(encoding="utf-8").strip()
     if not source.startswith(prefix) or not source.endswith(";"):
         raise AssertionError("Catálogo ECG não segue o envelope JavaScript esperado")
     return json.loads(source[len(prefix) : -1].strip())
+
+
+def load_catalog() -> dict:
+    base = load_catalog_file("data/catalog.js", "window.ECG_ALMANAC =")
+    expansion = load_catalog_file(
+        "data/catalog-31-60.js", "window.ECG_ALMANAC_EXPANSION ="
+    )
+    return {
+        **base,
+        "meta": {
+            **base["meta"],
+            "version": expansion["meta"]["version"],
+            "patternCount": len(base["patterns"]) + len(expansion["patterns"]),
+        },
+        "patterns": base["patterns"] + expansion["patterns"],
+        "references": base["references"] + expansion["references"],
+    }
 
 
 def sha256(path: Path) -> str:
@@ -50,7 +66,8 @@ class AlmanaqueEcgModuleTests(unittest.TestCase):
 
     def test_core_files_exist_and_html_parses(self) -> None:
         for relative in (
-            "index.html", "assets/styles.css", "assets/app.js", "data/catalog.js"
+            "index.html", "assets/styles.css", "assets/app.js", "data/catalog.js",
+            "data/catalog-31-60.js"
         ):
             with self.subTest(path=relative):
                 path = MODULE / relative
@@ -60,15 +77,15 @@ class AlmanaqueEcgModuleTests(unittest.TestCase):
         parser.feed(self.html)
         parser.close()
 
-    def test_exactly_thirty_unique_models_and_images(self) -> None:
+    def test_exactly_sixty_unique_models_and_images(self) -> None:
         patterns = self.catalog["patterns"]
-        self.assertEqual(len(patterns), 30)
-        self.assertEqual(self.catalog["meta"]["patternCount"], 30)
-        self.assertEqual(len({item["id"] for item in patterns}), 30)
-        self.assertEqual(len({item["number"] for item in patterns}), 30)
-        self.assertEqual(len({item["image"] for item in patterns}), 30)
+        self.assertEqual(len(patterns), 60)
+        self.assertEqual(self.catalog["meta"]["patternCount"], 60)
+        self.assertEqual(len({item["id"] for item in patterns}), 60)
+        self.assertEqual(len({item["number"] for item in patterns}), 60)
+        self.assertEqual(len({item["image"] for item in patterns}), 60)
         image_files = sorted((MODULE / "assets/images").glob("*.png"))
-        self.assertEqual(len(image_files), 30)
+        self.assertEqual(len(image_files), 60)
         for pattern in patterns:
             with self.subTest(pattern=pattern["id"]):
                 self.assertTrue((MODULE / pattern["image"]).is_file())
@@ -77,9 +94,9 @@ class AlmanaqueEcgModuleTests(unittest.TestCase):
 
     def test_visual_manifest_hashes_and_provenance_are_consistent(self) -> None:
         assets = self.manifest["assets"]
-        self.assertEqual(len(assets), 30)
+        self.assertEqual(len(assets), 60)
         self.assertEqual(self.manifest["stage"], "approved-for-integration")
-        self.assertEqual(len({asset["sha256"] for asset in assets}), 30)
+        self.assertEqual(len({asset["sha256"] for asset in assets}), 60)
         for asset in assets:
             path = MODULE / "assets/images" / asset["file"]
             with self.subTest(file=asset["file"]):
@@ -99,7 +116,10 @@ class AlmanaqueEcgModuleTests(unittest.TestCase):
             "BAVT", "bloqueio de ramo direito", "bloqueio de ramo esquerdo",
             "pericardite", "tamponamento", "TEP", "Wellens", "de Winter",
             "Sgarbossa", "fibrilação atrial", "flutter", "WPW", "Brugada",
-            "marcapasso", "digoxina", "canal de sódio"
+            "marcapasso", "digoxina", "canal de sódio", "fibrilação ventricular",
+            "assistolia", "atividade elétrica sem pulso", "FA pré-excitada",
+            "R sobre T", "infarto de ventrículo direito", "bloqueio bifascicular",
+            "ramo alternante", "falha de captura", "ondas T cerebrais"
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker.casefold(), self.public_source.casefold())
@@ -117,6 +137,13 @@ class AlmanaqueEcgModuleTests(unittest.TestCase):
                     self.assertIsInstance(pattern[key], list)
                     self.assertTrue(pattern[key])
                 self.assertTrue(set(pattern["refs"]).issubset(valid_refs))
+                if pattern["number"] >= 31:
+                    self.assertIn("decision30s", pattern)
+                    decision = pattern["decision30s"]
+                    self.assertTrue(decision["priority"])
+                    for key in ("now", "doNotDelay", "reassess"):
+                        self.assertIsInstance(decision[key], list)
+                        self.assertTrue(decision[key])
 
     def test_search_filters_compare_and_deep_links_are_local(self) -> None:
         for marker in (
@@ -129,6 +156,7 @@ class AlmanaqueEcgModuleTests(unittest.TestCase):
         self.assertNotIn("fetch(", self.app)
         self.assertNotIn("XMLHttpRequest", self.app)
         self.assertNotIn("sessionStorage", self.app)
+        self.assertIn("Decisão em 30 segundos", self.app)
 
     def test_safety_privacy_and_dose_boundary_are_explicit(self) -> None:
         for marker in (
@@ -163,6 +191,7 @@ class AlmanaqueEcgModuleTests(unittest.TestCase):
         self.assertTrue(any(item["year"] == 2025 and "ACC" in item["organization"] for item in references))
         self.assertTrue(any("cpr.heart.org" in url for url in urls))
         self.assertTrue(any("physionet.org" in url for url in urls))
+        self.assertTrue(any(item["year"] == 2026 and "AHA" in item["organization"] for item in references))
 
     def test_accessibility_responsiveness_and_print_are_present(self) -> None:
         for marker in (
@@ -194,7 +223,9 @@ class AlmanaqueEcgModuleTests(unittest.TestCase):
         self.assertIn(expected, home)
         self.assertIn("../Almanaque_ECG/index.html", sca)
         self.assertIn("./" + expected, worker)
+        self.assertIn("./" + (RELATIVE / "data/catalog-31-60.js").as_posix(), worker)
         self.assertIn("site/" + expected, workflow)
+        self.assertIn("site/" + (RELATIVE / "data/catalog-31-60.js").as_posix(), workflow)
         self.assertIn((RELATIVE / "module.manifest.json").as_posix(), builder)
         self.assertIn((RELATIVE / "data/visual-assets.json").as_posix(), builder)
 

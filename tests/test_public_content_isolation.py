@@ -644,7 +644,7 @@ class PublicContentIsolationTests(unittest.TestCase):
 
     def test_service_worker_revokes_the_previous_public_cache(self) -> None:
         worker = (ROOT / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v21`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v22`', worker)
         self.assertNotIn('const CACHE_NAME = `${CACHE_PREFIX}v12`', worker)
         self.assertIn(
             "key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME",

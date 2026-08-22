@@ -1,8 +1,24 @@
 (() => {
   "use strict";
 
-  const catalog = window.ECG_ALMANAC;
-  if (!catalog || !Array.isArray(catalog.patterns)) return;
+  const baseCatalog = window.ECG_ALMANAC;
+  const expansionCatalog = window.ECG_ALMANAC_EXPANSION;
+  if (!baseCatalog || !Array.isArray(baseCatalog.patterns)) return;
+  const expansionPatterns = Array.isArray(expansionCatalog?.patterns) ? expansionCatalog.patterns : [];
+  const referenceMap = new Map(
+    [...baseCatalog.references, ...(expansionCatalog?.references || [])]
+      .map((reference) => [reference.id, reference])
+  );
+  const catalog = {
+    ...baseCatalog,
+    meta: {
+      ...baseCatalog.meta,
+      version: expansionCatalog?.meta?.version || baseCatalog.meta.version,
+      patternCount: baseCatalog.patterns.length + expansionPatterns.length
+    },
+    patterns: [...baseCatalog.patterns, ...expansionPatterns],
+    references: [...referenceMap.values()]
+  };
 
   const preferenceKey = document.documentElement.dataset.preferenceKey || "antigravity:a11y:v1";
   const state = { query: "", category: "all", compare: [] };
@@ -78,7 +94,11 @@
       repolarizacao: "Repolarização",
       canalopatias: "Canalopatias",
       sobrecarga: "Sobrecarga/TEP",
-      sistemicos: "Sistêmicos"
+      sistemicos: "Sistêmicos",
+      bradiarritmias: "Bradiarritmias",
+      parada: "Parada e peri-parada",
+      dispositivos: "Dispositivos",
+      toxicologia: "Toxicologia"
     };
     return labels[value] || value;
   }
@@ -100,7 +120,9 @@
       pattern.number, pattern.title, pattern.short, pattern.category, pattern.urgency,
       pattern.firstLook, pattern.leads, pattern.measure, pattern.context,
       ...pattern.tags, ...pattern.findings, ...pattern.mimics, ...pattern.action,
-      ...pattern.prevention, ...pattern.limits
+      ...pattern.prevention, ...pattern.limits,
+      pattern.decision30s?.priority, ...(pattern.decision30s?.now || []),
+      ...(pattern.decision30s?.doNotDelay || []), ...(pattern.decision30s?.reassess || [])
     ].join(" "));
   }
 
@@ -154,6 +176,21 @@
     `).join("");
   }
 
+  function renderDecision30s(pattern) {
+    const decision = pattern.decision30s;
+    if (!decision) return "";
+    return `
+      <section class="decision-30s" aria-label="Decisão em 30 segundos">
+        <div class="decision-heading"><span>🚑 Decisão em 30 segundos</span><strong>${escapeHtml(decision.priority)}</strong></div>
+        <div class="decision-grid">
+          <div><h3>Faça agora</h3>${list(decision.now)}</div>
+          <div><h3>Não atrase</h3>${list(decision.doNotDelay)}</div>
+          <div><h3>Reavalie</h3>${list(decision.reassess)}</div>
+        </div>
+      </section>
+    `;
+  }
+
   function openDetail(id, updateHash = true) {
     const pattern = byId.get(id);
     if (!pattern) return;
@@ -169,6 +206,7 @@
             <div class="key-card"><strong>Derivações</strong>${escapeHtml(pattern.leads)}</div>
             <div class="key-card"><strong>Meça</strong>${escapeHtml(pattern.measure)}</div>
           </div>
+          ${renderDecision30s(pattern)}
           <div class="detail-grid">
             ${detailSection("Achados-chave", pattern.findings)}
             <section class="detail-section"><h3>Contexto típico</h3><p>${escapeHtml(pattern.context)}</p></section>
@@ -215,6 +253,7 @@
           <div class="comparison-row"><strong>Derivações</strong><span>${escapeHtml(pattern.leads)}</span></div>
           <div class="comparison-row"><strong>Meça</strong><span>${escapeHtml(pattern.measure)}</span></div>
           <div class="comparison-row"><strong>Contexto</strong><span>${escapeHtml(pattern.context)}</span></div>
+          ${pattern.decision30s ? `<div class="comparison-row"><strong>Decisão em 30 s</strong><span>${escapeHtml(pattern.decision30s.priority)} ${escapeHtml(pattern.decision30s.now.join(" "))}</span></div>` : ""}
           <div class="comparison-row"><strong>Ação</strong><span>${escapeHtml(pattern.action.join(" "))}</span></div>
           <div class="comparison-row"><strong>Limite</strong><span>${escapeHtml(pattern.limits.join(" "))}</span></div>
         </div>
