@@ -98,6 +98,28 @@ class CriticalModulesTests(unittest.TestCase):
         for path in paths:
             self.assertIsNone(forbidden.search(path.read_text(encoding="utf-8")), path)
 
+    def test_pulmonology_has_safe_rapid_dpoc_ventilation_block(self):
+        catalog = (ROOT / "01_Modulos_Clinicos/Pneumologia_Critica/data/catalog.js").read_text(encoding="utf-8")
+        required_clinical_markers = (
+            'moduleVersion: "1.1.0"',
+            "PaCO₂ alta isolada pode ser basal",
+            "SpO₂ geralmente 88–92%",
+            "pH ≤7,35",
+            "Resposta clínica em 30–60 min",
+            "6–8 mL/kg de peso predito",
+            "10–15/min",
+            "I:E ≥1:3",
+            "Fluxo expiratório não retorna a zero",
+            "dose exige validação local",
+            "42371750",
+            "26976648",
+            "37225653",
+            "38085854",
+        )
+        for marker in required_clinical_markers:
+            self.assertIn(marker, catalog)
+        self.assertNotIn("carbonarcose", catalog.casefold())
+
 
 if __name__ == "__main__":
     unittest.main()
