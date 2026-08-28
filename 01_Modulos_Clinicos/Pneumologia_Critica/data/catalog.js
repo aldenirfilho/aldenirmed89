@@ -4,13 +4,13 @@
   const catalog = {
     meta: {
       schemaVersion: "critical-module-v1",
-      moduleVersion: "1.0.0",
+      moduleVersion: "1.1.0",
       slug: "pneumologia-critica",
       title: "Pneumologia Crítica",
       subtitle: "Insuficiência respiratória, SDRA, doenças obstrutivas, hemoptise e TEP organizados em decisões práticas, fisiologia visível e treino Turbo TEMI.",
       kicker: "🫁 Plantão · UTI · Turbo TEMI",
       emoji: "🫁",
-      updatedAt: "2026-07-30",
+      updatedAt: "2026-08-28",
       status: "em-revisao-medica",
       readyEvent: "antigravity:pulmonology-ready",
       safetyNotice: "Material educacional em revisão médica. Não substitui avaliação à beira-leito, gasometria e mecânica seriadas, protocolo de ventilação, fisioterapia respiratória, pneumologista/intensivista nem dupla checagem de parâmetros e dispositivos."
@@ -39,12 +39,12 @@
         tags: ["HFNC", "CNAF", "escalada"], referenceIds: ["florali2015", "soho2026"]
       },
       {
-        id: "dpoc-hipercapnica", category: "Obstrutiva", title: "Exacerbação de DPOC com acidose hipercápnica",
-        signal: "Dispneia, obstrução e aumento de PaCO₂ com acidemia, sem contraindicação imediata à VNI.",
-        firstHour: ["Oxigene com alvo individualizado e evite hiperóxia.", "Broncodilate, trate gatilho e avalie secreção/fadiga.", "VNI é preferencial quando indicada e tolerada, com monitorização de resposta.", "Prepare intubação se deterioração, contraindicação ou falha precoce."],
-        decisive: ["Gasometria seriada", "Trabalho respiratório e consciência", "Causa da exacerbação e imagem"],
-        doNot: ["Não negar oxigênio necessário por medo de CO₂.", "Não usar VNI sem plano de falha.", "Não sedar profundamente para forçar máscara."],
-        tags: ["DPOC", "VNI", "hipercapnia"], referenceIds: ["ersAtsNiv2017", "gold2026"]
+        id: "dpoc-hipercapnica", category: "Obstrutiva", title: "DPOC exacerbada com acidose/encefalopatia hipercápnica",
+        signal: "Após tratamento inicial: PaCO₂ elevada, pH ≤7,35 e esforço, fadiga ou alteração da consciência. PaCO₂ alta isolada pode ser basal; encefalopatia hipercápnica é um diagnóstico clínico.",
+        firstHour: ["ABCDE, monitorização, oxigênio controlado para SpO₂ geralmente entre 88–92% e gasometria seriada.", "Administre broncodilatador inalatório de curta ação, corticosteroide sistêmico quando indicado e trate o gatilho conforme diretriz e protocolo local.", "Procure pneumonia, pneumotórax, edema pulmonar, TEP, síndrome coronariana, arritmia, secreção, aspiração e sedativos/opioides.", "Na acidose hipercápnica, inicie VNI bilevel precocemente se a via aérea for segura; documente antes os critérios de falha e intubação."],
+        decisive: ["pH, PaCO₂, bicarbonato e gasometria basal quando conhecida", "Frequência, esforço, consciência, proteção da via aérea e secreções", "Resposta clínica em 30–60 min e tendência gasométrica aproximadamente em 1 h"],
+        doNot: ["Não diagnosticar ‘narcose por CO₂’ por um valor isolado de PaCO₂.", "Não normalizar SpO₂ ou PaCO₂ à custa de hiperóxia e aprisionamento aéreo.", "Não prolongar VNI em piora de pH, esforço, consciência, oxigenação ou hemodinâmica."],
+        tags: ["DPOC", "VNI", "hipercapnia", "auto-PEEP"], referenceIds: ["gold2026", "atsNirs2026", "ersAtsNiv2017", "btsIcsAhrf2016", "hessCopdVent2023"]
       },
       {
         id: "asma-quase-fatal", category: "Obstrutiva", title: "Asma grave/quase fatal",
@@ -84,7 +84,7 @@
         firstHour: ["Desconecte brevemente do ventilador se colapso grave e permita exalação, enquanto trata causas simultâneas.", "Reduza frequência/volume-minuto e aumente tempo expiratório.", "Trate broncoespasmo, secreção e assincronia.", "Meça auto-PEEP quando possível e diferencie de pneumotórax."],
         decisive: ["Curva fluxo-tempo", "Pausa expiratória", "Pressão pico versus platô e ultrassom pleural"],
         doNot: ["Não aumentar frequência por reflexo.", "Não perseguir PaCO₂ normal.", "Não ignorar pneumotórax como diagnóstico concorrente."],
-        tags: ["auto-PEEP", "DPOC", "asma"], referenceIds: ["ersAtsNiv2017", "gina2025"]
+        tags: ["auto-PEEP", "DPOC", "asma"], referenceIds: ["btsIcsAhrf2016", "hessCopdVent2023", "jubranPeep2024"]
       },
       {
         id: "falha-extubacao", category: "Desmame", title: "Falha de extubação e estridor",
@@ -126,15 +126,27 @@
         exit: "Ventilação protetora comprovada por números e estratégia de resgate definida."
       },
       {
+        id: "dpoc-vni-checkpoint", title: "DPOC acidótica: VNI → checkpoint → escalada", timebox: "primeira hora",
+        steps: [
+          { title: "Confirme falência aguda", text: "Combine pH, PaCO₂, frequência, esforço e consciência. Hipercapnia crônica sem acidose não basta; exclua hipoxemia, hipoglicemia, sepse, AVC, uremia e fármacos depressores." },
+          { title: "Comece o tratamento", text: "Titule O₂ para SpO₂ geralmente 88–92%, broncodilate, use corticosteroide sistêmico quando indicado e trate a causa conforme GOLD e protocolo local; antibiótico depende de purulência, cultura prévia, ventilação e contexto infeccioso." },
+          { title: "Configure a VNI", text: "Interface oronasal; referência BTS: IPAP próxima de 15 e EPAP 3–5 cmH₂O. Suba IPAP conforme expansão, esforço, frequência, vazamento e gasometria; 20–30 cmH₂O pode ser necessário. São referências, não prescrição universal." },
+          { title: "Faça o checkpoint", text: "Em 30–60 min, procure redução do esforço/frequência, melhora da consciência e direção favorável do pH; repita gasometria aproximadamente em 1 h. Corrija máscara, vazamento, suporte insuficiente e assincronia." },
+          { title: "Escale sem atraso", text: "Piora clínica ou gasométrica, via aérea insegura, secreção não manejável, aspiração, choque, hipoxemia ameaçadora ou intolerância não corrigível indicam preparação para IOT." }
+        ],
+        exit: "Resposta objetiva à VNI ou intubação realizada antes do colapso. Ao elevar EPAP, reavalie a diferença IPAP − EPAP e a ventilação efetiva."
+      },
+      {
         id: "obstrutivo-intubado", title: "Obstrutivo intubado: esvaziar antes de ventilar mais", timebox: "minutos",
         steps: [
-          { title: "Detecte", text: "Fluxo expiratório não zera, auto-PEEP e hipotensão sugerem aprisionamento." },
-          { title: "Dê tempo", text: "Reduza frequência, ajuste VT/fluxo inspiratório e prolongue expiração." },
-          { title: "Aceite", text: "Hipercapnia permissiva pode ser preferível a hiperinsuflação, se não houver contraindicação." },
-          { title: "Trate causa", text: "Broncodilatação, secreção, tubo e assincronia." },
-          { title: "Reavalie", text: "Curvas, pressões e hemodinâmica após cada mudança." }
+          { title: "Detecte", text: "Fluxo expiratório não retorna a zero, auto-PEEP, pressão de pico alta e hipotensão sugerem aprisionamento; compare pico com platô e exclua pneumotórax/DOPE." },
+          { title: "Comece conservador", text: "Referências iniciais: VT 6–8 mL/kg de peso predito, FR 10–15/min (faixa baixa se obstrução intensa), Ti 0,8–1,2 s, I:E ≥1:3 e fluxo VCV frequentemente 60–100 L/min." },
+          { title: "Dê tempo", text: "Se aprisiona, reduza volume-minuto — em geral FR primeiro —, encurte Ti/aumente fluxo e prolongue expiração. PEEP próxima de 5 cmH₂O é só ponto de partida; titule por PEEP total, platô e hemodinâmica." },
+          { title: "Aceite", text: "Aproxime a PaCO₂ basal ou aceite hipercapnia permissiva quando apropriado. pH 7,20–7,25 é faixa eventualmente tolerada em obstrução extrema, com evidência baixa; não é objetivo rotineiro." },
+          { title: "Resgate e causa", text: "No colapso grave, desconexão breve para exalação é teste/resgate temporário enquanto se trata broncoespasmo, secreção, tubo, assincronia, pneumotórax e outras causas de choque." },
+          { title: "Reavalie", text: "Após cada mudança, confira curva fluxo-tempo, auto-PEEP em paciente passivo, platô, volume expirado, sincronia, gasometria e pressão arterial." }
         ],
-        exit: "Fluxo retorna a zero ou melhora, auto-PEEP/hemodinâmica controladas."
+        exit: "Fluxo expiratório retorna a zero ou melhora, auto-PEEP e hemodinâmica estão controladas, e a causa segue em tratamento."
       },
       {
         id: "desmame-extubacao", title: "Desmame: pronto → teste → proteger extubação", timebox: "diário",
@@ -173,10 +185,36 @@
         id: "hfnc-vni-iot", title: "Alto fluxo × VNI × IOT",
         headers: ["Suporte", "Melhor encaixe", "Sinal de alerta", "Limite"],
         rows: [
-          ["Alto fluxo", "Hipoxemia selecionada, paciente cooperativo", "Esforço/taquipneia persistentes", "Não protege via aérea"],
-          ["VNI", "DPOC acidótica, edema cardiogênico e perfis selecionados", "Piora de pH, consciência ou instabilidade", "Interface e risco de atraso"],
+          ["Alto fluxo", "Hipoxemia selecionada; ATS 2026 admite alternativa condicional apenas na acidemia hipercápnica leve, com vigilância", "Esforço/taquipneia persistentes", "Não protege via aérea nem substitui VNI na acidose mais grave"],
+          ["VNI bilevel", "Primeira escolha na DPOC com acidose hipercápnica e via aérea segura", "Piora de pH, esforço, consciência ou instabilidade", "Interface, secreções e risco de atraso"],
           ["IOT", "Falha, via aérea, exaustão, choque ou hipoxemia refratária", "Pré-oxigenação/hemodinâmica frágeis", "Procedimento de alto risco"],
           ["Regra", "Teste com objetivo", "Reavalie cedo", "Escalone antes do colapso"]
+        ]
+      },
+      {
+        id: "dpoc-vm-invasiva", title: "DPOC intubada: dê tempo para expirar",
+        headers: ["Controle", "Referência inicial", "Objetivo", "Se houver aprisionamento"],
+        rows: [
+          ["Modo", "VCV ou PCV", "Usar modo familiar; não há superioridade comprovada", "Rever volume-minuto, curvas e sincronia"],
+          ["VT", "6–8 mL/kg de peso predito", "Evitar hiperdistensão", "Reduzir conforme platô, volume expirado e hemodinâmica"],
+          ["Frequência", "10–15/min; faixa baixa na obstrução intensa", "Diminuir volume-minuto", "Reduzir frequência antes de perseguir PaCO₂"],
+          ["Ti / fluxo", "Ti 0,8–1,2 s; fluxo VCV frequentemente 60–100 L/min", "I:E ≥1:3 e fluxo expiratório chegando a zero", "Encurtar Ti ou aumentar fluxo"],
+          ["PEEP", "Baixa, frequentemente próxima de 5 cmH₂O", "Reduzir carga de disparo sem hiperdistender", "Titular por PEEP total, platô, volume e pressão arterial"],
+          ["Pressões", "Platô preferencialmente <28–30 cmH₂O", "Separar resistência de distensão alveolar", "Pico alto isolado pode refletir resistência"],
+          ["Oxigenação", "FiO₂ de resgate com redução precoce", "SpO₂ geralmente 88–92%", "Excluir secreção, atelectasia e pneumotórax"],
+          ["CO₂ / pH", "Aproximar PaCO₂ basal ou obter pH seguro", "Evitar hiperinsuflação", "Aceitar hipercapnia permissiva quando apropriado"]
+        ]
+      },
+      {
+        id: "dpoc-terapeutica", title: "DPOC exacerbada: terapêutica sem automatizar prescrição",
+        headers: ["Intervenção", "Quando buscar", "Checkpoint", "Limite / regra local"],
+        rows: [
+          ["Oxigênio controlado", "Hipoxemia", "SpO₂ geralmente 88–92% + gasometria", "Não negar O₂; evitar hiperóxia"],
+          ["SABA ± SAMA", "Broncoespasmo/obstrução", "Esforço, ausculta, frequência e técnica de entrega", "Dose e dispositivo conforme protocolo; titule O₂ separadamente"],
+          ["Corticosteroide sistêmico", "Exacerbação moderada/grave quando indicado", "Resposta, glicemia, eventos adversos", "Curso curto conforme GOLD e contraindicações; dose exige validação local"],
+          ["Antibiótico", "Escarro purulento, cultura respiratória prévia positiva ou necessidade de VNI/VM", "Culturas prévias, função renal, resposta e diagnóstico de pneumonia", "Escolha e duração dependem da microbiologia/protocolo local"],
+          ["Tratar precipitante", "Pneumonia, edema, arritmia, SCA, TEP, pneumotórax, aspiração ou fármacos", "Trajetória clínica e exames dirigidos", "Não atribuir toda piora à DPOC"],
+          ["Metilxantina IV", "Não é rotina", "Toxicidade/interações se exceção justificada", "GOLD desaconselha uso rotineiro"]
         ]
       },
       {
@@ -204,6 +242,9 @@
       { term: "Peso corporal predito", category: "Ventilação", definition: "Estimativa baseada em altura e sexo, relacionada ao tamanho pulmonar.", application: "É o denominador para VT protetor; obesidade não aumenta o tamanho do pulmão." },
       { term: "Driving pressure", category: "Mecânica", definition: "Diferença entre pressão de platô e PEEP total em condições válidas.", application: "Apoia leitura de estresse relativo; depende de esforço, pausa e mecânica da parede." },
       { term: "Auto-PEEP", category: "Mecânica", definition: "Pressão expiratória intrínseca por esvaziamento incompleto.", application: "Suspeite se fluxo não zera; reduza volume-minuto e aumente tempo expiratório." },
+      { term: "Encefalopatia hipercápnica", category: "DPOC", definition: "Alteração da consciência associada à hipercapnia — também chamada ‘narcose por CO₂’ — após excluir causas concorrentes.", application: "Não existe PaCO₂ isolada diagnóstica; integre pH, basal, oxigenação, glicemia, sepse, neurologia, uremia e fármacos." },
+      { term: "Constante de tempo", category: "Mecânica", definition: "Produto de resistência por complacência; descreve a velocidade de enchimento e esvaziamento pulmonar.", application: "Na obstrução, constantes longas exigem mais tempo expiratório e favorecem aprisionamento heterogêneo." },
+      { term: "PEEP total", category: "Mecânica", definition: "Soma funcional da PEEP externa com a pressão intrínseca mensurada em condições válidas.", application: "Use pausa expiratória em paciente passivo e interprete com curva, platô, volume e hemodinâmica." },
       { term: "Complacência", category: "Mecânica", definition: "Mudança de volume por mudança de pressão.", application: "Tendência é mais útil que um número isolado; parede torácica e esforço interferem." },
       { term: "Relação P/F", category: "Oxigenação", definition: "PaO₂ dividida pela FiO₂ em fração.", application: "Classifica hipoxemia no contexto, mas varia com PEEP, tempo, posição e FiO₂." },
       { term: "Hipercapnia permissiva", category: "Proteção", definition: "Aceitar CO₂ mais alto para evitar ventilação lesiva.", application: "Requer contexto e contraindicações; pH e hemodinâmica importam." },
@@ -229,6 +270,8 @@
       { title: "PEEP sempre maior", kind: "Ventilação", message: "PEEP pode recrutar ou hiperdistender e comprometer hemodinâmica.", countermeasure: "Titule por fenótipo, resposta e tolerância." },
       { title: "VNI como adiamento", kind: "Tempo", message: "Suporte não invasivo falho pode atrasar IOT e piorar desfecho.", countermeasure: "Defina gatilhos de falha e reavalie em intervalos curtos." },
       { title: "CO₂ normal a qualquer custo", kind: "Obstrutiva", message: "Aumentar volume-minuto pode causar hiperinsuflação dinâmica.", countermeasure: "Priorize esvaziamento e proteção; aceite hipercapnia quando apropriada." },
+      { title: "PaCO₂ alta = narcose", kind: "DPOC", message: "Hipercapnia crônica pode ter PaCO₂ elevada sem encefalopatia ou falência aguda.", countermeasure: "Confirme alteração de consciência, acidose e trajetória; exclua hipoxemia, glicose, sepse, AVC, uremia e sedativos/opioides." },
+      { title: "Alto fluxo substitui VNI na acidose", kind: "Suporte", message: "A recomendação ATS 2026 para alto fluxo na falência hipercápnica é condicional e restrita à acidemia leve, com baixa certeza.", countermeasure: "Mantenha VNI bilevel como primeira escolha na DPOC acidótica e disponibilidade imediata de escalada." },
       { title: "P/F sem contexto", kind: "Diagnóstico", message: "P/F muda com FiO₂, PEEP, posição e tempo.", countermeasure: "Registre condições da medida e use tendência." },
       { title: "Prona como manobra de oxigênio", kind: "SDRA", message: "Benefício não depende apenas de subir SpO₂ imediatamente.", countermeasure: "Use indicação, duração e proteção do protocolo estudado." }
     ],
@@ -255,7 +298,10 @@
       { id: "pne-q07", block: "D · Fadiga", prompt: "PaCO₂ de asmático grave passa de baixa para normal com piora clínica. Isso pode indicar:", options: ["Cura", "Fadiga e falência ventilatória", "Apenas erro laboratorial", "Hiperventilação maior"], correct: 1, explanation: "Normalização/subida de CO₂ no asmático em deterioração pode sinalizar exaustão." },
       { id: "pne-q08", block: "E · Pleura", prompt: "Choque súbito sob pressão positiva com suspeita forte de pneumotórax hipertensivo. Deve-se:", options: ["Aguardar radiografia", "Descomprimir imediatamente", "Fazer espirometria", "Aumentar PEEP"], correct: 1, explanation: "É diagnóstico clínico tempo-dependente; imagem não deve atrasar descompressão no instável." },
       { id: "pne-q09", block: "SDRA", prompt: "A diretriz ATS 2024 recomenda contra:", options: ["Ventilação protetora", "Manobras de recrutamento prolongadas de rotina em SDRA moderada/grave", "Avaliar ECMO selecionada", "PEEP individualizada"], correct: 1, explanation: "A recomendação forte é contra recrutamento pulmonar prolongado; outras intervenções dependem do contexto." },
-      { id: "pne-q10", block: "Desmame", prompt: "Paciente falha extubação com indicação clara de reintubação. Melhor conduta?", options: ["VNI indefinida para adiar", "Reintubar sem atraso evitável", "Apenas sedar", "Ignorar hipercapnia"], correct: 1, explanation: "Suporte não invasivo não deve mascarar falha estabelecida com necessidade de via aérea." }
+      { id: "pne-q10", block: "Desmame", prompt: "Paciente falha extubação com indicação clara de reintubação. Melhor conduta?", options: ["VNI indefinida para adiar", "Reintubar sem atraso evitável", "Apenas sedar", "Ignorar hipercapnia"], correct: 1, explanation: "Suporte não invasivo não deve mascarar falha estabelecida com necessidade de via aérea." },
+      { id: "pne-q11", block: "DPOC · VNI", prompt: "DPOC exacerbada, após tratamento inicial: pH 7,29, PaCO₂ 68 mmHg, FR 30 e via aérea segura. Suporte preferencial?", options: ["VNI bilevel com checkpoint precoce", "Alto fluxo sem plano de falha", "Oxigênio a 100%", "Intubação obrigatória apenas pelo valor de PaCO₂"], correct: 0, explanation: "ERS/ATS recomenda VNI bilevel na insuficiência hipercápnica acidótica por DPOC. Defina falha antes de iniciar e reavalie em 30–60 min, com gasometria aproximadamente em 1 h." },
+      { id: "pne-q12", block: "DPOC · Auto-PEEP", prompt: "Na VM, o fluxo expiratório ainda não chegou a zero quando começa a inspiração seguinte. Qual ajuste lógico prioritário?", options: ["Aumentar frequência", "Reduzir tempo expiratório", "Reduzir volume-minuto e prolongar expiração", "Normalizar PaCO₂ imediatamente"], correct: 2, explanation: "O traçado sugere esvaziamento incompleto. Em geral, reduza FR/volume-minuto e encurte Ti ou aumente fluxo, reavaliando curvas, pressões e hemodinâmica." },
+      { id: "pne-q13", block: "DPOC · Colapso", prompt: "DPOC intubado desenvolve hipotensão abrupta, pressão de pico alta e expiração incompleta. Melhor princípio imediato?", options: ["Aumentar VT", "Desconexão breve para exalação como resgate enquanto avalia DOPE e pneumotórax", "Aumentar FR", "Assumir auto-PEEP e ignorar outras causas"], correct: 1, explanation: "Desconexão breve pode testar/aliviar temporariamente hiperinsuflação grave, mas não é tratamento definitivo. Investigue simultaneamente tubo, obstrução, pneumotórax, equipamento e outras causas de choque." }
     ],
     cases: [
       { id: "pne-c01", block: "SDRA", prompt: "Paciente 165 cm, obesidade e SDRA. Para calcular VT inicial protetor, qual peso usar?", options: ["Peso real", "Peso corporal predito pela altura/sexo", "Peso pós-diálise", "Peso estimado visualmente"], correct: 1, explanation: "Obesidade não aumenta tamanho pulmonar; use PBW." },
@@ -263,7 +309,9 @@
       { id: "pne-c03", block: "Hipoxemia", prompt: "Alto fluxo há 2 h: saturação 94%, FR 38, tiragem e confusão nova. Próximo passo?", options: ["Manter porque saturação está boa", "Preparar escalada/intubação com equipe", "Reduzir monitorização", "Dar alta"], correct: 1, explanation: "Esforço e alteração mental sinalizam falha apesar da SpO₂." },
       { id: "pne-c04", block: "Prona", prompt: "SDRA grave em protetora, sem contraindicação, equipe treinada. Estratégia apoiada por PROSEVA?", options: ["Prona curta de 1 h", "Prona precoce por sessão prolongada", "Apenas posição lateral", "Recrutamento prolongado obrigatório"], correct: 1, explanation: "PROSEVA aplicou sessões de pelo menos 16 horas em SDRA grave selecionada." },
       { id: "pne-c05", block: "Pleura", prompt: "Paciente em VM entra em choque, hemitórax esquerdo sem deslizamento no POCUS e alta suspeita de tensão. Conduta?", options: ["Esperar TC", "Descompressão imediata", "Aumentar pressão", "Teste de caminhada"], correct: 1, explanation: "Instabilidade e forte suspeita exigem tratamento sem atraso por imagem." },
-      { id: "pne-c06", block: "TEP", prompt: "Choque com alta suspeita de TEP, transporte à TC é inseguro e eco mostra VD muito dilatado. Melhor princípio?", options: ["Dímero-D para excluir", "Decisão de reperfusão baseada em contexto/equipe sem exame inviável", "Aguardar estabilidade espontânea", "Carga volumosa automática"], correct: 1, explanation: "No instável, eco à beira-leito e probabilidade podem apoiar decisão urgente com equipe e avaliação de sangramento." }
+      { id: "pne-c06", block: "TEP", prompt: "Choque com alta suspeita de TEP, transporte à TC é inseguro e eco mostra VD muito dilatado. Melhor princípio?", options: ["Dímero-D para excluir", "Decisão de reperfusão baseada em contexto/equipe sem exame inviável", "Aguardar estabilidade espontânea", "Carga volumosa automática"], correct: 1, explanation: "No instável, eco à beira-leito e probabilidade podem apoiar decisão urgente com equipe e avaliação de sangramento." },
+      { id: "pne-c07", block: "DPOC · Consciência", prompt: "DPOC com sonolência, pH 7,27 e PaCO₂ 82 mmHg, mas tosse e via aérea ainda eficazes, hemodinâmica estável e equipe experiente. Qual princípio?", options: ["PaCO₂ obriga IOT em todos", "Teste de VNI muito monitorado pode ser considerado, com preparo imediato para IOT", "Sedação profunda para tolerar máscara", "Alto fluxo sempre substitui VNI"], correct: 1, explanation: "Encefalopatia hipercápnica isolada não é contraindicação absoluta à VNI. Via aérea insegura, aspiração, secreção não manejável, peri-parada, choque ou piora precoce favorecem IOT." },
+      { id: "pne-c08", block: "DPOC · Mecânica", prompt: "Após IOT: VT 8 mL/kg predito, FR 22/min, fluxo não zera e pressão arterial cai. Qual mudança ataca o mecanismo dominante?", options: ["Aumentar FR", "Reduzir FR/volume-minuto e ampliar tempo expiratório", "Aumentar VT", "Subir PEEP sem medir mecânica"], correct: 1, explanation: "FR elevada reduz o tempo expiratório e agrava hiperinsuflação dinâmica. Reduza volume-minuto, trate obstrução e reavalie curva, auto-PEEP, platô e hemodinâmica." }
     ],
     flashcards: [
       { id: "pne-f01", topic: "VM", front: "VT protetor usa qual peso?", back: "Peso corporal predito.", pearl: "Calcule pela altura e sexo." },
@@ -283,7 +331,13 @@
       { id: "pne-f15", topic: "Pressões", front: "Platô alto mede apenas pulmão?", back: "Não.", pearl: "Parede torácica, abdome e esforço influenciam." },
       { id: "pne-f16", topic: "Obstrutiva", front: "Objetivo primário é normalizar PaCO₂?", back: "Não.", pearl: "Evite hiperinsuflação e lesão; aceite permissividade quando segura." },
       { id: "pne-f17", topic: "HFNC", front: "ROX decide sozinho a IOT?", back: "Não.", pearl: "É apoio de tendência, não substituto do exame." },
-      { id: "pne-f18", topic: "Prona", front: "Subir SpO₂ é o único objetivo da prona?", back: "Não.", pearl: "Homogeneidade e proteção podem importar além da resposta imediata." }
+      { id: "pne-f18", topic: "Prona", front: "Subir SpO₂ é o único objetivo da prona?", back: "Não.", pearl: "Homogeneidade e proteção podem importar além da resposta imediata." },
+      { id: "pne-f19", topic: "DPOC", front: "PaCO₂ alta isolada define ‘narcose’?", back: "Não.", pearl: "Encefalopatia hipercápnica é clínica e exige exclusão de causas concorrentes." },
+      { id: "pne-f20", topic: "DPOC", front: "Meta usual de SpO₂ na exacerbação hipercápnica?", back: "Geralmente 88–92%.", pearl: "Titule oxigênio e confirme com gasometria; não negue O₂ necessário." },
+      { id: "pne-f21", topic: "VNI", front: "Quando fazer o primeiro checkpoint da VNI?", back: "Clínica em 30–60 min e gasometria aproximadamente em 1 h.", pearl: "Procure direção favorável do pH, esforço, FR e consciência." },
+      { id: "pne-f22", topic: "VNI", front: "Elevar apenas EPAP mantém o mesmo suporte ventilatório?", back: "Não necessariamente.", pearl: "A pressão de suporte é a diferença IPAP − EPAP; reavalie ventilação efetiva." },
+      { id: "pne-f23", topic: "VM obstrutiva", front: "Referência inicial de VT na DPOC intubada?", back: "6–8 mL/kg de peso predito.", pearl: "Associe baixa FR e expiração longa; números são ponto de partida." },
+      { id: "pne-f24", topic: "Auto-PEEP", front: "Desconectar brevemente resolve a hiperinsuflação?", back: "É apenas teste/resgate temporário.", pearl: "O definitivo é reduzir volume-minuto, prolongar expiração e tratar a causa." }
     ],
     references: [
       { id: "atsArds2024", title: "ATS Guideline Update on Management of Adult Patients with ARDS", group: "ATS", year: 2024, url: "https://pubmed.ncbi.nlm.nih.gov/38032683/" },
@@ -295,6 +349,10 @@
       { id: "art2017", title: "Lung Recruitment and Titrated PEEP versus Low PEEP in ARDS — ART", group: "JAMA", year: 2017, url: "https://pubmed.ncbi.nlm.nih.gov/28973363/" },
       { id: "ersAtsNiv2017", title: "Official ERS/ATS Clinical Practice Guidelines: Noninvasive Ventilation for Acute Respiratory Failure", group: "ERS/ATS", year: 2017, url: "https://pubmed.ncbi.nlm.nih.gov/28860265/" },
       { id: "gold2026", title: "Global Strategy for Prevention, Diagnosis and Management of COPD — 2026 Report", group: "GOLD", year: 2026, url: "https://goldcopd.org/2026-gold-report-and-pocket-guide/" },
+      { id: "atsNirs2026", title: "ATS Guideline: Noninvasive Respiratory Support for Acute Respiratory Failure", group: "ATS", year: 2026, url: "https://pubmed.ncbi.nlm.nih.gov/42371750/" },
+      { id: "btsIcsAhrf2016", title: "BTS/ICS Guideline for Acute Hypercapnic Respiratory Failure", group: "BTS/ICS", year: 2016, url: "https://pubmed.ncbi.nlm.nih.gov/26976648/" },
+      { id: "hessCopdVent2023", title: "Respiratory Care Management of COPD Exacerbations", group: "Respiratory Care", year: 2023, url: "https://pubmed.ncbi.nlm.nih.gov/37225653/" },
+      { id: "jubranPeep2024", title: "Setting PEEP in the Severely Obstructive Patient", group: "Current Opinion in Critical Care", year: 2024, url: "https://pubmed.ncbi.nlm.nih.gov/38085854/" },
       { id: "gina2025", title: "Global Strategy for Asthma Management and Prevention — 2025", group: "GINA", year: 2025, url: "https://ginasthma.org/2025-gina-strategy-report/" },
       { id: "escPe2019", title: "ESC Guidelines for Acute Pulmonary Embolism", group: "ESC/ERS", year: 2019, url: "https://pubmed.ncbi.nlm.nih.gov/31504429/" },
       { id: "btsPleural2023", title: "British Thoracic Society Guideline for Pleural Disease", group: "BTS", year: 2023, url: "https://pubmed.ncbi.nlm.nih.gov/37433578/" },
