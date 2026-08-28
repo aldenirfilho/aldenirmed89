@@ -1,0 +1,75 @@
+.dpoc-visual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.dpoc-visual-card {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(155deg, color-mix(in srgb, var(--panel) 92%, var(--accent) 8%), var(--panel));
+  box-shadow: var(--shadow);
+}
+
+.dpoc-visual-card > a {
+  display: block;
+  background: #06111f;
+}
+
+.dpoc-visual-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.dpoc-visual-card > a:hover img {
+  filter: brightness(1.06);
+}
+
+.dpoc-visual-card figcaption {
+  padding: 1rem 1.05rem 1.1rem;
+}
+
+.dpoc-visual-card h3 {
+  margin: 0 0 .55rem;
+}
+
+.dpoc-visual-card p {
+  margin: 0;
+  color: var(--soft);
+}
+
+.dpoc-visual-card .visual-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-top: .8rem;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.dpoc-visual-card .visual-meta a {
+  color: var(--accent);
+}
+
+.dpoc-visual-safety {
+  margin: 0 0 1rem;
+}
+
+@media (max-width: 760px) {
+  .dpoc-visual-grid { grid-template-columns: 1fr; }
+}
+
+@media print {
+  .dpoc-visual-card { box-shadow: none; break-inside: avoid; }
+  .dpoc-visual-card .visual-meta a { display: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dpoc-visual-card img { transition: filter .18s ease; }
+}

@@ -4,7 +4,7 @@
   const catalog = {
     meta: {
       schemaVersion: "critical-module-v1",
-      moduleVersion: "1.1.0",
+      moduleVersion: "1.2.0",
       slug: "pneumologia-critica",
       title: "Pneumologia Crítica",
       subtitle: "Insuficiência respiratória, SDRA, doenças obstrutivas, hemoptise e TEP organizados em decisões práticas, fisiologia visível e treino Turbo TEMI.",
