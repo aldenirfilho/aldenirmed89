@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regressões da identidade A Orbital e da oficina local do Card Feed."""
+"""Regressões da identidade Laranja Mecânica e da oficina local do Card Feed."""
 
 from __future__ import annotations
 
@@ -21,14 +21,14 @@ def png_header(path: Path) -> tuple[int, int, int]:
 
 class OrbitalBrandTests(unittest.TestCase):
     def test_social_card_has_public_share_dimensions_and_metadata(self) -> None:
-        card = ROOT / "assets/brand/aldenirmed89-social-card.png"
+        card = ROOT / "assets/brand/aldenirmed89-total-orange-social-card.png"
         self.assertTrue(card.is_file())
         self.assertEqual(png_header(card)[:2], (1200, 630))
 
         home = (ROOT / "index.html").read_text(encoding="utf-8")
         public_url = (
             "https://aldenirfilho.github.io/aldenirmed89/"
-            "assets/brand/aldenirmed89-social-card.png"
+            "assets/brand/aldenirmed89-total-orange-social-card.png"
         )
         self.assertIn(f'<meta property="og:image" content="{public_url}"/>', home)
         self.assertIn('<meta property="og:image:width" content="1200"/>', home)
@@ -39,8 +39,8 @@ class OrbitalBrandTests(unittest.TestCase):
 
     def test_monochrome_marks_are_square_pngs_with_alpha(self) -> None:
         for filename in (
-            "antigravity-a-orbital-mono-light.png",
-            "antigravity-a-orbital-mono-dark.png",
+            "aldenirmed89-total-orange-mono-light.png",
+            "aldenirmed89-total-orange-mono-dark.png",
         ):
             width, height, color_type = png_header(ROOT / "assets/brand" / filename)
             self.assertEqual((width, height), (1024, 1024))
@@ -58,12 +58,13 @@ class OrbitalBrandTests(unittest.TestCase):
 
     def test_brand_assets_have_reproducible_documented_generator(self) -> None:
         readme = (ROOT / "assets/brand/README.md").read_text(encoding="utf-8")
-        generator = ROOT / "scripts_admin/build_orbital_brand_assets.swift"
+        generator = ROOT / "scripts_admin/build_total_orange_brand_assets.swift"
         self.assertTrue(generator.is_file())
-        self.assertIn("antigravity-a-orbital-mono-light.png", readme)
-        self.assertIn("antigravity-a-orbital-mono-dark.png", readme)
-        self.assertIn("antigravity-social-card.png", readme)
-        self.assertIn("build_orbital_brand_assets.swift", readme)
+        self.assertIn("aldenirmed89-total-orange-mono-light.png", readme)
+        self.assertIn("aldenirmed89-total-orange-mono-dark.png", readme)
+        self.assertIn("aldenirmed89-total-orange-social-card.png", readme)
+        self.assertIn("build_total_orange_brand_assets.swift", readme)
+        self.assertIn("build_multires_ico.py", readme)
 
 
 class LocalImageStudioTests(unittest.TestCase):

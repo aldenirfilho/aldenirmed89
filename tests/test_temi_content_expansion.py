@@ -35,6 +35,20 @@ process.stdout.write(payload);
 
 
 class TemiContentExpansionTests(unittest.TestCase):
+    def test_mnemonic_hub_is_in_the_public_build_and_offline_shell(self):
+        builder = (ROOT / "scripts_admin/build_public_site.py").read_text(
+            encoding="utf-8"
+        )
+        worker = (ROOT / "sw.js").read_text(encoding="utf-8")
+        workflow = (ROOT / ".github/workflows/deploy-seguro.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('"mnemonicos",', builder)
+        for relative in ("index.html", "styles.css", "app.js"):
+            self.assertTrue((ROOT / "mnemonicos" / relative).is_file())
+            self.assertIn(f'"./mnemonicos/{relative}"', worker)
+            self.assertIn(f"test -f site/mnemonicos/{relative}", workflow)
+
     def test_mnemonic_pack_has_at_least_fifty_safe_unique_entries(self):
         pack = load_json("11_MNEMONICOS/catalogo_uti_clinica_50.json")
         entries = pack["mnemonicos"]

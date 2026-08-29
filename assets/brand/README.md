@@ -1,52 +1,64 @@
-# Identidade AldenirMed89 — A Orbital
+# Identidade AldenirMed89 — Laranja Mecânica
 
 ## Conceito oficial
 
-Um **A em ascensão** atravessa sua própria órbita: conhecimento clínico
-convertido em missão. O ponto âmbar representa o próximo objetivo e reforça a
-orientação por foco.
+O **A arcano-orbital** reúne três trajetórias laranja-fogo em movimento. Onze
+pontos de brasa formam um campo tático ao redor da marca: uma metáfora visual
+para troca coordenada de funções, ocupação inteligente dos espaços e trabalho
+em rede.
+
+A referência histórica é o Futebol Total da seleção neerlandesa de 1974. A
+identidade é uma homenagem conceitual autoral, sem afiliação esportiva oficial
+e sem copiar escudo, uniforme, bandeira, jogadores ou marcas de terceiros.
 
 ## Regras visuais
 
-- Fundo azul-marinho profundo.
-- Monograma `A` branco, formado por duas asas delta ascendentes.
-- Uma órbita ciano aberta e um único nó circular âmbar.
+- Fundo preto profundo.
+- Monograma `A` reconhecível, formado por três faixas laranja e âmbar.
+- Órbitas finas e onze pontos de brasa como elementos secundários.
+- Sem bola, escudo, bandeira, uniforme ou símbolos oficiais neerlandeses.
 - Sem cruz, sinal de adição, livro, ECG, coração, caduceu ou símbolo hospitalar.
-- Sem texto incorporado ao símbolo.
-- A silhueta precisa permanecer reconhecível entre 16 e 1024 px.
+- Sem texto incorporado ao símbolo quadrado.
+- O `A` central precisa continuar reconhecível entre 16 e 1024 px.
+- Brilhos decorativos não podem substituir contraste, foco ou texto legível.
 
-## Fonte canônica
+## Fontes canônicas
 
-`antigravity-a-orbital-master.png` é o mestre PNG de 1024 × 1024 px. Os
-favicons, ícones PWA, Apple Touch Icons e o ícone Windows devem sempre ser
-derivados desse arquivo.
+- `aldenirmed89-total-orange-master.png`: mestre quadrado em 1024 × 1024 px.
+- `aldenirmed89-total-orange-social-card.png`: cartão social em 1200 × 630 px.
+- `aldenirmed89-total-orange-mono-light.png`: marca clara com transparência.
+- `aldenirmed89-total-orange-mono-dark.png`: marca escura com transparência.
 
-O arquivo foi gerado com a ferramenta integrada de criação de imagens a partir
-de um prompt de marca aeroespacial minimalista: monograma A/delta, órbita ciano
-aberta, nó âmbar, fundo navy, alto contraste e proibição explícita de símbolos
-médicos.
-
-## Variações disponíveis
-
-- `antigravity-a-orbital-mono-light.png`: símbolo branco com transparência para
-  fundos escuros, impressão invertida e gravação.
-- `antigravity-a-orbital-mono-dark.png`: símbolo navy com transparência para
-  fundos claros, documentos e materiais monocromáticos.
-- `aldenirmed89-social-card.png`: cartão oficial de compartilhamento em
-  1200 × 630 px, com selo cósmico autoral, órbitas, pulso clínico e o título
-  “ALDENIRMED89 — Medicina Intensiva · Plantão · TEMI”.
-- `antigravity-social-card.png`: cartão legado preservado apenas para histórico
-  e compatibilidade; não é mais usado nos metadados públicos.
-
-As versões monocromáticas mantêm o `A`, a órbita e o nó como uma única
-silhueta. Não introduzir cores extras, contornos médicos ou fundos incorporados.
-O script `scripts_admin/build_orbital_brand_assets.swift` regenera as duas
-versões monocromáticas e normaliza o cartão social legado para 1200 × 630 px.
-O cartão AldenirMed89 é um ativo autoral independente e não deve ser
-sobrescrito pelo gerador legado.
+O mestre foi criado com a ferramenta integrada de geração de imagens a partir
+de um briefing autoral: `A` entrelaçado, laranja-fogo, onze brasas, geometria
+arcana e orbital, alto contraste e proibição explícita de símbolos médicos ou
+identidades esportivas oficiais.
 
 ## Compatibilidade
 
-Os nomes públicos antigos são preservados para não quebrar atalhos e instalações
-existentes. O service worker precisa avançar de versão sempre que os ícones
-forem substituídos.
+Os nomes técnicos antigos continuam disponíveis para não quebrar atalhos,
+instalações e páginas existentes. Eles apontam para a identidade atual:
+
+- `antigravity-a-orbital-master.png`;
+- `antigravity-a-orbital-mono-light.png`;
+- `antigravity-a-orbital-mono-dark.png`;
+- `aldenirmed89-social-card.png`.
+
+O cartão social recebeu um novo nome público para reduzir o risco de redes
+sociais continuarem exibindo a imagem anterior em cache.
+
+## Regeneração
+
+No macOS, o script abaixo deriva mestre, ícones web/PWA, Apple Touch Icons,
+marcas monocromáticas e cartão social:
+
+```bash
+swift scripts_admin/build_total_orange_brand_assets.swift \
+  /caminho/logo-gerado.png \
+  /caminho/raiz-do-repositorio
+```
+
+O favicon e o ícone do Windows usam sete tamanhos (16–256 px) e são empacotados
+pelo script `scripts_admin/build_multires_ico.py`.
+
+Sempre avance a versão do service worker quando substituir qualquer ícone.

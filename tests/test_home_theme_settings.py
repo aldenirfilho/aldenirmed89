@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HOME = (ROOT / "index.html").read_text(encoding="utf-8")
 
 PROFILE_IDS = {
+    "total-orange",
     "mystic-aerospace",
     "aerospace",
     "aerospace-light",
@@ -55,17 +56,21 @@ class HomeThemeSettingsTests(unittest.TestCase):
 
     def test_profile_persists_in_shared_accessibility_preferences(self):
         self.assertIn("const a11yKey='antigravity:a11y:v1'", HOME)
-        self.assertIn("visualProfile:'mystic-aerospace'", HOME)
+        self.assertIn("visualProfile:'total-orange'", HOME)
+        self.assertIn("visualProfile=saved.visualProfile", HOME)
         self.assertIn("a11yPrefs.visualProfile=profile.id", HOME)
         self.assertIn("localStorage.setItem(a11yKey,JSON.stringify(a11yPrefs))", HOME)
         self.assertIn("root.dataset.visualProfile=contrastActive?'contrast'", HOME)
 
-    def test_mystic_aerospace_is_default_and_branded_fiction_is_original(self):
-        self.assertIn("visualProfile='mystic-aerospace'", HOME)
-        self.assertIn("fantasia autoral simbólica", HOME)
+    def test_total_orange_is_default_and_branded_tribute_is_original(self):
+        self.assertIn("visualProfile='total-orange'", HOME)
+        self.assertIn("Modo principal · Laranja Mecânica", HOME)
+        self.assertIn("trocas coordenadas", HOME)
+        self.assertIn("sem afiliação esportiva oficial", HOME)
         self.assertIn("O conteúdo clínico permanece separado", HOME)
         self.assertNotIn("Harry Potter", HOME)
         self.assertNotIn("Marvel", HOME)
+        self.assertNotIn("A Clockwork Orange", HOME)
 
 
 if __name__ == "__main__":

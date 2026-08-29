@@ -64,6 +64,7 @@ REQUIRED = (
     "questoes",
     "apps",
     "desafios",
+    "mnemonicos",
 )
 
 OPTIONAL = (

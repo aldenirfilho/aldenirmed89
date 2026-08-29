@@ -73,6 +73,7 @@ class ThemeCatalogTests(unittest.TestCase):
 
     def test_catalog_has_exact_requested_profiles(self):
         expected = {
+            "total-orange",
             "mystic-aerospace",
             "aerospace",
             "aerospace-light",
@@ -89,13 +90,13 @@ class ThemeCatalogTests(unittest.TestCase):
             "modern-serious",
         }
         themes = self.catalog["themes"]
-        self.assertEqual(14, len(themes))
+        self.assertEqual(15, len(themes))
         self.assertEqual(expected, {theme["id"] for theme in themes})
-        self.assertEqual("mystic-aerospace", self.catalog["defaultTheme"])
+        self.assertEqual("total-orange", self.catalog["defaultTheme"])
 
     def test_all_explicit_profiles_are_active(self):
         statuses = {theme["id"]: theme["status"] for theme in self.catalog["themes"]}
-        self.assertEqual(14, len(statuses))
+        self.assertEqual(15, len(statuses))
         self.assertEqual({"active"}, set(statuses.values()))
 
     def test_each_theme_is_bilingual_and_has_complete_palette(self):
@@ -124,6 +125,7 @@ class ThemeCatalogTests(unittest.TestCase):
         payload = json.dumps(self.catalog, ensure_ascii=False).lower()
         self.assertNotIn("harry potter", payload)
         self.assertNotIn("marvel", payload)
+        self.assertNotIn("a clockwork orange", payload)
 
     def test_every_non_default_theme_has_css_and_script_support(self):
         css = (ROOT / "en/assets/theme.css").read_text(encoding="utf-8")

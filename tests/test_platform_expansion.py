@@ -118,7 +118,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed89"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v23`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v24`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
@@ -140,10 +140,10 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("Baixar atalho opcional", home)
         self.assertIn("não contém .app, script ou instalador", home)
 
-    def test_a_orbital_identity_replaces_legacy_cross_assets(self) -> None:
+    def test_total_orange_identity_replaces_legacy_cross_assets(self) -> None:
         home = (ROOT / "index.html").read_text(encoding="utf-8")
         expected_master = (
-            "1b0332baa08c1e9aebc98868ad2714a1a7c6b035302d28699fd052de5e324850"
+            "bef9b02abd183200ce5a38c45ab2bc9639dd92c01d2871d5df7da0d38875da5f"
         )
         legacy_hashes = {
             "44135464a2514d8b35ed01c3a6674425f98cb35ce4e88b582c43c23eecddc477",
@@ -151,14 +151,16 @@ class AccessiblePwaTests(unittest.TestCase):
             "cf98e8fe91f626ca81db185b0e2046b49dd845dc4018def45dd49c0b40eab5f4",
             "8a2d35b0f93ee9a85a8d95ae0d8ea0bab7a2e0cf8739e87d4c09c0b2437955b3",
         }
+        # ``public_site/`` é um espelho histórico, nunca copiado pelo builder
+        # canônico (scripts_admin/build_public_site.py); por isso, não participa
+        # do contrato de identidade nem do artefato publicado no GitHub Pages.
         master_aliases = (
+            "assets/brand/aldenirmed89-total-orange-master.png",
             "assets/brand/antigravity-a-orbital-master.png",
             "assets/icons/antigravity-consultas-1024.png",
             "assets/icons/ios/apple-touch-icon-1024.png",
             "assets/img/logo.png",
             "logo_concept_3_book_1778036997285.png",
-            "public_site/assets/img/logo.png",
-            "public_site/logo_concept_3_book_1778036997285.png",
         )
 
         for relative in master_aliases:

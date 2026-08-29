@@ -9,14 +9,14 @@
 <meta property="og:description" content="Central clínica: módulos críticos de Infectologia, Pneumologia, Hematologia e Reumatologia, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo."/>
 <meta property="og:url" content="https://aldenirfilho.github.io/aldenirmed89/"/>
 <meta property="og:type" content="website"/>
-<meta property="og:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-social-card.png"/>
+<meta property="og:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-total-orange-social-card.png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
-<meta property="og:image:alt" content="AldenirMed89 — Medicina Intensiva, Plantão e TEMI"/>
+<meta property="og:image:alt" content="AldenirMed89 em preto e laranja-fogo, com símbolo A arcano-orbital e tema Laranja Mecânica"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-social-card.png"/>
-<meta name="twitter:image:alt" content="AldenirMed89 — Medicina Intensiva, Plantão e TEMI"/>
-<meta name="theme-color" content="#071422"/>
+<meta name="twitter:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-total-orange-social-card.png"/>
+<meta name="twitter:image:alt" content="AldenirMed89 em preto e laranja-fogo, com símbolo A arcano-orbital e tema Laranja Mecânica"/>
+<meta name="theme-color" content="#0b0603"/>
 <meta name="color-scheme" content="dark light"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="AldenirMed89"/>
@@ -25,11 +25,11 @@
 /* Restaura tema e largura antes da primeira pintura para evitar saltos visuais. */
 (function(){
   let mode='dark';
-  let visualProfile='mystic-aerospace';
+  let visualProfile='total-orange';
   let wide=true;
   let contrast=false;
   const profileModes={
-    'mystic-aerospace':'dark',aerospace:'dark','aerospace-light':'light','rustic-light':'light',
+    'total-orange':'dark','mystic-aerospace':'dark',aerospace:'dark','aerospace-light':'light','rustic-light':'light',
     dark:'dark',minimal:'light',sepia:'light',oceanic:'dark',green:'dark',
     natural:'light',forest:'dark','wizard-academy':'dark',
     'comic-hero':'dark','modern-serious':'light'
@@ -47,7 +47,7 @@
       visualProfile=saved.visualProfile;
       if(mode!=='system')mode=profileModes[visualProfile];
     }else{
-      visualProfile=mode==='light'?'aerospace-light':'mystic-aerospace';
+      visualProfile=mode==='light'?'aerospace-light':'total-orange';
     }
     wide=saved.wide!==false;
     contrast=saved.contrast===true;
@@ -63,7 +63,8 @@
   document.documentElement.classList.toggle('layout-focus',!wide);
   const themeColor=document.querySelector('meta[name="theme-color"]');
   const appleStatus=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
-  themeColor?.setAttribute('content',contrast?'#000000':resolved==='light'?'#ffffff':'#071422');
+  const darkThemeColor=visualProfile==='total-orange'?'#0b0603':'#071422';
+  themeColor?.setAttribute('content',contrast?'#000000':resolved==='light'?'#ffffff':darkThemeColor);
   appleStatus?.setAttribute('content',!contrast&&resolved==='light'?'default':'black-translucent');
 })();
 </script>
@@ -76,7 +77,7 @@
 <link rel="apple-touch-icon" href="./assets/icons/ios/apple-touch-icon-120.png" sizes="120x120"/>
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="stylesheet" href="./assets/editorial-attribution.css"/>
-<link rel="preload" as="image" href="./assets/brand/aldenirmed89-social-card.png" fetchpriority="high"/>
+<link rel="preload" as="image" href="./assets/brand/aldenirmed89-total-orange-social-card.png" fetchpriority="high"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -256,7 +257,71 @@ html[data-theme="light"] .temi-stat-big{
 }
 html[data-theme="light"] .temi-section .btn-primary{color:#fff!important}
 
-/* ── PERFIS VISUAIS · MÍSTICO-AEROESPACIAL É O PADRÃO ───── */
+/* ── PERFIS VISUAIS · LARANJA MECÂNICA É O PADRÃO ───────── */
+html[data-visual-profile="total-orange"]{
+  --bg:#050301;--bg2:#0b0603;--bg3:#170b04;
+  --surf:rgba(255,122,0,.07);--surf-h:rgba(255,146,31,.12);
+  --brd:rgba(255,122,0,.22);--brd-h:rgba(255,174,72,.46);
+  --text:#fff7ed;--muted:#c69b7a;--soft:#ead2bc;
+  --cyan:#ff7800;--cyan-d:rgba(255,120,0,.16);
+  --violet:#ffad33;--vio-d:rgba(255,173,51,.16);
+  --green:#78e6a4;--grn-d:rgba(120,230,164,.12);
+  --yellow:#ffd166;--yel-d:rgba(255,209,102,.15);
+  --red:#ff645e;--red-d:rgba(255,100,94,.14);
+  --shadow:0 28px 96px rgba(0,0,0,.64),0 0 54px rgba(255,88,0,.1);
+  --header-bg:rgba(5,3,1,.92);--panel-head-bg:rgba(18,8,3,.98);
+  --download-card-bg:rgba(18,8,3,.86);--download-card-hover:#241006;
+  --cockpit-bg:rgba(5,3,1,.76);--grid-dot:rgba(255,122,0,.085);
+  --on-accent:#170700;
+}
+html[data-visual-profile="total-orange"] body::before{
+  background-image:
+    radial-gradient(circle at 50% 50%,var(--grid-dot) 1px,transparent 1px),
+    repeating-radial-gradient(ellipse at 86% 20%,transparent 0 58px,rgba(255,122,0,.07) 59px 60px,transparent 61px 91px),
+    radial-gradient(circle at 14% 14%,rgba(255,71,0,.11),transparent 24%);
+  background-size:30px 30px,100% 100%,100% 100%;
+}
+html[data-visual-profile="total-orange"] .brand-icon,
+html[data-visual-profile="total-orange"] .mission-core{
+  background:linear-gradient(135deg,rgba(255,71,0,.25),rgba(255,173,51,.16));
+  border-color:rgba(255,122,0,.42);
+  box-shadow:0 0 0 1px rgba(255,177,69,.18),0 0 36px rgba(255,89,0,.32);
+}
+html[data-visual-profile="total-orange"] .orb:nth-child(1){
+  background:radial-gradient(circle,rgba(255,71,0,.15) 0%,transparent 70%);
+}
+html[data-visual-profile="total-orange"] .orb:nth-child(2){
+  background:radial-gradient(circle,rgba(255,173,51,.12) 0%,transparent 70%);
+}
+html[data-visual-profile="total-orange"] .orb:nth-child(3){
+  background:radial-gradient(circle,rgba(255,106,0,.09) 0%,transparent 70%);
+}
+html[data-visual-profile="total-orange"] .nav-links a.accent{color:var(--cyan)}
+html[data-visual-profile="total-orange"] .nav-download{
+  box-shadow:0 8px 28px rgba(255,106,0,.24);
+}
+html[data-visual-profile="total-orange"] .nav-download:hover,
+html[data-visual-profile="total-orange"] .btn-primary:hover,
+html[data-visual-profile="total-orange"] .download-action.primary:hover{
+  background:#ff9a1f;box-shadow:0 8px 30px rgba(255,106,0,.34);
+}
+html[data-visual-profile="total-orange"] .btn-violet{
+  border-color:rgba(255,173,51,.34);
+}
+html[data-visual-profile="total-orange"] .btn-violet:hover{
+  background:rgba(255,173,51,.24);
+}
+html[data-visual-profile="total-orange"] .download-showcase{
+  border-color:rgba(255,106,0,.28);
+  background:
+    radial-gradient(circle at 8% 0%,rgba(255,71,0,.17),transparent 34%),
+    radial-gradient(circle at 95% 100%,rgba(255,173,51,.13),transparent 36%),
+    var(--bg2);
+}
+html[data-visual-profile="total-orange"] .hero h1 .hl{
+  background:linear-gradient(110deg,#ff5a00 0%,#ff9d20 48%,#ffd166 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
 html[data-visual-profile="mystic-aerospace"]{
   --bg:#070613;--bg2:#100d22;--bg3:#17112d;
   --surf:rgba(244,240,255,.06);--surf-h:rgba(244,240,255,.105);
@@ -1001,6 +1066,33 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   max-width:720px;margin-bottom:32px;
 }
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.total-orange-manifesto{
+  max-width:720px;margin:0 0 22px;padding:12px 15px;border:1px solid var(--brd-h);
+  border-left:4px solid var(--cyan);border-radius:12px;background:var(--cyan-d);
+  color:var(--soft);font-size:.88rem;line-height:1.55;
+}
+.total-orange-manifesto strong{
+  display:block;margin-bottom:3px;color:var(--yellow);font-family:var(--font-mono);
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+}
+html[data-visual-profile="total-orange"] .mission-intro{
+  background:
+    radial-gradient(circle at 50% 78%,rgba(255,79,0,.3),transparent 34%),
+    radial-gradient(circle at 50% 42%,rgba(255,152,28,.12),transparent 42%),
+    #030100;
+}
+html[data-visual-profile="total-orange"] .mission-intro::before{
+  background-image:
+    radial-gradient(circle at 15% 18%,#ff8a1d 0 1px,transparent 1.6px),
+    radial-gradient(circle at 73% 23%,#ffd166 0 1px,transparent 1.6px),
+    radial-gradient(circle at 38% 66%,#ff5a00 0 1px,transparent 1.5px),
+    radial-gradient(circle at 86% 72%,#fff2d8 0 1px,transparent 1.4px);
+}
+html[data-visual-profile="total-orange"] .mission-intro::after{
+  background:radial-gradient(ellipse at 50% 0,
+    rgba(255,193,92,.9) 0 1px,rgba(255,91,0,.5) 2px,rgba(58,17,0,.94) 8%,
+    #030100 58%);box-shadow:0 -8px 54px rgba(255,91,0,.42);
+}
 .view-controls{
   width:max-content;max-width:100%;display:flex;align-items:center;flex-wrap:wrap;
   gap:8px;margin-top:24px;padding:8px;border:1px solid var(--brd);
@@ -2150,7 +2242,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   <button class="mission-skip" id="missionSkip" type="button">Pular abertura · Esc</button>
   <div class="mission-stage">
     <div class="mission-card-shell" aria-hidden="true">
-      <img class="mission-card" src="./assets/brand/aldenirmed89-social-card.png" alt=""
+      <img class="mission-card" src="./assets/brand/aldenirmed89-total-orange-social-card.png" alt=""
         width="1200" height="630" fetchpriority="high" decoding="async"/>
     </div>
     <div class="mission-core" id="missionCore" aria-hidden="true">
@@ -2278,8 +2370,8 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
           aria-label="Fechar configurações">✕</button>
       </div>
       <p class="settings-current">
-        Tema atual: <strong id="settingsCurrentTheme">Aeroespacial</strong>.
-        O padrão oficial combina cabine aeroespacial, constelações e fantasia autoral simbólica.
+        Tema atual: <strong id="settingsCurrentTheme">Laranja Mecânica</strong>.
+        O padrão oficial combina preto, laranja-fogo, sigilo orbital e movimento coletivo.
       </p>
       <div class="theme-options" id="themeOptions" role="group" aria-label="Perfis visuais"></div>
       <div class="settings-links">
@@ -2349,6 +2441,10 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
 
     <div class="hero-left">
       <div class="hero-eyebrow" aria-hidden="true">Central clínica — Plantão + Prova + UTI</div>
+      <div class="total-orange-manifesto" role="note">
+        <strong>🔥 Modo principal · Laranja Mecânica</strong>
+        Inspirado no Futebol Total neerlandês de 1974: trocas coordenadas, ocupação inteligente dos espaços e módulos atuando em rede.
+      </div>
       <h1 id="hero-heading">
         A <span class="hl">central de comando</span><br/>
         para medicina de alta performance.
@@ -2367,7 +2463,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
       <div class="view-controls" role="group" aria-label="Controles de visualização da página">
         <span class="view-controls-label" aria-hidden="true">👁️ Visualização</span>
         <select class="view-select" id="themeModeSelect" data-theme-select aria-label="Escolher tema visual">
-          <option value="dark">🌌 Aeroespacial</option>
+          <option value="dark">🔥 Laranja Mecânica</option>
           <option value="light">☀️ Visualização clara</option>
           <option value="system">💻 Sistema</option>
         </select>
@@ -3418,7 +3514,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
       <span style="font-family:var(--font-mono)">Conteúdo autoral · Uso educacional · Não substitui raciocínio clínico individual</span>
     </div>
     <p class="aldenirmed89-symbolic-note" role="note">
-      ✦ A estética místico-aeroespacial é simbólica e autoral. O conteúdo clínico permanece separado desse universo visual e fundamentado em evidências, diretrizes e revisão médica.
+      ✦ A estética laranja arcano-orbital é uma homenagem conceitual autoral, sem afiliação esportiva oficial. O conteúdo clínico permanece separado desse universo visual e fundamentado em evidências, diretrizes e revisão médica.
     </p>
   </div>
 </footer>
@@ -3462,7 +3558,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
     <p class="a11y-scroll-help">↕️ Se o quadro ficar maior que a tela, role dentro dele com mouse, trackpad ou toque.</p>
     <h3>Visualização</h3>
     <select class="a11y-select" id="themeModeSelectPanel" data-theme-select aria-label="Escolher tema visual da página">
-      <option value="dark">🌌 Aeroespacial</option>
+      <option value="dark">🔥 Laranja Mecânica</option>
       <option value="light">☀️ Visualização clara</option>
       <option value="system">💻 Acompanhar sistema</option>
     </select>
@@ -4903,7 +4999,8 @@ const appleStatusMeta=document.querySelector('meta[name="apple-mobile-web-app-st
 const systemTheme=window.matchMedia('(prefers-color-scheme: light)');
 const a11yKey='antigravity:a11y:v1';
 const VISUAL_PROFILES=[
-  {id:'mystic-aerospace',label:'Arcano orbital',icon:'🧙‍♂️',mode:'dark',note:'padrão místico-aeroespacial'},
+  {id:'total-orange',label:'Laranja Mecânica',icon:'🔥',mode:'dark',note:'padrão preto + laranja-fogo'},
+  {id:'mystic-aerospace',label:'Arcano orbital',icon:'🧙‍♂️',mode:'dark',note:'místico-aeroespacial'},
   {id:'aerospace',label:'Aeroespacial',icon:'🚀',mode:'dark',note:'cabine clássica'},
   {id:'aerospace-light',label:'Aeroespacial claro',icon:'🛰️',mode:'light',note:'cabine diurna'},
   {id:'rustic-light',label:'Claro rústico',icon:'📜',mode:'light',note:'sóbrio e conservador'},
@@ -4927,7 +5024,7 @@ function readA11yPrefs(raw){
   }catch(_){}
   const normalized={
     large:false,contrast:false,motion:false,theme:'dark',wide:true,
-    visualProfile:'mystic-aerospace',...saved
+    visualProfile:'total-orange',...saved
   };
   if(!['dark','light','system'].includes(normalized.theme)){
     normalized.theme=saved.clarity===true?'light':'dark';
@@ -4937,7 +5034,7 @@ function readA11yPrefs(raw){
   normalized.motion=saved.motion===true;
   normalized.wide=saved.wide!==false;
   if(!PROFILE_BY_ID.has(normalized.visualProfile)){
-    normalized.visualProfile=normalized.theme==='light'?'aerospace-light':'mystic-aerospace';
+    normalized.visualProfile=normalized.theme==='light'?'aerospace-light':'total-orange';
   }else if(normalized.theme!=='system'){
     normalized.theme=PROFILE_BY_ID.get(normalized.visualProfile).mode;
   }
@@ -4960,8 +5057,9 @@ function applyA11y({persist=true}={}){
   root.dataset.themeMode=a11yPrefs.theme;
   root.dataset.theme=contrastActive?'dark':resolvedTheme;
   root.style.colorScheme=contrastActive?'dark':resolvedTheme;
+  const darkThemeColor=a11yPrefs.visualProfile==='total-orange'?'#0b0603':'#071422';
   themeColorMeta?.setAttribute(
-    'content',contrastActive?'#000000':resolvedTheme==='light'?'#ffffff':'#071422'
+    'content',contrastActive?'#000000':resolvedTheme==='light'?'#ffffff':darkThemeColor
   );
   appleStatusMeta?.setAttribute(
     'content',
@@ -5017,7 +5115,7 @@ document.querySelectorAll('[data-theme-select]').forEach(select=>{
       a11yPrefs.visualProfile='aerospace-light';
       a11yPrefs.contrast=false;
     }else{
-      a11yPrefs.visualProfile='mystic-aerospace';
+      a11yPrefs.visualProfile='total-orange';
     }
     applyA11y();
   });
