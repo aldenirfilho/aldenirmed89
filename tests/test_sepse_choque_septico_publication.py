@@ -31,7 +31,11 @@ class SepseChoqueSepticoPublicationTests(unittest.TestCase):
     def test_conteudo_e_seguranca(self):
         self.assertIn("Sepse e Choque Séptico — Antigravity Consultas", self.html)
         self.assertIn("Pense. Pode ser sepse.", self.html)
-        self.assertIn("connect-src 'none'", self.html)
+        self.assertIn("script-src 'self' https://gc.zgo.at", self.html)
+        self.assertIn(
+            "connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com",
+            self.html,
+        )
         self.assertIn("default-src 'self'", self.html)
         self.assertEqual(sorted(set(re.findall(r'data-visual-id="IMG-(\d{2})"', self.html))), [f"{i:02d}" for i in range(1, 61)])
         for marker in ("educação e apoio cognitivo", "não substitui", "controle do foco", "antimicrobiano"):

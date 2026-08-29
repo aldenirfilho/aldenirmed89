@@ -140,6 +140,9 @@ PUBLIC_BASE_URL = "https://aldenirfilho.github.io/antigravity-consultas/"
 PUBLIC_HOST = "aldenirfilho.github.io"
 ANALYTICS_CONFIG_PATH = "data/site-analytics.json"
 PUBLIC_METADATA_MARKER = "antigravity-public-metadata:v1"
+ANALYTICS_EXCLUDED_PREFIXES = (
+    "02_Biblioteca_IA_Engine/previews/",
+)
 
 
 class LibraryPublicationPlan(NamedTuple):
@@ -1047,9 +1050,15 @@ def canonical_url_for_html(relative: PurePosixPath) -> str:
 def validate_goatcounter_csp(html: str, site_code: str, relative: PurePosixPath) -> None:
     """Falha fechado: CSP externa só pode ser alterada em revisão explícita."""
 
+    head_match = re.search(
+        r"<head\b[^>]*>(.*?)</head\s*>",
+        html,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    head = head_match.group(1) if head_match else html
     match = re.search(
         r'<meta\s+http-equiv=["\']Content-Security-Policy["\']\s+content=["\'](.*?)["\']\s*/?>',
-        html,
+        head,
         flags=re.IGNORECASE,
     )
     if not match:
@@ -1088,6 +1097,10 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
     counter_enabled = analytics["visitorCounterEnabled"]
     for html_path in sorted(site.rglob("*.html")):
         relative = PurePosixPath(html_path.relative_to(site).as_posix())
+        analytics_allowed = not any(
+            relative.as_posix().startswith(prefix)
+            for prefix in ANALYTICS_EXCLUDED_PREFIXES
+        )
         try:
             html = html_path.read_text(encoding="utf-8")
         except UnicodeDecodeError as exc:
@@ -1110,7 +1123,8 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
         elif re.search(r'<link\s+rel=["\']canonical["\']', html, flags=re.IGNORECASE) is None:
             canonical = html_lib.escape(canonical_url_for_html(relative), quote=True)
             head_lines.append(f'<link rel="canonical" href="{canonical}">')
-        head_lines.append(f'<link rel="stylesheet" href="{css_href}">')
+        if analytics_allowed:
+            head_lines.append(f'<link rel="stylesheet" href="{css_href}">')
         head_block = "\n".join(head_lines)
         closing_head = re.search(r"</head\s*>", html, flags=re.IGNORECASE)
         if closing_head:
@@ -1118,21 +1132,27 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
         else:
             html = head_block + "\n" + html
 
-        script = (
-            f'<script defer src="{js_src}" data-antigravity-analytics '
-            f'data-enabled="{str(enabled).lower()}" '
-            f'data-counter-enabled="{str(counter_enabled).lower()}" '
-            f'data-site-code="{html_lib.escape(site_code, quote=True)}" '
-            f'data-public-host="{PUBLIC_HOST}" '
-            f'data-config="{config_href}"></script>'
-        )
-        closing_body = re.search(r"</body\s*>", html, flags=re.IGNORECASE)
-        if closing_body:
-            html = html[: closing_body.start()] + script + "\n" + html[closing_body.start() :]
-        else:
-            html = html.rstrip() + "\n" + script + "\n"
+        if analytics_allowed:
+            script = (
+                f'<script defer src="{js_src}" data-antigravity-analytics '
+                f'data-enabled="{str(enabled).lower()}" '
+                f'data-counter-enabled="{str(counter_enabled).lower()}" '
+                f'data-site-code="{html_lib.escape(site_code, quote=True)}" '
+                f'data-public-host="{PUBLIC_HOST}" '
+                f'data-config="{config_href}"></script>'
+            )
+            closing_body = re.search(r"</body\s*>", html, flags=re.IGNORECASE)
+            if closing_body:
+                html = (
+                    html[: closing_body.start()]
+                    + script
+                    + "\n"
+                    + html[closing_body.start() :]
+                )
+            else:
+                html = html.rstrip() + "\n" + script + "\n"
 
-        if enabled:
+        if enabled and analytics_allowed:
             validate_goatcounter_csp(html, site_code, relative)
         html_path.write_text(html, encoding="utf-8")
         updated += 1

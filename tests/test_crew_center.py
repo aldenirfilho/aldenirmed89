@@ -185,8 +185,11 @@ class CrewCenterTests(unittest.TestCase):
             'recordSectionView("centro-tripulacao")',
         ):
             self.assertIn(marker, self.app + self.config)
-        self.assertIn("connect-src 'self';", self.html)
-        self.assertNotIn("connect-src 'self' https:", self.html)
+        self.assertIn(
+            "connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com;",
+            self.html,
+        )
+        self.assertIn("script-src 'self' https://gc.zgo.at", self.html)
 
     def test_newsletter_requires_consent_and_supports_cancellation(self) -> None:
         for marker in (

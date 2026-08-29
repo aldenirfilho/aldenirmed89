@@ -87,7 +87,11 @@ class DeliriumModuleTests(unittest.TestCase):
         )
         self.assertIsNotNone(policy_match)
         policy = policy_match.group(1)
-        self.assertIn("connect-src 'none'", policy)
+        self.assertIn("script-src 'self' https://gc.zgo.at", policy)
+        self.assertIn(
+            "connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com",
+            policy,
+        )
         self.assertIn("object-src 'none'", policy)
         self.assertNotIn("'unsafe-inline'", policy)
         self.assertNotRegex(self.html, r"\sstyle=")

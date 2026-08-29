@@ -27,22 +27,31 @@ class SeoAndPublicAnalyticsTests(unittest.TestCase):
             (ROOT / "data/site-analytics.json").read_text(encoding="utf-8")
         )
 
-    def test_disabled_config_is_public_safe_and_contains_no_secret(self):
+    def test_active_config_is_public_safe_and_contains_no_secret(self):
         config = self.builder.load_site_analytics_config(ROOT)
-        self.assertFalse(config["enabled"])
-        self.assertFalse(config["visitorCounterEnabled"])
-        self.assertEqual(config["siteCode"], "")
+        self.assertTrue(config["enabled"])
+        self.assertTrue(config["visitorCounterEnabled"])
+        self.assertEqual(
+            config["siteCode"],
+            "aldenirrochadeoliveirafilho1989",
+        )
         serialized = json.dumps(config).casefold()
         for forbidden in ("password", "api_key", "token", "secret"):
             self.assertNotIn(forbidden, serialized)
 
-    def test_injects_canonical_and_local_disabled_loader_at_any_depth(self):
+    def test_injects_canonical_and_active_loader_at_any_depth(self):
         with tempfile.TemporaryDirectory() as directory:
             site = Path(directory)
             nested = site / "01_Modulos_Clinicos" / "Pneumologia_Critica"
             nested.mkdir(parents=True)
             page = nested / "index.html"
-            csp = "default-src 'self'; script-src 'self'; connect-src 'none'"
+            endpoint = "https://aldenirrochadeoliveirafilho1989.goatcounter.com"
+            csp = (
+                "default-src 'self'; "
+                "script-src 'self' https://gc.zgo.at; "
+                f"connect-src 'self' {endpoint}; "
+                f"img-src 'self' {endpoint}"
+            )
             page.write_text(
                 f'<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="{csp}"></head><body></body></html>',
                 encoding="utf-8",
@@ -58,8 +67,13 @@ class SeoAndPublicAnalyticsTests(unittest.TestCase):
                 html,
             )
             self.assertIn('src="../../assets/site-analytics.js"', html)
-            self.assertIn('data-enabled="false"', html)
-            self.assertNotIn("https://gc.zgo.at", html)
+            self.assertIn('data-enabled="true"', html)
+            self.assertIn('data-counter-enabled="true"', html)
+            self.assertIn(
+                'data-site-code="aldenirrochadeoliveirafilho1989"',
+                html,
+            )
+            self.assertIn("https://gc.zgo.at", html)
             self.assertIn(csp, html)
 
     def test_activation_fails_closed_when_existing_csp_was_not_reviewed(self):
@@ -79,6 +93,35 @@ class SeoAndPublicAnalyticsTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "bloqueadas pela CSP"):
                 self.builder.inject_public_metadata(site, active)
+
+    def test_csp_text_inside_body_script_is_not_treated_as_page_policy(self):
+        html = """<!doctype html><html><head><meta charset="utf-8"></head>
+        <body><script>const preview = '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'">';</script></body></html>"""
+        self.builder.validate_goatcounter_csp(
+            html,
+            self.config["siteCode"],
+            Path("preview.html"),
+        )
+
+    def test_isolated_document_previews_keep_their_closed_csp(self):
+        with tempfile.TemporaryDirectory() as directory:
+            site = Path(directory)
+            preview_dir = site / "02_Biblioteca_IA_Engine" / "previews"
+            preview_dir.mkdir(parents=True)
+            page = preview_dir / "docx-example.html"
+            page.write_text(
+                """<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'"></head><body>Prévia isolada</body></html>""",
+                encoding="utf-8",
+            )
+
+            self.builder.inject_public_metadata(site, self.config)
+
+            html = page.read_text(encoding="utf-8")
+            self.assertIn("default-src 'none'", html)
+            self.assertIn(self.builder.PUBLIC_METADATA_MARKER, html)
+            self.assertNotIn("data-antigravity-analytics", html)
+            self.assertNotIn("site-analytics.css", html)
+            self.assertNotIn("gc.zgo.at", html)
 
     def test_generates_robots_and_sitemap_from_canonical_manifest(self):
         with tempfile.TemporaryDirectory() as directory:
