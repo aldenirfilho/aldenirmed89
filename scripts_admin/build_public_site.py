@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html as html_lib
 import json
 import posixpath
 import re
@@ -22,6 +23,7 @@ import zipfile
 from collections import Counter
 from pathlib import Path, PurePosixPath
 from typing import NamedTuple
+from urllib.parse import quote
 
 try:
     from svg_safety import validate_svg_file
@@ -134,6 +136,10 @@ PUBLIC_DOWNLOADS = (
 )
 DOWNLOAD_ARCHIVE_LIMIT = 512
 DOWNLOAD_UNCOMPRESSED_LIMIT = 64 * 1024 * 1024
+PUBLIC_BASE_URL = "https://aldenirfilho.github.io/antigravity-consultas/"
+PUBLIC_HOST = "aldenirfilho.github.io"
+ANALYTICS_CONFIG_PATH = "data/site-analytics.json"
+PUBLIC_METADATA_MARKER = "antigravity-public-metadata:v1"
 
 
 class LibraryPublicationPlan(NamedTuple):
@@ -973,6 +979,213 @@ def inject_editorial_attribution(site: Path) -> int:
     return updated
 
 
+def load_site_analytics_config(root: Path) -> dict:
+    """Valida a configuração pública sem aceitar credenciais ou URLs arbitrárias."""
+
+    config = _load_json_object(
+        root / ANALYTICS_CONFIG_PATH,
+        "Configuração pública de métricas",
+    )
+    if config.get("schemaVersion") != "antigravity-analytics-v1":
+        raise ValueError("Configuração pública de métricas com versão inválida.")
+    if config.get("provider") != "goatcounter":
+        raise ValueError("Provedor público de métricas não homologado.")
+    if not isinstance(config.get("enabled"), bool):
+        raise ValueError("Campo enabled das métricas precisa ser booleano.")
+    if not isinstance(config.get("visitorCounterEnabled"), bool):
+        raise ValueError(
+            "Campo visitorCounterEnabled das métricas precisa ser booleano."
+        )
+    if config.get("publicHost") != PUBLIC_HOST:
+        raise ValueError("Host público das métricas não corresponde ao site oficial.")
+    if config.get("publicPathPrefix") != "/antigravity-consultas/":
+        raise ValueError("Prefixo público das métricas não corresponde ao GitHub Pages.")
+
+    site_code = config.get("siteCode")
+    if not isinstance(site_code, str) or (
+        site_code and re.fullmatch(r"[a-z0-9][a-z0-9-]{0,62}[a-z0-9]", site_code) is None
+    ):
+        raise ValueError("Código público GoatCounter ausente ou inválido.")
+    if config["enabled"] and not site_code:
+        raise ValueError("Métricas ativas exigem um código público GoatCounter.")
+
+    routes = config.get("routes")
+    if not isinstance(routes, list) or not routes:
+        raise ValueError("Configuração de métricas precisa declarar rotas públicas.")
+    seen: set[str] = set()
+    for route in routes:
+        if not isinstance(route, dict):
+            raise ValueError("Rota de métrica precisa ser um objeto.")
+        path = route.get("path")
+        label = route.get("label")
+        if (
+            not isinstance(path, str)
+            or not path
+            or path.startswith(("/", "http://", "https://"))
+            or "\\" in path
+            or any(part in {"", ".", ".."} for part in PurePosixPath(path).parts)
+            or path in seen
+            or not isinstance(label, str)
+            or not label.strip()
+        ):
+            raise ValueError("Rota pública inválida na configuração de métricas.")
+        seen.add(path)
+    return config
+
+
+def canonical_url_for_html(relative: PurePosixPath) -> str:
+    """Converte o caminho do artefato na URL pública preferencial."""
+
+    path = relative.as_posix()
+    if path == "index.html":
+        return PUBLIC_BASE_URL
+    if path.endswith("/index.html"):
+        path = path[: -len("index.html")]
+    return PUBLIC_BASE_URL + quote(path, safe="/:-._~")
+
+
+def validate_goatcounter_csp(html: str, site_code: str, relative: PurePosixPath) -> None:
+    """Falha fechado: CSP externa só pode ser alterada em revisão explícita."""
+
+    match = re.search(
+        r'<meta\s+http-equiv=["\']Content-Security-Policy["\']\s+content=["\'](.*?)["\']\s*/?>',
+        html,
+        flags=re.IGNORECASE,
+    )
+    if not match:
+        return
+    content = match.group(1)
+    endpoint = f"https://{site_code}.goatcounter.com"
+    required = {
+        "script-src": "https://gc.zgo.at",
+        "connect-src": endpoint,
+        "img-src": endpoint,
+    }
+    compatible = True
+    for directive, source in required.items():
+        directive_match = re.search(
+            rf"(?:^|;)\s*{re.escape(directive)}\s+([^;]*)",
+            content,
+        )
+        values = directive_match.group(1).split() if directive_match else []
+        if source not in values or "'none'" in values:
+            compatible = False
+            break
+    if not compatible:
+        raise ValueError(
+            "Métricas ativas bloqueadas pela CSP de "
+            f"{relative.as_posix()}; autorize apenas os endpoints GoatCounter "
+            "em uma revisão de segurança separada."
+        )
+
+
+def inject_public_metadata(site: Path, analytics: dict) -> int:
+    """Injeta canonical e o carregador local de métricas em todo HTML público."""
+
+    updated = 0
+    enabled = analytics["enabled"]
+    site_code = analytics["siteCode"]
+    counter_enabled = analytics["visitorCounterEnabled"]
+    for html_path in sorted(site.rglob("*.html")):
+        relative = PurePosixPath(html_path.relative_to(site).as_posix())
+        try:
+            html = html_path.read_text(encoding="utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError(
+                f"HTML público sem codificação UTF-8: {relative.as_posix()}"
+            ) from exc
+        if PUBLIC_METADATA_MARKER in html:
+            continue
+
+        parent = relative.parent.as_posix()
+        root_prefix = posixpath.relpath(".", start=parent or ".")
+        root_prefix = "" if root_prefix == "." else root_prefix + "/"
+        css_href = f"{root_prefix}assets/site-analytics.css"
+        js_src = f"{root_prefix}assets/site-analytics.js"
+        config_href = f"{root_prefix}{ANALYTICS_CONFIG_PATH}"
+
+        head_lines = [f"<!-- {PUBLIC_METADATA_MARKER} -->"]
+        if relative.as_posix() == "404.html":
+            head_lines.append('<meta name="robots" content="noindex,follow">')
+        elif re.search(r'<link\s+rel=["\']canonical["\']', html, flags=re.IGNORECASE) is None:
+            canonical = html_lib.escape(canonical_url_for_html(relative), quote=True)
+            head_lines.append(f'<link rel="canonical" href="{canonical}">')
+        head_lines.append(f'<link rel="stylesheet" href="{css_href}">')
+        head_block = "\n".join(head_lines)
+        closing_head = re.search(r"</head\s*>", html, flags=re.IGNORECASE)
+        if closing_head:
+            html = html[: closing_head.start()] + head_block + "\n" + html[closing_head.start() :]
+        else:
+            html = head_block + "\n" + html
+
+        script = (
+            f'<script defer src="{js_src}" data-antigravity-analytics '
+            f'data-enabled="{str(enabled).lower()}" '
+            f'data-counter-enabled="{str(counter_enabled).lower()}" '
+            f'data-site-code="{html_lib.escape(site_code, quote=True)}" '
+            f'data-public-host="{PUBLIC_HOST}" '
+            f'data-config="{config_href}"></script>'
+        )
+        closing_body = re.search(r"</body\s*>", html, flags=re.IGNORECASE)
+        if closing_body:
+            html = html[: closing_body.start()] + script + "\n" + html[closing_body.start() :]
+        else:
+            html = html.rstrip() + "\n" + script + "\n"
+
+        if enabled:
+            validate_goatcounter_csp(html, site_code, relative)
+        html_path.write_text(html, encoding="utf-8")
+        updated += 1
+    return updated
+
+
+def write_search_discovery(root: Path, site: Path) -> tuple[int, int]:
+    """Gera sitemap e robots a partir das rotas canônicas homologadas."""
+
+    manifest = _load_json_object(root / "data/site_manifest.json", "Manifesto do site")
+    routes = manifest.get("canonicalRoutes")
+    if not isinstance(routes, dict):
+        raise ValueError("Manifesto do site sem rotas canônicas.")
+    html_paths = {"index.html"}
+    for path in routes.values():
+        if isinstance(path, str) and path.endswith(".html"):
+            html_paths.add(path)
+    urls = sorted(
+        {
+            canonical_url_for_html(PurePosixPath(path))
+            for path in html_paths
+            if (site / path).is_file()
+        }
+    )
+    if PUBLIC_BASE_URL not in urls:
+        raise ValueError("Homepage canônica ausente do artefato público.")
+    lastmod = manifest.get("updatedAt")
+    if not isinstance(lastmod, str) or re.fullmatch(r"\d{4}-\d{2}-\d{2}", lastmod) is None:
+        raise ValueError("Manifesto do site sem data editorial válida.")
+
+    entries = "\n".join(
+        "  <url>\n"
+        f"    <loc>{html_lib.escape(url)}</loc>\n"
+        f"    <lastmod>{lastmod}</lastmod>\n"
+        "  </url>"
+        for url in urls
+    )
+    sitemap = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{entries}\n"
+        "</urlset>\n"
+    )
+    (site / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+    robots = (
+        "User-agent: *\n"
+        "Allow: /\n\n"
+        f"Sitemap: {PUBLIC_BASE_URL}sitemap.xml\n"
+    )
+    (site / "robots.txt").write_text(robots, encoding="utf-8")
+    return len(urls), len(robots.splitlines())
+
+
 def build(root: Path, site: Path) -> int:
     root = root.resolve()
     site = site.resolve()
@@ -994,6 +1207,7 @@ def build(root: Path, site: Path) -> int:
     library_allowlist = set(library_plan.public_acervo_allowlist)
     card_allowlist = load_card_public_allowlist(root)
     card_conflicts = validate_card_public_assets(root, card_allowlist)
+    analytics_config = load_site_analytics_config(root)
     validate_clinical_publication(root)
     validate_public_downloads(root)
 
@@ -1042,11 +1256,19 @@ def build(root: Path, site: Path) -> int:
     write_public_library_metadata(root, site, library_plan)
     (site / ".nojekyll").touch(exist_ok=True)
     attributed = inject_editorial_attribution(site)
+    enriched = inject_public_metadata(site, analytics_config)
+    indexed_urls, _ = write_search_discovery(root, site)
     normalize_permissions(site)
     total = sum(path.stat().st_size for path in site.rglob("*") if path.is_file())
     count = sum(1 for path in site.rglob("*") if path.is_file())
     print(f"✅ Artefato montado: {count} arquivo(s), {total / 1024 / 1024:.1f} MiB.")
     print(f"🛡️ Atribuição editorial aplicada a {attributed} página(s) HTML.")
+    print(f"🔎 Canonical e métricas preparados em {enriched} página(s) HTML.")
+    print(f"🗺️ Sitemap público gerado com {indexed_urls} URL(s) canônicas.")
+    if analytics_config["enabled"]:
+        print("📊 Métricas públicas habilitadas com contador de visitas registradas.")
+    else:
+        print("📊 Métricas públicas preparadas e desativadas até cadastro humano do provedor.")
     if card_conflicts:
         print(
             f"🛡️ Cópias de conflito preservadas localmente e excluídas do site: "
