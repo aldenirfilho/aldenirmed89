@@ -164,12 +164,16 @@ class AlmanaqueEcgModuleTests(unittest.TestCase):
             "protocolo institucional",
             "não fornecem escolha, dose, diluição ou esquema farmacológico",
             "Não inserir dados identificáveis de pacientes",
-            "connect-src 'none'",
             "não recebe, envia ou analisa exames",
             "traçados sintéticos"
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker.casefold(), self.public_source.casefold())
+        self.assertIn("script-src 'self' https://gc.zgo.at", self.public_source)
+        self.assertIn(
+            "connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com",
+            self.public_source,
+        )
         blocked = (
             "source_thread_id", "Rua Raimunda", "CRM 16587", "token=",
             "api_key", "deploymentId", "TAF###", "HOM###"

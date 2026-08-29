@@ -69,7 +69,11 @@ class DermatologiaCriticalReplacementTests(unittest.TestCase):
                 self.assertGreater((MODULE / relative).stat().st_size, 300)
 
         self.assertIn("Publicação educacional oficial", self.html)
-        self.assertIn("connect-src 'none'", self.html)
+        self.assertIn("script-src 'self' https://gc.zgo.at", self.html)
+        self.assertIn(
+            "connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com",
+            self.html,
+        )
 
     def test_home_replaces_old_public_entrypoint(self) -> None:
         home = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -167,7 +171,11 @@ class DermatologiaCriticalReplacementTests(unittest.TestCase):
             self.assertIn(url, urls)
 
     def test_no_remote_runtime_or_patient_input_field(self) -> None:
-        self.assertIn("connect-src 'none'", self.html)
+        self.assertIn("script-src 'self' https://gc.zgo.at", self.html)
+        self.assertIn(
+            "connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com",
+            self.html,
+        )
         self.assertNotRegex(self.html, r'<script[^>]+src="https?://')
         self.assertNotRegex(self.html, r'<link[^>]+href="https?://')
         self.assertNotIn('type="file"', self.html)

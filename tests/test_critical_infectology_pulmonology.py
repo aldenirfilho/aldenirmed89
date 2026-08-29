@@ -32,7 +32,11 @@ class CriticalModulesTests(unittest.TestCase):
             self.assertFalse(manifest["privacy"]["cloud"])
             self.assertFalse(manifest["privacy"]["telemetry"])
             self.assertFalse(manifest["privacy"]["patientData"])
-            self.assertIn("connect-src 'none'", html)
+            self.assertIn("script-src 'self' https://gc.zgo.at", html)
+            self.assertIn(
+                "connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com",
+                html,
+            )
             self.assertIn('class="skip-link"', html)
             self.assertIn('id="moduleSafety"', html)
             self.assertIn("../_shared_critical/assets/critical.js", html)

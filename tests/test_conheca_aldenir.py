@@ -185,8 +185,11 @@ class ConhecaAldenirTests(unittest.TestCase):
             self.assertIn(marker, self.app + self.html)
         for unsafe in ("innerHTML", "document.write", "eval("):
             self.assertNotIn(unsafe, self.app)
-        self.assertIn("connect-src 'self';", self.html)
-        self.assertNotIn("connect-src 'self' https:", self.html)
+        self.assertIn(
+            "connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com;",
+            self.html,
+        )
+        self.assertIn("script-src 'self' https://gc.zgo.at", self.html)
 
     def test_conversation_is_prepared_but_fail_closed(self) -> None:
         for category in (

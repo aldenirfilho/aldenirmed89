@@ -89,10 +89,14 @@ class ScaTemiModuleTests(unittest.TestCase):
             "protocolo institucional",
             "não fornece escolha, dose ou esquema farmacológico",
             "Não inserir dados identificáveis de pacientes",
-            "connect-src 'none'",
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker.casefold(), self.public_source.casefold())
+        self.assertIn("script-src 'self' https://gc.zgo.at", self.public_source)
+        self.assertIn(
+            "connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com",
+            self.public_source,
+        )
         blocked = (
             "TAF###",
             "HOM###",
