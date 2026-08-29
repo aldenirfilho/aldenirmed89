@@ -4,13 +4,13 @@
   const catalog = {
     meta: {
       schemaVersion: "critical-module-v1",
-      moduleVersion: "1.1.0",
+      moduleVersion: "1.3.0",
       slug: "pneumologia-critica",
       title: "Pneumologia Crítica",
       subtitle: "Insuficiência respiratória, SDRA, doenças obstrutivas, hemoptise e TEP organizados em decisões práticas, fisiologia visível e treino Turbo TEMI.",
       kicker: "🫁 Plantão · UTI · Turbo TEMI",
       emoji: "🫁",
-      updatedAt: "2026-08-28",
+      updatedAt: "2026-08-29",
       status: "em-revisao-medica",
       readyEvent: "antigravity:pulmonology-ready",
       safetyNotice: "Material educacional em revisão médica. Não substitui avaliação à beira-leito, gasometria e mecânica seriadas, protocolo de ventilação, fisioterapia respiratória, pneumologista/intensivista nem dupla checagem de parâmetros e dispositivos."
