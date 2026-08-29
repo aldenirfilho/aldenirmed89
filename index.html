@@ -1075,6 +1075,140 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   display:block;margin-bottom:3px;color:var(--yellow);font-family:var(--font-mono);
   font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
 }
+
+/* ── FUTEBOL TOTAL · CAMPO TÁTICO OPERACIONAL ────── */
+.total-football-section{padding:0 0 88px;scroll-margin-top:82px}
+.tf-surface{
+  position:relative;overflow:hidden;padding:clamp(24px,4vw,48px);
+  border:1px solid var(--brd-h);border-radius:var(--r-xl);
+  background:
+    radial-gradient(circle at 12% 0%,var(--cyan-d),transparent 34%),
+    radial-gradient(circle at 94% 100%,var(--vio-d),transparent 36%),
+    var(--bg2);box-shadow:var(--shadow);
+}
+.tf-surface::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.45;
+  background:linear-gradient(120deg,transparent 0 46%,var(--brd) 46.2% 46.4%,transparent 46.6% 100%);
+}
+.tf-head,.tf-controls,.tf-layout,.tf-rule{position:relative;z-index:1}
+.tf-head{display:flex;justify-content:space-between;gap:28px;align-items:end;margin-bottom:24px}
+.tf-head-copy{max-width:76ch;color:var(--soft);line-height:1.65}
+.tf-badge{
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;min-height:40px;
+  padding:8px 12px;border:1px solid var(--brd-h);border-radius:999px;
+  background:var(--surf);color:var(--yellow);font-family:var(--font-mono);
+  font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+}
+.tf-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.tf-filter{
+  min-height:44px;padding:8px 13px;border:1px solid var(--brd-h);border-radius:999px;
+  background:var(--surf);color:var(--soft);cursor:pointer;font-size:.76rem;font-weight:800;
+}
+.tf-filter:hover,.tf-filter:focus-visible{border-color:var(--cyan);color:var(--text)}
+.tf-filter[aria-pressed="true"]{background:var(--cyan);border-color:var(--cyan);color:var(--on-accent)}
+.tf-layout{display:grid;grid-template-columns:minmax(650px,1.55fr) minmax(280px,.65fr);gap:24px;align-items:stretch}
+.tf-pitch{
+  position:relative;min-height:670px;overflow:hidden;border:2px solid var(--brd-h);
+  border-radius:28px;background:
+    linear-gradient(90deg,transparent 49.8%,var(--brd-h) 49.9% 50.1%,transparent 50.2%),
+    repeating-linear-gradient(90deg,var(--surf) 0 12.5%,var(--surf-h) 12.5% 25%);
+  box-shadow:inset 0 0 70px rgba(0,0,0,.28);
+}
+.tf-pitch::before{
+  content:'';position:absolute;left:50%;top:50%;width:138px;height:138px;
+  border:2px solid var(--brd-h);border-radius:50%;transform:translate(-50%,-50%);
+}
+.tf-pitch::after{
+  content:'4–3–3 VIVO';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  color:var(--muted);font-family:var(--font-mono);font-size:.58rem;font-weight:900;
+  letter-spacing:.14em;white-space:nowrap;
+}
+.tf-box{
+  position:absolute;left:50%;width:52%;height:18%;transform:translateX(-50%);
+  border:2px solid var(--brd-h);pointer-events:none;
+}
+.tf-box.top{top:-2px;border-top:0;border-radius:0 0 18px 18px}
+.tf-box.bottom{bottom:-2px;border-bottom:0;border-radius:18px 18px 0 0}
+.tf-goal{
+  position:absolute;left:50%;width:22%;height:4%;transform:translateX(-50%);
+  border:2px solid var(--brd-h);pointer-events:none;
+}
+.tf-goal.top{top:-2px;border-top:0}.tf-goal.bottom{bottom:-2px;border-bottom:0}
+.tf-pass-lane{
+  position:absolute;left:50%;top:50%;height:2px;width:44%;transform-origin:left center;
+  background:repeating-linear-gradient(90deg,var(--cyan) 0 8px,transparent 8px 16px);
+  opacity:.22;pointer-events:none;
+}
+.tf-pass-lane.one{transform:rotate(-28deg)}
+.tf-pass-lane.two{transform:rotate(28deg)}
+.tf-pass-lane.three{transform:translateX(-100%) rotate(-152deg)}
+.tf-pass-lane.four{transform:translateX(-100%) rotate(152deg)}
+.tf-player{
+  --player-accent:var(--cyan);position:absolute;z-index:3;left:var(--x);top:var(--y);
+  width:clamp(102px,15%,158px);min-height:76px;transform:translate(-50%,-50%);
+  display:grid;grid-template-columns:32px 1fr;gap:8px;align-items:center;padding:9px;
+  border:1px solid color-mix(in srgb,var(--player-accent) 58%,var(--brd));border-radius:14px;
+  background:color-mix(in srgb,var(--bg3) 91%,var(--player-accent));color:var(--text);
+  box-shadow:0 12px 26px rgba(0,0,0,.34);text-decoration:none;
+  transition:opacity .2s,transform .2s,border-color .2s,box-shadow .2s;
+}
+.tf-player:hover,.tf-player:focus-visible,.tf-player.is-active{
+  z-index:5;transform:translate(-50%,-50%) scale(1.05);border-color:var(--player-accent);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--player-accent) 18%,transparent),0 16px 34px rgba(0,0,0,.44);
+}
+.tf-player.is-dimmed{
+  opacity:1;border-style:dashed;background:color-mix(in srgb,var(--bg3) 97%,var(--player-accent));
+  box-shadow:0 5px 14px rgba(0,0,0,.2);
+}
+.tf-player.is-dimmed:hover,.tf-player.is-dimmed:focus-visible{opacity:1}
+.tf-number{
+  width:32px;height:32px;display:grid;place-items:center;border-radius:50%;
+  background:var(--player-accent);color:var(--player-ink,var(--on-accent));font-family:var(--font-mono);
+  font-size:.68rem;font-weight:950;
+}
+.tf-player strong{display:block;font-size:.78rem;line-height:1.15}
+.tf-player small{display:block;margin-top:3px;color:var(--muted);font-size:.6rem;line-height:1.22}
+.tf-sidebar{display:grid;gap:14px;align-content:start}
+.tf-readout,.tf-principle{
+  border:1px solid var(--brd);border-radius:18px;background:var(--surf);padding:18px;
+}
+.tf-readout-label{
+  display:block;margin-bottom:7px;color:var(--cyan);font-family:var(--font-mono);
+  font-size:.62rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;
+}
+.tf-readout strong{display:block;margin-bottom:8px;font-family:var(--font-head);font-size:1.12rem}
+.tf-readout p{color:var(--soft);font-size:.82rem;line-height:1.55}
+.tf-status{min-height:4.8em}
+.tf-principles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tf-principle{padding:14px;text-decoration:none;transition:.18s}
+.tf-principle:hover{border-color:var(--cyan);background:var(--surf-h);transform:translateY(-1px)}
+.tf-principle b{display:block;margin-bottom:4px;color:var(--yellow);font-size:.78rem}
+.tf-principle span{display:block;color:var(--muted);font-size:.67rem;line-height:1.4}
+.tf-rule{
+  margin-top:18px;padding-top:16px;border-top:1px solid var(--brd);color:var(--muted);
+  font-size:.76rem;line-height:1.55;
+}
+html[data-visual-profile="total-orange"] .tf-surface{
+  border-color:rgba(255,122,0,.4);background:
+    radial-gradient(circle at 10% 0%,rgba(255,71,0,.2),transparent 34%),
+    radial-gradient(circle at 96% 100%,rgba(255,173,51,.15),transparent 36%),#080301;
+}
+html[data-visual-profile="total-orange"] .tf-pitch{
+  background:
+    linear-gradient(90deg,transparent 49.8%,rgba(255,174,72,.38) 49.9% 50.1%,transparent 50.2%),
+    repeating-linear-gradient(90deg,rgba(255,122,0,.045) 0 12.5%,rgba(255,173,51,.075) 12.5% 25%),
+    #080401;border-color:rgba(255,174,72,.4);
+}
+html[data-visual-profile="total-orange"] #mapa-graph{
+  background:
+    linear-gradient(90deg,transparent 49.8%,rgba(255,174,72,.2) 49.9% 50.1%,transparent 50.2%),
+    repeating-linear-gradient(90deg,rgba(255,122,0,.025) 0 12.5%,rgba(255,173,51,.045) 12.5% 25%),#080401;
+  border-color:rgba(255,122,0,.32);
+}
+html.a11y-contrast .tf-pitch{background:#000;border-color:#fff}
+html.a11y-contrast .tf-player{background:#000;border-color:#fff}
+html.a11y-contrast .tf-player.is-dimmed{opacity:1;border-style:dashed}
+html.a11y-reduce-motion .tf-player,html.a11y-reduce-motion .tf-principle{transition:none}
 html[data-visual-profile="total-orange"] .mission-intro{
   background:
     radial-gradient(circle at 50% 78%,rgba(255,79,0,.3),transparent 34%),
@@ -2126,6 +2260,17 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
   .pipeline-step,.safety-banner,.download-card{
     break-inside:avoid;page-break-inside:avoid;
   }
+  .tf-layout{grid-template-columns:1fr}
+  .tf-pitch{
+    min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;padding:12px;background:#fff!important;
+  }
+  .tf-pitch::before,.tf-pitch::after,.tf-box,.tf-goal,.tf-pass-lane{display:none!important}
+  .tf-player,.tf-player:hover,.tf-player:focus-visible{
+    position:static;width:auto;min-height:60px;transform:none!important;
+    background:#fff!important;color:#102a43!important;box-shadow:none!important;
+  }
+  .tf-player.is-dimmed{opacity:1}
   a{text-decoration:none}
 }
 
@@ -2155,6 +2300,10 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 }
 @media(max-width:1024px){
   .download-head{align-items:start}
+  .tf-head{align-items:start}
+  .tf-layout{grid-template-columns:1fr}
+  .tf-sidebar{grid-template-columns:minmax(240px,.75fr) minmax(0,1.25fr)}
+  .tf-principles{align-content:start}
   .metrics-grid{grid-template-columns:repeat(4,1fr)}
   .pipeline-flow{grid-template-columns:repeat(3,1fr);gap:20px}
   .pipeline-connector{display:none}
@@ -2164,6 +2313,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 @media(max-width:900px){
   .hero{grid-template-columns:1fr;gap:40px}
   .hero-panel{max-width:620px}
+  .tf-sidebar{grid-template-columns:1fr}
   .modules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .dsf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -2225,6 +2375,20 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 @media(max-width:620px){
   .modules-grid,.stations-grid,.portal-grid{grid-template-columns:1fr}
   .portal-card{padding:25px 22px}
+  .tf-surface{padding:20px 16px}
+  .tf-head{display:block}
+  .tf-badge{margin-top:14px}
+  .tf-controls{display:grid;grid-template-columns:1fr}
+  .tf-filter{width:100%;text-align:left}
+  .tf-pitch{
+    min-height:0;display:grid;grid-template-columns:1fr;gap:10px;padding:12px;
+    background:var(--bg3)!important;
+  }
+  .tf-pitch::before,.tf-pitch::after,.tf-box,.tf-goal,.tf-pass-lane{display:none}
+  .tf-player,.tf-player:hover,.tf-player:focus-visible,.tf-player.is-active{
+    position:static;width:100%;min-height:64px;transform:none;
+  }
+  .tf-player.is-dimmed{opacity:1}
   .view-controls{width:100%;align-items:stretch}
   .view-controls-label{width:100%;padding:2px 4px}
   .view-select{flex:1;min-width:0}
@@ -2404,6 +2568,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
       </div>
     </a>
     <div class="nav-links" role="navigation" aria-label="Navegação principal">
+      <a href="#campo-total" class="accent">⚽ Campo Total</a>
       <a href="17_Portal_Vivo/index.html" class="accent">🛰️ Portal UPGRADE</a>
       <a href="15_Radar_Cientifico/index.html" class="accent">📡 Estação Radar</a>
       <a href="16_Diretorio_Medico/index.html">🌐 Estação Diretório</a>
@@ -2440,19 +2605,20 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
   <section class="hero" aria-labelledby="hero-heading">
 
     <div class="hero-left">
-      <div class="hero-eyebrow" aria-hidden="true">Central clínica — Plantão + Prova + UTI</div>
+      <div class="hero-eyebrow" aria-hidden="true">Futebol Total clínico — evidência + plantão + TEMI</div>
       <div class="total-orange-manifesto" role="note">
-        <strong>🔥 Modo principal · Laranja Mecânica</strong>
-        Inspirado no Futebol Total neerlandês de 1974: trocas coordenadas, ocupação inteligente dos espaços e módulos atuando em rede.
+        <strong>🔥 Modo principal · Laranja Mecânica · Futebol Total Clínico</strong>
+        Um 4–3–3 vivo: cada módulo conserva uma função primária, troca apoio e cobre os espaços do conhecimento sem perder responsabilidade.
       </div>
       <h1 id="hero-heading">
-        A <span class="hl">central de comando</span><br/>
-        para medicina de alta performance.
+        <span class="hl">Nenhum módulo</span><br/>
+        joga sozinho.
       </h1>
       <p class="hero-lead">
-        Plataforma médica interativa, continuamente atualizada e pensada para decisão real — da beira-leito da UTI à prova de título TEMI. Conteúdo autoral, didático e rastreável por raciocínio clínico.
+        Evidência, ferramentas, módulos clínicos e treino TEMI circulam como um único sistema: a rota certa aparece no momento certo, com cobertura das áreas relacionadas e responsabilidade clínica preservada.
       </p>
       <div class="hero-btns">
+        <a class="btn btn-primary" href="#campo-total">⚽ Entrar no Campo Total</a>
         <a class="btn btn-primary" href="17_Portal_Vivo/index.html">🛰️ Ver UPGRADEs da plataforma</a>
         <a class="btn btn-primary" href="15_Radar_Cientifico/index.html">📡 Estudar atualizações clínicas</a>
         <a class="btn btn-primary" href="01_UpDown_Hub/index.html">↕️ Abrir UpDown Hub</a>
@@ -2475,8 +2641,8 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 
     <aside class="hero-panel card" aria-label="Painel operacional do projeto">
       <div class="panel-header">
-        <div class="panel-title">// painel operacional</div>
-        <div class="panel-badge"><span>●</span> Em expansão</div>
+        <div class="panel-title">// prancheta operacional</div>
+        <div class="panel-badge"><span>●</span> Futebol Total</div>
       </div>
       <div class="metrics-grid">
         <div class="metric-cell">
@@ -2497,7 +2663,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
         </div>
       </div>
       <div class="panel-topics">
-        <div class="panel-topics-title">// temas no repositório</div>
+        <div class="panel-topics-title">// elenco clínico em movimento</div>
         <div class="topic-pills">
           <a class="topic-pill cyan" href="01_Modulos_Clinicos/AVC_Agudo/avc.html">🧠 AVC Agudo</a>
           <a class="topic-pill red" href="01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/index.html">❤️‍🩹 SCA · STEMI · NSTEMI</a>
@@ -2523,6 +2689,89 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 
   </section>
 </div><!-- /shell -->
+
+<!-- ── CAMPO TOTAL 4–3–3 ─────────────────────────── -->
+<section class="total-football-section" id="campo-total" aria-labelledby="campo-total-heading">
+  <div class="shell">
+    <div class="tf-surface">
+      <div class="tf-head">
+        <div>
+          <div class="section-label">// modelo operacional · responsabilidade + cobertura</div>
+          <h2 class="section-title" id="campo-total-heading">Campo Total 4–3–3 ⚽🔥</h2>
+          <p class="tf-head-copy">Onze rotas reais ocupam o campo inteiro. Cada unidade tem uma missão principal e cobre outras áreas, permitindo passar da fonte à decisão, da decisão ao estudo e do estudo à revisão sem criar silos.</p>
+        </div>
+        <span class="tf-badge">11 funções · 1 sistema</span>
+      </div>
+
+      <div class="tf-controls" role="group" aria-label="Destacar momento de uso no Campo Total">
+        <button class="tf-filter" type="button" data-tf-filter="all" aria-controls="tfPitch tfStatus" aria-pressed="true">⚽ Todo o campo</button>
+        <button class="tf-filter" type="button" data-tf-filter="evidence" aria-controls="tfPitch tfStatus" aria-pressed="false">📚 Organizar evidência</button>
+        <button class="tf-filter" type="button" data-tf-filter="shift" aria-controls="tfPitch tfStatus" aria-pressed="false">🚑 Decidir no plantão</button>
+        <button class="tf-filter" type="button" data-tf-filter="study" aria-controls="tfPitch tfStatus" aria-pressed="false">🏆 Treinar para o TEMI</button>
+        <button class="tf-filter" type="button" data-tf-filter="review" aria-controls="tfPitch tfStatus" aria-pressed="false">🧠 Revisar e conectar</button>
+      </div>
+
+      <div class="tf-layout">
+        <div class="tf-pitch" id="tfPitch" role="group" aria-label="Onze funções móveis do ecossistema AldenirMed89">
+          <span class="tf-box top" aria-hidden="true"></span><span class="tf-box bottom" aria-hidden="true"></span>
+          <span class="tf-goal top" aria-hidden="true"></span><span class="tf-goal bottom" aria-hidden="true"></span>
+          <span class="tf-pass-lane one" aria-hidden="true"></span><span class="tf-pass-lane two" aria-hidden="true"></span>
+          <span class="tf-pass-lane three" aria-hidden="true"></span><span class="tf-pass-lane four" aria-hidden="true"></span>
+
+          <a class="tf-player" data-tf-player="library" data-phases="evidence review" data-primary="Base de evidências" data-cover="Diretório · Radar · UpDown" href="02_Biblioteca_IA_Engine/index.html" style="--x:50%;--y:89%;--player-accent:var(--violet)" aria-label="Biblioteca IA: base de evidências">
+            <span class="tf-number">01</span><span><strong>Biblioteca IA</strong><small>base · evidências</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="directory" data-phases="evidence review" data-primary="Validação de fontes" data-cover="Biblioteca · Radar" href="16_Diretorio_Medico/index.html" style="--x:14%;--y:69%;--player-accent:var(--cyan)" aria-label="Diretório Médico: validação de fontes">
+            <span class="tf-number">02</span><span><strong>Diretório</strong><small>lateral · fontes</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="radar" data-phases="evidence review" data-primary="Vigilância científica" data-cover="Biblioteca · UpDown" href="15_Radar_Cientifico/index.html" style="--x:38%;--y:69%;--player-accent:var(--cyan)" aria-label="Radar Científico: vigilância e atualização">
+            <span class="tf-number">03</span><span><strong>Radar</strong><small>zaga · atualização</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="updown" data-phases="evidence study review" data-primary="Síntese autoral" data-cover="Biblioteca · ACRA · TEMI" href="01_UpDown_Hub/index.html" style="--x:62%;--y:69%;--player-accent:var(--green)" aria-label="UpDown Hub: síntese autoral">
+            <span class="tf-number">04</span><span><strong>UpDown Hub</strong><small>zaga · síntese</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="feed" data-phases="study review" data-primary="Disseminação visual" data-cover="UpDown · ACRA" href="05_Midia_E_Feed/index.html" style="--x:86%;--y:69%;--player-accent:#6aa9ff;--player-ink:#170700" aria-label="Card Feed: disseminação visual">
+            <span class="tf-number">05</span><span><strong>Card Feed</strong><small>lateral · visual</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="map" data-phases="evidence shift study review" data-primary="Integração do sistema" data-cover="Todas as linhas" href="#mapa" style="--x:50%;--y:49%;--player-accent:var(--yellow)" aria-label="Mapa Vivo: integração do sistema">
+            <span class="tf-number">06</span><span><strong>Mapa Vivo</strong><small>volante · conexão</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="calculators" data-phases="shift review" data-primary="Decisão objetiva" data-cover="Módulos · RenalDose · SAPS 3" href="03_Calculadoras_E_Apps/index.html" style="--x:25%;--y:38%;--player-accent:var(--cyan)" aria-label="Calculadoras: decisão objetiva">
+            <span class="tf-number">07</span><span><strong>Calculadoras</strong><small>meio · decisão</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="pocus" data-phases="shift study" data-primary="Imagem à beira-leito" data-cover="Decisão · módulos clínicos" href="09_POCUS_Hub/index.html" style="--x:75%;--y:38%;--player-accent:var(--green)" aria-label="POCUS Hub: imagem à beira-leito">
+            <span class="tf-number">08</span><span><strong>POCUS Hub</strong><small>meio · imagem</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="clinical" data-phases="shift study" data-primary="Aplicação clínica" data-cover="Calculadoras · POCUS · TEMI" href="#modulos" style="--x:18%;--y:16%;--player-accent:var(--red)" aria-label="Módulos clínicos: aplicação prática">
+            <span class="tf-number">09</span><span><strong>Módulos clínicos</strong><small>ponta · aplicação</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="acra" data-phases="study review" data-primary="Recuperação ativa" data-cover="UpDown · Feed · TEMI" href="22_Microparticulas_Ativas_ACRA/index.html" style="--x:50%;--y:16%;--player-accent:var(--violet)" aria-label="Micropartículas ACRA: recuperação ativa">
+            <span class="tf-number">10</span><span><strong>ACRA</strong><small>falso 9 · retenção</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="temi" data-phases="study review" data-primary="Avaliação e finalização" data-cover="ACRA · UpDown · módulos" href="questoes/index.html" style="--x:82%;--y:16%;--player-accent:var(--yellow)" aria-label="Simulador TEMI: avaliação e finalização">
+            <span class="tf-number">11</span><span><strong>Simulador TEMI</strong><small>ataque · treino</small></span>
+          </a>
+        </div>
+
+        <aside class="tf-sidebar" aria-label="Leitura tática do Campo Total">
+          <div class="tf-readout">
+            <span class="tf-readout-label">Leitura do momento</span>
+            <strong id="tfReadoutTitle">Todo o campo conectado</strong>
+            <p class="tf-status" id="tfStatus" aria-live="polite" aria-atomic="true">11 rotas em destaque; as demais rotas continuam disponíveis em qualquer filtro.</p>
+          </div>
+          <div class="tf-principles" aria-label="Quatro princípios do modelo operacional">
+            <a class="tf-principle" href="16_Diretorio_Medico/index.html"><b>🛡️ Cobertura</b><span>Fontes e revisão protegem a decisão.</span></a>
+            <a class="tf-principle" href="#modulos"><b>🔄 Mobilidade</b><span>Cada módulo apoia o próximo passo.</span></a>
+            <a class="tf-principle" href="#mapa"><b>↔️ Amplitude</b><span>O mapa evita conhecimento isolado.</span></a>
+            <a class="tf-principle" href="questoes/index.html"><b>🎯 Finalização</b><span>Treino converte estudo em desempenho.</span></a>
+          </div>
+        </aside>
+      </div>
+
+      <p class="tf-rule"><strong>Regra do sistema:</strong> Futebol Total não significa “todo mundo fazendo tudo”. Significa mobilidade, trocas coordenadas, ocupação inteligente dos espaços e cobertura mútua. Esta é uma homenagem conceitual autoral, sem afiliação esportiva oficial; o conteúdo clínico permanece separado da metáfora visual.</p>
+    </div>
+  </div>
+</section>
 
 <!-- ── DOWNLOADS MULTIPLATAFORMA ─────────────────── -->
 <section class="downloads-section" id="downloads" aria-labelledby="downloads-heading">
@@ -2618,9 +2867,9 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 <section id="portal-upgrade" class="portal-section" aria-labelledby="portal-heading">
   <div class="shell">
     <div class="reveal section-intro">
-      <div class="section-label">// comunicação e evolução da plataforma</div>
-      <h2 class="section-title" id="portal-heading">Portais AldenirMed89 🛰️</h2>
-      <p class="section-sub">O Portal Vivo registra o que mudou. O Centro da Tripulação organiza assinatura, preferências, métricas agregadas e comunicação protegida com os tripulantes.</p>
+      <div class="section-label">// comissão técnica · comunicação e evolução</div>
+      <h2 class="section-title" id="portal-heading">Comissão técnica AldenirMed89 🛰️</h2>
+      <p class="section-sub">O Portal Vivo registra a evolução do sistema. O Centro da Tripulação organiza preferências, métricas agregadas e comunicação protegida — coordenação fora do campo sem interferir no conteúdo clínico.</p>
     </div>
     <div class="portal-grid">
 
@@ -2658,9 +2907,9 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 <section id="estacoes" class="stations-section" aria-labelledby="stations-heading">
   <div class="shell">
     <div class="reveal section-intro">
-      <div class="section-label">// destinos permanentes</div>
-      <h2 class="section-title" id="stations-heading">Estações AldenirMed89 📡</h2>
-      <p class="section-sub">Duas áreas independentes e sempre acessíveis: uma recebe conteúdo clínico e estudo; a outra organiza as fontes médicas verificáveis.</p>
+      <div class="section-label">// cobertura e leitura do jogo</div>
+      <h2 class="section-title" id="stations-heading">Estações AldenirMed89 — cobertura total 📡</h2>
+      <p class="section-sub">Duas áreas independentes e coordenadas: o Radar acompanha o que mudou; o Diretório sustenta a checagem de fontes. Nenhuma decisão avança sem cobertura informacional.</p>
     </div>
     <div class="stations-grid">
 
@@ -2698,9 +2947,9 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 <section id="modulos" aria-labelledby="mod-heading">
   <div class="shell">
     <div class="reveal section-intro">
-      <div class="section-label">// ferramentas do ecossistema</div>
-      <h2 class="section-title" id="mod-heading">Módulos e apps AldenirMed89 🧬</h2>
-      <p class="section-sub">Ferramentas interconectadas para conteúdo autoral, decisão clínica, treinamento TEMI, ventilação, emergências, imagem e consulta rápida.</p>
+      <div class="section-label">// elenco móvel · função primária + coberturas</div>
+      <h2 class="section-title" id="mod-heading">Módulos e apps AldenirMed89 — elenco em rotação 🧬</h2>
+      <p class="section-sub">Todos os módulos continuam visíveis e com nomes clínicos claros. Cada ferramenta conserva sua função principal e se conecta às rotas de evidência, decisão, imagem, treino e revisão.</p>
     </div>
     <div class="modules-grid">
 
@@ -3127,9 +3376,9 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 <section id="vias" aria-labelledby="vias-heading">
   <div class="shell">
     <div class="reveal section-intro">
-      <div class="section-label">// trilhas principais</div>
-      <h2 class="section-title" id="vias-heading">As duas grandes vias 🛣️</h2>
-      <p class="section-sub">A plataforma se organiza em duas trilhas-mãe que se conversam, sem virar silos.</p>
+      <div class="section-label">// dois corredores · um único sistema</div>
+      <h2 class="section-title" id="vias-heading">Amplitude clínica pelos dois lados ↔️</h2>
+      <p class="section-sub">Medicina Intensiva e Medicina Interna preservam suas competências, mas trocam cobertura continuamente para evitar silos e pontos cegos.</p>
     </div>
     <div class="vias-grid">
 
@@ -3179,9 +3428,9 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 <section id="mapa" class="map-section" aria-labelledby="map-heading">
   <div class="shell">
     <div class="reveal section-intro">
-      <div class="section-label">// mapa semântico</div>
-      <h2 class="section-title" id="map-heading">Mapa vivo de conexões 🕸️</h2>
-      <p class="section-sub">Cada nó é uma página real do projeto; cada aresta, uma decisão clínica. Gerado de <code>data/connections.json</code> e atualizado automaticamente a cada publicação. Filtre por ramo, passe o mouse para destacar conexões e clique para abrir.</p>
+      <div class="section-label">// linhas de passe do conhecimento</div>
+      <h2 class="section-title" id="map-heading">Mapa vivo de cobertura total 🕸️⚽</h2>
+      <p class="section-sub">Cada nó é uma página real; cada aresta mostra uma cobertura possível entre conteúdos. O mapa é gerado de <code>data/connections.json</code> e atualizado a cada publicação. Filtre, destaque a vizinhança e abra a rota necessária.</p>
     </div>
 
     <div class="map-toolbar reveal">
@@ -3196,7 +3445,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
     </div>
 
     <div class="map-legend" id="mapLegend"></div>
-    <div class="map-howto">🛰️ A abertura mostra apenas a estrutura essencial. Ative Tópicos, Temas, Desafios, Mnemônicos ou Arquivos quando precisar aprofundar; a busca consulta todo o mapa.</div>
+    <div class="map-howto">⚽ A abertura mostra a estrutura essencial. Ative Tópicos, Temas, Desafios, Mnemônicos ou Arquivos para ampliar o campo; a busca consulta todo o mapa.</div>
   </div>
 </section>
 
@@ -3317,9 +3566,9 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 <section class="pipeline-section" id="pipeline" aria-labelledby="pipe-heading">
   <div class="shell">
     <div class="reveal section-intro">
-      <div class="section-label">// fluxo editorial</div>
-      <h2 class="section-title" id="pipe-heading">Como funciona a máquina ⚙️</h2>
-      <p class="section-sub">Cada tema percorre 5 etapas antes de virar uma página clínica pública e conectada.</p>
+      <div class="section-label">// construção coordenada em cinco passes</div>
+      <h2 class="section-title" id="pipe-heading">Circulação total do conhecimento ⚙️⚽</h2>
+      <p class="section-sub">A bola não pula etapas: cada tema passa por fonte, organização, síntese, revisão médica e publicação antes de entrar no sistema conectado.</p>
     </div>
     <div style="position:relative;margin-top:48px">
       <div class="pipeline-connector" aria-hidden="true"></div>
@@ -3369,7 +3618,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 <section id="roadmap" aria-labelledby="road-heading">
   <div class="shell">
     <div class="reveal section-intro">
-      <div class="section-label">// evolução do projeto</div>
+      <div class="section-label">// temporada operacional · evolução do projeto</div>
       <h2 class="section-title" id="road-heading">Roadmap operacional 🧭</h2>
       <p class="section-sub">Estado real, responsabilidades separadas e uma próxima ação por vez. Marcação local nunca substitui homologação.</p>
     </div>
@@ -4841,6 +5090,76 @@ function escHtml(s){
   section?.addEventListener('focusout',startRotation);
   render();
   startRotation();
+})();
+
+/* ── CAMPO TOTAL — filtros e leitura acessível ───── */
+const TOTAL_FOOTBALL_PHASES={
+  all:{title:'Todo o campo conectado',text:'Base, meio e ataque aparecem como uma única rede de responsabilidade e cobertura.'},
+  evidence:{title:'Organizar evidência',text:'A base recua, valida fontes e constrói a síntese antes da aplicação.'},
+  shift:{title:'Decidir no plantão',text:'Ferramentas, imagem e módulos clínicos avançam com apoio das rotas de evidência.'},
+  study:{title:'Treinar para o TEMI',text:'Síntese, aplicação, recuperação ativa e questões ocupam o campo de aprendizagem.'},
+  review:{title:'Revisar e conectar',text:'Radar, fontes, mapa, ACRA e treino fecham os espaços de esquecimento.'}
+};
+(function initTotalFootballField(){
+  const field=document.getElementById('campo-total');
+  if(!field)return;
+  const filters=Array.from(field.querySelectorAll('[data-tf-filter]'));
+  const players=Array.from(field.querySelectorAll('[data-tf-player]'));
+  const title=document.getElementById('tfReadoutTitle');
+  const status=document.getElementById('tfStatus');
+  let phase='all';
+
+  const describePhase=()=>{
+    const copy=TOTAL_FOOTBALL_PHASES[phase]||TOTAL_FOOTBALL_PHASES.all;
+    const highlighted=players.filter(player=>phase==='all'||player.dataset.phases.split(/\s+/).includes(phase)).length;
+    title.textContent=copy.title;
+    status.textContent=`${copy.text} ${highlighted} rotas em destaque; as demais rotas continuam disponíveis.`;
+  };
+  const applyPhase=next=>{
+    phase=Object.prototype.hasOwnProperty.call(TOTAL_FOOTBALL_PHASES,next)?next:'all';
+    filters.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.tfFilter===phase)));
+    players.forEach(player=>{
+      const match=phase==='all'||player.dataset.phases.split(/\s+/).includes(phase);
+      player.classList.toggle('is-dimmed',!match);
+    });
+    describePhase();
+  };
+  const describePlayer=player=>{
+    players.forEach(item=>item.classList.toggle('is-active',item===player));
+    const label=player.querySelector('strong')?.textContent?.trim()||player.dataset.tfPlayer;
+    title.textContent=`${label} · ${player.dataset.primary}`;
+    status.textContent=`Função primária: ${player.dataset.primary}. Cobre: ${player.dataset.cover}. O link abre a rota real sem ocultar as demais.`;
+  };
+  const restoreReadout=()=>{
+    players.forEach(player=>player.classList.remove('is-active'));
+    describePhase();
+  };
+
+  filters.forEach(button=>button.addEventListener('click',()=>applyPhase(button.dataset.tfFilter)));
+  players.forEach(player=>{
+    player.addEventListener('mouseenter',()=>describePlayer(player));
+    player.addEventListener('focus',()=>describePlayer(player));
+    player.addEventListener('mouseleave',restoreReadout);
+  });
+  const pitch=field.querySelector('.tf-pitch');
+  pitch?.addEventListener('focusout',event=>{
+    if(!event.relatedTarget?.closest?.('[data-tf-player]'))restoreReadout();
+  });
+  pitch?.addEventListener('keydown',event=>{
+    const current=event.target.closest?.('[data-tf-player]');
+    if(!current)return;
+    const index=players.indexOf(current);
+    let target=null;
+    if(event.key==='ArrowLeft'||event.key==='ArrowUp')target=players[(index-1+players.length)%players.length];
+    if(event.key==='ArrowRight'||event.key==='ArrowDown')target=players[(index+1)%players.length];
+    if(event.key==='Home')target=players[0];
+    if(event.key==='End')target=players[players.length-1];
+    if(event.key==='Escape'){
+      event.preventDefault();applyPhase('all');filters[0]?.focus();return;
+    }
+    if(target){event.preventDefault();target.focus()}
+  });
+  applyPhase('all');
 })();
 
 /* ── MAPA VIVO — grafo data-driven (connections.json) ─ */

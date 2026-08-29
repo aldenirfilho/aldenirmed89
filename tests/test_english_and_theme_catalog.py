@@ -174,6 +174,12 @@ class EnglishHomeTests(unittest.TestCase):
         self.assertTrue((ROOT / "en/assets/theme.css").exists())
         self.assertTrue((ROOT / "en/assets/theme.js").exists())
 
+    def test_home_explains_the_total_football_operating_model(self):
+        rendered = " ".join(self.page.text)
+        self.assertIn("Total Football operating model", rendered)
+        self.assertIn("coordinated rotations", rendered)
+        self.assertIn("total-football-model", self.page.ids)
+
     def test_home_offers_all_catalogued_themes(self):
         source = self.path.read_text(encoding="utf-8")
         catalog = json.loads(

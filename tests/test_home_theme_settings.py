@@ -1,3 +1,4 @@
+import re
 import unittest
 from pathlib import Path
 
@@ -71,6 +72,33 @@ class HomeThemeSettingsTests(unittest.TestCase):
         self.assertNotIn("Harry Potter", HOME)
         self.assertNotIn("Marvel", HOME)
         self.assertNotIn("A Clockwork Orange", HOME)
+
+    def test_total_football_is_an_accessible_operating_surface(self):
+        self.assertIn('id="campo-total"', HOME)
+        self.assertIn('aria-labelledby="campo-total-heading"', HOME)
+        self.assertIn('id="tfPitch" role="group"', HOME)
+        self.assertIn('id="tfStatus" aria-live="polite"', HOME)
+        self.assertIn("const TOTAL_FOOTBALL_PHASES", HOME)
+        self.assertIn("setAttribute('aria-pressed'", HOME)
+
+        players = re.findall(r'<a class="tf-player[^>]*data-tf-player[^>]*>', HOME)
+        self.assertEqual(11, len(players))
+        for player in players:
+            with self.subTest(player=player):
+                href = re.search(r'href="([^"]+)"', player)
+                self.assertIsNotNone(href)
+                clean_href = href.group(1).split("#", 1)[0]
+                self.assertTrue((ROOT / clean_href).exists())
+                self.assertRegex(player, r'data-phases="[^"]+"')
+                self.assertRegex(player, r'data-primary="[^"]+"')
+                self.assertRegex(player, r'data-cover="[^"]+"')
+                self.assertNotIn('role="listitem"', player)
+
+        for phase in ("all", "evidence", "shift", "study", "review"):
+            self.assertIn(f'data-tf-filter="{phase}"', HOME)
+        self.assertIn("4–3–3 vivo", HOME)
+        self.assertIn("função primária", HOME)
+        self.assertIn("demais rotas continuam disponíveis", HOME)
 
 
 if __name__ == "__main__":
