@@ -101,7 +101,7 @@ class CriticalModulesTests(unittest.TestCase):
     def test_pulmonology_has_safe_rapid_dpoc_ventilation_block(self):
         catalog = (ROOT / "01_Modulos_Clinicos/Pneumologia_Critica/data/catalog.js").read_text(encoding="utf-8")
         required_clinical_markers = (
-            'moduleVersion: "1.2.0"',
+            'moduleVersion: "1.3.0"',
             "PaCO₂ alta isolada pode ser basal",
             "SpO₂ geralmente 88–92%",
             "pH ≤7,35",
@@ -126,19 +126,19 @@ class CriticalModulesTests(unittest.TestCase):
         css = (module / "assets/pneumologia-visuals.css").read_text(encoding="utf-8")
         manifest = json.loads((module / "module.manifest.json").read_text(encoding="utf-8"))
 
-        self.assertEqual(manifest["version"], "1.2.0")
+        self.assertEqual(manifest["version"], "1.3.0")
         self.assertIn('id="dpoc-visuais"', html)
         self.assertIn('href="#dpoc-visuais"', html)
-        self.assertEqual(html.count('data-visual-id="DPOC-'), 10)
-        self.assertEqual(html.count('alt="'), 10)
+        self.assertEqual(html.count('data-visual-id="DPOC-'), 20)
+        self.assertEqual(html.count('alt="'), 20)
         self.assertIn("@media (max-width: 760px)", css)
 
         originals = sorted((module / "assets/images").glob("dpoc-*.png"))
         desktop = sorted((module / "assets/images/optimized").glob("dpoc-*-1672.jpg"))
         mobile = sorted((module / "assets/images/optimized").glob("dpoc-*-960.jpg"))
-        self.assertEqual(len(originals), 10)
-        self.assertEqual(len(desktop), 10)
-        self.assertEqual(len(mobile), 10)
+        self.assertEqual(len(originals), 20)
+        self.assertEqual(len(desktop), 20)
+        self.assertEqual(len(mobile), 20)
         for asset in originals + desktop + mobile:
             self.assertGreater(asset.stat().st_size, 10_000, asset)
 

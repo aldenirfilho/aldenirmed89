@@ -13,6 +13,35 @@
   box-shadow: var(--shadow);
 }
 
+.dpoc-visual-card--advanced {
+  border-color: color-mix(in srgb, var(--accent) 58%, var(--line));
+}
+
+.dpoc-series-divider {
+  grid-column: 1 / -1;
+  padding: 1rem 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 52%, var(--line));
+  border-radius: var(--radius);
+  background: linear-gradient(110deg, color-mix(in srgb, var(--panel) 84%, var(--accent) 16%), var(--panel));
+}
+
+.dpoc-series-divider span {
+  color: var(--accent);
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.dpoc-series-divider h3 {
+  margin: .35rem 0 .45rem;
+}
+
+.dpoc-series-divider p {
+  margin: 0;
+  color: var(--soft);
+}
+
 .dpoc-visual-card > a {
   display: block;
   background: #06111f;
@@ -67,6 +96,7 @@
 
 @media print {
   .dpoc-visual-card { box-shadow: none; break-inside: avoid; }
+  .dpoc-series-divider { break-after: avoid; }
   .dpoc-visual-card .visual-meta a { display: none; }
 }
 
