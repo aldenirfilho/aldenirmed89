@@ -1,6 +1,6 @@
 # 🚀 Próximas etapas — guia do proprietário
 
-Este é o roteiro curto para continuar o Antigravity sem misturar tarefas,
+Este é o roteiro curto para continuar o AldenirMed89 sem misturar tarefas,
 credenciais ou riscos. Faça **uma microação por vez**.
 
 > **Estado real agora:** o site e a revisão protetiva semanal estão no ar. O

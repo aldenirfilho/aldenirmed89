@@ -55,7 +55,7 @@ HARD_MAX_RESPONSE_BYTES = 5_000_000
 MAX_NORMALIZED_BYTES = 4_000_000
 USER_AGENT = (
     "Antigravity-LegalIntegrityMonitor/1.0 "
-    "(+https://aldenirfilho.github.io/antigravity-consultas/"
+    "(+https://aldenirfilho.github.io/aldenirmed89/"
     "19_Integridade_Editorial/; technical-change-monitor)"
 )
 ALLOWED_HOSTS = frozenset(

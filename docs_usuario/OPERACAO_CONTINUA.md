@@ -436,7 +436,7 @@ O workflow `.github/workflows/deploy-seguro.yml`:
 
 Espere o GitHub Actions ficar verde. Em seguida, teste:
 
-- `https://aldenirfilho.github.io/antigravity-consultas/`;
+- `https://aldenirfilho.github.io/aldenirmed89/`;
 - as rotas novas;
 - `manifest.webmanifest`;
 - o Card Feed e a Biblioteca;

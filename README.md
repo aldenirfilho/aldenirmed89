@@ -1,8 +1,8 @@
-# 🏥 Enciclopédia Médica Intensiva & Medicina Interna
+# 🧙‍♂️🚀 AldenirMed89 — Enciclopédia Médica Intensiva
 
 > Plataforma médica educacional, interativa e **continuamente alimentada**, focada em **Medicina Intensiva**, **Clínica Médica avançada**, **emergência**, **enfermaria**, **POCUS** e **preparação para provas de título (TEMI/AMIB e R3)**.
 
-🌐 **Site público:** https://aldenirfilho.github.io/antigravity-consultas/
+🌐 **Site público:** https://aldenirfilho.github.io/aldenirmed89/
 👤 **Autoria/curadoria médica:** Dr. Aldenir Rocha — CRM-CE 16587 · RQE Clínica Médica 11846 · Mestre em Ciências da Saúde (UFC)
 
 ## ♿ Acesso rápido e manutenção
@@ -11,7 +11,7 @@
 - [🪟 Baixar o acesso rápido para Windows](downloads/Antigravity-Consultas-Windows.zip)
 - [📘 Instalar no Windows sem privilégios administrativos](docs_usuario/ACESSO_WINDOWS/)
 - [📱 Baixar os ícones para iPhone](downloads/Antigravity-Consultas-iPhone-Icones.zip)
-- [📘 Adicionar o Antigravity à Tela de Início do iPhone](docs_usuario/ACESSO_IPHONE/)
+- [📘 Adicionar o AldenirMed89 à Tela de Início do iPhone](docs_usuario/ACESSO_IPHONE/)
 - [🧭 Alimentar cada seção e bloco do site, passo a passo](docs_usuario/ALIMENTAR_CONTEUDO_SITE/)
 - [🔄 Alimentar Feed, Biblioteca, módulos e apps com segurança](docs_usuario/OPERACAO_CONTINUA/)
 - [📚 Abrir a central HTML de guias](docs_usuario/)
@@ -28,7 +28,7 @@ pela Home**: **UpDown Hub**, **Biblioteca IA**, **Calculadoras UTI**,
 **Ebooks**, **Questões Comentadas**, **Transcrições**, **POCUS**, **RenalDose**,
 **SAPS 3**, **Hematologia Crítica**, **Reumatologia Crítica** e **Delirium
 UTI/Enfermaria**. As três PWAs
-instaláveis — **Antigravity**, **Card Feed Médico** e **RespiraSense ICU** — e os
+instaláveis — **AldenirMed89**, **Card Feed Médico** e **RespiraSense ICU** — e os
 atalhos de Mac, Windows e iPhone que abrem a plataforma também recebem a
 preferência. A impressão e a exportação para PDF usam uma folha branca
 otimizada.

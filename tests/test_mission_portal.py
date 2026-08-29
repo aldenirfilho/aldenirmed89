@@ -15,9 +15,9 @@ class MissionPortalTests(unittest.TestCase):
     def test_portal_uses_the_public_brand_card_and_emblem(self) -> None:
         for marker in (
             'id="missionIntro" role="dialog" aria-modal="true"',
-            'src="./assets/brand/antigravity-social-card.png"',
+            'src="./assets/brand/aldenirmed89-social-card.png"',
             'rel="preload" as="image" '
-            'href="./assets/brand/antigravity-social-card.png"',
+            'href="./assets/brand/aldenirmed89-social-card.png"',
             'id="missionCore"',
             'id="missionEmblem"',
             'src="./assets/icons/antigravity-consultas-192.png"',

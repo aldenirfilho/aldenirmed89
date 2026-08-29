@@ -21,14 +21,14 @@ def png_header(path: Path) -> tuple[int, int, int]:
 
 class OrbitalBrandTests(unittest.TestCase):
     def test_social_card_has_public_share_dimensions_and_metadata(self) -> None:
-        card = ROOT / "assets/brand/antigravity-social-card.png"
+        card = ROOT / "assets/brand/aldenirmed89-social-card.png"
         self.assertTrue(card.is_file())
         self.assertEqual(png_header(card)[:2], (1200, 630))
 
         home = (ROOT / "index.html").read_text(encoding="utf-8")
         public_url = (
-            "https://aldenirfilho.github.io/antigravity-consultas/"
-            "assets/brand/antigravity-social-card.png"
+            "https://aldenirfilho.github.io/aldenirmed89/"
+            "assets/brand/aldenirmed89-social-card.png"
         )
         self.assertIn(f'<meta property="og:image" content="{public_url}"/>', home)
         self.assertIn('<meta property="og:image:width" content="1200"/>', home)

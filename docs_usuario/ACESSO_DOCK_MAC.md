@@ -14,7 +14,7 @@ Em versões recentes do macOS:
 
 1. abra o **Safari**;
 2. acesse
-   `https://aldenirfilho.github.io/antigravity-consultas/`;
+   `https://aldenirfilho.github.io/aldenirmed89/`;
 3. aguarde a página inicial terminar de carregar;
 4. no menu superior, escolha **Arquivo → Adicionar ao Dock**;
 5. confirme o nome `Antigravity Consultas`;

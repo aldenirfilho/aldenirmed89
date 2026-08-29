@@ -1,12 +1,14 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v22`;
+const CACHE_NAME = `${CACHE_PREFIX}v23`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
   "./offline.html",
   "./manifest.webmanifest",
+  "./assets/aldenirmed89-mystic.css",
+  "./assets/brand/aldenirmed89-social-card.png",
   "./assets/icons/antigravity-consultas-192.png",
   "./assets/icons/antigravity-consultas-512.png",
   "./assets/icons/apple-touch-icon.png"

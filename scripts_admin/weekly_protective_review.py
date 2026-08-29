@@ -48,7 +48,7 @@ DEFAULT_PROVENANCE = Path("data/editorial/editorial-provenance.json")
 DEFAULT_MANIFEST = Path("data/site_manifest.json")
 DEFAULT_DOWNLOADS = Path("downloads")
 DEFAULT_SITE_BASE_URL = (
-    "https://aldenirfilho.github.io/antigravity-consultas/"
+    "https://aldenirfilho.github.io/aldenirmed89/"
 )
 OUTPUT_JSON_NAME = "laudo-semanal.json"
 OUTPUT_MARKDOWN_NAME = "laudo-semanal.md"

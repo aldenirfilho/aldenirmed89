@@ -3,6 +3,7 @@
 (() => {
   const STORAGE_KEY = "antigravity-theme";
   const ACTIVE_THEMES = new Set([
+    "mystic-aerospace",
     "aerospace",
     "aerospace-light",
     "rustic-light",
@@ -21,7 +22,7 @@
   const selector = document.querySelector("[data-theme-selector]");
 
   function normalize(value) {
-    return ACTIVE_THEMES.has(value) ? value : "aerospace";
+    return ACTIVE_THEMES.has(value) ? value : "mystic-aerospace";
   }
 
   function apply(value) {
@@ -31,7 +32,7 @@
     try { localStorage.setItem(STORAGE_KEY, theme); } catch (_) {}
   }
 
-  let initial = "aerospace";
+  let initial = "mystic-aerospace";
   try { initial = normalize(localStorage.getItem(STORAGE_KEY)); } catch (_) {}
   apply(initial);
 

@@ -8,7 +8,7 @@ Execução de inspeção (não envia):
 ```bash
 SUPABASE_URL="https://SEU-PROJETO.supabase.co" \
 SUPABASE_SERVICE_ROLE_KEY="secret-do-servidor" \
-SITE_URL="https://aldenirfilho.github.io/antigravity-consultas/" \
+SITE_URL="https://aldenirfilho.github.io/aldenirmed89/" \
 NEWSLETTER_FROM="equipe@dominio-oficial.example" \
 UNSUBSCRIBE_BASE_URL="https://api.dominio-oficial.example/unsubscribe" \
 node ./send_daily_newsletter.mjs
@@ -25,4 +25,3 @@ Envio real exige adicionalmente:
 
 Não ative cron antes de validar consentimento, cancelamento, idempotência,
 limites do provedor, retorno de bounces e revisão humana.
-

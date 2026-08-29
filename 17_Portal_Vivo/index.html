@@ -463,7 +463,7 @@
     function syncDestination(){
       const target=$("draftTarget").value,isPortal=target==="portal-vivo-upgrade";
       $("destinationHint").textContent=isPortal
-        ?"Use somente para novas estações, recursos, correções e melhorias operacionais do Antigravity."
+        ?"Use somente para novas estações, recursos, correções e melhorias operacionais do AldenirMed89."
         :"Padrão para artigos, notícias clínicas, notas de estudo, conteúdo TEMI e produtos úteis a auditar.";
       if(isPortal){$("draftType").value="system-upgrade";$("draftCategory").value="Sistema Antigravity"}
       else if($("draftType").value==="system-upgrade"){$("draftType").value="study-note";$("draftCategory").value="Terapia Intensiva"}
@@ -487,7 +487,7 @@
       return problems.length===0?item:null;
     }
     function chatPrompt(item){
-      return `Use $antigravity-publicar-portal no repositório Antigravity Consultas para auditar, editar, converter e PUBLICAR no destino declarado: ${item.destination} (${item.target}).\n\nDADOS DO RASCUNHO:\n${JSON.stringify(item,null,2)}\n\nRegras: respeite destination/target; conteúdo clínico, de estudo ou product-watch vai para a Estação Radar Diário; somente UPGRADE da plataforma vai para o Portal Vivo; confira a fonte original; procure DOI/PMID/ID e fonte primária; não invente números; separe fato, interpretação e incerteza; em produto, registre preço e horário, especificações, vendedor, garantia, uso, limites, alternativa de não comprar e proíba promessa de rendimento; deduplique pelo identificador específico da publicação, não pelo domínio; não inclua dados de paciente; mantenha tudo em português; rotule revisão clínica pendente quando aplicável; execute os testes, publique pelo fluxo seguro do GitHub e confirme o link público.`;
+      return `Use $antigravity-publicar-portal no repositório AldenirMed89 para auditar, editar, converter e PUBLICAR no destino declarado: ${item.destination} (${item.target}).\n\nDADOS DO RASCUNHO:\n${JSON.stringify(item,null,2)}\n\nRegras: respeite destination/target; conteúdo clínico, de estudo ou product-watch vai para a Estação Radar Diário; somente UPGRADE da plataforma vai para o Portal Vivo; confira a fonte original; procure DOI/PMID/ID e fonte primária; não invente números; separe fato, interpretação e incerteza; em produto, registre preço e horário, especificações, vendedor, garantia, uso, limites, alternativa de não comprar e proíba promessa de rendimento; deduplique pelo identificador específico da publicação, não pelo domínio; não inclua dados de paciente; mantenha tudo em português; rotule revisão clínica pendente quando aplicável; execute os testes, publique pelo fluxo seguro do GitHub e confirme o link público.`;
     }
     $("auditDraft").addEventListener("click",auditDraft);
     $("copyDraft").addEventListener("click",async()=>{const item=auditDraft();if(!item)return;try{await navigator.clipboard.writeText(chatPrompt(item));$("auditResult").innerHTML="<strong>Pacote copiado.</strong><br/>Cole agora no chat do Codex/ChatGPT. O agente fará a conferência editorial e a publicação."; $("auditResult").className="audit-result ok"}catch(_){$("auditResult").textContent="O navegador bloqueou a cópia. Use Baixar JSON e anexe o arquivo ao chat."}});

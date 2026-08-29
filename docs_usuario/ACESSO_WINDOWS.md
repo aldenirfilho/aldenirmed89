@@ -60,7 +60,7 @@ O instalador:
 Ele executa somente:
 
 ```text
-https://aldenirfilho.github.io/antigravity-consultas/
+https://aldenirfilho.github.io/aldenirmed89/
 ```
 
 no navegador padrão. Não há telemetria, API clínica, sincronização própria,

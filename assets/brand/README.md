@@ -1,4 +1,4 @@
-# Identidade Antigravity — A Orbital
+# Identidade AldenirMed89 — A Orbital
 
 ## Conceito oficial
 
@@ -32,13 +32,18 @@ médicos.
   fundos escuros, impressão invertida e gravação.
 - `antigravity-a-orbital-mono-dark.png`: símbolo navy com transparência para
   fundos claros, documentos e materiais monocromáticos.
-- `antigravity-social-card.png`: cartão oficial de compartilhamento em
-  1200 × 630 px, com o título “Antigravity — Central de Missão Clínica”.
+- `aldenirmed89-social-card.png`: cartão oficial de compartilhamento em
+  1200 × 630 px, com selo cósmico autoral, órbitas, pulso clínico e o título
+  “ALDENIRMED89 — Medicina Intensiva · Plantão · TEMI”.
+- `antigravity-social-card.png`: cartão legado preservado apenas para histórico
+  e compatibilidade; não é mais usado nos metadados públicos.
 
 As versões monocromáticas mantêm o `A`, a órbita e o nó como uma única
 silhueta. Não introduzir cores extras, contornos médicos ou fundos incorporados.
 O script `scripts_admin/build_orbital_brand_assets.swift` regenera as duas
-versões monocromáticas e normaliza o cartão social para 1200 × 630 px.
+versões monocromáticas e normaliza o cartão social legado para 1200 × 630 px.
+O cartão AldenirMed89 é um ativo autoral independente e não deve ser
+sobrescrito pelo gerador legado.
 
 ## Compatibilidade
 

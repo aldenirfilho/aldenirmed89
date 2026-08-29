@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Monta o artefato público Antigravity a partir de uma allowlist explícita.
+"""Monta o artefato público AldenirMed89 a partir de uma allowlist explícita.
 
 O builder falha se uma entrada obrigatória estiver ausente, nunca copia o
 espelho legado ``public_site/`` e ignora staging privado, scripts de operação e
@@ -136,12 +136,32 @@ PUBLIC_DOWNLOADS = (
 )
 DOWNLOAD_ARCHIVE_LIMIT = 512
 DOWNLOAD_UNCOMPRESSED_LIMIT = 64 * 1024 * 1024
-PUBLIC_BASE_URL = "https://aldenirfilho.github.io/antigravity-consultas/"
+PUBLIC_BRAND = "AldenirMed89"
+PUBLIC_BASE_URL = "https://aldenirfilho.github.io/aldenirmed89/"
+PUBLIC_REPOSITORY_URL = "https://github.com/aldenirfilho/aldenirmed89"
+PUBLIC_PATH_PREFIX = "/aldenirmed89/"
+LEGACY_BASE_URL = "https://aldenirfilho.github.io/antigravity-consultas/"
+LEGACY_REPOSITORY_URL = "https://github.com/aldenirfilho/antigravity-consultas"
 PUBLIC_HOST = "aldenirfilho.github.io"
 ANALYTICS_CONFIG_PATH = "data/site-analytics.json"
 PUBLIC_METADATA_MARKER = "antigravity-public-metadata:v1"
 ANALYTICS_EXCLUDED_PREFIXES = (
     "02_Biblioteca_IA_Engine/previews/",
+)
+PUBLIC_IDENTITY_TEXT_REPLACEMENTS = (
+    ("ANTIGRAVITY CONSULTAS", "ALDENIRMED89"),
+    ("Antigravity Consultas", PUBLIC_BRAND),
+    ("ANTIGRAVITY", "ALDENIRMED89"),
+    ("Antigravity", PUBLIC_BRAND),
+)
+PUBLIC_IDENTITY_PROTECTED_BLOCKS = re.compile(
+    r"<(script|style|code|pre|textarea)\b[^>]*>.*?</\1\s*>",
+    flags=re.IGNORECASE | re.DOTALL,
+)
+PUBLIC_IDENTITY_SAFE_ATTRIBUTES = re.compile(
+    r"(?P<prefix>\b(?:alt|aria-label|title|content)\s*=\s*)"
+    r"(?P<quote>[\"'])(?P<value>.*?)(?P=quote)",
+    flags=re.IGNORECASE | re.DOTALL,
 )
 
 
@@ -914,6 +934,71 @@ def normalize_permissions(site: Path) -> None:
         path.chmod(mode)
 
 
+def replace_public_brand_text(value: str) -> str:
+    """Troca somente rótulos públicos; identificadores legados ficam intactos."""
+
+    for old, new in PUBLIC_IDENTITY_TEXT_REPLACEMENTS:
+        value = value.replace(old, new)
+    return value
+
+
+def rebrand_public_html(html: str) -> str:
+    """Atualiza texto/atributos visíveis sem tocar scripts, estilos ou caminhos."""
+
+    def replace_safe_attribute(match: re.Match[str]) -> str:
+        value = replace_public_brand_text(match.group("value"))
+        return (
+            f'{match.group("prefix")}{match.group("quote")}'
+            f'{value}{match.group("quote")}'
+        )
+
+    def replace_unprotected(fragment: str) -> str:
+        fragment = PUBLIC_IDENTITY_SAFE_ATTRIBUTES.sub(
+            replace_safe_attribute,
+            fragment,
+        )
+        return re.sub(
+            r"(?<=>)([^<]+)(?=<)",
+            lambda match: replace_public_brand_text(match.group(1)),
+            fragment,
+        )
+
+    parts: list[str] = []
+    cursor = 0
+    for protected in PUBLIC_IDENTITY_PROTECTED_BLOCKS.finditer(html):
+        parts.append(replace_unprotected(html[cursor : protected.start()]))
+        parts.append(protected.group(0))
+        cursor = protected.end()
+    parts.append(replace_unprotected(html[cursor:]))
+    return "".join(parts)
+
+
+def migrate_public_identity(site: Path) -> int:
+    """Aplica marca e endereço novos apenas ao HTML público renderizado."""
+
+    updated = 0
+    for html_path in sorted(site.rglob("*.html")):
+        relative = PurePosixPath(html_path.relative_to(site).as_posix())
+        if any(
+            relative.as_posix().startswith(prefix)
+            for prefix in ANALYTICS_EXCLUDED_PREFIXES
+        ):
+            continue
+        try:
+            original = html_path.read_text(encoding="utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError(
+                f"HTML público sem codificação UTF-8: {relative.as_posix()}"
+            ) from exc
+        migrated = original.replace(LEGACY_BASE_URL, PUBLIC_BASE_URL)
+        migrated = migrated.replace(LEGACY_REPOSITORY_URL, PUBLIC_REPOSITORY_URL)
+        migrated = rebrand_public_html(migrated)
+        if migrated != original:
+            html_path.write_text(migrated, encoding="utf-8")
+            updated += 1
+    return updated
+
+
 EDITORIAL_ATTRIBUTION_MARKER = "antigravity-editorial-attribution:v1"
 EDITORIAL_ATTRIBUTION_EXCLUSIONS = frozenset(
     {
@@ -1001,7 +1086,7 @@ def load_site_analytics_config(root: Path) -> dict:
         )
     if config.get("publicHost") != PUBLIC_HOST:
         raise ValueError("Host público das métricas não corresponde ao site oficial.")
-    if config.get("publicPathPrefix") != "/antigravity-consultas/":
+    if config.get("publicPathPrefix") != PUBLIC_PATH_PREFIX:
         raise ValueError("Prefixo público das métricas não corresponde ao GitHub Pages.")
 
     site_code = config.get("siteCode")
@@ -1113,6 +1198,7 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
         parent = relative.parent.as_posix()
         root_prefix = posixpath.relpath(".", start=parent or ".")
         root_prefix = "" if root_prefix == "." else root_prefix + "/"
+        identity_css_href = f"{root_prefix}assets/aldenirmed89-mystic.css"
         css_href = f"{root_prefix}assets/site-analytics.css"
         js_src = f"{root_prefix}assets/site-analytics.js"
         config_href = f"{root_prefix}{ANALYTICS_CONFIG_PATH}"
@@ -1124,6 +1210,7 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
             canonical = html_lib.escape(canonical_url_for_html(relative), quote=True)
             head_lines.append(f'<link rel="canonical" href="{canonical}">')
         if analytics_allowed:
+            head_lines.append(f'<link rel="stylesheet" href="{identity_css_href}">')
             head_lines.append(f'<link rel="stylesheet" href="{css_href}">')
         head_block = "\n".join(head_lines)
         closing_head = re.search(r"</head\s*>", html, flags=re.IGNORECASE)
@@ -1133,7 +1220,10 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
             html = head_block + "\n" + html
 
         if analytics_allowed:
-            script = (
+            body_blocks = [
+                '<div class="aldenirmed89-cosmos" aria-hidden="true"></div>'
+            ]
+            body_blocks.append(
                 f'<script defer src="{js_src}" data-antigravity-analytics '
                 f'data-enabled="{str(enabled).lower()}" '
                 f'data-counter-enabled="{str(counter_enabled).lower()}" '
@@ -1141,16 +1231,17 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
                 f'data-public-host="{PUBLIC_HOST}" '
                 f'data-config="{config_href}"></script>'
             )
+            body_block = "\n".join(body_blocks)
             closing_body = re.search(r"</body\s*>", html, flags=re.IGNORECASE)
             if closing_body:
                 html = (
                     html[: closing_body.start()]
-                    + script
+                    + body_block
                     + "\n"
                     + html[closing_body.start() :]
                 )
             else:
-                html = html.rstrip() + "\n" + script + "\n"
+                html = html.rstrip() + "\n" + body_block + "\n"
 
         if enabled and analytics_allowed:
             validate_goatcounter_csp(html, site_code, relative)
@@ -1275,6 +1366,7 @@ def build(root: Path, site: Path) -> int:
 
     write_public_library_metadata(root, site, library_plan)
     (site / ".nojekyll").touch(exist_ok=True)
+    rebranded = migrate_public_identity(site)
     attributed = inject_editorial_attribution(site)
     enriched = inject_public_metadata(site, analytics_config)
     indexed_urls, _ = write_search_discovery(root, site)
@@ -1282,6 +1374,7 @@ def build(root: Path, site: Path) -> int:
     total = sum(path.stat().st_size for path in site.rglob("*") if path.is_file())
     count = sum(1 for path in site.rglob("*") if path.is_file())
     print(f"✅ Artefato montado: {count} arquivo(s), {total / 1024 / 1024:.1f} MiB.")
+    print(f"✨ Identidade AldenirMed89 aplicada a {rebranded} página(s) HTML.")
     print(f"🛡️ Atribuição editorial aplicada a {attributed} página(s) HTML.")
     print(f"🔎 Canonical e métricas preparados em {enriched} página(s) HTML.")
     print(f"🗺️ Sitemap público gerado com {indexed_urls} URL(s) canônicas.")

@@ -787,7 +787,7 @@
       version: "3.1",
       generatedAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      targetRepository: "aldenirfilho/antigravity-consultas",
+      targetRepository: "aldenirfilho/aldenirmed89",
       targetFile: "data/connections.json",
       operations: []
     };

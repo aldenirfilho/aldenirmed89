@@ -1,4 +1,4 @@
-# 🍎 Antigravity Consultas no Mac — sem executável
+# 🍎 AldenirMed89 no Mac — sem executável
 
 Este pacote substitui a versão antiga que continha um `.app` sem notarização e
 podia ser bloqueada pelo Gatekeeper.
@@ -7,9 +7,9 @@ podia ser bloqueada pelo Gatekeeper.
 
 1. Abra o Safari.
 2. Acesse:
-   `https://aldenirfilho.github.io/antigravity-consultas/`
+   `https://aldenirfilho.github.io/aldenirmed89/`
 3. Escolha **Arquivo → Adicionar ao Dock**.
-4. Confirme `Antigravity Consultas` e clique em **Adicionar**.
+4. Confirme `AldenirMed89` e clique em **Adicionar**.
 
 O Safari cria o aplicativo localmente com o ícone do site. Não é necessário
 executar instalador, desativar o Gatekeeper ou conceder acesso administrativo.

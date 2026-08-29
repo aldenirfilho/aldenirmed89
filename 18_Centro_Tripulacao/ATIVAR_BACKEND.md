@@ -68,7 +68,7 @@ Depois, ajuste a política CSP de `index.html` para o hostname exato do projeto:
 substitua `connect-src 'self'` por, por exemplo,
 `connect-src 'self' https://SEU-PROJETO.supabase.co`. Não use curinga.
 O `allowedAppOrigins` recebe **origens**, sem caminho;
-`https://aldenirfilho.github.io/antigravity-consultas/` tem origem
+`https://aldenirfilho.github.io/aldenirmed89/` tem origem
 `https://aldenirfilho.github.io`.
 
 ### O que pode e o que não pode estar no frontend

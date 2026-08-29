@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set "ANTIGRAVITY_URL=https://aldenirfilho.github.io/antigravity-consultas/"
+set "ANTIGRAVITY_URL=https://aldenirfilho.github.io/aldenirmed89/"
 start "" "%ANTIGRAVITY_URL%"
 if errorlevel 1 (
   echo Nao foi possivel abrir o navegador padrao.

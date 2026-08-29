@@ -10,7 +10,7 @@ toque para entrar na plataforma.
 
 No iPhone, abra o **Safari** e acesse:
 
-<https://aldenirfilho.github.io/antigravity-consultas/>
+<https://aldenirfilho.github.io/aldenirmed89/>
 
 > Use o Safari para esta instalação. Abrir o link dentro de WhatsApp, Gmail ou
 > outro navegador pode ocultar a opção necessária.

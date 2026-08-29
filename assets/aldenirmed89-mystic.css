@@ -1,0 +1,91 @@
+/* AldenirMed89 · atmosfera místico-aeroespacial, sem alterar o layout. */
+:root {
+  --aldenirmed89-cosmic-cyan: #39e6ff;
+  --aldenirmed89-cosmic-violet: #a98cff;
+  --aldenirmed89-cosmic-copper: #f2a93b;
+  --aldenirmed89-cosmic-ink: #070613;
+}
+
+.aldenirmed89-cosmos {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: .16;
+  mix-blend-mode: screen;
+  contain: strict;
+}
+
+.aldenirmed89-cosmos::before,
+.aldenirmed89-cosmos::after {
+  content: "";
+  position: absolute;
+  inset: -12vmax;
+}
+
+.aldenirmed89-cosmos::before {
+  background-image:
+    radial-gradient(circle at 11% 17%, rgba(255,255,255,.95) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 37% 8%, rgba(57,230,255,.9) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 78% 19%, rgba(255,255,255,.85) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 91% 72%, rgba(169,140,255,.9) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 22% 83%, rgba(242,169,59,.75) 0 1px, transparent 1.8px),
+    repeating-radial-gradient(circle at 86% 78%, transparent 0 54px, rgba(57,230,255,.16) 55px 56px, transparent 57px 82px);
+  background-size: 173px 173px, 229px 229px, 307px 307px, 263px 263px, 349px 349px, 100% 100%;
+  animation: aldenirmed89-cosmic-drift 72s linear infinite;
+}
+
+.aldenirmed89-cosmos::after {
+  inset: 8% 4%;
+  border: 1px solid rgba(57,230,255,.22);
+  border-radius: 50%;
+  background:
+    conic-gradient(from 28deg at 50% 50%, transparent 0 17%, rgba(169,140,255,.18) 18% 18.4%, transparent 19% 44%, rgba(242,169,59,.16) 45% 45.4%, transparent 46% 76%, rgba(57,230,255,.18) 77% 77.4%, transparent 78%),
+    radial-gradient(ellipse at center, transparent 0 49.6%, rgba(169,140,255,.16) 49.8% 50%, transparent 50.2% 64%, rgba(57,230,255,.12) 64.2% 64.5%, transparent 64.8%);
+  transform: rotate(-8deg) scale(1.12, .78);
+  animation: aldenirmed89-orbital-turn 96s linear infinite;
+}
+
+html[data-visual-profile="mystic-aerospace"] :where(.brand-icon, .mission-core, .mission-emblem) {
+  filter: drop-shadow(0 0 14px rgba(57,230,255,.32)) drop-shadow(0 0 28px rgba(169,140,255,.18));
+}
+
+html[data-visual-profile="mystic-aerospace"] :where(.mission-kicker, .section-label, .eyebrow) {
+  text-shadow: 0 0 18px rgba(169,140,255,.3);
+}
+
+.aldenirmed89-symbolic-note {
+  max-width: 76rem;
+  margin: 1rem auto 0;
+  padding: .75rem 1rem;
+  color: inherit;
+  opacity: .78;
+  font-size: .88rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+@keyframes aldenirmed89-cosmic-drift {
+  to { transform: translate3d(2.5vmax, -1.5vmax, 0) rotate(.6deg); }
+}
+
+@keyframes aldenirmed89-orbital-turn {
+  to { transform: rotate(352deg) scale(1.12, .78); }
+}
+
+html.a11y-contrast .aldenirmed89-cosmos,
+html[data-visual-profile="contrast"] .aldenirmed89-cosmos {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aldenirmed89-cosmos::before,
+  .aldenirmed89-cosmos::after {
+    animation: none;
+  }
+}
+
+@media (prefers-contrast: more), print {
+  .aldenirmed89-cosmos { display: none; }
+}

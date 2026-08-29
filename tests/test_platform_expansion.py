@@ -117,8 +117,8 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-152.png", home)
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
-        self.assertIn('name="apple-mobile-web-app-title" content="Antigravity"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v22`', worker)
+        self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed89"', home)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v23`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
@@ -180,7 +180,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertEqual(int.from_bytes(favicon[4:6], "little"), 7)
         self.assertEqual(windows_icon, favicon)
         self.assertIn(
-            'aria-label="Antigravity Consultas — início"',
+            'aria-label="AldenirMed89 — início"',
             home,
         )
         self.assertIn(
@@ -219,7 +219,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn('class="nav-status-full">Sistema online</span>', home)
         self.assertIn('class="nav-status-short">Online</span>', home)
         self.assertIn('class="nav-download-short">Apps</span>', home)
-        self.assertIn('class="brand-short">Antigravity</span>', home)
+        self.assertIn('class="brand-short">AldenirMed89</span>', home)
         self.assertIn("não um aplicativo publicado na App Store", home)
         self.assertIn(".hero>*{min-width:0}", home)
 
@@ -330,12 +330,12 @@ class AccessiblePwaTests(unittest.TestCase):
 
         for marker in (
             "Portal Vivo · UPGRADE",
-            "UPGRADE contínuo do Antigravity",
+            "UPGRADE contínuo do AldenirMed89",
             "Centro da Tripulação",
-            "Estações Antigravity",
+            "Estações AldenirMed89",
             "Estação Radar Diário",
             "Estação Diretório Médico",
-            "Módulos e apps Antigravity",
+            "Módulos e apps AldenirMed89",
             "Conteúdo clínico do chat",
             'class="stations-grid"',
             'aria-label="Navegação principal"',
@@ -520,7 +520,7 @@ class OperationalPackageTests(unittest.TestCase):
         )
         self.assertEqual(
             web_location["URL"],
-            "https://aldenirfilho.github.io/antigravity-consultas/",
+            "https://aldenirfilho.github.io/aldenirmed89/",
         )
         self.assertFalse(any(".app/" in name for name in names))
 
@@ -585,9 +585,10 @@ class OperationalPackageTests(unittest.TestCase):
             ).read_bytes(),
         )
         self.assertIn(
-            "https://aldenirfilho.github.io/antigravity-consultas/",
+            "https://aldenirfilho.github.io/aldenirmed89/",
             scripts,
         )
+        self.assertIn("$appName = 'AldenirMed89'", scripts)
         self.assertIn("[Environment]::GetFolderPath('LocalApplicationData')", scripts)
         self.assertIn("[Environment]::GetFolderPath('DesktopDirectory')", scripts)
         self.assertIn("[IO.FileAttributes]::ReparsePoint", scripts)

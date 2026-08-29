@@ -86,7 +86,7 @@ async function loadConnectionsData(dataUrl) {
     'data/connections.json',
     './data/connections.json',
     '../data/connections.json',
-    '/antigravity-consultas/data/connections.json'
+    '/aldenirmed89/data/connections.json'
   ];
 
   // Remover duplicatas e valores falsy
@@ -105,7 +105,7 @@ async function loadConnectionsData(dataUrl) {
         'data/connections_patch_biblioteca.json', 
         '05_Biblioteca_IA/data/connections_patch_biblioteca.json',
         '../data/connections_patch_biblioteca.json',
-        '/antigravity-consultas/05_Biblioteca_IA/data/connections_patch_biblioteca.json'
+        '/aldenirmed89/05_Biblioteca_IA/data/connections_patch_biblioteca.json'
       ];
       
       for (const path of patchPaths) {

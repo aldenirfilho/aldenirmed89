@@ -1,4 +1,4 @@
-# 📱 Antigravity Consultas — ícones para iPhone e iPad
+# 📱 AldenirMed89 — ícones para iPhone e iPad
 
 ## ⚡ Caminho rápido: colocar o site na Tela de Início
 
@@ -7,14 +7,14 @@ publicado pelo site.
 
 1. Abra o **Safari** no iPhone.
 2. Acesse:
-   `https://aldenirfilho.github.io/antigravity-consultas/`
+   `https://aldenirfilho.github.io/aldenirmed89/`
 3. Toque em **Mais** e depois em **Compartilhar**. Dependendo do layout do
    Safari, o botão **Compartilhar** pode aparecer diretamente.
 4. Role a lista e toque em **Adicionar à Tela de Início**.
 5. Ative **Abrir como App da Web**.
 6. Toque em **Adicionar**.
 
-✅ Pronto: o Antigravity aparecerá com um ícone próprio e abrirá como app.
+✅ Pronto: o AldenirMed89 aparecerá com um ícone próprio e abrirá como app.
 
 Se **Adicionar à Tela de Início** não aparecer, role até o fim, toque em
 **Editar Ações** e adicione essa opção.

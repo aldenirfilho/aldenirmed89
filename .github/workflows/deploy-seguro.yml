@@ -303,12 +303,12 @@ jobs:
           }
 
           $desktopShortcut = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) `
-            'Antigravity Consultas.lnk'
+            'AldenirMed89.lnk'
           $startMenuDirectory = Join-Path ([Environment]::GetFolderPath('Programs')) `
-            'Antigravity Consultas'
-          $startShortcut = Join-Path $startMenuDirectory 'Antigravity Consultas.lnk'
+            'AldenirMed89'
+          $startShortcut = Join-Path $startMenuDirectory 'AldenirMed89.lnk'
           $uninstallShortcut = Join-Path $startMenuDirectory `
-            'Desinstalar Antigravity Consultas.lnk'
+            'Desinstalar AldenirMed89.lnk'
           foreach ($shortcut in @($desktopShortcut, $startShortcut, $uninstallShortcut)) {
             if (-not (Test-Path -LiteralPath $shortcut -PathType Leaf)) {
               throw "Atalho esperado ausente: $shortcut"
@@ -316,7 +316,7 @@ jobs:
           }
 
           $installDirectory = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) `
-            'Antigravity Consultas'
+            'AldenirMed89'
           $sentinel = Join-Path $installDirectory 'arquivo-desconhecido.txt'
           [IO.File]::WriteAllText($sentinel, 'preservar')
 

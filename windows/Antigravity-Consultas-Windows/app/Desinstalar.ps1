@@ -4,7 +4,7 @@ param()
 Set-StrictMode -Version 2.0
 $ErrorActionPreference = 'Stop'
 
-$appName = 'Antigravity Consultas'
+$appName = 'AldenirMed89'
 $localAppData = [Environment]::GetFolderPath('LocalApplicationData')
 $desktopDirectory = [Environment]::GetFolderPath('DesktopDirectory')
 $programsDirectory = [Environment]::GetFolderPath('Programs')

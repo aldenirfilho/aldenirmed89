@@ -31,7 +31,7 @@ def valid_roadmap() -> dict:
                     "Página oficial responde por HTTPS com conteúdo esperado."
                 ],
                 "references": [
-                    "https://aldenirfilho.github.io/antigravity-consultas/"
+                    "https://aldenirfilho.github.io/aldenirmed89/"
                 ],
                 "microActions": [
                     {

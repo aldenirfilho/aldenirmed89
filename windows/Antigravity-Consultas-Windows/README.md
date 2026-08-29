@@ -1,6 +1,6 @@
-# 🪟 Antigravity Consultas para Windows
+# 🪟 AldenirMed89 para Windows
 
-Atalho leve para abrir o site oficial do Antigravity Consultas no navegador
+Atalho leve para abrir o site oficial do AldenirMed89 no navegador
 padrão. Não exige instalação administrativa, não cria serviço em segundo plano
 e não adiciona telemetria.
 
@@ -8,14 +8,14 @@ e não adiciona telemetria.
 
 1. Extraia **todo** o ZIP para uma pasta.
 2. Dê dois cliques em `INSTALAR.cmd`.
-3. Ao final, use o ícone **Antigravity Consultas** no Desktop ou Menu Iniciar.
+3. Ao final, use o ícone **AldenirMed89** no Desktop ou Menu Iniciar.
 
 O instalador grava somente no perfil atual:
 
 ```text
-%LOCALAPPDATA%\Antigravity Consultas\
-%USERPROFILE%\Desktop\Antigravity Consultas.lnk
-%APPDATA%\Microsoft\Windows\Start Menu\Programs\Antigravity Consultas\
+%LOCALAPPDATA%\AldenirMed89\
+%USERPROFILE%\Desktop\AldenirMed89.lnk
+%APPDATA%\Microsoft\Windows\Start Menu\Programs\AldenirMed89\
 ```
 
 O caminho real do Desktop é obtido do próprio Windows e também funciona quando
@@ -25,7 +25,7 @@ ele é gerenciado pelo OneDrive.
 
 Escolha uma das opções:
 
-- Menu Iniciar → Antigravity Consultas → **Desinstalar Antigravity Consultas**;
+- Menu Iniciar → AldenirMed89 → **Desinstalar AldenirMed89**;
 - execute `DESINSTALAR.cmd` a partir desta pasta extraída.
 
 O desinstalador remove somente atalhos e arquivos conhecidos. Se encontrar
@@ -54,7 +54,7 @@ execução.
 - sem coleta de uso ou telemetria;
 - sem envio de arquivos locais;
 - a única ação de rede é abrir
-  `https://aldenirfilho.github.io/antigravity-consultas/`;
+  `https://aldenirfilho.github.io/aldenirmed89/`;
 - nenhuma informação de paciente deve ser inserida ou armazenada nos atalhos.
 
 O parâmetro `ExecutionPolicy Bypass` vale somente para o processo que executa os

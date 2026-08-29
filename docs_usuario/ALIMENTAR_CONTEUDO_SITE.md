@@ -1281,7 +1281,7 @@ O PR valida e monta o pacote, mas o deploy ocorre somente após merge/push em
 Site público:
 
 ```text
-https://aldenirfilho.github.io/antigravity-consultas/
+https://aldenirfilho.github.io/aldenirmed89/
 ```
 
 ## ↩️ Reversão segura

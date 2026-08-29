@@ -4,7 +4,7 @@ param()
 Set-StrictMode -Version 2.0
 $ErrorActionPreference = 'Stop'
 
-$appName = 'Antigravity Consultas'
+$appName = 'AldenirMed89'
 $sourceDirectory = $PSScriptRoot
 $localAppData = [Environment]::GetFolderPath('LocalApplicationData')
 $desktopDirectory = [Environment]::GetFolderPath('DesktopDirectory')
@@ -85,14 +85,14 @@ try {
     New-AntigravityShortcut `
         -ShortcutPath $desktopShortcut `
         -TargetPath $launcherPath `
-        -Description 'Abrir o Antigravity Consultas no navegador padrao.' `
+        -Description 'Abrir o AldenirMed89 no navegador padrao.' `
         -WorkingDirectory $installDirectory `
         -IconLocation ($iconPath + ',0')
 
     New-AntigravityShortcut `
         -ShortcutPath $startShortcut `
         -TargetPath $launcherPath `
-        -Description 'Abrir o Antigravity Consultas no navegador padrao.' `
+        -Description 'Abrir o AldenirMed89 no navegador padrao.' `
         -WorkingDirectory $installDirectory `
         -IconLocation ($iconPath + ',0')
 
@@ -101,12 +101,12 @@ try {
         -ShortcutPath $uninstallShortcut `
         -TargetPath $powerShellPath `
         -Arguments $uninstallArguments `
-        -Description 'Remover os atalhos e arquivos locais do Antigravity Consultas.' `
+        -Description 'Remover os atalhos e arquivos locais do AldenirMed89.' `
         -WorkingDirectory $installDirectory `
         -IconLocation ($iconPath + ',0')
 
     Write-Host ''
-    Write-Host 'OK: Antigravity Consultas instalado para o usuario atual.' -ForegroundColor Green
+    Write-Host 'OK: AldenirMed89 instalado para o usuario atual.' -ForegroundColor Green
     Write-Host ('Pasta local: ' + $installDirectory)
     Write-Host 'Atalhos: Desktop e Menu Iniciar.'
     Write-Host 'Nenhum dado de paciente, credencial ou telemetria foi configurado.'

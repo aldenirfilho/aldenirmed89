@@ -63,10 +63,12 @@ class SeoAndPublicAnalyticsTests(unittest.TestCase):
             html = page.read_text(encoding="utf-8")
             self.assertIn(self.builder.PUBLIC_METADATA_MARKER, html)
             self.assertIn(
-                'rel="canonical" href="https://aldenirfilho.github.io/antigravity-consultas/01_Modulos_Clinicos/Pneumologia_Critica/"',
+                'rel="canonical" href="https://aldenirfilho.github.io/aldenirmed89/01_Modulos_Clinicos/Pneumologia_Critica/"',
                 html,
             )
             self.assertIn('src="../../assets/site-analytics.js"', html)
+            self.assertIn('href="../../assets/aldenirmed89-mystic.css"', html)
+            self.assertIn('class="aldenirmed89-cosmos" aria-hidden="true"', html)
             self.assertIn('data-enabled="true"', html)
             self.assertIn('data-counter-enabled="true"', html)
             self.assertIn(
@@ -75,6 +77,23 @@ class SeoAndPublicAnalyticsTests(unittest.TestCase):
             )
             self.assertIn("https://gc.zgo.at", html)
             self.assertIn(csp, html)
+
+    def test_public_rebrand_preserves_legacy_identifiers_and_download_paths(self):
+        source = """<!doctype html><html><head>
+        <title>Antigravity Consultas</title>
+        </head><body>
+        <h1 aria-label="Antigravity Consultas — início">ANTIGRAVITY</h1>
+        <a href="downloads/Antigravity-Consultas-Windows.zip">Antigravity</a>
+        <script>window.ANTIGRAVITY_PORTAL='Antigravity';</script>
+        </body></html>"""
+
+        migrated = self.builder.rebrand_public_html(source)
+
+        self.assertIn("<title>AldenirMed89</title>", migrated)
+        self.assertIn('aria-label="AldenirMed89 — início"', migrated)
+        self.assertIn(">ALDENIRMED89</h1>", migrated)
+        self.assertIn("downloads/Antigravity-Consultas-Windows.zip", migrated)
+        self.assertIn("window.ANTIGRAVITY_PORTAL='Antigravity'", migrated)
 
     def test_activation_fails_closed_when_existing_csp_was_not_reviewed(self):
         with tempfile.TemporaryDirectory() as directory:

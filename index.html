@@ -3,33 +3,33 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Enciclopédia Médica Intensiva & Medicina Interna</title>
+<title>AldenirMed89 — Medicina Intensiva, Plantão e TEMI</title>
 <meta name="description" content="Plataforma médica interativa para Medicina Intensiva, UTI, emergência, Infectologia, Pneumologia, Hematologia, Reumatologia e preparação TEMI/R3."/>
-<meta property="og:title" content="Enciclopédia Médica Intensiva & Medicina Interna"/>
+<meta property="og:title" content="AldenirMed89 — Medicina Intensiva, Plantão e TEMI"/>
 <meta property="og:description" content="Central clínica: módulos críticos de Infectologia, Pneumologia, Hematologia e Reumatologia, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo."/>
-<meta property="og:url" content="https://aldenirfilho.github.io/antigravity-consultas/"/>
+<meta property="og:url" content="https://aldenirfilho.github.io/aldenirmed89/"/>
 <meta property="og:type" content="website"/>
-<meta property="og:image" content="https://aldenirfilho.github.io/antigravity-consultas/assets/brand/antigravity-social-card.png"/>
+<meta property="og:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-social-card.png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
-<meta property="og:image:alt" content="Antigravity — Central de Missão Clínica, Plantão, UTI e TEMI"/>
+<meta property="og:image:alt" content="AldenirMed89 — Medicina Intensiva, Plantão e TEMI"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://aldenirfilho.github.io/antigravity-consultas/assets/brand/antigravity-social-card.png"/>
-<meta name="twitter:image:alt" content="Antigravity — Central de Missão Clínica, Plantão, UTI e TEMI"/>
+<meta name="twitter:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-social-card.png"/>
+<meta name="twitter:image:alt" content="AldenirMed89 — Medicina Intensiva, Plantão e TEMI"/>
 <meta name="theme-color" content="#071422"/>
 <meta name="color-scheme" content="dark light"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="Antigravity"/>
+<meta name="apple-mobile-web-app-title" content="AldenirMed89"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <script>
 /* Restaura tema e largura antes da primeira pintura para evitar saltos visuais. */
 (function(){
   let mode='dark';
-  let visualProfile='aerospace';
+  let visualProfile='mystic-aerospace';
   let wide=true;
   let contrast=false;
   const profileModes={
-    aerospace:'dark','aerospace-light':'light','rustic-light':'light',
+    'mystic-aerospace':'dark',aerospace:'dark','aerospace-light':'light','rustic-light':'light',
     dark:'dark',minimal:'light',sepia:'light',oceanic:'dark',green:'dark',
     natural:'light',forest:'dark','wizard-academy':'dark',
     'comic-hero':'dark','modern-serious':'light'
@@ -47,7 +47,7 @@
       visualProfile=saved.visualProfile;
       if(mode!=='system')mode=profileModes[visualProfile];
     }else{
-      visualProfile=mode==='light'?'aerospace-light':'aerospace';
+      visualProfile=mode==='light'?'aerospace-light':'mystic-aerospace';
     }
     wide=saved.wide!==false;
     contrast=saved.contrast===true;
@@ -76,13 +76,13 @@
 <link rel="apple-touch-icon" href="./assets/icons/ios/apple-touch-icon-120.png" sizes="120x120"/>
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="stylesheet" href="./assets/editorial-attribution.css"/>
-<link rel="preload" as="image" href="./assets/brand/antigravity-social-card.png" fetchpriority="high"/>
+<link rel="preload" as="image" href="./assets/brand/aldenirmed89-social-card.png" fetchpriority="high"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
 <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║  ANTIGRAVITY · ENCICLOMEDIA MÉDICA                          ║
+  ║  ALDENIRMED89 · ENCICLOPÉDIA MÉDICA                        ║
   ║  Homepage v2.0 — "Clinical Command Center"                  ║
   ║  ARQUIVO AUTO-CONTIDO: todo CSS e JS inline.                ║
   ║  Não depende de 06_Infra_Site_E_Assets/ — deploy-safe.      ║
@@ -256,7 +256,32 @@ html[data-theme="light"] .temi-stat-big{
 }
 html[data-theme="light"] .temi-section .btn-primary{color:#fff!important}
 
-/* ── PERFIS VISUAIS · AEROESPACIAL É O PADRÃO ───── */
+/* ── PERFIS VISUAIS · MÍSTICO-AEROESPACIAL É O PADRÃO ───── */
+html[data-visual-profile="mystic-aerospace"]{
+  --bg:#070613;--bg2:#100d22;--bg3:#17112d;
+  --surf:rgba(244,240,255,.06);--surf-h:rgba(244,240,255,.105);
+  --brd:rgba(126,224,255,.18);--brd-h:rgba(205,174,255,.34);
+  --text:#f5f4ff;--muted:#8e89ad;--soft:#c6c2dc;
+  --cyan:#4de7ff;--cyan-d:rgba(77,231,255,.14);
+  --violet:#b292ff;--vio-d:rgba(178,146,255,.16);
+  --green:#72ddb0;--grn-d:rgba(114,221,176,.12);
+  --yellow:#f2b450;--yel-d:rgba(242,180,80,.15);
+  --red:#ff6b78;--red-d:rgba(255,107,120,.13);
+  --shadow:0 26px 90px rgba(0,0,0,.48),0 0 50px rgba(104,72,190,.08);
+  --header-bg:rgba(7,6,19,.9);--panel-head-bg:rgba(16,13,34,.97);
+  --download-card-bg:rgba(16,13,34,.83);--download-card-hover:#21183c;
+  --cockpit-bg:rgba(7,6,19,.7);--grid-dot:rgba(126,224,255,.07);
+}
+html[data-visual-profile="mystic-aerospace"] body::before{
+  background-image:
+    radial-gradient(circle at 50% 50%,var(--grid-dot) 1px,transparent 1px),
+    repeating-radial-gradient(ellipse at 86% 20%,transparent 0 62px,rgba(178,146,255,.055) 63px 64px,transparent 65px 94px);
+  background-size:32px 32px,100% 100%;
+}
+html[data-visual-profile="mystic-aerospace"] .brand-icon,
+html[data-visual-profile="mystic-aerospace"] .mission-core{
+  box-shadow:0 0 0 1px rgba(77,231,255,.16),0 0 34px rgba(178,146,255,.18);
+}
 html[data-visual-profile="dark"]{
   --bg:#0d0f12;--bg2:#171a1f;--bg3:#20252c;
   --surf:rgba(255,255,255,.055);--surf-h:rgba(255,255,255,.1);
@@ -2125,7 +2150,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   <button class="mission-skip" id="missionSkip" type="button">Pular abertura · Esc</button>
   <div class="mission-stage">
     <div class="mission-card-shell" aria-hidden="true">
-      <img class="mission-card" src="./assets/brand/antigravity-social-card.png" alt=""
+      <img class="mission-card" src="./assets/brand/aldenirmed89-social-card.png" alt=""
         width="1200" height="630" fetchpriority="high" decoding="async"/>
     </div>
     <div class="mission-core" id="missionCore" aria-hidden="true">
@@ -2133,7 +2158,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
         width="230" height="230"/>
     </div>
     <div class="mission-briefing">
-      <span class="mission-kicker">Portal de missão · Antigravity</span>
+      <span class="mission-kicker">Portal de missão · AldenirMed89</span>
       <h1 class="mission-title" id="missionTitle">A missão começa agora.</h1>
       <p class="mission-subtitle" id="missionSubtitle">
         Dez segundos para organizar o foco, entrar em ritmo e estudar com propósito.
@@ -2171,7 +2196,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
     <img src="./assets/icons/antigravity-consultas-192.png" alt="" width="78" height="78"/>
   </button>
 
-  <aside class="sound-console" id="soundConsole" aria-label="Console sonoro Antigravity">
+  <aside class="sound-console" id="soundConsole" aria-label="Console sonoro AldenirMed89">
     <button class="sound-console-toggle" id="soundConsoleToggle" type="button"
       aria-label="Abrir console sonoro" aria-controls="soundConsolePanel"
       aria-expanded="false" title="Console sonoro">
@@ -2233,7 +2258,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
     </section>
   </aside>
 
-  <aside class="settings-console" id="settingsConsole" aria-label="Configurações Antigravity">
+  <aside class="settings-console" id="settingsConsole" aria-label="Configurações AldenirMed89">
     <button class="quick-command" id="settingsConsoleToggle" type="button"
       aria-label="Abrir configurações" aria-controls="settingsConsolePanel"
       aria-expanded="false" title="Configurações">
@@ -2254,7 +2279,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
       </div>
       <p class="settings-current">
         Tema atual: <strong id="settingsCurrentTheme">Aeroespacial</strong>.
-        O padrão oficial da missão permanece aeroespacial.
+        O padrão oficial combina cabine aeroespacial, constelações e fantasia autoral simbólica.
       </p>
       <div class="theme-options" id="themeOptions" role="group" aria-label="Perfis visuais"></div>
       <div class="settings-links">
@@ -2279,10 +2304,10 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
 <!-- ── NAVIGATION ─────────────────────────────────── -->
 <header>
   <nav class="nav">
-    <a class="brand" href="#top" aria-label="Antigravity Consultas — início">
+    <a class="brand" href="#top" aria-label="AldenirMed89 — início">
       <div class="brand-icon" aria-hidden="true"><img src="./assets/icons/antigravity-consultas-64.png" alt="" width="38" height="38"/></div>
       <div class="brand-text">
-        <strong><span class="brand-full">Enciclopédia Médica</span><span class="brand-short">Antigravity</span></strong>
+        <strong><span class="brand-full">AldenirMed89</span><span class="brand-short">AldenirMed89</span></strong>
         <span class="brand-subtitle">Intensiva &amp; Medicina Interna</span>
       </div>
     </a>
@@ -2410,7 +2435,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
       <div class="download-head">
         <div>
           <div class="section-label">// acesso fácil em qualquer dispositivo</div>
-          <h2 class="section-title" id="downloads-heading">Baixe ou instale o Antigravity 💻📱</h2>
+          <h2 class="section-title" id="downloads-heading">Baixe ou instale o AldenirMed89 💻📱</h2>
           <p class="section-sub">Três caminhos claros e diretos. O conteúdo continua vindo do mesmo site, sempre atualizado, sem telemetria e sem armazenar dados de pacientes.</p>
         </div>
         <span class="download-ready"><span aria-hidden="true">●</span> Links disponíveis agora</span>
@@ -2498,7 +2523,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   <div class="shell">
     <div class="reveal section-intro">
       <div class="section-label">// comunicação e evolução da plataforma</div>
-      <h2 class="section-title" id="portal-heading">Portais Antigravity 🛰️</h2>
+      <h2 class="section-title" id="portal-heading">Portais AldenirMed89 🛰️</h2>
       <p class="section-sub">O Portal Vivo registra o que mudou. O Centro da Tripulação organiza assinatura, preferências, métricas agregadas e comunicação protegida com os tripulantes.</p>
     </div>
     <div class="portal-grid">
@@ -2506,7 +2531,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
       <a class="module-card portal-card mod-violet reveal" href="17_Portal_Vivo/index.html" aria-label="Abrir Portal Vivo de UPGRADE da plataforma">
         <div class="module-icon">🛰️</div>
         <span class="card-state">Portal opcional</span>
-        <h3>UPGRADE contínuo do Antigravity</h3>
+        <h3>UPGRADE contínuo do AldenirMed89</h3>
         <p>Acompanhe novas ferramentas, correções, sessões atualizadas e marcos de evolução do sistema. O conteúdo clínico e de estudo recebido pelo chat segue para a Estação Radar Diário.</p>
         <div class="module-tag-row">
           <span class="module-tag">Evolução da plataforma</span>
@@ -2533,12 +2558,12 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   </div>
 </section>
 
-<!-- ── ESTAÇÕES ANTIGRAVITY ───────────────────────── -->
+<!-- ── ESTAÇÕES ALDENIRMED89 ───────────────────────── -->
 <section id="estacoes" class="stations-section" aria-labelledby="stations-heading">
   <div class="shell">
     <div class="reveal section-intro">
       <div class="section-label">// destinos permanentes</div>
-      <h2 class="section-title" id="stations-heading">Estações Antigravity 📡</h2>
+      <h2 class="section-title" id="stations-heading">Estações AldenirMed89 📡</h2>
       <p class="section-sub">Duas áreas independentes e sempre acessíveis: uma recebe conteúdo clínico e estudo; a outra organiza as fontes médicas verificáveis.</p>
     </div>
     <div class="stations-grid">
@@ -2578,7 +2603,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   <div class="shell">
     <div class="reveal section-intro">
       <div class="section-label">// ferramentas do ecossistema</div>
-      <h2 class="section-title" id="mod-heading">Módulos e apps Antigravity 🧬</h2>
+      <h2 class="section-title" id="mod-heading">Módulos e apps AldenirMed89 🧬</h2>
       <p class="section-sub">Ferramentas interconectadas para conteúdo autoral, decisão clínica, treinamento TEMI, ventilação, emergências, imagem e consulta rápida.</p>
     </div>
     <div class="modules-grid">
@@ -3314,7 +3339,7 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   <div class="shell">
     <div class="section-intro">
       <p class="section-label">TRANSPARÊNCIA DE AUDIÊNCIA</p>
-      <h2 class="section-title" id="analytics-heading">Visitas registradas no Antigravity</h2>
+      <h2 class="section-title" id="analytics-heading">Visitas registradas no AldenirMed89</h2>
       <p class="section-sub">Indicadores públicos aproximados para acompanhar o alcance educacional e descobrir quais seções são mais úteis.</p>
     </div>
     <div class="analytics-panel" data-analytics-panel>
@@ -3379,8 +3404,8 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
       <div class="footer-col">
         <h4>Projeto</h4>
         <a href="#downloads">⬇️ Apps para Mac, Windows e iPhone</a>
-        <a href="https://github.com/aldenirfilho/antigravity-consultas">GitHub Repository</a>
-        <a href="https://github.com/aldenirfilho/antigravity-consultas#readme">Documentação</a>
+        <a href="https://github.com/aldenirfilho/aldenirmed89">Repositório no GitHub</a>
+        <a href="https://github.com/aldenirfilho/aldenirmed89#readme">Documentação</a>
         <a href="19_Integridade_Editorial/index.html">🛡️ Integridade e responsabilidade editorial</a>
         <a href="20_Conheca_Aldenir/index.html">✦ Conheça Aldenir, idealizador</a>
         <a href="21_Central_Ativacao/index.html">🚀 Central de Ativação</a>
@@ -3389,9 +3414,12 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Enciclopédia Médica Intensiva · Projeto Antigravity</span>
+      <span>© 2026 AldenirMed89 · Enciclopédia Médica Intensiva</span>
       <span style="font-family:var(--font-mono)">Conteúdo autoral · Uso educacional · Não substitui raciocínio clínico individual</span>
     </div>
+    <p class="aldenirmed89-symbolic-note" role="note">
+      ✦ A estética místico-aeroespacial é simbólica e autoral. O conteúdo clínico permanece separado desse universo visual e fundamentado em evidências, diretrizes e revisão médica.
+    </p>
   </div>
 </footer>
 
@@ -4875,7 +4903,8 @@ const appleStatusMeta=document.querySelector('meta[name="apple-mobile-web-app-st
 const systemTheme=window.matchMedia('(prefers-color-scheme: light)');
 const a11yKey='antigravity:a11y:v1';
 const VISUAL_PROFILES=[
-  {id:'aerospace',label:'Aeroespacial',icon:'🚀',mode:'dark',note:'padrão oficial'},
+  {id:'mystic-aerospace',label:'Arcano orbital',icon:'🧙‍♂️',mode:'dark',note:'padrão místico-aeroespacial'},
+  {id:'aerospace',label:'Aeroespacial',icon:'🚀',mode:'dark',note:'cabine clássica'},
   {id:'aerospace-light',label:'Aeroespacial claro',icon:'🛰️',mode:'light',note:'cabine diurna'},
   {id:'rustic-light',label:'Claro rústico',icon:'📜',mode:'light',note:'sóbrio e conservador'},
   {id:'dark',label:'Escuro essencial',icon:'🌑',mode:'dark',note:'neutro e direto'},
@@ -4898,7 +4927,7 @@ function readA11yPrefs(raw){
   }catch(_){}
   const normalized={
     large:false,contrast:false,motion:false,theme:'dark',wide:true,
-    visualProfile:'aerospace',...saved
+    visualProfile:'mystic-aerospace',...saved
   };
   if(!['dark','light','system'].includes(normalized.theme)){
     normalized.theme=saved.clarity===true?'light':'dark';
@@ -4908,7 +4937,7 @@ function readA11yPrefs(raw){
   normalized.motion=saved.motion===true;
   normalized.wide=saved.wide!==false;
   if(!PROFILE_BY_ID.has(normalized.visualProfile)){
-    normalized.visualProfile=normalized.theme==='light'?'aerospace-light':'aerospace';
+    normalized.visualProfile=normalized.theme==='light'?'aerospace-light':'mystic-aerospace';
   }else if(normalized.theme!=='system'){
     normalized.theme=PROFILE_BY_ID.get(normalized.visualProfile).mode;
   }
@@ -4988,7 +5017,7 @@ document.querySelectorAll('[data-theme-select]').forEach(select=>{
       a11yPrefs.visualProfile='aerospace-light';
       a11yPrefs.contrast=false;
     }else{
-      a11yPrefs.visualProfile='aerospace';
+      a11yPrefs.visualProfile='mystic-aerospace';
     }
     applyA11y();
   });
@@ -5116,7 +5145,7 @@ installPwaBtn.addEventListener('click',async()=>{
 window.addEventListener('appinstalled',()=>{
   deferredInstallPrompt=null;
   installPwaBtn.hidden=true;
-  installPwaStatus.textContent='Antigravity instalado neste dispositivo.';
+  installPwaStatus.textContent='AldenirMed89 instalado neste dispositivo.';
 });
 
 /* ── TOP BUTTON ──────────────────────────────────── */

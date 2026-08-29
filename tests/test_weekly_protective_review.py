@@ -46,9 +46,9 @@ class WeeklyProtectiveReviewTests(unittest.TestCase):
     def test_public_url_is_https_same_origin_and_routes_are_relative(self) -> None:
         self.assertEqual(
             WEEKLY.validate_site_base_url(
-                "https://aldenirfilho.github.io/antigravity-consultas"
+                "https://aldenirfilho.github.io/aldenirmed89"
             ),
-            "https://aldenirfilho.github.io/antigravity-consultas/",
+            "https://aldenirfilho.github.io/aldenirmed89/",
         )
         self.assertEqual(
             WEEKLY.safe_relative_url_path("15_Radar_Cientifico/index.html"),

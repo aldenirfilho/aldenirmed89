@@ -73,6 +73,7 @@ class ThemeCatalogTests(unittest.TestCase):
 
     def test_catalog_has_exact_requested_profiles(self):
         expected = {
+            "mystic-aerospace",
             "aerospace",
             "aerospace-light",
             "rustic-light",
@@ -88,13 +89,13 @@ class ThemeCatalogTests(unittest.TestCase):
             "modern-serious",
         }
         themes = self.catalog["themes"]
-        self.assertEqual(13, len(themes))
+        self.assertEqual(14, len(themes))
         self.assertEqual(expected, {theme["id"] for theme in themes})
-        self.assertEqual("aerospace", self.catalog["defaultTheme"])
+        self.assertEqual("mystic-aerospace", self.catalog["defaultTheme"])
 
     def test_all_explicit_profiles_are_active(self):
         statuses = {theme["id"]: theme["status"] for theme in self.catalog["themes"]}
-        self.assertEqual(13, len(statuses))
+        self.assertEqual(14, len(statuses))
         self.assertEqual({"active"}, set(statuses.values()))
 
     def test_each_theme_is_bilingual_and_has_complete_palette(self):

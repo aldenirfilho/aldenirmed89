@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HOME = (ROOT / "index.html").read_text(encoding="utf-8")
 
 PROFILE_IDS = {
+    "mystic-aerospace",
     "aerospace",
     "aerospace-light",
     "rustic-light",
@@ -54,14 +55,15 @@ class HomeThemeSettingsTests(unittest.TestCase):
 
     def test_profile_persists_in_shared_accessibility_preferences(self):
         self.assertIn("const a11yKey='antigravity:a11y:v1'", HOME)
-        self.assertIn("visualProfile:'aerospace'", HOME)
+        self.assertIn("visualProfile:'mystic-aerospace'", HOME)
         self.assertIn("a11yPrefs.visualProfile=profile.id", HOME)
         self.assertIn("localStorage.setItem(a11yKey,JSON.stringify(a11yPrefs))", HOME)
         self.assertIn("root.dataset.visualProfile=contrastActive?'contrast'", HOME)
 
-    def test_aerospace_is_default_and_branded_fiction_is_original(self):
-        self.assertIn("visualProfile='aerospace'", HOME)
-        self.assertIn("padrão oficial da missão permanece aeroespacial", HOME)
+    def test_mystic_aerospace_is_default_and_branded_fiction_is_original(self):
+        self.assertIn("visualProfile='mystic-aerospace'", HOME)
+        self.assertIn("fantasia autoral simbólica", HOME)
+        self.assertIn("O conteúdo clínico permanece separado", HOME)
         self.assertNotIn("Harry Potter", HOME)
         self.assertNotIn("Marvel", HOME)
 
