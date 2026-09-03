@@ -5,7 +5,7 @@ window.ANTIGRAVITY_TCE_CRASH = Object.freeze({
     schemaVersion: "antigravity-tce-crash-v1",
     moduleId: "tce-grave-crash",
     title: "TCE grave · Protocolo CRASH",
-    version: "1.0.0-rc.1",
+    version: "1.1.0-rc.1",
     updatedAt: "2026-09-03",
     status: "em-revisao-medica",
     mnemonic: Object.freeze({
@@ -37,9 +37,17 @@ window.ANTIGRAVITY_TCE_CRASH = Object.freeze({
     "auto-peep",
     "reverse-triggering"
   ]),
+  visualAtlas: Object.freeze({
+    id: "tce-tc-360x",
+    count: 10,
+    aspectRatio: "16:9",
+    synthetic: true,
+    diagnosticUse: false
+  }),
   sourceFamilies: Object.freeze([
     "Neurocritical Care Society ENLS 6.0",
     "Brain Trauma Foundation",
+    "American College of Surgeons",
     "Neurocritical Care Society Guidelines",
     "ESICM",
     "ATS",

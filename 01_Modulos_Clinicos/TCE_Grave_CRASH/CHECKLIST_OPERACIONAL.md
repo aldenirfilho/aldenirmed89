@@ -34,6 +34,37 @@
 - [ ] Hiperventilação apenas como ponte curta na herniação; ETCO2 32–35 e gasometria.
 - [ ] TC repetida ou cirurgia sem atraso conforme anatomia e curso.
 
+## 3A. Atlas TC 360X e escalada neurocirúrgica
+
+- [ ] Confirmado que as pranchas são sintéticas, educacionais e não diagnósticas.
+- [ ] TC real lida em ordem fixa: compartimento, volume/espessura, linha média,
+      cisternas, ventrículos/4º ventrículo, osso/ar, herniação e progressão.
+- [ ] Epidural: volume, espessura, desvio, GCS, déficit e possibilidade de vigilância
+      neurocirúrgica documentados; limiar numérico não usado isoladamente.
+- [ ] Subdural/contusão: exame seriado, pupilas, PIC, cisternas e trajetória clínica
+      integrados à medida tomográfica.
+- [ ] Piora neurológica gerou TC urgente e contato com neurocirurgia sem atraso.
+- [ ] Discrepância clínico-TC levantou hipótese de lesão axonal e indicação/segurança de RM.
+- [ ] Hidrocefalia diferenciada de ventriculomegalia ex vacuo por clínica e imagem seriada.
+- [ ] Fratura aberta/penetrante: dura, seios, contaminação, fístula, lesão vascular e
+      objeto retido discutidos com neurocirurgia.
+
+## 3B. Fármacos e drenos vinculados ao atlas
+
+- [ ] Profilaxia anticonvulsivante separa TCE contuso (se usada, ≤7 dias segundo NCS)
+      de penetrante (consenso BTF: 7 dias ou mais, sem agente superior), com função
+      renal/interações e plano de neuro/EEG/reavaliação.
+- [ ] TXA/Transamin só considerado dentro da janela/população apropriada e não atrasou cirurgia.
+- [ ] Ceftriaxona/clindamicina não usadas automaticamente no TCE fechado, pneumoencéfalo
+      isolado ou fratura de base; ferida aberta/penetrante prioriza desbridamento/reparo,
+      curso curto, espectro conforme contaminação e stewardship.
+- [ ] DVE: indicação, altura, referência anatômica, débito, PIC, coleta e critérios de pinçamento escritos.
+- [ ] DVP: hidrocefalia sintomática persistente/dependência confirmada e infecção excluída.
+- [ ] DLE: indicação por fístula separada da hidrocefalia externa/HIC; documentar cisternas
+      patentes e ausência de massa/obstrução, desvio relevante, herniação uncal/tonsilar,
+      lesão de fossa posterior, coagulopatia e infecção; ordem, limite e interrupção definidos
+      pela neurocirurgia.
+
 ## 4. Sedação e despertar
 
 - [ ] Indicação e alvo de analgesia (CPOT/BPS) e sedação (RASS/SAS) escritos.

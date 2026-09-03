@@ -118,7 +118,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed89"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v26`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v27`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
@@ -490,8 +490,18 @@ class AccessiblePwaTests(unittest.TestCase):
             builder.canonical_relative(decomposed),
             "avaliação-clínica.pdf",
         )
-        builder.validate_clinical_publication(ROOT)
+        with self.assertRaisesRegex(
+            ValueError,
+            r"TCE_Grave_CRASH/module\.manifest\.json",
+        ):
+            builder.validate_clinical_publication(ROOT)
         builder.validate_public_downloads(ROOT)
+
+        tce_manifest = load_json(
+            "01_Modulos_Clinicos/TCE_Grave_CRASH/module.manifest.json"
+        )
+        self.assertEqual(tce_manifest["publication"]["mode"], "draft-review")
+        self.assertFalse(tce_manifest["publication"]["publicPreview"])
 
         for module in ("Hematologia_Critica", "Reumatologia_Critica", "Delirium_UTI"):
             manifest = load_json(f"01_Modulos_Clinicos/{module}/module.manifest.json")

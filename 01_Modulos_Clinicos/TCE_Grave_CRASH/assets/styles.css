@@ -205,6 +205,216 @@ main { min-width: 0; }
   color: var(--soft);
 }
 
+.ct-atlas {
+  scroll-margin-top: 8rem;
+  margin-top: clamp(1.8rem, 4vw, 3rem);
+  padding: clamp(1rem, 2.5vw, 1.6rem);
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--line));
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--panel) 94%, var(--accent) 6%);
+  box-shadow: var(--shadow);
+}
+
+.ct-atlas-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+}
+
+.ct-atlas-heading h3,
+.ct-therapy-bridge h3 {
+  margin: .3rem 0 .55rem;
+}
+
+.ct-atlas-heading p,
+.ct-therapy-bridge > p {
+  max-width: 78ch;
+  margin: 0;
+  color: var(--soft);
+}
+
+.ct-synthetic-seal {
+  padding: .45rem .7rem;
+  border: 1px solid var(--accent-2);
+  border-radius: 999px;
+  color: var(--accent-2);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .09em;
+  white-space: nowrap;
+}
+
+.ct-read-sequence {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: .45rem;
+  margin: 1.2rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ct-read-sequence li {
+  min-width: 0;
+  padding: .55rem .45rem;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--bg-2);
+  color: var(--soft);
+  font-size: .7rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.ct-read-sequence span {
+  display: block;
+  margin-bottom: .2rem;
+  color: var(--accent);
+  font-size: .72rem;
+}
+
+.ct-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ct-plate {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg-2);
+}
+
+.ct-image-frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1672 / 941;
+  background: #07090c;
+}
+
+.ct-image-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05);
+}
+
+.ct-image-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ct-image-frame > span {
+  position: absolute;
+  left: .7rem;
+  bottom: .65rem;
+  z-index: 1;
+  padding: .32rem .52rem;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 7px;
+  background: rgba(5, 7, 10, .88);
+  color: #f2f5f7;
+  font-size: .64rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+
+.ct-plate figcaption {
+  padding: 1rem;
+}
+
+.ct-plate h4,
+.ct-therapy-grid h4 {
+  margin: 0 0 .55rem;
+  color: var(--text);
+}
+
+.ct-pattern {
+  margin: 0;
+  color: var(--soft);
+}
+
+.ct-pattern strong,
+.ct-decision dt {
+  color: var(--accent-2);
+}
+
+.ct-decision {
+  display: grid;
+  gap: .55rem;
+  margin: .8rem 0 0;
+}
+
+.ct-decision div {
+  padding-top: .55rem;
+  border-top: 1px solid var(--line);
+}
+
+.ct-decision dt {
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.ct-decision dd {
+  margin: .2rem 0 0;
+  color: var(--soft);
+}
+
+.ct-therapy-bridge {
+  margin-top: 1.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.ct-therapy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .75rem;
+  margin-top: 1rem;
+}
+
+.ct-therapy-grid article {
+  min-width: 0;
+  padding: .9rem;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--panel-2);
+}
+
+.ct-therapy-grid p {
+  margin: 0;
+  color: var(--soft);
+  font-size: .86rem;
+}
+
+.ct-token {
+  display: inline-block;
+  margin-bottom: .55rem;
+  color: var(--accent);
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.ct-safety-lock {
+  margin-top: .85rem;
+  padding: .9rem 1rem;
+  border-left: 4px solid var(--warning);
+  border-radius: 0 12px 12px 0;
+  background: color-mix(in srgb, var(--warning) 9%, var(--bg-2));
+  color: var(--soft);
+}
+
+.ct-safety-lock strong { color: var(--warning); }
+
 .timeline {
   position: relative;
   display: grid;
@@ -654,6 +864,8 @@ footer a { color: var(--accent-2); }
   .letter-card,
   .letter-card:last-child { grid-column: auto; }
   .letter-card:last-child { grid-column: 1 / -1; }
+  .ct-read-sequence { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ct-therapy-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 720px) {
@@ -667,8 +879,12 @@ footer a { color: var(--accent-2); }
   .substance-grid,
   .checklist-grid,
   .brain-lung-grid,
-  .herniation-callout { grid-template-columns: 1fr; }
+  .herniation-callout,
+  .ct-atlas-heading,
+  .ct-gallery,
+  .ct-therapy-grid { grid-template-columns: 1fr; }
   .letter-card:last-child { grid-column: auto; }
+  .ct-synthetic-seal { justify-self: start; }
   .async-card dl { grid-template-columns: 1fr; }
   .async-card dt { margin-top: .35rem; }
   .post-arrest-grid ol { columns: 1; }
@@ -685,6 +901,7 @@ footer a { color: var(--accent-2); }
   .step-number { width: 2.4rem; height: 2.4rem; }
   .toolbar input { min-width: 100%; width: 100%; }
   .review-strip { text-align: left; }
+  .ct-read-sequence { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -700,8 +917,10 @@ footer a { color: var(--accent-2); }
   .hero, main, footer { width: 100%; }
   .hero { padding: 1rem 0; }
   section { padding: 1.2rem 0; break-inside: auto; }
-  .letter-card, .card, .async-card, .rescue-step, .substance-card, .tier { box-shadow: none; break-inside: avoid; }
+  .letter-card, .card, .async-card, .rescue-step, .substance-card, .tier, .ct-atlas { box-shadow: none; }
+  .letter-card, .card, .async-card, .rescue-step, .substance-card, .tier, .ct-plate, .ct-therapy-grid article { break-inside: avoid; }
   details > * { display: block !important; }
-  .crash-grid, .asynchrony-grid, .substance-grid, .checklist-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .crash-grid, .asynchrony-grid, .substance-grid, .checklist-grid, .ct-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ct-read-sequence, .ct-therapy-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   a { text-decoration: none; }
 }
