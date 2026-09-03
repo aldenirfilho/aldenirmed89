@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "tce-grave-crash",
+  "title": "TCE grave — Protocolo CRASH",
+  "shortTitle": "TCE grave CRASH",
+  "emoji": "🧠",
+  "entrypoint": "index.html",
+  "href": "01_Modulos_Clinicos/TCE_Grave_CRASH/index.html",
+  "version": "1.0.0-rc.1",
+  "status": "em-revisao-medica",
+  "clinicalReviewRequired": true,
+  "publication": {
+    "mode": "public-preview",
+    "publicPreview": true,
+    "clinicalReviewOngoing": true,
+    "purpose": "educacional-e-apoio-cognitivo",
+    "authorizedAt": "2026-09-03"
+  },
+  "updatedAt": "2026-09-03",
+  "category": [
+    "Medicina Intensiva",
+    "Medicina de Emergência",
+    "Neurointensivismo",
+    "Trauma",
+    "Ventilação Mecânica",
+    "Toxicologia"
+  ],
+  "keywords": [
+    "TCE grave",
+    "CRASH",
+    "hipertensão intracraniana",
+    "herniação",
+    "sedação",
+    "despertar",
+    "assincronia ventilatória",
+    "SDRA",
+    "VV-ECMO",
+    "álcool",
+    "cocaína",
+    "opioide"
+  ],
+  "features": [
+    "Mnemônico CRASH autoral com limites explícitos",
+    "Ressuscitação da hora zero ao fechamento da primeira hora",
+    "Algoritmo escalonado de herniação e PIC refratária",
+    "Gate interativo de segurança para teste de despertar",
+    "Desmame de sedação e extubação no paciente neurológico",
+    "Oito assincronias ventilatórias pesquisáveis com correção passo a passo",
+    "Escada de resgate respiratório integrada à fisiologia cerebral",
+    "Abordagem de álcool, cocaína, opioides e coingestões",
+    "Checklists copiáveis de handoff e metas",
+    "Tema claro/escuro, impressão e navegação por teclado",
+    "HTML, CSS e JavaScript puros; sem dependências externas de runtime"
+  ],
+  "pluginContract": {
+    "global": "window.ANTIGRAVITY_TCE_CRASH",
+    "event": "antigravity:tce-crash-ready",
+    "catalog": "data/catalog.js",
+    "extensionRule": "Metas e regras essenciais permanecem no HTML; o catálogo expõe apenas metadados públicos estáveis."
+  },
+  "privacy": {
+    "networkRuntime": false,
+    "cloud": false,
+    "telemetry": false,
+    "patientData": false,
+    "localStorage": [
+      "preferência global de tema"
+    ]
+  },
+  "evidence": {
+    "cutoffDate": "2026-09-03",
+    "sourceFamilies": [
+      "Neurocritical Care Society ENLS 6.0",
+      "Brain Trauma Foundation",
+      "ESICM",
+      "ATS",
+      "ELSO",
+      "SCCM",
+      "American Heart Association 2025",
+      "CRASH e CRASH-3"
+    ],
+    "uncertaintyLabelsRequired": true
+  },
+  "safetyNotice": "Conteúdo educacional e apoio cognitivo. O mnemônico CRASH não é escore validado. Condutas reais exigem avaliação clínica, ATLS/ACLS, protocolo institucional, neurocirurgia, toxicologia e dupla checagem farmacológica.",
+  "reviewGate": {
+    "owner": "Aldenir Rocha de Oliveira Filho",
+    "requiredBeforeActive": [
+      "validar metas fisiológicas e critérios de monitorização de PIC com neurocirurgia",
+      "homologar concentrações, doses, acessos e monitorização da osmoterapia",
+      "homologar fármacos de RSI, analgosedação, bloqueio e toxicologia com farmácia clínica",
+      "adaptar critérios de despertar, abortagem, SBT e extubação ao protocolo da UTI",
+      "validar ajustes de assincronia em cada modelo de ventilador disponível",
+      "confirmar fluxo de prona, ECMO e transferência inter-hospitalar",
+      "revisar referências, links, data de corte e nível de evidência",
+      "mudar status para ativo somente após homologação médica documentada"
+    ]
+  }
+}
