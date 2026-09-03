@@ -12,6 +12,8 @@ Módulo clínico estático, responsivo e sem dependências externas.
 
 `/aldenirmed89/01_Modulos_Clinicos/Hepatite_Alcool_Associada/`
 
+O módulo está integrado ao card da página inicial e aos manifestos canônicos do AldenirMed89.
+
 ## Segurança
 
 Apoio educacional para profissionais de saúde. Validar diagnóstico, fórmulas, unidades, contraindicações, dose e protocolo institucional antes da prescrição. A página não armazena nem transmite os valores inseridos nas calculadoras.
