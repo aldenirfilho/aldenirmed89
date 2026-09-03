@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-30T02:42:50-03:00",
+  "updatedAt": "2026-09-03",
   "version": "4.6-acra-microparticles",
   "description": "Mapa vivo organizado da Enciclopédia: Home, Central de Ativação, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos, Micropartículas Ativas ACRA e macrotemas de UTI.",
   "legend": {
@@ -1000,6 +1000,54 @@
       "body": "Segurança, causas, desescalada, fármacos situacionais e mimetizadores.",
       "x": 62,
       "y": 50
+    },
+    {
+      "id": "tce-grave-crash",
+      "label": "🧠 TCE grave · CRASH",
+      "type": "module",
+      "url": "01_Modulos_Clinicos/TCE_Grave_CRASH/index.html",
+      "status": "em_revisao",
+      "body": "Ressuscitação, PIC/herniação, sedação/despertar, assincronias, resgate respiratório e toxicologia."
+    },
+    {
+      "id": "tce-herniacao-pic",
+      "label": "🚨 Herniação e PIC",
+      "type": "topic",
+      "url": "01_Modulos_Clinicos/TCE_Grave_CRASH/index.html#herniacao",
+      "status": "em_revisao",
+      "body": "Código cerebral em tiers, osmoterapia, EVD, perfusão e neurocirurgia."
+    },
+    {
+      "id": "tce-sedacao-despertar",
+      "label": "🌙 Sedação e despertar",
+      "type": "tool",
+      "url": "01_Modulos_Clinicos/TCE_Grave_CRASH/index.html#sedacao",
+      "status": "em_revisao",
+      "body": "Gate de segurança, teste de despertar, SBT e extubação no paciente neurológico."
+    },
+    {
+      "id": "tce-assincronias",
+      "label": "〰️ Assincronias no TCE",
+      "type": "tool",
+      "url": "01_Modulos_Clinicos/TCE_Grave_CRASH/index.html#assincronias",
+      "status": "em_revisao",
+      "body": "Oito padrões ventilatórios com reconhecimento, mecanismo, reversão e reavaliação."
+    },
+    {
+      "id": "tce-resgate-respiratorio",
+      "label": "🫁 Resgate respiratório",
+      "type": "topic",
+      "url": "01_Modulos_Clinicos/TCE_Grave_CRASH/index.html#resgate",
+      "status": "em_revisao",
+      "body": "DOPE, ventilação protetora, prona, bloqueio e referência para VV-ECMO."
+    },
+    {
+      "id": "tce-alcool-drogas",
+      "label": "⚗️ Álcool e drogas",
+      "type": "topic",
+      "url": "01_Modulos_Clinicos/TCE_Grave_CRASH/index.html#substancias",
+      "status": "em_revisao",
+      "body": "TCE sem ancoragem com cocaína, opioides, álcool e coingestões."
     }
   ],
   "edges": [
@@ -1925,6 +1973,51 @@
       "from": "delirium-uti",
       "to": "sepse-choque",
       "relation": "causa-e-mimetizador"
+    },
+    {
+      "from": "home",
+      "to": "tce-grave-crash",
+      "relation": "modulo-em-revisao"
+    },
+    {
+      "from": "tce-grave-crash",
+      "to": "tce-herniacao-pic",
+      "relation": "codigo-cerebral"
+    },
+    {
+      "from": "tce-grave-crash",
+      "to": "tce-sedacao-despertar",
+      "relation": "neuroavaliacao-seriada"
+    },
+    {
+      "from": "tce-grave-crash",
+      "to": "tce-assincronias",
+      "relation": "interacao-paciente-ventilador"
+    },
+    {
+      "from": "tce-grave-crash",
+      "to": "tce-resgate-respiratorio",
+      "relation": "resgate-cerebro-pulmao"
+    },
+    {
+      "from": "tce-grave-crash",
+      "to": "tce-alcool-drogas",
+      "relation": "toxicologia-sem-ancoragem"
+    },
+    {
+      "from": "tce-grave-crash",
+      "to": "vm-sdra",
+      "relation": "ventilacao-protetora"
+    },
+    {
+      "from": "tce-grave-crash",
+      "to": "delirium-uti",
+      "relation": "sedacao-despertar"
+    },
+    {
+      "from": "tce-grave-crash",
+      "to": "banco-temi",
+      "relation": "treino-ativo"
     }
   ],
   "links": []

@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-specialty="neurotrauma" data-preference-key="antigravity:a11y:v1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Protocolo CRASH autoral para TCE grave: ressuscitação, hipertensão intracraniana, sedação, despertar, assincronias e resgate respiratório.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://aldenirrochadeoliveirafilho1989.goatcounter.com; style-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>TCE grave · Protocolo CRASH — AldenirMed89</title>
+  <script src="../_shared_critical/assets/critical-theme.js"></script>
+  <link rel="stylesheet" href="../_shared_critical/assets/critical.css">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o protocolo</a>
+
+  <header class="topbar">
+    <a class="brand" href="../../index.html" aria-label="Voltar ao portal AldenirMed89">
+      <span class="brand-mark" aria-hidden="true">🧠</span>
+      <span>AldenirMed89 · Neurocrítico</span>
+    </a>
+    <div class="top-actions">
+      <button id="themeToggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara" title="Alternar tema">☀️</button>
+      <button id="expandAll" type="button" aria-pressed="false">Abrir detalhes</button>
+      <button id="printModule" type="button">🖨️ Imprimir</button>
+    </div>
+  </header>
+
+  <div class="review-strip" role="status">
+    <strong>Revisão médica obrigatória:</strong> prévia pública educacional. Confirme doses, concentrações, recursos e fluxos no protocolo institucional antes do uso assistencial.
+  </div>
+
+  <div class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Protocolo autoral · plantão · adulto</div>
+        <h1>TCE grave<br><span>CRASH</span></h1>
+        <p>Uma prancheta única para organizar a primeira hora, impedir lesão cerebral secundária, reconhecer herniação, conduzir sedação e despertar, corrigir assincronias e resgatar a falência respiratória.</p>
+        <div class="status-row">
+          <span class="status">🩺 Prévia pública · revisão em andamento</span>
+          <span class="status safe">🔒 Estático · sem dados do paciente</span>
+          <span class="status">v1.0.0-rc.1 · 03/09/2026</span>
+        </div>
+      </div>
+      <aside class="target-board" aria-label="Metas iniciais do TCE grave">
+        <div class="target-board-title">Alvos que não podem esperar</div>
+        <dl>
+          <div><dt>SpO<sub>2</sub></dt><dd>≥ 94%</dd></div>
+          <div><dt>PaCO<sub>2</sub></dt><dd>35–38 mmHg*</dd></div>
+          <div><dt>PAS</dt><dd>≥ 100–110 mmHg†</dd></div>
+          <div><dt>PIC</dt><dd>tratar &gt; 22 mmHg</dd></div>
+          <div><dt>PPC</dt><dd>60–70 mmHg</dd></div>
+          <div><dt>Temperatura</dt><dd>normotermia</dd></div>
+        </dl>
+        <p class="microcopy">*Se suspeita de hipertensão intracraniana. †≥110 mmHg entre 15–49 ou &gt;70 anos; ≥100 mmHg entre 50–69 anos. Individualize.</p>
+      </aside>
+    </div>
+
+    <nav class="module-nav" aria-label="Seções do protocolo">
+      <a href="#crash">⚡ CRASH</a>
+      <a href="#hora-zero">⏱️ Hora zero</a>
+      <a href="#herniacao">🚨 Herniação/PIC</a>
+      <a href="#sedacao">🌙 Sedação/despertar</a>
+      <a href="#assincronias">〰️ Assincronias</a>
+      <a href="#resgate">🫁 Resgate respiratório</a>
+      <a href="#substancias">⚗️ Álcool e drogas</a>
+      <a href="#checklists">✅ Checklists</a>
+      <a href="#fontes">📚 Evidências</a>
+    </nav>
+  </div>
+
+  <main id="conteudo">
+    <aside class="safety-banner" role="note">
+      <strong>Antes de tudo:</strong> “CRASH” é um mnemônico autoral de organização e não um escore validado. Não confundir com o ensaio <em>CRASH</em> (corticoide: dano) nem com o <em>CRASH-3</em> (ácido tranexâmico). O atendimento deve seguir ATLS/ACLS, neurocirurgia e protocolo local.
+    </aside>
+
+    <section id="crash" aria-labelledby="crash-title">
+      <div class="section-head">
+        <div><div class="kicker">Leitura de 60 segundos</div><h2 id="crash-title">CRASH: cinco comandos simultâneos</h2><p>Delegue funções. Não espere terminar uma letra para iniciar a próxima.</p></div>
+      </div>
+      <div class="crash-grid">
+        <article class="letter-card c-card">
+          <div class="letter" aria-hidden="true">C</div>
+          <h3>Circulação, coluna e capnografia</h3>
+          <ol>
+            <li>Controle hemorragia externa; procure tórax, abdome, pelve e ossos longos. Hipotensão no TCE é hemorragia até prova em contrário.</li>
+            <li>Restrinja movimento cervical, mantendo cabeça e pescoço alinhados; evite colar comprimindo jugulares.</li>
+            <li>Dois acessos calibrosos/IO, sangue, tipagem, hemograma, eletrólitos, gasometria/lactato, coagulograma, fibrinogênio e glicose.</li>
+            <li>Reanime com hemoderivados quando houver choque hemorrágico. Evite ressuscitação hipotensiva no TCE.</li>
+            <li>Após intubação, confirme tubo com capnografia contínua e ausculta; acompanhe ETCO<sub>2</sub> com gasometria.</li>
+          </ol>
+        </article>
+
+        <article class="letter-card r-card">
+          <div class="letter" aria-hidden="true">R</div>
+          <h3>Respiração e via aérea neuroprotetora</h3>
+          <ol>
+            <li>Oxigênio imediato; aspirador, bolsa-válvula, cânulas e plano de via aérea difícil prontos.</li>
+            <li>Intube se GCS ≤8 pós-ressuscitação, perda de reflexos protetores, hipoxemia/hipoventilação, agitação inviabilizando proteção ou herniação.</li>
+            <li>Pré-oxigene. Em hipoxemia grave (P/F &lt;150), considere VNI para pré-oxigenação se não houver contraindicação.</li>
+            <li>Prepare hipotensão peri-intubação: sangue/fluido apropriado e vasopressor titulável já conectados conforme cenário.</li>
+            <li>Use hipnótico + bloqueador neuromuscular na sequência rápida; reduza doses se choque e nunca paralise sem sedação.</li>
+          </ol>
+        </article>
+
+        <article class="letter-card a-card">
+          <div class="letter" aria-hidden="true">A</div>
+          <h3>Avaliação neurológica e agentes</h3>
+          <ol>
+            <li>Registre GCS por componentes (E/V/M), pupilas, lateralização e melhor resposta antes da sedação/paralisia quando viável.</li>
+            <li>Repita após corrigir hipóxia, hipotensão e hipoglicemia. Álcool ou droga não “explica” coma até excluir TCE.</li>
+            <li>Faça TC de crânio sem contraste e coluna cervical logo após estabilização; acione neurocirurgia cedo.</li>
+            <li>Colha etanol/toxicologia quando muda conduta, sem atrasar ressuscitação. Faça ECG e temperatura central.</li>
+            <li>Revise anticoagulantes/antiagregantes e reverta coagulopatia com protocolo específico.</li>
+          </ol>
+        </article>
+
+        <article class="letter-card s-card">
+          <div class="letter" aria-hidden="true">S</div>
+          <h3>Segunda lesão, sedação e sincronização</h3>
+          <ol>
+            <li>Evite os seis agressores: hipóxia, hipotensão, hipo/hipercapnia, febre, glicemia extrema e convulsão.</li>
+            <li>Analgesia primeiro; titule sedação a um alvo explícito e à fisiologia cerebral.</li>
+            <li>Considere monitor de PIC no TCE grave salvável com TC anormal; discuta cenários selecionados com TC normal.</li>
+            <li>Trate PIC sustentada &gt;22 mmHg e mantenha PPC 60–70 mmHg, sem induzir hipertensão agressiva.</li>
+            <li>Procure assincronia por curva e causa. Não use sedação como resposta automática a todo alarme.</li>
+          </ol>
+        </article>
+
+        <article class="letter-card h-card">
+          <div class="letter" aria-hidden="true">H</div>
+          <h3>Herniação, resgate e handoff</h3>
+          <ol>
+            <li>Anisocoria nova, pupila fixa, queda de GCS ≥2, postura extensora ou reflexo de Cushing = código cerebral.</li>
+            <li>Cabeceira 30°, cabeça neutra, oxigênio/pressão, neurocirurgia, osmoterapia e drenagem de LCR em paralelo.</li>
+            <li>Hiperventile apenas como ponte curta na herniação: ETCO<sub>2</sub> 32–35 mmHg, enquanto prepara terapia definitiva.</li>
+            <li>Repita TC se deterioração ou PIC refratária, sem atrasar descompressão óbvia.</li>
+            <li>Handoff: mecanismo/hora, GCS pré e pós-ressuscitação, pupilas, episódios de hipóxia/hipotensão, drogas, TC, terapias e respostas.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section id="hora-zero" aria-labelledby="hora-zero-title">
+      <div class="section-head">
+        <div><div class="kicker">Cronologia operacional</div><h2 id="hora-zero-title">Hora zero, passo a passo</h2><p>Uma linha do tempo para distribuir tarefas sem criar pontos cegos.</p></div>
+      </div>
+      <div class="timeline">
+        <article class="timeline-step">
+          <div class="time">0–2 min</div>
+          <h3>Reconheça e estabilize</h3>
+          <ul>
+            <li>Ative trauma + neurocirurgia; defina líder, via aérea, circulação, medicamentos e registro.</li>
+            <li>Restrição cervical, monitor/desfibrilador, oxigênio, aspiração, temperatura e glicemia.</li>
+            <li>Se PCR traumática: RCP/ALS e correção imediata de hemorragia maciça, hipóxia, pneumotórax hipertensivo e tamponamento.</li>
+          </ul>
+        </article>
+        <article class="timeline-step">
+          <div class="time">2–10 min</div>
+          <h3>Evite o segundo golpe</h3>
+          <ul>
+            <li>Controle sangramento e restaure PAS-alvo; transfusão balanceada conforme protocolo de hemorragia.</li>
+            <li>Exame neurológico documentado; pupilas seriadas. Corrija hipoglicemia imediatamente.</li>
+            <li>Se via aérea ameaçada: RSI neuroprotetora, capnografia, ventilação inicial e gasometria precoce.</li>
+            <li>Se herniação: execute o pacote de resgate sem aguardar TC.</li>
+          </ul>
+        </article>
+        <article class="timeline-step">
+          <div class="time">10–30 min</div>
+          <h3>Defina anatomia e ameaças</h3>
+          <ul>
+            <li>FAST/eFAST e investigação de fonte hemorrágica; TC de crânio e coluna quando hemodinamicamente seguro.</li>
+            <li>Reverta anticoagulação; corrija plaquetas/fibrinogênio conforme causa e protocolo.</li>
+            <li>Comunique achados cirúrgicos: hematoma, desvio, cisternas, hidrocefalia, fratura e deterioração clínica.</li>
+          </ul>
+        </article>
+        <article class="timeline-step">
+          <div class="time">30–60 min</div>
+          <h3>Feche o plano neurocrítico</h3>
+          <ul>
+            <li>Decisão: centro cirúrgico, monitor de PIC/EVD, UTI neurocrítica ou transferência protegida.</li>
+            <li>Prescreva alvos de SpO<sub>2</sub>, PaCO<sub>2</sub>, PAS/PAM, PIC/PPC, temperatura, sódio, glicose, analgesia/sedação e exame horário.</li>
+            <li>Considere profilaxia anticonvulsivante por até 7 dias após pesar risco/benefício; se escolhida, levetiracetam é opção preferida nas diretrizes NCS 2024.</li>
+            <li>Planeje repetição da TC e reavaliação de coagulação conforme evolução.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="grid two decision-pair">
+        <article class="card alert">
+          <span class="card-tag">NÃO FAZER</span>
+          <h3>Corticoide no TCE</h3>
+          <p>Não administrar corticoide para tratar TCE ou PIC. O ensaio CRASH mostrou aumento de mortalidade; a Brain Trauma Foundation classifica o uso em dose alta como contraindicado.</p>
+        </article>
+        <article class="card">
+          <span class="card-tag">CRASH-3</span>
+          <h3>Ácido tranexâmico não é sinônimo de CRASH</h3>
+          <p>Se houver indicação pelo protocolo de trauma, avalie a janela precoce. No CRASH-3, o sinal de benefício concentrou-se em TCE leve–moderado tratado até 3 horas; o subgrupo grave não demonstrou benefício. Não atrasar hemostasia cirúrgica.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="herniacao" aria-labelledby="herniacao-title">
+      <div class="section-head">
+        <div><div class="kicker">Código cerebral</div><h2 id="herniacao-title">Herniação e PIC refratária</h2><p>Trate a tendência e a clínica, não um número isolado. Reavalie resposta após cada intervenção.</p></div>
+      </div>
+
+      <div class="herniation-callout">
+        <div><strong>Sinais</strong><span>pupila assimétrica/fixa · queda GCS &gt;2 · postura extensora · Cushing · piora focal</span></div>
+        <div><strong>Ação simultânea</strong><span>neurocirurgia · O<sub>2</sub>/PAS · cabeça neutra 30° · osmoterapia · EVD/TC conforme cenário</span></div>
+      </div>
+
+      <div class="tier-stack">
+        <details class="tier" open>
+          <summary><span>BASE</span> Corrija antes de escalar</summary>
+          <div class="tier-body">
+            <ol>
+              <li>Cheque transdutor/zero e curva da PIC. Examine pupilas e motor; procure convulsão.</li>
+              <li>Cabeceira 30°, cabeça central, retire compressão cervical, trate dor/agitação/tosse e garanta drenagem venosa.</li>
+              <li>SpO<sub>2</sub> ≥94%; PaCO<sub>2</sub> 35–38 mmHg; PAS/PPC no alvo; normotermia; glicemia segura; evite hiponatremia.</li>
+              <li>Procure causa reversível: tubo/circuito, secreção, pneumotórax, assincronia, febre, crise, nova hemorragia, hidrocefalia ou posicionamento.</li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="tier" open>
+          <summary><span>TIER 1</span> Terapia de resgate inicial</summary>
+          <div class="tier-body">
+            <ol>
+              <li>Bolus hiperosmolar conforme acesso, volemia, sódio, rim/coração e protocolo local.</li>
+              <li>Se EVD presente, drene LCR conforme ordem neurocirúrgica; ENLS sugere 5–10 mL em elevação aguda.</li>
+              <li>Otimize analgosedação sem derrubar PAM/PPC. Trate convulsão clínica/eletrográfica.</li>
+              <li>Evacue lesão expansiva/descomprima quando indicada. Repita TC se causa/curso não explicados.</li>
+            </ol>
+            <div class="dose-table-wrap">
+              <table class="dose-table">
+                <caption>Exemplos ENLS 6.0 — dupla checagem obrigatória</caption>
+                <thead><tr><th>Agente</th><th>Bolus adulto de referência</th><th>Vigilância</th></tr></thead>
+                <tbody>
+                  <tr><td>NaCl 3%</td><td>5 mL/kg em 5–20 min</td><td>Sódio/cloro 4–6 h, acesso, congestão, acidose, resposta de PIC</td></tr>
+                  <tr><td>NaCl 5%</td><td>3 mL/kg em 5–20 min</td><td>Concentração e via conforme farmácia/protocolo</td></tr>
+                  <tr><td>NaCl 7,5%</td><td>2 mL/kg em 5–20 min</td><td>Acesso central segundo ENLS para concentração &gt;3%</td></tr>
+                  <tr><td>NaCl 23,4%</td><td>30 mL em 10–20 min</td><td>Acesso central; vigilância contínua e sódio seriado</td></tr>
+                  <tr><td>Manitol</td><td>0,5–1 g/kg em 5–15 min</td><td>PAS/PPC, diurese, rim, volume e gap osmolar</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="evidence-note"><strong>Força da evidência:</strong> a NCS sugere salina hipertônica sobre manitol para abordagem inicial no TCE, mas a recomendação é condicional e de baixa qualidade. Nenhum dos dois deve ser usado esperando melhora comprovada do desfecho neurológico.</p>
+          </div>
+        </details>
+
+        <details class="tier">
+          <summary><span>TIER 2</span> Se PIC permanece &gt;22 mmHg</summary>
+          <div class="tier-body">
+            <ol>
+              <li>Chame neurocirurgia novamente; confirme necessidade de evacuação/descompressão e funcionamento do EVD.</li>
+              <li>Aprofunde sedação titulada à PIC e considere bloqueio neuromuscular curto se tosse/assincronia mantêm crise, sempre com analgesia/sedação e monitorização.</li>
+              <li>Repita osmoterapia guiada por resposta e toxicidade; não persiga hipernatremia arbitrária.</li>
+              <li>Use EEG contínuo quando disponível; trate estado de mal não convulsivo.</li>
+              <li>Hiperventilação moderada e temporária apenas em deterioração/hernição, com gasometria e, idealmente, monitorização de oxigenação cerebral.</li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="tier danger-tier">
+          <summary><span>TIER 3</span> PIC verdadeiramente refratária</summary>
+          <div class="tier-body">
+            <ol>
+              <li>Reunião neurocirurgia–neurointensivismo: craniectomia descompressiva/resgate adequado ao padrão de lesão e prognóstico.</li>
+              <li>Barbitúrico em alta dose pode ser considerado para PIC refratária a tratamento máximo, apenas com estabilidade hemodinâmica e monitorização intensiva.</li>
+              <li>Não usar barbitúrico profilático. Não usar hipotermia profilática para melhorar desfecho. Prevenir e tratar febre.</li>
+              <li>Rever metas e proporcionalidade terapêutica com dados multimodais; evitar prognóstico precoce baseado apenas no exame sob sedação/intoxicação.</li>
+            </ol>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="sedacao" aria-labelledby="sedacao-title">
+      <div class="section-head">
+        <div><div class="kicker">Analgesia → alvo → reavaliação</div><h2 id="sedacao-title">Sedação, desmame e despertar neurológico</h2><p>O teste de despertar é diagnóstico, não ritual. Só execute quando a reserva cerebral e sistêmica permitirem.</p></div>
+      </div>
+
+      <div class="grid three sedation-principles">
+        <article class="card"><span class="card-tag">1 · POR QUÊ</span><h3>Defina a indicação</h3><p>Dor, ventilação, procedimento, crise epiléptica, hiperatividade simpática ou controle de PIC. Sem indicação documentada, reduza acúmulo.</p></article>
+        <article class="card"><span class="card-tag">2 · ALVO</span><h3>Escreva o alvo</h3><p>CPOT/BPS para dor e RASS/SAS para sedação. Sedação profunda é tratamento em HIC refratária; fora disso, busque o menor nível eficaz.</p></article>
+        <article class="card"><span class="card-tag">3 · AGENTE</span><h3>Escolha pela fisiologia</h3><p>Propofol facilita despertar e controla PIC, mas pode causar hipotensão/PRIS. Dexmedetomidina favorece sedação leve, com risco de bradicardia/hipotensão. Benzodiazepínico acumula e tem usos específicos.</p></article>
+      </div>
+
+      <div class="comparison-wrap medication-table">
+        <table>
+          <caption>Mapa prático — não substitui prescrição institucional</caption>
+          <thead><tr><th>Opção</th><th>Quando ajuda</th><th>O que vigiar</th><th>Armadilha</th></tr></thead>
+          <tbody>
+            <tr><td>Fentanil/remifentanil</td><td>Analgesia, tosse e procedimentos; remifentanil facilita exame rápido</td><td>Ventilação, rigidez torácica, íleo, tolerância/abstinência</td><td>Opioide trata dor, não toda agitação</td></tr>
+            <tr><td>Propofol</td><td>Controle rápido, PIC, crises e despertar previsível</td><td>PAS/PPC, triglicérides, acidose, CK, lactato e dose/duração</td><td>Não usar dose alta para “melhorar desfecho”; reconhecer PRIS</td></tr>
+            <tr><td>Dexmedetomidina</td><td>Transição para sedação leve, avaliação e extubação selecionada</td><td>Bradicardia e hipotensão</td><td>Não substitui sedação profunda necessária na HIC</td></tr>
+            <tr><td>Midazolam</td><td>Crise/estado de mal, abstinência e instabilidade em contextos selecionados</td><td>Acúmulo, delirium, tolerância e despertar tardio</td><td>Coma prolongado pode ser farmacológico</td></tr>
+            <tr><td>Cetamina</td><td>Analgesia/sedação e broncodilatação; útil quando hipotensão limita opções</td><td>Resposta pressórica, secreção, emergência e drive</td><td>Não é automaticamente contraindicada no TCE; individualize</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="wake-layout">
+        <article class="wake-gate card" aria-labelledby="wake-gate-title">
+          <div class="card-tag">GATE INTERATIVO</div>
+          <h3 id="wake-gate-title">Pode iniciar o teste de despertar?</h3>
+          <p>Marque apenas condições confirmadas. O resultado é educativo e não fica salvo.</p>
+          <div id="wakeChecklist" class="checklist" role="group" aria-label="Condições para teste de despertar">
+            <label><input type="checkbox" data-wake-check> PIC estável/no alvo e sem herniação recente</label>
+            <label><input type="checkbox" data-wake-check> PPC/PAS estáveis, sem escalada de vasopressor</label>
+            <label><input type="checkbox" data-wake-check> Sem estado de mal ou crise não controlada</label>
+            <label><input type="checkbox" data-wake-check> Oxigenação/ventilação estáveis; sem resgate de SDRA em curso</label>
+            <label><input type="checkbox" data-wake-check> Sem bloqueio neuromuscular ativo ou paralisia residual</label>
+            <label><input type="checkbox" data-wake-check> Sem procedimento/transporte imediato e equipe pronta para abortar</label>
+          </div>
+          <div id="wakeResult" class="gate-result" aria-live="polite">0/6 condições confirmadas — mantenha a sedação e reavalie o motivo pendente.</div>
+        </article>
+
+        <article class="card wake-steps">
+          <div class="card-tag">PASSO A PASSO</div>
+          <h3>Despertar neurológico seguro</h3>
+          <ol>
+            <li><strong>Briefing:</strong> registre GCS/pupilas/PIC/PPC/RASS/respiração e defina quem observa cérebro, ventilador e hemodinâmica.</li>
+            <li><strong>Prepare:</strong> reduza estímulo, corrija dor, posição, secreção, febre, retenção urinária e assincronia.</li>
+            <li><strong>Reduza um eixo:</strong> interrompa ou diminua o sedativo de curta ação; mantenha analgesia mínima necessária.</li>
+            <li><strong>Observe em série:</strong> comando, pupilas, motor, RASS, PIC/PPC, FR, volume corrente, SpO<sub>2</sub> e pressão.</li>
+            <li><strong>Decida:</strong> se tolerado, fixe novo alvo mais leve e combine SBT. Se falhar, trate a causa e retorne à menor dose eficaz.</li>
+          </ol>
+          <div class="abort-box"><strong>Abortar e resgatar:</strong> nova anisocoria/déficit, crise, PIC &gt;22 sustentada ou curva ascendente, PPC &lt;60, dessaturação, desconforto/empilhamento lesivo, agitação perigosa ou instabilidade hemodinâmica. Os limiares temporais devem ser homologados localmente.</div>
+        </article>
+      </div>
+
+      <details class="clinical-detail" open>
+        <summary>Desmame ventilatório e extubação no TCE</summary>
+        <div>
+          <ol>
+            <li>Resolva a indicação de ventilação e confirme estabilidade de oxigenação, hemodinâmica e PIC.</li>
+            <li>Reduza sedação até permitir avaliação confiável; exclua acúmulo, distúrbio metabólico, crise e nova lesão.</li>
+            <li>Faça SBT conforme protocolo, observando também PIC/PPC e padrão de drive.</li>
+            <li>Avalie tosse, manejo de secreções, deglutição/risco de aspiração, patência de via aérea e trajetória neurológica.</li>
+            <li>Não use um único corte de GCS como veto ou autorização. A decisão combina consciência, reflexos/proteção de via aérea e fatores respiratórios.</li>
+            <li>Defina plano pós-extubação e critérios de reintubação; alto risco pode exigir suporte não invasivo/HFNC conforme fenótipo, sem postergar falha.</li>
+          </ol>
+        </div>
+      </details>
+    </section>
+
+    <section id="assincronias" aria-labelledby="assincronias-title">
+      <div class="section-head">
+        <div><div class="kicker">Olhe pressão + fluxo + paciente</div><h2 id="assincronias-title">Assincronias: identificar, reverter, reavaliar</h2><p>Primeiro exclua deterioração. Depois corrija o mecanismo — paciente, circuito, drive e ventilador.</p></div>
+      </div>
+
+      <div class="dope-strip" role="note">
+        <strong>Deterioração abrupta? DOPE antes da assincronia:</strong>
+        <span><b>D</b>eslocamento do tubo</span><span><b>O</b>bstrução/secreção</span><span><b>P</b>neumotórax</span><span><b>E</b>quipamento/circuito</span>
+      </div>
+
+      <div class="toolbar asynchrony-tools">
+        <label for="asynchronySearch">Buscar padrão</label>
+        <input id="asynchronySearch" type="search" placeholder="Ex.: duplo disparo, auto-PEEP, ciclagem…" autocomplete="off">
+        <label for="asynchronyFilter">Momento</label>
+        <select id="asynchronyFilter">
+          <option value="all">Todos</option>
+          <option value="trigger">Disparo</option>
+          <option value="flow">Fluxo</option>
+          <option value="cycle">Ciclagem</option>
+          <option value="entrainment">Entrainment</option>
+        </select>
+        <span id="asynchronyCount" class="meta" aria-live="polite"></span>
+      </div>
+
+      <div id="asynchronyGrid" class="asynchrony-grid">
+        <article class="async-card" data-category="flow" data-search="fome fluxo flow starvation fluxo insuficiente concavidade pressão drive">
+          <div class="async-head"><span class="wave-icon">⌁</span><div><span class="card-tag">FLUXO</span><h3>Fome de fluxo</h3></div></div>
+          <dl><dt>Reconheça</dt><dd>Queda/concavidade da pressão inspiratória em VC, esforço visível e demanda maior que o fluxo entregue.</dd><dt>Procure</dt><dd>Dor, febre, acidose, ansiedade, volume/minuto insuficiente, fluxo baixo ou rise time lento.</dd><dt>Reverta</dt><dd>Trate o drive; em VC, aumente fluxo ou mude o perfil; em pressão, acelere rise time e ajuste suporte. Preserve VT/Pplat/ΔP.</dd><dt>Reavalie</dt><dd>Conforto, esforço, VT, pressão de platô, driving pressure, PaCO<sub>2</sub> e PIC.</dd></dl>
+        </article>
+
+        <article class="async-card" data-category="trigger" data-search="esforço ineficaz disparo ineficaz ineffective trigger auto peep fraqueza">
+          <div class="async-head"><span class="wave-icon">⌄</span><div><span class="card-tag">DISPARO</span><h3>Esforço ineficaz</h3></div></div>
+          <dl><dt>Reconheça</dt><dd>Deflexão de pressão/fluxo sem ciclo ventilatório correspondente; esforço abdominal/pescoço.</dd><dt>Procure</dt><dd>Auto-PEEP, trigger pouco sensível, fraqueza, sedação excessiva ou suporte excessivo com drive baixo.</dd><dt>Reverta</dt><dd>Trate obstrução e prolongue expiração; reduza FR/VT se aprisionamento; torne trigger mais sensível sem auto-disparo; reduza suporte excessivo. PEEP externa pode ajudar auto-PEEP em obstrutivo, titulada com cautela.</dd><dt>Reavalie</dt><dd>Curva expiratória chega a zero, esforços capturados, hiperinsuflação, pressão e trabalho.</dd></dl>
+        </article>
+
+        <article class="async-card" data-category="trigger" data-search="auto disparo autotrigger vazamento água circuito condensado oscilação cardíaca trigger sensível">
+          <div class="async-head"><span class="wave-icon">⌃</span><div><span class="card-tag">DISPARO</span><h3>Auto-disparo</h3></div></div>
+          <dl><dt>Reconheça</dt><dd>Ciclos sem esforço precedente; FR do ventilador maior que a atividade do paciente.</dd><dt>Procure</dt><dd>Vazamento, água no circuito, oscilação cardíaca, nebulização ou trigger excessivamente sensível.</dd><dt>Reverta</dt><dd>Drene condensado com segurança, corrija vazamento/cuff, organize circuito e reduza sensibilidade gradualmente.</dd><dt>Reavalie</dt><dd>Confirme que esforço verdadeiro ainda dispara sem atraso.</dd></dl>
+        </article>
+
+        <article class="async-card" data-category="trigger" data-search="duplo disparo double triggering breath stacking empilhamento volume corrente drive tempo inspiratório">
+          <div class="async-head"><span class="wave-icon">⌁⌁</span><div><span class="card-tag">DISPARO</span><h3>Duplo disparo / empilhamento</h3></div></div>
+          <dl><dt>Reconheça</dt><dd>Dois ciclos quase contíguos para um esforço; volume empilhado pode exceder a meta protetora.</dd><dt>Procure</dt><dd>Drive alto, tempo inspiratório mecânico curto, VT baixo demais para demanda, dor/acidose/hipoxemia ou reverse triggering.</dd><dt>Reverta</dt><dd>Trate a causa do drive; alinhe Ti/fluxo; em PSV, prolongue inspiração reduzindo o critério de ciclagem; considere modo que acompanhe esforço. Não eleve VT cegamente.</dd><dt>Reavalie</dt><dd>VT total entregue, Pplat/ΔP, frequência de eventos e PIC. Bloqueio curto apenas se empilhamento lesivo persiste apesar de correções.</dd></dl>
+        </article>
+
+        <article class="async-card" data-category="cycle" data-search="ciclagem precoce premature cycling inspiração curta duplo disparo corte fluxo pressão suporte">
+          <div class="async-head"><span class="wave-icon">╱│</span><div><span class="card-tag">CICLAGEM</span><h3>Ciclagem precoce</h3></div></div>
+          <dl><dt>Reconheça</dt><dd>Ventilador termina antes do esforço neural; queda de pressão, esforço continua e pode gerar duplo disparo.</dd><dt>Procure</dt><dd>Ti curto, limite de fluxo alto em PSV, drive alto ou rise time inadequado.</dd><dt>Reverta</dt><dd>Prolongue Ti. Em PSV, reduza a porcentagem de ciclagem (ex.: 50% → 25%, conforme aparelho); ajuste rise time e trate drive.</dd><dt>Reavalie</dt><dd>Ausência de esforço após ciclagem, VT seguro e expiração suficiente.</dd></dl>
+        </article>
+
+        <article class="async-card" data-category="cycle" data-search="ciclagem tardia delayed cycling inspiração longa expiração ativa copd dpoc threshold">
+          <div class="async-head"><span class="wave-icon">│╲</span><div><span class="card-tag">CICLAGEM</span><h3>Ciclagem tardia</h3></div></div>
+          <dl><dt>Reconheça</dt><dd>Fluxo inspiratório persiste após relaxamento; pico de pressão no fim, expiração ativa ou desconforto.</dd><dt>Procure</dt><dd>Ti longo, limite de ciclagem baixo, vazamento ou constante de tempo longa na DPOC.</dd><dt>Reverta</dt><dd>Encurte Ti. Em PSV, aumente a porcentagem de ciclagem (ex.: 25% → 40–50%); corrija vazamento e acelere fluxo quando adequado.</dd><dt>Reavalie</dt><dd>Mais tempo expiratório, menor auto-PEEP e ausência de pico terminal.</dd></dl>
+        </article>
+
+        <article class="async-card" data-category="flow" data-search="auto peep hiperinsuflação dinâmica aprisionamento aéreo fluxo expiratório zero dpoc asma">
+          <div class="async-head"><span class="wave-icon">≋</span><div><span class="card-tag">EXPIRAÇÃO</span><h3>Auto-PEEP / aprisionamento</h3></div></div>
+          <dl><dt>Reconheça</dt><dd>Fluxo expiratório não retorna a zero, dificuldade de disparo, hipotensão, pressões altas ou tórax hiperinsuflado.</dd><dt>Procure</dt><dd>Obstrução, secreção, FR/VT altos, Ti longo ou resistência do circuito.</dd><dt>Reverta</dt><dd>Se colapso, desconecte brevemente e ventile manualmente enquanto exclui pneumotórax. Depois broncodilate/aspire, reduza FR/VT, aumente fluxo e encurte Ti; aceite maior tempo expiratório.</dd><dt>Reavalie</dt><dd>Auto-PEEP medida em pausa expiratória, pressão, retorno do fluxo e hemodinâmica.</dd></dl>
+        </article>
+
+        <article class="async-card" data-category="entrainment" data-search="reverse triggering disparo reverso entrainment sedação controlado esforço diafragma empilhamento">
+          <div class="async-head"><span class="wave-icon">⇄</span><div><span class="card-tag">ENTRAINMENT</span><h3>Reverse triggering</h3></div></div>
+          <dl><dt>Reconheça</dt><dd>Um ciclo mandatório precede e induz esforço diafragmático tardio, às vezes com empilhamento.</dd><dt>Procure</dt><dd>Sedação profunda/intermediária, ritmo mandatório próximo ao drive neural e controle excessivo.</dd><dt>Reverta</dt><dd>Confirme com curvas; mude FR/Ti para quebrar acoplamento, considere modo espontâneo quando neuro/respiração permitem e evite escalada automática de sedação. Se esforço lesivo refratário, bloqueio curto selecionado.</dd><dt>Reavalie</dt><dd>Empilhamento, esforço, VT/Pplat/ΔP e PIC após cada mudança.</dd></dl>
+        </article>
+      </div>
+      <div id="asynchronyEmpty" class="empty" hidden>Nenhum padrão corresponde ao filtro.</div>
+
+      <aside class="sequence-box">
+        <strong>Sequência universal em 7 passos</strong>
+        <ol><li>Olhe o paciente.</li><li>DOPE e pneumotórax.</li><li>Leia pressão + fluxo.</li><li>Defina drive/esforço.</li><li>Corrija causa reversível.</li><li>Ajuste um parâmetro por vez.</li><li>Reavalie proteção pulmonar + PIC/PPC.</li></ol>
+      </aside>
+    </section>
+
+    <section id="resgate" aria-labelledby="resgate-title">
+      <div class="section-head">
+        <div><div class="kicker">Pulmão e cérebro no mesmo plano</div><h2 id="resgate-title">Resgate da falência respiratória grave</h2><p>Hipoxemia mata o cérebro; ventilação lesiva também. Escalone cedo e meça a resposta cerebral.</p></div>
+      </div>
+
+      <div class="rescue-ladder">
+        <article class="rescue-step">
+          <div class="step-number">1</div><div><h3>Resgate imediato: 0–5 min</h3><ul><li>FiO<sub>2</sub> 1,0, equipe, monitor e gasometria.</li><li>Se deterioração abrupta: desconecte e ventile com bolsa, avalie complacência e execute DOPE.</li><li>Confirme profundidade do tubo/capnografia, aspire, examine/POCUS e trate pneumotórax sem atraso.</li><li>Se choque: diferencie pressão intratorácica, hemorragia, sepse e cardiogênico; preserve PPC.</li></ul></div>
+        </article>
+        <article class="rescue-step">
+          <div class="step-number">2</div><div><h3>Ventilação protetora e diagnóstico</h3><ul><li>VT inicial ~6 mL/kg de peso predito (faixa 4–8 conforme mecânica), Pplat ≤30 cmH<sub>2</sub>O; acompanhe driving pressure e energia.</li><li>PEEP/FiO<sub>2</sub> por protocolo; avalie recrutabilidade, VD, complacência e hemodinâmica. Não faça manobra de recrutamento prolongada rotineira.</li><li>Procure SDRA, aspiração, contusão, edema, atelectasia, TEP, hemorragia alveolar, obstrução e infecção.</li><li>No TCE, não aceite hipercapnia permissiva sem medir PaCO<sub>2</sub>, PIC/PPC e risco de herniação.</li></ul></div>
+        </article>
+        <article class="rescue-step">
+          <div class="step-number">3</div><div><h3>SDRA moderada–grave</h3><ul><li>Se P/F permanece &lt;150 após estabilização, VT baixo e PEEP ajustada: prona precoce por ≥16 horas, com equipe treinada.</li><li>Prepare ETT, linhas, olhos, pele e pontos de pressão; defina abortagem. Monitore PIC/PPC durante e após virar.</li><li>Considere bloqueio neuromuscular precoce e curto (até 48 h) na SDRA grave selecionada com assincronia/hipoxemia, sempre com sedação/analgesia.</li><li>Estratégia conservadora de fluidos após correção do choque; trate causa.</li></ul></div>
+        </article>
+        <article class="rescue-step">
+          <div class="step-number">4</div><div><h3>Ponte enquanto organiza transferência</h3><ul><li>Óxido nítrico/prostaciclina inalados podem melhorar oxigenação transitoriamente em resgate selecionado; não são terapia de mortalidade.</li><li>Otimize posição, PEEP, sincronização e hemoglobina/perfusão; evite pressões lesivas para “normalizar” saturação.</li><li>Acione centro ECMO cedo se deterioração apesar de tratamento máximo.</li></ul></div>
+        </article>
+        <article class="rescue-step ecmo-step">
+          <div class="step-number">5</div><div><h3>Referência para VV-ECMO</h3><ul><li>ELSO: considerar se P/F &lt;80 apesar de manejo ótimo incluindo prona, ou falência hipercápnica com pH &lt;7,25 e PaCO<sub>2</sub> ≥60 apesar de ventilação convencional protetora.</li><li>TCE/hemorragia intracraniana e contraindicação à anticoagulação são contraindicações relativas importantes — decisão individual do centro ECMO + neurocirurgia.</li><li>Não espere dias de ventilação muito agressiva; a candidatura piora com tempo e dano irreversível.</li></ul></div>
+        </article>
+      </div>
+
+      <div class="brain-lung-grid">
+        <article><strong>Ao subir PEEP</strong><span>Reveja PAM, PIC, PPC, complacência, VD e oxigenação; PEEP benéfica ao pulmão pode ser tolerável se melhora recrutamento e a perfusão é mantida.</span></article>
+        <article><strong>Ao pronar</strong><span>Planeje monitorização/linhas/EVD, cabeça alinhada, acesso às pupilas e critérios claros de retorno; não descarte prona apenas pelo diagnóstico de TCE.</span></article>
+        <article><strong>Ao bloquear</strong><span>Garanta analgesia + hipnose, proteção ocular, prevenção de lesão por pressão, TOF conforme prática e reavaliação diária da necessidade.</span></article>
+        <article><strong>Ao corrigir CO<sub>2</sub></strong><span>Evite mudanças abruptas. Use gasometria, capnografia e fisiologia cerebral; ETCO<sub>2</sub> pode subestimar PaCO<sub>2</sub> no choque/alto espaço morto.</span></article>
+      </div>
+    </section>
+
+    <section id="substancias" aria-labelledby="substancias-title">
+      <div class="section-head">
+        <div><div class="kicker">Sem ancoragem diagnóstica</div><h2 id="substancias-title">TCE após álcool, cocaína, opioides ou outras drogas</h2><p>A substância modifica riscos e antídotos; nunca rebaixa a prioridade do trauma e da neuroproteção.</p></div>
+      </div>
+
+      <div class="substance-grid">
+        <article class="substance-card alcohol-card">
+          <span class="card-tag">ÁLCOOL</span><h3>Depressor + aspiração + viés</h3>
+          <ol><li>ABC, coluna, glicemia, temperatura, ECG e trauma completo.</li><li>Corrija hipoglicemia imediatamente; não espere tiamina.</li><li>Dê tiamina parenteral conforme protocolo se dependência, desnutrição ou suspeita de encefalopatia de Wernicke.</li><li>Procure coingestão, sangramento, hiponatremia, acidose e abstinência posterior.</li><li>Exame deprimido não é “só álcool”: repita GCS/pupilas e imagem.</li></ol>
+        </article>
+
+        <article class="substance-card cocaine-card">
+          <span class="card-tag">COCAÍNA / SIMPATICOMIMÉTICO</span><h3>Agitação, calor, isquemia e QRS</h3>
+          <ol><li>Sedação precoce da agitação grave, com via aérea, capnografia e temperatura; contenção física prolongada sem sedação é perigosa.</li><li>Temperatura central &gt;40 °C: resfriamento externo rápido; trate convulsão e rabdomiólise.</li><li>ECG seriado. QRS largo/TV ou PCR: bicarbonato de sódio é razoável; lidocaína também pode ser usada.</li><li>Vasoespasmo coronário/emergência hipertensiva: nitrato, fentolamina ou bloqueador de canal de cálcio conforme cenário.</li><li>Na toxicidade ameaçadora à vida, AHA 2025 não recomenda antagonista beta-adrenérgico.</li></ol>
+        </article>
+
+        <article class="substance-card opioid-card">
+          <span class="card-tag">OPIOIDE</span><h3>Ventile antes que pare</h3>
+          <ol><li>Se há pulso e depressão/parada respiratória: abra via aérea, ventile com bolsa e administre naloxona.</li><li>Titule naloxona para ventilação/proteção de via aérea, não necessariamente abstinência abrupta; repita se necessário pelo protocolo.</li><li>Se PCR: compressões + ventilação + ALS imediatamente. Naloxona pode ser administrada, mas não deve interromper RCP.</li><li>Antecipe recorrência quando o opioide dura mais que a naloxona; observe e considere redoses/infusão em ambiente monitorado.</li><li>Após reversão, o TCE continua: exame, TC, perfusão e prevenção de aspiração.</li></ol>
+        </article>
+
+        <article class="substance-card mixed-card">
+          <span class="card-tag">MISTURA / DESCONHECIDA</span><h3>Trate o toxíndrome e chame apoio</h3>
+          <ol><li>ABC, glicose, temperatura, ECG/QRS/QTc, gasometria, eletrólitos, função renal/hepática e CK conforme fenótipo.</li><li>Considere paracetamol/salicilato e álcool tóxico quando história/fisiologia indicarem; preserve amostras.</li><li>Evite flumazenil rotineiro em coma misto, uso crônico ou risco de convulsão.</li><li>Consulte centro de informação toxicológica/CIATox e toxicologista; antídotos são específicos.</li><li>Reavalie diagnóstico se resposta ao antídoto for incompleta: hipóxia, choque, hemorragia e TCE coexistem.</li></ol>
+        </article>
+      </div>
+
+      <details class="clinical-detail" open>
+        <summary>Se houver parada cardíaca ou choque refratário</summary>
+        <div class="post-arrest-grid">
+          <ol>
+            <li>Execute RCP de alta qualidade/ALS e trate causas traumáticas reversíveis em paralelo: hemorragia, hipóxia, pneumotórax hipertensivo e tamponamento.</li>
+            <li>Acrescente terapia toxicológica específica sem atrasar desfibrilação, compressões, ventilação ou controle de hemorragia.</li>
+            <li>Cocaína com QRS largo: bicarbonato/lidocaína; choque cardiogênico tóxico refratário pode motivar discussão de VA-ECMO em centro experiente.</li>
+            <li>Opioide: ventilação é central; naloxona não reverte fibrilação ventricular nem substitui RCP.</li>
+            <li>Após ROSC: evite hipóxia, hipotensão e hipocapnia; controle febre, faça TC/neurocirurgia e identifique lesão cardíaca/toxicológica.</li>
+          </ol>
+        </div>
+      </details>
+    </section>
+
+    <section id="checklists" aria-labelledby="checklists-title">
+      <div class="section-head">
+        <div><div class="kicker">Copiar sem dados do paciente</div><h2 id="checklists-title">Checklists de passagem e prescrição</h2><p>Use como esqueleto; adapte à realidade local.</p></div>
+      </div>
+      <div class="checklist-grid">
+        <article class="copy-card card">
+          <h3>Handoff TCE grave</h3>
+          <pre id="handoffText">TCE GRAVE — HANDOFF
+• Mecanismo e hora:
+• GCS E/V/M: pré-hospitalar | pós-ressuscitação | atual:
+• Pupilas e lateralização:
+• Hipóxia/hipotensão: episódio, duração, menor valor:
+• Via aérea: dispositivo, profundidade, capnografia, PaCO2:
+• TC crânio/coluna e evolução:
+• Hemorragia/coagulação/reversão:
+• PIC/PPC/EVD e resposta a resgates:
+• Analgesia/sedação/BNM e última dose:
+• Álcool/drogas/antídotos/toxicologia:
+• Próximo passo, responsável e gatilho de escalada:</pre>
+          <button class="copy-button" type="button" data-copy-target="handoffText">Copiar handoff</button>
+        </article>
+        <article class="copy-card card">
+          <h3>Prescrição de alvos</h3>
+          <pre id="targetsText">TCE GRAVE — ALVOS A HOMOLOGAR
+□ SpO2 ≥94%; gasometria/capnografia seriadas
+□ PaCO2 35–38 mmHg se suspeita de HIC
+□ PAS por idade; PPC 60–70 mmHg
+□ Tratar PIC sustentada &gt;22 mmHg
+□ Cabeceira 30°; cabeça/pescoço neutros
+□ Normotermia; evitar hiponatremia e glicemia extrema
+□ GCS E/V/M + pupilas de hora em hora
+□ Alvo CPOT/BPS e RASS/SAS documentado
+□ EEG/convulsão e profilaxia ≤7 d se indicada
+□ DVT, pele, olhos, nutrição e reabilitação conforme segurança
+□ Critérios explícitos de despertar, SBT e abortagem</pre>
+          <button class="copy-button" type="button" data-copy-target="targetsText">Copiar alvos</button>
+        </article>
+      </div>
+      <p id="copyStatus" class="copy-status" aria-live="polite"></p>
+    </section>
+
+    <section id="fontes" aria-labelledby="fontes-title">
+      <div class="section-head">
+        <div><div class="kicker">Rastreabilidade clínica</div><h2 id="fontes-title">Diretrizes e estudos-base</h2><p>Última busca: 03/09/2026. Preferência por sociedades, consensos e estudos primários.</p></div>
+      </div>
+      <ol class="reference-list">
+        <li><a href="https://www.neurocriticalcare.org/Portals/0/ENLS%205.0/ENLS%206.0/Protocol%20V6_0_Traumatic%20Brain%20Injury.pdf" target="_blank" rel="noopener noreferrer">Neurocritical Care Society — ENLS 6.0: Traumatic Brain Injury Protocol</a> (2024).</li>
+        <li><a href="https://www.neurocriticalcare.org/Portals/0/ENLS%205.0/ENLS%206.0/Protocol%20V6_0_Intracranial%20Hypertension%20and%20Herniation.pdf" target="_blank" rel="noopener noreferrer">Neurocritical Care Society — ENLS 6.0: Intracranial Hypertension and Herniation</a> (2024).</li>
+        <li><a href="https://braintrauma.org/coma/guidelines/severe-tbi-4th-edition" target="_blank" rel="noopener noreferrer">Brain Trauma Foundation — Guidelines for Severe TBI, 4th Edition</a>.</li>
+        <li><a href="https://braintrauma.org/coma/guidelines/prehospital" target="_blank" rel="noopener noreferrer">Brain Trauma Foundation — Prehospital Guidelines, 3rd Edition</a>.</li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7272487/" target="_blank" rel="noopener noreferrer">NCS — Acute Treatment of Cerebral Edema</a>. Neurocrit Care. 2020.</li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/38316735/" target="_blank" rel="noopener noreferrer">NCS — Seizure Prophylaxis in Moderate–Severe TBI</a>. Neurocrit Care. 2024.</li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6853170/" target="_blank" rel="noopener noreferrer">CRASH-3 — Tranexamic acid in acute TBI</a>. Lancet. 2019.</li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/15474134/" target="_blank" rel="noopener noreferrer">CRASH — Corticosteroids after head injury</a>. Lancet. 2004.</li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7655906/" target="_blank" rel="noopener noreferrer">ESICM — Mechanical ventilation in acute brain injury</a>. Intensive Care Med. 2020.</li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7922463/" target="_blank" rel="noopener noreferrer">Consensus on analgo-sedation in neurocritical care</a>. Indian J Crit Care Med. 2021.</li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8509510/" target="_blank" rel="noopener noreferrer">Patient–Ventilator Dyssynchrony in Critically Ill Patients</a>. J Clin Med. 2021.</li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10354163/" target="_blank" rel="noopener noreferrer">ESICM Guidelines on ARDS</a>. Intensive Care Med. 2023.</li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10870893/" target="_blank" rel="noopener noreferrer">ATS Update on Management of Adult ARDS</a>. Am J Respir Crit Care Med. 2024.</li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8315725/" target="_blank" rel="noopener noreferrer">ELSO Guideline for Adult VV-ECMO</a>. ASAIO J. 2021.</li>
+        <li><a href="https://www.sccm.org/clinical-resources/guidelines/guidelines/guidelines-rapid-sequence-intubation" target="_blank" rel="noopener noreferrer">SCCM — Rapid Sequence Intubation in the Critically Ill Adult</a>. 2023.</li>
+        <li><a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-and-pediatric-special-circumstances-of-resuscitation" target="_blank" rel="noopener noreferrer">AHA 2025 — Special Circumstances of Resuscitation</a>.</li>
+        <li><a href="https://www.nice.org.uk/guidance/cg100/chapter/recommendations" target="_blank" rel="noopener noreferrer">NICE CG100 — Alcohol-use disorders: physical complications</a>.</li>
+      </ol>
+      <aside class="evidence-legend">
+        <strong>Como ler:</strong> números de alvo vêm de BTF/ENLS; osmoterapia e profilaxia anticonvulsivante carregam recomendações fracas/condicionais; ventilação e sedação no TCE exigem individualização e monitorização integrada cérebro–pulmão.
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>AldenirMed89 · TCE grave CRASH</strong> — conteúdo educacional e apoio cognitivo. Não substitui avaliação médica, ATLS/ACLS, neurocirurgia, toxicologia, ECMO ou protocolo institucional.</p>
+    <p><a href="../../index.html">← Voltar ao portal principal</a> · <a href="../Ventilacao_Mecanica/respiracrit.html">Abrir RespiraCrit</a> · <a href="../Delirium_UTI/index.html">Abrir Delirium/Sedação</a></p>
+  </footer>
+
+  <script src="data/catalog.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

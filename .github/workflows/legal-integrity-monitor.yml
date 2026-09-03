@@ -29,10 +29,12 @@ jobs:
         shell: bash
         run: |
           set -uo pipefail
+          set +e
           python3 scripts_admin/check_legal_sources.py \
             --check \
             --report legal-integrity-report.json
           exit_code=$?
+          set -e
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
           if [ ! -s legal-integrity-report.json ]; then
             echo "report_missing=true" >> "$GITHUB_OUTPUT"

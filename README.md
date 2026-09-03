@@ -18,16 +18,17 @@
 - [🩸 Abrir Hematologia Crítica](01_Modulos_Clinicos/Hematologia_Critica/index.html)
 - [🧬 Abrir Reumatologia Crítica](01_Modulos_Clinicos/Reumatologia_Critica/index.html)
 - [🧠 Abrir Delirium na UTI e Enfermaria](01_Modulos_Clinicos/Delirium_UTI/index.html)
+- [🧠 Abrir TCE grave — Protocolo CRASH](01_Modulos_Clinicos/TCE_Grave_CRASH/index.html)
 - [🧪 Log consolidado da homologação do Delirium](docs_usuario/HOMOLOGACAO_DELIRIUM_UTI_2026-07-25.md)
 
 O controle **☀️ Visualização clara** ativa a **Visualização Clara**: fundo branco real, tipografia
 azul-marinho de alto contraste e acentos aeroespaciais preservados. Ela funciona
-na página inicial, no modo offline, na página 404 e nos **16 módulos acessíveis
+na página inicial, no modo offline, na página 404 e nos **17 módulos acessíveis
 pela Home**: **UpDown Hub**, **Biblioteca IA**, **Calculadoras UTI**,
 **RespiraSense ICU**, **RespiraCrit**, **Simulador TEMI**, **Card Feed Médico**,
 **Ebooks**, **Questões Comentadas**, **Transcrições**, **POCUS**, **RenalDose**,
-**SAPS 3**, **Hematologia Crítica**, **Reumatologia Crítica** e **Delirium
-UTI/Enfermaria**. As três PWAs
+**SAPS 3**, **Hematologia Crítica**, **Reumatologia Crítica**, **Delirium
+UTI/Enfermaria** e **TCE grave — Protocolo CRASH**. As três PWAs
 instaláveis — **AldenirMed89**, **Card Feed Médico** e **RespiraSense ICU** — e os
 atalhos de Mac, Windows e iPhone que abrem a plataforma também recebem a
 preferência. A impressão e a exportação para PDF usam uma folha branca
@@ -126,7 +127,7 @@ Material bruto (PDF/DOCX/aula/IA)
 | `07_Questoes_Comentadas/` | Questões comentadas, simulados, casos clínicos, OSCE, CSV e Anki | ✅ |
 | `08_Transcricoes/` | Transcrições de aulas, vídeos, podcasts, reuniões e discussões clínicas | ✅ |
 | `09_POCUS_Hub/` | POCUS/USG beira-leito: aulas, vídeos, artigos, imagens, modelos, dicas e links | ✅ |
-| `01_Modulos_Clinicos/` | Módulos clínicos em HTML, incluindo **Hematologia Crítica**, **Reumatologia Crítica** e **Delirium UTI/Enfermaria** (emergências, diagnóstico difícil, scores e Turbo TEMI) | ✅ |
+| `01_Modulos_Clinicos/` | Módulos clínicos em HTML, incluindo **TCE grave CRASH**, **Hematologia Crítica**, **Reumatologia Crítica** e **Delirium UTI/Enfermaria** (emergências, diagnóstico difícil, ventilação e Turbo TEMI) | ✅ |
 | `questoes/` | Banco de questões TEMI/R3 — rota canônica | ✅ |
 | `02_Banco_Questoes_TEMI/` | Alias legado com redirect para `questoes/` | ✅ |
 | `les-autoanticorpos/` | Módulo LES — autoanticorpos | ✅ |
