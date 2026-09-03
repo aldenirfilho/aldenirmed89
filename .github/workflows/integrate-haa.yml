@@ -1,0 +1,204 @@
+name: Integrar Hepatite Associada ao Álcool
+
+on:
+  push:
+    branches:
+      - feature/hepatite-alcool-associada-2026-09-03
+    paths:
+      - .github/workflows/integrate-haa.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout da branch de integração
+        uses: actions/checkout@v5
+        with:
+          ref: feature/hepatite-alcool-associada-2026-09-03
+          fetch-depth: 0
+
+      - name: Reconstruir módulo, registrar e integrar
+        shell: bash
+        run: |
+          set -euo pipefail
+          target="01_Modulos_Clinicos/Hepatite_Alcool_Associada"
+          mkdir -p "$target"
+          cat .github/haa-payload/part*.b64 | base64 --decode > /tmp/hepatite-module.tar.xz
+          tar -xJf /tmp/hepatite-module.tar.xz -C "$target"
+          rm -rf .github/haa-payload
+
+          python3 <<'PY'
+          from __future__ import annotations
+
+          import json
+          from pathlib import Path
+
+          ROOT = Path('.')
+          ROUTE = '01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html'
+          MODULE_ROOT = '01_Modulos_Clinicos/Hepatite_Alcool_Associada'
+
+          def load_json(path: str):
+              return json.loads((ROOT / path).read_text(encoding='utf-8'))
+
+          def save_json(path: str, data):
+              (ROOT / path).write_text(
+                  json.dumps(data, ensure_ascii=False, indent=2) + '\n',
+                  encoding='utf-8',
+              )
+
+          # 1. Card visível na homepage
+          home_path = '06_Infra_Site_E_Assets/data/home-manifest.json'
+          home = load_json(home_path)
+          card = {
+              'title': 'Hepatite associada ao álcool',
+              'icon': '🟠',
+              'description': 'Diagnóstico NIAAA, fisiopatologia, Maddrey, ABIC, Lille, prednisolona, NAC, complicações e atualizações STASH/CORTISAVE.',
+              'href': '01_Modulos_Clinicos/Hepatite_Alcool_Associada/'
+          }
+          links = home.setdefault('mainLinks', [])
+          links[:] = [item for item in links if item.get('href') != card['href']]
+          insert_at = next(
+              (i for i, item in enumerate(links) if item.get('title') == 'RespiraSense ICU'),
+              len(links),
+          )
+          links.insert(insert_at, card)
+          topics = home.setdefault('topicData', {})
+          topics['hepatite_alcool'] = {
+              'title': '🟠 Hepatite associada ao álcool',
+              'text': 'Módulo Laranja Mecânica com diagnóstico NIAAA, mecanismo fisiopatológico, gravidade por MELD/Maddrey/ABIC, resposta por Lille e uso seguro de prednisolona.',
+              'tags': ['Hepatologia', 'Maddrey', 'Lille', 'Prednisolona', 'UTI']
+          }
+          save_json(home_path, home)
+
+          # 2. Manifesto canônico de rotas e módulos
+          site_path = 'data/site_manifest.json'
+          site = load_json(site_path)
+          site['updatedAt'] = '2026-09-03'
+          site['version'] = 'manifest-canonico-v14'
+          site.setdefault('hubs', {})['hepatite_alcool'] = ROUTE
+          site.setdefault('canonicalRoutes', {})['hepatite_alcool_associada'] = ROUTE
+          site.setdefault('dataSources', {})['hepatiteAlcoolManifest'] = f'{MODULE_ROOT}/module.manifest.json'
+          module_entry = {
+              'id': 'hepatite_alcool_associada',
+              'path': ROUTE,
+              'label': 'Hepatite associada ao álcool'
+          }
+          modules = site.setdefault('modules', [])
+          modules[:] = [item for item in modules if item.get('id') != module_entry['id']]
+          insert_at = next(
+              (i for i, item in enumerate(modules) if item.get('id') == 'respirasense'),
+              len(modules),
+          )
+          modules.insert(insert_at, module_entry)
+          save_json(site_path, site)
+
+          # 3. Registro editorial fail-closed
+          registry_path = 'data/editorial/registry.json'
+          registry = load_json(registry_path)
+          release_id = 'release-hepatite-alcool-associada-laranja-mecanica-2026-09-03'
+          item = {
+              'id': release_id,
+              'classification': 'public-cited',
+              'paths': [
+                  f'{MODULE_ROOT}/README.md',
+                  f'{MODULE_ROOT}/app.js',
+                  f'{MODULE_ROOT}/index.html',
+                  f'{MODULE_ROOT}/module.manifest.json',
+                  f'{MODULE_ROOT}/styles.css'
+              ],
+              'publishTargets': ['github-pages'],
+              'ownerApproval': True,
+              'reviewer': 'Codex — revisão técnica, atualização científica até 03/09/2026, acessibilidade, privacidade, integração e publicação solicitadas explicitamente pelo proprietário.',
+              'reviewedAt': '2026-09-03',
+              'rights': {
+                  'basis': 'owned',
+                  'statement': 'Código, interface, calculadoras, organização e redação são produção original para o projeto. Fórmulas, estudos e recomendações científicas permanecem atribuídos às fontes primárias e diretrizes citadas.'
+              },
+              'professionalClaims': [],
+              'personalData': {'contains': False},
+              'medical': True,
+              'clinicalReviewer': 'Aldenir Rocha de Oliveira Filho — proprietário médico; autorizou explicitamente anexar o módulo ao site principal e publicar em 03/09/2026, mantendo julgamento clínico, dupla checagem e protocolo institucional como requisitos assistenciais.',
+              'sources': [
+                  {
+                      'title': 'ACG Clinical Guideline: Alcohol-Associated Liver Disease',
+                      'url': 'https://pubmed.ncbi.nlm.nih.gov/38174913/',
+                      'accessedAt': '2026-09-03'
+                  },
+                  {
+                      'title': 'Standard Definitions and Common Data Elements for Clinical Trials in Patients With Alcoholic Hepatitis: Recommendation From the NIAAA Alcoholic Hepatitis Consortia',
+                      'url': 'https://pubmed.ncbi.nlm.nih.gov/26921783/',
+                      'accessedAt': '2026-09-03'
+                  },
+                  {
+                      'title': 'Prednisolone or pentoxifylline for alcoholic hepatitis — STOPAH',
+                      'url': 'https://pubmed.ncbi.nlm.nih.gov/25901427/',
+                      'accessedAt': '2026-09-03'
+                  },
+                  {
+                      'title': 'Glucocorticoids plus N-acetylcysteine in severe alcoholic hepatitis',
+                      'url': 'https://pubmed.ncbi.nlm.nih.gov/22070475/',
+                      'accessedAt': '2026-09-03'
+                  },
+                  {
+                      'title': 'The Lille model: a new tool for therapeutic strategy in patients with severe alcoholic hepatitis treated with steroids',
+                      'url': 'https://pubmed.ncbi.nlm.nih.gov/17518367/',
+                      'accessedAt': '2026-09-03'
+                  },
+                  {
+                      'title': 'A new scoring system for prognostic stratification of patients with alcoholic hepatitis — ABIC',
+                      'url': 'https://pubmed.ncbi.nlm.nih.gov/18721242/',
+                      'accessedAt': '2026-09-03'
+                  },
+                  {
+                      'title': 'Infections in Standard or Tapered Dose of Prednisolone in Alcohol-Associated Hepatitis — STASH',
+                      'url': 'https://pubmed.ncbi.nlm.nih.gov/40079479/',
+                      'accessedAt': '2026-09-03'
+                  },
+                  {
+                      'title': 'Restricting corticosteroids reduces mortality in patients with severe alcohol-related hepatitis — CORTISAVE',
+                      'url': 'https://pubmed.ncbi.nlm.nih.gov/42456804/',
+                      'accessedAt': '2026-09-03'
+                  },
+                  {
+                      'title': 'Mechanisms and treatment of alcohol-associated hepatitis',
+                      'url': 'https://www.jci.org/articles/view/176345',
+                      'accessedAt': '2026-09-03'
+                  }
+              ]
+          }
+          items = registry.setdefault('items', [])
+          items[:] = [existing for existing in items if existing.get('id') != release_id]
+          items.append(item)
+          save_json(registry_path, registry)
+
+          # 4. Teste de presença no artefato público
+          workflow_path = ROOT / '.github/workflows/deploy-seguro.yml'
+          workflow = workflow_path.read_text(encoding='utf-8')
+          marker = '          test -s site/01_Modulos_Clinicos/Delirium_UTI/CHECKLIST_OPERACIONAL.md\n'
+          checks = (
+              '          test -s site/01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html\n'
+              '          test -s site/01_Modulos_Clinicos/Hepatite_Alcool_Associada/styles.css\n'
+              '          test -s site/01_Modulos_Clinicos/Hepatite_Alcool_Associada/app.js\n'
+              '          test -s site/01_Modulos_Clinicos/Hepatite_Alcool_Associada/README.md\n'
+              '          test -s site/01_Modulos_Clinicos/Hepatite_Alcool_Associada/module.manifest.json\n'
+          )
+          if checks not in workflow:
+              if marker not in workflow:
+                  raise SystemExit('Marcador do deploy seguro não encontrado.')
+              workflow = workflow.replace(marker, marker + checks, 1)
+              workflow_path.write_text(workflow, encoding='utf-8')
+
+          PY
+
+          # O workflow é descartável; o PR final não carrega payload nem automação transitória.
+          rm -f .github/workflows/integrate-haa.yml
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat(clínica): publicar hepatite associada ao álcool"
+          git push origin HEAD:feature/hepatite-alcool-associada-2026-09-03
