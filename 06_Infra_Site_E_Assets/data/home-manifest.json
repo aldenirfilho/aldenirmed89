@@ -6,10 +6,22 @@
     "mission": "Transformar conteúdos médicos dispersos em páginas vivas, didáticas, conectadas e úteis para estudo, plantão e tomada de decisão."
   },
   "metrics": [
-    { "value": "∞", "label": "conexões clínicas" },
-    { "value": "5", "label": "eixos centrais" },
-    { "value": "2", "label": "vias principais" },
-    { "value": "24/7", "label": "consulta rápida" }
+    {
+      "value": "∞",
+      "label": "conexões clínicas"
+    },
+    {
+      "value": "5",
+      "label": "eixos centrais"
+    },
+    {
+      "value": "2",
+      "label": "vias principais"
+    },
+    {
+      "value": "24/7",
+      "label": "consulta rápida"
+    }
   ],
   "mainLinks": [
     {
@@ -143,6 +155,12 @@
       "href": "01_Modulos_Clinicos/Pneumologia_Critica/"
     },
     {
+      "title": "Hepatite associada ao álcool",
+      "icon": "🟠",
+      "description": "Diagnóstico NIAAA, fisiopatologia, Maddrey, ABIC, Lille, prednisolona, NAC, complicações e atualizações STASH/CORTISAVE.",
+      "href": "01_Modulos_Clinicos/Hepatite_Alcool_Associada/"
+    },
+    {
       "title": "RespiraSense ICU",
       "icon": "🫁",
       "description": "Dashboard PWA para oxigenoterapia, CBAF/HFNC, VNI, VM protetora, SARA/ARDS, gasometria e assincronias.",
@@ -173,67 +191,148 @@
     "avc": {
       "title": "🧠 AVC Agudo",
       "text": "Hub inaugural do projeto. Conecta emergência tempo-dependente, neuroimagem, reperfusão, metas hemodinâmicas, prevenção de complicações, UTI neurológica, prevenção secundária e reabilitação.",
-      "tags": ["Neuro", "Emergência", "UTI", "TEMI"]
+      "tags": [
+        "Neuro",
+        "Emergência",
+        "UTI",
+        "TEMI"
+      ]
     },
     "trombolise": {
       "title": "💉 Trombólise endovenosa",
       "text": "Nó crítico de decisão: janela terapêutica, elegibilidade, contraindicações, controle pressórico, risco de transformação hemorrágica e monitorização pós-trombólise.",
-      "tags": ["Alteplase/Tenecteplase", "PA", "Hemorragia", "Checklist"]
+      "tags": [
+        "Alteplase/Tenecteplase",
+        "PA",
+        "Hemorragia",
+        "Checklist"
+      ]
     },
     "trombectomia": {
       "title": "🧲 Trombectomia mecânica",
       "text": "Conecta neurologia vascular, radiologia, regulação, centro de AVC, oclusão de grande vaso, perfusão cerebral e logística porta-punção.",
-      "tags": ["OGV", "AngioTC", "Perfusão", "Fluxo"]
+      "tags": [
+        "OGV",
+        "AngioTC",
+        "Perfusão",
+        "Fluxo"
+      ]
     },
     "pa": {
       "title": "🎚️ Pressão arterial no AVC",
       "text": "Nó de segurança: metas diferentes conforme AVC isquêmico sem reperfusão, AVC isquêmico com trombólise/trombectomia e hemorragia intracraniana.",
-      "tags": ["Hipertensão", "Emergência", "Metas", "Risco"]
+      "tags": [
+        "Hipertensão",
+        "Emergência",
+        "Metas",
+        "Risco"
+      ]
     },
     "temi": {
       "title": "🏆 Conexões com TEMI",
       "text": "Pontos de prova: janela, contraindicações, controle de PA, NIHSS, ASPECTS, transformação hemorrágica, edema maligno, disfagia e prevenção de complicações.",
-      "tags": ["Prova", "Pegadinhas", "Flashcards", "Questões"]
+      "tags": [
+        "Prova",
+        "Pegadinhas",
+        "Flashcards",
+        "Questões"
+      ]
     },
     "fa": {
       "title": "❤️ Fibrilação atrial e anticoagulação",
       "text": "Conecta AVC cardioembólico, prevenção secundária, DOACs, varfarina, risco hemorrágico, reinício de anticoagulação e avaliação de causa embólica.",
-      "tags": ["Cardio", "Anticoagulação", "DOAC", "Prevenção"]
+      "tags": [
+        "Cardio",
+        "Anticoagulação",
+        "DOAC",
+        "Prevenção"
+      ]
     },
     "imagem": {
       "title": "🖥️ Neuroimagem",
       "text": "Base decisória para excluir hemorragia, avaliar sinais precoces, estimar ASPECTS, detectar oclusão de grande vaso e selecionar pacientes para reperfusão.",
-      "tags": ["TC", "AngioTC", "ASPECTS", "Perfusão"]
+      "tags": [
+        "TC",
+        "AngioTC",
+        "ASPECTS",
+        "Perfusão"
+      ]
     },
     "edema": {
       "title": "🌊 Edema cerebral maligno",
       "text": "Conecta Neuro UTI, monitorização neurológica, osmoterapia, neurocirurgia, craniectomia descompressiva, ventilação e prevenção de lesão secundária.",
-      "tags": ["Neuro UTI", "Osmoterapia", "Herniação", "Craniectomia"]
+      "tags": [
+        "Neuro UTI",
+        "Osmoterapia",
+        "Herniação",
+        "Craniectomia"
+      ]
     },
     "hematologia": {
       "title": "🩸 Hematologia Crítica",
       "text": "Plataforma plugável para reconhecer emergências tempo-dependentes, comparar mecanismos em diagnósticos difíceis e treinar PTT/MAT, HLH/MAS, LPA/CIVD, leucostase, HIT e hemólise.",
-      "tags": ["PTT/MAT", "HLH/MAS", "LPA/CIVD", "UTI", "Turbo TEMI"]
+      "tags": [
+        "PTT/MAT",
+        "HLH/MAS",
+        "LPA/CIVD",
+        "UTI",
+        "Turbo TEMI"
+      ]
     },
     "reumatologia": {
       "title": "🧬 Reumatologia Crítica",
       "text": "Plataforma plugável para proteger órgãos ameaçados, excluir mimetizadores e treinar pulmão–rim, CAPS, crise renal esclerodérmica, MAS/HLH, LES grave, anti-MDA5 e vasculites.",
-      "tags": ["Pulmão–rim", "CAPS", "MAS/HLH", "LES grave", "Turbo TEMI"]
+      "tags": [
+        "Pulmão–rim",
+        "CAPS",
+        "MAS/HLH",
+        "LES grave",
+        "Turbo TEMI"
+      ]
     },
     "infectologia": {
       "title": "🦠 Infectologia Crítica",
       "text": "Módulo interativo para sepse, controle do foco, PAV, meningite, imunossupressão, Gram-negativos resistentes e stewardship, com qSOFA contextual e treino ABCDE.",
-      "tags": ["Sepse", "PAV", "AMR", "Stewardship", "Turbo TEMI"]
+      "tags": [
+        "Sepse",
+        "PAV",
+        "AMR",
+        "Stewardship",
+        "Turbo TEMI"
+      ]
     },
     "pneumologia": {
       "title": "🫁 Pneumologia Crítica",
       "text": "Módulo interativo para insuficiência respiratória, SDRA, ventilação protetora, DPOC, asma, hemoptise, TEP e desmame, com calculadora P/F e peso predito.",
-      "tags": ["SDRA", "VM", "HFNC/VNI", "P/F + PBW", "Turbo TEMI"]
+      "tags": [
+        "SDRA",
+        "VM",
+        "HFNC/VNI",
+        "P/F + PBW",
+        "Turbo TEMI"
+      ]
     },
     "microparticulas_acra": {
       "title": "🧬 Micropartículas Ativas ACRA",
       "text": "Sessão didática em camadas M0–M6: essência, mecanismo, decisões, aplicação, armadilhas, recuperação ativa e retomada espaçada. O piloto organiza POCUS no choque em Bomba, Tanque, Tubos, Pulmão e Perfusão.",
-      "tags": ["ACRA v1.0", "POCUS", "Choque", "Recuperação ativa", "TDAH-friendly"]
+      "tags": [
+        "ACRA v1.0",
+        "POCUS",
+        "Choque",
+        "Recuperação ativa",
+        "TDAH-friendly"
+      ]
+    },
+    "hepatite_alcool": {
+      "title": "🟠 Hepatite associada ao álcool",
+      "text": "Módulo Laranja Mecânica com diagnóstico NIAAA, mecanismo fisiopatológico, gravidade por MELD/Maddrey/ABIC, resposta por Lille e uso seguro de prednisolona.",
+      "tags": [
+        "Hepatologia",
+        "Maddrey",
+        "Lille",
+        "Prednisolona",
+        "UTI"
+      ]
     }
   }
 }
