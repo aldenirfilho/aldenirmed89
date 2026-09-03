@@ -50,7 +50,6 @@ jobs:
                   encoding='utf-8',
               )
 
-          # 1. Card visível na homepage
           home_path = '06_Infra_Site_E_Assets/data/home-manifest.json'
           home = load_json(home_path)
           card = {
@@ -74,7 +73,6 @@ jobs:
           }
           save_json(home_path, home)
 
-          # 2. Manifesto canônico de rotas e módulos
           site_path = 'data/site_manifest.json'
           site = load_json(site_path)
           site['updatedAt'] = '2026-09-03'
@@ -96,7 +94,6 @@ jobs:
           modules.insert(insert_at, module_entry)
           save_json(site_path, site)
 
-          # 3. Registro editorial fail-closed
           registry_path = 'data/editorial/registry.json'
           registry = load_json(registry_path)
           release_id = 'release-hepatite-alcool-associada-laranja-mecanica-2026-09-03'
@@ -175,27 +172,7 @@ jobs:
           items.append(item)
           save_json(registry_path, registry)
 
-          # 4. Teste de presença no artefato público
-          workflow_path = ROOT / '.github/workflows/deploy-seguro.yml'
-          workflow = workflow_path.read_text(encoding='utf-8')
-          marker = '          test -s site/01_Modulos_Clinicos/Delirium_UTI/CHECKLIST_OPERACIONAL.md\n'
-          checks = (
-              '          test -s site/01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html\n'
-              '          test -s site/01_Modulos_Clinicos/Hepatite_Alcool_Associada/styles.css\n'
-              '          test -s site/01_Modulos_Clinicos/Hepatite_Alcool_Associada/app.js\n'
-              '          test -s site/01_Modulos_Clinicos/Hepatite_Alcool_Associada/README.md\n'
-              '          test -s site/01_Modulos_Clinicos/Hepatite_Alcool_Associada/module.manifest.json\n'
-          )
-          if checks not in workflow:
-              if marker not in workflow:
-                  raise SystemExit('Marcador do deploy seguro não encontrado.')
-              workflow = workflow.replace(marker, marker + checks, 1)
-              workflow_path.write_text(workflow, encoding='utf-8')
-
           PY
-
-          # O workflow é descartável; o PR final não carrega payload nem automação transitória.
-          rm -f .github/workflows/integrate-haa.yml
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
