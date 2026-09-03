@@ -1,0 +1,40 @@
+name: Corrigir versão do manifesto HAA
+
+on:
+  push:
+    branches:
+      - feature/hepatite-alcool-associada-2026-09-03
+    paths:
+      - .github/workflows/fix-haa-manifest.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: feature/hepatite-alcool-associada-2026-09-03
+          fetch-depth: 0
+      - name: Restaurar versão canônica exigida pelos testes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('data/site_manifest.json')
+          text = path.read_text(encoding='utf-8')
+          old = '"version": "manifest-canonico-v14"'
+          new = '"version": "manifest-canonico-v13"'
+          if old not in text:
+              raise SystemExit('Versão v14 esperada não encontrada.')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site_manifest.json
+          git commit -m "fix(manifest): preservar versão canônica v13"
+          git push origin HEAD:feature/hepatite-alcool-associada-2026-09-03
