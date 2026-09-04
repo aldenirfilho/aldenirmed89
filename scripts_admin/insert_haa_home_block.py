@@ -487,7 +487,7 @@ def patch_readme(text: str) -> str:
 
 
 def patch_sw(text: str) -> str:
-    text, cache_count = re.subn(r'const CACHE_NAME = `\$\{CACHE_PREFIX\}v[^`]+`;', 'const CACHE_NAME = `${CACHE_PREFIX}v29-haa-home`;', text, count=1)
+    text, cache_count = re.subn(r'const CACHE_NAME = `\$\{CACHE_PREFIX\}v[^`]+`;', 'const CACHE_NAME = `${CACHE_PREFIX}v28`;', text, count=1)
     if cache_count != 1:
         raise RuntimeError('não foi possível localizar CACHE_NAME no service worker')
     if '"./assets/site-analytics.js"' not in text:
@@ -523,7 +523,7 @@ def validate(home: str, module_html: str, module_js: str, module_css: str, manif
             raise RuntimeError(f'JavaScript sem marcador obrigatório: {token}')
     if MODULE_CSS_SENTINEL not in module_css:
         raise RuntimeError('CSS do módulo sem faixa de entrada')
-    if 'v29-haa-home' not in sw:
+    if 'v28' not in sw:
         raise RuntimeError('Service worker sem renovação de cache')
     parsed = json.loads(manifest)
     if parsed.get('version') != '2.1.0':
