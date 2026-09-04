@@ -16,8 +16,8 @@ Módulo clínico estático, responsivo e integrado à rota pública do AldenirMe
 
 - Bloco estático inserido na homepage em 04/09/2026.
 - Atalhos incluídos no menu superior, hero, tópicos, elenco de módulos e rodapé.
-- Cache do PWA renovado para que a nova seção substitua versões anteriores.
-- Esta atualização também funciona como gatilho verificável do deploy final no GitHub Pages.
+- Arquivos HAA incluídos no aquecimento do PWA, preservando o contrato de cache `v28` exigido pela suíte de regressão.
+- Esta atualização funciona como gatilho verificável do deploy final no GitHub Pages.
 
 ## Arquivos
 
