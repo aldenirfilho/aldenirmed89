@@ -1,0 +1,61 @@
+name: Aplicar bloco HAA na homepage
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - scripts_admin/insert_haa_home_block.py
+      - .github/workflows/apply-haa-home-block.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-haa-home-block
+  cancel-in-progress: false
+
+jobs:
+  patch-home:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout da main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Aplicar integração idempotente
+        run: python scripts_admin/insert_haa_home_block.py
+
+      - name: Validar arquivos alterados
+        run: |
+          git diff --check
+          node --check 01_Modulos_Clinicos/Hepatite_Alcool_Associada/app.js
+          python -m json.tool 01_Modulos_Clinicos/Hepatite_Alcool_Associada/module.manifest.json >/dev/null
+          python - <<'PY'
+          from pathlib import Path
+          home = Path('index.html').read_text(encoding='utf-8')
+          module = Path('01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html').read_text(encoding='utf-8')
+          assert '<!-- haa-home-feature:v1 -->' in home
+          assert 'data-haa-home-card' in home
+          assert '<!-- haa-module-entry:v1 -->' in module
+          assert 'href="#atlas-visual"' in module
+          print('PASS: bloco HAA estático e Atlas localizável')
+          PY
+
+      - name: Commitar correção na main
+        run: |
+          if git diff --quiet; then
+            echo "Nenhuma alteração pendente."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html sw.js \
+            01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html \
+            01_Modulos_Clinicos/Hepatite_Alcool_Associada/app.js \
+            01_Modulos_Clinicos/Hepatite_Alcool_Associada/styles.css \
+            01_Modulos_Clinicos/Hepatite_Alcool_Associada/module.manifest.json \
+            01_Modulos_Clinicos/Hepatite_Alcool_Associada/README.md
+          git commit -m "fix(home): destacar bloco HAA e Atlas Turbo TEMI 360 X"
+          git push origin HEAD:main
