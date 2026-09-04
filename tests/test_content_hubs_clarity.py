@@ -61,7 +61,7 @@ class ContentHubsClarityTests(unittest.TestCase):
                 )
                 self.assertIn('classList.toggle("a11y-light", clarity)', bootstrap)
                 self.assertIn(
-                    'clarity ? "#ffffff" : contrast ? "#000000" : "#050d1a"',
+                    'clarity ? "#ffffff" : contrast ? "#000000" : "#0b100c"',
                     bootstrap,
                 )
 
@@ -146,6 +146,7 @@ class ContentHubsClarityTests(unittest.TestCase):
             with self.subTest(color=color):
                 self.assertGreaterEqual(contrast_ratio(color), 4.5)
         self.assertGreaterEqual(contrast_ratio("#71869a"), 3)
+        self.assertGreaterEqual(contrast_ratio("#806f54", "#1c271f"), 3)
 
     def test_print_is_white_and_mobile_control_remains_accessible(self) -> None:
         for path, source in self.sources.items():
@@ -153,7 +154,9 @@ class ContentHubsClarityTests(unittest.TestCase):
                 print_css = source[source.index("@media print") : source.index("</style>")]
                 self.assertIn("html.a11y-light", print_css)
                 self.assertIn("html.a11y-contrast", print_css)
+                self.assertIn(":root,html.a11y-light", print_css)
                 self.assertIn("body{background:#fff!important", print_css)
+                self.assertIn("Modo rústico", source)
                 self.assertIn("print-color-adjust:exact", print_css)
                 self.assertIn("break-inside:avoid", print_css)
                 self.assertIn("@media(max-width:520px)", source)

@@ -78,6 +78,19 @@ class SeoAndPublicAnalyticsTests(unittest.TestCase):
             self.assertIn("https://gc.zgo.at", html)
             self.assertIn(csp, html)
 
+    def test_global_identity_layer_is_rustic_restrained_and_accessible(self):
+        css = (ROOT / "assets/aldenirmed89-mystic.css").read_text(encoding="utf-8")
+        for marker in (
+            "bruxa-rustica-moderna",
+            "--aldenirmed89-aged-copper: #d8a85f",
+            "--aldenirmed89-moss: #91b28b",
+            "--line: #806f54",
+            "prefers-reduced-motion: reduce",
+            "html.a11y-contrast .aldenirmed89-cosmos",
+        ):
+            self.assertIn(marker, css)
+        self.assertNotIn("@keyframes", css)
+
     def test_public_rebrand_preserves_legacy_identifiers_and_download_paths(self):
         source = """<!doctype html><html><head>
         <title>Antigravity Consultas</title>

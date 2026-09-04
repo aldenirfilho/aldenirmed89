@@ -67,6 +67,28 @@ class TceCrashModuleTests(unittest.TestCase):
         cls.checklist = (MODULE / "CHECKLIST_OPERACIONAL.md").read_text(
             encoding="utf-8"
         )
+        cls.shared_theme = (
+            ROOT / "01_Modulos_Clinicos/_shared_critical/assets/critical-theme.js"
+        ).read_text(encoding="utf-8")
+        cls.shared_css = (
+            ROOT / "01_Modulos_Clinicos/_shared_critical/assets/critical.css"
+        ).read_text(encoding="utf-8")
+
+    def test_modern_rustic_witch_theme_is_shared_without_changing_clinical_content(self) -> None:
+        profile = "bruxa-rustica-moderna"
+        self.assertIn(profile, self.shared_theme)
+        self.assertIn("root.dataset.visualProfile", self.shared_theme)
+        self.assertIn(f'data-visual-profile="{profile}"', self.shared_css)
+        self.assertIn(f'data-visual-profile="{profile}"', self.css)
+        self.assertIn("html.a11y-contrast", self.shared_css)
+        self.assertIn(f'data-visual-profile="{profile}"', self.html)
+        for module_name in ("Infectologia_Critica", "Pneumologia_Critica"):
+            module_html = (ROOT / "01_Modulos_Clinicos" / module_name / "index.html").read_text(encoding="utf-8")
+            self.assertIn(f'data-visual-profile="{profile}"', module_html)
+        self.assertIn("preferences.contrast = false", (ROOT / "01_Modulos_Clinicos/_shared_critical/assets/critical.js").read_text(encoding="utf-8"))
+        self.assertIn("html[data-theme][data-visual-profile] {", self.shared_css)
+        self.assertIn("html[data-theme][data-visual-profile][data-specialty]", self.css)
+        self.assertIn("--letter-color: #111 !important", self.css)
 
     def test_required_files_and_review_gate(self) -> None:
         for relative in (
@@ -372,7 +394,7 @@ class TceCrashModuleTests(unittest.TestCase):
             '"./01_Modulos_Clinicos/TCE_Grave_CRASH/data/visual-assets.json"',
             worker,
         )
-        self.assertIn('`${CACHE_PREFIX}v27`', worker)
+        self.assertIn('`${CACHE_PREFIX}v28`', worker)
 
     def test_editorial_registry_preserves_previous_and_records_atlas_preview(self) -> None:
         editorial = load_json("data/editorial/registry.json")

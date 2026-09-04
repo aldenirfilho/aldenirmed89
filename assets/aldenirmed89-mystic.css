@@ -1,14 +1,63 @@
-/* AldenirMed89 · atmosfera arcano-orbital em laranja-fogo, sem alterar o layout. */
+/* AldenirMed89 · camada visual Bruxa Rústica Moderna, sóbria e sem alterar conteúdo clínico. */
 :root {
-  --aldenirmed89-fire-orange: #ff6a00;
-  --aldenirmed89-fire-amber: #ffad33;
-  --aldenirmed89-fire-gold: #ffd166;
-  --aldenirmed89-cosmic-ink: #050301;
+  --aldenirmed89-aged-copper: #d8a85f;
+  --aldenirmed89-parchment: #f4eedf;
+  --aldenirmed89-moss: #91b28b;
+  --aldenirmed89-night-wood: #090d0a;
+  --aldenirmed89-primary-rgb: 216, 168, 95;
+  --aldenirmed89-secondary-rgb: 145, 178, 139;
+}
+
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"],
+html[data-theme="dark"]:not([data-visual-profile]):not(.a11y-contrast):not(.a11y-light) {
+  --bg: #090d0a;
+  --bg2: #0f1611;
+  --bg-2: #0f1611;
+  --bg-deep: #090d0a;
+  --surface: #0f1611;
+  --surface-2: #182019;
+  --panel: #151d17;
+  --panel-2: #1c271f;
+  --panel2: #1c271f;
+  --panel-strong: #1c271f;
+  --panel-soft: rgba(21, 29, 23, .84);
+  --card: #151d17;
+  --card2: #1c271f;
+  --paper: #151d17;
+  --text: #f4eedf;
+  --ink: #f4eedf;
+  --soft: #d4cab8;
+  --muted: #aa9e89;
+  --line: #806f54;
+  --border: #806f54;
+}
+
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] {
+  --accent: #d8a85f;
+  --accent-2: #91b28b;
+  --accent2: #91b28b;
+  --cyan: #d8a85f;
+  --violet: #b89ac5;
+  --green: #9aca99;
+  --gold: #edc477;
+  --yellow: #edc477;
+  --red: #e77c72;
+}
+
+html[data-visual-profile="bruxa-rustica-moderna"],
+html[data-theme="bruxa-rustica-moderna"] {
+  --aldenirmed89-primary-rgb: 216, 168, 95;
+  --aldenirmed89-secondary-rgb: 145, 178, 139;
+}
+
+html[data-visual-profile="total-orange"],
+html[data-theme="total-orange"] {
   --aldenirmed89-primary-rgb: 255, 106, 0;
   --aldenirmed89-secondary-rgb: 255, 173, 51;
 }
 
-html[data-visual-profile="mystic-aerospace"] {
+html[data-visual-profile="mystic-aerospace"],
+html[data-theme="mystic-aerospace"] {
   --aldenirmed89-primary-rgb: 57, 230, 255;
   --aldenirmed89-secondary-rgb: 169, 140, 255;
 }
@@ -19,8 +68,7 @@ html[data-visual-profile="mystic-aerospace"] {
   z-index: 99999;
   overflow: hidden;
   pointer-events: none;
-  opacity: .16;
-  mix-blend-mode: screen;
+  opacity: .06;
   contain: strict;
 }
 
@@ -28,50 +76,35 @@ html[data-visual-profile="mystic-aerospace"] {
 .aldenirmed89-cosmos::after {
   content: "";
   position: absolute;
-  inset: -12vmax;
+  inset: 0;
 }
 
 .aldenirmed89-cosmos::before {
   background-image:
-    radial-gradient(circle at 11% 17%, rgba(255,255,255,.95) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 37% 8%, rgba(var(--aldenirmed89-primary-rgb),.9) 0 1px, transparent 1.7px),
-    radial-gradient(circle at 78% 19%, rgba(255,255,255,.85) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 91% 72%, rgba(var(--aldenirmed89-secondary-rgb),.9) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 22% 83%, rgba(255,209,102,.78) 0 1px, transparent 1.8px),
-    repeating-radial-gradient(circle at 86% 78%, transparent 0 54px, rgba(var(--aldenirmed89-primary-rgb),.16) 55px 56px, transparent 57px 82px);
-  background-size: 173px 173px, 229px 229px, 307px 307px, 263px 263px, 349px 349px, 100% 100%;
-  animation: aldenirmed89-cosmic-drift 72s linear infinite;
+    linear-gradient(115deg, rgba(var(--aldenirmed89-primary-rgb), .24) 1px, transparent 1px),
+    linear-gradient(25deg, rgba(var(--aldenirmed89-secondary-rgb), .18) 1px, transparent 1px),
+    radial-gradient(circle at 12% 8%, rgba(var(--aldenirmed89-secondary-rgb), .45), transparent 28rem),
+    radial-gradient(circle at 88% 86%, rgba(var(--aldenirmed89-primary-rgb), .34), transparent 30rem);
+  background-size: 42px 42px, 42px 42px, auto, auto;
 }
 
 .aldenirmed89-cosmos::after {
-  inset: 8% 4%;
-  border: 1px solid rgba(var(--aldenirmed89-primary-rgb),.22);
-  border-radius: 50%;
-  background:
-    conic-gradient(from 28deg at 50% 50%, transparent 0 17%, rgba(var(--aldenirmed89-secondary-rgb),.18) 18% 18.4%, transparent 19% 44%, rgba(255,209,102,.16) 45% 45.4%, transparent 46% 76%, rgba(var(--aldenirmed89-primary-rgb),.18) 77% 77.4%, transparent 78%),
-    radial-gradient(ellipse at center, transparent 0 49.6%, rgba(var(--aldenirmed89-secondary-rgb),.16) 49.8% 50%, transparent 50.2% 64%, rgba(var(--aldenirmed89-primary-rgb),.12) 64.2% 64.5%, transparent 64.8%);
-  transform: rotate(-8deg) scale(1.12, .78);
-  animation: aldenirmed89-orbital-turn 96s linear infinite;
+  box-shadow: inset 0 0 12rem rgba(0, 0, 0, .42);
 }
 
-html[data-visual-profile="total-orange"] :where(.brand-icon, .mission-core, .mission-emblem) {
-  filter: drop-shadow(0 0 14px rgba(255,106,0,.42)) drop-shadow(0 0 30px rgba(255,173,51,.2));
+html[data-visual-profile="bruxa-rustica-moderna"] :where(.brand-icon, .mission-core, .mission-emblem),
+html[data-theme="bruxa-rustica-moderna"] :where(.brand-icon, .mission-core, .mission-emblem) {
+  filter: drop-shadow(0 0 12px rgba(216, 168, 95, .24));
 }
 
-html[data-visual-profile="total-orange"] :where(.mission-kicker, .section-label, .eyebrow) {
-  text-shadow: 0 0 18px rgba(255,106,0,.34);
+html[data-visual-profile="total-orange"] :where(.brand-icon, .mission-core, .mission-emblem),
+html[data-theme="total-orange"] :where(.brand-icon, .mission-core, .mission-emblem) {
+  filter: drop-shadow(0 0 14px rgba(255, 106, 0, .42)) drop-shadow(0 0 30px rgba(255, 173, 51, .2));
 }
 
-html[data-visual-profile="mystic-aerospace"] :where(.brand-icon, .mission-core, .mission-emblem) {
-  filter: drop-shadow(0 0 14px rgba(57,230,255,.32)) drop-shadow(0 0 28px rgba(169,140,255,.18));
-}
-
-html[data-visual-profile="total-orange"] .total-orange-manifesto {
-  box-shadow: inset 0 0 28px rgba(255,106,0,.06), 0 12px 42px rgba(0,0,0,.22);
-}
-
-html[data-visual-profile="mystic-aerospace"] :where(.mission-kicker, .section-label, .eyebrow) {
-  text-shadow: 0 0 18px rgba(169,140,255,.3);
+html[data-visual-profile="mystic-aerospace"] :where(.brand-icon, .mission-core, .mission-emblem),
+html[data-theme="mystic-aerospace"] :where(.brand-icon, .mission-core, .mission-emblem) {
+  filter: drop-shadow(0 0 14px rgba(57, 230, 255, .32)) drop-shadow(0 0 28px rgba(169, 140, 255, .18));
 }
 
 .aldenirmed89-symbolic-note {
@@ -85,26 +118,47 @@ html[data-visual-profile="mystic-aerospace"] :where(.mission-kicker, .section-la
   text-align: center;
 }
 
-@keyframes aldenirmed89-cosmic-drift {
-  to { transform: translate3d(2.5vmax, -1.5vmax, 0) rotate(.6deg); }
-}
-
-@keyframes aldenirmed89-orbital-turn {
-  to { transform: rotate(352deg) scale(1.12, .78); }
-}
-
 html.a11y-contrast .aldenirmed89-cosmos,
 html[data-visual-profile="contrast"] .aldenirmed89-cosmos {
   display: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .aldenirmed89-cosmos::before,
-  .aldenirmed89-cosmos::after {
-    animation: none;
-  }
+@media (prefers-reduced-motion: reduce), (prefers-contrast: more), (forced-colors: active), print {
+  .aldenirmed89-cosmos { display: none; }
 }
 
-@media (prefers-contrast: more), (forced-colors: active), print {
-  .aldenirmed89-cosmos { display: none; }
+@media print {
+  html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"],
+  html[data-theme="dark"]:not([data-visual-profile]):not(.a11y-contrast):not(.a11y-light) {
+    color-scheme: light !important;
+    --bg: #ffffff;
+    --bg2: #ffffff;
+    --bg-2: #ffffff;
+    --bg-deep: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f3f5f7;
+    --panel: #ffffff;
+    --panel-2: #f3f5f7;
+    --panel2: #f3f5f7;
+    --panel-strong: #ffffff;
+    --panel-soft: #ffffff;
+    --card: #ffffff;
+    --card2: #f3f5f7;
+    --paper: #ffffff;
+    --text: #111111;
+    --ink: #111111;
+    --soft: #222222;
+    --muted: #444444;
+    --line: #71869a;
+    --border: #71869a;
+    --accent: #7b4a16;
+    --accent-2: #2d6250;
+    --accent2: #2d6250;
+    --cyan: #075d72;
+    --violet: #574d78;
+    --green: #2f6b46;
+    --gold: #6d4d00;
+    --yellow: #6d4d00;
+    --red: #922b2b;
+  }
 }

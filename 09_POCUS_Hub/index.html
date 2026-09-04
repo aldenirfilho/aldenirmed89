@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>POCUS Hub | Antigravity</title>
-  <meta name="theme-color" content="#050d1a"/>
+  <meta name="theme-color" content="#0b100c"/>
   <meta name="color-scheme" content="dark light"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <script>
@@ -24,7 +24,7 @@
         document.documentElement.classList.toggle("a11y-light", clarity);
         document.documentElement.style.colorScheme = clarity ? "light" : "dark";
         document.querySelector('meta[name="theme-color"]').content =
-          clarity ? "#ffffff" : contrast ? "#000000" : "#050d1a";
+          clarity ? "#ffffff" : contrast ? "#000000" : "#0b100c";
         document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content =
           clarity ? "default" : "black-translucent";
       } catch (_) {}
@@ -74,8 +74,8 @@
     @media(max-width:520px){.clarity-label{display:none}.clarity-toggle{flex:0 0 48px}}
     @media print{
       @page{margin:14mm}
-      html,html.a11y-light,html.a11y-contrast{
-        color-scheme:light;
+      :root,html.a11y-light,html.a11y-contrast{
+        color-scheme:light !important;
         --bg:#fff;--bg2:#fff;--card:#fff;--card2:#eef4f8;
         --border:#71869a;--text:#102a43;--muted:#455f73;
         --accent:#006b7d;--accent2:#5946c7;--green:#087a55;
@@ -141,13 +141,13 @@
         document.documentElement.classList.toggle("a11y-contrast", contrast);
         document.documentElement.classList.toggle("a11y-light", clarity);
         document.documentElement.style.colorScheme = clarity ? "light" : "dark";
-        themeMeta?.setAttribute("content", clarity ? "#ffffff" : contrast ? "#000000" : "#050d1a");
+        themeMeta?.setAttribute("content", clarity ? "#ffffff" : contrast ? "#000000" : "#0b100c");
         statusMeta?.setAttribute("content", clarity ? "default" : "black-translucent");
         toggle.setAttribute("aria-pressed", String(clarity));
         toggle.querySelector('[aria-hidden="true"]').textContent = clarity ? "🌙" : "☀️";
-        toggle.querySelector(".clarity-label").textContent = clarity ? "Modo espacial" : "Visualização clara";
+        toggle.querySelector(".clarity-label").textContent = clarity ? "Modo rústico" : "Visualização clara";
         toggle.setAttribute("aria-label", clarity
-          ? "Desativar visualização clara e voltar ao modo espacial escuro"
+          ? "Desativar visualização clara e voltar ao modo rústico escuro"
           : "Ativar visualização clara com fundo branco");
         if (persist) {
           try { localStorage.setItem(key, JSON.stringify(preferences)); } catch (_) {}

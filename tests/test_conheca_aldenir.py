@@ -265,11 +265,17 @@ class ConhecaAldenirTests(unittest.TestCase):
         for marker in (
             "antigravity:a11y:v1",
             "visualProfile",
+            "bruxa-rustica-moderna",
+            "total-orange",
+            "mystic-aerospace",
+            "a11y-contrast",
+            "systemTheme",
             "aerospace-light",
             "rustic-light",
             "modern-serious",
         ):
             self.assertIn(marker, self.app + self.css + self.html)
+        self.assertIn(":root,html[data-theme][data-visual-profile]{color-scheme:light", self.css)
         for forbidden in (
             "google-analytics",
             "googletagmanager",

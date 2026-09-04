@@ -1,16 +1,31 @@
 :root {
   color-scheme: dark;
-  --bg: #050301;
-  --surface: #0b0603;
-  --surface-2: #170b04;
-  --text: #fff7ed;
-  --muted: #c69b7a;
-  --accent: #ff7800;
-  --accent-2: #ffad33;
-  --border: #71310b;
-  --danger: #ff645e;
-  --success: #78e6a4;
-  --shadow: 0 20px 54px rgba(0, 0, 0, .55);
+  --bg: #090d0a;
+  --surface: #0f1611;
+  --surface-2: #182019;
+  --text: #f4eedf;
+  --muted: #aa9e89;
+  --accent: #d8a85f;
+  --accent-2: #91b28b;
+  --border: #806f54;
+  --danger: #e77c72;
+  --success: #9aca99;
+  --shadow: 0 22px 58px rgba(0, 0, 0, .45);
+}
+
+html[data-theme="bruxa-rustica-moderna"] {
+  color-scheme: dark;
+  --bg: #090d0a;
+  --surface: #0f1611;
+  --surface-2: #182019;
+  --text: #f4eedf;
+  --muted: #aa9e89;
+  --accent: #d8a85f;
+  --accent-2: #91b28b;
+  --border: #806f54;
+  --danger: #e77c72;
+  --success: #9aca99;
+  --shadow: 0 22px 58px rgba(0, 0, 0, .45);
 }
 
 html[data-theme="total-orange"] {
@@ -170,7 +185,7 @@ html[data-theme="natural"] {
   --surface-2: #e5ead8;
   --text: #263126;
   --muted: #64705f;
-  --accent: #547a54;
+  --accent: #507550;
   --accent-2: #a2683c;
   --border: #bdc9ae;
   --danger: #963f38;
@@ -256,6 +271,22 @@ html[data-theme="sepia"] body,
 html[data-theme="rustic-light"] body,
 html[data-theme="wizard-academy"] body {
   font-family: Georgia, "Times New Roman", ui-serif, serif;
+}
+
+html[data-theme="bruxa-rustica-moderna"] body {
+  background:
+    linear-gradient(115deg, rgba(216, 168, 95, .028) 1px, transparent 1px),
+    linear-gradient(25deg, rgba(145, 178, 139, .02) 1px, transparent 1px),
+    radial-gradient(circle at 82% 3%, rgba(184, 154, 197, .08), transparent 32rem),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg) 92%, var(--surface-2)), var(--bg));
+  background-size: 42px 42px, 42px 42px, auto, auto;
+}
+
+html[data-theme="bruxa-rustica-moderna"] h1,
+html[data-theme="bruxa-rustica-moderna"] h2,
+html[data-theme="bruxa-rustica-moderna"] h3 {
+  font-family: Georgia, "Times New Roman", ui-serif, serif;
+  letter-spacing: -.025em;
 }
 html[data-theme="minimal"] .card,
 html[data-theme="minimal"] .story {
@@ -522,4 +553,30 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+@media print {
+  @page { margin: 14mm; }
+  html[data-theme] {
+    color-scheme: light !important;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f3f5f7;
+    --text: #111111;
+    --muted: #444444;
+    --accent: #075d72;
+    --accent-2: #574d78;
+    --border: #71869a;
+    --danger: #922b2b;
+    --success: #2f6b46;
+    --shadow: none;
+  }
+  body { background: #ffffff !important; color: #111111 !important; }
+  .topbar { position: static; background: #ffffff !important; backdrop-filter: none; }
+  .top-actions, .hero-actions, .controls-wrap, .aldenirmed89-cosmos { display: none !important; }
+  .card, .notice, .total-football-model, .english-pitch, .mission-mark, .metric, .story, .visual {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  a { color: #064b5c; text-decoration: underline; }
 }

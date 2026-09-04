@@ -3,10 +3,11 @@
 (() => {
   const PREFERENCES_KEY = "antigravity.crew.preferences.v1";
   const A11Y_PREFERENCES_KEY = "antigravity:a11y:v1";
-  const DEFAULT_GLOBAL_A11Y = Object.freeze({ theme: "dark", visualProfile: "aerospace" });
+  const DEFAULT_GLOBAL_A11Y = Object.freeze({ theme: "dark", visualProfile: "bruxa-rustica-moderna" });
   const DEFAULT_PREFERENCES = Object.freeze({
-    theme: "aerospace",
+    theme: "bruxa-rustica-moderna",
     colorMode: "dark",
+    contrast: false,
     language: "pt-BR",
     notificationsEnabled: false,
     publicProfile: false,
@@ -14,12 +15,15 @@
     occupation: ""
   });
   const ALLOWED_THEMES = new Set([
-    "aerospace", "aerospace-light", "rustic-light", "dark", "minimal",
+    "bruxa-rustica-moderna", "total-orange", "mystic-aerospace", "aerospace", "aerospace-light", "rustic-light", "dark", "minimal",
     "sepia", "oceanic", "green", "natural", "forest", "wizard-academy",
     "comic-hero", "modern-serious"
   ]);
   const ALLOWED_COLOR_MODES = new Set(["dark", "light", "system"]);
   const PROFILE_MODES = Object.freeze({
+    "bruxa-rustica-moderna": "dark",
+    "total-orange": "dark",
+    "mystic-aerospace": "dark",
     aerospace: "dark",
     "aerospace-light": "light",
     "rustic-light": "light",
@@ -487,17 +491,26 @@
     paragraph.textContent = detail;
   }
 
-  function applyTheme(theme, colorMode = "dark") {
-    const safeTheme = ALLOWED_THEMES.has(theme) ? theme : "aerospace";
+  function applyTheme(theme, colorMode = "dark", contrast = false) {
+    const safeTheme = ALLOWED_THEMES.has(theme) ? theme : "bruxa-rustica-moderna";
     const safeMode = ALLOWED_COLOR_MODES.has(colorMode) ? colorMode : "dark";
     const systemLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-    const resolvedMode = safeMode === "system"
-      ? (systemLight ? "light" : "dark")
-      : safeMode;
-    document.documentElement.dataset.visualProfile = safeTheme;
+    const resolvedMode = contrast
+      ? "dark"
+      : safeMode === "system" ? (systemLight ? "light" : "dark") : safeMode;
+    document.documentElement.dataset.visualProfile = contrast ? "contrast" : safeTheme;
     document.documentElement.dataset.themeMode = safeMode;
     document.documentElement.dataset.theme = resolvedMode;
+    document.documentElement.classList.toggle("a11y-contrast", contrast);
     document.documentElement.style.colorScheme = resolvedMode;
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) {
+      themeMeta.content = contrast ? "#000000" : resolvedMode === "light"
+        ? "#ffffff"
+        : safeTheme === "bruxa-rustica-moderna"
+          ? "#0b100c"
+          : safeTheme === "total-orange" ? "#0b0603" : "#061526";
+    }
     const clarity = byId("clarityToggle");
     if (clarity) {
       clarity.textContent = resolvedMode === "light" ? "🌙 Escuro" : "☀️ Claro";
@@ -522,7 +535,8 @@
       notificationsEnabled: Boolean(source.notificationsEnabled),
       publicProfile: Boolean(source.publicProfile),
       displayName: cleanText(source.displayName, 80),
-      occupation: cleanText(source.occupation, 100)
+      occupation: cleanText(source.occupation, 100),
+      contrast: source.contrast === true
     };
   }
 
@@ -540,7 +554,8 @@
       theme: ALLOWED_THEMES.has(globalA11y.visualProfile)
         ? globalA11y.visualProfile
         : stored.theme,
-      colorMode: savedColorMode
+      colorMode: savedColorMode,
+      contrast: globalA11y.contrast === true
     });
   }
 
@@ -553,7 +568,7 @@
     byId("publicProfilePreference").checked = safe.publicProfile;
     byId("displayName").value = safe.displayName;
     byId("occupation").value = safe.occupation;
-    applyTheme(safe.theme, safe.colorMode);
+    applyTheme(safe.theme, safe.colorMode, safe.contrast);
     configurePreparedCapabilities();
   }
 
@@ -928,7 +943,9 @@
     writeStorage(localStorage, A11Y_PREFERENCES_KEY, {
       ...existingA11y,
       theme: preferences.colorMode,
-      visualProfile: preferences.theme
+      visualProfile: preferences.theme,
+      contrast: false,
+      clarity: preferences.colorMode === "light"
     });
     applyTheme(preferences.theme, preferences.colorMode);
     if (!state.connected || !state.session) {
@@ -1617,7 +1634,7 @@
       const systemLight = window.matchMedia("(prefers-color-scheme: light)").matches;
       const currentlyLight = currentMode === "light" || (currentMode === "system" && systemLight);
       const nextMode = currentlyLight ? "dark" : "light";
-      const nextProfile = currentlyLight ? "aerospace" : "aerospace-light";
+      const nextProfile = currentlyLight ? "bruxa-rustica-moderna" : "aerospace-light";
       byId("colorModePreference").value = nextMode;
       byId("themePreference").value = nextProfile;
       const preferences = { ...getPreferencesFromForm(), colorMode: nextMode, theme: nextProfile };
@@ -1626,7 +1643,9 @@
       writeStorage(localStorage, A11Y_PREFERENCES_KEY, {
         ...existingA11y,
         theme: nextMode,
-        visualProfile: nextProfile
+        visualProfile: nextProfile,
+        contrast: false,
+        clarity: nextMode === "light"
       });
       applyTheme(nextProfile, nextMode);
     });
@@ -1662,6 +1681,9 @@
     window.addEventListener("hashchange", () => {
       showView(requestedViewFromLocation());
     });
+    window.addEventListener("storage", (event) => {
+      if (event.key === A11Y_PREFERENCES_KEY) fillPreferences(loadLocalPreferences());
+    });
   }
 
   async function initialize() {
@@ -1696,7 +1718,13 @@
     const colorSchemeMedia = window.matchMedia("(prefers-color-scheme: light)");
     const syncSystemTheme = () => {
       const preferences = getPreferencesFromForm();
-      if (preferences.colorMode === "system") applyTheme(preferences.theme, "system");
+      if (preferences.colorMode === "system") {
+        applyTheme(
+          preferences.theme,
+          "system",
+          document.documentElement.classList.contains("a11y-contrast")
+        );
+      }
     };
     colorSchemeMedia.addEventListener?.("change", syncSystemTheme);
     colorSchemeMedia.addListener?.(syncSystemTheme);

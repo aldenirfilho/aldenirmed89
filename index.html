@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark" data-theme-mode="dark" data-visual-profile="bruxa-rustica-moderna">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-total-orange-social-card.png"/>
 <meta name="twitter:image:alt" content="AldenirMed89 em preto e laranja-fogo, com símbolo A arcano-orbital e tema Laranja Mecânica"/>
-<meta name="theme-color" content="#0b0603"/>
+<meta name="theme-color" content="#0b100c"/>
 <meta name="color-scheme" content="dark light"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="AldenirMed89"/>
@@ -25,11 +25,12 @@
 /* Restaura tema e largura antes da primeira pintura para evitar saltos visuais. */
 (function(){
   let mode='dark';
-  let visualProfile='total-orange';
+  let visualProfile='bruxa-rustica-moderna';
   let wide=true;
   let contrast=false;
+  const brandThemeRelease='bruxa-rustica-moderna-v1';
   const profileModes={
-    'total-orange':'dark','mystic-aerospace':'dark',aerospace:'dark','aerospace-light':'light','rustic-light':'light',
+    'bruxa-rustica-moderna':'dark','total-orange':'dark','mystic-aerospace':'dark',aerospace:'dark','aerospace-light':'light','rustic-light':'light',
     dark:'dark',minimal:'light',sepia:'light',oceanic:'dark',green:'dark',
     natural:'light',forest:'dark','wizard-academy':'dark',
     'comic-hero':'dark','modern-serious':'light'
@@ -41,13 +42,24 @@
   }catch(_){}
   try{
     const saved=JSON.parse(localStorage.getItem('antigravity:a11y:v1')||'{}');
+    const legacyBrandDefault=(
+      saved.brandThemeRelease!==brandThemeRelease&&
+      (!saved.visualProfile||saved.visualProfile==='total-orange')&&
+      saved.contrast!==true&&saved.clarity!==true&&!['light','system'].includes(saved.theme)
+    );
+    if(legacyBrandDefault){
+      saved.visualProfile='bruxa-rustica-moderna';
+      saved.theme='dark';
+      saved.brandThemeRelease=brandThemeRelease;
+      localStorage.setItem('antigravity:a11y:v1',JSON.stringify(saved));
+    }
     if(['dark','light','system'].includes(saved.theme)) mode=saved.theme;
     else if(saved.clarity===true) mode='light';
     if(Object.prototype.hasOwnProperty.call(profileModes,saved.visualProfile)){
       visualProfile=saved.visualProfile;
       if(mode!=='system')mode=profileModes[visualProfile];
     }else{
-      visualProfile=mode==='light'?'aerospace-light':'total-orange';
+      visualProfile=mode==='light'?'aerospace-light':'bruxa-rustica-moderna';
     }
     wide=saved.wide!==false;
     contrast=saved.contrast===true;
@@ -63,7 +75,7 @@
   document.documentElement.classList.toggle('layout-focus',!wide);
   const themeColor=document.querySelector('meta[name="theme-color"]');
   const appleStatus=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
-  const darkThemeColor=visualProfile==='total-orange'?'#0b0603':'#071422';
+  const darkThemeColor=visualProfile==='total-orange'?'#0b0603':visualProfile==='bruxa-rustica-moderna'?'#0b100c':'#071422';
   themeColor?.setAttribute('content',contrast?'#000000':resolved==='light'?'#ffffff':darkThemeColor);
   appleStatus?.setAttribute('content',!contrast&&resolved==='light'?'default':'black-translucent');
 })();
@@ -257,7 +269,57 @@ html[data-theme="light"] .temi-stat-big{
 }
 html[data-theme="light"] .temi-section .btn-primary{color:#fff!important}
 
-/* ── PERFIS VISUAIS · LARANJA MECÂNICA É O PADRÃO ───────── */
+/* ── PERFIS VISUAIS · BRUXA RÚSTICA MODERNA É O PADRÃO ───── */
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"]{
+  --bg:#090d0a;--bg2:#0f1611;--bg3:#182019;
+  --surf:rgba(244,238,222,.06);--surf-h:rgba(244,238,222,.105);
+  --brd:#806f54;--brd-h:#b59665;
+  --text:#f4eedf;--muted:#aa9e89;--soft:#d4cab8;
+  --cyan:#d8a85f;--cyan-d:rgba(216,168,95,.15);
+  --violet:#b89ac5;--vio-d:rgba(184,154,197,.14);
+  --green:#91b28b;--grn-d:rgba(145,178,139,.13);
+  --yellow:#edc477;--yel-d:rgba(237,196,119,.14);
+  --red:#e77c72;--red-d:rgba(231,124,114,.14);
+  --font-head:Georgia,'Times New Roman',serif;
+  --r:9px;--r-lg:15px;--r-xl:22px;
+  --shadow:0 24px 72px rgba(0,0,0,.52),0 0 0 1px rgba(216,168,95,.035);
+  --header-bg:rgba(9,13,10,.93);--panel-head-bg:rgba(16,22,17,.98);
+  --download-card-bg:rgba(15,22,17,.88);--download-card-hover:#1d281f;
+  --cockpit-bg:rgba(9,13,10,.76);--grid-dot:rgba(216,168,95,.065);
+  --on-accent:#171006;
+}
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] body::before{
+  background-image:
+    linear-gradient(115deg,rgba(216,168,95,.035) 1px,transparent 1px),
+    linear-gradient(25deg,rgba(145,178,139,.025) 1px,transparent 1px),
+    radial-gradient(ellipse at 84% 12%,rgba(184,154,197,.075),transparent 31%),
+    radial-gradient(ellipse at 9% 78%,rgba(145,178,139,.07),transparent 34%);
+  background-size:42px 42px,42px 42px,100% 100%,100% 100%;
+}
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] .brand-icon,
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] .mission-core{
+  background:linear-gradient(145deg,rgba(216,168,95,.2),rgba(145,178,139,.11));
+  border-color:rgba(216,168,95,.44);
+  box-shadow:0 0 0 1px rgba(244,238,222,.055),0 14px 34px rgba(0,0,0,.34);
+}
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] .orb:nth-child(1){
+  background:radial-gradient(circle,rgba(145,178,139,.105) 0%,transparent 70%);
+}
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] .orb:nth-child(2){
+  background:radial-gradient(circle,rgba(184,154,197,.08) 0%,transparent 70%);
+}
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] .orb:nth-child(3){
+  background:radial-gradient(circle,rgba(216,168,95,.075) 0%,transparent 70%);
+}
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] .hero h1 .hl{
+  background:linear-gradient(110deg,#f0d49a 0%,#d8a85f 48%,#91b28b 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] .card,
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] .download-card,
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] .tf-surface{
+  border-top-color:rgba(216,168,95,.46);
+}
 html[data-visual-profile="total-orange"]{
   --bg:#050301;--bg2:#0b0603;--bg3:#170b04;
   --surf:rgba(255,122,0,.07);--surf-h:rgba(255,146,31,.12);
@@ -2210,10 +2272,10 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
   html[data-theme="light"],
   html[data-theme="dark"],
   html.a11y-contrast{
-    color-scheme:light;
+    color-scheme:light!important;
     --bg:#fff;--bg2:#fff;--bg3:#fff;
     --surf:#fff;--surf-h:#f6f9fc;
-    --brd:#9fb6c8;--brd-h:#71869a;
+    --brd:#71869a;--brd-h:#52697a;
     --text:#102a43;--muted:#455f73;--soft:#263f56;
     --cyan:#006b7d;--violet:#5946c7;--green:#087a55;
     --yellow:#855400;--red:#b4233f;--shadow:none;
@@ -2534,8 +2596,8 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
           aria-label="Fechar configurações">✕</button>
       </div>
       <p class="settings-current">
-        Tema atual: <strong id="settingsCurrentTheme">Laranja Mecânica</strong>.
-        O padrão oficial combina preto, laranja-fogo, sigilo orbital e movimento coletivo.
+        Tema atual: <strong id="settingsCurrentTheme">Bruxa Rústica Moderna</strong>.
+        O padrão oficial combina bosque noturno, cobre envelhecido, pergaminho e verde-musgo.
       </p>
       <div class="theme-options" id="themeOptions" role="group" aria-label="Perfis visuais"></div>
       <div class="settings-links">
@@ -2608,7 +2670,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
     <div class="hero-left">
       <div class="hero-eyebrow" aria-hidden="true">Futebol Total clínico — evidência + plantão + TEMI</div>
       <div class="total-orange-manifesto" role="note">
-        <strong>🔥 Modo principal · Laranja Mecânica · Futebol Total Clínico</strong>
+        <strong>🔥 Identidade histórica · Laranja Mecânica · Futebol Total Clínico</strong>
         Um 4–3–3 vivo: cada módulo conserva uma função primária, troca apoio e cobre os espaços do conhecimento sem perder responsabilidade.
       </div>
       <h1 id="hero-heading">
@@ -2631,7 +2693,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
       <div class="view-controls" role="group" aria-label="Controles de visualização da página">
         <span class="view-controls-label" aria-hidden="true">👁️ Visualização</span>
         <select class="view-select" id="themeModeSelect" data-theme-select aria-label="Escolher tema visual">
-          <option value="dark">🔥 Laranja Mecânica</option>
+          <option value="dark">🜃 Bruxa Rústica Moderna</option>
           <option value="light">☀️ Visualização clara</option>
           <option value="system">💻 Sistema</option>
         </select>
@@ -3824,7 +3886,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
     <p class="a11y-scroll-help">↕️ Se o quadro ficar maior que a tela, role dentro dele com mouse, trackpad ou toque.</p>
     <h3>Visualização</h3>
     <select class="a11y-select" id="themeModeSelectPanel" data-theme-select aria-label="Escolher tema visual da página">
-      <option value="dark">🔥 Laranja Mecânica</option>
+      <option value="dark">🜃 Bruxa Rústica Moderna</option>
       <option value="light">☀️ Visualização clara</option>
       <option value="system">💻 Acompanhar sistema</option>
     </select>
@@ -5334,8 +5396,10 @@ const themeColorMeta=document.querySelector('meta[name="theme-color"]');
 const appleStatusMeta=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
 const systemTheme=window.matchMedia('(prefers-color-scheme: light)');
 const a11yKey='antigravity:a11y:v1';
+const BRAND_THEME_RELEASE='bruxa-rustica-moderna-v1';
 const VISUAL_PROFILES=[
-  {id:'total-orange',label:'Laranja Mecânica',icon:'🔥',mode:'dark',note:'padrão preto + laranja-fogo'},
+  {id:'bruxa-rustica-moderna',label:'Bruxa Rústica Moderna',icon:'🜃',mode:'dark',note:'bosque noturno, cobre e pergaminho'},
+  {id:'total-orange',label:'Laranja Mecânica',icon:'🔥',mode:'dark',note:'legado preto + laranja-fogo'},
   {id:'mystic-aerospace',label:'Arcano orbital',icon:'🧙‍♂️',mode:'dark',note:'místico-aeroespacial'},
   {id:'aerospace',label:'Aeroespacial',icon:'🚀',mode:'dark',note:'cabine clássica'},
   {id:'aerospace-light',label:'Aeroespacial claro',icon:'🛰️',mode:'light',note:'cabine diurna'},
@@ -5360,8 +5424,17 @@ function readA11yPrefs(raw){
   }catch(_){}
   const normalized={
     large:false,contrast:false,motion:false,theme:'dark',wide:true,
-    visualProfile:'total-orange',...saved
+    visualProfile:'bruxa-rustica-moderna',brandThemeRelease:BRAND_THEME_RELEASE,...saved
   };
+  if(
+    normalized.brandThemeRelease!==BRAND_THEME_RELEASE&&
+    (!saved.visualProfile||saved.visualProfile==='total-orange')&&
+    saved.contrast!==true&&saved.clarity!==true&&!['light','system'].includes(saved.theme)
+  ){
+    normalized.visualProfile='bruxa-rustica-moderna';
+    normalized.theme='dark';
+    normalized.brandThemeRelease=BRAND_THEME_RELEASE;
+  }
   if(!['dark','light','system'].includes(normalized.theme)){
     normalized.theme=saved.clarity===true?'light':'dark';
   }
@@ -5370,7 +5443,7 @@ function readA11yPrefs(raw){
   normalized.motion=saved.motion===true;
   normalized.wide=saved.wide!==false;
   if(!PROFILE_BY_ID.has(normalized.visualProfile)){
-    normalized.visualProfile=normalized.theme==='light'?'aerospace-light':'total-orange';
+    normalized.visualProfile=normalized.theme==='light'?'aerospace-light':'bruxa-rustica-moderna';
   }else if(normalized.theme!=='system'){
     normalized.theme=PROFILE_BY_ID.get(normalized.visualProfile).mode;
   }
@@ -5393,7 +5466,7 @@ function applyA11y({persist=true}={}){
   root.dataset.themeMode=a11yPrefs.theme;
   root.dataset.theme=contrastActive?'dark':resolvedTheme;
   root.style.colorScheme=contrastActive?'dark':resolvedTheme;
-  const darkThemeColor=a11yPrefs.visualProfile==='total-orange'?'#0b0603':'#071422';
+  const darkThemeColor=a11yPrefs.visualProfile==='total-orange'?'#0b0603':a11yPrefs.visualProfile==='bruxa-rustica-moderna'?'#0b100c':'#071422';
   themeColorMeta?.setAttribute(
     'content',contrastActive?'#000000':resolvedTheme==='light'?'#ffffff':darkThemeColor
   );
@@ -5451,7 +5524,7 @@ document.querySelectorAll('[data-theme-select]').forEach(select=>{
       a11yPrefs.visualProfile='aerospace-light';
       a11yPrefs.contrast=false;
     }else{
-      a11yPrefs.visualProfile='total-orange';
+      a11yPrefs.visualProfile='bruxa-rustica-moderna';
     }
     applyA11y();
   });

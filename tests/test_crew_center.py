@@ -91,6 +91,9 @@ class CrewCenterTests(unittest.TestCase):
         ):
             self.assertIn(marker, self.html + self.css)
         self.assertIn("antigravity:a11y:v1", self.app)
+        for marker in ("bruxa-rustica-moderna", "total-orange", "mystic-aerospace", "#0b100c"):
+            self.assertIn(marker, self.app + self.css + self.html)
+        self.assertIn("html[data-theme][data-visual-profile]{color-scheme:light", self.css)
         self.assertIn('globalA11y.theme === "system"', self.app)
         self.assertIn('aria-label="Ativar visualização clara"', self.html)
         for mode in ('value="light"', 'value="dark"', 'value="system"'):

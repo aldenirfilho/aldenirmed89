@@ -19,6 +19,17 @@
   function writeTheme(theme) {
     const preferences = readPreferences();
     preferences.theme = theme;
+    preferences.clarity = theme === "light";
+    preferences.contrast = false;
+    preferences.visualProfile = theme === "light" ? "aerospace-light" : "bruxa-rustica-moderna";
+    const themeEngine = window.ANTIGRAVITY_CRITICAL_THEME;
+    themeEngine?.applyPreferences(preferences);
+    if (!themeEngine) {
+      root.dataset.theme = theme;
+      root.dataset.themeMode = theme;
+      root.dataset.visualProfile = preferences.visualProfile;
+      root.style.colorScheme = theme;
+    }
     try {
       localStorage.setItem(preferenceKey, JSON.stringify(preferences));
     } catch (_) {
@@ -36,9 +47,6 @@
 
   themeButton?.addEventListener("click", () => {
     const theme = root.dataset.theme === "light" ? "dark" : "light";
-    root.dataset.theme = theme;
-    root.dataset.themeMode = theme;
-    root.style.colorScheme = theme;
     writeTheme(theme);
     syncThemeButton();
   });

@@ -5,8 +5,12 @@
   const FEED_URL = "./data/content/public-feed.json";
   const DOCUMENTS_URL = "./data/content/public-documents.json";
   const PAGE_SIZE = 6;
+  const systemTheme = window.matchMedia("(prefers-color-scheme: light)");
 
   const ALLOWED_PROFILES = new Set([
+    "bruxa-rustica-moderna",
+    "total-orange",
+    "mystic-aerospace",
     "aerospace",
     "aerospace-light",
     "rustic-light",
@@ -166,14 +170,34 @@
 
   function applyVisualProfile() {
     const preferences = readPreferences();
-    const profile = ALLOWED_PROFILES.has(preferences.visualProfile)
+    const requestedProfile = ALLOWED_PROFILES.has(preferences.visualProfile)
       ? preferences.visualProfile
-      : "aerospace";
-    const mode = LIGHT_PROFILES.has(profile) ? "light" : "dark";
+      : "bruxa-rustica-moderna";
+    const requestedMode = ["dark", "light", "system"].includes(preferences.theme)
+      ? preferences.theme
+      : preferences.clarity === true
+        ? "light"
+        : LIGHT_PROFILES.has(requestedProfile) ? "light" : "dark";
+    const contrast = preferences.contrast === true;
+    const mode = contrast
+      ? "dark"
+      : requestedMode === "system" ? (systemTheme.matches ? "light" : "dark") : requestedMode;
+    const profile = contrast
+      ? "contrast"
+      : mode === "light" && !LIGHT_PROFILES.has(requestedProfile)
+        ? "aerospace-light"
+        : mode === "dark" && LIGHT_PROFILES.has(requestedProfile)
+          ? "bruxa-rustica-moderna"
+          : requestedProfile;
     document.documentElement.dataset.visualProfile = profile;
     document.documentElement.dataset.theme = mode;
-    document.documentElement.dataset.themeMode = mode;
+    document.documentElement.dataset.themeMode = requestedMode;
+    document.documentElement.classList.toggle("a11y-contrast", contrast);
     document.documentElement.style.colorScheme = mode;
+    const themeMeta = document.querySelector("meta[name=theme-color]");
+    if (themeMeta) {
+      themeMeta.content = contrast ? "#000000" : mode === "light" ? "#ffffff" : profile === "bruxa-rustica-moderna" ? "#0b100c" : profile === "total-orange" ? "#0b0603" : "#061526";
+    }
   }
 
   function cleanText(value, maximum = 5000) {
@@ -806,6 +830,11 @@
     window.addEventListener("storage", (event) => {
       if (event.key === A11Y_STORAGE_KEY) applyVisualProfile();
     });
+    if (typeof systemTheme.addEventListener === "function") {
+      systemTheme.addEventListener("change", applyVisualProfile);
+    } else {
+      systemTheme.addListener?.(applyVisualProfile);
+    }
   }
 
   applyVisualProfile();

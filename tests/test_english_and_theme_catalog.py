@@ -73,6 +73,7 @@ class ThemeCatalogTests(unittest.TestCase):
 
     def test_catalog_has_exact_requested_profiles(self):
         expected = {
+            "bruxa-rustica-moderna",
             "total-orange",
             "mystic-aerospace",
             "aerospace",
@@ -90,13 +91,13 @@ class ThemeCatalogTests(unittest.TestCase):
             "modern-serious",
         }
         themes = self.catalog["themes"]
-        self.assertEqual(15, len(themes))
+        self.assertEqual(16, len(themes))
         self.assertEqual(expected, {theme["id"] for theme in themes})
-        self.assertEqual("total-orange", self.catalog["defaultTheme"])
+        self.assertEqual("bruxa-rustica-moderna", self.catalog["defaultTheme"])
 
     def test_all_explicit_profiles_are_active(self):
         statuses = {theme["id"]: theme["status"] for theme in self.catalog["themes"]}
-        self.assertEqual(15, len(statuses))
+        self.assertEqual(16, len(statuses))
         self.assertEqual({"active"}, set(statuses.values()))
 
     def test_each_theme_is_bilingual_and_has_complete_palette(self):
@@ -130,6 +131,7 @@ class ThemeCatalogTests(unittest.TestCase):
     def test_every_non_default_theme_has_css_and_script_support(self):
         css = (ROOT / "en/assets/theme.css").read_text(encoding="utf-8")
         script = (ROOT / "en/assets/theme.js").read_text(encoding="utf-8")
+        self.assertIn("root.dataset.visualProfile = theme", script)
         for theme in self.catalog["themes"]:
             self.assertIn(f'"{theme["id"]}"', script)
             if theme["id"] != self.catalog["defaultTheme"]:
@@ -173,6 +175,15 @@ class EnglishHomeTests(unittest.TestCase):
         self.assertIn("./assets/theme.js", self.page.scripts)
         self.assertTrue((ROOT / "en/assets/theme.css").exists())
         self.assertTrue((ROOT / "en/assets/theme.js").exists())
+
+    def test_default_theme_and_color_match_catalog(self):
+        expected = "<html lang=\"en\" data-theme=\"bruxa-rustica-moderna\""
+        color = "<meta name=\"theme-color\" content=\"#0b100c\">"
+        for relative in ("en/index.html", "en/radar/index.html"):
+            source = (ROOT / relative).read_text(encoding="utf-8")
+            self.assertIn(expected, source)
+            self.assertIn('data-visual-profile="bruxa-rustica-moderna"', source)
+            self.assertIn(color, source)
 
     def test_home_explains_the_total_football_operating_model(self):
         rendered = " ".join(self.page.text)

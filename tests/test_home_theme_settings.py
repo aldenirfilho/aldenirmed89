@@ -1,4 +1,6 @@
+import json
 import re
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -7,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HOME = (ROOT / "index.html").read_text(encoding="utf-8")
 
 PROFILE_IDS = {
+    "bruxa-rustica-moderna",
     "total-orange",
     "mystic-aerospace",
     "aerospace",
@@ -46,10 +49,12 @@ class HomeThemeSettingsTests(unittest.TestCase):
             with self.subTest(profile=profile_id):
                 self.assertIn(f"id:'{profile_id}'", HOME)
                 if profile_id not in {"aerospace", "aerospace-light"}:
-                    self.assertIn(
-                        f'html[data-visual-profile="{profile_id}"]',
-                        HOME,
+                    selector = (
+                        f'html[data-theme="dark"][data-visual-profile="{profile_id}"]'
+                        if profile_id == "bruxa-rustica-moderna"
+                        else f'html[data-visual-profile="{profile_id}"]'
                     )
+                    self.assertIn(selector, HOME)
         self.assertIn(
             'themeOptions.querySelectorAll(\'[data-visual-profile]\')',
             HOME,
@@ -57,21 +62,76 @@ class HomeThemeSettingsTests(unittest.TestCase):
 
     def test_profile_persists_in_shared_accessibility_preferences(self):
         self.assertIn("const a11yKey='antigravity:a11y:v1'", HOME)
-        self.assertIn("visualProfile:'total-orange'", HOME)
+        self.assertIn("visualProfile:'bruxa-rustica-moderna'", HOME)
         self.assertIn("visualProfile=saved.visualProfile", HOME)
         self.assertIn("a11yPrefs.visualProfile=profile.id", HOME)
         self.assertIn("localStorage.setItem(a11yKey,JSON.stringify(a11yPrefs))", HOME)
         self.assertIn("root.dataset.visualProfile=contrastActive?'contrast'", HOME)
 
-    def test_total_orange_is_default_and_branded_tribute_is_original(self):
-        self.assertIn("visualProfile='total-orange'", HOME)
-        self.assertIn("Modo principal · Laranja Mecânica", HOME)
+    def test_bruxa_rustica_is_default_and_total_orange_remains_available(self):
+        self.assertIn("visualProfile='bruxa-rustica-moderna'", HOME)
+        self.assertIn('<html lang="pt-BR" data-theme="dark" data-theme-mode="dark" data-visual-profile="bruxa-rustica-moderna">', HOME)
+        self.assertGreaterEqual(HOME.count("!['light','system'].includes(saved.theme)"), 2)
+        self.assertIn("Bruxa Rústica Moderna", HOME)
+        self.assertIn("id:'total-orange'", HOME)
+        self.assertIn("Identidade histórica · Laranja Mecânica", HOME)
         self.assertIn("trocas coordenadas", HOME)
         self.assertIn("sem afiliação esportiva oficial", HOME)
         self.assertIn("O conteúdo clínico permanece separado", HOME)
         self.assertNotIn("Harry Potter", HOME)
         self.assertNotIn("Marvel", HOME)
         self.assertNotIn("A Clockwork Orange", HOME)
+
+    def test_prepaint_migration_preserves_system_and_explicit_choices(self):
+        harness = r"""
+const fs = require("fs");
+const vm = require("vm");
+const html = fs.readFileSync(process.argv[1], "utf8");
+const bootstrap = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+function run(preferences, systemLight) {
+  let stored = JSON.stringify(preferences);
+  const themeMeta = {setAttribute(name, value) { this[name] = value; }};
+  const statusMeta = {setAttribute(name, value) { this[name] = value; }};
+  const root = {
+    dataset: {}, style: {},
+    classList: {state: {}, toggle(name, force) { this.state[name] = Boolean(force); }}
+  };
+  const localStorage = {
+    getItem() { return stored; },
+    setItem(_key, value) { stored = value; }
+  };
+  const matchMedia = () => ({matches: systemLight});
+  const document = {
+    documentElement: root,
+    querySelector(selector) {
+      return selector.includes("theme-color") ? themeMeta : statusMeta;
+    }
+  };
+  vm.runInNewContext(bootstrap, {document, localStorage, matchMedia, window: {matchMedia}});
+  return {dataset: root.dataset, stored: JSON.parse(stored), themeColor: themeMeta.content};
+}
+process.stdout.write(JSON.stringify({
+  system: run({theme: "system"}, true),
+  legacy: run({theme: "dark", visualProfile: "total-orange"}, false),
+  explicitOrange: run({theme: "dark", visualProfile: "total-orange", brandThemeRelease: "bruxa-rustica-moderna-v1"}, false),
+  contrast: run({theme: "dark", contrast: true}, false)
+}));
+"""
+        result = subprocess.run(
+            ["node", "-e", harness, str(ROOT / "index.html")],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        cases = json.loads(result.stdout)
+        self.assertEqual("system", cases["system"]["dataset"]["themeMode"])
+        self.assertEqual("light", cases["system"]["dataset"]["theme"])
+        self.assertEqual("system", cases["system"]["stored"]["theme"])
+        self.assertEqual("bruxa-rustica-moderna", cases["legacy"]["dataset"]["visualProfile"])
+        self.assertEqual("total-orange", cases["explicitOrange"]["dataset"]["visualProfile"])
+        self.assertEqual("contrast", cases["contrast"]["dataset"]["visualProfile"])
+        self.assertEqual("#000000", cases["contrast"]["themeColor"])
 
     def test_total_football_is_an_accessible_operating_surface(self):
         self.assertIn('id="campo-total"', HOME)
