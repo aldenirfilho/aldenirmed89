@@ -1,13 +1,15 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v28`;
+const CACHE_NAME = `${CACHE_PREFIX}v29-haa-home`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
   "./offline.html",
   "./manifest.webmanifest",
   "./assets/aldenirmed89-mystic.css",
+  "./assets/site-analytics.css",
+  "./assets/site-analytics.js",
   "./assets/brand/aldenirmed89-total-orange-social-card.png",
   "./assets/icons/antigravity-consultas-192.png",
   "./assets/icons/antigravity-consultas-512.png",
@@ -92,6 +94,10 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/Infectologia_Critica/data/catalog.js",
   "./01_Modulos_Clinicos/Pneumologia_Critica/index.html",
   "./01_Modulos_Clinicos/Pneumologia_Critica/data/catalog.js",
+  "./01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html",
+  "./01_Modulos_Clinicos/Hepatite_Alcool_Associada/styles.css",
+  "./01_Modulos_Clinicos/Hepatite_Alcool_Associada/app.js",
+  "./01_Modulos_Clinicos/Hepatite_Alcool_Associada/module.manifest.json",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/index.html",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/assets/styles.css",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/assets/app.js",

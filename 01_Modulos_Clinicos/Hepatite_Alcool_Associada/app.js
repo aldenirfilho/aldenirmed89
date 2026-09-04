@@ -405,8 +405,10 @@
   }
 
   function buildVisualAtlas() {
-    const physiopathology = byId('fisiopatologia');
-    if (!physiopathology || byId('atlas-visual')) return;
+    const entryRail = document.querySelector('[data-haa-module-entry]');
+    const flash = byId('flash');
+    const insertionPoint = entryRail || flash;
+    if (!insertionPoint || byId('atlas-visual')) return;
 
     const section = document.createElement('section');
     section.className = 'panel visual-atlas';
@@ -435,7 +437,7 @@
       </div>
       <div class="visual-grid" id="visual-grid"></div>
       <p class="visual-note"><b>Nota:</b> as figuras são materiais educacionais autorais em SVG. Não contêm imagens, exames ou dados de pacientes.</p>`;
-    physiopathology.insertAdjacentElement('afterend', section);
+    insertionPoint.insertAdjacentElement('afterend', section);
 
     const grid = byId('visual-grid');
     slides.forEach((slide, index) => {
@@ -467,12 +469,12 @@
     });
 
     const nav = document.querySelector('.section-nav');
-    const scoresLink = nav?.querySelector('a[href="#escores"]');
-    if (nav && scoresLink && !nav.querySelector('a[href="#atlas-visual"]')) {
+    const diagnosisLink = nav?.querySelector('a[href="#diagnostico"]');
+    if (nav && !nav.querySelector('a[href="#atlas-visual"]')) {
       const link = document.createElement('a');
       link.href = '#atlas-visual';
       link.textContent = 'Atlas 360 X';
-      nav.insertBefore(link, scoresLink);
+      nav.insertBefore(link, diagnosisLink || nav.firstChild);
     }
   }
 
@@ -534,7 +536,7 @@
 
   function updateVersionMarkers() {
     const status = document.querySelector('.status-pill');
-    if (status) status.textContent = 'Versão 2.0 · Atlas Turbo TEMI 360 X · 03/09/2026';
+    if (status) status.textContent = 'Versão 2.1 · Atlas destacado · 04/09/2026';
     const heroTag = document.querySelector('#flash .tag--dark');
     if (heroTag) heroTag.textContent = 'CINCO SCORES + 10 MAPAS 16:9';
   }
@@ -552,11 +554,24 @@
     });
   }
 
+
+  function honorRequestedAnchor() {
+    const raw = window.location.hash.slice(1);
+    if (!raw) return;
+    let id = raw;
+    try { id = decodeURIComponent(raw); } catch (_) {}
+    const target = byId(id);
+    if (!target) return;
+    window.requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
+  }
+
   function initialize() {
     buildVisualAtlas();
     buildAdditionalScores();
     updateVersionMarkers();
     bindCalculators();
+    honorRequestedAnchor();
+    window.addEventListener('hashchange', honorRequestedAnchor);
   }
 
   if (document.readyState === 'loading') {

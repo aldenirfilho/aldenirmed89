@@ -2,11 +2,13 @@
 
 Módulo clínico estático, responsivo e integrado à rota pública do AldenirMed89.
 
-## Versão 2.0
+## Versão 2.1
 
 - Conteúdo clínico: diagnóstico NIAAA, fisiopatologia, prednisolona, suporte, complicações, STASH 2025 e CORTISAVE 2026.
 - Cinco calculadoras educacionais: Maddrey, MELD/MELD-Na, ABIC, GAHS e Lille.
 - Série visual Turbo TEMI 360 X com 10 mapas vetoriais widescreen 16:9.
+- Bloco destacado na página principal, no menu, no elenco de módulos e no rodapé.
+- Atlas posicionado logo no início do módulo, com âncoras diretas.
 - Galeria com filtros, abertura ampliada e download individual em SVG.
 - Gráficos produzidos localmente pelo `app.js`, sem buscar imagens ou bibliotecas externas.
 

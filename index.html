@@ -4,9 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>AldenirMed89 — Medicina Intensiva, Plantão e TEMI</title>
-<meta name="description" content="Plataforma médica interativa para Medicina Intensiva, UTI e emergência, com TCE grave CRASH, ventilação, Infectologia, Pneumologia, Hematologia, Reumatologia e preparação TEMI/R3."/>
+<meta name="description" content="Plataforma médica interativa para Medicina Intensiva, UTI e emergência, com hepatite associada ao álcool, TCE grave CRASH, ventilação, módulos críticos e preparação TEMI/R3."/>
 <meta property="og:title" content="AldenirMed89 — Medicina Intensiva, Plantão e TEMI"/>
-<meta property="og:description" content="Central clínica: TCE grave CRASH, módulos críticos, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo em um único portal."/>
+<meta property="og:description" content="Central clínica com hepatite associada ao álcool, TCE grave CRASH, módulos críticos, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo."/>
 <meta property="og:url" content="https://aldenirfilho.github.io/aldenirmed89/"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-total-orange-social-card.png"/>
@@ -1136,6 +1136,138 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
 .total-orange-manifesto strong{
   display:block;margin-bottom:3px;color:var(--yellow);font-family:var(--font-mono);
   font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+}
+
+/* haa-home-feature:v1 */
+.haa-home-feature{
+  padding:0 0 var(--section-space);
+  scroll-margin-top:96px;
+}
+.haa-home-surface{
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr);
+  gap:clamp(22px,4vw,54px);
+  align-items:center;
+  padding:clamp(24px,4vw,52px);
+  border:1px solid color-mix(in srgb,var(--yellow) 42%,var(--brd));
+  border-radius:var(--r-xl);
+  background:
+    radial-gradient(circle at 8% 5%,color-mix(in srgb,var(--yellow) 16%,transparent),transparent 35%),
+    radial-gradient(circle at 94% 94%,color-mix(in srgb,var(--red) 12%,transparent),transparent 32%),
+    linear-gradient(145deg,var(--bg3),var(--bg2));
+  box-shadow:var(--shadow);
+}
+.haa-home-surface::after{
+  content:"";
+  position:absolute;
+  inset:auto -120px -180px auto;
+  width:420px;
+  height:420px;
+  border:1px solid color-mix(in srgb,var(--yellow) 26%,transparent);
+  border-radius:50%;
+  box-shadow:0 0 0 44px color-mix(in srgb,var(--yellow) 4%,transparent),0 0 0 92px color-mix(in srgb,var(--cyan) 3%,transparent);
+  pointer-events:none;
+}
+.haa-home-copy,.haa-home-scoreboard{position:relative;z-index:1}
+.haa-home-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:14px;
+  color:var(--yellow);
+  font:800 .72rem/1.2 var(--font-mono);
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.haa-home-title{
+  max-width:15ch;
+  margin:0;
+  font:800 clamp(2rem,4.8vw,4.9rem)/.96 var(--font-head);
+  letter-spacing:-.055em;
+}
+.haa-home-title span{color:var(--yellow)}
+.haa-home-copy>p{
+  max-width:68ch;
+  margin:18px 0 0;
+  color:var(--soft);
+  font-size:clamp(.98rem,1.4vw,1.12rem);
+  line-height:1.65;
+}
+.haa-home-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:24px;
+}
+.haa-home-actions .btn{margin:0}
+.haa-home-scoreboard{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.haa-score-tile{
+  min-height:118px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:18px;
+  border:1px solid var(--brd);
+  border-radius:var(--r);
+  background:var(--surf);
+}
+.haa-score-tile:first-child{
+  grid-column:1/-1;
+  min-height:150px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--yellow) 16%,var(--surf)),var(--surf));
+  border-color:color-mix(in srgb,var(--yellow) 38%,var(--brd));
+}
+.haa-score-tile strong{
+  color:var(--yellow);
+  font:800 clamp(1.12rem,2.4vw,1.75rem)/1.05 var(--font-head);
+}
+.haa-score-tile span{
+  margin-top:10px;
+  color:var(--soft);
+  font-size:.86rem;
+  line-height:1.42;
+}
+.haa-home-note{
+  grid-column:1/-1;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:13px 14px;
+  border:1px solid var(--brd);
+  border-radius:12px;
+  background:color-mix(in srgb,var(--bg) 60%,transparent);
+  color:var(--soft);
+  font-size:.82rem;
+  line-height:1.45;
+}
+.haa-home-note b{color:var(--text)}
+.module-card[data-haa-home-card]{
+  --accent:var(--yellow);
+  --accent-d:var(--yel-d);
+  border-color:color-mix(in srgb,var(--yellow) 42%,var(--brd));
+  background:linear-gradient(145deg,color-mix(in srgb,var(--yellow) 8%,var(--surf)),var(--surf));
+}
+.module-card[data-haa-home-card] .module-icon{
+  background:var(--yel-d);
+  border-color:color-mix(in srgb,var(--yellow) 55%,var(--brd));
+  color:var(--yellow);
+}
+@media (max-width:900px){
+  .haa-home-surface{grid-template-columns:1fr}
+  .haa-home-title{max-width:18ch}
+}
+@media (max-width:560px){
+  .haa-home-surface{padding:20px;border-radius:var(--r-lg)}
+  .haa-home-scoreboard{grid-template-columns:1fr}
+  .haa-score-tile:first-child,.haa-home-note{grid-column:auto}
+  .haa-home-actions{display:grid}
+  .haa-home-actions .btn{width:100%;justify-content:center}
 }
 
 /* ── FUTEBOL TOTAL · CAMPO TÁTICO OPERACIONAL ────── */
@@ -2639,6 +2771,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
       <a href="05_Midia_E_Feed/index.html">🖼️ Card Feed</a>
       <a href="questoes/index.html">🏆 Simulador TEMI</a>
       <a href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" class="accent">🧠 TCE CRASH</a>
+      <a href="#hepatite-alcool" class="accent">🟠 Hepatologia HAA</a>
       <a href="01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/index.html">❤️‍🩹 SCA</a>
       <a href="01_Modulos_Clinicos/Almanaque_ECG/index.html">🫀 Almanaque ECG</a>
       <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia</a>
@@ -2683,6 +2816,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
       <div class="hero-btns">
         <a class="btn btn-primary" href="#campo-total">⚽ Entrar no Campo Total</a>
         <a class="btn btn-primary" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html">🧠 Abrir TCE grave CRASH</a>
+        <a class="btn btn-primary" href="#hepatite-alcool">🟠 Abrir Hepatologia HAA</a>
         <a class="btn btn-primary" href="17_Portal_Vivo/index.html">🛰️ Ver UPGRADEs da plataforma</a>
         <a class="btn btn-primary" href="15_Radar_Cientifico/index.html">📡 Estudar atualizações clínicas</a>
         <a class="btn btn-primary" href="01_UpDown_Hub/index.html">↕️ Abrir UpDown Hub</a>
@@ -2740,6 +2874,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
           <a class="topic-pill green" href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Pulmão–rim · CAPS · MDA5</a>
           <a class="topic-pill violet" href="01_Modulos_Clinicos/Delirium_UTI/index.html">🧠 Delirium · CAM-ICU · 4AT</a>
           <a class="topic-pill red" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html">🧠 TCE grave · CRASH</a>
+          <a class="topic-pill yellow" href="#hepatite-alcool">🟠 HAA · Maddrey · MELD · Lille</a>
           <a class="topic-pill green" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html">🫁 VM · SDRA · assincronias</a>
           <a class="topic-pill yellow" href="01_Modulos_Clinicos/Sepse_Choque_Septico/index.html">🦠 Sepse · choque séptico</a>
         </div>
@@ -2754,6 +2889,33 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 
   </section>
 </div><!-- /shell -->
+
+<!-- haa-home-feature:v1 -->
+<section class="haa-home-feature" id="hepatite-alcool" aria-labelledby="haa-home-title">
+  <div class="shell">
+    <div class="haa-home-surface">
+      <div class="haa-home-copy">
+        <span class="haa-home-kicker">🟠 Novo bloco clínico · Laranja Mecânica · Turbo TEMI 360 X</span>
+        <h2 class="haa-home-title" id="haa-home-title">Hepatite associada <span>ao álcool</span></h2>
+        <p>Uma estação única para critérios NIAAA, mecanismo da lesão, abordagem inicial, prednisolona, suporte, complicações e os principais escores. O Atlas Turbo TEMI reúne dez mapas widescreen para revisão rápida.</p>
+        <div class="haa-home-actions">
+          <a class="btn btn-primary" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/">Abrir módulo completo</a>
+          <a class="btn btn-primary" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/#atlas-visual">Ver 10 mapas 16:9</a>
+          <a class="btn btn-ghost" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/#escores">Abrir escores</a>
+          <a class="btn btn-ghost" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/#prednisolona">Fluxo da prednisolona</a>
+        </div>
+      </div>
+      <div class="haa-home-scoreboard" aria-label="Conteúdo do módulo de hepatite associada ao álcool">
+        <article class="haa-score-tile"><strong>10 mapas · 5 escores</strong><span>Atlas vetorial widescreen, calculadoras educacionais e comparação prática em uma única página.</span></article>
+        <article class="haa-score-tile"><strong>Maddrey · MELD</strong><span>Gravidade inicial e prognóstico global.</span></article>
+        <article class="haa-score-tile"><strong>ABIC · GAHS</strong><span>Estratificação prognóstica complementar.</span></article>
+        <article class="haa-score-tile"><strong>Lille</strong><span>Resposta ao corticoide e regra de interrupção.</span></article>
+        <article class="haa-score-tile"><strong>Conduta</strong><span>Diagnóstico, segurança, suporte e seguimento.</span></article>
+        <div class="haa-home-note"><span aria-hidden="true">🛡️</span><span><b>Uso educacional profissional.</b> O conteúdo canônico, a avaliação clínica e o protocolo institucional prevalecem sobre qualquer síntese visual.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ── CAMPO TOTAL 4–3–3 ─────────────────────────── -->
 <section class="total-football-section" id="campo-total" aria-labelledby="campo-total-heading">
@@ -3802,6 +3964,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
         <a href="07_Questoes_Comentadas/index.html">🧠 Questões Comentadas</a>
         <a href="08_Transcricoes/index.html">🎙️ Transcrições</a>
         <a href="09_POCUS_Hub/index.html">🔊 POCUS Hub</a>
+        <a href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/">🟠 Hepatite associada ao álcool · Atlas 360 X</a>
         <a href="22_Microparticulas_Ativas_ACRA/index.html">🧬 Micropartículas Ativas ACRA</a>
         <a href="01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/index.html">❤️‍🩹 Síndrome Coronariana Aguda</a>
         <a href="01_Modulos_Clinicos/Almanaque_ECG/index.html">🫀 Almanaque ECG 360</a>
