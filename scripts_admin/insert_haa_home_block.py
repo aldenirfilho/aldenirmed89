@@ -360,7 +360,7 @@ def patch_home(text: str) -> str:
             'bloco HAA após o hero',
         )
 
-    if 'data-haa-home-card' not in text:
+    if 'data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/"' not in text:
         text = replace_once(
             text,
             '      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" aria-label="Abrir TCE grave — Protocolo CRASH">',
