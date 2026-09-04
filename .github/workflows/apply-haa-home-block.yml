@@ -36,19 +36,21 @@ jobs:
           home = home_path.read_text(encoding='utf-8')
           card_marker = 'data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/"'
           tce_marker = '      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" aria-label="Abrir TCE grave — Protocolo CRASH">'
-          card = '''      <a class="module-card mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/" aria-label="Abrir Hepatite associada ao álcool — Turbo TEMI 360 X">
-        <div class="module-icon">🟠</div>
-        <h3>Hepatite associada ao álcool</h3>
-        <p>Critérios NIAAA, mecanismo, abordagem inicial, prednisolona, suporte e Atlas visual com os principais escores.</p>
-        <div class="module-tag-row">
-          <span class="module-tag">10 mapas 16:9</span>
-          <span class="module-tag">5 escores</span>
-          <span class="module-tag">Turbo TEMI 360 X</span>
-        </div>
-        <span class="module-link" style="color:var(--yellow)">Abrir hepatologia</span>
-      </a>
-
-'''
+          card = '\n'.join([
+              '      <a class="module-card mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/" aria-label="Abrir Hepatite associada ao álcool — Turbo TEMI 360 X">',
+              '        <div class="module-icon">🟠</div>',
+              '        <h3>Hepatite associada ao álcool</h3>',
+              '        <p>Critérios NIAAA, mecanismo, abordagem inicial, prednisolona, suporte e Atlas visual com os principais escores.</p>',
+              '        <div class="module-tag-row">',
+              '          <span class="module-tag">10 mapas 16:9</span>',
+              '          <span class="module-tag">5 escores</span>',
+              '          <span class="module-tag">Turbo TEMI 360 X</span>',
+              '        </div>',
+              '        <span class="module-link" style="color:var(--yellow)">Abrir hepatologia</span>',
+              '      </a>',
+              '',
+              '',
+          ])
           if card_marker not in home:
               if home.count(tce_marker) != 1:
                   raise RuntimeError('Não foi possível localizar de forma única o card TCE usado como âncora.')
