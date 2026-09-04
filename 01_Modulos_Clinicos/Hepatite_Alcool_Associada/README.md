@@ -12,6 +12,13 @@ Módulo clínico estático, responsivo e integrado à rota pública do AldenirMe
 - Galeria com filtros, abertura ampliada e download individual em SVG.
 - Gráficos produzidos localmente pelo `app.js`, sem buscar imagens ou bibliotecas externas.
 
+## Recibo de descoberta e publicação
+
+- Bloco estático inserido na homepage em 04/09/2026.
+- Atalhos incluídos no menu superior, hero, tópicos, elenco de módulos e rodapé.
+- Cache do PWA renovado para que a nova seção substitua versões anteriores.
+- Esta atualização também funciona como gatilho verificável do deploy final no GitHub Pages.
+
 ## Arquivos
 
 - `index.html`: conteúdo canônico, fluxo de decisão e referências.
