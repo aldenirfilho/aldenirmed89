@@ -27,17 +27,31 @@ jobs:
       - name: Aplicar integração idempotente
         run: python scripts_admin/insert_haa_home_block.py
 
-      - name: Garantir card HAA no elenco de módulos
+      - name: Normalizar o card de descoberta da HAA
         run: |
           python - <<'PY'
           from pathlib import Path
 
           home_path = Path('index.html')
+          patcher_path = Path('scripts_admin/insert_haa_home_block.py')
           home = home_path.read_text(encoding='utf-8')
-          card_marker = 'data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/"'
+          patcher = patcher_path.read_text(encoding='utf-8')
+
+          route = '01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html'
+          card_marker = f'data-haa-home-card href="{route}"'
+          old_openings = (
+              '<a class="module-card mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/"',
+              '<a class="module-card mod-yellow" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/"',
+              '<a class="module-card mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html"',
+              '<a class="module-card mod-yellow" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html"',
+          )
+          new_opening = f'<a class="haa-discovery-module mod-yellow reveal" data-haa-home-card href="{route}"'
+          for old in old_openings:
+              home = home.replace(old, new_opening)
+
           tce_marker = '      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" aria-label="Abrir TCE grave — Protocolo CRASH">'
           card = '\n'.join([
-              '      <a class="module-card mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/" aria-label="Abrir Hepatite associada ao álcool — Turbo TEMI 360 X">',
+              f'      <a class="haa-discovery-module mod-yellow reveal" data-haa-home-card href="{route}" aria-label="Abrir Hepatite associada ao álcool — Turbo TEMI 360 X">',
               '        <div class="module-icon">🟠</div>',
               '        <h3>Hepatite associada ao álcool</h3>',
               '        <p>Critérios NIAAA, mecanismo, abordagem inicial, prednisolona, suporte e Atlas visual com os principais escores.</p>',
@@ -55,19 +69,81 @@ jobs:
               if home.count(tce_marker) != 1:
                   raise RuntimeError('Não foi possível localizar de forma única o card TCE usado como âncora.')
               home = home.replace(tce_marker, card + tce_marker, 1)
-              home_path.write_text(home, encoding='utf-8')
 
-          patcher_path = Path('scripts_admin/insert_haa_home_block.py')
-          patcher = patcher_path.read_text(encoding='utf-8')
-          old = "if 'data-haa-home-card' not in text:"
-          new = "if 'data-haa-home-card href=\"01_Modulos_Clinicos/Hepatite_Alcool_Associada/\"' not in text:"
-          if old in patcher:
-              patcher = patcher.replace(old, new, 1)
-              patcher_path.write_text(patcher, encoding='utf-8')
+          css_marker = '/* haa-discovery-card:v1 */'
+          discovery_css = '''
+/* haa-discovery-card:v1 */
+.haa-discovery-module{
+  --accent:var(--yellow);--accent-d:var(--yel-d);
+  position:relative;overflow:hidden;display:flex;flex-direction:column;
+  min-width:0;min-height:100%;padding:26px 24px 22px;
+  border:1px solid color-mix(in srgb,var(--yellow) 42%,var(--brd));
+  border-radius:var(--r-lg);
+  background:linear-gradient(145deg,color-mix(in srgb,var(--yellow) 8%,var(--surf)),var(--surf));
+  color:var(--text);text-decoration:none;cursor:pointer;
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,background .22s ease;
+}
+.haa-discovery-module::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
+  background:linear-gradient(135deg,var(--yel-d),transparent 60%);transition:opacity .22s ease;
+}
+.haa-discovery-module:hover,.haa-discovery-module:focus-visible{
+  transform:translateY(-3px);border-color:var(--yellow);
+  box-shadow:0 16px 50px rgba(0,0,0,.3),0 0 0 1px var(--yellow);
+}
+.haa-discovery-module:hover::before,.haa-discovery-module:focus-visible::before{opacity:1}
+.haa-discovery-module h3{
+  position:relative;font-family:var(--font-head);font-size:1rem;font-weight:700;
+  letter-spacing:-.01em;margin-bottom:8px;line-height:1.2;
+}
+.haa-discovery-module p{
+  position:relative;font-size:.85rem;color:var(--soft);line-height:1.55;margin-bottom:16px;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;
+}
+.haa-discovery-module .module-icon,.haa-discovery-module .module-tag-row,
+.haa-discovery-module .module-link{position:relative}
+.haa-discovery-module:hover .module-link::after,
+.haa-discovery-module:focus-visible .module-link::after{transform:translateX(3px)}
+'''.strip()
+          if css_marker not in home:
+              css_anchor = '''.module-card[data-haa-home-card] .module-icon{
+  background:var(--yel-d);
+  border-color:color-mix(in srgb,var(--yellow) 55%,var(--brd));
+  color:var(--yellow);
+}
+'''
+              if home.count(css_anchor) != 1:
+                  raise RuntimeError('Âncora de CSS HAA não encontrada de forma única.')
+              home = home.replace(css_anchor, css_anchor + discovery_css + '\n', 1)
 
-          assert card_marker in home_path.read_text(encoding='utf-8')
-          assert new in patcher_path.read_text(encoding='utf-8')
-          print('PASS: card HAA inserido e verificação idempotente corrigida')
+          patcher_replacements = {
+              'class="module-card mod-yellow" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/"':
+                  'class="haa-discovery-module mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html"',
+              'data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/"':
+                  'data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html"',
+          }
+          for old, new in patcher_replacements.items():
+              patcher = patcher.replace(old, new)
+
+          if css_marker not in patcher:
+              patcher_anchor = '''.module-card[data-haa-home-card] .module-icon{
+  background:var(--yel-d);
+  border-color:color-mix(in srgb,var(--yellow) 55%,var(--brd));
+  color:var(--yellow);
+}
+'''
+              if patcher.count(patcher_anchor) != 1:
+                  raise RuntimeError('Âncora de CSS do patcher não encontrada de forma única.')
+              patcher = patcher.replace(patcher_anchor, patcher_anchor + discovery_css + '\n', 1)
+
+          home_path.write_text(home, encoding='utf-8')
+          patcher_path.write_text(patcher, encoding='utf-8')
+
+          checked_home = home_path.read_text(encoding='utf-8')
+          assert card_marker in checked_home
+          assert 'class="module-card mod-yellow reveal" data-haa-home-card' not in checked_home
+          assert css_marker in checked_home
+          print('PASS: card HAA visível sem alterar o contrato dos module-card existentes')
           PY
 
       - name: Preservar contrato legado do cache v28
@@ -75,14 +151,10 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          paths = [
-              Path('sw.js'),
-              Path('scripts_admin/insert_haa_home_block.py'),
-          ]
+          paths = [Path('sw.js'), Path('scripts_admin/insert_haa_home_block.py')]
           for path in paths:
-              text = path.read_text(encoding='utf-8')
-              updated = text.replace('v29-haa-home', 'v28')
-              path.write_text(updated, encoding='utf-8')
+              text = path.read_text(encoding='utf-8').replace('v29-haa-home', 'v28')
+              path.write_text(text, encoding='utf-8')
 
           worker = Path('sw.js').read_text(encoding='utf-8')
           patcher = Path('scripts_admin/insert_haa_home_block.py').read_text(encoding='utf-8')
@@ -92,24 +164,37 @@ jobs:
           print('PASS: HAA mantida no cache aquecido e contrato v28 preservado')
           PY
 
-      - name: Validar arquivos alterados
+      - name: Validar descoberta, sintaxe e regressões direcionadas
         run: |
           git diff --check
           node --check 01_Modulos_Clinicos/Hepatite_Alcool_Associada/app.js
           python -m json.tool 01_Modulos_Clinicos/Hepatite_Alcool_Associada/module.manifest.json >/dev/null
           python - <<'PY'
           from pathlib import Path
+          import re
+
           home = Path('index.html').read_text(encoding='utf-8')
           module = Path('01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html').read_text(encoding='utf-8')
           worker = Path('sw.js').read_text(encoding='utf-8')
           assert '<!-- haa-home-feature:v1 -->' in home
-          assert 'data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/"' in home
+          assert 'class="haa-discovery-module mod-yellow reveal" data-haa-home-card' in home
+          assert 'href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html"' in home
           assert '<!-- haa-module-entry:v1 -->' in module
           assert 'href="#atlas-visual"' in module
           assert 'const CACHE_NAME = `${CACHE_PREFIX}v28`;' in worker
           assert './01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html' in worker
-          print('PASS: bloco, card HAA, Atlas e cache compatível')
+          module_hrefs = set(re.findall(r'<a\b[^>]*class="[^"]*\bmodule-card\b[^"]*"[^>]*href="([^"]+)"', home, flags=re.I))
+          assert len(module_hrefs) == 28
+          assert '01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html' not in module_hrefs
+          modules_start = home.index('id="modulos"')
+          deck_start = home.index('<!-- ── DECK DE MISSÕES CRÍTICAS')
+          assert home[modules_start:deck_start].count('class="module-card') == 25
+          print('PASS: bloco HAA, card de descoberta, Atlas e taxonomia preservados')
           PY
+          python -m unittest \
+            tests.test_clarity_home_coverage.ClarityHomeCoverageTests.test_all_home_module_entrypoints_are_covered \
+            tests.test_platform_expansion.AccessiblePwaTests.test_portal_stations_and_modules_have_distinct_visual_taxonomy \
+            -v
 
       - name: Commitar correção na main
         run: |
@@ -126,5 +211,5 @@ jobs:
             01_Modulos_Clinicos/Hepatite_Alcool_Associada/styles.css \
             01_Modulos_Clinicos/Hepatite_Alcool_Associada/module.manifest.json \
             01_Modulos_Clinicos/Hepatite_Alcool_Associada/README.md
-          git commit -m "fix(home): garantir card HAA no elenco de módulos"
+          git commit -m "fix(home): publicar card HAA sem alterar taxonomia de módulos"
           git push origin HEAD:main
