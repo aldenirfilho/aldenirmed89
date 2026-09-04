@@ -6,7 +6,7 @@
   "emoji": "🧠",
   "entrypoint": "index.html",
   "href": "01_Modulos_Clinicos/TCE_Grave_CRASH/index.html",
-  "version": "1.0.0-rc.1",
+  "version": "1.1.0-rc.2",
   "status": "em-revisao-medica",
   "clinicalReviewRequired": true,
   "publication": {
@@ -14,13 +14,17 @@
     "publicPreview": true,
     "clinicalReviewOngoing": true,
     "purpose": "educacional-e-apoio-cognitivo",
-    "authorizedAt": "2026-09-03"
+    "previousPublicPreviewAuthorizedAt": "2026-09-03",
+    "atlasPublicPreviewAuthorizedAt": "2026-09-04",
+    "previewReason": "O proprietário autorizou a circulação educacional do atlas como prévia pública; a homologação clínica multiprofissional permanece pendente."
   },
-  "updatedAt": "2026-09-03",
+  "updatedAt": "2026-09-04",
   "category": [
     "Medicina Intensiva",
     "Medicina de Emergência",
     "Neurointensivismo",
+    "Neurocirurgia",
+    "Neurorradiologia",
     "Trauma",
     "Ventilação Mecânica",
     "Toxicologia"
@@ -37,10 +41,26 @@
     "VV-ECMO",
     "álcool",
     "cocaína",
-    "opioide"
+    "opioide",
+    "tomografia de crânio",
+    "hematoma epidural",
+    "hematoma subdural",
+    "contusão cerebral",
+    "hemorragia subaracnóidea traumática",
+    "hidrocefalia pós-traumática",
+    "DVE",
+    "DVP",
+    "DLE",
+    "ceftriaxona",
+    "clindamicina",
+    "ácido tranexâmico",
+    "anticonvulsivante"
   ],
   "features": [
     "Mnemônico CRASH autoral com limites explícitos",
+    "Atlas tomográfico Turbo TEMI 360X com dez pranchas sintéticas widescreen",
+    "Leitura tomográfica fixa em nove passos e critérios de escalada neurocirúrgica",
+    "Ponte de segurança para anticonvulsivantes, TXA, antibióticos, DVE, DVP e DLE",
     "Ressuscitação da hora zero ao fechamento da primeira hora",
     "Algoritmo escalonado de herniação e PIC refratária",
     "Gate interativo de segurança para teste de despertar",
@@ -52,6 +72,17 @@
     "Tema claro/escuro, impressão e navegação por teclado",
     "HTML, CSS e JavaScript puros; sem dependências externas de runtime"
   ],
+  "visualAtlas": {
+    "id": "tce-tc-360x",
+    "count": 10,
+    "format": "widescreen",
+    "dimensions": "1672x941",
+    "synthetic": true,
+    "diagnosticUse": false,
+    "assetDirectory": "assets/visuals",
+    "ledger": "data/visual-assets.json",
+    "reviewStatus": "pending-neuroradiology-neurosurgery"
+  },
   "pluginContract": {
     "global": "window.ANTIGRAVITY_TCE_CRASH",
     "event": "antigravity:tce-crash-ready",
@@ -68,16 +99,20 @@
     ]
   },
   "evidence": {
-    "cutoffDate": "2026-09-03",
+    "cutoffDate": "2026-09-04",
     "sourceFamilies": [
       "Neurocritical Care Society ENLS 6.0",
       "Brain Trauma Foundation",
+      "American College of Surgeons",
+      "French Society of Neurosurgery",
       "ESICM",
       "ATS",
       "ELSO",
       "SCCM",
       "American Heart Association 2025",
-      "CRASH e CRASH-3"
+      "CRASH e CRASH-3",
+      "Infectious Diseases Society of America",
+      "American Association for the Surgery of Trauma"
     ],
     "uncertaintyLabelsRequired": true
   },
@@ -86,8 +121,11 @@
     "owner": "Aldenir Rocha de Oliveira Filho",
     "requiredBeforeActive": [
       "validar metas fisiológicas e critérios de monitorização de PIC com neurocirurgia",
+      "revisar as dez pranchas sintéticas com neurorradiologia e registrar que não são diagnósticas",
+      "reconciliar limiares de evacuação, repetição de TC e critérios de DVE, DVP e DLE com neurocirurgia",
       "homologar concentrações, doses, acessos e monitorização da osmoterapia",
       "homologar fármacos de RSI, analgosedação, bloqueio e toxicologia com farmácia clínica",
+      "homologar anticonvulsivantes, TXA e antibióticos com farmácia clínica, infectologia e stewardship",
       "adaptar critérios de despertar, abortagem, SBT e extubação ao protocolo da UTI",
       "validar ajustes de assincronia em cada modelo de ventilador disponível",
       "confirmar fluxo de prona, ECMO e transferência inter-hospitalar",

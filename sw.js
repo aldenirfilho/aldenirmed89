@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v26`;
+const CACHE_NAME = `${CACHE_PREFIX}v27`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -96,6 +96,7 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/assets/styles.css",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/assets/app.js",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/data/catalog.js",
+  "./01_Modulos_Clinicos/TCE_Grave_CRASH/data/visual-assets.json",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/module.manifest.json",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/CHECKLIST_OPERACIONAL.md",
   "./01_Modulos_Clinicos/Dermatologia_Critica/index.html",

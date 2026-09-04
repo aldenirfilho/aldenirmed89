@@ -172,6 +172,8 @@ jobs:
           test -s site/01_Modulos_Clinicos/TCE_Grave_CRASH/assets/styles.css
           test -s site/01_Modulos_Clinicos/TCE_Grave_CRASH/assets/app.js
           test -s site/01_Modulos_Clinicos/TCE_Grave_CRASH/data/catalog.js
+          test -s site/01_Modulos_Clinicos/TCE_Grave_CRASH/data/visual-assets.json
+          test "$(find site/01_Modulos_Clinicos/TCE_Grave_CRASH/assets/visuals -maxdepth 1 -type f -name 'tc-tce-*.jpg' | wc -l)" -eq 10
           test -s site/01_Modulos_Clinicos/TCE_Grave_CRASH/module.manifest.json
           test -s site/01_Modulos_Clinicos/TCE_Grave_CRASH/CHECKLIST_OPERACIONAL.md
           test -s site/15_Radar_Cientifico/index.html
