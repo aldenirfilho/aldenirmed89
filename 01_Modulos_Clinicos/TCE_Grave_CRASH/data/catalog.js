@@ -5,8 +5,8 @@ window.ANTIGRAVITY_TCE_CRASH = Object.freeze({
     schemaVersion: "antigravity-tce-crash-v1",
     moduleId: "tce-grave-crash",
     title: "TCE grave · Protocolo CRASH",
-    version: "1.1.0-rc.1",
-    updatedAt: "2026-09-03",
+    version: "1.1.0-rc.2",
+    updatedAt: "2026-09-04",
     status: "em-revisao-medica",
     mnemonic: Object.freeze({
       C: "Circulação, coluna e capnografia",

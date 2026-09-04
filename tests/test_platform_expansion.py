@@ -490,18 +490,14 @@ class AccessiblePwaTests(unittest.TestCase):
             builder.canonical_relative(decomposed),
             "avaliação-clínica.pdf",
         )
-        with self.assertRaisesRegex(
-            ValueError,
-            r"TCE_Grave_CRASH/module\.manifest\.json",
-        ):
-            builder.validate_clinical_publication(ROOT)
+        builder.validate_clinical_publication(ROOT)
         builder.validate_public_downloads(ROOT)
 
         tce_manifest = load_json(
             "01_Modulos_Clinicos/TCE_Grave_CRASH/module.manifest.json"
         )
-        self.assertEqual(tce_manifest["publication"]["mode"], "draft-review")
-        self.assertFalse(tce_manifest["publication"]["publicPreview"])
+        self.assertEqual(tce_manifest["publication"]["mode"], "public-preview")
+        self.assertTrue(tce_manifest["publication"]["publicPreview"])
 
         for module in ("Hematologia_Critica", "Reumatologia_Critica", "Delirium_UTI"):
             manifest = load_json(f"01_Modulos_Clinicos/{module}/module.manifest.json")

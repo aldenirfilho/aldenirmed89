@@ -84,10 +84,10 @@ class TceCrashModuleTests(unittest.TestCase):
         manifest = load_json(f"{RELATIVE.as_posix()}/module.manifest.json")
         self.assertEqual(manifest["status"], "em-revisao-medica")
         self.assertTrue(manifest["clinicalReviewRequired"])
-        self.assertEqual(manifest["publication"]["mode"], "draft-review")
-        self.assertFalse(manifest["publication"]["publicPreview"])
+        self.assertEqual(manifest["publication"]["mode"], "public-preview")
+        self.assertTrue(manifest["publication"]["publicPreview"])
         self.assertTrue(manifest["publication"]["clinicalReviewOngoing"])
-        self.assertIn("draftReason", manifest["publication"])
+        self.assertIn("previewReason", manifest["publication"])
         self.assertFalse(manifest["privacy"]["networkRuntime"])
         self.assertFalse(manifest["privacy"]["telemetry"])
         self.assertFalse(manifest["privacy"]["patientData"])
@@ -138,7 +138,7 @@ class TceCrashModuleTests(unittest.TestCase):
                 item["clinicalReview"],
                 "pending-neuroradiology-neurosurgery",
             )
-            self.assertEqual(item["publicationStatus"], "draft-review")
+            self.assertEqual(item["publicationStatus"], "public-preview")
             self.assertTrue(item["caption"])
             self.assertTrue(item["promptSummary"])
             self.assertEqual(
@@ -374,7 +374,7 @@ class TceCrashModuleTests(unittest.TestCase):
         )
         self.assertIn('`${CACHE_PREFIX}v27`', worker)
 
-    def test_editorial_registry_preserves_previous_public_release(self) -> None:
+    def test_editorial_registry_preserves_previous_and_records_atlas_preview(self) -> None:
         editorial = load_json("data/editorial/registry.json")
         release = next(
             item for item in editorial["items"]
@@ -391,9 +391,25 @@ class TceCrashModuleTests(unittest.TestCase):
         self.assertNotIn(
             f"{RELATIVE.as_posix()}/data/visual-assets.json", release["paths"]
         )
-        self.assertFalse(
+        self.assertTrue(
             load_json(f"{RELATIVE.as_posix()}/module.manifest.json")
             ["publication"]["publicPreview"]
+        )
+
+        atlas_release = next(
+            item for item in editorial["items"]
+            if item["id"] == "release-tce-atlas-360x-public-preview-2026-09-04"
+        )
+        self.assertEqual(atlas_release["classification"], "public-cited")
+        self.assertTrue(atlas_release["ownerApproval"])
+        self.assertTrue(atlas_release["medical"])
+        self.assertIn(
+            f"{RELATIVE.as_posix()}/data/visual-assets.json",
+            atlas_release["paths"],
+        )
+        self.assertEqual(
+            len([path for path in atlas_release["paths"] if path.endswith(".jpg")]),
+            10,
         )
 
 

@@ -26,8 +26,10 @@ falência respiratória grave e intoxicações associadas ao trauma.
 - Toda prancha é sintética, não deriva de paciente e não serve para diagnóstico.
 - O registro visual entra no aquecimento offline; os JPEGs são carregados sob demanda
   e passam ao cache local após a primeira visualização, evitando instalação inicial pesada.
-- O estado é `em-revisao-medica` com `draft-review`; a nova versão fica fora da
-  prévia pública até homologação multiprofissional documentada.
+- O estado é `em-revisao-medica` com `public-preview`; a versão pode circular
+  como prévia educacional, mas não é protocolo assistencial homologado.
+- A homologação multiprofissional documentada continua obrigatória antes de
+  mudar o módulo para `ativo`.
 - ATLS/ACLS, neurocirurgia e protocolos institucionais prevalecem.
 
 ## Validação
