@@ -27,6 +27,28 @@ jobs:
       - name: Aplicar integração idempotente
         run: python scripts_admin/insert_haa_home_block.py
 
+      - name: Preservar contrato legado do cache v28
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          paths = [
+              Path('sw.js'),
+              Path('scripts_admin/insert_haa_home_block.py'),
+          ]
+          for path in paths:
+              text = path.read_text(encoding='utf-8')
+              updated = text.replace('v29-haa-home', 'v28')
+              path.write_text(updated, encoding='utf-8')
+
+          worker = Path('sw.js').read_text(encoding='utf-8')
+          patcher = Path('scripts_admin/insert_haa_home_block.py').read_text(encoding='utf-8')
+          assert 'const CACHE_NAME = `${CACHE_PREFIX}v28`;' in worker
+          assert 'v29-haa-home' not in worker
+          assert 'v29-haa-home' not in patcher
+          print('PASS: HAA mantida no cache aquecido e contrato v28 preservado')
+          PY
+
       - name: Validar arquivos alterados
         run: |
           git diff --check
@@ -36,11 +58,14 @@ jobs:
           from pathlib import Path
           home = Path('index.html').read_text(encoding='utf-8')
           module = Path('01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html').read_text(encoding='utf-8')
+          worker = Path('sw.js').read_text(encoding='utf-8')
           assert '<!-- haa-home-feature:v1 -->' in home
           assert 'data-haa-home-card' in home
           assert '<!-- haa-module-entry:v1 -->' in module
           assert 'href="#atlas-visual"' in module
-          print('PASS: bloco HAA estático e Atlas localizável')
+          assert 'const CACHE_NAME = `${CACHE_PREFIX}v28`;' in worker
+          assert './01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html' in worker
+          print('PASS: bloco HAA estático, Atlas localizável e cache compatível')
           PY
 
       - name: Commitar correção na main
@@ -52,10 +77,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html sw.js \
+            scripts_admin/insert_haa_home_block.py \
             01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html \
             01_Modulos_Clinicos/Hepatite_Alcool_Associada/app.js \
             01_Modulos_Clinicos/Hepatite_Alcool_Associada/styles.css \
             01_Modulos_Clinicos/Hepatite_Alcool_Associada/module.manifest.json \
             01_Modulos_Clinicos/Hepatite_Alcool_Associada/README.md
-          git commit -m "fix(home): destacar bloco HAA e Atlas Turbo TEMI 360 X"
+          git commit -m "fix(pwa): preservar cache v28 com o bloco HAA"
           git push origin HEAD:main
