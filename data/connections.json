@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-09-03",
-  "version": "4.6-acra-microparticles",
-  "description": "Mapa vivo organizado da Enciclopédia: Home, Central de Ativação, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos, Micropartículas Ativas ACRA e macrotemas de UTI.",
+  "updatedAt": "2026-09-05",
+  "version": "4.7-neuro-semiology",
+  "description": "Mapa vivo organizado da Enciclopédia: Home, Central de Ativação, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos, Semiologia Neurológica Topográfica, Micropartículas Ativas ACRA e macrotemas de UTI.",
   "legend": {
     "hub": "Nó central do projeto",
     "biblioteca": "Base de documentos e curadoria IA",
@@ -1048,6 +1048,70 @@
       "url": "01_Modulos_Clinicos/TCE_Grave_CRASH/index.html#substancias",
       "status": "em_revisao",
       "body": "TCE sem ancoragem com cocaína, opioides, álcool e coingestões."
+    },
+    {
+      "id": "semiologia-neurologica-topografica",
+      "label": "🧠 Semiologia Neurológica",
+      "type": "module",
+      "url": "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html",
+      "status": "em_revisao",
+      "body": "Exame neurológico completo e localização topográfica do córtex ao músculo, em prévia educacional."
+    },
+    {
+      "id": "neuro-radar-topografico",
+      "label": "🧭 Radar topográfico",
+      "type": "tool",
+      "url": "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html#metodo",
+      "status": "em_revisao",
+      "body": "Sete gates para integrar tempo, síndrome, lateralidade, nível anatômico e achados que refutam a hipótese."
+    },
+    {
+      "id": "neuro-exame-completo-osce",
+      "label": "📋 Exame completo / OSCE",
+      "type": "tool",
+      "url": "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html#exame",
+      "status": "em_revisao",
+      "body": "Checklist de 29 itens, cronômetro e síntese topográfica sem dados de pacientes."
+    },
+    {
+      "id": "neuro-afasias",
+      "label": "🗣️ Afasias",
+      "type": "tool",
+      "url": "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html#linguagem",
+      "status": "em_revisao",
+      "body": "Fluência, compreensão, repetição e nomeação com padrões clássicos e modelo moderno em rede."
+    },
+    {
+      "id": "neuro-face-central-periferica",
+      "label": "🙂 Face central × periférica",
+      "type": "topic",
+      "url": "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html#face",
+      "status": "em_revisao",
+      "body": "Testa, olhos e boca interpretados junto a sinais corticais, piramidais, pontinos e otológicos."
+    },
+    {
+      "id": "neuro-motor-sensitivo",
+      "label": "💪 Motor e sensitivo",
+      "type": "topic",
+      "url": "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html#motor",
+      "status": "em_revisao",
+      "body": "NMS, NMI, reflexos, distribuição sensitiva e eixo raiz–plexo–nervo–junção–músculo."
+    },
+    {
+      "id": "neuro-atlas-topografico",
+      "label": "🖼️ Atlas neurológico",
+      "type": "feed",
+      "url": "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html#atlas",
+      "status": "em_revisao",
+      "body": "Dez pranchas sintéticas widescreen para revisão topográfica, com validação neurológica formal pendente."
+    },
+    {
+      "id": "neuro-casos-topograficos",
+      "label": "🎯 Casos topográficos",
+      "type": "qbank",
+      "url": "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html#casos",
+      "status": "em_revisao",
+      "body": "Oito casos rápidos com feedback sobre a pista localizadora e a principal armadilha."
     }
   ],
   "edges": [
@@ -2016,6 +2080,61 @@
     },
     {
       "from": "tce-grave-crash",
+      "to": "banco-temi",
+      "relation": "treino-ativo"
+    },
+    {
+      "from": "home",
+      "to": "semiologia-neurologica-topografica",
+      "relation": "modulo-em-revisao"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
+      "to": "neuro-radar-topografico",
+      "relation": "localizacao-anatomica"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
+      "to": "neuro-exame-completo-osce",
+      "relation": "exame-estruturado"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
+      "to": "neuro-afasias",
+      "relation": "rede-da-linguagem"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
+      "to": "neuro-face-central-periferica",
+      "relation": "localizacao-do-vii-par"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
+      "to": "neuro-motor-sensitivo",
+      "relation": "tratos-e-sistema-periferico"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
+      "to": "neuro-atlas-topografico",
+      "relation": "revisao-visual"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
+      "to": "neuro-casos-topograficos",
+      "relation": "recuperacao-ativa"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
+      "to": "avc-agudo",
+      "relation": "deficit-focal-tempo-dependente"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
+      "to": "tce-grave-crash",
+      "relation": "neuroavaliacao-seriada"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
       "to": "banco-temi",
       "relation": "treino-ativo"
     }

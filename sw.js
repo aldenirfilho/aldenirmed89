@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v29`;
+const CACHE_NAME = `${CACHE_PREFIX}v30`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -107,6 +107,13 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/data/visual-assets.json",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/module.manifest.json",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/CHECKLIST_OPERACIONAL.md",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/styles.css",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/app.js",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/theme-bootstrap.js",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/data/content.js",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/data/visual-assets.json",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/module.manifest.json",
   "./01_Modulos_Clinicos/Dermatologia_Critica/index.html",
   "./01_Modulos_Clinicos/Dermatologia_Critica/assets/styles.css",
   "./01_Modulos_Clinicos/Dermatologia_Critica/assets/app.js",

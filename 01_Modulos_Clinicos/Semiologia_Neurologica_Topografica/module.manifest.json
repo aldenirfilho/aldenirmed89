@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "semiologia-neurologica-topografica",
+  "title": "Semiologia Neurológica Topográfica — Exame Completo e Localização da Lesão",
+  "shortTitle": "Semiologia Neurológica",
+  "emoji": "🧠",
+  "entrypoint": "index.html",
+  "href": "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html",
+  "version": "1.0.0-rc.1",
+  "status": "em-revisao-medica",
+  "clinicalReviewRequired": true,
+  "publication": {
+    "mode": "public-preview",
+    "publicPreview": true,
+    "clinicalReviewOngoing": true,
+    "purpose": "educacional-e-apoio-cognitivo",
+    "authorizedAt": "2026-09-05"
+  },
+  "updatedAt": "2026-09-05",
+  "category": [
+    "Neurologia",
+    "Semiologia",
+    "Clínica Médica",
+    "Medicina de Emergência",
+    "Neurointensivismo",
+    "TEMI"
+  ],
+  "keywords": [
+    "exame neurológico",
+    "localização topográfica",
+    "afasia",
+    "Broca",
+    "Wernicke",
+    "afasia de condução",
+    "paralisia facial",
+    "pares cranianos",
+    "neurônio motor superior",
+    "neurônio motor inferior",
+    "vias sensitivas",
+    "cerebelo",
+    "medula",
+    "TEMI"
+  ],
+  "features": [
+    "Exame neurológico completo em sequência reproduzível",
+    "Radar topográfico em sete gates anatômicos",
+    "Classificador educacional de padrões afásicos",
+    "Comparador de paralisia facial central e periférica com ressalvas modernas",
+    "Mapa de campos visuais e via óptica",
+    "Matriz córtex, substância branca, tronco, cerebelo, medula e sistema periférico",
+    "Checklist de exame com progresso local, modo OSCE e impressão",
+    "Casos clínicos de localização com feedback imediato",
+    "Dez pranchas médico-científicas originais com texto alternativo",
+    "Navegação acessível por teclado, modo claro, alto contraste e redução de movimento",
+    "Sem dados de pacientes, backend, telemetria clínica ou decisão automatizada"
+  ],
+  "pluginContract": {
+    "global": "window.ALDENIR_NEURO_SEMIOLOGY",
+    "event": "aldenirmed89:neuro-semiology-ready",
+    "collections": [
+      "aphasiaPatterns",
+      "localizationRules",
+      "examChecklist",
+      "cases",
+      "references"
+    ],
+    "extensionRule": "Conteúdo didático estruturado entra em data/content.js; sinais de segurança e limites permanecem visíveis no HTML."
+  },
+  "privacy": {
+    "networkRuntime": false,
+    "cloud": false,
+    "telemetry": false,
+    "patientData": false,
+    "siteWideAnalytics": "O build público pode injetar o contador agregado de visitas do portal; não há telemetria clínica nem envio de respostas das ferramentas.",
+    "localStorage": [
+      "preferência global de tema",
+      "progresso educacional do checklist e dos casos"
+    ]
+  },
+  "media": {
+    "generatedWith": "OpenAI image generation",
+    "count": 10,
+    "license": "conteúdo autoral do projeto",
+    "directory": "assets/images",
+    "files": [
+      "01-mapa-cortical-funcional.png",
+      "02-rede-da-linguagem.png",
+      "03-padroes-afasicos.png",
+      "04-via-corticoespinal.png",
+      "05-paralisia-facial-central-periferica.png",
+      "06-via-optica-campos-visuais.png",
+      "07-tronco-encefalico-sinais-cruzados.png",
+      "08-vias-sensitivas.png",
+      "09-cerebelo-topografia.png",
+      "10-eixo-neuromuscular.png"
+    ]
+  },
+  "safetyNotice": "Ferramenta educacional de treinamento semiológico. Achados isolados não confirmam etiologia nem substituem avaliação clínica completa, neuroimagem, exames complementares, protocolo institucional ou parecer especializado.",
+  "reviewGate": {
+    "owner": "Dr. Aldenir Rocha",
+    "requiredBeforeClinicalUse": [
+      "revisão assinada por neurologista ou equipe docente de neurologia",
+      "validação das tarefas de linguagem em português brasileiro e adequação cultural",
+      "revisão das ressalvas para paralisia facial central e periférica",
+      "validação das dez pranchas por neurologia/neuroanatomia",
+      "simulação do checklist em cenários ambulatorial, emergência e UTI",
+      "confirmação dos fluxos locais de AVC, neuroinfecção, compressão medular e síndrome de cauda equina",
+      "registro de data, versão e responsável por cada revisão"
+    ]
+  }
+}

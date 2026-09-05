@@ -179,6 +179,15 @@ jobs:
           test "$(find site/01_Modulos_Clinicos/TCE_Grave_CRASH/assets/visuals -maxdepth 1 -type f -name 'tc-tce-*.jpg' | wc -l)" -eq 10
           test -s site/01_Modulos_Clinicos/TCE_Grave_CRASH/module.manifest.json
           test -s site/01_Modulos_Clinicos/TCE_Grave_CRASH/CHECKLIST_OPERACIONAL.md
+          test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html
+          test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/styles.css
+          test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/app.js
+          test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/theme-bootstrap.js
+          test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/data/content.js
+          test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/data/visual-assets.json
+          test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/module.manifest.json
+          test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/README.md
+          test "$(find site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/images -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 10
           test -s site/15_Radar_Cientifico/index.html
           test -s site/15_Radar_Cientifico/data/radar.js
           test -s site/15_Radar_Cientifico/data/radar-history.json
