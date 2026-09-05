@@ -79,3 +79,11 @@ Déficit neurológico súbito, rebaixamento, primeira crise/estado de mal, cefal
 - metadados, versão e gate de revisão: `module.manifest.json`.
 
 Ao atualizar o conteúdo, preserve a separação entre descrição sindrômica, hipótese topográfica e etiologia; registre data, versão, fontes e responsável pela revisão.
+
+## Aprofundamento Turbo TEMI 360 X — versão 1.1
+
+`aprofundamento.html` integra o material fornecido pelo proprietário, revisado documentalmente e ampliado, sem substituir a interface inicial. Inclui 19 seções, localizador de 34 padrões, 28 casos, 40 flashcards, diagramas interativos de via óptica/medula, três pranchas SVG novas e uma ilustração conceitual original. Trilhas de 10/25/50 minutos armazenam somente progresso educacional em `nm_study_v1`.
+
+Fontes de maior risco foram conferidas em CFM 2.173/2017, GCS oficial, AHA/ASA 2022 e 2026, SAEM GRACE-3, NICE e EAN/PNS 2023. Isso é revisão documental assistida, não revisão humana assinada nem validação de algoritmo diagnóstico. O localizador usa pesos editoriais, sem estimativas de probabilidade.
+
+As duas cópias HTML e o ZIP originais em Downloads permaneceram intactos. Instruções e prompts de operação anexados não fazem parte da publicação. Fontes, limitações e links estão na seção S17; imagens são conceituais/esquemáticas, sem exames reais. O contador agregado do portal pode ser acrescentado pelo pipeline de publicação, sem enviar respostas de estudo.

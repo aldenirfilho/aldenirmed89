@@ -395,7 +395,7 @@ class TceCrashModuleTests(unittest.TestCase):
             '"./01_Modulos_Clinicos/TCE_Grave_CRASH/data/visual-assets.json"',
             worker,
         )
-        self.assertIn('`${CACHE_PREFIX}v30`', worker)
+        self.assertIn('`${CACHE_PREFIX}v31`', worker)
 
     def test_editorial_registry_preserves_previous_and_records_atlas_preview(self) -> None:
         editorial = load_json("data/editorial/registry.json")
