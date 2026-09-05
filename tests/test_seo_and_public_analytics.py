@@ -78,9 +78,12 @@ class SeoAndPublicAnalyticsTests(unittest.TestCase):
             self.assertIn("https://gc.zgo.at", html)
             self.assertIn(csp, html)
 
-    def test_global_identity_layer_is_rustic_restrained_and_accessible(self):
+    def test_global_identity_layer_defaults_to_aerospace_and_keeps_rustic_option(self):
         css = (ROOT / "assets/aldenirmed89-mystic.css").read_text(encoding="utf-8")
         for marker in (
+            'data-visual-profile="aerospace"',
+            "--bg: #020b1f",
+            "--accent: #2dd4ff",
             "bruxa-rustica-moderna",
             "--aldenirmed89-aged-copper: #d8a85f",
             "--aldenirmed89-moss: #91b28b",

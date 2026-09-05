@@ -17,7 +17,7 @@ Módulo clínico estático, responsivo e integrado à rota pública do AldenirMe
 - Bloco estático inserido na homepage em 04/09/2026.
 - Atalhos incluídos no menu superior, hero, tópicos, elenco de módulos e rodapé.
 - Card “Hepatite associada ao álcool” confirmado dentro de “Módulos e apps”, imediatamente antes do módulo TCE grave CRASH.
-- Arquivos HAA incluídos no aquecimento do PWA, preservando o contrato de cache `v28` exigido pela suíte de regressão.
+- Arquivos HAA incluídos no aquecimento do PWA, preservando o contrato de cache `v29` exigido pela suíte de regressão.
 - Este registro dispara e documenta o deploy final que contém o bloco e o card de descoberta.
 
 ## Arquivos

@@ -1,6 +1,24 @@
-# Identidade AldenirMed89 — Laranja Mecânica
+# Identidade AldenirMed89 — Aeroespacial principal
 
-## Conceito oficial
+## Padrão atual
+
+O tema principal voltou a ser uma central de missão aeroespacial: azul profundo,
+ciano orbital e âmbar de prioridade. A entrada usa a decolagem de 10 segundos
+com áudio local opcional, botão para pular, replay e redução de movimento.
+
+Ativos restaurados do histórico autoral da própria plataforma, sem sobrescrever
+os aliases atuais:
+
+- `aldenirmed89-aerospace-launch-card.png`: quadro de decolagem em 1200 × 630 px;
+- `aldenirmed89-aerospace-orbital-master.png`: A Orbital em 1024 × 1024 px;
+- `../icons/aldenirmed89-aerospace-orbital-192.png`: emblema de replay em 192 × 192 px.
+
+Os modos Bruxa Rústica Moderna e Laranja Mecânica permanecem selecionáveis.
+O tema é apenas uma camada visual e não modifica conteúdo clínico.
+
+## Conceito alternativo — Laranja Mecânica
+
+### Detalhes do conceito
 
 O **A arcano-orbital** reúne três trajetórias laranja-fogo em movimento. Onze
 pontos de brasa formam um campo tático ao redor da marca: uma metáfora visual
@@ -37,7 +55,8 @@ identidades esportivas oficiais.
 ## Compatibilidade
 
 Os nomes técnicos antigos continuam disponíveis para não quebrar atalhos,
-instalações e páginas existentes. Eles apontam para a identidade atual:
+instalações e páginas existentes. Eles continuam apontando para a identidade
+alternativa Laranja Mecânica, preservada por compatibilidade:
 
 - `antigravity-a-orbital-master.png`;
 - `antigravity-a-orbital-mono-light.png`;

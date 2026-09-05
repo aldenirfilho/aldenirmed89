@@ -170,17 +170,44 @@ HOME_CSS = r'''
   line-height:1.45;
 }
 .haa-home-note b{color:var(--text)}
-.module-card[data-haa-home-card]{
+/* haa-discovery-card:v1 */
+.haa-discovery-module{
   --accent:var(--yellow);
   --accent-d:var(--yel-d);
+  position:relative;overflow:hidden;display:flex;flex-direction:column;
+  min-width:0;min-height:100%;padding:26px 24px 22px;
   border-color:color-mix(in srgb,var(--yellow) 42%,var(--brd));
+  border-style:solid;border-width:1px;border-radius:var(--r-lg);
   background:linear-gradient(145deg,color-mix(in srgb,var(--yellow) 8%,var(--surf)),var(--surf));
+  color:var(--text);text-decoration:none;cursor:pointer;
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,background .22s ease;
 }
-.module-card[data-haa-home-card] .module-icon{
+.haa-discovery-module::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
+  background:linear-gradient(135deg,var(--yel-d),transparent 60%);transition:opacity .22s ease;
+}
+.haa-discovery-module:hover,.haa-discovery-module:focus-visible{
+  transform:translateY(-3px);border-color:var(--yellow);
+  box-shadow:0 16px 50px rgba(0,0,0,.3),0 0 0 1px var(--yellow);
+}
+.haa-discovery-module:hover::before,.haa-discovery-module:focus-visible::before{opacity:1}
+.haa-discovery-module h3{
+  position:relative;font-family:var(--font-head);font-size:1rem;font-weight:700;
+  letter-spacing:-.01em;margin-bottom:8px;line-height:1.2;
+}
+.haa-discovery-module p{
+  position:relative;font-size:.85rem;color:var(--soft);line-height:1.55;margin-bottom:16px;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;
+}
+.haa-discovery-module .module-icon{
   background:var(--yel-d);
   border-color:color-mix(in srgb,var(--yellow) 55%,var(--brd));
   color:var(--yellow);
 }
+.haa-discovery-module .module-icon,.haa-discovery-module .module-tag-row,
+.haa-discovery-module .module-link{position:relative}
+.haa-discovery-module:hover .module-link::after,
+.haa-discovery-module:focus-visible .module-link::after{transform:translateX(3px)}
 @media (max-width:900px){
   .haa-home-surface{grid-template-columns:1fr}
   .haa-home-title{max-width:18ch}
@@ -205,10 +232,10 @@ HOME_SECTION = r'''
         <h2 class="haa-home-title" id="haa-home-title">Hepatite associada <span>ao álcool</span></h2>
         <p>Uma estação única para critérios NIAAA, mecanismo da lesão, abordagem inicial, prednisolona, suporte, complicações e os principais escores. O Atlas Turbo TEMI reúne dez mapas widescreen para revisão rápida.</p>
         <div class="haa-home-actions">
-          <a class="btn btn-primary" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/">Abrir módulo completo</a>
-          <a class="btn btn-primary" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/#atlas-visual">Ver 10 mapas 16:9</a>
-          <a class="btn btn-ghost" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/#escores">Abrir escores</a>
-          <a class="btn btn-ghost" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/#prednisolona">Fluxo da prednisolona</a>
+          <a class="btn btn-primary" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html">Abrir módulo completo</a>
+          <a class="btn btn-primary" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html#atlas-visual">Ver 10 mapas 16:9</a>
+          <a class="btn btn-ghost" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html#escores">Abrir escores</a>
+          <a class="btn btn-ghost" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html#prednisolona">Fluxo da prednisolona</a>
         </div>
       </div>
       <div class="haa-home-scoreboard" aria-label="Conteúdo do módulo de hepatite associada ao álcool">
@@ -226,7 +253,7 @@ HOME_SECTION = r'''
 
 
 HOME_MODULE_CARD = r'''
-      <a class="module-card mod-yellow" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/" aria-label="Abrir Hepatite associada ao álcool — Turbo TEMI 360 X">
+      <a class="haa-discovery-module mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html" aria-label="Abrir Hepatite associada ao álcool — Turbo TEMI 360 X">
         <div class="module-icon">🟠</div>
         <h3>Hepatite associada ao álcool</h3>
         <p>Critérios NIAAA, mecanismo, abordagem inicial, prednisolona, suporte e Atlas visual com os principais escores.</p>
@@ -360,7 +387,7 @@ def patch_home(text: str) -> str:
             'bloco HAA após o hero',
         )
 
-    if 'data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/"' not in text:
+    if 'data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html"' not in text:
         text = replace_once(
             text,
             '      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" aria-label="Abrir TCE grave — Protocolo CRASH">',
@@ -368,7 +395,7 @@ def patch_home(text: str) -> str:
             'card HAA no elenco de módulos',
         )
 
-    footer_link = '        <a href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/">🟠 Hepatite associada ao álcool · Atlas 360 X</a>\n'
+    footer_link = '        <a href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html">🟠 Hepatite associada ao álcool · Atlas 360 X</a>\n'
     if 'Hepatite associada ao álcool · Atlas 360 X' not in text:
         text = replace_once(
             text,
@@ -487,7 +514,7 @@ def patch_readme(text: str) -> str:
 
 
 def patch_sw(text: str) -> str:
-    text, cache_count = re.subn(r'const CACHE_NAME = `\$\{CACHE_PREFIX\}v[^`]+`;', 'const CACHE_NAME = `${CACHE_PREFIX}v28`;', text, count=1)
+    text, cache_count = re.subn(r'const CACHE_NAME = `\$\{CACHE_PREFIX\}v[^`]+`;', 'const CACHE_NAME = `${CACHE_PREFIX}v29`;', text, count=1)
     if cache_count != 1:
         raise RuntimeError('não foi possível localizar CACHE_NAME no service worker')
     if '"./assets/site-analytics.js"' not in text:
@@ -523,7 +550,7 @@ def validate(home: str, module_html: str, module_js: str, module_css: str, manif
             raise RuntimeError(f'JavaScript sem marcador obrigatório: {token}')
     if MODULE_CSS_SENTINEL not in module_css:
         raise RuntimeError('CSS do módulo sem faixa de entrada')
-    if 'v28' not in sw:
+    if 'v29' not in sw:
         raise RuntimeError('Service worker sem renovação de cache')
     parsed = json.loads(manifest)
     if parsed.get('version') != '2.1.0':

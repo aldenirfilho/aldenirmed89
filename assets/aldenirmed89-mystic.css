@@ -1,15 +1,47 @@
-/* AldenirMed89 · camada visual Bruxa Rústica Moderna, sóbria e sem alterar conteúdo clínico. */
+/* AldenirMed89 · camada multitema com Aeroespacial como padrão, sem alterar conteúdo clínico. */
 :root {
   --aldenirmed89-aged-copper: #d8a85f;
   --aldenirmed89-parchment: #f4eedf;
   --aldenirmed89-moss: #91b28b;
   --aldenirmed89-night-wood: #090d0a;
-  --aldenirmed89-primary-rgb: 216, 168, 95;
-  --aldenirmed89-secondary-rgb: 145, 178, 139;
+  --aldenirmed89-primary-rgb: 45, 212, 255;
+  --aldenirmed89-secondary-rgb: 255, 176, 46;
 }
 
-html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"],
+html[data-theme="dark"][data-visual-profile="aerospace"],
 html[data-theme="dark"]:not([data-visual-profile]):not(.a11y-contrast):not(.a11y-light) {
+  --bg: #020b1f;
+  --bg2: #071831;
+  --bg-2: #071831;
+  --bg-deep: #020b1f;
+  --surface: #071831;
+  --surface-2: #0c2445;
+  --panel: #071831;
+  --panel-2: #0c2445;
+  --panel2: #0c2445;
+  --panel-strong: #0c2445;
+  --panel-soft: rgba(7, 24, 49, .86);
+  --card: #071831;
+  --card2: #0c2445;
+  --paper: #071831;
+  --text: #f5f9ff;
+  --ink: #f5f9ff;
+  --soft: #c7d7ea;
+  --muted: #a7bad4;
+  --line: #1e4a72;
+  --border: #1e4a72;
+  --accent: #2dd4ff;
+  --accent-2: #ffb02e;
+  --accent2: #ffb02e;
+  --cyan: #2dd4ff;
+  --violet: #a98cff;
+  --green: #5ce1a8;
+  --gold: #ffb02e;
+  --yellow: #ffd166;
+  --red: #ff7b75;
+}
+
+html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"] {
   --bg: #090d0a;
   --bg2: #0f1611;
   --bg-2: #0f1611;
@@ -48,6 +80,12 @@ html[data-visual-profile="bruxa-rustica-moderna"],
 html[data-theme="bruxa-rustica-moderna"] {
   --aldenirmed89-primary-rgb: 216, 168, 95;
   --aldenirmed89-secondary-rgb: 145, 178, 139;
+}
+
+html[data-visual-profile="aerospace"],
+html[data-theme="aerospace"] {
+  --aldenirmed89-primary-rgb: 45, 212, 255;
+  --aldenirmed89-secondary-rgb: 255, 176, 46;
 }
 
 html[data-visual-profile="total-orange"],
@@ -107,6 +145,11 @@ html[data-theme="mystic-aerospace"] :where(.brand-icon, .mission-core, .mission-
   filter: drop-shadow(0 0 14px rgba(57, 230, 255, .32)) drop-shadow(0 0 28px rgba(169, 140, 255, .18));
 }
 
+html[data-visual-profile="aerospace"] :where(.brand-icon, .mission-core, .mission-emblem),
+html[data-theme="aerospace"] :where(.brand-icon, .mission-core, .mission-emblem) {
+  filter: drop-shadow(0 0 14px rgba(45, 212, 255, .34)) drop-shadow(0 0 28px rgba(255, 176, 46, .14));
+}
+
 .aldenirmed89-symbolic-note {
   max-width: 76rem;
   margin: 1rem auto 0;
@@ -128,8 +171,7 @@ html[data-visual-profile="contrast"] .aldenirmed89-cosmos {
 }
 
 @media print {
-  html[data-theme="dark"][data-visual-profile="bruxa-rustica-moderna"],
-  html[data-theme="dark"]:not([data-visual-profile]):not(.a11y-contrast):not(.a11y-light) {
+  html[data-theme="dark"] {
     color-scheme: light !important;
     --bg: #ffffff;
     --bg2: #ffffff;

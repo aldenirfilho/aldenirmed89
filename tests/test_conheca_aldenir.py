@@ -262,6 +262,10 @@ class ConhecaAldenirTests(unittest.TestCase):
         self.assertNotIn("Bearer ", self.app)
 
     def test_global_visual_profile_is_supported_without_tracking(self) -> None:
+        self.assertIn('data-visual-profile="aerospace"', self.html)
+        self.assertIn(': "aerospace";', self.app)
+        self.assertIn('const BRAND_THEME_RELEASE = "aerospace-primary-v1"', self.app)
+        self.assertIn("previousBrandDefault", self.app)
         for marker in (
             "antigravity:a11y:v1",
             "visualProfile",

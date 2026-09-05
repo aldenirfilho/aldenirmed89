@@ -3,17 +3,22 @@
 (() => {
   const root = document.documentElement;
   const preferenceKey = "antigravity:a11y:v1";
-  const brandThemeRelease = "bruxa-rustica-moderna-v1";
-  const defaultProfile = "bruxa-rustica-moderna";
+  const brandThemeRelease = "aerospace-primary-v1";
+  const previousBrandRelease = "bruxa-rustica-moderna-v1";
+  const defaultProfile = "aerospace";
   const systemTheme = window.matchMedia("(prefers-color-scheme: light)");
 
   function readPreferences() {
     try {
       const parsed = JSON.parse(localStorage.getItem(preferenceKey) || "{}");
       const preferences = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+      const previousBrandDefault = (
+        !preferences.visualProfile ||
+        (preferences.visualProfile === "bruxa-rustica-moderna" && preferences.brandThemeRelease === previousBrandRelease) ||
+        (preferences.visualProfile === "total-orange" && preferences.brandThemeRelease !== previousBrandRelease)
+      );
       const legacyBrandDefault = (
-        preferences.brandThemeRelease !== brandThemeRelease &&
-        (!preferences.visualProfile || preferences.visualProfile === "total-orange") &&
+        preferences.brandThemeRelease !== brandThemeRelease && previousBrandDefault &&
         preferences.contrast !== true && preferences.clarity !== true && !["light", "system"].includes(preferences.theme)
       );
       if (legacyBrandDefault) {
@@ -45,7 +50,7 @@
     root.classList.toggle("a11y-contrast", contrast);
     const themeMeta = document.querySelector("meta[name=theme-color]");
     if (themeMeta) {
-      themeMeta.content = contrast ? "#000000" : light ? "#ffffff" : visualProfile === "total-orange" ? "#0b0603" : visualProfile === defaultProfile ? "#0b100c" : "#071422";
+      themeMeta.content = contrast ? "#000000" : light ? "#ffffff" : visualProfile === "total-orange" ? "#0b0603" : visualProfile === "bruxa-rustica-moderna" ? "#0b100c" : "#071422";
     }
   }
 

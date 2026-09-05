@@ -15,17 +15,29 @@ class MissionPortalTests(unittest.TestCase):
     def test_portal_uses_the_public_brand_card_and_emblem(self) -> None:
         for marker in (
             'id="missionIntro" role="dialog" aria-modal="true"',
-            'src="./assets/brand/aldenirmed89-total-orange-social-card.png"',
+            'src="./assets/brand/aldenirmed89-aerospace-launch-card.png"',
             'rel="preload" as="image" '
-            'href="./assets/brand/aldenirmed89-total-orange-social-card.png"',
+            'href="./assets/brand/aldenirmed89-aerospace-launch-card.png"',
             'id="missionCore"',
             'id="missionEmblem"',
-            'src="./assets/icons/antigravity-consultas-192.png"',
+            'src="./assets/brand/aldenirmed89-aerospace-orbital-master.png"',
+            'src="./assets/icons/aldenirmed89-aerospace-orbital-192.png"',
+            'class="mission-flight-hud"',
             "A missão começa agora.",
         ):
             self.assertIn(marker, HOME)
         self.assertNotIn("com honra e vigor", HOME.casefold())
         self.assertNotIn("honra · vigor", HOME.casefold())
+
+    def test_launch_assets_are_cached_for_offline_replay(self) -> None:
+        worker = (ROOT / "sw.js").read_text(encoding="utf-8")
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v29`', worker)
+        for asset in (
+            "./assets/brand/aldenirmed89-aerospace-launch-card.png",
+            "./assets/brand/aldenirmed89-aerospace-orbital-master.png",
+            "./assets/icons/aldenirmed89-aerospace-orbital-192.png",
+        ):
+            self.assertIn(f'"{asset}"', worker)
 
     def test_sound_requires_an_explicit_choice_and_stays_local(self) -> None:
         for marker in (
@@ -85,10 +97,11 @@ class MissionPortalTests(unittest.TestCase):
 
     def test_intro_is_once_per_session_and_can_be_replayed(self) -> None:
         for marker in (
-            "const MISSION_INTRO_KEY='antigravity:mission-intro:v1'",
+            "const MISSION_INTRO_KEY='antigravity:mission-intro:v2'",
             "sessionStorage.setItem(MISSION_INTRO_KEY,'seen')",
             "sessionStorage.getItem(MISSION_INTRO_KEY)==='seen'",
             "missionEmblem.addEventListener('click',openMissionPortal)",
+            "heroReplayMission?.addEventListener('click',openMissionPortal)",
             "Repetir abertura da missão",
         ):
             self.assertIn(marker, HOME)
@@ -109,6 +122,9 @@ class MissionPortalTests(unittest.TestCase):
             "missionHasReducedMotion()",
             "window.matchMedia('(prefers-reduced-motion: reduce)').matches",
             "html.a11y-reduce-motion *",
+            "overflow:auto;overscroll-behavior:contain",
+            "@media(max-height:820px)",
+            "calc(52vh * 1.9048)",
             "<noscript><style>.mission-intro,.mission-emblem"
             "{display:none!important}</style></noscript>",
             "#drawer,.mission-intro,.mission-emblem,",

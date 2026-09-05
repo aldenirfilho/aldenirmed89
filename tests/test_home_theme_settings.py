@@ -62,19 +62,22 @@ class HomeThemeSettingsTests(unittest.TestCase):
 
     def test_profile_persists_in_shared_accessibility_preferences(self):
         self.assertIn("const a11yKey='antigravity:a11y:v1'", HOME)
-        self.assertIn("visualProfile:'bruxa-rustica-moderna'", HOME)
+        self.assertIn("visualProfile:'aerospace'", HOME)
         self.assertIn("visualProfile=saved.visualProfile", HOME)
         self.assertIn("a11yPrefs.visualProfile=profile.id", HOME)
         self.assertIn("localStorage.setItem(a11yKey,JSON.stringify(a11yPrefs))", HOME)
         self.assertIn("root.dataset.visualProfile=contrastActive?'contrast'", HOME)
 
-    def test_bruxa_rustica_is_default_and_total_orange_remains_available(self):
-        self.assertIn("visualProfile='bruxa-rustica-moderna'", HOME)
-        self.assertIn('<html lang="pt-BR" data-theme="dark" data-theme-mode="dark" data-visual-profile="bruxa-rustica-moderna">', HOME)
+    def test_aerospace_is_default_and_alternative_themes_remain_available(self):
+        self.assertIn("visualProfile='aerospace'", HOME)
+        self.assertIn('<html lang="pt-BR" data-theme="dark" data-theme-mode="dark" data-visual-profile="aerospace">', HOME)
         self.assertGreaterEqual(HOME.count("!['light','system'].includes(saved.theme)"), 2)
+        self.assertIn("central de missão principal", HOME)
         self.assertIn("Bruxa Rústica Moderna", HOME)
         self.assertIn("id:'total-orange'", HOME)
-        self.assertIn("Identidade histórica · Laranja Mecânica", HOME)
+        self.assertIn("Controle de missão · padrão principal", HOME)
+        self.assertIn("Sua central clínica", HOME)
+        self.assertIn("--text:#f5f9ff;--muted:#a7bad4;--soft:#c7d7ea", HOME)
         self.assertIn("trocas coordenadas", HOME)
         self.assertIn("sem afiliação esportiva oficial", HOME)
         self.assertIn("O conteúdo clínico permanece separado", HOME)
@@ -112,7 +115,9 @@ function run(preferences, systemLight) {
 }
 process.stdout.write(JSON.stringify({
   system: run({theme: "system"}, true),
+  empty: run({}, false),
   legacy: run({theme: "dark", visualProfile: "total-orange"}, false),
+  previousBruxa: run({theme: "dark", visualProfile: "bruxa-rustica-moderna", brandThemeRelease: "bruxa-rustica-moderna-v1"}, false),
   explicitOrange: run({theme: "dark", visualProfile: "total-orange", brandThemeRelease: "bruxa-rustica-moderna-v1"}, false),
   contrast: run({theme: "dark", contrast: true}, false)
 }));
@@ -128,7 +133,10 @@ process.stdout.write(JSON.stringify({
         self.assertEqual("system", cases["system"]["dataset"]["themeMode"])
         self.assertEqual("light", cases["system"]["dataset"]["theme"])
         self.assertEqual("system", cases["system"]["stored"]["theme"])
-        self.assertEqual("bruxa-rustica-moderna", cases["legacy"]["dataset"]["visualProfile"])
+        self.assertEqual("aerospace", cases["empty"]["dataset"]["visualProfile"])
+        self.assertEqual("#071422", cases["empty"]["themeColor"])
+        self.assertEqual("aerospace", cases["legacy"]["dataset"]["visualProfile"])
+        self.assertEqual("aerospace", cases["previousBruxa"]["dataset"]["visualProfile"])
         self.assertEqual("total-orange", cases["explicitOrange"]["dataset"]["visualProfile"])
         self.assertEqual("contrast", cases["contrast"]["dataset"]["visualProfile"])
         self.assertEqual("#000000", cases["contrast"]["themeColor"])
@@ -156,9 +164,10 @@ process.stdout.write(JSON.stringify({
 
         for phase in ("all", "evidence", "shift", "study", "review"):
             self.assertIn(f'data-tf-filter="{phase}"', HOME)
-        self.assertIn("4–3–3 vivo", HOME)
+        self.assertIn("Campo Total 4–3–3", HOME)
         self.assertIn("função primária", HOME)
         self.assertIn("demais rotas continuam disponíveis", HOME)
+        self.assertIn(".module-card p,.haa-discovery-module p,.dsf-excerpt", HOME)
 
 
 if __name__ == "__main__":

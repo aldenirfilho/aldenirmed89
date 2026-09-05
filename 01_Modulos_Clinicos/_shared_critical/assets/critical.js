@@ -38,7 +38,7 @@
     preferences.theme = next;
     preferences.clarity = next === "light";
     preferences.contrast = false;
-    preferences.visualProfile = next === "light" ? "aerospace-light" : "bruxa-rustica-moderna";
+    preferences.visualProfile = next === "light" ? "aerospace-light" : "aerospace";
     theme?.applyPreferences(preferences);
     if (!theme) document.documentElement.dataset.theme = next;
     themeButton.setAttribute("aria-pressed", String(next === "light"));

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="theme-color" content="#0b100c"/>
+  <meta name="theme-color" content="#071422"/>
   <base href="/aldenirmed89/"/>
   <title>404 — Página não encontrada | AldenirMed89</title>
   <meta name="description" content="Página não encontrada. Retorne à homepage da Enciclopédia Médica Intensiva ou busque um módulo."/>
@@ -20,7 +20,7 @@
       document.documentElement.classList.toggle("a11y-contrast",contrast);
       document.documentElement.classList.toggle("a11y-light",light);
       document.documentElement.style.colorScheme=light?"light":"dark";
-      document.querySelector('meta[name="theme-color"]').content=contrast?"#000000":light?"#ffffff":"#0b100c";
+      document.querySelector('meta[name="theme-color"]').content=contrast?"#000000":light?"#ffffff":"#071422";
     }catch(_){}
   </script>
   <link rel="icon" type="image/png" href="assets/img/logo.png"/>
@@ -33,18 +33,18 @@
 
     :root {
       color-scheme: dark;
-      --bg:        #090d0a;
-      --surface:   #0f1611;
-      --card:      #182019;
-      --border:    #806f54;
-      --text:      #f4eedf;
-      --muted:     #aa9e89;
-      --cyan:      #d8a85f;
-      --violet:    #91b28b;
-      --green:     #9aca99;
-      --yellow:    #edc477;
-      --red:       #e77c72;
-      --blue:      #8fb6aa;
+      --bg:        #020b1f;
+      --surface:   #071831;
+      --card:      #0c2445;
+      --border:    #1e4a72;
+      --text:      #f5f9ff;
+      --muted:     #a7bad4;
+      --cyan:      #2dd4ff;
+      --violet:    #a98cff;
+      --green:     #5ce1a8;
+      --yellow:    #ffb02e;
+      --red:       #ff7b75;
+      --blue:      #72b7ff;
       --radius:    12px;
       --font:      'Outfit', system-ui, sans-serif;
       --mono:      'IBM Plex Mono', monospace;
@@ -101,8 +101,8 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse 600px 400px at 20% 30%, rgba(216,168,95,.07), transparent),
-        radial-gradient(ellipse 500px 500px at 80% 70%, rgba(145,178,139,.06), transparent);
+        radial-gradient(ellipse 600px 400px at 20% 30%, rgba(45,212,255,.08), transparent),
+        radial-gradient(ellipse 500px 500px at 80% 70%, rgba(169,140,255,.07), transparent);
       pointer-events: none;
       z-index: 0;
     }
@@ -397,9 +397,9 @@
       document.documentElement.classList.toggle('a11y-contrast', contrast);
       document.documentElement.classList.toggle('a11y-light', active);
       document.documentElement.style.colorScheme = active ? 'light' : 'dark';
-      document.querySelector('meta[name="theme-color"]').content = contrast ? '#000000' : active ? '#ffffff' : '#0b100c';
+      document.querySelector('meta[name="theme-color"]').content = contrast ? '#000000' : active ? '#ffffff' : '#071422';
       theme404.setAttribute('aria-pressed', String(active));
-      theme404.textContent = active ? '🌙 Modo rústico escuro' : '☀️ Visualização clara';
+      theme404.textContent = active ? '🌙 Modo aeroespacial escuro' : '☀️ Visualização clara';
       if (persist) {
         try { localStorage.setItem(a11yKey, JSON.stringify(a11yPrefs)); } catch (_) {}
       }

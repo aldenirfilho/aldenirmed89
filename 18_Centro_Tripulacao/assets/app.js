@@ -3,9 +3,14 @@
 (() => {
   const PREFERENCES_KEY = "antigravity.crew.preferences.v1";
   const A11Y_PREFERENCES_KEY = "antigravity:a11y:v1";
-  const DEFAULT_GLOBAL_A11Y = Object.freeze({ theme: "dark", visualProfile: "bruxa-rustica-moderna" });
+  const BRAND_THEME_RELEASE = "aerospace-primary-v1";
+  const DEFAULT_GLOBAL_A11Y = Object.freeze({
+    theme: "dark",
+    visualProfile: "aerospace",
+    brandThemeRelease: BRAND_THEME_RELEASE
+  });
   const DEFAULT_PREFERENCES = Object.freeze({
-    theme: "bruxa-rustica-moderna",
+    theme: "aerospace",
     colorMode: "dark",
     contrast: false,
     language: "pt-BR",
@@ -92,6 +97,31 @@
     } catch (_error) {
       return false;
     }
+  };
+  const migrateGlobalA11y = (value) => {
+    const saved = value && typeof value === "object" && !Array.isArray(value) ? value : {};
+    const previousBrandDefault = (
+      !saved.visualProfile ||
+      (saved.visualProfile === "bruxa-rustica-moderna" && saved.brandThemeRelease === "bruxa-rustica-moderna-v1") ||
+      (saved.visualProfile === "total-orange" && saved.brandThemeRelease !== "bruxa-rustica-moderna-v1")
+    );
+    if (
+      saved.brandThemeRelease !== BRAND_THEME_RELEASE &&
+      previousBrandDefault &&
+      saved.contrast !== true && saved.clarity !== true &&
+      !["light", "system"].includes(saved.theme)
+    ) {
+      const migrated = {
+        ...DEFAULT_GLOBAL_A11Y,
+        ...saved,
+        theme: "dark",
+        visualProfile: "aerospace",
+        brandThemeRelease: BRAND_THEME_RELEASE
+      };
+      writeStorage(localStorage, A11Y_PREFERENCES_KEY, migrated);
+      return migrated;
+    }
+    return { ...DEFAULT_GLOBAL_A11Y, ...saved };
   };
   const removeStorage = (storage, key) => {
     try {
@@ -492,7 +522,7 @@
   }
 
   function applyTheme(theme, colorMode = "dark", contrast = false) {
-    const safeTheme = ALLOWED_THEMES.has(theme) ? theme : "bruxa-rustica-moderna";
+    const safeTheme = ALLOWED_THEMES.has(theme) ? theme : "aerospace";
     const safeMode = ALLOWED_COLOR_MODES.has(colorMode) ? colorMode : "dark";
     const systemLight = window.matchMedia("(prefers-color-scheme: light)").matches;
     const resolvedMode = contrast
@@ -509,7 +539,7 @@
         ? "#ffffff"
         : safeTheme === "bruxa-rustica-moderna"
           ? "#0b100c"
-          : safeTheme === "total-orange" ? "#0b0603" : "#061526";
+          : safeTheme === "total-orange" ? "#0b0603" : "#071422";
     }
     const clarity = byId("clarityToggle");
     if (clarity) {
@@ -542,7 +572,9 @@
 
   function loadLocalPreferences() {
     const stored = readStorage(localStorage, PREFERENCES_KEY, {});
-    const globalA11y = readStorage(localStorage, A11Y_PREFERENCES_KEY, DEFAULT_GLOBAL_A11Y);
+    const globalA11y = migrateGlobalA11y(
+      readStorage(localStorage, A11Y_PREFERENCES_KEY, DEFAULT_GLOBAL_A11Y)
+    );
     const savedColorMode = globalA11y.theme === "system"
       ? "system"
       : ALLOWED_COLOR_MODES.has(globalA11y.theme)
@@ -944,6 +976,7 @@
       ...existingA11y,
       theme: preferences.colorMode,
       visualProfile: preferences.theme,
+      brandThemeRelease: BRAND_THEME_RELEASE,
       contrast: false,
       clarity: preferences.colorMode === "light"
     });
@@ -1634,7 +1667,7 @@
       const systemLight = window.matchMedia("(prefers-color-scheme: light)").matches;
       const currentlyLight = currentMode === "light" || (currentMode === "system" && systemLight);
       const nextMode = currentlyLight ? "dark" : "light";
-      const nextProfile = currentlyLight ? "bruxa-rustica-moderna" : "aerospace-light";
+      const nextProfile = currentlyLight ? "aerospace" : "aerospace-light";
       byId("colorModePreference").value = nextMode;
       byId("themePreference").value = nextProfile;
       const preferences = { ...getPreferencesFromForm(), colorMode: nextMode, theme: nextProfile };
@@ -1644,6 +1677,7 @@
         ...existingA11y,
         theme: nextMode,
         visualProfile: nextProfile,
+        brandThemeRelease: BRAND_THEME_RELEASE,
         contrast: false,
         clarity: nextMode === "light"
       });

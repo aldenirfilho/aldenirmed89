@@ -21,7 +21,7 @@
     preferences.theme = theme;
     preferences.clarity = theme === "light";
     preferences.contrast = false;
-    preferences.visualProfile = theme === "light" ? "aerospace-light" : "bruxa-rustica-moderna";
+    preferences.visualProfile = theme === "light" ? "aerospace-light" : "aerospace";
     const themeEngine = window.ANTIGRAVITY_CRITICAL_THEME;
     themeEngine?.applyPreferences(preferences);
     if (!themeEngine) {

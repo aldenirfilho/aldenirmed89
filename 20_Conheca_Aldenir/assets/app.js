@@ -2,6 +2,7 @@
   "use strict";
 
   const A11Y_STORAGE_KEY = "antigravity:a11y:v1";
+  const BRAND_THEME_RELEASE = "aerospace-primary-v1";
   const FEED_URL = "./data/content/public-feed.json";
   const DOCUMENTS_URL = "./data/content/public-documents.json";
   const PAGE_SIZE = 6;
@@ -160,11 +161,43 @@
   function readPreferences() {
     try {
       const raw = localStorage.getItem(A11Y_STORAGE_KEY);
-      if (!raw) return {};
+      if (!raw) {
+        return {
+          theme: "dark",
+          visualProfile: "aerospace",
+          brandThemeRelease: BRAND_THEME_RELEASE
+        };
+      }
       const parsed = JSON.parse(raw);
-      return parsed && typeof parsed === "object" ? parsed : {};
+      const preferences = parsed && typeof parsed === "object" && !Array.isArray(parsed)
+        ? parsed
+        : {};
+      const previousBrandDefault = (
+        !preferences.visualProfile ||
+        (preferences.visualProfile === "bruxa-rustica-moderna" && preferences.brandThemeRelease === "bruxa-rustica-moderna-v1") ||
+        (preferences.visualProfile === "total-orange" && preferences.brandThemeRelease !== "bruxa-rustica-moderna-v1")
+      );
+      if (
+        preferences.brandThemeRelease !== BRAND_THEME_RELEASE &&
+        previousBrandDefault &&
+        preferences.contrast !== true && preferences.clarity !== true &&
+        !["light", "system"].includes(preferences.theme)
+      ) {
+        const migrated = {
+          ...preferences,
+          theme: "dark",
+          visualProfile: "aerospace",
+          brandThemeRelease: BRAND_THEME_RELEASE
+        };
+        return migrated;
+      }
+      return preferences;
     } catch (_error) {
-      return {};
+      return {
+        theme: "dark",
+        visualProfile: "aerospace",
+        brandThemeRelease: BRAND_THEME_RELEASE
+      };
     }
   }
 
@@ -172,7 +205,7 @@
     const preferences = readPreferences();
     const requestedProfile = ALLOWED_PROFILES.has(preferences.visualProfile)
       ? preferences.visualProfile
-      : "bruxa-rustica-moderna";
+      : "aerospace";
     const requestedMode = ["dark", "light", "system"].includes(preferences.theme)
       ? preferences.theme
       : preferences.clarity === true
@@ -187,7 +220,7 @@
       : mode === "light" && !LIGHT_PROFILES.has(requestedProfile)
         ? "aerospace-light"
         : mode === "dark" && LIGHT_PROFILES.has(requestedProfile)
-          ? "bruxa-rustica-moderna"
+          ? "aerospace"
           : requestedProfile;
     document.documentElement.dataset.visualProfile = profile;
     document.documentElement.dataset.theme = mode;
@@ -196,7 +229,7 @@
     document.documentElement.style.colorScheme = mode;
     const themeMeta = document.querySelector("meta[name=theme-color]");
     if (themeMeta) {
-      themeMeta.content = contrast ? "#000000" : mode === "light" ? "#ffffff" : profile === "bruxa-rustica-moderna" ? "#0b100c" : profile === "total-orange" ? "#0b0603" : "#061526";
+      themeMeta.content = contrast ? "#000000" : mode === "light" ? "#ffffff" : profile === "bruxa-rustica-moderna" ? "#0b100c" : profile === "total-orange" ? "#0b0603" : "#071422";
     }
   }
 

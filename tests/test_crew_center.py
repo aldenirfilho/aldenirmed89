@@ -91,6 +91,10 @@ class CrewCenterTests(unittest.TestCase):
         ):
             self.assertIn(marker, self.html + self.css)
         self.assertIn("antigravity:a11y:v1", self.app)
+        self.assertIn('data-visual-profile="aerospace"', self.html)
+        self.assertIn('visualProfile: "aerospace"', self.app)
+        self.assertIn('const BRAND_THEME_RELEASE = "aerospace-primary-v1"', self.app)
+        self.assertIn("previousBrandDefault", self.app)
         for marker in ("bruxa-rustica-moderna", "total-orange", "mystic-aerospace", "#0b100c"):
             self.assertIn(marker, self.app + self.css + self.html)
         self.assertIn("html[data-theme][data-visual-profile]{color-scheme:light", self.css)

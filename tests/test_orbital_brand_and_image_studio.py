@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import struct
 import unittest
 from pathlib import Path
@@ -19,7 +20,46 @@ def png_header(path: Path) -> tuple[int, int, int]:
     return width, height, color_type
 
 
+def png_chunk_types(path: Path) -> set[bytes]:
+    data = path.read_bytes()
+    position = 8
+    chunks: set[bytes] = set()
+    while position + 12 <= len(data):
+        length = struct.unpack(">I", data[position : position + 4])[0]
+        chunk_type = data[position + 4 : position + 8]
+        chunks.add(chunk_type)
+        position += 12 + length
+        if chunk_type == b"IEND":
+            break
+    return chunks
+
+
 class OrbitalBrandTests(unittest.TestCase):
+    def test_restored_aerospace_launch_assets_are_exact_and_metadata_free(self) -> None:
+        expected = {
+            "assets/brand/aldenirmed89-aerospace-launch-card.png": (
+                (1200, 630),
+                "ae2df2453a6afc1f46470407703f1da413ebae7f54763b4f1aad778e4400c6fa",
+            ),
+            "assets/brand/aldenirmed89-aerospace-orbital-master.png": (
+                (1024, 1024),
+                "1b0332baa08c1e9aebc98868ad2714a1a7c6b035302d28699fd052de5e324850",
+            ),
+            "assets/icons/aldenirmed89-aerospace-orbital-192.png": (
+                (192, 192),
+                "e88e33064754d97c3bf9534ec95abe4a0c4023a576120b6f09c73e2199ecdbd4",
+            ),
+        }
+        for relative, (dimensions, digest) in expected.items():
+            with self.subTest(asset=relative):
+                path = ROOT / relative
+                self.assertTrue(path.is_file())
+                self.assertEqual(png_header(path)[:2], dimensions)
+                self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), digest)
+                self.assertTrue(
+                    png_chunk_types(path).isdisjoint({b"tEXt", b"zTXt", b"iTXt", b"eXIf"})
+                )
+
     def test_social_card_has_public_share_dimensions_and_metadata(self) -> None:
         card = ROOT / "assets/brand/aldenirmed89-total-orange-social-card.png"
         self.assertTrue(card.is_file())

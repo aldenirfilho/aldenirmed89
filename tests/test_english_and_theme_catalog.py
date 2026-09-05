@@ -93,7 +93,7 @@ class ThemeCatalogTests(unittest.TestCase):
         themes = self.catalog["themes"]
         self.assertEqual(16, len(themes))
         self.assertEqual(expected, {theme["id"] for theme in themes})
-        self.assertEqual("bruxa-rustica-moderna", self.catalog["defaultTheme"])
+        self.assertEqual("aerospace", self.catalog["defaultTheme"])
 
     def test_all_explicit_profiles_are_active(self):
         statuses = {theme["id"]: theme["status"] for theme in self.catalog["themes"]}
@@ -177,12 +177,12 @@ class EnglishHomeTests(unittest.TestCase):
         self.assertTrue((ROOT / "en/assets/theme.js").exists())
 
     def test_default_theme_and_color_match_catalog(self):
-        expected = "<html lang=\"en\" data-theme=\"bruxa-rustica-moderna\""
-        color = "<meta name=\"theme-color\" content=\"#0b100c\">"
+        expected = "<html lang=\"en\" data-theme=\"aerospace\""
+        color = "<meta name=\"theme-color\" content=\"#071422\">"
         for relative in ("en/index.html", "en/radar/index.html"):
             source = (ROOT / relative).read_text(encoding="utf-8")
             self.assertIn(expected, source)
-            self.assertIn('data-visual-profile="bruxa-rustica-moderna"', source)
+            self.assertIn('data-visual-profile="aerospace"', source)
             self.assertIn(color, source)
 
     def test_home_explains_the_total_football_operating_model(self):

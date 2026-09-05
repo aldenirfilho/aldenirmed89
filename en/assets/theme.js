@@ -3,8 +3,9 @@
 (() => {
   const STORAGE_KEY = "antigravity-theme";
   const RELEASE_KEY = "aldenirmed89-theme-release";
-  const RELEASE_ID = "bruxa-rustica-moderna-v1";
-  const DEFAULT_THEME = "bruxa-rustica-moderna";
+  const RELEASE_ID = "aerospace-primary-v1";
+  const PREVIOUS_RELEASE_ID = "bruxa-rustica-moderna-v1";
+  const DEFAULT_THEME = "aerospace";
   const ACTIVE_THEMES = new Set([
     "bruxa-rustica-moderna",
     "total-orange",
@@ -49,7 +50,10 @@
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     const release = localStorage.getItem(RELEASE_KEY);
-    const legacyBrandDefault = release !== RELEASE_ID && (!stored || stored === "total-orange");
+    const previousBrandDefault = !stored ||
+      (stored === "bruxa-rustica-moderna" && release === PREVIOUS_RELEASE_ID) ||
+      (stored === "total-orange" && release !== PREVIOUS_RELEASE_ID);
+    const legacyBrandDefault = release !== RELEASE_ID && previousBrandDefault;
     initial = legacyBrandDefault ? DEFAULT_THEME : normalize(stored);
     localStorage.setItem(RELEASE_KEY, RELEASE_ID);
   } catch (_) {}

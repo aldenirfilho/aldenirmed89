@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v28`;
+const CACHE_NAME = `${CACHE_PREFIX}v29`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -10,7 +10,9 @@ const SHELL_ASSETS = [
   "./assets/aldenirmed89-mystic.css",
   "./assets/site-analytics.css",
   "./assets/site-analytics.js",
-  "./assets/brand/aldenirmed89-total-orange-social-card.png",
+  "./assets/brand/aldenirmed89-aerospace-launch-card.png",
+  "./assets/brand/aldenirmed89-aerospace-orbital-master.png",
+  "./assets/icons/aldenirmed89-aerospace-orbital-192.png",
   "./assets/icons/antigravity-consultas-192.png",
   "./assets/icons/antigravity-consultas-512.png",
   "./assets/icons/apple-touch-icon.png"

@@ -74,12 +74,13 @@ class TceCrashModuleTests(unittest.TestCase):
             ROOT / "01_Modulos_Clinicos/_shared_critical/assets/critical.css"
         ).read_text(encoding="utf-8")
 
-    def test_modern_rustic_witch_theme_is_shared_without_changing_clinical_content(self) -> None:
-        profile = "bruxa-rustica-moderna"
-        self.assertIn(profile, self.shared_theme)
+    def test_aerospace_default_is_shared_without_changing_clinical_content(self) -> None:
+        profile = "aerospace"
+        self.assertIn('const defaultProfile = "aerospace"', self.shared_theme)
         self.assertIn("root.dataset.visualProfile", self.shared_theme)
-        self.assertIn(f'data-visual-profile="{profile}"', self.shared_css)
-        self.assertIn(f'data-visual-profile="{profile}"', self.css)
+        self.assertIn("--bg: #050b14", self.shared_css)
+        self.assertIn("bruxa-rustica-moderna", self.shared_css)
+        self.assertIn("bruxa-rustica-moderna", self.css)
         self.assertIn("html.a11y-contrast", self.shared_css)
         self.assertIn(f'data-visual-profile="{profile}"', self.html)
         for module_name in ("Infectologia_Critica", "Pneumologia_Critica"):
@@ -394,7 +395,7 @@ class TceCrashModuleTests(unittest.TestCase):
             '"./01_Modulos_Clinicos/TCE_Grave_CRASH/data/visual-assets.json"',
             worker,
         )
-        self.assertIn('`${CACHE_PREFIX}v28`', worker)
+        self.assertIn('`${CACHE_PREFIX}v29`', worker)
 
     def test_editorial_registry_preserves_previous_and_records_atlas_preview(self) -> None:
         editorial = load_json("data/editorial/registry.json")

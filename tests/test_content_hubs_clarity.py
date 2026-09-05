@@ -61,7 +61,7 @@ class ContentHubsClarityTests(unittest.TestCase):
                 )
                 self.assertIn('classList.toggle("a11y-light", clarity)', bootstrap)
                 self.assertIn(
-                    'clarity ? "#ffffff" : contrast ? "#000000" : "#0b100c"',
+                    'clarity ? "#ffffff" : contrast ? "#000000" : "#071422"',
                     bootstrap,
                 )
 
@@ -156,7 +156,7 @@ class ContentHubsClarityTests(unittest.TestCase):
                 self.assertIn("html.a11y-contrast", print_css)
                 self.assertIn(":root,html.a11y-light", print_css)
                 self.assertIn("body{background:#fff!important", print_css)
-                self.assertIn("Modo rústico", source)
+                self.assertIn("Modo aeroespacial", source)
                 self.assertIn("print-color-adjust:exact", print_css)
                 self.assertIn("break-inside:avoid", print_css)
                 self.assertIn("@media(max-width:520px)", source)

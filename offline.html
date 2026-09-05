@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b100c">
+  <meta name="theme-color" content="#071422">
   <title>AldenirMed89 — modo offline</title>
   <script>
     try{
@@ -18,14 +18,14 @@
       document.documentElement.classList.toggle("a11y-contrast",contrast);
       document.documentElement.classList.toggle("a11y-light",light);
       document.documentElement.style.colorScheme=light?"light":"dark";
-      document.querySelector('meta[name="theme-color"]').content=contrast?"#000000":light?"#ffffff":"#0b100c";
+      document.querySelector('meta[name="theme-color"]').content=contrast?"#000000":light?"#ffffff":"#071422";
     }catch(_){}
   </script>
   <style>
     :root{
       color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      --bg:#090d0a;--surface:#0f1611;--card:#182019;--border:#d8a85f;
-      --text:#f4eedf;--muted:#d4cab8;--focus:#edc477;--shadow:#0008;--dot:rgba(216,168,95,.08)
+      --bg:#020b1f;--surface:#071831;--card:#0c2445;--border:#2dd4ff;
+      --text:#f5f9ff;--muted:#c7d7ea;--focus:#ffb02e;--shadow:#0008;--dot:rgba(45,212,255,.09)
     }
     html.a11y-light{
       color-scheme:light;
@@ -52,7 +52,7 @@
 </head>
 <body>
   <main>
-    <img src="assets/icons/antigravity-consultas-192.png" alt="">
+    <img src="assets/icons/aldenirmed89-aerospace-orbital-192.png" alt="">
     <h1>Você está offline.</h1>
     <p>O núcleo clínico previamente carregado continua disponível. Reconecte-se para atualizar biblioteca, feed e referências externas.</p>
     <nav aria-label="Ações offline">
@@ -86,9 +86,9 @@
       document.documentElement.classList.toggle("a11y-contrast",contrast);
       document.documentElement.classList.toggle("a11y-light",active);
       document.documentElement.style.colorScheme=active?"light":"dark";
-      document.querySelector('meta[name="theme-color"]').content=contrast?"#000000":active?"#ffffff":"#0b100c";
+      document.querySelector('meta[name="theme-color"]').content=contrast?"#000000":active?"#ffffff":"#071422";
       themeButton.setAttribute("aria-pressed",String(active));
-      themeButton.textContent=active?"🌙 Modo rústico escuro":"☀️ Visualização clara";
+      themeButton.textContent=active?"🌙 Modo aeroespacial escuro":"☀️ Visualização clara";
       if(persist){
         try{localStorage.setItem(a11yKey,JSON.stringify(prefs))}catch(_){}
       }

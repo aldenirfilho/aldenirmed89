@@ -118,7 +118,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed89"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v28`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v29`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
@@ -140,7 +140,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("Baixar atalho opcional", home)
         self.assertIn("não contém .app, script ou instalador", home)
 
-    def test_total_orange_identity_replaces_legacy_cross_assets(self) -> None:
+    def test_primary_aerospace_header_preserves_total_orange_install_assets(self) -> None:
         home = (ROOT / "index.html").read_text(encoding="utf-8")
         expected_master = (
             "bef9b02abd183200ce5a38c45ab2bc9639dd92c01d2871d5df7da0d38875da5f"
@@ -186,7 +186,7 @@ class AccessiblePwaTests(unittest.TestCase):
             home,
         )
         self.assertIn(
-            'src="./assets/icons/antigravity-consultas-64.png" alt=""',
+            'src="./assets/icons/aldenirmed89-aerospace-orbital-192.png" alt=""',
             home,
         )
         self.assertNotIn(
@@ -448,7 +448,7 @@ class AccessiblePwaTests(unittest.TestCase):
             home,
         )
         self.assertIn("-webkit-text-fill-color:currentColor!important;", home)
-        self.assertIn(".module-card p,.dsf-excerpt{", home)
+        self.assertIn(".module-card p,.haa-discovery-module p,.dsf-excerpt{", home)
         self.assertIn("-webkit-line-clamp:unset!important", home)
         self.assertIn("overflow:visible!important", home)
         self.assertIn("document.documentElement.style.colorScheme", home)

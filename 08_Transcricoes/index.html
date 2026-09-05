@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Transcrições | Antigravity</title>
-  <meta name="theme-color" content="#0b100c"/>
+  <meta name="theme-color" content="#071422"/>
   <meta name="color-scheme" content="dark light"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <script>
@@ -24,7 +24,7 @@
         document.documentElement.classList.toggle("a11y-light", clarity);
         document.documentElement.style.colorScheme = clarity ? "light" : "dark";
         document.querySelector('meta[name="theme-color"]').content =
-          clarity ? "#ffffff" : contrast ? "#000000" : "#0b100c";
+          clarity ? "#ffffff" : contrast ? "#000000" : "#071422";
         document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content =
           clarity ? "default" : "black-translucent";
       } catch (_) {}
@@ -141,13 +141,13 @@
         document.documentElement.classList.toggle("a11y-contrast", contrast);
         document.documentElement.classList.toggle("a11y-light", clarity);
         document.documentElement.style.colorScheme = clarity ? "light" : "dark";
-        themeMeta?.setAttribute("content", clarity ? "#ffffff" : contrast ? "#000000" : "#0b100c");
+        themeMeta?.setAttribute("content", clarity ? "#ffffff" : contrast ? "#000000" : "#071422");
         statusMeta?.setAttribute("content", clarity ? "default" : "black-translucent");
         toggle.setAttribute("aria-pressed", String(clarity));
         toggle.querySelector('[aria-hidden="true"]').textContent = clarity ? "🌙" : "☀️";
-        toggle.querySelector(".clarity-label").textContent = clarity ? "Modo rústico" : "Visualização clara";
+        toggle.querySelector(".clarity-label").textContent = clarity ? "Modo aeroespacial" : "Visualização clara";
         toggle.setAttribute("aria-label", clarity
-          ? "Desativar visualização clara e voltar ao modo rústico escuro"
+          ? "Desativar visualização clara e voltar ao modo aeroespacial escuro"
           : "Ativar visualização clara com fundo branco");
         if (persist) {
           try { localStorage.setItem(key, JSON.stringify(preferences)); } catch (_) {}

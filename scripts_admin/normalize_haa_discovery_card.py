@@ -113,9 +113,10 @@ def normalize_home(text: str) -> str:
         text = text.replace(TCE_MARKER, CARD + TCE_MARKER, 1)
 
     if CSS_MARKER not in text:
-        if text.count("</style>") != 1:
+        css_anchor = "</style>\n<noscript><style>"
+        if text.count(css_anchor) != 1:
             raise RuntimeError("Fechamento do estilo principal não foi localizado de forma única.")
-        text = text.replace("</style>", f"\n{DISCOVERY_CSS}\n</style>", 1)
+        text = text.replace(css_anchor, f"\n{DISCOVERY_CSS}\n</style>\n<noscript><style>", 1)
 
     return text
 
@@ -144,10 +145,10 @@ def normalize_patcher(text: str) -> str:
 
 
 def preserve_cache_contract(text: str) -> str:
-    text = text.replace("v29-haa-home", "v28")
+    text = text.replace("v29-haa-home", "v29")
     text, count = re.subn(
         r"const CACHE_NAME = `\$\{CACHE_PREFIX\}v[^`]+`;",
-        "const CACHE_NAME = `${CACHE_PREFIX}v28`;",
+        "const CACHE_NAME = `${CACHE_PREFIX}v29`;",
         text,
         count=1,
     )
@@ -174,8 +175,8 @@ def validate(home: str, patcher: str, module_html: str, worker: str) -> None:
         raise RuntimeError("Patcher idempotente não foi normalizado.")
     if "<!-- haa-module-entry:v1 -->" not in module_html or 'href="#atlas-visual"' not in module_html:
         raise RuntimeError("Entrada do módulo ou atalho do Atlas não foi encontrado.")
-    if "const CACHE_NAME = `${CACHE_PREFIX}v28`;" not in worker:
-        raise RuntimeError("Contrato de cache v28 não foi preservado.")
+    if "const CACHE_NAME = `${CACHE_PREFIX}v29`;" not in worker:
+        raise RuntimeError("Contrato de cache v29 não foi preservado.")
     if '"./01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html"' not in worker:
         raise RuntimeError("Módulo HAA não está no aquecimento do PWA.")
 
