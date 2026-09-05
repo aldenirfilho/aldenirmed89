@@ -131,8 +131,27 @@ Material bruto (PDF/DOCX/aula/IA)
 | `questoes/` | Banco de questões TEMI/R3 — rota canônica | ✅ |
 | `02_Banco_Questoes_TEMI/` | Alias legado com redirect para `questoes/` | ✅ |
 | `les-autoanticorpos/` | Módulo LES — autoanticorpos | ✅ |
-| `apps/` · `biblioteca/` · `updown/` | Wrappers de rota amigável/legado (redirects) | ✅ |
+| `apps/` · `biblioteca/` · `updown/` · `calculadoras/` · `desafios/` · `mnemonicos/` · `card-feed/` · `respirasense-icu/` | Wrappers de rota amigável/legado (redirects) | ✅ |
 | `imagens/` | Galeria visual / infográficos | ✅ |
+| `15_Radar_Cientifico/` | Estação Radar Diário — curadoria de novidades científicas | ✅ |
+| `16_Diretorio_Medico/` | Estação Diretório Médico | ✅ |
+| `17_Portal_Vivo/` | Portal Vivo — hub de publicação viva | ✅ |
+| `18_Centro_Tripulacao/` | Centro da Tripulação — portal comunitário estático, privacy-first (backend em NO-GO, ver `docs_usuario/PROXIMAS_ETAPAS.md`) | ✅ |
+| `19_Integridade_Editorial/` | Superfície pública da política editorial e integridade de conteúdo | ✅ |
+| `20_Conheca_Aldenir/` | Canal público de reflexões/biografia do idealizador (somente conteúdo aprovado) | ✅ |
+| `21_Central_Ativacao/` | Central de Ativação — roadmap operacional público | ✅ |
+| `22_Microparticulas_Ativas_ACRA/` | Micropartículas Ativas ACRA — POCUS no choque | ✅ |
+| `23_Cosmos_NEXUS/` | Linha de produtos/apps experimentais (ex.: Máquina Turbo TEMI 360X) | ✅ |
+| `en/` | Edição em inglês (escopo parcial, em expansão por lotes) | ✅ |
+| `docs_usuario/` | Guias de acesso/operação em HTML para o proprietário e usuários | ✅ |
+| `data/` (raiz) | Manifests globais que já aparecem na tabela acima | ✅ |
+| `admin/` | Painéis administrativos estáticos (ex.: desafios) | ✅ |
+| `downloads/` | Pacotes de acesso rápido (macOS/Windows/iPhone) | ✅ |
+| `macos-webapp/` · `windows/` | Fontes dos instaladores/atalhos nativos (macOS e Windows) | 🔒 NÃO (build interno) |
+| `tests/` | Suíte de testes automatizados (`unittest` + `node`) usada pelo CI | 🔒 NÃO |
+| `scripts/` · `scripts_admin/` | Scripts de validação, build e automação usados pelo CI | 🔒 NÃO |
+| `public_site/` | **Mirror legado e obsoleto**, gerado por `scripts_admin/sync_public_site.py` (script antigo, pré-`build_public_site.py`). Não é usado pelo deploy real desde a correção documentada em `.github/workflows/deploy-seguro.yml` ("site fantasma duplicado"). Mantido apenas para não perder histórico; não deve receber edições manuais. Candidato a remoção controlada em uma tarefa dedicada. | 🔒 NÃO (legado) |
+| `admin/desafios.html`, `data/_aplicados/` | Artefatos administrativos internos | 🔒 NÃO |
 | — | — | — |
 | `00_INBOX_ATUALIZACAO/` | **Bastidor**: entradas de IA, rascunhos, kits | 🔒 NÃO |
 | `99_ARQUIVO_HISTORICO/` | Backups e histórico | 🔒 NÃO (gitignored) |
