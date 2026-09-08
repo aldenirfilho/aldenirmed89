@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -26,6 +27,29 @@ class SeoAndPublicAnalyticsTests(unittest.TestCase):
         cls.config = json.loads(
             (ROOT / "data/site-analytics.json").read_text(encoding="utf-8")
         )
+
+    def test_optional_counter_skips_denied_storage_without_throwing(self):
+        script = r'''
+const vm=require('node:vm'),fs=require('node:fs'),assert=require('node:assert/strict');
+const code=fs.readFileSync('assets/site-analytics.js','utf8');
+function run(mode,hostname='aldenirfilho.github.io') {
+ let appended=0,reads=0; const win={};
+ Object.defineProperty(win,'localStorage',{get(){
+   if(mode==='property-denied')throw Error('SecurityError');
+   return {getItem(){reads++;if(mode==='read-denied')throw Error('SecurityError');return null;}};
+ }});
+ const loader={dataset:{enabled:'true',siteCode:'aldenirrochadeoliveirafilho1989',publicHost:'aldenirfilho.github.io'}};
+ const document={querySelector:selector=>selector==='script[data-antigravity-analytics]'?loader:null,createElement:()=>({dataset:{}}),head:{append:()=>appended++}};
+ vm.runInNewContext(code,{window:win,document,location:{protocol:'https:',hostname}});
+ return {appended,reads};
+}
+assert.deepEqual(run('allowed'),{appended:1,reads:1});
+assert.deepEqual(run('read-denied'),{appended:0,reads:1});
+assert.deepEqual(run('property-denied'),{appended:0,reads:0});
+assert.deepEqual(run('allowed','localhost'),{appended:0,reads:0});
+'''
+        result = subprocess.run(['node', '-e', script], cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_active_config_is_public_safe_and_contains_no_secret(self):
         config = self.builder.load_site_analytics_config(ROOT)
@@ -184,7 +208,10 @@ class SeoAndPublicAnalyticsTests(unittest.TestCase):
         self.assertIn("hidden>", home)
         self.assertIn("loader.dataset.enabled !== 'true'", script)
         self.assertNotIn("document.cookie", script)
-        self.assertNotIn("localStorage", script)
+        # A read-only capability probe may skip a counter that cannot initialize.
+        # Analytics must never write identifiers or other browser storage.
+        for mutation in (".setItem(", ".removeItem(", ".clear("):
+            self.assertNotIn(mutation, script)
         self.assertNotIn("innerHTML", script)
 
 

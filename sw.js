@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v35`;
+const CACHE_NAME = `${CACHE_PREFIX}v36`;
 const SHELL_ASSETS = [
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-64.png",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-192.png",

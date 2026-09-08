@@ -9,6 +9,14 @@
   const isPublicSite = location.protocol === 'https:' && location.hostname === publicHost;
   if (!isPublicSite || !/^[a-z0-9][a-z0-9-]{0,62}[a-z0-9]$/.test(siteCode)) return;
 
+  // The external counter reads localStorage for its own opt-out setting.
+  // If the browser denies access, keep optional analytics out of the page.
+  try {
+    window.localStorage.getItem('antigravity:analytics:storage-check');
+  } catch (_) {
+    return;
+  }
+
   const endpoint = `https://${siteCode}.goatcounter.com`;
   const counterScript = document.createElement('script');
   counterScript.async = true;
