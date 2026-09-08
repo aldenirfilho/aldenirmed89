@@ -1,8 +1,11 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v33`;
+const CACHE_NAME = `${CACHE_PREFIX}v34`;
 const SHELL_ASSETS = [
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-64.png",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-192.png",
+
   "./",
   "./index.html",
   "./offline.html",
@@ -19,7 +22,12 @@ const SHELL_ASSETS = [
   "./favicon.ico"
 ];
 const WARM_ASSETS = [
-  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.css?v=1.1.3",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-180.png",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/neuro-app.css",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/neuro-app.js",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/manifest.webmanifest",
+
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.css?v=1.1.4",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.js?v=1.1.3",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/atlas-estudo.js?v=1.1.3",
   "./01_Modulos_Clinicos/Neuro_Semiologia_Topografica/index.html",

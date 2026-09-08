@@ -88,6 +88,13 @@ Fontes de maior risco foram conferidas em CFM 2.173/2017, GCS oficial, AHA/ASA 2
 
 As duas cópias HTML e o ZIP originais em Downloads permaneceram intactos. Instruções e prompts de operação anexados não fazem parte da publicação. Fontes, limitações e links estão na seção S17; imagens são conceituais/esquemáticas, sem exames reais. O contador agregado do portal pode ser acrescentado pelo pipeline de publicação, sem enviar respostas de estudo.
 
+## Identidade própria e instalação — 08/09/2026
+
+A seção usa o símbolo exclusivo ciano e âmbar em `assets/icons/neuro-*.png`, no portal, na visão geral e no curso. A identidade visual foi gerada por IA e não tem finalidade de ensino anatômico.
+
+O manifesto `manifest.webmanifest` abre diretamente `aprofundamento.html?app=1`, com nome **Semiologia Neuro** e escopo restrito a esta pasta. As duas páginas oferecem “Instalar Semiologia como app”, com alternativa pelo menu do navegador. O worker local mantém um cache exclusivo, prepara textos/ferramentas e guarda imagens consultadas. Instalação física no aparelho deve ser validada separadamente.
+
+O padrão para os demais módulos está em [Aplicativos por seção](../../docs_usuario/PADRAO_APPS_POR_SECAO.md). A condição de prévia educacional e a revisão médica pendente continuam vigentes.
 ### Correção 1.1.3 · 8 de setembro de 2026
 
 O quiz agora retoma respostas, caso atual e ordem embaralhada após recarregar,
@@ -98,4 +105,4 @@ reduzido. Conteúdo e critérios clínicos permanecem em revisão médica.
 
 A rota `../Neuro_Semiologia_Topografica/index.html` abre esta versão ampliada,
 preservando fragmentos de seção. A busca global inclui todos os termos do pacote
-original. Os ícones e o atalho de instalação usam a identidade aeroespacial original.
+original. O portal mantém a identidade aeroespacial original; a seção usa o símbolo próprio descrito acima.
