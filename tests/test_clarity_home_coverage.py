@@ -31,7 +31,7 @@ EXPECTED_MODULE_ENTRYPOINTS = {
     "01_Modulos_Clinicos/Pneumologia_Critica/index.html",
     "01_Modulos_Clinicos/Delirium_UTI/index.html",
     "01_Modulos_Clinicos/TCE_Grave_CRASH/index.html",
-    "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html",
+    "24_Semiologia/index.html",
     "15_Radar_Cientifico/index.html",
     "16_Diretorio_Medico/index.html",
     "17_Portal_Vivo/index.html",
@@ -73,7 +73,7 @@ class ClarityHomeCoverageTests(unittest.TestCase):
                 entrypoint = ROOT / relative_path
                 self.assertTrue(entrypoint.is_file())
                 html = entrypoint.read_text(encoding="utf-8")
-                self.assertIn(PREFERENCE_KEY, html)
+                self.assertIn(PREFERENCE_KEY, html + "\n".join(self._linked_local_sources(entrypoint, html, "src", ".js")))
 
                 buttons = re.findall(r"<button\b[^>]*>", html, flags=re.IGNORECASE)
                 clarity_buttons = [

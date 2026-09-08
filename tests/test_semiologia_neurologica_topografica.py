@@ -191,8 +191,9 @@ class SemiologiaNeurologicaTopograficaTests(unittest.TestCase):
         graph = load_json("data/connections.json")
         worker = (ROOT / "sw.js").read_text(encoding="utf-8")
 
-        self.assertIn(f'href="{ROUTE}"', home)
-        self.assertTrue(any(item.get("url") == ROUTE for item in navigation["main"]))
+        self.assertIn('href="24_Semiologia/index.html"', home)
+        self.assertIn(f'href="../{ROUTE}"', (ROOT / "24_Semiologia/index.html").read_text())
+        self.assertTrue(any(item.get("url") == "24_Semiologia/index.html" for item in navigation["main"]))
         topic_ids = {item["id"] for item in topics}
         for topic_id in (
             "semiologia-neurologica-topografica",
@@ -219,11 +220,11 @@ class SemiologiaNeurologicaTopograficaTests(unittest.TestCase):
         node_ids = {node["id"] for node in graph["nodes"]}
         self.assertIn("semiologia-neurologica-topografica", node_ids)
         edges = {(edge["from"], edge["to"]) for edge in graph["edges"]}
-        self.assertIn(("home", "semiologia-neurologica-topografica"), edges)
+        self.assertIn(("semiologia", "semiologia-neurologica-topografica"), edges)
         self.assertIn(("semiologia-neurologica-topografica", "avc-agudo"), edges)
         self.assertIn(("semiologia-neurologica-topografica", "banco-temi"), edges)
 
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v34`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v35`', worker)
         for core in (
             "index.html",
             "assets/styles.css",
