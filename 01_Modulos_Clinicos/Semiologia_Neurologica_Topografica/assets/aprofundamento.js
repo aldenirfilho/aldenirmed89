@@ -5,6 +5,7 @@ var $=function(s,r){return (r||document).querySelector(s)};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 function store(k,v){try{if(v===undefined){var x=localStorage.getItem(k);return x?JSON.parse(x):null}localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
 function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function motionBehavior(){return document.documentElement.classList.contains("a11y-reduce-motion")||(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)?"auto":"smooth"}
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 
 /* ===================== Navegação ativa ===================== */
@@ -15,13 +16,13 @@ if("IntersectionObserver" in window){
     entries.forEach(function(en){
       if(en.isIntersecting){
         var id=en.target.id;
-        navLinks.forEach(function(a){a.classList.toggle("active",a.getAttribute("href")==="#"+id)});
+        navLinks.forEach(function(a){var active=a.getAttribute("href")==="#"+id;a.classList.toggle("active",active);if(active)a.setAttribute("aria-current","location");else a.removeAttribute("aria-current")});
       }
     });
   },{rootMargin:"-20% 0px -70% 0px",threshold:0});
   sections.forEach(function(s){io.observe(s)});
 }
-$("#btn-top").addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+$("#btn-top").addEventListener("click",function(){window.scrollTo({top:0,behavior:motionBehavior()})});
 
 /* ===================== Busca ===================== */
 var searchBox=$("#nm-search"), searchHint=$("#nm-search-hint");
@@ -48,15 +49,62 @@ function runSearch(){
 }
 searchBox.addEventListener("input",runSearch);
 
-/* ===================== Abas ===================== */
-var activeTab="qt1";
-$$("#qt-tabs button").forEach(function(b){
-  b.addEventListener("click",function(){
-    activeTab=b.dataset.tab;
-    $$("#qt-tabs button").forEach(function(x){x.setAttribute("aria-selected",x===b?"true":"false")});
-    $$(".tabpanel").forEach(function(p){p.classList.toggle("show",p.id===activeTab)});
+/* A navegação explícita encerra o filtro antes de revelar o destino. */
+function clearSearch(){
+  if(!searchBox.value)return;
+  searchBox.value="";
+  runSearch();
+}
+searchHint.setAttribute("role","status");
+searchHint.setAttribute("aria-live","polite");
+document.addEventListener("click",function(event){
+  var link=event.target.closest('a[href^="#"]');
+  if(!link||event.defaultPrevented||event.button>0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+  var target=document.getElementById(link.getAttribute("href").slice(1));
+  if(!target)return;
+  clearSearch();
+  // Run after the mobile menu has collapsed; otherwise the anchor lands too high.
+  window.requestAnimationFrame(function(){
+    target.scrollIntoView({block:"start",behavior:motionBehavior()});
+    target.setAttribute("tabindex","-1");
+    target.focus({preventScroll:true});
   });
 });
+window.addEventListener("hashchange",clearSearch);
+searchBox.addEventListener("keydown",function(event){if(event.key==="Escape")clearSearch()});
+
+/* ===================== Abas ===================== */
+var activeTab="qt1";
+var tabButtons=$$("#qt-tabs button");
+function selectTab(button,focus){
+  activeTab=button.dataset.tab;
+  clearSearch();
+  tabButtons.forEach(function(tab){
+    var selected=tab===button;
+    tab.setAttribute("aria-selected",String(selected));
+    tab.tabIndex=selected?0:-1;
+  });
+  $$(".tabpanel").forEach(function(panel){panel.classList.toggle("show",panel.id===activeTab)});
+  if(focus)button.focus();
+}
+tabButtons.forEach(function(button,index){
+  button.id="tab-"+button.dataset.tab;
+  button.setAttribute("aria-controls",button.dataset.tab);
+  var panel=document.getElementById(button.dataset.tab);
+  panel.setAttribute("role","tabpanel");
+  panel.setAttribute("aria-labelledby",button.id);
+  button.addEventListener("click",function(){selectTab(button,false)});
+  button.addEventListener("keydown",function(event){
+    var next=index;
+    if(event.key==="ArrowRight")next=(index+1)%tabButtons.length;
+    else if(event.key==="ArrowLeft")next=(index+tabButtons.length-1)%tabButtons.length;
+    else if(event.key==="Home")next=0;
+    else if(event.key==="End")next=tabButtons.length-1;
+    else return;
+    event.preventDefault();selectTab(tabButtons[next],true);
+  });
+});
+selectTab(tabButtons[0],false);
 
 /* ===================== Checklist do exame ===================== */
 var EXAM=[

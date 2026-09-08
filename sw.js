@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v31`;
+const CACHE_NAME = `${CACHE_PREFIX}v32`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -110,6 +110,10 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/aprofundamento.html",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.css",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.css?v=1.1.2",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.js?v=1.1.2",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/atlas-estudo.js?v=1.1.2",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/theme-bootstrap.js?v=1.1.2",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.js",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/atlas-estudo.js",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/styles.css",

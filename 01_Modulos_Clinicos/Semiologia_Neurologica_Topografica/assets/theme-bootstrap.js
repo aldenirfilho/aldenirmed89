@@ -23,6 +23,8 @@
     || (requestedTheme === null && preferences.clarity === true)
   );
 
+  root.classList.toggle("a11y-reduce-motion", preferences.motion === true);
+  root.classList.toggle("a11y-large-text", preferences.large === true);
   root.classList.toggle("a11y-contrast", contrast);
   root.dataset.theme = clarity ? "light" : "dark";
   root.style.colorScheme = clarity ? "light" : "dark";

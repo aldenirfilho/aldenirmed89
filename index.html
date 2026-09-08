@@ -36,7 +36,7 @@
     'comic-hero':'dark','modern-serious':'light'
   };
   try{
-    if(sessionStorage.getItem('antigravity:mission-intro:v2')==='seen'){
+    if(window.location?.hash||sessionStorage.getItem('antigravity:mission-intro:v2')==='seen'){
       document.documentElement.classList.add('mission-returning');
     }
   }catch(_){}
@@ -2650,6 +2650,48 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
   .view-select{flex:1;min-width:0}
   .view-toggle{flex:1}
 }
+
+/* Cabeçalho compacto: marca e comandos participam do fluxo da página. */
+html{scroll-padding-top:calc(var(--site-header-height,126px) + 16px)}
+.nav{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;height:auto;
+  padding:10px var(--page-gutter);gap:10px 16px}
+.brand{grid-column:1;grid-row:1;min-width:0;gap:10px}
+.brand-icon{width:44px;height:44px;flex:none}
+.brand-icon img{object-fit:contain}
+.brand-text strong{font-size:1.08rem;line-height:1.25}
+.brand-text .brand-subtitle{font-size:.75rem}
+.nav-tools{grid-column:2;grid-row:1;margin-left:0}
+.nav-links{grid-column:1/-1;grid-row:2;width:100%;padding-bottom:3px}
+.nav-links a{min-height:44px;display:inline-flex;align-items:center}
+.nav .corner-command-cluster{position:relative;grid-column:3;grid-row:1;top:auto;
+  right:auto;gap:6px;max-width:none;align-items:center;z-index:1}
+.nav .mission-emblem,.nav .sound-console-toggle,.nav .quick-command,
+.nav .command-language{width:44px;height:44px;min-height:44px;border-radius:12px;transform:none}
+.nav .mission-emblem{box-shadow:none}
+.nav .mission-emblem::after{width:7px;height:7px;right:4px;top:4px}
+.nav .sound-buds-icon{width:30px;height:28px}
+.nav .sound-console,.nav .settings-console{position:static}
+.nav .sound-console-panel,.nav .settings-console-panel{top:calc(100% + 12px);right:0;
+  max-height:calc(100dvh - var(--site-header-height,126px) - 24px)}
+@media(max-width:1000px){.nav-status{display:none}}
+@media(max-width:700px){
+  .nav{grid-template-columns:minmax(0,1fr) auto;padding:8px 12px;gap:8px}
+  .nav .corner-command-cluster{grid-column:2;grid-row:2}
+  .nav-links{grid-column:1;grid-row:2}
+  .nav .command-language{display:none}
+  .brand-text strong{font-size:1rem}.brand-full{display:inline}.brand-short{display:none}
+}
+/* Leitura continua acessível mesmo sem observador ou antes do JavaScript. */
+.reveal,.reveal-l,.phase,.pipeline-step{opacity:1;transform:none}
+html.reveal-ready .reveal:not(.visible),html.reveal-ready .phase:not(.visible),
+html.reveal-ready .pipeline-step:not(.visible){opacity:0;transform:translateY(16px)}
+html.reveal-ready .reveal-l:not(.visible){opacity:0;transform:translateX(-16px)}
+html.reveal-ready :is(.reveal,.reveal-l,.phase,.pipeline-step):focus-within{opacity:1;transform:none}
+html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!important;transform:none!important}
+@media(prefers-reduced-motion:reduce){
+  html.reveal-ready :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!important;transform:none!important}
+}
+
 </style>
 <noscript><style>.mission-intro,.mission-emblem{display:none!important}</style></noscript>
 </head>
@@ -2705,6 +2747,54 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
     </div>
   </div>
 </section>
+<!-- Animated background orbs -->
+<div class="orbs" aria-hidden="true">
+  <div class="orb"></div><div class="orb"></div><div class="orb"></div>
+</div>
+
+<!-- ── NAVIGATION ─────────────────────────────────── -->
+<header>
+  <nav class="nav">
+    <a class="brand" href="#top" aria-label="AldenirMed89 — início">
+      <div class="brand-icon" aria-hidden="true"><img src="./assets/icons/aldenirmed89-aerospace-orbital-192.png" alt="" width="38" height="38"/></div>
+      <div class="brand-text">
+        <strong><span class="brand-full">AldenirMed89</span><span class="brand-short">AldenirMed89</span></strong>
+        <span class="brand-subtitle">Intensiva &amp; Medicina Interna</span>
+      </div>
+    </a>
+    <div class="nav-links" role="navigation" aria-label="Navegação principal">
+      <a href="#modulos" class="accent">🧭 Módulos</a>
+      <a href="17_Portal_Vivo/index.html" class="accent">🛰️ Portal UPGRADE</a>
+      <a href="15_Radar_Cientifico/index.html" class="accent">📡 Estação Radar</a>
+      <a href="16_Diretorio_Medico/index.html">🌐 Estação Diretório</a>
+      <a href="01_UpDown_Hub/index.html" class="accent">↕️ UpDown Hub</a>
+      <a href="#campo-total">⚽ Campo Total</a>
+      <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras</a>
+      <a href="05_Midia_E_Feed/index.html">🖼️ Card Feed</a>
+      <a href="questoes/index.html">🏆 Simulador TEMI</a>
+      <a href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" class="accent">🧠 TCE CRASH</a>
+      <a href="01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html" class="accent">🧠 Semiologia Neuro</a>
+      <a href="01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/aprofundamento.html" class="accent">📚 Neuro · Curso completo</a>
+      <a href="#hepatite-alcool" class="accent">🟠 Hepatologia HAA</a>
+      <a href="01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/index.html">❤️‍🩹 SCA</a>
+      <a href="01_Modulos_Clinicos/Almanaque_ECG/index.html">🫀 Almanaque ECG</a>
+      <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia</a>
+      <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Reumatologia</a>
+      <a href="01_Modulos_Clinicos/Sepse_Choque_Septico/index.html">🦠 Sepse</a>
+<a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca</a>
+      <a href="13_RenalDose_Antimicrobianos/index.html">💊 RenalDose ICU</a>
+      <a href="14_SAPS3_Calculator/index.html">📊 SAPS 3</a>
+    </div>
+    <div class="nav-tools">
+      <a class="nav-download" href="#downloads" aria-label="Ir para downloads de macOS, Windows e iPhone">
+        <span aria-hidden="true">⬇️</span><span class="nav-download-full">Baixar apps</span><span class="nav-download-short">Apps</span>
+      </a>
+      <div class="nav-status" aria-label="Sistema online">
+        <div class="pulse" aria-hidden="true"></div>
+        <span class="nav-status-full">Sistema online</span>
+        <span class="nav-status-short">Online</span>
+      </div>
+    </div>
 <div class="corner-command-cluster" id="cornerCommandCluster"
   aria-label="Comandos rápidos da plataforma">
   <button class="mission-emblem" id="missionEmblem" type="button"
@@ -2812,54 +2902,6 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
   <a class="command-language" href="en/index.html" hreflang="en" lang="en"
     aria-label="Open the English version" title="English version">EN</a>
 </div>
-
-<!-- Animated background orbs -->
-<div class="orbs" aria-hidden="true">
-  <div class="orb"></div><div class="orb"></div><div class="orb"></div>
-</div>
-
-<!-- ── NAVIGATION ─────────────────────────────────── -->
-<header>
-  <nav class="nav">
-    <a class="brand" href="#top" aria-label="AldenirMed89 — início">
-      <div class="brand-icon" aria-hidden="true"><img src="./assets/icons/aldenirmed89-aerospace-orbital-192.png" alt="" width="38" height="38"/></div>
-      <div class="brand-text">
-        <strong><span class="brand-full">AldenirMed89</span><span class="brand-short">AldenirMed89</span></strong>
-        <span class="brand-subtitle">Intensiva &amp; Medicina Interna</span>
-      </div>
-    </a>
-    <div class="nav-links" role="navigation" aria-label="Navegação principal">
-      <a href="#modulos" class="accent">🧭 Módulos</a>
-      <a href="17_Portal_Vivo/index.html" class="accent">🛰️ Portal UPGRADE</a>
-      <a href="15_Radar_Cientifico/index.html" class="accent">📡 Estação Radar</a>
-      <a href="16_Diretorio_Medico/index.html">🌐 Estação Diretório</a>
-      <a href="01_UpDown_Hub/index.html" class="accent">↕️ UpDown Hub</a>
-      <a href="#campo-total">⚽ Campo Total</a>
-      <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras</a>
-      <a href="05_Midia_E_Feed/index.html">🖼️ Card Feed</a>
-      <a href="questoes/index.html">🏆 Simulador TEMI</a>
-      <a href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" class="accent">🧠 TCE CRASH</a>
-      <a href="01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html" class="accent">🧠 Semiologia Neuro</a>
-      <a href="#hepatite-alcool" class="accent">🟠 Hepatologia HAA</a>
-      <a href="01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/index.html">❤️‍🩹 SCA</a>
-      <a href="01_Modulos_Clinicos/Almanaque_ECG/index.html">🫀 Almanaque ECG</a>
-      <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia</a>
-      <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Reumatologia</a>
-      <a href="01_Modulos_Clinicos/Sepse_Choque_Septico/index.html">🦠 Sepse</a>
-<a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca</a>
-      <a href="13_RenalDose_Antimicrobianos/index.html">💊 RenalDose ICU</a>
-      <a href="14_SAPS3_Calculator/index.html">📊 SAPS 3</a>
-    </div>
-    <div class="nav-tools">
-      <a class="nav-download" href="#downloads" aria-label="Ir para downloads de macOS, Windows e iPhone">
-        <span aria-hidden="true">⬇️</span><span class="nav-download-full">Baixar apps</span><span class="nav-download-short">Apps</span>
-      </a>
-      <div class="nav-status" aria-label="Sistema online">
-        <div class="pulse" aria-hidden="true"></div>
-        <span class="nav-status-full">Sistema online</span>
-        <span class="nav-status-short">Online</span>
-      </div>
-    </div>
   </nav>
 </header>
 
@@ -4069,6 +4111,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
         <a href="01_Modulos_Clinicos/Dermatologia_Critica/index.html">🧴 Dermatologia Crítica</a>
         <a href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html">🧠 TCE grave · Protocolo CRASH</a>
         <a href="01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html">🧭 Semiologia Neurológica Topográfica</a>
+        <a href="01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/aprofundamento.html">📚 Neuro · Curso completo e flashcards</a>
         <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia Crítica</a>
         <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Reumatologia Crítica</a>
         <a href="01_Modulos_Clinicos/Infectologia_Critica/index.html">🦠 Infectologia Crítica</a>
@@ -4869,11 +4912,12 @@ function openMissionPortal(){
   missionStartSilent.disabled=false;
   setMissionStatus('SISTEMAS EM ESPERA','T−10,0');
   document.body.classList.add('mission-locked');
-  window.requestAnimationFrame(()=>missionStartSound.focus());
+  window.requestAnimationFrame(()=>{if(!missionIntro.hidden)missionStartSound.focus()});
 }
 function launchMission(withSound){
   if(missionRunning||!missionIntro||!missionEmblem)return;
   missionRunning=true;
+  missionSkip.focus();
   missionStartSound.disabled=true;
   missionStartSilent.disabled=true;
   document.body.classList.add('mission-locked');
@@ -4908,7 +4952,9 @@ function launchMission(withSound){
     missionLater(()=>setMissionStatus(label,countdown),delay);
   });
 
-  if(missionCore.animate){
+  missionLater(()=>finishMission(),MISSION_DURATION);
+  try{
+  if(missionCore?.animate){
     const coreRect=missionCore.getBoundingClientRect();
     const emblemRect=missionEmblem.getBoundingClientRect();
     const deltaX=(emblemRect.left+emblemRect.width/2)-(coreRect.left+coreRect.width/2);
@@ -4925,12 +4971,12 @@ function launchMission(withSound){
     ],{duration:MISSION_DURATION,easing:'cubic-bezier(.2,.72,.18,1)',fill:'forwards'});
     missionAnimations.push(flight);
   }
-  missionLater(()=>finishMission(),MISSION_DURATION);
+  }catch(_){clearMissionAnimations()}
 }
 
 if(missionIntro&&missionEmblem){
-  let missionSeen=false;
-  try{missionSeen=sessionStorage.getItem(MISSION_INTRO_KEY)==='seen'}catch(_){}
+  let missionSeen=document.documentElement.classList.contains('mission-returning')||Boolean(window.location.hash);
+  try{missionSeen=missionSeen||sessionStorage.getItem(MISSION_INTRO_KEY)==='seen'}catch(_){}
   if(missionSeen){
     missionIntro.hidden=true;
     missionEmblem.classList.add('is-visible');
@@ -4939,7 +4985,7 @@ if(missionIntro&&missionEmblem){
   }else{
     document.documentElement.classList.remove('mission-returning');
     document.body.classList.add('mission-locked');
-    window.requestAnimationFrame(()=>missionStartSound.focus());
+    window.requestAnimationFrame(()=>{if(!missionIntro.hidden)missionStartSound.focus()});
   }
   missionStartSound.addEventListener('click',()=>launchMission(true));
   missionStartSilent.addEventListener('click',()=>launchMission(false));
@@ -4956,7 +5002,8 @@ if(missionIntro&&missionEmblem){
       return;
     }
     if(event.key!=='Tab')return;
-    const focusable=[...missionIntro.querySelectorAll('button:not([disabled])')];
+    const focusable=[...missionIntro.querySelectorAll('button:not([disabled])')]
+      .filter(button=>!missionRunning||button===missionSkip);
     if(!focusable.length){event.preventDefault();return}
     const first=focusable[0];
     const last=focusable[focusable.length-1];
@@ -5127,7 +5174,7 @@ document.querySelectorAll('[data-node]').forEach(btn=>{
 });
 
 /* ── SCROLL REVEAL ───────────────────────────────── */
-const observer=new IntersectionObserver(entries=>{
+const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
       e.target.classList.add('visible');
@@ -5139,10 +5186,11 @@ const observer=new IntersectionObserver(entries=>{
       observer.unobserve(e.target);
     }
   });
-},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+},{threshold:0,rootMargin:'0px 0px -24px 0px'}):null;
+if(observer&&!missionHasReducedMotion())document.documentElement.classList.add('reveal-ready');
 
 document.querySelectorAll('.reveal,.reveal-l,.phase,.pipeline-step')
-  .forEach(el=>observer.observe(el));
+  .forEach(el=>observer?observer.observe(el):el.classList.add('visible'));
 
 /* ── COUNTER ANIMATION ───────────────────────────── */
 function animateCount(el){
@@ -5160,12 +5208,15 @@ function animateCount(el){
   }
   requestAnimationFrame(step);
 }
-const cntObserver=new IntersectionObserver(entries=>{
+const cntObserver='IntersectionObserver' in window?new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){animateCount(e.target);cntObserver.unobserve(e.target);}
   });
-},{threshold:.5});
-document.querySelectorAll('[data-count]').forEach(el=>cntObserver.observe(el));
+},{threshold:.5}):null;
+document.querySelectorAll('[data-count]').forEach(el=>{
+  if(cntObserver)cntObserver.observe(el);
+  else el.textContent=el.dataset.count||el.textContent;
+});
 
 /* ── MARKDOWN RENDERER (drawer de desafios) ──────── */
 function mdToHtml(md){
@@ -5285,7 +5336,7 @@ function escHtml(s){
       </a>
     `).join('');
 
-    grid.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    grid.querySelectorAll('.reveal').forEach(el=>observer?observer.observe(el):el.classList.add('visible'));
     document.getElementById('dsfPreviewCount').textContent=`${visible.length} de ${sorted.length} · alternância automática pausada durante interação`;
   }
 
@@ -5923,6 +5974,26 @@ window.addEventListener('appinstalled',()=>{
   installPwaBtn.hidden=true;
   installPwaStatus.textContent='AldenirMed89 instalado neste dispositivo.';
 });
+
+
+/* Voltar/avançar restaura uma página navegável, sem painéis ou bloqueio de rolagem. */
+window.addEventListener('pagehide',()=>{
+  if(!missionIntro.hidden)finishMission({immediate:true,focus:false});
+});
+window.addEventListener('pageshow',event=>{
+  if(!event.persisted)return;
+  finishMission({immediate:true,focus:false});
+  closeDrawer();
+  setSoundConsole(false,{returnFocus:false});
+  setSettingsPanel(false,{focus:false});
+});
+const siteHeader=document.querySelector('body > header');
+function updateHeaderOffset(){
+  if(siteHeader)document.documentElement.style.setProperty('--site-header-height',`${Math.ceil(siteHeader.getBoundingClientRect().height)}px`);
+}
+updateHeaderOffset();
+if('ResizeObserver' in window)new ResizeObserver(updateHeaderOffset).observe(siteHeader);
+else window.addEventListener('resize',updateHeaderOffset,{passive:true});
 
 /* ── TOP BUTTON ──────────────────────────────────── */
 const topBtn=document.getElementById('topBtn');
