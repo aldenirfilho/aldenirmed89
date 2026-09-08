@@ -5,7 +5,7 @@ const KEY='aldenirmed89:semiologia-cardio:v1';
 (async()=>{
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});
-const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('goatcounter')&&!m.text().includes('ERR_INTERNET_DISCONNECTED'))errors.push(m.text())});
+const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('goatcounter')&&!m.text().includes('ERR_INTERNET_DISCONNECTED'))errors.push({message:m.text(),location:m.location()})});
 await page.goto(base);
 if(await page.locator('#missionSkip').isVisible())await page.locator('#missionSkip').click();
 assert.equal(await page.locator('.neuro-feature,.mission-neuro-direct').count(),0);
@@ -51,6 +51,6 @@ const offline=await page.evaluate(async()=>{let count=0;for(const a of SEMIO_CAR
 await page.locator('#audio-player').evaluate(x=>x.play());await page.waitForFunction(()=>document.querySelector('#audio-player').currentTime>0);
 await context.setOffline(false);
 // Corrupt and denied storage do not prevent opening the course.
-const denied=await browser.newContext({serviceWorkers:'block'});await denied.addInitScript(()=>{Object.defineProperty(Storage.prototype,'getItem',{value:()=>{throw Error('denied')}});Object.defineProperty(Storage.prototype,'setItem',{value:()=>{throw Error('denied')}})});const p2=await denied.newPage();let deniedErrors=[];p2.on('pageerror',e=>deniedErrors.push(e.message));await p2.goto(base+'24_Semiologia/Cardiovascular/index.html');assert.equal(await p2.locator('#case-select option').count(),20);assert.equal(deniedErrors.length,0);await denied.close();
+const denied=await browser.newContext({serviceWorkers:'block'});await denied.addInitScript(()=>{Object.defineProperty(Storage.prototype,'getItem',{value:()=>{throw Error('denied')}});Object.defineProperty(Storage.prototype,'setItem',{value:()=>{throw Error('denied')}})});const p2=await denied.newPage();let deniedErrors=[];p2.on('pageerror',e=>deniedErrors.push(e.stack));await p2.goto(base+'24_Semiologia/Cardiovascular/index.html');assert.equal(await p2.locator('#case-select option').count(),20);assert.equal(deniedErrors.length,0,deniedErrors.join("\n"));await denied.close();
 console.log(JSON.stringify({base,output,audiosPlayed:ids.length,cases:20,flashcards:49,offline,errors},null,2));assert.equal(errors.length,0);await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
