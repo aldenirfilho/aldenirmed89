@@ -95,3 +95,14 @@ A seção usa o símbolo exclusivo ciano e âmbar em `assets/icons/neuro-*.png`,
 O manifesto `manifest.webmanifest` abre diretamente `aprofundamento.html?app=1`, com nome **Semiologia Neuro** e escopo restrito a esta pasta. As duas páginas oferecem “Instalar Semiologia como app”, com alternativa pelo menu do navegador. O worker local mantém um cache exclusivo, prepara textos/ferramentas e guarda imagens consultadas. Instalação física no aparelho deve ser validada separadamente.
 
 O padrão para os demais módulos está em [Aplicativos por seção](../../docs_usuario/PADRAO_APPS_POR_SECAO.md). A condição de prévia educacional e a revisão médica pendente continuam vigentes.
+### Correção 1.1.3 · 8 de setembro de 2026
+
+O quiz agora retoma respostas, caso atual e ordem embaralhada após recarregar,
+sem contar novamente um caso respondido. Totais legados são preservados; o botão
+de reinício limpa somente o progresso do quiz. Valores inválidos no armazenamento
+são descartados com segurança. O botão de retorno ao topo respeita movimento
+reduzido. Conteúdo e critérios clínicos permanecem em revisão médica.
+
+A rota `../Neuro_Semiologia_Topografica/index.html` abre esta versão ampliada,
+preservando fragmentos de seção. A busca global inclui todos os termos do pacote
+original. O portal mantém a identidade aeroespacial original; a seção usa o símbolo próprio descrito acima.

@@ -133,6 +133,7 @@ PUBLIC_DOWNLOADS = (
     "downloads/Antigravity-Consultas-macOS.zip",
     "downloads/Antigravity-Consultas-Windows.zip",
     "downloads/Antigravity-Consultas-iPhone-Icones.zip",
+    "downloads/AldenirMed89-Identidade-Multiplataforma.zip",
     "downloads/SHA256SUMS.txt",
 )
 DOWNLOAD_ARCHIVE_LIMIT = 512

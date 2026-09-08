@@ -118,7 +118,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed89"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v33`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v34`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
@@ -157,9 +157,6 @@ class AccessiblePwaTests(unittest.TestCase):
         master_aliases = (
             "assets/brand/aldenirmed89-total-orange-master.png",
             "assets/brand/antigravity-a-orbital-master.png",
-            "assets/icons/antigravity-consultas-1024.png",
-            "assets/icons/ios/apple-touch-icon-1024.png",
-            "assets/img/logo.png",
             "logo_concept_3_book_1778036997285.png",
         )
 
@@ -172,6 +169,16 @@ class AccessiblePwaTests(unittest.TestCase):
             "windows/Antigravity-Consultas-Windows/app/AntigravityConsultas.ico",
         ):
             self.assertNotIn(sha256(relative), legacy_hashes)
+
+        aerospace_master = sha256("assets/brand/aldenirmed89-aerospace-orbital-master.png")
+        for relative in (
+            "assets/icons/antigravity-consultas-1024.png",
+            "assets/icons/ios/apple-touch-icon-1024.png",
+            "assets/img/logo.png",
+        ):
+            self.assertEqual(png_size(relative), (1024, 1024))
+            self.assertEqual(sha256(relative), aerospace_master)
+            self.assertNotEqual(aerospace_master, expected_master)
 
         favicon = (ROOT / "favicon.ico").read_bytes()
         windows_icon = (

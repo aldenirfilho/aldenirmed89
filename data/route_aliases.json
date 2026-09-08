@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-20",
+  "updatedAt": "2026-09-08",
   "version": "route-aliases-canonico-v3",
   "policy": "Rotas publicas e legadas devem apontar para destinos canonicos existentes na nova arquitetura (01_UpDown_Hub, 02_Biblioteca_IA_Engine, etc.), sem mover ou apagar arquivos originais.",
   "aliases": [
@@ -80,6 +80,12 @@
       "to": "05_Midia_E_Feed/index.html",
       "status": "legacy-redirect",
       "note": "Pasta legada redireciona para Midia E Feed canonico."
+    },
+    {
+      "from": "01_Modulos_Clinicos/Neuro_Semiologia_Topografica/index.html",
+      "to": "01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/aprofundamento.html",
+      "status": "wrapper-redirect",
+      "note": "Nome do pacote original; abre a versão ampliada existente, preservando o fragmento de seção."
     }
   ]
 }

@@ -13,8 +13,8 @@ const SHELL_ASSETS = [
   './index.html', './aprofundamento.html', './offline.html', './manifest.webmanifest',
   './assets/neuro-app.css', './assets/neuro-app.js',
   './assets/styles.css', './assets/app.js', './assets/theme-bootstrap.js',
-  './data/content.js', './assets/aprofundamento.css?v=1.1.3',
-  './assets/aprofundamento.js?v=1.1.2', './assets/atlas-estudo.js?v=1.1.2',
+  './data/content.js', './assets/aprofundamento.css?v=1.1.4',
+  './assets/aprofundamento.js?v=1.1.3', './assets/atlas-estudo.js?v=1.1.3',
   './assets/icons/neuro-64.png', './assets/icons/neuro-180.png',
   './assets/icons/neuro-192.png', './assets/icons/neuro-512.png', ...SHARED_ASSETS
 ];

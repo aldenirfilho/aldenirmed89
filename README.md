@@ -19,6 +19,9 @@
 - [🧬 Abrir Reumatologia Crítica](01_Modulos_Clinicos/Reumatologia_Critica/index.html)
 - [🧠 Abrir Delirium na UTI e Enfermaria](01_Modulos_Clinicos/Delirium_UTI/index.html)
 - [🧠 Abrir TCE grave — Protocolo CRASH](01_Modulos_Clinicos/TCE_Grave_CRASH/index.html)
+- [🧭 Semiologia Neurológica: visão geral](01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html)
+- [📚 Semiologia Topográfica: 19 seções, 28 casos e 40 flashcards](01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/aprofundamento.html)
+- [🎨 Logotipo aeroespacial: pacote macOS, iOS, Windows e Android](downloads/AldenirMed89-Identidade-Multiplataforma.zip)
 - [🧪 Log consolidado da homologação do Delirium](docs_usuario/HOMOLOGACAO_DELIRIUM_UTI_2026-07-25.md)
 
 O controle **☀️ Visualização clara** ativa a **Visualização Clara**: fundo branco real, tipografia
