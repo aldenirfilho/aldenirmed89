@@ -1,0 +1,31 @@
+/* Identidade do aplicativo; compartilhada pela visão geral e pelo curso. */
+.neuro-app-bar {display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:20px 0;padding:18px;border:1px solid #366177;border-radius:18px;background:#071b30;color:#f2f7ff;}
+.neuro-app-logo {width:72px;height:72px;object-fit:contain;flex:none;border-radius:16px;}
+.neuro-app-name {flex:1;min-width:170px;}
+.neuro-app-name strong {display:block;font-size:clamp(1.1rem,3vw,1.45rem);line-height:1.3;color:#fff;}
+.neuro-app-name small {display:block;color:#b9d0e4;line-height:1.5;margin-top:4px;}
+.neuro-app-actions {display:flex;gap:8px;flex-wrap:wrap;}
+.neuro-app-actions a,.neuro-install button {display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border:1px solid #70d9e8;border-radius:10px;background:#082e43;color:#e7fbff;text-decoration:none;font:inherit;font-weight:700;cursor:pointer;}
+.neuro-app-actions a[aria-current="page"] {background:#84eaf3;color:#052334;}
+.neuro-app-actions a:hover,.neuro-install button:hover {background:#174864;color:#fff;}
+.neuro-install {flex-basis:100%;border-top:1px solid #366177;padding-top:12px;scroll-margin-top:150px;}
+.neuro-install summary {width:fit-content;padding:8px 0;min-height:44px;color:#ffda8a;font-weight:700;cursor:pointer;}
+.neuro-install p,.neuro-install li {font-size:.94rem;line-height:1.6;color:#d8e6f3;}
+.neuro-install ol {padding-left:24px;}
+.neuro-install a {color:#8ce9ff;text-decoration:underline;}
+.neuro-install [hidden] {display:none!important;}
+.neuro-install [data-neuro-status] {color:#8de6c5;}
+.neuro-app-bar :focus-visible {outline:3px solid #ffd06b;outline-offset:4px;}
+.brand-mark.neuro-brand-mark {padding:0;background:none;overflow:hidden;}
+.neuro-brand-mark img {width:100%;height:100%;object-fit:contain;border-radius:10px;}
+.nm-brand.neuro-rail-brand {display:flex;align-items:center;gap:10px;}
+.neuro-rail-brand img {width:48px;height:48px;border-radius:10px;}
+.neuro-rail-brand span {min-width:0;}
+@media(max-width:520px) {
+  .neuro-app-bar {gap:12px;padding:14px;}
+  .neuro-app-logo {width:56px;height:56px;border-radius:12px;}
+  .neuro-app-name {min-width:140px;}
+  .neuro-app-actions {width:100%;}
+  .neuro-app-actions a {flex:1;}
+}
+@media print {.neuro-app-bar{display:none}}

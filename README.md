@@ -203,3 +203,7 @@ Antes de qualquer alteração no repositório, **leia `ANTIGRAVITY_INSTRUCTIONS.
 ## 📜 Licença e aviso
 
 Conteúdo educacional autoral. **Não substitui julgamento clínico individual.** Os autores não se responsabilizam por eventos adversos decorrentes do uso. Diretrizes de referência: AMIB, Surviving Sepsis Campaign, AHA/ASA, EULAR/ACR, ADA (sempre verificar a versão vigente).
+
+### Aplicativos com identidade por seção
+
+A Semiologia Neurológica tem logotipo e instalação próprios. Veja o [padrão de identidade e metas para as demais seções](docs_usuario/PADRAO_APPS_POR_SECAO.md).

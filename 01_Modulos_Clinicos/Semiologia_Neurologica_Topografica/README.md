@@ -87,3 +87,11 @@ Ao atualizar o conteúdo, preserve a separação entre descrição sindrômica, 
 Fontes de maior risco foram conferidas em CFM 2.173/2017, GCS oficial, AHA/ASA 2022 e 2026, SAEM GRACE-3, NICE e EAN/PNS 2023. Isso é revisão documental assistida, não revisão humana assinada nem validação de algoritmo diagnóstico. O localizador usa pesos editoriais, sem estimativas de probabilidade.
 
 As duas cópias HTML e o ZIP originais em Downloads permaneceram intactos. Instruções e prompts de operação anexados não fazem parte da publicação. Fontes, limitações e links estão na seção S17; imagens são conceituais/esquemáticas, sem exames reais. O contador agregado do portal pode ser acrescentado pelo pipeline de publicação, sem enviar respostas de estudo.
+
+## Identidade própria e instalação — 08/09/2026
+
+A seção usa o símbolo exclusivo ciano e âmbar em `assets/icons/neuro-*.png`, no portal, na visão geral e no curso. A identidade visual foi gerada por IA e não tem finalidade de ensino anatômico.
+
+O manifesto `manifest.webmanifest` abre diretamente `aprofundamento.html?app=1`, com nome **Semiologia Neuro** e escopo restrito a esta pasta. As duas páginas oferecem “Instalar Semiologia como app”, com alternativa pelo menu do navegador. O worker local mantém um cache exclusivo, prepara textos/ferramentas e guarda imagens consultadas. Instalação física no aparelho deve ser validada separadamente.
+
+O padrão para os demais módulos está em [Aplicativos por seção](../../docs_usuario/PADRAO_APPS_POR_SECAO.md). A condição de prévia educacional e a revisão médica pendente continuam vigentes.
