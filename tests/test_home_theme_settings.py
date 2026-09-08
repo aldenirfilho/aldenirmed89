@@ -32,7 +32,7 @@ class HomeThemeSettingsTests(unittest.TestCase):
     def test_settings_and_language_commands_share_top_cluster(self):
         cluster = HOME[
             HOME.index('id="cornerCommandCluster"'):
-            HOME.index("<!-- Animated background orbs -->")
+            HOME.index("</header>")
         ]
         for marker in (
             'id="soundConsole"',
