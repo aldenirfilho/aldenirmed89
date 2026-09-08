@@ -68,7 +68,7 @@ class OrbitalBrandTests(unittest.TestCase):
         home = (ROOT / "index.html").read_text(encoding="utf-8")
         public_url = (
             "https://aldenirfilho.github.io/aldenirmed89/"
-            "assets/brand/aldenirmed89-total-orange-social-card.png"
+            "assets/brand/aldenirmed89-aerospace-launch-card.png"
         )
         self.assertIn(f'<meta property="og:image" content="{public_url}"/>', home)
         self.assertIn('<meta property="og:image:width" content="1200"/>', home)

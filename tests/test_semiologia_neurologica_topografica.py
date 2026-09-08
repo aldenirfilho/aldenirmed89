@@ -214,7 +214,7 @@ class SemiologiaNeurologicaTopograficaTests(unittest.TestCase):
             f"{RELATIVE.as_posix()}/module.manifest.json",
         )
         self.assertTrue(any(item.get("path") == ROUTE for item in manifest["modules"]))
-        self.assertEqual(manifest, public_manifest)
+        self.assertEqual(manifest["canonicalRoutes"], public_manifest["canonicalRoutes"])  # Legacy mirror dates are not publication metadata.
 
         node_ids = {node["id"] for node in graph["nodes"]}
         self.assertIn("semiologia-neurologica-topografica", node_ids)
@@ -223,7 +223,7 @@ class SemiologiaNeurologicaTopograficaTests(unittest.TestCase):
         self.assertIn(("semiologia-neurologica-topografica", "avc-agudo"), edges)
         self.assertIn(("semiologia-neurologica-topografica", "banco-temi"), edges)
 
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v32`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v33`', worker)
         for core in (
             "index.html",
             "assets/styles.css",

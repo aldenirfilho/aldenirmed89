@@ -9,13 +9,13 @@
 <meta property="og:description" content="Central clínica com hepatite associada ao álcool, TCE grave CRASH, módulos críticos, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo."/>
 <meta property="og:url" content="https://aldenirfilho.github.io/aldenirmed89/"/>
 <meta property="og:type" content="website"/>
-<meta property="og:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-total-orange-social-card.png"/>
+<meta property="og:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-aerospace-launch-card.png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
-<meta property="og:image:alt" content="AldenirMed89 em preto e laranja-fogo, com símbolo A arcano-orbital e tema Laranja Mecânica"/>
+<meta property="og:image:alt" content="AldenirMed89 · Medicina Intensiva, Plantão e TEMI · identidade aeroespacial"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-total-orange-social-card.png"/>
-<meta name="twitter:image:alt" content="AldenirMed89 em preto e laranja-fogo, com símbolo A arcano-orbital e tema Laranja Mecânica"/>
+<meta name="twitter:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/brand/aldenirmed89-aerospace-launch-card.png"/>
+<meta name="twitter:image:alt" content="AldenirMed89 · Medicina Intensiva, Plantão e TEMI · identidade aeroespacial"/>
 <meta name="theme-color" content="#071422"/>
 <meta name="color-scheme" content="dark light"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -3119,6 +3119,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <!-- ── DOWNLOADS MULTIPLATAFORMA ─────────────────── -->
 <section class="downloads-section" id="downloads" aria-labelledby="downloads-heading">
   <div class="shell">
+    <p class="hero-btns"><a class="btn btn-ghost" href="downloads/AldenirMed89-Identidade-Multiplataforma.zip" download>🎨 Logotipo aeroespacial · Mac, iPhone, Windows e Android</a></p>
     <div class="download-showcase">
       <div class="download-head">
         <div>
@@ -3187,7 +3188,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
               <span>Instalar no iPhone / iPad</span><span>GUIA →</span>
             </a>
             <a class="download-action secondary" href="downloads/Antigravity-Consultas-iPhone-Icones.zip" download>
-              <span>Baixar pacote de ícones</span><span>ZIP · 1,3 MB</span>
+              <span>Baixar pacote de ícones</span><span>ZIP · 713 KB</span>
             </a>
           </div>
           <p class="download-note">É um App Web instalado pelo Safari, não um aplicativo publicado na App Store.</p>
@@ -5606,14 +5607,17 @@ const TOTAL_FOOTBALL_PHASES={
 
   const colorOf = n => TYPE_COLOR[n.type] || 'var(--cyan)';
   const groupOf = n => typeToGroup[n.type] || 'outros';
+  const searchText = value => String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 
   function visibleSet(){
     let vis = query ? allNodes : allNodes.filter(n=>active.has(groupOf(n)));
     if(query){
-      const q = query.toLowerCase();
-      const match = new Set(vis.filter(n=>String(n.label||n.id).toLowerCase().includes(q)).map(n=>n.id));
+      const q = searchText(query);
+      const direct = new Set(vis.filter(n=>searchText([n.label,n.id,n.body,...(Array.isArray(n.tags)?n.tags:[])].join(' ')).includes(q)).map(n=>n.id));
+      const match = new Set(direct);
       if(match.size){
-        allEdges.forEach(e=>{ if(match.has(e.from)) match.add(e.to); if(match.has(e.to)) match.add(e.from); });
+        // Only expand the immediate neighbours, independent of edge order.
+        allEdges.forEach(e=>{ if(direct.has(e.from)) match.add(e.to); if(direct.has(e.to)) match.add(e.from); });
       }
       vis = vis.filter(n=>match.has(n.id));
     }
