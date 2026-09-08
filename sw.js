@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v32`;
+const CACHE_NAME = `${CACHE_PREFIX}v33`;
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -15,9 +15,15 @@ const SHELL_ASSETS = [
   "./assets/icons/aldenirmed89-aerospace-orbital-192.png",
   "./assets/icons/antigravity-consultas-192.png",
   "./assets/icons/antigravity-consultas-512.png",
-  "./assets/icons/apple-touch-icon.png"
+  "./assets/icons/apple-touch-icon.png",
+  "./favicon.ico"
 ];
 const WARM_ASSETS = [
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.css?v=1.1.3",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.js?v=1.1.3",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/atlas-estudo.js?v=1.1.3",
+  "./01_Modulos_Clinicos/Neuro_Semiologia_Topografica/index.html",
+  "./01_Modulos_Clinicos/Neuro_Semiologia_Topografica/redirect.js",
   "./data/site_manifest.json",
   "./15_Radar_Cientifico/index.html",
   "./15_Radar_Cientifico/data/radar.js",
@@ -110,10 +116,7 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/aprofundamento.html",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.css",
-  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.css?v=1.1.2",
-  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.js?v=1.1.2",
-  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/atlas-estudo.js?v=1.1.2",
-  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/theme-bootstrap.js?v=1.1.2",
+  "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/theme-bootstrap.js?v=1.1.3",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.js",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/atlas-estudo.js",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/styles.css",

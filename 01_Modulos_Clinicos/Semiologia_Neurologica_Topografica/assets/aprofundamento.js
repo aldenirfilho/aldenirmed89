@@ -544,7 +544,21 @@ var QUIZ=[
  {lv:"tronco",s:"Vertigem contínua há 12 horas com náuseas. Nistagmo que muda de direção conforme o olhar, teste do impulso cefálico sem sacada corretiva, desalinhamento vertical ao cover test. Não consegue ficar em pé sem apoio.",o:["Padrão central preocupante (fossa posterior)","Neurite vestibular","VPPB","Doença de Menière"],a:0,e:"Neste contexto de síndrome vestibular aguda com nistagmo, qualquer componente central preocupa para AVC, se examinado por profissional treinado; não define a etiologia sozinho. Incapacidade de permanecer em pé reforça o alarme. Avaliação urgente com imagem apropriada; TC normal não exclui infarto. Não esperar 24 h para investigar."}
 ];
 (function(){
-  var order=QUIZ.map(function(_,i){return i}), pos=0, answered={}, score=store("nm_quiz_v1")||{ok:0,err:0};
+  // Keep legacy totals, and persist canonical answer IDs so reloads cannot
+  // count the same case twice. Invalid storage never interrupts the course.
+  var saved=store("nm_quiz_v1"), order=QUIZ.map(function(_,i){return i}), pos=0, answered={};
+  if(!saved||typeof saved!=="object"||Array.isArray(saved))saved={};
+  var score={ok:validCount(saved.ok),err:validCount(saved.err)};
+  function validCount(value){return Number.isSafeInteger(value)&&value>=0?value:0}
+  if(saved.answered&&typeof saved.answered==="object"&&!Array.isArray(saved.answered)){
+    Object.keys(saved.answered).forEach(function(id){
+      var i=Number(id),answer=saved.answered[id];
+      if(String(i)===id&&Number.isInteger(i)&&i>=0&&i<QUIZ.length&&Number.isInteger(answer)&&answer>=0&&answer<QUIZ[i].o.length)answered[i]=answer;
+    });
+  }
+  if(Array.isArray(saved.order)&&saved.order.length===QUIZ.length&&new Set(saved.order).size===QUIZ.length&&saved.order.every(function(i){return Number.isInteger(i)&&i>=0&&i<QUIZ.length}))order=saved.order;
+  if(Number.isInteger(saved.pos)&&saved.pos>=0&&saved.pos<order.length)pos=saved.pos;
+  function saveQuiz(){store("nm_quiz_v1",{ok:score.ok,err:score.err,answered:answered,order:order,pos:pos})}
   var lvn=LVNAME;
   function render(){
     var q=QUIZ[order[pos]];
@@ -564,7 +578,7 @@ var QUIZ=[
         if(answered[order[pos]]!==undefined)return;
         answered[order[pos]]=oi;
         if(oi===q.a)score.ok++;else score.err++;
-        store("nm_quiz_v1",score); render();
+        saveQuiz(); render();
       });
       opts.appendChild(b);
     });
@@ -573,10 +587,10 @@ var QUIZ=[
     else{ex.classList.remove("show");ex.innerHTML=""}
   }
   function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
-  $("#quiz-next").addEventListener("click",function(){pos=(pos+1)%QUIZ.length;render()});
-  $("#quiz-prev").addEventListener("click",function(){pos=(pos-1+QUIZ.length)%QUIZ.length;render()});
-  $("#quiz-shuffle").addEventListener("click",function(){shuffle(order);pos=0;render()});
-  $("#quiz-reset").addEventListener("click",function(){score={ok:0,err:0};answered={};QUIZ.forEach(function(q){delete q._perm});store("nm_quiz_v1",score);render()});
+  $("#quiz-next").addEventListener("click",function(){pos=(pos+1)%QUIZ.length;saveQuiz();render()});
+  $("#quiz-prev").addEventListener("click",function(){pos=(pos-1+QUIZ.length)%QUIZ.length;saveQuiz();render()});
+  $("#quiz-shuffle").addEventListener("click",function(){shuffle(order);pos=0;saveQuiz();render()});
+  $("#quiz-reset").addEventListener("click",function(){score={ok:0,err:0};answered={};pos=0;order=QUIZ.map(function(_,i){return i});QUIZ.forEach(function(q){delete q._perm});saveQuiz();render()});
   render();
 })();
 

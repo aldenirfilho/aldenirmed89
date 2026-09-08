@@ -1,15 +1,16 @@
 
 /* ============================================================
    AldenirMed89 · Módulo Semiologia Topográfica Neurológica
-   Identidade "Laranja Mecânica": preto / laranja-fogo, painel clínico sóbrio.
-   Tema inicial escuro; respeita a preferência de leitura do portal.
+   Identidade aeroespacial: azul profundo, ciano e âmbar, como a home.
+   As cores anatômicas dos diagramas e dos níveis são preservadas.
+   Respeita a preferência de leitura do portal.
    ============================================================ */
 :root{
   color-scheme: dark;
-  --bg:#0a0a0b; --panel:#131315; --raised:#1b1b1e; --sunken:#0f0f10;
-  --line:#2a2a2f; --line-2:#3a3a41;
-  --ink:#ebe9e4; --ink-2:#a8a69f; --ink-3:#a8a69f;
-  --fire:#ff5a1f; --fire-2:#ff7a45; --fire-dim:rgba(255,90,31,.14); --amber:#ffb14a;
+  --bg:#020b1f; --panel:#071831; --raised:#0c2445; --sunken:#041126;
+  --line:#233d5e; --line-2:#466183;
+  --ink:#f5f9ff; --ink-2:#bacce2; --ink-3:#a7bad4;
+  --fire:#2dd4ff; --fire-2:#75e4ff; --fire-dim:rgba(45,212,255,.14); --amber:#ffd166;
   --ok:#4cc38a; --warn:#f2c14e; --crit:#ff4d4f; --info:#5aa9ff;
   /* Códigos de nível do neuroeixo (informação, não decoração) */
   --lv-cortex:#ff5a1f; --lv-sub:#ffb14a; --lv-tronco:#5aa9ff; --lv-cereb:#2ec4b6;
@@ -20,6 +21,7 @@
   --rail:248px; --maxw:1120px; --radius:6px;
 }
 *{box-sizing:border-box}
+.bench svg{--fire:#ff5a1f;--fire-2:#ff7a45;--fire-dim:rgba(255,90,31,.14)}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
@@ -289,7 +291,7 @@ html[data-theme="light"]{
   color-scheme:light;
   --bg:#fff;--panel:#f4f7fa;--raised:#e9eff5;--sunken:#fff;
   --line:#c4d0dc;--line-2:#8295aa;--ink:#12263b;--ink-2:#344e66;--ink-3:#425b71;
-  --fire:#a53200;--fire-2:#9b3000;--fire-dim:rgba(165,50,0,.09);--amber:#805300;
+  --fire:#006783;--fire-2:#005e7a;--fire-dim:rgba(0,103,131,.09);--amber:#805300;
   --ok:#12683d;--warn:#805300;--crit:#b51c2c;--info:#125e9b;
   --lv-cortex:#a53200;--lv-sub:#805300;--lv-tronco:#125e9b;--lv-cereb:#006c62;
   --lv-medula:#6e3d9e;--lv-snp:#12683d;--lv-jnm:#9d326a;--lv-musc:#805300;--lv-difuso:#425b71;

@@ -87,3 +87,15 @@ Ao atualizar o conteúdo, preserve a separação entre descrição sindrômica, 
 Fontes de maior risco foram conferidas em CFM 2.173/2017, GCS oficial, AHA/ASA 2022 e 2026, SAEM GRACE-3, NICE e EAN/PNS 2023. Isso é revisão documental assistida, não revisão humana assinada nem validação de algoritmo diagnóstico. O localizador usa pesos editoriais, sem estimativas de probabilidade.
 
 As duas cópias HTML e o ZIP originais em Downloads permaneceram intactos. Instruções e prompts de operação anexados não fazem parte da publicação. Fontes, limitações e links estão na seção S17; imagens são conceituais/esquemáticas, sem exames reais. O contador agregado do portal pode ser acrescentado pelo pipeline de publicação, sem enviar respostas de estudo.
+
+### Correção 1.1.3 · 8 de setembro de 2026
+
+O quiz agora retoma respostas, caso atual e ordem embaralhada após recarregar,
+sem contar novamente um caso respondido. Totais legados são preservados; o botão
+de reinício limpa somente o progresso do quiz. Valores inválidos no armazenamento
+são descartados com segurança. O botão de retorno ao topo respeita movimento
+reduzido. Conteúdo e critérios clínicos permanecem em revisão médica.
+
+A rota `../Neuro_Semiologia_Topografica/index.html` abre esta versão ampliada,
+preservando fragmentos de seção. A busca global inclui todos os termos do pacote
+original. Os ícones e o atalho de instalação usam a identidade aeroespacial original.

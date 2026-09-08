@@ -81,3 +81,22 @@ O favicon e o ícone do Windows usam sete tamanhos (16–256 px) e são empacota
 pelo script `scripts_admin/build_multires_ico.py`.
 
 Sempre avance a versão do service worker quando substituir qualquer ícone.
+
+
+## Ícones multiplataforma · 8 de setembro de 2026
+
+O proprietário reafirmou a escolha do **A aeroespacial original**, branco com
+órbita ciano e ponto âmbar. O mestre `aldenirmed89-aerospace-orbital-master.png`
+permanece idêntico ao histórico, inclusive no SHA-256. Os aliases ativos
+`antigravity-consultas-*`, os ícones iOS, o favicon e o pacote Windows agora
+usam esse mesmo desenho. A capa social usa a arte aeroespacial existente.
+
+O pacote `../../downloads/AldenirMed89-Identidade-Multiplataforma.zip` entrega
+PNG para iOS/Android, ICO multirresolução para Windows e ICNS para macOS.
+Android usa `purpose: any` para preservar toda a órbita: o mestre não deve ser
+rotulado como maskable, pois seu desenho ultrapassa a área segura de recorte.
+
+Reproduzir: `python3 scripts_admin/build_aerospace_platform_icons.py` (Pillow).
+Somente conversão de formato e redimensionamento; sem geração de uma nova marca.
+Origem e hashes: `aerospace-platforms.json`. O pacote contém a identidade
+visual, não quatro aplicativos nativos. As artes históricas continuam preservadas.
