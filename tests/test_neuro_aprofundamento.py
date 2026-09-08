@@ -36,7 +36,7 @@ class NeuroAprofundamentoTests(unittest.TestCase):
 
     def test_every_local_asset_and_anchor_resolves(self):
         self.assertEqual(len(self.page.ids), len(set(self.page.ids)))
-        self.assertEqual(set(self.page.sections), {f's{i:02}' for i in range(1, 20)})
+        self.assertEqual(set(self.page.sections), {f's{i:02}' for i in range(1, 20)} | {'atlas-widescreen'})
         for reference in self.page.references:
             url = urlsplit(reference)
             if url.scheme or url.netloc:
