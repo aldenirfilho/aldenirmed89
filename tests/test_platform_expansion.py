@@ -113,12 +113,12 @@ class AccessiblePwaTests(unittest.TestCase):
                 png_size(f"assets/icons/ios/apple-touch-icon-{size}.png"),
                 (size, size),
             )
-        self.assertIn("assets/icons/ios/apple-touch-icon-167.png", home)
-        self.assertIn("assets/icons/ios/apple-touch-icon-152.png", home)
-        self.assertIn("assets/icons/ios/apple-touch-icon-120.png", home)
+        self.assertIn("assets/icons/aerospace-v2/apple-touch-icon-167.png", home)
+        self.assertIn("assets/icons/aerospace-v2/apple-touch-icon-152.png", home)
+        self.assertIn("assets/icons/aerospace-v2/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed89"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v36`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v37`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'

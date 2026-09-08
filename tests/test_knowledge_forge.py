@@ -109,7 +109,7 @@ class KnowledgeForgeContractTests(unittest.TestCase):
             self.assertGreater(path.stat().st_size, minimum_size, relative)
         self.assertEqual((VENDOR / "lang/por.traineddata.gz").read_bytes()[:2], b"\x1f\x8b")
         self.assertEqual((VENDOR / "lang/eng.traineddata.gz").read_bytes()[:2], b"\x1f\x8b")
-        self.assertIn('CACHE_NAME = `${CACHE_PREFIX}v7`', SERVICE_WORKER)
+        self.assertIn('CACHE_NAME = `${CACHE_PREFIX}v8`', SERVICE_WORKER)
         for relative in (
             "assets/knowledge-forge.css",
             "assets/knowledge-forge.js",

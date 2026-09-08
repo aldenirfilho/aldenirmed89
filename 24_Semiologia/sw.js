@@ -1,12 +1,13 @@
 'use strict';
 const CACHE_PREFIX = 'aldenirmed89-semiologia-cardio-';
-const CACHE_NAME = `${CACHE_PREFIX}v1`;
+const CACHE_NAME = `${CACHE_PREFIX}v2`;
 const BASE = new URL('./', self.location.href);
 const CORE = [
   './', 'index.html', 'assets/semio.css', 'assets/theme.js',
   'Cardiovascular/', 'Cardiovascular/index.html', 'Cardiovascular/assets/app.js', 'Cardiovascular/data/course.js',
   '../assets/icons/aldenirmed89-aerospace-orbital-192.png',
-  '../assets/icons/antigravity-consultas-32.png', '../assets/icons/apple-touch-icon.png',
+  '../assets/icons/aerospace-v2/icon-32.png', '../assets/icons/aerospace-v2/apple-touch-icon-180.png',
+  '../assets/icons/aerospace-v2/icon-192.png', '../assets/icons/aerospace-v2/icon-512.png', '../assets/icons/aerospace-v2/icon-1024.png',
   '../manifest.webmanifest', '../01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-192.png'
 ];
 self.addEventListener('install', event => {
@@ -49,6 +50,14 @@ self.addEventListener('fetch', event => {
     const cache = await caches.open(CACHE_NAME);
     const clean = new Request(request.url, {method:'GET'});
     const cached = await cache.match(clean);
+    if (url.pathname === new URL('../manifest.webmanifest', BASE).pathname) {
+      try {
+        const response = await fetch(request, {cache:'no-store'});
+        if (!response.ok) throw new Error('Manifesto indisponível');
+        await cache.put(clean,response.clone());
+        return response;
+      } catch(error) { if(cached) return cached; throw error; }
+    }
     if (request.headers.has('range')) return cached ? partial(cached, request.headers.get('range')) : fetch(request);
     if (request.mode === 'navigate') {
       try {

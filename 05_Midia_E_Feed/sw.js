@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "card-feed-medico-";
-const CACHE_NAME = `${CACHE_PREFIX}v7`;
+const CACHE_NAME = `${CACHE_PREFIX}v8`;
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -41,7 +41,7 @@ self.addEventListener("fetch", event => {
     return;
   }
   event.respondWith(
-    fetch(event.request).then(response => {
+    fetch(event.request, url.pathname.endsWith('/manifest.webmanifest') ? {cache:'no-store'} : {}).then(response => {
       if (response.ok) {
         const copy = response.clone();
         event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy)));

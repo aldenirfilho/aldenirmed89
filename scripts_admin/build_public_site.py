@@ -23,7 +23,7 @@ import zipfile
 from collections import Counter
 from pathlib import Path, PurePosixPath
 from typing import NamedTuple
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit
 
 try:
     from svg_safety import validate_svg_file
@@ -1176,6 +1176,61 @@ def validate_goatcounter_csp(html: str, site_code: str, relative: PurePosixPath)
         )
 
 
+def restore_original_brand_metadata(html: str, relative: PurePosixPath, root_prefix: str) -> str:
+    """Version global brand URLs in head only, preserving independent app icons."""
+    match = re.search(r'<head\b[^>]*>(.*?)</head\s*>', html, re.I | re.S)
+    if not match:
+        return html
+    folder = 'assets/icons/aerospace-v2/'
+    aliases = {
+        'favicon.ico': 'favicon.ico',
+        'assets/img/logo.png': 'icon-192.png',
+        'assets/icons/apple-touch-icon.png': 'apple-touch-icon-180.png',
+        **{f'assets/icons/antigravity-consultas-{n}.png': f'icon-{n}.png' for n in (32, 64, 192, 512, 1024)},
+        **{f'assets/icons/ios/apple-touch-icon-{n}.png': f'apple-touch-icon-{n}.png' for n in (120, 152, 167, 180, 1024)},
+    }
+    seen = set()
+
+    def update_tag(tag_match):
+        tag = tag_match.group()
+        if not tag.lower().startswith('<link'):
+            return tag
+        rel = re.search(r'\brel\s*=\s*([\"\'])(.*?)\1', tag, re.I)
+        if not rel:
+            return tag
+        kind = rel.group(2).lower().split()
+        if not ({'icon', 'apple-touch-icon', 'apple-touch-icon-precomposed'} & set(kind)):
+            return tag
+        seen.add('apple' if any(value.startswith('apple-touch-icon') for value in kind) else 'icon')
+        href = re.search(r'\bhref\s*=\s*([\"\'])(.*?)\1', tag, re.I)
+        if not href:
+            return tag
+        url = urlsplit(html_lib.unescape(href.group(2)))
+        if url.scheme or url.netloc or url.path.startswith('/'):
+            seen.add('custom')
+            return tag
+        path = posixpath.normpath(posixpath.join(relative.parent.as_posix(), url.path))
+        if path not in aliases:
+            if not path.startswith(folder):
+                seen.add('custom')
+            return tag
+        return tag[:href.start(2)] + root_prefix + folder + aliases[path] + tag[href.end(2):]
+
+    # Consume script/style/comment blocks whole so code examples are never rewritten.
+    head = re.sub(r'<script\b[^>]*>.*?</script\s*>|<style\b[^>]*>.*?</style\s*>|<!--.*?-->|<link\b[^>]*>',
+                  update_tag, match.group(1), flags=re.I | re.S)
+    additions = []
+    if 'icon' not in seen and 'custom' not in seen:
+        additions.append(f'<link rel="icon" type="image/png" sizes="32x32" href="{root_prefix}{folder}icon-32.png">')
+    if 'apple' not in seen and 'custom' not in seen:
+        additions.append(f'<link rel="apple-touch-icon" sizes="180x180" href="{root_prefix}{folder}apple-touch-icon-180.png">')
+    for attribute, name in (('property', 'og:image'), ('name', 'twitter:image')):
+        if not re.search(rf'<meta\b[^>]*\b{attribute}\s*=\s*[\"\']{name}[\"\']', head, re.I):
+            additions.append(f'<meta {attribute}="{name}" content="{PUBLIC_BASE_URL}{folder}social-card.png">')
+    head += '\n' + '\n'.join(additions) + '\n'
+    return html[:match.start(1)] + head + html[match.end(1):]
+
+
 def inject_public_metadata(site: Path, analytics: dict) -> int:
     """Injeta canonical e o carregador local de métricas em todo HTML público."""
 
@@ -1201,6 +1256,8 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
         parent = relative.parent.as_posix()
         root_prefix = posixpath.relpath(".", start=parent or ".")
         root_prefix = "" if root_prefix == "." else root_prefix + "/"
+        if analytics_allowed:
+            html = restore_original_brand_metadata(html, relative, root_prefix)
         identity_css_href = f"{root_prefix}assets/aldenirmed89-mystic.css"
         css_href = f"{root_prefix}assets/site-analytics.css"
         js_src = f"{root_prefix}assets/site-analytics.js"

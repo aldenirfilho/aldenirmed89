@@ -109,7 +109,7 @@ const key=r=>typeof r==='string'?r:r.url;
 const cache={addAll:async urls=>{for(const url of urls)entries.set(key(url),new Response('0123456789',{headers:{'Content-Type':'audio/wav'}}))},match:async r=>entries.get(key(r))?.clone(),put:async(r,v)=>entries.set(key(r),v)};
 const sandbox={URL,Response,Request,Headers,
  self:{location:{href:root+'sw.js'},addEventListener:(n,f)=>events[n]=f,skipWaiting:async()=>{},clients:{claim:async()=>{}}},
- caches:{open:async()=>cache,keys:async()=>['antigravity-root-v35','aldenirmed89-semiologia-neuro-v2','aldenirmed89-semiologia-cardio-old','aldenirmed89-semiologia-cardio-v1'],delete:async k=>deleted.push(k)},
+ caches:{open:async()=>cache,keys:async()=>['antigravity-root-v35','aldenirmed89-semiologia-neuro-v2','aldenirmed89-semiologia-cardio-old','aldenirmed89-semiologia-cardio-v2'],delete:async k=>deleted.push(k)},
  fetch:async request=>{if(fail)throw Error('offline');if(String(request).includes('audio-manifest'))return Response.json([{file:'assets/audio/normal.wav'}]);return new Response('network')}
 };
 vm.runInNewContext(fs.readFileSync('24_Semiologia/sw.js','utf8'),sandbox);
