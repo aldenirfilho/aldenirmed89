@@ -116,7 +116,7 @@ vm.runInNewContext(fs.readFileSync('24_Semiologia/sw.js','utf8'),sandbox);
 async function dispatch(name){let p;events[name]({waitUntil:x=>p=x});await p;}
 async function get(path,range,mode='cors'){let p;events.fetch({request:{url:new URL(path,root).href,method:'GET',mode,headers:new Headers(range?{'Range':range}:{})},respondWith:x=>p=x});return p;}
 (async()=>{
- await dispatch('install');await dispatch('activate');assert.deepEqual(deleted,['aldenirmed89-semiologia-cardio-old']);
+ await dispatch('install');await dispatch('activate');assert.deepEqual(deleted,['aldenirmed89-semiologia-cardio-old','aldenirmed89-semiologia-cardio-v2']);
  assert.equal(await get('../01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html'),undefined);
  fail=true;const file='Cardiovascular/assets/audio/normal.wav';
  let r=await get(file,'bytes=2-5');assert.equal(r.status,206);assert.equal(r.headers.get('Content-Range'),'bytes 2-5/10');assert.equal(await r.text(),'2345');

@@ -1,9 +1,11 @@
 'use strict';
 const CACHE_PREFIX = 'aldenirmed89-semiologia-cardio-';
-const CACHE_NAME = `${CACHE_PREFIX}v2`;
+const CACHE_NAME = `${CACHE_PREFIX}v3`;
 const BASE = new URL('./', self.location.href);
 const CORE = [
   './', 'index.html', 'assets/semio.css', 'assets/theme.js',
+  'Abdominal/', 'Abdominal/index.html', 'Abdominal/assets/app.js', 'Abdominal/assets/abdominal.css', 'Abdominal/data/course.js',
+  'assets/atlas-integrado.css', 'Atlas/index.html', 'Atlas/galeria.css', 'Atlas/galeria.js', 'Atlas/catalogo.js',
   'Cardiovascular/', 'Cardiovascular/index.html', 'Cardiovascular/assets/app.js', 'Cardiovascular/data/course.js',
   '../assets/icons/aldenirmed89-aerospace-orbital-192.png',
   '../assets/icons/aerospace-v2/icon-32.png', '../assets/icons/aerospace-v2/apple-touch-icon-180.png',
