@@ -1,7 +1,7 @@
 'use strict';
 // Each section owns only its scope and cache; never remove another app's data.
 const CACHE_PREFIX = 'aldenirmed89-semiologia-neuro-';
-const CACHE_NAME = `${CACHE_PREFIX}v1`;
+const CACHE_NAME = `${CACHE_PREFIX}v2`;
 const APP_ROOT = new URL('./', self.location.href);
 const SHARED_ASSETS = [
   '../../assets/aldenirmed89-mystic.css',

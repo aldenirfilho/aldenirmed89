@@ -43,7 +43,7 @@ const cache={
 };
 const sandbox={URL,Response,Request,
  self:{location:{href:root+'sw.js'},addEventListener:(n,f)=>events[n]=f,skipWaiting:async()=>{},clients:{claim:async()=>{}}},
- caches:{open:async()=>cache,keys:async()=>['antigravity-root-v33','aldenirmed89-semiologia-neuro-old','respirasense-v1','aldenirmed89-semiologia-neuro-v1'],delete:async k=>deleted.push(k)},
+ caches:{open:async()=>cache,keys:async()=>['antigravity-root-v33','aldenirmed89-semiologia-neuro-old','respirasense-v1','aldenirmed89-semiologia-neuro-v1','aldenirmed89-semiologia-neuro-v2'],delete:async k=>deleted.push(k)},
  fetch:async()=>{if(networkFails)throw Error('offline');return new Response('fresh')}
 };
 vm.runInNewContext(fs.readFileSync('01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/sw.js','utf8'),sandbox);
@@ -51,7 +51,7 @@ async function dispatch(name){let done;events[name]({waitUntil:p=>done=p});await
 async function request(path,mode='navigate',method='GET'){let response;events.fetch({request:{url:new URL(path,root).href,method,mode},respondWith:p=>response=p});return response;}
 (async()=>{
  await dispatch('install');await dispatch('activate');
- assert.deepEqual(deleted,['aldenirmed89-semiologia-neuro-old']);
+ assert.deepEqual(deleted,['aldenirmed89-semiologia-neuro-old','aldenirmed89-semiologia-neuro-v1']);
  assert(installList.includes('./aprofundamento.html'));
  assert.equal(await request('../../index.html'),undefined,'Do not intercept the portal');
  assert.equal(await request('index.html','navigate','POST'),undefined);

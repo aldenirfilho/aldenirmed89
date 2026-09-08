@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v34`;
+const CACHE_NAME = `${CACHE_PREFIX}v35`;
 const SHELL_ASSETS = [
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-64.png",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-192.png",
@@ -22,6 +22,12 @@ const SHELL_ASSETS = [
   "./favicon.ico"
 ];
 const WARM_ASSETS = [
+  "./24_Semiologia/index.html",
+  "./24_Semiologia/assets/semio.css",
+  "./24_Semiologia/assets/theme.js",
+  "./24_Semiologia/Cardiovascular/index.html",
+  "./24_Semiologia/Cardiovascular/assets/app.js",
+  "./24_Semiologia/Cardiovascular/data/course.js",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-180.png",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/neuro-app.css",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/neuro-app.js",

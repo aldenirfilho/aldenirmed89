@@ -210,3 +210,7 @@ Conteúdo educacional autoral. **Não substitui julgamento clínico individual.*
 ### Aplicativos com identidade por seção
 
 A Semiologia Neurológica tem logotipo e instalação próprios. Veja o [padrão de identidade e metas para as demais seções](docs_usuario/PADRAO_APPS_POR_SECAO.md).
+
+### Semiologia
+
+A seção `24_Semiologia/index.html` reúne Neurológica e Cardiovascular. O módulo cardiovascular traz exame clínico, 30 áudios identificados por origem, 20 casos, 49 flashcards e estudo offline. Documentação: [Semiologia](24_Semiologia/README.md) e [Cardiovascular](24_Semiologia/Cardiovascular/README.md). Conteúdo em prévia educacional, com revisão médica formal pendente.
