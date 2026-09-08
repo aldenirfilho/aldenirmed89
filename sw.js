@@ -1,8 +1,19 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v36`;
+const CACHE_NAME = `${CACHE_PREFIX}v37`;
 const SHELL_ASSETS = [
+  "./assets/icons/aerospace-v2/favicon.ico",
+  "./assets/icons/aerospace-v2/icon-32.png",
+  "./assets/icons/aerospace-v2/icon-64.png",
+  "./assets/icons/aerospace-v2/icon-192.png",
+  "./assets/icons/aerospace-v2/icon-512.png",
+  "./assets/icons/aerospace-v2/icon-1024.png",
+  "./assets/icons/aerospace-v2/apple-touch-icon-180.png",
+  "./assets/icons/aerospace-v2/apple-touch-icon-167.png",
+  "./assets/icons/aerospace-v2/apple-touch-icon-152.png",
+  "./assets/icons/aerospace-v2/apple-touch-icon-120.png",
+
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-64.png",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-192.png",
 
@@ -303,12 +314,31 @@ function networkOnlyDownload(request) {
   return fetch(new Request(request, { cache: "no-store" }));
 }
 
+async function freshManifest(request) {
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const response = await fetch(request, { cache: "no-store" });
+    if (!response.ok) throw new Error("Manifest unavailable");
+    await cache.put(request, response.clone());
+    return response;
+  } catch (error) {
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    throw error; // A manifest request must never receive the HTML offline page.
+  }
+}
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
+  if (url.pathname.endsWith("/manifest.webmanifest")) {
+    event.respondWith(freshManifest(request));
+    return;
+  }
 
   const downloadsPath = new URL("./downloads/", self.registration.scope).pathname;
   if (url.pathname.startsWith(downloadsPath)) {

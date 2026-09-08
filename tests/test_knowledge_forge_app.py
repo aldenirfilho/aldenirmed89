@@ -144,7 +144,7 @@ class KnowledgeForgeAppTests(unittest.TestCase):
         self.assertIn("height: calc(100dvh - 12px)", STYLE)
         self.assertIn("overflow-x: auto", STYLE)
         self.assertIn("@media (max-width: 620px)", STYLE)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v7`', SERVICE_WORKER)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v8`', SERVICE_WORKER)
 
     def test_runtime_normalizer_preserves_new_product_records(self) -> None:
         script = f"""
