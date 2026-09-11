@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-09-08",
-  "version": "4.8-semiologia",
+  "updatedAt": "2026-09-11",
+  "version": "4.9-avc-turbo-temi",
   "description": "Mapa vivo organizado da Enciclopédia: Home, Central de Ativação, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos, Semiologia Neurológica Topográfica, Micropartículas Ativas ACRA e macrotemas de UTI.",
   "legend": {
     "hub": "Nó central do projeto",
@@ -1206,6 +1206,54 @@
       "status": "em_revisao",
       "x": 77,
       "y": 46
+    },
+    {
+      "id": "avc-turbo-temi",
+      "label": "🧠 AVC Turbo TEMI",
+      "type": "module",
+      "url": "01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html",
+      "status": "em_revisao",
+      "body": "Edição 1.1 auditada: isquêmico, HIC e HSA, NIHSS, escalas, 16 roteiros de deterioração, 17 fichas e laboratório TEMI."
+    },
+    {
+      "id": "avc-turbo-nihss",
+      "label": "🧮 NIHSS item a item",
+      "type": "tool",
+      "url": "01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html#nihss",
+      "status": "em_revisao",
+      "body": "UN, subtotal explícito, coerência em coma e comparação com exame anterior."
+    },
+    {
+      "id": "avc-turbo-hsa-escalas",
+      "label": "🩸 Fisher · Hunt–Hess · WFNS",
+      "type": "tool",
+      "url": "01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html#escalas",
+      "status": "em_revisao",
+      "body": "Escalas da HSA com o critério exposto; ABC/2 e ICH Score para a HIC."
+    },
+    {
+      "id": "avc-turbo-complicacoes",
+      "label": "🚨 Complicações do AVC",
+      "type": "topic",
+      "url": "01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html#complicacoes",
+      "status": "em_revisao",
+      "body": "Dezesseis roteiros de deterioração neurológica e sistêmica."
+    },
+    {
+      "id": "avc-turbo-farmacos",
+      "label": "💊 Fármacos e reversão",
+      "type": "topic",
+      "url": "01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html#farmacos",
+      "status": "em_revisao",
+      "body": "Trombolíticos, reversores, controle pressórico e nimodipino com limites de fonte."
+    },
+    {
+      "id": "avc-turbo-laboratorio",
+      "label": "🎯 Laboratório TEMI",
+      "type": "tool",
+      "url": "01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html#estudo",
+      "status": "em_revisao",
+      "body": "Casos, questões comentadas, flashcards e revisão espaçada."
     }
   ],
   "edges": [
@@ -2271,6 +2319,61 @@
       "from": "semiologia-cardiovascular",
       "to": "banco-temi",
       "relation": "aprendizagem"
+    },
+    {
+      "from": "home",
+      "to": "avc-turbo-temi",
+      "relation": "modulo-em-revisao"
+    },
+    {
+      "from": "avc-agudo",
+      "to": "avc-turbo-temi",
+      "relation": "edicao-auditada-2026"
+    },
+    {
+      "from": "avc-turbo-temi",
+      "to": "avc-turbo-nihss",
+      "relation": "exame-item-a-item"
+    },
+    {
+      "from": "avc-turbo-temi",
+      "to": "avc-turbo-hsa-escalas",
+      "relation": "graduar-hsa-hic"
+    },
+    {
+      "from": "avc-turbo-temi",
+      "to": "avc-turbo-complicacoes",
+      "relation": "deterioracao"
+    },
+    {
+      "from": "avc-turbo-temi",
+      "to": "avc-turbo-farmacos",
+      "relation": "seguranca-farmacologica"
+    },
+    {
+      "from": "avc-turbo-temi",
+      "to": "avc-turbo-laboratorio",
+      "relation": "treino-ativo"
+    },
+    {
+      "from": "avc-turbo-temi",
+      "to": "banco-temi",
+      "relation": "questoes"
+    },
+    {
+      "from": "semiologia-neurologica-topografica",
+      "to": "avc-turbo-temi",
+      "relation": "deficit-focal-tempo-dependente"
+    },
+    {
+      "from": "avc-turbo-complicacoes",
+      "to": "tce-herniacao-pic",
+      "relation": "herniacao-e-pic"
+    },
+    {
+      "from": "avc-turbo-temi",
+      "to": "delirium-uti",
+      "relation": "delirium-pos-avc"
     }
   ],
   "links": []

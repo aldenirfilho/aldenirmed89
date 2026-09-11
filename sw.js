@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v37`;
+const CACHE_NAME = `${CACHE_PREFIX}v38`;
 const SHELL_ASSETS = [
   "./assets/icons/aerospace-v2/favicon.ico",
   "./assets/icons/aerospace-v2/icon-32.png",
@@ -138,6 +138,16 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/data/visual-assets.json",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/module.manifest.json",
   "./01_Modulos_Clinicos/TCE_Grave_CRASH/CHECKLIST_OPERACIONAL.md",
+  "./01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html",
+  "./01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/style.css",
+  "./01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/app.js",
+  "./01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/data.js",
+  "./01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/nihss.js",
+  "./01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/tools.js",
+  "./01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/images/21_compartimentos_vetor.svg",
+  "./01_Modulos_Clinicos/AVC_Turbo_TEMI/data/visual-assets.json",
+  "./01_Modulos_Clinicos/AVC_Turbo_TEMI/module.manifest.json",
+  "./01_Modulos_Clinicos/AVC_Turbo_TEMI/CHECKLIST_OPERACIONAL.md",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/aprofundamento.html",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/aprofundamento.css",

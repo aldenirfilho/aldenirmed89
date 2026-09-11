@@ -19,6 +19,8 @@
 - [🧬 Abrir Reumatologia Crítica](01_Modulos_Clinicos/Reumatologia_Critica/index.html)
 - [🧠 Abrir Delirium na UTI e Enfermaria](01_Modulos_Clinicos/Delirium_UTI/index.html)
 - [🧠 Abrir TCE grave — Protocolo CRASH](01_Modulos_Clinicos/TCE_Grave_CRASH/index.html)
+- [🧠 Abrir AVC agudo — Turbo TEMI (isquêmico, HIC e HSA, edição 1.1 auditada)](01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html)
+- [🧾 Relatório da auditoria do módulo AVC (11/09/2026)](docs_usuario/AUDITORIA_AVC_TURBO_TEMI_2026-09-11.md)
 - [🧭 Semiologia Neurológica: visão geral](01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html)
 - [📚 Semiologia Topográfica: 19 seções, 28 casos e 40 flashcards](01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/aprofundamento.html)
 - [🎨 Logotipo aeroespacial: pacote macOS, iOS, Windows e Android](downloads/AldenirMed89-Identidade-Multiplataforma.zip)
@@ -31,7 +33,7 @@ pela Home**: **UpDown Hub**, **Biblioteca IA**, **Calculadoras UTI**,
 **RespiraSense ICU**, **RespiraCrit**, **Simulador TEMI**, **Card Feed Médico**,
 **Ebooks**, **Questões Comentadas**, **Transcrições**, **POCUS**, **RenalDose**,
 **SAPS 3**, **Hematologia Crítica**, **Reumatologia Crítica**, **Delirium
-UTI/Enfermaria** e **TCE grave — Protocolo CRASH**. As três PWAs
+UTI/Enfermaria**, **TCE grave — Protocolo CRASH** e **AVC agudo — Turbo TEMI**. As três PWAs
 instaláveis — **AldenirMed89**, **Card Feed Médico** e **RespiraSense ICU** — e os
 atalhos de Mac, Windows e iPhone que abrem a plataforma também recebem a
 preferência. A impressão e a exportação para PDF usam uma folha branca
@@ -130,7 +132,7 @@ Material bruto (PDF/DOCX/aula/IA)
 | `07_Questoes_Comentadas/` | Questões comentadas, simulados, casos clínicos, OSCE, CSV e Anki | ✅ |
 | `08_Transcricoes/` | Transcrições de aulas, vídeos, podcasts, reuniões e discussões clínicas | ✅ |
 | `09_POCUS_Hub/` | POCUS/USG beira-leito: aulas, vídeos, artigos, imagens, modelos, dicas e links | ✅ |
-| `01_Modulos_Clinicos/` | Módulos clínicos em HTML, incluindo **TCE grave CRASH**, **Hematologia Crítica**, **Reumatologia Crítica** e **Delirium UTI/Enfermaria** (emergências, diagnóstico difícil, ventilação e Turbo TEMI) | ✅ |
+| `01_Modulos_Clinicos/` | Módulos clínicos em HTML, incluindo **AVC agudo Turbo TEMI** (edição 1.1 auditada), **TCE grave CRASH**, **Hematologia Crítica**, **Reumatologia Crítica** e **Delirium UTI/Enfermaria** (emergências, diagnóstico difícil, ventilação e Turbo TEMI) | ✅ |
 | `questoes/` | Banco de questões TEMI/R3 — rota canônica | ✅ |
 | `02_Banco_Questoes_TEMI/` | Alias legado com redirect para `questoes/` | ✅ |
 | `les-autoanticorpos/` | Módulo LES — autoanticorpos | ✅ |
@@ -210,6 +212,18 @@ Conteúdo educacional autoral. **Não substitui julgamento clínico individual.*
 ### Aplicativos com identidade por seção
 
 A Semiologia Neurológica tem logotipo e instalação próprios. Veja o [padrão de identidade e metas para as demais seções](docs_usuario/PADRAO_APPS_POR_SECAO.md).
+
+### AVC agudo — Turbo TEMI
+
+`01_Modulos_Clinicos/AVC_Turbo_TEMI/` publica a edição 1.1 do módulo de AVC
+isquêmico, hemorragia intracerebral e HSA: dez percursos, NIHSS item a item,
+Fisher/Hunt–Hess/WFNS, ABC/2 e ICH Score, 16 roteiros de deterioração, 17 fichas,
+7 casos, 25 questões, 30 flashcards e 21 figuras. A edição 1.0 passou por
+auditoria independente em 11/09/2026 (relatório em `docs_usuario/`); o módulo
+circula como prévia pública em revisão médica. O app **AVC Agudo** de 2025
+(`01_Modulos_Clinicos/AVC_Agudo/`) permanece publicado e ligado ao novo módulo.
+A fonte editável é o pacote auditado, fora do repositório; a pasta é regenerada por
+`scripts_admin/gerar_modulo_avc_turbo_temi.py`.
 
 ### Semiologia
 

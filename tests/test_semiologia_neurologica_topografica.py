@@ -224,7 +224,7 @@ class SemiologiaNeurologicaTopograficaTests(unittest.TestCase):
         self.assertIn(("semiologia-neurologica-topografica", "avc-agudo"), edges)
         self.assertIn(("semiologia-neurologica-topografica", "banco-temi"), edges)
 
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v37`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v38`', worker)
         for core in (
             "index.html",
             "assets/styles.css",

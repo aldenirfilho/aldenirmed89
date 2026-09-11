@@ -179,6 +179,20 @@ jobs:
           test "$(find site/01_Modulos_Clinicos/TCE_Grave_CRASH/assets/visuals -maxdepth 1 -type f -name 'tc-tce-*.jpg' | wc -l)" -eq 10
           test -s site/01_Modulos_Clinicos/TCE_Grave_CRASH/module.manifest.json
           test -s site/01_Modulos_Clinicos/TCE_Grave_CRASH/CHECKLIST_OPERACIONAL.md
+          test -s site/01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html
+          test -s site/01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/style.css
+          test -s site/01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/app.js
+          test -s site/01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/data.js
+          test -s site/01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/nihss.js
+          test -s site/01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/tools.js
+          test -s site/01_Modulos_Clinicos/AVC_Turbo_TEMI/data/visual-assets.json
+          test -s site/01_Modulos_Clinicos/AVC_Turbo_TEMI/module.manifest.json
+          test -s site/01_Modulos_Clinicos/AVC_Turbo_TEMI/CHECKLIST_OPERACIONAL.md
+          test -s site/01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/images/21_compartimentos_vetor.svg
+          test "$(find site/01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/images -maxdepth 1 -type f -name '*.webp' | wc -l)" -eq 20
+          test "$(find site/01_Modulos_Clinicos/AVC_Turbo_TEMI/assets/images -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 0
+          test -s site/01_UpDown_Hub/content/intensiva/avc-agudo-turbo-temi.md
+          test -s site/docs_usuario/AUDITORIA_AVC_TURBO_TEMI_2026-09-11.md
           test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html
           test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/styles.css
           test -s site/01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/app.js
