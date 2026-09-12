@@ -1,4 +1,6 @@
 import importlib.util
+import hashlib
+import json
 import shutil
 import subprocess
 import tempfile
@@ -22,6 +24,56 @@ def load_builder():
 
 
 class EditorialAttributionBuilderTests(unittest.TestCase):
+    def test_final_transform_chain_preserves_preview_bytes_and_index_hashes(self):
+        """The public index declares hashes generated before the global HTML passes."""
+        builder = load_builder()
+        with tempfile.TemporaryDirectory() as directory:
+            site = Path(directory)
+            library = site / "02_Biblioteca_IA_Engine"
+            previews = library / "previews"
+            previews.mkdir(parents=True)
+            original = (
+                '<!doctype html>\r\n<html lang="pt-BR"><head>'
+                '<meta charset="utf-8"><title>Antigravity — prévia</title>'
+                '</head><body><main data-reader-content="true">'
+                'Referência preservada: https://aldenirfilho.github.io/antigravity-consultas/'
+                '</main></body></html>\r\n'
+            ).encode("utf-8")
+            digest = hashlib.sha256(original).hexdigest()
+            items = []
+            for extension in ("docx", "pdf", "pages"):
+                relative = f"previews/{extension}-{'a' * 20}.html"
+                (library / relative).write_bytes(original)
+                items.append({"previewPath": relative, "previewSha256": digest})
+            index = library / "data/biblioteca_previews.json"
+            index.parent.mkdir()
+            index.write_text(json.dumps({"items": items}), encoding="utf-8")
+            index_bytes = index.read_bytes()
+            reader = library / "index.html"
+            reader.write_bytes(original)
+
+            # Same HTML mutation order used by build(), after metadata emission.
+            self.assertEqual(builder.migrate_public_identity(site), 1)
+            self.assertEqual(builder.inject_editorial_attribution(site), 1)
+            self.assertEqual(builder.inject_public_metadata(site, {
+                "enabled": False, "siteCode": "", "visitorCounterEnabled": False,
+            }), 1)
+            builder.normalize_permissions(site)
+
+            self.assertEqual(index.read_bytes(), index_bytes)
+            for entry in json.loads(index.read_text())["items"]:
+                with self.subTest(preview=entry["previewPath"]):
+                    published_bytes = (library / entry["previewPath"]).read_bytes()
+                    self.assertEqual(published_bytes, original)
+                    self.assertEqual(hashlib.sha256(published_bytes).hexdigest(), entry["previewSha256"])
+                    self.assertNotIn(b"<a ", published_bytes)
+                    self.assertNotIn(b"href=", published_bytes)
+                    self.assertNotIn(b"<script", published_bytes)
+            rendered_reader = reader.read_text()
+            self.assertIn(builder.EDITORIAL_ATTRIBUTION_MARKER, rendered_reader)
+            self.assertIn(builder.PUBLIC_METADATA_MARKER, rendered_reader)
+            self.assertIn('data-antigravity-analytics', rendered_reader)
+
     def test_injectors_preserve_inline_preview_templates_and_ignore_comment_closings(self):
         """A Biblioteca embeds complete HTML in JS strings, including </body>."""
         builder = load_builder()
