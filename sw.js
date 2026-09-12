@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v39`;
+const CACHE_NAME = `${CACHE_PREFIX}v40`;
 const SHELL_ASSETS = [
   "./assets/icons/aerospace-v2/favicon.ico",
   "./assets/icons/aerospace-v2/icon-32.png",

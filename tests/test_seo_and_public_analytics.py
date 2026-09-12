@@ -172,12 +172,14 @@ assert.deepEqual(run('allowed','localhost'),{appended:0,reads:0});
                 """<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'"></head><body>Prévia isolada</body></html>""",
                 encoding="utf-8",
             )
+            original_bytes = page.read_bytes()
 
-            self.builder.inject_public_metadata(site, self.config)
+            self.assertEqual(self.builder.inject_public_metadata(site, self.config), 0)
 
             html = page.read_text(encoding="utf-8")
+            self.assertEqual(page.read_bytes(), original_bytes)
             self.assertIn("default-src 'none'", html)
-            self.assertIn(self.builder.PUBLIC_METADATA_MARKER, html)
+            self.assertNotIn(self.builder.PUBLIC_METADATA_MARKER, html)
             self.assertNotIn("data-antigravity-analytics", html)
             self.assertNotIn("site-analytics.css", html)
             self.assertNotIn("gc.zgo.at", html)

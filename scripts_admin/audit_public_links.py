@@ -5,6 +5,7 @@ Uso: python3 scripts_admin/audit_public_links.py site > auditoria.json
 Fragmentos sem alvo estático são avisos: alguns módulos os criam por JavaScript.
 """
 import json
+import hashlib
 import re
 import sys
 from collections import Counter
@@ -80,12 +81,28 @@ def audit(root):
             if value.startswith('#'):
                 continue
             check(path, 'css-url', value.strip())
+    preview_errors, previews_checked = [], 0
+    preview_index = root / '02_Biblioteca_IA_Engine/data/biblioteca_previews.json'
+    if preview_index.is_file():
+        for entry in json.loads(preview_index.read_text(encoding='utf-8')).get('items', []):
+            if entry.get('status') != 'ready':
+                continue
+            preview_path = str(entry.get('previewPath') or '')
+            expected = str(entry.get('previewSha256') or '')
+            if not re.fullmatch(r'previews/(?:docx|pdf|pages)-[0-9a-f]{20}\.html', preview_path) or not re.fullmatch(r'[0-9a-f]{64}', expected):
+                preview_errors.append({'documentId':entry.get('documentId'), 'error':'invalid-preview-identity'})
+                continue
+            path = root / '02_Biblioteca_IA_Engine' / preview_path
+            previews_checked += 1
+            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+                preview_errors.append({'documentId':entry.get('documentId'), 'path':preview_path, 'error':'published-preview-hash-mismatch'})
     return {'htmlPages':len(pages), 'checkedLocalReferences':checked,
             'externalUrlsListedNotCrawled':len(external), 'brokenLocalReferences':issues,
+            'previewsCheckedBySha256':previews_checked, 'previewIntegrityErrors':preview_errors,
             'fragmentsNeedingRuntimeCheck':fragments, 'accessibilityFindings':accessibility}
 
 
 if __name__ == '__main__':
     result = audit(sys.argv[1])
     print(json.dumps(result, ensure_ascii=False, indent=2))
-    sys.exit(bool(result['brokenLocalReferences']))
+    sys.exit(bool(result['brokenLocalReferences'] or result['previewIntegrityErrors']))

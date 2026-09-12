@@ -1103,6 +1103,9 @@ def inject_editorial_attribution(site: Path) -> int:
     updated = 0
     for html_path in sorted(site.rglob("*.html")):
         relative = html_path.relative_to(site)
+        # Prévias são verificadas por SHA-256 e precisam permanecer inertes.
+        if relative.as_posix().startswith(LIBRARY_ROOT_PREFIX + "previews/"):
+            continue
         if relative.as_posix() in EDITORIAL_ATTRIBUTION_EXCLUSIONS:
             continue
         try:
@@ -1321,6 +1324,9 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
     counter_enabled = analytics["visitorCounterEnabled"]
     for html_path in sorted(site.rglob("*.html")):
         relative = PurePosixPath(html_path.relative_to(site).as_posix())
+        # O índice já contém o hash final; nem canonical deve alterar a prévia.
+        if relative.as_posix().startswith(LIBRARY_ROOT_PREFIX + "previews/"):
+            continue
         analytics_allowed = not any(
             relative.as_posix().startswith(prefix)
             for prefix in ANALYTICS_EXCLUDED_PREFIXES
