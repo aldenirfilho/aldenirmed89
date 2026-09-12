@@ -38,8 +38,8 @@ O arquivo `data/public-metrics.json` declara explicitamente esse estado.
 | Estado | Capacidades |
 |---|---|
 | **Funciona agora** | Navegação entre painéis, visualização clara/escura, perfis visuais, preferências locais, layout responsivo e indicadores honestos `—` no modo desconectado. |
-| **Preparado no código** | Adaptador de autenticação, perfis, assinatura, métricas, diretório, manifestações, Caderno privado, esquema SQL/RLS e template dry-run do boletim. Esses caminhos ainda precisam de homologação real. |
-| **Bloqueado até infraestrutura segura** | Contas, e-mails, números reais, protocolos, conversas, telemetria, diretório administrativo, documentos owner e verificação de credenciais. Não há Edge Functions, CAPTCHA, rate limit ou provedor de e-mail configurados. |
+| **Preparado no código** | Adaptador de autenticação, perfis, assinatura, métricas, diretório, manifestações, Caderno privado, esquema SQL/RLS, gateways de envio identificado/telemetria autenticada com quota e template dry-run do boletim. Esses caminhos ainda precisam de homologação real. |
+| **Bloqueado até infraestrutura segura** | Contas, e-mails, números reais, protocolos, conversas, telemetria, diretório administrativo, documentos owner e verificação de credenciais. Gateways autenticados e quota SQL estão implementados em `supabase/`, mas não implantados. CAPTCHA, proteção anônima e provedor de e-mail permanecem pendentes. |
 
 Idioma e notificações são preferências preparadas: ainda não traduzem este
 Centro nem enviam alertas. Enquanto `enablePublicProfiles` for `false`, o opt-in
@@ -93,3 +93,22 @@ essa preferência compartilhada.
   tabelas privadas com RLS.
 
 Leia [ATIVAR_BACKEND.md](./ATIVAR_BACKEND.md) antes de conectar qualquer serviço.
+
+## Evolução de 11/09/2026 — acesso gratuito
+
+- `painel-visitas.html`: filtros diários, visitantes estimados por sessão e páginas acessadas; fonte indisponível nunca vira zero. JSON local importado permanece somente em memória.
+- `conectar.html`: roteiro operacional progressivo para GoatCounter, Supabase Auth, associação gratuita, Portal de Escuta e boletim.
+- `divulgacao.html`: textos copiáveis e lista de canais em CSV; nenhum contato ou envio é criado.
+- `scripts_admin/import_goatcounter_daily.py` (na raiz): conversor local de CSV GoatCounter v2. Exclui bots/eventos e rotas fora do manifesto canônico. Deduplica sessões por dia entre páginas, remove identificadores e conserva SHA-256 da fonte. Recusa sobrescrever a saída.
+- O acesso ao site permanece gratuito, sem previsão de cobrança. Nenhuma conta de infraestrutura ou rotina automática foi ativada.
+
+O painel depende de um CSV real com sessões para estimar público diário. Ausência de coleta histórica não pode ser reconstruída. A soma entre dias é visitante-dia, nunca público único no período. O mecanismo Supabase existente continua independente: seu `pageSessionId` identifica carregamentos, não pessoas.
+
+### Gateways autenticados implementados (ainda não implantados)
+
+O pacote `supabase/` acrescenta duas Edge Functions e uma migração de quota. O núcleo valida a sessão real no Supabase Auth, vincula o envio ao UUID/e-mail retornado pelo provedor, exige consentimento, valida origem e limites, e aplica quota atômica por conta com HMAC rotativo por dia. Não loga corpos ou credenciais.
+
+- `crew-manifestations`: somente submissão **identificada**, 5 por hora por conta. Leitura e respostas identificadas continuam pelos RPCs existentes protegidos por RLS.
+- `crew-analytics`: somente carregamento autenticado do Centro, 60 tentativas por hora por conta, mantendo deduplicação existente por carregamento/dia. Não mede todo o público do site.
+- Anônimo desativado por padrão (`enableAnonymousManifestations: false`): CAPTCHA, proteção contra abuso e homologação precisam preceder qualquer habilitação. Os gateways entregues recusam as ações anônimas.
+- Não houve deploy, migração de banco nem teste com usuários reais. Consulte `supabase/README.md` e o guia público `conectar.html`.

@@ -31,6 +31,27 @@ def load_module(name: str, path: Path):
 
 
 class LibraryCanonicalCatalogTests(unittest.TestCase):
+    def test_clone_mtime_does_not_rewrite_unchanged_document_history(self) -> None:
+        scanner = load_module('scanner_history_test', LIBRARY / 'scan_biblioteca.py')
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            scanner.ROOT = base
+            scanner.DATA_DIR = base / 'data'
+            scanner.PUBLICATION_BASELINE = scanner.DATA_DIR / 'baseline.json'
+            scanner.SCAN_DIRS = [base / 'acervo']
+            scanner.DATA_DIR.mkdir()
+            source = base / 'acervo/uti-geral/example.txt'
+            source.parent.mkdir(parents=True)
+            source.write_text('Clinical educational content', encoding='utf-8')
+            original = {'path': 'acervo/uti-geral/example.txt', 'sourceSha256': scanner.sha256_file(source), 'updatedAt': '2024-01-02T03:04:05', 'addedAt': '2023-12-01'}
+            (scanner.DATA_DIR / 'biblioteca_documentos_manifest.json').write_text(json.dumps({'files': [original]}))
+            unchanged = scanner.collect_files()[0]
+            self.assertEqual(unchanged['updatedAt'], original['updatedAt'])
+            self.assertEqual(unchanged['addedAt'], original['addedAt'])
+            source.write_text('A changed document', encoding='utf-8')
+            changed = scanner.collect_files()[0]
+            self.assertNotEqual(changed['updatedAt'], original['updatedAt'])
+
     def test_manifest_and_catalog_have_exact_unique_public_paths(self) -> None:
         manifest = load_json("02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json")
         catalog = load_json("02_Biblioteca_IA_Engine/data/biblioteca_catalogo.json")

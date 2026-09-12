@@ -109,7 +109,7 @@
     <section class="controls"><input id="search" class="control" aria-label="Buscar no acervo de transcrições" placeholder="Buscar transcrição, aula, tema, formato ou tag..." oninput="setQuery(this.value)"/><select id="format-filter" class="control" aria-label="Filtrar transcrições por formato" onchange="setFormat(this.value)"></select><select id="source-filter" class="control" aria-label="Filtrar transcrições por origem" onchange="setSource(this.value)"></select><button class="btn" onclick="clearFilters()">Limpar</button></section>
     <div id="format-tabs" class="format-tabs"></div>
     <section class="section-title"><div><h2>Acervo</h2><p id="result-count">0 item(ns)</p></div></section>
-    <div id="empty-state" class="empty" style="display:none">Nenhum item público aprovado neste módulo.</div>
+    <div id="empty-state" class="empty" style="display:none">Nenhum item público aprovado neste módulo. <a href="../02_Biblioteca_IA_Engine/index.html">Explorar os documentos relacionados na Biblioteca IA →</a></div>
     <div id="items-grid" class="grid"></div>
   </main>
   <div id="preview" class="preview" role="dialog" aria-modal="true" aria-labelledby="preview-title" aria-hidden="true" tabindex="-1"><div class="preview-bar"><h3 id="preview-title">Visualização</h3><div class="actions"><a id="preview-direct" class="btn" target="_blank" rel="noopener">Abrir</a><a id="preview-download" class="btn" download>Baixar</a><button class="btn primary" type="button" data-preview-close onclick="closePreview()">Fechar</button></div></div><iframe id="preview-frame" class="preview-frame" title="Pré-visualização segura do documento" sandbox="allow-downloads" referrerpolicy="no-referrer"></iframe><div id="preview-body" class="preview-body"></div></div>

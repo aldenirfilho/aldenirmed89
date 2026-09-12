@@ -286,7 +286,7 @@
     }
 
     async recordSectionView(sectionSlug) {
-      if (!this.analyticsEndpoint) return false;
+      if (!this.analyticsEndpoint || !this.accessToken) return false;
       const endpoint = new URL(this.analyticsEndpoint);
       if (
         endpoint.protocol !== "https:" ||
@@ -298,7 +298,7 @@
         method: "POST",
         headers: {
           apikey: this.anonKey,
-          Authorization: `Bearer ${this.anonKey}`,
+          Authorization: `Bearer ${this.accessToken}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -636,6 +636,18 @@
   }
 
   function configurePreparedCapabilities() {
+    const anonymousEnabled = config.enableAnonymousManifestations === true;
+    const anonymousOption = document.querySelector('input[name="identityMode"][value="anonymous"]');
+    const identifiedOption = document.querySelector('input[name="identityMode"][value="identified"]');
+    anonymousOption.disabled = !anonymousEnabled;
+    if (!anonymousEnabled) {
+      anonymousOption.checked = false;
+      identifiedOption.checked = true;
+    }
+    Array.from(byId("anonymousLookupForm").elements).forEach(control => { control.disabled = !anonymousEnabled; });
+    byId("anonymousModeStatus").textContent = anonymousEnabled
+      ? "Modalidade anônima depende do gateway e CAPTCHA homologados pelo serviço."
+      : "Envio e acompanhamento anônimos aguardam CAPTCHA e gateway homologados. Use uma conta para a modalidade identificada quando o serviço estiver conectado.";
     const publicProfileCheckbox = byId("publicProfilePreference");
     const publicProfileStatus = byId("publicProfileStatus");
     const publicProfilesEnabled = config.enablePublicProfiles === true;
@@ -828,6 +840,10 @@
         });
       }
       if (!byId("listeningPanel").hidden) loadOwnManifestations();
+      // Optional telemetry is scoped to authenticated Center loads; failure never blocks login.
+      state.adapter.recordSectionView("centro-tripulacao")
+        .then(recorded => { if (recorded) loadPublicMetrics(); })
+        .catch(() => {});
     } catch (_error) {
       clearSession();
       setMessage(byId("authMessage"), "Sessão inválida ou expirada. Entre novamente.", "error");
@@ -1345,6 +1361,10 @@
     const category = byId("manifestationCategory").value;
     const otherCategory = cleanText(byId("manifestationOtherCategory").value, 80);
     const identityMode = document.querySelector('input[name="identityMode"]:checked')?.value || "anonymous";
+    if (identityMode === "anonymous" && config.enableAnonymousManifestations !== true) {
+      setMessage(byId("manifestationMessageStatus"), "Envio anônimo ainda indisponível; nenhuma mensagem foi enviada.", "error");
+      return;
+    }
     const subject = cleanText(byId("manifestationSubject").value, 140);
     const message = cleanText(byId("manifestationMessage").value, 5000);
     if (!ALLOWED_CATEGORIES.has(category)) {
@@ -1388,6 +1408,7 @@
         ? "Guarde também a chave secreta abaixo. Ela é mostrada uma vez e não é armazenada por esta página."
         : "A conversa ficará vinculada à sua conta autenticada.";
       byId("manifestationForm").reset();
+      configurePreparedCapabilities();
       byId("otherCategoryField").hidden = true;
       setMessage(byId("manifestationMessageStatus"), "Manifestação registrada. Guarde o protocolo.", "success");
       if (state.session && identityMode === "identified") loadOwnManifestations();

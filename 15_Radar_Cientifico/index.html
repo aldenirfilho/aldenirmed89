@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <meta name="theme-color" content="#050b16"/>
   <meta name="color-scheme" content="dark light"/>
-  <title>Estação Radar Diário · Antigravity</title>
+  <title>Estação Radar Diário · AldenirMed89</title>
   <meta name="description" content="Portal cronológico diário de Medicina Intensiva, Clínica Médica, POCUS, IA em saúde, tecnologia, TEMI, SUS e saúde global."/>
   <link rel="icon" href="../assets/icons/antigravity-consultas-64.png"/>
   <style>
@@ -120,11 +120,11 @@
     .results-status{justify-self:end;align-self:center;color:var(--soft);font:.7rem var(--mono);text-align:right}
     .portal-layout{display:grid;grid-template-columns:minmax(190px,230px) minmax(520px,1fr) minmax(240px,285px);gap:20px;align-items:start;margin-top:22px}
     .date-rail,.context-rail{position:sticky;top:92px;display:grid;gap:13px}
-    .rail-card{border:1px solid var(--line);border-radius:17px;background:var(--panel);padding:15px}
+    .rail-card{min-width:0;border:1px solid var(--line);border-radius:17px;background:var(--panel);padding:15px}
     .rail-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
     .rail-title h2{font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;margin:0}
     .rail-title span{font-size:.6rem;color:var(--muted)}
-    .date-list{display:grid;gap:7px}
+    .date-list{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;min-width:0}
     .date-list button{
       width:100%;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--soft);
       padding:10px;text-align:left;font-weight:800;
@@ -136,6 +136,16 @@
     .context-links a{padding:9px 10px;border-radius:10px;background:var(--panel2);text-decoration:none;font-size:.76rem;font-weight:800;color:var(--soft)}
     .context-links a:hover{color:var(--cyan)}
     .timeline{min-width:0}
+    .hero>*,.portal-layout>*,.date-rail>*,.context-rail>*,.control-top>*,.control-bottom>*{min-width:0}
+    h1,h2,h3,.source-line,.reference-card{overflow-wrap:anywhere}
+    .window-note{margin:16px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--soft);line-height:1.55}
+    .window-note strong{color:var(--cyan)}
+    .review-status{font-size:.7rem;color:var(--amber);margin:10px 0 0}
+    .reference-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px}
+    .reference-card{padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+    .reference-card h3{margin:0 0 8px;font-size:1.05rem}
+    .reference-card p{font-size:.8rem;line-height:1.6;color:var(--soft)}
+    .reference-card a{color:var(--cyan)}
     .timeline-title{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .date-group{margin-bottom:28px;scroll-margin-top:92px}
     .date-heading{
@@ -276,8 +286,8 @@
       .hero,.temi-deck{grid-template-columns:1fr}
       .portal-layout{display:block}
       .date-rail{position:static;margin-bottom:14px}
-      .date-list{display:flex;overflow:auto;padding-bottom:4px}
-      .date-list button{min-width:max-content;width:auto}
+      .date-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr))}
+      .date-list button{min-width:0;width:100%;white-space:normal;overflow-wrap:anywhere}
       .context-rail{display:grid;grid-template-columns:1fr;margin-top:16px}
       .story.with-visual.visual-card{grid-template-columns:1fr}
       .story-figure{border-right:0;border-bottom:1px solid var(--line)}
@@ -287,8 +297,9 @@
     @media(max-width:720px){
       .control-top,.control-bottom{grid-template-columns:1fr}
       .results-status{justify-self:start;text-align:left}
-      .quick-filters,.date-actions{overflow:auto;flex-wrap:nowrap;padding-bottom:3px}
-      .quick-filters>* ,.date-actions>*{white-space:nowrap}
+      .quick-filters,.date-actions{flex-wrap:wrap;padding-bottom:3px}
+      .quick-filters>* ,.date-actions>*{min-width:0;white-space:normal}
+      .date-actions>*{flex:1 1 145px}
       .visual-mode-status{width:100%;margin-left:0}
       .didactic-grid,.commerce-grid{grid-template-columns:1fr}
       .date-heading{align-items:start}.date-heading p{max-width:150px}
@@ -384,6 +395,7 @@
           <button class="date-button" id="previousButton" type="button">← Anterior</button>
           <button class="date-button" id="nextButton" type="button">Próximo →</button>
           <button class="date-button" id="allDatesButton" type="button">Todas</button>
+          <button class="date-button" id="sourceWindowButton" type="button">Recorte de 5 dias</button>
         </nav>
         <div class="select-field">
           <label for="dateSelect">Data editorial</label>
@@ -396,6 +408,8 @@
         <div class="results-status" id="resultsStatus" role="status" aria-live="polite">Preparando o arquivo…</div>
       </div>
     </section>
+
+    <p class="window-note" id="sourceWindowNote" role="note"></p>
 
     <div class="portal-layout">
       <aside class="date-rail" aria-label="Arquivo por data">
@@ -436,11 +450,24 @@
           <div class="context-links">
             <a href="../16_Diretorio_Medico/index.html">🧭 Estação Diretório Médico</a>
             <a href="../17_Portal_Vivo/index.html">🛰️ Portal Vivo opcional</a>
+            <a href="../02_Biblioteca_IA_Engine/index.html">📚 Biblioteca IA e documentos</a>
+            <a href="#referencias-biblioteca">🔎 Referências dos novos documentos</a>
+            <a href="../18_Centro_Tripulacao/index.html">👨‍🚀 Centro da Tripulação</a>
             <a href="../docs_usuario/RADAR_CIENTIFICO_OPERACAO/">📘 Manual editorial</a>
           </div>
         </section>
       </aside>
     </div>
+
+    <section class="section" id="referencias-biblioteca" aria-labelledby="libraryReferencesTitle">
+      <div class="section-head">
+        <div><div class="eyebrow">Biblioteca IA · revisão de fontes</div><h2 id="libraryReferencesTitle">Referências para os 7 documentos</h2></div>
+        <p>Fontes anteriores consultadas nesta atualização. Os anos originais estão preservados; estes materiais não são novidades dos últimos cinco dias.</p>
+      </div>
+      <p class="small-note">Os documentos da Biblioteca são prévias educacionais em revisão médica. Estas referências ajudam a conferir o conteúdo; não certificam cada afirmação dos arquivos.</p>
+      <div class="reference-grid" id="libraryReferences"></div>
+      <p><a class="button" href="../02_Biblioteca_IA_Engine/index.html">📚 Abrir a Biblioteca IA</a></p>
+    </section>
 
     <section class="section" id="spotify" aria-labelledby="spotifyTitle">
       <div class="section-head">
@@ -521,6 +548,8 @@
     const timezone=radar.timezone||"America/Fortaleza";
     const accessLabel={aberto:"Aberto",semiaberto:"Semiaberto",fechado:"Fechado"};
     const items=[...(radar.scientific||[]),...(radar.geopolitics||[]),...(radar.commercial||[])];
+    const sourceWindow=radar.sourceWindow||null;
+    const inSourceWindow=item=>Boolean(sourceWindow&&dateKey(item.sourcePublishedAt)>=sourceWindow.start&&dateKey(item.sourcePublishedAt)<=sourceWindow.end);
     const allVisuals=[...(radar.visuals||[]),...(radar.productVisuals||[])];
     const visualsByItem=new Map(allVisuals.map(item=>[item.itemId,item]));
     const itemById=new Map(items.map(item=>[item.id,item]));
@@ -551,7 +580,7 @@
     const editorialDates=[...new Set(items.map(item=>dateKey(item.editorialPublishedAt||radar.editionDate)).filter(Boolean))].sort().reverse();
     const today=localDateKey();
     const params=new URLSearchParams(location.search);
-    state.date=params.get("date")==="all"?"all":editorialDates.includes(params.get("date"))?params.get("date"):(editorialDates.includes(today)?today:(editorialDates[0]||"all"));
+    state.date=params.get("date")==="window"&&sourceWindow?"window":params.get("date")==="all"?"all":editorialDates.includes(params.get("date"))?params.get("date"):(editorialDates.includes(today)?today:(editorialDates[0]||"all"));
 
     try{clarityPrefs={...clarityPrefs,...JSON.parse(localStorage.getItem(clarityKey)||"{}")}}catch(_){}
     function drawClarity(){
@@ -571,6 +600,9 @@
 
     $("editionDate").textContent=`Edição atual · ${dateShort(radar.editionDate)}`;
     $("lastScan").textContent=`Conferido ${dateShort(radar.lastScanAt||radar.generatedAt)} às ${timeShort(radar.lastScanAt||radar.generatedAt)}`;
+    $("sourceWindowNote").textContent=sourceWindow?`${sourceWindow.label} · ${items.filter(inSourceWindow).length} leituras selecionadas. Publicação científica, divulgação de recurso e notícia institucional estão identificadas em cada card. Prévia educacional em revisão médica.`:"Consulte a data original e o tipo de fonte em cada leitura.";
+    $("sourceWindowButton").hidden=!sourceWindow;
+    $("libraryReferences").innerHTML=(radar.libraryReferences||[]).map(reference=>`<article class="reference-card"><h3>${esc(reference.topic)}</h3><p><a href="${esc(safeUrl(reference.url))}" target="_blank" rel="noopener noreferrer">${esc(reference.title)} ↗</a></p><p><strong>Data original:</strong> ${esc(reference.date)}</p><p>${esc(reference.note)}</p>${reference.secondaryUrl?`<a href="${esc(safeUrl(reference.secondaryUrl))}" target="_blank" rel="noopener noreferrer">Abrir adendo ↗</a>`:""}${reference.relatedSource?`<p><a href="${esc(safeUrl(reference.relatedSource.url))}" target="_blank" rel="noopener noreferrer">${esc(reference.relatedSource.title)} ↗</a><br/>${esc(reference.relatedSource.date)}</p>`:""}${reference.documentId?`<p><a class="button" href="../02_Biblioteca_IA_Engine/index.html?doc=${esc(encodeURIComponent(reference.documentId))}">📖 Ler documento na Biblioteca</a></p>`:""}</article>`).join("");
     $("methodText").textContent=radar.editorialNote||"Curadoria por relevância, recência e nível de evidência.";
     $("freshnessPolicy").textContent=radar.freshnessPolicy||"A data da fonte nunca é alterada para simular novidade.";
     $("editionCount").textContent=`${editorialDates.length} ${editorialDates.length===1?"data":"datas"}`;
@@ -591,23 +623,25 @@
       history.replaceState(null,"",`${next.pathname}${next.search}${next.hash}`);
     }
     function renderDateNavigation(){
-      $("dateSelect").innerHTML=`<option value="all">Todas as datas</option>${editorialDates.map(date=>`<option value="${esc(date)}">${esc(dateLong(date))}</option>`).join("")}`;
+      $("dateSelect").innerHTML=`<option value="all">Todas as datas</option>${sourceWindow?`<option value="window">${esc(sourceWindow.label)}</option>`:""}${editorialDates.map(date=>`<option value="${esc(date)}">${esc(dateLong(date))}</option>`).join("")}`;
       $("dateSelect").value=state.date;
       $("dateList").innerHTML=editorialDates.map(date=>`<button type="button" data-date="${esc(date)}" aria-current="${state.date===date?"date":"false"}">${esc(date===today?`Hoje · ${dateShort(date)}`:dateLong(date))}</button>`).join("");
       $("todayButton").disabled=!editorialDates.includes(today);
       $("todayButton").classList.toggle("is-active",state.date===today);
       $("allDatesButton").classList.toggle("is-active",state.date==="all");
+      $("sourceWindowButton").classList.toggle("is-active",state.date==="window");
       const index=editorialDates.indexOf(state.date);
       $("previousButton").disabled=index<0||index>=editorialDates.length-1;
       $("nextButton").disabled=index<=0;
     }
 
     function selectDate(date){
-      if(date!=="all"&&!editorialDates.includes(date))return;
+      if(date!=="all"&&!(date==="window"&&sourceWindow)&&!editorialDates.includes(date))return;
       state.date=date;state.limit=date==="all"?12:20;setUrlDate();renderDateNavigation();renderFeed();
     }
     $("todayButton").addEventListener("click",()=>selectDate(today));
     $("allDatesButton").addEventListener("click",()=>selectDate("all"));
+    $("sourceWindowButton").addEventListener("click",()=>selectDate("window"));
     $("previousButton").addEventListener("click",()=>{
       const index=editorialDates.indexOf(state.date);if(index>=0&&index<editorialDates.length-1)selectDate(editorialDates[index+1]);
     });
@@ -626,7 +660,8 @@
       ].flat().join(" "));
     }
     function matches(item){
-      if(state.date!=="all"&&dateKey(item.editorialPublishedAt)!==state.date)return false;
+      if(state.date==="window"&&!inSourceWindow(item))return false;
+      if(state.date!=="all"&&state.date!=="window"&&dateKey(item.editorialPublishedAt)!==state.date)return false;
       if(state.section==="scientific"&&item.section!=="scientific")return false;
       if(state.section==="context"&&item.section!=="context")return false;
       if(state.section==="commercial"&&item.section!=="commercial")return false;
@@ -722,7 +757,7 @@
       const sectionLabels={scientific:"Ciência clínica",context:"Saúde e sistemas",commercial:"Produtividade & compras"};
       const questionLabel=item.section==="commercial"?"Decisão de compra":"Pergunta clínica";
       const resultLabel=item.section==="commercial"?"O que foi verificado":"Achado principal";
-      return `<article class="story ${visual?`with-visual visual-${state.visualMode}`:""}" data-item-id="${esc(item.id)}" data-section="${esc(item.section)}">
+      return `<article class="story ${visual?`with-visual visual-${state.visualMode}`:""}" id="item-${esc(item.id)}" data-item-id="${esc(item.id)}" data-section="${esc(item.section)}">
         ${visualHTML(visual)}
         <div class="story-content">
           <div class="story-top">
@@ -734,6 +769,7 @@
           </div>
           <h3>${esc(item.title)}</h3>
           <p class="story-summary">${esc(item.summary)}</p>
+          ${item.audit?.reviewStatus==="pending"?'<p class="review-status">📖 Prévia educacional · revisão médica pendente</p>':""}
           <div class="memory-anchor">⚡ ${esc(didactic.memoryAnchor||item.topic)}</div>
           <div class="didactic-grid">
             <div class="didactic-block"><strong>${esc(questionLabel)}</strong><p>${esc(didactic.clinicalQuestion)}</p></div>
@@ -754,13 +790,15 @@
             </div>
           </details>
           <div class="source-line">
-            <strong>${esc(item.source)}</strong> · ${esc(accessLabel[item.access]||item.access)} · fonte publicada em
-            <time datetime="${esc(item.sourcePublishedAt)}">${esc(dateShort(item.sourcePublishedAt))}</time><br/>
+            <strong>${esc(item.source)}</strong> · ${esc(accessLabel[item.access]||item.access)} · ${esc(item.sourceDateKind||"fonte publicada")} em
+            <time datetime="${esc(item.sourceDatePrecision==="day"?dateKey(item.sourcePublishedAt):item.sourcePublishedAt)}">${esc(dateShort(item.sourcePublishedAt))}</time><br/>
+            ${item.sourceDateNote?`${esc(item.sourceDateNote)}<br/>`:""}
             Entrada no Radar em <time datetime="${esc(item.editorialPublishedAt)}">${esc(dateShort(item.editorialPublishedAt))} às ${esc(timeShort(item.editorialPublishedAt))}</time> ·
             conferida em <time datetime="${esc(item.checkedAt)}">${esc(dateShort(item.checkedAt))}</time>.
           </div>
           <div class="story-actions">
             <a class="button primary" href="${esc(sourceUrl)}" target="_blank" rel="noopener noreferrer">Abrir fonte ↗</a>
+            <a class="button" href="?date=${esc(dateKey(item.editorialPublishedAt))}#item-${esc(encodeURIComponent(item.id))}">Link desta leitura</a>
             <button class="button" type="button" data-gpt="${esc(item.id)}">Copiar análise + GPT</button>
           </div>
         </div>

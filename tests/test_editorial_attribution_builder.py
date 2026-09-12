@@ -1,6 +1,9 @@
 import importlib.util
+import shutil
+import subprocess
 import tempfile
 import unittest
+from html.parser import HTMLParser
 from pathlib import Path
 
 
@@ -19,6 +22,80 @@ def load_builder():
 
 
 class EditorialAttributionBuilderTests(unittest.TestCase):
+    def test_injectors_preserve_inline_preview_templates_and_ignore_comment_closings(self):
+        """A Biblioteca embeds complete HTML in JS strings, including </body>."""
+        builder = load_builder()
+
+        class InlineScripts(HTMLParser):
+            def __init__(self):
+                super().__init__(convert_charrefs=False)
+                self.scripts = []
+                self.current = None
+
+            def handle_starttag(self, tag, attrs):
+                if tag == 'script' and not dict(attrs).get('src'):
+                    self.current = []
+
+            def handle_data(self, data):
+                if self.current is not None:
+                    self.current.append(data)
+
+            def handle_endtag(self, tag):
+                if tag == 'script' and self.current is not None:
+                    self.scripts.append(''.join(self.current))
+                    self.current = None
+
+        original = '''<!doctype html>
+<html lang="pt-BR"><head><title>Biblioteca</title></head>
+<body><main id="reader"></main>
+<script id="preview-template">
+function previewMessage(title) {
+  return '<!doctype html><html><head><title>Prévia</title></head><body><main>' + title + '</main></body></html>';
+}
+// A string that fooled the old first-match injector: </body>
+const templateComment = '<!-- fake </body> and </head> -->';
+window.previewFactory = previewMessage;
+</script>
+<script>window.readerReady = typeof window.previewFactory === 'function';</script>
+<!-- A closing tag inside a comment is not the document end: </body> -->
+</body></html>
+<!-- A trailing comment also defeats a last-match regex: </body> -->
+'''
+        before = InlineScripts()
+        before.feed(original)
+        analytics = {'enabled': False, 'siteCode': '', 'visitorCounterEnabled': False}
+        for sequence in ('attribution', 'metadata', 'both'):
+            with self.subTest(injector=sequence), tempfile.TemporaryDirectory() as directory:
+                site = Path(directory)
+                page = site / 'index.html'
+                page.write_text(original, encoding='utf-8')
+                if sequence in ('attribution', 'both'):
+                    self.assertEqual(builder.inject_editorial_attribution(site), 1)
+                if sequence in ('metadata', 'both'):
+                    self.assertEqual(builder.inject_public_metadata(site, analytics), 1)
+                result = page.read_text(encoding='utf-8')
+                after = InlineScripts()
+                after.feed(result)
+                self.assertEqual(after.scripts, before.scripts)
+                # Both additions belong after application scripts and before
+                # the real closing body, not in a string or trailing comment.
+                app_end = result.index("</script>", result.index('window.readerReady'))
+                real_body_end = result.index('</body></html>\n<!-- A trailing')
+                if sequence in ('attribution', 'both'):
+                    marker = result.index(builder.EDITORIAL_ATTRIBUTION_MARKER)
+                    self.assertLess(app_end, marker)
+                    self.assertLess(marker, real_body_end)
+                if sequence in ('metadata', 'both'):
+                    marker = result.index('data-antigravity-analytics')
+                    self.assertLess(app_end, marker)
+                    self.assertLess(marker, real_body_end)
+                node = shutil.which('node')
+                if node:
+                    script = site / 'application.js'
+                    script.write_text('\n'.join(after.scripts), encoding='utf-8')
+                    checked = subprocess.run([node, '--check', str(script)], capture_output=True, text=True)
+                    self.assertEqual(checked.returncode, 0, checked.stderr)
+
     def test_injects_discreet_attribution_with_depth_aware_links(self):
         builder = load_builder()
         with tempfile.TemporaryDirectory() as directory:
@@ -95,6 +172,18 @@ class EditorialAttributionBuilderTests(unittest.TestCase):
                 ROOT, ROOT / "data/editorial/editorial-provenance.json"
             )
         )
+
+    def test_supabase_backend_is_excluded_without_hiding_the_public_crew_center(self):
+        builder = load_builder()
+        for relative in (
+            '18_Centro_Tripulacao/supabase',
+            '18_Centro_Tripulacao/supabase/schema.sql',
+            '18_Centro_Tripulacao/supabase/functions/member-directory/index.ts',
+        ):
+            with self.subTest(path=relative):
+                self.assertTrue(builder.should_skip(ROOT, ROOT / relative))
+        self.assertFalse(builder.should_skip(ROOT, ROOT / '18_Centro_Tripulacao/index.html'))
+        self.assertFalse(builder.should_skip(ROOT, ROOT / '18_Centro_Tripulacao/supabase-client.js'))
 
 
 if __name__ == "__main__":

@@ -330,8 +330,26 @@ def load_editorial_overlays() -> dict[str, dict]:
         # Ambiguidade no legado deve falhar fechada, nunca escolher o primeiro.
         if len(candidates) != 1:
             continue
-        overlays[path] = {key: candidates[0][key] for key in allowed if key in candidates[0]}
+        overlays[path] = {key: value for key, value in candidates[0].items() if key in allowed}
     return overlays
+
+
+def load_document_history() -> dict[str, dict]:
+    """Keep documentary dates across clones only when the source SHA matches."""
+    try:
+        payload = json.loads((DATA_DIR / "biblioteca_documentos_manifest.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    history: dict[str, dict] = {}
+    duplicates: set[str] = set()
+    for item in payload.get("files", []):
+        if not isinstance(item, dict) or not item.get("path"):
+            continue
+        path = canonical_path(item["path"])
+        if path in history:
+            duplicates.add(path)
+        history[path] = item
+    return {path: item for path, item in history.items() if path not in duplicates}
 
 
 def load_gate_attestations() -> dict[str, dict]:
@@ -353,6 +371,7 @@ def collect_files() -> list[dict]:
     seen_ids: set[str] = set()
     overlays = load_editorial_overlays()
     gate_attestations = load_gate_attestations()
+    history = load_document_history()
 
     for directory in SCAN_DIRS:
         if not directory.exists():
@@ -422,6 +441,11 @@ def collect_files() -> list[dict]:
 
             # A camada editorial pode enriquecer, mas jamais redirecionar o arquivo.
             canonical.update(editorial)
+            previous = history.get(rel, {})
+            if previous.get("sourceSha256") == canonical["sourceSha256"]:
+                for field in ("updatedAt", "addedAt"):
+                    if isinstance(previous.get(field), str) and previous[field]:
+                        canonical[field] = previous[field]
             if editorial.get("tags"):
                 canonical["tags"] = list(dict.fromkeys([*canonical["tags"], *editorial["tags"]]))
 
@@ -434,7 +458,7 @@ def collect_files() -> list[dict]:
                         "authorshipEvidence": "Autoria/licença atestadas no gate; conservar a prova documental externa.",
                         "license": "revisada-no-gate-de-publicacao",
                         "privacyReviewStatus": "revisado-no-gate-de-publicacao",
-                        "clinicalReviewStatus": "revisado-no-gate-de-publicacao",
+                        "clinicalReviewStatus": attestation.get("clinicalReviewStatus", "revisado-no-gate-de-publicacao"),
                         "reviewedAt": attestation.get("reviewedAt", ""),
                     }
                 )

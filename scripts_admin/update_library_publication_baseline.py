@@ -104,6 +104,7 @@ def approve(args: argparse.Namespace) -> int:
             "sourceSha256": digest,
             "changeType": "added" if path not in previous else "modified",
             "reviewedAt": reviewed_at,
+            "clinicalReviewStatus": getattr(args, "clinical_review_status", "revisado-no-gate-de-publicacao"),
         }
         for path, digest in sorted(current.items())
         if previous.get(path) != digest
@@ -128,7 +129,7 @@ def approve(args: argparse.Namespace) -> int:
         },
         "approvedChanges": approved_changes,
         "removedPaths": removed_paths,
-        "warning": "A atestação registra a revisão declarada; não substitui prova documental de licença ou auditoria clínica.",
+        "warning": "A atestação registra a revisão declarada do lote; não confirma autoria nem revisão clínica dos itens legados. Não substitui prova documental de licença ou revisão médica especializada.",
     }
     BASELINE_PATH.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
@@ -151,6 +152,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--attest-authorship-license", action="store_true")
     parser.add_argument("--attest-privacy", action="store_true")
     parser.add_argument("--attest-clinical-review", action="store_true")
+    parser.add_argument(
+        "--clinical-review-status",
+        choices=("revisado-no-gate-de-publicacao", "previa-educacional-em-revisao-medica"),
+        default="revisado-no-gate-de-publicacao",
+        help="Distingue a triagem documental educacional da revisão clínica concluída.",
+    )
     args = parser.parse_args(argv)
     try:
         return check() if args.check else approve(args)

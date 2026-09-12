@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v38`;
+const CACHE_NAME = `${CACHE_PREFIX}v39`;
 const SHELL_ASSETS = [
   "./assets/icons/aerospace-v2/favicon.ico",
   "./assets/icons/aerospace-v2/icon-32.png",
@@ -33,6 +33,17 @@ const SHELL_ASSETS = [
   "./favicon.ico"
 ];
 const WARM_ASSETS = [
+  "./18_Centro_Tripulacao/painel-visitas.html",
+  "./18_Centro_Tripulacao/conectar.html",
+  "./18_Centro_Tripulacao/divulgacao.html",
+  "./18_Centro_Tripulacao/assets/daily-metrics-core.js",
+  "./18_Centro_Tripulacao/assets/daily-metrics.js",
+  "./18_Centro_Tripulacao/assets/share.js",
+  "./18_Centro_Tripulacao/data/daily-visits.json",
+  "./assets/site-navigation.css",
+  "./assets/site-navigation.js",
+  "./02_Biblioteca_IA_Engine/data/biblioteca_ingestao_20260911.json",
+
   "./24_Semiologia/index.html",
   "./24_Semiologia/assets/semio.css",
   "./24_Semiologia/assets/theme.js",
@@ -345,7 +356,9 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (url.pathname.endsWith("/manifest.webmanifest")) {
+  if (url.pathname.endsWith("/manifest.webmanifest") ||
+      url.pathname.endsWith("/18_Centro_Tripulacao/data/daily-visits.json") ||
+      url.pathname.endsWith("/18_Centro_Tripulacao/data/public-metrics.json")) {
     event.respondWith(freshManifest(request));
     return;
   }

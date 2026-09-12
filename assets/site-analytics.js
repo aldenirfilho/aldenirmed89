@@ -47,9 +47,10 @@
     });
     if (!response.ok) throw new Error(`counter-${response.status}`);
     const payload = await response.json();
-    const display = String(payload.count_unique ?? payload.count ?? '').trim();
-    if (!display) throw new Error('counter-empty');
-    const numeric = Number(display.replace(/\D/g, '')) || 0;
+    const display = String(payload.count ?? payload.count_unique ?? '').trim();
+    if (!/^[0-9][0-9., \u00a0]*$/.test(display)) throw new Error('counter-invalid');
+    const numeric = Number(display.replace(/[., \u00a0]/g, ''));
+    if (!Number.isSafeInteger(numeric) || numeric < 0) throw new Error('counter-invalid');
     return {display, numeric};
   };
 
@@ -70,7 +71,7 @@
 
       const [total, routeResults] = await Promise.all([
         readCount('TOTAL'),
-        Promise.all(config.routes.map(async (route) => ({
+        Promise.allSettled(config.routes.map(async (route) => ({
           ...route,
           count: await readCount(normalizePath(config.publicPathPrefix, route.path)),
         }))),
@@ -78,7 +79,8 @@
 
       totalNode.textContent = total.display;
       listNode.replaceChildren();
-      routeResults
+      const availableRoutes = routeResults.filter(result => result.status === 'fulfilled').map(result => result.value);
+      availableRoutes
         .sort((left, right) => right.count.numeric - left.count.numeric)
         .slice(0, 5)
         .forEach((route) => {
@@ -92,10 +94,14 @@
           item.append(link, count);
           listNode.append(item);
         });
-      statusNode.textContent = config.privacyLabel;
+      statusNode.textContent = `${config.privacyLabel} Contagem acumulada por página/sessão; não representa pessoas únicas no site nem visitas do dia.${availableRoutes.length < config.routes.length ? ' Algumas seções não responderam.' : ''}`;
       panel.closest('[data-analytics-section]').hidden = false;
     } catch (_) {
-      panel.closest('[data-analytics-section]').hidden = true;
+      if (totalNode) totalNode.textContent = '—';
+      if (listNode) listNode.replaceChildren();
+      if (statusNode) statusNode.textContent = 'Métricas indisponíveis: o contador público não autorizou ou não respondeu à consulta. Isso não significa zero visitantes. Abra o painel diário para consultar a origem e conectar um relatório agregado.';
+      const section = panel.closest('[data-analytics-section]');
+      if (section) section.hidden = false;
     }
   };
 

@@ -163,6 +163,41 @@ def add_pages_to_library(library: Path) -> Path:
 
 
 class LibraryPreviewBuilderTests(unittest.TestCase):
+    def test_native_linear_equation_preserves_text_and_document_order(self) -> None:
+        xml = b'''<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><w:body><w:p><w:r><w:t>Before </w:t></w:r><m:oMath><m:r><m:t>AG = Na - (Cl + HCO3)</m:t></m:r></m:oMath><w:r><w:t> after</w:t></w:r></w:p></w:body></w:document>'''
+        content, stats = BUILDER.render_document_xml(xml)
+        self.assertLess(content.index('Before'), content.index('AG ='))
+        self.assertLess(content.index('HCO3)'), content.index('after'))
+        self.assertGreater(stats['characters'], len('Before after'))
+
+    def test_structured_equation_is_not_silently_flattened(self) -> None:
+        xml = b'''<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><w:body><w:p><m:oMath><m:f><m:num><m:r><m:t>A</m:t></m:r></m:num><m:den><m:r><m:t>B</m:t></m:r></m:den></m:f></m:oMath></w:p></w:body></w:document>'''
+        content, _ = BUILDER.render_document_xml(xml)
+        self.assertIn('Equação estruturada', content)
+        self.assertNotIn('>AB<', content)
+
+    def test_only_reviewed_images_and_links_are_rendered_including_tables(self) -> None:
+        xml = b'''<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><w:body><w:tbl><w:tr><w:tc><w:p><w:r><w:drawing><a:blip r:embed="rImage"/></w:drawing></w:r></w:p><w:p><w:hyperlink r:id="rLink"><w:r><w:t>Reference</w:t></w:r></w:hyperlink></w:p></w:tc></w:tr></w:tbl></w:body></w:document>'''
+        plain, _ = BUILDER.render_document_xml(xml)
+        self.assertNotIn('<img', plain)
+        self.assertNotIn('<a ', plain)
+        enriched, _ = BUILDER.render_document_xml(xml, {'images': {'rImage': '<img alt="Educational">'}, 'links': {'rLink': 'https://example.org/paper'}})
+        self.assertIn('<img alt="Educational">', enriched)
+        self.assertIn('https://example.org/paper', enriched)
+        self.assertNotRegex(enriched, r'<a\b|href\s*=')
+
+    def test_reviewed_illustration_rejects_modified_asset(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            library, source = make_library(Path(temporary))
+            digest = BUILDER.sha256_file(source)
+            image_path = 'assets/docx-illustrations/' + 'a' * 64 + '.webp'
+            image = library / image_path
+            image.parent.mkdir(parents=True)
+            image.write_bytes(b'RIFFxxxxWEBPmodified')
+            (library / 'data/biblioteca_preview_assets.json').write_text(json.dumps({'documents': {digest: {'images': [{'path': image_path, 'sha256': 'b' * 64}]}}}))
+            with self.assertRaisesRegex(BUILDER.PreviewBuildError, 'Integridade'):
+                BUILDER.reviewed_docx_media(library, source, digest)
+
     def test_generates_escaped_semantic_preview_and_exact_index(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             library, _ = make_library(Path(temporary))
