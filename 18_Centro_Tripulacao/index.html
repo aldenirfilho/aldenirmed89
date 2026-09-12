@@ -67,6 +67,13 @@
         </aside>
       </div>
 
+      <p class="crew-free"><strong>💚 Acesso gratuito, sem previsão de cobrança.</strong> Você pode estudar e navegar sem criar conta. A associação serve para preferências, participação e boletim voluntário; não cria uma assinatura paga.</p>
+      <nav id="visitas" class="crew-shortcuts" aria-label="Comece pelo que precisa">
+        <a href="./painel-visitas.html">📊 Visitas por dia</a>
+        <a href="./conectar.html">🔌 Como participar e conectar</a>
+        <a href="./divulgacao.html">📣 Divulgação gratuita</a>
+        <a href="../02_Biblioteca_IA_Engine/">📚 Ir direto à biblioteca</a>
+      </nav>
       <section class="section-block" aria-labelledby="metricsTitle">
         <div class="section-heading">
           <div>
@@ -82,9 +89,9 @@
             <small>Somente consentimentos ativos</small>
           </article>
           <article class="metric-card">
-            <span>Visualizações gerais</span>
+            <span>Visualizações da comunidade</span>
             <strong id="totalViews" aria-live="polite">—</strong>
-            <small>Contagem agregada, sem exibir histórico individual</small>
+            <small>Carregamentos registrados pelo serviço do Centro, sem histórico individual</small>
           </article>
           <article class="metric-card">
             <span>Estações monitoradas</span>
@@ -199,9 +206,10 @@
             </div>
             <fieldset class="identity-choice">
               <legend>Como deseja enviar?</legend>
-              <label><input type="radio" name="identityMode" value="anonymous" checked/> Anônima</label>
-              <label><input type="radio" name="identityMode" value="identified"/> Identificada pela conta</label>
+              <label><input type="radio" name="identityMode" value="anonymous" disabled/> Anônima</label>
+              <label><input type="radio" name="identityMode" value="identified" checked/> Identificada pela conta</label>
             </fieldset>
+            <p id="anonymousModeStatus" class="field-help">Envio anônimo aguardando CAPTCHA e gateway homologados. A modalidade identificada exige conta conectada.</p>
             <label for="manifestationSubject">Assunto</label>
             <input id="manifestationSubject" name="subject" type="text" minlength="4" maxlength="140" required/>
             <label for="manifestationMessage">Mensagem</label>

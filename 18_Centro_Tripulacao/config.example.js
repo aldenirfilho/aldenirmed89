@@ -21,5 +21,7 @@ window.ANTIGRAVITY_CREW_CONFIG = Object.freeze({
   // Gateway HTTPS obrigatório para criar/consultar manifestação anônima.
   manifestationEndpoint: "",
   institutionalEmail: "",
+  // Anônimo exige outro gateway com CAPTCHA homologado; o gateway entregue só aceita contas.
+  enableAnonymousManifestations: false,
   enablePublicProfiles: false
 });

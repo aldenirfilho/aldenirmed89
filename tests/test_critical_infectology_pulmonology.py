@@ -80,8 +80,17 @@ class CriticalModulesTests(unittest.TestCase):
     def test_radar_has_new_dated_edition_and_unique_ids(self):
         history = json.loads((ROOT / "15_Radar_Cientifico/data/radar-history.json").read_text(encoding="utf-8"))
         radar = (ROOT / "15_Radar_Cientifico/data/radar.js").read_text(encoding="utf-8")
-        self.assertEqual(history["currentEditionId"], "2026-07-30")
-        self.assertEqual(history["editions"][0]["scientificCount"], 3)
+        editions = {edition["id"]: edition for edition in history["editions"]}
+        # New editions may advance the current pointer without replacing history.
+        self.assertIn("2026-07-30", editions)
+        self.assertEqual(editions["2026-07-30"]["scientificCount"], 3)
+        newest = max(history["editions"], key=lambda edition: edition["date"])
+        self.assertEqual(history["currentEditionId"], newest["id"])
+        self.assertGreaterEqual(newest["date"], editions["2026-07-30"]["date"])
+        self.assertEqual(
+            [edition["date"] for edition in history["editions"]],
+            sorted((edition["date"] for edition in history["editions"]), reverse=True),
+        )
         for item_id in (
             "doi:10.1007/s00134-026-08361-1",
             "doi:10.1093/cid/ciae403",
@@ -90,7 +99,15 @@ class CriticalModulesTests(unittest.TestCase):
             self.assertIn(item_id, history["publishedIds"])
             self.assertIn(item_id, radar)
         self.assertEqual(len(history["publishedIds"]), len(set(history["publishedIds"])))
-        self.assertIn('editionId:"2026-07-30"', radar)
+        result = subprocess.run(
+            ["node", "-e", "global.window={};require(process.argv[1]);process.stdout.write(JSON.stringify(window.ANTIGRAVITY_RADAR));",
+             str(ROOT / "15_Radar_Cientifico/data/radar.js")],
+            check=True, capture_output=True, text=True,
+        )
+        radar_data = json.loads(result.stdout)
+        self.assertEqual(radar_data["editionId"], history["currentEditionId"])
+        self.assertEqual(radar_data["editionDate"], newest["date"])
+        self.assertIn("2026-07-30", {edition["id"] for edition in radar_data["editions"]})
         self.assertIn('audit:{reviewStatus:"pending"', radar)
 
     def test_no_obvious_identifiable_patient_data(self):

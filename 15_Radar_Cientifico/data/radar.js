@@ -6,7 +6,7 @@
  * Três relógios nunca devem ser misturados:
  * - sourcePublishedAt: publicação/atualização da fonte;
  * - editorialPublishedAt: entrada no Radar;
- * - checkedAt: última conferência humana da referência.
+ * - checkedAt: última conferência documental da referência.
  *
  * O Radar tem três canais editoriais independentes:
  * - scientific: ciência clínica;
@@ -679,23 +679,563 @@ const spotify=[
   {id:"peaceful-piano",title:"Peaceful Piano — estudo e recuperação",mode:"Recuperação cognitiva",image:"https://image-cdn-fa.spotifycdn.com/image/ab67706c0000bebb3a131f06c2865923a0f2ae01",url:"https://open.spotify.com/playlist/1u4F50HA53L3Jwxbnk9IeO"}
 ];
 
+const SEPTEMBER_CHECKED_AT="2026-09-11T22:52:03-03:00";
+
+const septemberItems=[
+  {
+    "id": "doi:10.1001/jamanetworkopen.2026.33038",
+    "section": "scientific",
+    "priority": 1,
+    "date": "2026-09-11",
+    "sourcePublishedAt": "2026-09-11T00:00:00-03:00",
+    "sourceDatePrecision": "day",
+    "sourceDateKind": "publicação original",
+    "editorialPublishedAt": "2026-09-11T22:52:03-03:00",
+    "checkedAt": "2026-09-11T22:52:03-03:00",
+    "windowId": "2026-09-07_2026-09-11",
+    "target": "radar-diario",
+    "kind": "Estudo prognóstico de validação externa",
+    "evidenceLevel": "Estudo prognóstico de validação externa",
+    "access": "aberto",
+    "topic": "Prognóstico, cuidados paliativos e qualidade",
+    "title": "Prognóstico: discriminação adequada não garante risco bem calibrado",
+    "source": "JAMA Network Open",
+    "url": "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2853919",
+    "summary": "Em 39 hospitais de dois sistemas de saúde dos EUA, o End-of-Life Care Index apresentou estatísticas C de 0,76 e 0,81, mas superestimou mortalidade e teve calibração ruim. O desempenho variou em idosos e alguns grupos diagnósticos.",
+    "why": "Avaliar a calibração local antes de interpretar probabilidades.",
+    "caveat": "Validação retrospectiva em dois sistemas dos EUA; não demonstra que usar o escore melhora desfechos. Risco estimado não define sozinho limitação de suporte.",
+    "didactic": {
+      "clinicalQuestion": "O risco previsto corresponde ao observado?",
+      "design": "Estudo prognóstico de validação externa",
+      "population": "Adultos internados em 39 hospitais dos EUA.",
+      "mainResult": "Estatística C 0,76/0,81; calibração ruim.",
+      "clinicalMeaning": "Avaliar a calibração local antes de interpretar probabilidades.",
+      "practiceToday": "Diferenciar discriminação, calibração e utilidade clínica antes de interpretar um escore prognóstico.",
+      "doNotInfer": "Não decidir limitação de suporte a partir do risco previsto isoladamente.",
+      "temiHook": "Discriminar não é calibrar.",
+      "memoryAnchor": "DISCRIMINAÇÃO ≠ CALIBRAÇÃO",
+      "caveats": [
+        "Validação retrospectiva em dois sistemas dos EUA; não demonstra que usar o escore melhora desfechos. Risco estimado não define sozinho limitação de suporte."
+      ]
+    },
+    "audit": {
+      "reviewStatus": "pending",
+      "editorialReviewer": "Codex",
+      "clinicalReviewer": null,
+      "reviewedAt": null,
+      "dataClass": "none",
+      "riskNotes": "Síntese educacional; revisão médica especializada pendente."
+    }
+  },
+  {
+    "id": "https://www.esicm.org/icm-online-first-latest-results-machine-learning-ards-studies/",
+    "section": "scientific",
+    "priority": 2,
+    "date": "2026-09-11",
+    "sourcePublishedAt": "2026-09-11T00:00:00-03:00",
+    "sourceDatePrecision": "day",
+    "sourceDateKind": "divulgação editorial pela ESICM",
+    "editorialPublishedAt": "2026-09-11T22:52:03-03:00",
+    "checkedAt": "2026-09-11T22:52:03-03:00",
+    "windowId": "2026-09-07_2026-09-11",
+    "target": "radar-diario",
+    "kind": "Seleção editorial de leituras",
+    "evidenceLevel": "Seleção editorial de leituras",
+    "access": "aberto",
+    "topic": "Ventilação, choque e inteligência artificial",
+    "title": "ICM: ventilação personalizada, adrenorreceptores e limites da IA",
+    "source": "ESICM / Intensive Care Medicine",
+    "url": "https://www.esicm.org/icm-online-first-latest-results-machine-learning-ards-studies/",
+    "summary": "A seleção da ESICM reúne discussão sobre balão esofágico na SDRA, fisiologia dos adrenorreceptores no choque e um editorial sobre previsão por aprendizado de máquina na linfo-histiocitose hemofagocítica secundária.",
+    "why": "Fisiologia e desempenho preditivo não bastam para demonstrar benefício.",
+    "caveat": "11/09 é a data da seleção editorial, não a data confirmada de cada artigo. O destaque de um tema não é recomendação de uso rotineiro nem validação de uma ferramenta de IA.",
+    "didactic": {
+      "clinicalQuestion": "Como separar mecanismo, previsão e benefício?",
+      "design": "Seleção editorial de leituras",
+      "population": "Leituras sobre SDRA, choque e IA.",
+      "mainResult": "Três leituras destacadas pela ESICM.",
+      "clinicalMeaning": "Fisiologia e desempenho preditivo não bastam para demonstrar benefício.",
+      "practiceToday": "Revisar pressão transpulmonar e efeitos adrenérgicos; separar plausibilidade fisiológica, validação preditiva e benefício clínico.",
+      "doNotInfer": "Não considerar destaque editorial uma validação clínica.",
+      "temiHook": "Identificar o tipo de evidência.",
+      "memoryAnchor": "MECANISMO → TESTE → DESFECHO",
+      "caveats": [
+        "11/09 é a data da seleção editorial, não a data confirmada de cada artigo. O destaque de um tema não é recomendação de uso rotineiro nem validação de uma ferramenta de IA."
+      ]
+    },
+    "audit": {
+      "reviewStatus": "pending",
+      "editorialReviewer": "Codex",
+      "clinicalReviewer": null,
+      "reviewedAt": null,
+      "dataClass": "none",
+      "riskNotes": "Síntese educacional; revisão médica especializada pendente."
+    }
+  },
+  {
+    "id": "doi:10.1001/jamanetworkopen.2026.33017",
+    "section": "scientific",
+    "priority": 1,
+    "date": "2026-09-10",
+    "sourcePublishedAt": "2026-09-10T00:00:00-03:00",
+    "sourceDatePrecision": "day",
+    "sourceDateKind": "publicação original",
+    "editorialPublishedAt": "2026-09-11T22:52:03-03:00",
+    "checkedAt": "2026-09-11T22:52:03-03:00",
+    "windowId": "2026-09-07_2026-09-11",
+    "target": "radar-diario",
+    "kind": "Revisão sistemática e metanálise bayesiana de ensaios randomizados",
+    "evidenceLevel": "Revisão sistemática e metanálise bayesiana de ensaios randomizados",
+    "access": "aberto",
+    "topic": "Antimicrobianos e stewardship",
+    "title": "Cefepime: metanálise bayesiana reabre discussão de segurança",
+    "source": "JAMA Network Open",
+    "url": "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2853883",
+    "summary": "Em 110 ensaios e 22.608 participantes, a estimativa global de mortalidade foi OR 1,10, com intervalo de credibilidade de 95% de 0,98–1,24. A probabilidade posterior de OR maior que 1 foi 94,4%; o resultado diferiu entre estudos publicados e não publicados.",
+    "why": "Interpretar magnitude, incerteza e contexto farmacológico.",
+    "caveat": "Certeza moderada, heterogeneidade e ausência de dados individuais limitam a interpretação. O intervalo global inclui 1; a síntese não determina substituição automática do antibiótico.",
+    "didactic": {
+      "clinicalQuestion": "Como interpretar um sinal de segurança?",
+      "design": "Revisão sistemática e metanálise bayesiana de ensaios randomizados",
+      "population": "110 ensaios, adultos e crianças, indicações diversas.",
+      "mainResult": "OR 1,10; ICr95% 0,98–1,24.",
+      "clinicalMeaning": "Interpretar magnitude, incerteza e contexto farmacológico.",
+      "practiceToday": "Comparar probabilidade posterior, intervalo de credibilidade e relevância clínica; revisar exposição farmacológica e segurança no contexto do stewardship.",
+      "doNotInfer": "Não substituir antibióticos automaticamente a partir de uma estimativa agregada.",
+      "temiHook": "Bayes: probabilidade posterior não é valor de p.",
+      "memoryAnchor": "SINAL + INCERTEZA + CONTEXTO",
+      "caveats": [
+        "Certeza moderada, heterogeneidade e ausência de dados individuais limitam a interpretação. O intervalo global inclui 1; a síntese não determina substituição automática do antibiótico."
+      ]
+    },
+    "audit": {
+      "reviewStatus": "pending",
+      "editorialReviewer": "Codex",
+      "clinicalReviewer": null,
+      "reviewedAt": null,
+      "dataClass": "none",
+      "riskNotes": "Síntese educacional; revisão médica especializada pendente."
+    }
+  },
+  {
+    "id": "doi:10.1001/jama.2026.16557",
+    "section": "scientific",
+    "priority": 1,
+    "date": "2026-09-10",
+    "sourcePublishedAt": "2026-09-10T00:00:00-03:00",
+    "sourceDatePrecision": "day",
+    "sourceDateKind": "publicação online original",
+    "editorialPublishedAt": "2026-09-11T22:52:03-03:00",
+    "checkedAt": "2026-09-11T22:52:03-03:00",
+    "windowId": "2026-09-07_2026-09-11",
+    "target": "radar-diario",
+    "kind": "Ensaio clínico randomizado",
+    "evidenceLevel": "Ensaio clínico randomizado",
+    "access": "aberto",
+    "topic": "Neurointensivismo e AVC",
+    "title": "AVC isquêmico: ensaio LAIS avalia loberamisal",
+    "source": "JAMA",
+    "url": "https://jamanetwork.com/journals/jama/fullarticle/2854043",
+    "summary": "O LAIS incluiu 998 pacientes tratados até 48 horas do início do AVC. O desfecho mRS 0–1 aos 90 dias ocorreu em 69,7% com loberamisal e 56,3% com placebo.",
+    "why": "Resultados promissores exigem validação externa.",
+    "caveat": "População exclusivamente chinesa; trombectomia excluída e extremos de gravidade pouco representados. Vários desfechos secundários não diferiram. Não equivale a incorporação em protocolo ou confirmação de registro no Brasil.",
+    "didactic": {
+      "clinicalQuestion": "O resultado se aplica ao meu cenário?",
+      "design": "Ensaio clínico randomizado",
+      "population": "998 pacientes na China; trombectomia excluída.",
+      "mainResult": "mRS 0–1: 69,7% versus 56,3%.",
+      "clinicalMeaning": "Resultados promissores exigem validação externa.",
+      "practiceToday": "Analisar validade externa e consistência entre desfechos. O estudo não substitui avaliação de elegibilidade para terapias de reperfusão.",
+      "doNotInfer": "Não extrapolar para trombectomia nem interpretar o ensaio como incorporação em protocolo brasileiro.",
+      "temiHook": "Ler exclusões antes de extrapolar.",
+      "memoryAnchor": "POPULAÇÃO ANTES DA EXTRAPOLAÇÃO",
+      "caveats": [
+        "População exclusivamente chinesa; trombectomia excluída e extremos de gravidade pouco representados. Vários desfechos secundários não diferiram. Não equivale a incorporação em protocolo ou confirmação de registro no Brasil."
+      ]
+    },
+    "audit": {
+      "reviewStatus": "pending",
+      "editorialReviewer": "Codex",
+      "clinicalReviewer": null,
+      "reviewedAt": null,
+      "dataClass": "none",
+      "riskNotes": "Síntese educacional; revisão médica especializada pendente."
+    },
+    "sourceDateNote": "A página inicial da JAMA estava datada de 11/09, mas o artigo informa publicação online em 10/09/2026."
+  },
+  {
+    "id": "doi:10.1001/jamanetworkopen.2026.32981",
+    "section": "scientific",
+    "priority": 1,
+    "date": "2026-09-09",
+    "sourcePublishedAt": "2026-09-09T00:00:00-03:00",
+    "sourceDatePrecision": "day",
+    "sourceDateKind": "publicação original",
+    "editorialPublishedAt": "2026-09-11T22:52:03-03:00",
+    "checkedAt": "2026-09-11T22:52:03-03:00",
+    "windowId": "2026-09-07_2026-09-11",
+    "target": "radar-diario",
+    "kind": "Coorte retrospectiva populacional",
+    "evidenceLevel": "Coorte retrospectiva populacional",
+    "access": "aberto",
+    "topic": "Infecção hospitalar e qualidade",
+    "title": "Bacteremia hospitalar: como comparar taxas entre hospitais",
+    "source": "JAMA Network Open",
+    "url": "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2853851",
+    "summary": "Uma coorte de 3.325.900 internações em 114 hospitais de Ontário encontrou variação nas taxas de bacteremia/fungemia de início hospitalar que persistiu após ajustes por características medidas de pacientes e hospitais.",
+    "why": "Indicadores precisam de definição e denominador consistentes.",
+    "caveat": "Associação observacional; culturas contaminadas integraram a definição de vigilância. Não mede causalidade nem prova que toda diferença seja evitável. Pequenos hospitais rurais foram excluídos.",
+    "didactic": {
+      "clinicalQuestion": "Taxas diferentes significam qualidade diferente?",
+      "design": "Coorte retrospectiva populacional",
+      "population": "114 hospitais; internações de 2017–2024.",
+      "mainResult": "Variação persistente após ajuste de risco.",
+      "clinicalMeaning": "Indicadores precisam de definição e denominador consistentes.",
+      "practiceToday": "Revisar denominadores, ajuste de risco, contaminação de hemoculturas e diferença entre indicador de vigilância e diagnóstico individual.",
+      "doNotInfer": "Não atribuir diferenças de taxas exclusivamente à qualidade assistencial.",
+      "temiHook": "Vigilância não equivale a adjudicação clínica.",
+      "memoryAnchor": "DEFINIÇÃO + DENOMINADOR + AJUSTE",
+      "caveats": [
+        "Associação observacional; culturas contaminadas integraram a definição de vigilância. Não mede causalidade nem prova que toda diferença seja evitável. Pequenos hospitais rurais foram excluídos."
+      ]
+    },
+    "audit": {
+      "reviewStatus": "pending",
+      "editorialReviewer": "Codex",
+      "clinicalReviewer": null,
+      "reviewedAt": null,
+      "dataClass": "none",
+      "riskNotes": "Síntese educacional; revisão médica especializada pendente."
+    }
+  },
+  {
+    "id": "doi:10.1001/jamanetworkopen.2026.32619",
+    "section": "scientific",
+    "priority": 1,
+    "date": "2026-09-09",
+    "sourcePublishedAt": "2026-09-09T00:00:00-03:00",
+    "sourceDatePrecision": "day",
+    "sourceDateKind": "publicação original",
+    "editorialPublishedAt": "2026-09-11T22:52:03-03:00",
+    "checkedAt": "2026-09-11T22:52:03-03:00",
+    "windowId": "2026-09-07_2026-09-11",
+    "target": "radar-diario",
+    "kind": "Ensaio randomizado de efetividade e implementação",
+    "evidenceLevel": "Ensaio randomizado de efetividade e implementação",
+    "access": "aberto",
+    "topic": "Perioperatório e saúde mental",
+    "title": "Saúde mental perioperatória: efeito global não se repetiu na ortopedia",
+    "source": "JAMA Network Open",
+    "url": "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2853855",
+    "summary": "Em 306 adultos de 60 anos ou mais, uma intervenção psicológica e farmacológica reduziu sintomas de ansiedade/depressão aos três meses. O efeito global foi pequeno; o subgrupo ortopédico não mostrou benefício significativo.",
+    "why": "Intervenções complexas exigem validação por contexto.",
+    "caveat": "Um sistema de saúde, população selecionada e controle sem equivalência de atenção. Não houve melhora significativa de delirium, reinternação ou quedas.",
+    "didactic": {
+      "clinicalQuestion": "O efeito global vale para cada cirurgia?",
+      "design": "Ensaio randomizado de efetividade e implementação",
+      "population": "Cirurgias cardíacas, oncológicas e ortopédicas.",
+      "mainResult": "Redução global; ortopedia sem diferença significativa.",
+      "clinicalMeaning": "Intervenções complexas exigem validação por contexto.",
+      "practiceToday": "Distinguir efeito global e subgrupos, desfechos de sintomas e desfechos cirúrgicos.",
+      "doNotInfer": "Não assumir benefício para pacientes ortopédicos ou redução de delirium.",
+      "temiHook": "Não atribuir ao subgrupo um resultado global.",
+      "memoryAnchor": "GLOBAL ≠ TODO SUBGRUPO",
+      "caveats": [
+        "Um sistema de saúde, população selecionada e controle sem equivalência de atenção. Não houve melhora significativa de delirium, reinternação ou quedas."
+      ]
+    },
+    "audit": {
+      "reviewStatus": "pending",
+      "editorialReviewer": "Codex",
+      "clinicalReviewer": null,
+      "reviewedAt": null,
+      "dataClass": "none",
+      "riskNotes": "Síntese educacional; revisão médica especializada pendente."
+    }
+  },
+  {
+    "id": "doi:10.1001/jamanetworkopen.2026.32989",
+    "section": "context",
+    "priority": 2,
+    "date": "2026-09-09",
+    "sourcePublishedAt": "2026-09-09T00:00:00-03:00",
+    "sourceDatePrecision": "day",
+    "sourceDateKind": "publicação original",
+    "editorialPublishedAt": "2026-09-11T22:52:03-03:00",
+    "checkedAt": "2026-09-11T22:52:03-03:00",
+    "windowId": "2026-09-07_2026-09-11",
+    "target": "radar-diario",
+    "kind": "Estudo qualitativo com entrevistas",
+    "evidenceLevel": "Estudo qualitativo com entrevistas",
+    "access": "aberto",
+    "topic": "Saúde do médico",
+    "title": "Quando o médico adoece: apoio ao retorno ao trabalho",
+    "source": "JAMA Network Open",
+    "url": "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2853850",
+    "summary": "Entrevistas com 22 médicos após doença ameaçadora à vida identificaram tensões entre identidade profissional e papel de paciente. Apoio, licenças e sensibilidade das lideranças influenciaram os relatos de retorno ao trabalho.",
+    "why": "O retorno inclui função, identidade e relações.",
+    "caveat": "Narrativas retrospectivas e amostra pequena; não estima prevalência nem testa eficácia de uma política institucional. Perspectivas de colegas e gestores não foram incluídas.",
+    "didactic": {
+      "clinicalQuestion": "Como apoiar quem cuida quando adoece?",
+      "design": "Estudo qualitativo com entrevistas",
+      "population": "22 médicos entrevistados após doença grave.",
+      "mainResult": "Apoio institucional foi tema recorrente.",
+      "clinicalMeaning": "O retorno inclui função, identidade e relações.",
+      "practiceToday": "Reconhecer necessidades práticas e relacionais na reintegração profissional; não confundir pedir apoio com perda de competência.",
+      "doNotInfer": "Não transformar entrevistas em estimativa populacional ou prova de eficácia institucional.",
+      "temiHook": "Qualitativo explora experiências; não estima efeito.",
+      "memoryAnchor": "CUIDAR DE QUEM CUIDA",
+      "caveats": [
+        "Narrativas retrospectivas e amostra pequena; não estima prevalência nem testa eficácia de uma política institucional. Perspectivas de colegas e gestores não foram incluídas."
+      ]
+    },
+    "audit": {
+      "reviewStatus": "pending",
+      "editorialReviewer": "Codex",
+      "clinicalReviewer": null,
+      "reviewedAt": null,
+      "dataClass": "none",
+      "riskNotes": "Síntese educacional; revisão médica especializada pendente."
+    },
+    "routineImpact": "Reconhecer necessidades práticas e relacionais na reintegração profissional; não confundir pedir apoio com perda de competência."
+  },
+  {
+    "id": "doi:10.1001/jamanetworkopen.2026.32555",
+    "section": "scientific",
+    "priority": 1,
+    "date": "2026-09-08",
+    "sourcePublishedAt": "2026-09-08T00:00:00-03:00",
+    "sourceDatePrecision": "day",
+    "sourceDateKind": "publicação original da análise secundária",
+    "editorialPublishedAt": "2026-09-11T22:52:03-03:00",
+    "checkedAt": "2026-09-11T22:52:03-03:00",
+    "windowId": "2026-09-07_2026-09-11",
+    "target": "radar-diario",
+    "kind": "Análise secundária pré-especificada de ensaio randomizado",
+    "evidenceLevel": "Análise secundária pré-especificada de ensaio randomizado",
+    "access": "aberto",
+    "topic": "Neurointensivismo e transfusão",
+    "title": "TCE e anemia: análise secundária do TRAIN exige leitura crítica",
+    "source": "JAMA Network Open",
+    "url": "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2853805",
+    "summary": "Entre 475 pacientes com TCE analisados para o desfecho principal, a estratégia liberal teve menos desfechos neurológicos desfavoráveis aos 180 dias: 58,5% versus 67,4%; RR 0,86, IC95% 0,75–1,00.",
+    "why": "A precisão importa além da significância.",
+    "caveat": "Análise secundária de estudo aberto, com índice de fragilidade 1. A análise por protocolo não confirmou significância; o resultado não deve ser generalizado a todos os pacientes críticos.",
+    "didactic": {
+      "clinicalQuestion": "Qual a robustez do sinal transfusional?",
+      "design": "Análise secundária pré-especificada de ensaio randomizado",
+      "population": "TCE com anemia; 475 no desfecho principal.",
+      "mainResult": "58,5% versus 67,4%; fragilidade 1.",
+      "clinicalMeaning": "A precisão importa além da significância.",
+      "practiceToday": "Distinguir análise principal e de subgrupo, precisão da estimativa e fragilidade estatística ao estudar limiares transfusionais.",
+      "doNotInfer": "Não universalizar limiares transfusionais a partir deste subgrupo.",
+      "temiHook": "Subgrupos e análise por protocolo exigem cautela.",
+      "memoryAnchor": "FRAGILIDADE TAMBÉM É EVIDÊNCIA",
+      "caveats": [
+        "Análise secundária de estudo aberto, com índice de fragilidade 1. A análise por protocolo não confirmou significância; o resultado não deve ser generalizado a todos os pacientes críticos."
+      ]
+    },
+    "audit": {
+      "reviewStatus": "pending",
+      "editorialReviewer": "Codex",
+      "clinicalReviewer": null,
+      "reviewedAt": null,
+      "dataClass": "none",
+      "riskNotes": "Síntese educacional; revisão médica especializada pendente."
+    }
+  },
+  {
+    "id": "https://www.esicm.org/new-webinar-synergizing-ssc-and-antimicrobial-stewardship-icu/",
+    "section": "scientific",
+    "priority": 2,
+    "date": "2026-09-08",
+    "sourcePublishedAt": "2026-09-08T00:00:00-03:00",
+    "sourceDatePrecision": "day",
+    "sourceDateKind": "divulgação do replay",
+    "editorialPublishedAt": "2026-09-11T22:52:03-03:00",
+    "checkedAt": "2026-09-11T22:52:03-03:00",
+    "windowId": "2026-09-07_2026-09-11",
+    "target": "radar-diario",
+    "kind": "Recurso educacional de sociedades científicas",
+    "evidenceLevel": "Recurso educacional de sociedades científicas",
+    "access": "aberto",
+    "topic": "Sepse e stewardship",
+    "title": "Sepse e stewardship: replay conjunto ESICM–ESCMID",
+    "source": "ESICM / ESCMID",
+    "url": "https://www.esicm.org/new-webinar-synergizing-ssc-and-antimicrobial-stewardship-icu/",
+    "summary": "Replay sobre integração entre Surviving Sepsis Campaign e stewardship na UTI, com foco no equilíbrio entre tratamento oportuno e uso responsável de antimicrobianos.",
+    "why": "Atualização educacional apoia revisão de processos.",
+    "caveat": "A data refere-se à divulgação do recurso. Webinar não constitui ensaio novo nem uma diretriz adicional.",
+    "didactic": {
+      "clinicalQuestion": "Como integrar oportunidade e reavaliação?",
+      "design": "Recurso educacional de sociedades científicas",
+      "population": "Educação para equipes de terapia intensiva.",
+      "mainResult": "Replay conjunto ESICM–ESCMID disponível.",
+      "clinicalMeaning": "Atualização educacional apoia revisão de processos.",
+      "practiceToday": "Organizar revisão de indicação, coleta microbiológica, adequação e reavaliação do antimicrobiano à luz da diretriz e do contexto local.",
+      "doNotInfer": "Não apresentar o replay como uma nova diretriz.",
+      "temiHook": "Stewardship acompanha todo o tratamento.",
+      "memoryAnchor": "TRATAR → REAVALIAR",
+      "caveats": [
+        "A data refere-se à divulgação do recurso. Webinar não constitui ensaio novo nem uma diretriz adicional."
+      ]
+    },
+    "audit": {
+      "reviewStatus": "pending",
+      "editorialReviewer": "Codex",
+      "clinicalReviewer": null,
+      "reviewedAt": null,
+      "dataClass": "none",
+      "riskNotes": "Síntese educacional; revisão médica especializada pendente."
+    }
+  },
+  {
+    "id": "https://amib.org.br/com-a-capacitacao-de-mais-de-2-mil-profissionais-pela-associacao-de-medicina-intensiva-brasileira-o-pais-quer-reduzir-a-resistencia-a-doacao-de-orgaos/",
+    "section": "context",
+    "priority": 2,
+    "date": "2026-09-08",
+    "sourcePublishedAt": "2026-09-08T00:00:00-03:00",
+    "sourceDatePrecision": "day",
+    "sourceDateKind": "notícia institucional",
+    "editorialPublishedAt": "2026-09-11T22:52:03-03:00",
+    "checkedAt": "2026-09-11T22:52:03-03:00",
+    "windowId": "2026-09-07_2026-09-11",
+    "target": "radar-diario",
+    "kind": "Relato institucional de capacitação",
+    "evidenceLevel": "Relato institucional de capacitação",
+    "access": "aberto",
+    "topic": "Doação de órgãos e comunicação",
+    "title": "Setembro Verde: formação para doação e comunicação com famílias",
+    "source": "AMIB",
+    "url": "https://amib.org.br/com-a-capacitacao-de-mais-de-2-mil-profissionais-pela-associacao-de-medicina-intensiva-brasileira-o-pais-quer-reduzir-a-resistencia-a-doacao-de-orgaos/",
+    "summary": "A AMIB informou capacitação de 2.534 profissionais entre setembro de 2025 e agosto de 2026, abrangendo identificação do potencial doador, morte encefálica, manutenção clínica e comunicação em situações críticas.",
+    "why": "Comunicação e técnica são partes do mesmo processo.",
+    "caveat": "A notícia foi publicada no período do radar, mas os dados de capacitação cobrem o ano anterior. O relato institucional não comprova efeito causal sobre doação ou transplantes.",
+    "didactic": {
+      "clinicalQuestion": "Quais etapas dependem de capacitação?",
+      "design": "Relato institucional de capacitação",
+      "population": "Profissionais capacitados entre 09/2025 e 08/2026.",
+      "mainResult": "AMIB relata 2.534 profissionais capacitados.",
+      "clinicalMeaning": "Comunicação e técnica são partes do mesmo processo.",
+      "practiceToday": "Revisar etapas do processo de doação e comunicação acolhedora, com critérios técnicos e formação institucional apropriada.",
+      "doNotInfer": "Não atribuir aumento de doações causalmente à capacitação.",
+      "temiHook": "Conhecer etapas e limites de cada atribuição.",
+      "memoryAnchor": "TÉCNICA + COMUNICAÇÃO",
+      "caveats": [
+        "A notícia foi publicada no período do radar, mas os dados de capacitação cobrem o ano anterior. O relato institucional não comprova efeito causal sobre doação ou transplantes."
+      ]
+    },
+    "audit": {
+      "reviewStatus": "pending",
+      "editorialReviewer": "Codex",
+      "clinicalReviewer": null,
+      "reviewedAt": null,
+      "dataClass": "none",
+      "riskNotes": "Síntese educacional; revisão médica especializada pendente."
+    },
+    "routineImpact": "Revisar etapas do processo de doação e comunicação acolhedora, com critérios técnicos e formação institucional apropriada."
+  }
+];
+
+const libraryReferences=[
+  {
+    "topic": "CRAB",
+    "title": "IDSA 2026 Guidance on the Treatment of Antimicrobial Resistant Gram-Negative Infections",
+    "date": "30/07/2026 (página oficial da IDSA)",
+    "url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "note": "Versão 2026, fora da janela. Diferencia infecção invasiva e colonização e atualiza seção CRAB; disponibilidade e epidemiologia locais precisam de revisão.",
+    "documentId": "acervo-infectologia-guia-turbo-temi-360x-crab-diagnostico-stewardship-docx",
+    "documentTitle": "CRAB — hemocultura, diagnóstico e stewardship"
+  },
+  {
+    "topic": "Fahr / hipocalcemia",
+    "title": "Society for Endocrinology: acute hypocalcaemia guidance and 2019 addendum",
+    "date": "2016-09; adendo 2019",
+    "url": "https://www.endocrinology.org/clinical-practice/clinical-guidance/society-for-endocrinology-guidance/",
+    "secondaryUrl": "https://pubmed.ncbi.nlm.nih.gov/32022081/",
+    "note": "Revisar hipocalcemia e equivalência de cálcio elementar; não atribuir automaticamente calcificações a uma síndrome genética.",
+    "documentId": "acervo-endocrino-metabolico-protocolo-turbo-temi-sindrome-de-fahr-hipocalcemia-360x-docx",
+    "documentTitle": "Síndrome de Fahr e hipocalcemia",
+    "relatedSource": {
+      "title": "Primary Brain Calcification: consenso internacional",
+      "date": "Online: 04/12/2025; edição: fevereiro/2026",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41346103/"
+    }
+  },
+  {
+    "topic": "Encefalite paraneoplásica",
+    "title": "Updated Diagnostic Criteria for Paraneoplastic Neurologic Syndromes",
+    "date": "2021-05-18",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8237398/",
+    "note": "Critérios PNS-Care; integrar fenótipo, anticorpos e tumor. Encefalite autoimune e paraneoplásica não são sinônimos.",
+    "documentId": "acervo-neuro-uti-encefalite-paraneoplasica-turbo-temi-360x-docx",
+    "documentTitle": "Encefalite paraneoplásica — investigação e aprendizagem ativa"
+  },
+  {
+    "topic": "Medicações em cirurgia ortopédica",
+    "title": "2024 AHA/ACC multisociety guideline for perioperative cardiovascular management for noncardiac surgery",
+    "date": "2024",
+    "url": "https://www.jacc.org/doi/10.1016/j.jacc.2024.06.013",
+    "note": "Referência para avaliação e medicamentos cardiovasculares em cirurgia não cardíaca; não cobre isoladamente toda analgesia, antibioticoprofilaxia ou tromboprofilaxia ortopédica.",
+    "documentId": "acervo-clinica-medica-turbo-temi-360x-medicacoes-cirurgia-ortopedica-docx",
+    "documentTitle": "Medicamentos antes de cirurgia ortopédica"
+  },
+  {
+    "topic": "POCUS de bexiga",
+    "title": "ACEP Emergency Ultrasound Imaging Criteria Compendium",
+    "date": "2021",
+    "url": "https://www.acep.org/globalassets/new-pdfs/policy-statements/emergency-ultrasound-imaging-criteria-compendium.pdf",
+    "note": "Técnica, documentação, limites e avaliação do trato urinário; achados inespecíficos do conteúdo vesical exigem correlação clínica.",
+    "documentId": "acervo-pocus-usg-manual-turbo-temi-pocus-bexiga-conteudo-vesical-interativo-docx",
+    "documentTitle": "POCUS da bexiga — aquisição e conteúdo vesical"
+  },
+  {
+    "topic": "Lemierre",
+    "title": "Patients with Lemierre syndrome have a high risk of new thromboembolic complications, clinical sequelae and death: an analysis of 712 cases",
+    "date": "2020-06-18 online; edição 2021-03",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32445216/",
+    "note": "Análise observacional de casos; associação com anticoagulação não prova benefício causal nem estabelece indicação universal.",
+    "documentId": "acervo-infectologia-doenca-de-lemierre-turbo-temi-tdah-friendly-docx",
+    "documentTitle": "Doença de Lemierre — diagnóstico e complicações"
+  },
+  {
+    "topic": "Gasometria",
+    "title": "AARC Clinical Practice Guideline: Blood Gas Analysis and Hemoximetry: 2013",
+    "date": "2013",
+    "url": "https://www.aarc.org/wp-content/uploads/2025/03/davis-et-al-2013-aarc-clinical-practice-guideline-blood-gas-analysis-and-hemoximetry-2013.pdf",
+    "note": "Referência para coleta e análise; o caminho de upload 2025 não modifica o ano original 2013. Complementar interpretação ácido-base com fontes específicas.",
+    "documentId": "acervo-disturbios-eletroliticos-gasometria-i2-modo-turbo-docx",
+    "documentTitle": "Gasometria para iniciantes — Internato I2"
+  }
+];
+
 window.ANTIGRAVITY_RADAR={
   schemaVersion:"radar-v2",
-  editionId:"2026-07-30",
-  editionDate:CURRENT_EDITORIAL_DAY,
-  generatedAt:CURRENT_RADAR_GENERATED_AT,
-  updatedAt:CURRENT_RADAR_GENERATED_AT,
-  lastScanAt:CURRENT_RADAR_GENERATED_AT,
+  editionId:"2026-09-11",
+  editionDate:"2026-09-11",
+  generatedAt:SEPTEMBER_CHECKED_AT,
+  updatedAt:SEPTEMBER_CHECKED_AT,
+  lastScanAt:SEPTEMBER_CHECKED_AT,
+  sourceWindow:{id:"2026-09-07_2026-09-11",start:"2026-09-07",end:"2026-09-11",label:"Fontes de 7 a 11 de setembro de 2026",itemCount:10,exhaustive:false},
+  libraryReferences,
   timezone:"America/Fortaleza",
-  freshnessPolicy:"A edição abre todos os dias. Se não houver publicação relevante do próprio dia, o Radar mostra a fonte mais recente disponível sem alterar sua data original. Preço e estoque comercial sempre exibem o horário da conferência.",
+  freshnessPolicy:"Atualização manual com fontes de 7 a 11/09/2026. Data de publicação, divulgação editorial e conferência documental aparecem separadas. A seleção não é uma busca sistemática; ausência de destaque não significa ausência de pesquisa. Preços anteriores permanecem snapshots históricos.",
   editorialNote:"Prioridade combina gravidade, aplicabilidade em UTI/Clínica, recência e qualidade da fonte. Ciência, contexto e comércio permanecem separados. Conteúdo comercial não é afiliado, não promete resultado e exige conferência de preço, vendedor, garantia e necessidade real.",
   commercialPolicy:"Sem links afiliados. Preço é snapshot, nunca promessa. Produto só entra com problema de uso, especificações conferíveis, limite, segurança e alternativa de não comprar.",
   priorities:[
+    "Cefepime: leia o sinal de segurança junto da incerteza e da heterogeneidade; sem troca automática de protocolo.",
+    "TCE e AVC: diferencie análise secundária, fragilidade estatística e validade externa antes de extrapolar.",
+    "Prognóstico e cuidado: um escore pode discriminar bem e calibrar mal; comunicação continua essencial.",
     "Sepse 2026: trate a primeira hora como início de ciclos de reavaliação — estabilização, foco, microbiologia e stewardship.",
     "Resistência: cultura não é sinônimo de infecção; mecanismo, sítio e controle do foco vêm antes da escalada automática.",
     "Hipoxemia: alto fluxo pode reduzir modestamente intubação em pacientes selecionados, mas esforço e trajetória definem falha."
   ],
   editions:[
+    {id:"2026-09-11",date:"2026-09-11",label:"Atualização de 7 a 11 de setembro de 2026",
+      editionType:"incremental",sourceWindowStart:"2026-09-07",sourceWindowEnd:"2026-09-11",
+      generatedAt:SEPTEMBER_CHECKED_AT,lastUpdatedAt:SEPTEMBER_CHECKED_AT,
+      itemIds:septemberItems.map(item=>item.id),visualIds:[],visualPairCount:0,visualAssetCount:0,
+      commercialIds:[],productVisualIds:[],productVisualPairCount:0,productVisualAssetCount:0},
     {
       id:"2026-07-30",date:CURRENT_EDITORIAL_DAY,label:"Edição de 30 de julho de 2026",
       generatedAt:CURRENT_RADAR_GENERATED_AT,lastUpdatedAt:CURRENT_RADAR_GENERATED_AT,
@@ -712,8 +1252,8 @@ window.ANTIGRAVITY_RADAR={
       productVisualIds:productVisuals.map(item=>item.id),productVisualPairCount:3,productVisualAssetCount:6
     }
   ],
-  scientific,
-  geopolitics,
+  scientific:[...septemberItems.filter(item=>item.section==="scientific"),...scientific],
+  geopolitics:[...septemberItems.filter(item=>item.section==="context"),...geopolitics],
   commercial,
   visuals,
   productVisuals,

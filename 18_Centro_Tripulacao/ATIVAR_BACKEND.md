@@ -105,9 +105,11 @@ uma especificação. O banco:
 
 Os RPCs `submit_manifestation`, `crew_anonymous_thread` e
 `reply_anonymous_manifestation` estão revogados para `anon` e `authenticated`;
-somente `service_role` pode executá-los. Antes de abrir o canal, implemente uma
-Supabase Edge Function, informe sua URL exata em `manifestationEndpoint` e
-aplique:
+somente `service_role` pode executá-los. Para envio identificado, implante a Edge Function entregue em
+`supabase/functions/crew-manifestations`, aplique a migração de quota descrita
+em `supabase/README.md` e informe sua URL exata em `manifestationEndpoint` e
+aplique os controles abaixo. O envio anônimo permanece desabilitado no pacote
+atual e ainda exige uma implementação com CAPTCHA homologado:
 
 1. allowlist de origem e checagem estrita de `Origin`;
 2. CAPTCHA acessível (por exemplo, Turnstile) no envio anônimo;
@@ -130,7 +132,9 @@ Defina um SLA humano somente quando a equipe tiver capacidade real.
 ## 5. Métricas de visualização
 
 O frontend cria um `pageSessionId` aleatório por carregamento do documento e o
-reutiliza em qualquer registro feito durante esse carregamento.
+reutiliza em qualquer registro feito durante esse carregamento. No gateway
+entregue, o registro ocorre somente após login confirmado: são carregamentos
+autenticados do Centro, não o público total do site.
 `record_section_view` deduplica seção/carregamento/dia e armazena somente um hash
 efêmero, sem IP; recarregar a página inicia uma nova visualização. Os papéis
 `anon` e `authenticated` não podem executar esse RPC nem inserir na tabela.
@@ -222,3 +226,25 @@ ativar. A automação não deve decidir recomendações clínicas personalizadas
 - [ ] CSP e as duas allowlists contêm somente origens oficiais.
 - [ ] Backup, retenção e exclusão de conta foram definidos.
 - [ ] Testes de teclado, leitor de tela, mobile e modo desconectado passaram.
+
+## Roteiro visual e visitas diárias — 11/09/2026
+
+Consulte `conectar.html` para a ordem prática de ativação e `painel-visitas.html` para análise diária. O site permanece **gratuito, sem previsão de cobrança**; conta e boletim são opcionais.
+
+O contador público GoatCounter respondeu HTTP 403 na verificação desta atualização. Isso não comprova ausência de tráfego e não autoriza inferir zero visitantes. A conta privada é a fonte para consultar o histórico. `data/daily-visits.json` registra indisponibilidade explícita.
+
+Para um relatório local, exporte o CSV v2 no GoatCounter (se a coleta individual estiver habilitada), descompacte fora do repositório e execute da raiz:
+
+```sh
+python3 scripts_admin/import_goatcounter_daily.py --csv /caminho/privado/export.csv --output /caminho/privado/visitas-agregadas.json
+```
+
+Importe somente o JSON agregado no painel. O conversor utiliza apenas caminhos canônicos do `data/site_manifest.json`, remove parâmetros e ignora rotas desconhecidas, bots e eventos; não publica títulos livres, sessões, IPs ou referenciadores. O SHA-256 registra a origem. Linhas com sessão ausente deixam o público do dia nulo; os dias não presentes permanecem ausentes. As fronteiras do arquivo podem conter dias incompletos.
+
+Uma atualização automática futura precisa de processo de servidor e segredo de leitura do GoatCounter; nunca exponha a API key no HTML/JS. O CSV bruto permanece privado. A integração entregue é manual e nenhum envio/cronograma foi ativado. Não some números de GoatCounter com o carregamento por seção do Supabase: são medições distintas.
+
+### Deploy dos gateways autenticados
+
+O código servidor está em `supabase/` e é excluído do artefato GitHub Pages. Ele exige `CREW_ALLOWED_ORIGINS` e `CREW_RATE_LIMIT_SALT` no cofre de segredos do Supabase e as chaves de projeto provisionadas pelo serviço. Não coloque esses segredos em `config.js`. Siga `supabase/README.md`: aplicar esquema base em homologação, aplicar migração de quota, configurar segredos, implantar as duas funções e testar conta sem papel administrativo antes de conectar produção.
+
+O fluxo identificado usa verificação JWT da plataforma e consulta real ao Auth para obter usuário confirmado; o payload do navegador não pode definir UUID/e-mail verificados. As quotas são 5 novos envios/hora e 60 tentativas de telemetria/hora por conta. Leitura/resposta do canal identificado usa os RPCs/RLS já existentes; esses RPCs não passam pela nova quota de submissão. Retenção dos contadores privados e proteção de borda devem ser definidas na operação.

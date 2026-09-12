@@ -108,6 +108,8 @@ jobs:
           python3 scripts_admin/build_public_site.py . site
           python3 scripts_admin/publication_guard.py sanitize-site site
           python3 scripts_admin/publication_guard.py check-site site
+          python3 scripts_admin/audit_public_links.py site
+          test ! -e site/18_Centro_Tripulacao/supabase
           python3 scripts_admin/editorial_gate.py --check --public-root site --json
           test -f site/admin/desafios.html
           test -f site/data/desafios.json

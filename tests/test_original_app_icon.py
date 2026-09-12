@@ -58,7 +58,7 @@ class OriginalAppIconTests(unittest.TestCase):
     def test_workers_refresh_stale_manifest_and_keep_offline_json(self):
         script = r'''
 const vm=require('node:vm'),fs=require('node:fs'),assert=require('node:assert/strict');
-async function check(file) {
+async function check(file, requestPath='manifest.webmanifest') {
  const origin='https://example.com', root=origin+'/aldenirmed89/';
  const scope=root+(file.startsWith('24_')?'24_Semiologia/':'');
  const entries=new Map(), events={};let offline=false,status=200,options;
@@ -70,7 +70,7 @@ async function check(file) {
   fetch:async(r,o)=>{options=o;if(offline)throw Error('offline');return Response.json({icons:[{src:'assets/icons/aerospace-v2/icon-192.png'}]},{status})}
  };
  vm.runInNewContext(fs.readFileSync(file,'utf8'),sandbox);
- const url=root+'manifest.webmanifest', request=new Request(url);
+ const url=root+requestPath, request=new Request(url);
  const get=()=>{let p;events.fetch({request,respondWith:v=>p=v});return p;};
  entries.set(url,Response.json({icons:[{src:'orange.png'}]}));
  assert.match(JSON.stringify(await(await get()).json()),/aerospace-v2/);
@@ -79,7 +79,7 @@ async function check(file) {
  offline=false;status=503;assert.match(JSON.stringify(await(await get()).json()),/aerospace-v2/);
  entries.clear();offline=true;await assert.rejects(get(),/offline/);
 }
-(async()=>{await check('sw.js');await check('24_Semiologia/sw.js')})().catch(e=>{console.error(e);process.exit(1)});
+(async()=>{await check('sw.js');await check('24_Semiologia/sw.js');await check('sw.js','18_Centro_Tripulacao/data/daily-visits.json');await check('sw.js','18_Centro_Tripulacao/data/public-metrics.json')})().catch(e=>{console.error(e);process.exit(1)});
 '''
         result = subprocess.run(['node', '-e', script], cwd=ROOT, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

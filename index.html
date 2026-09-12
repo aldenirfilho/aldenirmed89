@@ -611,10 +611,11 @@ section{padding:var(--section-space) 0;scroll-margin-top:88px}
 .section-title{
   font-family:var(--font-head);font-size:clamp(1.7rem,3.5vw,2.5rem);
   font-weight:800;line-height:1.1;letter-spacing:-.02em;
-  color:var(--text);margin-bottom:16px
+  color:var(--text);margin-bottom:16px;min-width:0;overflow-wrap:anywhere
 }
 .section-sub{font-size:1rem;color:var(--soft);max-width:72ch;line-height:1.65}
 .section-intro{max-width:1180px}
+.section-intro>*{min-width:0;max-width:100%;overflow-wrap:anywhere}
 .g2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -2533,7 +2534,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
 /* ── RESPONSIVE ───────────────────────────────────── */
 @media(min-width:1100px){
   .section-intro{
-    display:grid;grid-template-columns:minmax(300px,.8fr) minmax(420px,1.2fr);
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
     column-gap:clamp(36px,5vw,84px);align-items:end;
   }
   .section-intro .section-label{grid-column:1;grid-row:1}
@@ -2696,6 +2697,8 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 
 </style>
 <noscript><style>.mission-intro,.mission-emblem{display:none!important}</style></noscript>
+<link rel="stylesheet" href="assets/site-navigation.css"/>
+<script src="assets/site-navigation.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#top">Pular para o conteúdo principal</a>
@@ -2934,6 +2937,19 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       <p class="hero-lead">
         Evidência, protocolos, calculadoras e treino TEMI reunidos em um painel operacional para encontrar a rota certa com rapidez e responsabilidade clínica.
       </p>
+      <p class="access-free">🔓 Acesso gratuito · sem previsão de cobrança · cadastro opcional</p>
+      <div class="quick-finder" role="search" aria-label="Buscar rotas do site">
+        <label for="quickSearch">🔎 O que você precisa encontrar?</label>
+        <input id="quickSearch" type="search" placeholder="Ex.: AVC, POCUS, gasometria, biblioteca…" autocomplete="off" aria-controls="quickResults" aria-describedby="quickSearchStatus"/>
+        <p id="quickSearchStatus" role="status" aria-live="polite">Busque módulos e os documentos recém-integrados. A busca fica neste navegador.</p>
+        <ul id="quickResults" class="quick-results" hidden></ul>
+        <nav class="quick-routes" aria-label="Atalhos principais">
+          <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca IA</a>
+          <a href="15_Radar_Cientifico/index.html">📡 Radar dos últimos dias</a>
+          <a href="18_Centro_Tripulacao/painel-visitas.html">📊 Visitas por dia</a>
+          <a href="18_Centro_Tripulacao/divulgacao.html">📣 Divulgar o site</a>
+        </nav>
+      </div>
       <div class="hero-btns">
         <a class="btn btn-primary" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html">🧠 Abrir TCE grave CRASH</a>
         <a class="btn btn-primary" href="#hepatite-alcool">🟠 Abrir Hepatologia HAA</a>
@@ -3753,7 +3769,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         </a>
       </div>
       <div class="hema-note">
-        🛡️ Conteúdo em pré-publicação: revisão médica obrigatória. Scores
+        🛡️ Prévia educacional em revisão médica. Scores
         classificatórios e prognósticos não substituem diagnóstico nem protocolo.
       </div>
     </aside>
@@ -3988,7 +4004,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <div class="pipe-num">04</div>
           <div class="pipe-icon" style="background:rgba(255,96,96,.1);border:1px solid rgba(255,96,96,.22)">🛡️</div>
           <div class="pipe-label">Revisão Médica</div>
-          <div class="pipe-desc">Verificação clínica obrigatória — nenhum conteúdo vai ao ar sem aprovação.</div>
+          <div class="pipe-desc">Verificação clínica obrigatória; prévias são identificadas e aguardam revisão médica formal.</div>
         </div>
 
         <div class="pipeline-step" role="listitem">
@@ -4068,13 +4084,13 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   </div>
 </section>
 
-<!-- O painel permanece oculto até existir contagem pública real e validada. -->
-<section id="audiencia" class="analytics-section" data-analytics-section aria-labelledby="analytics-heading" hidden>
+<!-- Indisponibilidade da fonte é informada explicitamente, sem estimar números. -->
+<section id="audiencia" class="analytics-section" data-analytics-section aria-labelledby="analytics-heading">
   <div class="shell">
     <div class="section-intro">
       <p class="section-label">TRANSPARÊNCIA DE AUDIÊNCIA</p>
       <h2 class="section-title" id="analytics-heading">Visitas registradas no AldenirMed89</h2>
-      <p class="section-sub">Indicadores públicos aproximados para acompanhar o alcance educacional e descobrir quais seções são mais úteis.</p>
+      <p class="section-sub">Indicadores públicos aproximados para acompanhar o alcance educacional e descobrir quais seções são mais úteis. <a href="18_Centro_Tripulacao/painel-visitas.html">Abrir painel diário de visitas e páginas →</a></p>
     </div>
     <div class="analytics-panel" data-analytics-panel>
       <div class="analytics-total">

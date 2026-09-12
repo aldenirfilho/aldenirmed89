@@ -70,13 +70,16 @@ MAX_OCR_CACHE_ENTRY_BYTES = 8 * 1024 * 1024
 INDEX_RENDERER_VERSION = "library-safe-html-v5"
 INDEX_VERSION = "library-previews-v5"
 REVIEW_PLACEHOLDER_RENDERER = "editorial-review-placeholder-v1"
-DOCX_RENDERER_VERSION = "docx-stdlib-xml-v1"
+DOCX_RENDERER_VERSION = "docx-stdlib-xml-v2"
 PDF_RENDERER_VERSION = "pdf-local-cover-text-ocr-v3"
 PAGES_RENDERER_VERSION = "pages-quicklook-image-v1"
 PREVIEW_EXTENSIONS = {"docx", "pdf", "pages"}
 
 WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-NS = {"w": WORD_NS}
+MATH_NS = "http://schemas.openxmlformats.org/officeDocument/2006/math"
+REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
+NS = {"w": WORD_NS, "m": MATH_NS}
 W_VAL = f"{{{WORD_NS}}}val"
 W_TAG = lambda name: f"{{{WORD_NS}}}{name}"
 
@@ -445,13 +448,50 @@ def run_html(run: ET.Element) -> tuple[str, str]:
     return rendered, plain
 
 
-def paragraph_html(paragraph: ET.Element) -> tuple[str, str, bool]:
+def paragraph_html(paragraph: ET.Element, media: dict | None = None) -> tuple[str, str, bool]:
     rendered_parts: list[str] = []
     plain_parts: list[str] = []
-    for run in paragraph.iter(W_TAG("r")):
-        rendered, plain = run_html(run)
-        rendered_parts.append(rendered)
-        plain_parts.append(plain)
+    media = media or {}
+
+    def visit(node: ET.Element) -> None:
+        if node.tag == W_TAG("r"):
+            rendered, plain = run_html(node)
+            rendered_parts.append(rendered)
+            plain_parts.append(plain)
+            for blip in node.iter(f"{{{DRAWING_NS}}}blip"):
+                image_data = media.get("images", {}).get(blip.get(f"{{{REL_NS}}}embed"))
+                if image_data:
+                    rendered_parts.append(image_data)
+            return
+        if node.tag == f"{{{MATH_NS}}}oMath":
+            # Linear native equations retain their text and order. Never flatten
+            # a structured fraction/power into an ambiguous clinical formula.
+            allowed = {f"{{{MATH_NS}}}{name}" for name in ("oMath", "r", "t", "rPr", "sty", "nor", "ctrlPr")}
+            if all(child.tag in allowed or child.tag.startswith(f"{{{WORD_NS}}}") for child in node.iter()):
+                value = "".join(child.text or "" for child in node.iter(f"{{{MATH_NS}}}t"))
+            else:
+                value = "[Equação estruturada: conferir no documento Word original.]"
+            rendered_parts.append('<span class="docx-equation">' + html.escape(value) + '</span>')
+            plain_parts.append(value)
+            return
+        if node.tag == W_TAG("hyperlink"):
+            start = len(rendered_parts)
+            for child in node:
+                visit(child)
+            target = media.get("links", {}).get(node.get(f"{{{REL_NS}}}id"))
+            if target:
+                label = "".join(rendered_parts[start:])
+                del rendered_parts[start:]
+                # Public previews are inert and contain no outbound anchors.
+                # Preserve the citation URL as selectable text; navigation is
+                # offered by the surrounding library/radar UI.
+                rendered_parts.append(f'<span class="docx-reference">{label} · {html.escape(target)}</span>')
+                plain_parts.append(" " + target)
+            return
+        for child in node:
+            visit(child)
+
+    visit(paragraph)
 
     rendered = "".join(rendered_parts).strip()
     plain = "".join(plain_parts).strip()
@@ -468,7 +508,7 @@ def paragraph_html(paragraph: ET.Element) -> tuple[str, str, bool]:
     return f"<p>{rendered}</p>", plain, False
 
 
-def table_html(table: ET.Element) -> tuple[str, str]:
+def table_html(table: ET.Element, media: dict | None = None) -> tuple[str, str]:
     rendered_rows: list[str] = []
     plain_rows: list[str] = []
     for row in table.findall("./w:tr", NS):
@@ -476,13 +516,16 @@ def table_html(table: ET.Element) -> tuple[str, str]:
         plain_cells: list[str] = []
         for cell in row.findall("./w:tc", NS):
             cell_texts: list[str] = []
+            cell_html: list[str] = []
             for paragraph in cell.findall("./w:p", NS):
-                _, plain, _ = paragraph_html(paragraph)
+                rendered, plain, _ = paragraph_html(paragraph, media)
                 if plain:
                     cell_texts.append(plain)
+                if rendered:
+                    cell_html.append(rendered)
             plain_cell = "\n".join(cell_texts)
             plain_cells.append(plain_cell)
-            rendered_cells.append(f"<td>{html.escape(plain_cell).replace(chr(10), '<br>')}</td>")
+            rendered_cells.append(f"<td>{''.join(cell_html)}</td>")
         if rendered_cells:
             rendered_rows.append("<tr>" + "".join(rendered_cells) + "</tr>")
             plain_rows.append("\t".join(plain_cells))
@@ -491,7 +534,7 @@ def table_html(table: ET.Element) -> tuple[str, str]:
     return "<div class=\"table-wrap\"><table><tbody>" + "".join(rendered_rows) + "</tbody></table></div>", "\n".join(plain_rows)
 
 
-def render_document_xml(document_xml: bytes) -> tuple[str, dict[str, int]]:
+def render_document_xml(document_xml: bytes, media: dict | None = None) -> tuple[str, dict[str, int]]:
     if len(document_xml) > MAX_DOCUMENT_XML_BYTES:
         raise PreviewBuildError(
             f"word/document.xml excede o limite seguro de {MAX_DOCUMENT_XML_BYTES} bytes."
@@ -517,7 +560,7 @@ def render_document_xml(document_xml: bytes) -> tuple[str, dict[str, int]]:
 
     for child in body:
         if child.tag == W_TAG("p"):
-            rendered, plain, is_list = paragraph_html(child)
+            rendered, plain, is_list = paragraph_html(child, media)
             if not rendered:
                 continue
             paragraph_count += 1
@@ -529,7 +572,7 @@ def render_document_xml(document_xml: bytes) -> tuple[str, dict[str, int]]:
                 blocks.append(rendered)
         elif child.tag == W_TAG("tbl"):
             flush_list()
-            rendered, plain = table_html(child)
+            rendered, plain = table_html(child, media)
             if rendered:
                 table_count += 1
                 blocks.append(rendered)
@@ -545,6 +588,55 @@ def render_document_xml(document_xml: bytes) -> tuple[str, dict[str, int]]:
     }
     content = "\n".join(blocks) or '<p class="empty">Nenhum texto extraível foi encontrado neste DOCX.</p>'
     return content, stats
+
+
+def reviewed_docx_media(library_root: Path, source: Path, digest: str) -> dict:
+    """Opt-in illustrations/links audited for a particular source SHA.
+
+    Compressed image bytes must match a local derivative and the embedded
+    source image. Unregistered legacy documents keep their text-only preview.
+    Nothing is fetched from a document relationship.
+    """
+    registry = library_root / "data/biblioteca_preview_assets.json"
+    if not registry.is_file():
+        return {}
+    payload = json.loads(registry.read_text(encoding="utf-8"))
+    entry = payload.get("documents", {}).get(digest)
+    if not isinstance(entry, dict):
+        return {}
+    result: dict = {"images": {}, "links": {}}
+    with zipfile.ZipFile(source) as archive:
+        rel_path = "word/_rels/document.xml.rels"
+        relationships = ET.fromstring(archive.read(rel_path)) if rel_path in archive.namelist() else []
+        for rel in relationships:
+            target = rel.get("Target", "")
+            if rel.get("TargetMode") == "External" and target in entry.get("approvedLinks", []):
+                from urllib.parse import urlsplit
+                url = urlsplit(target)
+                if url.scheme == "https" and url.netloc and not url.username and not url.password:
+                    result["links"][rel.get("Id")] = target
+        for item in entry.get("images", []):
+            path = str(item.get("path", ""))
+            if not re.fullmatch(r"assets/docx-illustrations/[a-f0-9]{64}\.webp", path):
+                raise PreviewBuildError("Caminho de ilustração DOCX inválido.")
+            image_file = source_file(library_root, PurePosixPath(path))
+            if image_file.stat().st_size > 512_000:
+                raise PreviewBuildError("Ilustração DOCX excede o limite por imagem.")
+            data = image_file.read_bytes()
+            if sha256_bytes(data) != item.get("sha256") or data[:4] != b"RIFF" or data[8:12] != b"WEBP":
+                raise PreviewBuildError("Integridade/formato da ilustração DOCX divergente.")
+            member = str(item.get("sourceMedia", ""))
+            if not re.fullmatch(r"word/media/[A-Za-z0-9_.-]+", member):
+                raise PreviewBuildError("Origem da ilustração DOCX inválida.")
+            if archive.getinfo(member).file_size > 32 * 1024 * 1024 or sha256_bytes(archive.read(member)) != item.get("sourceSha256"):
+                raise PreviewBuildError("Imagem original DOCX divergiu da revisão.")
+            rid = next((r.get("Id") for r in relationships if r.get("Target") == member.removeprefix("word/")), None)
+            if not rid:
+                raise PreviewBuildError("Ilustração DOCX sem relação original.")
+            alt = html.escape(str(item.get("alt") or "Ilustração educacional do documento"), quote=True)
+            encoded = base64.b64encode(data).decode("ascii")
+            result["images"][rid] = f'<img class="docx-illustration" src="data:image/webp;base64,{encoded}" alt="{alt}" loading="lazy">'
+    return result
 
 
 def docx_document_xml(source: Path) -> bytes:
@@ -1065,6 +1157,10 @@ def render_page(
     .table-wrap{{overflow:auto;margin:1rem 0;border:1px solid var(--line);border-radius:10px}}
     table{{border-collapse:collapse;width:100%;min-width:420px}}
     td{{border:1px solid var(--line);padding:.65rem;vertical-align:top}}
+    td p{{margin:.2rem 0}}
+    .docx-reference{{color:var(--accent);overflow-wrap:anywhere}}
+    .docx-illustration{{display:block;width:100%;height:auto;margin:1rem auto;border-radius:8px;background:#fff}}
+    .docx-equation{{display:inline-block;padding:.3rem .5rem;background:#152c44;color:#fff;border-radius:5px;font-weight:600;overflow-wrap:anywhere}}
     .empty{{color:var(--muted);font-style:italic}}
     .pdf-cover{{margin:0 auto 2rem;text-align:center}}
     .pdf-cover img{{display:block;max-width:100%;height:auto;margin:auto;border:1px solid var(--line);border-radius:8px;box-shadow:0 12px 30px #0007}}
@@ -1216,14 +1312,24 @@ def build_plan(
             raise PreviewBuildError(f"SHA-256 divergente no manifesto: {source_path}")
 
         if extension == "docx":
-            content, stats = render_document_xml(docx_document_xml(source))
+            media = reviewed_docx_media(library_root, source, source_sha)
+            content, stats = render_document_xml(docx_document_xml(source), media)
             renderer = DOCX_RENDERER_VERSION
             status = "ready"
-            text_only = True
+            text_only = not bool(media.get("images"))
             notice = (
                 "Prévia textual segura. Layout, imagens, equações, notas e paginação "
                 "podem diferir do Word original."
             )
+            if media:
+                notice = (
+                    "Prévia educacional em revisão médica. Texto, tabelas, equações lineares e ilustrações "
+                    "educacionais do Word; imagens ilustrativas não são exames de pacientes. "
+                    "A conferência documental não substitui revisão médica especializada. "
+                    "Confira o Word para layout, paginação e campos editáveis."
+                )
+                stats["reviewedIllustrations"] = len(media.get("images", {}))
+                stats["referenceLinks"] = len(media.get("links", {}))
             content_label = "Conteúdo textual extraído do documento Word"
         elif extension == "pdf":
             content, stats, rendered = render_pdf_content(

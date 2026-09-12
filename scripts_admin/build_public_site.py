@@ -21,6 +21,7 @@ import sys
 import unicodedata
 import zipfile
 from collections import Counter
+from html.parser import HTMLParser
 from pathlib import Path, PurePosixPath
 from typing import NamedTuple
 from urllib.parse import quote, urlsplit
@@ -142,6 +143,39 @@ DOWNLOAD_UNCOMPRESSED_LIMIT = 64 * 1024 * 1024
 PUBLIC_BRAND = "AldenirMed89"
 PUBLIC_BASE_URL = "https://aldenirfilho.github.io/aldenirmed89/"
 PUBLIC_REPOSITORY_URL = "https://github.com/aldenirfilho/aldenirmed89"
+# Acesso aos sete anexos fornecidos em 11/09/2026 e autorizados para o site.
+# Blobs deste commit conferidos por SHA-256; binários continuam fora do Pages.
+LIBRARY_EXTERNAL_ORIGINAL_COMMIT = "7af0e0c680cd988952a7a886b8b2c8f856e69d41"
+LIBRARY_EXTERNAL_ORIGINALS = {
+    "acervo/infectologia/Doenca_de_Lemierre_Turbo_TEMI_TDAH_Friendly.docx": (
+        "acervo-infectologia-doenca-de-lemierre-turbo-temi-tdah-friendly-docx",
+        "330e3b9a008207116a8e89ff9d56f737638f31cace3e1612d4a0da6daaa02d11",
+    ),
+    "acervo/pocus-usg/Manual_Turbo_TEMI_POCUS_Bexiga_Conteudo_Vesical_Interativo.docx": (
+        "acervo-pocus-usg-manual-turbo-temi-pocus-bexiga-conteudo-vesical-interativo-docx",
+        "683bf55ef0a6353a141f3a0eb36fcb26eeaf8bfbb023ae157eab6ccbe8e033b9",
+    ),
+    "acervo/infectologia/Guia_Turbo_TEMI_360x_CRAB_Diagnostico_Stewardship.docx": (
+        "acervo-infectologia-guia-turbo-temi-360x-crab-diagnostico-stewardship-docx",
+        "f9e3b5d621448805a2d49820f4b5f429aa62c42c1e7b8ca99b324a0d5d534f5c",
+    ),
+    "acervo/disturbios-eletroliticos/Gasometria_I2_Modo_Turbo.docx": (
+        "acervo-disturbios-eletroliticos-gasometria-i2-modo-turbo-docx",
+        "1ac7df43a2f78a415a20de5a85d56043fe8e31f10173b58e1cef011debd2bb91",
+    ),
+    "acervo/endocrino-metabolico/Protocolo_Turbo_TEMI_Sindrome_de_Fahr_Hipocalcemia_360X.docx": (
+        "acervo-endocrino-metabolico-protocolo-turbo-temi-sindrome-de-fahr-hipocalcemia-360x-docx",
+        "363f3cc0b17bbd3eb5ac800ea216ce2f1c1b3811962238884a719eae40cdfd76",
+    ),
+    "acervo/clinica-medica/Turbo_TEMI_360X_Medicacoes_Cirurgia_Ortopedica.docx": (
+        "acervo-clinica-medica-turbo-temi-360x-medicacoes-cirurgia-ortopedica-docx",
+        "c40bbe380c09b7d41cf98da5ddd48bec766a8f92c4fd197c7d4fbe3df6ea5a1c",
+    ),
+    "acervo/neuro-uti/Encefalite_Paraneoplasica_Turbo_TEMI_360X.docx": (
+        "acervo-neuro-uti-encefalite-paraneoplasica-turbo-temi-360x-docx",
+        "7636e06b557f760dcee2f65f5eda3555666c4d06b416fea4d7798eb72e08fac1",
+    ),
+}
 PUBLIC_PATH_PREFIX = "/aldenirmed89/"
 LEGACY_BASE_URL = "https://aldenirfilho.github.io/antigravity-consultas/"
 LEGACY_REPOSITORY_URL = "https://github.com/aldenirfilho/antigravity-consultas"
@@ -198,6 +232,10 @@ def should_skip(root: Path, candidate: Path) -> bool:
     relative = candidate.relative_to(root).as_posix()
     normalized = relative.lower()
     name = candidate.name.lower()
+
+    # Código de servidor é implantado no Supabase, nunca no GitHub Pages.
+    if relative == "18_Centro_Tripulacao/supabase" or relative.startswith("18_Centro_Tripulacao/supabase/"):
+        return True
 
     if candidate.is_symlink():
         return True
@@ -487,6 +525,27 @@ def _write_public_json(site: Path, relative: str, payload: object) -> None:
     destination.write_bytes(_json_bytes(payload))
 
 
+def sanitize_library_public_record(
+    item: dict, preview_only_paths: set[str], path_key: str = "path"
+) -> dict:
+    record = dict(item)
+    source_path = canonical_relative(str(record.get(path_key) or ""))
+    preview_only = source_path in preview_only_paths
+    record["publicationMode"] = "preview-only" if preview_only else "original-public"
+    record["originalPublic"] = not preview_only
+    record.pop("externalOriginalUrl", None)
+    approved = LIBRARY_EXTERNAL_ORIGINALS.get(source_path)
+    if approved is not None and preview_only:
+        identity = str(record.get("documentId") or record.get("id") or "")
+        if (identity, record.get("sourceSha256")) != approved:
+            raise ValueError(f"Identidade do original externo divergente: {source_path}")
+        record["externalOriginalUrl"] = (
+            f"{PUBLIC_REPOSITORY_URL}/blob/{LIBRARY_EXTERNAL_ORIGINAL_COMMIT}/"
+            + quote(LIBRARY_ROOT_PREFIX + source_path, safe="/")
+        )
+    return record
+
+
 def write_public_library_metadata(
     root: Path,
     site: Path,
@@ -499,14 +558,7 @@ def write_public_library_metadata(
     preview_only_paths = set(plan.preview_only_source_paths)
 
     def sanitize_record(item: dict, path_key: str = "path") -> dict:
-        record = dict(item)
-        source_path = canonical_relative(str(record.get(path_key) or ""))
-        preview_only = source_path in preview_only_paths
-        record["publicationMode"] = (
-            "preview-only" if preview_only else "original-public"
-        )
-        record["originalPublic"] = not preview_only
-        return record
+        return sanitize_library_public_record(item, preview_only_paths, path_key)
 
     manifest_relative = (
         "02_Biblioteca_IA_Engine/data/biblioteca_documentos_manifest.json"
@@ -1010,6 +1062,35 @@ EDITORIAL_ATTRIBUTION_EXCLUSIONS = frozenset(
 )
 
 
+def closing_document_tag(html: str, tag: str) -> int | None:
+    """Localiza o fechamento real, ignorando strings JavaScript e comentários."""
+    class ClosingTagParser(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=False)
+            self.document_closing_offset = None
+            self.raw = []
+            self.lines = [0]
+            for match in re.finditer("\n", html):
+                self.lines.append(match.end())
+
+        def handle_starttag(self, name, attrs):
+            if name in {"script", "style", "textarea", "title"}:
+                self.raw.append(name)
+
+        def handle_endtag(self, name):
+            if self.raw:
+                if name == self.raw[-1]:
+                    self.raw.pop()
+                return
+            if name == tag:
+                line, column = self.getpos()
+                self.document_closing_offset = self.lines[line - 1] + column
+
+    parser = ClosingTagParser()
+    parser.feed(html)
+    return parser.document_closing_offset
+
+
 def inject_editorial_attribution(site: Path) -> int:
     """Acrescenta atribuição editorial discreta em todo HTML do artefato.
 
@@ -1060,9 +1141,9 @@ def inject_editorial_attribution(site: Path) -> int:
     marcas e obras de terceiros permanecem creditadas aos respectivos titulares.
   </p>
 </footer>"""
-        closing_body = re.search(r"</body\s*>", html, flags=re.IGNORECASE)
-        if closing_body:
-            html = html[: closing_body.start()] + block + "\n" + html[closing_body.start() :]
+        closing_body = closing_document_tag(html, "body")
+        if closing_body is not None:
+            html = html[: closing_body] + block + "\n" + html[closing_body :]
         else:
             html = html.rstrip() + "\n" + block + "\n"
         html_path.write_text(html, encoding="utf-8")
@@ -1273,9 +1354,9 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
             head_lines.append(f'<link rel="stylesheet" href="{identity_css_href}">')
             head_lines.append(f'<link rel="stylesheet" href="{css_href}">')
         head_block = "\n".join(head_lines)
-        closing_head = re.search(r"</head\s*>", html, flags=re.IGNORECASE)
-        if closing_head:
-            html = html[: closing_head.start()] + head_block + "\n" + html[closing_head.start() :]
+        closing_head = closing_document_tag(html, "head")
+        if closing_head is not None:
+            html = html[: closing_head] + head_block + "\n" + html[closing_head :]
         else:
             html = head_block + "\n" + html
 
@@ -1292,13 +1373,13 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
                 f'data-config="{config_href}"></script>'
             )
             body_block = "\n".join(body_blocks)
-            closing_body = re.search(r"</body\s*>", html, flags=re.IGNORECASE)
-            if closing_body:
+            closing_body = closing_document_tag(html, "body")
+            if closing_body is not None:
                 html = (
-                    html[: closing_body.start()]
+                    html[: closing_body]
                     + body_block
                     + "\n"
-                    + html[closing_body.start() :]
+                    + html[closing_body :]
                 )
             else:
                 html = html.rstrip() + "\n" + body_block + "\n"
