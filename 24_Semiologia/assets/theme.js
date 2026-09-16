@@ -39,7 +39,7 @@
     try {
       const registration = await navigator.serviceWorker.register(new URL('../sw.js', scriptURL));
       const installing = registration.installing || registration.waiting;
-      const report = () => { if(status) status.textContent = '✓ Aulas e áudios salvos offline; imagens ficam disponíveis após serem abertas com conexão'; };
+      const report = () => { if(status) status.textContent = '✓ Aulas e áudios salvos offline; imagens podem ser guardadas após a abertura com conexão, se houver espaço'; };
       if (installing) {
         if(status) status.textContent='Salvando aulas e áudios para uso offline…';
         installing.addEventListener('statechange', () => {

@@ -34,7 +34,8 @@ class ImportWorkflowTest(unittest.TestCase):
 
     def test_default_output_next_to_source_and_compatible(self):
         target, result = gc.convert_file(self.source)
-        self.assertEqual(target.parent, self.base)
+        # macOS exposes /var through /private/var; compare the actual directory.
+        self.assertEqual(target.parent, self.base.resolve())
         self.assertEqual(json.loads(target.read_text()), result)
         self.assertEqual(result['days'][0]['views'], 1)
         self.assertEqual(result['days'][0]['visitors'], 1)
