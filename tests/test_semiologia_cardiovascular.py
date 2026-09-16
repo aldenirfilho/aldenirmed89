@@ -103,20 +103,20 @@ class SemiologyCardioTests(unittest.TestCase):
     def test_worker_ranges_offline_and_cache_isolation(self):
         script=r'''
 const vm=require('node:vm'),fs=require('node:fs'),assert=require('node:assert/strict');
-const events={},entries=new Map(),deleted=[];let fail=false;
+const events={},entries=new Map(),deleted=[];let fail=false,quotaExceeded=false;
 const root='https://example.com/aldenirmed89/24_Semiologia/';
 const key=r=>typeof r==='string'?r:r.url;
-const cache={addAll:async urls=>{for(const url of urls)entries.set(key(url),new Response('0123456789',{headers:{'Content-Type':'audio/wav'}}))},match:async r=>entries.get(key(r))?.clone(),put:async(r,v)=>entries.set(key(r),v)};
+const cache={addAll:async urls=>{for(const url of urls)entries.set(key(url),new Response('0123456789',{headers:{'Content-Type':'audio/wav'}}))},match:async r=>entries.get(key(r))?.clone(),put:async(r,v)=>{if(quotaExceeded)throw Error('QuotaExceededError');entries.set(key(r),v)}};
 const sandbox={URL,Response,Request,Headers,
  self:{location:{href:root+'sw.js'},addEventListener:(n,f)=>events[n]=f,skipWaiting:async()=>{},clients:{claim:async()=>{}}},
- caches:{open:async()=>cache,keys:async()=>['antigravity-root-v35','aldenirmed89-semiologia-neuro-v2','aldenirmed89-semiologia-cardio-old','aldenirmed89-semiologia-cardio-v2'],delete:async k=>deleted.push(k)},
+ caches:{open:async()=>cache,keys:async()=>['antigravity-root-v35','aldenirmed89-semiologia-neuro-v2','aldenirmed89-semiologia-cardio-old','aldenirmed89-semiologia-cardio-v2','aldenirmed89-semiologia-cardio-v3','aldenirmed89-semiologia-cardio-v4'],delete:async k=>deleted.push(k)},
  fetch:async request=>{if(fail)throw Error('offline');if(String(request).includes('audio-manifest'))return Response.json([{file:'assets/audio/normal.wav'}]);return new Response('network')}
 };
 vm.runInNewContext(fs.readFileSync('24_Semiologia/sw.js','utf8'),sandbox);
 async function dispatch(name){let p;events[name]({waitUntil:x=>p=x});await p;}
 async function get(path,range,mode='cors'){let p;events.fetch({request:{url:new URL(path,root).href,method:'GET',mode,headers:new Headers(range?{'Range':range}:{})},respondWith:x=>p=x});return p;}
 (async()=>{
- await dispatch('install');await dispatch('activate');assert.deepEqual(deleted,['aldenirmed89-semiologia-cardio-old','aldenirmed89-semiologia-cardio-v2']);
+ await dispatch('install');await dispatch('activate');assert.deepEqual(deleted,['aldenirmed89-semiologia-cardio-old','aldenirmed89-semiologia-cardio-v2','aldenirmed89-semiologia-cardio-v3']);
  assert.equal(await get('../01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html'),undefined);
  fail=true;const file='Cardiovascular/assets/audio/normal.wav';
  let r=await get(file,'bytes=2-5');assert.equal(r.status,206);assert.equal(r.headers.get('Content-Range'),'bytes 2-5/10');assert.equal(await r.text(),'2345');
@@ -126,6 +126,18 @@ async function get(path,range,mode='cors'){let p;events.fetch({request:{url:new 
  assert.equal((await get(file,'bytes=0-1,4-5')).status,416);
  assert.equal(await(await get(file)).text(),'0123456789');
  assert.equal(await(await get('Cardiovascular/index.html',null,'navigate')).text(),'0123456789');
+ // Filtered static pages must work even when this exact query was never visited online.
+ for(const path of ['Atlas/index.html?modulo=Neurologica','Atlas/?modulo=Cardiovascular','Abdominal/index.html?origem=atalho']){
+   assert.equal(await(await get(path,null,'navigate')).text(),'0123456789',path);
+ }
+ await assert.rejects(()=>get('missing.html?modulo=Neurologica',null,'navigate'),/offline/);
+ await assert.rejects(()=>get('Atlas/galeria.js?v=uncached'),/offline/);
+ // A full device must not make an available online page or image fail to load.
+ fail=false;quotaExceeded=true;
+ for(const path of ['Abdominal/index.html','Atlas/assets/new-image.png','../manifest.webmanifest']){
+   const response=await get(path,null,path.endsWith('.html')?'navigate':'cors');
+   assert.equal(await response.text(),'network',path);
+ }
 })().catch(e=>{console.error(e);process.exit(1)});
 '''
         result=subprocess.run(['node','-e',script],cwd=ROOT,text=True,capture_output=True)
