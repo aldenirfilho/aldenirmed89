@@ -37,6 +37,7 @@ EXPECTED_MODULE_ENTRYPOINTS = {
     "16_Diretorio_Medico/index.html",
     "17_Portal_Vivo/index.html",
     "18_Centro_Tripulacao/index.html",
+    "radar-biblico-3min/index.html",
 }
 
 
@@ -54,7 +55,7 @@ class ClarityHomeCoverageTests(unittest.TestCase):
 
     def test_all_home_module_entrypoints_are_covered(self):
         self.assertEqual(self.entrypoints, EXPECTED_MODULE_ENTRYPOINTS)
-        self.assertEqual(len(self.entrypoints), 30)
+        self.assertEqual(len(self.entrypoints), 31)
 
     @staticmethod
     def _linked_local_sources(entrypoint, html, attribute, suffix):

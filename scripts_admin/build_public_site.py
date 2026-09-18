@@ -93,6 +93,7 @@ OPTIONAL = (
     "02_Banco_Questoes_TEMI",
     "les-autoanticorpos",
     "respirasense-icu",
+    "radar-biblico-3min",
     "biblioteca",
     "updown",
     "calculadoras",

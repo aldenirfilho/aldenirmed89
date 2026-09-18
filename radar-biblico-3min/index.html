@@ -1,1 +1,1345 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Radar Bíblico 3 Minutos</title><style>body{font-family:system-ui;max-width:760px;margin:auto;padding:24px;background:#f6f4ed;color:#20251f}.card{background:white;padding:22px;border-radius:18px;box-shadow:0 4px 20px #0001;margin:14px 0}h1{font-size:1.8rem}h2{font-size:1.1rem}button{padding:12px 16px;border:0;border-radius:12px;background:#273b2c;color:white;font-weight:700}.small{color:#667;line-height:1.5}</style></head><body><h1>📖 Radar Bíblico 3 Minutos</h1><p class="small">Bíblia João Ferreira de Almeida 1911 · reflexão → justiça → honra → amor → perdão → ação</p><div class="card"><h2>📖 Versículo</h2><p id="v">Insira aqui o versículo fiel à Almeida 1911.</p><p><b>🔎 Interpretação:</b> significado simples e contextual.</p><p><b>🧭 Orientação:</b> como aplicar à situação de hoje.</p><p><b>⚖️ Justiça:</b> verdade, responsabilidade e limites.</p><p><b>🛡️ Honra:</b> agir com integridade mesmo quando é difícil.</p><p><b>❤️ Amor:</b> buscar o bem sem tolerar injustiça.</p><p><b>🕊️ Perdão:</b> libertar-se do rancor sem permitir repetição do dano.</p></div><div class="card"><h2>✅ Hoje, pratique</h2><p>• Uma atitude verdadeira.<br>• Uma atitude justa.<br>• Uma atitude de bondade concreta.</p></div><div class="card"><h2>🎁 Para entregar a alguém hoje</h2><p>Escolha um versículo diferente e acrescente uma mensagem humana curta conforme a oportunidade.</p><button onclick="navigator.clipboard.writeText(document.body.innerText)">📋 Copiar mensagem</button></div><footer class="small">Modelo de reflexão. Verifique a redação literal dos versículos na edição Almeida 1911 antes de publicar.</footer></body></html>
+<!doctype html>
+<html lang="pt-BR" data-module="radar-biblico-3min" data-default-theme="dark" data-global-theme-key="antigravity:a11y:v1" data-legacy-theme-key="rb3min-theme" data-dark-theme-color="#020b1f">
+<head>
+<meta charset="utf-8">
+<script>
+/* Bootstrap de preferências compartilhadas AldenirMed89 — mesma chave global dos demais módulos. */
+(function(){
+  "use strict";
+  var root=document.documentElement;
+  var globalKey="antigravity:a11y:v1";
+  var legacyKey=root.dataset.legacyThemeKey;
+  var preferences={},legacyTheme=null;
+  try{
+    var parsed=JSON.parse(localStorage.getItem(globalKey)||"{}");
+    if(parsed&&typeof parsed==="object"&&!Array.isArray(parsed))preferences=parsed;
+  }catch(_){preferences={}}
+  try{legacyTheme=legacyKey?localStorage.getItem(legacyKey):null}catch(_){legacyTheme=null}
+  var systemLight=matchMedia("(prefers-color-scheme: light)").matches;
+  var contrast=preferences.contrast===true;
+  var requestedTheme=["dark","light","system"].indexOf(preferences.theme)>-1?preferences.theme:null;
+  var followsSystem=preferences.theme === "system";
+  var legacyClarity=legacyTheme==="light"||legacyTheme==='"light"';
+  var defaultClarity=root.dataset.defaultTheme==="light";
+  var clarity=!contrast&&(
+    requestedTheme==="light"
+    ||(followsSystem&&systemLight)
+    ||(requestedTheme===null&&(typeof preferences.clarity==="boolean"?preferences.clarity:legacyClarity||defaultClarity))
+  );
+  root.classList.toggle("a11y-contrast",contrast);
+  root.dataset.theme=clarity?"light":"dark";
+  root.style.colorScheme=clarity?"light":"dark";
+})();
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Radar Bíblico 3 Minutos — trilha de Formação Humana do AldenirMed89: ciclo ativo de 3 minutos, aplicação à beira do leito na UTI e roteiro de preceptoria. Participação voluntária e plural.">
+<meta name="theme-color" content="#020b1f">
+<meta name="color-scheme" content="dark light">
+<meta name="robots" content="index,follow">
+<title>Radar Bíblico 3 Minutos • Formação Humana | AldenirMed89</title>
+<link rel="icon" href="../favicon.ico">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#020b1f;--bg2:#071831;--bg3:#0c2445;
+  --surf:rgba(255,255,255,.055);--surf-h:rgba(255,255,255,.09);
+  --brd:rgba(255,255,255,.09);--brd-h:rgba(255,255,255,.18);
+  --text:#f5f9ff;--muted:#a7bad4;--soft:#c7d7ea;
+  --cyan:#2dd4ff;--cyan-d:rgba(45,212,255,.14);
+  --violet:#a98cff;--vio-d:rgba(169,140,255,.14);
+  --green:#4ef0a1;--grn-d:rgba(78,240,161,.12);
+  --yellow:#ffd166;--yel-d:rgba(255,209,102,.13);
+  --red:#ff6060;--red-d:rgba(255,96,96,.13);
+  --rose:#ff8fa8;--rose-d:rgba(255,143,168,.13);
+  --font-head:'Syne',ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --font-body:'Outfit',ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --r:14px;--r-lg:22px;--r-xl:32px;
+  --shadow:0 24px 80px rgba(0,0,0,.4);
+  --page-max:1180px;
+  --page-gutter:clamp(16px,3vw,44px);
+  --on-accent:#030c18;
+  --accent:var(--rose);--accent-d:var(--rose-d);
+}
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#fffdfb;--bg2:#f5f8fc;--bg3:#ffffff;
+  --surf:rgba(16,38,59,.045);--surf-h:rgba(16,38,59,.085);
+  --brd:#d8e2ec;--brd-h:#7a8ea1;
+  --text:#10263b;--muted:#4f6577;--soft:#31506a;
+  --cyan:#006f7d;--cyan-d:rgba(0,111,125,.1);
+  --violet:#6548b8;--vio-d:rgba(101,72,184,.1);
+  --green:#0a7a51;--grn-d:rgba(10,122,81,.1);
+  --yellow:#8a5a00;--yel-d:rgba(138,90,0,.1);
+  --red:#b3261e;--red-d:rgba(179,38,30,.1);
+  --rose:#b03a58;--rose-d:rgba(176,58,88,.1);
+  --shadow:0 18px 50px rgba(16,38,59,.12);
+  --on-accent:#ffffff;
+}
+html.a11y-contrast{--bg:#000;--bg2:#0a0a0a;--bg3:#111;--text:#fff;--muted:#e2e2e2;--soft:#f0f0f0;--brd:#7d7d7d;--brd-h:#fff;--surf:rgba(255,255,255,.1);--surf-h:rgba(255,255,255,.2)}
+html.a11y-contrast a{text-decoration:underline}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html.fs-1{font-size:106%}html.fs-2{font-size:113%}html.fs-3{font-size:120%}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.62;overflow-x:hidden}
+a{color:var(--cyan);text-decoration:none;text-underline-offset:3px}
+a:hover{text-decoration:underline}
+img{display:block;max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--brd);border-radius:10px;padding:.6rem 1rem;background:var(--surf);color:var(--text);min-height:44px;transition:background .15s ease,border-color .15s ease,transform .1s ease}
+button:hover{background:var(--surf-h);border-color:var(--brd-h)}
+button:active{transform:translateY(1px)}
+button:disabled{opacity:.45;cursor:default}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+[hidden]{display:none!important}
+.skip{position:fixed;top:10px;left:10px;z-index:999;padding:11px 16px;border-radius:10px;background:#fff;color:#071422;font-weight:800;transform:translateY(-200%);transition:transform .18s ease}
+.skip:focus{transform:translateY(0)}
+.shell{width:100%;max-width:var(--page-max);margin:0 auto;padding:0 var(--page-gutter)}
+
+/* ── TOPBAR ─────────────────────────── */
+.topbar{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--brd)}
+.topbar-in{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:11px 0}
+.brand{font-family:var(--font-head);font-weight:800;letter-spacing:.02em;font-size:1.02rem;color:var(--text);display:flex;flex-direction:column;line-height:1.15}
+.brand span{color:var(--rose)}
+.brand small{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;font-weight:500}
+.tools{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tools button{padding:.45rem .7rem;min-height:40px;font-size:.86rem}
+.home-btn{background:var(--rose-d);border-color:color-mix(in srgb,var(--rose) 45%,transparent);color:var(--text);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:.5rem .85rem;min-height:40px;border-width:1px;border-style:solid}
+.home-btn:hover{background:var(--surf-h);text-decoration:none}
+#search-input{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:.45rem .75rem;min-height:40px;width:min(230px,44vw)}
+.search-results{position:absolute;z-index:80;right:var(--page-gutter);top:64px;background:var(--bg3);border:1px solid var(--brd-h);border-radius:var(--r);box-shadow:var(--shadow);max-width:min(460px,92vw);max-height:60vh;overflow:auto;padding:8px}
+.search-results p{padding:10px;color:var(--muted);font-size:.9rem}
+.search-results button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--brd);border-radius:0;padding:.7rem .6rem;min-height:0}
+.search-results button:last-child{border-bottom:0}
+.search-results b{color:var(--rose)}
+
+/* ── HERO ───────────────────────────── */
+.hero{padding:clamp(26px,5vw,52px) 0 18px;border-bottom:1px solid var(--brd);background:
+  radial-gradient(900px 340px at 12% -10%,var(--rose-d),transparent 62%),
+  radial-gradient(760px 300px at 92% 0%,var(--cyan-d),transparent 60%)}
+.kicker{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kicker i{font-style:normal;padding:.2rem .55rem;border:1px solid color-mix(in srgb,var(--rose) 40%,transparent);border-radius:999px;background:var(--rose-d)}
+h1{font-family:var(--font-head);font-size:clamp(1.85rem,5vw,3.1rem);line-height:1.08;letter-spacing:-.02em;font-weight:800;margin-bottom:14px}
+h1 em{font-style:normal;color:var(--rose)}
+.lead{color:var(--soft);font-size:clamp(1rem,1.9vw,1.14rem);max-width:74ch}
+.triade{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin-top:26px}
+.triade div{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r);padding:14px 16px}
+.triade b{display:block;font-family:var(--font-head);font-size:1rem;margin-bottom:3px}
+.triade p{color:var(--muted);font-size:.9rem;line-height:1.5}
+.t-sci{border-left:3px solid var(--cyan)}.t-comp{border-left:3px solid var(--green)}.t-hum{border-left:3px solid var(--rose)}
+
+/* ── AVISO / CONFERÊNCIA ────────────── */
+.strip{display:flex;gap:12px;align-items:flex-start;background:var(--yel-d);border:1px solid color-mix(in srgb,var(--yellow) 40%,transparent);border-radius:var(--r);padding:13px 16px;margin:20px 0 0;font-size:.89rem;line-height:1.55;color:var(--soft)}
+.strip b{color:var(--text)}
+.strip.plural{background:var(--cyan-d);border-color:color-mix(in srgb,var(--cyan) 38%,transparent)}
+
+/* ── NAV ────────────────────────────── */
+.nav{position:sticky;top:57px;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--brd)}
+.nav-in{display:flex;gap:6px;overflow-x:auto;padding:9px 0;scrollbar-width:thin}
+.nav button{white-space:nowrap;border-radius:999px;padding:.45rem .95rem;min-height:40px;font-size:.88rem;font-weight:600;background:transparent;border-color:transparent;color:var(--muted)}
+.nav button:hover{background:var(--surf);color:var(--text)}
+.nav button[aria-selected="true"]{background:var(--rose-d);border-color:color-mix(in srgb,var(--rose) 45%,transparent);color:var(--text)}
+
+/* ── PANES ──────────────────────────── */
+main{padding:clamp(24px,4vw,44px) 0 80px}
+.pane{display:none;animation:fade .25s ease}
+.pane.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+h2{font-family:var(--font-head);font-size:clamp(1.3rem,3vw,1.85rem);letter-spacing:-.01em;margin:0 0 6px;font-weight:800}
+h3{font-family:var(--font-head);font-size:1.08rem;margin:0 0 8px;font-weight:700}
+h4{font-family:var(--font-head);font-size:.96rem;margin:0 0 6px;font-weight:700}
+.sub{color:var(--muted);margin-bottom:22px;max-width:78ch}
+.block{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-lg);padding:clamp(16px,2.6vw,24px);margin-bottom:18px}
+.block>p+p,.block>ul,.block>ol{margin-top:10px}
+ul,ol{padding-left:1.25rem}
+li{margin-bottom:6px}
+.muted{color:var(--muted)}
+.mono{font-family:var(--font-mono)}
+.grid2{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(285px,1fr))}
+.grid3{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border-radius:999px;padding:.38rem .85rem;min-height:38px;font-size:.84rem;font-weight:600;background:var(--surf);border:1px solid var(--brd);color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--accent-d);border-color:color-mix(in srgb,var(--accent) 48%,transparent);color:var(--text)}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;padding:.22rem .58rem;border-radius:999px;background:var(--surf);border:1px solid var(--brd);color:var(--muted)}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.btn-main{background:var(--rose-d);border-color:color-mix(in srgb,var(--rose) 50%,transparent);font-weight:700}
+.callout{border-left:3px solid var(--accent);background:var(--accent-d);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin:12px 0;font-size:.93rem}
+.danger{--accent:var(--red);--accent-d:var(--red-d)}
+.ok{--accent:var(--green);--accent-d:var(--grn-d)}
+.info{--accent:var(--cyan);--accent-d:var(--cyan-d)}
+
+/* ── MOTOR 3 MIN ────────────────────── */
+.engine{background:linear-gradient(160deg,var(--bg2),var(--bg3));border:1px solid var(--brd-h);border-radius:var(--r-xl);padding:clamp(18px,3vw,30px);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.engine::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 200px at 85% -20%,var(--rose-d),transparent 65%);pointer-events:none}
+.eng-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;position:relative}
+.ring{width:82px;height:82px;flex:0 0 82px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(var(--rose) calc(var(--p,0)*1%),var(--surf) 0);transition:background .3s linear}
+.ring::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--bg2)}
+.ring b{position:relative;z-index:1;font-family:var(--font-mono);font-size:1.02rem;font-weight:700;letter-spacing:-.02em}
+.eng-meta{flex:1;min-width:190px}
+.eng-meta .tag{margin-bottom:6px}
+.eng-meta h3{font-size:1.22rem;margin-bottom:2px}
+.eng-ctrl{display:flex;gap:8px;flex-wrap:wrap}
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:20px;position:relative}
+.ph{border:1px solid var(--brd);border-radius:10px;padding:8px 6px;text-align:center;background:var(--surf);opacity:.5;transition:.2s}
+.ph.on{opacity:1;border-color:color-mix(in srgb,var(--rose) 55%,transparent);background:var(--rose-d)}
+.ph.done{opacity:.8;border-color:color-mix(in srgb,var(--green) 40%,transparent)}
+.ph i{font-style:normal;display:block;font-size:1.05rem;line-height:1.3}
+.ph b{display:block;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.09em;text-transform:uppercase}
+.ph small{display:block;font-family:var(--font-mono);font-size:.62rem;color:var(--muted)}
+.layer{border:1px solid var(--brd);border-radius:var(--r);padding:15px 17px;margin-bottom:11px;background:var(--bg3);position:relative}
+.layer.locked{background:var(--surf);border-style:dashed}
+.layer-h{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.layer-h i{font-style:normal;font-size:1.1rem}
+.layer-h b{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.layer .body{font-size:1rem;line-height:1.66}
+.verso{font-family:var(--font-head);font-size:clamp(1.05rem,2.3vw,1.32rem);line-height:1.5;font-weight:600}
+.ref{font-family:var(--font-mono);font-size:.82rem;color:var(--rose);margin-top:9px;letter-spacing:.03em}
+.think{color:var(--muted);font-style:italic;font-size:.93rem}
+.reveal-btn{width:100%;background:var(--surf);border-style:dashed;color:var(--muted);font-size:.9rem}
+.reveal-btn:hover{color:var(--text)}
+
+/* ── CARDS ──────────────────────────── */
+.card{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-lg);padding:18px 20px;border-top:3px solid var(--accent);height:100%;display:flex;flex-direction:column}
+.card h3{display:flex;align-items:center;gap:8px}
+.card .ref{margin:2px 0 10px}
+.card p{font-size:.94rem;color:var(--soft);margin-bottom:9px}
+.card .lbl{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+.eixo-justica{--accent:var(--cyan);--accent-d:var(--cyan-d)}
+.eixo-honra{--accent:var(--violet);--accent-d:var(--vio-d)}
+.eixo-amor{--accent:var(--rose);--accent-d:var(--rose-d)}
+.eixo-perdao{--accent:var(--green);--accent-d:var(--grn-d)}
+.eixo-responsabilidade{--accent:var(--yellow);--accent-d:var(--yel-d)}
+.eixo-humanidade{--accent:var(--cyan);--accent-d:var(--cyan-d)}
+
+/* ── UTI ────────────────────────────── */
+.scn{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-lg);margin-bottom:12px;overflow:hidden}
+.scn>summary{cursor:pointer;padding:15px 18px;font-family:var(--font-head);font-weight:700;font-size:1.03rem;display:flex;align-items:center;gap:10px;list-style:none;min-height:56px}
+.scn>summary::-webkit-details-marker{display:none}
+.scn>summary::after{content:"+";margin-left:auto;font-family:var(--font-mono);font-size:1.3rem;color:var(--muted)}
+.scn[open]>summary::after{content:"−"}
+.scn[open]>summary{border-bottom:1px solid var(--brd);background:var(--accent-d)}
+.scn-body{padding:16px 18px}
+.scn-body .cols{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));margin-top:12px}
+.do,.dont{border-radius:var(--r);padding:12px 14px;font-size:.91rem}
+.do{background:var(--grn-d);border:1px solid color-mix(in srgb,var(--green) 34%,transparent)}
+.dont{background:var(--red-d);border:1px solid color-mix(in srgb,var(--red) 34%,transparent)}
+.do h4,.dont h4{font-size:.8rem;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase}
+.frase{font-family:var(--font-head);font-style:italic;font-size:1.02rem;line-height:1.5;border-left:3px solid var(--accent);padding-left:14px;margin-top:14px}
+
+/* ── FLASHCARDS ─────────────────────── */
+.fc-grid{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(245px,1fr))}
+.fc{perspective:1200px;min-height:185px;cursor:pointer;background:none;border:0;padding:0;text-align:left}
+.fc-in{position:relative;width:100%;height:100%;min-height:185px;transition:transform .5s;transform-style:preserve-3d}
+.fc[aria-pressed="true"] .fc-in{transform:rotateY(180deg)}
+.fc-f,.fc-b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r-lg);border:1px solid var(--brd);padding:17px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.fc-f{background:var(--surf)}
+.fc-b{background:var(--rose-d);border-color:color-mix(in srgb,var(--rose) 42%,transparent);transform:rotateY(180deg)}
+.fc-f b,.fc-b b{font-family:var(--font-head);font-size:1rem;line-height:1.4}
+.fc small{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.fc p{font-size:.9rem;color:var(--soft)}
+
+/* ── DILEMAS ────────────────────────── */
+.dil{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r-lg);padding:19px 21px;margin-bottom:15px}
+.dil .cen{font-size:.99rem;margin:8px 0 14px}
+.opt{display:block;width:100%;text-align:left;margin-bottom:8px;background:var(--bg3);border:1px solid var(--brd);border-radius:var(--r);padding:.8rem 1rem;min-height:0;font-size:.93rem}
+.opt:hover{border-color:var(--brd-h)}
+.opt.sel{border-color:color-mix(in srgb,var(--rose) 55%,transparent);background:var(--rose-d)}
+.com{display:none;font-size:.92rem;color:var(--soft);border-left:3px solid var(--rose);padding:10px 14px;margin:4px 0 12px;background:var(--rose-d);border-radius:0 var(--r) var(--r) 0}
+.com.on{display:block}
+
+/* ── REVISÃO / DIÁRIO ───────────────── */
+.field{display:flex;flex-direction:column;gap:5px;font-size:.87rem;color:var(--muted)}
+.field input,.field select,.field textarea{background:var(--bg3);border:1px solid var(--brd);border-radius:10px;padding:.6rem .8rem;min-height:44px;color:var(--text);width:100%}
+.form-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:.91rem}
+.table-wrap{overflow-x:auto;border:1px solid var(--brd);border-radius:var(--r);margin:12px 0}
+th,td{padding:.62rem .75rem;text-align:left;border-bottom:1px solid var(--brd);vertical-align:top}
+th{background:var(--surf);font-family:var(--font-mono);font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+.diary-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--brd);font-size:.92rem}
+.diary-item:last-child{border-bottom:0}
+.diary-item .d{font-family:var(--font-mono);font-size:.74rem;color:var(--muted);flex:0 0 78px}
+
+/* ── FOOTER ─────────────────────────── */
+footer{border-top:1px solid var(--brd);padding:30px 0 50px;color:var(--muted);font-size:.87rem}
+footer .fl{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(140%);background:var(--bg3);border:1px solid var(--brd-h);border-radius:999px;padding:.7rem 1.3rem;box-shadow:var(--shadow);z-index:200;transition:transform .28s ease;font-size:.9rem;font-weight:600}
+.toast.on{transform:translateX(-50%) translateY(0)}
+mark{background:var(--yel-d);color:var(--text);padding:0 3px;border-radius:3px}
+
+@media (max-width:640px){
+  .phases{grid-template-columns:repeat(2,1fr)}
+  .nav{top:0;position:sticky}
+  #search-input{width:100%}
+  .tools{width:100%;margin-left:0}
+}
+@media print{
+  .topbar,.nav,.actions,.eng-ctrl,footer .fl,.reveal-btn,.chips{display:none!important}
+  body{background:#fff;color:#000}
+  .pane{display:block!important}
+  .block,.card,.engine{break-inside:avoid;border:1px solid #ccc;background:#fff;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topbar">
+  <div class="shell topbar-in">
+    <a class="brand" href="../index.html">ALDENIR<span>MED89</span><small>Formação Humana · Radar Bíblico</small></a>
+    <div class="tools">
+      <form id="search-form" role="search" autocomplete="off" onsubmit="return false">
+        <label class="sr-only" for="search-input">Buscar no módulo</label>
+        <input id="search-input" type="search" placeholder="Buscar… (tecla /)" aria-describedby="search-hint">
+        <span class="sr-only" id="search-hint">Busca versículos, cenários de UTI e ações práticas.</span>
+      </form>
+      <button type="button" id="font-btn" title="Tamanho do texto" aria-label="Aumentar tamanho do texto">🔠 A+</button>
+      <button type="button" id="theme-btn" data-clarity-toggle aria-pressed="false" title="Ativar visualização clara" aria-label="Ativar visualização clara com fundo branco">☀️ <span class="sr-only">Visualização clara</span></button>
+      <button type="button" id="print-btn" title="Imprimir cartão de bolso" aria-label="Imprimir">🖨️</button>
+      <a class="home-btn" href="../index.html">🏠 <span>Voltar ao AldenirMed89</span></a>
+    </div>
+  </div>
+  <div id="search-results" class="search-results" hidden></div>
+</header>
+
+<section class="hero">
+  <div class="shell">
+    <div class="kicker">❤️ Formação Humana <i>Turbo 360</i> <i>ciclo ativo de 3 minutos</i> <i>voluntário e plural</i></div>
+    <h1>Radar Bíblico <em>3 Minutos</em></h1>
+    <p class="lead">Reflexões breves sobre <b>justiça, honra, amor, perdão, responsabilidade e humanidade</b> — aplicadas ao leito, à conferência familiar, ao plantão noturno e à preceptoria. Não é devocional passivo: é um <b>ciclo ativo</b> de pensar antes de ler, traduzir para a UTI e sair com uma ação concreta.</p>
+    <div class="triade">
+      <div class="t-sci"><b>🧠 Ciência</b><p>Saber <b>o que</b> fazer. Diretriz, evidência, dose, protocolo.</p></div>
+      <div class="t-comp"><b>🩺 Competência</b><p>Saber <b>fazer</b>. Mão, tempo de resposta, execução sob pressão.</p></div>
+      <div class="t-hum"><b>❤️ Humanidade</b><p>Refletir <b>como</b> e <b>por que</b> cuidar. O que sobra quando o protocolo acaba.</p></div>
+    </div>
+    <div class="strip plural">
+      <span aria-hidden="true">🕊️</span>
+      <p><b>Trilha espiritual voluntária.</b> Este módulo respeita médicos, residentes, equipe, estudantes e pacientes de qualquer religião — ou sem religião nenhuma. Ninguém é avaliado, listado ou cobrado por participar. Os seis eixos funcionam igualmente como <b>ética clínica laica</b>: quem preferir pode usar só a coluna “Tradução UTI” e a “Ação”.</p>
+    </div>
+    <div class="strip">
+      <span aria-hidden="true">📜</span>
+      <p><b>Conferência textual pendente.</b> As passagens seguem a tradição <b>João Ferreira de Almeida (domínio público)</b>. Confira a redação literal na sua edição impressa antes de usar em material publicado, aula formal ou impressão em massa. O valor autoral deste módulo está no comentário, na tradução clínica e na ação — não na transcrição.</p>
+    </div>
+  </div>
+</section>
+
+<nav class="nav" aria-label="Seções do módulo">
+  <div class="shell nav-in" id="nav" role="tablist"></div>
+</nav>
+
+<main id="conteudo">
+<div class="shell">
+
+<!-- ═══ 1. MOTOR 3 MIN ═══ -->
+<section class="pane on" id="motor" role="tabpanel" aria-labelledby="tab-motor">
+  <h2>⏱️ Motor 3 Minutos</h2>
+  <p class="sub">Quatro camadas, 180 segundos. A regra do modo ativo: <b>você pensa antes de ler</b>. Cada camada fica fechada até você responder mentalmente à pergunta — é recordação ativa, o mesmo mecanismo do Turbo TEMI, aplicado a conduta humana.</p>
+
+  <div class="engine">
+    <div class="eng-head">
+      <div class="ring" id="ring" style="--p:0"><b id="clock">3:00</b></div>
+      <div class="eng-meta">
+        <span class="tag" id="card-eixo">eixo</span>
+        <h3 id="card-titulo">—</h3>
+        <p class="muted" id="card-cena">—</p>
+      </div>
+      <div class="eng-ctrl">
+        <button type="button" id="play" class="btn-main">▶️ Iniciar</button>
+        <button type="button" id="next">🔀 Próximo</button>
+        <button type="button" id="reset-eng">↺</button>
+      </div>
+    </div>
+
+    <div class="phases" id="phases"></div>
+    <div id="layers"></div>
+
+    <div class="actions">
+      <button type="button" id="open-all">👁️ Abrir tudo</button>
+      <button type="button" id="copy-card">📋 Copiar cartão</button>
+      <button type="button" id="save-diary">✅ Registrar no diário</button>
+      <button type="button" id="mode-plantao">⚡ Modo Plantão (60 s)</button>
+    </div>
+  </div>
+
+  <div class="block" style="margin-top:20px">
+    <h3>🎛️ Três modos de uso</h3>
+    <div class="grid3">
+      <div>
+        <h4>⚡ Modo Plantão — 60 s</h4>
+        <p class="muted" style="font-size:.9rem">Corredor, elevador, entre dois leitos. Só <b>versículo + ação</b>. Sem cronômetro, sem reflexão longa. Botão acima.</p>
+      </div>
+      <div>
+        <h4>🎓 Modo Preceptoria — 3 min</h4>
+        <p class="muted" style="font-size:.9rem">Fim do round ou antes da passagem. Projete a tela, rode o ciclo com a equipe. Roteiro completo na aba <b>Ensinar</b>.</p>
+      </div>
+      <div>
+        <h4>🧘 Modo Pessoal — 3 min</h4>
+        <p class="muted" style="font-size:.9rem">Início ou fim do seu plantão, sozinho. Use o diário local para fechar o ciclo com um registro de uma linha.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 2. TRILHAS ═══ -->
+<section class="pane" id="trilhas" role="tabpanel" aria-labelledby="tab-trilhas" hidden>
+  <h2>🧭 Trilhas — seis eixos</h2>
+  <p class="sub">Todo o acervo, filtrável. Clique em um cartão para carregá-lo no Motor 3 Minutos.</p>
+  <div class="chips" id="eixo-chips" role="group" aria-label="Filtrar por eixo"></div>
+  <div class="grid2" id="deck"></div>
+</section>
+
+<!-- ═══ 3. UTI NA PRÁTICA ═══ -->
+<section class="pane" id="uti" role="tabpanel" aria-labelledby="tab-uti" hidden>
+  <h2>🏥 Como inserir no ambiente de UTI</h2>
+  <p class="sub">Esta é a aba que transforma reflexão em conduta. Cada bloco parte de um <b>gatilho real de terapia intensiva</b> e entrega: o que fazer, o que não fazer e uma frase pronta que você pode dizer. A passagem bíblica é o ancoramento mnemônico — a conduta abaixo se sustenta sozinha em qualquer crença.</p>
+
+  <div class="block info">
+    <h3>🚦 Regra de ouro dos três nãos</h3>
+    <ul>
+      <li><b>Não durante emergência.</b> Parada, intubação, choque refratário, sangramento ativo: o Radar não existe. Ciência e competência primeiro, sempre.</li>
+      <li><b>Não à beira do leito sem convite.</b> Nunca ofereça conteúdo religioso a paciente ou família que não pediu. Quem conduz espiritualidade com paciente é a própria família, o capelão ou o líder religioso que <b>ela</b> escolher.</li>
+      <li><b>Não como avaliação.</b> Residente não é cobrado, listado, nem pontuado por participar. No serviço público a laicidade é regra — participação é livre e sem registro.</li>
+    </ul>
+    <p class="muted" style="margin-top:10px;font-size:.9rem">O que sobra é generoso: <b>a formação da equipe entre si</b>, fora do leito, em espaço e horário combinados. É ali que o Radar vive.</p>
+  </div>
+
+  <div class="chips" id="scn-chips" role="group" aria-label="Filtrar cenários"></div>
+  <div id="scn-list"></div>
+</section>
+
+<!-- ═══ 4. ENSINAR ═══ -->
+<section class="pane" id="ensinar" role="tabpanel" aria-labelledby="tab-ensinar" hidden>
+  <h2>🎓 Ensinar — Pausa de 3 Minutos na preceptoria</h2>
+  <p class="sub">Formato testável de condução com residentes e equipe. Um ritual curto, previsível e não invasivo tem muito mais adesão do que uma reunião longa e solene.</p>
+
+  <div class="block">
+    <h3>⏳ Estrutura fixa — 180 segundos</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tempo</th><th>Etapa</th><th>O que o preceptor faz</th><th>O que a equipe faz</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">0–20 s</td><td><b>📖 Texto</b></td><td>Lê a passagem uma única vez, em voz calma. Não comenta ainda.</td><td>Só escuta. Sem celular.</td></tr>
+          <tr><td class="mono">20–60 s</td><td><b>❓ Pergunta</b></td><td>Faz <b>uma</b> pergunta aberta ligada ao plantão de hoje.</td><td>Pensa em silêncio. Ninguém é obrigado a falar.</td></tr>
+          <tr><td class="mono">60–120 s</td><td><b>🏥 Caso</b></td><td>Traz um caso <b>anonimizado</b> — sem leito, sem nome, sem diagnóstico identificável.</td><td>Um ou dois comentam, no máximo.</td></tr>
+          <tr><td class="mono">120–180 s</td><td><b>✅ Ação</b></td><td>Fecha com <b>uma</b> ação concreta para o turno.</td><td>Cada um escolhe a sua, em silêncio. Sem prestação de contas.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout ok"><b>Regra do relógio:</b> se passar de 3 minutos, o ritual morre em duas semanas. Cronometre de verdade — o Motor da primeira aba faz isso por você, com o timer projetado.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="block ok">
+      <h3>✅ O que faz funcionar</h3>
+      <ul>
+        <li><b>Horário fixo e previsível.</b> Sempre no mesmo momento (fim do round, antes da passagem).</li>
+        <li><b>Porta aberta.</b> Quem quiser sair, sai — sem explicação e sem olhar atravessado.</li>
+        <li><b>Rodízio de condução.</b> Depois de um mês, deixe um residente conduzir. Ensinar consolida.</li>
+        <li><b>Espaço para o não religioso.</b> Convide explicitamente quem quiser trazer um poema, um caso, uma frase de um professor.</li>
+        <li><b>Encerramento seco.</b> "Bom plantão." Sem oração coletiva imposta, sem constrangimento de mãos dadas.</li>
+      </ul>
+    </div>
+    <div class="block danger">
+      <h3>⛔ O que mata o ritual</h3>
+      <ul>
+        <li><b>Transformar em sermão.</b> Passou de 3 minutos, virou pregação — e a equipe deixa de vir.</li>
+        <li><b>Usar como correção velada.</b> Escolher o texto para repreender alguém específico. Corrija em particular, sempre.</li>
+        <li><b>Lista de presença.</b> Qualquer registro transforma espiritualidade em obrigação institucional.</li>
+        <li><b>Caso identificável.</b> Leito, nome, idade exata, diagnóstico raro. Quebra de sigilo é falta ética grave.</li>
+        <li><b>Fazer com o paciente de plateia.</b> A pausa é da equipe, fora do leito.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>🗓️ Programação sugerida de 6 semanas</h3>
+    <p class="muted" style="font-size:.92rem">Um eixo por semana, três pausas por semana. Ao final, a equipe percorreu os seis eixos e você tem um vocabulário comum para conversas difíceis.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Semana</th><th>Eixo</th><th>Pergunta de abertura sugerida</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">S1</td><td>⚖️ Justiça</td><td>"Quem foi o paciente mais fácil de esquecer esta semana — e por quê?"</td></tr>
+          <tr><td class="mono">S2</td><td>🛡️ Honra</td><td>"O que você faria igual se ninguém estivesse olhando a prescrição?"</td></tr>
+          <tr><td class="mono">S3</td><td>❤️ Amor</td><td>"Qual foi o cuidado que ninguém prescreveu, mas alguém aqui fez?"</td></tr>
+          <tr><td class="mono">S4</td><td>🕊️ Perdão</td><td>"O que você ainda carrega de um plantão que deu errado?"</td></tr>
+          <tr><td class="mono">S5</td><td>🧭 Responsabilidade</td><td>"O que você sabia que devia fazer hoje e deixou para depois?"</td></tr>
+          <tr><td class="mono">S6</td><td>🤝 Humanidade</td><td>"Quando o silêncio ajudou mais do que a explicação?"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5. DILEMAS ═══ -->
+<section class="pane" id="dilemas" role="tabpanel" aria-labelledby="tab-dilemas" hidden>
+  <h2>⚖️ Dilemas — treino de decisão humana</h2>
+  <p class="sub">Não há gabarito moral automático. Há <b>consequências</b>. Escolha uma opção e leia o comentário: o objetivo é antecipar o custo de cada caminho antes de viver a cena de verdade — o mesmo princípio das questões comentadas do TEMI, aplicado a conduta.</p>
+  <div id="dil-list"></div>
+</section>
+
+<!-- ═══ 6. FLASHCARDS ═══ -->
+<section class="pane" id="flash" role="tabpanel" aria-labelledby="tab-flash" hidden>
+  <h2>🃏 Flashcards</h2>
+  <p class="sub">Frente: a situação clínica. Verso: o eixo, a referência e a conduta. Clique para virar. Recordação ativa — tente responder antes de virar.</p>
+  <div class="actions" style="margin:0 0 16px">
+    <button type="button" id="fc-shuffle">🔀 Embaralhar</button>
+    <button type="button" id="fc-reset">↺ Fechar todos</button>
+  </div>
+  <div class="fc-grid" id="fc-grid"></div>
+</section>
+
+<!-- ═══ 7. REVISÃO ═══ -->
+<section class="pane" id="revisao" role="tabpanel" aria-labelledby="tab-revisao" hidden>
+  <h2>🔁 Plano de revisão e diário</h2>
+  <p class="sub">Formação humana também precisa de repetição espaçada. Gere as datas D1 · D7 · D14 · D30 e registre uma linha por ciclo — o registro fica <b>só neste aparelho</b>, no navegador, e nunca sai daqui.</p>
+
+  <div class="block">
+    <h3>📅 Gerador de revisão espaçada</h3>
+    <div class="form-grid">
+      <label class="field">Data de hoje<input type="date" id="rev-date"></label>
+      <label class="field">Eixo estudado<select id="rev-eixo"></select></label>
+    </div>
+    <div class="actions"><button type="button" id="rev-gen" class="btn-main">Gerar plano</button><button type="button" id="rev-copy">📋 Copiar</button></div>
+    <div id="rev-out" class="table-wrap" hidden></div>
+  </div>
+
+  <div class="block">
+    <h3>📓 Diário de uma linha</h3>
+    <p class="muted" style="font-size:.9rem">O que você fez hoje que não estava na prescrição? Uma linha basta. <b>Não escreva dado de paciente</b> — nem iniciais, nem leito, nem diagnóstico raro.</p>
+    <div class="form-grid" style="grid-template-columns:1fr">
+      <label class="field"><span class="sr-only">Registro do dia</span><textarea id="diary-in" rows="2" placeholder="Ex.: sentei para falar com a filha do leito da manhã em vez de falar em pé."></textarea></label>
+    </div>
+    <div class="actions">
+      <button type="button" id="diary-add" class="btn-main">Salvar linha</button>
+      <button type="button" id="diary-export">⬇️ Exportar</button>
+      <button type="button" id="diary-clear">🗑️ Apagar tudo</button>
+    </div>
+    <div id="diary-list" style="margin-top:14px"></div>
+  </div>
+</section>
+
+<!-- ═══ 8. SOBRE ═══ -->
+<section class="pane" id="sobre" role="tabpanel" aria-labelledby="tab-sobre" hidden>
+  <h2>ℹ️ Conceito, limites e método</h2>
+
+  <div class="block">
+    <h3>🧠 Por que isto existe dentro de um site clínico</h3>
+    <p>O AldenirMed89 cobre <b>ciência</b> (o que fazer) e <b>competência</b> (saber fazer). Faltava a terceira dimensão: <b>humanidade</b> — como e por que cuidar. Ela não substitui nenhuma das outras duas e não compete com elas: entra depois do protocolo, no espaço em que o protocolo se cala.</p>
+    <div class="callout"><b>Princípio do módulo:</b> conhecimento permite tratar doenças. Humanidade ajuda a cuidar de pessoas.</div>
+  </div>
+
+  <div class="block">
+    <h3>🔬 Por que o formato é “Turbo 360” e não devocional</h3>
+    <ul>
+      <li><b>Recordação ativa:</b> a camada seguinte só abre depois que você pensa. Leitura passiva não fixa conduta.</li>
+      <li><b>Limite de tempo:</b> 3 minutos é curto o bastante para caber em plantão e longo o bastante para mudar uma decisão.</li>
+      <li><b>Tradução obrigatória:</b> nenhum cartão termina em abstração — todos aterrissam em UTI e em uma ação verificável no turno.</li>
+      <li><b>Revisão espaçada:</b> D1 · D7 · D14 · D30, igual aos módulos clínicos.</li>
+      <li><b>Dilema comentado:</b> a decisão é treinada antes da cena real, como questão comentada de prova.</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>📜 Texto, tradução e direitos</h3>
+    <p>As passagens seguem a tradição <b>João Ferreira de Almeida</b>, em domínio público. Cada cartão traz somente um trecho curto, como objeto de comentário autoral. Antes de usar em material impresso, aula formal ou publicação, <b>confira a redação literal</b> na sua edição de referência. Todo o comentário, a tradução clínica, os cenários de UTI e os dilemas são conteúdo autoral do projeto.</p>
+  </div>
+
+  <div class="block danger">
+    <h3>⛔ O que este módulo não é</h3>
+    <ul>
+      <li><b>Não é aconselhamento religioso</b> a paciente ou família, nem substitui capelania, psicologia hospitalar ou assistência espiritual formal.</li>
+      <li><b>Não é conduta clínica.</b> Nenhuma decisão de tratamento, limitação terapêutica ou comunicação de prognóstico se apoia neste módulo — use protocolo institucional, bioética e a equipe.</li>
+      <li><b>Não é proselitismo.</b> Nenhum conteúdo aqui deve ser usado para convencer alguém de crença alguma, especialmente em serviço público.</li>
+      <li><b>Não é substituto de cuidado com a própria saúde mental.</b> Sofrimento persistente da equipe pede apoio profissional, não reflexão.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <div class="shell">
+    <div class="fl">
+      <a class="home-btn" href="../index.html">🏠 Voltar ao AldenirMed89</a>
+      <span class="tag">Formação Humana</span>
+      <span class="tag">Turbo 360</span>
+      <span class="tag">Voluntário e plural</span>
+    </div>
+    <p class="mono" style="font-size:.78rem">Conteúdo autoral · Uso educacional · Participação voluntária · Não substitui raciocínio clínico, protocolo institucional, bioética ou assistência espiritual formal.</p>
+    <p style="margin-top:8px">Redação das passagens a conferir na edição João Ferreira de Almeida de referência antes de uso publicado.</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ══════════ DADOS ══════════ */
+var EIXOS = [
+  {id:"justica",         nome:"Justiça",         emoji:"⚖️", cor:"eixo-justica",         desc:"Verdade, responsabilidade e limites. Tratar igual quem o sistema trata diferente."},
+  {id:"honra",           nome:"Honra",           emoji:"🛡️", cor:"eixo-honra",           desc:"Integridade quando ninguém confere. O que você faz às 4h da manhã."},
+  {id:"amor",            nome:"Amor",            emoji:"❤️", cor:"eixo-amor",            desc:"Buscar o bem concreto, sem tolerar injustiça nem se destruir no processo."},
+  {id:"perdao",          nome:"Perdão",          emoji:"🕊️", cor:"eixo-perdao",          desc:"Soltar o rancor sem permitir a repetição do dano. Inclui perdoar a si mesmo."},
+  {id:"responsabilidade",nome:"Responsabilidade",emoji:"🧭", cor:"eixo-responsabilidade",desc:"Carregar o que é seu, pedir ajuda no que não é, e não adiar o que já sabe."},
+  {id:"humanidade",      nome:"Humanidade",      emoji:"🤝", cor:"eixo-humanidade",      desc:"Presença, escuta e palavra. Frequentemente o silêncio vale mais que a explicação."}
+];
+
+var CARDS = [
+  /* ── JUSTIÇA ── */
+  {eixo:"justica", ref:"Miqueias 6:8", titulo:"O mínimo inegociável",
+   texto:"Ele te declarou, ó homem, o que é bom; e que é o que o Senhor pede de ti, senão que pratiques a justiça, e ames a benignidade, e andes humildemente com o teu Deus?",
+   pergunta:"Se você tivesse que reduzir toda a sua ética de plantão a três palavras, quais seriam?",
+   ideia:"Três verbos, nesta ordem: fazer justiça, amar a bondade, andar com humildade. Não é sentimento — é prática, afeto e medida de si.",
+   uti:"Justiça é o mesmo protocolo para o executivo e para o morador de rua. Bondade é o cobertor que ninguém prescreveu. Humildade é chamar ajuda antes de o paciente pagar pela sua demora.",
+   acao:"Hoje, revise um paciente que você assumiu já rotulado por outro plantão. Refaça o exame com olhos limpos.",
+   cena:"Passagem de plantão com paciente rotulado"},
+
+  {eixo:"justica", ref:"Provérbios 31:8-9", titulo:"A voz de quem não tem voz",
+   texto:"Abre a tua boca a favor do mudo, pela causa de todos os que são designados à destruição. Abre a tua boca; julga retamente; e faze justiça aos pobres e aos necessitados.",
+   pergunta:"Quem, na sua UTI de hoje, não tem ninguém para falar por ele?",
+   ideia:"O texto não pede compaixão silenciosa: pede que se abra a boca. Advocacia ativa em favor de quem não consegue advogar por si.",
+   uti:"Sedado, intubado, delirante, sem família, sem plano, sem acompanhante. É exatamente o paciente que mais some da discussão do round — e o que mais precisa de alguém que fale.",
+   acao:"Escolha o paciente mais invisível da unidade e o apresente primeiro no round de hoje, com o mesmo cuidado que daria ao mais grave.",
+   cena:"Paciente sem família, sem acompanhante"},
+
+  {eixo:"justica", ref:"Levítico 19:15", titulo:"Sem acepção de pessoas",
+   texto:"Não farás injustiça no juízo; não aceitarás o pobre, nem respeitarás o grande; com justiça julgarás o teu próximo.",
+   pergunta:"A fila da vaga de UTI de hoje foi decidida por critério ou por pressão?",
+   ideia:"A imparcialidade tem dois lados: não favorecer o poderoso é óbvio; não favorecer o fraco por pena também é exigido. O critério vale para todos.",
+   uti:"Regulação de leito, priorização de exame, ordem de transferência. Quando o critério não está escrito, ele vira o telefonema mais insistente.",
+   acao:"Ao decidir uma priorização hoje, escreva no prontuário o critério usado — não só a decisão.",
+   cena:"Fila de vaga, recurso escasso, regulação"},
+
+  {eixo:"justica", ref:"Isaías 1:17", titulo:"Aprender a fazer o bem",
+   texto:"Aprendei a fazer bem; procurai o que é justo; ajudai o oprimido; fazei justiça ao órfão; tratai da causa das viúvas.",
+   pergunta:"Fazer o bem é instinto ou é habilidade treinada?",
+   ideia:"O verbo é aprender. Bondade competente não nasce pronta — treina-se como se treina intubação: repetição, feedback, correção.",
+   uti:"Comunicar mal notícia, acolher família em conflito, conduzir limitação terapêutica: são procedimentos com técnica, não improviso de quem tem boa intenção.",
+   acao:"Peça a um colega feedback específico sobre uma conversa difícil que você conduziu esta semana.",
+   cena:"Treino de comunicação e acolhimento"},
+
+  /* ── HONRA ── */
+  {eixo:"honra", ref:"Provérbios 10:9", titulo:"Andar seguro",
+   texto:"Quem anda em sinceridade, anda seguro; mas o que perverte os seus caminhos será conhecido.",
+   pergunta:"Que anotação sua do último mês você não gostaria de ver lida em voz alta numa auditoria?",
+   ideia:"Integridade não é virtude decorativa — é redução de risco. Quem não esconde nada não precisa lembrar o que escondeu.",
+   uti:"Prontuário é documento legal e memória da equipe. Evolução genérica, horário retroagido, exame não feito descrito como feito: cada atalho vira uma dívida que vence no pior momento.",
+   acao:"Releia sua última evolução. Se algo estiver descrito além do que você realmente examinou, corrija com aditamento datado.",
+   cena:"Prontuário, registro, auditoria"},
+
+  {eixo:"honra", ref:"Lucas 16:10", titulo:"O pequeno revela o grande",
+   texto:"Quem é fiel no mínimo, também é fiel no muito; e quem é injusto no mínimo, também é injusto no muito.",
+   pergunta:"O que você faz com o paciente estável às 4h da manhã, quando ninguém vai conferir?",
+   ideia:"Caráter não aparece na crise — aparece na rotina sem plateia. A crise só revela o que a rotina construiu.",
+   uti:"Lavar as mãos entre leitos, conferir bomba de infusão, checar alarme silenciado, reavaliar quem \"está bem\". Ninguém vê. O paciente sente.",
+   acao:"Escolha a checagem que você mais pula por rotina e faça-a integralmente em todos os leitos hoje.",
+   cena:"Plantão noturno, rotina sem supervisão"},
+
+  {eixo:"honra", ref:"Provérbios 12:22", titulo:"O custo da meia verdade",
+   texto:"Os lábios mentirosos são abomináveis ao Senhor, mas os que obram fielmente são o seu deleite.",
+   pergunta:"Qual foi a última vez que você suavizou um dado para evitar uma conversa difícil?",
+   ideia:"A meia verdade é confortável no minuto e cara no mês. Ela transfere o custo da conversa para quem vier depois.",
+   uti:"\"Está estável\" para uma família que precisa decidir. \"Deu tudo certo\" após uma intercorrência. \"Já vou ver\" quando não vai. Cada uma cobra juros.",
+   acao:"Substitua uma frase confortável por uma frase precisa hoje — e fique os 10 segundos de silêncio que virão depois.",
+   cena:"Conferência familiar, comunicação de prognóstico"},
+
+  {eixo:"honra", ref:"Colossenses 3:23", titulo:"Padrão único de execução",
+   texto:"E, tudo quanto fizerdes, fazei-o de coração, como ao Senhor, e não aos homens.",
+   pergunta:"Seu padrão de cuidado muda conforme quem está olhando?",
+   ideia:"Um único padrão de qualidade, independente de plateia, de convênio, de horário e de cansaço. Não é perfeccionismo: é constância.",
+   uti:"O paciente do corredor recebe o mesmo exame do paciente do box. O plantão de domingo à noite tem a mesma evolução da visita de segunda com o chefe.",
+   acao:"Identifique onde seu padrão cai por cansaço e proteja especificamente esse ponto hoje.",
+   cena:"Constância de qualidade sob cansaço"},
+
+  /* ── AMOR ── */
+  {eixo:"amor", ref:"Lucas 10:33-34", titulo:"Compaixão que atravessa a rua",
+   texto:"Mas um samaritano, que ia de viagem, chegou ao pé dele e, vendo-o, moveu-se de íntima compaixão; e, aproximando-se, atou-lhe as feridas.",
+   pergunta:"Qual paciente você tem evitado — e por quê?",
+   ideia:"A compaixão do texto tem três movimentos físicos: ver, aproximar-se, tocar. Sentimento sem deslocamento não é compaixão, é comentário.",
+   uti:"O paciente com ferida de odor forte, o agitado, o dependente químico, o preso algemado. Todos ativam a vontade de passar do outro lado.",
+   acao:"Vá ao leito do paciente que você mais evita e fique 2 minutos ali, sem tarefa, só examinando com atenção.",
+   cena:"Paciente estigmatizado, ferida difícil, agitação"},
+
+  {eixo:"amor", ref:"1 Coríntios 13:4-5", titulo:"Amor é comportamento",
+   texto:"O amor é sofredor, é benigno; o amor não é invejoso; o amor não trata com leviandade, não se ensoberbece, não se porta com indecência, não busca os seus interesses.",
+   pergunta:"Se amor fosse avaliado por checklist observável, você passaria no plantão de ontem?",
+   ideia:"A definição é inteiramente comportamental — paciência, benignidade, ausência de arrogância. Nenhuma linha fala de sentimento.",
+   uti:"Paciência com a família que pergunta a mesma coisa pela quarta vez. Benignidade com o técnico novo que errou. Não se ensoberbecer diante do residente que não sabe.",
+   acao:"Responda pela quarta vez a mesma pergunta de uma família — com a mesma paciência da primeira.",
+   cena:"Família repetitiva, equipe em formação"},
+
+  {eixo:"amor", ref:"Gálatas 6:2", titulo:"Carga dividida",
+   texto:"Levai as cargas uns dos outros, e assim cumprireis a lei de Cristo.",
+   pergunta:"Quem na sua equipe está carregando algo sozinho neste momento?",
+   ideia:"Divisão de carga é ato ativo, não oferta passiva. Ninguém que está afundando levanta a mão.",
+   uti:"O residente que perdeu o primeiro paciente. A enfermeira após um óbito pediátrico. O colega no divórcio. Todos continuam trabalhando e ninguém pergunta.",
+   acao:"Pergunte a uma pessoa da equipe, em particular, como ela está de verdade — e espere a segunda resposta, não a primeira.",
+   cena:"Equipe sobrecarregada, óbito recente"},
+
+  {eixo:"amor", ref:"1 João 3:18", titulo:"Obra, não discurso",
+   texto:"Meus filhinhos, não amemos de palavra, nem de língua, mas por obra e em verdade.",
+   pergunta:"Qual foi seu último gesto de cuidado que não estava em nenhuma prescrição?",
+   ideia:"O contraste é direto: palavra e língua de um lado, obra e verdade do outro. Afeto declarado que não muda conduta não conta.",
+   uti:"Ajustar o travesseiro. Fechar a cortina antes do banho. Avisar a família antes que ela ligue. Nada disso gera código de faturamento.",
+   acao:"Faça hoje um gesto de cuidado invisível — um que ninguém vai registrar nem agradecer.",
+   cena:"Cuidado não prescrito, dignidade no leito"},
+
+  {eixo:"amor", ref:"Mateus 25:36", titulo:"A visita conta",
+   texto:"Estive nu, e vestistes-me; adoeci, e visitastes-me; estive na prisão, e fostes ver-me.",
+   pergunta:"Quanto do seu dia foi presença e quanto foi apenas tarefa?",
+   ideia:"A lista é de presenças simples — vestir, visitar, ir ver. Nenhuma exige heroísmo, todas exigem deslocamento.",
+   uti:"A visita de 3 minutos sem prancheta na mão muda a percepção de cuidado mais do que qualquer ajuste fino de droga.",
+   acao:"Entre em um box hoje sem nada nas mãos. Só para ver a pessoa.",
+   cena:"Presença, visita, dignidade"},
+
+  /* ── PERDÃO ── */
+  {eixo:"perdao", ref:"Efésios 4:26", titulo:"Prazo de validade da raiva",
+   texto:"Irai-vos, e não pequeis; não se ponha o sol sobre a vossa ira.",
+   pergunta:"Que conversa mal terminada você está levando para casa hoje?",
+   ideia:"A raiva não é proibida — é datada. O texto dá um prazo: o pôr do sol. Depois disso, ela deixa de ser reação e vira projeto.",
+   uti:"O atrito com o colega na passagem. A discussão com a enfermagem sobre a prescrição. Levado para casa, volta ao plantão como frieza permanente.",
+   acao:"Antes de sair do hospital, resolva verbalmente o atrito mais recente — mesmo que com uma frase só.",
+   cena:"Atrito de equipe, passagem de plantão"},
+
+  {eixo:"perdao", ref:"Provérbios 19:11", titulo:"Passar por cima",
+   texto:"O entendimento do homem retém a sua ira, e sua glória é passar sobre a transgressão.",
+   pergunta:"Qual ofensa desta semana não merecia o espaço mental que você deu a ela?",
+   ideia:"Há uma inteligência específica em decidir o que não vale resposta. Não é fraqueza nem negação — é economia de energia finita.",
+   uti:"Tom ríspido no telefone, resposta seca no grupo, crédito não dado numa apresentação. Custo real: zero. Custo de ruminar: horas de sono.",
+   acao:"Escolha uma ofensa pequena da semana e decida conscientemente encerrá-la, sem cobrança.",
+   cena:"Ruminação, atrito pequeno, desgaste"},
+
+  {eixo:"perdao", ref:"Provérbios 28:13", titulo:"O erro escondido",
+   texto:"O que encobre as suas transgressões nunca prosperará; mas o que as confessa e deixa, alcançará misericórdia.",
+   pergunta:"Existe um erro seu que ainda ninguém sabe?",
+   ideia:"Duas ações são exigidas: confessar e deixar. Admitir sem mudar é confissão estéril; mudar sem admitir deixa o dano sem reparo.",
+   uti:"Evento adverso, dose trocada, exame esquecido. A cultura que pune esconde; a cultura que aprende notifica. Você decide qual você constrói na sua equipe.",
+   acao:"Se houve um erro seu nesta semana, comunique hoje — ao paciente quando couber, à equipe sempre, ao sistema de notificação sem falta.",
+   cena:"Evento adverso, cultura de segurança"},
+
+  {eixo:"perdao", ref:"Colossenses 3:13", titulo:"Suportar e perdoar",
+   texto:"Suportando-vos uns aos outros, e perdoando-vos uns aos outros, se alguém tiver queixa contra outro; assim como Cristo vos perdoou, assim fazei vós também.",
+   pergunta:"Você perdoaria a si mesmo o erro que ainda cobra de um colega?",
+   ideia:"Suportar e perdoar aparecem juntos por um motivo: conviver diariamente com pessoas imperfeitas exige as duas coisas, repetidamente.",
+   uti:"Equipe fixa de UTI convive mais horas do que muitas famílias. Mágoa não resolvida vira protocolo informal de evitação — e paciente paga a conta.",
+   acao:"Identifique uma mágoa antiga com um colega e decida se vai conversar ou encerrar. As duas servem; deixar pendurado, não.",
+   cena:"Convivência longa, mágoa antiga"},
+
+  {eixo:"perdao", ref:"Mateus 6:14", titulo:"Perdoar a si mesmo",
+   texto:"Porque, se perdoardes aos homens as suas ofensas, também vosso Pai celestial vos perdoará a vós.",
+   pergunta:"Qual paciente você ainda carrega — e já se culpou o suficiente por ele?",
+   ideia:"Quem não recebe perdão dificilmente o distribui. E quem se pune indefinidamente por um desfecho ruim não fica melhor médico: fica mais medroso.",
+   uti:"O primeiro óbito. O diagnóstico que veio tarde. A decisão certa com desfecho ruim. Culpa mal processada vira medicina defensiva e exaustão.",
+   acao:"Escreva em uma linha o que aprendeu com o caso que você mais carrega — e encerre o processo interno ali.",
+   cena:"Luto profissional, culpa, desfecho ruim"},
+
+  /* ── RESPONSABILIDADE ── */
+  {eixo:"responsabilidade", ref:"Tiago 4:17", titulo:"O bem adiado",
+   texto:"Aquele, pois, que sabe fazer o bem e não o faz, comete pecado.",
+   pergunta:"O que você sabe que precisa fazer hoje e já adiou duas vezes?",
+   ideia:"A falta aqui não é fazer o mal — é a omissão consciente. O saber cria a obrigação.",
+   uti:"A conferência familiar que você posterga. A discussão de limitação terapêutica adiada. O exame que você sabe que deve pedir. Omissão tem desfecho.",
+   acao:"Pegue o item mais adiado da sua lista e execute os primeiros 10 minutos dele agora.",
+   cena:"Procrastinação clínica, conversa adiada"},
+
+  {eixo:"responsabilidade", ref:"Provérbios 27:23", titulo:"Conhecer o estado do rebanho",
+   texto:"Procura conhecer o estado das tuas ovelhas; põe o teu coração sobre o teu gado.",
+   pergunta:"Você sabe de cabeça o pior problema de cada paciente sob sua responsabilidade agora?",
+   ideia:"Responsabilidade exige conhecimento atualizado do estado real, não presunção baseada no que era verdade ontem.",
+   uti:"Round de 12 leitos em que três viraram \"estáveis\" e saíram do radar. É exatamente ali que a deterioração silenciosa acontece.",
+   acao:"Liste de memória o principal risco ativo de cada paciente seu. O que você não lembrar, vá reavaliar.",
+   cena:"Round, deterioração silenciosa"},
+
+  {eixo:"responsabilidade", ref:"Eclesiastes 4:9-10", titulo:"Ninguém decide sozinho",
+   texto:"Melhores são dois do que um, porque têm melhor paga do seu trabalho. Porque se um cair, o outro levanta o seu companheiro.",
+   pergunta:"Qual decisão de hoje você tomaria diferente se tivesse falado com alguém?",
+   ideia:"A vantagem não é moral, é operacional: o segundo levanta o primeiro. Isolamento é fator de risco, não sinal de competência.",
+   uti:"Plantão noturno sozinho, sem retaguarda, com decisão limítrofe. Ligar de madrugada parece fraqueza e é gestão de risco.",
+   acao:"Na próxima decisão limítrofe, ligue antes de decidir — mesmo que seja só para verbalizar o raciocínio em voz alta.",
+   cena:"Plantão noturno, decisão isolada"},
+
+  {eixo:"responsabilidade", ref:"Lucas 12:48", titulo:"Proporcional ao que foi dado",
+   texto:"E àquele a quem muito for dado, muito se lhe pedirá; e ao que muito se lhe confiou, muito mais se lhe pedirá.",
+   pergunta:"O que a sua formação obriga você a fazer que um colega menos treinado não poderia?",
+   ideia:"A cobrança é proporcional ao recebido. Quem teve acesso a formação, título e retaguarda carrega responsabilidade maior — inclusive de ensinar.",
+   uti:"Preceptor que não corrige por preguiça, especialista que não compartilha raciocínio, quem sabe e guarda para si.",
+   acao:"Ensine hoje, em 2 minutos, uma coisa que você sabe e um residente ainda não sabe.",
+   cena:"Preceptoria, transmissão de conhecimento"},
+
+  {eixo:"responsabilidade", ref:"Provérbios 11:13", titulo:"Sigilo não é formalidade",
+   texto:"O mexeriqueiro descobre o segredo, mas o fiel de espírito encobre o negócio.",
+   pergunta:"Onde você falou do último caso difícil — e quem estava ouvindo?",
+   ideia:"Discrição é definida como fidelidade, não como frieza. É uma promessa, não uma regra burocrática.",
+   uti:"Elevador, corredor, refeitório, grupo de mensagens com foto de exame. O paciente não escolheu ser assunto.",
+   acao:"Revise hoje os grupos de mensagem que você usa para trabalho e apague qualquer dado identificável de paciente.",
+   cena:"Sigilo, corredor, grupo de mensagens"},
+
+  /* ── HUMANIDADE ── */
+  {eixo:"humanidade", ref:"Jó 2:13", titulo:"Sete dias em silêncio",
+   texto:"E se assentaram com ele na terra, sete dias e sete noites; e nenhum lhe dizia palavra alguma, porque viam que a dor era muito grande.",
+   pergunta:"Na última má notícia que você deu, quanto tempo de silêncio você suportou?",
+   ideia:"Os amigos de Jó acertam enquanto ficam calados — e erram quando começam a explicar. Diante de dor grande, presença vale mais que interpretação.",
+   uti:"A família acaba de ouvir o prognóstico. O impulso é preencher o silêncio com fisiopatologia. Não preencha. Sente, fique, espere a pergunta vir.",
+   acao:"Na próxima conversa difícil, conte 5 segundos de silêncio depois da frase mais dura antes de dizer qualquer outra coisa.",
+   cena:"Má notícia, conferência familiar"},
+
+  {eixo:"humanidade", ref:"Provérbios 15:1", titulo:"A resposta branda",
+   texto:"A resposta branda desvia o furor, mas a palavra dura suscita a ira.",
+   pergunta:"Qual foi a última vez que você respondeu à altura — e piorou tudo?",
+   ideia:"É uma afirmação técnica sobre escalada: o tom de quem responde determina a trajetória do conflito mais do que o conteúdo.",
+   uti:"Família hostil, acusação de descaso, cobrança agressiva no corredor. Quase sempre é medo travestido de raiva. Responder à altura fecha a porta.",
+   acao:"Diante da próxima cobrança agressiva, comece pela frase: \"vejo que o senhor está muito preocupado — me conta o que aconteceu até aqui\".",
+   cena:"Família hostil, conflito, acusação"},
+
+  {eixo:"humanidade", ref:"Romanos 12:15", titulo:"Chorar com quem chora",
+   texto:"Alegrai-vos com os que se alegram; e chorai com os que choram.",
+   pergunta:"Você comemorou a alta difícil da semana passada com alguém?",
+   ideia:"Duas obrigações simétricas. A segunda a gente pratica; a primeira a gente esquece — e é ela que sustenta a equipe no longo prazo.",
+   uti:"Extubação que ninguém apostava. Alta após 40 dias. Passa batido enquanto o óbito ocupa a reunião inteira.",
+   acao:"Nomeie em voz alta, no round de hoje, uma vitória da equipe — com o nome de quem fez.",
+   cena:"Moral da equipe, vitória não celebrada"},
+
+  {eixo:"humanidade", ref:"Tiago 1:19", titulo:"Ordem das três velocidades",
+   texto:"Todo o homem seja pronto para ouvir, tardio para falar, tardio para se irar.",
+   pergunta:"Na última reunião difícil, você falou antes ou depois de entender?",
+   ideia:"Três velocidades deliberadamente diferentes: rápido para ouvir, lento para falar, mais lento ainda para se irritar. A ordem é o método.",
+   uti:"Reunião de família, conflito com equipe, discordância com o colega. Interromper para corrigir encerra a chance de saber o que realmente está em jogo.",
+   acao:"Na próxima conversa tensa, deixe a outra pessoa terminar duas frases completas depois do ponto em que você quis interromper.",
+   cena:"Escuta, reunião tensa, discordância"},
+
+  {eixo:"humanidade", ref:"Marcos 6:31", titulo:"Descansar é parte do trabalho",
+   texto:"Vinde vós, aqui à parte, a um lugar deserto, e repousai um pouco.",
+   pergunta:"Quando foi seu último intervalo real neste plantão — sem tela e sem tarefa?",
+   ideia:"O convite ao descanso aparece no meio de um período de alta demanda, não depois dela. Repouso é insumo do cuidado, não recompensa por ele.",
+   uti:"Médico exausto erra dose, encurta conversa e perde empatia mensurável. Descanso não é luxo: é segurança do paciente.",
+   acao:"Marque 10 minutos reais de pausa neste plantão — sentado, sem tela, com água.",
+   cena:"Exaustão, burnout, segurança do paciente"},
+
+  {eixo:"humanidade", ref:"Eclesiastes 3:1,7", titulo:"Tempo de calar, tempo de falar",
+   texto:"Tudo tem o seu tempo determinado, e há tempo para todo o propósito debaixo do céu. Tempo de rasgar, e tempo de coser; tempo de estar calado, e tempo de falar.",
+   pergunta:"Você está prolongando um tratamento ou prolongando uma morte?",
+   ideia:"Reconhecer a mudança de tempo é habilidade clínica. Insistir fora de tempo não é dedicação — é falta de leitura.",
+   uti:"Transição de cuidado curativo para paliativo. Mudar o alvo não é desistir: é trocar o objetivo de \"reverter\" para \"não fazer sofrer\".",
+   acao:"Identifique um paciente em que a meta de cuidado precisa ser revista e leve o caso para discussão formal hoje.",
+   cena:"Limitação terapêutica, cuidado paliativo"}
+];
+
+var CENARIOS = [
+  {id:"masnoticias", emoji:"🗣️", titulo:"Comunicar má notícia e conduzir conferência familiar", grupo:"comunicacao",
+   gatilho:"Você precisa dizer a uma família que o quadro não tem mais reversão — e tem 15 minutos entre duas intercorrências.",
+   ref:"Jó 2:13 · Tiago 1:19",
+   ancora:"Presença antes de explicação. Ouvir rápido, falar devagar.",
+   faca:["Sente-se. Ficar em pé encurta a conversa e sinaliza pressa.","Pergunte primeiro o que eles já entenderam. Comece de onde eles estão.","Dê um aviso antes da frase dura (\"tenho uma notícia difícil\") e então diga em uma frase curta, sem jargão.","Cale-se por 5 segundos completos. Deixe a reação acontecer.","Termine com o que <b>vai</b> ser feito — nunca com \"não há mais nada a fazer\"."],
+   naofaca:["Explicar fisiopatologia para preencher o silêncio.","Usar \"não há mais nada a fazer\" — sempre há: conforto, presença, controle de sintoma.","Dar prognóstico em número exato quando não se tem.","Conduzir a conversa no corredor, em pé, com a porta aberta."],
+   frase:"\"Eu preciso lhe dar uma notícia difícil. O quadro dele piorou e não está respondendo ao tratamento. Eu vou ficar aqui com o senhor.\""},
+
+  {id:"paliativo", emoji:"🕯️", titulo:"Limitação terapêutica e transição para cuidado paliativo", grupo:"decisao",
+   gatilho:"A equipe concorda que a escalada não faz mais sentido, mas ninguém quer ser quem propõe.",
+   ref:"Eclesiastes 3:1,7 · Miqueias 6:8",
+   ancora:"Há tempo para cada coisa. Mudar o alvo não é abandonar.",
+   faca:["Traga a discussão para o round formal, com registro — nunca decisão de corredor.","Nomeie a mudança como <b>troca de objetivo</b>: de reverter para não fazer sofrer.","Envolva enfermagem e fisioterapia: quem está 12 horas ao lado enxerga o que o round não vê.","Registre no prontuário quem participou, qual critério e o que a família compreendeu.","Garanta explicitamente o que continua: analgesia, higiene, presença da família, dignidade."],
+   naofaca:["Apresentar como \"não vamos fazer mais nada\".","Decidir sozinho no plantão noturno para \"resolver\" antes da equipe fixa chegar.","Delegar a conversa ao residente mais novo porque é desconfortável.","Deixar a família com a sensação de que ela assinou a sentença — a responsabilidade técnica é da equipe."],
+   frase:"\"A partir de agora nosso objetivo muda: não é mais reverter a doença, é garantir que ele não sinta dor e não fique sozinho. Isso nós vamos fazer com toda a força.\""},
+
+  {id:"conflito", emoji:"🔥", titulo:"Família hostil, acusação de descaso, cobrança agressiva", grupo:"comunicacao",
+   gatilho:"Um filho chega gritando no corredor que ninguém dá informação e que vai processar todo mundo.",
+   ref:"Provérbios 15:1 · Efésios 4:26",
+   ancora:"A resposta branda desvia o furor. E a raiva tem prazo de validade.",
+   faca:["Baixe o tom e a velocidade. O tom de quem responde define a escalada.","Tire da plateia: leve para uma sala. Conflito com público sempre escala.","Nomeie o que você vê: \"o senhor está muito preocupado e sente que não foi informado\".","Peça o relato completo antes de corrigir qualquer fato.","Feche com um combinado verificável: horário fixo de boletim, um interlocutor definido."],
+   naofaca:["Responder à altura, mesmo estando certo.","Corrigir os fatos antes de acolher a emoção — nada é ouvido nessa ordem.","Prometer o que não controla.","Levar para casa. Resolva o atrito antes de sair, mesmo que com uma frase."],
+   frase:"\"Vamos para a sala aqui do lado. Eu quero ouvir desde o começo o que o senhor viveu — e depois eu explico exatamente onde estamos.\""},
+
+  {id:"erro", emoji:"⚠️", titulo:"Erro médico e evento adverso", grupo:"seguranca",
+   gatilho:"Você percebe que a dose prescrita por você estava errada e o paciente já recebeu.",
+   ref:"Provérbios 28:13 · Provérbios 10:9",
+   ancora:"Confessar e deixar. Encobrir nunca prospera.",
+   faca:["Trate o paciente primeiro: mitigar o dano antecede qualquer conversa.","Comunique a equipe imediatamente — inclusive quem assume depois de você.","Registre de forma factual, com horário real e sem eufemismo.","Notifique no sistema institucional de segurança, mesmo sem dano.","Comunique a família conforme a política do serviço, com apoio da chefia."],
+   naofaca:["Ajustar retroativamente o registro.","Esperar \"ver se dá em nada\".","Culpar a equipe de enfermagem que executou a sua prescrição.","Punir quem notificou — a cultura que pune é a que esconde."],
+   frase:"\"Houve um erro na prescrição que eu fiz. Já corrigimos e estamos monitorando. Eu vou acompanhar pessoalmente e mantenho o senhor informado.\""},
+
+  {id:"equipe", emoji:"🫂", titulo:"Equipe exausta, óbito difícil, colega em sofrimento", grupo:"equipe",
+   gatilho:"Óbito de paciente jovem. A residente que conduziu a reanimação está calada e continua trabalhando.",
+   ref:"Gálatas 6:2 · Marcos 6:31",
+   ancora:"Levar a carga do outro. E o descanso é parte do trabalho.",
+   faca:["Faça uma pausa curta de equipe após o óbito — 3 minutos, de pé, fora do box.","Fale com a pessoa em particular e espere a <b>segunda</b> resposta, não a primeira.","Ofereça algo concreto: assumir um leito, cobrir 20 minutos, liberar mais cedo.","Nomeie a dificuldade em voz alta: \"esse foi pesado para todo mundo\".","Sinalize apoio profissional quando o sofrimento persistir além de dias."],
+   naofaca:["\"Faz parte\" como única resposta.","Exigir desempenho igual na hora seguinte.","Transformar o apoio em avaliação de desempenho.","Confundir apoio de equipe com tratamento — sofrimento persistente pede profissional."],
+   frase:"\"Esse foi pesado. Vamos parar 3 minutos aqui fora, todo mundo. Depois eu assumo o leito 4 e você toma um café.\""},
+
+  {id:"estigma", emoji:"🚪", titulo:"Paciente estigmatizado: dependente químico, preso, morador de rua", grupo:"justica",
+   gatilho:"Paciente algemado, escoltado, com histórico que já circulou na equipe antes mesmo do exame.",
+   ref:"Levítico 19:15 · Lucas 10:33-34",
+   ancora:"Sem acepção de pessoas. Ver, aproximar-se, tocar.",
+   faca:["Refaça o exame sem ler primeiro o rótulo que veio na passagem.","Use o nome da pessoa em todas as interações da equipe.","Garanta o mesmo protocolo, o mesmo tempo de round e a mesma analgesia.","Negocie privacidade possível mesmo sob escolta.","Corrija, na hora, comentário desqualificante feito na frente da equipe."],
+   naofaca:["Aceitar \"esse aí\" como forma de referência.","Subtratar dor por suspeita de busca de droga sem avaliação formal.","Discutir o histórico social em voz alta no corredor.","Deixar o round dele por último por padrão."],
+   frase:"\"O nome dele é [nome]. Vamos apresentar o caso como qualquer outro, com o mesmo tempo.\""},
+
+  {id:"invisivel", emoji:"🫥", titulo:"Paciente sem família, sem voz, sem plano", grupo:"justica",
+   gatilho:"Sedado, sem acompanhante, sem documento, há 12 dias na unidade. Some do round.",
+   ref:"Provérbios 31:8-9",
+   ancora:"Abre a tua boca a favor do mudo.",
+   faca:["Apresente-o <b>primeiro</b> no round, não por último.","Acione serviço social formalmente e registre a data.","Defina um responsável nominal da equipe pelo caso a cada semana.","Documente decisões de melhor interesse com mais rigor, não menos.","Reavalie metas de cuidado com periodicidade fixa, já que ninguém vai cobrar."],
+   naofaca:["Deixar decisões grandes acumularem porque \"não tem quem assine\".","Reduzir a frequência de reavaliação por ausência de família.","Adiar discussão de metas indefinidamente.","Tratar ausência de família como ausência de pessoa."],
+   frase:"\"Começamos o round por ele hoje. Ninguém está cobrando por esse leito — então a cobrança somos nós.\""},
+
+  {id:"vaga", emoji:"🎚️", titulo:"Recurso escasso: vaga de UTI, exame, transferência", grupo:"justica",
+   gatilho:"Uma vaga, dois candidatos, e um telefonema insistente pesando em favor de um deles.",
+   ref:"Levítico 19:15 · Provérbios 21:3",
+   ancora:"Julgar com retidão vale mais que sacrifício.",
+   faca:["Explicite o critério <b>antes</b> de olhar os nomes.","Registre no prontuário o critério aplicado, não só a decisão final.","Use o instrumento institucional quando existir; se não existe, proponha a criação.","Comunique a decisão a quem não foi contemplado, com plano alternativo definido.","Leve a decisão limítrofe para a regulação ou para a chefia — não decida sozinho."],
+   naofaca:["Decidir por pressão de telefonema, hierarquia ou conveniência.","Deixar o critério implícito \"para não criar problema\".","Favorecer por pena sem critério — parcialidade em favor do fraco também é parcialidade.","Omitir do prontuário o raciocínio da priorização."],
+   frase:"\"Antes de olhar os dois casos, vamos escrever qual critério vamos usar. Depois aplicamos e registramos.\""},
+
+  {id:"sigilo", emoji:"🔒", titulo:"Sigilo, corredor e grupo de mensagens", grupo:"seguranca",
+   gatilho:"Caso raro e impressionante. Todo mundo quer comentar — e alguém já mandou a imagem no grupo.",
+   ref:"Provérbios 11:13",
+   ancora:"O fiel de espírito encobre o negócio.",
+   faca:["Discuta caso apenas em ambiente fechado e com finalidade assistencial ou de ensino.","Anonimização real para ensino: sem leito, sem data exata, sem detalhe identificável.","Peça consentimento formal para qualquer imagem usada em aula.","Apague dados identificáveis dos grupos de mensagem hoje.","Corrija o colega na hora, sem constrangê-lo em público."],
+   naofaca:["Comentar em elevador, refeitório ou corredor.","Enviar imagem de exame com identificação em aplicativo pessoal.","Usar caso raro em rede social, mesmo \"sem citar o nome\".","Assumir que interesse científico dispensa consentimento."],
+   frase:"\"Vamos levar esse caso para a sessão fechada. E o grupo do plantão não é lugar para imagem com identificação.\""},
+
+  {id:"preceptoria", emoji:"🎓", titulo:"Corrigir residente e ensinar sob pressão", grupo:"equipe",
+   gatilho:"O residente errou uma conduta na frente da família e da enfermagem.",
+   ref:"Lucas 12:48 · Provérbios 15:1",
+   ancora:"A quem muito foi dado, muito se pedirá. E a resposta branda desvia o furor.",
+   faca:["Corrija o <b>risco</b> na hora, de forma neutra e sem plateia sobre a pessoa.","Faça a correção formativa em particular, logo depois, enquanto é fresco.","Separe o erro da identidade: \"a conduta foi errada\", não \"você é desatento\".","Peça a ele o raciocínio antes de dar a resposta.","Elogie em público o que ele fez bem — com o mesmo empenho da correção."],
+   naofaca:["Ridicularizar em frente à equipe ou à família.","Guardar a correção para a avaliação do fim do estágio.","Corrigir só o erro e nunca reconhecer o acerto.","Assumir a conduta sem explicar — o paciente melhora, o residente não."],
+   frase:"\"Vou ajustar essa prescrição agora. Depois do round eu quero 5 minutos com você para a gente destrinchar o raciocínio.\""},
+
+  {id:"noite", emoji:"🌙", titulo:"Plantão noturno, decisão limítrofe, sozinho", grupo:"decisao",
+   gatilho:"3h da manhã, paciente deteriorando, decisão que pode esperar ou não. Ligar acorda gente.",
+   ref:"Eclesiastes 4:9-10 · Lucas 16:10",
+   ancora:"Se um cair, o outro levanta. E quem é fiel no mínimo é fiel no muito.",
+   faca:["Ligue. Constrangimento de madrugada custa menos que desfecho evitável.","Verbalize o raciocínio em voz alta para alguém — mesmo que só para organizar.","Reavalie de forma ativa quem \"está bem\" desde o começo do plantão.","Registre a decisão e o horário real, especialmente quando decidiu sozinho.","Deixe passagem explícita do que ficou pendente e por quê."],
+   naofaca:["Confundir isolamento com competência.","Adiar para o plantão da manhã aquilo que muda o desfecho agora.","Pular checagem de rotina porque \"está tudo estável\".","Decidir limitação terapêutica de madrugada, sozinho, sem equipe fixa e sem família."],
+   frase:"\"Desculpa acordar. Preciso pensar em voz alta com você por dois minutos antes de decidir.\""}
+];
+
+var DILEMAS = [
+  {eixo:"justica",
+   cenario:"Uma vaga de UTI, dois pacientes com indicação semelhante. Um deles é parente de um diretor do hospital, e você recebe uma ligação pedindo \"atenção especial\".",
+   opcoes:[
+    {t:"Atender ao pedido — evita conflito institucional e no fim os dois serão atendidos de alguma forma.",
+     c:"É o caminho de menor atrito imediato e maior custo acumulado. Você acabou de criar precedente: a partir de agora, o critério da sua unidade é a força do telefonema. Quem não tem telefone nunca saberá que perdeu."},
+    {t:"Escrever o critério antes de olhar os nomes, aplicar e registrar o raciocínio no prontuário.",
+     c:"É o caminho defensável clínica, ética e juridicamente. O registro protege o paciente, você e a equipe. Se o critério explícito favorecer o parente do diretor, tudo bem — o que não pode é o critério ser o parentesco."},
+    {t:"Passar a decisão para a chefia e sair da cena.",
+     c:"Legítimo quando há conflito de interesse real, mas não pode ser reflexo automático. Se você delegar sem transmitir os dados clínicos completos, terceirizou a decisão sem terceirizar o problema — e a decisão volta pior."}]},
+
+  {eixo:"honra",
+   cenario:"Você percebe, na passagem de plantão, que não examinou um paciente que evoluiu como \"exame físico sem alterações\" no seu registro. Ele está bem.",
+   opcoes:[
+    {t:"Deixar como está — ele está bem e corrigir agora só cria problema.",
+     c:"O desfecho bom não converte o registro falso em verdadeiro. E o próximo plantonista tomará decisões acreditando num exame que não existiu. O risco não é disciplinar: é clínico."},
+    {t:"Examinar agora e fazer aditamento datado, descrevendo o achado real.",
+     c:"É o único caminho que corrige o dado e preserva a cadeia de informação. Aditamento datado é prática correta, não confissão de incompetência. Custo baixo, valor alto."},
+    {t:"Avisar verbalmente o colega que assume, sem mexer no registro.",
+     c:"Melhor que nada, mas insuficiente. Informação verbal não sobrevive a dois plantões, e o prontuário continua afirmando algo que não aconteceu."}]},
+
+  {eixo:"perdao",
+   cenario:"Um colega errou uma conduta que gerou dano a um paciente seu. Ele não notificou e evita o assunto. Vocês trabalham juntos toda semana.",
+   opcoes:[
+    {t:"Notificar o sistema institucional e conversar com ele antes, avisando que vai fazê-lo.",
+     c:"Notificação e relação não são excludentes. Avisar antes preserva a pessoa e mantém a segurança do sistema. Cultura justa notifica o evento sem executar o profissional."},
+    {t:"Não notificar para preservar a relação — falar só com ele em particular.",
+     c:"Protege a relação hoje e desprotege o próximo paciente. O evento não notificado não gera correção sistêmica, e o mesmo erro reaparecerá com outra pessoa."},
+    {t:"Notificar sem falar com ele, evitando o desconforto.",
+     c:"Tecnicamente correto e relacionalmente caro. Numa equipe fixa de UTI, o silêncio será lido como emboscada e contaminará a comunicação clínica — que é onde o paciente paga."}]},
+
+  {eixo:"humanidade",
+   cenario:"Você tem 12 minutos entre duas intercorrências. A família do leito 6 espera há 4 horas por um boletim. Você está exausto e sabe que a conversa será difícil.",
+   opcoes:[
+    {t:"Dar o boletim rápido, em pé, no corredor — melhor pouco agora do que nada.",
+     c:"Intuitivo e contraproducente. Boletim em pé, no corredor, sinaliza pressa e costuma gerar a segunda conversa, mais longa e mais hostil. O tempo economizado volta multiplicado."},
+    {t:"Sentar 8 minutos numa sala, dizer o essencial e combinar horário fixo para a conversa completa.",
+     c:"Melhor uso possível do tempo real. Sentar muda a percepção de duração da conversa. E o combinado verificável reduz drasticamente a ansiedade e as abordagens de corredor."},
+    {t:"Pedir ao residente que dê o boletim enquanto você resolve as intercorrências.",
+     c:"Aceitável para atualização de rotina, arriscado para notícia difícil. Se for má notícia, delegar por indisponibilidade transfere o peso a quem tem menos ferramenta e deixa a família com a sensação de descarte."}]},
+
+  {eixo:"responsabilidade",
+   cenario:"São 3h. Paciente deteriorando lentamente. Você acha que consegue manejar, mas há uma decisão limítrofe. Ligar significa acordar o plantonista sênior.",
+   opcoes:[
+    {t:"Manejar sozinho e reavaliar em 1 hora. Se piorar, aí sim ligar.",
+     c:"É a escolha mais comum e a mais perigosa. A janela de 1 hora costuma ser exatamente a janela em que a decisão ainda era reversível. Constrangimento é barato; desfecho, não."},
+    {t:"Ligar agora, mesmo sabendo que talvez você já tenha a resposta certa.",
+     c:"Custo real: um telefonema. Benefício: verbalizar o raciocínio em voz alta corrige erro de anchoring melhor que qualquer releitura solitária. E divide a responsabilidade de forma legítima."},
+    {t:"Documentar detalhadamente sua avaliação e seguir sozinho.",
+     c:"Documentar é necessário e não é suficiente. Registro bom protege a narrativa; não melhora a decisão. Documente <b>e</b> ligue."}]},
+
+  {eixo:"amor",
+   cenario:"A residente do seu time conduziu a reanimação de um paciente jovem que morreu. Ela voltou a trabalhar imediatamente e diz que está bem quando você pergunta.",
+   opcoes:[
+    {t:"Aceitar a resposta. Ela é adulta e sabe pedir ajuda se precisar.",
+     c:"Respeita a autonomia e ignora o dado: quem está afundando raramente levanta a mão, e a cultura médica pune quem levanta. A primeira resposta quase nunca é a real."},
+    {t:"Oferecer algo concreto — assumir um leito, cobrir 20 minutos — e voltar a perguntar mais tarde, em particular.",
+     c:"É a versão operacional de dividir a carga. A oferta concreta desarma a recusa educada, e a segunda pergunta, feita mais tarde e em particular, costuma receber a resposta verdadeira."},
+    {t:"Convocar uma reunião da equipe para discutir o caso no mesmo dia.",
+     c:"Bem-intencionado e frequentemente mal-dosado. Discussão técnica no mesmo dia, com quem conduziu ainda em choque, é vivida como julgamento. Separe o acolhimento imediato da revisão técnica."}]}
+];
+
+var FLASH = [
+  {f:"Família acabou de ouvir o prognóstico e há silêncio na sala.", b:"🤝 Humanidade · Jó 2:13", d:"Não preencha. Sente-se, aguarde 5 segundos completos, deixe a pergunta vir deles."},
+  {f:"Você recebe o paciente já rotulado na passagem de plantão.", b:"⚖️ Justiça · Levítico 19:15", d:"Refaça o exame sem o rótulo. O mesmo protocolo, o mesmo tempo de round, o nome próprio."},
+  {f:"São 4h da manhã e ninguém vai conferir a sua checagem.", b:"🛡️ Honra · Lucas 16:10", d:"Fiel no mínimo, fiel no muito. Caráter se constrói na rotina sem plateia, não na crise."},
+  {f:"Você errou uma dose e o paciente já recebeu.", b:"🕊️ Perdão · Provérbios 28:13", d:"Tratar o dano → comunicar a equipe → registrar factual → notificar. Encobrir nunca prospera."},
+  {f:"Filho da paciente chega gritando no corredor.", b:"🤝 Humanidade · Provérbios 15:1", d:"Baixe o tom, tire da plateia, acolha a emoção antes de corrigir os fatos."},
+  {f:"Decisão limítrofe, plantão noturno, você sozinho.", b:"🧭 Responsabilidade · Eclesiastes 4:9-10", d:"Ligue. Verbalizar o raciocínio corrige erro melhor que releitura solitária."},
+  {f:"Paciente há 12 dias sem família, sem documento, some do round.", b:"⚖️ Justiça · Provérbios 31:8-9", d:"Apresente-o primeiro. Ninguém cobra por ele — a cobrança é sua."},
+  {f:"A escalada terapêutica não faz mais sentido e ninguém propõe.", b:"🤝 Humanidade · Eclesiastes 3:1,7", d:"Troca de objetivo, não abandono: de reverter para não fazer sofrer. Round formal, com registro."},
+  {f:"A residente conduziu um óbito difícil e diz que está bem.", b:"❤️ Amor · Gálatas 6:2", d:"Ofereça algo concreto e espere a segunda resposta, em particular. A primeira é protocolo social."},
+  {f:"Você sabe o que precisa fazer e já adiou duas vezes.", b:"🧭 Responsabilidade · Tiago 4:17", d:"A omissão consciente tem desfecho. Execute os primeiros 10 minutos agora."},
+  {f:"Caso raro e impressionante, todo mundo quer comentar.", b:"🧭 Responsabilidade · Provérbios 11:13", d:"Ambiente fechado, anonimização real, consentimento para imagem. Corredor não é sessão clínica."},
+  {f:"Você está há 9 horas sem parar e ainda faltam 5.", b:"🤝 Humanidade · Marcos 6:31", d:"Descanso é insumo do cuidado, não recompensa. 10 minutos sentado, sem tela, com água."}
+];
+
+/* ══════════ UTILITÁRIOS ══════════ */
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+var toastEl=$("#toast"),toastT;
+function toast(m){toastEl.textContent=m;toastEl.classList.add("on");clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove("on")},2300)}
+function eixoOf(id){for(var i=0;i<EIXOS.length;i++){if(EIXOS[i].id===id)return EIXOS[i]}return EIXOS[0]}
+function copy(txt){
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast("Copiado ✅")},function(){fallback(txt)})}
+  else fallback(txt);
+  function fallback(t){var a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();try{document.execCommand("copy");toast("Copiado ✅")}catch(e){toast("Não foi possível copiar")}document.body.removeChild(a)}
+}
+
+/* ══════════ NAVEGAÇÃO ══════════ */
+var TABS=[
+  {id:"motor",   label:"⏱️ Motor 3 min"},
+  {id:"trilhas", label:"🧭 Trilhas"},
+  {id:"uti",     label:"🏥 UTI na prática"},
+  {id:"ensinar", label:"🎓 Ensinar"},
+  {id:"dilemas", label:"⚖️ Dilemas"},
+  {id:"flash",   label:"🃏 Flashcards"},
+  {id:"revisao", label:"🔁 Revisão"},
+  {id:"sobre",   label:"ℹ️ Sobre"}
+];
+var navEl=$("#nav");
+TABS.forEach(function(t,i){
+  var b=document.createElement("button");
+  b.type="button";b.id="tab-"+t.id;b.textContent=t.label;
+  b.setAttribute("role","tab");b.setAttribute("aria-controls",t.id);
+  b.setAttribute("aria-selected",i===0?"true":"false");
+  b.addEventListener("click",function(){go(t.id)});
+  navEl.appendChild(b);
+});
+function go(id,noScroll){
+  $$(".pane").forEach(function(p){var on=p.id===id;p.classList.toggle("on",on);p.hidden=!on});
+  $$("#nav button").forEach(function(b){b.setAttribute("aria-selected",b.id==="tab-"+id?"true":"false")});
+  if(location.hash!=="#"+id){history.replaceState(null,"","#"+id)}
+  if(!noScroll)window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ══════════ MOTOR 3 MINUTOS ══════════ */
+var PHASES=[
+  {k:"texto", i:"📖", n:"Texto",    s:40, campo:"texto"},
+  {k:"ideia", i:"🔎", n:"Destrava", s:50, campo:"ideia"},
+  {k:"uti",   i:"🏥", n:"UTI",      s:50, campo:"uti"},
+  {k:"acao",  i:"✅", n:"Ação",     s:40, campo:"acao"}
+];
+var TOTAL=180;
+var cur=0, elapsed=0, timer=null, running=false, opened=[false,false,false,false], plantao=false;
+
+function pick(idx){
+  cur=(typeof idx==="number")?idx:Math.floor(Math.random()*CARDS.length);
+  elapsed=0;opened=[false,false,false,false];stop();render();
+}
+function render(){
+  var c=CARDS[cur],e=eixoOf(c.eixo);
+  $("#card-eixo").textContent=e.emoji+" "+e.nome;
+  $("#card-titulo").textContent=c.titulo;
+  $("#card-cena").textContent=c.cena;
+  var eng=$(".engine");eng.className="engine "+e.cor;
+
+  var ph=$("#phases");ph.innerHTML="";
+  PHASES.forEach(function(p,i){
+    var d=document.createElement("div");
+    d.className="ph"+(i===activePhase()?" on":"")+(opened[i]?" done":"");
+    d.innerHTML='<i aria-hidden="true">'+p.i+'</i><b>'+p.n+'</b><small>'+p.s+'s</small>';
+    ph.appendChild(d);
+  });
+
+  var L=$("#layers");L.innerHTML="";
+  PHASES.forEach(function(p,i){
+    if(plantao&&i!==0&&i!==3)return;
+    var d=document.createElement("div");
+    d.className="layer"+(opened[i]?"":" locked");
+    var head='<div class="layer-h"><i aria-hidden="true">'+p.i+'</i><b>'+p.n+'</b></div>';
+    if(opened[i]){
+      var body=(i===0)
+        ? '<div class="body"><div class="verso">“'+esc(c.texto)+'”</div><div class="ref">'+esc(c.ref)+' · tradição Almeida (domínio público) · conferir redação</div></div>'
+        : '<div class="body">'+esc(c[p.campo])+'</div>';
+      d.innerHTML=head+body;
+    }else{
+      var q=(i===0)?c.pergunta:"Pense antes de abrir: o que você responderia agora?";
+      d.innerHTML=head+'<p class="think">'+esc(q)+'</p><button type="button" class="reveal-btn" data-open="'+i+'">👁️ Pensei — revelar '+p.n.toLowerCase()+'</button>';
+    }
+    L.appendChild(d);
+  });
+  $$("[data-open]",L).forEach(function(b){b.addEventListener("click",function(){opened[+b.dataset.open]=true;render()})});
+  paint();
+}
+function activePhase(){var acc=0;for(var i=0;i<PHASES.length;i++){acc+=PHASES[i].s;if(elapsed<acc)return i}return PHASES.length-1}
+function paint(){
+  var left=Math.max(0,TOTAL-elapsed);
+  $("#clock").textContent=Math.floor(left/60)+":"+("0"+(left%60)).slice(-2);
+  $("#ring").style.setProperty("--p",(elapsed/TOTAL*100).toFixed(1));
+}
+function tick(){
+  elapsed++;
+  var a=activePhase();
+  if(!opened[a]){opened[a]=true;render();return}
+  if(elapsed>=TOTAL){stop();opened=[true,true,true,true];render();toast("Ciclo completo — escolha sua ação ✅");return}
+  var ph=$$(".ph");ph.forEach(function(d,i){d.classList.toggle("on",i===a)});
+  paint();
+}
+function start(){if(running)return;running=true;$("#play").textContent="⏸️ Pausar";timer=setInterval(tick,1000)}
+function stop(){running=false;clearInterval(timer);$("#play").textContent="▶️ Iniciar"}
+$("#play").addEventListener("click",function(){running?stop():start()});
+$("#next").addEventListener("click",function(){plantao=false;pick()});
+$("#reset-eng").addEventListener("click",function(){elapsed=0;opened=[false,false,false,false];stop();render()});
+$("#open-all").addEventListener("click",function(){opened=[true,true,true,true];render()});
+$("#mode-plantao").addEventListener("click",function(){plantao=!plantao;opened=[true,false,false,true];stop();elapsed=0;render();toast(plantao?"Modo Plantão: versículo + ação ⚡":"Ciclo completo restaurado ⏱️")});
+$("#copy-card").addEventListener("click",function(){
+  var c=CARDS[cur],e=eixoOf(c.eixo);
+  copy("📖 RADAR BÍBLICO 3 MINUTOS — "+e.emoji+" "+e.nome.toUpperCase()+"\n"+c.titulo+"\n\n“"+c.texto+"”\n— "+c.ref+"\n\n🔎 DESTRAVA: "+c.ideia+"\n\n🏥 NA UTI: "+c.uti+"\n\n✅ AÇÃO DE HOJE: "+c.acao+"\n\n— AldenirMed89 · Formação Humana");
+});
+$("#save-diary").addEventListener("click",function(){
+  var c=CARDS[cur];
+  addDiary("["+eixoOf(c.eixo).nome+"] "+c.acao);
+  toast("Ação registrada no diário local ✅");
+});
+
+/* ══════════ TRILHAS ══════════ */
+var filtroEixo="todos";
+var chips=$("#eixo-chips");
+function mkChip(txt,val,cur,fn){
+  var b=document.createElement("button");b.type="button";b.className="chip";b.textContent=txt;
+  b.setAttribute("aria-pressed",val===cur?"true":"false");b.addEventListener("click",function(){fn(val)});
+  return b;
+}
+function renderChips(){
+  chips.innerHTML="";
+  chips.appendChild(mkChip("Todos ("+CARDS.length+")","todos",filtroEixo,setEixo));
+  EIXOS.forEach(function(e){
+    var n=CARDS.filter(function(c){return c.eixo===e.id}).length;
+    chips.appendChild(mkChip(e.emoji+" "+e.nome+" ("+n+")",e.id,filtroEixo,setEixo));
+  });
+}
+function setEixo(v){filtroEixo=v;renderChips();renderDeck()}
+function renderDeck(){
+  var d=$("#deck");d.innerHTML="";
+  var list=CARDS.map(function(c,i){return{c:c,i:i}}).filter(function(o){return filtroEixo==="todos"||o.c.eixo===filtroEixo});
+  if(filtroEixo!=="todos"){
+    var e=eixoOf(filtroEixo);
+    var intro=document.createElement("div");
+    intro.className="block";intro.style.gridColumn="1/-1";
+    intro.innerHTML='<h3>'+e.emoji+' '+esc(e.nome)+'</h3><p class="muted">'+esc(e.desc)+'</p>';
+    d.appendChild(intro);
+  }
+  list.forEach(function(o){
+    var e=eixoOf(o.c.eixo);
+    var a=document.createElement("div");a.className="card "+e.cor;
+    a.innerHTML='<h3>'+e.emoji+' '+esc(o.c.titulo)+'</h3><div class="ref">'+esc(o.c.ref)+'</div>'+
+      '<p><span class="lbl">Destrava</span>'+esc(o.c.ideia)+'</p>'+
+      '<p><span class="lbl">Na UTI</span>'+esc(o.c.uti)+'</p>'+
+      '<p style="margin-top:auto"><span class="lbl">Ação de hoje</span><b>'+esc(o.c.acao)+'</b></p>'+
+      '<div class="actions"><button type="button" class="btn-main" data-load="'+o.i+'">⏱️ Rodar 3 min</button></div>';
+    d.appendChild(a);
+  });
+  $$("[data-load]",d).forEach(function(b){b.addEventListener("click",function(){plantao=false;pick(+b.dataset.load);go("motor");toast("Cartão carregado no Motor ⏱️")})});
+}
+
+/* ══════════ UTI ══════════ */
+var GRUPOS=[{id:"todos",n:"Todos"},{id:"comunicacao",n:"🗣️ Comunicação"},{id:"decisao",n:"🎯 Decisão"},{id:"justica",n:"⚖️ Equidade"},{id:"seguranca",n:"🔒 Segurança"},{id:"equipe",n:"🫂 Equipe"}];
+var filtroG="todos";
+function renderScnChips(){
+  var c=$("#scn-chips");c.innerHTML="";
+  GRUPOS.forEach(function(g){
+    var n=g.id==="todos"?CENARIOS.length:CENARIOS.filter(function(s){return s.grupo===g.id}).length;
+    c.appendChild(mkChip(g.n+" ("+n+")",g.id,filtroG,function(v){filtroG=v;renderScnChips();renderScn()}));
+  });
+}
+function renderScn(){
+  var L=$("#scn-list");L.innerHTML="";
+  CENARIOS.filter(function(s){return filtroG==="todos"||s.grupo===filtroG}).forEach(function(s){
+    var d=document.createElement("details");d.className="scn";d.id="scn-"+s.id;
+    d.innerHTML='<summary><span aria-hidden="true">'+s.emoji+'</span> '+esc(s.titulo)+'</summary>'+
+      '<div class="scn-body">'+
+      '<p><span class="lbl mono" style="font-size:.64rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)">Gatilho real</span>'+esc(s.gatilho)+'</p>'+
+      '<div class="callout"><b>Âncora — '+esc(s.ref)+':</b> '+esc(s.ancora)+'</div>'+
+      '<div class="cols"><div class="do"><h4>✅ Faça</h4><ul>'+s.faca.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ul></div>'+
+      '<div class="dont"><h4>⛔ Não faça</h4><ul>'+s.naofaca.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ul></div></div>'+
+      '<div class="frase">'+esc(s.frase)+'</div>'+
+      '<div class="actions"><button type="button" data-cf="'+s.id+'">📋 Copiar frase pronta</button></div>'+
+      '</div>';
+    L.appendChild(d);
+  });
+  $$("[data-cf]",L).forEach(function(b){b.addEventListener("click",function(){
+    var s=CENARIOS.filter(function(x){return x.id===b.dataset.cf})[0];
+    copy(s.titulo+"\n\nFrase pronta: "+s.frase+"\n\nÂncora: "+s.ref+" — "+s.ancora);
+  })});
+}
+
+/* ══════════ DILEMAS ══════════ */
+function renderDil(){
+  var L=$("#dil-list");L.innerHTML="";
+  DILEMAS.forEach(function(d,di){
+    var e=eixoOf(d.eixo);
+    var w=document.createElement("div");w.className="dil "+e.cor;
+    var html='<span class="tag">'+e.emoji+' '+esc(e.nome)+'</span><p class="cen">'+esc(d.cenario)+'</p>';
+    d.opcoes.forEach(function(o,oi){
+      html+='<button type="button" class="opt" data-d="'+di+'" data-o="'+oi+'">'+String.fromCharCode(65+oi)+') '+esc(o.t)+'</button>'+
+            '<div class="com" id="com-'+di+'-'+oi+'"><b>Consequência:</b> '+o.c+'</div>';
+    });
+    w.innerHTML=html;L.appendChild(w);
+  });
+  $$(".opt",L).forEach(function(b){b.addEventListener("click",function(){
+    var di=b.dataset.d,oi=b.dataset.o;
+    $("#com-"+di+"-"+oi).classList.toggle("on");
+    b.classList.toggle("sel");
+  })});
+}
+
+/* ══════════ FLASHCARDS ══════════ */
+function renderFC(list){
+  var g=$("#fc-grid");g.innerHTML="";
+  (list||FLASH).forEach(function(f){
+    var b=document.createElement("button");
+    b.type="button";b.className="fc";b.setAttribute("aria-pressed","false");
+    b.innerHTML='<div class="fc-in"><div class="fc-f"><small>Situação</small><b>'+esc(f.f)+'</b><p>Clique para ver o eixo e a conduta.</p></div>'+
+      '<div class="fc-b"><small>'+esc(f.b)+'</small><p>'+esc(f.d)+'</p></div></div>';
+    b.addEventListener("click",function(){b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")==="true"?"false":"true")});
+    g.appendChild(b);
+  });
+}
+$("#fc-shuffle").addEventListener("click",function(){
+  var a=FLASH.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}
+  renderFC(a);toast("Embaralhado 🔀");
+});
+$("#fc-reset").addEventListener("click",function(){$$(".fc").forEach(function(b){b.setAttribute("aria-pressed","false")})});
+
+/* ══════════ REVISÃO ══════════ */
+var selEixo=$("#rev-eixo");
+EIXOS.forEach(function(e){var o=document.createElement("option");o.value=e.id;o.textContent=e.emoji+" "+e.nome;selEixo.appendChild(o)});
+$("#rev-date").value=new Date().toISOString().slice(0,10);
+var revTxt="";
+$("#rev-gen").addEventListener("click",function(){
+  var v=$("#rev-date").value;if(!v){toast("Informe a data");return}
+  var base=new Date(v+"T12:00:00"),e=eixoOf(selEixo.value);
+  var dias=[{d:1,o:"Releia a ação e responda: você fez? O que atrapalhou?"},
+            {d:7,o:"Releia o cenário de UTI correspondente e conte um caso real que encaixou."},
+            {d:14,o:"Conduza uma Pausa de 3 Minutos com a equipe usando este eixo."},
+            {d:30,o:"Compare: mudou alguma conduta sua de verdade? Registre em uma linha."}];
+  var rows=dias.map(function(x){
+    var dt=new Date(base.getTime()+x.d*86400000);
+    return "<tr><td class='mono'>D"+x.d+"</td><td class='mono'>"+dt.toLocaleDateString("pt-BR")+"</td><td>"+x.o+"</td></tr>";
+  }).join("");
+  $("#rev-out").innerHTML="<table><thead><tr><th>Marco</th><th>Data</th><th>O que fazer</th></tr></thead><tbody>"+rows+"</tbody></table>";
+  $("#rev-out").hidden=false;
+  revTxt="PLANO DE REVISÃO — "+e.emoji+" "+e.nome+"\nInício: "+base.toLocaleDateString("pt-BR")+"\n\n"+
+    dias.map(function(x){var dt=new Date(base.getTime()+x.d*86400000);return "D"+x.d+" ("+dt.toLocaleDateString("pt-BR")+"): "+x.o}).join("\n")+
+    "\n\n— AldenirMed89 · Radar Bíblico 3 Minutos";
+  toast("Plano gerado 📅");
+});
+$("#rev-copy").addEventListener("click",function(){revTxt?copy(revTxt):toast("Gere o plano primeiro")});
+
+/* ══════════ DIÁRIO (local) ══════════ */
+var KEY="rb3min-diario-v1";
+function readDiary(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
+function writeDiary(a){try{localStorage.setItem(KEY,JSON.stringify(a))}catch(e){toast("Armazenamento local indisponível")}}
+function addDiary(t){
+  if(!t||!t.trim())return;
+  var a=readDiary();a.unshift({d:new Date().toISOString().slice(0,10),t:t.trim()});
+  writeDiary(a.slice(0,200));renderDiary();
+}
+function renderDiary(){
+  var a=readDiary(),L=$("#diary-list");
+  if(!a.length){L.innerHTML='<p class="muted" style="font-size:.9rem">Nenhum registro ainda. Os registros ficam apenas neste navegador, neste aparelho.</p>';return}
+  L.innerHTML=a.map(function(x){return '<div class="diary-item"><span class="d">'+esc(x.d)+'</span><span>'+esc(x.t)+'</span></div>'}).join("");
+}
+$("#diary-add").addEventListener("click",function(){var v=$("#diary-in").value;if(!v.trim()){toast("Escreva uma linha");return}addDiary(v);$("#diary-in").value="";toast("Salvo neste aparelho ✅")});
+$("#diary-export").addEventListener("click",function(){
+  var a=readDiary();if(!a.length){toast("Nada para exportar");return}
+  copy("DIÁRIO — RADAR BÍBLICO 3 MINUTOS\n\n"+a.map(function(x){return x.d+" — "+x.t}).join("\n"));
+});
+$("#diary-clear").addEventListener("click",function(){
+  if(!confirm("Apagar todos os registros deste aparelho? Não há como desfazer."))return;
+  try{localStorage.removeItem(KEY)}catch(e){}
+  renderDiary();toast("Diário apagado");
+});
+
+/* ══════════ BUSCA ══════════ */
+var IDX=[];
+CARDS.forEach(function(c,i){IDX.push({t:c.titulo,s:c.ref+" · "+c.cena,txt:(c.texto+" "+c.ideia+" "+c.uti+" "+c.acao+" "+c.titulo+" "+c.ref+" "+c.cena).toLowerCase(),go:function(){plantao=false;pick(i);go("motor")}})});
+CENARIOS.forEach(function(s){IDX.push({t:s.emoji+" "+s.titulo,s:"UTI na prática · "+s.ref,txt:(s.titulo+" "+s.gatilho+" "+s.ancora+" "+s.frase+" "+s.faca.join(" ")+" "+s.naofaca.join(" ")).toLowerCase(),go:function(){go("uti");setTimeout(function(){var d=$("#scn-"+s.id);if(d){d.open=true;d.scrollIntoView({behavior:"smooth",block:"center"})}},120)}})});
+FLASH.forEach(function(f){IDX.push({t:f.f,s:"Flashcard · "+f.b,txt:(f.f+" "+f.b+" "+f.d).toLowerCase(),go:function(){go("flash")}})});
+var si=$("#search-input"),sr=$("#search-results");
+si.addEventListener("input",function(){
+  var q=si.value.trim().toLowerCase();
+  if(q.length<2){sr.hidden=true;return}
+  var hits=IDX.filter(function(x){return x.txt.indexOf(q)>-1}).slice(0,14);
+  sr.innerHTML=hits.length?"":"<p>Nada encontrado para “"+esc(si.value)+"”.</p>";
+  hits.forEach(function(h){
+    var b=document.createElement("button");b.type="button";
+    b.innerHTML="<b>"+esc(h.t)+"</b><br><small class='muted mono' style='font-size:.72rem'>"+esc(h.s)+"</small>";
+    b.addEventListener("click",function(){sr.hidden=true;si.value="";h.go()});
+    sr.appendChild(b);
+  });
+  sr.hidden=false;
+});
+document.addEventListener("click",function(e){if(!sr.contains(e.target)&&e.target!==si)sr.hidden=true});
+document.addEventListener("keydown",function(e){
+  if(e.key==="/"&&document.activeElement!==si&&["INPUT","TEXTAREA","SELECT"].indexOf(document.activeElement.tagName)<0){e.preventDefault();si.focus()}
+  if(e.key==="Escape"){sr.hidden=true;si.blur()}
+});
+
+/* ══════════ PREFERÊNCIAS ══════════ */
+var fs=0;
+$("#font-btn").addEventListener("click",function(){
+  fs=(fs+1)%4;document.documentElement.className=document.documentElement.className.replace(/\bfs-\d\b/g,"").trim();
+  if(fs)document.documentElement.classList.add("fs-"+fs);
+  try{localStorage.setItem("rb3min-fs",fs)}catch(e){}
+});
+var A11Y_KEY="antigravity:a11y:v1";
+function readPrefs(){try{var p=JSON.parse(localStorage.getItem(A11Y_KEY)||"{}");return (p&&typeof p==="object"&&!Array.isArray(p))?p:{}}catch(e){return{}}}
+function writePrefs(p){try{localStorage.setItem(A11Y_KEY,JSON.stringify(p))}catch(e){}}
+function syncThemeBtn(){
+  var clear=document.documentElement.getAttribute("data-theme")==="light";
+  var b=$("#theme-btn");
+  b.setAttribute("aria-pressed",clear?"true":"false");
+  b.title=clear?"Voltar ao tema escuro":"Ativar visualização clara";
+  b.setAttribute("aria-label",clear?"Voltar ao tema escuro":"Ativar visualização clara com fundo branco");
+}
+$("#theme-btn").addEventListener("click",function(){
+  var clear=document.documentElement.getAttribute("data-theme")==="light";
+  var next=clear?"dark":"light";
+  document.documentElement.setAttribute("data-theme",next);
+  document.documentElement.style.colorScheme=next;
+  var p=readPrefs();p.theme=next;p.clarity=(next==="light");writePrefs(p);
+  try{localStorage.setItem("rb3min-theme",next)}catch(e){}
+  syncThemeBtn();
+});
+$("#print-btn").addEventListener("click",function(){window.print()});
+syncThemeBtn();
+try{
+  var sf=parseInt(localStorage.getItem("rb3min-fs")||"0",10);if(sf){fs=sf;document.documentElement.classList.add("fs-"+sf)}
+}catch(e){}
+
+/* ══════════ INÍCIO ══════════ */
+renderChips();renderDeck();renderScnChips();renderScn();renderDil();renderFC();renderDiary();
+pick();
+var h=(location.hash||"").replace("#","");
+if(h&&TABS.filter(function(t){return t.id===h}).length)go(h,true);
+
+})();
+</script>
+</body>
+</html>
