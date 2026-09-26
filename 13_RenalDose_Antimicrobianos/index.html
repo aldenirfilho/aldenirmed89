@@ -523,9 +523,24 @@ html.a11y-contrast :where(a,button,input,select,[tabindex]):focus-visible{
           </select>
         </div>
         <div class="field" id="weight-field">
-          <label>Peso</label>
-          <input type="number" id="weight" min="30" max="250" value="70"/>
-          <span class="field-help">kg — usado em Cockcroft-Gault</span>
+          <label>Peso real</label>
+          <input type="number" id="weight" min="30" max="300" step="0.5" value="70"/>
+          <span class="field-help">kg — Cockcroft-Gault e BSA (desindexação)</span>
+        </div>
+        <div class="field" id="height-field">
+          <label>Altura</label>
+          <input type="number" id="height" min="120" max="230" step="1" placeholder="ex.: 170"/>
+          <span class="field-help">cm — opcional: habilita peso ideal/ajustado e TFG desindexada</span>
+        </div>
+        <div class="field" id="wtbasis-field">
+          <label>Peso para Cockcroft-Gault</label>
+          <select id="wtbasis">
+            <option value="auto">Automático (recomendado)</option>
+            <option value="actual">Peso real</option>
+            <option value="ideal">Peso ideal (Devine)</option>
+            <option value="adjusted">Peso ajustado (PI + 0,4×[real − PI])</option>
+          </select>
+          <span class="field-help">Auto: real se &lt; PI · PI se até 120% do PI · ajustado se &gt; 120% do PI</span>
         </div>
         <div class="field field-full">
           <label>Situação de diálise</label>
@@ -543,6 +558,7 @@ html.a11y-contrast :where(a,button,input,select,[tabindex]):focus-visible{
       <div class="result-eyebrow">Taxa de filtração glomerular estimada</div>
       <div class="result-value" id="gfr-val">—</div>
       <div class="result-unit" id="gfr-unit">mL/min/1,73 m²</div>
+      <div id="gfr-detail" style="font-size:.74rem;color:var(--muted);font-family:var(--font-mono);line-height:1.55;margin:-10px 0 16px" aria-live="polite"></div>
       <div class="result-stage stage-G2" id="gfr-stage"><span class="dot"></span><span id="gfr-stage-text">—</span></div>
       <p style="font-size:.78rem;color:var(--muted);margin-top:14px;line-height:1.5" id="gfr-note">
         Em <strong style="color:var(--soft)">paciente crítico</strong>, considere também ARC (Augmented Renal Clearance) se ClCr &gt; 130 mL/min — pode subdosar β-lactâmicos e vancomicina.
@@ -585,7 +601,7 @@ html.a11y-contrast :where(a,button,input,select,[tabindex]):focus-visible{
   <div class="tut-grid">
     <div class="tut-card">
       <h4><span class="num">1</span>Calcule a TFG</h4>
-      <p>Em paciente crônico estável, use <strong>CKD-EPI 2021</strong> (recomendação KDIGO CKD 2024). Em paciente crítico/instável ou idoso magro, prefira <strong>Cockcroft-Gault</strong> com peso ideal (PBW) ou peso ajustado se obeso.</p>
+      <p>Em paciente crônico estável, use <strong>CKD-EPI 2021</strong> (KDIGO CKD 2024; SBN/SBPC-ML 2024). Para <strong>dose</strong> em extremos de tamanho corporal, use a TFGe <strong>desindexada</strong> (mL/min = TFGe × BSA/1,73 — KDIGO 2024 PP 4.2.4): informe a altura e a calculadora faz isso. Em paciente crítico/instável ou idoso magro, prefira <strong>Cockcroft-Gault</strong>: com a altura informada, o peso é escolhido automaticamente (real se abaixo do ideal; ideal Devine até 120% do PI; ajustado <code>PI + 0,4×(real − PI)</code> acima disso).</p>
     </div>
     <div class="tut-card">
       <h4><span class="num">2</span>Classifique pelo KDIGO</h4>
@@ -617,8 +633,9 @@ html.a11y-contrast :where(a,button,input,select,[tabindex]):focus-visible{
       Idealização e edição da plataforma: Aldenir Rocha de Oliveira Filho.
     </p>
     <p style="margin-top:8px">
-      Bibliografia: Sanford Guide to Antimicrobial Therapy 55ª ed. · UpToDate (atualizado) · KDIGO 2024 CKD Guideline · KDIGO 2012 AKI Guideline ·
-      IDSA Guidelines · ASHP/IDSA Vancomycin 2020 · bulas ANVISA.
+      Bibliografia: Sanford Guide to Antimicrobial Therapy 55ª ed. · UpToDate (atualizado) · KDIGO 2024 CKD Guideline (PP 4.2.2–4.2.4: TFGe para dose; desindexar em extremos de tamanho corporal) · KDIGO 2012 AKI Guideline (atualização AKI/AKD 2026 em finalização após revisão pública) ·
+      FDA 2024 (PK em insuficiência renal) · SBN/SBPC-ML 2024 (CKD-EPI 2021 sem raça) · IDSA Guidelines · ASHP/IDSA Vancomycin 2020 · bulas ANVISA.
+      <br>Auditoria das fórmulas (CKD-EPI 2021, Cockcroft-Gault com peso ideal/ajustado, desindexação por BSA, matcher de faixas): set/2026.
     </p>
     <p style="margin-top:8px;color:var(--red)">
       ⚠️ Conteúdo educacional em revisão. Não use isoladamente para prescrever:
@@ -822,7 +839,7 @@ const DRUGS = [
     {gfr:"31–50", mant:"2 g IV 12/12h", pres:"4 fr 1 g/dia"},
     {gfr:"16–30", mant:"2 g IV 24/24h", pres:"2 fr 1 g/dia"},
     {gfr:"6–15", mant:"1 g IV 24/24h", pres:"1 fr 1 g/dia"},
-    {gfr:"<5", mant:"500 mg IV 24/24h", pres:""},
+    {gfr:"≤5", mant:"500 mg IV 24/24h", pres:""},
     {gfr:"HD", mant:"1 g pós-HD; ou 500 mg 24/24h + 1 g pós-sessão", pres:""},
     {gfr:"CRRT", mant:"2 g IV 12/12h", pres:""}
   ],
@@ -855,7 +872,7 @@ const DRUGS = [
   apres:"Frasco-ampola 1,5 g (1 g amp + 0,5 g sulb) e 3 g (2 g + 1 g) IV",
   ataque:"3 g IV (sem ajuste)",
   doses:[
-    {gfr:">30", mant:"3 g IV 6/6h", pres:"4 fr 3 g/dia = 12 g/dia"},
+    {gfr:"≥30", mant:"3 g IV 6/6h", pres:"4 fr 3 g/dia = 12 g/dia"},
     {gfr:"15–29", mant:"3 g IV 12/12h", pres:"2 fr 3 g/dia"},
     {gfr:"<15", mant:"3 g IV 24/24h", pres:"1 fr 3 g/dia"},
     {gfr:"HD", mant:"3 g IV 24/24h, administrar após HD", pres:""},
@@ -1029,7 +1046,7 @@ const DRUGS = [
   apres:"Bolsa IV 500 mg/100 mL e 750 mg/150 mL · cp 500/750 mg",
   ataque:"750 mg IV (sem ajuste)",
   doses:[
-    {gfr:">50", mant:"750 mg IV 24/24h (PAC grave) ou 500 mg 24/24h", pres:"1 bolsa/dia"},
+    {gfr:"≥50", mant:"750 mg IV 24/24h (PAC grave) ou 500 mg 24/24h", pres:"1 bolsa/dia"},
     {gfr:"20–49", mant:"750 mg dose única, depois 750 mg 48/48h (ou 500 mg/dia → 250 mg/dia)", pres:""},
     {gfr:"<20", mant:"750 mg dose única, depois 500 mg 48/48h", pres:""},
     {gfr:"HD", mant:"750 mg ataque + 500 mg 48/48h", pres:""},
@@ -1066,16 +1083,16 @@ const DRUGS = [
     {gfr:">90", mant:"4,5 MUI IV 12/12h (9 MUI/dia)", pres:""},
     {gfr:"50–90", mant:"3,5–4,5 MUI 12/12h (7–9 MUI/dia)", pres:""},
     {gfr:"30–49", mant:"2,5–3,5 MUI 12/12h (5–7 MUI/dia)", pres:""},
-    {gfr:"10–29", mant:"1,5 MUI 12/12h (3 MUI/dia)", pres:""},
-    {gfr:"<10", mant:"1,5 MUI 24/24h", pres:""},
-    {gfr:"HD", mant:"1,5 MUI/dia + 1,5 MUI extra pós-HD", pres:""},
-    {gfr:"CRRT", mant:"4,5 MUI 12/12h (9 MUI/dia)", pres:""}
+    {gfr:"10–29", mant:"2,25–2,75 MUI 12/12h (4,5–5,5 MUI/dia)", pres:"Bula EMA/CMS: 4,5–5,5 MUI/dia"},
+    {gfr:"<10", mant:"1,75 MUI 12/12h (3,5 MUI/dia)", pres:"Bula EMA/CMS: 3,5 MUI/dia (Nation 2017: ≈ 4 MUI/dia)"},
+    {gfr:"HD", mant:"2,25 MUI/dia em dias sem HD; 3 MUI/dia após a sessão nos dias de HD (bula EMA). Nomograma Nation 2017: ≈ 4 MUI/dia + 30–40% suplementar pós-HD", pres:"TDM se disponível"},
+    {gfr:"CRRT", mant:"4,5 MUI 12/12h (9 MUI/dia); nomograma Nation 2017 chega a ≈ 13 MUI/dia em CVVHDF de alto fluxo", pres:"TDM se disponível"}
   ],
   dil:"SF 0,9% — 100 mL (preparo imediato — instável)",
   time:"30–60 min IV",
-  obs:"DIFERENTE da polimixina B: AJUSTAR por TFG. Inalada para PAV: 1–2 MUI 8/8h adjuvante. Cuidado com unidades (UI vs mg base vs mg CMS — fonte de erro grave).",
-  warn:"Nefrotoxicidade > polimixina B. Neurotoxicidade. Erros de prescrição frequentes — confirmar unidade.",
-  ref:"Sanford 55ª; ESCMID 2017"
+  obs:"DIFERENTE da polimixina B: AJUSTAR por TFG. Inalada para PAV: 1–2 MUI 8/8h adjuvante. Cuidado com unidades (UI vs mg base vs mg CMS — fonte de erro grave: 1 MUI CMS ≈ 80 mg CMS ≈ 33 mg colistina base).",
+  warn:"Nefrotoxicidade > polimixina B. Neurotoxicidade. Erros de prescrição frequentes — confirmar unidade. Faixas &lt;30 mL/min corrigidas na auditoria set/2026 (valores anteriores estavam abaixo da bula EMA e do nomograma Nation 2017 — risco de subdose em MDR).",
+  ref:"Sanford 55ª; bula EMA colistimetato (harmonizada 2014); Nation et al. CID 2017; Consenso Internacional Polimixinas 2019"
 },
 {
   nome:"Tigeciclina", classe:"Glicilciclina", cat:"outros",
@@ -1097,7 +1114,7 @@ const DRUGS = [
   apres:"Bolsa IV 500 mg/100 mL · cp 250/400 mg",
   ataque:"500 mg (sem ajuste)",
   doses:[
-    {gfr:">10", mant:"500 mg IV/VO 8/8h", pres:"3 bolsas/dia"},
+    {gfr:"≥10", mant:"500 mg IV/VO 8/8h", pres:"3 bolsas/dia"},
     {gfr:"<10", mant:"500 mg IV/VO 12/12h (acúmulo de metabólitos)", pres:""},
     {gfr:"HD", mant:"500 mg 8/8h; dose após HD nos dias de sessão", pres:""},
     {gfr:"CRRT", mant:"500 mg 8/8h (sem ajuste)", pres:""}
@@ -1255,7 +1272,7 @@ const DRUGS = [
   apres:"Frasco-ampola 200 mg IV · cps 50/200 mg",
   ataque:"6 mg/kg IV 12/12h × 2 doses",
   doses:[
-    {gfr:">50", mant:"4 mg/kg IV 12/12h ou 200 mg VO 12/12h", pres:""},
+    {gfr:"≥50", mant:"4 mg/kg IV 12/12h ou 200 mg VO 12/12h", pres:""},
     {gfr:"<50", mant:"Mesma dose VO (preferir VO); IV: acúmulo do veículo SBECD — usar com cautela", pres:""},
     {gfr:"HD", mant:"VO mesma dose (não dialisado); IV evitar (SBECD acumula)", pres:""},
     {gfr:"CRRT", mant:"IV pode ser usado com monitorização TDM", pres:""}
@@ -1291,7 +1308,7 @@ const DRUGS = [
   apres:"Frasco-ampola 500 mg IV",
   ataque:"5 mg/kg IV (sem ajuste)",
   doses:[
-    {gfr:">70", mant:"5 mg/kg IV 12/12h (indução CMV) × 14–21d; 5 mg/kg/dia (manutenção)", pres:""},
+    {gfr:"≥70", mant:"5 mg/kg IV 12/12h (indução CMV) × 14–21d; 5 mg/kg/dia (manutenção)", pres:""},
     {gfr:"50–69", mant:"2,5 mg/kg 12/12h (indução)", pres:""},
     {gfr:"25–49", mant:"2,5 mg/kg 24/24h", pres:""},
     {gfr:"10–24", mant:"1,25 mg/kg 24/24h", pres:""},
@@ -1313,7 +1330,7 @@ const DRUGS = [
     {gfr:">60", mant:"75 mg VO 12/12h × 5 dias (10d em UTI/grave)", pres:"2 cps/dia"},
     {gfr:"30–60", mant:"30 mg VO 12/12h", pres:""},
     {gfr:"10–30", mant:"30 mg VO 24/24h", pres:""},
-    {gfr:"<10 sem HD", mant:"Não recomendado", pres:""},
+    {gfr:"<10 (sem TRS)", mant:"Não recomendado sem TRS", pres:""},
     {gfr:"HD", mant:"30 mg após cada HD (3×/sem)", pres:""},
     {gfr:"CRRT", mant:"75 mg 12/12h", pres:""}
   ],
@@ -1376,16 +1393,16 @@ const DRUGS = [
   apres:"Cp 500 mg",
   ataque:"Sem ataque",
   doses:[
-    {gfr:">50", mant:"25 mg/kg/dia (máx 2 g) — diária", pres:""},
-    {gfr:"≤50", mant:"25–35 mg/kg 3×/sem", pres:""},
+    {gfr:"≥30", mant:"25 mg/kg/dia (máx 2 g) — diária", pres:""},
+    {gfr:"<30", mant:"25–35 mg/kg 3×/sem (não diariamente)", pres:"ATS/CDC/IDSA 2016 e MS: limiar ClCr <30"},
     {gfr:"HD", mant:"25–35 mg/kg 3×/sem após HD", pres:""},
     {gfr:"CRRT", mant:"Padrão", pres:""}
   ],
   dil:"VO",
   time:"VO",
-  obs:"Faz parte do RHZE. Útil só nos 2 primeiros meses.",
+  obs:"Faz parte do RHZE. Útil só nos 2 primeiros meses. Limiar de ajuste corrigido na auditoria set/2026 (era ≤50; guidelines usam &lt;30, igual ao etambutol).",
   warn:"Hiperuricemia, hepatotoxicidade, artralgia, rash.",
-  ref:"Brasil MS PCDT TB 2023"
+  ref:"ATS/CDC/IDSA TB 2016; Brasil MS PCDT TB 2023"
 },
 {
   nome:"Etambutol (E)", classe:"Antituberculose", cat:"tb",
@@ -1410,22 +1427,76 @@ const DRUGS = [
    CÁLCULO DE TFG
    ═══════════════════════════════════════════════════════════════ */
 
+/* Auditoria set/2026 — fórmulas conferidas contra:
+   · CKD-EPI 2021 race-free (Inker NEJM 2021) — recomendada por KDIGO CKD 2024
+     (Rec. 1.1.2.1 / PP 1.2.4.2) e pelo consenso SBN/SBPC-ML 2024.
+   · KDIGO CKD 2024 PP 4.2.2–4.2.4: para dose de fármacos, TFGe por creatinina é
+     adequada; em extremos de tamanho corporal usar TFGe NÃO indexada
+     (mL/min = TFGe × BSA/1,73), sobretudo em fármacos de janela estreita.
+   · FDA (mar/2024, PK em insuficiência renal): CG ou CKD-EPI aceitos; usar valor
+     absoluto (não normalizado por BSA) na decisão individual.
+   · Cockcroft-Gault 1976 com escolha de peso (real / ideal Devine / ajustado 0,4).
+*/
+
+const CG_OBESITY_RATIO = 1.2;   // > 120% do peso ideal → peso ajustado
+const ADJ_BW_FACTOR   = 0.4;    // PAj = PI + 0,4 × (real − PI)
+const ARC_THRESHOLD   = 130;    // ClCr ≥ 130 mL/min → Augmented Renal Clearance
+
 function calcCKDEPI(scr, age, sex){
-  // CKD-EPI 2021 race-free
+  // CKD-EPI 2021 race-free — mL/min/1,73 m² (valor bruto; arredondar só na exibição)
   const k = sex==='F' ? 0.7 : 0.9;
   const a = sex==='F' ? -0.241 : -0.302;
   const minTerm = Math.min(scr/k, 1);
   const maxTerm = Math.max(scr/k, 1);
   let egfr = 142 * Math.pow(minTerm, a) * Math.pow(maxTerm, -1.200) * Math.pow(0.9938, age);
   if(sex==='F') egfr *= 1.012;
-  return Math.round(egfr * 10) / 10;
+  return egfr;
 }
 
 function calcCG(scr, age, sex, weight){
-  // Cockcroft-Gault
+  // Cockcroft-Gault — mL/min (valor bruto)
   let crcl = ((140 - age) * weight) / (72 * scr);
   if(sex==='F') crcl *= 0.85;
-  return Math.round(crcl * 10) / 10;
+  return crcl;
+}
+
+function idealBodyWeight(sex, heightCm){
+  // Devine (1974): H 50 kg / M 45,5 kg + 2,3 kg por polegada acima de 152,4 cm (0,9055 kg/cm)
+  const base = sex==='F' ? 45.5 : 50;
+  return base + 0.9055 * (heightCm - 152.4);
+}
+
+function adjustedBodyWeight(ibw, abw){
+  return ibw + ADJ_BW_FACTOR * (abw - ibw);
+}
+
+function bsaDuBois(heightCm, weightKg){
+  // Du Bois & Du Bois (1916) — mesma BSA de referência usada na indexação a 1,73 m²
+  return 0.007184 * Math.pow(weightKg, 0.425) * Math.pow(heightCm, 0.725);
+}
+
+/* Escolhe o peso para Cockcroft-Gault. Retorna {kg, label, ibw, ratio} */
+function chooseCGWeight(basis, sex, abw, heightCm){
+  const hasH = Number.isFinite(heightCm) && heightCm > 0;
+  const ibw  = hasH ? idealBodyWeight(sex, heightCm) : null;
+  const ratio = (ibw && ibw > 0) ? abw / ibw : null;
+
+  if(!hasH){
+    return {kg: abw, label: basis==='actual' ? 'real' : 'real (sem altura → PI/ajustado indisponíveis)', ibw, ratio};
+  }
+  let use = basis;
+  if(basis==='auto'){
+    if(abw < ibw) use = 'actual';
+    else if(ratio <= CG_OBESITY_RATIO) use = 'ideal';
+    else use = 'adjusted';
+  }
+  if(use==='ideal')    return {kg: ibw, label: 'ideal (Devine)', ibw, ratio};
+  if(use==='adjusted') return {kg: adjustedBodyWeight(ibw, abw), label: 'ajustado (PI + 0,4×[real − PI])', ibw, ratio};
+  return {kg: abw, label: abw < ibw ? 'real (abaixo do PI)' : 'real', ibw, ratio};
+}
+
+function fmt(n, d=0){
+  return Number.isFinite(n) ? n.toLocaleString('pt-BR', {minimumFractionDigits:d, maximumFractionDigits:d}) : '—';
 }
 
 function classifyKDIGO(gfr){
@@ -1443,78 +1514,169 @@ function classifyKDIGO(gfr){
 
 let state = {
   eq:'ckdepi',
-  scr:1.0, age:60, sex:'M', weight:70,
+  scr:1.0, age:60, sex:'M', weight:70, height:null, wtBasis:'auto',
   dialysis:'none',
-  gfr:null, stage:null,
+  gfr:null,      // valor exibido (CKD-EPI indexado ou CG)
+  gfrDose:null,  // valor em mL/min usado para destacar as faixas de dose
+  stage:null,
   cat:'all', search:''
 };
 
+function readNumber(id){
+  const v = parseFloat(String(document.getElementById(id).value).replace(',', '.'));
+  return Number.isFinite(v) ? v : NaN;
+}
+
 function updateGFR(){
-  state.scr = parseFloat(document.getElementById('scr').value) || 1.0;
-  state.age = parseInt(document.getElementById('age').value) || 60;
-  state.sex = document.getElementById('sex').value;
-  state.weight = parseFloat(document.getElementById('weight').value) || 70;
+  state.scr      = readNumber('scr');
+  state.age      = readNumber('age');
+  state.sex      = document.getElementById('sex').value;
+  state.weight   = readNumber('weight');
+  state.height   = readNumber('height');
+  state.wtBasis  = document.getElementById('wtbasis').value;
   state.dialysis = document.getElementById('dialysis').value;
 
-  let gfr;
-  if(state.eq==='ckdepi') gfr = calcCKDEPI(state.scr, state.age, state.sex);
-  else gfr = calcCG(state.scr, state.age, state.sex, state.weight);
+  const valEl = document.getElementById('gfr-val');
+  const unitEl = document.getElementById('gfr-unit');
+  const detailEl = document.getElementById('gfr-detail');
+  const stageEl = document.getElementById('gfr-stage');
+  const stageTxt = document.getElementById('gfr-stage-text');
+
+  const hasH = Number.isFinite(state.height) && state.height >= 100;
+  const hasW = Number.isFinite(state.weight) && state.weight > 0;
+  const baseOK = Number.isFinite(state.scr) && state.scr > 0 && Number.isFinite(state.age) && state.age > 0;
+  const needW = state.eq==='cg';
+
+  // ── Validação: sem dados válidos não se estima nada (evita “1,0 mg/dL” silencioso) ──
+  if(!baseOK || (needW && !hasW)){
+    state.gfr = null; state.gfrDose = null; state.stage = null;
+    valEl.textContent = '—';
+    unitEl.textContent = state.eq==='ckdepi' ? 'mL/min/1,73 m² (CKD-EPI 2021)' : 'mL/min (Cockcroft-Gault)';
+    detailEl.textContent = needW && !hasW
+      ? 'Informe o peso para calcular Cockcroft-Gault.'
+      : 'Informe creatinina (> 0) e idade para calcular.';
+    stageEl.className = 'result-stage stage-G2';
+    stageTxt.textContent = 'Dados incompletos';
+    document.getElementById('gfr-note').innerHTML = 'Preencha os campos para estimar a função renal.';
+    renderDrugs();
+    return;
+  }
+
+  let gfr, gfrDose, detail = '';
+  const bsa = (hasH && hasW) ? bsaDuBois(state.height, state.weight) : null;
+
+  if(state.eq==='ckdepi'){
+    gfr = calcCKDEPI(state.scr, state.age, state.sex);           // mL/min/1,73 m²
+    if(bsa){
+      gfrDose = gfr * bsa / 1.73;                                // desindexada (KDIGO 2024 PP 4.2.4)
+      detail = `Desindexada: <strong style="color:var(--soft)">${fmt(gfrDose)} mL/min</strong> (BSA ${fmt(bsa,2)} m², Du Bois) → usada no destaque das doses`;
+      if(Math.abs(gfrDose - gfr) / gfr >= 0.15) detail += ' · ⚠️ diferença ≥15% do valor indexado — extremo de tamanho corporal';
+    }else{
+      gfrDose = gfr;
+      detail = 'Sem altura: destaque das doses usa o valor indexado. Informe altura para desindexar (KDIGO 2024 PP 4.2.4 — extremos de tamanho corporal).';
+    }
+  }else{
+    const w = chooseCGWeight(state.wtBasis, state.sex, state.weight, hasH ? state.height : NaN);
+    gfr = calcCG(state.scr, state.age, state.sex, w.kg);          // mL/min
+    gfrDose = gfr;
+    detail = `Peso usado: <strong style="color:var(--soft)">${fmt(w.kg,1)} kg</strong> — ${w.label}`;
+    if(w.ibw) detail += ` · PI ${fmt(w.ibw,1)} kg · real = ${fmt(w.ratio*100)}% do PI`;
+    if(w.ratio && w.ratio > CG_OBESITY_RATIO && state.wtBasis==='actual') detail += ' · ⚠️ peso real em obesidade superestima o ClCr';
+    detail += ' · Estadiamento KDIGO abaixo é aproximado (formalmente usa TFGe indexada)';
+  }
 
   state.gfr = gfr;
+  state.gfrDose = gfrDose;
   state.stage = classifyKDIGO(gfr);
 
-  document.getElementById('gfr-val').textContent = gfr;
-  document.getElementById('gfr-unit').textContent = state.eq==='ckdepi'
+  valEl.textContent = fmt(gfr);   // TFGe reportada como inteiro (padrão laboratorial NKF/ASN)
+  unitEl.textContent = state.eq==='ckdepi'
     ? 'mL/min/1,73 m² (CKD-EPI 2021)'
     : 'mL/min (Cockcroft-Gault)';
-  const stageEl = document.getElementById('gfr-stage');
+  detailEl.innerHTML = detail;
   stageEl.className = 'result-stage ' + state.stage.cls;
-  document.getElementById('gfr-stage-text').textContent = state.stage.label;
+  stageTxt.textContent = state.stage.label;
 
   // Nota contextual
   let note = '';
   if(state.dialysis==='ihd') note='⚠️ Paciente em <strong>HD intermitente</strong>: use a linha “HD” em cada antimicrobiano. Administrar dose <strong>após</strong> sessão para drogas dialisáveis (β-lactâmicos, vanco em parte, aminoglicos).';
   else if(state.dialysis==='crrt') note='⚠️ Paciente em <strong>CRRT</strong>: use a linha “CRRT”. Clearance significativo — frequentemente requer dose MAIOR que IRC sem diálise. Considere TDM.';
-  else if(state.dialysis==='sled') note='⚠️ <strong>SLED/PIRRT</strong>: clearance intermediário. Em geral aproxima-se de TFG 30–50 durante e CRRT durante sessão.';
-  else if(state.dialysis==='pd') note='⚠️ <strong>Diálise peritoneal</strong>: clearance menor que HD. Aproximar de TFG &lt;15 sem HD. Considere dose intraperitoneal em peritonite (consultar nefrologia).';
-  else if(gfr > 130) note='🚀 <strong>ARC (Augmented Renal Clearance)</strong>: ClCr &gt;130 mL/min frequente em jovem, sepse, queimado, neuro-trauma. Subdosa β-lactâmicos e vanco — considere infusão estendida/contínua e TDM.';
-  else note='Em <strong>paciente crítico</strong>, considere também ARC se ClCr &gt; 130 mL/min — pode subdosar β-lactâmicos e vancomicina.';
+  else if(state.dialysis==='sled') note='⚠️ <strong>SLED/PIRRT</strong>: clearance intermediário — a linha “CRRT” é destacada como aproximação; em geral aproxima-se de TFG 30–50 fora da sessão e CRRT durante a sessão. Preferir dose após a sessão para fármacos dialisáveis.';
+  else if(state.dialysis==='pd') note='⚠️ <strong>Diálise peritoneal</strong>: clearance menor que HD — a linha “HD” é destacada como aproximação. Aproximar de TFG &lt;15 sem HD. Considere dose intraperitoneal em peritonite (consultar nefrologia).';
+  else if(gfrDose >= ARC_THRESHOLD) note='🚀 <strong>ARC (Augmented Renal Clearance)</strong>: ClCr ≥130 mL/min frequente em jovem, sepse, queimado, neuro-trauma. Subdosa β-lactâmicos e vanco — considere infusão estendida/contínua e TDM.';
+  else note='Em <strong>paciente crítico</strong>, considere também ARC se ClCr ≥ 130 mL/min — pode subdosar β-lactâmicos e vancomicina. Em <strong>AKI</strong> a creatinina atrasa 24–48 h: a estimativa pode superestimar a função real.';
   document.getElementById('gfr-note').innerHTML = note;
 
   renderDrugs();
 }
 
-/* Identifica qual linha de dose se aplica ao GFR/diálise atual */
+/* ── Classificação das linhas de dose ─────────────────────────────
+   HD  : rótulo exatamente "HD" ou terminado em "/HD" (ex.: "≤5/HD")
+   CRRT: rótulo exatamente "CRRT"
+   (evita o bug antigo em que /HD/ casava com "<10 sem HD")            */
+function isHDRow(g){ return /^(HD|.+\/HD)$/i.test(String(g).trim()); }
+function isCRRTRow(g){ return /^CRRT$/i.test(String(g).trim()); }
+
+/* Converte rótulo de faixa em intervalo numérico de ClCr (mL/min).
+   Aceita: "qualquer", ">N", "≥N", "<N", "≤N", "A–B" / "A-B", "≤5/HD",
+   "<10 (sem TRS)"; retorna null para linhas não numéricas (Child, AKI…). */
+function parseGfrRange(label){
+  let s = String(label).trim();
+  if(isCRRTRow(s) || /^HD$/i.test(s)) return null;
+  s = s.split('/')[0].replace(/\(.*?\)/g,'').trim();   // "≤5/HD" → "≤5"; "<10 (sem TRS)" → "<10"
+  const num = x => parseFloat(String(x).replace(',', '.'));
+  let m;
+  if(/^qualquer$/i.test(s)) return {lo:-Infinity, hi:Infinity, loInc:true, hiInc:true};
+  if((m = s.match(/^>\s*(\d+(?:[.,]\d+)?)$/)))  return {lo:num(m[1]), hi:Infinity,  loInc:false, hiInc:true};
+  if((m = s.match(/^≥\s*(\d+(?:[.,]\d+)?)$/)))  return {lo:num(m[1]), hi:Infinity,  loInc:true,  hiInc:true};
+  if((m = s.match(/^<\s*(\d+(?:[.,]\d+)?)$/)))  return {lo:-Infinity, hi:num(m[1]), loInc:true,  hiInc:false};
+  if((m = s.match(/^≤\s*(\d+(?:[.,]\d+)?)$/)))  return {lo:-Infinity, hi:num(m[1]), loInc:true,  hiInc:true};
+  if((m = s.match(/^(\d+(?:[.,]\d+)?)\s*[\-–—]\s*(\d+(?:[.,]\d+)?)$/))) return {lo:num(m[1]), hi:num(m[2]), loInc:true, hiInc:true};
+  return null;
+}
+function rangeContains(r, v){
+  const okLo = r.loInc ? v >= r.lo : v > r.lo;
+  const okHi = r.hiInc ? v <= r.hi : v < r.hi;
+  return okLo && okHi;
+}
+function rangeDistance(r, v){
+  if(rangeContains(r, v)) return 0;
+  if(v < r.lo || (v === r.lo && !r.loInc)) return r.lo - v + (r.loInc ? 0 : 1e-6);
+  return v - r.hi + (r.hiInc ? 0 : 1e-6);
+}
+
+/* Identifica qual linha de dose se aplica ao ClCr (mL/min)/diálise atual.
+   1) TRS → linha HD ou CRRT.  2) Primeira faixa numérica que contém o valor.
+   3) Sem faixa exata (buracos como 29,5 entre "15–29" e ">30") → faixa mais
+      próxima, com valor arredondado ao inteiro (tabelas são inteiras).        */
 function matchDoseRow(drug, gfr, dialysis){
   if(dialysis==='ihd' || dialysis==='pd'){
-    return drug.doses.findIndex(d => /HD/i.test(d.gfr));
+    return drug.doses.findIndex(d => isHDRow(d.gfr));
   }
   if(dialysis==='crrt' || dialysis==='sled'){
-    return drug.doses.findIndex(d => /CRRT/i.test(d.gfr));
+    return drug.doses.findIndex(d => isCRRTRow(d.gfr));
   }
-  // Sem TRS — compara faixas numéricas
+  if(!Number.isFinite(gfr)) return -1;
+  const v = Math.round(gfr);
+  let best = -1, bestDist = Infinity;
   for(let i=0;i<drug.doses.length;i++){
-    const g = drug.doses[i].gfr;
-    if(/HD|CRRT|Child|AKI/i.test(g)) continue;
-    if(g === 'qualquer') return i;
-    // ">N"
-    let m = g.match(/^>(\d+)$/); if(m && gfr > +m[1]) return i;
-    m = g.match(/^≥(\d+)$/); if(m && gfr >= +m[1]) return i;
-    // "<N" / "≤N"
-    m = g.match(/^<(\d+)$/); if(m && gfr < +m[1]) return i;
-    m = g.match(/^≤(\d+)$/); if(m && gfr <= +m[1]) return i;
-    // "N-N" ou "N–N"
-    m = g.match(/^(\d+)[\-–](\d+)$/); if(m && gfr >= +m[1] && gfr <= +m[2]) return i;
+    const r = parseGfrRange(drug.doses[i].gfr);
+    if(!r) continue;
+    if(rangeContains(r, v)) return i;
+    const dist = rangeDistance(r, v);
+    if(dist < bestDist){ bestDist = dist; best = i; }
   }
-  return -1;
+  return best;
 }
 
 function renderDrugs(){
   const grid = document.getElementById('drugs-grid');
-  const q = state.search.toLowerCase().trim();
+  // Busca por tokens: "ampi/sulb", "pip tazo", "vanco" — cada token deve aparecer no nome ou na classe
+  const tokens = state.search.toLowerCase().trim().split(/[\s\/\-+,]+/).filter(Boolean);
   const filtered = DRUGS.filter(d => {
     const catOK = state.cat==='all' || d.cat===state.cat;
-    const txtOK = !q || d.nome.toLowerCase().includes(q) || d.classe.toLowerCase().includes(q);
+    const hay = (d.nome + ' ' + d.classe).toLowerCase();
+    const txtOK = tokens.length===0 || tokens.every(t => hay.includes(t));
     return catOK && txtOK;
   });
 
@@ -1524,12 +1686,13 @@ function renderDrugs(){
   }
 
   grid.innerHTML = filtered.map(d => {
-    const highlightIdx = state.gfr ? matchDoseRow(d, state.gfr, state.dialysis) : -1;
+    const highlightIdx = (state.dialysis!=='none' || Number.isFinite(state.gfrDose))
+      ? matchDoseRow(d, state.gfrDose, state.dialysis) : -1;
     const dosesHTML = d.doses.map((row,i) => `
       <div class="dose-row ${i===highlightIdx?'highlight':''}">
         <div class="gfr-label">
           <span class="dot" style="background:${rowColor(row.gfr)}"></span>
-          ${row.gfr.includes('HD')||row.gfr.includes('CRRT')||row.gfr.includes('Child')||row.gfr.includes('AKI')?row.gfr:'ClCr '+row.gfr}
+          ${(isHDRow(row.gfr)||isCRRTRow(row.gfr)||/Child|AKI/i.test(row.gfr))?row.gfr:'ClCr '+row.gfr}
         </div>
         <div class="dose-text">${row.mant}</div>
         <div class="pres-text">${row.pres||'—'}</div>
@@ -1591,7 +1754,7 @@ function rowColor(g){
 /* ═══════════════════════════════════════════════════════════════
    EVENTOS
    ═══════════════════════════════════════════════════════════════ */
-document.querySelectorAll('#scr,#age,#sex,#weight,#dialysis').forEach(el => {
+document.querySelectorAll('#scr,#age,#sex,#weight,#height,#wtbasis,#dialysis').forEach(el => {
   el.addEventListener('input', updateGFR);
   el.addEventListener('change', updateGFR);
 });
