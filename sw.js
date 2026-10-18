@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v41`;
+const CACHE_NAME = `${CACHE_PREFIX}v42`;
 const SHELL_ASSETS = [
   "./assets/icons/aerospace-v2/favicon.ico",
   "./assets/icons/aerospace-v2/icon-32.png",
@@ -68,6 +68,10 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/Neuro_Semiologia_Topografica/index.html",
   "./01_Modulos_Clinicos/Neuro_Semiologia_Topografica/redirect.js",
   "./data/site_manifest.json",
+  "./ecossistema/index.html",
+  "./ecossistema/assets/styles.css",
+  "./ecossistema/assets/app.js",
+  "./ecossistema/data/catalog.json",
   "./15_Radar_Cientifico/index.html",
   "./15_Radar_Cientifico/data/radar.js",
   "./15_Radar_Cientifico/data/radar-history.json",
@@ -365,7 +369,8 @@ self.addEventListener("fetch", (event) => {
 
   if (url.pathname.endsWith("/manifest.webmanifest") ||
       url.pathname.endsWith("/18_Centro_Tripulacao/data/daily-visits.json") ||
-      url.pathname.endsWith("/18_Centro_Tripulacao/data/public-metrics.json")) {
+      url.pathname.endsWith("/18_Centro_Tripulacao/data/public-metrics.json") ||
+      url.pathname.endsWith("/ecossistema/data/catalog.json")) {
     event.respondWith(freshManifest(request));
     return;
   }
