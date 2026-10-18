@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-18T15:30:10.593745+00:00",
+  "repository": "aldenirfilho/aldenirmed89",
+  "baselineCommit": "35f7fef2f2010695c67ca6af3697fa86e59f000b",
+  "pullRequest": 26,
+  "deployment": {
+    "url": "https://github.com/aldenirfilho/aldenirmed89/actions/runs/39134049559",
+    "status": "completed",
+    "conclusion": "success",
+    "updatedAt": "2026-10-18T14:07:30Z"
+  },
+  "probes": [
+    {
+      "label": "total",
+      "method": "GET",
+      "url": "https://aldenirrochadeoliveirafilho1989.goatcounter.com/counter/TOTAL.json",
+      "origin": null,
+      "checkedAt": "2026-10-18T15:30:05.195884+00:00",
+      "httpStatus": 403,
+      "contentType": "text/html; charset=utf-8",
+      "accessControlAllowOrigin": null,
+      "responseSha256": "9e623de73fcc3214de6ce30aec7b181aacd21d5c3f3f1f045736d23a66a0ebbb",
+      "errorMessage": "Need to enable the ‘allow using the visitor counter’ setting",
+      "count": null
+    },
+    {
+      "label": "home",
+      "method": "GET",
+      "url": "https://aldenirrochadeoliveirafilho1989.goatcounter.com/counter/%2Faldenirmed89%2F.json",
+      "origin": "https://aldenirfilho.github.io",
+      "checkedAt": "2026-10-18T15:30:05.196448+00:00",
+      "httpStatus": 403,
+      "contentType": "text/html; charset=utf-8",
+      "accessControlAllowOrigin": null,
+      "responseSha256": "9e623de73fcc3214de6ce30aec7b181aacd21d5c3f3f1f045736d23a66a0ebbb",
+      "errorMessage": "Need to enable the ‘allow using the visitor counter’ setting",
+      "count": null
+    },
+    {
+      "label": "amr",
+      "method": "GET",
+      "url": "https://aldenirrochadeoliveirafilho1989.goatcounter.com/counter/%2Faldenirmed89%2F01_Modulos_Clinicos%2FBacterias_Super_Resistentes%2F.json",
+      "origin": "https://aldenirfilho.github.io",
+      "checkedAt": "2026-10-18T15:30:05.197279+00:00",
+      "httpStatus": 403,
+      "contentType": "text/html; charset=utf-8",
+      "accessControlAllowOrigin": null,
+      "responseSha256": "9e623de73fcc3214de6ce30aec7b181aacd21d5c3f3f1f045736d23a66a0ebbb",
+      "errorMessage": "Need to enable the ‘allow using the visitor counter’ setting",
+      "count": null
+    },
+    {
+      "label": "published_config",
+      "method": "GET",
+      "url": "https://aldenirfilho.github.io/aldenirmed89/data/site-analytics.json",
+      "origin": null,
+      "checkedAt": "2026-10-18T15:30:05.198340+00:00",
+      "httpStatus": 200,
+      "contentType": "application/json; charset=utf-8",
+      "accessControlAllowOrigin": "*",
+      "responseSha256": "6491d0916d35d263eaeaaf9e7b8e910144c3e36efb9112c6e20de416d7ddc9b8",
+      "matchesRepositoryBytes": true
+    },
+    {
+      "label": "published_script",
+      "method": "GET",
+      "url": "https://aldenirfilho.github.io/aldenirmed89/assets/site-analytics.js",
+      "origin": null,
+      "checkedAt": "2026-10-18T15:30:05.199863+00:00",
+      "httpStatus": 200,
+      "contentType": "application/javascript; charset=utf-8",
+      "accessControlAllowOrigin": "*",
+      "responseSha256": "5046123b5657ef1ae82ffec15bfdb38d353ac0add4d66127374a5cfab1e2a086",
+      "matchesRepositoryBytes": true
+    },
+    {
+      "label": "published_daily",
+      "method": "GET",
+      "url": "https://aldenirfilho.github.io/aldenirmed89/18_Centro_Tripulacao/data/daily-visits.json",
+      "origin": null,
+      "checkedAt": "2026-10-18T15:30:05.200417+00:00",
+      "httpStatus": 200,
+      "contentType": "application/json; charset=utf-8",
+      "accessControlAllowOrigin": "*",
+      "responseSha256": "5a0ae77c1dbbf17c1e4b17dcff0849ec7ef63f3cb44d45893df88eb05c0d8842",
+      "matchesRepositoryBytes": true,
+      "dataStatus": "unavailable",
+      "dayCount": 0
+    }
+  ],
+  "accountAccess": {
+    "state": "sign_in_required",
+    "observedUrl": "https://aldenirrochadeoliveirafilho1989.goatcounter.com/user/new",
+    "checkboxInspected": false,
+    "configurationChanged": false,
+    "authenticationCompleted": false
+  },
+  "conclusion": {
+    "state": "blocked_by_provider_public_counter_permission",
+    "countsVerified": false,
+    "observedCount": null,
+    "zeroVisitorsInferred": false,
+    "collectionVerified": false,
+    "settingsSessionsVerified": false,
+    "siteCodeChanged": false,
+    "cause": "Provider returned its explicit public-counter permission error; authenticated checkbox state was not inspected. Cached responses may delay observing later account changes."
+  },
+  "references": [
+    "https://www.goatcounter.com/help/visitor-counter",
+    "https://www.goatcounter.com/help/sessions",
+    "https://github.com/arp242/goatcounter/blob/c031008a8d28c85b36708824f23b28957e7ed262/handlers/vcounter.go"
+  ],
+  "validation": {
+    "command": "node tests/analytics_panel_regression.cjs",
+    "passed": 12,
+    "failed": 0,
+    "networkUsedByTests": false,
+    "diffCheck": "passed",
+    "reportJsonValidation": "passed"
+  },
+  "scope": {
+    "runtimeCodeChanged": false,
+    "siteContentChanged": false,
+    "historicalReportsChanged": false,
+    "collectorRequestsSent": false,
+    "documentationUpdated": [
+      "18_Centro_Tripulacao/ATIVAR_BACKEND.md"
+    ]
+  }
+}

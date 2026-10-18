@@ -233,6 +233,62 @@ Consulte `conectar.html` para a ordem prática de ativação e `painel-visitas.h
 
 O contador público GoatCounter respondeu HTTP 403 na verificação desta atualização. Isso não comprova ausência de tráfego e não autoriza inferir zero visitantes. A conta privada é a fonte para consultar o histórico. `data/daily-visits.json` registra indisponibilidade explícita.
 
+### Verificação do contador público — 18/10/2026
+
+**Estado: bloqueado pela permissão do contador público; nenhuma contagem validada.**
+Consultas GET iniciadas às 15:30 UTC (12:30 em Fortaleza) retornaram HTTP 403
+para `TOTAL`, `/aldenirmed89/` e o módulo Bactérias Super Resistentes, com a
+mensagem do próprio GoatCounter: “Need to enable the ‘allow using the visitor
+counter’ setting”. As duas consultas por caminho incluíram a origem
+`https://aldenirfilho.github.io`; a consulta a `TOTAL` não incluiu `Origin` e
+também foi recusada. Portanto, não se trata apenas de uma restrição CORS do
+navegador. O código oficial associa essa mensagem a `settings.allow_counter`
+desabilitado; uma resposta em cache pode atrasar a observação de uma alteração.
+
+O painel da conta abriu em `/user/new`, exigindo autenticação. O checkbox não
+foi inspecionado diretamente e nenhuma configuração foi alterada. Não há
+confirmação de ativação posterior. `visitorCounterEnabled: true` no JSON local
+prepara a interface, mas não habilita a permissão na conta GoatCounter.
+
+Para concluir com acesso autorizado à conta:
+
+1. Abra as configurações do site GoatCounter
+   `aldenirrochadeoliveirafilho1989` e habilite **Allow adding visitor counts on
+   your website**. Salve a configuração. Isso libera as contagens agregadas;
+   não exige tornar todo o dashboard público nem criar uma API key no site.
+2. Consulte novamente
+   `https://aldenirrochadeoliveirafilho1989.goatcounter.com/counter/TOTAL.json`
+   e os caminhos exatos do painel. Exija HTTP 200, JSON válido e `count`
+   numérico. Para caminhos use `/counter/` + `encodeURIComponent(path)` +
+   `.json`; `TOTAL` é maiúsculo e não começa com `/`. Um caminho sem registros
+   pode retornar 404, que não deve ser convertido em zero.
+3. Na página pública, use **Atualizar audiência** e confira total, ranking e
+   horário. Em falha ou sucesso parcial, conserve a indicação correspondente.
+   O provedor pode manter resultados em cache por até quatro horas, mesmo com
+   `cache: no-store` no cliente. Evite recarregar para fabricar acessos de teste.
+4. Registre horário, status e valores efetivamente recebidos. Compare com o
+   painel autenticado no mesmo período e com a opção **Sessions** da conta.
+   A validação de coleta real continua pendente até essa comparação.
+
+Sem `start`/`end`, o contador consulta todo o histórico disponível. `count`
+representa visitas registradas pelo GoatCounter conforme a configuração de
+sessões, não pessoas únicas no site nem visitas do dia. `count_unique` é um
+campo legado idêntico a `count`: não some os dois. Esses agregados não permitem
+certificar que cada registro corresponde a um ser humano. O relatório diário
+publicado permanece `status: unavailable`, com `days: []`, sem números estimados.
+
+Evidências: `scripts_admin/reports/goatcounter-audit-20261018.json` registra
+status, mensagens, horários e hashes das respostas. Os arquivos publicados
+`assets/site-analytics.js`, `data/site-analytics.json` e o JSON diário responderam
+HTTP 200 e coincidiram byte a byte com o commit da PR #26. Os 12 cenários locais
+de `node tests/analytics_panel_regression.cjs` passaram, inclusive falha 403 sem
+zero inventado. As consultas não acionaram `/count` nem geraram visitas de teste.
+Código, flags, conteúdo educacional e relatórios anteriores foram preservados.
+
+Referências oficiais: [contador público](https://www.goatcounter.com/help/visitor-counter),
+[sessões e visitas](https://www.goatcounter.com/help/sessions) e
+[handler da permissão, revisão c031008](https://github.com/arp242/goatcounter/blob/c031008a8d28c85b36708824f23b28957e7ed262/handlers/vcounter.go).
+
 Para um relatório local, exporte o CSV v2 no GoatCounter (se a coleta individual estiver habilitada), descompacte fora do repositório e execute da raiz:
 
 ```sh
