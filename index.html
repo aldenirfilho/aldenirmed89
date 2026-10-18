@@ -3622,6 +3622,14 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir módulo interativo</span>
       </a>
 
+      <a class="module-card mod-yellow reveal" href="01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html" aria-label="Abrir Bactérias Super Resistentes, seção independente">
+        <div class="module-icon">🧫</div>
+        <h3>Bactérias Super Resistentes</h3>
+        <p>MDR, XDR e PDR: mecanismos, abordagem terapêutica, escalonamento, descalonamento e doses de referência para adultos.</p>
+        <div class="module-tag-row"><span class="module-tag">IDSA 2026</span><span class="module-tag">10 esquemas</span><span class="module-tag">Em revisão médica</span></div>
+        <span class="module-link">Abrir seção independente</span>
+      </a>
+
       <a class="module-card mod-blue reveal" href="01_Modulos_Clinicos/Pneumologia_Critica/index.html" aria-label="Abrir Pneumologia Crítica">
         <div class="module-icon">🫁</div>
         <h3>Pneumologia Crítica</h3>
@@ -3949,7 +3957,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       </div>
 
       <div class="temi-card reveal" aria-label="Estatísticas do banco TEMI">
-        <div class="temi-stat-big" data-count="80">80+</div>
+        <div class="temi-stat-big" data-count="130">130+</div>
         <div class="temi-stat-lbl">// questões comentadas</div>
         <div class="temi-topics">
           <div class="temi-topic-row">
@@ -4107,14 +4115,21 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     <div class="analytics-panel" data-analytics-panel>
       <div class="analytics-total">
         <strong data-analytics-total>—</strong>
-        <span>visitas registradas no site</span>
+        <span>contagem acumulada informada pela fonte</span>
       </div>
       <div class="analytics-ranking">
-        <h3>Seções mais acessadas</h3>
+        <h3>Mais acessadas entre as seções acompanhadas</h3>
         <ol class="analytics-list" data-analytics-ranking></ol>
-        <p class="analytics-note" data-analytics-status>Contagem agregada, sem identificar visitantes individualmente.</p>
+        <p class="analytics-note" data-analytics-status role="status" aria-live="polite">Aguardando consulta à fonte. Dados indisponíveis não significam zero acessos.</p>
       </div>
     </div>
+    <div class="analytics-actions" aria-label="Operação da audiência">
+      <button type="button" data-analytics-refresh>↻ Atualizar audiência</button>
+      <a href="18_Centro_Tripulacao/painel-visitas.html">📅 Ver dados diários</a>
+      <a href="18_Centro_Tripulacao/conectar.html#visitas">🔌 Protocolo de ativação</a>
+    </div>
+    <p class="analytics-note" data-analytics-updated>Fonte: GoatCounter · período acumulado. O painel diário informa separadamente sua origem e cobertura.</p>
+    <noscript><p>Ative JavaScript para consultar o contador. Você pode abrir o painel diário e o protocolo de ativação pelos links acima.</p></noscript>
   </div>
 </section>
 
@@ -4154,6 +4169,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia Crítica</a>
         <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Reumatologia Crítica</a>
         <a href="01_Modulos_Clinicos/Infectologia_Critica/index.html">🦠 Infectologia Crítica</a>
+        <a href="01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html">🧫 Bactérias Super Resistentes · MDR/XDR/PDR</a>
         <a href="01_Modulos_Clinicos/Pneumologia_Critica/index.html">🫁 Pneumologia Crítica</a>
       </div>
       <div class="footer-col">
@@ -5402,15 +5418,24 @@ function escHtml(s){
   document.getElementById('dsfPrev')?.addEventListener('click',()=>move(-1));
   document.getElementById('dsfNext')?.addEventListener('click',()=>move(1));
   const section=document.getElementById('desafios');
+  const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const rotationPaused=()=>missionHasReducedMotion()||
+    Boolean(section?.matches(':hover')||section?.contains(document.activeElement));
   const startRotation=()=>{
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||rotateTimer) return;
+    if(rotationPaused()||rotateTimer) return;
     rotateTimer=setInterval(()=>move(1),25000);
   };
   const stopRotation=()=>{if(rotateTimer){clearInterval(rotateTimer);rotateTimer=null;}};
+  const syncRotation=()=>rotationPaused()?stopRotation():startRotation();
   section?.addEventListener('mouseenter',stopRotation);
-  section?.addEventListener('mouseleave',startRotation);
+  section?.addEventListener('mouseleave',syncRotation);
   section?.addEventListener('focusin',stopRotation);
-  section?.addEventListener('focusout',startRotation);
+  section?.addEventListener('focusout',()=>Promise.resolve().then(syncRotation));
+  if(motionPreference.addEventListener)motionPreference.addEventListener('change',syncRotation);
+  else motionPreference.addListener?.(syncRotation);
+  // O seletor interno altera a classe do html; pare também um timer já ativo.
+  if('MutationObserver' in window)new window.MutationObserver(syncRotation)
+    .observe(document.documentElement,{attributes:true,attributeFilter:['class']});
   renderDesafios();
   startRotation();
 })();
@@ -5488,7 +5513,7 @@ function escHtml(s){
       </article>
     `).join('');
 
-    grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    grid.querySelectorAll('.reveal').forEach(el => observer?observer.observe(el):el.classList.add('visible'));
   }
 
   // ── Interações (event delegation) ──────────────────
@@ -5513,15 +5538,24 @@ function escHtml(s){
   document.getElementById('mnemPrev')?.addEventListener('click',()=>move(-1));
   document.getElementById('mnemNext')?.addEventListener('click',()=>move(1));
   const section=document.getElementById('mnemonicos');
+  const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const rotationPaused=()=>missionHasReducedMotion()||
+    Boolean(section?.matches(':hover')||section?.contains(document.activeElement));
   const startRotation=()=>{
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||rotateTimer) return;
+    if(rotationPaused()||rotateTimer) return;
     rotateTimer=setInterval(()=>move(1),25000);
   };
   const stopRotation=()=>{if(rotateTimer){clearInterval(rotateTimer);rotateTimer=null;}};
+  const syncRotation=()=>rotationPaused()?stopRotation():startRotation();
   section?.addEventListener('mouseenter',stopRotation);
-  section?.addEventListener('mouseleave',startRotation);
+  section?.addEventListener('mouseleave',syncRotation);
   section?.addEventListener('focusin',stopRotation);
-  section?.addEventListener('focusout',startRotation);
+  section?.addEventListener('focusout',()=>Promise.resolve().then(syncRotation));
+  if(motionPreference.addEventListener)motionPreference.addEventListener('change',syncRotation);
+  else motionPreference.addListener?.(syncRotation);
+  // O seletor interno altera a classe do html; pare também um timer já ativo.
+  if('MutationObserver' in window)new window.MutationObserver(syncRotation)
+    .observe(document.documentElement,{attributes:true,attributeFilter:['class']});
   render();
   startRotation();
 })();
@@ -5918,7 +5952,7 @@ a11yPanel.addEventListener('keydown',e=>{
   e.preventDefault();
   a11yPanel.scrollTo({
     top:target,
-    behavior:document.documentElement.classList.contains('a11y-reduce-motion')?'auto':'smooth'
+    behavior:missionHasReducedMotion()?'auto':'smooth'
   });
 });
 a11yPanel.querySelector('a[href="#downloads"]').addEventListener('click',()=>setA11yPanel(false));
@@ -6047,7 +6081,7 @@ window.addEventListener('scroll',()=>{
 topBtn.style.opacity='0';topBtn.style.transition='opacity .3s';
 topBtn.addEventListener('click',()=>window.scrollTo({
   top:0,
-  behavior:document.documentElement.classList.contains('a11y-reduce-motion')?'auto':'smooth'
+  behavior:missionHasReducedMotion()?'auto':'smooth'
 }));
 
 /* ── ORBS PARALLAX (subtle) ──────────────────────── */

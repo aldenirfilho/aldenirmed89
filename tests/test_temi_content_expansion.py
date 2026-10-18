@@ -133,7 +133,10 @@ class TemiContentExpansionTests(unittest.TestCase):
         self.assertIn("localStorage", page)
         self.assertIn("temi_abcde_questoes.html", hub)
         self.assertIn('"questions": 50', hub)
-        self.assertIn("80+", home)
+        import re
+        count = re.search(r'class="temi-stat-big" data-count="(\d+)"', home)
+        self.assertIsNotNone(count)
+        self.assertGreaterEqual(int(count.group(1)), 80)
 
 
 if __name__ == "__main__":

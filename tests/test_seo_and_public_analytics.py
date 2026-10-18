@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import re
 import subprocess
 import tempfile
 import unittest
@@ -202,13 +203,17 @@ assert.deepEqual(run('allowed','localhost'),{appended:0,reads:0});
             self.assertNotIn("index.html</loc>", sitemap)
             self.assertIn(f"Sitemap: {self.builder.PUBLIC_BASE_URL}sitemap.xml", robots)
 
-    def test_home_panel_is_hidden_until_real_metrics_are_available(self):
+    def test_home_panel_discloses_availability_and_preserves_counter_privacy(self):
         home = (ROOT / "index.html").read_text(encoding="utf-8")
         script = (ROOT / "assets/site-analytics.js").read_text(encoding="utf-8")
         self.assertIn("data-analytics-section", home)
         self.assertIn("data-analytics-section aria-labelledby", home)
-        self.assertIn("hidden>", home)
-        self.assertIn("loader.dataset.enabled !== 'true'", script)
+        section = re.search(r'<section\b[^>]*\bdata-analytics-section\b[^>]*>', home)
+        self.assertIsNotNone(section)
+        self.assertNotRegex(section.group(0), r"\bhidden\b")
+        self.assertRegex(home, r'data-analytics-total>\s*—\s*</strong>')
+        self.assertIn('data-analytics-refresh', home)
+        self.assertIn('data-analytics-status role="status" aria-live="polite"', home)
         self.assertNotIn("document.cookie", script)
         # A read-only capability probe may skip a counter that cannot initialize.
         # Analytics must never write identifiers or other browser storage.

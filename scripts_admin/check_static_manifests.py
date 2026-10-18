@@ -8,6 +8,11 @@ Usa apenas stdlib Python 3.
 
 Uso:
     python3 scripts_admin/check_static_manifests.py
+    python3 scripts_admin/check_static_manifests.py --include-legacy-mirror
+
+Por padrão, valida apenas os manifests ativos usados pelo builder público.
+O espelho histórico public_site/ não participa do deploy e só é auditado quando
+--include-legacy-mirror for solicitado explicitamente. Nenhum modo altera arquivos.
 
 Checa:
     1. JSON válido em todos os manifests principais
@@ -21,6 +26,7 @@ Checa:
 ⚠️ Ferramenta de apoio à decisão — não substitui validação manual.
 """
 
+import argparse
 import json
 import os
 import sys
@@ -32,11 +38,15 @@ import unicodedata
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 
-# Manifests a validar
+# Manifests ativos utilizados pelo site e pelo builder público.
 MANIFESTS = {
     "site_manifest": "data/site_manifest.json",
     "route_aliases": "data/route_aliases.json",
     "home_manifest": "06_Infra_Site_E_Assets/data/home-manifest.json",
+}
+
+# Espelho obsoleto, preservado apenas para auditoria histórica opcional.
+LEGACY_MIRROR_MANIFESTS = {
     "public_site_manifest": "public_site/data/site_manifest.json",
     "public_route_aliases": "public_site/data/route_aliases.json",
 }
@@ -111,10 +121,13 @@ def check_unicode_nfc(text, context):
 # ── Checagem 1: JSON válido em todos os manifests ────────────────────────
 
 
-def check_json_validity():
+def check_json_validity(include_legacy_mirror=False):
     print("\n📋 1. Validação de JSON")
     print("─" * 60)
-    for name, path in MANIFESTS.items():
+    manifests = dict(MANIFESTS)
+    if include_legacy_mirror:
+        manifests.update(LEGACY_MIRROR_MANIFESTS)
+    for name, path in manifests.items():
         data, err = load_json(path)
         if err:
             log_err(f"{name} ({path}): {err}")
@@ -290,7 +303,7 @@ def check_public_site_consistency():
 
     # Comparar site_manifest
     root_data, root_err = load_json(MANIFESTS["site_manifest"])
-    pub_data, pub_err = load_json(MANIFESTS["public_site_manifest"])
+    pub_data, pub_err = load_json(LEGACY_MIRROR_MANIFESTS["public_site_manifest"])
 
     if root_err or pub_err:
         if root_err:
@@ -351,19 +364,32 @@ def check_data_sources():
 # ── MAIN ─────────────────────────────────────────────────────────────────
 
 
-def main():
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--include-legacy-mirror",
+        action="store_true",
+        help="Auditar também JSON e divergências do espelho histórico public_site/, sem editá-lo.",
+    )
+    args = parser.parse_args(argv)
+
+    # Permite reexecutar o validador no mesmo processo sem herdar resultados.
+    global errors, warnings, checks
+    errors = warnings = checks = 0
+
     print("=" * 60)
     print("🔍 VALIDADOR ESTÁTICO DE MANIFESTS — ANTIGRAVITY CONSULTAS")
     print(f"   Raiz do projeto: {PROJECT_ROOT}")
     print("=" * 60)
 
-    check_json_validity()
+    check_json_validity(include_legacy_mirror=args.include_legacy_mirror)
     check_canonical_routes()
     check_route_aliases()
     check_content_surfaces()
     check_legacy_routes()
     check_home_manifest()
-    check_public_site_consistency()
+    if args.include_legacy_mirror:
+        check_public_site_consistency()
     check_data_sources()
 
     # Resumo

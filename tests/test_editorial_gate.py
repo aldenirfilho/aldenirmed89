@@ -104,6 +104,32 @@ class EditorialGateConfigurationTests(unittest.TestCase):
             {"public-approved", "public-cited"},
         )
 
+    def test_october_public_preview_records_authorization_without_human_signoff(self):
+        item = next(item for item in self.registry["items"]
+                    if item["id"] == "revisao-clinica-pendente-2026-10-18")
+        self.assertEqual(item["classification"], "public-cited")
+        self.assertEqual(item["publishTargets"], ["github-pages"])
+        self.assertEqual(item["clinicalReviewStatus"], "pending")
+        self.assertIsNone(item["clinicalReviewedAt"])
+        self.assertIn("não realizada", item["clinicalReviewer"])
+        authorization = item["publicationAuthorization"]
+        self.assertEqual(authorization["source"], "explicit-human-user-request-in-current-chat")
+        self.assertIn("e publique", authorization["userRequest"])
+        self.assertFalse(authorization["grantsClinicalHomologation"])
+        self.assertFalse(authorization["claimsHumanClinicalReview"])
+        self.assertTrue(authorization["clinicalUseStillRequiresHumanReview"])
+        relative = "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
+        issues = self.guard.scan_file(ROOT, ROOT / relative, self.policy, item,
+                                      require_registration=True)
+        self.assertEqual(issues, [])
+        manifest = json.loads((ROOT / relative).with_name("module.manifest.json").read_text())
+        self.assertEqual(manifest["status"], "em-revisao-medica")
+        self.assertIsNone(manifest["clinicalReviewer"])
+        self.assertIsNone(manifest["clinicalReview"]["reviewer"])
+        self.assertIsNone(manifest["clinicalReview"]["reviewedAt"])
+        self.assertTrue(manifest["publication"]["clinicalReviewOngoing"])
+        self.assertFalse(manifest["publication"]["grantsClinicalHomologation"])
+
     def test_baseline_is_explicit_without_inventing_legacy_approval(self):
         baseline = self.registry["baseline"]
         self.assertEqual(baseline["mode"], "explicit-incremental")
@@ -114,13 +140,14 @@ class EditorialGateConfigurationTests(unittest.TestCase):
         )
         self.assertTrue(baseline["newOrModifiedPublicContentMustBeRegistered"])
         self.assertTrue(self.registry["items"])
-        self.assertTrue(
-            all(
-                item["classification"] in {"public-approved", "public-cited"}
-                and item["ownerApproval"] is True
-                for item in self.registry["items"]
-            )
-        )
+        for item in self.registry["items"]:
+            if item["classification"] in {"public-approved", "public-cited"}:
+                self.assertIs(item["ownerApproval"], True)
+            else:
+                # Pending/restricted records are real workflow states. They
+                # must have no publication target, never invented approval.
+                self.assertIn(item["classification"], {"quarantine", "restricted-owner", "rejected"})
+                self.assertFalse(item.get("publishTargets"))
         self.assertTrue(
             all(
                 item["classification"] not in {"public-approved", "public-cited"}

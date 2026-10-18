@@ -1,0 +1,415 @@
+{
+  "audit_date": "2026-10-18",
+  "scope": "Independent read-only source audit of ten adult IV reference regimens and five mechanism scenarios in PR26 module",
+  "file": "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html",
+  "status": "documentary-audit-complete-clarifications-applied",
+  "disclaimer": "Automated bibliographic/source verification; no human medical sign-off or ANVISA authorization verified. Renal replacement and patient-specific dosing excluded.",
+  "sources": {
+    "idsa": {
+      "url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+      "verified_live": true,
+      "published": "2026-07-30",
+      "evidence_cutoff": "2026-03-01",
+      "clauses": [
+        "3.4",
+        "3.5",
+        "3.6",
+        "3.8",
+        "4.3",
+        "4.4",
+        "4.6",
+        "5.1",
+        "5.2"
+      ],
+      "note": "US-focused expert guidance without GRADE grading."
+    },
+    "table1": {
+      "url": "https://www.idsociety.org/globalassets/idsa/practice-guidelines/amr-guidance/5.0/table-1.pdf",
+      "verified_live": true,
+      "pages": 4,
+      "screenshots_requested": [
+        0,
+        1,
+        2
+      ]
+    },
+    "avycaz": {
+      "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d9c2803f-dc9c-4b19-b4a3-8303bc8c15fd",
+      "verified_live": true,
+      "clauses": [
+        "1.1-1.3",
+        "2.1",
+        "2.3"
+      ]
+    },
+    "vabomere": {
+      "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e237fd0f-3050-42a3-b43e-b6fb4824e93d",
+      "verified_live": true,
+      "clauses": [
+        "1.1",
+        "2.1",
+        "2.2"
+      ]
+    },
+    "recarbrio": {
+      "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=be32f468-738b-40df-a425-591e12f65159",
+      "verified_live": true,
+      "clauses": [
+        "1.1-1.3",
+        "2.1",
+        "2.3"
+      ]
+    },
+    "emblaveo": {
+      "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=be1a6c99-d4b3-46d7-9e99-6e5f9fab556a",
+      "verified_live": true,
+      "clauses": [
+        "1.1",
+        "2.1 Table1 footnotes b-c",
+        "2.2"
+      ]
+    },
+    "fetroja": {
+      "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=75c0c785-38e0-4049-a6fb-b77581f5b35c",
+      "verified_live": true,
+      "clauses": [
+        "1.1-1.2",
+        "2.1-2.2",
+        "5.1"
+      ]
+    },
+    "zerbaxa": {
+      "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=70ac1d90-eff3-4f0b-9f46-5846c571b32f",
+      "verified_live": true,
+      "clauses": [
+        "1.1-1.3",
+        "2.1",
+        "2.3"
+      ]
+    },
+    "xacduro": {
+      "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c0167aec-a89d-4e96-afe5-2ccf3e89fe72",
+      "verified_live": true,
+      "clauses": [
+        "1.1",
+        "2.1-2.2"
+      ]
+    },
+    "unasyn": {
+      "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=155c7ec0-5862-404f-b1d0-f278f8a8bbda",
+      "verified_live": true,
+      "clauses": [
+        "Dosage and Administration",
+        "Impaired Renal Function Table3"
+      ]
+    },
+    "merrem": {
+      "url": "https://labeling.pfizer.com/ShowLabeling.aspx?id=9318",
+      "verified_live": true,
+      "clauses": [
+        "2.1",
+        "2.2"
+      ]
+    },
+    "azactam": {
+      "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9a105eaf-ee77-4016-beeb-d425a5565db2",
+      "verified_live": true,
+      "clauses": [
+        "Renal Impairment in Adult Patients"
+      ]
+    }
+  },
+  "dose_verification": [
+    {
+      "drug": "Ceftazidima-avibactam",
+      "dose": "2.5 g (2+0.5) IV q8h",
+      "infusion": "3h IDSA; 2h FDA",
+      "renal": "standard when CrCl>50; reduce when <=50 mL/min",
+      "sources": [
+        "avycaz",
+        "table1"
+      ],
+      "result": "supported; clarify exact boundary"
+    },
+    {
+      "drug": "Meropenem-vaborbactam",
+      "dose": "4 g (2+2) IV q8h",
+      "infusion": "3h",
+      "renal": "eGFR>=50 mL/min/1.73m2 standard; reduce below50",
+      "sources": [
+        "vabomere"
+      ],
+      "result": "supported"
+    },
+    {
+      "drug": "Imipenem-cilastatina-relebactam",
+      "dose": "1.25 g (0.5+0.5+0.25) IV q6h",
+      "infusion": "30min",
+      "renal": "CrCl>=90 standard; reduce below90 mL/min",
+      "sources": [
+        "recarbrio"
+      ],
+      "result": "supported"
+    },
+    {
+      "drug": "Aztreonam-avibactam",
+      "dose": "load2.67 g (2+0.67), then2 g (1.5+0.5) IV q6h",
+      "infusion": "each3h",
+      "renal": "CrCl>50 standard; reduction at<=50 mL/min",
+      "sources": [
+        "emblaveo"
+      ],
+      "result": "supported; make first maintenance start explicit:6h after loading-dose start"
+    },
+    {
+      "drug": "Ceftazidima-avibactam + aztreonam",
+      "dose": "2.5g CAZ-AVI q8h plus2g AZT q8h",
+      "infusion": "both3h, simultaneous (IDSA)",
+      "renal": "adjust both individually; CAZ-AVI <=50; AZT10-30 label requires reduction after load; dialysis separately",
+      "sources": [
+        "table1",
+        "avycaz",
+        "azactam"
+      ],
+      "result": "supported; add both-drugs renal reminder"
+    },
+    {
+      "drug": "Cefiderocol",
+      "dose": "2g IV q8h",
+      "infusion": "3h",
+      "renal": "CrCl60-119 standard; >=120:q6h; <60/HD/CRRT specific adjustment",
+      "sources": [
+        "fetroja"
+      ],
+      "result": "supported; explicit warning recommended"
+    },
+    {
+      "drug": "Ceftolozana-tazobactam",
+      "dose": "3g (2+1) IV q8h for pneumonia/invasive nonurinary context",
+      "infusion": "3h IDSA;1h FDA pneumonia",
+      "renal": "CrCl>50 standard; <=50 adjust",
+      "sources": [
+        "zerbaxa",
+        "table1"
+      ],
+      "result": "supported; FDA cUTI/cIAI uses1.5g (1+0.5) q8h"
+    },
+    {
+      "drug": "Sulbactam-durlobactam",
+      "dose": "2g (1+1) IV q6h",
+      "infusion": "3h",
+      "renal": "CrCl45-129 standard;>=130:q4h;<45 adjust",
+      "sources": [
+        "xacduro"
+      ],
+      "result": "supported"
+    },
+    {
+      "drug": "Ampicilina-sulbactam alta dose",
+      "dose": "9g (6+3) IV q8h; daily27g total with9g sulbactam",
+      "infusion": "4h",
+      "renal": "high-dose CRAB regimen requires specialist renal protocol; do not directly transplant low-dose label table",
+      "sources": [
+        "table1",
+        "unasyn"
+      ],
+      "result": "supported off-label IDSA bridge; usual FDA maximum sulbactam4g/day"
+    },
+    {
+      "drug": "Meropenem",
+      "dose": "1-2g IV q8h",
+      "infusion": "3h when feasible",
+      "renal": "FDA reduction when CrCl<=50 mL/min; specialist CRAB context",
+      "sources": [
+        "table1",
+        "merrem"
+      ],
+      "result": "supported; add renal threshold and primary label"
+    }
+  ],
+  "indication_verification": [
+    {
+      "scenario": "KPC Enterobacterales invasive",
+      "result": "supported",
+      "sources": [
+        "idsa:3.4"
+      ],
+      "note": "Listed three preferred agents correctly; susceptibility required."
+    },
+    {
+      "scenario": "NDM/MBL Enterobacterales invasive",
+      "result": "supported",
+      "sources": [
+        "idsa:3.5"
+      ],
+      "note": "Fixed AZT-AVI or cefiderocol; CAZ-AVI+AZT alternative when fixed combination unavailable."
+    },
+    {
+      "scenario": "OXA48-like Enterobacterales invasive",
+      "result": "supported",
+      "sources": [
+        "idsa:3.6"
+      ],
+      "note": "CAZ-AVI preferred; no extrapolation to vaborbactam/relebactam."
+    },
+    {
+      "scenario": "DTR Pseudomonas extraurinary",
+      "result": "supported",
+      "sources": [
+        "idsa:4.3-4.4"
+      ],
+      "note": "Listed agents and pneumonia preference correct; MBL cefiderocol. Do not transfer Enterobacterales AZT-AVI strategy to Pseudomonas."
+    },
+    {
+      "scenario": "CRAB invasive",
+      "result": "supported",
+      "sources": [
+        "idsa:5.1-5.2"
+      ],
+      "note": "SUL-DUR plus imipenem/meropenem preferred; high-dose AMP-SUL+second active agent bridge. NDM/resistance needs non-sulbactam specialist strategy."
+    }
+  ],
+  "actionable_findings": [
+    {
+      "id": "D01",
+      "priority": 1,
+      "type": "clinical-clarity",
+      "location": "dose table AZT-AVI line",
+      "issue": "Maintenance start expressed only as next interval.",
+      "change_pt": "Primeira manutenção 6 h após o início da dose de ataque; intervalo contado do início de uma infusão ao início da próxima.",
+      "source": "emblaveo",
+      "clause": "2.1 Table1 footnotes b-c"
+    },
+    {
+      "id": "D02",
+      "priority": 2,
+      "type": "renal-boundary",
+      "location": "CAZ-AVI and AZT-AVI dose rows",
+      "issue": "'Abaixo' following >50 may hide the exact50 boundary.",
+      "change_pt": "Ajustar se CrCl ≤50 mL/min; não somente abaixo de50.",
+      "sources": [
+        "avycaz",
+        "emblaveo"
+      ],
+      "clauses": [
+        "AVYCAZ2.3",
+        "EMBLAVEO2.2"
+      ]
+    },
+    {
+      "id": "D03",
+      "priority": 2,
+      "type": "material-label-warning",
+      "location": "cefiderocol row",
+      "issue": "Generic alert reference obscures a relevant mortality warning.",
+      "change_pt": "Bula: aumento de mortalidade observado em estudo de infecções por Gram-negativos resistentes a carbapenêmicos; causa não estabelecida. Monitorar resposta e discutir estratégia especializada, sobretudo CRAB.",
+      "source": "fetroja",
+      "clause": "5.1"
+    },
+    {
+      "id": "D04",
+      "priority": 2,
+      "type": "regulatory-context",
+      "location": "meropenem-vaborbactam dose row",
+      "issue": "KPC invasive guidance exceeds FDA indication; row does not identify that distinction.",
+      "change_pt": "FDA: ITU complicada/pielonefrite em adultos; uso em outras síndromes invasivas nesta síntese deriva da IDSA e pode ser fora de bula.",
+      "source": "vabomere",
+      "clause": "1.1"
+    },
+    {
+      "id": "D05",
+      "priority": 2,
+      "type": "renal-source-completeness",
+      "location": "meropenem and CAZ-AVI+AZT rows",
+      "issue": "No row-level renal reminders for these regimens and no AZACTAM/MERREM links.",
+      "change_pt": "Meropenem: ajustar se CrCl ≤50. CAZ-AVI+AZT: ajustar cada componente segundo sua bula e protocolo; não usar dose integral da tabela em disfunção renal.",
+      "sources": [
+        "merrem",
+        "azactam",
+        "avycaz"
+      ],
+      "clauses": [
+        "MERREM2.2",
+        "AZACTAM renal",
+        "AVYCAZ2.3"
+      ]
+    },
+    {
+      "id": "D06",
+      "priority": 2,
+      "type": "off-label-high-dose",
+      "location": "AMP-SUL row",
+      "issue": "'Fora da posologia usual' could be clearer than explicit off-label and separate renal pathway.",
+      "change_pt": "Alta dose fora da bula FDA, apoiada pela IDSA para ponte no CRAB; requer ajuste renal específico com infectologia/farmácia. A bula habitual limita sulbactam a4g/dia; não usar sua tabela usual para calcular este regime sem validação.",
+      "sources": [
+        "unasyn",
+        "table1"
+      ]
+    },
+    {
+      "id": "D07",
+      "priority": 3,
+      "type": "regulatory-context",
+      "location": "AZT-AVI row",
+      "issue": "FDA indication omits limited/no alternative options qualifier.",
+      "change_pt": "FDA: intra-abdominal complicada em adultos com alternativas limitadas ou ausentes, com metronidazol.",
+      "source": "emblaveo",
+      "clause": "1.1"
+    },
+    {
+      "id": "D08",
+      "priority": 3,
+      "type": "evidence-link-completeness",
+      "location": "source list IDSA clauses",
+      "issue": "Cefiderocol CRAB row combines therapy but source synopsis lists only5.1-5.2.",
+      "change_pt": "Acrescentar referência à questão5.3 para cefiderocol combinado no CRAB.",
+      "source": "idsa",
+      "clause": "5.3"
+    }
+  ],
+  "publication_assessment": "After clarifications and ordinary QA, bibliography supports an educational publication with visibly retained lack of human medical homologation and Brazil registration/local protocol limitation. This audit does not certify clinical deployment.",
+  "goatcounter": "Keep existing pending account-setting item; outside audit and not resolved.",
+  "humanClinicalReviewCompleted": false,
+  "resolution": {
+    "D01": {
+      "status": "applied",
+      "date": "2026-10-18",
+      "target": "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
+    },
+    "D02": {
+      "status": "applied",
+      "date": "2026-10-18",
+      "target": "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
+    },
+    "D03": {
+      "status": "applied",
+      "date": "2026-10-18",
+      "target": "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
+    },
+    "D04": {
+      "status": "applied",
+      "date": "2026-10-18",
+      "target": "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
+    },
+    "D05": {
+      "status": "applied",
+      "date": "2026-10-18",
+      "target": "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
+    },
+    "D06": {
+      "status": "applied",
+      "date": "2026-10-18",
+      "target": "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
+    },
+    "D07": {
+      "status": "applied",
+      "date": "2026-10-18",
+      "target": "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
+    },
+    "D08": {
+      "status": "applied",
+      "date": "2026-10-18",
+      "target": "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
+    }
+  }
+}

@@ -53,6 +53,35 @@ const HUB_DATA = {
       "keywords": ["POCUS", "ventilacao mecanica", "IOT", "drogas vasoativas", "sepse", "ABCDE", "TEMI", "trials"]
     },
     {
+      "id": "qbank-temi-integrado-2026-50",
+      "title": "TEMI Integrado 2026 — 50 questões autorais",
+      "icon": "📚",
+      "status": "ativo",
+      "domain": "multi",
+      "difficultyProfile": "Médio → Difícil",
+      "questions": 50,
+      "comments": 250,
+      "estimatedTime": "5 blocos de 20–30 min",
+      "url": "temi_integrado_2026_questoes.html",
+      "description": "50 questões novas autorais, casos fictícios e comentários A–E. Metabólico/renal, cuidados, respiratório, emergências e infectologia. Revisão médica pendente; sem vínculo com prova oficial.",
+      "relatedTopics": [
+        "ventilacao-mecanica",
+        "sepse",
+        "delirium-uti",
+        "anticoagulacao"
+      ],
+      "keywords": [
+        "TEMI",
+        "2026",
+        "cetoacidose",
+        "nutricao",
+        "sedacao",
+        "renal",
+        "ressuscitacao",
+        "infeccao"
+      ]
+    },
+    {
       "id": "qbank-temi-sepse",
       "title": "Sepse e Choque Séptico",
       "icon": "🦠",

@@ -1,0 +1,763 @@
+{
+  "version": "1.0",
+  "updated": "2026-10-18",
+  "target": "radar-diario",
+  "destination": "Estação Radar Diário — conteúdo clínico/estudo do chat",
+  "editorial": {
+    "status": "revisao-medica-pendente",
+    "patientData": false,
+    "authorship": "conteúdo didático autoral assistido por IA; revisão humana pendente",
+    "purpose": "preparação educacional; casos inteiramente fictícios; sem vínculo com provas oficiais AMIB",
+    "safety": "⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+    "verifiedAt": "2026-10-18"
+  },
+  "sources": {
+    "SSC2026": "https://www.sccm.org/clinical-resources/guidelines/guidelines/surviving-sepsis-campaign-international-guidelines-for-management-of-sepsis-and-septic-shock-2026",
+    "PADIS2025": "https://sccm.org/clinical-resources/guidelines/guidelines/focused-update-padis-guideline",
+    "GLIC2024": "https://www.sccm.org/clinical-resources/guidelines/guidelines/guidelines-on-glycemic-control-for-critically-ill",
+    "SUP2024": "https://www.sccm.org/clinical-resources/guidelines/guidelines/sccm-ashp-guideline-prevention-of-ugib",
+    "ESPEN2023": "https://www.espen.org/files/ESPEN-Guidelines/ESPEN_practical_and_partially_revised_guideline_Clinical_nutrition_in_the_intensive_care_unit.pdf",
+    "CAD2024": "https://diabetesjournals.org/care/article/47/8/1257/156808/Hyperglycemic-Crises-in-Adults-With-Diabetes-A",
+    "UKKA2026": "https://www.ukkidney.org/health-professionals/guidelines/treatment-acute-hyperkalaemia-adults-0",
+    "KDIGO2012": "https://kdigo.org/wp-content/uploads/2016/10/KDIGO-2012-AKI-Guideline-English.pdf",
+    "ADRENAL": "https://www.endocrinology.org/clinical-practice/clinical-guidance/adrenal-crisis/",
+    "AABB2023": "https://doi.org/10.1001/jama.2023.12914",
+    "AARC2024": "https://doi.org/10.4187/respcare.11735",
+    "LIBERACAO2017": "https://www.thoracic.org/statements/resources/cc/weaning-rehab-protocols-CLT.pdf",
+    "VNI2017": "https://www.thoracic.org/statements/resources/cc/niv-guidelines.pdf",
+    "ARDS2024": "https://doi.org/10.1164/rccm.202311-2011ST",
+    "AHA_POS2025": "https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/post-cardiac-arrest-care",
+    "AHA_ALS2025": "https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-advanced-life-support",
+    "BTF4": "https://braintrauma.org/s/Management_of_Severe_TBI_ExecSmry_4th_Edition.pdf",
+    "WAO2020": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7607509/",
+    "CANDIDA2016": "https://www.idsociety.org/practice-guideline/candidiasis/",
+    "CAUTI_CDC": "https://www.cdc.gov/infection-control/hcp/cauti/summary-of-recommendations.html",
+    "ASB2019": "https://www.idsociety.org/practice-guideline/asymptomatic-bacteriuria/",
+    "CDI2021": "https://www.idsociety.org/practice-guideline/clostridioides-difficile-2021-focused-update/",
+    "PANCREAS2024": "https://webfiles.gi.org/links/journals/AJG-Clinical-Guidelines-Highlights-Acute-Pancreatitis-2024-FINAL.pdf",
+    "FEBRE2023": "https://www.sccm.org/clinical-resources/guidelines/guidelines/guidelines-for-evaluating-new-fever-adult-icu",
+    "HIT2018": "https://www.hematology.org/education/clinicians/guidelines-and-quality-care/clinical-practice-guidelines/venous-thromboembolism-guidelines/heparin-induced-thrombocytopenia",
+    "CORT2024": "https://sccm.org/clinical-resources/guidelines/guidelines/use-of-corticosteroids-in-sepsis-ards-cap"
+  },
+  "mnemonicos": [
+    {
+      "id": "int26-cetonas",
+      "title": "CETO — não acompanhe só a glicose",
+      "emoji": "🧪",
+      "color": "var(--cyan)",
+      "category": "Metabólico",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Metabólico"
+      ],
+      "letters": {
+        "C": "Cetonemia",
+        "E": "Equilíbrio ácido-base",
+        "T": "Tendência clínica",
+        "O": "Outros distúrbios"
+      },
+      "content": "## Gancho autoral de estudo\nNa recuperação da CAD, confira cetonemia e acidose; a glicemia pode normalizar antes.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [Consenso ADA/EASD e sociedades — crises hiperglicêmicas 2024](https://diabetesjournals.org/care/article/47/8/1257/156808/Hyperglycemic-Crises-in-Adults-With-Diabetes-A) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "CAD2024"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-sglt2",
+      "title": "GLIFO — glicose baixa não exclui CAD",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Metabólico",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Metabólico"
+      ],
+      "letters": {
+        "GLI": "Glicemia pode ser pouco elevada",
+        "F": "Fármaco SGLT2 no histórico",
+        "O": "Observe cetonas e acidose"
+      },
+      "content": "## Gancho autoral de estudo\nUsuário de SGLT2 com sintomas compatíveis merece avaliação de cetose e acidose.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [Consenso ADA/EASD e sociedades — crises hiperglicêmicas 2024](https://diabetesjournals.org/care/article/47/8/1257/156808/Hyperglycemic-Crises-in-Adults-With-Diabetes-A) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "CAD2024"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-potassio-primeiro",
+      "title": "K-ANTES — potássio antes da insulina",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Metabólico",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Metabólico"
+      ],
+      "letters": {
+        "K": "Conheça o potássio",
+        "ANTES": "Adie insulina na hipocalemia relevante"
+      },
+      "content": "## Gancho autoral de estudo\nNa CAD com K <3,5 mmol/L, reponha antes de iniciar insulina conforme consenso 2024.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [Consenso ADA/EASD e sociedades — crises hiperglicêmicas 2024](https://diabetesjournals.org/care/article/47/8/1257/156808/Hyperglycemic-Crises-in-Adults-With-Diabetes-A) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "CAD2024"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-osmo",
+      "title": "OSMO — além da glicemia",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Metabólico",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Metabólico"
+      ],
+      "letters": {
+        "O": "Osmolalidade",
+        "S": "Sinais neurológicos",
+        "M": "Monitorização metabólica",
+        "O2": "Observe perfusão"
+      },
+      "content": "## Gancho autoral de estudo\nNo estado hiperosmolar, associe evolução osmótica e clínica à glicose.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [Consenso ADA/EASD e sociedades — crises hiperglicêmicas 2024](https://diabetesjournals.org/care/article/47/8/1257/156808/Hyperglycemic-Crises-in-Adults-With-Diabetes-A) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "CAD2024"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-glicemia-alvo",
+      "title": "ALVO — controle glicêmico com segurança",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Cuidados",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Cuidados"
+      ],
+      "letters": {
+        "A": "Aferir conforme estabilidade",
+        "L": "Limitar hipoglicemia",
+        "V": "Variar dose pelo protocolo",
+        "O": "Observar dieta e rim"
+      },
+      "content": "## Gancho autoral de estudo\nEvite uma meta intensiva universal; adapte o protocolo à resposta e ao risco de hipoglicemia.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [SCCM controle glicêmico 2024](https://www.sccm.org/clinical-resources/guidelines/guidelines/guidelines-on-glycemic-control-for-critically-ill) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "GLIC2024"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-glicemia-hora",
+      "title": "HORA — insulina IV exige vigilância",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Cuidados",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Cuidados"
+      ],
+      "letters": {
+        "H": "Hipoglicemia pode ser silenciosa",
+        "O": "Observar mudanças da dieta",
+        "R": "Reavaliar infusão",
+        "A": "Aferir até de hora em hora na instabilidade"
+      },
+      "content": "## Gancho autoral de estudo\nSob insulina IV e instabilidade glicêmica, use monitorização frequente.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [SCCM controle glicêmico 2024](https://www.sccm.org/clinical-resources/guidelines/guidelines/guidelines-on-glycemic-control-for-critically-ill) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "GLIC2024"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-sup-parar",
+      "title": "PARA — quando a profilaxia termina",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Cuidados",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Cuidados"
+      ],
+      "letters": {
+        "P": "Profilaxia ainda indicada?",
+        "A": "Algum fator de risco persiste?",
+        "R": "Revisar indicação prévia",
+        "A2": "Alta com reconciliação"
+      },
+      "content": "## Gancho autoral de estudo\nRetire profilaxia de sangramento por estresse quando cessar a indicação, preservando indicações digestivas independentes.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [SCCM/ASHP profilaxia de sangramento digestivo 2024](https://www.sccm.org/clinical-resources/guidelines/guidelines/sccm-ashp-guideline-prevention-of-ugib) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "SUP2024"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-sup-risco",
+      "title": "CHO-CO-FI — risco de sangramento por estresse",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Cuidados",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Cuidados"
+      ],
+      "letters": {
+        "CHO": "Choque",
+        "CO": "Coagulopatia",
+        "FI": "Fígado: doença crônica"
+      },
+      "content": "## Gancho autoral de estudo\nEsses fatores justificam avaliar profilaxia; ventilação mecânica isolada não é risco firmemente estabelecido na diretriz.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [SCCM/ASHP profilaxia de sangramento digestivo 2024](https://www.sccm.org/clinical-resources/guidelines/guidelines/sccm-ashp-guideline-prevention-of-ugib) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "SUP2024"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-dieta-perfusao",
+      "title": "PERF — segurança antes da progressão enteral",
+      "emoji": "🥣",
+      "color": "var(--cyan)",
+      "category": "Nutrição",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Nutrição"
+      ],
+      "letters": {
+        "P": "Perfusão",
+        "E": "Estabilidade",
+        "R": "Risco gastrointestinal",
+        "F": "Fase da doença"
+      },
+      "content": "## Gancho autoral de estudo\nNo choque não controlado com hipoperfusão, adie o início ou suspenda temporariamente a nutrição enteral. Após controle com fluidos e vasopressores/inotrópicos, considere retomada em baixa dose, monitorando perfusão, tolerância e sinais de isquemia intestinal. Vasoativo isoladamente não proíbe nutrição enteral.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [ESPEN nutrição em terapia intensiva 2023](https://www.espen.org/files/ESPEN-Guidelines/ESPEN_practical_and_partially_revised_guideline_Clinical_nutrition_in_the_intensive_care_unit.pdf) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "ESPEN2023"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-dieta-prona",
+      "title": "PRATO — dieta também pode acompanhar a prona",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Nutrição",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Nutrição"
+      ],
+      "letters": {
+        "P": "Posição e dispositivos",
+        "R": "Reavaliar tolerância",
+        "A": "Aspiração: prevenção",
+        "T": "Trato gastrointestinal",
+        "O": "Objetivo individual"
+      },
+      "content": "## Gancho autoral de estudo\nProna, isoladamente, não contraindica via enteral; organize medidas de segurança.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [ESPEN nutrição em terapia intensiva 2023](https://www.espen.org/files/ESPEN-Guidelines/ESPEN_practical_and_partially_revised_guideline_Clinical_nutrition_in_the_intensive_care_unit.pdf) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "ESPEN2023"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-dieta-energia",
+      "title": "ENER — não acelerar para meta plena",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Nutrição",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Nutrição"
+      ],
+      "letters": {
+        "E": "Estimar ou medir necessidade",
+        "N": "Nutrir progressivamente",
+        "E2": "Evitar excesso",
+        "R": "Reavaliar fase e tolerância"
+      },
+      "content": "## Gancho autoral de estudo\nEvite superalimentação na fase inicial da doença crítica.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [ESPEN nutrição em terapia intensiva 2023](https://www.espen.org/files/ESPEN-Guidelines/ESPEN_practical_and_partially_revised_guideline_Clinical_nutrition_in_the_intensive_care_unit.pdf) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "ESPEN2023"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-sedacao-leve",
+      "title": "LEVE — sedação com prioridade explícita",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Sedação",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Sedação"
+      ],
+      "letters": {
+        "L": "Listar a meta",
+        "E": "Escolher conforme contexto",
+        "V": "Vigiar hemodinâmica",
+        "E2": "Examinar resposta"
+      },
+      "content": "## Gancho autoral de estudo\nPADIS 2025 sugere dexmedetomidina sobre propofol quando sedação leve/redução de delirium forem prioridades; é condicional.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [SCCM PADIS — atualização 2025](https://sccm.org/clinical-resources/guidelines/guidelines/focused-update-padis-guideline) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "PADIS2025"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-incerteza",
+      "title": "GRAU — leia a força da recomendação",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Evidência",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Evidência"
+      ],
+      "letters": {
+        "G": "Grupo ao qual se aplica",
+        "R": "Risco e benefício",
+        "A": "Amplitude da incerteza",
+        "U": "Uso individualizado"
+      },
+      "content": "## Gancho autoral de estudo\nAusência de recomendação sobre antipsicóticos no delirium não demonstra benefício ou dano universal.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [SCCM PADIS — atualização 2025](https://sccm.org/clinical-resources/guidelines/guidelines/focused-update-padis-guideline) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "PADIS2025"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-reabilitacao",
+      "title": "MOVE — mobilizar com avaliação",
+      "emoji": "🚶",
+      "color": "var(--cyan)",
+      "category": "Cuidados",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Cuidados"
+      ],
+      "letters": {
+        "M": "Meta funcional",
+        "O": "Observar estabilidade",
+        "V": "Ver dispositivos",
+        "E": "Equipe preparada"
+      },
+      "content": "## Gancho autoral de estudo\nMobilização ampliada é sugerida, com intensidade e segurança individualizadas.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [SCCM PADIS — atualização 2025](https://sccm.org/clinical-resources/guidelines/guidelines/focused-update-padis-guideline) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "PADIS2025"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-transfusao-contexto",
+      "title": "HEMO — transfundir considerando a pessoa",
+      "emoji": "🩸",
+      "color": "var(--cyan)",
+      "category": "Hematologia",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Hematologia"
+      ],
+      "letters": {
+        "H": "Hemoglobina",
+        "E": "Estabilidade",
+        "M": "Manifestações e comorbidades",
+        "O": "Origem da anemia/sangramento"
+      },
+      "content": "## Gancho autoral de estudo\nO limiar restritivo de muitos adultos estáveis não substitui contexto e sintomas.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [AABB diretriz internacional de transfusão 2023](https://doi.org/10.1001/jama.2023.12914) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "AABB2023"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-tre-sem-barreira",
+      "title": "TESTE — dê oportunidade de respirar",
+      "emoji": "🫁",
+      "color": "var(--cyan)",
+      "category": "Respiratório",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Respiratório"
+      ],
+      "letters": {
+        "T": "Tratar a causa",
+        "E": "Examinar prontidão",
+        "S": "Suporte necessário",
+        "T2": "Testar conforme protocolo",
+        "E2": "Extubação inclui via aérea"
+      },
+      "content": "## Gancho autoral de estudo\nIRRS não é requisito obrigatório para iniciar TRE; êxito no teste não garante proteção da via aérea.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [AARC teste de respiração espontânea 2024](https://doi.org/10.4187/respcare.11735) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "AARC2024"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-tre-fio2",
+      "title": "FIO — não maquiar o TRE",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Respiratório",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Respiratório"
+      ],
+      "letters": {
+        "F": "FiO₂ documentada",
+        "I": "Interpretar tolerância",
+        "O": "Oxigenação sem aumento artificial"
+      },
+      "content": "## Gancho autoral de estudo\nAARC 2024 sugere não elevar FiO₂ durante o teste apenas para sustentar sua aparente tolerância.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [AARC teste de respiração espontânea 2024](https://doi.org/10.4187/respcare.11735) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "AARC2024"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-cuff-leak",
+      "title": "VALE — cuff leak em quem tem risco",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Respiratório",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Respiratório"
+      ],
+      "letters": {
+        "V": "Ver critérios de extubação",
+        "A": "Avaliar risco de estridor",
+        "L": "Leak de modo seletivo",
+        "E": "Equipe e plano de falha"
+      },
+      "content": "## Gancho autoral de estudo\nUse cuff leak em adultos prontos para extubação e com alto risco de estridor.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [ATS/CHEST liberação da ventilação e cuff leak 2017](https://www.thoracic.org/statements/resources/cc/weaning-rehab-protocols-CLT.pdf) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "LIBERACAO2017"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-vni-antes",
+      "title": "ANTES — VNI preventiva tem planejamento",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Respiratório",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Respiratório"
+      ],
+      "letters": {
+        "AN": "Antecipar o risco",
+        "T": "Teste respiratório aprovado",
+        "E": "Estratégia pós-extubação",
+        "S": "Segurança e vigilância"
+      },
+      "content": "## Gancho autoral de estudo\nEm alto risco selecionado, planeje VNI preventiva logo após extubação; não confunda com atraso de reintubação.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [ERS/ATS ventilação não invasiva 2017](https://www.thoracic.org/statements/resources/cc/niv-guidelines.pdf) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "VNI2017"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-vni-resposta",
+      "title": "RESPO — reavaliar VNI",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Respiratório",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Respiratório"
+      ],
+      "letters": {
+        "R": "Respiração",
+        "E": "Estado mental",
+        "S": "Saturação/gasometria",
+        "P": "Pressão e perfusão",
+        "O": "Objetivo e limite de tentativa"
+      },
+      "content": "## Gancho autoral de estudo\nDeterioração ou perda da proteção da via aérea requer reconhecer falha da VNI.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [ERS/ATS ventilação não invasiva 2017](https://www.thoracic.org/statements/resources/cc/niv-guidelines.pdf) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "VNI2017"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-pos-oxigenio",
+      "title": "OXI — oxigênio titulado no pós-parada",
+      "emoji": "❤️",
+      "color": "var(--cyan)",
+      "category": "Ressuscitação",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Ressuscitação"
+      ],
+      "letters": {
+        "O": "Obter medida confiável",
+        "X": "eXtremos a evitar",
+        "I": "Individualizar FiO₂"
+      },
+      "content": "## Gancho autoral de estudo\nApós medida confiável, AHA 2025 orienta SpO₂ 90–98%; não reduza oxigênio às cegas.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [AHA cuidados após parada cardíaca 2025](https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/post-cardiac-arrest-care) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "AHA_POS2025"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-pos-prognostico",
+      "title": "TEMPO — prognóstico sem pressa indevida",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Ressuscitação",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Ressuscitação"
+      ],
+      "letters": {
+        "T": "Tempo adequado",
+        "E": "Excluir confundidores",
+        "M": "Múltiplas modalidades",
+        "P": "Prognóstico com incerteza",
+        "O": "Orientar família"
+      },
+      "content": "## Gancho autoral de estudo\nComa precoce sob sedação não fornece prognóstico neurológico definitivo.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [AHA cuidados após parada cardíaca 2025](https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/post-cardiac-arrest-care) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "AHA_POS2025"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-choque-sincronia",
+      "title": "PULSO — escolha o choque correto",
+      "emoji": "⚡",
+      "color": "var(--cyan)",
+      "category": "Ressuscitação",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Ressuscitação"
+      ],
+      "letters": {
+        "P": "Presença de pulso?",
+        "U": "Urgência e instabilidade",
+        "L": "Ler o ritmo",
+        "S": "Sincronizar se indicado",
+        "O": "Otimizar RCP quando sem pulso"
+      },
+      "content": "## Gancho autoral de estudo\nTaquiarritmia instável organizada com pulso e FV sem pulso exigem estratégias elétricas diferentes.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [AHA suporte avançado de vida adulto 2025](https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-advanced-life-support) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "AHA_ALS2025"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-ppc",
+      "title": "PAM-MENOS-PIC — a conta da PPC",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Neurocrítico",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Neurocrítico"
+      ],
+      "letters": {
+        "PAM": "Pressão arterial média",
+        "MENOS": "Subtraia",
+        "PIC": "Pressão intracraniana"
+      },
+      "content": "## Gancho autoral de estudo\nPPC = PAM − PIC; a BTF recomenda alvo de 60–70 mmHg no TCE grave, adaptado ao contexto.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [Brain Trauma Foundation — TCE grave, quarta edição](https://braintrauma.org/s/Management_of_Severe_TBI_ExecSmry_4th_Edition.pdf) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "BTF4"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-anafilaxia",
+      "title": "COXA — primeira linha na anafilaxia",
+      "emoji": "🚨",
+      "color": "var(--cyan)",
+      "category": "Emergências",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Emergências"
+      ],
+      "letters": {
+        "C": "Chamar ajuda",
+        "O": "Observar via aérea/circulação",
+        "X": "eXpor a face anterolateral da coxa",
+        "A": "Adrenalina IM"
+      },
+      "content": "## Gancho autoral de estudo\nAdrenalina intramuscular é primeira linha; anti-histamínico e corticoide não a substituem.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [World Allergy Organization — anafilaxia 2020](https://pmc.ncbi.nlm.nih.gov/articles/PMC7607509/) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "WAO2020"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-hit",
+      "title": "4Ts — probabilidade antes do teste",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Hematologia",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Hematologia"
+      ],
+      "letters": {
+        "Trombocitopenia": "Magnitude da queda",
+        "Timing": "Tempo após heparina",
+        "Trombose": "Trombose ou outras sequelas",
+        "ouTras causas": "Explicações alternativas"
+      },
+      "content": "## Instrumento publicado — resumo educacional\n4Ts é ferramenta publicada de probabilidade clínica; este cartão apenas a resume e não reproduz toda a pontuação.\n\n**Limite:** a aplicação do 4Ts exige sua pontuação original completa; este resumo não substitui o instrumento.\n\n📚 [ASH trombocitopenia induzida por heparina](https://www.hematology.org/education/clinicians/guidelines-and-quality-care/clinical-practice-guidelines/venous-thromboembolism-guidelines/heparin-induced-thrombocytopenia) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "HIT2018"
+      ],
+      "evidenceType": "instrumento-publicado-resumo-educacional",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-candida-foco",
+      "title": "LEVEDURA — cultura precisa de contexto",
+      "emoji": "🦠",
+      "color": "var(--cyan)",
+      "category": "Infectologia",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Infectologia"
+      ],
+      "letters": {
+        "L": "Local da amostra",
+        "E": "Evidência de invasão",
+        "VEDURA": "Ver doença, risco e resposta antes de tratar"
+      },
+      "content": "## Gancho autoral de estudo\nCandida em secreção respiratória geralmente representa colonização; hemocultura positiva tem implicação diferente.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [IDSA candidíase 2016 — recomendações específicas citadas](https://www.idsociety.org/practice-guideline/candidiasis/) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "CANDIDA2016"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-sonda",
+      "title": "SONDA — cada dia pede uma indicação",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Prevenção",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Prevenção"
+      ],
+      "letters": {
+        "S": "Sistema fechado",
+        "O": "Observar indicação",
+        "N": "Necessidade diária",
+        "D": "Duração mínima",
+        "A": "Amostra asséptica"
+      },
+      "content": "## Gancho autoral de estudo\nRetire cateter desnecessário e colete cultura pelo ponto de amostragem, não pela bolsa.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [CDC prevenção de infecção urinária associada a cateter](https://www.cdc.gov/infection-control/hcp/cauti/summary-of-recommendations.html) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "CAUTI_CDC"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-urocultura",
+      "title": "URINA — resultado não é diagnóstico",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Infectologia",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Infectologia"
+      ],
+      "letters": {
+        "U": "Urocultura e sintomas",
+        "R": "Risco de tratar sem indicação",
+        "I": "Investigar alternativas",
+        "N": "Não automatizar antibiótico",
+        "A": "Avaliar exceções"
+      },
+      "content": "## Gancho autoral de estudo\nBacteriúria assintomática geralmente não se trata; gestação e procedimentos urológicos específicos são exceções.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [IDSA bacteriúria assintomática 2019](https://www.idsociety.org/practice-guideline/asymptomatic-bacteriuria/) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "ASB2019"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    },
+    {
+      "id": "int26-foco-cedo",
+      "title": "FOCO — coordenar a intervenção",
+      "emoji": "🧠",
+      "color": "var(--cyan)",
+      "category": "Sepse",
+      "tags": [
+        "TEMI",
+        "gancho autoral",
+        "Sepse"
+      ],
+      "letters": {
+        "F": "Fonte anatômica",
+        "O": "Organizar equipe",
+        "C": "Controlar cedo",
+        "O2": "Observar resposta"
+      },
+      "content": "## Gancho autoral de estudo\nA SSC 2026 sugere controle precoce do foco tratável, idealmente em até seis horas do diagnóstico quando indicado.\n\n**Limite:** recurso de memória criado para este acervo; não é escore validado nem protocolo autônomo.\n\n📚 [Surviving Sepsis Campaign adulta 2026](https://www.sccm.org/clinical-resources/guidelines/guidelines/surviving-sepsis-campaign-international-guidelines-for-management-of-sepsis-and-septic-shock-2026) · consulta em 2026-10-18.\n\n> ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.",
+      "sourceRefs": [
+        "SSC2026"
+      ],
+      "evidenceType": "gancho-autoral-baseado-em-diretriz",
+      "reviewStatus": "revisao-medica-pendente"
+    }
+  ]
+}
