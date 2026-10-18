@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v42`;
+const CACHE_NAME = `${CACHE_PREFIX}v43`;
 const SHELL_ASSETS = [
   "./assets/icons/aerospace-v2/favicon.ico",
   "./assets/icons/aerospace-v2/icon-32.png",
@@ -291,9 +291,13 @@ self.addEventListener("install", (event) => {
     (async () => {
       const cache = await caches.open(CACHE_NAME);
       await cache.addAll(SHELL_ASSETS);
-      await Promise.allSettled(
-        WARM_ASSETS.map((asset) => cache.add(asset))
-      );
+      // Keep the catalogue available offline, including its canonical directory URL.
+      // Courses and medical images are cached by the fetch handler only on access.
+      // The full inventory stays above for compatibility; it is not an install queue.
+      await cache.addAll([
+        "./ecossistema/",
+        ...WARM_ASSETS.filter((asset) => asset.startsWith("./ecossistema/"))
+      ]);
       await self.skipWaiting();
     })()
   );

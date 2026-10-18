@@ -100,7 +100,7 @@ class AccessiblePwaTests(unittest.TestCase):
         )
         self.assertIn('const CACHE_PREFIX = "antigravity-root-"', worker)
         self.assertIn("const SHELL_ASSETS", worker)
-        self.assertIn("Promise.allSettled", worker)
+        self.assertNotIn("WARM_ASSETS.map((asset) => cache.add(asset))", worker)
 
         for size in (32, 64, 192, 512, 1024):
             self.assertEqual(
@@ -118,7 +118,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/aerospace-v2/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed89"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v42`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v43`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
