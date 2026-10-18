@@ -24,7 +24,7 @@ Campos extraídos do Markdown:
   - excerpt   : texto do primeiro H2/H3 ou primeiro parágrafo
   - content   : Markdown completo (concatenado, no modo combinado)
   - tags      : palavras-chave extraídas do conteúdo
-  - date      : data de modificação mais recente entre os .md
+  - date      : data anterior para Markdown inalterado; mtime quando alterado
   - difficulty: detectada por palavras no conteúdo (padrão: alta p/ TEMI)
   - parts     : nº de arquivos .md combinados (1 no modo arquivo único)
   - featured  : False por padrão
@@ -247,8 +247,38 @@ def is_file_sourced(entry):
     return src.startswith("10_DESAFIOS")
 
 
-def load_json_packs():
+def same_source(left, right):
+    """Compara origens também entre checkouts Unicode NFC/NFD (macOS)."""
+    def normalized(value):
+        return unicodedata.normalize("NFC", str(value or "").replace("\\", "/"))
+
+    return bool(left and right) and normalized(left) == normalized(right)
+
+
+def pack_entry_date(raw, payload, filepath, source, previous):
+    """Usa metadados da fonte, nunca o dia em que um rebuild foi executado.
+
+    A data explícita do item prevalece sobre a atualização do catálogo. Para
+    catálogos legados sem datas, preserva o valor já publicado da mesma origem;
+    apenas na primeira importação usa o mtime da fonte como último recurso.
+    Esse mtime não é apresentado como data de criação do conteúdo.
+    """
+    previous_date = (
+        previous.get("date")
+        if previous and same_source(previous.get("source"), source)
+        else None
+    )
+    return str(
+        raw.get("date")
+        or payload.get("updated")
+        or previous_date
+        or most_recent_date([filepath])
+    )
+
+
+def load_json_packs(prev_by_id=None):
     """Carrega desafios estruturados em pacotes JSON versionados."""
+    prev_by_id = prev_by_id or {}
     packed = {"temi": [], "r3": []}
     pack_files = sorted(
         filename
@@ -275,15 +305,22 @@ def load_json_packs():
                         f"{filename}: campos ausentes em {branch}: "
                         + ", ".join(missing)
                     )
+                entry_id = slugify(str(raw["id"]))
+                source = (
+                    f"{os.path.relpath(filepath, ROOT_DIR)}"
+                    f"#{branch}/{entry_id}"
+                )
                 entry = {
-                    "id": slugify(str(raw["id"])),
+                    "id": entry_id,
                     "title": str(raw["title"]).strip(),
                     "excerpt": str(raw["excerpt"]).strip(),
                     "content": str(raw["content"]).strip(),
                     "tags": [str(tag) for tag in raw.get("tags", [])][:8],
                     "tema": str(raw.get("tema") or "").strip(),
                     "observacoes": str(raw.get("observacoes") or "").strip(),
-                    "date": str(raw.get("date") or datetime.now().strftime("%Y-%m-%d")),
+                    "date": pack_entry_date(
+                        raw, payload, filepath, source, prev_by_id.get(entry_id)
+                    ),
                     "difficulty": str(
                         raw.get("difficulty") or ("alta" if branch == "temi" else "media")
                     ),
@@ -293,10 +330,7 @@ def load_json_packs():
                     "reviewStatus": str(
                         raw.get("reviewStatus") or "revisao-medica-pendente"
                     ),
-                    "source": (
-                        f"{os.path.relpath(filepath, ROOT_DIR)}"
-                        f"#{branch}/{slugify(str(raw['id']))}"
-                    ),
+                    "source": source,
                     "editorial": raw.get("editorial") or payload.get("editorial", {}),
                 }
                 packed[branch].append(entry)
@@ -353,12 +387,22 @@ def build():
         except Exception as e:
             print(f"   ⚠️  Erro ao processar {base}: {e}")
             continue
-        entry = apply_curation(entry, prev_by_id.get(entry["id"]))
+        previous = prev_by_id.get(entry["id"])
+        # Checkout/cópia pode mudar o mtime sem mudar o conteúdo. Nesse caso,
+        # não transforme a data do rebuild numa atualização editorial falsa.
+        if (
+            previous
+            and previous.get("date")
+            and previous.get("content") == entry["content"]
+            and same_source(previous.get("source"), entry["source"])
+        ):
+            entry["date"] = previous["date"]
+        entry = apply_curation(entry, previous)
         (file_temi if branch == "temi" else file_r3).append(entry)
         extra = f" ({entry['parts']} partes)" if entry["parts"] > 1 else ""
         print(f"   ✅  [{branch.upper()}] {entry['title'][:60]}{extra}")
 
-    packed = load_json_packs()
+    packed = load_json_packs(prev_by_id)
     file_temi.extend(packed["temi"])
     file_r3.extend(packed["r3"])
 

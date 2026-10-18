@@ -61,3 +61,10 @@
   .analytics-panel{grid-template-columns:1fr}
   .analytics-total{min-height:140px}
 }
+
+.analytics-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.analytics-actions a,.analytics-actions button{display:inline-flex;align-items:center;min-height:44px;padding:10px 14px;border:1px solid var(--brd-h,#52728c);border-radius:10px;background:var(--surf,#10263b);color:var(--text,#e9f2ff);font:inherit;text-decoration:none;cursor:pointer}
+.analytics-actions :focus-visible{outline:3px solid var(--cyan,#3ee8ff);outline-offset:3px}
+.analytics-actions button:disabled{opacity:.6;cursor:wait}
+.analytics-panel[aria-busy="true"]{opacity:.8}
+.analytics-list a{overflow-wrap:anywhere}

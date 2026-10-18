@@ -187,7 +187,6 @@ class SemiologiaNeurologicaTopograficaTests(unittest.TestCase):
         navigation = load_json("data/navigation.json")
         topics = load_json("data/topics.json")
         manifest = load_json("data/site_manifest.json")
-        public_manifest = load_json("public_site/data/site_manifest.json")
         graph = load_json("data/connections.json")
         worker = (ROOT / "sw.js").read_text(encoding="utf-8")
 
@@ -215,7 +214,17 @@ class SemiologiaNeurologicaTopograficaTests(unittest.TestCase):
             f"{RELATIVE.as_posix()}/module.manifest.json",
         )
         self.assertTrue(any(item.get("path") == ROUTE for item in manifest["modules"]))
-        self.assertEqual(manifest["canonicalRoutes"], public_manifest["canonicalRoutes"])  # Legacy mirror dates are not publication metadata.
+        self.assertTrue((ROOT / manifest["canonicalRoutes"]["semiologia_neurologica_topografica"]).is_file())
+        self.assertTrue((ROOT / manifest["dataSources"]["semiologiaNeurologicaManifest"]).is_file())
+        legacy_route = "01_Modulos_Clinicos/Neuro_Semiologia_Topografica/index.html"
+        legacy_target = f"{RELATIVE.as_posix()}/aprofundamento.html"
+        aliases = load_json("data/route_aliases.json")["aliases"]
+        self.assertTrue(any(
+            alias.get("from") == legacy_route and alias.get("to") == legacy_target
+            for alias in aliases
+        ))
+        self.assertTrue((ROOT / legacy_route).is_file())
+        self.assertTrue((ROOT / legacy_target).is_file())
 
         node_ids = {node["id"] for node in graph["nodes"]}
         self.assertIn("semiologia-neurologica-topografica", node_ids)
@@ -224,7 +233,7 @@ class SemiologiaNeurologicaTopograficaTests(unittest.TestCase):
         self.assertIn(("semiologia-neurologica-topografica", "avc-agudo"), edges)
         self.assertIn(("semiologia-neurologica-topografica", "banco-temi"), edges)
 
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v40`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v41`', worker)
         for core in (
             "index.html",
             "assets/styles.css",

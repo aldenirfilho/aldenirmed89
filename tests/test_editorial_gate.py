@@ -104,6 +104,17 @@ class EditorialGateConfigurationTests(unittest.TestCase):
             {"public-approved", "public-cited"},
         )
 
+    def test_october_clinical_release_requires_real_human_review(self):
+        item = next(item for item in self.registry["items"]
+                    if item["id"] == "revisao-clinica-pendente-2026-10-18")
+        self.assertEqual(item["classification"], "quarantine")
+        self.assertEqual(item["publishTargets"], [])
+        self.assertIsNone(item["clinicalReviewer"])
+        relative = "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
+        issues = self.guard.scan_file(ROOT, ROOT / relative, self.policy, item,
+                                      require_registration=True)
+        self.assertIn("NONPUBLIC_IN_PUBLIC_OUTPUT", {issue.code for issue in issues})
+
     def test_baseline_is_explicit_without_inventing_legacy_approval(self):
         baseline = self.registry["baseline"]
         self.assertEqual(baseline["mode"], "explicit-incremental")
@@ -114,13 +125,14 @@ class EditorialGateConfigurationTests(unittest.TestCase):
         )
         self.assertTrue(baseline["newOrModifiedPublicContentMustBeRegistered"])
         self.assertTrue(self.registry["items"])
-        self.assertTrue(
-            all(
-                item["classification"] in {"public-approved", "public-cited"}
-                and item["ownerApproval"] is True
-                for item in self.registry["items"]
-            )
-        )
+        for item in self.registry["items"]:
+            if item["classification"] in {"public-approved", "public-cited"}:
+                self.assertIs(item["ownerApproval"], True)
+            else:
+                # Pending/restricted records are real workflow states. They
+                # must have no publication target, never invented approval.
+                self.assertIn(item["classification"], {"quarantine", "restricted-owner", "rejected"})
+                self.assertFalse(item.get("publishTargets"))
         self.assertTrue(
             all(
                 item["classification"] not in {"public-approved", "public-cited"}

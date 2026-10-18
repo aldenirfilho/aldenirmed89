@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v40`;
+const CACHE_NAME = `${CACHE_PREFIX}v41`;
 const SHELL_ASSETS = [
   "./assets/icons/aerospace-v2/favicon.ico",
   "./assets/icons/aerospace-v2/icon-32.png",
@@ -33,6 +33,13 @@ const SHELL_ASSETS = [
   "./favicon.ico"
 ];
 const WARM_ASSETS = [
+  "./01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html",
+  "./01_Modulos_Clinicos/Bacterias_Super_Resistentes/assets/styles.css",
+  "./01_Modulos_Clinicos/Bacterias_Super_Resistentes/assets/app.js",
+  "./01_Modulos_Clinicos/Bacterias_Super_Resistentes/assets/theme-bootstrap.js",
+  "./questoes/temi_integrado_2026_questoes.html",
+  "./questoes/data/qbank_temi_integrado_2026.js",
+
   "./18_Centro_Tripulacao/painel-visitas.html",
   "./18_Centro_Tripulacao/conectar.html",
   "./18_Centro_Tripulacao/divulgacao.html",

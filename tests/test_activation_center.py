@@ -29,7 +29,6 @@ class ActivationCenterTests(unittest.TestCase):
         cls.home = read("index.html")
         cls.worker = read("sw.js")
         cls.site_manifest = load_json("data/site_manifest.json")
-        cls.public_manifest = load_json("public_site/data/site_manifest.json")
         cls.connections = load_json("data/connections.json")
 
     def test_page_and_human_fallback_exist(self) -> None:
@@ -96,15 +95,7 @@ class ActivationCenterTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, self.app)
 
-    def test_manifest_routes_match_and_do_not_create_a_third_portal(self) -> None:
-        self.assertEqual(
-            self.site_manifest["version"],
-            self.public_manifest["version"],
-        )
-        self.assertEqual(
-            self.site_manifest["canonicalRoutes"],
-            self.public_manifest["canonicalRoutes"],
-        )
+    def test_active_manifest_routes_exist_and_do_not_create_a_third_portal(self) -> None:
         self.assertEqual(
             self.site_manifest["canonicalRoutes"]["central_ativacao"],
             "21_Central_Ativacao/index.html",
@@ -113,6 +104,23 @@ class ActivationCenterTests(unittest.TestCase):
             self.site_manifest["dataSources"]["activationRoadmap"],
             "21_Central_Ativacao/data/roadmap.json",
         )
+        self.assertTrue((ROOT / self.site_manifest["canonicalRoutes"]["central_ativacao"]).is_file())
+        self.assertTrue((ROOT / self.site_manifest["dataSources"]["activationRoadmap"]).is_file())
+        expected_legacy_routes = {
+            ("07_Estudos_Markdown/index.html", "01_UpDown_Hub/index.html"),
+            ("05_Biblioteca_IA/index.html", "02_Biblioteca_IA_Engine/index.html"),
+            ("03_Calculadoras_UTI/index.html", "03_Calculadoras_E_Apps/index.html"),
+            ("06_Card_Feed_Medico/index.html", "05_Midia_E_Feed/index.html"),
+        }
+        active_legacy_routes = {
+            (route["from"], route["to"])
+            for route in self.site_manifest["legacyRoutes"]
+        }
+        self.assertTrue(expected_legacy_routes.issubset(active_legacy_routes))
+        for source, target in expected_legacy_routes:
+            with self.subTest(legacy_route=source):
+                self.assertTrue((ROOT / source).is_file())
+                self.assertTrue((ROOT / target).is_file())
         self.assertEqual(len(self.site_manifest["portals"]), 2)
         self.assertEqual(len(self.site_manifest["stations"]), 2)
         operation_ids = {
@@ -144,7 +152,7 @@ class ActivationCenterTests(unittest.TestCase):
         guides = read("docs_usuario/index.html")
         workflow = read(".github/workflows/deploy-seguro.yml")
         self.assertIn('"21_Central_Ativacao",', builder)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v40`', self.worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v41`', self.worker)
         for asset in (
             "./21_Central_Ativacao/index.html",
             "./21_Central_Ativacao/assets/app.js",
