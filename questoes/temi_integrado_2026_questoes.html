@@ -142,6 +142,19 @@
     .source-row a{color:var(--cyan);font-weight:800}.source-row small{display:block;color:var(--muted);margin-top:4px}
     .footer{margin-top:25px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);color:var(--muted);line-height:1.6}
     .empty{padding:35px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:20px}
+    .training{padding:22px;margin:18px 0}
+    .training h2{margin:0 0 10px}.training p{color:var(--soft);line-height:1.6}
+    .training-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+    .training-summary div,.training-day{padding:13px;border:1px solid var(--border);border-radius:15px;background:rgba(0,0,0,.12)}
+    .training-summary strong,.training-day strong{display:block;margin-bottom:5px}
+    .training-summary span,.training-day span{color:var(--muted);line-height:1.5}
+    .training-days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:0;list-style:none}
+    .training-day.current{border-color:var(--cyan)}
+    .training-settings{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+    .training-settings .control{width:auto;max-width:100%}
+    .training-storage{font-size:.85rem;color:var(--muted)!important}
+    .btn:disabled{cursor:default;opacity:.7;transform:none}
+    .badge.study{color:var(--soft)}
     html.a11y-light{
       color-scheme:light;--bg:#f5f8fc;--bg2:#edf3f9;--panel:#fff;--panel2:#f5f8fc;
       --border:#c9d5e2;--text:#102033;--soft:#2d4055;--muted:#5f7183;--shadow:0 18px 50px rgba(18,45,68,.12)
@@ -151,10 +164,13 @@
     html.a11y-light .topbar{background:rgba(255,255,255,.93)}
     html.a11y-light .control,html.a11y-light .option,html.a11y-light .rationale,
     html.a11y-light .stat,html.a11y-light .source-row{background:#fff}
+    html.a11y-light .training-summary div,html.a11y-light .training-day{background:#fff}
+    @media(max-width:920px){.training-days{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:620px){.training-summary,.training-days{grid-template-columns:1fr}.training{padding:16px}.training-settings{align-items:stretch;flex-direction:column}.training-settings .control{width:100%}}
     @media(max-width:920px){.hero{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.topbar{position:relative;top:0}}
     @media(max-width:620px){.page{padding:10px 10px 60px}.topbar{align-items:flex-start;flex-direction:column}.nav{justify-content:flex-start}
       .controls,.stat-grid,.source-grid{grid-template-columns:1fr}.hero-main{padding:22px}.q-head{display:block}.q-head .btn{margin-top:10px;width:100%}}
-    @media print{body{background:#fff;color:#000}.topbar,.controls,.block-tabs,.q-actions{display:none!important}
+    @media print{body{background:#fff;color:#000}.topbar,.controls,.block-tabs,.q-actions,.training-settings{display:none!important}
       .page{max-width:none;padding:0}.glass,.q-card,.source-panel{box-shadow:none;background:#fff;color:#000}.answer{display:block!important}
       .stem,.rationale,.synthesis,.pearl,.footer{color:#111}.q-card{break-inside:avoid}}
   </style>
@@ -196,9 +212,35 @@
       </aside>
     </section>
 
+    <section class="glass training" id="treino" aria-labelledby="trainingTitle">
+      <h2 id="trainingTitle">🎯 Seu treino TEMI: uma próxima ação</h2>
+      <p>Meta de <strong>10 questões por dia, contando as revisões</strong>. Comece por duas questões, faça uma pausa e retome. Resolva antes de revelar o comentário; depois registre o estudo e marque os pontos difíceis.</p>
+      <div class="training-summary" aria-live="polite" aria-atomic="true">
+        <div><strong id="trainingToday">Hoje</strong><span id="trainingCount">0 de 10 na meta diária</span></div>
+        <div><strong id="trainingNext">Próxima ação</strong><span id="trainingNextDetail">Carregando plano…</span></div>
+        <div><strong>🔁 Revisão espaçada</strong><span id="trainingReviewCount">D+1, D+7 e D+21 após o estudo real de cada questão.</span></div>
+      </div>
+      <div class="q-actions">
+        <button class="btn primary" id="todayTraining" type="button" aria-pressed="false" aria-controls="questions">▶ Abrir treino de hoje</button>
+        <button class="btn" id="allTraining" type="button">Ver banco completo</button>
+      </div>
+      <p>📚 <strong>Primeira volta: cinco blocos de dez questões.</strong> Um bloco é liberado por dia a partir do início escolhido. Questões atrasadas continuam disponíveis; revisões têm prioridade e podem alongar a primeira volta. Você pode estudar livremente pelo banco completo.</p>
+      <ol class="training-days" id="trainingDays" aria-label="Distribuição das 50 questões"></ol>
+      <details>
+        <summary>Como funcionam as revisões e o planejamento</summary>
+        <p>D+1, D+7 e D+21 são alvos de revisão após a data em que você registrou o primeiro estudo. Se atrasar, retome a revisão mais antiga; cada questão conta uma vez por dia. Marcar como difícil muda a prioridade entre questões com o mesmo prazo. O botão de revisão só é liberado na data prevista.</p>
+        <div class="training-settings">
+          <label for="trainingStart">Início da primeira volta</label>
+          <input class="control" id="trainingStart" type="date" />
+          <button class="btn" id="saveTrainingStart" type="button">Salvar início</button>
+        </div>
+      </details>
+      <p class="training-storage" id="trainingStorage" role="status">Progresso e planejamento ficam somente neste navegador, sem dados de pacientes ou sincronização.</p>
+    </section>
+
     <section aria-label="Filtros das questões">
       <div class="controls">
-        <input class="control" id="searchInput" type="search" placeholder="🔎 Buscar trial, conceito ou palavra-chave…" />
+        <input class="control" id="searchInput" type="search" aria-label="Buscar questões" placeholder="🔎 Buscar trial, conceito ou palavra-chave…" />
         <select class="control" id="difficultyFilter" aria-label="Filtrar dificuldade">
           <option value="">Todas as dificuldades</option>
           <option value="Médio">Médio</option>
@@ -208,10 +250,12 @@
           <option value="">Todas</option>
           <option value="pending">Pendentes</option>
           <option value="reviewed">Revisadas</option>
+          <option value="difficult">Marcadas como difíceis</option>
+          <option value="due">Revisão para hoje ou atrasada</option>
         </select>
         <button class="btn" id="showAll" type="button">👁️ Mostrar comentários</button>
       </div>
-      <div class="block-tabs" id="blockTabs" role="tablist" aria-label="Blocos temáticos"></div>
+      <div class="block-tabs" id="blockTabs" role="group" aria-label="Blocos temáticos"></div>
       <div class="result"><span id="resultText">50 questões</span><span>Atalho mental: escolha → justifique → revele → revise.</span></div>
     </section>
 
@@ -233,6 +277,88 @@
     (() => {
       "use strict";
       const bank = TEMI_INTEGRADO_2026_QBANK;
+      // BEGIN TEMI TRAINING CORE — pure calendar and scheduling helpers.
+      const trainingCore = (() => {
+        const intervals = [1, 7, 21];
+        function localDay(date = new Date()) {
+          return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+        }
+        function parseDay(value) {
+          if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+          const [year, month, day] = value.split("-").map(Number);
+          if (year < 2000 || year > 9998) return null;
+          const date = new Date(year, month - 1, day, 12);
+          return localDay(date) === value ? date : null;
+        }
+        function addDays(value, count) {
+          const date = parseDay(value);
+          if (!date) return null;
+          date.setDate(date.getDate() + count);
+          return localDay(date);
+        }
+        function difference(start, end) {
+          const first = parseDay(start), last = parseDay(end);
+          if (!first || !last) return 0;
+          const ordinal = date => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+          return Math.round((ordinal(last) - ordinal(first)) / 86400000);
+        }
+        function cleanRecords(value, ids) {
+          const clean = {};
+          if (!value || typeof value !== "object" || Array.isArray(value)) return clean;
+          ids.forEach(id => {
+            const item = value[id];
+            if (!item || typeof item !== "object" || Array.isArray(item)) return;
+            const learnedOn = parseDay(item.learnedOn) ? item.learnedOn : null;
+            const reviews = {};
+            let previous = learnedOn;
+            if (learnedOn && item.reviews && typeof item.reviews === "object") {
+              for (const interval of intervals) {
+                const day = item.reviews[interval];
+                if (!parseDay(day) || day < addDays(learnedOn, interval) || day <= previous) break;
+                reviews[interval] = day;
+                previous = day;
+              }
+            }
+            clean[id] = {learnedOn, reviews, difficult:item.difficult === true};
+          });
+          return clean;
+        }
+        function nextReview(record) {
+          if (!record || !record.learnedOn) return null;
+          const interval = intervals.find(day => !record.reviews[day]);
+          if (!interval) return null;
+          const completed = Object.values(record.reviews).sort();
+          const lastDay = completed.length ? completed[completed.length - 1] : record.learnedOn;
+          const planned = addDays(record.learnedOn, interval);
+          return {interval, day: planned > lastDay ? planned : addDays(lastDay, 1)};
+        }
+        function recordedToday(record, today) {
+          return !!record && (record.learnedOn === today || Object.values(record.reviews).includes(today));
+        }
+        function dailyPlan(questions, blocks, records, start, today) {
+          const done = questions.filter(question => recordedToday(records[question.id], today));
+          const due = questions.filter(question => {
+            const review = nextReview(records[question.id]);
+            return review && review.day <= today && !recordedToday(records[question.id], today);
+          }).sort((a, b) => {
+            const dateOrder = nextReview(records[a.id]).day.localeCompare(nextReview(records[b.id]).day);
+            return dateOrder || Number(!!records[b.id].difficult) - Number(!!records[a.id].difficult);
+          });
+          const available = difference(start, today);
+          const pending = questions.filter(question => {
+            const blockIndex = blocks.findIndex(block => block.id === question.block);
+            return !records[question.id]?.learnedOn && blockIndex >= 0 && blockIndex <= available;
+          });
+          const remaining = Math.max(0, 10 - done.length);
+          const next = [...due, ...pending].slice(0, remaining);
+          const upcoming = questions.map(question => ({question, review:nextReview(records[question.id])}))
+            .filter(item => item.review && item.review.day > today)
+            .sort((a, b) => a.review.day.localeCompare(b.review.day));
+          return {done, due, next, upcoming, ids:new Set([...done, ...next].map(question => question.id))};
+        }
+        return {intervals, localDay, parseDay, addDays, difference, cleanRecords, nextReview, recordedToday, dailyPlan};
+      })();
+      // END TEMI TRAINING CORE
       const $ = id => document.getElementById(id);
       const questionsEl = $("questions");
       const searchInput = $("searchInput");
@@ -240,20 +366,61 @@
       const statusFilter = $("statusFilter");
       const blockTabs = $("blockTabs");
       const keyPrefix = "antigravity:temi-integrado-2026:reviewed:";
+      const trainingProgressKey = "antigravity:temi-integrado-2026:training:progress:v1";
+      const trainingPreferencesKey = "antigravity:temi-integrado-2026:training:preferences:v1";
       let activeBlock = "";
       let showAllAnswers = false;
+      let trainingOnly = false;
+      let lastRenderDay = trainingCore.localDay();
+      let storageAvailable = true;
+      let storageCorrupt = false;
+      function readStored(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) return fallback;
+          try { return JSON.parse(raw); } catch (_) { storageCorrupt = true; return fallback; }
+        } catch (_) { storageAvailable = false; return fallback; }
+      }
+      const storedPreferences = readStored(trainingPreferencesKey, {});
+      let trainingStart = trainingCore.parseDay(storedPreferences?.startedOn)
+        ? storedPreferences.startedOn : trainingCore.localDay();
+      let trainingRecords = trainingCore.cleanRecords(readStored(trainingProgressKey, {}), bank.questions.map(question => question.id));
+      function saveStored(key, value) {
+        try { localStorage.setItem(key, JSON.stringify(value)); }
+        catch (_) { storageAvailable = false; }
+      }
+      if (!trainingCore.parseDay(storedPreferences?.startedOn)) {
+        saveStored(trainingPreferencesKey, {startedOn:trainingStart});
+      }
 
       const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
       })[char]);
       const normalize = value => String(value ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      const memoryReviews = new Set();
-      const reviewed = id => { try { return localStorage.getItem(keyPrefix + id) === "1" || memoryReviews.has(id); } catch (_) { return memoryReviews.has(id); } };
+      const legacyReviews = new Set();
+      bank.questions.forEach(question => {
+        try { if (localStorage.getItem(keyPrefix + question.id) === "1") legacyReviews.add(question.id); }
+        catch (_) { storageAvailable = false; }
+      });
+      const reviewed = id => !!trainingRecords[id]?.learnedOn || legacyReviews.has(id);
       const blockMeta = id => bank.blocks.find(block => block.id === id) || {label:id,icon:"📚",color:"#43e8ff"};
+      const formatDay = day => trainingCore.parseDay(day)?.toLocaleDateString("pt-BR") || "—";
+      const planForToday = () => trainingCore.dailyPlan(bank.questions, bank.blocks, trainingRecords, trainingStart, trainingCore.localDay());
+      function reviewStatus(id) {
+        const record = trainingRecords[id];
+        const next = trainingCore.nextReview(record);
+        if (!record?.learnedOn) return legacyReviews.has(id) ? "Revisão anterior sem data; registre o estudo para planejar" : "Primeiro estudo pendente";
+        if (!next) return "Ciclo D+1 / D+7 / D+21 concluído ✓";
+        return `Revisão D+${next.interval} · ${formatDay(next.day)}${next.day < trainingCore.localDay() ? " · atrasada" : ""}`;
+      }
 
       function filteredQuestions() {
         const term = normalize(searchInput.value);
-        return bank.questions.filter(question => {
+        const today = trainingCore.localDay();
+        const todayPlan = trainingOnly ? planForToday() : null;
+        const todayIds = todayPlan?.ids;
+        const list = bank.questions.filter(question => {
+          if (todayIds && !todayIds.has(question.id)) return false;
           const haystack = normalize([
             question.id, question.block, question.difficulty, question.stem,
             ...question.tags, ...Object.values(question.options),
@@ -265,8 +432,18 @@
           if (difficultyFilter.value && question.difficulty !== difficultyFilter.value) return false;
           if (statusFilter.value === "reviewed" && !reviewed(question.id)) return false;
           if (statusFilter.value === "pending" && reviewed(question.id)) return false;
+          if (statusFilter.value === "difficult" && !trainingRecords[question.id]?.difficult) return false;
+          if (statusFilter.value === "due") {
+            const review = trainingCore.nextReview(trainingRecords[question.id]);
+            if (!review || review.day > today) return false;
+          }
           return true;
         });
+        if (todayPlan) {
+          const order = [...todayPlan.next, ...todayPlan.done].map(question => question.id);
+          list.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+        }
+        return list;
       }
 
       function sourceLinks(question) {
@@ -279,7 +456,10 @@
 
       function card(question, index) {
         const block = blockMeta(question.block);
-        const answerOpen = showAllAnswers || reviewed(question.id);
+        const record = trainingRecords[question.id];
+        const nextReview = trainingCore.nextReview(record);
+        const reviewReady = !record?.learnedOn || (nextReview && nextReview.day <= trainingCore.localDay());
+        const answerOpen = showAllAnswers;
         const options = Object.entries(question.options).map(([letter, text]) =>
           `<div class="option"><span class="letter">${letter}</span><span>${esc(text)}</span></div>`
         ).join("");
@@ -295,6 +475,8 @@
               <span class="badge block">${esc(block.icon)} ${esc(block.label)}</span>
               <span class="badge">${esc(question.difficulty)}</span>
               <span class="badge">${esc(question.id)}</span>
+              <span class="badge study">${esc(reviewStatus(question.id))}</span>
+              ${record?.difficult ? '<span class="badge">🧠 Ponto difícil</span>' : ""}
             </div>
             <button class="btn" type="button" data-toggle="${esc(question.id)}" aria-controls="answer-${esc(question.id)}" aria-expanded="${answerOpen}">${answerOpen ? "Ocultar ABCDE" : "Revelar ABCDE"}</button>
           </header>
@@ -308,7 +490,9 @@
               <div class="pearl">${esc(question.pearl)}</div>
               <div class="sources">${sourceLinks(question)}</div>
               <div class="q-actions">
-                <button class="btn primary" type="button" data-review="${esc(question.id)}">${reviewed(question.id) ? "Revisada ✓" : "Marcar como revisada"}</button>
+                <button class="btn primary" type="button" data-review="${esc(question.id)}" ${reviewReady ? "" : "disabled"}>${!record?.learnedOn ? "✓ Registrar primeiro estudo" : nextReview ? `✓ Registrar revisão D+${nextReview.interval}${reviewReady ? "" : ` em ${formatDay(nextReview.day)}`}` : "Ciclo concluído ✓"}</button>
+                <button class="btn" type="button" data-difficult="${esc(question.id)}" aria-pressed="${!!record?.difficult}">${record?.difficult ? "🧠 Difícil ✓" : "🧠 Marcar como difícil"}</button>
+                ${reviewed(question.id) ? `<button class="btn" type="button" data-undo="${esc(question.id)}">Desfazer estudo desta questão</button>` : ""}
                 <button class="btn" type="button" data-copy="${esc(question.id)}">⧉ Copiar questão</button>
               </div>
             </div>
@@ -324,10 +508,65 @@
         $("progressText").textContent = `${percent}% revisado neste navegador`;
       }
 
+      function updateTraining() {
+        const today = trainingCore.localDay();
+        const plan = planForToday();
+        $("trainingToday").textContent = `📅 Hoje · ${formatDay(today)}`;
+        $("trainingCount").textContent = `${plan.done.length} de 10 questões na meta diária`;
+        const next = plan.next[0];
+        if (plan.done.length >= 10) {
+          $("trainingNext").textContent = "✅ Meta de hoje concluída";
+          $("trainingNextDetail").textContent = "Faça uma pausa. Amanhã o plano recalcula as revisões.";
+        } else if (next) {
+          const review = trainingCore.nextReview(trainingRecords[next.id]);
+          $("trainingNext").textContent = `${review ? "🔁 Revisar" : "▶ Estudar"} ${next.id}`;
+          $("trainingNextDetail").textContent = `${blockMeta(next.block).label} · ${review ? `revisão D+${review.interval}` : "resolva, revele e registre"}. Comece por duas questões.`;
+        } else {
+          $("trainingNext").textContent = "✅ Sem tarefas pendentes hoje";
+          $("trainingNextDetail").textContent = today < trainingStart
+            ? `Primeiro bloco em ${formatDay(trainingStart)}. O banco completo está disponível.`
+            : plan.upcoming.length ? `Próxima revisão em ${formatDay(plan.upcoming[0].review.day)}.`
+              : "Cinco blocos disponíveis. Use os filtros para retomar pontos difíceis.";
+        }
+        $("trainingReviewCount").textContent = `${plan.due.length} revisões para hoje ou atrasadas. Alvos: D+1, D+7 e D+21 após o estudo real.`;
+        $("trainingStart").value = trainingStart;
+        $("todayTraining").setAttribute("aria-pressed", String(trainingOnly));
+        $("trainingDays").innerHTML = bank.blocks.map((block, index) => {
+          const items = bank.questions.filter(question => question.block === block.id);
+          const completed = items.filter(question => trainingRecords[question.id]?.learnedOn).length;
+          const day = trainingCore.addDays(trainingStart, index);
+          return `<li class="training-day ${day === today ? "current" : ""}"><strong>${esc(block.icon)} Bloco ${index + 1} · ${esc(block.label)}</strong><span>${items.length} questões · ${completed} estudadas<br>Liberação no plano: ${formatDay(day)}</span><br><button class="btn" type="button" data-training-block="${esc(block.id)}" aria-label="Abrir bloco ${esc(block.label)}">Abrir bloco</button></li>`;
+        }).join("");
+        $("trainingStorage").textContent = !storageAvailable
+          ? "⚠️ Armazenamento indisponível. O treino funciona nesta aba; ao fechar ou recarregar, novas marcações podem ser perdidas."
+          : storageCorrupt
+            ? "⚠️ Um registro local estava ilegível. O plano foi reiniciado nesta aba; confira as marcações. Sem dados de pacientes ou sincronização."
+            : "🔒 Progresso e planejamento ficam somente neste navegador, sem dados de pacientes ou sincronização. Limpar os dados do navegador apaga o treino.";
+      }
+
+      function refreshPreservingQuestion(id, action) {
+        render();
+        const target = [...questionsEl.querySelectorAll(`[data-${action}]`)].find(button => button.dataset[action] === id);
+        if (target) {
+          const answer = $("answer-" + id);
+          answer.classList.add("open");
+          const toggle = [...questionsEl.querySelectorAll("[data-toggle]")].find(button => button.dataset.toggle === id);
+          toggle.setAttribute("aria-expanded", "true");
+          toggle.textContent = "Ocultar ABCDE";
+          // Keep keyboard focus in the same question even when its review button becomes disabled.
+          const focusTarget = target.disabled
+            ? [...questionsEl.querySelectorAll("[data-difficult]")].find(button => button.dataset.difficult === id) : target;
+          focusTarget?.focus({preventScroll:true});
+        } else {
+          $("todayTraining").focus({preventScroll:true});
+        }
+      }
+
       function render() {
+        lastRenderDay = trainingCore.localDay();
         const list = filteredQuestions();
         $("visibleQ").textContent = list.length;
-        $("resultText").textContent = `${list.length} de ${bank.questions.length} questões`;
+        $("resultText").textContent = `${trainingOnly ? "Treino de hoje · " : ""}${list.length} de ${bank.questions.length} questões`;
         questionsEl.innerHTML = list.length
           ? list.map(card).join("")
           : `<div class="empty">Nenhuma questão encontrada. Limpe os filtros e tente novamente.</div>`;
@@ -342,11 +581,38 @@
         });
         questionsEl.querySelectorAll("[data-review]").forEach(button => {
           button.addEventListener("click", () => {
-            const key = keyPrefix + button.dataset.review;
-            const selected = !reviewed(button.dataset.review);
-            if (selected) memoryReviews.add(button.dataset.review); else memoryReviews.delete(button.dataset.review);
-            try { localStorage.setItem(key, selected ? "1" : "0"); } catch (_) {}
-            render();
+            const id = button.dataset.review;
+            const today = trainingCore.localDay();
+            const record = trainingRecords[id] || {learnedOn:null, reviews:{}, difficult:false};
+            if (!record.learnedOn) record.learnedOn = today;
+            else {
+              const next = trainingCore.nextReview(record);
+              if (!next || next.day > today) return;
+              record.reviews[next.interval] = today;
+            }
+            trainingRecords[id] = record;
+            saveStored(trainingProgressKey, trainingRecords);
+            refreshPreservingQuestion(id, "review");
+          });
+        });
+        questionsEl.querySelectorAll("[data-difficult]").forEach(button => {
+          button.addEventListener("click", () => {
+            const id = button.dataset.difficult;
+            const record = trainingRecords[id] || {learnedOn:null, reviews:{}, difficult:false};
+            record.difficult = !record.difficult;
+            trainingRecords[id] = record;
+            saveStored(trainingProgressKey, trainingRecords);
+            refreshPreservingQuestion(id, "difficult");
+          });
+        });
+        questionsEl.querySelectorAll("[data-undo]").forEach(button => {
+          button.addEventListener("click", () => {
+            const id = button.dataset.undo;
+            trainingRecords[id] = {learnedOn:null, reviews:{}, difficult:!!trainingRecords[id]?.difficult};
+            legacyReviews.delete(id);
+            try { localStorage.removeItem(keyPrefix + id); } catch (_) { storageAvailable = false; }
+            saveStored(trainingProgressKey, trainingRecords);
+            refreshPreservingQuestion(id, "review");
           });
         });
         questionsEl.querySelectorAll("[data-copy]").forEach(button => {
@@ -369,21 +635,62 @@
           });
         });
         updateProgress();
+        updateTraining();
       }
 
       blockTabs.innerHTML = [
-        `<button class="block-tab active" type="button" data-block="" style="--tab-color:var(--cyan)">✨ Todos (50)</button>`,
+        `<button class="block-tab active" type="button" data-block="" aria-pressed="true" style="--tab-color:var(--cyan)">✨ Todos (50)</button>`,
         ...bank.blocks.map(block =>
-          `<button class="block-tab" type="button" data-block="${esc(block.id)}" style="--tab-color:${esc(block.color)}">${esc(block.icon)} ${esc(block.label)} (10)</button>`
+          `<button class="block-tab" type="button" data-block="${esc(block.id)}" aria-pressed="false" style="--tab-color:${esc(block.color)}">${esc(block.icon)} ${esc(block.label)} (10)</button>`
         )
       ].join("");
+      function selectBlock(id) {
+        activeBlock = id;
+        blockTabs.querySelectorAll("[data-block]").forEach(item => {
+          const selected = item.dataset.block === id;
+          item.classList.toggle("active", selected);
+          item.setAttribute("aria-pressed", String(selected));
+        });
+      }
       blockTabs.querySelectorAll("[data-block]").forEach(button => {
         button.addEventListener("click", () => {
-          activeBlock = button.dataset.block;
-          blockTabs.querySelectorAll("[data-block]").forEach(item => item.classList.toggle("active", item === button));
+          trainingOnly = false;
+          selectBlock(button.dataset.block);
           render();
         });
       });
+      function openTraining(onlyToday, block = "") {
+        trainingOnly = onlyToday;
+        searchInput.value = "";
+        difficultyFilter.value = "";
+        statusFilter.value = "";
+        selectBlock(block);
+        showAllAnswers = false;
+        $("showAll").textContent = "👁️ Mostrar comentários";
+        render();
+        $("resultText").setAttribute("tabindex", "-1");
+        $("resultText").focus({preventScroll:true});
+        $("resultText").scrollIntoView({block:"center", behavior:matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"});
+      }
+      $("todayTraining").addEventListener("click", () => openTraining(true));
+      $("allTraining").addEventListener("click", () => openTraining(false));
+      $("trainingDays").addEventListener("click", event => {
+        const button = event.target.closest("[data-training-block]");
+        if (button) openTraining(false, button.dataset.trainingBlock);
+      });
+      $("saveTrainingStart").addEventListener("click", () => {
+        const value = $("trainingStart").value;
+        if (!trainingCore.parseDay(value)) {
+          $("trainingStart").setCustomValidity("Escolha uma data válida entre 2000 e 9998.");
+          $("trainingStart").reportValidity();
+          return;
+        }
+        $("trainingStart").setCustomValidity("");
+        trainingStart = value;
+        saveStored(trainingPreferencesKey, {startedOn:trainingStart});
+        render();
+      });
+      $("trainingStart").addEventListener("input", () => $("trainingStart").setCustomValidity(""));
       [searchInput, difficultyFilter, statusFilter].forEach(control => {
         control.addEventListener(control === searchInput ? "input" : "change", render);
       });
@@ -393,8 +700,11 @@
         render();
       });
       $("resetProgress").addEventListener("click", () => {
-        memoryReviews.clear();
-        bank.questions.forEach(question => { try { localStorage.removeItem(keyPrefix + question.id); } catch (_) {} });
+        if (!window.confirm("Zerar somente o estudo e os pontos difíceis deste banco TEMI? A data de início e as preferências visuais serão mantidas.")) return;
+        trainingRecords = {};
+        legacyReviews.clear();
+        try { localStorage.removeItem(trainingProgressKey); } catch (_) { storageAvailable = false; }
+        bank.questions.forEach(question => { try { localStorage.removeItem(keyPrefix + question.id); } catch (_) { storageAvailable = false; } });
         render();
       });
 
@@ -413,6 +723,9 @@
         } catch (_) {}
         clarityToggle.textContent = light ? "🌙 Modo espacial" : "☀️ Visualização clara";
       });
+      const refreshDay = () => { if (lastRenderDay !== trainingCore.localDay()) render(); };
+      window.addEventListener("focus", refreshDay);
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshDay(); });
       render();
     })();
   </script>

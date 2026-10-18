@@ -104,16 +104,31 @@ class EditorialGateConfigurationTests(unittest.TestCase):
             {"public-approved", "public-cited"},
         )
 
-    def test_october_clinical_release_requires_real_human_review(self):
+    def test_october_public_preview_records_authorization_without_human_signoff(self):
         item = next(item for item in self.registry["items"]
                     if item["id"] == "revisao-clinica-pendente-2026-10-18")
-        self.assertEqual(item["classification"], "quarantine")
-        self.assertEqual(item["publishTargets"], [])
-        self.assertIsNone(item["clinicalReviewer"])
+        self.assertEqual(item["classification"], "public-cited")
+        self.assertEqual(item["publishTargets"], ["github-pages"])
+        self.assertEqual(item["clinicalReviewStatus"], "pending")
+        self.assertIsNone(item["clinicalReviewedAt"])
+        self.assertIn("não realizada", item["clinicalReviewer"])
+        authorization = item["publicationAuthorization"]
+        self.assertEqual(authorization["source"], "explicit-human-user-request-in-current-chat")
+        self.assertIn("e publique", authorization["userRequest"])
+        self.assertFalse(authorization["grantsClinicalHomologation"])
+        self.assertFalse(authorization["claimsHumanClinicalReview"])
+        self.assertTrue(authorization["clinicalUseStillRequiresHumanReview"])
         relative = "01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html"
         issues = self.guard.scan_file(ROOT, ROOT / relative, self.policy, item,
                                       require_registration=True)
-        self.assertIn("NONPUBLIC_IN_PUBLIC_OUTPUT", {issue.code for issue in issues})
+        self.assertEqual(issues, [])
+        manifest = json.loads((ROOT / relative).with_name("module.manifest.json").read_text())
+        self.assertEqual(manifest["status"], "em-revisao-medica")
+        self.assertIsNone(manifest["clinicalReviewer"])
+        self.assertIsNone(manifest["clinicalReview"]["reviewer"])
+        self.assertIsNone(manifest["clinicalReview"]["reviewedAt"])
+        self.assertTrue(manifest["publication"]["clinicalReviewOngoing"])
+        self.assertFalse(manifest["publication"]["grantsClinicalHomologation"])
 
     def test_baseline_is_explicit_without_inventing_legacy_approval(self):
         baseline = self.registry["baseline"]

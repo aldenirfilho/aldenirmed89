@@ -5,8 +5,11 @@ essencial permanece no HTML quando JavaScript estiver indisponível. O módulo t
 filtros por mecanismo, busca sem distinção de acento, tabela de doses com fontes por
 linha, tema global, impressão e checklist educacional.
 
-Estado editorial: **em revisão médica**. A preparação técnica não equivale a
-homologação clínica, aprovação regulatória brasileira ou validação institucional.
+Versão 1.0.1 · 18/10/2026. Estado editorial: **prévia pública educacional em
+revisão médica**. A publicação foi solicitada explicitamente pelo proprietário
+após conferência documental assistida por IA de doses, indicações e fontes.
+Essa conferência não equivale a revisão médica humana, homologação clínica,
+aprovação regulatória brasileira ou validação institucional.
 Ver `module.manifest.json` e `index.html#revisao`.
 
 ## Arquivos e verificação
@@ -44,6 +47,20 @@ o checklist e seus valores não são transmitidos.
 - `antigravity:amr:study-checklist:v1` contém somente booleanos de revisão local.
 - Qualquer ativação clínica exige revisão humana e registro editorial compatível.
 
-Fontes verificadas em 18/10/2026: IDSA 2026 e tabela de doses, consenso
-Magiorakos 2012, EUCAST, OMS 2024, CDC, ANVISA 2023 e bulas profissionais
-DailyMed/FDA. Links e limites de contexto estão no módulo.
+Foram conferidos documentalmente dez esquemas IV adultos e cinco cenários por
+mecanismo em 18/10/2026. A versão 1.0.1 explicita início da manutenção de
+aztreonam-avibactam, limiares renais, alerta de mortalidade do cefiderocol,
+indicações FDA e usos fora de bula, além de ajustes específicos do regime de
+alta dose de ampicilina-sulbactam. O módulo não calcula doses individuais nem
+trata de ajustes de diálise/CRRT.
+
+As 18 fontes rastreáveis do módulo incluem IDSA 2026 e tabela de doses, consenso
+Magiorakos 2012, EUCAST, Decisão UE 2018/945, OMS 2024, CDC, ANVISA 2023,
+bulas DailyMed/FDA e MERREM IV/Pfizer. Links e limites de contexto estão no
+módulo; bulas dos EUA não confirmam registro ou disponibilidade no Brasil.
+
+A autorização específica de circulação educacional está no registro editorial;
+o relatório novo é `scripts_admin/reports/publicacao-pr26-20261018.json`.
+O relatório anterior foi preservado como histórico. A pendência de habilitação
+do contador público GoatCounter (HTTP 403) continua registrada no relatório;
+a publicação desta prévia não representa sua resolução.
