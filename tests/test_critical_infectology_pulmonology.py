@@ -147,7 +147,7 @@ class CriticalModulesTests(unittest.TestCase):
         css = (module / "assets/pneumologia-visuals.css").read_text(encoding="utf-8")
         manifest = json.loads((module / "module.manifest.json").read_text(encoding="utf-8"))
 
-        self.assertEqual(manifest["version"], "1.3.0")
+        self.assertEqual(manifest["version"], "1.4.0")
         self.assertIn('id="dpoc-visuais"', html)
         self.assertIn('href="#dpoc-visuais"', html)
         self.assertEqual(html.count('data-visual-id="DPOC-'), 20)
@@ -162,6 +162,28 @@ class CriticalModulesTests(unittest.TestCase):
         self.assertEqual(len(mobile), 20)
         for asset in originals + desktop + mobile:
             self.assertGreater(asset.stat().st_size, 10_000, asset)
+
+    def test_protocols_2026_approval_does_not_promote_parent_module(self):
+        module = ROOT / "01_Modulos_Clinicos/Pneumologia_Critica"
+        manifest = json.loads((module / "module.manifest.json").read_text(encoding="utf-8"))
+        protocols = manifest["protocols2026"]
+
+        self.assertEqual(protocols["entrypoint"], "protocolos-2026/index.html")
+        self.assertTrue((module / protocols["entrypoint"]).is_file())
+        self.assertEqual(protocols["clinicalReviewStatus"], "approved-by-owner")
+        self.assertEqual(protocols["clinicalReviewedAt"], "2026-10-18")
+        self.assertTrue(protocols["clinicalReviewer"].strip())
+        for scope_marker in ("DPOC", "PAC", "sete formulários", "vinte ilustrações"):
+            self.assertIn(scope_marker, protocols["scope"])
+        self.assertFalse(protocols["extendsApprovalToParentModule"])
+        self.assertFalse(protocols["institutionalHomologation"])
+
+        self.assertEqual(manifest["status"], "em-revisao-medica")
+        self.assertEqual(manifest["reviewGate"]["clinicalStatus"], "pending")
+        self.assertIn("revisar cada conduta e comentário", manifest["reviewGate"]["requiredBeforeActive"])
+        self.assertEqual(manifest["publication"]["mode"], "public-preview")
+        self.assertTrue(manifest["publication"]["publicPreview"])
+        self.assertTrue(manifest["publication"]["clinicalReviewOngoing"])
 
 
 if __name__ == "__main__":
