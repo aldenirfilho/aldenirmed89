@@ -2,6 +2,18 @@
 
 const CACHE_PREFIX = "antigravity-root-";
 const CACHE_NAME = `${CACHE_PREFIX}v42`;
+// Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
+const LIBRARY_MANIFEST_PATHS = new Set([
+  "biblioteca_catalogo.json",
+  "biblioteca_documentos_manifest.json",
+  "biblioteca_previews.json",
+  "biblioteca_brain_connections.json",
+  "biblioteca_inbox_manifest_auto.json",
+  "biblioteca_taxonomia_temas.json"
+].map((filename) => new URL(
+  `./02_Biblioteca_IA_Engine/data/${filename}`,
+  self.registration.scope
+).pathname));
 const SHELL_ASSETS = [
   "./assets/icons/aerospace-v2/favicon.ico",
   "./assets/icons/aerospace-v2/icon-32.png",
@@ -370,7 +382,8 @@ self.addEventListener("fetch", (event) => {
   if (url.pathname.endsWith("/manifest.webmanifest") ||
       url.pathname.endsWith("/18_Centro_Tripulacao/data/daily-visits.json") ||
       url.pathname.endsWith("/18_Centro_Tripulacao/data/public-metrics.json") ||
-      url.pathname.endsWith("/ecossistema/data/catalog.json")) {
+      url.pathname.endsWith("/ecossistema/data/catalog.json") ||
+      LIBRARY_MANIFEST_PATHS.has(url.pathname)) {
     event.respondWith(freshManifest(request));
     return;
   }
