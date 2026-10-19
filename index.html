@@ -1173,166 +1173,6 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
   display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;color:var(--muted);
   font:600 .65rem/1.4 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;
 }
-
-/* haa-home-feature:v1 */
-.haa-home-feature{
-  padding:0 0 var(--section-space);
-  scroll-margin-top:96px;
-}
-.haa-home-surface{
-  position:relative;
-  overflow:hidden;
-  display:grid;
-  grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr);
-  gap:clamp(22px,4vw,54px);
-  align-items:center;
-  padding:clamp(24px,4vw,52px);
-  border:1px solid color-mix(in srgb,var(--yellow) 42%,var(--brd));
-  border-radius:var(--r-xl);
-  background:
-    radial-gradient(circle at 8% 5%,color-mix(in srgb,var(--yellow) 16%,transparent),transparent 35%),
-    radial-gradient(circle at 94% 94%,color-mix(in srgb,var(--red) 12%,transparent),transparent 32%),
-    linear-gradient(145deg,var(--bg3),var(--bg2));
-  box-shadow:var(--shadow);
-}
-.haa-home-surface::after{
-  content:"";
-  position:absolute;
-  inset:auto -120px -180px auto;
-  width:420px;
-  height:420px;
-  border:1px solid color-mix(in srgb,var(--yellow) 26%,transparent);
-  border-radius:50%;
-  box-shadow:0 0 0 44px color-mix(in srgb,var(--yellow) 4%,transparent),0 0 0 92px color-mix(in srgb,var(--cyan) 3%,transparent);
-  pointer-events:none;
-}
-.haa-home-copy,.haa-home-scoreboard{position:relative;z-index:1}
-.haa-home-kicker{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  margin-bottom:14px;
-  color:var(--yellow);
-  font:800 .72rem/1.2 var(--font-mono);
-  letter-spacing:.11em;
-  text-transform:uppercase;
-}
-.haa-home-title{
-  max-width:15ch;
-  margin:0;
-  font:800 clamp(2rem,4.8vw,4.9rem)/.96 var(--font-head);
-  letter-spacing:-.055em;
-}
-.haa-home-title span{color:var(--yellow)}
-.haa-home-copy>p{
-  max-width:68ch;
-  margin:18px 0 0;
-  color:var(--soft);
-  font-size:clamp(.98rem,1.4vw,1.12rem);
-  line-height:1.65;
-}
-.haa-home-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:24px;
-}
-.haa-home-actions .btn{margin:0}
-.haa-home-scoreboard{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-}
-.haa-score-tile{
-  min-height:118px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  padding:18px;
-  border:1px solid var(--brd);
-  border-radius:var(--r);
-  background:var(--surf);
-}
-.haa-score-tile:first-child{
-  grid-column:1/-1;
-  min-height:150px;
-  background:linear-gradient(135deg,color-mix(in srgb,var(--yellow) 16%,var(--surf)),var(--surf));
-  border-color:color-mix(in srgb,var(--yellow) 38%,var(--brd));
-}
-.haa-score-tile strong{
-  color:var(--yellow);
-  font:800 clamp(1.12rem,2.4vw,1.75rem)/1.05 var(--font-head);
-}
-.haa-score-tile span{
-  margin-top:10px;
-  color:var(--soft);
-  font-size:.86rem;
-  line-height:1.42;
-}
-.haa-home-note{
-  grid-column:1/-1;
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  padding:13px 14px;
-  border:1px solid var(--brd);
-  border-radius:12px;
-  background:color-mix(in srgb,var(--bg) 60%,transparent);
-  color:var(--soft);
-  font-size:.82rem;
-  line-height:1.45;
-}
-.haa-home-note b{color:var(--text)}
-/* haa-discovery-card:v1 */
-.haa-discovery-module{
-  --accent:var(--yellow);
-  --accent-d:var(--yel-d);
-  position:relative;overflow:hidden;display:flex;flex-direction:column;
-  min-width:0;min-height:100%;padding:26px 24px 22px;
-  border-color:color-mix(in srgb,var(--yellow) 42%,var(--brd));
-  border-style:solid;border-width:1px;border-radius:var(--r-lg);
-  background:linear-gradient(145deg,color-mix(in srgb,var(--yellow) 8%,var(--surf)),var(--surf));
-  color:var(--text);text-decoration:none;cursor:pointer;
-  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,background .22s ease;
-}
-.haa-discovery-module::before{
-  content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
-  background:linear-gradient(135deg,var(--yel-d),transparent 60%);transition:opacity .22s ease;
-}
-.haa-discovery-module:hover,.haa-discovery-module:focus-visible{
-  transform:translateY(-3px);border-color:var(--yellow);
-  box-shadow:0 16px 50px rgba(0,0,0,.3),0 0 0 1px var(--yellow);
-}
-.haa-discovery-module:hover::before,.haa-discovery-module:focus-visible::before{opacity:1}
-.haa-discovery-module h3{
-  position:relative;font-family:var(--font-head);font-size:1rem;font-weight:700;
-  letter-spacing:-.01em;margin-bottom:8px;line-height:1.2;
-}
-.haa-discovery-module p{
-  position:relative;font-size:.85rem;color:var(--soft);line-height:1.55;margin-bottom:16px;
-  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;
-}
-.haa-discovery-module .module-icon{
-  background:var(--yel-d);
-  border-color:color-mix(in srgb,var(--yellow) 55%,var(--brd));
-  color:var(--yellow);
-}
-.haa-discovery-module .module-icon,.haa-discovery-module .module-tag-row,
-.haa-discovery-module .module-link{position:relative}
-.haa-discovery-module:hover .module-link::after,
-.haa-discovery-module:focus-visible .module-link::after{transform:translateX(3px)}
-@media (max-width:900px){
-  .haa-home-surface{grid-template-columns:1fr}
-  .haa-home-title{max-width:18ch}
-}
-@media (max-width:560px){
-  .haa-home-surface{padding:20px;border-radius:var(--r-lg)}
-  .haa-home-scoreboard{grid-template-columns:1fr}
-  .haa-score-tile:first-child,.haa-home-note{grid-column:auto}
-  .haa-home-actions{display:grid}
-  .haa-home-actions .btn{width:100%;justify-content:center}
-}
-
 /* ── FUTEBOL TOTAL · CAMPO TÁTICO OPERACIONAL ────── */
 .total-football-section{padding:0 0 88px;scroll-margin-top:82px}
 .tf-surface{
@@ -2504,7 +2344,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
     background:none!important;color:#102a43!important;
     -webkit-text-fill-color:currentColor!important;
   }
-  .module-card p,.haa-discovery-module p,.dsf-excerpt{
+  .module-card p,.dsf-excerpt{
     display:block!important;
     -webkit-line-clamp:unset!important;line-clamp:unset!important;
     overflow:visible!important;
@@ -2513,7 +2353,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
   .btn-primary,.btn-temi,.download-action.primary{color:#fff!important}
   .mod-blue,.mod-blue .module-link{--accent:#175cd3;color:#175cd3}
   .reveal,.reveal-l,.phase,.pipeline-step{opacity:1!important;transform:none!important}
-  .card,.module-card,.haa-discovery-module,.hema-cockpit,.mnem-card,.dsf-card,.via-card,.temi-card,
+  .card,.module-card,.hema-cockpit,.mnem-card,.dsf-card,.via-card,.temi-card,
   .pipeline-step,.safety-banner,.download-card{
     break-inside:avoid;page-break-inside:avoid;
   }
@@ -2782,7 +2622,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       <a href="questoes/index.html">🏆 Simulador TEMI</a>
       <a href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" class="accent">🧠 TCE CRASH</a>
       <a href="01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html" class="accent">🧠 AVC Turbo TEMI</a>
-      <a href="#hepatite-alcool" class="accent">🟠 Hepatologia HAA</a>
+      <a href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html" class="accent">🟠 Hepatologia HAA</a>
       <a href="01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/index.html">❤️‍🩹 SCA</a>
       <a href="01_Modulos_Clinicos/Almanaque_ECG/index.html">🫀 Almanaque ECG</a>
       <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia</a>
@@ -2955,7 +2795,6 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       <div class="hero-btns">
         <a class="btn btn-violet" href="ecossistema/index.html">🌱 Explorar o Ecossistema 360xA</a>
         <a class="btn btn-primary" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html">🧠 Abrir TCE grave CRASH</a>
-        <a class="btn btn-primary" href="#hepatite-alcool">🟠 Abrir Hepatologia HAA</a>
         <a class="btn btn-primary" href="15_Radar_Cientifico/index.html">📡 Estudar atualizações clínicas</a>
         <a class="btn btn-ghost" href="#modulos">🧭 Ver todos os módulos</a>
         <a class="btn btn-violet" href="17_Portal_Vivo/index.html">🛰️ Portal UPGRADE</a>
@@ -3011,7 +2850,6 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <a class="topic-pill green" href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Pulmão–rim · CAPS · MDA5</a>
           <a class="topic-pill violet" href="01_Modulos_Clinicos/Delirium_UTI/index.html">🧠 Delirium · CAM-ICU · 4AT</a>
           <a class="topic-pill red" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html">🧠 TCE grave · CRASH</a>
-          <a class="topic-pill yellow" href="#hepatite-alcool">🟠 HAA · Maddrey · MELD · Lille</a>
           <a class="topic-pill green" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html">🫁 VM · SDRA · assincronias</a>
           <a class="topic-pill yellow" href="01_Modulos_Clinicos/Sepse_Choque_Septico/index.html">🦠 Sepse · choque séptico</a>
         </div>
@@ -3026,33 +2864,6 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 
   </section>
 </div><!-- /shell -->
-
-<!-- haa-home-feature:v1 -->
-<section class="haa-home-feature" id="hepatite-alcool" aria-labelledby="haa-home-title">
-  <div class="shell">
-    <div class="haa-home-surface">
-      <div class="haa-home-copy">
-        <span class="haa-home-kicker">🟠 Novo bloco clínico · Laranja Mecânica · Turbo TEMI 360 X</span>
-        <h2 class="haa-home-title" id="haa-home-title">Hepatite associada <span>ao álcool</span></h2>
-        <p>Uma estação única para critérios NIAAA, mecanismo da lesão, abordagem inicial, prednisolona, suporte, complicações e os principais escores. O Atlas Turbo TEMI reúne dez mapas widescreen para revisão rápida.</p>
-        <div class="haa-home-actions">
-          <a class="btn btn-primary" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html">Abrir módulo completo</a>
-          <a class="btn btn-primary" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html#atlas-visual">Ver 10 mapas 16:9</a>
-          <a class="btn btn-ghost" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html#escores">Abrir escores</a>
-          <a class="btn btn-ghost" href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html#prednisolona">Fluxo da prednisolona</a>
-        </div>
-      </div>
-      <div class="haa-home-scoreboard" aria-label="Conteúdo do módulo de hepatite associada ao álcool">
-        <article class="haa-score-tile"><strong>10 mapas · 5 escores</strong><span>Atlas vetorial widescreen, calculadoras educacionais e comparação prática em uma única página.</span></article>
-        <article class="haa-score-tile"><strong>Maddrey · MELD</strong><span>Gravidade inicial e prognóstico global.</span></article>
-        <article class="haa-score-tile"><strong>ABIC · GAHS</strong><span>Estratificação prognóstica complementar.</span></article>
-        <article class="haa-score-tile"><strong>Lille</strong><span>Resposta ao corticoide e regra de interrupção.</span></article>
-        <article class="haa-score-tile"><strong>Conduta</strong><span>Diagnóstico, segurança, suporte e seguimento.</span></article>
-        <div class="haa-home-note"><span aria-hidden="true">🛡️</span><span><b>Uso educacional profissional.</b> O conteúdo canônico, a avaliação clínica e o protocolo institucional prevalecem sobre qualquer síntese visual.</span></div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ── CAMPO TOTAL 4–3–3 ─────────────────────────── -->
 <section class="total-football-section" id="campo-total" aria-labelledby="campo-total-heading">
@@ -3378,7 +3189,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--cyan)">Abrir RespiraCrit</span>
       </a>
 
-      <a class="haa-discovery-module mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html" aria-label="Abrir Hepatite associada ao álcool — Turbo TEMI 360 X">
+      <a id="hepatite-alcool" class="module-card mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html" aria-label="Abrir Hepatite associada ao álcool — Turbo TEMI 360 X">
         <div class="module-icon">🟠</div>
         <h3>Hepatite associada ao álcool</h3>
         <p>Critérios NIAAA, mecanismo, abordagem inicial, prednisolona, suporte e Atlas visual com os principais escores.</p>
@@ -3388,6 +3199,18 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <span class="module-tag">Turbo TEMI 360 X</span>
         </div>
         <span class="module-link" style="color:var(--yellow)">Abrir hepatologia</span>
+      </a>
+
+      <a id="doencas-geneticas" class="module-card mod-violet reveal" data-genetics-home-card href="01_Modulos_Clinicos/Doencas_Geneticas/index.html" aria-label="Abrir Doenças genéticas — rasopatias e síndrome de Noonan — Turbo TEMI 360X">
+        <div class="module-icon">🧬</div>
+        <h3>Doenças genéticas</h3>
+        <p>Rasopatias e síndrome de Noonan: via RAS/MAPK, reconhecimento clínico, avaliação genética e implicações na UTI. Atlas com 10 imagens didáticas.</p>
+        <div class="module-tag-row">
+          <span class="module-tag">Noonan · rasopatias</span>
+          <span class="module-tag">10 imagens</span>
+          <span class="module-tag">Turbo TEMI 360X</span>
+        </div>
+        <span class="module-link" style="color:var(--violet)">Explorar doenças genéticas</span>
       </a>
 
       <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" aria-label="Abrir TCE grave — Protocolo CRASH">

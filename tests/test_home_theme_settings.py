@@ -167,7 +167,7 @@ process.stdout.write(JSON.stringify({
         self.assertIn("Campo Total 4–3–3", HOME)
         self.assertIn("função primária", HOME)
         self.assertIn("demais rotas continuam disponíveis", HOME)
-        self.assertIn(".module-card p,.haa-discovery-module p,.dsf-excerpt", HOME)
+        self.assertIn(".module-card p,.dsf-excerpt", HOME)
 
 
 if __name__ == "__main__":
