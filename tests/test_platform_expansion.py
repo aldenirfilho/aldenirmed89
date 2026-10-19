@@ -118,7 +118,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/aerospace-v2/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed89"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v43`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v44`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
@@ -334,7 +334,7 @@ class AccessiblePwaTests(unittest.TestCase):
             home[modules_start:home.index("<!-- ── DECK DE MISSÕES CRÍTICAS")].count(
                 'class="module-card'
             ),
-            29,  # 27 módulos/apps (inclui MDR) + Formação Humana (Radar Bíblico) + Mapa Vivo
+            31,  # 29 módulos/apps (inclui HAA e genética) + Formação Humana + Mapa Vivo
         )
 
         for marker in (
@@ -455,7 +455,7 @@ class AccessiblePwaTests(unittest.TestCase):
             home,
         )
         self.assertIn("-webkit-text-fill-color:currentColor!important;", home)
-        self.assertIn(".module-card p,.haa-discovery-module p,.dsf-excerpt{", home)
+        self.assertIn(".module-card p,.dsf-excerpt{", home)
         self.assertIn("-webkit-line-clamp:unset!important", home)
         self.assertIn("overflow:visible!important", home)
         self.assertIn("document.documentElement.style.colorScheme", home)

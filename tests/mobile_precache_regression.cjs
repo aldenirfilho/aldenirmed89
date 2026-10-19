@@ -4,16 +4,19 @@ const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:a
 const path = require('node:path');
 const root = path.resolve(__dirname, '..'), scope = 'https://example.test/aldenirmed89/';
 async function check(file, proposed) {
-  const events = {}, stores = new Map(), requests = [];
+  const events = {}, stores = new Map([["antigravity-root-v42", new Map()], ["independent-module", new Map()]]), requests = [];
   let offline = false;
   const key = r => new URL(typeof r === 'string' ? r : r.url, scope).href;
   const fetch = async r => {
     if (offline) throw new Error('offline');
     const url = key(r), relative = new URL(url).pathname.replace('/aldenirmed89/', '');
+    requests.push({url, bytes:0});
     const local = path.join(root, relative.split('?')[0] || 'index.html');
     const target = fs.statSync(local).isDirectory() ? path.join(local, 'index.html') : local;
-    requests.push({url, bytes: fs.statSync(target).size});
-    return new Response(fs.readFileSync(target));
+    requests[requests.length-1].bytes = fs.statSync(target).size;
+    const response = new Response(fs.readFileSync(target));
+    Object.defineProperty(response, "type", {value:"basic"});
+    return response;
   };
   const caches = {
     async open(name) {
@@ -38,6 +41,11 @@ async function check(file, proposed) {
   let task; events.install({waitUntil:p=>task=p}); await task;
   const result = {requests:requests.length, uncompressedBytes:requests.reduce((n,r)=>n+r.bytes,0)};
   if (proposed) {
+    events.activate({waitUntil:p=>task=p}); await task;
+    assert(!stores.has('antigravity-root-v42'));
+    assert(stores.has('independent-module'));
+    for (const asset of ['./assets/site-navigation.css','./assets/site-navigation.js'])
+      assert(await caches.match(asset));
     assert(!requests.some(r=>/\/01_Modulos_Clinicos\/|\/22_Microparticulas/.test(r.url) && !r.url.includes('/assets/icons/')));
     async function serve(relative, mode='cors') {
       let response;
@@ -46,7 +54,9 @@ async function check(file, proposed) {
     }
     // Runtime caching remains available for an educational page visited online.
     await serve('./01_Modulos_Clinicos/Almanaque_ECG/index.html','navigate');
+    const courseCSS = await (await serve('./01_Modulos_Clinicos/Almanaque_ECG/assets/styles.css')).text();
     offline=true;
+    assert.equal(await (await serve('./01_Modulos_Clinicos/Almanaque_ECG/assets/styles.css')).text(), courseCSS);
     for (const route of ['./ecossistema/','./ecossistema/index.html']) {
       assert((await (await serve(route,'navigate')).text()).includes('searchInput'));
     }

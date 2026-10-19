@@ -291,6 +291,31 @@ jobs:
           (cd site/downloads && sha256sum -c SHA256SUMS.txt)
           test ! -e site/23_Cosmos_NEXUS
 
+      - name: Testar catálogo móvel e offline em Chromium
+        env:
+          MOBILE_BASE: http://127.0.0.1:8873/
+          MOBILE_PROOF_DIR: ${{ runner.temp }}/mobile-browser-proof
+        run: |
+          set -euo pipefail
+          npm install --prefix "$RUNNER_TEMP/mobile-browser" --no-save --package-lock=false playwright@1.62.1
+          export NODE_PATH="$RUNNER_TEMP/mobile-browser/node_modules"
+          export CHROME_BIN="$(command -v google-chrome || command -v chromium || true)"
+          if [ -z "$CHROME_BIN" ]; then
+            node "$NODE_PATH/playwright/cli.js" install --with-deps chromium
+          fi
+          python3 -m http.server 8873 --bind 127.0.0.1 --directory site > "$RUNNER_TEMP/mobile-http.log" 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID"' EXIT
+          node tests/browser_mobile_catalogue.cjs
+
+      - name: Salvar evidências do teste móvel
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-browser-proof
+          path: ${{ runner.temp }}/mobile-browser-proof
+          if-no-files-found: ignore
+
       - name: Upload Pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v5

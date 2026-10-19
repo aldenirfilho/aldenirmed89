@@ -248,6 +248,39 @@ button:hover, .visual-download:hover { filter: brightness(1.07); transform: tran
 
 footer { display: flex; justify-content: space-between; gap: 1rem; padding: 1.45rem clamp(1rem,4vw,4rem); background: var(--black); color: #d7dfe2; border-top: 5px solid var(--orange); }
 
+/* Preferência compartilhada com a homepage; as figuras conservam suas cores. */
+#clarity-toggle { margin: 0; flex-shrink: 0; }
+html[data-theme="light"] :is(.calculator,.differential-card,.nac-box) {
+  background: #fff; color: var(--ink); border: 1px solid var(--line);
+}
+html[data-theme="light"] .calculator { border-top: 5px solid var(--orange); }
+html[data-theme="light"] :is(.formula,.result,.nac-regimen,.chips span) {
+  background: var(--surface-2); color: var(--ink);
+}
+html[data-theme="light"] .result.is-severe { background: var(--danger-bg); color: var(--danger); }
+html[data-theme="light"] .result.is-ok { background: var(--success-bg); color: var(--success); }
+html[data-theme="light"] .result-note { color: var(--muted); }
+html[data-theme="dark"] {
+  --orange-soft: #35281f; --navy: #9cdbff; --ink: #e4edf3; --muted: #b7c8d4;
+  --line: #405467; --surface: #132331; --surface-2: #1b3042;
+  --danger: #ffb4b4; --danger-bg: #46262d; --warning: #ffdb99; --warning-bg: #3c311e;
+  --success: #92e1c5; --success-bg: #183f36;
+}
+html[data-theme="dark"] body { background: #09141e; }
+html[data-theme="dark"] :is(.mini-card,.mechanism-flow article,.score-hierarchy article,.timeline article,.support-grid article,.module-entry-actions a,.visual-summary,.visual-card,.visual-filters button,.disclaimer) {
+  background: var(--surface); color: var(--ink);
+}
+html[data-theme="dark"] .mini-card--danger { background: var(--danger-bg); }
+html[data-theme="dark"] :is(.module-entry-rail,.evidence-panel,.visual-atlas) { background: var(--surface-2); }
+html[data-theme="dark"] .section-nav { background: #132331f2; }
+html[data-theme="dark"] :is(th,.contra-grid span) { background: var(--surface-2); color: var(--ink); }
+html[data-theme="dark"] tbody tr:hover { background: var(--surface-2); }
+html[data-theme="dark"] :is(.section-nav a:hover,.module-entry-actions a:hover) { background: var(--orange-soft); color: #ffd0a9; }
+html[data-theme="dark"] :is(.score-hierarchy b,.decision-banner span,.visual-kicker,.references a) { color: #ffc18c; }
+html[data-theme="dark"] :is(.visual-safety,.timeline-step) { background: #102c3e; }
+html[data-theme="dark"] .visual-filters button[aria-pressed="true"] { background: var(--navy); color: #09141e; }
+html[data-theme="dark"] .error-grid article b { background: #a82424; }
+
 @media (max-width: 1050px) {
   .hero-grid, .split-grid, .nac-box, .visual-summary { grid-template-columns: 1fr; }
   .three-columns, .support-grid, .evidence-grid, .mechanism-flow, .decision-banner, .score-hierarchy, .error-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -273,6 +306,20 @@ footer { display: flex; justify-content: space-between; gap: 1rem; padding: 1.45
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 @media print {
+  html[data-theme] {
+    --ink: #20313d; --muted: #5e6970; --navy: #07324a; --surface: #fff; --surface-2: #f5f7f8;
+    --orange-soft: #fff1e7; --line: #dce2e6; --danger: #a82424; --danger-bg: #fff0f0;
+    --warning: #7b4800; --warning-bg: #fff4d9; --success: #0f684d; --success-bg: #e8f7f1;
+    color-scheme: light;
+  }
+  html[data-theme] body,
+  html[data-theme] :is(.panel,.hero-card,.mini-card,.mechanism-flow article,.score-hierarchy article,.timeline article,.support-grid article,.module-entry-rail,.module-entry-actions a,.visual-summary,.visual-card,.disclaimer,.calculator,.differential-card,.nac-box) {
+    background: #fff !important; color: #20313d !important;
+  }
+  html[data-theme] :is(.formula,.result,.nac-regimen,.chips span,.contra-grid span) {
+    background: #f5f7f8 !important; color: #20313d !important;
+  }
+  html[data-theme] :is(.score-hierarchy b,.decision-banner span,.visual-kicker,.references a) { color: #7b4800 !important; }
   .section-nav, button, .visual-download, .skip-link { display: none !important; }
   body { background: #fff; }
   main { width: 100%; }

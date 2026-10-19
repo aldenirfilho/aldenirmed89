@@ -1,5 +1,7 @@
 # Auditoria móvel do Ecossistema 360xA — 18/10/2026
 
+> A seção final registra a revalidação de 19/10/2026 sobre a main atual; os resultados anteriores abaixo são históricos.
+
 Base: `a97cc9d24da179afa396789f481f340454e189c6` (PR #28).
 
 ## Resultado e escopo
@@ -88,3 +90,34 @@ node tests/browser_mobile_catalogue.cjs
 ```
 
 Para fechar a medição real: usar perfil limpo de navegador móvel, mesma rota e rede antes/depois; registrar HAR incluindo service worker, bytes transferidos, LCP e tempo até worker activated; repetir com cache aquecido; ativar modo avião, recarregar as duas URLs e testar pesquisa, filtro e módulo visitado. Comparar instalação completa, não só o evento load. O roteiro de navegador não substitui esse ensaio de rede.
+
+
+## Revalidação de 19/10/2026
+
+Base atual incorporada: `0aed70b8cf5549eb7c5f84e13d5754e63679d747`. A versão v44 mantém os seis índices mutáveis da biblioteca e sua política de atualização/fallback offline. Dois arquivos da busca rápida da home (CSS e JS, 4.629 bytes no código fonte) foram mantidos no shell para preservar navegação e teclado após instalar pelo catálogo.
+
+Bloqueios resolvidos nesta rodada:
+
+- O relatório técnico foi registrado no inventário editorial como software original, sem revisão ou homologação médica. O gate editorial global passou sem issues.
+- Os arquivos temporários da recuperação do checkout foram preservados fora da árvore. O baseline passou: 202 documentos e 202 arquivos publicáveis; nenhum dado do acervo foi modificado para acomodar a contagem.
+- Foram gerados os 198 previews; o build seguro, sanitização, guarda de privacidade e auditoria de links passaram. O artefato continua com aproximadamente 752,3 MiB, sem relação direta com a transferência inicial.
+- Suíte local: **662 testes, todos aprovados**, incluindo atualização dos índices da biblioteca e cache sob demanda. Os contratos da versão do cache passaram a v44.
+
+Nova comparação Node, contra a main atual: **274 → 33 solicitações**, **12.723.769 → 3.264.051 bytes sem compressão**. São **9.459.718 bytes (9,02 MiB; aproximadamente 74,35%)** evitados na simulação. Os valores mudam com os arquivos da main; não devem ser comparados como se fossem o mesmo commit da rodada anterior. O teste agora conta tentativas antes da leitura do arquivo, verifica CSS de curso em cache e exercita activate preservando caches independentes.
+
+O Chrome oficial 155.0.8059.84 foi obtido localmente, mas sua execução foi impedida pela restrição de sockets do ambiente. Nenhuma medição local foi apresentada como navegador real. O teste Playwright foi conectado ao workflow da própria PR, após construir e sanitizar o site público; utiliza o Chrome disponível no runner ou instala Chromium se necessário. Ele produz screenshots e JSON no artefato `mobile-browser-proof`. **O status e as evidências do job GitHub Actions são a fonte para a execução real desse teste**, consultável na aba Checks da PR #29.
+
+O teste de navegador valida telas móveis, pesquisa, filtros, tema, detalhes, offline do catálogo pelas duas URLs, home e página de curso visitada. Ele não é ensaio em aparelho físico/4G; LCP e consumo real de dados móveis continuam fora das medições.
+
+Reprodução adicional:
+
+```bash
+python3 scripts_admin/build_library_previews.py
+python3 scripts_admin/build_public_site.py . site
+python3 scripts_admin/publication_guard.py sanitize-site site
+python3 scripts_admin/publication_guard.py check-site site
+python3 scripts_admin/audit_public_links.py site
+python3 -m http.server 8873 --bind 127.0.0.1 --directory site
+# Em outro terminal, com playwright disponível (CHROME_BIN é opcional):
+MOBILE_PROOF_DIR=/tmp/mobile-browser-proof node tests/browser_mobile_catalogue.cjs
+```
