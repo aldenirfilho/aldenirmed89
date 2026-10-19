@@ -1,11 +1,14 @@
-import { LEARNING_TOPIC_IDS } from './learning-registry.mjs?v=dbc34eb79dc4732b';
+import { LEARNING_TOPIC_IDS } from './learning-registry.mjs?v=3d1714df5ef42633';
+
+export const EXAM_COUNTS = Object.freeze([6,12,18]);
 
 const MINUTE = 60_000;
 const DAY = 86_400_000;
 const MAX_INTERVAL = 30 * DAY;
 const MAX_REPETITIONS = 1_000_000;
 const owns = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
-const moduleForId = id => typeof id==='string' ? LEARNING_TOPIC_IDS.find(topic=>id.startsWith(`${topic}-`)) : undefined;
+const ID_PREFIXES = [...LEARNING_TOPIC_IDS].sort((a,b)=>b.length-a.length);
+const moduleForId = id => typeof id==='string' ? ID_PREFIXES.find(topic=>id.startsWith(`${topic}-`)) : undefined;
 const safeId = id => { const module=moduleForId(id); return Boolean(module && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id.slice(module.length+1))); };
 const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const timestamp = value => Number.isSafeInteger(value) && value >= 0;
@@ -30,7 +33,7 @@ function validQuestion(question) {
 /** Selects without replacement and never mutates the supplied question bank. */
 export function buildExam({bank = [], topic = 'mixed', count = 6, random = Math.random} = {}) {
   if (![...LEARNING_TOPIC_IDS, 'mixed'].includes(topic)) throw new RangeError('Tópico inválido.');
-  if (![6, 12].includes(count)) throw new RangeError('Escolha 6 ou 12 questões.');
+  if (!EXAM_COUNTS.includes(count)) throw new RangeError('Escolha 6, 12 ou 18 questões.');
   if (typeof random !== 'function') throw new TypeError('Gerador aleatório inválido.');
   const seen = new Set();
   const moduleFor = question => moduleForId(question.id);
@@ -50,7 +53,8 @@ export function buildExam({bank = [], topic = 'mixed', count = 6, random = Math.
   }
   const size = Math.min(count, pool.length);
   if (topic === 'mixed') {
-    // One question from every available module before filling the remaining slots.
+    // Prioritize distinct modules up to the requested size, then fill the remaining slots.
+    // Full module coverage requires at least as many questions as available modules.
     // The prior shuffle randomizes selection within and between the module groups.
     const represented = new Set(), selected = [];
     for (const question of pool) {

@@ -12,15 +12,17 @@ import {initLearning} from '../01_Modulos_Clinicos/Pneumologia_Critica/protocolo
 const NOW=1_790_000_000_000;
 const CARD_KEY='turbo-temi-pulmao-revisao-v1';
 const NEW_TOPICS=['tb-pulmonar','tb-extra','micoses'];
+const LEGACY_TOPICS=['dpoc','pac',...NEW_TOPICS];
 const moduleFor=id=>LEARNING_TOPICS.find(t=>id.startsWith(`${t.id}-`))?.id;
 
 test('five banks have unique sourced content, explicit preview limits and complete editorial mappings',()=>{
-  assert.deepEqual(LEARNING_TOPICS.map(t=>t.id),['dpoc','pac',...NEW_TOPICS]);
-  assert.equal(ALL_CASES.length,30);assert.equal(ALL_CARDS.length,60);assert.equal(ALL_PARTICLES.length,120);
+  assert.deepEqual(LEARNING_TOPICS.slice(0,5).map(t=>t.id),LEGACY_TOPICS);
+  const previous=LEGACY_TOPICS.map(id=>BANK[id]);
+  assert.equal(previous.flatMap(b=>b.cases).length,30);assert.equal(previous.flatMap(b=>b.flashcards).length,60);assert.equal(previous.flatMap(b=>b.particles).length,120);
   const all=[...ALL_CASES,...ALL_CARDS,...ALL_PARTICLES];
-  assert.equal(new Set(all.map(x=>x.id)).size,210);
-  assert.equal(REVIEW_CONCEPTS.length,30);assert.equal(REVIEW_IDS.length,90);
-  for(const {id,preview} of LEARNING_TOPICS){
+  assert.equal(new Set(all.map(x=>x.id)).size,all.length);
+  assert.equal(REVIEW_CONCEPTS.filter(c=>LEGACY_TOPICS.includes(c.module)).length,30);assert.equal(REVIEW_IDS.filter(id=>LEGACY_TOPICS.some(t=>id.startsWith(`${t}-`))).length,90);
+  for(const {id,preview} of LEARNING_TOPICS.filter(t=>LEGACY_TOPICS.includes(t.id))){
     const bank=BANK[id];
     assert.equal(bank.cases.length,6);assert.equal(bank.flashcards.length,12);assert.equal(bank.particles.length,24);
     assert.equal(preview,NEW_TOPICS.includes(id));
@@ -52,7 +54,7 @@ test('exams filter module IDs despite human topic labels; mixed blocks cover all
   for(const count of [6,12])for(const random of [()=>0,()=>0.3,()=>0.99]){
     const mixed=buildExam({bank:ALL_CASES,topic:'mixed',count,random});
     assert.equal(mixed.length,count);assert.equal(new Set(mixed.map(q=>q.id)).size,count);
-    assert.deepEqual([...new Set(mixed.map(q=>moduleFor(q.id)))].sort(),LEARNING_TOPICS.map(t=>t.id).sort());
+    assert.equal(new Set(mixed.map(q=>moduleFor(q.id))).size,Math.min(count,LEARNING_TOPICS.length));
   }
   const forged={...BANK['tb-extra'].cases[0],module:'pac'};
   assert.equal(buildExam({bank:[forged],topic:'tb-extra'}).length,0);
@@ -67,7 +69,7 @@ test('existing SRS v1 survives expansion and every new card round-trips with due
   assert.deepEqual({...progress.cards},{'dpoc-f01':legacy,'pac-f12':legacy});
   for(const card of ALL_CARDS)if(!progress.cards[card.id])progress.cards[card.id]=scheduleReview(null,'good',NOW);
   const text=serializeProgress(progress),restored=loadProgress(text,CARD_IDS);
-  assert.equal(Object.keys(restored.cards).length,60);assert.deepEqual(restored.cards['dpoc-f01'],legacy);
+  assert.equal(Object.keys(restored.cards).length,CARD_IDS.length);assert.deepEqual(restored.cards['dpoc-f01'],legacy);
   assert.equal(selectDueCards(ALL_CARDS,restored,NOW)[0].id,'dpoc-f01');
   assert.doesNotMatch(text,/patient|invented|note/);
   for(const id of NEW_TOPICS){
@@ -125,7 +127,7 @@ function withUI(run,entries=[]){
 }
 
 test('internal selector and compatible API open every new flow/case/card with source and preview labels',()=>withUI(ui=>{
-  assert.match(ui.shell(),/30 casos autorais · 60 flashcards · 120 micropartículas/);
+  assert.ok(ui.shell().includes(`${ALL_CASES.length} casos autorais · ${ALL_CARDS.length} flashcards · ${ALL_PARTICLES.length} micropartículas`));
   assert.match(ui.shell(),/não.*método validado especificamente para TDAH/);
   for(const id of NEW_TOPICS){
     ui.change('learning-topic',id);assert.equal(ui.api.getTopic(),id);assert.equal(ui.selectValue(),id);

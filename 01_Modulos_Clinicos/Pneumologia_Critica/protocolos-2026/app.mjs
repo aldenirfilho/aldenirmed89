@@ -1,8 +1,9 @@
 import { ENGINES, SOURCES } from './clinical-engine.mjs?v=73a92287e43bc300';
 import { FORMS, MODULES, IMAGES } from './content.mjs?v=afbd8a7b50530707';
-import { initLearning } from './learning.mjs?v=5e76efe9d2273421';
-import { initSpecialtySections } from './specialty-sections.mjs?v=f187e4f4b54db399';
-import { initPulmonaryExpansion } from './pulmonary-expansion.mjs?v=357632308f7f39d7';
+import { LEARNING_TOPIC_IDS } from './learning-registry.mjs?v=3d1714df5ef42633';
+import { initLearning } from './learning.mjs?v=37b0c85f8de57c91';
+import { initSpecialtySections } from './specialty-sections.mjs?v=5f70f13967571019';
+import { initPulmonaryExpansion } from './pulmonary-expansion.mjs?v=ea008360944cb233';
 const $=id=>document.getElementById(id);
 const escape=text=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let module='dpoc',scenario='stable',view='practice';
@@ -38,8 +39,9 @@ function setView(id){
  history.replaceState(null,'',hash);
  for(const name of ['expansion','study','specialty'])document.body.classList.toggle(`${name}-active`,view===name);
  document.querySelectorAll('[data-module]').forEach(b=>{const active=!['expansion','specialty'].includes(view)&&b.dataset.module===(view==='study'?learning.getTopic():module);b.classList.toggle('active',active);b.setAttribute('aria-pressed',active);});
+ document.querySelectorAll('[data-study-shortcut]').forEach(b=>{const active=view==='study'&&b.dataset.openStudy===learning.getTopic();b.classList.toggle('active',active);b.setAttribute('aria-pressed',active);if(active)document.querySelector('.advanced-study-nav').open=true;});
  const newContent=['expansion','specialty'].includes(view)||(view==='study'&&!['dpoc','pac'].includes(learning.getTopic()));
- document.querySelector('.review').textContent=newContent?'Novos temas · prévia educacional · fontes conferidas':'Base DPOC/PAC aprovada · 18/10/2026';
+ document.querySelector('.review').textContent=view==='study'?'Estudo · DPOC/PAC: base aprovada · outros temas: prévia':newContent?'Novos temas · prévia educacional · fontes conferidas':'Base DPOC/PAC aprovada · 18/10/2026';
  for(const [key,area,controller] of [['expansionSection','expansion',expansion],['specialtySection','specialty',specialty]])document.querySelectorAll(`[data-${key.replace(/[A-Z]/g,c=>'-'+c.toLowerCase())}]`).forEach(b=>{const active=view===area&&b.dataset[key]===controller.getSection();b.classList.toggle('active',active);b.setAttribute('aria-pressed',active);});
 }
 function openStudy(id){learning.setTopic(id);learning.openFlow();setView('study');$('view-study').scrollIntoView({block:'start',behavior:'auto'});}
@@ -56,7 +58,7 @@ const expansion=initPulmonaryExpansion($('pulmonary-root'),{onSectionChange(id){
 const specialty=initSpecialtySections($('specialty-root'),{onSectionChange(id){if(view==='specialty')setView('specialty');},onStudy:openStudy});
 setModule('dpoc');
 const deepViews={'#view-practice':'practice','#view-visual':'visual','#view-sources':'sources','#view-study':'study','#view-review':'study','#view-expansion':'expansion','#tb-pulmonar':'expansion','#tb-extra':'expansion','#raras':'expansion','#pott':'specialty','#igg4':'specialty','#treino-dpoc':'study','#treino-pac':'study','#treino-tb-pulmonar':'study','#treino-tb-extra':'study','#treino-micoses':'study'};
-for(const id of ['dpoc','pac','tb-pulmonar','tb-extra','micoses'])deepViews[`#erros-${id}`]='study';
+for(const id of LEARNING_TOPIC_IDS){deepViews[`#erros-${id}`]='study';deepViews[`#treino-${id}`]='study';}
 function applyLocation(){const hash=location.hash;if(!deepViews[hash])return;if(['#tb-pulmonar','#tb-extra','#raras'].includes(hash))expansion.setSection(hash.slice(1));if(['#pott','#igg4'].includes(hash))specialty.setSection(hash.slice(1));if(hash.startsWith('#treino-')){learning.setTopic(hash.slice(8));learning.openFlow();}if(hash.startsWith('#erros-'))learning.setTopic(hash.slice(7));if(hash==='#view-review'||hash.startsWith('#erros-'))learning.openReview();setView(deepViews[hash]);$(`view-${view}`).scrollIntoView({block:'start',behavior:'auto'});}
 applyLocation();
 window.addEventListener('hashchange',applyLocation);

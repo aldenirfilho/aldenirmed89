@@ -1,5 +1,5 @@
-import { LEARNING_CONCEPTS } from './learning-registry.mjs?v=dbc34eb79dc4732b';
-import { gradeExam } from './learning-engine.mjs?v=4af5fd4cc9ba7c8d';
+import { LEARNING_CONCEPTS } from './learning-registry.mjs?v=3d1714df5ef42633';
+import { gradeExam } from './learning-engine.mjs?v=0874f1cb41dcfbb2';
 
 export const REVIEW_STORAGE_KEY = 'turbo-temi-pulmao-erros-v1';
 export const RETENTION_DELAY_MS = 5 * 60_000;
