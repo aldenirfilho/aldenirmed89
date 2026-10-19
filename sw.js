@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v43`;
+const CACHE_NAME = `${CACHE_PREFIX}v44`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -36,6 +36,8 @@ const SHELL_ASSETS = [
   "./assets/aldenirmed89-mystic.css",
   "./assets/site-analytics.css",
   "./assets/site-analytics.js",
+  "./assets/site-navigation.css",
+  "./assets/site-navigation.js",
   "./assets/brand/aldenirmed89-aerospace-launch-card.png",
   "./assets/brand/aldenirmed89-aerospace-orbital-master.png",
   "./assets/icons/aldenirmed89-aerospace-orbital-192.png",
@@ -303,9 +305,13 @@ self.addEventListener("install", (event) => {
     (async () => {
       const cache = await caches.open(CACHE_NAME);
       await cache.addAll(SHELL_ASSETS);
-      await Promise.allSettled(
-        WARM_ASSETS.map((asset) => cache.add(asset))
-      );
+      // Keep the catalogue available offline, including its canonical directory URL.
+      // Courses and medical images are cached by the fetch handler only on access.
+      // The full inventory stays above for compatibility; it is not an install queue.
+      await cache.addAll([
+        "./ecossistema/",
+        ...WARM_ASSETS.filter((asset) => asset.startsWith("./ecossistema/"))
+      ]);
       await self.skipWaiting();
     })()
   );
