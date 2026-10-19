@@ -1,9 +1,12 @@
+import { LEARNING_TOPIC_IDS } from './learning-registry.mjs?v=dbc34eb79dc4732b';
+
 const MINUTE = 60_000;
 const DAY = 86_400_000;
 const MAX_INTERVAL = 30 * DAY;
 const MAX_REPETITIONS = 1_000_000;
 const owns = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
-const safeId = id => typeof id === 'string' && /^(?:dpoc|pac)-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id);
+const moduleForId = id => typeof id==='string' ? LEARNING_TOPIC_IDS.find(topic=>id.startsWith(`${topic}-`)) : undefined;
+const safeId = id => { const module=moduleForId(id); return Boolean(module && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id.slice(module.length+1))); };
 const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const timestamp = value => Number.isSafeInteger(value) && value >= 0;
 const allowlists = new WeakMap();
@@ -26,13 +29,16 @@ function validQuestion(question) {
 
 /** Selects without replacement and never mutates the supplied question bank. */
 export function buildExam({bank = [], topic = 'mixed', count = 6, random = Math.random} = {}) {
-  if (!['dpoc', 'pac', 'mixed'].includes(topic)) throw new RangeError('Tópico inválido.');
+  if (![...LEARNING_TOPIC_IDS, 'mixed'].includes(topic)) throw new RangeError('Tópico inválido.');
   if (![6, 12].includes(count)) throw new RangeError('Escolha 6 ou 12 questões.');
   if (typeof random !== 'function') throw new TypeError('Gerador aleatório inválido.');
   const seen = new Set();
+  const moduleFor = question => moduleForId(question.id);
   const pool = (Array.isArray(bank) ? bank : []).filter(question => {
-    if (!validQuestion(question) || seen.has(question.id)
-        || (topic !== 'mixed' && !question.id.startsWith(`${topic}-`))) return false;
+    if (!validQuestion(question) || seen.has(question.id)) return false;
+    const module = moduleFor(question);
+    if (!module || (question.module !== undefined && question.module !== module)
+        || (topic !== 'mixed' && module !== topic)) return false;
     seen.add(question.id);
     return true;
   });
@@ -42,7 +48,20 @@ export function buildExam({bank = [], topic = 'mixed', count = 6, random = Math.
     const selected = Math.floor(value * (index + 1));
     [pool[index], pool[selected]] = [pool[selected], pool[index]];
   }
-  return pool.slice(0, Math.min(count, pool.length));
+  const size = Math.min(count, pool.length);
+  if (topic === 'mixed') {
+    // One question from every available module before filling the remaining slots.
+    // The prior shuffle randomizes selection within and between the module groups.
+    const represented = new Set(), selected = [];
+    for (const question of pool) {
+      const module = moduleFor(question);
+      if (!represented.has(module) && selected.length < size) { represented.add(module); selected.push(question); }
+    }
+    const chosen = new Set(selected.map(q=>q.id));
+    for (const question of pool) if (selected.length<size && !chosen.has(question.id)) selected.push(question);
+    return selected;
+  }
+  return pool.slice(0, size);
 }
 
 /** Answers may be an index-aligned array or an own-property map keyed by ID. */

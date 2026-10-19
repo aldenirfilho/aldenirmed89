@@ -56,7 +56,9 @@ test('todas as afirmações de guias e alertas possuem referências primárias r
   }
   assert.match(EXPANSION_SOURCES.who2026.scope, /não foi conferido/);
   assert.match(EXPANSION_SOURCES.whoSteroids.scope, /2026/);
-  assert.match(EXPANSION_SOURCES.idsaHistoplasma.scope, /não cobre integralmente/);
+  assert.equal(EXPANSION_SOURCES.idsaHistoplasma.year, 2026);
+  assert.match(EXPANSION_SOURCES.idsaHistoplasma.scope, /16\/09\/2026/);
+  assert.match(EXPANSION_SOURCES.idsaHistoplasma.scope, /não equivale a uma revisão integral/);
 });
 
 test('meningite tem indicação adjuvante sem transformar durações distintas em regra universal', () => {

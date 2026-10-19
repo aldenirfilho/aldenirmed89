@@ -7,16 +7,17 @@ import {
 } from '../01_Modulos_Clinicos/Pneumologia_Critica/protocolos-2026/review-engine.mjs';
 import {DPOC_LEARNING as D} from '../01_Modulos_Clinicos/Pneumologia_Critica/protocolos-2026/learning-dpoc.mjs';
 import {PAC_LEARNING as P} from '../01_Modulos_Clinicos/Pneumologia_Critica/protocolos-2026/learning-pac.mjs';
+import {BANK,ALL_CASES,ALL_CARDS,ALL_PARTICLES} from '../01_Modulos_Clinicos/Pneumologia_Critica/protocolos-2026/learning-registry.mjs';
 import {gradeExam} from '../01_Modulos_Clinicos/Pneumologia_Critica/protocolos-2026/learning-engine.mjs';
 import {initLearning} from '../01_Modulos_Clinicos/Pneumologia_Critica/protocolos-2026/learning.mjs';
 const NOW=1_790_000_000_000;
 const state=()=>({attempts:2,errors:1,lastAt:NOW,status:'aberto'});
 
 test('explicit concepts map every published case/card/particle once, independently of clinical wording',()=>{
-  assert.equal(REVIEW_CONCEPTS.length,12);assert.equal(REVIEW_IDS.length,36);
-  const all=[...D.cases,...D.flashcards,...D.particles,...P.cases,...P.flashcards,...P.particles];
+  assert.equal(REVIEW_CONCEPTS.length,Object.keys(BANK).length*6);assert.equal(REVIEW_IDS.length,ALL_CASES.length+ALL_CARDS.length);
+  const all=[...ALL_CASES,...ALL_CARDS,...ALL_PARTICLES];
   const mapped=REVIEW_CONCEPTS.flatMap(c=>[...c.caseIds,...c.cardIds,...c.particleIds]);
-  assert.equal(new Set(mapped).size,84);assert.deepEqual([...mapped].sort(),all.map(x=>x.id).sort());
+  assert.equal(new Set(mapped).size,all.length);assert.deepEqual([...mapped].sort(),all.map(x=>x.id).sort());
   for(const c of REVIEW_CONCEPTS){assert.equal(c.caseIds.length,1);assert.equal(c.cardIds.length,2);assert.equal(c.particleIds.length,4);assert.equal(relatedContent(c.id),c);}
   assert.equal(conceptFor('dpoc-c01').id,'dpoc-diagnostico');assert.equal(conceptFor('not-a-question'),null);
   assert.deepEqual(filterForConcepts([{id:'dpoc-f01',topic:'altered label'},{id:'pac-f01',topic:'Diagnóstico'}],['dpoc-diagnostico']).map(x=>x.id),['dpoc-f01']);

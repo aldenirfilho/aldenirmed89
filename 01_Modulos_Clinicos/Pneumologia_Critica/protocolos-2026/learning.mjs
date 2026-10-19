@@ -1,15 +1,10 @@
-import { SOURCES } from './clinical-engine.mjs?v=73a92287e43bc300';
-import { DPOC_LEARNING } from './learning-dpoc.mjs?v=133ae5c0be664985';
-import { PAC_LEARNING } from './learning-pac.mjs?v=a25fcb6a94674d4a';
+import { BANK, ALL_CASES, ALL_CARDS, ALL_PARTICLES, CARD_IDS, LEARNING_TOPICS, topicInfo, LEARNING_SOURCES as SOURCES } from './learning-registry.mjs?v=dbc34eb79dc4732b';
 import { buildExam, remainingSeconds, scheduleReview, selectDueCards,
-  loadProgress, serializeProgress, nextParticleIndex } from './learning-engine.mjs?v=7f9a31f7e150cdf5';
+  loadProgress, serializeProgress, nextParticleIndex } from './learning-engine.mjs?v=4af5fd4cc9ba7c8d';
 
 import { REVIEW_STORAGE_KEY, emptyReview, loadReview, serializeReview, recordReview, recordExamReview,
-  priorityConcepts, filterForConcepts, relatedContent, conceptFor, reviewSummary } from './review-engine.mjs?v=08342d3e0b8ca290';
+  priorityConcepts, filterForConcepts, relatedContent, conceptFor, reviewSummary } from './review-engine.mjs?v=6231ae4becce874e';
 
-const BANK = { dpoc: DPOC_LEARNING, pac: PAC_LEARNING };
-const ALL_CASES = [...DPOC_LEARNING.cases, ...PAC_LEARNING.cases];
-const CARD_IDS = [...DPOC_LEARNING.flashcards, ...PAC_LEARNING.flashcards].map(c => c.id);
 const STORAGE_KEY = 'turbo-temi-pulmao-revisao-v1';
 const PHASES = { contexto: '01 · Contexto', mecanismo: '02 · Mecanismo', decisao: '03 · Decisão', transferencia: '04 · Transferência' };
 const MODES = [['flow', '🔬 Microfluxo'], ['cases', '🩺 Casos'], ['cards', '🧠 Flashcards'], ['exam', '⏱ Simulado'], ['review', '🎯 Painel de revisão']];
@@ -18,7 +13,7 @@ const clock = seconds => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:$
 const refs = keys => [...new Set(keys)].map(key => SOURCES[key] ? `<a href="${esc(SOURCES[key].url)}" target="_blank" rel="noopener noreferrer">${esc(SOURCES[key].title)} ↗</a>` : '').join(' · ');
 const action = (name, label, extra = '') => `<button type="button" data-learn="${name}" ${extra}>${label}</button>`;
 
-export function initLearning(root) {
+export function initLearning(root, { onTopicChange } = {}) {
   let topic = 'dpoc', mode = 'flow', visible = false, notice = '', storageOK = true;
   let raw = null;
   try { raw = localStorage.getItem(STORAGE_KEY); } catch { storageOK = false; }
@@ -35,14 +30,15 @@ export function initLearning(root) {
     const q=bank?.cases.find(item=>item.id===id);if(q)return `Caso · ${q.title}`;
     const card=bank?.flashcards.find(item=>item.id===id);return card ? `Flashcard · ${card.front}` : 'Exercício acompanhado';
   };
-  const flow = { dpoc: { index: 0, cycle: 1, revealed: false }, pac: { index: 0, cycle: 1, revealed: false } };
+  const flow = Object.fromEntries(LEARNING_TOPICS.map(t=>[t.id,{index:0,cycle:1,revealed:false}]));
   let auto = false, cadence = 30, flowDeadline = null;
   let caseIndex = 0, caseAnswer = null, cardRevealed = false;
   let cards = selectDueCards(BANK[topic].flashcards, progress, Date.now());
   let exam = null;
   const examDraft = { topic: 'dpoc', count: 6, minutes: 10 };
 
-  root.innerHTML = `<div class="learn-intro"><div><p class="eyebrow">TURBO TEMI 360X · TREINO EM MICROPARTÍCULAS</p><h2 id="learn-heading">Uma decisão. Um comentário. O próximo passo.</h2><p>12 casos autorais · 24 flashcards · 48 micropartículas. Escolha DPOC ou pneumonia na lateral.</p></div><span class="learn-badge">UM PASSO POR VEZ</span></div>
+  root.innerHTML = `<div class="learn-intro"><div><p class="eyebrow">TURBO TEMI 360X · TREINO EM MICROPARTÍCULAS</p><h2 id="learn-heading">Uma decisão. Um comentário. O próximo passo.</h2><p>${ALL_CASES.length} casos autorais · ${ALL_CARDS.length} flashcards · ${ALL_PARTICLES.length} micropartículas. Escolha seu tema abaixo.</p><p>Base DPOC/PAC aprovada na etapa anterior. TB pulmonar, TB extrapulmonar e micoses: prévia educacional — revisão médica formal pendente.</p></div><span class="learn-badge">UM PASSO POR VEZ</span></div>
+    <div class="learn-topic-control"><label for="learning-topic">Tema do estudo<select id="learning-topic">${LEARNING_TOPICS.map(t=>`<option value="${esc(t.id)}">${esc(t.label)}${t.preview ? " · prévia" : ""}</option>`).join('')}</select></label><p>O tema vale para microfluxo, casos, flashcards e painel. O simulado também permite um bloco misto dos ${LEARNING_TOPICS.length} temas.</p></div>
     <nav class="learn-modes" aria-label="Formato de estudo">${MODES.map(([id, label]) => `<button type="button" data-learn-mode="${id}" aria-pressed="${id === mode}">${label}</button>`).join('')}</nav>
     <p class="learn-notice" id="learn-notice" role="status"></p><div id="learn-body"></div>
     <details class="learn-method"><summary>🔬 Como funciona o modelo microparticulado progressivo?</summary><div><p>O fluxo transforma um tópico em quatro partículas: contexto → mecanismo → decisão → transferência. Pense antes de revelar; confira o comentário e siga na mesma tela. Ao terminar, o percurso recomeça sem tela de bloqueio.</p><p>A citometria de fluxo inspira a metáfora visual: partículas passam por uma janela de atenção. É uma organização didática autoral, não um exame nem um método validado especificamente para TDAH.</p><p>O avanço automático é opcional. Os flashcards usam recuperação ativa e revisão espaçada; os intervalos de 5 minutos, 1 dia e progressão até 30 dias são escolhas desta plataforma, ajustáveis em versões futuras.</p><p>Base pedagógica: <a href="https://doi.org/10.1126/science.1152408" target="_blank" rel="noopener noreferrer">Karpicke e Roediger, 2008 ↗</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/39250798/" target="_blank" rel="noopener noreferrer">Estudo de repetição espaçada em médicos, 2024 ↗</a>.</p></div></details>
@@ -74,12 +70,13 @@ export function initLearning(root) {
   function reviewHTML() {
     const summary = reviewSummary(reviewState, topic), all = priorityConcepts(reviewState, topic, true);
     const pending = all.filter(c => c.status !== 'recuperado'), next = pending[0];
-    const other = reviewSummary(reviewState, topic === 'dpoc' ? 'pac' : 'dpoc');
+    const others = LEARNING_TOPICS.filter(t=>t.id!==topic&&reviewSummary(reviewState,t.id).total>0);
+    const otherTotal = others.reduce((sum,t)=>sum+reviewSummary(reviewState,t.id).total,0);
     const rows = all.map(c => { const preferredCard=c.rows.filter(row=>c.cardIds.includes(row.id)&&row.status!=='recuperado').sort((a,b)=>Number(b.status==='aberto')-Number(a.status==='aberto')||b.errors-a.errors)[0]?.id||c.cardIds[0]; return `<article class="review-item"><div class="learn-meta"><span>${esc(statusLabel(c.status))}</span><span>${c.errors} erro(s)/branco(s) registrados · ${c.attempts} ${c.attempts===1?'tentativa acompanhada':'tentativas acompanhadas'}</span></div><h4>${esc(c.label)}</h4><p>${esc(c.comment)}</p><p class="muted">Último registro: ${esc(new Date(c.lastAt).toLocaleString('pt-BR'))}. Prioridade de treino, sem inferir competência clínica.</p><div class="review-records">${c.rows.map(row=>`<span>${esc(itemLabel(row.id))} · ${esc(statusLabel(row.status))} · ${row.errors} erro(s)/branco(s)</span>`).join('')}</div><div class="learn-actions">${action('review-case', 'Abrir caso', `data-review-id="${esc(c.caseIds[0])}"`)}${action('review-card', 'Abrir flashcard', `data-review-id="${esc(preferredCard)}"`)}${action('review-flow', 'Abrir microfluxo', `data-concept="${esc(c.id)}"`)}</div></article>`; }).join('');
-    return `<section class="learn-card review-panel"><p class="eyebrow">${topic === 'dpoc' ? 'DPOC' : 'PNEUMONIA'} · UM FOCO DE CADA VEZ</p><h3>Seu próximo passo</h3>${next ? `<div class="review-next"><h4>${esc(next.label)}</h4><p>${esc(next.comment)}</p>${action('review-start', '▶ Iniciar roteiro dirigido', 'class="primary"')}</div>` : `<div class="review-empty"><h4>${summary.total ? 'Sem pendências abertas neste tema.' : 'Seu painel começa com a próxima tentativa.'}</h4><p>${summary.total ? 'As retomadas ficaram registradas. Continue no percurso livre e retorne quando precisar.' : 'Erros, respostas em branco e cards marcados para rever ajudam a escolher um foco. Este painel registra a partir desta edição; não reconstrói erros anteriores. Sua agenda anterior de flashcards foi preservada. Ainda não há dados para estimar seu desempenho.'}</p>${action('review-free-cases', 'Treinar um caso')}${action('review-free-cards', 'Abrir flashcards')}</div>`}
-      <div class="review-stats"><span><b>${summary.open}</b> abertos</span><span><b>${summary.reviewing}</b> em revisão</span><span><b>${summary.recovered}</b> retomadas registradas</span></div><p class="muted">Os contadores incluem somente itens acompanhados, a partir do primeiro erro, branco ou card marcado para rever. “Retomada registrada” descreve respostas no treino. Não mede domínio clínico, habilitação ou segurança para atendimento. Uma nova falha devolve prioridade.</p>${rows ? `<div class="review-list">${rows}</div>` : ''}${other.total ? '<p class="muted">Há registros no outro tema. Escolha DPOC ou pneumonia na lateral para abrir seu respectivo painel.</p>' : ''}
+    return `<section class="learn-card review-panel"><p class="eyebrow">${esc(topicInfo(topic).label)} · UM FOCO DE CADA VEZ</p><h3>Seu próximo passo</h3>${next ? `<div class="review-next"><h4>${esc(next.label)}</h4><p>${esc(next.comment)}</p>${action('review-start', '▶ Iniciar roteiro dirigido', 'class="primary"')}</div>` : `<div class="review-empty"><h4>${summary.total ? 'Sem pendências abertas neste tema.' : 'Seu painel começa com a próxima tentativa.'}</h4><p>${summary.total ? 'As retomadas ficaram registradas. Continue no percurso livre e retorne quando precisar.' : 'Erros, respostas em branco e cards marcados para rever ajudam a escolher um foco. Este painel registra a partir desta edição; não reconstrói erros anteriores. Sua agenda anterior de flashcards foi preservada. Ainda não há dados para estimar seu desempenho.'}</p>${action('review-free-cases', 'Treinar um caso')}${action('review-free-cards', 'Abrir flashcards')}</div>`}
+      <div class="review-stats"><span><b>${summary.open}</b> abertos</span><span><b>${summary.reviewing}</b> em revisão</span><span><b>${summary.recovered}</b> retomadas registradas</span></div><p class="muted">Os contadores incluem somente itens acompanhados, a partir do primeiro erro, branco ou card marcado para rever. “Retomada registrada” descreve respostas no treino. Não mede domínio clínico, habilitação ou segurança para atendimento. Uma nova falha devolve prioridade.</p>${rows ? `<div class="review-list">${rows}</div>` : ''}${others.length ? `<div class="review-other-topics"><p class="muted">Há registros em outros temas:</p>${others.map(t=>action('review-topic',esc(t.label),`data-topic="${esc(t.id)}"`)).join('')}</div>` : ''}
       <details class="review-privacy"><summary>O que fica salvo?</summary><p>Somente IDs conhecidos dos exercícios, tentativas, erros, data e status. Nenhum enunciado, alternativa selecionada, resposta clínica ou texto livre é persistido. A agenda de flashcards usa outro registro.</p></details>
-      ${confirmClear ? `<div class="review-confirm" role="alert"><strong>Apagar somente os registros deste painel, de DPOC e PAC?</strong><p>A agenda de flashcards e os bancos de conteúdo serão mantidos.</p><div class="learn-actions">${action('review-clear-confirm', 'Sim, apagar registros do painel')}${action('review-clear-cancel', 'Cancelar')}</div></div>` : action('review-clear', 'Apagar somente progresso do painel', summary.total || other.total ? '' : 'disabled')}
+      ${confirmClear ? `<div class="review-confirm" role="alert"><strong>Apagar somente os registros deste painel em todos os temas?</strong><p>A agenda de flashcards e os bancos de conteúdo serão mantidos.</p><div class="learn-actions">${action('review-clear-confirm', 'Sim, apagar registros do painel')}${action('review-clear-cancel', 'Cancelar')}</div></div>` : action('review-clear', 'Apagar somente progresso do painel', summary.total || otherTotal ? '' : 'disabled')}
     </section>`;
   }
   function pause(message = '') {
@@ -135,20 +132,29 @@ export function initLearning(root) {
       <p class="muted">Cards vencidos aparecem antes dos novos. Ao terminar a fila, você pode continuar em revisão livre, mesmo antes da data agendada.</p></section>`;
   }
   function examHTML() {
-    if (!exam) return `<section class="learn-card"><p class="eyebrow">SIMULADO AUTORAL · RESPOSTAS COMENTADAS AO FINAL</p><h3>Um bloco de atenção por vez.</h3><form id="exam-config"><div class="exam-config"><label for="exam-topic">Tema<select id="exam-topic"><option value="${topic}" ${examDraft.topic === topic ? 'selected' : ''}>${topic === 'dpoc' ? 'DPOC' : 'Pneumonia comunitária'}</option><option value="mixed" ${examDraft.topic === 'mixed' ? 'selected' : ''}>Misto · DPOC + pneumonia</option></select></label><label for="exam-count">Tamanho<select id="exam-count"><option value="6" ${examDraft.count === 6 ? 'selected' : ''}>Até 6 questões</option><option value="12" ${examDraft.count === 12 ? 'selected' : ''}>Até 12 questões · banco misto</option></select></label><label for="exam-minutes">Tempo · minutos<input id="exam-minutes" type="number" min="1" max="60" step="1" value="${examDraft.minutes}" required></label></div><p class="muted">6 questões por tema; 12 no banco misto. Você pode pausar. Tempo encerrado corrige o bloco; questões em branco contam como não respondidas.</p><button class="primary" type="submit">▶ Iniciar simulado</button></form></section>`;
-    if (exam.result) return `<section class="learn-card"><p class="eyebrow">${esc(exam.reason)} · ${exam.label}</p><h3>Seu treino: ${exam.result.correct} / ${exam.result.total}</h3><p class="exam-score">${exam.result.percentage}%</p><p>${exam.result.unanswered} sem resposta. Use os comentários para escolher o próximo foco.</p><div class="exam-review">${exam.questions.map((q, i) => { const item = exam.result.items[i]; return `<details><summary>${item.correct ? '✓' : '↻'} ${i + 1}. ${esc(q.title)} · ${item.selected === null ? 'sem resposta' : item.correct ? 'acerto' : 'revisar'}</summary><div><p>${esc(q.stem)}</p><p><strong>${esc(q.question)}</strong></p>${explanations(q, item.selected)}</div></details>`; }).join('')}</div><div class="learn-actions">${action('exam-new', 'Preparar outro simulado', 'class="primary"')}${action('exam-to-cards', 'Revisar flashcards')}${action('exam-to-review', '🎯 Ver painel de revisão')}</div></section>`;
+    if (!exam) return `<section class="learn-card"><p class="eyebrow">SIMULADO AUTORAL · RESPOSTAS COMENTADAS AO FINAL</p><h3>Um bloco de atenção por vez.</h3><form id="exam-config"><div class="exam-config"><label for="exam-topic">Tema do simulado<select id="exam-topic">${LEARNING_TOPICS.map(t=>`<option value="${esc(t.id)}" ${examDraft.topic===t.id?'selected':''}>${esc(t.label)}${t.preview?' · prévia':''}</option>`).join('')}<option value="mixed" ${examDraft.topic==='mixed'?'selected':''}>Misto · todos os ${LEARNING_TOPICS.length} temas</option></select></label><label for="exam-count">Tamanho<select id="exam-count">${[6,12].map(n=>`<option value="${n}" ${examDraft.count===n?'selected':''}>Até ${n} questões</option>`).join('')}</select></label><label for="exam-minutes">Tempo · minutos<input id="exam-minutes" type="number" min="1" max="60" step="1" value="${examDraft.minutes}" required></label></div><p class="muted">O tamanho respeita o banco disponível no tema escolhido; o misto reúne os ${LEARNING_TOPICS.length} temas. Você pode pausar. Tempo encerrado corrige o bloco; questões em branco contam como não respondidas.</p><button class="primary" type="submit">▶ Iniciar simulado</button></form></section>`;
+    if (exam.result) return `<section class="learn-card"><p class="eyebrow">${esc(exam.reason)} · ${esc(exam.label)}</p><h3>Seu treino: ${exam.result.correct} / ${exam.result.total}</h3><p class="exam-score">${exam.result.percentage}%</p><p>${exam.result.unanswered} sem resposta. Use os comentários para escolher o próximo foco.</p><div class="exam-review">${exam.questions.map((q, i) => { const item = exam.result.items[i]; return `<details><summary>${item.correct ? '✓' : '↻'} ${i + 1}. ${esc(q.title)} · ${item.selected === null ? 'sem resposta' : item.correct ? 'acerto' : 'revisar'}</summary><div><p>${esc(q.stem)}</p><p><strong>${esc(q.question)}</strong></p>${explanations(q, item.selected)}</div></details>`; }).join('')}</div><div class="learn-actions">${action('exam-new', 'Preparar outro simulado', 'class="primary"')}${action('exam-to-cards', 'Revisar flashcards')}${action('exam-to-review', '🎯 Ver painel de revisão')}</div></section>`;
     const q = exam.questions[exam.index];
-    return `<section class="learn-card"><div class="exam-toolbar"><div><p class="eyebrow">${exam.label}</p><h3>Questão ${exam.index + 1} / ${exam.questions.length}</h3></div><output id="exam-clock" aria-label="Tempo restante" aria-live="off">${clock(remainingSeconds(exam.running ? exam.deadline : Date.now() + exam.remainingMs))}</output>${action('exam-pause', exam.running ? 'Ⅱ Pausar' : '▶ Retomar', `aria-pressed="${!exam.running}"`)}</div>
+    const preserved = exam.scope!=='mixed' && exam.scope!==topic ? `<aside class="learn-clinical-status"><strong>Simulado preservado: ${esc(exam.label)}</strong><p>Seu tema de estudo agora é ${esc(topicInfo(topic).label)}. Este bloco mantém o tema original e suas respostas. Finalize-o antes de configurar outro bloco.</p></aside>` : '';
+    return `${preserved}<section class="learn-card"><div class="exam-toolbar"><div><p class="eyebrow">${esc(exam.label)}</p><h3>Questão ${exam.index + 1} / ${exam.questions.length}</h3></div><output id="exam-clock" aria-label="Tempo restante" aria-live="off">${clock(remainingSeconds(exam.running ? exam.deadline : Date.now() + exam.remainingMs))}</output>${action('exam-pause', exam.running ? 'Ⅱ Pausar' : '▶ Retomar', `aria-pressed="${!exam.running}"`)}</div>
       <p>${Object.keys(exam.answers).length} respondidas · ${exam.running ? 'Em andamento' : 'Cronômetro pausado'}</p><progress value="${Object.keys(exam.answers).length}" max="${exam.questions.length}" aria-label="Questões respondidas"></progress><h4>${esc(q.title)}</h4><p class="case-stem">${esc(q.stem)}</p><h4>${esc(q.question)}</h4><div class="learn-choices" role="group" aria-label="Alternativas do simulado">${q.choices.map((choice, i) => `<button type="button" data-learn="exam-answer" data-answer="${i}" aria-pressed="${exam.answers[q.id] === i}" ${!exam.running ? 'disabled' : ''}><b>${String.fromCharCode(65 + i)}</b><span>${esc(choice.text)}</span></button>`).join('')}</div><div class="learn-actions">${action('exam-prev', '← Anterior', exam.index === 0 ? 'disabled' : '')}${action('exam-next', 'Próxima →', exam.index === exam.questions.length - 1 ? 'disabled' : '')}${action('exam-finish', 'Finalizar e corrigir', 'class="primary"')}</div><p class="muted">Você pode alterar uma resposta antes de finalizar. Os comentários aparecem na correção.</p></section>`;
+  }
+  function clinicalStatusHTML() {
+    const examScope = mode==='exam' ? (exam?.scope || examDraft.topic) : null;
+    const preview = topicInfo(topic)?.preview || examScope==='mixed' || topicInfo(examScope)?.preview;
+    return preview ? '<aside class="learn-clinical-status" role="note"><strong>Prévia educacional — revisão médica formal pendente</strong><p>Os conteúdos de TB e micoses são casos autorais de estudo. As recomendações preservam os limites das fontes e não constituem validação para decisão clínica individual.</p></aside>' : '';
   }
   function render() {
     const active = document.activeElement;
     const focusAction = root.contains(active) ? active?.dataset?.learn : null;
     const focusAnswer = active?.dataset?.answer;
+    const focusId = root.contains(active) && ['exam-topic','exam-count','exam-minutes','flow-cadence','case-select'].includes(active?.id) ? active.id : null;
     root.querySelectorAll('[data-learn-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.learnMode === mode));
     root.querySelector('#learn-notice').textContent = [notice, !storageOK ? 'Armazenamento local indisponível: a revisão funciona nesta sessão.' : ''].filter(Boolean).join(' ');
-    root.querySelector('#learn-body').innerHTML = directedHTML() + ({ flow: flowHTML, cases: casesHTML, cards: cardsHTML, exam: examHTML, review: reviewHTML })[mode]();
-    if (focusAction) root.querySelector(`[data-learn="${focusAction}"]${focusAnswer !== undefined ? `[data-answer="${focusAnswer}"]` : ''}:not([disabled])`)?.focus({ preventScroll: true });
+    root.querySelector('#learning-topic').value = topic;
+    root.querySelector('#learn-body').innerHTML = clinicalStatusHTML() + directedHTML() + ({ flow: flowHTML, cases: casesHTML, cards: cardsHTML, exam: examHTML, review: reviewHTML })[mode]();
+    if (focusId) root.querySelector(`#${focusId}`)?.focus({preventScroll:true});
+    else if (focusAction) root.querySelector(`[data-learn="${focusAction}"]${focusAnswer !== undefined ? `[data-answer="${focusAnswer}"]` : ''}:not([disabled])`)?.focus({ preventScroll: true });
   }
   function finishExam(reason) {
     if (!exam || exam.result) return;
@@ -165,12 +171,17 @@ export function initLearning(root) {
     const minutes = Number(root.querySelector('#exam-minutes').value);
     if (!Number.isInteger(minutes) || minutes < 1 || minutes > 60) { notice = 'Informe de 1 a 60 minutos inteiros.'; render(); return; }
     const scope = root.querySelector('#exam-topic').value;
-    const questions = buildExam({ bank: ALL_CASES, topic: scope, count: Number(root.querySelector('#exam-count').value) });
-    exam = { questions, answers: {}, index: 0, running: true, deadline: Date.now() + minutes * 60000, remainingMs: minutes * 60000, result: null, label: scope === 'mixed' ? 'DPOC + PAC' : scope === 'dpoc' ? 'DPOC' : 'Pneumonia comunitária' };
+    const count = Number(root.querySelector('#exam-count').value);
+    if ((!topicInfo(scope) && scope!=='mixed') || ![6,12].includes(count)) { notice='Escolha um tema e um tamanho disponíveis.'; render(); return; }
+    const questions = buildExam({bank:ALL_CASES,topic:scope,count});
+    if (!questions.length) { notice='Não há questões disponíveis neste tema.'; render(); return; }
+    examDraft.topic=scope; examDraft.count=count; examDraft.minutes=minutes;
+    exam = {scope,questions,answers:{},index:0,running:true,deadline:Date.now()+minutes*60000,remainingMs:minutes*60000,result:null,label:scope==='mixed'?`Misto · ${LEARNING_TOPICS.length} temas`:topicInfo(scope).label};
     notice = ''; render();
   });
   root.addEventListener('change', event => {
-    if (event.target.id === 'exam-topic') examDraft.topic = event.target.value;
+    if (event.target.id === 'learning-topic') { changeTopic(event.target.value); return; }
+    if (event.target.id === 'exam-topic' && (topicInfo(event.target.value)||event.target.value==='mixed')) { examDraft.topic = event.target.value; render(); }
     if (event.target.id === 'exam-count') examDraft.count = Number(event.target.value);
     if (event.target.id === 'exam-minutes') { const n = Number(event.target.value); if (Number.isInteger(n) && n >= 1 && n <= 60) examDraft.minutes = n; }
     if (event.target.id === 'flow-cadence') { cadence = Number(event.target.value); if (auto) flowDeadline = Date.now() + cadence * 1000; }
@@ -201,6 +212,7 @@ export function initLearning(root) {
     if (cmd === 'exam-new') exam = null;
     if (cmd === 'exam-to-cards') mode = 'cards';
     if (cmd === 'exam-to-review') mode = 'review';
+    if (cmd === 'review-topic') { changeTopic(button.dataset.topic); return; }
     if (cmd === 'review-start') startDirected(priorityConcepts(reviewState, topic).map(c=>c.id));
     if (cmd === 'review-flow') startDirected([button.dataset.concept]);
     if (cmd === 'review-stop') { pause(); directedConcepts = null; pinnedCard = null; flow[topic].index = 0; flow[topic].revealed = false; cardRevealed = false; notice = 'Percurso livre restaurado. Seus registros foram mantidos.'; }
@@ -242,9 +254,22 @@ export function initLearning(root) {
   window.addEventListener('pagehide', () => { pause(); clearInterval(timer); });
   window.addEventListener('pageshow', event => { if (event.persisted) { timer = setInterval(tick, 250); notice = 'Treino pausado após voltar à página.'; render(); } });
   render();
+  function changeTopic(id) {
+    if (!Object.hasOwn(BANK,id) || topic===id) return;
+    pause('Tema alterado; o treino em andamento foi pausado.');
+    topic=id; directedConcepts=null; pinnedCard=null; confirmClear=false;
+    if(examDraft.topic!=='mixed')examDraft.topic=id;
+    caseIndex=0;caseAnswer=null;cardRevealed=false;
+    cards=selectDueCards(BANK[id].flashcards,progress,Date.now());
+    render();
+    if(typeof onTopicChange==='function')onTopicChange(id);
+  }
   return {
     openReview() { pause(); mode = 'review'; confirmClear = false; render(); },
-    setTopic(id) { if (!BANK[id] || topic === id) return; pause('Tema alterado; o treino em andamento foi pausado.'); topic = id; directedConcepts = null; pinnedCard = null; confirmClear = false; if (examDraft.topic !== 'mixed') examDraft.topic = id; caseIndex = 0; caseAnswer = null; cardRevealed = false; cards = selectDueCards(BANK[id].flashcards, progress, Date.now()); render(); },
+    openFlow() { pause(); mode = 'flow'; confirmClear = false; render(); },
+    setTopic: changeTopic,
+    getTopic: () => topic,
+    getMode: () => mode,
     setVisible(value) { visible = value; if (!value) { pause('Treino pausado ao mudar de camada.'); render(); } },
   };
 }
