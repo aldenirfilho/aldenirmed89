@@ -2,6 +2,47 @@
   'use strict';
 
   const byId = (id) => document.getElementById(id);
+  const preferenceKey = 'antigravity:a11y:v1';
+  const lightScheme = window.matchMedia('(prefers-color-scheme: light)');
+  const readPreferences = () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(preferenceKey) || '{}');
+      return saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
+    } catch (_) {
+      return {};
+    }
+  };
+  let themePreferences = readPreferences();
+  function applyTheme() {
+    const prefs = themePreferences;
+    const theme = prefs.theme === 'system' || ['light', 'dark'].includes(prefs.theme)
+      ? prefs.theme : typeof prefs.clarity === 'boolean' ? (prefs.clarity ? 'light' : 'dark') : 'system';
+    const light = theme === 'light' || (theme === 'system' && lightScheme.matches);
+    document.documentElement.dataset.theme = light ? 'light' : 'dark';
+    document.documentElement.style.colorScheme = light ? 'light' : 'dark';
+    const button = byId('clarity-toggle');
+    if (button) {
+      button.setAttribute('aria-pressed', String(light));
+      button.setAttribute('aria-label', light ? 'Ativar visualização escura' : 'Ativar visualização clara');
+      button.textContent = light ? '🌙 Visualização escura' : '☀️ Visualização clara';
+    }
+  }
+  applyTheme();
+  byId('clarity-toggle')?.addEventListener('click', () => {
+    const light = document.documentElement.dataset.theme !== 'light';
+    themePreferences = { ...readPreferences(), theme: light ? 'light' : 'dark', clarity: light };
+    try { localStorage.setItem(preferenceKey, JSON.stringify(themePreferences)); } catch (_) {}
+    applyTheme();
+  });
+  window.addEventListener('storage', (event) => {
+    if (event.key === preferenceKey || event.key === null) {
+      themePreferences = readPreferences();
+      applyTheme();
+    }
+  });
+  if (lightScheme.addEventListener) lightScheme.addEventListener('change', applyTheme);
+  else if (lightScheme.addListener) lightScheme.addListener(applyTheme);
+
   const num = (id) => {
     const element = byId(id);
     if (!element) return null;
@@ -536,7 +577,7 @@
 
   function updateVersionMarkers() {
     const status = document.querySelector('.status-pill');
-    if (status) status.textContent = 'Versão 2.1 · Atlas destacado · 04/09/2026';
+    if (status) status.textContent = 'Versão 2.1 · módulo clínico · 04/09/2026';
     const heroTag = document.querySelector('#flash .tag--dark');
     if (heroTag) heroTag.textContent = 'CINCO SCORES + 10 MAPAS 16:9';
   }

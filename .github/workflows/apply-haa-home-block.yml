@@ -1,4 +1,4 @@
-name: Aplicar bloco HAA na homepage
+name: Normalizar cartões clínicos na homepage
 
 on:
   push:
@@ -25,68 +25,29 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Aplicar integração idempotente
+      - name: Normalizar HAA e genética como cartões convencionais
         run: python3 scripts_admin/insert_haa_home_block.py
 
-      - name: Normalizar descoberta HAA sem alterar a taxonomia
+      - name: Verificar entrada histórica do normalizador
         run: python3 scripts_admin/normalize_haa_discovery_card.py
 
-      - name: Validar descoberta, cache, sintaxe e regressões direcionadas
+      - name: Validar integração, idempotência e taxonomia
         run: |
           git diff --check
-          node --check 01_Modulos_Clinicos/Hepatite_Alcool_Associada/app.js
-          python3 -m json.tool 01_Modulos_Clinicos/Hepatite_Alcool_Associada/module.manifest.json >/dev/null
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-
-          home = Path('index.html').read_text(encoding='utf-8')
-          module = Path('01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html').read_text(encoding='utf-8')
-          worker = Path('sw.js').read_text(encoding='utf-8')
-          patcher = Path('scripts_admin/insert_haa_home_block.py').read_text(encoding='utf-8')
-
-          route = '01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html'
-          assert '<!-- haa-home-feature:v1 -->' in home
-          assert 'class="haa-discovery-module mod-yellow reveal" data-haa-home-card' in home
-          assert f'href="{route}"' in home
-          assert '<!-- haa-module-entry:v1 -->' in module
-          assert 'href="#atlas-visual"' in module
-          assert 'const CACHE_NAME = `${CACHE_PREFIX}v29`;' in worker
-          assert './01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html' in worker
-          assert 'const CACHE_NAME = `${CACHE_PREFIX}v29`;' in patcher
-
-          module_hrefs = set(re.findall(
-              r'<a\b[^>]*class="[^"]*\bmodule-card\b[^"]*"[^>]*href="([^"]+)"',
-              home,
-              flags=re.I,
-          ))
-          assert len(module_hrefs) == 28
-          assert route not in module_hrefs
-          modules_start = home.index('id="modulos"')
-          deck_start = home.index('<!-- ── DECK DE MISSÕES CRÍTICAS')
-          assert home[modules_start:deck_start].count('class="module-card') == 25
-          print('PASS: HAA visível, cache v29 e taxonomia canônica preservada')
-          PY
           python3 -m unittest \
+            tests.test_home_clinical_sections \
             tests.test_clarity_home_coverage.ClarityHomeCoverageTests.test_all_home_module_entrypoints_are_covered \
             tests.test_platform_expansion.AccessiblePwaTests.test_portal_stations_and_modules_have_distinct_visual_taxonomy \
             -v
 
-      - name: Commitar correção somente se os normalizadores produzirem diff
+      - name: Commitar somente a homepage quando houver normalização
         run: |
-          if git diff --quiet; then
+          if git diff --quiet -- index.html; then
             echo "Nenhuma alteração pendente."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html sw.js \
-            scripts_admin/insert_haa_home_block.py \
-            scripts_admin/normalize_haa_discovery_card.py \
-            01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html \
-            01_Modulos_Clinicos/Hepatite_Alcool_Associada/app.js \
-            01_Modulos_Clinicos/Hepatite_Alcool_Associada/styles.css \
-            01_Modulos_Clinicos/Hepatite_Alcool_Associada/module.manifest.json \
-            01_Modulos_Clinicos/Hepatite_Alcool_Associada/README.md
-          git commit -m "fix(home): normalizar descoberta HAA sem alterar taxonomia"
+          git add index.html
+          git commit -m "fix(home): normalizar cartões HAA e genética"
           git push origin HEAD:main
