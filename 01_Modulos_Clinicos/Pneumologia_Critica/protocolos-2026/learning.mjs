@@ -1,9 +1,9 @@
-import { BANK, ALL_CASES, ALL_CARDS, ALL_PARTICLES, CARD_IDS, LEARNING_TOPICS, topicInfo, LEARNING_SOURCES as SOURCES } from './learning-registry.mjs?v=dbc34eb79dc4732b';
-import { buildExam, remainingSeconds, scheduleReview, selectDueCards,
-  loadProgress, serializeProgress, nextParticleIndex } from './learning-engine.mjs?v=4af5fd4cc9ba7c8d';
+import { BANK, ALL_CASES, ALL_CARDS, ALL_PARTICLES, CARD_IDS, LEARNING_TOPICS, topicInfo, LEARNING_SOURCES as SOURCES } from './learning-registry.mjs?v=3d1714df5ef42633';
+import { EXAM_COUNTS, buildExam, remainingSeconds, scheduleReview, selectDueCards,
+  loadProgress, serializeProgress, nextParticleIndex } from './learning-engine.mjs?v=0874f1cb41dcfbb2';
 
 import { REVIEW_STORAGE_KEY, emptyReview, loadReview, serializeReview, recordReview, recordExamReview,
-  priorityConcepts, filterForConcepts, relatedContent, conceptFor, reviewSummary } from './review-engine.mjs?v=6231ae4becce874e';
+  priorityConcepts, filterForConcepts, relatedContent, conceptFor, reviewSummary } from './review-engine.mjs?v=d8beb54a590bc9f7';
 
 const STORAGE_KEY = 'turbo-temi-pulmao-revisao-v1';
 const PHASES = { contexto: '01 · Contexto', mecanismo: '02 · Mecanismo', decisao: '03 · Decisão', transferencia: '04 · Transferência' };
@@ -37,8 +37,8 @@ export function initLearning(root, { onTopicChange } = {}) {
   let exam = null;
   const examDraft = { topic: 'dpoc', count: 6, minutes: 10 };
 
-  root.innerHTML = `<div class="learn-intro"><div><p class="eyebrow">TURBO TEMI 360X · TREINO EM MICROPARTÍCULAS</p><h2 id="learn-heading">Uma decisão. Um comentário. O próximo passo.</h2><p>${ALL_CASES.length} casos autorais · ${ALL_CARDS.length} flashcards · ${ALL_PARTICLES.length} micropartículas. Escolha seu tema abaixo.</p><p>Base DPOC/PAC aprovada na etapa anterior. TB pulmonar, TB extrapulmonar e micoses: prévia educacional — revisão médica formal pendente.</p></div><span class="learn-badge">UM PASSO POR VEZ</span></div>
-    <div class="learn-topic-control"><label for="learning-topic">Tema do estudo<select id="learning-topic">${LEARNING_TOPICS.map(t=>`<option value="${esc(t.id)}">${esc(t.label)}${t.preview ? " · prévia" : ""}</option>`).join('')}</select></label><p>O tema vale para microfluxo, casos, flashcards e painel. O simulado também permite um bloco misto dos ${LEARNING_TOPICS.length} temas.</p></div>
+  root.innerHTML = `<div class="learn-intro"><div><p class="eyebrow">TURBO TEMI 360X · TREINO EM MICROPARTÍCULAS</p><h2 id="learn-heading">Uma decisão. Um comentário. O próximo passo.</h2><p>${ALL_CASES.length} casos autorais · ${ALL_CARDS.length} flashcards · ${ALL_PARTICLES.length} micropartículas. Escolha seu tema abaixo.</p><p>Base DPOC/PAC aprovada na etapa anterior. Todos os demais temas, incluindo TB, micoses, antifúngicos e IgG4: prévia educacional — revisão médica formal pendente.</p></div><span class="learn-badge">UM PASSO POR VEZ</span></div>
+    <div class="learn-topic-control"><label for="learning-topic">Tema do estudo<select id="learning-topic">${LEARNING_TOPICS.map(t=>`<option value="${esc(t.id)}">${esc(t.label)}${t.preview ? " · prévia" : ""}</option>`).join('')}</select></label><p>O tema vale para microfluxo, casos, flashcards e painel. O simulado permite combinar os ${LEARNING_TOPICS.length} temas; a cobertura depende do tamanho do bloco.</p></div>
     <nav class="learn-modes" aria-label="Formato de estudo">${MODES.map(([id, label]) => `<button type="button" data-learn-mode="${id}" aria-pressed="${id === mode}">${label}</button>`).join('')}</nav>
     <p class="learn-notice" id="learn-notice" role="status"></p><div id="learn-body"></div>
     <details class="learn-method"><summary>🔬 Como funciona o modelo microparticulado progressivo?</summary><div><p>O fluxo transforma um tópico em quatro partículas: contexto → mecanismo → decisão → transferência. Pense antes de revelar; confira o comentário e siga na mesma tela. Ao terminar, o percurso recomeça sem tela de bloqueio.</p><p>A citometria de fluxo inspira a metáfora visual: partículas passam por uma janela de atenção. É uma organização didática autoral, não um exame nem um método validado especificamente para TDAH.</p><p>O avanço automático é opcional. Os flashcards usam recuperação ativa e revisão espaçada; os intervalos de 5 minutos, 1 dia e progressão até 30 dias são escolhas desta plataforma, ajustáveis em versões futuras.</p><p>Base pedagógica: <a href="https://doi.org/10.1126/science.1152408" target="_blank" rel="noopener noreferrer">Karpicke e Roediger, 2008 ↗</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/39250798/" target="_blank" rel="noopener noreferrer">Estudo de repetição espaçada em médicos, 2024 ↗</a>.</p></div></details>
@@ -131,8 +131,12 @@ export function initLearning(root, { onTopicChange } = {}) {
       ${cardRevealed ? `<div class="learn-answer"><p>${esc(card.back)}</p><p class="learn-anchor">⚠️ ${esc(card.pitfall)}</p><p class="learn-refs">${refs(card.sources)}</p></div><p class="muted">Avalie a lembrança que teve antes de virar o card.</p><div class="learn-actions">${action('card-again', '↻ Rever em 5 min')}${action('card-good', '✓ Lembrei · espaçar revisão', 'class="primary"')}</div>` : `<p class="muted">Tente responder sem olhar. Uma ideia por cartão.</p>${action('card-reveal', 'Virar flashcard', 'class="primary"')}`}
       <p class="muted">Cards vencidos aparecem antes dos novos. Ao terminar a fila, você pode continuar em revisão livre, mesmo antes da data agendada.</p></section>`;
   }
+  function mixedCoverage(count) {
+    const available=LEARNING_TOPICS.length;
+    return count>=available ? `todos os ${available} temas disponíveis` : `até ${count} dos ${available} temas disponíveis`;
+  }
   function examHTML() {
-    if (!exam) return `<section class="learn-card"><p class="eyebrow">SIMULADO AUTORAL · RESPOSTAS COMENTADAS AO FINAL</p><h3>Um bloco de atenção por vez.</h3><form id="exam-config"><div class="exam-config"><label for="exam-topic">Tema do simulado<select id="exam-topic">${LEARNING_TOPICS.map(t=>`<option value="${esc(t.id)}" ${examDraft.topic===t.id?'selected':''}>${esc(t.label)}${t.preview?' · prévia':''}</option>`).join('')}<option value="mixed" ${examDraft.topic==='mixed'?'selected':''}>Misto · todos os ${LEARNING_TOPICS.length} temas</option></select></label><label for="exam-count">Tamanho<select id="exam-count">${[6,12].map(n=>`<option value="${n}" ${examDraft.count===n?'selected':''}>Até ${n} questões</option>`).join('')}</select></label><label for="exam-minutes">Tempo · minutos<input id="exam-minutes" type="number" min="1" max="60" step="1" value="${examDraft.minutes}" required></label></div><p class="muted">O tamanho respeita o banco disponível no tema escolhido; o misto reúne os ${LEARNING_TOPICS.length} temas. Você pode pausar. Tempo encerrado corrige o bloco; questões em branco contam como não respondidas.</p><button class="primary" type="submit">▶ Iniciar simulado</button></form></section>`;
+    if (!exam) return `<section class="learn-card"><p class="eyebrow">SIMULADO AUTORAL · RESPOSTAS COMENTADAS AO FINAL</p><h3>Um bloco de atenção por vez.</h3><form id="exam-config"><div class="exam-config"><label for="exam-topic">Tema do simulado<select id="exam-topic">${LEARNING_TOPICS.map(t=>`<option value="${esc(t.id)}" ${examDraft.topic===t.id?'selected':''}>${esc(t.label)}${t.preview?' · prévia':''}</option>`).join('')}<option value="mixed" ${examDraft.topic==='mixed'?'selected':''}>Misto · ${mixedCoverage(examDraft.count)}</option></select></label><label for="exam-count">Tamanho<select id="exam-count">${EXAM_COUNTS.map(n=>`<option value="${n}" ${examDraft.count===n?'selected':''}>Até ${n} questões</option>`).join('')}</select></label><label for="exam-minutes">Tempo · minutos<input id="exam-minutes" type="number" min="1" max="60" step="1" value="${examDraft.minutes}" required></label></div><p class="muted">O tamanho respeita o banco disponível no tema escolhido; No modo misto, esse tamanho cobre ${mixedCoverage(examDraft.count)}. Escolha um bloco maior para ampliar a cobertura. Você pode pausar. Tempo encerrado corrige o bloco; questões em branco contam como não respondidas.</p><button class="primary" type="submit">▶ Iniciar simulado</button></form></section>`;
     if (exam.result) return `<section class="learn-card"><p class="eyebrow">${esc(exam.reason)} · ${esc(exam.label)}</p><h3>Seu treino: ${exam.result.correct} / ${exam.result.total}</h3><p class="exam-score">${exam.result.percentage}%</p><p>${exam.result.unanswered} sem resposta. Use os comentários para escolher o próximo foco.</p><div class="exam-review">${exam.questions.map((q, i) => { const item = exam.result.items[i]; return `<details><summary>${item.correct ? '✓' : '↻'} ${i + 1}. ${esc(q.title)} · ${item.selected === null ? 'sem resposta' : item.correct ? 'acerto' : 'revisar'}</summary><div><p>${esc(q.stem)}</p><p><strong>${esc(q.question)}</strong></p>${explanations(q, item.selected)}</div></details>`; }).join('')}</div><div class="learn-actions">${action('exam-new', 'Preparar outro simulado', 'class="primary"')}${action('exam-to-cards', 'Revisar flashcards')}${action('exam-to-review', '🎯 Ver painel de revisão')}</div></section>`;
     const q = exam.questions[exam.index];
     const preserved = exam.scope!=='mixed' && exam.scope!==topic ? `<aside class="learn-clinical-status"><strong>Simulado preservado: ${esc(exam.label)}</strong><p>Seu tema de estudo agora é ${esc(topicInfo(topic).label)}. Este bloco mantém o tema original e suas respostas. Finalize-o antes de configurar outro bloco.</p></aside>` : '';
@@ -142,7 +146,7 @@ export function initLearning(root, { onTopicChange } = {}) {
   function clinicalStatusHTML() {
     const examScope = mode==='exam' ? (exam?.scope || examDraft.topic) : null;
     const preview = topicInfo(topic)?.preview || examScope==='mixed' || topicInfo(examScope)?.preview;
-    return preview ? '<aside class="learn-clinical-status" role="note"><strong>Prévia educacional — revisão médica formal pendente</strong><p>Os conteúdos de TB e micoses são casos autorais de estudo. As recomendações preservam os limites das fontes e não constituem validação para decisão clínica individual.</p></aside>' : '';
+    return preview ? '<aside class="learn-clinical-status" role="note"><strong>Prévia educacional — revisão médica formal pendente</strong><p>Os temas além de DPOC/PAC são conteúdos autorais de estudo, incluindo TB, micoses, antifúngicos e IgG4. As recomendações preservam os limites das fontes e não constituem validação para decisão clínica individual.</p></aside>' : '';
   }
   function render() {
     const active = document.activeElement;
@@ -172,17 +176,17 @@ export function initLearning(root, { onTopicChange } = {}) {
     if (!Number.isInteger(minutes) || minutes < 1 || minutes > 60) { notice = 'Informe de 1 a 60 minutos inteiros.'; render(); return; }
     const scope = root.querySelector('#exam-topic').value;
     const count = Number(root.querySelector('#exam-count').value);
-    if ((!topicInfo(scope) && scope!=='mixed') || ![6,12].includes(count)) { notice='Escolha um tema e um tamanho disponíveis.'; render(); return; }
+    if ((!topicInfo(scope) && scope!=='mixed') || !EXAM_COUNTS.includes(count)) { notice='Escolha um tema e um tamanho disponíveis.'; render(); return; }
     const questions = buildExam({bank:ALL_CASES,topic:scope,count});
     if (!questions.length) { notice='Não há questões disponíveis neste tema.'; render(); return; }
     examDraft.topic=scope; examDraft.count=count; examDraft.minutes=minutes;
-    exam = {scope,questions,answers:{},index:0,running:true,deadline:Date.now()+minutes*60000,remainingMs:minutes*60000,result:null,label:scope==='mixed'?`Misto · ${LEARNING_TOPICS.length} temas`:topicInfo(scope).label};
+    exam = {scope,questions,answers:{},index:0,running:true,deadline:Date.now()+minutes*60000,remainingMs:minutes*60000,result:null,label:scope==='mixed'?`Misto · ${new Set(questions.map(q=>conceptFor(q.id)?.module)).size} de ${LEARNING_TOPICS.length} temas`:topicInfo(scope).label};
     notice = ''; render();
   });
   root.addEventListener('change', event => {
     if (event.target.id === 'learning-topic') { changeTopic(event.target.value); return; }
     if (event.target.id === 'exam-topic' && (topicInfo(event.target.value)||event.target.value==='mixed')) { examDraft.topic = event.target.value; render(); }
-    if (event.target.id === 'exam-count') examDraft.count = Number(event.target.value);
+    if (event.target.id === 'exam-count' && EXAM_COUNTS.includes(Number(event.target.value))) { examDraft.count = Number(event.target.value); render(); }
     if (event.target.id === 'exam-minutes') { const n = Number(event.target.value); if (Number.isInteger(n) && n >= 1 && n <= 60) examDraft.minutes = n; }
     if (event.target.id === 'flow-cadence') { cadence = Number(event.target.value); if (auto) flowDeadline = Date.now() + cadence * 1000; }
     if (event.target.id === 'case-select') { const next = Number(event.target.value); if (Number.isInteger(next) && next >= 0 && next < BANK[topic].cases.length && next !== caseIndex) { if (caseAnswer === null) saveCaseOutcome(); caseIndex = next; caseAnswer = null; render(); } }

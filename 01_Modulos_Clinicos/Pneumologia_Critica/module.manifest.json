@@ -2,7 +2,7 @@
   "schemaVersion": "antigravity-clinical-module-v1",
   "moduleId": "pneumologia-critica",
   "title": "Pneumologia Crítica",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "updatedAt": "2026-10-18",
   "status": "em-revisao-medica",
   "entrypoint": "index.html",
@@ -28,7 +28,11 @@
     "fibrose cística, bronquiectasias e micoses pulmonares",
     "tuberculose pulmonar e extrapulmonar: sítios, corticoides e gravidade",
     "mal de Pott e diagnósticos diferenciais vertebrais",
-    "doença relacionada à IgG4 e diagnósticos diferenciais"
+    "doença relacionada à IgG4 e diagnósticos diferenciais",
+    "neurotuberculose: investigação segura, SNC e complicações",
+    "tuberculose resistente: definições, suscetibilidade e referência",
+    "antifúngicos: escolha por agente/sítio, interações e monitorização",
+    "tratamento da doença relacionada à IgG4 e prevenção de complicações"
   ],
   "features": [
     "Plantão 60 s",
@@ -45,15 +49,16 @@
     "plataforma DPOC GOLD 2026 + PAC: ATS 2025/2026 e posição IDSA 2026 em protocolos-2026/",
     "7 formulários clínicos com critérios explícitos e dados ausentes preservados",
     "20 novas ilustrações widescreen: 10 DPOC e 10 pneumonia comunitária",
-    "30 casos autorais com comentário de todas as alternativas",
-    "60 flashcards com revisão espaçada local",
-    "simulados cronometrados de cinco temas e mistos: DPOC, PAC, TB pulmonar, TB extrapulmonar e micoses",
-    "120 micropartículas de treino em fluxo contínuo opcional",
-    "painel de erros de cinco temas integrado a casos, flashcards e microfluxo",
+    "54 casos autorais com comentário de todas as alternativas",
+    "108 flashcards com revisão espaçada local",
+    "simulados cronometrados de nove temas: 6, 12 ou 18 questões, com cobertura mista explícita",
+    "216 micropartículas de treino em fluxo contínuo opcional",
+    "painel de erros de nove temas integrado a casos, flashcards e microfluxo",
     "30 conexões sobre doenças menos comuns, TB pulmonar e extrapulmonar em 120 passos",
     "30 novas ilustrações widescreen: 10 doenças menos comuns, 10 TB pulmonar, 10 TB extrapulmonar",
     "consulta comparativa de corticoides em TB e sinais de gravidade",
-    "mal de Pott e doença relacionada à IgG4: 48 micropartículas, diferenciais e sinais de gravidade"
+    "mal de Pott e doença relacionada à IgG4: 48 micropartículas, diferenciais e sinais de gravidade",
+    "treino avançado: neuro-TB, TB resistente, antifúngicos e tratamento da IgG4"
   ],
   "privacy": {
     "network": false,
@@ -78,14 +83,14 @@
   },
   "learning2026": {
     "entrypoint": "protocolos-2026/index.html#view-study",
-    "version": "1.2.0",
-    "cases": 30,
-    "flashcards": 60,
-    "particles": 120,
+    "version": "1.3.0",
+    "cases": 54,
+    "flashcards": 108,
+    "particles": 216,
     "method": "contexto-mecanismo-decisao-transferencia",
     "continuousFlow": "optional-and-pausable",
     "publicationAuthorizedAt": "2026-10-18",
-    "clinicalBasis": "approved-DPOC-PAC-and-new-infectious-content-public-preview",
+    "clinicalBasis": "approved-DPOC-PAC-and-new-clinical-learning-public-preview",
     "newHumanClinicalReviewClaimed": false,
     "officialAmibQuestions": false,
     "institutionalHomologation": false,
@@ -100,10 +105,20 @@
       "pac",
       "tb-pulmonar",
       "tb-extra",
-      "micoses"
+      "micoses",
+      "neuro-tb",
+      "tb-resistente",
+      "antifungicos",
+      "igg4-tratamento"
     ],
     "infectiousClinicalReviewStatus": "public-preview-pending-formal-medical-review",
-    "oldProgressPreserved": true
+    "oldProgressPreserved": true,
+    "examQuestionCounts": [
+      6,
+      12,
+      18
+    ],
+    "mixedCoverage": "one-per-available-topic-when-question-count-allows"
   },
   "protocols2026": {
     "entrypoint": "protocolos-2026/index.html",
@@ -151,5 +166,31 @@
     "newHumanClinicalReviewClaimed": false,
     "institutionalHomologation": false,
     "newImages": 0
+  },
+  "advancedLearning2026": {
+    "entrypoints": [
+      "protocolos-2026/index.html#treino-neuro-tb",
+      "protocolos-2026/index.html#treino-tb-resistente",
+      "protocolos-2026/index.html#treino-antifungicos",
+      "protocolos-2026/index.html#treino-igg4-tratamento"
+    ],
+    "topics": [
+      "neuro-tb",
+      "tb-resistente",
+      "antifungicos",
+      "igg4-tratamento"
+    ],
+    "cases": 24,
+    "flashcards": 48,
+    "particles": 96,
+    "concepts": 24,
+    "errorReviewDashboard": true,
+    "directedReview": "explicit-concept-mapping",
+    "clinicalReviewStatus": "public-preview-pending-formal-medical-review",
+    "publicationAuthorizedAt": "2026-10-18",
+    "newHumanClinicalReviewClaimed": false,
+    "institutionalHomologation": false,
+    "newImages": 0,
+    "patientData": false
   }
 }

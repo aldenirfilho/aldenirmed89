@@ -7,22 +7,34 @@ import { MICOSES_LEARNING } from './learning-micoses.mjs?v=075b5372513380d7';
 import { SOURCES } from './clinical-engine.mjs?v=73a92287e43bc300';
 import { EXPANSION_SOURCES } from './pulmonary-expansion-data.mjs?v=1aec3cbe19cde326';
 
-export const LEARNING_TOPICS = Object.freeze([
-  {id:'dpoc',label:'DPOC',preview:false},
-  {id:'pac',label:'Pneumonia comunitária',preview:false},
-  {id:'tb-pulmonar',label:'Tuberculose pulmonar',preview:true},
-  {id:'tb-extra',label:'Tuberculose extrapulmonar',preview:true},
-  {id:'micoses',label:'Micoses pulmonares',preview:true},
-].map(Object.freeze));
+import { NEURO_TB_LEARNING } from './learning-neuro-tb.mjs?v=fb5fe375391e051e';
+import { TB_RESISTENTE_LEARNING } from './learning-tb-resistente.mjs?v=729a1893a26ff934';
+import { ANTIFUNGICOS_LEARNING } from './learning-antifungicos.mjs?v=152242c7f75bccfc';
+import { IGG4_TRATAMENTO_LEARNING } from './learning-igg4-tratamento.mjs?v=e65ac2697a1c764b';
+import { ADVANCED_TB_SOURCES } from './advanced-tb-sources.mjs?v=3f36d5efc299b8bc';
+import { ADVANCED_THERAPY_SOURCES } from './advanced-therapy-sources.mjs?v=54420d7e7c12943b';
+
+// Cada novo banco é registrado uma vez; coleções, filtros e conceitos são derivados daqui.
+const MODULES = [
+  {id:'dpoc',label:'DPOC',preview:false,bank:DPOC_LEARNING},
+  {id:'pac',label:'Pneumonia comunitária',preview:false,bank:PAC_LEARNING},
+  {id:'tb-pulmonar',label:'Tuberculose pulmonar',preview:true,bank:TB_PULMONAR_LEARNING},
+  {id:'tb-extra',label:'Tuberculose extrapulmonar',preview:true,bank:TB_EXTRA_LEARNING},
+  {id:'micoses',label:'Micoses pulmonares',preview:true,bank:MICOSES_LEARNING},
+  {id:'neuro-tb',label:'Neurotuberculose e corticoides',preview:true,bank:NEURO_TB_LEARNING},
+  {id:'tb-resistente',label:'Tuberculose resistente',preview:true,bank:TB_RESISTENTE_LEARNING},
+  {id:'antifungicos',label:'Antifúngicos e segurança',preview:true,bank:ANTIFUNGICOS_LEARNING},
+  {id:'igg4-tratamento',label:'IgG4: tratamento e segurança',preview:true,bank:IGG4_TRATAMENTO_LEARNING},
+];
+export const LEARNING_TOPICS = Object.freeze(MODULES.map(({id,label,preview})=>Object.freeze({id,label,preview})));
 export const LEARNING_TOPIC_IDS = Object.freeze(LEARNING_TOPICS.map(t=>t.id));
 export const topicInfo = id => LEARNING_TOPICS.find(t=>t.id===id) || null;
-export const BANK = Object.freeze({dpoc:DPOC_LEARNING,pac:PAC_LEARNING,
-  'tb-pulmonar':TB_PULMONAR_LEARNING,'tb-extra':TB_EXTRA_LEARNING,micoses:MICOSES_LEARNING});
+export const BANK = Object.freeze(Object.fromEntries(MODULES.map(({id,bank})=>[id,bank])));
 export const ALL_CASES = Object.freeze(Object.values(BANK).flatMap(b=>b.cases));
 export const ALL_CARDS = Object.freeze(Object.values(BANK).flatMap(b=>b.flashcards));
 export const ALL_PARTICLES = Object.freeze(Object.values(BANK).flatMap(b=>b.particles));
 export const CARD_IDS = Object.freeze(ALL_CARDS.map(c=>c.id));
-export const LEARNING_SOURCES = Object.freeze({...SOURCES,...EXPANSION_SOURCES});
+export const LEARNING_SOURCES = Object.freeze({...SOURCES,...EXPANSION_SOURCES,...ADVANCED_TB_SOURCES,...ADVANCED_THERAPY_SOURCES});
 
 // Mapeamento editorial explícito; não infere conteúdo clínico por palavras ou similaridade.
 const LEGACY_CONCEPTS = [
@@ -40,6 +52,6 @@ const LEGACY_CONCEPTS = [
   {id:'pac-corticoide',module:'pac',label:'Corticoide e reavaliação',comment:'Confira indicação, influenza e causas de falha do plano.',caseIds:['pac-c06'],cardIds:['pac-f11','pac-f12'],particleIds:['pac-p21','pac-p22','pac-p23','pac-p24']},
 ];
 
-export const LEARNING_CONCEPTS = Object.freeze([...LEGACY_CONCEPTS,
-  ...TB_PULMONAR_LEARNING.concepts,...TB_EXTRA_LEARNING.concepts,...MICOSES_LEARNING.concepts,
-].map(c=>Object.freeze({...c,caseIds:Object.freeze([...c.caseIds]),cardIds:Object.freeze([...c.cardIds]),particleIds:Object.freeze([...c.particleIds])})));
+export const LEARNING_CONCEPTS = Object.freeze(Object.entries(BANK).flatMap(([id,bank])=>
+  bank.concepts || LEGACY_CONCEPTS.filter(c=>c.module===id)
+).map(c=>Object.freeze({...c,caseIds:Object.freeze([...c.caseIds]),cardIds:Object.freeze([...c.cardIds]),particleIds:Object.freeze([...c.particleIds])})));
