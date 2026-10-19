@@ -14,11 +14,12 @@ function fieldHTML(f){const name=escape(f.key),label=escape(f.label),help=f.help
 }
 function empty(){ $('result').innerHTML='<div class="empty-result"><span>◎</span><h3>O raciocínio começa aqui.</h3><p>Preencha o formulário e confira os critérios usados. Um dado ausente nunca é considerado normal.</p></div>';}
 function renderForm(){const f=FORMS[scenario];$('form-title').textContent=f.title;$('form-note').textContent=f.note;$('fields').innerHTML=f.fields.map(fieldHTML).join('');empty();document.querySelectorAll('[data-scenario]').forEach(b=>{const active=b.dataset.scenario===scenario;b.classList.toggle('active',active);b.setAttribute('aria-pressed',active);});}
+function renderStudyCards(id){const m=MODULES[id],legacy=document.querySelector('.legacy-study');legacy.hidden=!m;if(!m)return;legacy.querySelector('summary').textContent=`📚 Recapitulação rápida · ${id==='dpoc'?'DPOC':'Pneumonia comunitária'}`;$('study-cards').innerHTML=m.study.map(([q,a,s],i)=>`<details><summary>${String(i+1).padStart(2,'0')} · ${escape(q)}</summary><div><p>${escape(a)}</p>${sourceLink(s||(id==='dpoc'?'gold':'ats'))}</div></details>`).join('');}
 function setModule(id){if(['expansion','specialty'].includes(view))setView('practice');module=id;const m=MODULES[id];scenario=m.scenarios[0];$('module-eyebrow').textContent=m.eyebrow;$('page-title').innerHTML=`${escape(m.heading)}<br><em>${escape(m.subtitle)}</em>`;$('hero-copy').textContent=m.copy;$('version-tag').textContent=m.version;$('hero-image').src=`assets/${m.hero}`;$('hero-image').alt=m.heroAlt;
  document.querySelectorAll('[data-module]').forEach(b=>{const active=b.dataset.module===module;b.classList.toggle('active',active);b.setAttribute('aria-pressed',active);});
  $('scenario-switch').innerHTML=m.scenarios.map(id=>`<button type="button" data-scenario="${id}" aria-pressed="${scenario===id}" class="${scenario===id?'active':''}">${escape(FORMS[id].label)}</button>`).join('');
  $('quick-reference').innerHTML=m.references.map(([title,text,s])=>`<details><summary>${escape(title)}</summary><div><p>${escape(text)}</p>${sourceLink(s)}</div></details>`).join('');
- $('study-cards').innerHTML=m.study.map(([q,a,s],i)=>`<details><summary>${String(i+1).padStart(2,'0')} · ${escape(q)}</summary><div><p>${escape(a)}</p>${sourceLink(s||(module==='dpoc'?'gold':'ats'))}</div></details>`).join('');
+ renderStudyCards(id);
  $('gallery').innerHTML=IMAGES[id].map(([file,title,caption],i)=>`<figure><button type="button" data-image="${i}" aria-label="Ampliar: ${escape(title)}"><img src="assets/${file}" width="1672" height="941" loading="lazy" decoding="async" alt="${escape(title)} — ilustração conceitual gerada por IA"></button><figcaption><span class="image-id">${module.toUpperCase()} ${String(i+1).padStart(2,'0')} / 10 · WIDESCREEN</span><h3>${escape(title)}</h3><p>${escape(caption)}</p><a href="assets/${file}" download>Baixar original ↓</a></figcaption></figure>`).join('');
  $('source-list').innerHTML=m.sources.map(key=>`<article class="source-item"><h3>${escape(SOURCES[key].title)}</h3><p>${escape(sourceDescription[key])}</p>${sourceLink(key)}</article>`).join('');renderForm();learning.setTopic(id);
 }
@@ -30,7 +31,7 @@ function renderResult(r){const target=$('result'),alerts=(r.alerts||[]).map(x=>`
 }
 function setView(id){
  if(!['practice','visual','study','expansion','specialty','sources'].includes(id))return;
- view=id;document.querySelectorAll('.view').forEach(s=>s.hidden=s.id!==`view-${view}`);
+ view=id;if(view==='study')renderStudyCards(learning.getTopic());document.querySelectorAll('.view').forEach(s=>s.hidden=s.id!==`view-${view}`);
  document.querySelectorAll('[data-view]').forEach(x=>{const active=x.dataset.view===view;x.classList.toggle('active',active);x.setAttribute('aria-pressed',active);});
  learning.setVisible(view==='study');expansion.setVisible(view==='expansion');specialty.setVisible(view==='specialty');
  const hash=view==='expansion'?`#${expansion.getSection()}`:view==='specialty'?`#${specialty.getSection()}`:view==='study'?`#${learning.getMode()==='review'?'erros':'treino'}-${learning.getTopic()}`:`#view-${view}`;
