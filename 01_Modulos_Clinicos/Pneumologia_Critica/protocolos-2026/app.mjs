@@ -1,6 +1,6 @@
 import { ENGINES, SOURCES } from './clinical-engine.mjs?v=73a92287e43bc300';
 import { FORMS, MODULES, IMAGES } from './content.mjs?v=afbd8a7b50530707';
-import { initLearning } from './learning.mjs?v=28fcc91ffbbb2d2d';
+import { initLearning } from './learning.mjs?v=08c38224684ba668';
 const $=id=>document.getElementById(id);
 const escape=text=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let module='dpoc',scenario='stable',view='practice';

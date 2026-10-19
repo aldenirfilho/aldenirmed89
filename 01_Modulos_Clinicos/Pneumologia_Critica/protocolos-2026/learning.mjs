@@ -130,7 +130,7 @@ export function initLearning(root) {
     const cmd = button.dataset.learn;
     if (!cmd) return;
     notice = '';
-    if (cmd === 'flow-reveal') flow[topic].revealed = true;
+    if (cmd === 'flow-reveal') { flow[topic].revealed = true; if (auto) flowDeadline = Date.now() + cadence * 1000; }
     if (cmd === 'flow-next') { nextParticle(); if (auto) flowDeadline = Date.now() + cadence * 1000; }
     if (cmd === 'flow-auto') { auto = !auto; flowDeadline = auto ? Date.now() + cadence * 1000 : null; }
     if (cmd === 'case-answer' && caseAnswer === null) caseAnswer = Number(button.dataset.answer);
