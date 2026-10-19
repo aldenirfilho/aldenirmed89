@@ -2,7 +2,7 @@
   "schemaVersion": "antigravity-clinical-module-v1",
   "moduleId": "pneumologia-critica",
   "title": "Pneumologia Crítica",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "updatedAt": "2026-10-18",
   "status": "em-revisao-medica",
   "entrypoint": "index.html",
@@ -24,7 +24,9 @@
     "hemoptise",
     "TEP de alto risco",
     "pleura e desmame",
-    "pneumonia adquirida na comunidade: diagnóstico, gravidade e reavaliação"
+    "pneumonia adquirida na comunidade: diagnóstico, gravidade e reavaliação",
+    "fibrose cística, bronquiectasias e micoses pulmonares",
+    "tuberculose pulmonar e extrapulmonar: sítios, corticoides e gravidade"
   ],
   "features": [
     "Plantão 60 s",
@@ -44,7 +46,11 @@
     "12 casos autorais com comentário de todas as alternativas",
     "24 flashcards com revisão espaçada local",
     "simulados cronometrados de DPOC, PAC e mistos, com pausa e correção",
-    "48 micropartículas progressivas em fluxo contínuo opcional"
+    "48 micropartículas progressivas em fluxo contínuo opcional",
+    "painel de erros e revisão dirigida de DPOC/PAC integrado a casos, flashcards e microfluxo",
+    "30 conexões sobre doenças menos comuns, TB pulmonar e extrapulmonar em 120 passos",
+    "30 novas ilustrações widescreen: 10 doenças menos comuns, 10 TB pulmonar, 10 TB extrapulmonar",
+    "consulta comparativa de corticoides em TB e sinais de gravidade"
   ],
   "privacy": {
     "network": false,
@@ -53,7 +59,8 @@
     "patientData": false,
     "localStorage": [
       "preferência de tema",
-      "progresso de flashcards"
+      "progresso de flashcards",
+      "indicadores de revisão por ID, contadores e datas, sem respostas ou dados clínicos"
     ]
   },
   "reviewGate": {
@@ -68,7 +75,7 @@
   },
   "learning2026": {
     "entrypoint": "protocolos-2026/index.html#view-study",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "cases": 12,
     "flashcards": 24,
     "particles": 48,
@@ -79,7 +86,12 @@
     "newHumanClinicalReviewClaimed": false,
     "officialAmibQuestions": false,
     "institutionalHomologation": false,
-    "localStorage": ["IDs dos flashcards e agendamentos numéricos"]
+    "localStorage": [
+      "IDs dos flashcards e agendamentos numéricos",
+      "IDs de conceitos, contadores, status e datas de revisão"
+    ],
+    "errorReviewDashboard": true,
+    "directedReview": "explicit-concept-mapping"
   },
   "protocols2026": {
     "entrypoint": "protocolos-2026/index.html",
@@ -89,5 +101,24 @@
     "scope": "DPOC e PAC, sete formulários e vinte ilustrações deste submódulo",
     "institutionalHomologation": false,
     "extendsApprovalToParentModule": false
+  },
+  "pulmonaryExpansion2026": {
+    "entrypoint": "protocolos-2026/index.html#view-expansion",
+    "sections": [
+      "raras",
+      "tb-pulmonar",
+      "tb-extra"
+    ],
+    "connections": 30,
+    "particles": 120,
+    "images": 30,
+    "imagesPerSection": 10,
+    "continuousFlow": "optional-and-pausable",
+    "clinicalReviewStatus": "public-preview-pending-formal-medical-review",
+    "publicationAuthorizedAt": "2026-10-18",
+    "newHumanClinicalReviewClaimed": false,
+    "institutionalHomologation": false,
+    "corticosteroidRecommendations": "site-and-context-specific-with-attributed-guidelines",
+    "patientData": false
   }
 }

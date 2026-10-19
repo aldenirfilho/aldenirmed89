@@ -4,12 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
-  <meta name="description" content="DPOC GOLD 2026 e pneumonia comunitária: formulários, atlas visual, casos comentados, flashcards, simulados e microfluxo progressivo Turbo TEMI 360X.">
+  <meta name="description" content="Pneumologia Turbo TEMI 360X: DPOC, pneumonia, painel de revisão dirigida, doenças menos comuns e tuberculose pulmonar e extrapulmonar em micropartículas.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://aldenirrochadeoliveirafilho1989.goatcounter.com; script-src 'self' https://gc.zgo.at; style-src 'self'; connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com; object-src 'none'; base-uri 'self'; form-action 'none'">
-  <title>DPOC + PAC | Turbo TEMI 360X</title>
+  <title>Pneumologia | Turbo TEMI 360X</title>
   <link rel="stylesheet" href="styles.css?v=9bca0cc1a2e626b1">
-  <link rel="stylesheet" href="learning.css?v=f9d011db37475b26">
-  <script type="module" src="app.mjs?v=6e96e9adb1565d5e"></script>
+  <link rel="stylesheet" href="learning.css?v=82145daedd17b84d">
+  <link rel="stylesheet" href="pulmonary-expansion.css?v=cac68f356e338696">
+  <script type="module" src="app.mjs?v=c883baa8daa53a78"></script>
 </head>
 <body>
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
@@ -21,6 +22,7 @@
 <aside class="sidebar">
   <p class="eyebrow">ESTAÇÃO RESPIRATÓRIA</p>
   <nav aria-label="Protocolos"><button class="module active" data-module="dpoc" aria-pressed="true"><span>01</span><div>DPOC<small>GOLD 2026</small></div><b>↗</b></button><button class="module" data-module="pac" aria-pressed="false"><span>02</span><div>Pneumonia comunitária<small>ATS 2025/2026 + IDSA</small></div><b>↗</b></button></nav>
+  <nav class="sidebar-expansion" aria-label="Novos temas pulmonares"><p class="eyebrow">AMPLIE O RACIOCÍNIO</p><button class="module" data-expansion-section="raras" aria-pressed="false"><span>03</span><div>Menos comuns<small>Fibrose cística · micoses</small></div></button><button class="module" data-expansion-section="tb-pulmonar" aria-pressed="false"><span>04</span><div>TB pulmonar<small>Diagnóstico · risco · cuidado</small></div></button><button class="module" data-expansion-section="tb-extra" aria-pressed="false"><span>05</span><div>TB extrapulmonar<small>Sítios · corticoide · gravidade</small></div></button></nav>
   <div class="rail-note"><span class="dot"></span> UM PASSO POR VEZ<p>Escolha o cenário.<br>Preencha o essencial.<br>Confira a próxima ação.</p></div>
   <p class="rail-bottom">🧠 Leitura em camadas<br>🫁 Adultos · apoio ao médico<br>📅 Fontes: 18 out 2026</p>
 </aside>
@@ -28,12 +30,13 @@
   <div class="edition"><span class="edition-tag">CONSULTA + TREINO</span><span class="review">Base clínica aprovada · 18/10/2026</span></div>
   <section class="hero" aria-labelledby="page-title"><div><p class="eyebrow" id="module-eyebrow">OBSTRUÇÃO · EXACERBAÇÃO · PREVENÇÃO</p><h1 id="page-title">DPOC.<br><em>Da evidência à ação.</em></h1><p class="hero-copy" id="hero-copy">GOLD 2026 em decisões curtas. Diagnóstico, tratamento inicial e resposta à exacerbação no mesmo percurso.</p><div class="hero-tags"><span id="version-tag">GOLD 2026</span><span>Formulários sem identificação</span><span>10 mapas visuais</span></div></div><div class="hero-art"><img id="hero-image" src="assets/dpoc-01-diagnostico.png" alt="Ilustração conceitual de pulmões e obstrução das vias aéreas" width="1536" height="864"><div class="art-caption"><span>ANATOMIA → RACIOCÍNIO → CONDUTA</span><strong>Veja o mecanismo.<br>Lembre a próxima ação.</strong></div></div></section>
   <div class="safety">⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual. <strong>Instabilidade exige avaliação imediata, independentemente do escore.</strong></div>
-  <nav class="tabs" aria-label="Camadas de consulta"><button data-view="practice" class="active" aria-pressed="true">⚡ Prática</button><button data-view="visual" aria-pressed="false">◫ Atlas visual</button><button data-view="study" aria-pressed="false">🧠 Turbo TEMI</button><button data-view="sources" aria-pressed="false">↗ Evidências</button></nav>
+  <nav class="tabs" aria-label="Camadas de consulta"><button data-view="practice" class="active" aria-pressed="true">⚡ Prática</button><button data-view="visual" aria-pressed="false">◫ Atlas visual</button><button data-view="study" aria-pressed="false">🧠 Turbo TEMI</button><button data-view="expansion" aria-pressed="false">🫁 Novos temas</button><button data-view="sources" aria-pressed="false">↗ Evidências</button></nav>
   <section id="view-practice" class="view"><div id="scenario-switch" class="scenario-switch" aria-label="Cenário clínico"></div><div class="workspace"><section class="form-card"><div class="section-title"><span class="step">01</span><div><p class="eyebrow">PREENCHA O ESSENCIAL</p><h2 id="form-title"></h2></div></div><p class="form-note" id="form-note"></p><form id="clinical-form" novalidate><div id="fields" class="fields"></div><div class="form-actions"><button type="submit" class="primary">Ver raciocínio e próxima ação <span>→</span></button><button type="reset">Limpar dados</button></div></form></section><section class="result-card" aria-labelledby="result-title"><div class="section-title"><span class="step">02</span><div><p class="eyebrow">RESULTADO + CONTEXTO</p><h2 id="result-title">Sua próxima ação</h2></div></div><div id="result" aria-live="polite"><div class="empty-result"><span>◎</span><h3>O raciocínio começa aqui.</h3><p>Preencha o formulário e confira os critérios usados. Um dado ausente nunca é considerado normal.</p></div></div></section></div><section class="reference-block"><div class="section-heading"><div><p class="eyebrow">LEITURA EM 60 SEGUNDOS</p><h2>Essenciais do protocolo</h2></div><span>Abra apenas o que precisa ↓</span></div><div id="quick-reference" class="reference-grid"></div></section></section>
   <section id="view-visual" class="view" hidden><div class="section-heading"><div><p class="eyebrow">10 IMAGENS · WIDESCREEN 16:9</p><h2>Veja. Conecte. Recupere.</h2></div></div><p class="muted">Ilustrações conceituais geradas por IA. A informação clínica está nas legendas e fontes; as imagens não representam exames de pacientes.</p><div id="gallery" class="gallery"></div></section>
   <section id="view-study" class="view" hidden><div id="learning-root"><p>Carregando o treino Turbo TEMI…</p></div><details class="legacy-study"><summary>📚 Recapitulação rápida do protocolo</summary><div><div id="study-cards" class="study-cards"></div></div></details></section>
+  <section id="view-expansion" class="view" hidden><div id="pulmonary-root"><p>Carregando as conexões pulmonares…</p></div></section>
   <section id="view-sources" class="view" hidden><div class="section-heading"><div><p class="eyebrow">RASTREABILIDADE</p><h2>Qual diretriz sustenta a decisão?</h2></div></div><div id="source-list" class="source-list"></div><div class="safety">Atualizações verificadas em 18/10/2026. A atualização ATS de PAC é focada e complementa a diretriz ATS/IDSA de 2019. O serviço deve adaptar os esquemas à CCIH, disponibilidade e resistência local.</div></section>
-  <footer><span>360X · MENOS CARGA COGNITIVA. MAIS CLAREZA.</span><p>Os dados dos formulários ficam apenas na memória desta página. Recarregar ou limpar remove os valores. O agendamento dos flashcards fica salvo somente neste navegador. Não informe identificadores de pacientes.</p></footer>
+  <footer><span>360X · MENOS CARGA COGNITIVA. MAIS CLAREZA.</span><p>Os dados dos formulários ficam apenas na memória desta página. Recarregar ou limpar remove os valores. O agendamento dos flashcards e os indicadores de revisão ficam salvos somente neste navegador. As novas seções pulmonares são uma prévia educacional com revisão médica formal pendente. Não informe identificadores de pacientes.</p></footer>
 </main></div>
 <dialog id="image-dialog"><button id="close-image" aria-label="Fechar imagem">✕</button><img id="dialog-image" alt=""><p id="dialog-caption"></p><a id="download-image" download>Baixar imagem original ↓</a></dialog>
 </body></html>
