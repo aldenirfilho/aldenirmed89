@@ -147,7 +147,7 @@ class CriticalModulesTests(unittest.TestCase):
         css = (module / "assets/pneumologia-visuals.css").read_text(encoding="utf-8")
         manifest = json.loads((module / "module.manifest.json").read_text(encoding="utf-8"))
 
-        self.assertEqual(manifest["version"], "1.4.0")
+        self.assertEqual(manifest["version"], "1.5.0")
         self.assertIn('id="dpoc-visuais"', html)
         self.assertIn('href="#dpoc-visuais"', html)
         self.assertEqual(html.count('data-visual-id="DPOC-'), 20)
