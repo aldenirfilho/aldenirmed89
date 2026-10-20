@@ -19,7 +19,8 @@ const manifests = [
   'biblioteca_previews.json',
   'biblioteca_brain_connections.json',
   'biblioteca_inbox_manifest_auto.json',
-  'biblioteca_taxonomia_temas.json'
+  'biblioteca_taxonomia_temas.json',
+  'livros_360x_publicacao.json'
 ];
 
 function worker(scope) {

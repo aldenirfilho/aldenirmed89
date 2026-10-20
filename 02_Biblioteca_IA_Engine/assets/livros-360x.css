@@ -1,0 +1,86 @@
+.books360 {
+  max-width: 1180px;
+  margin: 2rem auto;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: #fff;
+  color: #21182c;
+  border: 1px solid #d7cde2;
+  border-radius: 20px;
+  line-height: 1.65;
+  scroll-margin-top: 1rem;
+}
+.books360-intro { max-width: 880px; }
+.books360-eyebrow, .books360-volume {
+  color: #594075;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .055em;
+}
+.books360 h2 {
+  margin: .5rem 0 .75rem;
+  color: #37214f;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.2;
+}
+.books360-author { margin-top: .8rem; font-size: .92rem; }
+.books360-nav { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.2rem 0; }
+.books360-nav a, .books360-amazon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: .55rem .9rem;
+  border: 1px solid #75598e;
+  border-radius: 9px;
+  color: #43255f;
+  background: #f5f0fa;
+  font-weight: 700;
+  font-size: .88rem;
+  text-decoration: none;
+}
+.books360-nav a:hover, .books360-amazon:hover { background: #eae0f4; }
+.books360-nav .books360-skip { background: #fff5de; border-color: #95702a; color: #654711; }
+.books360-release { padding: .8rem 1rem; background: #fff7e6; border-radius: 10px; color: #654711; font-size: .92rem; }
+.books360-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+.books360-card { min-width: 0; display: flex; flex-direction: column; border: 1px solid #d7cde2; border-radius: 14px; overflow: hidden; scroll-margin-top: 1rem; }
+.books360-cover { display: block; width: 100%; height: auto; aspect-ratio: 720 / 932; object-fit: contain; background: #fff; border-bottom: 1px solid #e6ddec; }
+.books360-card-body { display: flex; flex-direction: column; flex: 1; padding: 1.1rem; gap: .8rem; }
+.books360 h3 { color: #37214f; font-size: 1.35rem; line-height: 1.25; overflow-wrap: break-word; }
+.books360-subtitle { font-weight: 700; color: #4a3b5a; }
+.books360-card-body > p { font-size: .9rem; }
+.books360-audience { color: #4a3b5a; }
+.books360 details { border-top: 1px solid #e6ddec; padding-top: .5rem; }
+.books360 summary { min-height: 44px; padding: .5rem 0; cursor: pointer; color: #43255f; font-size: .9rem; font-weight: 700; }
+.books360 ul { margin: .4rem 0 .4rem 1.2rem; font-size: .88rem; }
+.books360 li + li { margin-top: .3rem; }
+.books360-publication { display: flex; flex-direction: column; align-items: flex-start; gap: .45rem; margin-top: auto; padding-top: .6rem; }
+.books360-status { color: #654711; background: #fff0cb; border-radius: 6px; padding: .2rem .6rem; font-size: .82rem; font-weight: 700; }
+.books360-isbn { color: #5c4e68; font-size: .8rem; overflow-wrap: anywhere; }
+.books360-amazon[hidden] { display: none; }
+.books360-note { margin-top: 1.2rem; color: #5c4e68; font-size: .82rem; }
+.books360 a:focus-visible, .books360 summary:focus-visible { outline: 3px solid #855400; outline-offset: 4px; }
+.books360-free { max-width: 900px; margin: 2rem auto 0; padding: 0 1rem; scroll-margin-top: 1rem; }
+.books360-free h2 { font-size: 1.35rem; margin-bottom: .6rem; }
+.books360-free p { line-height: 1.6; font-size: .94rem; }
+html.a11y-contrast .books360, html.a11y-contrast .books360-card { color: #fff; background: #000; border-color: #fff; }
+html.a11y-contrast .books360 :is(h2,h3,p,li,summary,span) { color: #fff; }
+html.a11y-contrast .books360 :is(.books360-release,.books360-status,.books360-nav a,.books360-amazon) { color: #fff; background: #000; border-color: #fff; }
+@media (max-width: 800px) {
+  .books360-grid { grid-template-columns: 1fr; }
+  .books360-card { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+  .books360-cover { align-self: start; border-bottom: 0; }
+  .books360-card-body { padding: 1rem; }
+}
+@media (max-width: 520px) {
+  .books360 { margin: 1rem .75rem; border-radius: 14px; }
+  .books360-card { display: flex; }
+  .books360-cover { max-height: 480px; }
+  .books360-nav a { flex: 1 1 auto; }
+}
+@media print {
+  .books360 { margin: 0; padding: 0; border: 0; color: #000; background: #fff; }
+  .books360-nav { display: none; }
+  .books360-grid { display: block; }
+  .books360-card { display: block; break-inside: avoid; margin: 1rem 0; }
+  .books360-cover { max-height: 240px; width: auto; max-width: 100%; }
+}

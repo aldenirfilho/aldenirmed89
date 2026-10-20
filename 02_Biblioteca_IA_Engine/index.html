@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>📚 Biblioteca IA — Enciclopédia Médica Intensiva</title>
-<meta name="description" content="Repositório de materiais médicos gerados com suporte de IA, organizados por Dr. Aldenir Rocha, médico intensivista e clínico."/>
+<title>Biblioteca IA e Livros 360X | AldenirMed89</title>
+<meta name="description" content="Conheça os livros Turbo TEMI 360X e explore o acervo médico gratuito do AldenirMed89, com busca e recursos de estudo. Autoria dos livros: Aldenir Rocha de Oliveira Filho."/>
 <meta name="theme-color" content="#050d1a"/>
 <meta name="color-scheme" content="dark light"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -29,6 +29,8 @@
 })();
 </script>
 <link rel="icon" href="../favicon.ico" sizes="64x64"/>
+<link rel="stylesheet" href="assets/livros-360x.css?v=20261019-1"/>
+<script src="assets/livros-360x.js?v=20261019-1" defer></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap');
 
@@ -393,7 +395,7 @@
 <body>
 
 <header>
-  <h1>📚 Biblioteca IA — Enciclopédia Médica</h1>
+  <h1>📚 Biblioteca IA — Livros e acervo médico</h1>
   <div class="actions">
     <button class="nav-btn active" id="btn-catalogo" onclick="switchView('catalogo')">📂 Catálogo</button>
     <button class="nav-btn" id="btn-estudo" onclick="switchView('estudo')">🧠 Estudo <span id="study-due-count" style="background:var(--accent2);color:#fff;padding:1px 5px;border-radius:10px;font-size:.6rem;margin-left:3px">0</span></button>
@@ -409,6 +411,107 @@
 
 <!-- VIEW: CATÁLOGO -->
 <div id="view-catalogo" data-view="catalogo" class="active">
+  <section class="books360" id="livros360" aria-labelledby="livros360-title">
+    <div class="books360-intro">
+      <p class="books360-eyebrow">ALDENIRMED89 · EQUIPE360X</p>
+      <h2 id="livros360-title">Conheça os livros Turbo TEMI 360X</h2>
+      <p>Emergência, UTI e Clínica Médica em três livros independentes. Escolha o tema que acompanha seu momento de estudo e explore os conteúdos didáticos do AldenirMed89.</p>
+      <p class="books360-author">Autoria: <strong>Aldenir Rocha de Oliveira Filho</strong> · Equipe Ecossistema 360X</p>
+      <nav class="books360-nav" aria-label="Navegar pelos livros e pelo acervo">
+        <a href="#livro-emergencia">Emergência</a>
+        <a href="#livro-uti">UTI</a>
+        <a href="#livro-clinica">Clínica Médica</a>
+        <a class="books360-skip" href="#acervo-gratuito">🔎 Ir ao acervo gratuito</a>
+      </nav>
+      <p class="books360-release">📖 Em preparação editorial. Cada livro terá sua própria oferta na Amazon após a atribuição do ISBN e a publicação.</p>
+    </div>
+
+    <div class="books360-grid">
+      <article class="books360-card" id="livro-emergencia" data-book360="emergencia" aria-labelledby="livro-emergencia-title">
+        <img class="books360-cover" src="assets/livros-360x/emergencia.webp" width="720" height="932" alt="Capa de Emergência, da coleção Turbo TEMI 360X, de Aldenir Rocha de Oliveira Filho e Equipe Ecossistema 360X" loading="lazy" decoding="async"/>
+        <div class="books360-card-body">
+          <p class="books360-volume">Livro independente · Emergência</p>
+          <h3 id="livro-emergencia-title">Emergência</h3>
+          <p class="books360-subtitle">Guias de reconhecimento e abordagem inicial em adultos</p>
+          <p>Uma leitura organizada para reconhecer gravidade, estruturar a avaliação inicial e retomar os fundamentos na revisão.</p>
+          <p class="books360-audience"><strong>Para quem:</strong> acadêmicos, internos, residentes e médicos que estudam o atendimento inicial.</p>
+          <details>
+            <summary>Ver temas deste livro</summary>
+            <ul>
+              <li>Gasometria e equilíbrio acidobásico</li>
+              <li>Cetoacidose diabética</li>
+              <li>Síndrome de Lemierre</li>
+              <li>Hipocalcemia e calcificações cerebrais</li>
+              <li>Tamponamento cardíaco e derrame pericárdico</li>
+            </ul>
+          </details>
+          <div class="books360-publication" aria-live="polite">
+            <span class="books360-status" data-book360-status>Em preparação</span>
+            <span class="books360-isbn" data-book360-isbn>ISBN pendente</span>
+            <a class="books360-amazon" data-book360-amazon hidden target="_blank" rel="noopener noreferrer">Ver Emergência na Amazon ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="books360-card" id="livro-uti" data-book360="uti" aria-labelledby="livro-uti-title">
+        <img class="books360-cover" src="assets/livros-360x/uti.webp" width="720" height="932" alt="Capa de UTI, da coleção Turbo TEMI 360X, de Aldenir Rocha de Oliveira Filho e Equipe Ecossistema 360X" loading="lazy" decoding="async"/>
+        <div class="books360-card-body">
+          <p class="books360-volume">Livro independente · Terapia Intensiva</p>
+          <h3 id="livro-uti-title">UTI</h3>
+          <p class="books360-subtitle">Guias de medicina intensiva e raciocínio à beira do leito</p>
+          <p>Conteúdos para estudar problemas do paciente crítico, interpretar informações e reconhecer os limites de cada ferramenta.</p>
+          <p class="books360-audience"><strong>Para quem:</strong> internos, residentes, médicos e candidatos à prova de título em Medicina Intensiva.</p>
+          <details>
+            <summary>Ver temas deste livro</summary>
+            <ul>
+              <li>CRAB e resistência antimicrobiana</li>
+              <li>Anemia e metabolismo do ferro na UTI</li>
+              <li>Segurança dos cálculos clínicos</li>
+              <li>POCUS vesical</li>
+              <li>Pericárdio, tamponamento e seguimento</li>
+            </ul>
+          </details>
+          <div class="books360-publication" aria-live="polite">
+            <span class="books360-status" data-book360-status>Em preparação</span>
+            <span class="books360-isbn" data-book360-isbn>ISBN pendente</span>
+            <a class="books360-amazon" data-book360-amazon hidden target="_blank" rel="noopener noreferrer">Ver UTI na Amazon ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="books360-card" id="livro-clinica" data-book360="clinica" aria-labelledby="livro-clinica-title">
+        <img class="books360-cover" src="assets/livros-360x/clinica-medica.webp" width="720" height="932" alt="Capa de Clínica Médica e Medicina Interna, da coleção Turbo TEMI 360X, de Aldenir Rocha de Oliveira Filho e Equipe Ecossistema 360X" loading="lazy" decoding="async"/>
+        <div class="books360-card-body">
+          <p class="books360-volume">Livro independente · Medicina Interna</p>
+          <h3 id="livro-clinica-title">Clínica Médica e Medicina Interna</h3>
+          <p class="books360-subtitle">Guias para investigação clínica e cuidado longitudinal</p>
+          <p>Uma organização por problemas para conectar investigação, acompanhamento e discussão clínica em diferentes contextos.</p>
+          <p class="books360-audience"><strong>Para quem:</strong> acadêmicos, internos, residentes de Clínica Médica e médicos generalistas.</p>
+          <details>
+            <summary>Ver temas deste livro</summary>
+            <ul>
+              <li>Patient Blood Management e conservação de sangue</li>
+              <li>Trombocitopenia imune</li>
+              <li>Trombastenia de Glanzmann</li>
+              <li>Encefalite e investigação paraneoplásica</li>
+              <li>Medicamentos no perioperatório</li>
+            </ul>
+          </details>
+          <div class="books360-publication" aria-live="polite">
+            <span class="books360-status" data-book360-status>Em preparação</span>
+            <span class="books360-isbn" data-book360-isbn>ISBN pendente</span>
+            <a class="books360-amazon" data-book360-amazon hidden target="_blank" rel="noopener noreferrer">Ver Clínica Médica na Amazon ↗</a>
+          </div>
+        </div>
+      </article>
+    </div>
+    <p class="books360-note">Leitura em camadas, mapas didáticos, quadros e questões para estudo e revisão. Conteúdo educacional em revisão final pelo autor; não substitui avaliação individual nem protocolo institucional. As artes das capas são conceituais e foram geradas com apoio de IA.</p>
+  </section>
+
+  <section class="books360-free" id="acervo-gratuito" tabindex="-1" aria-labelledby="acervo-gratuito-title">
+    <h2 id="acervo-gratuito-title">Explore também o acervo gratuito</h2>
+    <p>Pesquise os materiais já disponíveis por tema, formato ou origem. A busca, o leitor e o caderno de estudo continuam disponíveis nesta biblioteca.</p>
+  </section>
   <div style="max-width:900px;margin:2rem auto 0;padding:0 1rem">
     <!-- AVISO JURÍDICO -->
     <div class="juridico">
