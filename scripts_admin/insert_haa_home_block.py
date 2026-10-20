@@ -36,12 +36,12 @@ HOME_MODULE_CARD = r'''
 '''.strip("\n")
 
 GENETICS_MODULE_CARD = r'''
-      <a id="doencas-geneticas" class="module-card mod-violet reveal" data-genetics-home-card href="01_Modulos_Clinicos/Doencas_Geneticas/index.html" aria-label="Abrir Doenças genéticas — rasopatias e síndrome de Noonan — Turbo TEMI 360X">
+      <a id="doencas-geneticas" class="module-card mod-violet reveal" data-genetics-home-card href="01_Modulos_Clinicos/Doencas_Geneticas/index.html" aria-label="Abrir Doenças genéticas — Noonan, Costello e facomatoses — Turbo TEMI 360X">
         <div class="module-icon">🧬</div>
         <h3>Doenças genéticas</h3>
-        <p>Rasopatias e síndrome de Noonan: via RAS/MAPK, reconhecimento clínico, avaliação genética e implicações na UTI. Atlas com 10 imagens didáticas.</p>
+        <p>Noonan, Costello e facomatoses: mecanismos genéticos, reconhecimento clínico e alertas na UTI. Atlas com 10 imagens didáticas.</p>
         <div class="module-tag-row">
-          <span class="module-tag">Noonan · rasopatias</span>
+          <span class="module-tag">Rasopatias · facomatoses</span>
           <span class="module-tag">10 imagens</span>
           <span class="module-tag">Turbo TEMI 360X</span>
         </div>

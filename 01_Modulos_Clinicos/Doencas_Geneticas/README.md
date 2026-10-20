@@ -1,6 +1,6 @@
 # 🧬 Doenças genéticas — TURBO TEMI 360X
 
-Módulo estático de rasopatias e síndrome de Noonan: leitura rápida, comparação, dez imagens, seis questões e referências. Abra `index.html` por servidor HTTP local.
+Módulo estático de rasopatias, Noonan, Costello e facomatoses: leitura rápida, comparação, dez imagens, dez questões e referências. Abra `index.html` por servidor HTTP local.
 
 Estado: **prévia educacional com publicação autorizada em 19/10/2026**. Revisão médica humana e homologação assistencial pendentes. A aprovação clínica não é inferida dos testes técnicos.
 

@@ -34,7 +34,7 @@ class HomeClinicalSectionsTests(unittest.TestCase):
         self.assertNotIn("🟠 Abrir Hepatologia HAA", self.home)
         self.assertNotIn("🟠 HAA · Maddrey · MELD · Lille", self.home)
         self.assertIn('<span class="module-tag">10 imagens</span>', self.home)
-        self.assertIn("Noonan · rasopatias", self.home)
+        self.assertIn("Rasopatias · facomatoses", self.home)
 
     def test_current_home_is_idempotent(self) -> None:
         self.assertEqual(PATCHER.patch_home(self.home), self.home)
