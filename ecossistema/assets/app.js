@@ -2,7 +2,9 @@
 
 (() => {
   const DATA_URL = "./data/catalog.json";
+  const SITES_URL = "./data/sites-360x.json";
   const THEME_KEY = "aldenirmed89:ecosystem-theme:v1";
+  const SHARED_THEME_KEY = "antigravity:a11y:v1";
   const PRIORITY_LABELS = Object.freeze({
     agora: "AGORA",
     proximo: "PRÓXIMO",
@@ -21,7 +23,7 @@
     public: "PÚBLICO",
     "controlled-public": "RESUMO PÚBLICO"
   });
-  const state = { catalog: null, query: "", root: "all", priority: "all" };
+  const state = { catalog: null, query: "", root: "all", priority: "all", sites: [], siteQuery: "", siteCategory: "all" };
   const byId = (id) => document.getElementById(id);
   const make = (tag, text, className = "") => {
     const node = document.createElement(tag);
@@ -34,17 +36,127 @@
   const asArray = (value) => Array.isArray(value) ? value : [];
 
   function safeThemeRead() {
-    try { return localStorage.getItem(THEME_KEY); } catch (_error) { return null; }
+    try {
+      const shared = JSON.parse(localStorage.getItem(SHARED_THEME_KEY) || "{}");
+      if (shared.contrast === true) return "dark";
+      const lightProfiles = ["light", "aerospace-light", "minimal", "sepia", "rustic-light", "natural", "modern-serious"];
+      if (shared.theme === "system") return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      if (shared.visualProfile) return lightProfiles.includes(shared.visualProfile) ? "light" : "dark";
+      if (shared.theme === "light" || shared.theme === "dark") return shared.theme;
+      if (shared.clarity === true) return "light";
+      return localStorage.getItem(THEME_KEY);
+    } catch (_error) { return null; }
   }
 
   function safeThemeWrite(value) {
-    try { localStorage.setItem(THEME_KEY, value); } catch (_error) { /* optional */ }
+    try {
+      const shared = JSON.parse(localStorage.getItem(SHARED_THEME_KEY) || "{}");
+      shared.theme = value;
+      shared.visualProfile = value === "light" ? "aerospace-light" : "aerospace";
+      shared.clarity = value === "light";
+      shared.contrast = false;
+      localStorage.setItem(SHARED_THEME_KEY, JSON.stringify(shared));
+      localStorage.setItem(THEME_KEY, value);
+    } catch (_error) { /* optional */ }
   }
 
   function applyTheme(value) {
     const theme = value === "light" ? "light" : "dark";
     document.documentElement.dataset.theme = theme;
     byId("themeButton").setAttribute("aria-label", theme === "dark" ? "Usar tema claro" : "Usar tema escuro");
+  }
+
+  function safeSiteUrl(value) {
+    try {
+      const url = new URL(String(value));
+      return url.protocol === "https:" && !url.username && !url.password ? url.href : null;
+    } catch (_error) { return null; }
+  }
+
+  function safeSiteImage(value) {
+    if (typeof value !== "string" || !value.trim()) return null;
+    try {
+      const url = new URL(String(value), document.baseURI);
+      return url.origin === window.location.origin ? url.href : null;
+    } catch (_error) { return null; }
+  }
+
+  function siteCard(project) {
+    const card = make("article", null, "site-card");
+    card.id = `site-${project.id}`;
+    const image = make("img", null, "site-card-image");
+    image.src = project.image;
+    image.alt = clean(project.imageAlt || project.title, 240);
+    image.width = 800;
+    image.height = 450;
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.addEventListener("error", () => { image.hidden = true; }, { once: true });
+    const body = make("div", null, "site-card-body");
+    body.append(make("p", project.category, "site-category"), make("h3", project.title), make("p", project.description, "site-description"));
+    if (project.accessNote) body.append(make("p", project.accessNote, "site-access-note"));
+    const link = make("a", "Abrir site ↗", "site-link");
+    link.href = project.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.setAttribute("aria-label", `Abrir site ${project.title} em nova aba`);
+    body.append(link);
+    card.append(image, body);
+    return card;
+  }
+
+  function renderSites() {
+    const holder = byId("sitesGrid");
+    const query = fold(state.siteQuery);
+    const projects = state.sites.filter((project) =>
+      (state.siteCategory === "all" || project.category === state.siteCategory) &&
+      (!query || fold([project.title, project.description, project.category].join(" ")).includes(query))
+    );
+    holder.replaceChildren();
+    projects.forEach((project) => holder.append(siteCard(project)));
+    if (!projects.length) holder.append(make("p", "Nenhum site encontrado. Tente outro assunto ou limpe a busca.", "empty-state"));
+    holder.setAttribute("aria-busy", "false");
+    byId("sitesStatus").textContent = `${projects.length} de ${state.sites.length} sites para explorar · links abrem em nova aba.`;
+  }
+
+  async function startSites() {
+    byId("sitesControls").addEventListener("submit", (event) => event.preventDefault());
+    byId("sitesSearch").addEventListener("input", (event) => { state.siteQuery = event.target.value; renderSites(); });
+    byId("sitesCategory").addEventListener("change", (event) => { state.siteCategory = event.target.value; renderSites(); });
+    byId("sitesClear").addEventListener("click", () => {
+      state.siteQuery = ""; state.siteCategory = "all";
+      byId("sitesSearch").value = ""; byId("sitesCategory").value = "all";
+      renderSites(); byId("sitesSearch").focus();
+    });
+    try {
+      const response = await fetch(SITES_URL, { cache: "no-store" });
+      if (!response.ok) throw new Error("Diretório indisponível.");
+      const payload = await response.json();
+      if (!Array.isArray(payload.projects) || !payload.projects.length) throw new Error("Diretório vazio.");
+      const seen = new Set();
+      state.sites = payload.projects.map((project) => {
+        if (!project || !/^[a-z0-9-]{2,100}$/.test(project.id) || seen.has(project.id)) throw new Error("Identificador inválido.");
+        seen.add(project.id);
+        const url = safeSiteUrl(project.url);
+        const image = safeSiteImage(project.image);
+        if (!url || !image || !clean(project.title) || !clean(project.description) || !clean(project.category)) throw new Error("Projeto incompleto.");
+        return { ...project, url, image, title: clean(project.title, 180), description: clean(project.description, 700), category: clean(project.category, 100) };
+      });
+      [...new Set(state.sites.map((project) => project.category))].sort((a, b) => a.localeCompare(b, "pt-BR")).forEach((category) => {
+        const option = make("option", category);
+        option.value = category;
+        byId("sitesCategory").append(option);
+      });
+      renderSites();
+      byId("sitesFallback").hidden = true;
+      if (window.location.hash === "#sites-publicos" || window.location.hash.startsWith("#site-")) {
+        const target = byId(window.location.hash.slice(1));
+        if (target) target.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+    } catch (_error) {
+      byId("sitesStatus").textContent = "As imagens e os filtros estão indisponíveis agora. Use os links abaixo para visitar os projetos.";
+      byId("sitesGrid").setAttribute("aria-busy", "false");
+    }
   }
 
   function validateCatalog(payload) {
@@ -216,6 +328,7 @@
   async function start() {
     applyTheme(safeThemeRead() || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
     bindControls();
+    startSites();
     try {
       const response = await fetch(DATA_URL, { cache: "no-store" });
       if (!response.ok) throw new Error("Falha ao carregar o catálogo.");
@@ -230,6 +343,10 @@
       byId("projectGrid").append(make("p", "Recarregue a página. Se o problema continuar, use a página inicial para acessar os módulos já publicados.", "empty-state"));
     }
   }
+
+  window.addEventListener("storage", (event) => {
+    if (event.key === SHARED_THEME_KEY) applyTheme(safeThemeRead());
+  });
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {

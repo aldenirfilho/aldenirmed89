@@ -1,0 +1,50 @@
+/* Identidade 360X: assinatura discreta, sem animação nem dependência externa. */
+.brand-360x-nav { display:inline-flex; align-items:center; gap:.45rem; }
+.brand-360x-nav img { width:28px; height:28px; border-radius:6px; object-fit:contain; flex:none; }
+.universe-360x { padding:12px 0 36px; scroll-margin-top:calc(var(--site-header-height,96px) + 16px); }
+.universe-360x-surface {
+  display:grid; grid-template-columns:190px minmax(0,1fr); gap:36px;
+  padding:32px 36px; border:1px solid rgba(180,194,204,.23); border-radius:22px;
+  background:#101e2a; color:#e7edf0;
+  box-shadow:0 8px 30px rgba(0,0,0,.07);
+}
+.universe-360x-identity { align-self:start; display:flex; flex-direction:column; align-items:flex-start; gap:18px; }
+.universe-360x-identity img { width:88px; height:88px; border-radius:18px; object-fit:contain; }
+.universe-360x-identity > span { font-size:.74rem; letter-spacing:.12em; color:#dcc798; font-weight:700; line-height:1.6; }
+.universe-360x-identity small { display:block; letter-spacing:0; color:#b2c3cf; font-size:.79rem; font-weight:400; }
+.universe-360x-copy { min-width:0; }
+.universe-360x-copy h2 { margin:0 0 14px; color:inherit; font-size:clamp(1.45rem,2.3vw,2rem); line-height:1.25; font-weight:650; letter-spacing:-.025em; }
+.universe-360x-copy > p { margin:0; max-width:76ch; color:#bfcdd6; font-size:.97rem; line-height:1.75; }
+.universe-360x-routes { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin:24px 0; }
+.universe-360x-routes a { display:block; min-width:0; padding-top:12px; border-top:1px solid #354652; color:#f1f4f5; font-size:.9rem; font-weight:600; line-height:1.5; text-decoration:none; }
+.universe-360x-routes span { display:block; color:#b9c9d3; font-size:.76rem; font-weight:400; }
+.universe-360x-routes a:hover { text-decoration:underline; text-underline-offset:4px; }
+.universe-360x-explore { display:inline-flex; align-items:center; gap:18px; min-height:44px; padding:10px 18px; border:1px solid #aa9260; border-radius:10px; color:#f5e4bd; font-size:.9rem; font-weight:650; text-decoration:none; }
+.universe-360x-explore:hover { background:#25323b; }
+.universe-360x a:focus-visible,.brand-360x-footer:focus-visible { outline:3px solid #d4b67d; outline-offset:5px; }
+.brand-360x-footer { display:flex; align-items:center; gap:10px; width:fit-content; margin-bottom:18px; color:inherit; font-size:.8rem; text-decoration:none; }
+.brand-360x-footer img { width:42px; height:42px; border-radius:9px; object-fit:contain; }
+html[data-theme="light"] .universe-360x-surface { background:#f7f7f2; color:#243d49; border-color:#cbd5d9; }
+html[data-theme="light"] .universe-360x-identity > span { color:#705d35; }
+html[data-theme="light"] .universe-360x-identity small,
+html[data-theme="light"] .universe-360x-copy > p,
+html[data-theme="light"] .universe-360x-routes span { color:#506773; }
+html[data-theme="light"] .universe-360x-routes a { color:#243d49; border-color:#ccd6d9; }
+html[data-theme="light"] .universe-360x-explore { color:#4e452e; border-color:#978251; }
+html[data-theme="light"] .universe-360x-explore:hover { background:#eeeee5; }
+html.a11y-contrast .universe-360x-surface { background:#000; color:#fff; border-color:#fff; }
+html.a11y-contrast .universe-360x-surface p,
+html.a11y-contrast .universe-360x-surface span,
+html.a11y-contrast .universe-360x-surface small,
+html.a11y-contrast .universe-360x-surface a { color:#fff; }
+@media(max-width:700px) {
+  .universe-360x-surface { grid-template-columns:minmax(0,1fr); gap:22px; padding:24px; border-radius:18px; }
+  .universe-360x-identity { flex-direction:row; align-items:center; gap:14px; }
+  .universe-360x-identity img { width:58px; height:58px; border-radius:12px; }
+  .universe-360x-routes { grid-template-columns:minmax(0,1fr); gap:12px; margin:20px 0; }
+  .universe-360x-routes a { min-height:44px; }
+}
+@media print {
+  .universe-360x-surface { background:#fff; color:#111; border:1px solid #999; box-shadow:none; break-inside:avoid; }
+  .universe-360x-surface p,.universe-360x-surface a,.universe-360x-surface span,.universe-360x-surface small { color:#111; }
+}
