@@ -31,7 +31,7 @@ A pergunta decisiva não é “qual nota cada pessoa merece?”, mas “quais in
 
 # 1. Identidade política do modelo
 
-## Uma hipótese institucional, não um diagnóstico pronto
+## Uma hipótese institucional, não um modelo validado
 
 O SMD-4 procura reconciliar competição e limites. A analogia com campeonatos ajuda a comunicar três mecanismos: regras conhecidas antes da disputa, avaliação periódica e possibilidade de mudança de posição. Entretanto, uma economia não é um campeonato. Empresas podem desaparecer, produtos não são perfeitamente comparáveis, trabalhadores dependem da renda para viver e consumidores não podem ser tratados como torcedores obrigados a escolher entre poucos clubes.
 
@@ -221,7 +221,7 @@ O rebaixamento profissional não seria mensal nem automático. Falhas exigem apu
 
 O desenho deve reconhecer manutenção, prevenção, cuidado e coordenação. Esses resultados podem ser menos visíveis que uma invenção ou venda, mas são necessários. Um hospital funciona por equipes; uma escola depende de professores, apoio, alimentação e ambiente. Premiar exclusivamente desempenho individual pode destruir cooperação.
 
-A progressão deve permitir trilhas paralelas: técnica, gestão, ensino e prática comunitária. Não é preciso transformar todo bom profissional em chefe para valorizá-lo. Também deve haver licença, reabilitação e retorno ao trabalho sem condenação permanente de quem atravessou doença ou interrupção familiar.
+A progressão deve permitir trilhas paralelas: técnica, gestão, ensino e prática comunitária. Não é preciso transformar todo bom profissional em chefe para valorizá-lo. Também deve haver licença, reabilitação e retorno ao trabalho sem condenação permanente de quem atravessou problemas de saúde ou interrupção familiar.
 
 **Síntese:** classificar responsabilidades, preservar direitos e criar várias formas legítimas de progredir.
 
@@ -229,7 +229,7 @@ A progressão deve permitir trilhas paralelas: técnica, gestão, ensino e prát
 
 ## Quatro dimensões, pesos específicos
 
-A matriz proposta reúne capacidade cognitiva e criativa, conhecimento científico-técnico, execução física-operacional e dimensão humana/ética. Os pesos dependem das tarefas reais. A metáfora “magia cognitiva” não é um teste de inteligência, um diagnóstico ou uma alegação sobre valor intrínseco.
+A matriz proposta reúne capacidade cognitiva e criativa, conhecimento científico-técnico, execução física-operacional e dimensão humana/ética. Os pesos dependem das tarefas reais. A metáfora “magia cognitiva” não é um teste de inteligência, uma avaliação psicológica ou uma alegação sobre valor intrínseco.
 
 | Dimensão | Avaliar | Não confundir com |
 |---|---|---|
@@ -282,7 +282,7 @@ Desvio-padrão mede dispersão, não justiça. Uma distribuição normal não de
 
 A formulação original sugeriu que o esforço escolar desde cedo influenciasse salários futuros. A intenção é reconhecer estudo e perseverança. O problema é que notas infantis também refletem qualidade escolar, apoio familiar, alimentação, segurança, saúde e acessibilidade. Converter essas notas em descontos permanentes na vida adulta confundiria oportunidade com mérito.
 
-A regra editorial desta versão é clara: dificuldades anteriores à vida adulta não geram penalidade salarial permanente. O registro escolar deve orientar apoio e oportunidades, respeitando finalidade, proteção de dados e desenvolvimento da criança. A LGPD prevê proteção específica ao tratamento de dados de crianças e adolescentes, com consideração de seu melhor interesse. [6]
+A regra editorial desta versão é clara: dificuldades anteriores à vida adulta não geram penalidade salarial permanente. O registro escolar deve orientar apoio e oportunidades, respeitando finalidade, proteção de dados e desenvolvimento da criança. A LGPD prevê proteção específica ao processamento de dados de crianças e adolescentes, com consideração de seu melhor interesse. [6]
 
 ## Apoio progressivo
 
@@ -304,7 +304,7 @@ No piloto, a educação deve ser avaliada por acesso, permanência, evolução d
 
 As faixas propostas descrevem situações econômicas: dignidade protegida, estabilidade, prosperidade e alta prosperidade delimitada. Elas não devem aparecer em documentos de identidade, perfis sociais, escolas, hospitais ou filas de atendimento. Sua eventual utilização seria restrita a tributação e desenho de políticas, com necessidade demonstrada e proteção de dados.
 
-A primeira faixa não significa incapacidade; a quarta não significa virtude. Renda depende de circunstâncias e pode variar ao longo da vida. A pessoa desempregada, aposentada, em tratamento ou dedicada a cuidados mantém o mesmo valor e os mesmos direitos. A Constituição não permite converter poder econômico em cidadania de qualidade distinta. [1]
+A primeira faixa não significa incapacidade; a quarta não significa virtude. Renda depende de circunstâncias e pode variar ao longo da vida. A pessoa desempregada, aposentada, em acompanhamento de saúde ou dedicada a cuidados mantém o mesmo valor e os mesmos direitos. A Constituição não permite converter poder econômico em cidadania de qualidade distinta. [1]
 
 ## Como definir as faixas
 
@@ -335,7 +335,7 @@ A Constituição protege a propriedade e sua função social, prevê competênci
 
 ## Os números da proposta original
 
-A referência inicial de até três imóveis residenciais e três veículos pessoais é preservada como hipótese. Contar unidades não mede adequadamente riqueza: três imóveis de altíssimo valor podem representar patrimônio maior que várias moradias simples. Além disso, propriedade fracionada, residência multigeracional, trabalho, acessibilidade e diferenças regionais exigem tratamento próprio.
+A referência inicial de até três imóveis residenciais e três veículos pessoais é preservada como hipótese. Contar unidades não mede adequadamente riqueza: três imóveis de altíssimo valor podem representar patrimônio maior que várias moradias simples. Além disso, propriedade fracionada, residência multigeracional, trabalho, acessibilidade e diferenças regionais exigem abordagem própria.
 
 O teto ilustrativo de 500 PVL anuais também não é recomendação validada. Se o PVL mensal hipotético for R$ 4.000, o PVL anual será R$ 48.000 e o teto simulado será R$ 24 milhões. O cálculo demonstra uma relação matemática; não prova adequação econômica nem validade jurídica.
 
@@ -460,7 +460,7 @@ No piloto, a abordagem prudente é educação financeira, comparação de custos
 
 O projeto propõe participação das empresas e dos bancos no financiamento de esporte, ciência, cultura, educação e ambiente. Os percentuais históricos de 0,5% para bancos e de 0,5% a 1% para grandes empresas são exemplos de simulação. Não são obrigações vigentes criadas por este livro nem estimativas de arrecadação.
 
-Definir “lucro ajustado” exige regras contábeis, tratamento de prejuízos, grupos econômicos e prevenção de transferência artificial de resultados. Também é preciso separar doação voluntária, patrocínio comercial e eventual obrigação legal. Cada modalidade demanda transparência própria e não deve ser utilizada para comprar avaliação favorável.
+Definir “lucro ajustado” exige regras contábeis, contabilização de prejuízos, grupos econômicos e prevenção de transferência artificial de resultados. Também é preciso separar doação voluntária, patrocínio comercial e eventual obrigação legal. Cada modalidade demanda transparência própria e não deve ser utilizada para comprar avaliação favorável.
 
 ## Crédito cívico de patrocínio
 
@@ -553,7 +553,7 @@ Uma proteção é combinar indicadores de processo, resultado e equilíbrio. O t
 
 ## Ficha técnica mínima
 
-Cada métrica deve conter nome, finalidade, unidade, regra de cálculo, fonte, periodicidade, população, exclusões, tratamento de ausências, incerteza, responsável e procedimento de revisão. Mudanças devem gerar nova versão e explicação de comparabilidade. Resultados de versões incompatíveis não podem ser apresentados como uma única série histórica contínua.
+Cada métrica deve conter nome, finalidade, unidade, regra de cálculo, fonte, periodicidade, população, exclusões, análise de dados ausentes, incerteza, responsável e procedimento de revisão. Mudanças devem gerar nova versão e explicação de comparabilidade. Resultados de versões incompatíveis não podem ser apresentados como uma única série histórica contínua.
 
 O piloto deve começar com poucas medidas relevantes. Um painel com dezenas de indicadores pouco confiáveis pode ser pior que três medidas bem definidas. O objetivo é apoiar decisão, não produzir uma aparência de precisão.
 
@@ -577,7 +577,7 @@ Os artigos seguintes compõem uma carta autoral, sem força de Constituição, l
 
 **Artigo 6 — Mérito contextualizado.** Reconhecimento profissional considera competências pertinentes, oportunidades, responsabilidades e contribuição verificável; não uma pontuação moral geral.
 
-**Artigo 7 — Segunda chance.** Dificuldades escolares, doença, deficiência, interrupção de carreira ou pobreza não geram condenação econômica permanente.
+**Artigo 7 — Segunda chance.** Dificuldades escolares, problemas de saúde, deficiência, interrupção de carreira ou pobreza não geram condenação econômica permanente.
 
 **Artigo 8 — Transparência.** Critérios, versões e decisões institucionais devem ser explicáveis e auditáveis, preservada a privacidade das pessoas.
 
@@ -735,7 +735,7 @@ Expandir exige benefício relevante, custo aceitável, ausência de dano importa
 
 Foram selecionados 31 painéis distintos: 21 sobre os tópicos conceituais e dez da cronologia original. Variações repetidas do tópico 11 e mosaicos que não atendiam ao pedido de imagens separadas foram excluídos da seleção principal. As imagens foram convertidas para WebP, mantendo suas dimensões, para reduzir o peso do site. Não foram apresentadas como novas fotografias nem como obras sem assistência de IA.
 
-| Painel ou série | Problema identificado | Tratamento editorial |
+| Painel ou série | Problema identificado | Revisão editorial |
 |---|---|---|
 | 08 — Mérito profissional | Pesos divergem dos exemplos textuais e não são validados | Texto informa a divergência; nenhum peso é regra profissional |
 | 12 a 21 | Numeração da série e expansões do nome variam | Identidade canônica definida no livro |
@@ -764,9 +764,9 @@ Os parâmetros do simulador são fictícios. Seu resultado não classifica uma e
 
 ## Publicação e estado de entrega
 
-A consulta ao repositório confirmou o portfólio, o catálogo e a inclusão de ecossistema na lista de diretórios do processo de construção pública. A conexão disponível nesta execução ofereceu leitura, sem ação de escrita. A tentativa adicional por Git não alcançou o servidor por falha de resolução de rede. Portanto, esta edição foi preparada como pacote local: não há commit, alteração remota ou publicação no GitHub Pages confirmados.
+A primeira entrega desta edição foi preparada como pacote local. Em 22 de outubro de 2026, o módulo foi integrado ao repositório aldenirfilho/aldenirmed89, em ecossistema/smd4, com acesso pelo portfólio e pelo catálogo 360X. O conteúdo mantém natureza conceitual e não recebeu validação jurídica ou econômica independente. A disponibilidade do endereço público depende da conclusão do processo de publicação do GitHub Pages.
 
-O pacote inclui um integrador que deve ser executado em uma cópia autorizada do repositório. Ele preserva arquivos existentes, adiciona o módulo, atualiza os pontos de navegação e recusa substituir um módulo anterior sem autorização explícita. O primeiro modo é simulação; o modo de aplicação grava apenas a cópia local. Commit, revisão, envio e confirmação do deploy continuam necessários.
+A integração preservou o portal médico e as demais iniciativas. O site, o texto-fonte e os metadados receberam atualização de publicação; os livros PDF e Word conservam a primeira edição, inclusive seu registro histórico de entrega local. O registro editorial documenta a autorização de divulgação e a revisão técnica automatizada, sem simular parecer humano especializado.
 
 # Glossário essencial
 
@@ -832,4 +832,4 @@ As referências sustentam fatos e critérios mencionados; não constituem endoss
 
 O valor desta proposta não está em apresentar uma sociedade concluída, mas em organizar um conjunto de perguntas difíceis de forma que possam ser examinadas. Quais limites reduzem abuso sem impedir criação? Quais incentivos reconhecem contribuição sem culpar a origem? Quais dados melhoram serviços sem converter cidadãos em pontuações? Quais garantias impedem que o próprio regulador se torne uma concentração de poder?
 
-O SMD-4 permanece um modelo em desenvolvimento. A versão aqui publicada como arquivo local preserva a intenção autoral e explicita suas tensões. Seu próximo marco substantivo não é uma promessa de implantação nacional: é uma revisão independente do desenho e um teste de baixo risco com resultados publicamente verificáveis.
+O SMD-4 permanece um modelo em desenvolvimento. A versão aqui disponibilizada preserva a intenção autoral e explicita suas tensões. Seu próximo marco substantivo não é uma promessa de implantação nacional: é uma revisão independente do desenho e um teste de baixo risco com resultados publicamente verificáveis.

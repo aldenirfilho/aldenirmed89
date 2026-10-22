@@ -6,7 +6,7 @@ Módulo cívico do **PROJETO 360X**, associado à iniciativa `p048-integridade-p
 **Edição:** desenvolvimento 1.0, 22/10/2026.  
 **Status editorial:** proposta autoral em revisão, sem validação econômica ou jurídica independente.
 
-[Abrir o HTML](index.html) · [Livro PDF](downloads/SMD4_Livro.pdf) · [Word DOCX](downloads/SMD4_Livro.docx) · [Word DOC](downloads/SMD4_Livro.doc) · [Texto-fonte](downloads/SMD4_Manuscrito.md)
+[Acessar o site](https://aldenirfilho.github.io/aldenirmed89/ecossistema/smd4/) · [Arquivo HTML](index.html) · [Livro PDF](downloads/SMD4_Livro.pdf) · [Word DOCX](downloads/SMD4_Livro.docx) · [Word DOC](downloads/SMD4_Livro.doc) · [Texto-fonte](downloads/SMD4_Manuscrito.md)
 
 ## Conteúdo
 
@@ -18,7 +18,7 @@ O módulo não integra protocolos médicos, não constitui partido político e n
 
 ## Limites
 
-O cronograma é um cenário condicional. As imagens antigas apresentam inconsistências preservadas e assinaladas. A versão textual corrige essas falhas e prevalece como edição revisada. O livro não recebe ISBN nesta entrega. A publicação remota depende de commit e deploy confirmados; este pacote não declara que tenham ocorrido.
+O cronograma é um cenário condicional. As imagens antigas apresentam inconsistências preservadas e assinaladas. A versão textual corrige essas falhas e prevalece como edição revisada. O livro não recebe ISBN nesta entrega. O módulo está integrado à branch main do repositório. A disponibilização no endereço público depende do pipeline do GitHub Pages. Os livros PDF e Word preservam a primeira edição e seu registro histórico de entrega local; site e metadados foram atualizados nesta integração.
 
 ## Execução
 
