@@ -2,7 +2,7 @@
 
 **Aldenir Rocha de Oliveira Filho** · Medicina, educação e tecnologia com propósito.
 
-[Perfil no GitHub](https://github.com/aldenirfilho) · [Portal AldenirMed89](https://aldenirfilho.github.io/aldenirmed89/) · [Ecossistema 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/) · [Apresentação profissional](PERFIL.md)
+[Perfil no GitHub](https://github.com/aldenirfilho) · [Quadro de projetos](https://github.com/users/aldenirfilho/projects/2/views/1) · [Portal AldenirMed89](https://aldenirfilho.github.io/aldenirmed89/) · [Ecossistema 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/) · [Apresentação profissional](PERFIL.md)
 
 ## Comece pelos destaques
 
@@ -17,9 +17,11 @@
 
 ## Como ler o catálogo
 
-Este índice reúne os **24 repositórios públicos identificados em 22/10/2026**, agrupados por finalidade. As descrições vêm dos READMEs e das estruturas disponíveis nessa data. Os estágios indicam o que está documentado, sem certificar funcionamento, revisão clínica ou prontidão comercial.
+Este índice reúne **25 repositórios públicos em 22/10/2026**, agrupados por finalidade. O inventário inicial identificou **24 repositórios públicos**; o repositório de apresentação [aldenirfilho/aldenirfilho](https://github.com/aldenirfilho/aldenirfilho), criado nesta organização do portfólio, é o 25º. As descrições vêm dos READMEs e das estruturas disponíveis nessa data. Os estágios indicam o que está documentado, sem certificar funcionamento, revisão clínica ou prontidão comercial.
 
 As cinco áreas temáticas e a seção de identidade abaixo facilitam a navegação pelo GitHub. O [catálogo do ecossistema](https://github.com/aldenirfilho/aldenirmed89/blob/main/ecossistema/data/catalog.json) mantém suas próprias raízes e iniciativas; uma iniciativa pode corresponder a um módulo dentro de um repositório. As duas contagens representam coisas diferentes.
+
+O quadro público **Projeto 360X · Portfólio e evolução** oferece duas visões salvas: [**Todos os projetos**](https://github.com/users/aldenirfilho/projects/2/views/1), com 25 fichas agrupadas por área, e [**Destaques**](https://github.com/users/aldenirfilho/projects/2/views/2), com os seis projetos selecionados. Cada ficha registra o estágio documentado e o link do repositório.
 
 ## 🩺 Medicina e educação
 
@@ -73,6 +75,7 @@ As cinco áreas temáticas e a seção de identidade abaixo facilitam a navegaç
 
 | Projeto | Finalidade | Estágio documentado |
 |---|---|---|
+| [**Perfil · Aldenir Rocha**](https://github.com/aldenirfilho/aldenirfilho) | Apresentação profissional, projetos em destaque e acesso ao catálogo do Projeto 360X. | README de perfil publicado em 22/10/2026. |
 | [**Identidade · Aldenir Rocha**](https://github.com/aldenirfilho/aldenir.rocha) | Repositório público reservado, ainda sem conteúdo. | Vazio em 22/10/2026. |
 
 ## Projetos relacionados
