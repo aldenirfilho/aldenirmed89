@@ -114,3 +114,10 @@ A edição reúne 23 capítulos, quatro anexos, 31 painéis conceituais e histó
 
 [Comparação documental entre instituições cristãs, judaicas e islâmicas](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso/), com entidades jurídicas identificadas, valores datados, perímetros contábeis, gráfico interativo, filtros e base JSON aberta. O módulo não soma a amostra nem atribui patrimônio privado de fiéis às religiões. [Dossiê Igreja SUD](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html) · [Documentação](../COMPARATIVO_INTERRELIGIOSO_PATRIMONIO_360X_2026-10-22.md).
 
+
+
+## Auditoria UTI — Turbo TEMI 360X
+
+[Painel de custos e auditoria de UTI](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-uti/) · [Código e documentação](../../ecossistema/auditoria-uti/README.md).
+
+Catálogo de 140 itens; orçamento para 10/20/30 leitos; triagem de preços e Excel incorporado. Base parcial: 32 itens com preço elegível, sem sincronização automática com BPS/PNCP. Alertas não comprovam superfaturamento.

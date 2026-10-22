@@ -1,0 +1,60 @@
+name: Integrar Auditoria UTI 360X
+
+on:
+  push:
+    branches:
+      - feat/auditoria-uti-360x-20261022
+    paths:
+      - .github/workflows/integrate-auditoria-uti-360x.yml
+      - scripts_admin/integrate_auditoria_uti_360x.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: integrate-auditoria-uti-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout da branch de integração
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 1
+
+      - name: Conferir pacote e integrar página, navegação e seção
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts_admin/integrate_auditoria_uti_360x.py
+          python3 scripts_admin/integrate_auditoria_uti_360x.py
+          node --check /tmp/uti360x-functional.js
+          python3 -m json.tool ecossistema/auditoria-uti/integracao.json >/dev/null
+          python3 -m json.tool ecossistema/auditoria-uti/data/base-documental.json >/dev/null
+          test -s ecossistema/auditoria-uti/index.html
+          test -s ecossistema/auditoria-uti/README.md
+          git diff --check
+
+      - name: Registrar integração na mesma branch
+        run: |
+          set -euo pipefail
+          git config user.name 'AldenirMed89 publication bot'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add index.html docs_usuario/PORTFOLIO_GITHUB/README.md ecossistema/auditoria-uti
+          if git diff --cached --quiet; then
+            echo 'Integração já aplicada; nenhum arquivo foi alterado.'
+          else
+            git commit -m 'feat: integrar Auditoria UTI Turbo TEMI 360X ao AldenirMed89'
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+
+      - name: Registrar resumo verificável
+        run: |
+          echo '## Auditoria UTI 360X' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Integridade do pacote confirmada; dados, Excel e JavaScript originais preservados.' >> "$GITHUB_STEP_SUMMARY"
+          echo '140 itens; 35 observações; 32 itens com preço elegível; sem sincronização BPS/PNCP.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Seção, navegação e página prontas na branch. A publicação depende da integração em main e do deploy do site.' >> "$GITHUB_STEP_SUMMARY"
