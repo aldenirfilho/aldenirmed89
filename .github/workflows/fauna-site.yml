@@ -1,0 +1,35 @@
+name: Validar Bolsa de Ajuda Fauna
+on:
+  push:
+    branches: [main, feat/bolsa-ajuda-fauna-20261022]
+    paths:
+      - 'apps/bolsa-ajuda-fauna/**'
+      - 'tests/test_fauna_site.py'
+      - '.github/workflows/fauna-site.yml'
+  pull_request:
+    paths:
+      - 'apps/bolsa-ajuda-fauna/**'
+      - 'tests/test_fauna_site.py'
+      - '.github/workflows/fauna-site.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Validar catálogo, fontes e controles de privacidade
+        run: |
+          set -e
+          python3 -m unittest discover -s tests -p 'test_fauna_site.py' -v
+          node --check apps/bolsa-ajuda-fauna/app.js
+          node --check apps/bolsa-ajuda-fauna/catalog.js
+          python3 scripts_admin/editorial_gate.py --check --changed-file apps/bolsa-ajuda-fauna/index.html --changed-file apps/bolsa-ajuda-fauna/styles.css --changed-file apps/bolsa-ajuda-fauna/app.js --changed-file apps/bolsa-ajuda-fauna/catalog.json --changed-file apps/bolsa-ajuda-fauna/catalog.js --changed-file apps/bolsa-ajuda-fauna/README.md --changed-file apps/index.html --json
+      - name: Preservar versão estática validada
+        uses: actions/upload-artifact@v4
+        with:
+          name: bolsa-ajuda-fauna-site
+          retention-days: 7
+          path: apps/bolsa-ajuda-fauna/

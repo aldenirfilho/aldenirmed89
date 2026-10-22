@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#173e32">
+<meta name="description" content="Conheça 26 animais ameaçados, seus habitats e as ameaças à sua sobrevivência. Encontre instituições de conservação e seus canais oficiais de apoio.">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Fauna 360° — Bolsa de Ajuda</title>
+<link rel="stylesheet" href="styles.css">
+<script src="catalog.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#catalogo">Pular para o catálogo</a>
+<header class="topbar"><div class="wrap topbar-inner">
+<a class="brand" href="#inicio" aria-label="Bolsa de Ajuda — início"><span class="brandmark" aria-hidden="true">↗</span><span>Bolsa de Ajuda<small>FAUNA 360°</small></span></a>
+<nav aria-label="Navegação principal"><a href="#catalogo">Animais</a><a href="#instituicoes">Instituições</a><a href="#metodo">Transparência</a></nav>
+<a class="portal" href="../../index.html">Portal 360X <span aria-hidden="true">↗</span></a>
+</div></header>
+<main id="inicio">
+<section class="hero wrap" aria-labelledby="hero-title">
+<div class="hero-copy"><p class="eyebrow"><span class="dot"></span> CONHECER · PROTEGER · CONTRIBUIR</p>
+<h1 id="hero-title">Um planeta.<br>Muitas vidas.<br><em>Uma escolha sua.</em></h1>
+<p class="lead">Descubra animais ameaçados, entenda o que precisa mudar e encontre quem trabalha para protegê-los.</p>
+<div class="hero-actions"><a class="button primary" href="#catalogo">Explorar os animais <span aria-hidden="true">↓</span></a><a class="text-link" href="#instituicoes">Encontrar uma causa ↗</a></div>
+<p class="small hero-note">Informação pública. Contribuição diretamente à instituição.<br>Sem arrecadação ou intermediação por este site.</p></div>
+<div class="habitat-art" aria-label="Composição ilustrativa de habitats terrestres e marinhos">
+<div class="art-heading"><span>ATLAS DE CONSERVAÇÃO</span><span>01 / MUNDO</span></div>
+<div class="orbit" aria-hidden="true"><div class="planet">VIDA<br><b>360°</b></div><div class="animal-symbol bird">🦜</div><div class="animal-symbol turtle">🐢</div><div class="animal-symbol rhino">🦏</div><div class="orbit-label forest">FLORESTAS</div><div class="orbit-label ocean">OCEANOS</div></div>
+<div class="art-bottom"><span>Da Caatinga aos oceanos.</span><span>Proteção sem fronteiras ↗</span></div>
+</div></section>
+<section class="stats wrap" aria-label="Conteúdo deste catálogo, não totais mundiais"><div><strong id="stat-total">26</strong><span>animais neste catálogo</span></div><div><strong id="stat-critical">16</strong><span>criticamente em perigo</span></div><div><strong id="stat-orgs">10</strong><span>instituições para conhecer</span></div><div><strong>100%</strong><span>das fichas com fontes</span></div></section>
+<section class="catalog-section wrap" id="catalogo" aria-labelledby="catalog-title">
+<div class="section-heading"><div><p class="eyebrow">01 — CONHEÇA A VIDA EM RISCO</p><h2 id="catalog-title">Escolha por onde começar.</h2></div><p>Uma seleção mundial, com atenção<br>especial ao Brasil e ao Ceará.</p></div>
+<div class="filter-panel"><div class="filter-row">
+<label class="search-field"><span>Buscar um animal ou uma ameaça</span><input id="search" type="search" placeholder="Nome, habitat, tráfico, pesca…" autocomplete="off"></label>
+<label><span>Nível de risco</span><select id="risk"><option value="">Todos os níveis</option><option value="CR">CR · Criticamente em perigo</option><option value="EN">EN · Em perigo</option><option value="VU">VU · Vulnerável</option></select></label>
+<label><span>Região de ocorrência</span><select id="region"><option value="">Todas as regiões</option><option>Brasil</option><option>Ceará</option><option>África</option><option>Ásia</option><option>Américas</option><option>Europa</option><option>Oceania</option><option>Oceanos</option></select></label>
+</div><div class="filter-bottom"><div class="chips" aria-label="Filtros rápidos"><button type="button" data-quick="" aria-pressed="true">Todos</button><button type="button" data-quick="Ceará" aria-pressed="false">Perto de você · Ceará</button><button type="button" data-quick="CR" aria-pressed="false">Risco crítico</button><button type="button" data-quick="Oceanos" aria-pressed="false">Vida marinha</button></div><label class="check"><input type="checkbox" id="favorites-only"> Apenas favoritos</label></div></div>
+<div class="result-bar"><p id="result-count" role="status" aria-live="polite">Carregando catálogo…</p><button class="text-button" type="button" id="clear-filters">Limpar filtros</button></div>
+<div id="animal-grid" class="animal-grid"></div>
+<div id="empty" class="empty" hidden><h3>Nenhum animal encontrado.</h3><p>Tente outro termo ou remova os filtros. A seleção não representa toda a fauna ameaçada.</p></div>
+<noscript><p>Ative o JavaScript para utilizar busca e filtros. O catálogo completo está disponível em <a href="catalog.json">formato JSON</a>, e os canais oficiais também estão listados abaixo.</p></noscript>
+<div class="catalog-foot"><p class="small">CR: criticamente em perigo · EN: em perigo · VU: vulnerável. Todas são categorias de ameaça global. Ícones são símbolos ilustrativos, não fotografias das espécies.</p><button id="export-favorites" class="button secondary" type="button">Exportar favoritos</button></div>
+<p class="small" id="storage-note">Favoritos são guardados somente neste navegador, quando disponível. Não são doações e não são sincronizados entre aparelhos.</p>
+</section>
+<section class="action-band"><div class="wrap action-inner"><div><p class="eyebrow">AJUDAR É REDUZIR UMA AMEAÇA REAL</p><h2>Não basta admirar.<br>É preciso proteger o habitat.</h2></div><p>A ação prioritária de cada ficha ajuda a conectar uma causa a um trabalho concreto. Contribua de acordo com suas possibilidades — informação, tempo e participação também contam.</p></div></section>
+<section class="wrap org-section" id="instituicoes" aria-labelledby="org-title"><div class="section-heading"><div><p class="eyebrow">02 — ENCONTRE QUEM ATUA</p><h2 id="org-title">Instituições e caminhos de apoio.</h2></div><p>Sem ranking de eficiência.<br>Sem parceria presumida.</p></div>
+<p class="notice">Os botões levam aos sites das próprias instituições. Confira favorecido, moeda, recorrência e finalidade antes de contribuir. Doação institucional não garante destinação exclusiva a uma espécie.</p>
+<div id="org-grid" class="org-grid"></div>
+<noscript><p><a href="https://www.aquasis.org/doeaqui">Aquasis</a> · <a href="https://verdeluz.org/">Verdeluz</a> · <a href="https://www.tamar.org.br/interna.php?cod=201">TAMAR</a> · <a href="https://micoleao.org.br/apoie/">Associação Mico-Leão-Dourado</a> · <a href="https://ipe.org.br/doe/">IPÊ</a> · <a href="https://www.wwf.org.br/participe/como_apoiar/">WWF-Brasil</a> · <a href="https://projetoalbatroz.org.br/sobre-o-projeto-albatroz/quem-somos">Projeto Albatroz</a> · <a href="https://asianrhinos.group/donate/">Especialistas em rinocerontes asiáticos</a> · <a href="https://www.ib.unam.mx/ib/adopta-axolotl/">UNAM</a> · <a href="https://www.mantatrust.org/donate">Manta Trust</a>.</p></noscript>
+</section>
+<section class="wrap method-section" id="metodo" aria-labelledby="method-title"><p class="eyebrow">03 — TRANSPARÊNCIA, SEM ATALHOS</p><h2 id="method-title">Conhecer a fonte também é cuidar.</h2>
+<div class="method-grid"><article><span class="step">01</span><h3>Risco não é destino.</h3><p>As categorias são globais e podem diferir das listas nacionais. As datas de avaliação variam. A seleção reúne 25 espécies e uma subespécie, identificada na ficha.</p><a href="https://www.iucnredlist.org/resources/categories-and-criteria" target="_blank" rel="noopener noreferrer">Entenda as categorias da IUCN ↗</a></article><article><span class="step">02</span><h3>Fonte, não promessa.</h3><p>Cada ficha identifica suas referências. A ação prioritária é uma síntese educativa: não substitui o planejamento de profissionais de conservação nem garante resultados.</p><p class="small">Conteúdo-base: 18/10/2026. Site organizado: 22/10/2026. Canais revistos individualmente, com data visível.</p></article><article><span class="step">03</span><h3>Doação não é impacto medido.</h3><p>Comprovante, confirmação de recebimento e resultados são evidências diferentes. Procure relatórios, período de atuação e indicadores. Não converta dinheiro em “animais salvos” sem comprovação.</p></article></div>
+<details class="faq"><summary>Como ajudar sem fazer uma doação?</summary><p>Procure atividades educativas e voluntariado organizado pela instituição, respeitando os critérios de participação. Compartilhe fontes confiáveis e observe a fauna à distância. Não capture, alimente ou solte animais por conta própria.</p></details>
+<details class="faq"><summary>O que fica salvo aqui?</summary><p>Apenas os identificadores dos animais marcados como favoritos podem ser armazenados neste navegador. Não há cadastro, upload de comprovantes, registro de valores ou processamento de pagamentos neste módulo. Os sites externos têm suas próprias políticas. Limpar dados do navegador pode apagar os favoritos.</p><button class="text-button" id="erase-favorites" type="button">Apagar meus favoritos deste navegador</button></details>
+<details class="faq"><summary>Como acompanhar uma instituição?</summary><p>Guarde o comprovante fora deste site público e procure confirmação de recebimento e relatórios. Compare a finalidade informada com as atividades e o período do relatório. Número de solturas ou de mudas plantadas, isoladamente, não demonstra recuperação da espécie.</p></details>
+</section>
+</main>
+<footer class="footer"><div class="wrap footer-inner"><div><strong>Bolsa de Ajuda · Fauna 360°</strong><p>Conhecer para proteger. Ajudar com responsabilidade.</p></div><p>Iniciativa educativa independente do PROJETO 360X.<br>Sem afiliação presumida às organizações citadas.</p><a href="../../ecossistema/index.html">Explorar o ecossistema ↗</a></div></footer>
+<dialog id="animal-dialog" aria-labelledby="dialog-title"><div class="dialog-toolbar"><span>FICHA DE CONSERVAÇÃO</span><button id="close-dialog" type="button" aria-label="Fechar ficha">Fechar ×</button></div><div id="dialog-content"></div></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body></html>
