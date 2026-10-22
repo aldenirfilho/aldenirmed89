@@ -1,0 +1,48 @@
+name: Integrar comparativo inter-religioso 360X
+
+on:
+  push:
+    branches:
+      - feat/comparativo-interreligioso-360x-pro
+    paths:
+      - ".github/workflows/integrate-comparativo-interreligioso.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: integrate-comparativo-interreligioso-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout da branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Aplicar integração idempotente
+        run: |
+          set -e
+          python3 scripts_admin/integrate_comparativo_interreligioso_360x.py
+          python3 -m json.tool ecossistema/auditoria-religiosa-360/data/comparativo-interreligioso-patrimonio-360x.json >/dev/null
+          python3 -m json.tool ecossistema/data/sites-360x.json >/dev/null
+          test -s ecossistema/auditoria-religiosa-360/comparativo-interreligioso.html
+          test -s ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html
+
+      - name: Registrar alterações na branch
+        run: |
+          set -e
+          if git diff --quiet; then
+            echo "Nenhuma alteração adicional necessária."
+            exit 0
+          fi
+          git config user.name "Aldenir Rocha de Oliveira Filho"
+          git config user.email "63321690+aldenirfilho@users.noreply.github.com"
+          git add ecossistema docs_usuario/PORTFOLIO_GITHUB/README.md
+          git commit -m "feat: integrar comparativo inter-religioso ao portal 360X"
+          git push origin HEAD:${{ github.ref_name }}

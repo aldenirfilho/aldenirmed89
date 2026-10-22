@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#08111d">
+  <meta name="description" content="Comparação documental entre instituições cristãs, judaicas e islâmicas, com patrimônio, transparência, limites contábeis e dados abertos.">
+  <link rel="canonical" href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso.html">
+  <link rel="stylesheet" href="./assets/comparativo-interreligioso.css?v=20261022-pro">
+  <title>Comparativo inter-religioso de patrimônio — Auditoria Religiosa 360X</title>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <header class="top"><div class="wrap topin">
+    <a class="brand" href="./index.html">AUDITORIA RELIGIOSA 360X</a>
+    <nav aria-label="Navegação">
+      <a href="#metodo">Método</a><a href="#estrutura">Estrutura</a><a href="#valores">Patrimônio</a>
+      <a href="#tradicoes">Tradições</a><a href="#transparencia">Transparência</a><a href="#fontes">Fontes</a>
+    </nav>
+  </div></header>
+
+  <main id="conteudo">
+    <section class="hero"><div class="wrap">
+      <span class="eyebrow">Projeto 360X · Auditoria Religiosa 360 · edição 22.10.2026</span>
+      <h1>Patrimônio sem <span>estereótipos.</span></h1>
+      <p class="lead">Comparação entre instituições cristãs, judaicas e islâmicas com o mesmo protocolo: entidade jurídica, perímetro contábil, data, titularidade, auditoria e impacto social.</p>
+      <div class="notice"><strong>Regra central:</strong> não existe um “caixa mundial” do cristianismo, do judaísmo ou do islamismo. Patrimônio privado de fiéis, famílias, empresas e governos não integra esta análise.</div>
+      <div class="actions">
+        <a class="button primary" href="#valores">Abrir comparação</a>
+        <a class="button" href="./dossie-igreja-mormon.html">Dossiê Igreja SUD</a>
+        <a class="button" href="./index.html">Portal da auditoria</a>
+        <button id="exportButton" type="button">Exportar dados JSON</button>
+      </div>
+    </div></section>
+
+    <section class="section" id="metodo"><div class="wrap">
+      <span class="number">01 / PROTOCOLO</span><h2>Primeiro o perímetro. <strong>Depois o número.</strong></h2>
+      <div class="grid three">
+        <article class="card"><h3>Entidade jurídica</h3><p>Uma tradição religiosa não é uma pessoa jurídica. Igrejas, federações, dioceses, fundos, waqfs e ONGs devem ser identificados separadamente.</p></article>
+        <article class="card"><h3>Medida contábil</h3><p>Ativos totais, patrimônio líquido, carteira regulatória, recursos de clientes e valor imobiliário não são equivalentes.</p></article>
+        <article class="card"><h3>Data de corte</h3><p>Valores de 2024, 2025 e junho de 2026 permanecem identificados e não são apresentados como se fossem simultâneos.</p></article>
+        <article class="card"><h3>Titularidade</h3><p>Ativos de clientes do IOR, fundos soberanos e bens estatais não são patrimônio religioso próprio.</p></article>
+        <article class="card"><h3>Câmbio</h3><p>Conversões em dólares são aproximações didáticas e não substituem o valor original ou a data da demonstração.</p></article>
+        <article class="card"><h3>Impacto social</h3><p>Estoque patrimonial e gasto anual são dimensões distintas; nenhum deles mede isoladamente fé, virtude ou corrupção.</p></article>
+      </div>
+    </div></section>
+
+    <section class="section alt" id="estrutura"><div class="wrap">
+      <span class="number">02 / ARQUITETURA</span><h2>A centralização explica grande parte do <strong>contraste aparente.</strong></h2>
+      <div class="architecture">
+        <article class="card"><span class="tag christian">Cristianismo</span><div class="level">Alta</div><h3>Igreja SUD</h3><p>Governança global e administração de reservas relativamente centralizadas.</p></article>
+        <article class="card"><span class="tag christian">Cristianismo</span><div class="level">Média</div><h3>Igreja da Inglaterra</h3><p>Fundo nacional central coexistindo com dioceses, paróquias e catedrais.</p></article>
+        <article class="card"><span class="tag christian">Cristianismo</span><div class="level">Baixa global</div><h3>Catolicismo</h3><p>Santa Sé, dioceses, ordens, paróquias, hospitais e universidades possuem pessoas jurídicas distintas.</p></article>
+        <article class="card"><span class="tag jewish">Judaísmo</span><div class="level">Muito baixa</div><h3>Comunidades judaicas</h3><p>Sinagogas, movimentos, federações, escolas e organizações humanitárias não formam um tesouro mundial comum.</p></article>
+        <article class="card"><span class="tag islamic">Islamismo</span><div class="level">Muito baixa</div><h3>Waqfs e instituições</h3><p>Endowments, mesquitas, ministérios, fundações e ONGs variam por país e tradição jurídica.</p></article>
+      </div>
+    </div></section>
+
+    <section class="section" id="valores"><div class="wrap">
+      <span class="number">03 / AMOSTRA DOCUMENTAL</span><h2>Instituições representativas, <strong>não ranking de religiões.</strong></h2>
+      <div class="controls">
+        <label>Tradição<select id="traditionFilter"><option value="all">Todas</option><option value="Cristianismo">Cristianismo</option><option value="Judaísmo">Judaísmo / vida comunitária</option><option value="Islamismo">Islamismo / waqf e filantropia</option></select></label>
+        <label>Escala<select id="scaleMode"><option value="log">Logarítmica</option><option value="linear">Linear</option></select></label>
+        <label>Buscar<input id="searchInput" type="search" placeholder="Ex.: APSA, UJA, Awqaf"></label>
+      </div>
+      <p id="status" class="small" role="status" aria-live="polite">Carregando dados…</p>
+      <div id="chart" class="chart" aria-label="Gráfico comparativo"></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Entidade</th><th>Valor original</th><th>≈ US$ bi</th><th>Medida e perímetro</th><th>Data</th><th>Evidência</th><th>Limite principal</th></tr></thead>
+        <tbody id="tableBody"></tbody>
+      </table></div>
+      <div class="notice"><strong>Não some a amostra:</strong> ela combina estimativa global, endowments, patrimônio líquido, carteira 13F e ecossistema de waqfs. A soma não teria significado contábil ou religioso.</div>
+    </div></section>
+
+    <section class="section alt" id="tradicoes"><div class="wrap">
+      <span class="number">04 / LEITURA POR TRADIÇÃO</span><h2>O que os dados realmente <strong>permitem concluir.</strong></h2>
+      <div class="grid two">
+        <article class="card"><span class="tag christian">Cristianismo</span><h3>Modelos muito diferentes</h3><ul><li>A Igreja SUD é mais centralizada que a maioria das igrejas.</li><li>A Igreja da Inglaterra publica um grande endowment nacional.</li><li>APSA e IOR não representam todo o patrimônio católico mundial.</li><li>Recursos de clientes sob custódia não são patrimônio próprio.</li></ul></article>
+        <article class="card"><span class="tag jewish">Judaísmo</span><h3>Patrimônio comunitário disperso</h3><ul><li>Não há autoridade financeira central reconhecida por todas as correntes.</li><li>Federações e entidades humanitárias publicam documentos por pessoa jurídica.</li><li>UJA, JDC e JNF-USA possuem finalidades e patrimônios distintos.</li><li>Não se atribui a elas a riqueza de indivíduos judeus ou do Estado de Israel.</li></ul></article>
+        <article class="card"><span class="tag islamic">Islamismo</span><h3>Waqf e preservação do ativo</h3><ul><li>Waqfs podem deter imóveis, terras, títulos e dinheiro destinados a fins permanentes.</li><li>Dubai apresenta predominância imobiliária no ecossistema local examinado.</li><li>A supervisão pode ser estatal, fundacional ou privada.</li><li>Islamic Relief é uma ONG, não um tesouro central do islamismo.</li></ul></article>
+        <article class="card"><span class="tag neutral">Exclusões</span><h3>O que fica fora</h3><ul><li>Fundos soberanos, petróleo estatal, bancos centrais e orçamentos nacionais.</li><li>Patrimônio privado de fiéis, empresários, famílias ou líderes.</li><li>Instituições sem controle jurídico comprovado.</li><li>Depósitos, custódia e ativos administrados para clientes.</li></ul></article>
+      </div>
+    </div></section>
+
+    <section class="section" id="transparencia"><div class="wrap">
+      <span class="number">05 / TRANSPARÊNCIA</span><h2>A abertura varia mais por <strong>jurisdição e entidade</strong> do que por religião.</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Entidade</th><th>Cobertura</th><th>Pontos fortes</th><th>Lacunas</th></tr></thead>
+        <tbody>
+          <tr><td>Igreja SUD / Ensign Peak</td><td>Média</td><td>Form 13F, relatório humanitário e documentos da SEC</td><td>Sem balanço global consolidado público com parecer externo</td></tr>
+          <tr><td>Church Commissioners</td><td>Alta no fundo</td><td>Relatório anual, carteira, governança e sustentabilidade</td><td>Não consolida todas as entidades anglicanas</td></tr>
+          <tr><td>APSA / IOR</td><td>Alta no perímetro central</td><td>Balanços e auditoria externa do IOR</td><td>Não consolida dioceses, ordens e instituições católicas</td></tr>
+          <tr><td>UJA / JDC / JNF-USA</td><td>Alta por entidade</td><td>Form 990, ativos, receitas, despesas e governança</td><td>Não existe consolidação global do judaísmo</td></tr>
+          <tr><td>Awqaf Dubai</td><td>Média-alta local</td><td>Valor agregado e divisão entre imóveis e ativos financeiros</td><td>Não representa outros países ou todos os waqfs privados</td></tr>
+          <tr><td>Islamic Relief Worldwide</td><td>Alta por entidade</td><td>Demonstrações auditadas e gastos por programa</td><td>É ONG humanitária, não autoridade religiosa central</td></tr>
+        </tbody>
+      </table></div>
+    </div></section>
+
+    <section class="section alt" id="fontes"><div class="wrap">
+      <span class="number">06 / FONTES</span><h2>Documentos para <strong>refazer a análise.</strong></h2>
+      <ol class="sources">
+        <li><a href="https://www.sec.gov/newsroom/press-releases/2023-35">SEC — Ensign Peak e Igreja SUD, acordo de 2023</a></li>
+        <li><a href="https://www.churchofengland.org/media/finance-news/church-commissioners-england-endowment-fund-delivers-8-return-2025">Church Commissioners — relatório de 2025</a></li>
+        <li><a href="https://www.vaticannews.va/en/vatican-city/news/2026-07/apsa-2025-financial-statements-stronger-net-assets-service-holy.html">APSA — demonstrações de 2025</a></li>
+        <li><a href="https://www.ior.va/en/contents/press-2025/annual-report-2024/">IOR — relatório anual de 2024</a></li>
+        <li><a href="https://projects.propublica.org/nonprofits/organizations/510172429">UJA-Federation of New York — Form 990</a></li>
+        <li><a href="https://projects.propublica.org/nonprofits/organizations/131656634">JDC — Form 990</a></li>
+        <li><a href="https://projects.propublica.org/nonprofits/organizations/131659627">JNF-USA — Form 990</a></li>
+        <li><a href="https://mediaoffice.ae/en/news/2026/march/10-03/dubai-endowment">Dubai Media Office — endowments de 2025</a></li>
+        <li><a href="https://annualreport.islamic-relief.org/2025/financial-statements/">Islamic Relief Worldwide — demonstrações de 2025</a></li>
+        <li><a href="https://www.vgm.gov.tr/foundations-in-turkiye/foundations-in-turkiye/what-is-foundation-waqf">Diretoria-Geral de Fundações da Turquia — conceito de waqf</a></li>
+      </ol>
+      <p class="small">Os valores e conversões permanecem acompanhados de data, fonte, medida e limitação. Ausência de transparência não prova crime; patrimônio elevado não prova apropriação pessoal.</p>
+    </div></section>
+  </main>
+
+  <footer><div class="wrap"><strong>Projeto 360X · Auditoria Religiosa 360</strong><p>Pesquisa documental educacional. Não substitui auditoria contábil, perícia, parecer jurídico ou decisão judicial. Autoria editorial: Aldenir Rocha de Oliveira Filho.</p></div></footer>
+  <script src="./assets/comparativo-interreligioso.js?v=20261022-pro" defer></script>
+</body>
+</html>
