@@ -31,6 +31,22 @@ jobs:
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v6
 
+      - name: Gerar índices estáticos necessários
+        run: |
+          set -e
+          python3 scripts_admin/build_desafios.py
+          python3 scripts_admin/build_mnemonicos.py
+          python3 02_Biblioteca_IA_Engine/scan_biblioteca.py
+          python3 scripts_admin/build_library_previews.py
+          python3 scripts_admin/build_library_connections.py
+          python3 scripts_admin/scan_card_feed.py
+          python3 scripts_admin/build_connections.py
+          for hub in 04_Ebooks_Intensiva_Clinica 07_Questoes_Comentadas 08_Transcricoes 09_POCUS_Hub; do
+            if [ -d "$hub" ]; then
+              python3 scripts_admin/scan_content_module.py "$hub"
+            fi
+          done
+
       - name: Montar site público pela allowlist existente
         run: |
           set -e
