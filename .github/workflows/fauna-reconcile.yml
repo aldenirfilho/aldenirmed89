@@ -1,0 +1,60 @@
+name: Conciliar registro editorial da fauna
+on:
+  push:
+    branches: [feat/bolsa-ajuda-fauna-20261022]
+    paths: ['.github/workflows/fauna-reconcile.yml']
+permissions:
+  contents: read
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: feat/bolsa-ajuda-fauna-20261022
+          fetch-depth: 0
+      - name: Conciliar somente o conflito esperado de registro
+        shell: bash
+        run: |
+          set -e
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = '95acad3afd77b12db8cdb990cf5d25942cd6abb8'
+          BASE=$(git merge-base HEAD origin/main)
+          export BASE
+          git merge --no-commit --no-ff origin/main || {
+            test "$(git diff --name-only --diff-filter=U)" = 'data/editorial/registry.json'
+          }
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          path = 'data/editorial/registry.json'
+          def read(ref):
+              return json.loads(subprocess.check_output(['git','show',ref+':'+path]))
+          base, ours, theirs = read(os.environ['BASE']), read('HEAD'), read('origin/main')
+          extra_ids = {'bolsa-ajuda-fauna-20261022','bolsa-ajuda-fauna-navigation-20261022'}
+          b = {i['id']: i for i in base['items']}
+          o = {i['id']: i for i in ours['items']}
+          t = {i['id']: i for i in theirs['items']}
+          if set(o) - set(b) != extra_ids:
+              raise SystemExit('Unexpected feature-branch registry additions.')
+          if any(o.get(k) != v for k,v in b.items()):
+              raise SystemExit('Feature branch changed an existing registry item.')
+          if any(ours.get(k) != v for k,v in base.items() if k != 'items'):
+              raise SystemExit('Feature branch changed registry metadata.')
+          if extra_ids & set(t):
+              raise SystemExit('New entries already exist upstream; manual review required.')
+          theirs['items'].extend(o[k] for k in sorted(extra_ids))
+          Path(path).write_text(json.dumps(theirs,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('Preserved all upstream registry entries and both fauna additions.')
+          PY
+          git add data/editorial/registry.json
+          test -z "$(git diff --name-only --diff-filter=U)"
+          python3 -m unittest discover -s tests -p 'test_fauna_site.py' -v
+          node --check apps/bolsa-ajuda-fauna/app.js
+          python3 scripts_admin/editorial_gate.py --check --changed-file apps/bolsa-ajuda-fauna/index.html --changed-file apps/bolsa-ajuda-fauna/styles.css --changed-file apps/bolsa-ajuda-fauna/app.js --changed-file apps/bolsa-ajuda-fauna/catalog.json --changed-file apps/bolsa-ajuda-fauna/catalog.js --changed-file apps/bolsa-ajuda-fauna/README.md --changed-file apps/index.html --json
+          git commit -m 'merge: preserve concurrent portfolio and fauna editorial entries'
+          git push origin HEAD:feat/bolsa-ajuda-fauna-20261022
