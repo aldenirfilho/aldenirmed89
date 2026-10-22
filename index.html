@@ -2540,6 +2540,22 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <link rel="stylesheet" href="assets/site-navigation.css"/>
 <script src="assets/site-navigation.js" defer></script>
 <link rel="stylesheet" href="./assets/brand-360x/identity.css"/>
+
+<style id="auditoria-uti-360x-style">
+#auditoria-uti{max-width:var(--page-max,1400px);margin:0 auto;padding:clamp(32px,5vw,64px) var(--page-gutter,24px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;scroll-margin-top:160px}
+#auditoria-uti h2{font:700 clamp(28px,3vw,42px)/1.2 var(--font-head,sans-serif);margin:12px 0}
+#auditoria-uti p{color:var(--soft,#c7d7ea);line-height:1.65;max-width:68ch}
+.uti360x-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:22px 0}
+.uti360x-actions a{min-height:44px;display:inline-flex;align-items:center;color:var(--cyan,#73ddd6);font-weight:600}
+.uti360x-actions .uti360x-primary{border:1px solid var(--cyan,#73ddd6);background:var(--cyan-d,#102f3d);border-radius:12px;padding:13px 20px}
+#auditoria-uti .uti360x-notice{font-size:13px;border-left:3px solid var(--yellow,#f4bd73);padding:8px 14px}
+.uti360x-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-content:center}
+.uti360x-features div{border:1px solid var(--brd,#26364d);background:var(--surf,#101b2c);border-radius:16px;padding:21px}
+.uti360x-features strong{display:block;font-size:20px;color:var(--text,#eef3fa);margin-bottom:8px}
+.uti360x-features span{display:block;color:var(--muted,#a5b4c9);font-size:14px;line-height:1.5}
+@media(max-width:760px){#auditoria-uti{grid-template-columns:1fr}.uti360x-features strong{font-size:18px}}
+@media(max-width:380px){.uti360x-features{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#top">Pular para o conteúdo principal</a>
@@ -2610,6 +2626,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       </div>
     </a>
     <div class="nav-links" role="navigation" aria-label="Navegação principal">
+      <a href="#auditoria-uti" class="accent">Auditoria UTI</a>
       <a href="ecossistema/mapa.html" class="accent brand-360x-nav"><img src="./assets/brand-360x/logo-360x.webp" width="28" height="28" alt=""/> Mapa 360X</a>
       <a href="24_Semiologia/index.html" class="accent">🩺 Semiologia</a>
       <a href="#modulos" class="accent">🧭 Módulos</a>
@@ -3146,6 +3163,23 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 </section>
 
 <!-- ── MÓDULOS E APPS ─────────────────────────────── -->
+
+<!-- Auditoria UTI 360X: seção integrada, sem substituir módulos existentes. -->
+<section id="auditoria-uti" class="section" aria-labelledby="auditoria-uti-title">
+  <div class="uti360x-intro">
+    <span class="section-tag">Turbo TEMI 360X · Gestão e transparência</span>
+    <h2 id="auditoria-uti-title">Auditoria UTI</h2>
+    <p>Do preço do equipamento ao custo por paciente-dia. Consulte o catálogo, explore os cenários e revise as evidências de uma compra.</p>
+    <div class="uti360x-actions"><a class="uti360x-primary" href="ecossistema/auditoria-uti/">Abrir painel de Auditoria UTI →</a><a href="https://github.com/aldenirfilho/aldenirmed89/tree/main/ecossistema/auditoria-uti" target="_blank" rel="noopener noreferrer">Documentação no GitHub</a></div>
+    <p class="uti360x-notice"><strong>Base documental parcial:</strong> 32 dos 140 itens possuem preço elegível. Sem atualização automática BPS/PNCP. Alertas indicam revisão; não comprovam superfaturamento.</p>
+  </div>
+  <div class="uti360x-features" aria-label="Recursos do painel">
+    <div><strong>140 itens</strong><span>Equipamentos, medicamentos e materiais.</span></div>
+    <div><strong>10 / 20 / 30 leitos</strong><span>Cenários de orçamento e paciente-dia.</span></div>
+    <div><strong>Triagem de preços</strong><span>Fontes, equivalência e amostra mínima.</span></div>
+    <div><strong>Excel incorporado</strong><span>Planilha original disponível no painel.</span></div>
+  </div>
+</section>
 <section id="modulos" aria-labelledby="mod-heading">
   <div class="shell">
     <div class="reveal section-intro">
