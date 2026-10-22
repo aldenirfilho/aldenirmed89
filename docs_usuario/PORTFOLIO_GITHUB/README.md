@@ -14,6 +14,7 @@
 | [🧠 DiversaMente](https://github.com/aldenirfilho/neurodiversidade-brasil) | Educação sobre TDAH adulto, rotina e inclusão. |
 | [🌿 Atlas Vivo · Plantas](https://github.com/aldenirfilho/atlas-vivo-360x-pages) | Botânica e aprendizagem visual. |
 | [📚 IntensivaHub](https://github.com/aldenirfilho/intensivahub) | Temas de estudo e materiais de medicina intensiva. |
+| [🔎 Auditoria Religiosa 360](https://aldenirfilho.github.io/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-/) | Cenário atual, agentes de investigação, dossiês, método e fontes documentais. |
 
 ## Como ler o catálogo
 
@@ -59,7 +60,7 @@ O quadro público **Projeto 360X · Portfólio e evolução** oferece duas visõ
 | [**360X Brasil · Portal cívico**](https://github.com/aldenirfilho/NEXUS-BRASIL) | Portal de ideias e propostas cívicas com foco inicial em Sobral. | Iniciativa em construção. |
 | [**360X Brasil · Observatório e propostas**](https://github.com/aldenirfilho/NEXUS-COSMOS-SITE) | Portal de propostas, análises documentais e indicadores históricos. | Distribuição pública com análises preliminares. |
 | [**Índole 360° · Pesquisa Documental**](https://github.com/aldenirfilho/INDOLE-360) | Catálogo de pesquisa sobre empresas, fontes e comparações. | Pesquisa v2.2.0; sem nota geral de índole concluída. |
-| [**Auditoria e Transparência · Instituições Cristãs**](https://github.com/aldenirfilho/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-) | Pesquisa documental sobre instituições, recursos e impacto social e ambiental. | Pesquisa documental; conferir fontes e estados processuais. |
+| [**Auditoria Religiosa 360**](https://aldenirfilho.github.io/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-/) ([repositório](https://github.com/aldenirfilho/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-)) | Pesquisa documental sobre igrejas, recursos, casos judiciais, governança e impacto social. | Portal público com cenário 2026, 14 agentes de auditoria, dossiês, método e fontes; atualização processual contínua. |
 | [**Plano D · Desenvolvimento de Sobral**](https://github.com/aldenirfilho/PLANO-D-) | Registro inicial de uma proposta de desenvolvimento cívico e social. | Ideia inicial; apresentação editorial a revisar. |
 
 ## ✨ Cultura, reflexão e tempo de viver
@@ -85,6 +86,7 @@ O quadro público **Projeto 360X · Portfólio e evolução** oferece duas visõ
 - **360X Brasil:** os dois portais cívicos têm conteúdo e ciclos próprios. Os nomes técnicos legados foram mantidos nos links.
 - **Atlas Vivo:** plantas, animais e rochas são distribuições distintas. Atualizações de conteúdo e integridade seguem a documentação de cada uma.
 - **BLACKBLOK:** o título segue o conteúdo atual do README; o nome técnico do repositório ainda é `ORGANIZA-OCODIFICADATEOLOGICACRIST-`.
+- **Auditoria Religiosa 360:** integra investigação documental, contraditório, transparência financeira, impacto social e uma arquitetura de agentes; não publica ranking automático de culpa.
 
 ## Participar e acompanhar
 
@@ -93,4 +95,3 @@ Abra o README do projeto para conhecer seu escopo, forma de execução, referên
 **Projetos médicos:** finalidade educacional; cada ferramenta informa suas condições de revisão e validação. **Projetos culturais:** obras e marcas de terceiros mantêm seus respectivos direitos. A disponibilidade pública de um repositório não substitui uma licença de uso.
 
 [Dados deste índice](repositorios-publicos.json) · [Voltar ao AldenirMed89](https://github.com/aldenirfilho/aldenirmed89)
-
