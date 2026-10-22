@@ -3,9 +3,10 @@ name: Integrar comparativo inter-religioso 360X
 on:
   push:
     branches:
-      - feat/comparativo-interreligioso-360x-pro
+      - fix/comparativo-interreligioso-404
     paths:
       - ".github/workflows/integrate-comparativo-interreligioso.yml"
+      - "scripts_admin/integrate_comparativo_interreligioso_360x.py"
   workflow_dispatch:
 
 permissions:
@@ -32,6 +33,7 @@ jobs:
           python3 -m json.tool ecossistema/auditoria-religiosa-360/data/comparativo-interreligioso-patrimonio-360x.json >/dev/null
           python3 -m json.tool ecossistema/data/sites-360x.json >/dev/null
           test -s ecossistema/auditoria-religiosa-360/comparativo-interreligioso.html
+          test -s ecossistema/auditoria-religiosa-360/comparativo-interreligioso/index.html
           test -s ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html
 
       - name: Registrar alterações na branch
@@ -44,5 +46,5 @@ jobs:
           git config user.name "Aldenir Rocha de Oliveira Filho"
           git config user.email "63321690+aldenirfilho@users.noreply.github.com"
           git add ecossistema docs_usuario/PORTFOLIO_GITHUB/README.md
-          git commit -m "feat: integrar comparativo inter-religioso ao portal 360X"
+          git commit -m "fix: apontar comparativo para rota estável sem 404"
           git push origin HEAD:${{ github.ref_name }}
