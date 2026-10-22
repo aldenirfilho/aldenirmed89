@@ -150,10 +150,14 @@ def classify(rows: list[dict], nasdaq: dict, manual: list[dict], pending_reviews
     if len(result) != 1724 or sum(r["valueUSD"] for r in result) != TOTAL:
         raise ValueError("Carteira não reconciliada com o 13F")
     sectors = []
+    former_residual_total = sum(r["valueUSD"] for r in result if r["previousResidual"])
     for sector in sorted({r["sector"] for r in result}):
         rs = [r for r in result if r["sector"] == sector]
         value = sum(r["valueUSD"] for r in rs)
+        residual_value = sum(r["valueUSD"] for r in rs if r["previousResidual"])
         sectors.append(dict(sector=sector, valueUSD=value, percentOf13F=value/TOTAL*100,
+                            residualValueUSD=residual_value, residualPercentOf13F=residual_value/TOTAL*100,
+                            percentOfFormerResidual=residual_value/former_residual_total*100,
                             positions=len(rs), issuers=len({r["issuer"] for r in rs})))
     sectors.sort(key=lambda s: -s["valueUSD"])
     totals = {}

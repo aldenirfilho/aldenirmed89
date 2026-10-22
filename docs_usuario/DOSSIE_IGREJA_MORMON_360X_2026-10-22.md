@@ -64,4 +64,4 @@ python3 scripts_admin/classify_ensign_peak_sectors.py \
   --output /tmp/ensign-peak-setores-reproducao
 ```
 
-A tabela HTML incorpora os dados, pesquisa, filtros e fontes por posição. O índice de transparência da Igreja continua 31/100: enriquecimento independente não é aumento de divulgação institucional. Simulador e demais perímetros do dossiê preservados. Publicação adicional explicitamente autorizada pelo pedido de atualização do usuário. Reverter o commit da edição 1.1 restaura a versão anterior.
+A tabela HTML incorpora os dados, pesquisa, filtros e fontes por posição. Há distribuição de toda a carteira e tabela específica dos 57,08% restantes, com valores, percentual do 13F e percentual interno do bloco residual; denominadores explícitos. O índice de transparência da Igreja continua 31/100: enriquecimento independente não é aumento de divulgação institucional. Simulador e demais perímetros do dossiê preservados. Publicação adicional explicitamente autorizada pelo pedido de atualização do usuário. Reverter os commits da edição 1.1 restaura a versão anterior.

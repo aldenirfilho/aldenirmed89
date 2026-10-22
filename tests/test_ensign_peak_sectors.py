@@ -42,6 +42,8 @@ class EnsignPeakSectorsTests(unittest.TestCase):
         for key, value in (("summary", 60_816_389_385), ("previousResidual", 34_711_166_918)):
             self.assertEqual(sum(g["valueUSD"] for g in self.result[key].values()), value)
         self.assertEqual(sum(s["valueUSD"] for s in self.result["sectors"]), 60_816_389_385)
+        self.assertEqual(sum(s["residualValueUSD"] for s in self.result["sectors"]), 34_711_166_918)
+        self.assertAlmostEqual(sum(s["percentOfFormerResidual"] for s in self.result["sectors"]), 100)
         self.assertAlmostEqual(sum(s["percentOf13F"] for s in self.result["sectors"]), 100)
         self.assertEqual(self.result["summary"]["etf"]["positions"], 29)
         self.assertEqual(self.result["summary"]["etf"]["valueUSD"], 1_217_968_868)
@@ -84,6 +86,7 @@ class EnsignPeakSectorsTests(unittest.TestCase):
             self.assertEqual(int(csv_record["valueUSD"]), record["valueUSD"])
         self.assertIn('id="filtro-status"', source)
         self.assertIn('id="fonte-nasdaq"', source)
+        self.assertIn('id="residuo-setorial"', source)
 
 
 if __name__ == "__main__":
