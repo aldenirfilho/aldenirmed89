@@ -1,0 +1,113 @@
+name: Importar SMD-4 para o 360X (execucao unica)
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/import-smd4-once.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-smd4-once
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout do destino sem alterar o portal medico
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            ecossistema
+            docs_usuario/PORTFOLIO_GITHUB
+            scripts_admin
+          sparse-checkout-cone-mode: true
+      - name: Transferir somente o pacote publico autorizado
+        env:
+          PACKAGE_URL: 'https://sdmntprbrazilsouth.oaiusercontent.com/files/00000000-d6ec-820e-9cec-aafc3cd0d623/raw?se=2026-10-22T16%3A46%3A09Z&sp=r&sv=2026-02-06&sr=b&scid=5dcdaf17-5eb5-5360-b480-7ffa0d4ff862&skoid=4a431cd2-eafd-49c7-90be-bbb4d45e696d&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-22T10%3A47%3A29Z&ske=2026-10-23T10%3A47%3A29Z&sks=b&skv=2026-02-06&sig=NQF4cz5BwIhWzuX6Oc6G74vLOt/kGz%2B/bc5XdjHGba4%3D'
+          PACKAGE_SHA256: '64ba67a42c13cd8b819dcbe30dac1704eeee7389dd13126796787e651221ef75'
+        run: |
+          set -euo pipefail
+          echo "::add-mask::$PACKAGE_URL"
+          python3 - <<'PY'
+          import hashlib, os, pathlib, stat, urllib.request, zipfile
+          destination = pathlib.Path(os.environ['RUNNER_TEMP']) / 'smd4-authorized-package'
+          destination.mkdir(exist_ok=True)
+          archive = destination / 'package.zip'
+          with urllib.request.urlopen(os.environ['PACKAGE_URL'], timeout=90) as response:
+              payload = response.read(32 * 1024 * 1024 + 1)
+          assert len(payload) == 24342405, 'Tamanho inesperado'
+          assert hashlib.sha256(payload).hexdigest() == os.environ['PACKAGE_SHA256'], 'SHA256 divergente'
+          archive.write_bytes(payload)
+          with zipfile.ZipFile(archive) as z:
+              entries = z.infolist()
+              assert len(entries) == 81
+              assert sum(e.file_size for e in entries) < 64 * 1024 * 1024
+              for e in entries:
+                  path = pathlib.PurePosixPath(e.filename)
+                  assert not path.is_absolute() and '..' not in path.parts
+                  assert path.parts[0] == 'SMD4_360X'
+                  assert not stat.S_ISLNK(e.external_attr >> 16)
+              z.extractall(destination)
+          print('Pacote autorizado validado: 81 arquivos, SHA256 conferido.')
+          PY
+      - name: Integrar site, galeria, livros e navegacao existente
+        run: |
+          set -euo pipefail
+          python3 "$RUNNER_TEMP/smd4-authorized-package/SMD4_360X/integracao/integrar_smd4.py" --repo "$GITHUB_WORKSPACE" --apply
+      - name: Validar integridade do modulo e dos links locais
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib, re
+          from html.parser import HTMLParser
+          from urllib.parse import unquote, urlsplit
+          repo = pathlib.Path.cwd()
+          root = repo / 'ecossistema/smd4'
+          source = pathlib.Path(__import__('os').environ['RUNNER_TEMP']) / 'smd4-authorized-package/SMD4_360X/para_repositorio/ecossistema/smd4'
+          files = [p for p in source.rglob('*') if p.is_file()]
+          for p in files:
+              target = root / p.relative_to(source)
+              assert target.is_file() and hashlib.sha256(p.read_bytes()).digest() == hashlib.sha256(target.read_bytes()).digest(), str(target)
+          assert len(list((root/'assets').glob('t[0-9][0-9].webp'))) == 21
+          assert len(list((root/'assets').glob('h[0-9][0-9].webp'))) == 10
+          for p in (root/'data').glob('*.json'):
+              json.loads(p.read_text())
+          catalog = json.loads((repo/'ecossistema/data/catalog.json').read_text())
+          records = [p for p in catalog['projects'] if p['id'] == 'p048-integridade-politicas']
+          assert len(records) == 1 and 'SMD-4' in records[0]['aliases']
+          for relative in ['ecossistema/index.html','docs_usuario/PORTFOLIO_GITHUB/README.md']:
+              assert (repo/relative).read_text().count('SMD4-360X:BEGIN') == 1
+          class Links(HTMLParser):
+              def handle_starttag(self, tag, attrs):
+                  for k, v in attrs:
+                      if k not in ('href','src') or not v or v.startswith(('#','data:','mailto:','tel:')):
+                          continue
+                      u = urlsplit(v)
+                      if u.scheme or u.netloc or u.path.startswith('/'):
+                          continue
+                      target = (root / unquote(u.path)).resolve()
+                      assert target.exists(), 'Link local ausente: ' + v
+          Links().feed((root/'index.html').read_text())
+          print(f'Modulo completo validado: {len(files)} arquivos, 31 imagens, livros e navegacao.')
+          PY
+          git diff --check
+      - name: Registrar alteracoes sem sobrescrever trabalho concorrente
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ecossistema/smd4 ecossistema/index.html ecossistema/data/catalog.json docs_usuario/PORTFOLIO_GITHUB/README.md
+          if git diff --cached --quiet; then
+            echo 'Modulo ja integrado; nenhuma duplicacao.'
+            exit 0
+          fi
+          git commit -m 'feat: integrar SMD-4 ao 360X com site, 31 imagens e livros'
+          git pull --rebase origin main
+          git push origin HEAD:main
+          printf '## SMD-4 integrado\n\nCommit: `%s`\n\nDestino: `ecossistema/smd4/`\n\nPublicacao depende do pipeline existente do GitHub Pages.\n' "$(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
