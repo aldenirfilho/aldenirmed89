@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#08111d">
+  <title>Comparativo inter-religioso — Auditoria Religiosa 360X</title>
+  <meta name="description" content="Rota estável do Comparativo Inter-religioso de Patrimônio 360X.">
+  <link rel="canonical" href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso/">
+  <style>
+    :root{color-scheme:dark;--bg:#08111d;--panel:#132338;--line:#31506d;--text:#edf5fa;--muted:#adc1d0;--gold:#f0c876;--cyan:#72ddd4}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 0,#1b3c64 0,var(--bg) 44%,#050a11 100%);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+    main{width:min(760px,calc(100% - 32px));padding:30px;border:1px solid var(--line);border-radius:16px;background:rgba(19,35,56,.96);box-shadow:0 24px 80px #0008}h1{line-height:1.08;margin:.25em 0;color:var(--gold)}p{color:var(--muted)}.k{color:var(--cyan);text-transform:uppercase;letter-spacing:.14em;font-size:.76rem;font-weight:800}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}a{display:inline-block;padding:11px 15px;border:1px solid var(--line);border-radius:9px;color:var(--text);text-decoration:none;font-weight:750}a.primary{background:var(--gold);border-color:var(--gold);color:#132033}code{overflow-wrap:anywhere;color:var(--cyan)}
+  </style>
+</head>
+<body>
+<main id="status">
+  <span class="k">Auditoria Religiosa 360X</span>
+  <h1>Abrindo o comparativo inter-religioso</h1>
+  <p>Esta rota foi criada para contornar erros 404 e cache de publicação. A página completa será carregada automaticamente.</p>
+  <p id="detail">Verificando a edição publicada…</p>
+  <div class="actions">
+    <a class="primary" href="../comparativo-interreligioso.html?route=stable-20261022">Abrir edição principal</a>
+    <a href="../">Voltar ao portal</a>
+  </div>
+</main>
+<script>
+(() => {
+  'use strict';
+  const primary = '../comparativo-interreligioso.html?route=stable-20261022';
+  const raw = 'https://raw.githubusercontent.com/aldenirfilho/aldenirmed89/main/ecossistema/auditoria-religiosa-360/comparativo-interreligioso.html';
+  const detail = document.getElementById('detail');
+  const withTimeout = (promise, ms) => Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
+  ]);
+
+  async function start() {
+    try {
+      const response = await withTimeout(fetch(primary, {cache: 'no-store'}), 8000);
+      if (response.ok) {
+        location.replace(primary);
+        return;
+      }
+      detail.textContent = 'A rota direta ainda não respondeu. Carregando a cópia canônica do repositório…';
+    } catch (_) {
+      detail.textContent = 'A rota direta não respondeu. Carregando a cópia canônica do repositório…';
+    }
+
+    try {
+      const response = await withTimeout(fetch(raw, {cache: 'no-store'}), 12000);
+      if (!response.ok) throw new Error('raw-' + response.status);
+      let source = await response.text();
+      source = source.replace(/<head(\s[^>]*)?>/i, match => match + '\n<base href="../">');
+      document.open();
+      document.write(source);
+      document.close();
+    } catch (_) {
+      detail.innerHTML = 'Não foi possível carregar automaticamente. Use <strong>Abrir edição principal</strong> ou retorne ao portal.';
+    }
+  }
+  start();
+})();
+</script>
+<noscript><p>JavaScript está desativado. Use o botão “Abrir edição principal”.</p></noscript>
+</body>
+</html>

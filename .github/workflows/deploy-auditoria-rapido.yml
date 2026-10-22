@@ -56,6 +56,7 @@ jobs:
           test -s site/ecossistema/auditoria-religiosa-360/agentes.html
           test -s site/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html
           test -s site/ecossistema/auditoria-religiosa-360/comparativo-interreligioso.html
+          test -s site/ecossistema/auditoria-religiosa-360/comparativo-interreligioso/index.html
           test -s site/ecossistema/auditoria-religiosa-360/assets/comparativo-interreligioso.css
           test -s site/ecossistema/auditoria-religiosa-360/assets/comparativo-interreligioso.js
           test -s site/ecossistema/auditoria-religiosa-360/data/comparativo-interreligioso-patrimonio-360x.json
@@ -68,3 +69,20 @@ jobs:
       - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+      - name: Confirmar rota pública do comparativo
+        env:
+          ROUTE: https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso/
+        run: |
+          set -e
+          for tentativa in $(seq 1 24); do
+            codigo="$(curl -L --connect-timeout 10 --max-time 30 -sS -o /tmp/comparativo.html -w '%{http_code}' "${ROUTE}?build=${GITHUB_SHA}&attempt=${tentativa}" || true)"
+            if [ "$codigo" = "200" ] && grep -qi "Comparativo inter-religioso" /tmp/comparativo.html; then
+              echo "Rota pública confirmada com HTTP 200."
+              exit 0
+            fi
+            echo "Tentativa ${tentativa}: HTTP ${codigo:-sem-resposta}."
+            sleep 10
+          done
+          echo "A rota pública não foi confirmada após o deploy."
+          exit 1
