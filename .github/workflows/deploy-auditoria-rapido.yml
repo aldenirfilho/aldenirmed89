@@ -1,0 +1,49 @@
+name: Deploy rápido — Auditoria Religiosa 360
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "ecossistema/auditoria-religiosa-360/**"
+      - ".github/workflows/deploy-auditoria-rapido.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-auditoria-fast
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Montar site público pela allowlist existente
+        run: |
+          set -e
+          python3 scripts_admin/build_public_site.py . site
+          test -s site/ecossistema/auditoria-religiosa-360/index.html
+          test -s site/ecossistema/auditoria-religiosa-360/cenario-atual.html
+          test -s site/ecossistema/auditoria-religiosa-360/agentes.html
+
+      - name: Enviar artefato do Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
