@@ -95,3 +95,13 @@ Abra o README do projeto para conhecer seu escopo, forma de execução, referên
 **Projetos médicos:** finalidade educacional; cada ferramenta informa suas condições de revisão e validação. **Projetos culturais:** obras e marcas de terceiros mantêm seus respectivos direitos. A disponibilidade pública de um repositório não substitui uma licença de uso.
 
 [Dados deste índice](repositorios-publicos.json) · [Voltar ao AldenirMed89](https://github.com/aldenirfilho/aldenirmed89)
+
+<!-- SMD4-360X:BEGIN -->
+## SMD-4 · Sociedade e mobilidade aberta
+
+Módulo da iniciativa **Integridade pública e propostas de sociedade** do Projeto 360X, sem criar outro repositório ou outra raiz do catálogo.
+
+[Apresentação do módulo](../../ecossistema/smd4/README.md) · [HTML](../../ecossistema/smd4/index.html) · [Livro PDF](../../ecossistema/smd4/downloads/SMD4_Livro.pdf) · [Word](../../ecossistema/smd4/downloads/SMD4_Livro.docx)
+
+A edição reúne 23 capítulos, quatro anexos, 31 painéis conceituais e históricos, cronologia revisada e simulador didático de pontuação empresarial. **Proposta autoral em revisão, não legislação nem modelo validado.** As imagens antigas conservam notas de correção. Nenhuma pessoa ou empresa real recebe classificação. Conteúdo cívico separado dos módulos médicos.
+<!-- SMD4-360X:END -->
