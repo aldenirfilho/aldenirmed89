@@ -1,0 +1,116 @@
+name: Preparar fotografias reais da fauna
+on:
+  push:
+    branches: [feat/fauna-fotos-reais-20261022]
+    paths: ['.github/workflows/fauna-photo-import.yml']
+permissions:
+  contents: write
+jobs:
+  import-photos:
+    if: github.repository == 'aldenirfilho/aldenirmed89'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: feat/fauna-fotos-reais-20261022
+          sparse-checkout: |
+            apps/bolsa-ajuda-fauna
+            data/editorial
+            scripts_admin
+            tests
+          fetch-depth: 1
+      - name: Preparar processador de imagens
+        run: python -m pip install --quiet Pillow
+      - name: Consultar fontes livres e guardar fotografias locais
+        shell: python
+        run: |
+          import json, re, io, time, hashlib, html, urllib.request, urllib.parse
+          from pathlib import Path
+          from PIL import Image, ImageOps
+          from html.parser import HTMLParser
+          root = Path('apps/bolsa-ajuda-fauna')
+          target = root / 'images'
+          target.mkdir(exist_ok=True)
+          catalog = json.loads((root/'catalog.json').read_text())
+          titles = ['Araripe manakin','Grey-breasted parakeet',"Lear's macaw",'Golden lion tamarin','Black lion tamarin','Amazon river dolphin','Javan rhinoceros','Sumatran rhinoceros','Tapanuli orangutan','African forest elephant','Mountain gorilla','Tiger','Chinese pangolin','Giant panda','Vaquita','Hawksbill sea turtle','North Atlantic right whale','Whale shark','Giant oceanic manta ray','African penguin','Waved albatross','Kakapo','Axolotl','European eel','Elkhorn coral','Bombus affinis']
+          overrides = {'animal-02':'Pyrrhura griseipectus -upper body-8a.jpg', 'animal-09':'Pongo tapanuliensis.jpg', 'animal-15':'Vaquita2 Olson NOAA.jpg'}
+          ua = 'Fauna360-PhotoImport/1.0 (https://github.com/aldenirfilho/aldenirmed89; educational conservation catalogue)'
+          def get(url, json_data=False):
+            assert urllib.parse.urlsplit(url).hostname in {'en.wikipedia.org','commons.wikimedia.org','upload.wikimedia.org','thumb.wikimedia.org'}
+            for attempt in range(4):
+              try:
+                req = urllib.request.Request(url, headers={'User-Agent':ua,'Accept':'application/json' if json_data else 'image/*'})
+                with urllib.request.urlopen(req, timeout=40) as response:
+                  data = response.read(30*1024*1024+1)
+                if len(data)>30*1024*1024: raise ValueError('Image exceeds import size limit')
+                return json.loads(data) if json_data else data
+              except Exception:
+                if attempt == 3: raise
+                time.sleep(2+attempt*3)
+          def api(host, **params):
+            return get('https://'+host+'/w/api.php?'+urllib.parse.urlencode({'format':'json','formatversion':2,**params}),True)
+          class Text(HTMLParser):
+            def __init__(self): super().__init__(); self.parts=[]
+            def handle_data(self,data): self.parts.append(data)
+          def plain(s):
+            p=Text();p.feed(s);return re.sub(r'\s+',' ',html.unescape(' '.join(p.parts))).strip()
+          photos={}; failures=[]; review=[]
+          for a,title in zip(catalog['animals'], titles):
+            try:
+              if a['id'] in overrides:
+                filename=overrides[a['id']]
+              else:
+                wp=api('en.wikipedia.org',action='query',titles=title,redirects=1,prop='pageimages',piprop='name',pilicense='free')
+                filename=wp['query']['pages'][0]['pageimage']
+              assert re.search(r'\.(jpe?g|png|webp)$',filename,re.I),filename
+              if re.search(r'map|range|distribution|illustration|drawing|skull|skeleton|logo',filename,re.I): raise ValueError('Non-photographic candidate: '+filename)
+              meta=api('commons.wikimedia.org',action='query',titles='File:'+filename,redirects=1,prop='imageinfo',iiprop='url|size|mime|extmetadata|sha1',iiurlwidth=960)
+              page=meta['query']['pages'][0]; info=page['imageinfo'][0]; e=info['extmetadata']
+              license=plain(e.get('LicenseShortName',{}).get('value',''))
+              license_url=e.get('LicenseUrl',{}).get('value','')
+              if license_url.startswith('//'): license_url='https:'+license_url
+              if license_url.startswith('http:'): license_url='https:'+license_url[5:]
+              if not (re.match(r'^CC (BY|BY-SA|0)',license) or 'public domain' in license.lower() or license=='CC0'):
+                raise ValueError('License requires manual review: '+license)
+              if not license_url:
+                license_url='https://creativecommons.org/publicdomain/mark/1.0/' if 'public domain' in license.lower() else 'https://creativecommons.org/publicdomain/zero/1.0/'
+              author=plain(e.get('Artist',{}).get('value',''))
+              if not author: raise ValueError('Missing author')
+              src=info.get('thumburl') or info['url']
+              raw=get(src)
+              im=ImageOps.exif_transpose(Image.open(io.BytesIO(raw))).convert('RGB')
+              im.thumbnail((1200,960),Image.Resampling.LANCZOS)
+              full=target/(a['id']+'.webp'); im.save(full,'WEBP',quality=84,method=6)
+              small=im.copy(); small.thumbnail((480,480),Image.Resampling.LANCZOS)
+              thumb=target/(a['id']+'-480.webp');small.save(thumb,'WEBP',quality=80,method=6)
+              photos[a['id']]={'src':'images/'+full.name,'thumbnail':'images/'+thumb.name,'width':im.width,'height':im.height,'thumbnailWidth':small.width,'thumbnailHeight':small.height,'alt':'Fotografia de '+a['name']+' ('+a['scientific']+').','author':author,'license':license,'licenseUrl':license_url,'sourceUrl':info['descriptionurl'],'sourceFile':page['title'],'originalUrl':info['url'],'sourceSha1':info['sha1'],'sha256':hashlib.sha256(full.read_bytes()).hexdigest(),'changes':'Redimensionamento e conversão para WebP; enquadramento adaptado no cartão. A ficha exibe a fotografia completa.','reviewedAt':'2026-10-22'}
+              review.append({'id':a['id'],'name':a['name'],'scientific':a['scientific'],'file':page['title'],'description':plain(e.get('ImageDescription',{}).get('value',''))[:1000],'author':author,'license':license})
+              print(a['id'],a['name'],page['title'],license,len(full.read_bytes()),flush=True)
+              time.sleep(.4)
+            except Exception as exc:
+              failures.append({'id':a['id'],'title':title,'error':str(exc)})
+              print('REVIEW NEEDED',a['id'],str(exc),flush=True)
+          manifest={'version':'1.0','reviewedAt':'2026-10-22','photos':photos}
+          (root/'photos.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+          (root/'photos.js').write_text('window.FAUNA_PHOTOS = '+json.dumps(manifest,ensure_ascii=False,separators=(',',':'))+';\n')
+          Path('/tmp/fauna-photo-review.json').write_text(json.dumps({'review':review,'failures':failures},ensure_ascii=False,indent=2))
+          print('Photos:',len(photos),'Failures:',len(failures))
+      - name: Preservar fontes e fotografias para revisão visual
+        uses: actions/upload-artifact@v4
+        with:
+          name: fauna-real-photos-review
+          retention-days: 7
+          path: |
+            apps/bolsa-ajuda-fauna/
+            data/editorial/registry.json
+            tests/test_fauna_site.py
+            /tmp/fauna-photo-review.json
+      - name: Gravar apenas fotografias e créditos na ramificação isolada
+        run: |
+          set -e
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add apps/bolsa-ajuda-fauna/images apps/bolsa-ajuda-fauna/photos.json apps/bolsa-ajuda-fauna/photos.js
+          git diff --cached --quiet || git commit -m 'feat(fauna): add local licensed photographs and source credits'
+          git push origin HEAD:feat/fauna-fotos-reais-20261022
