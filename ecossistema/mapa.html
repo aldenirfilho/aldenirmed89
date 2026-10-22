@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101f27">
+  <meta name="description" content="Um mapa interativo dos projetos públicos 360X. Explore clínica, ciência, cultura e cidadania e siga diretamente para cada site.">
+  <meta property="og:title" content="Mapa de projetos 360X | AldenirMed">
+  <meta property="og:description" content="Conheça os projetos, descubra suas conexões e encontre o próximo caminho para explorar.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aldenirfilho.github.io/aldenirmed89/ecossistema/mapa.html">
+  <link rel="canonical" href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/mapa.html">
+  <link rel="icon" href="../favicon.ico">
+  <script src="./assets/mapa-theme.js"></script>
+  <link rel="stylesheet" href="./assets/mapa.css">
+  <script src="./assets/mapa.js" defer></script>
+  <noscript><style>.map-explorer { display: none; } .direct-links { margin-top: 0; }</style></noscript>
+  <title>Mapa de projetos 360X | AldenirMed</title>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="site-header shell">
+    <a class="site-brand" href="../index.html" aria-label="AldenirMed, página inicial">
+      <img src="../assets/brand-360x/logo-360x.webp" alt="" width="44" height="44">
+      <span><strong>AldenirMed</strong><small>Conhecimento que se conecta.</small></span>
+    </a>
+    <nav class="header-nav" aria-label="Navegação principal">
+      <a href="./index.html#sites-publicos">Universo 360X</a>
+      <a class="header-catalog" href="./index.html#catalogo">Catálogo</a>
+      <button id="mapTheme" class="icon-button theme-button" type="button" aria-label="Alternar tema claro e escuro" title="Alternar tema claro e escuro"><span aria-hidden="true">◐</span><span class="theme-label">Tema</span></button>
+    </nav>
+  </header>
+
+  <main id="conteudo" class="shell" tabindex="-1">
+    <nav class="breadcrumb" aria-label="Localização">
+      <a href="../index.html">AldenirMed</a><span aria-hidden="true">/</span><a href="./index.html">Universo 360X</a><span aria-hidden="true">/</span><span aria-current="page">Mapa</span>
+    </nav>
+
+    <section class="map-intro" aria-labelledby="pageTitle">
+      <div class="intro-copy">
+        <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>PROJETO 360X · MAPA VIVO</p>
+        <h1 id="pageTitle">Projetos que<br><em>se conectam.</em></h1>
+      </div>
+      <div class="intro-aside">
+        <p>Um olhar sobre o conjunto.<br>Um caminho para cada curiosidade.</p>
+        <p class="intro-description">Explore as áreas, escolha um projeto e siga direto para o seu site.</p>
+        <a class="text-link" href="./index.html#catalogo">Ver catálogo de iniciativas <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="map-explorer" aria-labelledby="explorerTitle">
+      <h2 id="explorerTitle" class="sr-only">Explore o mapa de projetos públicos</h2>
+      <div class="explorer-toolbar">
+        <label class="search-field" for="mapSearch">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg>
+          <span class="sr-only">Buscar projeto por nome ou assunto</span>
+          <input id="mapSearch" type="search" placeholder="Buscar projeto ou assunto…" autocomplete="off" aria-controls="mapNodes projectList">
+          <span class="search-hint" aria-hidden="true">Explorar</span>
+        </label>
+        <div class="view-switch" role="group" aria-label="Visualização dos projetos">
+          <button id="mapView" type="button" aria-pressed="true" aria-controls="graphPanel"><svg aria-hidden="true" viewBox="0 0 20 20" width="17" height="17"><path d="m5 5 10 3M5 5l3 10m7-7-7 7"></path><circle cx="5" cy="5" r="2"></circle><circle cx="15" cy="8" r="2"></circle><circle cx="8" cy="15" r="2"></circle></svg>Mapa</button>
+          <button id="listView" type="button" aria-pressed="false" aria-controls="listPanel"><svg aria-hidden="true" viewBox="0 0 20 20" width="17" height="17"><path d="M7 5h10M7 10h10M7 15h10M3 5h.2M3 10h.2M3 15h.2"></path></svg>Lista</button>
+        </div>
+      </div>
+
+      <div class="filter-toolbar">
+        <div id="mapFilters" class="map-filters" role="group" aria-label="Filtrar projetos por área"></div>
+        <button id="mapReset" class="reset-button" type="button"><span aria-hidden="true">↺</span> Visão geral</button>
+      </div>
+
+      <div class="map-workspace">
+        <div class="map-main">
+          <div class="map-status-bar">
+            <p id="mapCount" role="status" aria-live="polite">23 projetos · 4 áreas de interesse</p>
+            <span class="map-status-caption">Cada ponto, uma possibilidade.</span>
+          </div>
+
+          <p id="mapLoading" class="map-loading" role="status">Preparando as conexões… Os links diretos também estão disponíveis abaixo.</p>
+          <p id="mapError" class="map-error" role="status" hidden></p>
+
+          <div id="graphPanel" class="graph-panel">
+            <div id="mapViewport" class="map-viewport" tabindex="0" aria-label="Mapa interativo de projetos. Selecione um projeto para conhecer seus detalhes." aria-describedby="mapHelp">
+              <svg id="mapSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 920" role="group" aria-labelledby="graphTitle graphDescription">
+                <title id="graphTitle">Mapa de projetos do Universo 360X</title>
+                <desc id="graphDescription">Projetos agrupados em clínica e estudo, ciência e natureza, vida e cultura, cidadania e consumo. Selecione um projeto para ler sua apresentação e abrir o site. A visualização em lista oferece os mesmos destinos.</desc>
+                <g id="mapEdges" aria-hidden="true"></g>
+                <g id="mapNodes"></g>
+              </svg>
+            </div>
+            <div class="map-bottom-tools">
+              <p id="mapHelp">Selecione um projeto para ver afinidades.</p>
+              <div class="zoom-controls" role="group" aria-label="Ajustar ampliação do mapa">
+                <button id="mapZoomOut" type="button" aria-label="Diminuir mapa" title="Diminuir mapa">−</button>
+                <output id="mapZoom" aria-label="Nível de ampliação">100%</output>
+                <button id="mapZoomIn" type="button" aria-label="Ampliar mapa" title="Ampliar mapa">+</button>
+                <button id="mapFit" class="fit-button" type="button" aria-label="Enquadrar mapa completo" title="Enquadrar mapa completo"><svg aria-hidden="true" viewBox="0 0 20 20" width="18" height="18"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4"></path></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <div id="listPanel" class="list-panel" hidden>
+            <ul id="projectList" class="project-list" aria-label="Projetos encontrados"></ul>
+            <p id="listEmpty" class="empty-state" hidden>Nenhum projeto encontrado. Tente outro termo ou volte à visão geral.</p>
+          </div>
+
+          <div class="map-legend">
+            <div class="legend-items"><span><i class="legend-line" aria-hidden="true"></i>Área do projeto</span><span><i class="legend-line legend-line--dashed" aria-hidden="true"></i>Afinidade temática</span></div>
+            <label class="affinity-toggle" for="mapRelatedToggle"><input id="mapRelatedToggle" type="checkbox" checked> Mostrar afinidades</label>
+          </div>
+        </div>
+
+        <aside id="mapDetails" class="map-details" aria-labelledby="detailTitle">
+          <div class="detail-heading"><span class="detail-indicator" aria-hidden="true"></span>UM PROJETO DE CADA VEZ</div>
+          <div id="detailBody" class="detail-body">
+            <p class="detail-kicker">VISÃO DO CONJUNTO</p>
+            <h2 id="detailTitle" class="detail-title">Sua próxima descoberta começa aqui.</h2>
+            <p class="detail-description">Selecione um ponto no mapa para conhecer o projeto, suas afinidades e o caminho para visitá-lo.</p>
+            <div class="overview-mark" aria-hidden="true"><span>360</span><small>X</small></div>
+            <p class="detail-note">Prefere uma leitura linear? A visualização em lista reúne os mesmos projetos e links.</p>
+          </div>
+          <div class="detail-footer">Conhecer. Conectar. Explorar.</div>
+        </aside>
+      </div>
+      <p class="connection-note">As conexões representam áreas e afinidades de conteúdo. Escolha um projeto para conhecer o significado de cada relação.</p>
+    </section>
+
+    <details id="mapFallback" class="direct-links" open>
+      <summary><span>Todos os links, em um só lugar.</span><small>23 projetos públicos</small><span class="summary-symbol" aria-hidden="true">+</span></summary>
+      <p class="fallback-intro">Acesso direto, inclusive quando o mapa não estiver disponível. Os destinos abrem em uma nova aba.</p>
+      <div class="fallback-grid">
+        <section aria-labelledby="linksClinical">
+          <h3 id="linksClinical"><span class="category-dot category-dot--clinical" aria-hidden="true"></span>Clínica e estudo</h3>
+          <ul>
+            <li><a href="https://aldenirfilho.github.io/aldenirmed89/" target="_blank" rel="noopener noreferrer">AldenirMed89 <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://passagem-plantao-uti.vercel.app/" target="_blank" rel="noopener noreferrer">Passagem de plantão 360X <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/RESPIRACRIT/" target="_blank" rel="noopener noreferrer">RespiraCrit <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/respirasense-icu/" target="_blank" rel="noopener noreferrer">RespiraSense ICU · Documentação <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/intensivahub/" target="_blank" rel="noopener noreferrer">IntensivaHub <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </section>
+        <section aria-labelledby="linksNature">
+          <h3 id="linksNature"><span class="category-dot category-dot--nature" aria-hidden="true"></span>Ciência e natureza</h3>
+          <ul>
+            <li><a href="https://aldenirfilho.github.io/atlas-vivo-360x-pages/" target="_blank" rel="noopener noreferrer">Atlas Vivo 360X · Plantas <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/atlas-vivo-360x-animais/" target="_blank" rel="noopener noreferrer">Animalia 360X <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/atlas-vivo-360x-rochas/" target="_blank" rel="noopener noreferrer">Geo 360X <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </section>
+        <section aria-labelledby="linksCulture">
+          <h3 id="linksCulture"><span class="category-dot category-dot--culture" aria-hidden="true"></span>Vida e cultura</h3>
+          <ul>
+            <li><a href="https://aldenirfilho.github.io/INVESTIMENTO-DE-TEMPO-PARA-CURTIR/" target="_blank" rel="noopener noreferrer">Tempo de Viver 360X <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://entre-dois-ceus-jeri-islandia.aldenirmed.chatgpt.site/" target="_blank" rel="noopener noreferrer">Entre dois céus · Jeri &amp; Islândia <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://biblia-crista-guerreiros-de-fe.aldenirmed.chatgpt.site/" target="_blank" rel="noopener noreferrer">Bíblia Cristã para Guerreiros de Fé <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://dragonball-legado-eterno.aldenirmed.chatgpt.site/" target="_blank" rel="noopener noreferrer">Dragon Ball · Legado Eterno <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/atlas-phoenix-piratas/" target="_blank" rel="noopener noreferrer">Atlas Phoenix e Piratas do Infinito <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/INTUICAO-DECISIONAL/" target="_blank" rel="noopener noreferrer">Intuição · Guia Decisional <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenir-life-archive-360-demo.aldenirmed.chatgpt.site/" target="_blank" rel="noopener noreferrer">Life Archive 360 · Demonstração <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </section>
+        <section aria-labelledby="linksCivic">
+          <h3 id="linksCivic"><span class="category-dot category-dot--civic" aria-hidden="true"></span>Cidadania e consumo</h3>
+          <ul>
+            <li><a href="https://plano-d-comunidade.aldenirmed.chatgpt.site/" target="_blank" rel="noopener noreferrer">PLANO D · Comunidade <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://auditoria-das-coisas-360x.aldenirmed.chatgpt.site/" target="_blank" rel="noopener noreferrer">Auditoria das Coisas · 360X <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://bruxo-piloto-garagem-2026.aldenirmed.chatgpt.site/" target="_blank" rel="noopener noreferrer">Garagem 2026 · Revista <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://garagem-2026-votacao.aldenirmed.chatgpt.site/" target="_blank" rel="noopener noreferrer">Garagem 2026 · Avaliações <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/NEXUS-BRASIL/" target="_blank" rel="noopener noreferrer">360X Brasil · Comunidade <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/NEXUS-COSMOS-SITE/" target="_blank" rel="noopener noreferrer">360X Brasil · Propostas <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/INDOLE-360/" target="_blank" rel="noopener noreferrer">Índole 360° <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://aldenirfilho.github.io/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-/" target="_blank" rel="noopener noreferrer">Transparência 360X · Igrejas <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </section>
+      </div>
+    </details>
+    <noscript><p class="no-script-note">Os links acima funcionam sem JavaScript. Ative-o para explorar o mapa, a busca e os filtros.</p></noscript>
+  </main>
+
+  <footer class="site-footer shell">
+    <div><strong>PROJETO 360X</strong><span>de Aldenir Rocha de Oliveira Filho</span></div>
+    <a href="../index.html">Voltar ao AldenirMed <span aria-hidden="true">↗</span></a>
+  </footer>
+</body>
+</html>
