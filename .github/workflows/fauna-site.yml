@@ -5,6 +5,8 @@ on:
     paths:
       - 'apps/bolsa-ajuda-fauna/**'
       - 'tests/test_fauna_site.py'
+      - 'scripts_admin/integrate_fauna_site.py'
+      - 'scripts_admin/fauna-site-release.json.xz'
       - '.github/workflows/fauna-site.yml'
   pull_request:
     paths:
@@ -14,32 +16,41 @@ on:
 permissions:
   contents: read
 jobs:
+  integrate:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/bolsa-ajuda-fauna-20261022'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: feat/bolsa-ajuda-fauna-20261022
+      - name: Instalar fonte pública com verificação de integridade
+        run: python3 scripts_admin/integrate_fauna_site.py
+      - name: Validar antes de gravar a ramificação
+        run: |
+          set -e
+          python3 -m unittest discover -s tests -p 'test_fauna_site.py' -v
+          node --check apps/bolsa-ajuda-fauna/app.js
+          node --check apps/bolsa-ajuda-fauna/catalog.js
+          python3 scripts_admin/editorial_gate.py --check --changed-file apps/bolsa-ajuda-fauna/index.html --changed-file apps/bolsa-ajuda-fauna/styles.css --changed-file apps/bolsa-ajuda-fauna/app.js --changed-file apps/bolsa-ajuda-fauna/catalog.json --changed-file apps/bolsa-ajuda-fauna/catalog.js --changed-file apps/bolsa-ajuda-fauna/README.md --changed-file apps/index.html --json
+      - name: Gravar somente o escopo autorizado na ramificação de desenvolvimento
+        run: |
+          set -e
+          git add apps/bolsa-ajuda-fauna/index.html apps/bolsa-ajuda-fauna/styles.css apps/bolsa-ajuda-fauna/app.js apps/bolsa-ajuda-fauna/catalog.json apps/bolsa-ajuda-fauna/catalog.js apps/bolsa-ajuda-fauna/README.md tests/test_fauna_site.py apps/index.html data/editorial/registry.json
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'feat(fauna): add tested conservation directory and official support channels'
+            git push origin HEAD:feat/bolsa-ajuda-fauna-20261022
+          fi
   validate:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
         with:
           persist-credentials: false
-      - name: Validar catálogo e estrutura
+      - name: Validar catálogo e JavaScript
         run: |
-          if [ -f tests/test_fauna_site.py ]; then
-            python3 -m unittest discover -s tests -p 'test_fauna_site.py' -v
-            node --check apps/bolsa-ajuda-fauna/app.js
-          fi
-      - name: Contexto temporário de integração
-        if: github.event_name == 'push'
-        uses: actions/upload-artifact@v4
-        with:
-          name: fauna-development-context
-          retention-days: 1
-          path: |
-            apps/index.html
-            data/editorial/registry.json
-            data/editorial/policy.json
-            data/editorial/editorial-provenance.json
-            ecossistema/data/catalog.json
-            scripts_admin/editorial_gate.py
-            scripts_admin/svg_safety.py
-            scripts_admin/build_public_site.py
-            scripts_admin/publication_guard.py
-            scripts_admin/audit_public_links.py
+          python3 -m unittest discover -s tests -p 'test_fauna_site.py' -v
+          node --check apps/bolsa-ajuda-fauna/app.js
+          node --check apps/bolsa-ajuda-fauna/catalog.js
