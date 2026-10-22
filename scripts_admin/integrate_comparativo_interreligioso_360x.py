@@ -5,7 +5,8 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC_URL = "https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso.html"
+OLD_PUBLIC_URL = "https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso.html"
+PUBLIC_URL = "https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso/"
 DOSSIE_URL = "https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html"
 
 
@@ -18,39 +19,51 @@ def update_text(path: Path, transform) -> bool:
     return True
 
 
+def stable_route(text: str) -> str:
+    return (
+        text.replace(OLD_PUBLIC_URL, PUBLIC_URL)
+        .replace("auditoria-religiosa-360/comparativo-interreligioso.html", "auditoria-religiosa-360/comparativo-interreligioso/")
+        .replace('href="comparativo-interreligioso.html"', 'href="comparativo-interreligioso/"')
+    )
+
+
 def patch_auditoria_index(text: str) -> str:
-    if "comparativo-interreligioso.html" in text:
+    text = stable_route(text)
+    if 'href="comparativo-interreligioso/"' in text:
         return text
     marker = '<a href="dossie-igreja-mormon.html">Dossiê Igreja Mórmon</a>'
     if marker in text:
-        text = text.replace(marker, marker + '<a href="comparativo-interreligioso.html">Comparativo inter-religioso</a>', 1)
+        text = text.replace(marker, marker + '<a href="comparativo-interreligioso/">Comparativo inter-religioso</a>', 1)
     button = '<a class="btn primary" href="dossie-igreja-mormon.html">Dossiê Igreja Mórmon · patrimônio e simulador</a>'
     if button in text:
-        text = text.replace(button, button + '<a class="btn" href="comparativo-interreligioso.html">Cristianismo × judaísmo × islamismo</a>', 1)
+        text = text.replace(button, button + '<a class="btn" href="comparativo-interreligioso/">Cristianismo × judaísmo × islamismo</a>', 1)
     return text
 
 
 def patch_dossie(text: str) -> str:
-    if "comparativo-interreligioso.html" in text:
+    text = stable_route(text)
+    if 'href="comparativo-interreligioso/"' in text:
         return text
     nav_marker = '<a href="#fontes">Fontes</a></nav>'
     if nav_marker in text:
-        text = text.replace(nav_marker, '<a href="#fontes">Fontes</a><a href="comparativo-interreligioso.html">Comparativo</a></nav>', 1)
+        text = text.replace(nav_marker, '<a href="#fontes">Fontes</a><a href="comparativo-interreligioso/">Comparativo</a></nav>', 1)
     action_marker = '<a class="button" href="#simulador">Simular impacto social</a>'
     if action_marker in text:
-        text = text.replace(action_marker, action_marker + '<a class="button" href="comparativo-interreligioso.html">Comparar tradições</a>', 1)
+        text = text.replace(action_marker, action_marker + '<a class="button" href="comparativo-interreligioso/">Comparar tradições</a>', 1)
     return text
 
 
 def patch_ecossistema_index(text: str) -> str:
-    if "comparativo-interreligioso.html" in text:
+    text = stable_route(text)
+    if "auditoria-religiosa-360/comparativo-interreligioso/" in text:
         return text
     marker = '          <li><a href="auditoria-religiosa-360/dossie-igreja-mormon.html">Dossiê Igreja Mórmon · investimentos e simulador ↗</a></li>'
-    addition = marker + '\n          <li><a href="auditoria-religiosa-360/comparativo-interreligioso.html">Comparativo inter-religioso · patrimônio e transparência ↗</a></li>'
+    addition = marker + '\n          <li><a href="auditoria-religiosa-360/comparativo-interreligioso/">Comparativo inter-religioso · patrimônio e transparência ↗</a></li>'
     return text.replace(marker, addition, 1) if marker in text else text
 
 
 def patch_portfolio(text: str) -> str:
+    text = stable_route(text)
     heading = "## Comparativo inter-religioso de patrimônio institucional"
     if heading in text:
         return text
@@ -66,7 +79,7 @@ def patch_portfolio(text: str) -> str:
 def patch_sites_catalog(path: Path) -> bool:
     data = json.loads(path.read_text(encoding="utf-8"))
     projects = data.setdefault("projects", [])
-    ids = {p.get("id") for p in projects}
+    by_id = {p.get("id"): p for p in projects}
     common = {
         "category": "Cidadania e consumo",
         "image": "./assets/previews/turbo-360x-v1/transparencia.svg",
@@ -78,7 +91,8 @@ def patch_sites_catalog(path: Path) -> bool:
         "kind": "site",
     }
     changed = False
-    if "dossie-igreja-mormon-360x" not in ids:
+
+    if "dossie-igreja-mormon-360x" not in by_id:
         projects.append({
             "id": "dossie-igreja-mormon-360x",
             "title": "Dossiê Igreja Mórmon · Auditoria 360X",
@@ -90,8 +104,10 @@ def patch_sites_catalog(path: Path) -> bool:
             **common,
         })
         changed = True
-    if "comparativo-interreligioso-360x" not in ids:
-        projects.append({
+
+    comparison = by_id.get("comparativo-interreligioso-360x")
+    if comparison is None:
+        comparison = {
             "id": "comparativo-interreligioso-360x",
             "title": "Comparativo inter-religioso · Patrimônio 360X",
             "description": "Contraste responsável entre instituições cristãs, judaicas e islâmicas, com valores, datas, limites e dados abertos.",
@@ -100,8 +116,19 @@ def patch_sites_catalog(path: Path) -> bool:
             "sources": [{"url": PUBLIC_URL, "type": "public-project-homepage"}],
             "accessNote": "Amostra institucional não representa patrimônio mundial das religiões nem riqueza privada dos fiéis.",
             **common,
-        })
+        }
+        projects.append(comparison)
         changed = True
+    else:
+        if comparison.get("url") != PUBLIC_URL:
+            comparison["url"] = PUBLIC_URL
+            changed = True
+        sources = comparison.setdefault("sources", [])
+        for source in sources:
+            if source.get("type") == "public-project-homepage" and source.get("url") != PUBLIC_URL:
+                source["url"] = PUBLIC_URL
+                changed = True
+
     if changed:
         data["updatedAt"] = "2026-10-22"
         if isinstance(data.get("visualRevision"), dict):
