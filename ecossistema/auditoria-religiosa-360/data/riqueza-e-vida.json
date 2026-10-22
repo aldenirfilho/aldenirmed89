@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "title": "Riqueza financeira e benefício à vida — Auditoria Religiosa 360X",
+  "research_cutoff": "2026-10-22",
+  "currency": "USD",
+  "unit": "billions",
+  "bases": {
+    "reservas": {"value": 231, "label": "Reservas de investimento estimadas", "date": "2025-12-31", "evidence": "Estimativa independente WMR", "limitation": "Integram os ativos totais estimados; não são caixa livre confirmado."},
+    "ativos": {"value": 321, "label": "Ativos totais estimados", "date": "2025-12-31", "evidence": "Estimativa independente WMR", "limitation": "Incluem ativos operacionais; não constituem patrimônio líquido auditado ou caixa disponível."},
+    "13f": {"value": 60.816389385, "label": "Títulos reportados pela Ensign Peak no 13F", "date": "2026-06-30", "evidence": "Declaração regulatória à SEC", "limitation": "Recorte de títulos reportáveis, em outra data; não é o total global de investimentos."}
+  },
+  "spending_percentages": [1, 3, 5],
+  "default_base": "reservas",
+  "default_percentage": 3,
+  "benchmarks": [
+    {"id": "ocha", "name": "Apelo humanitário global inicial da ONU", "budget": 33, "period": "2026", "target_people": 135000000, "source": "https://www.unocha.org/publications/report/world/press-release-life-life-un-launches-33-billion-aid-appeal-urgent-call-global-solidarity"},
+    {"id": "wfp", "name": "Programa Mundial de Alimentos", "budget": 13, "period": "2026", "target_people": 110000000, "source": "https://www.wfp.org/news/wfp-prioritize-feeding-110-million-hungriest-2026-global-hunger-deepens-amidst-uncertain"},
+    {"id": "cbd", "name": "Meta 19 de financiamento da biodiversidade", "budget": 200, "period": "Meta anual a atingir até 2030", "target_people": null, "source": "https://www.cbd.int/gbf/targets/19"}
+  ],
+  "assistance": {"value": 1.58, "period": "2025", "evidence": "Autorrelato institucional; inclui bens, serviços e assistência a membros; horas voluntárias não monetizadas", "source": "https://www.churchofjesuschrist.org/serve/caring/report/expenditures?lang=eng"},
+  "countries": [
+    {"name": "Finlândia", "gdp_2025": 317.039},
+    {"name": "Peru", "gdp_2025": 334.855},
+    {"name": "Nove países selecionados", "gdp_2025": 304.8, "members": ["Bahrein", "Letônia", "Líbia", "Estônia", "Nepal", "Albânia", "Armênia", "Andorra", "Antígua e Barbuda"]}
+  ],
+  "world_equity_market_cap_2025": 151940,
+  "biodiversity": {"assessed_species": 175909, "threatened_species": 49505, "date": "2026-07-09", "scope": "Espécies avaliadas de animais, plantas e fungos", "source": "https://iucn.org/press-release/202607/desert-frog-deep-sea-molluscs-remarkable-species-risk-iucn-red-list"},
+  "institutions": [
+    {"id": "lds", "name": "Igreja de Jesus Cristo dos Santos dos Últimos Dias", "amount": 321, "currency": "USD", "unit": "billions", "period": "2025-12-31", "metric": "Ativos totais globais estimados", "evidence": "Estimativa independente", "scope": "Modelo externo para a instituição global", "limitation": "Não é balanço oficial consolidado ou patrimônio líquido auditado", "source": "https://thewidowsmite.org/2025update/"},
+    {"id": "england", "name": "Church Commissioners for England", "amount": 11.6, "currency": "GBP", "unit": "billions", "period": "2025-12-31", "metric": "Fundo patrimonial permanente", "evidence": "Relatório institucional", "scope": "Fundo dos Church Commissioners", "limitation": "Não inclui todos os bens de paróquias, dioceses, catedrais e escolas da Igreja da Inglaterra", "source": "https://www.churchofengland.org/media/finance-news/church-commissioners-england-endowment-fund-delivers-8-return-2025"},
+    {"id": "apsa", "name": "APSA — Santa Sé", "amount": 2.686, "currency": "EUR", "unit": "billions", "period": "2025-12-31", "metric": "Patrimônio líquido próprio", "evidence": "Balanço divulgado institucionalmente", "scope": "Administração do Patrimônio da Sé Apostólica", "limitation": "Não representa o patrimônio mundial da Igreja Católica ou os ativos de clientes do IOR", "source": "https://www.vaticannews.va/en/vatican-city/news/2026-07/apsa-2025-financial-statements-stronger-net-assets-service-holy.html"}
+  ],
+  "limitations": [
+    "As três bases patrimoniais se sobrepõem e têm datas e perímetros diferentes. Não somar.",
+    "Destinação é hipótese de gasto; não é rendimento garantido, dinheiro livre confirmado ou recomendação de liquidação integral.",
+    "Cada equivalência de orçamento é alternativa; não destinar a mesma verba integralmente a várias causas ao mesmo tempo.",
+    "Públicos da OCHA e do WFP se sobrepõem. Não somar beneficiários, nem converter os percentuais em vidas salvas.",
+    "Não há preço universal por espécie salva. Metas de financiamento não garantem a conservação de toda a biodiversidade.",
+    "Patrimônio é estoque; PIB é fluxo anual. Comparação ilustra escala, não riqueza nacional ou preço de compra de países.",
+    "Moedas e perímetros institucionais foram preservados; não foi construído ranking de riqueza das religiões."
+  ],
+  "sources": [
+    {"label": "SEC — Form 13F Ensign Peak, junho de 2026", "url": "https://www.sec.gov/Archives/edgar/data/1454984/000145498426000004/xslForm13F_X02/primary_doc.xml"},
+    {"label": "The Widow’s Mite Report — estimativas de 2025", "url": "https://thewidowsmite.org/2025update/"},
+    {"label": "Resumo das estimativas publicado pelos autores", "url": "https://www.reddit.com/r/mormon/comments/1qx44p4/2025_widows_mite_report/"},
+    {"label": "Banco Mundial — PIB 2025", "url": "https://datacatalogfiles.worldbank.org/ddh-published/0038130/DR0046441/GDP.pdf"},
+    {"label": "WFE — capitalização global no fim de 2025", "url": "https://www.world-exchanges.org/news/articles/new-wfe-data-public-markets-post-strong-growth-2025-despite-geopolitical-instability"},
+    {"label": "SEC — acordo de 2023", "url": "https://www.sec.gov/newsroom/press-releases/2023-35"},
+    {"label": "Igreja — posição sobre doações e reservas", "url": "https://www.churchofjesuschrist.org/learn/church-donations-and-reserves?lang=por"},
+    {"label": "Investor.gov — liquidez", "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary/liquidity-or-marketability"},
+    {"label": "Investor.gov — liquidação T+1", "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/new-t1-settlement-cycle-what-investors-need-know-investor-bulletin"}
+  ]
+}

@@ -121,3 +121,11 @@ A edição reúne 23 capítulos, quatro anexos, 31 painéis conceituais e histó
 [Painel de custos e auditoria de UTI](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-uti/) · [Código e documentação](../../ecossistema/auditoria-uti/README.md).
 
 Catálogo de 140 itens; orçamento para 10/20/30 leitos; triagem de preços e Excel incorporado. Base parcial: 32 itens com preço elegível, sem sincronização automática com BPS/PNCP. Alertas não comprovam superfaturamento.
+
+<!-- RIQUEZA-E-VIDA-360X:BEGIN -->
+## Riqueza e Vida · Auditoria Religiosa 360X
+
+[Painel HTML comparativo](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/riqueza-e-vida.html): patrimônio documentado e estimado, países e bolsas, cenários de destinação de **1%, 3% e 5%**, comparação institucional com moedas e perímetros preservados e infográfico sobre recursos financeiros e benefício à vida. Dados e referências datados; simulações de capacidade financeira, sem promessa de vidas ou espécies salvas.
+
+[Dossiê Igreja Mórmon](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html) · [Método e integração](../RIQUEZA_E_VIDA_360X.md).
+<!-- RIQUEZA-E-VIDA-360X:END -->
