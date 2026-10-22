@@ -27,3 +27,9 @@ Edite `catalog.json` e regenere `catalog.js` como `window.FAUNA_CATALOG = ` segu
 `node --check apps/bolsa-ajuda-fauna/app.js`
 
 O fluxo existente de publicação por allowlist inclui `apps/`. A autorização deste trabalho abrange apenas este conteúdo educativo e sua navegação, sem alterar módulos clínicos ou regras de privacidade.
+
+## Fotografias reais — 22/10/2026
+
+Camada fotográfica progressiva para as 26 fichas, a capa e o diálogo. As categorias e fontes científicas do catálogo não foram alteradas. Fotografias externas do Wikimedia Commons, com autor, licença individual, fonte e contexto. Registros históricos e em cativeiro são identificados. Não há imagens geradas por IA. Ver `photos.html` e os metadados `window.FAUNA_PHOTOS`.
+
+As imagens precisam de internet. A requisição vai à Wikimedia, sem favoritos e sem referência de origem. Falhas de carregamento tentam uma única vez o original e depois exibem aviso, sem impedir o catálogo. Nenhuma credencial, dado de doador, pagamento ou comprovante foi acrescentado.
