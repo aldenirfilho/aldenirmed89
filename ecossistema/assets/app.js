@@ -274,6 +274,19 @@
     if (asArray(project.outputs).length) body.append(listBlock("Frutos possíveis", project.outputs));
     body.append(detailBlock("Caminho de valor", project.valuePath));
     if (asArray(project.safeguards).length) body.append(listBlock("Limites antes de avançar", project.safeguards));
+    // Optional public destinations: text-only labels and HTTPS allowlist.
+    const publicLinks = asArray(project.publicLinks).filter((entry) => entry && clean(entry.label) && safeSiteUrl(entry.url));
+    if (publicLinks.length) {
+      const destinations = make("div", null, "hero-actions");
+      publicLinks.forEach((entry) => {
+        const link = make("a", `${clean(entry.label, 100)} ↗`, "button secondary");
+        link.href = safeSiteUrl(entry.url);
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        destinations.append(link);
+      });
+      body.append(destinations);
+    }
     const aliases = asArray(project.aliases).filter(Boolean);
     if (aliases.length) {
       body.append(make("p", `Nomes históricos revisados: ${aliases.join(", ")}.`, "aliases"));
