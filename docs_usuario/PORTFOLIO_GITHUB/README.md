@@ -14,7 +14,7 @@
 | [🧠 DiversaMente](https://github.com/aldenirfilho/neurodiversidade-brasil) | Educação sobre TDAH adulto, rotina e inclusão. |
 | [🌿 Atlas Vivo · Plantas](https://github.com/aldenirfilho/atlas-vivo-360x-pages) | Botânica e aprendizagem visual. |
 | [📚 IntensivaHub](https://github.com/aldenirfilho/intensivahub) | Temas de estudo e materiais de medicina intensiva. |
-| [🔎 Auditoria Religiosa 360](https://aldenirfilho.github.io/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-/) | Cenário atual, agentes de investigação, dossiês, método e fontes documentais. |
+| [🔎 Auditoria Religiosa 360](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/) | Cenário atual, agentes de investigação, dossiês, método e fontes documentais. |
 
 ## Como ler o catálogo
 
@@ -60,7 +60,7 @@ O quadro público **Projeto 360X · Portfólio e evolução** oferece duas visõ
 | [**360X Brasil · Portal cívico**](https://github.com/aldenirfilho/NEXUS-BRASIL) | Portal de ideias e propostas cívicas com foco inicial em Sobral. | Iniciativa em construção. |
 | [**360X Brasil · Observatório e propostas**](https://github.com/aldenirfilho/NEXUS-COSMOS-SITE) | Portal de propostas, análises documentais e indicadores históricos. | Distribuição pública com análises preliminares. |
 | [**Índole 360° · Pesquisa Documental**](https://github.com/aldenirfilho/INDOLE-360) | Catálogo de pesquisa sobre empresas, fontes e comparações. | Pesquisa v2.2.0; sem nota geral de índole concluída. |
-| [**Auditoria Religiosa 360**](https://aldenirfilho.github.io/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-/) ([repositório](https://github.com/aldenirfilho/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-)) | Pesquisa documental sobre igrejas, recursos, casos judiciais, governança e impacto social. | Portal público com cenário 2026, 14 agentes de auditoria, dossiês, método e fontes; atualização processual contínua. |
+| [**Auditoria Religiosa 360**](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/) ([repositório](https://github.com/aldenirfilho/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-)) | Pesquisa documental sobre igrejas, recursos, casos judiciais, governança e impacto social. | Portal público com cenário 2026, 14 agentes de auditoria, dossiês, método e fontes; atualização processual contínua. |
 | [**Plano D · Desenvolvimento de Sobral**](https://github.com/aldenirfilho/PLANO-D-) | Registro inicial de uma proposta de desenvolvimento cívico e social. | Ideia inicial; apresentação editorial a revisar. |
 
 ## ✨ Cultura, reflexão e tempo de viver
@@ -105,3 +105,7 @@ Módulo da iniciativa **Integridade pública e propostas de sociedade** do Proje
 
 A edição reúne 23 capítulos, quatro anexos, 31 painéis conceituais e históricos, cronologia revisada e simulador didático de pontuação empresarial. **Proposta autoral em revisão, não legislação nem modelo validado.** As imagens antigas conservam notas de correção. Nenhuma pessoa ou empresa real recebe classificação. Conteúdo cívico separado dos módulos médicos.
 <!-- SMD4-360X:END -->
+
+## Dossiê Igreja Mórmon — Auditoria Religiosa 360X
+
+[Módulo documental e simulador social](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html), integrado ao portal em 22/10/2026. Dados SEC de 30/06/2026, estimativas globais de 2025 e fontes institucionais identificadas. Índice editorial experimental; não equivale a auditoria contábil independente. [Documentação](../DOSSIE_IGREJA_MORMON_360X_2026-10-22.md).
