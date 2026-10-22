@@ -112,5 +112,5 @@ A edição reúne 23 capítulos, quatro anexos, 31 painéis conceituais e histó
 
 ## Comparativo inter-religioso de patrimônio institucional
 
-[Comparação documental entre instituições cristãs, judaicas e islâmicas](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso.html), com entidades jurídicas identificadas, valores datados, perímetros contábeis, gráfico interativo, filtros e base JSON aberta. O módulo não soma a amostra nem atribui patrimônio privado de fiéis às religiões. [Dossiê Igreja SUD](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html) · [Documentação](../COMPARATIVO_INTERRELIGIOSO_PATRIMONIO_360X_2026-10-22.md).
+[Comparação documental entre instituições cristãs, judaicas e islâmicas](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso/), com entidades jurídicas identificadas, valores datados, perímetros contábeis, gráfico interativo, filtros e base JSON aberta. O módulo não soma a amostra nem atribui patrimônio privado de fiéis às religiões. [Dossiê Igreja SUD](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html) · [Documentação](../COMPARATIVO_INTERRELIGIOSO_PATRIMONIO_360X_2026-10-22.md).
 
