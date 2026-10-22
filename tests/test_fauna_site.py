@@ -69,11 +69,18 @@ class FaunaTests(unittest.TestCase):
                 self.assertIn('Brasil',a['regions'])
     def test_local_resources_and_no_payment_or_upload_form(self):
         for tag,attrs in self.tags.tags:
+            resource = None
             if tag=='script' and attrs.get('src'):
-                self.assertTrue((SITE/attrs['src']).is_file())
-                self.assertFalse(attrs['src'].startswith('http'))
+                resource = attrs['src']
             if tag=='link' and attrs.get('rel')=='stylesheet':
-                self.assertTrue((SITE/attrs['href']).is_file())
+                resource = attrs['href']
+            if resource is not None:
+                # Query strings version browser caches; only the path names a file.
+                parsed = urlparse(resource)
+                self.assertFalse(parsed.scheme or parsed.netloc, resource)
+                target = (SITE / parsed.path).resolve()
+                self.assertTrue(target.is_relative_to(SITE.resolve()), resource)
+                self.assertTrue(target.is_file(), resource)
             if tag=='input':
                 self.assertNotIn(attrs.get('type'),['file','password'])
             self.assertNotEqual(tag,'iframe')

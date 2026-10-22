@@ -1,0 +1,91 @@
+name: Verificar fotografias da Fauna
+on:
+  push:
+    branches: [main, feat/fauna-fotografias-reais-20261022]
+    paths: ['apps/bolsa-ajuda-fauna/**', '.github/workflows/fauna-photo-smoke.yml']
+  pull_request:
+    paths: ['apps/bolsa-ajuda-fauna/**', '.github/workflows/fauna-photo-smoke.yml']
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+          sparse-checkout: apps/bolsa-ajuda-fauna
+      - name: Instalar navegador de teste
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright
+          python3 -m playwright install --with-deps chromium
+      - name: Testar interface com fotografias reais e produzir diagnóstico
+        run: |
+          python3 - <<'PY'
+          import http.server, json, pathlib, socketserver, threading
+          from playwright.sync_api import sync_playwright
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self,*args): pass
+          server=socketserver.TCPServer(('127.0.0.1',8765),Handler)
+          threading.Thread(target=server.serve_forever,daemon=True).start()
+          out=pathlib.Path('/tmp/fauna-photo-check');out.mkdir()
+          report={'interface':[],'photoLoading':[],'scope':'Local HTTP server in GitHub runner, real external image requests. Not the production CDN.'}
+          with sync_playwright() as p:
+              browser=p.chromium.launch()
+              page=browser.new_page(viewport={'width':1440,'height':1000})
+              errors=[];page.on('pageerror',lambda error:errors.append(str(error)))
+              page.goto('http://127.0.0.1:8765/apps/bolsa-ajuda-fauna/',wait_until='domcontentloaded')
+              page.wait_for_selector('.animal-card[data-photographed]')
+              assert page.locator('.animal-card[data-photographed]').count()==26
+              assert page.locator('.fauna-real-hero img').count()==1
+              report['interface'].append('26 photographic cards and photographic cover')
+              page.locator('#search').fill('panda')
+              page.wait_for_function("document.querySelectorAll('.animal-card').length===1")
+              page.locator('.animal-card .fauna-photo-open').click()
+              page.wait_for_selector('dialog[open] .fauna-photo-figure img')
+              assert 'Panda' in page.locator('#dialog-title').inner_text()
+              page.keyboard.press('Escape')
+              page.locator('.favorite').click()
+              page.reload(wait_until='domcontentloaded')
+              page.wait_for_selector('.animal-card[data-photographed]')
+              assert page.locator('[data-favorite="animal-14"]').get_attribute('aria-pressed')=='true'
+              report['interface'].append('Search, photograph dialog, keyboard close and real localStorage persistence')
+              page.locator('[data-quick="Ceará"]').click()
+              page.wait_for_function("document.querySelectorAll('.animal-card').length===2")
+              page.locator('[data-quick="CR"]').click()
+              page.wait_for_function("document.querySelectorAll('.animal-card').length===16")
+              page.locator('#clear-filters').click()
+              page.wait_for_function("document.querySelectorAll('.animal-card').length===26")
+              page.evaluate("document.querySelectorAll('img[data-animal-photo]').forEach(i=>i.loading='eager')")
+              try:
+                  page.wait_for_function("Array.from(document.querySelectorAll('img[data-animal-photo]')).every(i=>i.complete)",timeout=60000)
+              except Exception: report['imageTimeout']=True
+              report['photoLoading']=page.locator('#animal-grid img[data-animal-photo]').evaluate_all("imgs=>imgs.map(i=>({id:i.dataset.animalPhoto,loaded:i.complete&&i.naturalWidth>0,width:i.naturalWidth,url:i.currentSrc}))")
+              report['loadedCount']=sum(x['loaded'] for x in report['photoLoading'])
+              report['totalPhotos']=len(report['photoLoading'])
+              page.screenshot(path=str(out/'desktop.png'))
+              page.locator('#catalogo').scroll_into_view_if_needed()
+              page.screenshot(path=str(out/'desktop-catalog.png'))
+              for width in (390,320):
+                  page.set_viewport_size({'width':width,'height':900})
+                  assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth'), f'Horizontal overflow at {width}'
+                  report['interface'].append(f'No horizontal overflow at {width}px')
+              page.screenshot(path=str(out/'mobile.png'))
+              page.goto('http://127.0.0.1:8765/apps/bolsa-ajuda-fauna/photos.html',wait_until='domcontentloaded')
+              assert page.locator('.photo-credit-entry').count()==26
+              report['interface'].append('26 static credit entries')
+              report['javascriptErrors']=errors
+              assert not errors, errors
+              browser.close()
+          server.shutdown()
+          (out/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+          print(json.dumps(report,ensure_ascii=False,indent=2))
+          PY
+      - name: Guardar diagnóstico e capturas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fauna-fotografias-verificacao
+          path: /tmp/fauna-photo-check/
+          retention-days: 7
