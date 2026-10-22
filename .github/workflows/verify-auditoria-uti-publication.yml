@@ -1,0 +1,97 @@
+name: Verificar publicação Auditoria UTI 360X
+
+on:
+  push:
+    branches: [feat/auditoria-uti-360x-20261022]
+    paths: [.github/workflows/verify-auditoria-uti-publication.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Preparar navegador de verificação
+        run: |
+          python3 -m pip install --quiet playwright==1.55.0
+          python3 -m playwright install --with-deps chromium
+      - name: Verificar publicação, catálogo, navegação e Excel
+        run: |
+          mkdir -p checks
+          python3 - <<'PY'
+          import base64, datetime, hashlib, json, re, time, urllib.request
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          base = 'https://aldenirfilho.github.io/aldenirmed89/'
+          url = base + 'ecossistema/auditoria-uti/'
+          report = {'url': url, 'checkedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'http': [], 'screens': []}
+          def read(address):
+              req = urllib.request.Request(address + '?audit=31feb669', headers={'User-Agent': 'UTI360X-PublicationCheck/1.0', 'Cache-Control': 'no-cache'})
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  return response.status, response.read().decode('utf-8')
+          for attempt in range(36):
+              try:
+                  status, html = read(url)
+                  hs, home = read(base)
+                  assert status == 200 and hs == 200
+                  assert 'id="appData"' in html and 'id="workbookBytes"' in html
+                  assert 'id="auditoria-uti"' in home and 'ecossistema/auditoria-uti/' in home
+                  data = json.loads(re.search(r'<script[^>]*id="appData"[^>]*>(.*?)</script>', html, re.S).group(1))
+                  assert len(data['items']) == 140
+                  assert len(data['references']) == 35
+                  assert sum(x['priced'] for x in data['coverage']) == 32
+                  encoded = re.search(r'<script[^>]*id="workbookBytes"[^>]*>(.*?)</script>', html, re.S).group(1).strip()
+                  expected = '27bf900e427ae9208562a0f26c077f83fcf86eaff3479494730a447d94cf2ed6'
+                  assert hashlib.sha256(base64.b64decode(encoded)).hexdigest() == expected
+                  report.update({'http': [{'url':url,'status':status},{'url':base,'status':hs}], 'items':140,'observations':35,'pricedItems':32,'embeddedWorkbookIntegrity':True})
+                  Path('checks/public-panel.html').write_text(html)
+                  break
+              except Exception as exc:
+                  print(f'Verificação {attempt + 1}: publicação ainda não confirmada ({type(exc).__name__}).', flush=True)
+                  if attempt == 35:
+                      report['error'] = type(exc).__name__
+                      Path('checks/result.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
+                      raise
+                  time.sleep(15)
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True, args=['--no-sandbox'])
+              for width in (1440, 390, 320):
+                  page = browser.new_page(viewport={'width':width,'height':1000}, accept_downloads=True)
+                  errors = []
+                  page.on('pageerror', lambda error: errors.append(str(error)))
+                  page.goto(url + '?audit=31feb669', wait_until='domcontentloaded', timeout=60000)
+                  page.wait_for_selector('#view-overview', state='visible')
+                  for view in ('catalog','budget','audit','learn','sources','overview'):
+                      page.locator('#nav button[data-view="' + view + '"]').click()
+                      assert page.locator('#view-' + view).is_visible(), view
+                  scroll = page.evaluate('document.documentElement.scrollWidth')
+                  page.screenshot(path=f'checks/panel-{width}.png', full_page=False)
+                  if width == 1440:
+                      with page.expect_download() as download_info:
+                          page.locator('[data-download-workbook]').first.click()
+                      download = download_info.value
+                      download.save_as('checks/planilha-publicada.xlsx')
+                      assert hashlib.sha256(Path('checks/planilha-publicada.xlsx').read_bytes()).hexdigest() == expected
+                      report['downloadWorkbookIntegrity'] = True
+                  report['screens'].append({'width':width,'documentWidth':scroll,'horizontalOverflow':scroll > width,'pageErrors':errors,'allSixTabsVisible':True})
+                  page.close()
+              page = browser.new_page(viewport={'width':1440,'height':1000})
+              page.goto(base + '?audit=31feb669#auditoria-uti', wait_until='domcontentloaded', timeout=60000)
+              section = page.locator('#auditoria-uti')
+              section.scroll_into_view_if_needed()
+              section.screenshot(path='checks/home-section.png')
+              browser.close()
+          Path('checks/result.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
+          print(json.dumps(report, ensure_ascii=False, indent=2))
+          assert all(not s['pageErrors'] for s in report['screens']), 'Erro JavaScript no painel publicado'
+          PY
+      - name: Guardar evidências de verificação
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uti360x-publication-check
+          path: checks/
+          retention-days: 7
