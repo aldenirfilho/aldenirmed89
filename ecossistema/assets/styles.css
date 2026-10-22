@@ -90,3 +90,15 @@ html[data-theme="light"] .sites-controls input,html[data-theme="light"] .sites-c
 @media print{.sites-universe{--sites-text:#111;--sites-muted:#333;--sites-accent:#473510;--sites-line:#ccc;background:#fff;box-shadow:none}.sites-controls{display:none}.sites-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.site-card{background:#fff;break-inside:avoid}.site-link::after{content:" (" attr(href) ")";font-size:.65rem;overflow-wrap:anywhere}.brand-360x{box-shadow:none}}
 
 .sites-static-fallback{padding:1rem;border:1px solid var(--sites-line);border-radius:12px;color:var(--sites-muted)}.sites-static-fallback[hidden]{display:none}.sites-static-fallback p{margin:0 0 .8rem}.sites-static-fallback ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem 1.5rem;margin:0;padding-left:1.2rem}.sites-static-fallback a{display:inline-block;min-height:44px;color:var(--sites-accent);overflow-wrap:anywhere}@media(max-width:720px){.sites-static-fallback ul{grid-template-columns:1fr}}
+
+/* turbo-360x-covers:v1 — artwork stays vivid in both accessible reading themes. */
+.sites-universe{--sites-accent:#66e6f6}
+.site-card{box-shadow:0 10px 32px rgba(4,14,31,.12);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.site-card-image{aspect-ratio:16/9;object-fit:contain;background:#0a132a}
+.site-card:focus-within{border-color:var(--sites-accent);box-shadow:0 0 0 2px var(--sites-accent)}
+.site-card h3{font-weight:750}
+html[data-theme="light"] .sites-universe{--sites-accent:#125675}
+html[data-theme="light"] .site-card{background:#fff;box-shadow:0 10px 28px rgba(18,40,65,.09)}
+@media(hover:hover){.site-card:hover{transform:translateY(-3px);border-color:var(--sites-accent);box-shadow:0 16px 36px rgba(5,22,45,.18)}}
+@media(prefers-reduced-motion:reduce){.site-card{transition:none}.site-card:hover{transform:none}}
+@media print{.site-card{box-shadow:none;transform:none}}
