@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v44`;
+const CACHE_NAME = `${CACHE_PREFIX}v45`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -37,6 +37,13 @@ const SHELL_ASSETS = [
   "./assets/aldenirmed89-mystic.css",
   "./assets/brand-360x/identity.css",
   "./assets/brand-360x/logo-360x.webp",
+  "./ecossistema/mapa.html",
+  "./ecossistema/assets/mapa.css",
+  "./ecossistema/assets/mapa.js",
+  "./ecossistema/assets/mapa-theme.js",
+  "./ecossistema/data/mapa-conexoes.json",
+  "./ecossistema/data/sites-360x.json",
+  "./ecossistema/data/catalog.json",
   "./assets/site-analytics.css",
   "./assets/site-analytics.js",
   "./assets/brand/aldenirmed89-aerospace-launch-card.png",
@@ -86,8 +93,6 @@ const WARM_ASSETS = [
   "./ecossistema/index.html",
   "./ecossistema/assets/styles.css",
   "./ecossistema/assets/app.js",
-  "./ecossistema/data/catalog.json",
-  "./ecossistema/data/sites-360x.json",
   "./15_Radar_Cientifico/index.html",
   "./15_Radar_Cientifico/data/radar.js",
   "./15_Radar_Cientifico/data/radar-history.json",
@@ -386,7 +391,9 @@ self.addEventListener("fetch", (event) => {
   if (url.pathname.endsWith("/manifest.webmanifest") ||
       url.pathname.endsWith("/18_Centro_Tripulacao/data/daily-visits.json") ||
       url.pathname.endsWith("/18_Centro_Tripulacao/data/public-metrics.json") ||
-      (url.pathname.endsWith("/ecossistema/data/catalog.json") || url.pathname.endsWith("/ecossistema/data/sites-360x.json")) ||
+      (url.pathname.endsWith("/ecossistema/data/catalog.json") ||
+       url.pathname.endsWith("/ecossistema/data/sites-360x.json") ||
+       url.pathname.endsWith("/ecossistema/data/mapa-conexoes.json")) ||
       LIBRARY_MANIFEST_PATHS.has(url.pathname)) {
     event.respondWith(freshManifest(request));
     return;
