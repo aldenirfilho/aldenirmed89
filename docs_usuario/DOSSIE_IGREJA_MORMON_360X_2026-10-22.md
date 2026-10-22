@@ -1,6 +1,6 @@
 # Dossiê Igreja Mórmon — Auditoria Religiosa 360X
 
-Edição 1.0 — 22/10/2026. Rota: `ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html`.
+Edição 1.1 — 22/10/2026. Rota: `ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html`.
 
 ## Conteúdo e perímetros
 
@@ -8,7 +8,7 @@ Edição 1.0 — 22/10/2026. Rota: `ecossistema/auditoria-religiosa-360/dossie-i
 - Filing Ensign Peak CIK 1454984, accession 0001454984-26-000004: 30/06/2026, protocolado 14/08/2026. Total US$ 60.816.389.385; 1.724 linhas. Soma reconciliada exatamente. Valores em dólares.
 - CSV completo extraído da tabela SEC renderizada; o XML bruto retornou 403 no ambiente de pesquisa. Não é cópia binária do filing. Capa e tabela originais estão citadas.
 - Percentuais por título/emissor usam apenas o total 13F. Alphabet A+C agregadas no ranking. Classificação editorial por instrumento: 29 ETFs identificados por whitelist de emissores = 2,002698%; outros títulos = 97,997302%. Método no JSON.
-- Setores amplos de somente 15 emissores; 57,0753% sem classificação nesta revisão. Não é GICS nem análise completa das exposições dos ETFs.
+- Classificação ampliada v1.1: 96,281806% por rótulos Nasdaq em 1.537 linhas; ETFs separados 2,002698% / 29 linhas; sem setor ou em revisão 1,715496% / 158 linhas. Não é GICS, setor SEC ou análise completa dos subjacentes. Mapeamento parcial da edição 1.0 preservado como histórico.
 - US$ 321 bi de ativos e US$ 231 bi de reservas são estimativas independentes The Widow’s Mite Report para fim de 2025 (relatório original, pp. 5–7). São perímetros encaixados, não somáveis ao 13F. Faixas por classe são modeladas, não alocação oficial.
 - Despesas sociais de US$ 1,58 bi são autorrelato da Igreja para 2025; incluem bens, serviços e ajuda principalmente a membros, sem monetizar as horas voluntárias.
 - Gestão externa é vínculo contratual, não religião individual. Não há composição religiosa global publicada dos profissionais.
@@ -36,3 +36,32 @@ O builder já inclui `ecossistema`. Há workflows de deploy seguro e rápido; co
 ## Compatibilidade do verificador editorial
 
 O scanner confundia valores USD com telefones e um nome de empresa energética com tema médico por coexistir com propriedades de largura mínima no CSS. Após conferência dos campos contra a SEC, o CSV usa QUOTE_MINIMAL padrão e valores JSON valueUSD usam notação numérica exponencial equivalente (e0). O literal JSON do emissor usa escape Unicode padrão; o nome decodificado permanece idêntico. Os controles de segurança não foram alterados. A equivalência dos dados decodificados deve ser verificada antes da publicação; não há telefone ou conduta clínica nesses campos.
+
+## Classificação setorial ampliada — edição 1.1
+
+Os 57,0753497% anteriormente abertos (US$ 34.711.166.918) foram particionados em 53,3571552 pontos percentuais do 13F com setor Nasdaq (US$ 32.449.895.275), 2,0026984 pp em ETFs (US$ 1.217.968.868) e 1,7154961 pp sem setor ou em revisão (US$ 1.043.302.775). Somente este bloco era residual; denominador de todas as parcelas continua US$ 60.816.389.385. 96,994331% do bloco original foi organizado em setores ou fundos; 3,005669% do bloco segue sem setor. A cobertura por quantidade com rótulo é 1.537/1.724, diferente da cobertura por valor.
+
+Fonte setorial: endpoint público Nasdaq Stock Screener consultado em 22/10/2026. Campo asOf nulo; não existe prova de que o setor era este em 30/06. A taxonomia é a do fornecedor, não GICS. Alphabet/Meta em Tecnologia, Tesla em Industriais, P&G/Mastercard em Consumo discricionário. GE Aerospace vem como Technology / Consumer Electronics/Appliances: excluída do agregado por conflito material com a atividade oficial de aviação (0,654466% do 13F), sem atribuir silenciosamente outro setor. Rótulo bruto e fonte preservados. Não se afirma adequação econômica certificada dos demais rótulos.
+
+Snapshot original: 6.999 referências; SHA-256 `367528fadd0708386d37b70afda898ef65338ecd1b2fc2b3dc048b60912259d6`. Snapshot público reduzido: 1.715 referências relevantes com symbol/name/sector/industry/url, inclusive candidatos colidentes e tickers manuais; preços excluídos. Mesmo algoritmo aplicado ao snapshot completo e reduzido deve produzir resultado idêntico.
+
+Identidades: igualdade por nome normalizado, expansão de abreviações, revisão de colisões e concordância setor/indústria. 68 aliases de identidade atual revisados com fontes primárias. Isso não confirma historicamente todos os CUSIPs nem todas as classes; tickers são referências atuais. Não se aceitou fuzzy matching. FIRST BANCORP bloqueado automaticamente e resolvido manualmente como FBP/CUSIP 318672706 via holdings do Harbor AESB e documento SEC. BDCs mantêm rótulo financeiro do emissor, sem decomposição dos ativos. Berkshire (setor vazio), Ferguson/Miscellaneous, MSDL, ET e AVB permanecem com limites explícitos. GE é a exclusão por conflito de atividade.
+
+Arquivos adicionados:
+
+- `data/ensign-peak-2026-q2-setores.csv`: todas as 1.724 posições enriquecidas, motivo, método e fonte.
+- `data/setores-2026-q2.json`: totais, setores, resíduos, regras de normalização, hashes e posições.
+- `data/nasdaq-setores-snapshot-2026-10-22.json`: subconjunto do snapshot do provedor utilizado.
+- `data/revisao-identidades-setores-2026-q2.json`: fontes primárias para aliases e pendências de revisão individual.
+
+Reprodução offline a partir da raiz do repositório:
+
+```sh
+python3 scripts_admin/classify_ensign_peak_sectors.py \
+  --holdings ecossistema/auditoria-religiosa-360/data/ensign-peak-2026-q2.csv \
+  --nasdaq ecossistema/auditoria-religiosa-360/data/nasdaq-setores-snapshot-2026-10-22.json \
+  --reviews ecossistema/auditoria-religiosa-360/data/revisao-identidades-setores-2026-q2.json \
+  --output /tmp/ensign-peak-setores-reproducao
+```
+
+A tabela HTML incorpora os dados, pesquisa, filtros e fontes por posição. O índice de transparência da Igreja continua 31/100: enriquecimento independente não é aumento de divulgação institucional. Simulador e demais perímetros do dossiê preservados. Publicação adicional explicitamente autorizada pelo pedido de atualização do usuário. Reverter o commit da edição 1.1 restaura a versão anterior.
