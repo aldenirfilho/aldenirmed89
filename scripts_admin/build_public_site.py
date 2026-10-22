@@ -186,6 +186,8 @@ ANALYTICS_CONFIG_PATH = "data/site-analytics.json"
 PUBLIC_METADATA_MARKER = "antigravity-public-metadata:v1"
 ANALYTICS_EXCLUDED_PREFIXES = (
     "02_Biblioteca_IA_Engine/previews/",
+    "ecossistema/auditoria-uti/",
+    "ecossistema/auditoria-religiosa-360/riqueza-e-vida.html",
 )
 PUBLIC_IDENTITY_TEXT_REPLACEMENTS = (
     ("ANTIGRAVITY CONSULTAS", "ALDENIRMED89"),
