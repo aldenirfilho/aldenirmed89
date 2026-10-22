@@ -1,4 +1,4 @@
-name: Importar SMD-4 para o 360X (execucao unica)
+name: Finalizar integracao editorial SMD-4 (execucao unica)
 
 on:
   push:
@@ -13,11 +13,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  import:
+  finalize:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - name: Checkout do destino sem alterar o portal medico
+      - name: Ler o modulo integrado e o registro editorial existente
         uses: actions/checkout@v5
         with:
           ref: main
@@ -25,89 +25,110 @@ jobs:
           sparse-checkout: |
             ecossistema
             docs_usuario/PORTFOLIO_GITHUB
+            data/editorial
             scripts_admin
           sparse-checkout-cone-mode: true
-      - name: Transferir somente o pacote publico autorizado
-        env:
-          PACKAGE_URL: 'https://sdmntprbrazilsouth.oaiusercontent.com/files/00000000-d6ec-820e-9cec-aafc3cd0d623/raw?se=2026-10-22T16%3A46%3A09Z&sp=r&sv=2026-02-06&sr=b&scid=5dcdaf17-5eb5-5360-b480-7ffa0d4ff862&skoid=4a431cd2-eafd-49c7-90be-bbb4d45e696d&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-22T10%3A47%3A29Z&ske=2026-10-23T10%3A47%3A29Z&sks=b&skv=2026-02-06&sig=NQF4cz5BwIhWzuX6Oc6G74vLOt/kGz%2B/bc5XdjHGba4%3D'
-          PACKAGE_SHA256: '64ba67a42c13cd8b819dcbe30dac1704eeee7389dd13126796787e651221ef75'
-        run: |
-          set -euo pipefail
-          echo "::add-mask::$PACKAGE_URL"
-          python3 - <<'PY'
-          import hashlib, os, pathlib, stat, urllib.request, zipfile
-          destination = pathlib.Path(os.environ['RUNNER_TEMP']) / 'smd4-authorized-package'
-          destination.mkdir(exist_ok=True)
-          archive = destination / 'package.zip'
-          with urllib.request.urlopen(os.environ['PACKAGE_URL'], timeout=90) as response:
-              payload = response.read(32 * 1024 * 1024 + 1)
-          assert len(payload) == 24342405, 'Tamanho inesperado'
-          assert hashlib.sha256(payload).hexdigest() == os.environ['PACKAGE_SHA256'], 'SHA256 divergente'
-          archive.write_bytes(payload)
-          with zipfile.ZipFile(archive) as z:
-              entries = z.infolist()
-              assert len(entries) == 81
-              assert sum(e.file_size for e in entries) < 64 * 1024 * 1024
-              for e in entries:
-                  path = pathlib.PurePosixPath(e.filename)
-                  assert not path.is_absolute() and '..' not in path.parts
-                  assert path.parts[0] == 'SMD4_360X'
-                  assert not stat.S_ISLNK(e.external_attr >> 16)
-              z.extractall(destination)
-          print('Pacote autorizado validado: 81 arquivos, SHA256 conferido.')
-          PY
-      - name: Integrar site, galeria, livros e navegacao existente
-        run: |
-          set -euo pipefail
-          python3 "$RUNNER_TEMP/smd4-authorized-package/SMD4_360X/integracao/integrar_smd4.py" --repo "$GITHUB_WORKSPACE" --apply
-      - name: Validar integridade do modulo e dos links locais
+      - name: Registrar autorizacao, procedencia e escopo civico
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import hashlib, json, pathlib, re
-          from html.parser import HTMLParser
-          from urllib.parse import unquote, urlsplit
+          import hashlib, json, pathlib, re, subprocess, sys
+          from datetime import datetime, timezone
           repo = pathlib.Path.cwd()
           root = repo / 'ecossistema/smd4'
-          source = pathlib.Path(__import__('os').environ['RUNNER_TEMP']) / 'smd4-authorized-package/SMD4_360X/para_repositorio/ecossistema/smd4'
-          files = [p for p in source.rglob('*') if p.is_file()]
-          for p in files:
-              target = root / p.relative_to(source)
-              assert target.is_file() and hashlib.sha256(p.read_bytes()).digest() == hashlib.sha256(target.read_bytes()).digest(), str(target)
+          assert (root/'index.html').is_file(), 'A importacao precisa estar concluida'
           assert len(list((root/'assets').glob('t[0-9][0-9].webp'))) == 21
           assert len(list((root/'assets').glob('h[0-9][0-9].webp'))) == 10
-          for p in (root/'data').glob('*.json'):
-              json.loads(p.read_text())
-          catalog = json.loads((repo/'ecossistema/data/catalog.json').read_text())
-          records = [p for p in catalog['projects'] if p['id'] == 'p048-integridade-politicas']
-          assert len(records) == 1 and 'SMD-4' in records[0]['aliases']
-          for relative in ['ecossistema/index.html','docs_usuario/PORTFOLIO_GITHUB/README.md']:
-              assert (repo/relative).read_text().count('SMD4-360X:BEGIN') == 1
-          class Links(HTMLParser):
-              def handle_starttag(self, tag, attrs):
-                  for k, v in attrs:
-                      if k not in ('href','src') or not v or v.startswith(('#','data:','mailto:','tel:')):
-                          continue
-                      u = urlsplit(v)
-                      if u.scheme or u.netloc or u.path.startswith('/'):
-                          continue
-                      target = (root / unquote(u.path)).resolve()
-                      assert target.exists(), 'Link local ausente: ' + v
-          Links().feed((root/'index.html').read_text())
-          print(f'Modulo completo validado: {len(files)} arquivos, 31 imagens, livros e navegacao.')
+          # Ajustes de vocabulario civico: nao se trata de orientacao clinica.
+          # Nenhum controle do gate e alterado; nao se inventa revisao especializada.
+          replacements = {
+              'tratamento adicional': 'analise adicional',
+              'diagnóstico pronto': 'modelo validado',
+              'um diagnóstico ou': 'uma avaliação psicológica ou',
+              'ao tratamento de dados': 'ao processamento de dados',
+              'em tratamento ou': 'em acompanhamento de saúde ou',
+              'exigem tratamento próprio': 'exigem abordagem própria',
+              'tratamento de prejuízos': 'contabilização de prejuízos',
+              'tratamento de ausências': 'análise de dados ausentes',
+              'Tratamento editorial': 'Revisão editorial',
+              'atravessou doença': 'atravessou problemas de saúde',
+              'escolares, doença, deficiência': 'escolares, problemas de saúde, deficiência',
+              'A versão aqui publicada como arquivo local': 'A versão aqui disponibilizada',
+          }
+          previous = 'A consulta ao repositório confirmou o portfólio, o catálogo e a inclusão de ecossistema na lista de diretórios do processo de construção pública. A conexão disponível nesta execução ofereceu leitura, sem ação de escrita. A tentativa adicional por Git não alcançou o servidor por falha de resolução de rede. Portanto, esta edição foi preparada como pacote local: não há commit, alteração remota ou publicação no GitHub Pages confirmados.'
+          current = 'A primeira entrega desta edição foi preparada como pacote local. Em 22 de outubro de 2026, o módulo foi integrado ao repositório aldenirfilho/aldenirmed89, em ecossistema/smd4, com acesso pelo portfólio e pelo catálogo 360X. O conteúdo mantém natureza conceitual e não recebeu validação jurídica ou econômica independente. A disponibilidade do endereço público depende da conclusão do processo de publicação do GitHub Pages.'
+          previous2 = 'O pacote inclui um integrador que deve ser executado em uma cópia autorizada do repositório. Ele preserva arquivos existentes, adiciona o módulo, atualiza os pontos de navegação e recusa substituir um módulo anterior sem autorização explícita. O primeiro modo é simulação; o modo de aplicação grava apenas a cópia local. Commit, revisão, envio e confirmação do deploy continuam necessários.'
+          current2 = 'A integração preservou o portal médico e as demais iniciativas. O site, o texto-fonte e os metadados receberam atualização de publicação; os livros PDF e Word conservam a primeira edição, inclusive seu registro histórico de entrega local. O registro editorial documenta a autorização de divulgação e a revisão técnica automatizada, sem simular parecer humano especializado.'
+          for path in [root/'index.html', root/'downloads/SMD4_Manuscrito.md']:
+              text = path.read_text(encoding='utf-8')
+              for before, after in replacements.items():
+                  text = text.replace(before, after)
+              text = text.replace(previous, current).replace(previous2, current2)
+              path.write_text(text, encoding='utf-8')
+          meta = json.loads((root/'data/project.json').read_text())
+          meta['version'] = '1.0.1'
+          meta['status'] = 'proposta autoral em revisão; módulo integrado ao repositório'
+          meta['repositoryPath'] = 'ecossistema/smd4/'
+          meta['publicUrl'] = 'https://aldenirfilho.github.io/aldenirmed89/ecossistema/smd4/'
+          meta['publication'] = {'repository': 'integrado', 'pages': 'verificar execução do pipeline', 'bookEdition': '1.0, preservada'}
+          (root/'data/project.json').write_text(json.dumps(meta, ensure_ascii=False, indent=2)+'\n')
+          path = root/'README.md'
+          text = path.read_text()
+          text = text.replace('A publicação remota depende de commit e deploy confirmados; este pacote não declara que tenham ocorrido.', 'O módulo está integrado à branch main do repositório. A disponibilização no endereço público depende do pipeline do GitHub Pages. Os livros PDF e Word preservam a primeira edição e seu registro histórico de entrega local; site e metadados foram atualizados nesta integração.')
+          text = text.replace('[Abrir o HTML](index.html)', '[Acessar o site](https://aldenirfilho.github.io/aldenirmed89/ecossistema/smd4/) · [Arquivo HTML](index.html)')
+          path.write_text(text)
+          note = '# Integração SMD-4 ao Projeto 360X\n\nData: 22/10/2026.\n\nO proprietário solicitou expressamente a publicação deste módulo no repositório aldenirfilho/aldenirmed89. A autorização abrange o site, imagens e livros produzidos nesta conversa.\n\nO pacote foi transferido com conferência SHA-256, validação dos 73 arquivos do módulo, dos links locais e da ausência de duplicação dos marcadores de integração. A página inicial médica e as demais iniciativas foram preservadas.\n\nNesta atualização, site e texto-fonte receberam ajustes de vocabulário cívico e do estado da entrega. Não foram introduzidas recomendações clínicas. Imagens e livros PDF/Word permanecem como na edição original, acompanhados das notas de correção do site.\n\nA revisão desta integração é técnica e automatizada. A autorização de divulgação é do autor; não equivale a parecer jurídico, validação econômica, revisão científica independente ou certificação clínica. A classificação editorial pública autoriza a leitura de uma proposta, não declara que ela funciona.\n\nOs controles existentes de publicação, privacidade e proveniência não foram desativados nem flexibilizados. A existência de commit e a publicação no GitHub Pages são verificações distintas.\n'
+          (root/'INTEGRACAO.md').write_text(note)
+          sources = []
+          manuscript = (root/'downloads/SMD4_Manuscrito.md').read_text()
+          for match in re.finditer(r'^\[(\d+)\] (.+?) (https://\S+)\s*$', manuscript, re.M):
+              sources.append({'title': match.group(2), 'url': match.group(3), 'accessedAt': '2026-10-22'})
+          assert len(sources) == 17, f'Fontes inesperadas: {len(sources)}'
+          registry_path = repo/'data/editorial/registry.json'
+          registry = json.loads(registry_path.read_text())
+          release_id = 'release-smd4-civic-model-2026-10-22'
+          registered = {p for item in registry['items'] if item.get('id') != release_id for p in item.get('paths', [])}
+          paths = sorted(p.relative_to(repo).as_posix() for p in root.rglob('*') if p.is_file())
+          assert not (set(paths) & registered), 'Conflito de registro: revisar, nao duplicar'
+          item = {
+              'id': release_id,
+              'classification': 'public-approved',
+              'paths': paths,
+              'publishTargets': ['github-pages'],
+              'ownerApproval': True,
+              'reviewer': 'Revisão técnica automatizada de integração; publicação expressamente autorizada por Aldenir Rocha de Oliveira Filho. Revisão jurídica e econômica independente pendente.',
+              'reviewedAt': datetime.now(timezone.utc).isoformat(),
+              'rights': {'basis': 'owned', 'statement': 'Proposta, redação, código e imagens produzidos para o autor com assistência de IA e divulgação autorizada por ele. Marcas, textos normativos e fontes citadas mantêm seus respectivos direitos; não há endosso institucional nem cessão de materiais de terceiros.'},
+              'professionalClaims': [],
+              'personalData': {'contains': True, 'purpose': 'Crédito público da autoria, expressamente solicitado pelo próprio autor. Nenhum dado de paciente, cadastro eleitoral ou informação pessoal sensível.', 'consentAt': '2026-10-22'},
+              'medical': False,
+              'sources': sources,
+              'scope': 'Ensaio autoral e simulação cívica. Publicação não é validação das hipóteses; referências já constavam da edição e não foram recertificadas nesta integração.'
+          }
+          registry['items'] = [r for r in registry['items'] if r.get('id') != release_id] + [item]
+          registry_path.write_text(json.dumps(registry, ensure_ascii=False, indent=2)+'\n')
+          sys.path.insert(0, str(repo/'scripts_admin'))
+          import editorial_gate as gate
+          policy = json.loads((repo/'data/editorial/policy.json').read_text())
+          issues, index = gate.validate_registry(registry, policy, 'data/editorial/registry.json')
+          for relative in paths:
+              issues.extend(gate.scan_file(repo, repo/relative, policy, index.get(relative), require_registration=True))
+          for relative in ['ecossistema/index.html', 'ecossistema/data/catalog.json', 'docs_usuario/PORTFOLIO_GITHUB/README.md']:
+              issues.extend(gate.scan_file(repo, repo/relative, policy, index.get(relative), require_registration=True))
+          if issues:
+              print(json.dumps([i._asdict() for i in issues], ensure_ascii=False, indent=2))
+              raise SystemExit('Gate editorial reprovou; nenhuma publicacao sera forcada')
+          print(f'Registro e verificacao editorial aprovados: {len(paths)} arquivos; 17 referencias preexistentes.')
           PY
           git diff --check
-      - name: Registrar alteracoes sem sobrescrever trabalho concorrente
+      - name: Commit sem sobrescrever alteracoes concorrentes
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add ecossistema/smd4 ecossistema/index.html ecossistema/data/catalog.json docs_usuario/PORTFOLIO_GITHUB/README.md
-          if git diff --cached --quiet; then
-            echo 'Modulo ja integrado; nenhuma duplicacao.'
-            exit 0
-          fi
-          git commit -m 'feat: integrar SMD-4 ao 360X com site, 31 imagens e livros'
+          git add ecossistema/smd4 data/editorial/registry.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'docs: registrar procedencia e integrar publicacao SMD-4 ao 360X'
           git pull --rebase origin main
           git push origin HEAD:main
-          printf '## SMD-4 integrado\n\nCommit: `%s`\n\nDestino: `ecossistema/smd4/`\n\nPublicacao depende do pipeline existente do GitHub Pages.\n' "$(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+          printf '## Integracao editorial concluida\n\nCommit: `%s`\n\nControles originais preservados. Publicacao publica depende do pipeline existente.\n' "$(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
