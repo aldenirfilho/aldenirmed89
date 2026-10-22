@@ -1,9 +1,26 @@
-# 🧙‍♂️🚀 AldenirMed89 — Enciclopédia Médica Intensiva
+![Aldenir Rocha — Medicina, educação e inteligência artificial](docs_usuario/PORTFOLIO_GITHUB/banner.svg)
+
+# AldenirMed89 · Educação médica
 
 > Plataforma médica educacional, interativa e **continuamente alimentada**, focada em **Medicina Intensiva**, **Clínica Médica avançada**, **emergência**, **enfermaria**, **POCUS** e **preparação para provas de título (TEMI/AMIB e R3)**.
 
 🌐 **Site público:** https://aldenirfilho.github.io/aldenirmed89/
 👤 **Autoria/curadoria médica:** Dr. Aldenir Rocha — CRM-CE 16587 · RQE Clínica Médica 11846 · Mestre em Ciências da Saúde (UFC)
+
+## 🧭 Comece por aqui
+
+**Clínica Médica, terapia intensiva e aprendizagem acessível**, reunidas em um portal de estudo e experimentação educacional do **Projeto 360X**.
+
+| Quero… | Acesso |
+|---|---|
+| Explorar a plataforma médica | [🩺 Abrir AldenirMed89](https://aldenirfilho.github.io/aldenirmed89/) |
+| Conhecer as iniciativas do ecossistema | [🌐 Abrir Ecossistema 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/) |
+| Encontrar um repositório por área | [🗂️ Ver o portfólio GitHub organizado](docs_usuario/PORTFOLIO_GITHUB/README.md) |
+| Conhecer o autor e os destaques | [👤 Apresentação profissional](docs_usuario/PORTFOLIO_GITHUB/PERFIL.md) |
+
+**🛠️ Escopo:** plataforma educacional em evolução. Cada módulo informa seu estado de revisão; a publicação de código ou conteúdo não equivale a validação clínica.
+
+---
 
 ## ♿ Acesso rápido e manutenção
 
@@ -28,7 +45,7 @@
 
 O controle **☀️ Visualização clara** ativa a **Visualização Clara**: fundo branco real, tipografia
 azul-marinho de alto contraste e acentos aeroespaciais preservados. Ela funciona
-na página inicial, no modo offline, na página 404 e nos **17 módulos acessíveis
+na página inicial, no modo offline, na página 404 e nos **módulos acessíveis
 pela Home**: **UpDown Hub**, **Biblioteca IA**, **Calculadoras UTI**,
 **RespiraSense ICU**, **RespiraCrit**, **Simulador TEMI**, **Card Feed Médico**,
 **Ebooks**, **Questões Comentadas**, **Transcrições**, **POCUS**, **RenalDose**,
@@ -228,3 +245,4 @@ A fonte editável é o pacote auditado, fora do repositório; a pasta é regener
 ### Semiologia
 
 A seção `24_Semiologia/index.html` reúne Neurológica e Cardiovascular. O módulo cardiovascular traz exame clínico, 30 áudios identificados por origem, 20 casos, 49 flashcards e estudo offline. Documentação: [Semiologia](24_Semiologia/README.md) e [Cardiovascular](24_Semiologia/Cardiovascular/README.md). Conteúdo em prévia educacional, com revisão médica formal pendente.
+
