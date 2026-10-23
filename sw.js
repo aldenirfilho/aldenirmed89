@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v46`;
+const CACHE_NAME = `${CACHE_PREFIX}v47`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -37,6 +37,9 @@ const SHELL_ASSETS = [
   "./assets/aldenirmed89-mystic.css",
   "./assets/brand-360x/identity.css",
   "./assets/brand-360x/logo-360x.webp",
+  "./ecossistema/painel.html",
+  "./ecossistema/assets/painel.css",
+  "./ecossistema/assets/painel.js",
   "./ecossistema/mapa.html",
   "./ecossistema/assets/mapa.css",
   "./ecossistema/assets/mapa.js",
@@ -412,3 +415,4 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(cacheFirst(request));
 });
+

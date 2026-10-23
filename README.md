@@ -14,6 +14,7 @@
 | Quero… | Acesso |
 |---|---|
 | Explorar a plataforma médica | [🩺 Abrir AldenirMed89](https://aldenirfilho.github.io/aldenirmed89/) |
+| Abrir o painel completo de projetos e conexões | [🔗 Painel integrado 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html) |
 | Conhecer as iniciativas do ecossistema | [🌐 Abrir Ecossistema 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/) |
 | Encontrar um repositório por área | [🗂️ Ver o portfólio GitHub organizado](docs_usuario/PORTFOLIO_GITHUB/README.md) |
 | Conhecer o autor e os destaques | [👤 Apresentação profissional](docs_usuario/PORTFOLIO_GITHUB/PERFIL.md) |
@@ -245,4 +246,5 @@ A fonte editável é o pacote auditado, fora do repositório; a pasta é regener
 ### Semiologia
 
 A seção `24_Semiologia/index.html` reúne Neurológica e Cardiovascular. O módulo cardiovascular traz exame clínico, 30 áudios identificados por origem, 20 casos, 49 flashcards e estudo offline. Documentação: [Semiologia](24_Semiologia/README.md) e [Cardiovascular](24_Semiologia/Cardiovascular/README.md). Conteúdo em prévia educacional, com revisão médica formal pendente.
+
 

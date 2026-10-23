@@ -716,7 +716,7 @@
       ],
       "ownerApproval": true,
       "reviewer": "Codex — pesquisa em fontes primárias, síntese clínica, adaptação ao contrato ACRA v1.0, segurança, privacidade e validação estrutural; criação solicitada explicitamente pelo proprietário",
-      "reviewedAt": "2026-07-30T04:00:00-03:00",
+      "reviewedAt": "2026-10-22",
       "rights": {
         "basis": "licensed",
         "license": "CC BY 4.0 para as figuras POCUS; direitos próprios para código e produção editorial original",
@@ -813,6 +813,29 @@
           "title": "Microlearning in health professions education: a scoping review",
           "url": "https://pubmed.ncbi.nlm.nih.gov/31339105/",
           "accessedAt": "2026-07-30"
+        }
+      ],
+      "navigationRevisions": [
+        {
+          "id": "painel-integrado-360x-20261022",
+          "date": "2026-10-22",
+          "authorization": "Pedido explícito do proprietário: enviar o painel atualizado completo e atualizar o site com as conexões integradas do Ecossistema 360X.",
+          "scope": "Inventário público com 54 iniciativas, 33 destinos, 26 repositórios e 40 conexões editoriais; links, filtros, acesso sem JavaScript e atualização offline. Sem publicação de Sites privados nem alteração de conteúdo clínico.",
+          "reviewer": "Revisão técnica e documental assistida por IA, com revisão independente; sem alegação de revisão clínica humana."
+        }
+      ],
+      "assetEvidence": [
+        {
+          "path": "index.html",
+          "sha256": "8c69aacbb616f6d3e46f7924ed9ada91e75c1cdd413467735ea9a41ed82a17fb"
+        },
+        {
+          "path": "data/site_manifest.json",
+          "sha256": "09724b9e806cdb9d98ce2f1c2c03097a020ba370882985195ee80dc9cdcf841b"
+        },
+        {
+          "path": "sw.js",
+          "sha256": "fc4f3adb7400073dc9a0bfa2f0f13d660ee8953e7017dce505413b7740313c62"
         }
       ]
     },
@@ -4144,7 +4167,10 @@
         "ecossistema/assets/app.js",
         "ecossistema/assets/styles.css",
         "ecossistema/data/catalog.json",
-        "ecossistema/index.html"
+        "ecossistema/index.html",
+        "ecossistema/painel.html",
+        "ecossistema/assets/painel.css",
+        "ecossistema/assets/painel.js"
       ],
       "publishTargets": [
         "github-pages"
@@ -4247,12 +4273,19 @@
           "authorization": "Pedidos expressos do proprietário para integrar e publicar o Dossiê Igreja Mórmon e atualizar o dossiê no Projeto 360X; correção mínima de capas, catálogo e acesso sem JavaScript necessária à publicação validada.",
           "scope": "Somente os dois destinos dossiê/comparativo já cadastrados: capas independentes, links de fallback, verificação HTTP pública e hashes dos três arquivos de navegação alterados. Preserva os 25 destinos e capas anteriores e todo conteúdo das pesquisas.",
           "reviewer": "Revisão técnica assistida por IA; não declara revisão humana, clínica, contábil ou jurídica independente."
+        },
+        {
+          "id": "painel-integrado-360x-20261022",
+          "date": "2026-10-22",
+          "authorization": "Pedido explícito do proprietário: enviar o painel atualizado completo e atualizar o site com as conexões integradas do Ecossistema 360X.",
+          "scope": "Inventário público com 54 iniciativas, 33 destinos, 26 repositórios e 40 conexões editoriais; links, filtros, acesso sem JavaScript e atualização offline. Sem publicação de Sites privados nem alteração de conteúdo clínico.",
+          "reviewer": "Revisão técnica e documental assistida por IA, com revisão independente; sem alegação de revisão clínica humana."
         }
       ],
       "assetEvidence": [
         {
           "path": "ecossistema/data/catalog.json",
-          "sha256": "2d2fee1c747e825df6e1c11a5aa6889633871cf978be1fc0f75ca65cebdee3e5"
+          "sha256": "c3efef3dc25cb70784687231b2faafae4b5b4b8d7572e91ac43b552c1384e11f"
         },
         {
           "path": "ecossistema/assets/app.js",
@@ -4260,11 +4293,23 @@
         },
         {
           "path": "ecossistema/index.html",
-          "sha256": "aa0c53dce3d66bd57b85f47b2efb82282f82f0793f7194d59443f1f7308df8d8"
+          "sha256": "2db409ab47ea23be4cb440cdb9f6f05d3d406a6facf167dcff2e9c1e0d223c28"
         },
         {
           "path": "ecossistema/assets/styles.css",
           "sha256": "5e4d04cefc8d9e33d4eb3bcbeeadfce3cfb447e3e69f4a3a5a032ebdbc8a910a"
+        },
+        {
+          "path": "ecossistema/assets/painel.css",
+          "sha256": "dc9f6bb0e108a9f4f341335eb37a7caf973c25e1af0c602daa663869f7994eae"
+        },
+        {
+          "path": "ecossistema/assets/painel.js",
+          "sha256": "76a3b717b9f6c9e2f4d1f5686e24efc8f53d1a644097a58a99a99fde4a941e1a"
+        },
+        {
+          "path": "ecossistema/painel.html",
+          "sha256": "9f830f81126525159878c218dbb08fb7194f7f636f3b2a2700955f2bbb9f4ce3"
         }
       ],
       "visualRevisions": [
@@ -6390,7 +6435,7 @@
         },
         {
           "path": "ecossistema/data/sites-360x.json",
-          "sha256": "56b1ae32cce57d7fff02ebb7b4548e375626dedb25e9117fd3e464c54bc7e8bd"
+          "sha256": "0f93ae4c655039d480c3dc6800f240c97c63b7918d2931afc1eecae22ee7ff86"
         },
         {
           "path": "ecossistema/assets/previews/aldenirmed.svg",
@@ -6536,6 +6581,13 @@
           "authorization": "Pedidos expressos do proprietário para integrar e publicar o Dossiê Igreja Mórmon e atualizar o dossiê no Projeto 360X; correção mínima de capas, catálogo e acesso sem JavaScript necessária à publicação validada.",
           "scope": "Somente os dois destinos dossiê/comparativo já cadastrados: capas independentes, links de fallback, verificação HTTP pública e hashes dos três arquivos de navegação alterados. Preserva os 25 destinos e capas anteriores e todo conteúdo das pesquisas.",
           "reviewer": "Revisão técnica assistida por IA; não declara revisão humana, clínica, contábil ou jurídica independente."
+        },
+        {
+          "id": "painel-integrado-360x-20261022",
+          "date": "2026-10-22",
+          "authorization": "Pedido explícito do proprietário: enviar o painel atualizado completo e atualizar o site com as conexões integradas do Ecossistema 360X.",
+          "scope": "Inventário público com 54 iniciativas, 33 destinos, 26 repositórios e 40 conexões editoriais; links, filtros, acesso sem JavaScript e atualização offline. Sem publicação de Sites privados nem alteração de conteúdo clínico.",
+          "reviewer": "Revisão técnica e documental assistida por IA, com revisão independente; sem alegação de revisão clínica humana."
         }
       ],
       "visualRevisions": [
@@ -6756,6 +6808,27 @@
           "authorization": "Pedido expresso de integrar e publicar o Dossiê Igreja Mórmon no Projeto 360X.",
           "scope": "Sincroniza a rota canônica do portal, sua navegação estática, catálogo público e hashes dos arquivos revisados; sem alteração de conteúdo clínico.",
           "reviewer": "Revisão técnica e documental assistida por IA."
+        },
+        {
+          "id": "painel-integrado-360x-20261022",
+          "date": "2026-10-22",
+          "authorization": "Pedido explícito do proprietário: enviar o painel atualizado completo e atualizar o site com as conexões integradas do Ecossistema 360X.",
+          "scope": "Inventário público com 54 iniciativas, 33 destinos, 26 repositórios e 40 conexões editoriais; links, filtros, acesso sem JavaScript e atualização offline. Sem publicação de Sites privados nem alteração de conteúdo clínico.",
+          "reviewer": "Revisão técnica e documental assistida por IA, com revisão independente; sem alegação de revisão clínica humana."
+        }
+      ],
+      "assetEvidence": [
+        {
+          "path": "docs_usuario/PORTFOLIO_GITHUB/README.md",
+          "sha256": "cd0e2bdec91bee3c7381b2cbf49801e2200878257afadfe2957a025fdff2b252"
+        },
+        {
+          "path": "docs_usuario/PORTFOLIO_GITHUB/repositorios-publicos.json",
+          "sha256": "186106a4934b954701fc19cf7601ef95095036d83baaedc5b29a5f0834836d55"
+        },
+        {
+          "path": "README.md",
+          "sha256": "7f92469ae6474d57d5bd8cfa00e1475edf2f39c3906c84b9bd01abd8ec60aa92"
         }
       ]
     },
@@ -7344,16 +7417,23 @@
           "authorization": "Pedidos expressos do proprietário para integrar e publicar o Dossiê Igreja Mórmon e atualizar o dossiê no Projeto 360X; correção mínima de capas, catálogo e acesso sem JavaScript necessária à publicação validada.",
           "scope": "Somente os dois destinos dossiê/comparativo já cadastrados: capas independentes, links de fallback, verificação HTTP pública e hashes dos três arquivos de navegação alterados. Preserva os 25 destinos e capas anteriores e todo conteúdo das pesquisas.",
           "reviewer": "Revisão técnica assistida por IA; não declara revisão humana, clínica, contábil ou jurídica independente."
+        },
+        {
+          "id": "painel-integrado-360x-20261022",
+          "date": "2026-10-22",
+          "authorization": "Pedido explícito do proprietário: enviar o painel atualizado completo e atualizar o site com as conexões integradas do Ecossistema 360X.",
+          "scope": "Inventário público com 54 iniciativas, 33 destinos, 26 repositórios e 40 conexões editoriais; links, filtros, acesso sem JavaScript e atualização offline. Sem publicação de Sites privados nem alteração de conteúdo clínico.",
+          "reviewer": "Revisão técnica e documental assistida por IA, com revisão independente; sem alegação de revisão clínica humana."
         }
       ],
       "assetEvidence": [
         {
           "path": "ecossistema/data/mapa-conexoes.json",
-          "sha256": "d030c0700f351d49f7683da2a9b619ee5329e7f2de44eba557602d78c54051cb"
+          "sha256": "dff534e10a7189c1445308324baa859bccdcc054ec051ae0dac898a77d89dae2"
         },
         {
           "path": "ecossistema/mapa.html",
-          "sha256": "8e4ae7b97d7e01bad9b834f940e1e75cf24b9a04334d3a1a742f91bba73cf36e"
+          "sha256": "7feb980e3108243f7a32ca699285931f8cb1f6d6f91e5cc48fcd6565ae48f9b5"
         }
       ]
     },
@@ -7387,7 +7467,13 @@
         "ecossistema/assets/previews/turbo-360x-v1/transparencia.svg",
         "ecossistema/assets/previews/turbo-360x-v1/auditoria-evangelica-360.svg",
         "ecossistema/assets/previews/turbo-360x-v1/dossie-igreja-mormon-360x.svg",
-        "ecossistema/assets/previews/turbo-360x-v1/comparativo-interreligioso-360x.svg"
+        "ecossistema/assets/previews/turbo-360x-v1/comparativo-interreligioso-360x.svg",
+        "ecossistema/assets/previews/turbo-360x-v1/smd4.svg",
+        "ecossistema/assets/previews/turbo-360x-v1/auditoria-uti.svg",
+        "ecossistema/assets/previews/turbo-360x-v1/riqueza-e-vida.svg",
+        "ecossistema/assets/previews/turbo-360x-v1/paradoxos-inexoraveis.svg",
+        "ecossistema/assets/previews/turbo-360x-v1/antigravity.svg",
+        "ecossistema/assets/previews/turbo-360x-v1/dragon-ball-github.svg"
       ],
       "publishTargets": [
         "github-pages"
@@ -7398,7 +7484,7 @@
       "medical": false,
       "rights": {
         "basis": "owned",
-        "statement": "27 composições vetoriais originais, declarativas, sem fotografias, fontes externas, personagens oficiais ou logotipos de terceiros. A identificação dos projetos não concede direitos sobre suas marcas. Ilustrações conceituais, não fotografias ou capturas."
+        "statement": "33 composições vetoriais originais, declarativas, sem fotografias, fontes externas, personagens oficiais ou logotipos de terceiros. A identificação dos projetos não concede direitos sobre suas marcas. Ilustrações conceituais, não fotografias ou capturas."
       },
       "personalData": {
         "contains": false
@@ -7537,6 +7623,30 @@
         {
           "path": "ecossistema/assets/previews/turbo-360x-v1/comparativo-interreligioso-360x.svg",
           "sha256": "6d55ba723b0c55764f9f40521617e008f678a5c5ce753cb32ad4e0ee078977c0"
+        },
+        {
+          "path": "ecossistema/assets/previews/turbo-360x-v1/smd4.svg",
+          "sha256": "24308a63a0df6958ac88dea1fb2c08922f617efae98d38bfe6222ef4ab2def14"
+        },
+        {
+          "path": "ecossistema/assets/previews/turbo-360x-v1/auditoria-uti.svg",
+          "sha256": "b985d01a8d583d36fa1412e68379cf35d52154866a6f16a0fd212d70806eba40"
+        },
+        {
+          "path": "ecossistema/assets/previews/turbo-360x-v1/riqueza-e-vida.svg",
+          "sha256": "edb73214738bcdddac26bfcc19516f17e60fd7a549b24f6df10a78a861807cdf"
+        },
+        {
+          "path": "ecossistema/assets/previews/turbo-360x-v1/paradoxos-inexoraveis.svg",
+          "sha256": "e3ee4b2d351b09a7dd4ec751ece2ce254a56ad70bb1da452b89f03790964dacc"
+        },
+        {
+          "path": "ecossistema/assets/previews/turbo-360x-v1/antigravity.svg",
+          "sha256": "e961539adab8686ad63db5ff4d481869f17b9980b6621d2c8d6b498a5f7f4df2"
+        },
+        {
+          "path": "ecossistema/assets/previews/turbo-360x-v1/dragon-ball-github.svg",
+          "sha256": "4ff17f5863830bdaa47eb223b6cf7b6d82e166e88669f02da3480211cb8989c3"
         }
       ],
       "navigationRevisions": [
@@ -7546,6 +7656,13 @@
           "authorization": "Pedidos expressos do proprietário para integrar e publicar o Dossiê Igreja Mórmon e atualizar o dossiê no Projeto 360X; correção mínima de capas, catálogo e acesso sem JavaScript necessária à publicação validada.",
           "scope": "Somente os dois destinos dossiê/comparativo já cadastrados: capas independentes, links de fallback, verificação HTTP pública e hashes dos três arquivos de navegação alterados. Preserva os 25 destinos e capas anteriores e todo conteúdo das pesquisas.",
           "reviewer": "Revisão técnica assistida por IA; não declara revisão humana, clínica, contábil ou jurídica independente."
+        },
+        {
+          "id": "painel-integrado-360x-20261022",
+          "date": "2026-10-22",
+          "authorization": "Pedido explícito do proprietário para atualizar o painel e integrar todas as conexões do Ecossistema 360X.",
+          "scope": "Seis capas editoriais originais para os destinos novos; preserva as 27 anteriores e o conteúdo dos projetos.",
+          "reviewer": "Revisão técnica assistida por IA; sem declaração de revisão clínica humana."
         }
       ]
     },

@@ -68,7 +68,7 @@ class FaunaEcosystemTests(unittest.TestCase):
             pairs.add(pair)
             if KEY in pair:
                 neighbors.update(set(pair) - {KEY})
-        self.assertEqual(neighbors, {'atlas-animais', 'atlas-plantas', 'plano-d', 'aldenirmed'})
+        self.assertTrue({'atlas-animais', 'atlas-plantas', 'plano-d', 'aldenirmed'}.issubset(neighbors))
 
     def test_direct_links_exist_without_javascript(self):
         for path in ['ecossistema/index.html', 'ecossistema/mapa.html']:

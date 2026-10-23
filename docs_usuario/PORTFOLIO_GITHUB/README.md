@@ -4,6 +4,8 @@
 
 [Perfil no GitHub](https://github.com/aldenirfilho) · [Quadro de projetos](https://github.com/users/aldenirfilho/projects/2/views/1) · [Portal AldenirMed89](https://aldenirfilho.github.io/aldenirmed89/) · [Ecossistema 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/) · [Apresentação profissional](PERFIL.md)
 
+**🔗 [Abrir o painel integrado 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html)** · Iniciativas, sites, módulos e todos os repositórios públicos em uma busca.
+
 ## Comece pelos destaques
 
 | Projeto | O que explorar |
@@ -18,11 +20,11 @@
 
 ## Como ler o catálogo
 
-Este índice reúne **25 repositórios públicos em 22/10/2026**, agrupados por finalidade. O inventário inicial identificou **24 repositórios públicos**; o repositório de apresentação [aldenirfilho/aldenirfilho](https://github.com/aldenirfilho/aldenirfilho), criado nesta organização do portfólio, é o 25º. As descrições vêm dos READMEs e das estruturas disponíveis nessa data. Os estágios indicam o que está documentado, sem certificar funcionamento, revisão clínica ou prontidão comercial.
+Este índice reúne **26 repositórios públicos em 22/10/2026**, agrupados por finalidade, após percorrer o inventário até o fim. O inventário inicial de 24 passou a incluir o README de perfil e **Paradoxos Inexoráveis**. Os estágios descrevem a documentação disponível; funcionamento, revisão clínica e prontidão comercial têm verificação própria.
 
 As cinco áreas temáticas e a seção de identidade abaixo facilitam a navegação pelo GitHub. O [catálogo do ecossistema](https://github.com/aldenirfilho/aldenirmed89/blob/main/ecossistema/data/catalog.json) mantém suas próprias raízes e iniciativas; uma iniciativa pode corresponder a um módulo dentro de um repositório. As duas contagens representam coisas diferentes.
 
-O quadro público **Projeto 360X · Portfólio e evolução** oferece duas visões salvas: [**Todos os projetos**](https://github.com/users/aldenirfilho/projects/2/views/1), com 25 fichas agrupadas por área, e [**Destaques**](https://github.com/users/aldenirfilho/projects/2/views/2), com os seis projetos selecionados. Cada ficha registra o estágio documentado e o link do repositório.
+O quadro público **Projeto 360X · Portfólio e evolução** oferece duas visões salvas: [**Todos os projetos**](https://github.com/users/aldenirfilho/projects/2/views/1), com fichas agrupadas por área (o quadro pode ter atualização própria), e [**Destaques**](https://github.com/users/aldenirfilho/projects/2/views/2), com os seis projetos selecionados. Cada ficha registra o estágio documentado e o link do repositório.
 
 ## 🩺 Medicina e educação
 
@@ -62,6 +64,8 @@ O quadro público **Projeto 360X · Portfólio e evolução** oferece duas visõ
 | [**Índole 360° · Pesquisa Documental**](https://github.com/aldenirfilho/INDOLE-360) | Catálogo de pesquisa sobre empresas, fontes e comparações. | Pesquisa v2.2.0; sem nota geral de índole concluída. |
 | [**Auditoria Religiosa 360**](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/) ([repositório](https://github.com/aldenirfilho/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-)) | Pesquisa documental sobre igrejas, recursos, casos judiciais, governança e impacto social. | Portal público com cenário 2026, 14 agentes de auditoria, dossiês, método e fontes; atualização processual contínua. |
 | [**Plano D · Desenvolvimento de Sobral**](https://github.com/aldenirfilho/PLANO-D-) | Registro inicial de uma proposta de desenvolvimento cívico e social. | Ideia inicial; apresentação editorial a revisar. |
+
+| [**Paradoxos Inexoráveis**](https://github.com/aldenirfilho/PARADOXOS-INEXORAVEIS) | Ensaios e painel sobre riqueza financeira, desigualdade e benefício à vida. | Site estático documentado; disponibilidade HTTP pendente nesta revisão. |
 
 ## ✨ Cultura, reflexão e tempo de viver
 
@@ -129,3 +133,4 @@ Catálogo de 140 itens; orçamento para 10/20/30 leitos; triagem de preços e Ex
 
 [Dossiê Igreja Mórmon](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html) · [Método e integração](../RIQUEZA_E_VIDA_360X.md).
 <!-- RIQUEZA-E-VIDA-360X:END -->
+

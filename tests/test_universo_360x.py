@@ -44,7 +44,11 @@ class Universo360XTests(unittest.TestCase):
                 self.assertIsNone(url.password)
                 self.assertIn(project['url'], {source['url'] for source in project['sources']})
                 self.assertTrue(project['description'].strip())
-                self.assertIn(project['verificationMethod'], {'anonymous-http-200', 'browser-public-content'})
+                self.assertIn(project['verificationMethod'], {'anonymous-http-200', 'browser-public-content', 'source-repository'})
+                if project['verificationMethod'] == 'source-repository':
+                    self.assertEqual(project.get('availability'), 'not-verified')
+                    self.assertTrue(any(source['type'] == 'owner-repository' for source in project['sources']))
+                    self.assertIn('HTTP', project.get('accessNote', ''))
 
     def test_each_illustration_is_local_accessible_and_contains_no_active_svg(self):
         for project in self.projects:
@@ -72,3 +76,4 @@ class Universo360XTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
