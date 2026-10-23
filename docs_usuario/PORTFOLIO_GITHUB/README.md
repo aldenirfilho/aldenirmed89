@@ -141,3 +141,11 @@ Catálogo de 140 itens; orçamento para 10/20/30 leitos; triagem de preços e Ex
 [Dossiê Igreja Mórmon](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html) · [Método e integração](../RIQUEZA_E_VIDA_360X.md).
 <!-- RIQUEZA-E-VIDA-360X:END -->
 
+
+<!-- RAM-ESPELHO-CEREBRO-360X:BEGIN -->
+## RAM, espelho e cérebro · Conexões 360X
+
+[**Abrir o ensaio visual interativo**](https://aldenirfilho.github.io/aldenirmed89/ecossistema/ram-espelho-cerebro/) · [Código e documentação](../../ecossistema/ram-espelho-cerebro/README.md).
+
+Três relações conectadas: silício e fabricação da RAM; RAM versus espelho; visão, memória humana e processamento por IA. Reúne três imagens widescreen, seis conexões, tabela comparativa, perguntas de revisão e estimativa do espaço dos pesos de um modelo. Material educacional com fontes e limites das analogias; integrado às iniciativas existentes de IA aplicada e humanização tecnológica.
+<!-- RAM-ESPELHO-CEREBRO-360X:END -->
