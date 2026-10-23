@@ -1,6 +1,6 @@
 # Dossiê Igreja Mórmon — Auditoria Religiosa 360X
 
-Edição 1.3 — 22/10/2026. Rota: `ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html`.
+Edição 1.4 — 22/10/2026. Rota: `ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html`.
 
 ## Conteúdo e perímetros
 
@@ -67,14 +67,16 @@ python3 scripts_admin/classify_ensign_peak_sectors.py \
 A tabela HTML incorpora os dados, pesquisa, filtros e fontes por posição. Há distribuição de toda a carteira e tabela específica dos 57,08% restantes, com valores, percentual do 13F e percentual interno do bloco residual; denominadores explícitos. O índice de transparência da Igreja continua 31/100: enriquecimento independente não é aumento de divulgação institucional. Simulador e demais perímetros do dossiê preservados. Publicação adicional explicitamente autorizada pelo pedido de atualização do usuário. Reverter os commits da edição 1.1 restaura a versão anterior.
 
 
-## Componentes dos ETFs — edição 1.3
+## Componentes dos ETFs — edição 1.4
 
 A seção `#etfs` detalha os 29 fundos que somam US$ 1.217.968.868 (2,0026984% do 13F). O agregado usa cinco classes/mandatos dos veículos: 23 de ações, dois de crédito com empréstimos, dois de títulos corporativos, VTIP de dívida pública ligada à inflação e HGER de commodities/derivativos. Isso não é decomposição setorial homogênea dos subjacentes.
 
-A revisão pesquisou os 16 fundos que na edição 1.2 tinham apenas aproximações posteriores. Há agora **21 com componentes e categorias em 30/06 (73,486176% do valor das cotas)**, **dois parciais (1,434496%)**, VEA e VWO, e **seis sem campo confirmado em junho (25,079328%)**. Os componentes de junho cobrem 23 fundos e 74,920672% do valor das cotas; essa proporção não demonstra cobertura integral dos ativos internos. Novas confirmações completas: SRLN, KRE, SPYG, SPYV, XLU, XLY, VXF e VTIP.
+A revisão pesquisou os 16 fundos que na edição 1.2 tinham apenas aproximações posteriores. A primeira rodada terminou em 21/2/6 e permanece registrada como histórico. Após a segunda rodada, há **22 com componentes e categorias em 30/06 (73,660799% do valor das cotas)**, **três parciais (1,743992%)**, VEA/VWO com componentes e AVEM com setores, e **quatro sem campo principal confirmado em junho (24,595209%)**. Os componentes de junho cobrem 24 fundos e 75,095294% do valor das cotas; essa proporção não demonstra cobertura integral dos ativos internos. A primeira rodada confirmou SRLN, KRE, SPYG, SPYV, XLU, XLY, VXF e VTIP; a segunda acrescentou QQQM. Categorias de junho: 23 fundos e 73,970296% do valor das cotas.
 
-VEA/VWO têm componentes de junho e setores amplos ICB de setembro; subindústrias literais de junho aparecem separadas. Os 16 resultados, fontes e lacunas estão no quadro estático `#etf-historical-search`. BKLN mantém o quadro principal posterior e recebe um quadro próprio de **31/05**, com 30 categorias de empréstimos (93,14% do NAV), 17 de bonds (3,79%) e balanço 106,04% − 6,04% = 100%. Maio não foi classificado como junho nem multiplicado pelas cotas do 13F.
+VEA/VWO têm componentes de junho e setores amplos ICB de setembro; subindústrias literais de junho aparecem separadas. Os 16 resultados da primeira rodada estão no quadro estático `#etf-historical-search`, rotulado como retrato da edição 1.3. O estado atual das oito buscas está em `#etf-followup-search`. BKLN mantém o quadro principal posterior e recebe um quadro próprio de **31/05**, com 30 categorias de empréstimos (93,14% do NAV), 17 de bonds (3,79%) e balanço 106,04% − 6,04% = 100%. Maio não foi classificado como junho nem multiplicado pelas cotas do 13F.
 
 Relatórios State Street usam valor/NAV para pesos editoriais declarados; a API Vanguard conserva o campo nativo `percentOfFunds`. Pesos nocionais, caixa/colateral e derivativos não viram participações acionárias. Não se alteraram o 13F, a classificação das posições diretas, o simulador ou o índice 31/100. Atualização histórica e publicação expressamente autorizadas em 22/10/2026; revisão técnica assistida por IA, sem alegar revisão humana independente.
 
 Método completo, fontes, arquivos, limites e reprodução: [ETFS_ENSIGN_PEAK_360X_2026-10-22.md](ETFS_ENSIGN_PEAK_360X_2026-10-22.md).
+
+A segunda rodada preserva QQQM em dez participações por emissor publicadas na ficha Q2 (103 posições informadas, sem extração integral; Alphabet agregado). AVEM recebeu somente onze setores de junho, soma 99%, sem converter as posições específicas de julho em junho. HGER recebeu um painel separado com os 20 pesos Daily Weight % do relatório de junho, sem base contábil ETF/índice/NAV confirmada e sem alteração do status principal. VEA/VWO receberam painéis GICS calculados editorialmente dos pesos conhecidos de junho e mapa de abril de 2026, com cobertura, lacunas e fontes; não são quadros ICB publicados pela Vanguard nem alteram o status parcial. Nenhum peso foi normalizado ou multiplicado pelas cotas Ensign Peak.

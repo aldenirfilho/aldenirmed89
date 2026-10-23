@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.1",
-  "edition": "1.3",
+  "edition": "1.4",
   "accessedAt": "2026-10-22",
   "ensignPeakHoldingsAsOf": "2026-06-30",
   "total13FValueUSD": 60816389385e0,
@@ -10,21 +10,21 @@
   "aggregationBasis": "Valor das cotas 13F por classe/mandato do veículo, não setores dos subjacentes.",
   "sectorAggregationPerformed": false,
   "indirectExposuresAddedToDirectPortfolio": false,
-  "historicalFundCount": 21,
-  "historicalValueUSD": 895038749e0,
-  "historicalPercentOfETFs": 73.4861762492931,
-  "partialFundCount": 2,
-  "partialValueUSD": 17471710e0,
-  "partialPercentOfETFs": 1.4344956147105725,
-  "proxyFundCount": 6,
-  "proxyValueUSD": 305458409e0,
-  "proxyPercentOfETFs": 25.07932813599633,
-  "historicalHoldingsFundCount": 23,
-  "historicalHoldingsValueUSD": 912510459e0,
-  "historicalHoldingsPercentOfETFs": 74.92067186400368,
-  "historicalSectorsFundCount": 21,
-  "historicalSectorsValueUSD": 895038749e0,
-  "historicalSectorsPercentOfETFs": 73.4861762492931,
+  "historicalFundCount": 22,
+  "historicalValueUSD": 897165598e0,
+  "historicalPercentOfETFs": 73.66079885713467,
+  "partialFundCount": 3,
+  "partialValueUSD": 21241285e0,
+  "partialPercentOfETFs": 1.7439924416852992,
+  "proxyFundCount": 4,
+  "proxyValueUSD": 299561985e0,
+  "proxyPercentOfETFs": 24.595208701180038,
+  "historicalHoldingsFundCount": 24,
+  "historicalHoldingsValueUSD": 914637308e0,
+  "historicalHoldingsPercentOfETFs": 75.09529447184524,
+  "historicalSectorsFundCount": 23,
+  "historicalSectorsValueUSD": 900935173e0,
+  "historicalSectorsPercentOfETFs": 73.97029568410939,
   "groups": [
     {
       "id": "equity",
@@ -614,7 +614,9 @@
         "As categorias do gestor foram preservadas; não foram convertidas silenciosamente em GICS/Nasdaq.",
         "Os setores (30/09) e componentes (21/10) têm datas diferentes.",
         "O parâmetro date=2026-06-30 foi ignorado pela API e devolveu 21/10; effectiveDate=2026-06-30 devolveu HTTP400; nenhum deles foi tratado como dado de junho.",
-        "URLs de factsheet retornaram HTML em vez de PDF nesta consulta; não usadas como evidência quantitativa."
+        "URLs de factsheet retornaram HTML em vez de PDF nesta consulta; não usadas como evidência quantitativa.",
+        "Resultado negativo limitado aos URLs, consultas e janelas documentados; não prova inexistência de histórico.",
+        "Pesos do índice e carteiras 13F de detentores de cotas não substituem a carteira interna do ETF."
       ],
       "evidenceFiles": [
         {
@@ -2286,7 +2288,10 @@
         "Linha da API sem peso: USD Pending Dividends; não incluída na soma por tipo.",
         "Os setores (30/09) e componentes (21/10) têm datas diferentes.",
         "O parâmetro date=2026-06-30 foi ignorado pela API e devolveu 21/10; effectiveDate=2026-06-30 devolveu HTTP400; nenhum deles foi tratado como dado de junho.",
-        "URLs de factsheet retornaram HTML em vez de PDF nesta consulta; não usadas como evidência quantitativa."
+        "URLs de factsheet retornaram HTML em vez de PDF nesta consulta; não usadas como evidência quantitativa.",
+        "Resultado negativo limitado aos URLs, consultas e janelas documentados; não prova inexistência de histórico.",
+        "Pesos do índice e carteiras 13F de detentores de cotas não substituem a carteira interna do ETF.",
+        "A divulgação de 31/05/2026 da rodada anterior continua separada e não foi rebatizada como junho."
       ],
       "evidenceFiles": [
         {
@@ -9080,54 +9085,65 @@
         }
       ],
       "holdingsAsOf": "2026-09-30",
-      "sectorAsOf": "2026-09-30",
+      "sectorAsOf": "2026-06-30",
       "dateBasis": "proxy_temporal_posterior_ao_13F",
-      "sectorTaxonomy": "Rótulos setoriais do gestor Avantis; a ficha consultada não declara explicitamente GICS",
-      "sectorCoveragePercent": 100.0,
+      "sectorTaxonomy": "Literal manager sector labels; taxonomy not explicitly declared",
+      "sectorCoveragePercent": null,
       "sectors": [
         {
           "name": "Information Technology",
-          "weightPercent": 38.66
+          "weightPercent": 41.0,
+          "sourceWeightLiteral": "41%"
         },
         {
           "name": "Financials",
-          "weightPercent": 19.81
-        },
-        {
-          "name": "Consumer Discretionary",
-          "weightPercent": 8.06
+          "weightPercent": 19.0,
+          "sourceWeightLiteral": "19%"
         },
         {
           "name": "Industrials",
-          "weightPercent": 7.59
+          "weightPercent": 8.0,
+          "sourceWeightLiteral": "8%"
+        },
+        {
+          "name": "Consumer Discretionary",
+          "weightPercent": 7.0,
+          "sourceWeightLiteral": "7%"
         },
         {
           "name": "Materials",
-          "weightPercent": 6.71
+          "weightPercent": 7.0,
+          "sourceWeightLiteral": "7%"
         },
         {
           "name": "Communication Services",
-          "weightPercent": 5.02
+          "weightPercent": 5.0,
+          "sourceWeightLiteral": "5%"
         },
         {
           "name": "Energy",
-          "weightPercent": 4.1
-        },
-        {
-          "name": "Health Care",
-          "weightPercent": 3.16
+          "weightPercent": 4.0,
+          "sourceWeightLiteral": "4%"
         },
         {
           "name": "Consumer Staples",
-          "weightPercent": 3.09
+          "weightPercent": 3.0,
+          "sourceWeightLiteral": "3%"
+        },
+        {
+          "name": "Health Care",
+          "weightPercent": 2.0,
+          "sourceWeightLiteral": "2%"
         },
         {
           "name": "Utilities",
-          "weightPercent": 2.25
+          "weightPercent": 2.0,
+          "sourceWeightLiteral": "2%"
         },
         {
           "name": "Real Estate",
-          "weightPercent": 1.55
+          "weightPercent": 1.0,
+          "sourceWeightLiteral": "1%"
         }
       ],
       "topHoldings": [
@@ -9198,6 +9214,14 @@
           "title": "Avantis — AVEM Quarterly Fact Sheet",
           "asOf": "2026-09-30",
           "accessedAt": "2026-10-22"
+        },
+        {
+          "url": "https://web.archive.org/web/20260730170945id_/https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
+          "originalURL": "https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
+          "asOf": "2026-06-30",
+          "accessedAt": "2026-10-22",
+          "sourceType": "official_page_preserved_in_Internet_Archive",
+          "title": "Avantis — objeto portfolio em 30/06/2026, captura de 30/07/2026"
         }
       ],
       "limitations": [
@@ -9205,7 +9229,12 @@
         "A ficha agrupa ações ordinárias, recibos depositários, direitos e warrants de um mesmo emissor em uma empresa. Não misturar esse agrupamento com posições por classe de outros fundos.",
         "A soma dos setores publicados é 100,00%; a soma dos dez pesos arredondados é 30,64%. A ficha não declara explicitamente o padrão GICS, embora use rótulos usuais desse sistema.",
         "Não foi recuperada composição primária de30/06/2026 doAVEM nas buscas pelo produto e pelo índice recente daSEC. Os períodos N-PORT encontrados na listagem consultada são outros; a lacuna não permite afirmar que um documento de junho inexiste.",
-        "A rentabilidade trimestral e as linhas históricas de NAV presentes no site não foram usadas como prova de posições ou setores de junho. Também não foram confundidos oETF americano AVEM(CUSIP025072604) com oUCITSAVEM.L ou com o produto australiano."
+        "A rentabilidade trimestral e as linhas históricas de NAV presentes no site não foram usadas como prova de posições ou setores de junho. Também não foram confundidos oETF americano AVEM(CUSIP025072604) com oUCITSAVEM.L ou com o produto australiano.",
+        "A captura em julho não foi usada como data da carteira; a data de junho vem do campo interno a.portfolio.asOfDate.",
+        "topHoldingsAsOfDate e etfHoldingsAsOfDate são 07/29/2026; nenhuma posição específica desse objeto foi rotulada como junho.",
+        "Pesos inteiros de setores não têm precisão decimal de uma ficha PDF; a soma preservada não foi normalizada.",
+        "A ficha na rota alternativa res.americancentury.com é a mesma de setembro (SHA256 idêntico à pesquisa anterior); não é composição de junho.",
+        "Snapshots são preservação por terceiro de conteúdo originalmente publicado pelo gestor; o gestor não confirma a integridade do arquivo Internet Archive."
       ],
       "evidenceFiles": [
         {
@@ -9234,12 +9263,24 @@
           "url": "https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
           "sha256": "1339fb38e02e90c611e68990d0bfb9f2dffc6a7901983b5a1adb9ae72bd41a38",
           "bytes": 1827080
+        },
+        {
+          "fileName": "AVEM-july30-wayback-page.html",
+          "sha256": "38d4a69c28dd093d517cf736e2ffd2d863653efc31b6a9659828d8a470da8548"
+        },
+        {
+          "fileName": "AVEM-july30-wayback-page.decoded.html",
+          "sha256": "69f503f95b255db9e399982ebba5aa830c0ae0d4743b13032bcdfabe9a55289e"
+        },
+        {
+          "fileName": "AVEM-portfolio-date-scope-qa.json",
+          "sha256": "1c97b005b24e483c2ca001dd1e8d8c299f92d07ab06e5cdc68546b01e9e0b74e"
         }
       ],
       "reportedTop10TotalPercent": 30.64,
       "ensignPeakValueUSD": 3769575e0,
       "ensignPeakHoldingsAsOf": "2026-06-30",
-      "reportedSectorWeightSumPercent": 100.0,
+      "reportedSectorWeightSumPercent": 99.0,
       "secLineNumber": 94,
       "secIssuer": "AMERICAN CENTY ETF TR",
       "secSecurityClass": "AVANTIS EMGMKT",
@@ -9249,11 +9290,35 @@
       "mandateLabel": "Mandatos de ações",
       "fieldDateStatus": {
         "holdings": "later_dated_proxy",
-        "sectors": "later_dated_proxy"
+        "sectors": "same_date_documented"
       },
-      "temporalStatus": "later_proxy",
-      "temporalLabel": "Aproximação posterior",
-      "componentHeading": "Maiores posições do ETF; classes separadas do mesmo emissor"
+      "temporalStatus": "partial_same_date",
+      "temporalLabel": "Confirmação parcial em 30/06",
+      "componentHeading": "Maiores posições do ETF; classes separadas do mesmo emissor",
+      "sectorWeightBasis": "Manager disclosure: percent of assets basis; values rounded to whole percentage points",
+      "sectorDateEvidence": {
+        "field": "a.portfolio.asOfDate",
+        "value": "06/30/2026",
+        "relationship": "sectorWeightings belongs to this portfolio object; specific topHoldings/etfHoldings date overrides are July 29 and excluded",
+        "snapshotTimestamp": "20260730170945",
+        "originalURL": "https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
+        "snapshotURL": "https://web.archive.org/web/20260730170945id_/https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
+        "objectScopeQAEvidence": "AVEM-portfolio-date-scope-qa.json",
+        "specificSectorDateExists": false,
+        "decodedSnapshotMatchesCDXDigest": false,
+        "rawSnapshotMatchesCDXDigest": true,
+        "CDXDigestVerification": "CDX SHA1 Base32 GOHJOMNNXZX55MELNDYLFIP2SAW3LJ2O matches downloaded gzip body exactly; decoded derivative has separate hash."
+      },
+      "sectorSources": [
+        {
+          "url": "https://web.archive.org/web/20260730170945id_/https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
+          "originalURL": "https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
+          "asOf": "2026-06-30",
+          "accessedAt": "2026-10-22",
+          "sourceType": "official_page_preserved_in_Internet_Archive",
+          "title": "Avantis — objeto portfolio em 30/06/2026, captura de 30/07/2026"
+        }
+      ]
     },
     {
       "cusip": "464287507",
@@ -11625,142 +11690,183 @@
           "title": "Invesco NASDAQ 100 ETF — página oficial com CUSIP"
         }
       ],
-      "holdingsAsOf": "2026-10-21",
-      "sectorAsOf": "2026-09-30",
-      "dateBasis": "Proxy temporal: composição do fundo posterior a 30/06/2026; não comprova a exposição indireta da Ensign Peak naquela data.",
-      "sectorTaxonomy": "Fund Sector Exposure (rótulos Technology / Telecommunications; nome formal do padrão não declarado na resposta).",
-      "sectorCoveragePercent": 99.999999,
+      "holdingsAsOf": "2026-06-30",
+      "sectorAsOf": "2026-06-30",
+      "dateBasis": "official_Q2_2026_factsheet_internally_as_of_June_30_2026_archived_August_1",
+      "sectorTaxonomy": "ICB — Industry Classification Benchmark",
+      "sectorCoveragePercent": 100.0,
       "sectors": [
         {
           "name": "Technology",
-          "weightPercent": 68.009322
+          "weightPercent": 68.51
         },
         {
           "name": "Consumer Discretionary",
-          "weightPercent": 15.137432
-        },
-        {
-          "name": "Telecommunications",
-          "weightPercent": 5.913478
+          "weightPercent": 16.43
         },
         {
           "name": "Health Care",
-          "weightPercent": 3.780798
+          "weightPercent": 3.56
+        },
+        {
+          "name": "Telecommunications",
+          "weightPercent": 3.46
         },
         {
           "name": "Industrials",
-          "weightPercent": 2.817071
+          "weightPercent": 3.13
         },
         {
           "name": "Consumer Staples",
-          "weightPercent": 1.734396
+          "weightPercent": 2.04
         },
         {
           "name": "Basic Materials",
-          "weightPercent": 1.155718
+          "weightPercent": 1.28
         },
         {
           "name": "Utilities",
-          "weightPercent": 1.007452
+          "weightPercent": 1.14
         },
         {
           "name": "Energy",
-          "weightPercent": 0.444332
+          "weightPercent": 0.45
         }
       ],
       "topHoldings": [
         {
           "name": "NVIDIA Corp",
           "ticker": "NVDA",
-          "weightPercent": 8.273096,
-          "kind": "Common Stock",
-          "cusip": "67066G104"
+          "rank": 1,
+          "holdingRepresentation": "issuer_label_as_published_by_manager",
+          "shareClassesSeparated": false,
+          "source": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "tickerMappingBasis": "Ticker identificador para integração; a tabela da ficha publica o nome do emissor e o peso, sem ticker.",
+          "weightPercent": 7.6,
+          "kind": "equity_company"
         },
         {
           "name": "Apple Inc",
           "ticker": "AAPL",
-          "weightPercent": 7.763946,
-          "kind": "Common Stock",
-          "cusip": "037833100"
+          "rank": 2,
+          "holdingRepresentation": "issuer_label_as_published_by_manager",
+          "shareClassesSeparated": false,
+          "source": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "tickerMappingBasis": "Ticker identificador para integração; a tabela da ficha publica o nome do emissor e o peso, sem ticker.",
+          "weightPercent": 6.67,
+          "kind": "equity_company"
         },
         {
-          "name": "Microsoft Corp",
-          "ticker": "MSFT",
-          "weightPercent": 6.120242,
-          "kind": "Common Stock",
-          "cusip": "594918104"
+          "name": "Alphabet Inc",
+          "ticker": null,
+          "rank": 3,
+          "holdingRepresentation": "issuer_label_as_published_by_manager",
+          "shareClassesSeparated": false,
+          "source": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "aggregationNote": "A ficha publica Alphabet Inc em uma linha, 6,29%; não fornece divisão de classes A/C. Preservar o agregado e não inventar pesos GOOG/GOOGL.",
+          "weightPercent": 6.29,
+          "kind": "equity_company"
         },
         {
           "name": "Micron Technology Inc",
           "ticker": "MU",
-          "weightPercent": 4.406302,
-          "kind": "Common Stock",
-          "cusip": "595112103"
+          "rank": 4,
+          "holdingRepresentation": "issuer_label_as_published_by_manager",
+          "shareClassesSeparated": false,
+          "source": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "tickerMappingBasis": "Ticker identificador para integração; a tabela da ficha publica o nome do emissor e o peso, sem ticker.",
+          "weightPercent": 5.64,
+          "kind": "equity_company"
         },
         {
-          "name": "Amazon.com Inc",
-          "ticker": "AMZN",
-          "weightPercent": 4.376608,
-          "kind": "Common Stock",
-          "cusip": "023135106"
+          "name": "Microsoft Corp",
+          "ticker": "MSFT",
+          "rank": 5,
+          "holdingRepresentation": "issuer_label_as_published_by_manager",
+          "shareClassesSeparated": false,
+          "source": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "tickerMappingBasis": "Ticker identificador para integração; a tabela da ficha publica o nome do emissor e o peso, sem ticker.",
+          "weightPercent": 4.35,
+          "kind": "equity_company"
         },
         {
           "name": "Advanced Micro Devices Inc",
           "ticker": "AMD",
-          "weightPercent": 3.852278,
-          "kind": "Common Stock",
-          "cusip": "007903107"
+          "rank": 6,
+          "holdingRepresentation": "issuer_label_as_published_by_manager",
+          "shareClassesSeparated": false,
+          "source": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "tickerMappingBasis": "Ticker identificador para integração; a tabela da ficha publica o nome do emissor e o peso, sem ticker.",
+          "weightPercent": 4.11,
+          "kind": "equity_company"
         },
         {
-          "name": "Meta Platforms Inc",
-          "ticker": "META",
-          "weightPercent": 3.207581,
-          "kind": "Common Stock",
-          "cusip": "30303M102"
+          "name": "Amazon.com Inc",
+          "ticker": "AMZN",
+          "rank": 7,
+          "holdingRepresentation": "issuer_label_as_published_by_manager",
+          "shareClassesSeparated": false,
+          "source": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "tickerMappingBasis": "Ticker identificador para integração; a tabela da ficha publica o nome do emissor e o peso, sem ticker.",
+          "weightPercent": 4.03,
+          "kind": "equity_company"
         },
         {
           "name": "Tesla Inc",
           "ticker": "TSLA",
-          "weightPercent": 3.139807,
-          "kind": "Common Stock",
-          "cusip": "88160R101"
+          "rank": 8,
+          "holdingRepresentation": "issuer_label_as_published_by_manager",
+          "shareClassesSeparated": false,
+          "source": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "tickerMappingBasis": "Ticker identificador para integração; a tabela da ficha publica o nome do emissor e o peso, sem ticker.",
+          "weightPercent": 3.3,
+          "kind": "equity_company"
         },
         {
-          "name": "Alphabet Inc",
-          "ticker": "GOOGL",
-          "weightPercent": 3.0379,
-          "kind": "Common Stock",
-          "cusip": "02079K305"
+          "name": "Intel Corp",
+          "ticker": "INTC",
+          "rank": 9,
+          "holdingRepresentation": "issuer_label_as_published_by_manager",
+          "shareClassesSeparated": false,
+          "source": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "tickerMappingBasis": "Ticker identificador para integração; a tabela da ficha publica o nome do emissor e o peso, sem ticker.",
+          "weightPercent": 3.04,
+          "kind": "equity_company"
         },
         {
-          "name": "Space Exploration Technologies Corp",
-          "ticker": "SPCX",
-          "weightPercent": 2.917794,
-          "kind": "Common Stock",
-          "cusip": "84615Q103"
+          "name": "Broadcom Inc",
+          "ticker": "AVGO",
+          "rank": 10,
+          "holdingRepresentation": "issuer_label_as_published_by_manager",
+          "shareClassesSeparated": false,
+          "source": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "tickerMappingBasis": "Ticker identificador para integração; a tabela da ficha publica o nome do emissor e o peso, sem ticker.",
+          "weightPercent": 2.81,
+          "kind": "equity_company"
         }
       ],
       "holdingsSources": [
         {
-          "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46138G649/holdings/fund?idType=cusip&productType=ETF",
-          "title": "Invesco — API oficial Holdings Fund",
-          "asOf": "2026-10-21",
-          "accessedAt": "2026-10-22"
-        },
-        {
-          "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46138G649/weightedHoldings/fund?idType=cusip&breakdown=sector&productType=ETF",
-          "title": "Invesco — API oficial Fund Sector Exposure",
-          "asOf": "2026-09-30",
-          "accessedAt": "2026-10-22"
+          "url": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "originalURL": "https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "title": "Invesco NASDAQ 100 ETF — ficha oficial Q2 2026, captura Internet Archive de 01/08/2026",
+          "sourceType": "primary_issuer_document_archived_by_third_party",
+          "asOf": "2026-06-30",
+          "archiveCaptureTimestamp": "20260801031657",
+          "accessedAt": "2026-10-22",
+          "pages": [
+            1,
+            2
+          ]
         }
       ],
       "limitations": [
-        "Não se obteve composição oficial histórica do próprio fundo em 30/06/2026; pesos posteriores não são exposições observadas da Ensign Peak.",
-        "Pesos dos maiores componentes pertencem ao ETF, não à carteira inteira de US$ 60,816 bilhões.",
-        "As categorias do gestor foram preservadas; não foram convertidas silenciosamente em GICS/Nasdaq.",
-        "Os setores (30/09) e componentes (21/10) têm datas diferentes.",
-        "O parâmetro date=2026-06-30 foi ignorado pela API e devolveu 21/10; effectiveDate=2026-06-30 devolveu HTTP400; nenhum deles foi tratado como dado de junho.",
-        "URLs de factsheet retornaram HTML em vez de PDF nesta consulta; não usadas como evidência quantitativa."
+        "A ficha fornece dez maiores componentes publicados pelo gestor, com nomes de emissores. Não fornece todas as 103 posições.",
+        "Alphabet Inc aparece agregado em uma linha, sem divisão de classes A/C. Preservar o agregado; não inventar pesos GOOG/GOOGL.",
+        "A taxonomia setorial é ICB. Não converter automaticamente em GICS.",
+        "A captura é de 01/08/2026; o dado interno é de 30/06/2026; o rodapé indica 7/26. São datas distintas.",
+        "Os pesos setoriais são publicados na ficha Q2 2026, com data geral declarada de 30/06/2026. O quadro Sector allocation (%) não repete uma data própria. A nota sobre classificações de ativos refere-se ao último pregão do mês anterior, sem explicitar o referente temporal; ela não declara outra data para os pesos e não permite concluir maio ou junho para as classificações.",
+        "A referência setorial de 30/06 é a data geral da ficha, não um cabeçalho independente da tabela. Classificações podem refletir o mês anterior; a nota não determina outra data dos pesos."
       ],
       "evidenceFiles": [
         {
@@ -11822,47 +11928,17 @@
           "bytes": 35513,
           "evidenceType": "network_response",
           "httpStatus": 200
+        },
+        {
+          "fileName": "qqqm_archive_20260801031657.pdf",
+          "sha256": "b45245c8dcfa3490ed00d1562d2edac0cee074317db8a1209040bcb8d4a113cf"
+        },
+        {
+          "fileName": "qqqm_archive_20260801031657-decoded.pdf",
+          "sha256": "145e0c189f797e12c00d3579a717534435edab65afb5003e87cf3bbdfc54ee0a"
         }
       ],
-      "fundHoldingCount": 108,
-      "providerBreakdownRaw": [
-        {
-          "name": "Technology",
-          "value": 68.009322
-        },
-        {
-          "name": "Consumer Discretionary",
-          "value": 15.137432
-        },
-        {
-          "name": "Telecommunications",
-          "value": 5.913478
-        },
-        {
-          "name": "Health Care",
-          "value": 3.780798
-        },
-        {
-          "name": "Industrials",
-          "value": 2.817071
-        },
-        {
-          "name": "Consumer Staples",
-          "value": 1.734396
-        },
-        {
-          "name": "Basic Materials",
-          "value": 1.155718
-        },
-        {
-          "name": "Utilities",
-          "value": 1.007452
-        },
-        {
-          "name": "Energy",
-          "value": 0.444332
-        }
-      ],
+      "fundHoldingCount": 103,
       "ensignPeakValueUSD": 2126849e0,
       "ensignPeakHoldingsAsOf": "2026-06-30",
       "secLineNumber": 861,
@@ -11873,13 +11949,31 @@
       "mandateCategory": "equity",
       "mandateLabel": "Mandatos de ações",
       "fieldDateStatus": {
-        "holdings": "later_dated_proxy",
-        "sectors": "later_dated_proxy"
+        "holdings": "same_date_documented",
+        "sectors": "same_date_documented"
       },
-      "temporalStatus": "later_proxy",
-      "temporalLabel": "Aproximação posterior",
-      "reportedSectorWeightSumPercent": 99.999999,
-      "componentHeading": "Maiores posições do ETF; classes separadas do mesmo emissor"
+      "temporalStatus": "historical_same_date",
+      "temporalLabel": "Componentes e categorias em 30/06",
+      "reportedSectorWeightSumPercent": 100.0,
+      "componentHeading": "10 maiores participações publicadas pelo gestor",
+      "sectorWeightBasis": "Alocação setorial ICB publicada na ficha oficial Q2 2026; sem normalização.",
+      "sectorDateBasis": "overall_factsheet_as_of",
+      "sectorAsOfDeclaredJune30": true,
+      "internalDateConfirmedIndependentlyForHoldingsAndSectors": false,
+      "sourceDateEvidence": {
+        "internalDateConfirmedIndependentlyForHoldingsAndSectors": false,
+        "sectorDateBasis": "overall_factsheet_as_of",
+        "overallFactsheetAsOf": "2026-06-30",
+        "sectorTableHasOwnDateHeading": false,
+        "classificationTimingCaveat": "Classificações podem refletir o último pregão do mês anterior; a nota não estabelece data independente dos pesos."
+      },
+      "sectorMethod": "Setores publicados na ficha Q2 2026 — data geral 30/06/2026. A tabela setorial não repete data própria; as classificações podem refletir o último pregão do mês anterior. A nota trata das classificações usadas e não confirma uma data independente dos pesos.",
+      "fullPortfolioConfirmed": false,
+      "holdingsScope": "published_top_10_issuer_labels_only",
+      "sectorScope": "complete_published_sector_allocation",
+      "reportedTop10TotalPercent": 47.84,
+      "holdingsRepresentation": "issuer_label_as_published_by_manager",
+      "shareClassesSeparated": false
     },
     {
       "cusip": "922020805",
@@ -12909,7 +13003,9 @@
         "As categorias do gestor foram preservadas; não foram convertidas silenciosamente em GICS/Nasdaq.",
         "Os setores (30/09) e componentes (21/10) têm datas diferentes.",
         "O parâmetro date=2026-06-30 foi ignorado pela API e devolveu 21/10; effectiveDate=2026-06-30 devolveu HTTP400; nenhum deles foi tratado como dado de junho.",
-        "URLs de factsheet retornaram HTML em vez de PDF nesta consulta; não usadas como evidência quantitativa."
+        "URLs de factsheet retornaram HTML em vez de PDF nesta consulta; não usadas como evidência quantitativa.",
+        "Resultado negativo limitado aos URLs, consultas e janelas documentados; não prova inexistência de histórico.",
+        "Pesos do índice e carteiras 13F de detentores de cotas não substituem a carteira interna do ETF."
       ],
       "evidenceFiles": [
         {
@@ -13087,7 +13183,11 @@
         "As datas de vencimento diferem em um dia entre widgets Top Ten e Full Holdings da própria página; não utilizamos esses vencimentos para inferir exposição.",
         "A posição de US$181.908 da Ensign Peak é de 30/06/2026. Não foi recuperada composição primária contemporânea de junho. As exposições posteriores são apenas aproximação temporal.",
         "Não foi recuperada composição primária de30/06/2026 doHGER nas buscas. O relatório semestral dogestor encontrado é de30/04/2026 e oN-PORT maisrecente localizado refere-se a31/07/2026; nenhum foi rotulado como junho.",
-        "Derivativos decommodities, suas pernas positivas/negativas e títulos deTesouro colaterais não equivalem a carteira acionária nem permitem somar exposições brutas como divisão de capital. Pesos correntes superiores a100% não foram retroagidos para junho."
+        "Derivativos decommodities, suas pernas positivas/negativas e títulos deTesouro colaterais não equivalem a carteira acionária nem permitem somar exposições brutas como divisão de capital. Pesos correntes superiores a100% não foram retroagidos para junho.",
+        "A tabela de commodities não contém posições contábeis de swaps, nomes de contrapartes, pernas pagas/recebidas ou colaterais de junho.",
+        "A página 7 identifica expressamente atribuição do QCIER; não se transcreveu atribuição de retorno como peso de carteira.",
+        "Sem confirmação explícita da base exata ETF versus índice, os pesos ficam em painel separado do relatório do gestor e não alteram holdingsAsOfJune ou sectorAsOfJuneConfirmedForETF.",
+        "Nenhum peso foi multiplicado pelo valor da posição Ensign como divisão do NAV."
       ],
       "evidenceFiles": [
         {
@@ -13121,6 +13221,14 @@
           "url": "https://www.harborcapital.com/documents/fund/",
           "sha256": "f0d0173288106b9cd1c5988741cf7a6ef64d3915cbd120591e1ed1573c7c6c66",
           "bytes": 723213
+        },
+        {
+          "fileName": "HGER-quarterly-june2026.pdf",
+          "sha256": "61a29be9c7534d421e9fae11dfeeaef7d042b21c3262ce3d3659a46b913127aa"
+        },
+        {
+          "fileName": "HGER-page-data.json",
+          "sha256": "a60671cb338fba9ce9197cc9ae63b49bc7ee522f4d940c20dc255fb81606c818"
         }
       ],
       "sectorWeightBasis": "Commodity exposure reported by manager; exclude from equity look-through aggregation",
@@ -13291,7 +13399,248 @@
       },
       "temporalStatus": "later_proxy",
       "temporalLabel": "Aproximação posterior",
-      "componentHeading": "Exposições a commodities; não são empresas"
+      "componentHeading": "Exposições a commodities; não são empresas",
+      "managerReportedCommodityWeightsJune": {
+        "asOf": "2026-06-30",
+        "sourceURL": "https://www.harborcapital.com/static/9bee31957691ab4953865b4bc227dd1d/Commodity_All-Weather_Strategy_ETF_Quarterly_Report.pdf",
+        "sourcePageOneBased": 6,
+        "title": "Harbor Commodity All-Weather Strategy ETF — WEIGHTS — Commodity Sector Weights",
+        "columnLabel": "Daily Weight %",
+        "rows": [
+          {
+            "commoditySector": "Precious",
+            "name": "Gold",
+            "tickerLiteral": "GCZ6",
+            "facility": "CME",
+            "dailyWeightPercent": 34.42,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Petroleum",
+            "name": "RBOB Gasoline",
+            "tickerLiteral": "XBU6",
+            "facility": "CME",
+            "dailyWeightPercent": 8.76,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Petroleum",
+            "name": "Gasoil",
+            "tickerLiteral": "QSU6",
+            "facility": "ICE",
+            "dailyWeightPercent": 7.71,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Petroleum",
+            "name": "Brent Crude Oil",
+            "tickerLiteral": "COX6",
+            "facility": "ICE",
+            "dailyWeightPercent": 7.01,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Petroleum",
+            "name": "Heating Oil",
+            "tickerLiteral": "HOU6",
+            "facility": "CME",
+            "dailyWeightPercent": 5.99,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Softs",
+            "name": "Cocoa",
+            "tickerLiteral": "CCU6",
+            "facility": "ICE",
+            "dailyWeightPercent": 5.39,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Grains And Soybean Products",
+            "name": "Soybeans",
+            "tickerLiteral": "S X6",
+            "facility": "CME",
+            "dailyWeightPercent": 3.04,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Softs",
+            "name": "Sugar",
+            "tickerLiteral": "SBV6",
+            "facility": "ICE",
+            "dailyWeightPercent": 2.42,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Industrial",
+            "name": "Comex Copper",
+            "tickerLiteral": "HGU6",
+            "facility": "CME",
+            "dailyWeightPercent": 2.4,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Industrial",
+            "name": "Zinc",
+            "tickerLiteral": "LXU6",
+            "facility": "LME",
+            "dailyWeightPercent": 2.36,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Softs",
+            "name": "Cotton",
+            "tickerLiteral": "CTZ6",
+            "facility": "ICE",
+            "dailyWeightPercent": 2.28,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Grains And Soybean Products",
+            "name": "Corn",
+            "tickerLiteral": "C U6",
+            "facility": "CME",
+            "dailyWeightPercent": 2.2,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Grains And Soybean Products",
+            "name": "Bean Oil",
+            "tickerLiteral": "BOZ6",
+            "facility": "CME",
+            "dailyWeightPercent": 2.1,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Softs",
+            "name": "Coffee",
+            "tickerLiteral": "KCU6",
+            "facility": "ICE",
+            "dailyWeightPercent": 2.1,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Grains And Soybean Products",
+            "name": "Soymeal",
+            "tickerLiteral": "SMZ6",
+            "facility": "CME",
+            "dailyWeightPercent": 2.09,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Grains And Soybean Products",
+            "name": "Kansas Wheat",
+            "tickerLiteral": "KWU6",
+            "facility": "CME",
+            "dailyWeightPercent": 2.08,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Industrial",
+            "name": "Nickel",
+            "tickerLiteral": "LNU6",
+            "facility": "LME",
+            "dailyWeightPercent": 2.04,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Grains And Soybean Products",
+            "name": "Wheat",
+            "tickerLiteral": "W U6",
+            "facility": "CME",
+            "dailyWeightPercent": 2.03,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Industrial",
+            "name": "Aluminum",
+            "tickerLiteral": "LAU26",
+            "facility": "LME",
+            "dailyWeightPercent": 1.97,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          },
+          {
+            "commoditySector": "Livestock And Dairy",
+            "name": "Lean Hogs",
+            "tickerLiteral": "LHV6",
+            "facility": "CME",
+            "dailyWeightPercent": 1.61,
+            "kind": "manager_reported_commodity_weight_not_NAV"
+          }
+        ],
+        "weightSumPercent": 100.0,
+        "editorialGroupings": [
+          {
+            "name": "Precious",
+            "dailyWeightSumPercent": 34.42,
+            "method": "Editorial sum of manager-reported Daily Weight % by literal Commodity Sector label; no normalization"
+          },
+          {
+            "name": "Petroleum",
+            "dailyWeightSumPercent": 29.47,
+            "method": "Editorial sum of manager-reported Daily Weight % by literal Commodity Sector label; no normalization"
+          },
+          {
+            "name": "Softs",
+            "dailyWeightSumPercent": 12.19,
+            "method": "Editorial sum of manager-reported Daily Weight % by literal Commodity Sector label; no normalization"
+          },
+          {
+            "name": "Grains And Soybean Products",
+            "dailyWeightSumPercent": 13.54,
+            "method": "Editorial sum of manager-reported Daily Weight % by literal Commodity Sector label; no normalization"
+          },
+          {
+            "name": "Industrial",
+            "dailyWeightSumPercent": 8.77,
+            "method": "Editorial sum of manager-reported Daily Weight % by literal Commodity Sector label; no normalization"
+          },
+          {
+            "name": "Livestock And Dairy",
+            "dailyWeightSumPercent": 1.61,
+            "method": "Editorial sum of manager-reported Daily Weight % by literal Commodity Sector label; no normalization"
+          }
+        ],
+        "attribution": "Table published under the HGER title, with holdings footer linking HGER. It does not explicitly state whether these are precisely fund look-through exposures or benchmark QCI component weights. Preserve as separately labeled manager-report weights; do not silently equate to accounting ETF holdings.",
+        "weightBasis": "Daily Weight %; no explicit NAV denominator on the table; do not sum with cash collateral or swap accounting values.",
+        "sources": [
+          {
+            "url": "https://www.harborcapital.com/static/9bee31957691ab4953865b4bc227dd1d/Commodity_All-Weather_Strategy_ETF_Quarterly_Report.pdf",
+            "asOf": "2026-06-30",
+            "accessedAt": "2026-10-22",
+            "title": "Harbor — relatório trimestral oficial HGER de junho, página 6"
+          },
+          {
+            "url": "https://www.harborcapital.com/page-data/etf/hger/page-data.json",
+            "accessedAt": "2026-10-22",
+            "title": "Harbor — relatório trimestral oficial HGER de junho, página 6"
+          }
+        ],
+        "evidenceFiles": [
+          {
+            "fileName": "HGER-quarterly-june2026.pdf",
+            "sha256": "61a29be9c7534d421e9fae11dfeeaef7d042b21c3262ce3d3659a46b913127aa"
+          },
+          {
+            "fileName": "HGER-page-data.json",
+            "sha256": "a60671cb338fba9ce9197cc9ae63b49bc7ee522f4d940c20dc255fb81606c818"
+          }
+        ],
+        "limitations": [
+          "A tabela de commodities não contém posições contábeis de swaps, nomes de contrapartes, pernas pagas/recebidas ou colaterais de junho.",
+          "A página 7 identifica expressamente atribuição do QCIER; não se transcreveu atribuição de retorno como peso de carteira.",
+          "Sem confirmação explícita da base exata ETF versus índice, os pesos ficam em painel separado do relatório do gestor e não alteram holdingsAsOfJune ou sectorAsOfJuneConfirmedForETF.",
+          "Nenhum peso foi multiplicado pelo valor da posição Ensign como divisão do NAV."
+        ],
+        "documentDateEvidence": {
+          "page6Header": "As of 06/30/2026",
+          "page2Identity": "HGER 41151J505",
+          "page8Reference": "5012326 5748421-20260716",
+          "officialPageDataField": "documents.seismic_quarterly_report[0].date=2026-06-30",
+          "officialPageDataUpdatedAt": "07/17/2026",
+          "pageCount": 8
+        }
+      }
     },
     {
       "cusip": "81369Y407",
@@ -15248,6 +15597,3891 @@
       "VXF",
       "XLU",
       "XLY"
+    ],
+    "resultEdition": "1.3",
+    "auditIsHistoricalSnapshot": true,
+    "endOfRoundCounts": {
+      "historicalFundCount": 21,
+      "partialFundCount": 2,
+      "proxyFundCount": 6
+    }
+  },
+  "derived_panels": {
+    "VEA": {
+      "status": "EDITORIAL_DERIVED_GICS_KNOWN_JUNE_WEIGHTS_ONLY",
+      "label_pt": "Setores amplos GICS calculados editorialmente dos pesos conhecidos de junho",
+      "as_of": "2026-06-30",
+      "taxonomy": "GICS; mapa de abril de 2026; correspondência literal exata",
+      "published_by_vanguard": false,
+      "replace_official_ICB_panel": false,
+      "basis": "Soma do percentOfFunds nativo das linhas equity; denominador não reinterpretado; sem normalização; pesos não numéricos não estimados",
+      "holdings_source_url": "https://advisors.vanguard.com/investments/products/api/funds/0936/holdings/historical?effectiveDate=2026-06-30",
+      "holdings_source_sha256": "dc00c0574a268072664122dbb47c14724ee6265279519ca920b37e904f0910b8",
+      "map_source_url": "https://www.msci.com/index/methodology/latest/GICS",
+      "map_source_sha256": "d66cfdf808872211561270a7141c40687417b3f669192c6b2650ae2d0aacad06",
+      "map_document_date": "2026-04",
+      "map_pages_1_based": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "coverage": {
+        "equity_rows": 3868,
+        "literal_labels_including_empty": 158,
+        "nonempty_literal_labels": 157,
+        "mapped_nonempty_literal_labels": 157,
+        "nonempty_unmapped_labels": [],
+        "unmapped_labels_including_empty": [
+          ""
+        ],
+        "mapped_rows": 3861,
+        "unmapped_rows": 7,
+        "missing_numeric_weights_total": 8,
+        "missing_numeric_weights_mapped": 8,
+        "missing_numeric_weights_unmapped": 0,
+        "mapped_known_weight_pct": 98.06157,
+        "unmapped_known_weight_pct": 0.00612,
+        "all_known_equity_weight_pct": 98.06769,
+        "normalization_performed": false,
+        "full_portfolio_coverage_claimed": false
+      },
+      "sectors": [
+        {
+          "gics_sector_code": "10",
+          "sector": "Energy",
+          "known_native_weight_pct": 4.3335,
+          "holding_rows": 124,
+          "missing_numeric_weights": 0
+        },
+        {
+          "gics_sector_code": "15",
+          "sector": "Materials",
+          "known_native_weight_pct": 7.21408,
+          "holding_rows": 415,
+          "missing_numeric_weights": 3
+        },
+        {
+          "gics_sector_code": "20",
+          "sector": "Industrials",
+          "known_native_weight_pct": 17.54196,
+          "holding_rows": 839,
+          "missing_numeric_weights": 1
+        },
+        {
+          "gics_sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "known_native_weight_pct": 7.51802,
+          "holding_rows": 498,
+          "missing_numeric_weights": 0
+        },
+        {
+          "gics_sector_code": "30",
+          "sector": "Consumer Staples",
+          "known_native_weight_pct": 5.49852,
+          "holding_rows": 271,
+          "missing_numeric_weights": 0
+        },
+        {
+          "gics_sector_code": "35",
+          "sector": "Health Care",
+          "known_native_weight_pct": 7.67447,
+          "holding_rows": 289,
+          "missing_numeric_weights": 1
+        },
+        {
+          "gics_sector_code": "40",
+          "sector": "Financials",
+          "known_native_weight_pct": 22.83544,
+          "holding_rows": 458,
+          "missing_numeric_weights": 1
+        },
+        {
+          "gics_sector_code": "45",
+          "sector": "Information Technology",
+          "known_native_weight_pct": 17.02582,
+          "holding_rows": 386,
+          "missing_numeric_weights": 1
+        },
+        {
+          "gics_sector_code": "50",
+          "sector": "Communication Services",
+          "known_native_weight_pct": 2.863,
+          "holding_rows": 181,
+          "missing_numeric_weights": 0
+        },
+        {
+          "gics_sector_code": "55",
+          "sector": "Utilities",
+          "known_native_weight_pct": 3.21942,
+          "holding_rows": 105,
+          "missing_numeric_weights": 0
+        },
+        {
+          "gics_sector_code": "60",
+          "sector": "Real Estate",
+          "known_native_weight_pct": 2.33734,
+          "holding_rows": 295,
+          "missing_numeric_weights": 1
+        }
+      ],
+      "subindustry_audit": [
+        {
+          "literal_label": "Advertising",
+          "subindustry_code": "50201010",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.18287
+        },
+        {
+          "literal_label": "Aerospace & Defense",
+          "subindustry_code": "20101010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 43,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 2.42316
+        },
+        {
+          "literal_label": "Agricultural & Farm Machinery",
+          "subindustry_code": "20106015",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 4,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.05885
+        },
+        {
+          "literal_label": "Agricultural Products & Services",
+          "subindustry_code": "30202010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 14,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03993
+        },
+        {
+          "literal_label": "Air Freight & Logistics",
+          "subindustry_code": "20301010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 29,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.43568
+        },
+        {
+          "literal_label": "Airport Services",
+          "subindustry_code": "20305010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 9,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.15301
+        },
+        {
+          "literal_label": "Alternative Carriers",
+          "subindustry_code": "50101010",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 6,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02313
+        },
+        {
+          "literal_label": "Aluminum",
+          "subindustry_code": "15104010",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 7,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.06332
+        },
+        {
+          "literal_label": "Apparel Retail",
+          "subindustry_code": "25504010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 23,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.6191
+        },
+        {
+          "literal_label": "Apparel, Accessories & Luxury Goods",
+          "subindustry_code": "25203010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 36,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.37914
+        },
+        {
+          "literal_label": "Application Software",
+          "subindustry_code": "45103010",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 54,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.87462
+        },
+        {
+          "literal_label": "Asset Management & Custody Banks",
+          "subindustry_code": "40203010",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 58,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.89802
+        },
+        {
+          "literal_label": "Automobile Manufacturers",
+          "subindustry_code": "25102010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 24,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.44426
+        },
+        {
+          "literal_label": "Automotive Parts & Equipment",
+          "subindustry_code": "25101010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 71,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.58518
+        },
+        {
+          "literal_label": "Automotive Retail",
+          "subindustry_code": "25504050",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 10,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04364
+        },
+        {
+          "literal_label": "Biotechnology",
+          "subindustry_code": "35201010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 58,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.61739
+        },
+        {
+          "literal_label": "Brewers",
+          "subindustry_code": "30201010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 9,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.47781
+        },
+        {
+          "literal_label": "Broadcasting",
+          "subindustry_code": "50201020",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 16,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.0445
+        },
+        {
+          "literal_label": "Broadline Retail",
+          "subindustry_code": "25503030",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 33,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.80001
+        },
+        {
+          "literal_label": "Building Products",
+          "subindustry_code": "20102010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 43,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.70577
+        },
+        {
+          "literal_label": "Cable & Satellite",
+          "subindustry_code": "50201030",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 4,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01927
+        },
+        {
+          "literal_label": "Cargo Ground Transportation",
+          "subindustry_code": "20304030",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.05699
+        },
+        {
+          "literal_label": "Casinos & Gaming",
+          "subindustry_code": "25301010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 29,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.25546
+        },
+        {
+          "literal_label": "Coal & Consumable Fuels",
+          "subindustry_code": "10102050",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 12,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.20923
+        },
+        {
+          "literal_label": "Commercial & Residential Mortgage Finance",
+          "subindustry_code": "40201050",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 6,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01811
+        },
+        {
+          "literal_label": "Commercial Printing",
+          "subindustry_code": "20201010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04706
+        },
+        {
+          "literal_label": "Commodity Chemicals",
+          "subindustry_code": "15101010",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 58,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.28968
+        },
+        {
+          "literal_label": "Communications Equipment",
+          "subindustry_code": "45201020",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 12,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.31566
+        },
+        {
+          "literal_label": "Computer & Electronics Retail",
+          "subindustry_code": "25504020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 13,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.05308
+        },
+        {
+          "literal_label": "Construction & Engineering",
+          "subindustry_code": "20103010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 123,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.25863
+        },
+        {
+          "literal_label": "Construction Machinery & Heavy Transportation Equipment",
+          "subindustry_code": "20106010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 50,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.83331
+        },
+        {
+          "literal_label": "Construction Materials",
+          "subindustry_code": "15102010",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.39229
+        },
+        {
+          "literal_label": "Consumer Electronics",
+          "subindustry_code": "25201010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.6374
+        },
+        {
+          "literal_label": "Consumer Finance",
+          "subindustry_code": "40202010",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 21,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.06863
+        },
+        {
+          "literal_label": "Consumer Staples Merchandise Retail",
+          "subindustry_code": "30101040",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.10282
+        },
+        {
+          "literal_label": "Copper",
+          "subindustry_code": "15104025",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.26939
+        },
+        {
+          "literal_label": "Data Center REITs",
+          "subindustry_code": "60108050",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 4,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01587
+        },
+        {
+          "literal_label": "Data Processing & Outsourced Services",
+          "subindustry_code": "20202030",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 7,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.05649
+        },
+        {
+          "literal_label": "Distillers & Vintners",
+          "subindustry_code": "30201020",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 9,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.21595
+        },
+        {
+          "literal_label": "Distributors",
+          "subindustry_code": "25501010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 13,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03679
+        },
+        {
+          "literal_label": "Diversified Banks",
+          "subindustry_code": "40101010",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 97,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 13.44147
+        },
+        {
+          "literal_label": "Diversified Capital Markets",
+          "subindustry_code": "40203030",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 6,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.86885
+        },
+        {
+          "literal_label": "Diversified Chemicals",
+          "subindustry_code": "15101020",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 26,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.36761
+        },
+        {
+          "literal_label": "Diversified Financial Services",
+          "subindustry_code": "40201020",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 9,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.26567
+        },
+        {
+          "literal_label": "Diversified Metals & Mining",
+          "subindustry_code": "15104020",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 52,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 2.02137
+        },
+        {
+          "literal_label": "Diversified REITs",
+          "subindustry_code": "60101010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 46,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.3222
+        },
+        {
+          "literal_label": "Diversified Real Estate Activities",
+          "subindustry_code": "60201010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 25,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.42301
+        },
+        {
+          "literal_label": "Diversified Support Services",
+          "subindustry_code": "20201070",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 19,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.26898
+        },
+        {
+          "literal_label": "Drug Retail",
+          "subindustry_code": "30101010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04859
+        },
+        {
+          "literal_label": "Education Services",
+          "subindustry_code": "25302010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 6,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03209
+        },
+        {
+          "literal_label": "Electric Utilities",
+          "subindustry_code": "55101010",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 37,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.66273
+        },
+        {
+          "literal_label": "Electrical Components & Equipment",
+          "subindustry_code": "20104010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 50,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.95599
+        },
+        {
+          "literal_label": "Electronic Components",
+          "subindustry_code": "45203015",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 56,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.29556
+        },
+        {
+          "literal_label": "Electronic Equipment & Instruments",
+          "subindustry_code": "45203010",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 46,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.67983
+        },
+        {
+          "literal_label": "Electronic Manufacturing Services",
+          "subindustry_code": "45203020",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.15095
+        },
+        {
+          "literal_label": "Environmental & Facilities Services",
+          "subindustry_code": "20201050",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 22,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.25396
+        },
+        {
+          "literal_label": "Fertilizers & Agricultural Chemicals",
+          "subindustry_code": "15101030",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.14275
+        },
+        {
+          "literal_label": "Financial Exchanges & Data",
+          "subindustry_code": "40203040",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 13,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.68249
+        },
+        {
+          "literal_label": "Food Distributors",
+          "subindustry_code": "30101020",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 9,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01723
+        },
+        {
+          "literal_label": "Food Retail",
+          "subindustry_code": "30101030",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 51,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.97149
+        },
+        {
+          "literal_label": "Footwear",
+          "subindustry_code": "25203020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.07257
+        },
+        {
+          "literal_label": "Forest Products",
+          "subindustry_code": "15105010",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 4,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03931
+        },
+        {
+          "literal_label": "Gas Utilities",
+          "subindustry_code": "55102010",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.32891
+        },
+        {
+          "literal_label": "Gold",
+          "subindustry_code": "15104030",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 59,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 1.49395
+        },
+        {
+          "literal_label": "Health Care Distributors",
+          "subindustry_code": "35102010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 16,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.10235
+        },
+        {
+          "literal_label": "Health Care Equipment",
+          "subindustry_code": "35101010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 39,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.4755
+        },
+        {
+          "literal_label": "Health Care Facilities",
+          "subindustry_code": "35102020",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 16,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.06557
+        },
+        {
+          "literal_label": "Health Care REITs",
+          "subindustry_code": "60105010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04028
+        },
+        {
+          "literal_label": "Health Care Services",
+          "subindustry_code": "35102015",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 12,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.11949
+        },
+        {
+          "literal_label": "Health Care Supplies",
+          "subindustry_code": "35101020",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 21,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.53361
+        },
+        {
+          "literal_label": "Health Care Technology",
+          "subindustry_code": "35103010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.05737
+        },
+        {
+          "literal_label": "Heavy Electrical Equipment",
+          "subindustry_code": "20104020",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 14,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.97774
+        },
+        {
+          "literal_label": "Highways & Railtracks",
+          "subindustry_code": "20305020",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 3,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.11976
+        },
+        {
+          "literal_label": "Home Furnishings",
+          "subindustry_code": "25201020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 4,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00505
+        },
+        {
+          "literal_label": "Home Improvement Retail",
+          "subindustry_code": "25504030",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 10,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03897
+        },
+        {
+          "literal_label": "Homebuilding",
+          "subindustry_code": "25201030",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 23,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.16196
+        },
+        {
+          "literal_label": "Homefurnishing Retail",
+          "subindustry_code": "25504060",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02754
+        },
+        {
+          "literal_label": "Hotel & Resort REITs",
+          "subindustry_code": "60103010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 6,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02735
+        },
+        {
+          "literal_label": "Hotels, Resorts & Cruise Lines",
+          "subindustry_code": "25301020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 30,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.27469
+        },
+        {
+          "literal_label": "Household Appliances",
+          "subindustry_code": "25201040",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 13,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04451
+        },
+        {
+          "literal_label": "Household Products",
+          "subindustry_code": "30301010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 10,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.27349
+        },
+        {
+          "literal_label": "Housewares & Specialties",
+          "subindustry_code": "25201050",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 1,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00031
+        },
+        {
+          "literal_label": "Human Resource & Employment Services",
+          "subindustry_code": "20202010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 27,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.35906
+        },
+        {
+          "literal_label": "IT Consulting & Other Services",
+          "subindustry_code": "45102010",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 65,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.53891
+        },
+        {
+          "literal_label": "Independent Power Producers & Energy Traders",
+          "subindustry_code": "55105010",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 6,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.20614
+        },
+        {
+          "literal_label": "Industrial Conglomerates",
+          "subindustry_code": "20105010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 42,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.90357
+        },
+        {
+          "literal_label": "Industrial Gases",
+          "subindustry_code": "15101040",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.42201
+        },
+        {
+          "literal_label": "Industrial Machinery & Supplies & Components",
+          "subindustry_code": "20106020",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 149,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 2.19353
+        },
+        {
+          "literal_label": "Industrial REITs",
+          "subindustry_code": "60102510",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 28,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.37209
+        },
+        {
+          "literal_label": "Insurance Brokers",
+          "subindustry_code": "40301010",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 3,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01897
+        },
+        {
+          "literal_label": "Integrated Oil & Gas",
+          "subindustry_code": "10102010",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 2.08696
+        },
+        {
+          "literal_label": "Integrated Telecommunication Services",
+          "subindustry_code": "50101020",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 38,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.13646
+        },
+        {
+          "literal_label": "Interactive Home Entertainment",
+          "subindustry_code": "50202020",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 32,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.2725
+        },
+        {
+          "literal_label": "Interactive Media & Services",
+          "subindustry_code": "50203010",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.22601
+        },
+        {
+          "literal_label": "Internet Services & Infrastructure",
+          "subindustry_code": "45102030",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 13,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.47783
+        },
+        {
+          "literal_label": "Investment Banking & Brokerage",
+          "subindustry_code": "40203020",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 44,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.37178
+        },
+        {
+          "literal_label": "Leisure Facilities",
+          "subindustry_code": "25301030",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 14,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.06951
+        },
+        {
+          "literal_label": "Leisure Products",
+          "subindustry_code": "25202010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 24,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.16061
+        },
+        {
+          "literal_label": "Life & Health Insurance",
+          "subindustry_code": "40301020",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 27,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.58721
+        },
+        {
+          "literal_label": "Life Sciences Tools & Services",
+          "subindustry_code": "35203010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 22,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.3143
+        },
+        {
+          "literal_label": "Marine Ports & Services",
+          "subindustry_code": "20305030",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 6,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04309
+        },
+        {
+          "literal_label": "Marine Transportation",
+          "subindustry_code": "20303010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 26,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.23136
+        },
+        {
+          "literal_label": "Metal, Glass & Plastic Containers",
+          "subindustry_code": "15103010",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 12,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02933
+        },
+        {
+          "literal_label": "Motorcycle Manufacturers",
+          "subindustry_code": "25102020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 3,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02211
+        },
+        {
+          "literal_label": "Movies & Entertainment",
+          "subindustry_code": "50202010",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 22,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.12225
+        },
+        {
+          "literal_label": "Multi-Family Residential REITs",
+          "subindustry_code": "60106010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 16,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.07347
+        },
+        {
+          "literal_label": "Multi-Sector Holdings",
+          "subindustry_code": "40201030",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 17,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.47697
+        },
+        {
+          "literal_label": "Multi-Utilities",
+          "subindustry_code": "55103010",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 18,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.75235
+        },
+        {
+          "literal_label": "Multi-line Insurance",
+          "subindustry_code": "40301030",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 22,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.7301
+        },
+        {
+          "literal_label": "Office REITs",
+          "subindustry_code": "60104010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 33,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.1405
+        },
+        {
+          "literal_label": "Office Services & Supplies",
+          "subindustry_code": "20201060",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 9,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02056
+        },
+        {
+          "literal_label": "Oil & Gas Drilling",
+          "subindustry_code": "10101010",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 2,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00477
+        },
+        {
+          "literal_label": "Oil & Gas Equipment & Services",
+          "subindustry_code": "10101020",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 18,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.1666
+        },
+        {
+          "literal_label": "Oil & Gas Exploration & Production",
+          "subindustry_code": "10102020",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 39,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.76863
+        },
+        {
+          "literal_label": "Oil & Gas Refining & Marketing",
+          "subindustry_code": "10102030",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 22,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.29496
+        },
+        {
+          "literal_label": "Oil & Gas Storage & Transportation",
+          "subindustry_code": "10102040",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.80235
+        },
+        {
+          "literal_label": "Other Specialized REITs",
+          "subindustry_code": "60108010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 3,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00597
+        },
+        {
+          "literal_label": "Other Specialty Retail",
+          "subindustry_code": "25504040",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 24,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.09698
+        },
+        {
+          "literal_label": "Packaged Foods & Meats",
+          "subindustry_code": "30202030",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 108,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.73182
+        },
+        {
+          "literal_label": "Paper & Plastic Packaging Products & Materials",
+          "subindustry_code": "15103020",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03942
+        },
+        {
+          "literal_label": "Paper Products",
+          "subindustry_code": "15105020",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 13,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.10172
+        },
+        {
+          "literal_label": "Passenger Airlines",
+          "subindustry_code": "20302010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.20576
+        },
+        {
+          "literal_label": "Passenger Ground Transportation",
+          "subindustry_code": "20304040",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 9,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03411
+        },
+        {
+          "literal_label": "Personal Care Products",
+          "subindustry_code": "30302010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 32,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.86997
+        },
+        {
+          "literal_label": "Pharmaceuticals",
+          "subindustry_code": "35202010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 94,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 5.38889
+        },
+        {
+          "literal_label": "Property & Casualty Insurance",
+          "subindustry_code": "40301040",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 26,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.10605
+        },
+        {
+          "literal_label": "Publishing",
+          "subindustry_code": "50201040",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.0123
+        },
+        {
+          "literal_label": "Rail Transportation",
+          "subindustry_code": "20304010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 24,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.75081
+        },
+        {
+          "literal_label": "Real Estate Development",
+          "subindustry_code": "60201030",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 14,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.07617
+        },
+        {
+          "literal_label": "Real Estate Operating Companies",
+          "subindustry_code": "60201020",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 66,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.45646
+        },
+        {
+          "literal_label": "Real Estate Services",
+          "subindustry_code": "60201040",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 6,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04465
+        },
+        {
+          "literal_label": "Regional Banks",
+          "subindustry_code": "40101015",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 75,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.66596
+        },
+        {
+          "literal_label": "Reinsurance",
+          "subindustry_code": "40301050",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.43403
+        },
+        {
+          "literal_label": "Renewable Electricity",
+          "subindustry_code": "55105020",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 21,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.18943
+        },
+        {
+          "literal_label": "Research & Consulting Services",
+          "subindustry_code": "20202020",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.52789
+        },
+        {
+          "literal_label": "Restaurants",
+          "subindustry_code": "25301040",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 52,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.41144
+        },
+        {
+          "literal_label": "Retail REITs",
+          "subindustry_code": "60107010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 36,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.32337
+        },
+        {
+          "literal_label": "Security & Alarm Services",
+          "subindustry_code": "20201080",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 9,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.10264
+        },
+        {
+          "literal_label": "Self-Storage REITs",
+          "subindustry_code": "60108020",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 4,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01595
+        },
+        {
+          "literal_label": "Semiconductor Materials & Equipment",
+          "subindustry_code": "45301010",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 55,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 4.34968
+        },
+        {
+          "literal_label": "Semiconductors",
+          "subindustry_code": "45301020",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 31,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 4.46164
+        },
+        {
+          "literal_label": "Silver",
+          "subindustry_code": "15104045",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 7,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.08029
+        },
+        {
+          "literal_label": "Soft Drinks & Non-alcoholic Beverages",
+          "subindustry_code": "30201030",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.12535
+        },
+        {
+          "literal_label": "Specialized Consumer Services",
+          "subindustry_code": "25302020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 3,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00182
+        },
+        {
+          "literal_label": "Specialized Finance",
+          "subindustry_code": "40201040",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 17,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.05854
+        },
+        {
+          "literal_label": "Specialty Chemicals",
+          "subindustry_code": "15101050",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 69,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.99073
+        },
+        {
+          "literal_label": "Steel",
+          "subindustry_code": "15104050",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 50,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.47091
+        },
+        {
+          "literal_label": "Systems Software",
+          "subindustry_code": "45103020",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.05282
+        },
+        {
+          "literal_label": "Technology Distributors",
+          "subindustry_code": "45203030",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 18,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04859
+        },
+        {
+          "literal_label": "Technology Hardware, Storage & Peripherals",
+          "subindustry_code": "45202030",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 3.77973
+        },
+        {
+          "literal_label": "Textiles",
+          "subindustry_code": "25203030",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 7,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01433
+        },
+        {
+          "literal_label": "Tires & Rubber",
+          "subindustry_code": "25101020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.22947
+        },
+        {
+          "literal_label": "Tobacco",
+          "subindustry_code": "30203010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.62407
+        },
+        {
+          "literal_label": "Trading Companies & Distributors",
+          "subindustry_code": "20107010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 69,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.5642
+        },
+        {
+          "literal_label": "Transaction & Payment Processing Services",
+          "subindustry_code": "40201060",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 12,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.14259
+        },
+        {
+          "literal_label": "Water Utilities",
+          "subindustry_code": "55104010",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 3,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.07986
+        },
+        {
+          "literal_label": "Wireless Telecommunication Services",
+          "subindustry_code": "50102010",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 15,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.82371
+        }
+      ],
+      "unmapped_rows": [
+        {
+          "source_array_index": 1834,
+          "holdingName": "Generation Capital Ltd",
+          "literal_label": "",
+          "percentOfFunds": 0.00453,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 3678,
+          "holdingName": "SEB SA - PF - 2027",
+          "literal_label": "",
+          "percentOfFunds": 0.00041,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 3721,
+          "holdingName": "Valor Gold Corp",
+          "literal_label": "",
+          "percentOfFunds": 0.00036,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 3740,
+          "holdingName": "SEB SA - PF - 2028",
+          "literal_label": "",
+          "percentOfFunds": 0.00034,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 3790,
+          "holdingName": "VISCOFAN-INTERIM",
+          "literal_label": "",
+          "percentOfFunds": 0.00027,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 3828,
+          "holdingName": "LISI - PF - 2028",
+          "literal_label": "",
+          "percentOfFunds": 0.0002,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 3859,
+          "holdingName": "Orion Retail Properties Ltd",
+          "literal_label": "",
+          "percentOfFunds": 1e-05,
+          "numeric_weight": true
+        }
+      ],
+      "holdings_source_fileName": "VEA-holdings-historical-api.json",
+      "map_source_fileName": "official-msci-gics-methodology.pdf",
+      "sources": [
+        {
+          "url": "https://advisors.vanguard.com/investments/products/api/funds/0936/holdings/historical?effectiveDate=2026-06-30",
+          "title": "Vanguard — pesos nativos da carteira histórica",
+          "asOf": "2026-06-30",
+          "accessedAt": "2026-10-22"
+        },
+        {
+          "url": "https://www.msci.com/index/methodology/latest/GICS",
+          "title": "MSCI — metodologia GICS, abril de 2026, páginas 6–12",
+          "accessedAt": "2026-10-22"
+        }
+      ]
+    },
+    "VWO": {
+      "status": "EDITORIAL_DERIVED_GICS_KNOWN_JUNE_WEIGHTS_ONLY",
+      "label_pt": "Setores amplos GICS calculados editorialmente dos pesos conhecidos de junho",
+      "as_of": "2026-06-30",
+      "taxonomy": "GICS; mapa de abril de 2026; correspondência literal exata",
+      "published_by_vanguard": false,
+      "replace_official_ICB_panel": false,
+      "basis": "Soma do percentOfFunds nativo das linhas equity; denominador não reinterpretado; sem normalização; pesos não numéricos não estimados",
+      "holdings_source_url": "https://advisors.vanguard.com/investments/products/api/funds/0964/holdings/historical?effectiveDate=2026-06-30",
+      "holdings_source_sha256": "21a970e8ef3bb93dc0feb323391c2d3a5a5eea44664439cd64a88ac77fe2cf7d",
+      "map_source_url": "https://www.msci.com/index/methodology/latest/GICS",
+      "map_source_sha256": "d66cfdf808872211561270a7141c40687417b3f669192c6b2650ae2d0aacad06",
+      "map_document_date": "2026-04",
+      "map_pages_1_based": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "coverage": {
+        "equity_rows": 6334,
+        "literal_labels_including_empty": 156,
+        "nonempty_literal_labels": 155,
+        "mapped_nonempty_literal_labels": 155,
+        "nonempty_unmapped_labels": [],
+        "unmapped_labels_including_empty": [
+          ""
+        ],
+        "mapped_rows": 6315,
+        "unmapped_rows": 19,
+        "missing_numeric_weights_total": 59,
+        "missing_numeric_weights_mapped": 47,
+        "missing_numeric_weights_unmapped": 12,
+        "mapped_known_weight_pct": 95.09779,
+        "unmapped_known_weight_pct": 0.04552,
+        "all_known_equity_weight_pct": 95.14331,
+        "normalization_performed": false,
+        "full_portfolio_coverage_claimed": false
+      },
+      "sectors": [
+        {
+          "gics_sector_code": "10",
+          "sector": "Energy",
+          "known_native_weight_pct": 3.40124,
+          "holding_rows": 155,
+          "missing_numeric_weights": 2
+        },
+        {
+          "gics_sector_code": "15",
+          "sector": "Materials",
+          "known_native_weight_pct": 6.97939,
+          "holding_rows": 870,
+          "missing_numeric_weights": 9
+        },
+        {
+          "gics_sector_code": "20",
+          "sector": "Industrials",
+          "known_native_weight_pct": 7.15975,
+          "holding_rows": 1178,
+          "missing_numeric_weights": 5
+        },
+        {
+          "gics_sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "known_native_weight_pct": 8.49008,
+          "holding_rows": 660,
+          "missing_numeric_weights": 4
+        },
+        {
+          "gics_sector_code": "30",
+          "sector": "Consumer Staples",
+          "known_native_weight_pct": 3.3575,
+          "holding_rows": 382,
+          "missing_numeric_weights": 1
+        },
+        {
+          "gics_sector_code": "35",
+          "sector": "Health Care",
+          "known_native_weight_pct": 3.37004,
+          "holding_rows": 578,
+          "missing_numeric_weights": 3
+        },
+        {
+          "gics_sector_code": "40",
+          "sector": "Financials",
+          "known_native_weight_pct": 18.62488,
+          "holding_rows": 596,
+          "missing_numeric_weights": 3
+        },
+        {
+          "gics_sector_code": "45",
+          "sector": "Information Technology",
+          "known_native_weight_pct": 32.76967,
+          "holding_rows": 1081,
+          "missing_numeric_weights": 5
+        },
+        {
+          "gics_sector_code": "50",
+          "sector": "Communication Services",
+          "known_native_weight_pct": 6.27216,
+          "holding_rows": 224,
+          "missing_numeric_weights": 3
+        },
+        {
+          "gics_sector_code": "55",
+          "sector": "Utilities",
+          "known_native_weight_pct": 2.69056,
+          "holding_rows": 270,
+          "missing_numeric_weights": 1
+        },
+        {
+          "gics_sector_code": "60",
+          "sector": "Real Estate",
+          "known_native_weight_pct": 1.98252,
+          "holding_rows": 321,
+          "missing_numeric_weights": 11
+        }
+      ],
+      "subindustry_audit": [
+        {
+          "literal_label": "Advertising",
+          "subindustry_code": "50201010",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 26,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.04579
+        },
+        {
+          "literal_label": "Aerospace & Defense",
+          "subindustry_code": "20101010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 43,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.46225
+        },
+        {
+          "literal_label": "Agricultural & Farm Machinery",
+          "subindustry_code": "20106015",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01305
+        },
+        {
+          "literal_label": "Agricultural Products & Services",
+          "subindustry_code": "30202010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 37,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.15476
+        },
+        {
+          "literal_label": "Air Freight & Logistics",
+          "subindustry_code": "20301010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 43,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.27636
+        },
+        {
+          "literal_label": "Airport Services",
+          "subindustry_code": "20305010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 22,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.28021
+        },
+        {
+          "literal_label": "Alternative Carriers",
+          "subindustry_code": "50101010",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02766
+        },
+        {
+          "literal_label": "Aluminum",
+          "subindustry_code": "15104010",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 34,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.43505
+        },
+        {
+          "literal_label": "Apparel Retail",
+          "subindustry_code": "25504010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 16,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.2098
+        },
+        {
+          "literal_label": "Apparel, Accessories & Luxury Goods",
+          "subindustry_code": "25203010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 44,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.41468
+        },
+        {
+          "literal_label": "Application Software",
+          "subindustry_code": "45103010",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 107,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.27086
+        },
+        {
+          "literal_label": "Asset Management & Custody Banks",
+          "subindustry_code": "40203010",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 24,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.24557
+        },
+        {
+          "literal_label": "Automobile Manufacturers",
+          "subindustry_code": "25102010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 50,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.2569
+        },
+        {
+          "literal_label": "Automotive Parts & Equipment",
+          "subindustry_code": "25101010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 146,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.57667
+        },
+        {
+          "literal_label": "Automotive Retail",
+          "subindustry_code": "25504050",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 32,
+          "missing_numeric_weights": 2,
+          "known_native_weight_pct": 0.25636
+        },
+        {
+          "literal_label": "Biotechnology",
+          "subindustry_code": "35201010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 100,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.70396
+        },
+        {
+          "literal_label": "Brewers",
+          "subindustry_code": "30201010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 17,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.21273
+        },
+        {
+          "literal_label": "Broadcasting",
+          "subindustry_code": "50201020",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01942
+        },
+        {
+          "literal_label": "Broadline Retail",
+          "subindustry_code": "25503030",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 43,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 3.08299
+        },
+        {
+          "literal_label": "Building Products",
+          "subindustry_code": "20102010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 27,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.10224
+        },
+        {
+          "literal_label": "Cable & Satellite",
+          "subindustry_code": "50201030",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 15,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03137
+        },
+        {
+          "literal_label": "Cargo Ground Transportation",
+          "subindustry_code": "20304030",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 6,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.05351
+        },
+        {
+          "literal_label": "Casinos & Gaming",
+          "subindustry_code": "25301010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.05122
+        },
+        {
+          "literal_label": "Coal & Consumable Fuels",
+          "subindustry_code": "10102050",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 54,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.47329
+        },
+        {
+          "literal_label": "Commercial & Residential Mortgage Finance",
+          "subindustry_code": "40201050",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 10,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.09982
+        },
+        {
+          "literal_label": "Commercial Printing",
+          "subindustry_code": "20201010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 2,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00079
+        },
+        {
+          "literal_label": "Commodity Chemicals",
+          "subindustry_code": "15101010",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 222,
+          "missing_numeric_weights": 2,
+          "known_native_weight_pct": 1.072
+        },
+        {
+          "literal_label": "Communications Equipment",
+          "subindustry_code": "45201020",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 100,
+          "missing_numeric_weights": 2,
+          "known_native_weight_pct": 0.90176
+        },
+        {
+          "literal_label": "Computer & Electronics Retail",
+          "subindustry_code": "25504020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 2,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01346
+        },
+        {
+          "literal_label": "Construction & Engineering",
+          "subindustry_code": "20103010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 142,
+          "missing_numeric_weights": 2,
+          "known_native_weight_pct": 0.83013
+        },
+        {
+          "literal_label": "Construction Machinery & Heavy Transportation Equipment",
+          "subindustry_code": "20106010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 81,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.58587
+        },
+        {
+          "literal_label": "Construction Materials",
+          "subindustry_code": "15102010",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 85,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.79817
+        },
+        {
+          "literal_label": "Consumer Electronics",
+          "subindustry_code": "25201010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 24,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.0935
+        },
+        {
+          "literal_label": "Consumer Finance",
+          "subindustry_code": "40202010",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 36,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.74902
+        },
+        {
+          "literal_label": "Consumer Staples Merchandise Retail",
+          "subindustry_code": "30101040",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 16,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.20896
+        },
+        {
+          "literal_label": "Copper",
+          "subindustry_code": "15104025",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 18,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.11299
+        },
+        {
+          "literal_label": "Data Processing & Outsourced Services",
+          "subindustry_code": "20202030",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03726
+        },
+        {
+          "literal_label": "Distillers & Vintners",
+          "subindustry_code": "30201020",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 45,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.25713
+        },
+        {
+          "literal_label": "Distributors",
+          "subindustry_code": "25501010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 15,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01532
+        },
+        {
+          "literal_label": "Diversified Banks",
+          "subindustry_code": "40101010",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 213,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 12.8988
+        },
+        {
+          "literal_label": "Diversified Capital Markets",
+          "subindustry_code": "40203030",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.14596
+        },
+        {
+          "literal_label": "Diversified Chemicals",
+          "subindustry_code": "15101020",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 14,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.17606
+        },
+        {
+          "literal_label": "Diversified Financial Services",
+          "subindustry_code": "40201020",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 8,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.59447
+        },
+        {
+          "literal_label": "Diversified Metals & Mining",
+          "subindustry_code": "15104020",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 100,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.8304
+        },
+        {
+          "literal_label": "Diversified REITs",
+          "subindustry_code": "60101010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.15647
+        },
+        {
+          "literal_label": "Diversified Real Estate Activities",
+          "subindustry_code": "60201010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 50,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.2478
+        },
+        {
+          "literal_label": "Diversified Support Services",
+          "subindustry_code": "20201070",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 9,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.08277
+        },
+        {
+          "literal_label": "Drug Retail",
+          "subindustry_code": "30101010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 16,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.13511
+        },
+        {
+          "literal_label": "Education Services",
+          "subindustry_code": "25302010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 14,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.11245
+        },
+        {
+          "literal_label": "Electric Utilities",
+          "subindustry_code": "55101010",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 52,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 1.03593
+        },
+        {
+          "literal_label": "Electrical Components & Equipment",
+          "subindustry_code": "20104010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 204,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.2064
+        },
+        {
+          "literal_label": "Electronic Components",
+          "subindustry_code": "45203015",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 187,
+          "missing_numeric_weights": 2,
+          "known_native_weight_pct": 4.62739
+        },
+        {
+          "literal_label": "Electronic Equipment & Instruments",
+          "subindustry_code": "45203010",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 91,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.41089
+        },
+        {
+          "literal_label": "Electronic Manufacturing Services",
+          "subindustry_code": "45203020",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 19,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.94073
+        },
+        {
+          "literal_label": "Environmental & Facilities Services",
+          "subindustry_code": "20201050",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 34,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.07182
+        },
+        {
+          "literal_label": "Fertilizers & Agricultural Chemicals",
+          "subindustry_code": "15101030",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 59,
+          "missing_numeric_weights": 2,
+          "known_native_weight_pct": 0.25455
+        },
+        {
+          "literal_label": "Financial Exchanges & Data",
+          "subindustry_code": "40203040",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 21,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.32604
+        },
+        {
+          "literal_label": "Food Distributors",
+          "subindustry_code": "30101020",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.08175
+        },
+        {
+          "literal_label": "Food Retail",
+          "subindustry_code": "30101030",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 29,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.34098
+        },
+        {
+          "literal_label": "Footwear",
+          "subindustry_code": "25203020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 13,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04982
+        },
+        {
+          "literal_label": "Forest Products",
+          "subindustry_code": "15105010",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.0091
+        },
+        {
+          "literal_label": "Gas Utilities",
+          "subindustry_code": "55102010",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 37,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.25345
+        },
+        {
+          "literal_label": "Gold",
+          "subindustry_code": "15104030",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 26,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.99835
+        },
+        {
+          "literal_label": "Health Care Distributors",
+          "subindustry_code": "35102010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 36,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.06535
+        },
+        {
+          "literal_label": "Health Care Equipment",
+          "subindustry_code": "35101010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 47,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.08028
+        },
+        {
+          "literal_label": "Health Care Facilities",
+          "subindustry_code": "35102020",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 43,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.58799
+        },
+        {
+          "literal_label": "Health Care Services",
+          "subindustry_code": "35102015",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.05516
+        },
+        {
+          "literal_label": "Health Care Supplies",
+          "subindustry_code": "35101020",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 31,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.0532
+        },
+        {
+          "literal_label": "Health Care Technology",
+          "subindustry_code": "35103010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.01256
+        },
+        {
+          "literal_label": "Heavy Electrical Equipment",
+          "subindustry_code": "20104020",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 62,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.45888
+        },
+        {
+          "literal_label": "Highways & Railtracks",
+          "subindustry_code": "20305020",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 44,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.18442
+        },
+        {
+          "literal_label": "Home Furnishings",
+          "subindustry_code": "25201020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02223
+        },
+        {
+          "literal_label": "Home Improvement Retail",
+          "subindustry_code": "25504030",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 6,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02374
+        },
+        {
+          "literal_label": "Homebuilding",
+          "subindustry_code": "25201030",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 7,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03857
+        },
+        {
+          "literal_label": "Homefurnishing Retail",
+          "subindustry_code": "25504060",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 2,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00203
+        },
+        {
+          "literal_label": "Hotel & Resort REITs",
+          "subindustry_code": "60103010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 1,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00061
+        },
+        {
+          "literal_label": "Hotels, Resorts & Cruise Lines",
+          "subindustry_code": "25301020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 34,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.48091
+        },
+        {
+          "literal_label": "Household Appliances",
+          "subindustry_code": "25201040",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 48,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.2203
+        },
+        {
+          "literal_label": "Household Products",
+          "subindustry_code": "30301010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04612
+        },
+        {
+          "literal_label": "Housewares & Specialties",
+          "subindustry_code": "25201050",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 2,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00159
+        },
+        {
+          "literal_label": "Human Resource & Employment Services",
+          "subindustry_code": "20202010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 7,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04258
+        },
+        {
+          "literal_label": "IT Consulting & Other Services",
+          "subindustry_code": "45102010",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 70,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.975
+        },
+        {
+          "literal_label": "Independent Power Producers & Energy Traders",
+          "subindustry_code": "55105010",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 91,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.78068
+        },
+        {
+          "literal_label": "Industrial Conglomerates",
+          "subindustry_code": "20105010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 46,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.60153
+        },
+        {
+          "literal_label": "Industrial Gases",
+          "subindustry_code": "15101040",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02308
+        },
+        {
+          "literal_label": "Industrial Machinery & Supplies & Components",
+          "subindustry_code": "20106020",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 204,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.64737
+        },
+        {
+          "literal_label": "Industrial REITs",
+          "subindustry_code": "60102510",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 10,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.11737
+        },
+        {
+          "literal_label": "Insurance Brokers",
+          "subindustry_code": "40301010",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 2,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.06068
+        },
+        {
+          "literal_label": "Integrated Oil & Gas",
+          "subindustry_code": "10102010",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 20,
+          "missing_numeric_weights": 2,
+          "known_native_weight_pct": 1.42779
+        },
+        {
+          "literal_label": "Integrated Telecommunication Services",
+          "subindustry_code": "50101020",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 33,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.85364
+        },
+        {
+          "literal_label": "Interactive Home Entertainment",
+          "subindustry_code": "50202020",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 28,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.4951
+        },
+        {
+          "literal_label": "Interactive Media & Services",
+          "subindustry_code": "50203010",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 3.31139
+        },
+        {
+          "literal_label": "Internet Services & Infrastructure",
+          "subindustry_code": "45102030",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 16,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.06565
+        },
+        {
+          "literal_label": "Investment Banking & Brokerage",
+          "subindustry_code": "40203020",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 126,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.57265
+        },
+        {
+          "literal_label": "Leisure Facilities",
+          "subindustry_code": "25301030",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 4,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02373
+        },
+        {
+          "literal_label": "Leisure Products",
+          "subindustry_code": "25202010",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03921
+        },
+        {
+          "literal_label": "Life & Health Insurance",
+          "subindustry_code": "40301020",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 33,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.7688
+        },
+        {
+          "literal_label": "Life Sciences Tools & Services",
+          "subindustry_code": "35203010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 25,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.42975
+        },
+        {
+          "literal_label": "Managed Health Care",
+          "subindustry_code": "35102030",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 2,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00787
+        },
+        {
+          "literal_label": "Marine Ports & Services",
+          "subindustry_code": "20305030",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 45,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.33743
+        },
+        {
+          "literal_label": "Marine Transportation",
+          "subindustry_code": "20303010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 25,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.23049
+        },
+        {
+          "literal_label": "Metal, Glass & Plastic Containers",
+          "subindustry_code": "15103010",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02149
+        },
+        {
+          "literal_label": "Mortgage REITs",
+          "subindustry_code": "40204010",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 7,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.04443
+        },
+        {
+          "literal_label": "Motorcycle Manufacturers",
+          "subindustry_code": "25102020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 13,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.30999
+        },
+        {
+          "literal_label": "Movies & Entertainment",
+          "subindustry_code": "50202010",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 27,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.09972
+        },
+        {
+          "literal_label": "Multi-Family Residential REITs",
+          "subindustry_code": "60106010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 2,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00866
+        },
+        {
+          "literal_label": "Multi-Sector Holdings",
+          "subindustry_code": "40201030",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.10772
+        },
+        {
+          "literal_label": "Multi-Utilities",
+          "subindustry_code": "55103010",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.11881
+        },
+        {
+          "literal_label": "Multi-line Insurance",
+          "subindustry_code": "40301030",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.18825
+        },
+        {
+          "literal_label": "Office REITs",
+          "subindustry_code": "60104010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.08362
+        },
+        {
+          "literal_label": "Office Services & Supplies",
+          "subindustry_code": "20201060",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 6,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.00542
+        },
+        {
+          "literal_label": "Oil & Gas Drilling",
+          "subindustry_code": "10101010",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.07326
+        },
+        {
+          "literal_label": "Oil & Gas Equipment & Services",
+          "subindustry_code": "10101020",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 26,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.05077
+        },
+        {
+          "literal_label": "Oil & Gas Exploration & Production",
+          "subindustry_code": "10102020",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 9,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.1509
+        },
+        {
+          "literal_label": "Oil & Gas Refining & Marketing",
+          "subindustry_code": "10102030",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 19,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.08111
+        },
+        {
+          "literal_label": "Oil & Gas Storage & Transportation",
+          "subindustry_code": "10102040",
+          "sector_code": "10",
+          "sector": "Energy",
+          "source_page": 6,
+          "holding_rows": 19,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.14412
+        },
+        {
+          "literal_label": "Other Specialty Retail",
+          "subindustry_code": "25504040",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 14,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.23173
+        },
+        {
+          "literal_label": "Packaged Foods & Meats",
+          "subindustry_code": "30202030",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 154,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.98157
+        },
+        {
+          "literal_label": "Paper & Plastic Packaging Products & Materials",
+          "subindustry_code": "15103020",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 20,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.04733
+        },
+        {
+          "literal_label": "Paper Products",
+          "subindustry_code": "15105020",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 24,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.09504
+        },
+        {
+          "literal_label": "Passenger Airlines",
+          "subindustry_code": "20302010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 32,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.35955
+        },
+        {
+          "literal_label": "Passenger Ground Transportation",
+          "subindustry_code": "20304040",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 10,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.07068
+        },
+        {
+          "literal_label": "Personal Care Products",
+          "subindustry_code": "30302010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 32,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.33175
+        },
+        {
+          "literal_label": "Pharmaceuticals",
+          "subindustry_code": "35202010",
+          "sector_code": "35",
+          "sector": "Health Care",
+          "source_page": 9,
+          "holding_rows": 266,
+          "missing_numeric_weights": 3,
+          "known_native_weight_pct": 1.37392
+        },
+        {
+          "literal_label": "Precious Metals & Minerals",
+          "subindustry_code": "15104040",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 7,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.38197
+        },
+        {
+          "literal_label": "Property & Casualty Insurance",
+          "subindustry_code": "40301040",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 15,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.26936
+        },
+        {
+          "literal_label": "Publishing",
+          "subindustry_code": "50201040",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 33,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.03179
+        },
+        {
+          "literal_label": "Rail Transportation",
+          "subindustry_code": "20304010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 17,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.06863
+        },
+        {
+          "literal_label": "Real Estate Development",
+          "subindustry_code": "60201030",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 161,
+          "missing_numeric_weights": 9,
+          "known_native_weight_pct": 0.78258
+        },
+        {
+          "literal_label": "Real Estate Operating Companies",
+          "subindustry_code": "60201020",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 50,
+          "missing_numeric_weights": 2,
+          "known_native_weight_pct": 0.40122
+        },
+        {
+          "literal_label": "Real Estate Services",
+          "subindustry_code": "60201040",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 8,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.08896
+        },
+        {
+          "literal_label": "Regional Banks",
+          "subindustry_code": "40101015",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 50,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.20636
+        },
+        {
+          "literal_label": "Reinsurance",
+          "subindustry_code": "40301050",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 4,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02962
+        },
+        {
+          "literal_label": "Renewable Electricity",
+          "subindustry_code": "55105020",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 52,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.26688
+        },
+        {
+          "literal_label": "Research & Consulting Services",
+          "subindustry_code": "20202020",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 14,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.02711
+        },
+        {
+          "literal_label": "Restaurants",
+          "subindustry_code": "25301040",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 27,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.77314
+        },
+        {
+          "literal_label": "Retail REITs",
+          "subindustry_code": "60107010",
+          "sector_code": "60",
+          "sector": "Real Estate",
+          "source_page": 12,
+          "holding_rows": 11,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.09523
+        },
+        {
+          "literal_label": "Security & Alarm Services",
+          "subindustry_code": "20201080",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 1,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00631
+        },
+        {
+          "literal_label": "Semiconductor Materials & Equipment",
+          "subindustry_code": "45301010",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 85,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.87739
+        },
+        {
+          "literal_label": "Semiconductors",
+          "subindustry_code": "45301020",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 262,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 21.33789
+        },
+        {
+          "literal_label": "Soft Drinks & Non-alcoholic Beverages",
+          "subindustry_code": "30201030",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 14,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.49644
+        },
+        {
+          "literal_label": "Specialized Consumer Services",
+          "subindustry_code": "25302020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 4,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.00527
+        },
+        {
+          "literal_label": "Specialized Finance",
+          "subindustry_code": "40201040",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 15,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.26637
+        },
+        {
+          "literal_label": "Specialty Chemicals",
+          "subindustry_code": "15101050",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 105,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.52469
+        },
+        {
+          "literal_label": "Steel",
+          "subindustry_code": "15104050",
+          "sector_code": "15",
+          "sector": "Materials",
+          "source_page": 6,
+          "holding_rows": 132,
+          "missing_numeric_weights": 3,
+          "known_native_weight_pct": 1.19912
+        },
+        {
+          "literal_label": "Systems Software",
+          "subindustry_code": "45103020",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 38,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.08376
+        },
+        {
+          "literal_label": "Technology Distributors",
+          "subindustry_code": "45203030",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 33,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.2308
+        },
+        {
+          "literal_label": "Technology Hardware, Storage & Peripherals",
+          "subindustry_code": "45202030",
+          "sector_code": "45",
+          "sector": "Information Technology",
+          "source_page": 11,
+          "holding_rows": 73,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 2.04755
+        },
+        {
+          "literal_label": "Textiles",
+          "subindustry_code": "25203030",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 35,
+          "missing_numeric_weights": 1,
+          "known_native_weight_pct": 0.08781
+        },
+        {
+          "literal_label": "Tires & Rubber",
+          "subindustry_code": "25101020",
+          "sector_code": "25",
+          "sector": "Consumer Discretionary",
+          "source_page": 8,
+          "holding_rows": 26,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.09666
+        },
+        {
+          "literal_label": "Tobacco",
+          "subindustry_code": "30203010",
+          "sector_code": "30",
+          "sector": "Consumer Staples",
+          "source_page": 9,
+          "holding_rows": 6,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.1102
+        },
+        {
+          "literal_label": "Trading Companies & Distributors",
+          "subindustry_code": "20107010",
+          "sector_code": "20",
+          "sector": "Industrials",
+          "source_page": 7,
+          "holding_rows": 42,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.11669
+        },
+        {
+          "literal_label": "Transaction & Payment Processing Services",
+          "subindustry_code": "40201060",
+          "sector_code": "40",
+          "sector": "Financials",
+          "source_page": 10,
+          "holding_rows": 5,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.05096
+        },
+        {
+          "literal_label": "Water Utilities",
+          "subindustry_code": "55104010",
+          "sector_code": "55",
+          "sector": "Utilities",
+          "source_page": 12,
+          "holding_rows": 33,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 0.23481
+        },
+        {
+          "literal_label": "Wireless Telecommunication Services",
+          "subindustry_code": "50102010",
+          "sector_code": "50",
+          "sector": "Communication Services",
+          "source_page": 11,
+          "holding_rows": 26,
+          "missing_numeric_weights": 0,
+          "known_native_weight_pct": 1.35628
+        }
+      ],
+      "unmapped_rows": [
+        {
+          "source_array_index": 994,
+          "holdingName": "DIGITAL TELECOMMUNICATIONS-F",
+          "literal_label": "",
+          "percentOfFunds": 0.01277,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 1155,
+          "holdingName": "IndiGrid Infrastructure Trust",
+          "literal_label": "",
+          "percentOfFunds": 0.01031,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 1675,
+          "holdingName": "3BB INTERNET INFRASTRUCTUR-F",
+          "literal_label": "",
+          "percentOfFunds": 0.00608,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 1794,
+          "holdingName": "IRB InvIT Fund",
+          "literal_label": "",
+          "percentOfFunds": 0.00544,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 1951,
+          "holdingName": "NEW HORIZON HEALTH LTD - DELISTED SHARES (NOV 2025)",
+          "literal_label": "",
+          "percentOfFunds": 0.00486,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 2303,
+          "holdingName": "THAILAND FUTURE FUND-FOREIGN",
+          "literal_label": "",
+          "percentOfFunds": 0.00358,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 2785,
+          "holdingName": "FII BTLG - RECEIPT LINE (May 2026)",
+          "literal_label": "",
+          "percentOfFunds": 0.00248,
+          "numeric_weight": true
+        },
+        {
+          "source_array_index": 6284,
+          "holdingName": "CHINA GRAND AUTOMOTIVE SER-A - DELISTED SHARES (AUG 24)",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6286,
+          "holdingName": "ZHEJIANG AKCOME NEW ENERGY T - CONVERSION (AUG 2024)",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6288,
+          "holdingName": "NINGXIA ZHONGYIN CASHMERE-A - CONVERSION (AUG 2024)",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6297,
+          "holdingName": "TUNGHSU OPTOELECTRONIC TEC-A - DELISTED SHARES (OCT 24)",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6300,
+          "holdingName": "PENGDU AGRICULTURE & ANIMA-A - DELISTED SHARES (SEPT 24)",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6303,
+          "holdingName": "JIANGSU ZHONGNAN Temp Line 2024",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6313,
+          "holdingName": "CHONGQING DIMA INDUSTRY CO-A - CONVERSION LINE",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6316,
+          "holdingName": "KANGMEI PHARMACEUTICAL CO-A TEMP LINE JUNE 2022",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6317,
+          "holdingName": "GUANGDONG HUATIE TONGDA HI-A - DELISTED SHARES  (AUG 2024)",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6318,
+          "holdingName": "SICHUAN LANGUANG DEVELOPME-A PENDING",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6319,
+          "holdingName": "JILIN ZIXIN PHARMACEUTICAL-A - Conversion Line",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        },
+        {
+          "source_array_index": 6329,
+          "holdingName": "Eternal Materials Co Ltd RIGHTS (June 2026)",
+          "literal_label": "",
+          "percentOfFunds": "",
+          "numeric_weight": false
+        }
+      ],
+      "holdings_source_fileName": "VWO-holdings-historical-api.json",
+      "map_source_fileName": "official-msci-gics-methodology.pdf",
+      "sources": [
+        {
+          "url": "https://advisors.vanguard.com/investments/products/api/funds/0964/holdings/historical?effectiveDate=2026-06-30",
+          "title": "Vanguard — pesos nativos da carteira histórica",
+          "asOf": "2026-06-30",
+          "accessedAt": "2026-10-22"
+        },
+        {
+          "url": "https://www.msci.com/index/methodology/latest/GICS",
+          "title": "MSCI — metodologia GICS, abril de 2026, páginas 6–12",
+          "accessedAt": "2026-10-22"
+        }
+      ]
+    }
+  },
+  "followupSearchAudit": [
+    {
+      "ticker": "PBUS",
+      "targetAsOf": "2026-06-30",
+      "holdingsConfirmed": false,
+      "sectorsConfirmed": false,
+      "holdingsAsOf": "2026-10-21",
+      "sectorsAsOf": "2026-09-30",
+      "result": "later_proxy",
+      "gap": "URLs legados e arquivo consultados não recuperaram a carteira exata de junho; referências posteriores preservadas. Resultado negativo limitado às rotas e janelas pesquisadas.",
+      "sources": [
+        {
+          "url": "https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=PBUS",
+          "title": "HTTP200 redireciona à página atual do produto; não contém carteira histórica de junho.",
+          "accessedAt": "2026-10-22"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=www.invesco.com%2Fus%2Ffinancial-products%2Fetfs%2Fproduct-detail%3FaudienceType%3DInvestor%26ticker%3DPBUS&output=json&from=20260630&to=20260831&filter=statuscode%3A200&collapse=digest&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype",
+          "title": "Nenhuma captura na consulta exata deste URL legado entre30/06 e31/08/2026; resultado limitado a este URL e janela.",
+          "accessedAt": "2026-10-22"
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "fileName": "PBUS_legacy_product.html",
+          "sha256": "b79a621740cb1d19f1df2f32c757f1e1cacce41bad8ce94830c2922244171281"
+        },
+        {
+          "fileName": "PBUS_legacy_cdx.json",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        }
+      ]
+    },
+    {
+      "ticker": "BKLN",
+      "targetAsOf": "2026-06-30",
+      "holdingsConfirmed": false,
+      "sectorsConfirmed": false,
+      "holdingsAsOf": "2026-10-21",
+      "sectorsAsOf": "2026-09-30",
+      "result": "later_proxy",
+      "gap": "Junho continua não confirmado; referências posteriores e quadro de 31/05 preservados. A ausência de captura nas consultas documentadas não prova inexistência do histórico.",
+      "sources": [
+        {
+          "url": "https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=BKLN",
+          "title": "HTTP200 redireciona à página atual do produto; não contém carteira histórica de junho.",
+          "accessedAt": "2026-10-22"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=www.invesco.com%2Fus%2Ffinancial-products%2Fetfs%2Fproduct-detail%3FaudienceType%3DInvestor%26ticker%3DBKLN&output=json&from=20260630&to=20260831&filter=statuscode%3A200&collapse=digest&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype",
+          "title": "Nenhuma captura na consulta exata deste URL legado entre30/06 e31/08/2026; resultado limitado a este URL e janela.",
+          "accessedAt": "2026-10-22"
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "fileName": "BKLN_legacy_product.html",
+          "sha256": "f022c9a0b98c5808e4868746d3f1e260a389112ca1a9b01c09e07f695a5da7e0"
+        },
+        {
+          "fileName": "BKLN_legacy_cdx.json",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        }
+      ]
+    },
+    {
+      "ticker": "QQQM",
+      "targetAsOf": "2026-06-30",
+      "holdingsConfirmed": true,
+      "sectorsConfirmed": true,
+      "holdingsAsOf": "2026-06-30",
+      "sectorsAsOf": "2026-06-30",
+      "result": "historical_same_date",
+      "gap": "Dez maiores emissores e nove setores ICB da ficha Q2 arquivada, com data geral 30/06. O quadro setorial não repete data própria; classificações podem refletir mês anterior. As 103 posições não foram extraídas integralmente; Alphabet permanece agregado.",
+      "sources": [
+        {
+          "url": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "originalURL": "https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "title": "Invesco NASDAQ 100 ETF — ficha oficial Q2 2026, captura Internet Archive de 01/08/2026",
+          "sourceType": "primary_issuer_document_archived_by_third_party",
+          "asOf": "2026-06-30",
+          "archiveCaptureTimestamp": "20260801031657",
+          "accessedAt": "2026-10-22",
+          "pages": [
+            1,
+            2
+          ]
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "fileName": "qqqm_archive_20260801031657.pdf",
+          "sha256": "b45245c8dcfa3490ed00d1562d2edac0cee074317db8a1209040bcb8d4a113cf"
+        },
+        {
+          "fileName": "qqqm_archive_20260801031657-decoded.pdf",
+          "sha256": "145e0c189f797e12c00d3579a717534435edab65afb5003e87cf3bbdfc54ee0a"
+        }
+      ]
+    },
+    {
+      "ticker": "KBWB",
+      "targetAsOf": "2026-06-30",
+      "holdingsConfirmed": false,
+      "sectorsConfirmed": false,
+      "holdingsAsOf": "2026-10-21",
+      "sectorsAsOf": "2026-09-30",
+      "result": "later_proxy",
+      "gap": "URLs legados e arquivo consultados não recuperaram a carteira exata de junho; referências posteriores preservadas. Resultado negativo limitado às rotas e janelas pesquisadas.",
+      "sources": [
+        {
+          "url": "https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=KBWB",
+          "title": "HTTP200 redireciona à página atual do produto; não contém carteira histórica de junho.",
+          "accessedAt": "2026-10-22"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=www.invesco.com%2Fus%2Ffinancial-products%2Fetfs%2Fproduct-detail%3FaudienceType%3DInvestor%26ticker%3DKBWB&output=json&from=20260630&to=20260831&filter=statuscode%3A200&collapse=digest&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype",
+          "title": "Nenhuma captura na consulta exata deste URL legado entre30/06 e31/08/2026; resultado limitado a este URL e janela.",
+          "accessedAt": "2026-10-22"
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "fileName": "KBWB_legacy_product.html",
+          "sha256": "023396d53a1dd3e5a853a3babf00a49f2e3b76abe0029d89b627d48b1751848f"
+        },
+        {
+          "fileName": "KBWB_legacy_cdx.json",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        }
+      ]
+    },
+    {
+      "ticker": "AVEM",
+      "targetAsOf": "2026-06-30",
+      "holdingsConfirmed": false,
+      "sectorsConfirmed": true,
+      "holdingsAsOf": "2026-09-30",
+      "sectorsAsOf": "2026-06-30",
+      "result": "partial_same_date",
+      "gap": "Onze setores do objeto portfolio de junho recuperados; soma 99%, sem normalização. As posições do snapshot são de 29/07 e foram excluídas; a lista principal conserva a referência de setembro.",
+      "sources": [
+        {
+          "url": "https://web.archive.org/web/20260730170945id_/https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
+          "originalURL": "https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
+          "asOf": "2026-06-30",
+          "accessedAt": "2026-10-22",
+          "sourceType": "official_page_preserved_in_Internet_Archive",
+          "title": "AVEM — rotas públicas consultadas na segunda rodada"
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "fileName": "AVEM-july30-wayback-page.html",
+          "sha256": "38d4a69c28dd093d517cf736e2ffd2d863653efc31b6a9659828d8a470da8548"
+        },
+        {
+          "fileName": "AVEM-july30-wayback-page.decoded.html",
+          "sha256": "69f503f95b255db9e399982ebba5aa830c0ae0d4743b13032bcdfabe9a55289e"
+        },
+        {
+          "fileName": "AVEM-portfolio-date-scope-qa.json",
+          "sha256": "1c97b005b24e483c2ca001dd1e8d8c299f92d07ab06e5cdc68546b01e9e0b74e"
+        }
+      ]
+    },
+    {
+      "ticker": "HGER",
+      "targetAsOf": "2026-06-30",
+      "holdingsConfirmed": false,
+      "sectorsConfirmed": false,
+      "holdingsAsOf": "2026-09-30",
+      "sectorsAsOf": "2026-09-30",
+      "result": "later_proxy",
+      "gap": "Vinte pesos Daily Weight % de junho no relatório do gestor aparecem em painel separado. Base ETF versus índice e denominador NAV não esclarecidos; não confirmam os campos principais de junho nem valores indiretos.",
+      "sources": [
+        {
+          "url": "https://www.harborcapital.com/static/9bee31957691ab4953865b4bc227dd1d/Commodity_All-Weather_Strategy_ETF_Quarterly_Report.pdf",
+          "asOf": "2026-06-30",
+          "accessedAt": "2026-10-22",
+          "title": "HGER — rotas públicas consultadas na segunda rodada"
+        },
+        {
+          "url": "https://www.harborcapital.com/page-data/etf/hger/page-data.json",
+          "accessedAt": "2026-10-22",
+          "title": "HGER — rotas públicas consultadas na segunda rodada"
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "fileName": "HGER-quarterly-june2026.pdf",
+          "sha256": "61a29be9c7534d421e9fae11dfeeaef7d042b21c3262ce3d3659a46b913127aa"
+        },
+        {
+          "fileName": "HGER-page-data.json",
+          "sha256": "a60671cb338fba9ce9197cc9ae63b49bc7ee522f4d940c20dc255fb81606c818"
+        }
+      ]
+    },
+    {
+      "ticker": "VEA",
+      "targetAsOf": "2026-06-30",
+      "holdingsConfirmed": true,
+      "sectorsConfirmed": false,
+      "holdingsAsOf": "2026-06-30",
+      "sectorsAsOf": "2026-09-30",
+      "result": "partial_same_date",
+      "gap": "Quadro ICB oficial de junho não confirmado. Setores ICB de setembro preservados; painel GICS editorial soma somente pesos numéricos de junho, com cobertura e lacunas explícitas.",
+      "sources": [
+        {
+          "url": "https://advisors.vanguard.com/investments/products/api/funds/0936/holdings/historical?effectiveDate=2026-06-30",
+          "title": "Vanguard — pesos nativos da carteira histórica",
+          "asOf": "2026-06-30",
+          "accessedAt": "2026-10-22"
+        },
+        {
+          "url": "https://www.msci.com/index/methodology/latest/GICS",
+          "title": "MSCI — metodologia GICS, abril de 2026, páginas 6–12",
+          "accessedAt": "2026-10-22"
+        },
+        {
+          "url": "https://advisors.vanguard.com/iippdf/pdfs/FS936R.pdf",
+          "title": "Vanguard — rota investigada; quadro ICB de junho não confirmado",
+          "accessedAt": "2026-10-22"
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "fileName": "VEA-holdings-historical-api.json",
+          "sha256": "dc00c0574a268072664122dbb47c14724ee6265279519ca920b37e904f0910b8"
+        },
+        {
+          "fileName": "official-msci-gics-methodology.pdf",
+          "sha256": "d66cfdf808872211561270a7141c40687417b3f669192c6b2650ae2d0aacad06"
+        }
+      ]
+    },
+    {
+      "ticker": "VWO",
+      "targetAsOf": "2026-06-30",
+      "holdingsConfirmed": true,
+      "sectorsConfirmed": false,
+      "holdingsAsOf": "2026-06-30",
+      "sectorsAsOf": "2026-09-30",
+      "result": "partial_same_date",
+      "gap": "Quadro ICB oficial de junho não confirmado. Captura localizada tinha data interna de março. Setores de setembro preservados; painel GICS editorial separado e sem imputação.",
+      "sources": [
+        {
+          "url": "https://advisors.vanguard.com/investments/products/api/funds/0964/holdings/historical?effectiveDate=2026-06-30",
+          "title": "Vanguard — pesos nativos da carteira histórica",
+          "asOf": "2026-06-30",
+          "accessedAt": "2026-10-22"
+        },
+        {
+          "url": "https://www.msci.com/index/methodology/latest/GICS",
+          "title": "MSCI — metodologia GICS, abril de 2026, páginas 6–12",
+          "accessedAt": "2026-10-22"
+        },
+        {
+          "url": "https://web.archive.org/web/20260711085612id_/https://fund-docs.vanguard.com/F0964.pdf",
+          "title": "Vanguard — rota investigada; quadro ICB de junho não confirmado",
+          "accessedAt": "2026-10-22"
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "fileName": "VWO-holdings-historical-api.json",
+          "sha256": "21a970e8ef3bb93dc0feb323391c2d3a5a5eea44664439cd64a88ac77fe2cf7d"
+        },
+        {
+          "fileName": "official-msci-gics-methodology.pdf",
+          "sha256": "d66cfdf808872211561270a7141c40687417b3f669192c6b2650ae2d0aacad06"
+        }
+      ]
+    }
+  ],
+  "followupSearchScope": {
+    "edition": "1.4",
+    "targetAsOf": "2026-06-30",
+    "accessedAt": "2026-10-22",
+    "fundCount": 8,
+    "tickers": [
+      "PBUS",
+      "BKLN",
+      "QQQM",
+      "KBWB",
+      "AVEM",
+      "HGER",
+      "VEA",
+      "VWO"
     ]
   },
   "sourceHashes": {
@@ -15278,6 +19512,20 @@
       {
         "fileName": "vanguard_avantis_historical.json",
         "sha256": "8c9391fd4f74c4b47e04c9ca4059bb4c3d805188370a2414cfbddbead377c9dd"
+      }
+    ],
+    "followupResearchInputs": [
+      {
+        "fileName": "invesco_round2.json",
+        "sha256": "e1fb1850ec3188dd1e233b98a9eb3f444ba46346b59a4c42b04dc2f5451cb1e1"
+      },
+      {
+        "fileName": "avem_hger_round2.json",
+        "sha256": "4ef6d84be820560cdfbe9b69703d541bcaec9de60af539bae9e401f2fd54635c"
+      },
+      {
+        "fileName": "vea_vwo_sectors_round2.json",
+        "sha256": "12c0a35bad7d7ff5cb4d24c0aee0f72767a93489fbded972c8407987e85182e0"
       }
     ]
   }

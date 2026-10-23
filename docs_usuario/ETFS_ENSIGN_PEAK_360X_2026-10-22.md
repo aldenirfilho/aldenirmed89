@@ -1,6 +1,6 @@
 # ETFs da Ensign Peak — Projeto 360X
 
-Edição 1.3 do dossiê, corte em **22/10/2026**. Página: `ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html#etfs`.
+Edição 1.4 do dossiê, corte em **22/10/2026**. Página: `ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html#etfs`.
 
 ## O que foi observado
 
@@ -22,20 +22,37 @@ A confirmação é independente para **componentes** e **setores/categorias**. T
 
 | Situação temporal | Fundos | Valor das cotas USD | % dos ETFs |
 |---|---:|---:|---:|
-| Ambos os campos em 30/06/2026 | 21 | 895.038.749 | 73,486176 |
-| Apenas componentes em junho: VEA e VWO | 2 | 17.471.710 | 1,434496 |
-| Nenhum dos dois campos confirmado em junho | 6 | 305.458.409 | 25,079328 |
-| Componentes de junho, incluindo os dois parciais | 23 | 912.510.459 | 74,920672 |
+| Ambos os campos em 30/06/2026 | 22 | 897.165.598 | 73,660799 |
+| Um campo em junho: VEA/VWO componentes; AVEM setores | 3 | 21.241.285 | 1,743992 |
+| Nenhum dos dois campos confirmado em junho | 4 | 299.561.985 | 24,595209 |
+| Componentes de junho, incluindo VEA e VWO | 24 | 914.637.308 | 75,095294 |
+| Categorias de junho, incluindo AVEM | 23 | 900.935.173 | 73,970296 |
 
-A última linha inclui as duas primeiras; não se soma novamente ao total. A edição 1.2 tinha 13 fundos com ambos os campos em junho. Foram pesquisados individualmente os 16 fundos restantes; o quadro estático `#etf-historical-search` registra fontes, resultado por campo e lacunas.
+As duas últimas linhas são indicadores por campo, sobrepostos às situações temporais; não se somam novamente ao total. A edição 1.2 tinha 13 fundos com ambos os campos em junho. Foram pesquisados individualmente os 16 fundos restantes; o quadro estático `#etf-historical-search` preserva o resultado da primeira rodada (edição 1.3, 21/2/6). A segunda rodada de oito buscas está em `#etf-followup-search` e mostra o estado atual.
 
 - **12 iShares:** API histórica oficial com `asOfDate=20260630` e data conferida na resposta. Pesos de mercado e nocionais permanecem separados quando fornecidos.
 - **VOO:** tabela oficial Vanguard com cabeçalhos de 30/06/2026 recuperada pela extração indexada; não foi baixado CSV histórico. A ficha PDF de setembro não fundamenta os percentuais de junho.
-- **Novos oito com ambos os campos em junho:** SRLN, KRE, SPYG, SPYV, XLU e XLY, a partir dos relatórios financeiros oficiais State Street; VXF, a partir da API histórica e relatório oficial Vanguard; VTIP, a partir da API histórica, com agrupamento editorial explícito dos instrumentos públicos e de liquidez. Categorias e bases nativas são preservadas.
+- **Oito confirmações da primeira rodada (edição 1.3):** SRLN, KRE, SPYG, SPYV, XLU e XLY, a partir dos relatórios financeiros oficiais State Street; VXF, a partir da API histórica e relatório oficial Vanguard; VTIP, a partir da API histórica, com agrupamento editorial explícito dos instrumentos públicos e de liquidez. Categorias e bases nativas são preservadas.
 - **VEA e VWO, confirmação parcial:** componentes da API histórica Vanguard em 30/06. Os setores amplos ICB continuam em 30/09. Os agrupamentos literais de 158 e 156 subindústrias da carteira de junho aparecem em quadros próprios e não substituem os setores amplos. Há, respectivamente, 8 e 59 linhas sem peso numérico; não foram estimadas nem confirmadas como zero.
-- **PBUS, BKLN, QQQM, KBWB, AVEM e HGER:** as buscas não confirmaram os dois campos na data exata. Mantiveram-se as referências posteriores já publicadas. Solicitar junho em um parâmetro da API Invesco não comprovou a data: a resposta retornou 21/10. A busca incompleta não prova inexistência de documento histórico.
+- **PBUS, BKLN, KBWB e HGER:** os campos principais de junho continuam não confirmados. Referências posteriores preservadas. Um parâmetro de junho na API ou uma busca sem resultado não comprova a composição histórica nem inexistência de documento. QQQM e AVEM receberam os achados específicos abaixo.
 
 Cada fundo no JSON inclui fontes primárias, datas, categorias nativas, natureza dos instrumentos, limitações e hashes SHA-256. O registro das 16 buscas conserva tentativas, evidências e arquivos localizados; um N-PORT apenas localizado não é apresentado como fonte de pesos extraídos. Não são publicados caminhos privados ou PDFs integrais.
+
+## Segunda rodada — edição 1.4
+
+O quadro estático `#etf-followup-search` documenta oito fundos: PBUS, BKLN, QQQM, KBWB, AVEM, HGER, VEA e VWO. O registro anterior de 16 buscas é um retrato da edição 1.3; não foi reescrito como se os novos achados já existissem naquela rodada.
+
+- **QQQM:** [ficha oficial Q2 2026, preservada pelo Internet Archive](https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD), data interna **30/06**, captura 01/08, rodapé 7/26. Dez maiores participações por emissor somam **47,84%**; nove setores **ICB (Industry Classification Benchmark)** somam **100%**. A referência é a data geral da ficha, 30/06; a tabela setorial não tem cabeçalho temporal próprio. A nota informa que as classificações podem refletir o último pregão do mês anterior; não estabelece data independente dos pesos. O gestor informa 103 posições; não foram extraídas todas. Alphabet Inc permanece em uma linha com 6,29%, sem inventar pesos GOOG/GOOGL ou divisão de classes.
+- **AVEM:** [página oficial preservada em 30/07/2026](https://web.archive.org/web/20260730170945id_/https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/) contém o objeto `portfolio` com `asOfDate=06/30/2026`. Onze setores inteiros somam **99%**, sem normalização. Os campos específicos `topHoldingsAsOfDate` e `etfHoldingsAsOfDate` indicam **29/07**, por isso essas posições não foram usadas como junho. O quadro principal de maiores posições conserva a data de setembro. Taxonomia formal não declarada pelo gestor.
+- **HGER:** [relatório trimestral oficial de oito páginas](https://www.harborcapital.com/static/9bee31957691ab4953865b4bc227dd1d/Commodity_All-Weather_Strategy_ETF_Quarterly_Report.pdf), página 6, traz 20 pesos **Daily Weight %**, data 30/06, soma 100%. O painel `managerReportedCommodityWeightsJune` os conserva separados: a base exata ETF versus índice e o denominador NAV não estão esclarecidos. Não são posições contábeis confirmadas de swaps/colateral, não promovem os campos principais de junho e não foram multiplicados pelas cotas Ensign Peak.
+- **VEA/VWO:** não se confirmou quadro **ICB oficial de junho**; referências ICB de setembro preservadas. Em `derived_panels.VEA/VWO`, o **GICS (Global Industry Classification Standard)** foi calculado editorialmente dos pesos conhecidos da API histórica, por correspondência literal de todos os rótulos não vazios ao [mapa MSCI de abril de 2026](https://www.msci.com/index/methodology/latest/GICS), pp. 6–12. Não é um quadro publicado pela Vanguard. Não se normalizou nem imputou peso.
+
+| Painel editorial de junho | Pesos conhecidos mapeados | Pesos conhecidos sem rótulo | Linhas sem peso numérico | Rótulos não vazios mapeados |
+|---|---:|---:|---:|---:|
+| VEA | 98,06157% | 0,00612% | 8 | 157/157 |
+| VWO | 95,09779% | 0,04552% | 59 | 155/155 |
+
+Essas somas são de `percentOfFunds` conhecido das ações, sem reinterpretar o denominador como NAV. Rótulos vazios, linhas sem peso, cobertura por setor, auditoria de subindústrias, páginas da metodologia e hashes são preservados. Não representam composição integral do fundo. A eventual extração indexada de ficha ICB não foi aceita como original binário de junho; a captura VWO localizada tinha data interna de março.
 
 ## BKLN: quadro anterior de 31/05, separado de junho
 
@@ -60,13 +77,13 @@ O quadro `#etf-bkln-maio` não confirma junho e **não foi multiplicado pelo val
 - `data/etfs-ensign-peak-2026-q2.json`: dados completos, fontes, datas e hashes.
 - `data/etfs-ensign-peak-2026-q2-resumo.csv`: 29 valores de cotas e metadados.
 - `etfs-ensign-peak.css` e `etfs-ensign-peak.js`: fontes da interface, sincronizadas com os blocos incorporados ao HTML. Não há consulta ao vivo, CDN ou dependência de rede para os dados incorporados.
-- `scripts_admin/build_ensign_peak_etfs.py --research-dir PATH --historical-dir HISTORICAL_PATH`: concilia as três notas originais e as três notas históricas, escreve JSON/CSV e atualiza o HTML com CSS e JavaScript incorporados. O argumento histórico é opcional; a edição 1.3 usa ambas as pastas. A execução falha diante de CUSIP faltante/duplicado ou divergência dos valores imutáveis.
-- `tests/test_ensign_peak_etfs.py`: testa exaustividade, reconciliação financeira, datas, mandatos e limites entre ações, dívida pública, crédito e derivativos. As cinco regressões anteriores de setores devem continuar passando. O teste histórico confirma as 16 buscas, os totais 21/2/6, a separação de maio e junho e a distinção entre bases de peso.
+- `scripts_admin/build_ensign_peak_etfs.py --research-dir PATH --historical-dir HISTORICAL_PATH --followup-dir FOLLOWUP_PATH`: concilia as três notas originais e as três notas históricas, escreve JSON/CSV e atualiza o HTML com CSS e JavaScript incorporados. As duas rodadas são opcionais; a edição 1.4 usa as três pastas. `--followup-dir` exige `--historical-dir` para preservar a primeira rodada. Nenhuma pesquisa anterior é editada. A execução falha diante de CUSIP faltante/duplicado ou divergência dos valores imutáveis.
+- `tests/test_ensign_peak_etfs.py`: testa exaustividade, reconciliação financeira, datas, mandatos e limites entre ações, dívida pública, crédito e derivativos. As cinco regressões anteriores de setores devem continuar passando. O teste histórico confirma as 16 buscas, os totais atuais 22/3/4, o retrato anterior 21/2/6, a segunda rodada de oito buscas, os painéis separados e a separação de maio e junho e a distinção entre bases de peso.
 
 Números JSON de campos monetários podem usar notação exponencial equivalente (`e0`) para evitar falso positivo do scanner editorial. A leitura JSON mantém os mesmos valores numéricos. Não se alteraram os controles de segurança.
 
 ## Publicação e reversão
 
-Atualização e publicação expressamente autorizadas pelo proprietário em 22/10/2026, incluindo a busca da composição de 30/06 dos 16 fundos antes aproximados e os setores do BKLN. Redação e revisão técnica assistidas por IA; não se afirma revisão humana, contábil ou jurídica independente concluída. O índice de transparência mantém **31/100**: nossa análise dos fundos não aumenta a divulgação financeira da Igreja.
+Atualização e publicação expressamente autorizadas pelo proprietário em 22/10/2026, incluindo a busca da composição de 30/06, os setores do BKLN e o aprofundamento das lacunas históricas desta segunda rodada. Redação e revisão técnica assistidas por IA; não se afirma revisão humana, contábil ou jurídica independente concluída. O índice de transparência mantém **31/100**: nossa análise dos fundos não aumenta a divulgação financeira da Igreja.
 
 Validação local não demonstra deploy. Conferir o workflow seguro, o SHA e a página pública após publicação. Reversão: reverter o commit desta edição; bases e classificações anteriores permanecem preservadas.
