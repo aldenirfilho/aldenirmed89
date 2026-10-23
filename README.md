@@ -15,6 +15,7 @@
 |---|---|
 | Explorar a plataforma médica | [🩺 Abrir AldenirMed89](https://aldenirfilho.github.io/aldenirmed89/) |
 | Abrir o painel completo de projetos e conexões | [🔗 Painel integrado 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html) |
+| Conhecer os agentes e as habilidades autorais | [🤖 Catálogo visual 2026](https://aldenirfilho.github.io/aldenirmed89/ecossistema/agentes-habilidades/) |
 | Conhecer as iniciativas do ecossistema | [🌐 Abrir Ecossistema 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/) |
 | Encontrar um repositório por área | [🗂️ Ver o portfólio GitHub organizado](docs_usuario/PORTFOLIO_GITHUB/README.md) |
 | Conhecer o autor e os destaques | [👤 Apresentação profissional](docs_usuario/PORTFOLIO_GITHUB/PERFIL.md) |

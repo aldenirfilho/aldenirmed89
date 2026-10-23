@@ -11,12 +11,19 @@
 | Projeto | O que explorar |
 |---|---|
 | [🩺 AldenirMed89](https://github.com/aldenirfilho/aldenirmed89) | Educação médica, módulos e preparação TEMI. |
+| [🤖 Agentes e Habilidades · 2026](https://aldenirfilho.github.io/aldenirmed89/ecossistema/agentes-habilidades/) | Catálogo visual de criações autorais, funções, fontes e estágios documentados. |
 | [📋 Passagem de Plantão UTI](https://github.com/aldenirfilho/passagem-plantao-uti) | Organização da continuidade assistencial; protótipo. |
 | [🫁 RespiraSense ICU](https://github.com/aldenirfilho/respirasense-icu) | Código e documentação de um protótipo respiratório local. |
 | [🧠 DiversaMente](https://github.com/aldenirfilho/neurodiversidade-brasil) | Educação sobre TDAH adulto, rotina e inclusão. |
 | [🌿 Atlas Vivo · Plantas](https://github.com/aldenirfilho/atlas-vivo-360x-pages) | Botânica e aprendizagem visual. |
 | [📚 IntensivaHub](https://github.com/aldenirfilho/intensivahub) | Temas de estudo e materiais de medicina intensiva. |
 | [🔎 Auditoria Religiosa 360](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/) | Cenário atual, agentes de investigação, dossiês, método e fontes documentais. |
+
+## 🤖 Catálogo anual de agentes e habilidades
+
+[Explorar o catálogo visual de 2026](https://aldenirfilho.github.io/aldenirmed89/ecossistema/agentes-habilidades/) · [Código e documentação](../../ecossistema/agentes-habilidades/).
+
+Agentes, habilidades reutilizáveis e papéis internos estão organizados por finalidade, com descrições, ilustrações, evidências e estado documental. O recorte vai de 1º de janeiro a 22 de outubro de 2026 e reúne as fontes acessíveis; a cobertura global do histórico permanece desconhecida. Documentação não equivale a instalação ou funcionamento autônomo.
 
 ## Como ler o catálogo
 
