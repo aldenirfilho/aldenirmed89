@@ -184,6 +184,15 @@ LEGACY_REPOSITORY_URL = "https://github.com/aldenirfilho/antigravity-consultas"
 PUBLIC_HOST = "aldenirfilho.github.io"
 ANALYTICS_CONFIG_PATH = "data/site-analytics.json"
 PUBLIC_METADATA_MARKER = "antigravity-public-metadata:v1"
+# Documentos autorais com identidade, atribuição e metadados próprios. O HTML
+# portátil incorpora seus recursos; a transformação alteraria aliases históricos
+# e acrescentaria dependências externas ao arquivo oferecido para uso offline.
+PUBLIC_DOCUMENT_TRANSFORM_EXCLUSIONS = frozenset(
+    {
+        "ecossistema/agentes-habilidades/index.html",
+        "ecossistema/agentes-habilidades/downloads/Catalogo_Agentes_Habilidades_360X_2026.html",
+    }
+)
 ANALYTICS_EXCLUDED_PREFIXES = (
     "02_Biblioteca_IA_Engine/previews/",
     "ecossistema/auditoria-uti/",
@@ -1038,6 +1047,8 @@ def migrate_public_identity(site: Path) -> int:
     updated = 0
     for html_path in sorted(site.rglob("*.html")):
         relative = PurePosixPath(html_path.relative_to(site).as_posix())
+        if relative.as_posix() in PUBLIC_DOCUMENT_TRANSFORM_EXCLUSIONS:
+            continue
         if any(
             relative.as_posix().startswith(prefix)
             for prefix in ANALYTICS_EXCLUDED_PREFIXES
@@ -1107,6 +1118,8 @@ def inject_editorial_attribution(site: Path) -> int:
     updated = 0
     for html_path in sorted(site.rglob("*.html")):
         relative = html_path.relative_to(site)
+        if relative.as_posix() in PUBLIC_DOCUMENT_TRANSFORM_EXCLUSIONS:
+            continue
         # Prévias são verificadas por SHA-256 e precisam permanecer inertes.
         if relative.as_posix().startswith(LIBRARY_ROOT_PREFIX + "previews/"):
             continue
@@ -1328,6 +1341,8 @@ def inject_public_metadata(site: Path, analytics: dict) -> int:
     counter_enabled = analytics["visitorCounterEnabled"]
     for html_path in sorted(site.rglob("*.html")):
         relative = PurePosixPath(html_path.relative_to(site).as_posix())
+        if relative.as_posix() in PUBLIC_DOCUMENT_TRANSFORM_EXCLUSIONS:
+            continue
         # O índice já contém o hash final; nem canonical deve alterar a prévia.
         if relative.as_posix().startswith(LIBRARY_ROOT_PREFIX + "previews/"):
             continue
