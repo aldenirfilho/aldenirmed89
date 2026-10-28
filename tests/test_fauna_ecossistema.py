@@ -39,7 +39,10 @@ class FaunaEcosystemTests(unittest.TestCase):
 
     def test_existing_canonical_family_reused(self):
         catalog = load('ecossistema/data/catalog.json')
-        self.assertEqual(len(catalog['projects']), 54)
+        # The authorized Command Notch addition brings the canonical catalog to55.
+        self.assertEqual(len(catalog['projects']), 55)
+        self.assertEqual(catalog['metadata']['coverage']['canonicalProjects'], 55)
+        self.assertEqual(len([p for p in catalog['projects'] if p['id'] == 'command-notch-360x']), 1)
         self.assertEqual(len(catalog['roots']), 10)
         fauna = next(p for p in catalog['projects'] if p['id'] == 'p044-panda-x-fauna')
         self.assertEqual(fauna['root'], 'biodiversidade')
