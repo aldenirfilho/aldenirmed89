@@ -149,3 +149,13 @@ Catálogo de 140 itens; orçamento para 10/20/30 leitos; triagem de preços e Ex
 
 Três relações conectadas: silício e fabricação da RAM; RAM versus espelho; visão, memória humana e processamento por IA. Reúne três imagens widescreen, seis conexões, tabela comparativa, perguntas de revisão e estimativa do espaço dos pesos de um modelo. Material educacional com fontes e limites das analogias; integrado às iniciativas existentes de IA aplicada e humanização tecnológica.
 <!-- RAM-ESPELHO-CEREBRO-360X:END -->
+
+<!-- COMMAND-NOTCH-360X:BEGIN -->
+## Command Notch · 360X
+
+[**Site oficial e demonstração**](https://command-notch-360x.aldenirmed.chatgpt.site) · [Apresentação no GitHub](https://github.com/aldenirfilho/command-notch-360x)
+
+Aplicativo macOS para Apple Silicon: notas, arquivos, voz e Spotify, com novos módulos de timer, cronômetro, alarme, Pomodoro de 25 minutos e prévia local de uma janela escolhida. Versão 0.10.0 build 23 em validação local. Site em oito idiomas; navegação e módulos novos do app em seis idiomas, com áreas anteriores ainda em português.
+
+**Pré-lançamento:** preços de assinatura e compra única são propostas. Sem checkout ou download público; assinatura Developer ID, notarização e homologação permanecem etapas do lançamento.
+<!-- COMMAND-NOTCH-360X:END -->
