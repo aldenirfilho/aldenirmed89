@@ -1,0 +1,18 @@
+/* Complementos restritos à Auditoria UTI; preservam temas, impressão e foco. */
+.v11-band{margin-bottom:24px;border-top:3px solid var(--cyan)}
+.v11-band h2{margin-top:12px}.v11-band p{margin-top:10px;max-width:80ch}
+.v11-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.v11-band .v11-actions{margin:18px 0 10px}
+.v11-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.v11-ref{padding:18px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.v11-ref:first-child{padding-top:0}.v11-ref:last-child{border-bottom:0}
+.v11-ref p{margin:8px 0}.v11-ref a{font-size:13px}
+.v11-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px}
+#v11-import{width:min(780px,calc(100vw - 28px));max-height:90dvh;padding:26px;overflow:auto}
+#v11-import::backdrop{background:#0009}
+#v11-import-status{white-space:pre-wrap;overflow-wrap:anywhere}
+#v11-import .notice{display:block}#v11-import input[type=file]{max-width:100%}
+#v11-tco{scroll-margin-top:100px}#v11-tco-result{display:block;overflow-wrap:anywhere}
+@media(max-width:680px){.v11-form{grid-template-columns:1fr 1fr}#v11-import{padding:18px}.v11-dialog-head h2{font-size:20px}.v11-band .btn{flex:1}.v11-actions .field{max-width:100%;min-width:0}}
+@media(max-width:400px){.v11-form{grid-template-columns:1fr}.v11-actions .btn{width:100%}}
+@media print{.v11-actions,.v11-review,#v11-draft-title~*{display:none!important}.v11-band{box-shadow:none}}
