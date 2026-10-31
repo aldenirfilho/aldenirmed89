@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v47`;
+const CACHE_NAME = `${CACHE_PREFIX}v48`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -171,6 +171,15 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/Sepse_Choque_Septico/data/acra-bundle.js",
   "./01_Modulos_Clinicos/Infectologia_Critica/index.html",
   "./01_Modulos_Clinicos/Infectologia_Critica/data/catalog.js",
+  "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/index.html",
+  "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/resistencia.html",
+  "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/fungos-virus-prions.html",
+  "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/farmacologia.html",
+  "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/sessao.html",
+  "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/data/catalog.js",
+  "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/assets/app.js",
+  "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/assets/theme-bootstrap.js",
+  "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/assets/styles.css",
   "./01_Modulos_Clinicos/Pneumologia_Critica/index.html",
   "./01_Modulos_Clinicos/Pneumologia_Critica/data/catalog.js",
   "./01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html",
