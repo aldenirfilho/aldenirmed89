@@ -178,6 +178,7 @@ const WARM_ASSETS = [
   "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/sessao.html",
   "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/data/catalog.js",
   "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/assets/app.js",
+  "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/assets/theme-bootstrap.js",
   "./01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/assets/styles.css",
   "./01_Modulos_Clinicos/Pneumologia_Critica/index.html",
   "./01_Modulos_Clinicos/Pneumologia_Critica/data/catalog.js",

@@ -1,14 +1,15 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light" data-default-theme="light" data-global-theme-key="antigravity:a11y:v1">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#113a58">
   <meta name="description" content="Acervo educacional de resistência antimicrobiana na UTI: perfis de patógenos, fármacos, custos históricos e fontes. Revisão médica em andamento.">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>Resistência e antimicrobianos na UTI · AldenirMed89</title>
+  <script src="assets/theme-bootstrap.js"></script>
   <link rel="stylesheet" href="assets/styles.css">
   <script src="data/catalog.js" defer></script>
   <script src="assets/app.js" defer></script>
@@ -23,6 +24,10 @@
       </a>
       <div class="header-actions">
         <a href="../index.html">← Infectologia crítica</a>
+        <div class="theme-controls" role="group" aria-label="Preferências de visualização">
+          <button class="button button-subtle" type="button" data-clarity-toggle aria-pressed="false" aria-label="Ativar visualização clara com fundo branco" title="Alternar visualização clara e escura">☀️ Clara</button>
+          <label class="theme-label">Tema<select data-theme-select aria-label="Escolher tema da visualização"><option value="system">Do sistema</option><option value="light">Claro</option><option value="dark">Escuro</option></select></label>
+        </div>
         <button class="button button-subtle" type="button" id="print-page">Imprimir visão atual</button>
       </div>
     </div>

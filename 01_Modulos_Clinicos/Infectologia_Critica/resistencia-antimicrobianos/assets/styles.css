@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --ink: #173247;
   --ink-strong: #0c2940;
   --muted: #526879;
@@ -47,6 +48,9 @@ li + li { margin-top: 7px; }
 .brand small { display: block; font-size: .79rem; color: var(--muted); line-height: 1.45; margin-top: 4px; }
 .header-actions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 12px 20px; font-size: .85rem; }
 .header-actions > a { font-weight: 650; text-decoration: none; }
+.theme-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.theme-label { display: flex; align-items: center; gap: 7px; font-size: .75rem; font-weight: 700; color: var(--muted); }
+.theme-label select { max-width: 125px; min-width: 0; min-height: 44px; padding: 8px; border: 1px solid var(--line-strong); border-radius: 9px; color: var(--ink-strong); background: var(--paper); font-size: .8rem; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; border: 1px solid transparent; border-radius: 10px; padding: 11px 16px; font-weight: 700; font-size: .9rem; line-height: 1.4; min-height: 44px; transition: background .15s, border-color .15s; }
 .button-primary { color: white; background: var(--blue); box-shadow: 0 5px 12px rgba(17, 58, 88, .12); }
 .button-primary:hover { color: white; background: var(--blue-deep); }
@@ -232,6 +236,84 @@ tbody tr:last-child td { border-bottom: 0; }
 .reading-content code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; overflow-wrap: anywhere; background: #edf3f7; border-radius: 3px; padding: 2px 4px; }
 .reading-content pre code { padding: 0; background: transparent; overflow-wrap: normal; }
 .reading-content hr { border: 0; border-top: 1px solid var(--line); margin-block: 30px; }
+
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ink: #e0edf5;
+    --ink-strong: #f3f8fc;
+    --muted: #b4c7d6;
+    --blue: #95cdf4;
+    --blue-deep: #bedff7;
+    --teal: #7ad9c9;
+    --teal-soft: #153b3a;
+    --paper: #102330;
+    --canvas: #091722;
+    --line: #304858;
+    --line-strong: #587384;
+    --amber: #f3d99b;
+    --amber-bg: #322b1c;
+    --shadow: 0 10px 28px rgba(0, 0, 0, .18);
+  }
+  :root[data-theme="dark"].a11y-contrast {
+    --ink: #fff;
+    --ink-strong: #fff;
+    --muted: #eee;
+    --blue: #b3e1ff;
+    --blue-deep: #d3edff;
+    --teal: #9effe7;
+    --paper: #050a0e;
+    --canvas: #000;
+    --line: #9baebc;
+    --line-strong: #d8e5ef;
+  }
+  :root[data-theme="dark"] :focus-visible { outline-color: #8bdbf5; }
+  :root[data-theme="dark"] .button-primary { color: #fff; background: #175479; }
+  :root[data-theme="dark"] .button-primary:hover { background: #1b668e; }
+  :root[data-theme="dark"] .button-outline,
+  :root[data-theme="dark"] .field input,
+  :root[data-theme="dark"] .field select,
+  :root[data-theme="dark"] .empty-state,
+  :root[data-theme="dark"] .reading-content,
+  :root[data-theme="dark"] .cost-table tr { background: var(--paper); }
+  :root[data-theme="dark"] .button-subtle,
+  :root[data-theme="dark"] .source-link,
+  :root[data-theme="dark"] caption,
+  :root[data-theme="dark"] .notes-details,
+  :root[data-theme="dark"] .reading-content pre,
+  :root[data-theme="dark"] .reading-content code { background: #172e3e; }
+  :root[data-theme="dark"] .button-subtle:hover,
+  :root[data-theme="dark"] .button-outline:hover,
+  :root[data-theme="dark"] .card-disclosure > summary:hover { background: #203d4f; }
+  :root[data-theme="dark"] .review-strip { color: var(--amber); background: var(--amber-bg); border-color: #78633b; }
+  :root[data-theme="dark"] .review-strip span:last-child { color: #e6cea0; }
+  :root[data-theme="dark"] .orbit-dot { box-shadow: 0 0 0 5px #153b3a; }
+  :root[data-theme="dark"] .evidence-card { border-color: var(--line); background: radial-gradient(ellipse at top right, #16433f, transparent 65%), var(--paper); }
+  :root[data-theme="dark"] .section-nav { background: #102330; }
+  :root[data-theme="dark"] .result-count,
+  :root[data-theme="dark"] th,
+  :root[data-theme="dark"] .search-block,
+  :root[data-theme="dark"] .site-footer { background: #172e3e; }
+  :root[data-theme="dark"] .card-number { color: #aac3d4; }
+  :root[data-theme="dark"] .editorial-note { background: #142c3c; border-color: var(--line); border-left-color: var(--blue); }
+  :root[data-theme="dark"] .notice-warning { border-color: #78633b; }
+  :root[data-theme="dark"] .notice-clinical,
+  :root[data-theme="dark"] .session-card,
+  :root[data-theme="dark"] .reading-content blockquote { background: var(--teal-soft); border-color: #3c7870; color: #c2ece2; }
+  :root[data-theme="dark"] .field input::placeholder { color: #aec2d1; }
+  :root[data-theme="dark"] .card-disclosure[open] > summary { background: #153438; }
+  :root[data-theme="dark"] .group-badge { color: #a0e3d6; background: #164039; }
+  :root[data-theme="dark"] .group-badge[data-group*="Vírus"],
+  :root[data-theme="dark"] .group-badge[data-group*="Antivirais"] { color: #bedfff; background: #213d5a; }
+  :root[data-theme="dark"] .group-badge[data-group*="Príons"] { color: #e4c7f8; background: #443050; }
+  :root[data-theme="dark"] .group-badge[data-group*="Fungos"],
+  :root[data-theme="dark"] .group-badge[data-group*="Antifúngicos"] { color: #f1d9ad; background: #48381f; }
+  :root[data-theme="dark"] .record-field,
+  :root[data-theme="dark"] .cost-table td { border-bottom-color: var(--line); }
+  :root[data-theme="dark"] .record-field.field-warning,
+  :root[data-theme="dark"] .article-limit { background: var(--amber-bg); border-color: #78633b; color: var(--amber); }
+  :root[data-theme="dark"] .reading-content pre code { background: transparent; }
+}
 
 @media (max-width: 900px) {
   .hero { gap: 30px; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
