@@ -38,6 +38,7 @@
 <meta name="robots" content="index,follow">
 <title>Radar Bíblico 3 Minutos • Formação Humana | AldenirMed89</title>
 <link rel="icon" href="../favicon.ico">
+<link rel="stylesheet" href="daily.css?v=20261031">
 <style>
 :root{
   color-scheme:dark;
@@ -309,6 +310,7 @@ mark{background:var(--yel-d);color:var(--text);padding:0 3px;border-radius:3px}
     <div class="kicker">❤️ Formação Humana <i>Turbo 360</i> <i>ciclo ativo de 3 minutos</i> <i>voluntário e plural</i></div>
     <h1>Radar Bíblico <em>3 Minutos</em></h1>
     <p class="lead">Reflexões breves sobre <b>justiça, honra, amor, perdão, responsabilidade e humanidade</b> — aplicadas ao leito, à conferência familiar, ao plantão noturno e à preceptoria. Não é devocional passivo: é um <b>ciclo ativo</b> de pensar antes de ler, traduzir para a UTI e sair com uma ação concreta.</p>
+    <p><a class="home-btn" href="#hoje">🌅 Mensagem de hoje</a> <a class="daily-blog" href="https://biblia-crista-guerreiros-de-fe.aldenirmed.chatgpt.site/" target="_blank" rel="noopener noreferrer">Conhecer o blog de leituras ↗</a></p>
     <div class="triade">
       <div class="t-sci"><b>🧠 Ciência</b><p>Saber <b>o que</b> fazer. Diretriz, evidência, dose, protocolo.</p></div>
       <div class="t-comp"><b>🩺 Competência</b><p>Saber <b>fazer</b>. Mão, tempo de resposta, execução sob pressão.</p></div>
@@ -332,8 +334,43 @@ mark{background:var(--yel-d);color:var(--text);padding:0 3px;border-radius:3px}
 <main id="conteudo">
 <div class="shell">
 
+<!-- ═══ MENSAGEM DIÁRIA · CONEXÃO COM O BLOG ═══ -->
+<section class="pane on" id="hoje" role="tabpanel" aria-labelledby="tab-hoje">
+  <div class="daily-top">
+    <div><span class="tag" id="daily-label">Uma leitura para cada dia</span><h2>🌅 Mensagem do dia</h2><time id="daily-date"></time></div>
+    <div class="daily-date-controls"><label for="daily-picker">Escolher outra data<input id="daily-picker" type="date" min="2000-01-01" max="2099-12-31"></label><button type="button" id="daily-today">Voltar a hoje</button></div>
+  </div>
+  <p class="sub">Uma seleção diária do acervo <b>Bíblia Cristã para Guerreiros de Fé</b>, no horário de Sobral. Leia, reflita e escolha um gesto possível. A participação é voluntária.</p>
+  <p id="daily-loading">Preparando a leitura. <a class="daily-blog" href="https://biblia-crista-guerreiros-de-fe.aldenirmed.chatgpt.site/" target="_blank" rel="noopener noreferrer">Você também pode abrir o blog ↗</a></p>
+  <div id="daily-content" class="daily-hidden" hidden>
+    <article class="daily-card">
+      <span class="tag">📖 Texto · 💬 reflexão · 🌱 ação</span>
+      <h3 id="daily-title"></h3><p class="muted" id="daily-situation"></p>
+      <figure class="daily-scripture"><blockquote id="daily-verse"></blockquote><figcaption><a id="daily-source" target="_blank" rel="noopener noreferrer"></a><p id="daily-unit"></p></figcaption></figure>
+      <div class="daily-grid">
+        <div class="daily-step"><h4>🧠 Pense antes de abrir</h4><p id="daily-question"></p><details id="daily-reflection-box"><summary>Revelar a reflexão autoral</summary><p id="daily-reflection"></p></details></div>
+        <div class="daily-step"><h4>🌱 Uma ação possível hoje</h4><p id="daily-action"></p></div>
+      </div>
+      <details class="daily-step"><summary>🔎 Contexto e cuidado ao aplicar</summary><p id="daily-context"></p><p id="daily-care" class="callout"></p><p>Na UTI, use a reflexão para observar sua escuta, seu respeito e sua presença. Qualquer aproximação espiritual depende da vontade da pessoa. Condutas assistenciais continuam seguindo a equipe e os protocolos.</p></details>
+      <div class="actions">
+        <a id="daily-blog-reading" class="btn-main" target="_blank" rel="noopener noreferrer">Ler a mensagem completa no blog ↗</a>
+        <button type="button" id="daily-copy">📋 Copiar mensagem</button>
+        <button type="button" id="daily-share">↗ Compartilhar</button>
+        <a id="daily-whatsapp" target="_blank" rel="noopener noreferrer">Enviar pelo WhatsApp</a>
+      </div>
+      <p class="daily-note">Você escolhe o destinatário e confirma o envio. Compartilhe apenas com quem deseja receber.</p>
+      <p id="daily-status" class="daily-status" role="status" aria-live="polite"></p>
+      <div id="daily-fallback" class="daily-fallback daily-hidden" hidden><label for="daily-copy-text">Mensagem pronta para copiar</label><textarea id="daily-copy-text" readonly></textarea></div>
+      <p id="daily-provenance" class="daily-note"></p>
+    </article>
+    <h3>🗓️ Retomar uma leitura</h3><nav id="daily-recent" class="daily-recent" aria-label="Leituras dos últimos sete dias"></nav>
+  </div>
+  <p class="daily-note">A seleção muda a cada dia e percorre as 24 leituras atuais; não significa que um texto novo foi escrito diariamente. A página atualiza ao abrir, retornar ou permanecer aberta na virada do dia. O envio por aplicativos é confirmado por você.</p>
+  <noscript><p>Ative o JavaScript para ver a seleção diária e copiar uma mensagem, ou acesse diretamente o blog pelo link acima.</p></noscript>
+</section>
+
 <!-- ═══ 1. MOTOR 3 MIN ═══ -->
-<section class="pane on" id="motor" role="tabpanel" aria-labelledby="tab-motor">
+<section class="pane" id="motor" role="tabpanel" aria-labelledby="tab-motor" hidden>
   <h2>⏱️ Motor 3 Minutos</h2>
   <p class="sub">Quatro camadas, 180 segundos. A regra do modo ativo: <b>você pensa antes de ler</b>. Cada camada fica fechada até você responder mentalmente à pergunta — é recordação ativa, o mesmo mecanismo do Turbo TEMI, aplicado a conduta humana.</p>
 
@@ -1011,6 +1048,7 @@ function copy(txt){
 
 /* ══════════ NAVEGAÇÃO ══════════ */
 var TABS=[
+  {id:"hoje",    label:"🌅 Hoje"},
   {id:"motor",   label:"⏱️ Motor 3 min"},
   {id:"trilhas", label:"🧭 Trilhas"},
   {id:"uti",     label:"🏥 UTI na prática"},
@@ -1030,11 +1068,14 @@ TABS.forEach(function(t,i){
   navEl.appendChild(b);
 });
 function go(id,noScroll){
+  if(!TABS.some(function(t){return t.id===id}))return;
   $$(".pane").forEach(function(p){var on=p.id===id;p.classList.toggle("on",on);p.hidden=!on});
   $$("#nav button").forEach(function(b){b.setAttribute("aria-selected",b.id==="tab-"+id?"true":"false")});
   if(location.hash!=="#"+id){history.replaceState(null,"","#"+id)}
   if(!noScroll)window.scrollTo({top:0,behavior:"smooth"});
 }
+document.addEventListener("radar:open-tab",function(event){go(event.detail,true)});
+window.addEventListener("hashchange",function(){go(location.hash.slice(1),true)});
 
 /* ══════════ MOTOR 3 MINUTOS ══════════ */
 var PHASES=[
@@ -1341,5 +1382,8 @@ if(h&&TABS.filter(function(t){return t.id===h}).length)go(h,true);
 
 })();
 </script>
+<script src="daily-messages.js?v=20261031"></script>
+<script src="daily-core.js?v=20261031"></script>
+<script src="daily.js?v=20261031"></script>
 </body>
 </html>

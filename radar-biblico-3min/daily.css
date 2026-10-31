@@ -1,0 +1,29 @@
+.daily-card{border:1px solid var(--brd-h);border-radius:var(--r-xl);padding:clamp(18px,3vw,30px);background:linear-gradient(145deg,var(--bg2),var(--bg3));margin:18px 0}
+.daily-top,.daily-date-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.daily-top{justify-content:space-between;margin-bottom:16px}
+.daily-top h2{margin:8px 0 0}
+.daily-date-controls label{display:flex;gap:6px;flex-direction:column;font-size:.85rem;color:var(--muted)}
+.daily-date-controls input{min-width:0;max-width:100%;padding:9px;border:1px solid var(--brd);border-radius:9px;background:var(--bg);color:var(--text);font:inherit;color-scheme:inherit}
+.daily-card h3{font-size:clamp(1.25rem,3vw,1.8rem);line-height:1.3;margin:10px 0}
+.daily-scripture{border-left:3px solid var(--rose);padding:12px 18px;margin:18px 0;background:var(--surf);border-radius:0 10px 10px 0}
+.daily-scripture blockquote{margin:0;font-size:1.13rem;line-height:1.65}
+.daily-scripture a,.daily-blog{color:var(--rose);overflow-wrap:anywhere}
+.daily-scripture figcaption{margin-top:10px;font-size:.85rem}
+.daily-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:15px;margin:18px 0}
+.daily-step{padding:17px;border:1px solid var(--brd);border-radius:var(--r);background:var(--surf);min-width:0}
+.daily-step h4{margin:0 0 9px;font-size:1rem}
+.daily-step summary{cursor:pointer;font-weight:700;color:var(--text)}
+.daily-step details[open] summary{margin-bottom:12px}
+.daily-step p{line-height:1.65}
+.daily-card .actions a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border:1px solid var(--brd);border-radius:10px;text-decoration:none;color:var(--text);background:var(--surf)}
+.daily-status{min-height:1.5em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.daily-fallback textarea{width:100%;max-width:100%;min-height:160px;background:var(--bg);color:var(--text);padding:12px;border:1px solid var(--brd);border-radius:8px;font:inherit;resize:vertical}
+.daily-recent{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 24px}
+.daily-recent a{border:1px solid var(--brd);border-radius:10px;padding:9px 12px;color:var(--soft);text-decoration:none;max-width:100%}
+.daily-recent a[aria-current="date"]{border-color:var(--rose);color:var(--text)}
+.daily-note{font-size:.86rem;color:var(--muted);line-height:1.6;margin-top:15px}
+.daily-note a{color:inherit}
+.daily-hidden[hidden]{display:none!important}
+#daily-title,#daily-action,#daily-care,#daily-reflection{overflow-wrap:anywhere}
+@media(max-width:480px){.daily-date-controls{width:100%}.daily-date-controls label{flex:1}.daily-card .actions>*{flex:1 1 145px}}
+@media print{.daily-date-controls,.daily-card .actions,.daily-recent,.daily-fallback,.daily-status{display:none!important}.daily-card,.daily-step,.daily-scripture{background:#fff!important;color:#111!important;box-shadow:none;break-inside:avoid}.daily-card a{color:#111!important}.daily-card{border:1px solid #ccc}}
