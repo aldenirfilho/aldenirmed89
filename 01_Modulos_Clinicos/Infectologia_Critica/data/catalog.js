@@ -16,6 +16,7 @@
       safetyNotice: "Material educacional em revisão médica. Não substitui infectologista, microbiologia local, controle de infecção, protocolo institucional, avaliação individual, ajuste renal/hepático nem dupla checagem de antimicrobianos."
     },
     quickActions: [
+      { icon: "🧫", title: "Catálogo + fármacos na UTI", text: "49 perfis, 20 medicamentos e custos datados; prévia educacional em revisão médica.", href: "resistencia-antimicrobianos/index.html" },
       { icon: "⏱️", title: "Sepse: relógio + foco", text: "Reconheça disfunção orgânica, estabilize, obtenha culturas sem atraso indevido e procure controle de foco.", href: "#emergencias" },
       { icon: "🧫", title: "Microbiologia útil", text: "Colete a amostra certa, do sítio certo, antes da terapia quando isso não atrasar uma emergência.", href: "#fluxos" },
       { icon: "🎯", title: "Terapia empírica", text: "Cruze síndrome, gravidade, exposições, colonização prévia e antibiograma local.", href: "#comparacoes" },

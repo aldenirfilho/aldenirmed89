@@ -195,6 +195,8 @@ PUBLIC_DOCUMENT_TRANSFORM_EXCLUSIONS = frozenset(
 )
 ANALYTICS_EXCLUDED_PREFIXES = (
     "02_Biblioteca_IA_Engine/previews/",
+    # Consulta educacional autossuficiente: preserva CSP local e ausência de telemetria.
+    "01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/",
     "ecossistema/auditoria-uti/",
     "ecossistema/auditoria-religiosa-360/riqueza-e-vida.html",
 )
