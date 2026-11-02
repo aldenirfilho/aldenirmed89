@@ -5,7 +5,7 @@ const CORE_ASSETS = [
   "./index.html",
   "./assets/knowledge-forge.css",
   "./assets/knowledge-forge.js",
-  "./assets/icloud-folder.mjs?v=748d15d7ed9f6989",
+  "./assets/icloud-folder.mjs?v=f3ee6dbd538d4373",
   "./assets/vendor/tesseract/tesseract.min.js",
   "./assets/vendor/tesseract/worker.min.js",
   "./assets/vendor/tesseract/tesseract-core-lstm.wasm.js",

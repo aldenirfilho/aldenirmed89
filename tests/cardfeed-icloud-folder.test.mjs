@@ -26,7 +26,7 @@ function manifestFile(value=manifest(),extra={}){const content=typeof value==='s
 
 test('private theme parser accepts only bounded metadata and the exact current theme allowlist',()=>{
   const parsed=parseThemeManifest(JSON.stringify(manifest()));
-  assert.deepEqual(parsed.get('sepse.png'),{size:100,modifiedMs:1700000000000,theme:'sepse-choque',confidence:'alta',needsReview:false});
+  assert.deepEqual(parsed.get('sepse.png'),{size:100,modifiedMs:1700000000000,theme:'sepse-choque',confidence:'alta',needsReview:false,classificationTerms:['sepse'],classificationSecondaryThemes:[]});
   assert.deepEqual(LOCAL_THEME_IDS,[...JSON.parse(fs.readFileSync(new URL('../05_Midia_E_Feed/data/themes.json',import.meta.url))).themes].map(theme=>theme.id));
   for(const field of ['themeLabel','reason','matchedTerms','method','secondaryThemes','path'])assert.equal(Object.hasOwn(parsed.get('sepse.png'),field),false,field);
   assert.equal(parseThemeManifest(JSON.stringify(manifest([manifestEntry({path:'cafe\u0301.png',confidence:'baixa'})]))).get('café.png').needsReview,true);
@@ -54,13 +54,13 @@ test('directory applies local themes by exact relative path, size and mtime with
   const image=file();image.text=()=>{throw Error('pixels não devem ser lidos');};
   const dir=directory('IMAGENS',[[THEME_MANIFEST.name,fileHandle(manifestFile(manifest([manifestEntry({needsReview:true})])))],['sepse.png',fileHandle(image)]]);
   const result=await collectDirectory(dir);
-  assert.deepEqual(result.entries[0].classification,{theme:'sepse-choque',classificationSource:'manifest',classificationConfidence:'alta',classificationNeedsReview:true});
+  assert.deepEqual(result.entries[0].classification,{theme:'sepse-choque',classificationSource:'manifest',classificationConfidence:'alta',classificationNeedsReview:true,classificationTerms:['sepse'],classificationSecondaryThemes:[]});
   assert.equal(result.report.manifest.matched,1);assert.equal(result.report.accepted,1);assert.equal(result.report.ignored.unsupported,0);
   const f=fixture({pickDirectory:async()=>dir});await f.controller.connect();
   const card=f.published.at(-1).cards[0];assert.equal(card.theme,'sepse-choque');assert.equal(card.clinicalReviewStatus,'pendente');
   for(const key of ['path','manifest','reason','matchedTerms','method','secondaryThemes','themeLabel'])assert.equal(Object.hasOwn(card,key),false,key);
   const exported=folderMetadataOnly(card);
-  for(const key of ['classificationSource','classificationConfidence','classificationNeedsReview'])assert.equal(Object.hasOwn(exported,key),false,key);
+  for(const key of ['classificationSource','classificationConfidence','classificationNeedsReview','classificationTerms','classificationSecondaryThemes'])assert.equal(Object.hasOwn(exported,key),false,key);
 });
 
 test('same filename in a different folder or changed fingerprint never inherits a manifest classification',async()=>{
@@ -251,8 +251,9 @@ function coreFunction(name){const start=inline.indexOf('    function '+name+'(')
 function coreFixture(){
   const fieldMatch=inline.match(/const LOCAL_MUTABLE_FIELDS = (\[[\s\S]*?\]);/),writes=[];
   const elements=Object.fromEntries(['search','themeFilter','assetFilter','sortMode','btnReview','editId','editDialog','viewerImg','viewerDialog'].map(id=>[id,{value:id==='assetFilter'?'all':id==='sortMode'?'newest':'',textContent:'',dataset:{},close(){},removeAttribute(){}}]));
-  const code=`const LOCAL_MUTABLE_FIELDS=${fieldMatch[1]};let repoCards=[],folderCards=[],localCards=[],hiddenCards=[],activeTheme='',reviewOnly=false,directCardId='',paginationContext='';const $=id=>elements[id];const searchTokens=()=>[];const needsReview=()=>false;const inferTheme=()=> 'uti-geral';const inferTags=()=>['uti-geral'];const resetFocusState=()=>{};const render=()=>{};function store(){return {put(card){writes.push(card);const req={};queueMicrotask(()=>req.onsuccess());return req;}};}\n`+
-    ['mergeLocalOverride','isFolderLinkedCard','localRecordForStorage','portableBackupCard','backupCards','putLocal','allCards','getCard','setFolderCards','getFiltered'].map(coreFunction).join('\n')+
+  const themeData=JSON.parse(fs.readFileSync(new URL('../05_Midia_E_Feed/data/themes.json',import.meta.url))).themes;
+  const code=`const LOCAL_MUTABLE_FIELDS=${fieldMatch[1]};const themes=${JSON.stringify(themeData)};let repoCards=[],folderCards=[],localCards=[],hiddenCards=[],activeTheme='',reviewOnly=false,directCardId='',paginationContext='';const $=id=>elements[id];const needsReview=()=>false;const inferTheme=()=> 'uti-geral';const inferTags=()=>['uti-geral'];const resetFocusState=()=>{};const render=()=>{};function store(){return {put(card){writes.push(card);const req={};queueMicrotask(()=>req.onsuccess());return req;}};}\n`+
+    ['mergeLocalOverride','searchKey','searchTokens','themeById','folderClassificationSubjects','isFolderLinkedCard','localRecordForStorage','portableBackupCard','backupCards','putLocal','allCards','getCard','setFolderCards','getFiltered'].map(coreFunction).join('\n')+
     `\n({allCards,putLocal,portableBackupCard,backupCards,getFiltered,setFolderCards,setRepo:x=>repoCards=x,setLocal:x=>localCards=x,filter:x=>elements.assetFilter.value=x})`;
   const core=vm.runInNewContext(code,{elements,writes,queueMicrotask,Date,CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail;}},window:{dispatchEvent(){}}});
   return {core,writes,elements};
@@ -276,15 +277,34 @@ test('actual local manual theme overrides manifest without changing assets, priv
   assert.equal(card.classificationSource,'manual');assert.equal(card.classificationNeedsReview,false);assert.equal(card.clinicalReviewStatus,'pendente');assert.equal(card.imageUrl,'blob:canonical');
   const exported=core.portableBackupCard(card);
   assert.equal(exported.notes,'minha nota');
-  for(const key of ['classificationSource','classificationConfidence','classificationNeedsReview','manifest','path','matchedTerms','reason'])assert.equal(Object.hasOwn(exported,key),false,key);
+  for(const key of ['classificationSource','classificationConfidence','classificationNeedsReview','classificationTerms','classificationSecondaryThemes','manifest','path','matchedTerms','reason'])assert.equal(Object.hasOwn(exported,key),false,key);
+});
+
+test('actual search finds generic catalog subjects and secondary themes without altering tags or persisting the catalog',async()=>{
+  const {core,writes,elements}=coreFixture();
+  core.setRepo([{id:'repo-x',title:'a9a37e',theme:'uti-geral',classificationTerms:['Tuberculose'],classificationSecondaryThemes:['infectologia']}]);
+  core.setLocal([{id:'icloud-a',folderLinked:true,tags:['minha-tag'],notes:'minha nota'}]);
+  core.setFolderCards([{id:'icloud-a',folderLinked:true,imageUrl:'blob:canonical',title:'a9a37e',theme:'pneumologia',classificationSource:'manifest',classificationTerms:['Tuberculose','Pneumonia'],classificationSecondaryThemes:['infectologia','tema-inexistente'],clinicalReviewStatus:'pendente'}]);
+  elements.search.value='tuberculose';assert.equal(core.getFiltered().length,1);assert.equal(core.getFiltered()[0].id,'icloud-a');
+  elements.search.value='pneumonia';assert.equal(core.getFiltered().length,1);
+  elements.search.value='infectologia';assert.equal(core.getFiltered().length,1);
+  elements.search.value='';elements.themeFilter.value='infectologia';assert.equal(core.getFiltered().length,1);assert.equal(core.getFiltered()[0].id,'icloud-a');
+  elements.themeFilter.value='tema-inexistente';assert.equal(core.getFiltered().length,0);
+  const card=core.allCards().find(item=>item.id==='icloud-a');assert.deepEqual([...card.tags],['minha-tag']);assert.equal(card.notes,'minha nota');
+  await core.putLocal(card);const exported=core.portableBackupCard(card);
+  for(const data of [writes[0],exported,...core.backupCards().filter(item=>item.id==='icloud-a')]){
+    assert.equal(data.notes,'minha nota');
+    for(const key of ['classificationTerms','classificationSecondaryThemes','classificationSource','classificationConfidence','classificationNeedsReview'])assert.equal(Object.hasOwn(data,key),false,key);
+  }
+  core.setFolderCards([]);elements.themeFilter.value='';elements.search.value='tuberculose';assert.equal(core.getFiltered().length,0);
 });
 
 test('actual card UI identifies local organization and review with escaped, allowlisted classification labels',()=>{
-  const render=vm.runInNewContext(`${coreFunction('esc')}\n${coreFunction('cardHTML')}\ncardHTML`,{themeById:()=>({emoji:'🗂️',label:'Tema local'}),connectedHref:()=>'?theme=sepse-choque',isFocusMode:()=>false,formatDate:()=>'',hiddenCards:[],encodeURIComponent});
+  const render=vm.runInNewContext(`${coreFunction('esc')}\n${coreFunction('cardHTML')}\ncardHTML`,{folderClassificationSubjects:card=>({terms:card.classificationTerms||[],secondaryThemes:[]}),themeById:()=>({emoji:'🗂️',label:'Tema local'}),connectedHref:()=>'?theme=sepse-choque',isFocusMode:()=>false,formatDate:()=>'',hiddenCards:[],encodeURIComponent});
   const output=render({id:'icloud-a',folderLinked:true,title:'<script>privado</script>',theme:'sepse-choque',classificationSource:'manifest',classificationConfidence:'media',classificationNeedsReview:true,clinicalReviewStatus:'pendente'});
   assert.match(output,/catálogo privado/);assert.match(output,/confiança média/);assert.match(output,/Conferir classificação/);assert.match(output,/Organização temática; revisão clínica pendente/);assert.ok(!output.includes('<script>privado'));
-  const untrusted=render({id:'icloud-a',folderLinked:true,classificationSource:'<script>x</script>',classificationConfidence:'<img onerror=x>'});
-  assert.ok(!untrusted.includes('<script>'));assert.ok(!untrusted.includes('<img onerror'));assert.match(untrusted,/sugestão pelo nome/);
+  const untrusted=render({id:'icloud-a',folderLinked:true,classificationSource:'<script>x</script>',classificationConfidence:'<img onerror=x>',classificationTerms:['<script>privado</script>']});
+  assert.ok(!untrusted.includes('<script>'));assert.ok(!untrusted.includes('<img onerror'));assert.match(untrusted,/sugestão pelo nome/);assert.match(untrusted,/&lt;script&gt;privado/);
 });
 
 test('actual local theme shortcut filters in place and preserves the connected folder without navigation',async()=>{
@@ -298,7 +318,7 @@ test('actual local theme shortcut filters in place and preserves the connected f
   assert.equal(calls.renders,1);assert.equal(calls.resets,1);assert.equal(calls.prevented,1);assert.equal(calls.navigation,0);
   await handle.run({target:new FakeElement('tema-inválido'),preventDefault(){throw Error('Tema não permitido');}});
   assert.equal(calls.renders,1);
-  const render=vm.runInNewContext(`${coreFunction('esc')}\n${coreFunction('cardHTML')}\ncardHTML`,{themeById:()=>({emoji:'🧩',label:'TDAH'}),connectedHref:card=>'./index.html?theme='+encodeURIComponent(card.theme),isFocusMode:()=>false,formatDate:()=>'',hiddenCards:[],encodeURIComponent});
+  const render=vm.runInNewContext(`${coreFunction('esc')}\n${coreFunction('cardHTML')}\ncardHTML`,{folderClassificationSubjects:()=>({terms:[],secondaryThemes:[]}),themeById:()=>({emoji:'🧩',label:'TDAH'}),connectedHref:card=>'./index.html?theme='+encodeURIComponent(card.theme),isFocusMode:()=>false,formatDate:()=>'',hiddenCards:[],encodeURIComponent});
   const output=render({id:'icloud-a',theme:'tdah-neurodiversidade',folderLinked:true});
   assert.match(output,/<button[^>]+data-local-theme="tdah-neurodiversidade"/);assert.ok(!output.includes('href="./index.html?theme='));
 });

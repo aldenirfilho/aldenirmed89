@@ -65,7 +65,7 @@ export function parseThemeManifest(text) {
     if(!Number.isSafeInteger(entry.size)||entry.size<=0||!Number.isSafeInteger(entry.modifiedMs)||entry.modifiedMs<0||!themeIds.has(entry.theme)||!['alta','media','baixa'].includes(entry.confidence)||typeof entry.needsReview!=='boolean')throw new Error('invalid');
     if(!safeText(entry.themeLabel,120)||!safeText(entry.method,120)||!safeText(entry.reason,500)||!Array.isArray(entry.matchedTerms)||entry.matchedTerms.length>100||!entry.matchedTerms.every(term=>safeText(term,120))||!Array.isArray(entry.secondaryThemes)||entry.secondaryThemes.length>LOCAL_THEME_IDS.length||!entry.secondaryThemes.every(theme=>themeIds.has(theme)))throw new Error('invalid');
     // O resto do documento não é transferido aos cards, às notas ou ao backup.
-    byPath.set(path,{size:entry.size,modifiedMs:entry.modifiedMs,theme:entry.theme,confidence:entry.confidence,needsReview:entry.needsReview||entry.confidence==='baixa'||entry.theme==='a-classificar'});
+    byPath.set(path,{size:entry.size,modifiedMs:entry.modifiedMs,theme:entry.theme,confidence:entry.confidence,needsReview:entry.needsReview||entry.confidence==='baixa'||entry.theme==='a-classificar',classificationTerms:[...new Set(entry.matchedTerms.map(term=>term.normalize('NFC').trim()).filter(Boolean))],classificationSecondaryThemes:[...new Set(entry.secondaryThemes.filter(theme=>theme!==entry.theme))]});
   }
   return byPath;
 }
@@ -85,7 +85,7 @@ async function applyThemeManifest(collected,manifestFile,duplicate=false){
     const match=byPath.get(entry.path);
     if(!match){report.unmatched++;continue;}
     if(match.size!==entry.file.size||match.modifiedMs!==entry.file.lastModified){report.fingerprintMismatch++;continue;}
-    entry.classification={theme:match.theme,classificationSource:'manifest',classificationConfidence:match.confidence,classificationNeedsReview:match.needsReview};
+    entry.classification={theme:match.theme,classificationSource:'manifest',classificationConfidence:match.confidence,classificationNeedsReview:match.needsReview,classificationTerms:match.classificationTerms,classificationSecondaryThemes:match.classificationSecondaryThemes};
     report.matched++;
   }
   return collected;
