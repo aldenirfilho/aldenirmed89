@@ -2505,7 +2505,10 @@
       image.remove();
       const fallback = document.createElement("div");
       fallback.className = "missing";
-      fallback.textContent = "🖼️ Imagem indisponível. Confira o caminho em data/cards.json.";
+      const linkedCard = getCard(image.dataset.cardImage);
+      fallback.textContent = linkedCard?.folderLinked
+        ? "🖼️ Imagem local indisponível. Disponibilize o arquivo no iCloud e atualize ou reconecte a pasta."
+        : "🖼️ Imagem indisponível. Confira o caminho em data/cards.json.";
       box.appendChild(fallback);
       box.removeAttribute("data-view");
       box.setAttribute("aria-label", "Imagem indisponível");
