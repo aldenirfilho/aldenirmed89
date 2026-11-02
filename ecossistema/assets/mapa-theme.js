@@ -5,7 +5,10 @@
   const LEGACY_KEY = "aldenirmed89:ecosystem-theme:v1";
   const LIGHT_PROFILES = new Set(["light", "aerospace-light", "minimal", "sepia", "rustic-light", "natural", "modern-serious"]);
 
+  let sessionPreferences = null;
+
   function sharedPreference() {
+    if (sessionPreferences) return {...sessionPreferences};
     try {
       const value = JSON.parse(localStorage.getItem(SHARED_KEY) || "{}");
       return value && typeof value === "object" && !Array.isArray(value) ? value : {};
@@ -28,23 +31,37 @@
     if (persist) {
       const shared = sharedPreference();
       Object.assign(shared, {theme: value, visualProfile: value === "light" ? "aerospace-light" : "aerospace", clarity: value === "light", contrast: false});
+      sessionPreferences = {...shared};
       try {
         localStorage.setItem(SHARED_KEY, JSON.stringify(shared));
         localStorage.setItem(LEGACY_KEY, value);
       } catch (_) { /* A navegação permanece disponível sem armazenamento local. */ }
     }
     document.documentElement.dataset.theme = value;
-    document.documentElement.dataset.highContrast = String(sharedPreference().contrast === true);
+    const preferences = sharedPreference();
+    document.documentElement.dataset.highContrast = String(preferences.contrast === true);
+    document.documentElement.dataset.largeText = String(preferences.large === true);
+    document.documentElement.dataset.reduceMotion = String(preferences.motion === true);
     document.documentElement.style.colorScheme = value;
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.content = value === "light" ? "#f6f3eb" : "#0c2027";
     window.dispatchEvent(new CustomEvent("map360:theme", {detail: value}));
   }
 
-  window.Map360Theme = Object.freeze({read, apply});
+  function setPreference(key, value) {
+    if (!["large", "contrast"].includes(key)) return;
+    const preferences = sharedPreference(); preferences[key] = value === true;
+    sessionPreferences = {...preferences};
+    try { localStorage.setItem(SHARED_KEY, JSON.stringify(preferences)); } catch (_) { /* Optional persistence. */ }
+    apply(key === "contrast" && value ? "dark" : read());
+    // Apply even when storage is disabled.
+    document.documentElement.dataset[key === "large" ? "largeText" : "highContrast"] = String(value === true);
+    window.dispatchEvent(new CustomEvent("map360:theme"));
+  }
+  window.Map360Theme = Object.freeze({read, apply, setPreference});
   apply(read());
   addEventListener("storage", (event) => {
-    if ([SHARED_KEY, LEGACY_KEY, null].includes(event.key)) apply(read());
+    if ([SHARED_KEY, LEGACY_KEY, null].includes(event.key)) { sessionPreferences = null; apply(read()); }
   });
   matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
     if (sharedPreference().theme === "system") apply(read());

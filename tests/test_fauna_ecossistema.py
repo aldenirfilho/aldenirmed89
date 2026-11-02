@@ -77,9 +77,10 @@ class FaunaEcosystemTests(unittest.TestCase):
         for path in ['ecossistema/index.html', 'ecossistema/mapa.html']:
             links = Links((ROOT / path).read_text()).links
             direct = [a for a in links if a.get('href') == URL]
-            self.assertEqual(len(direct), 1, path)
-            self.assertEqual(direct[0]['target'], '_blank')
-            self.assertTrue({'noopener', 'noreferrer'} <= set(direct[0]['rel'].split()))
+            self.assertGreaterEqual(len(direct), 1, path)
+            for link in direct:
+                self.assertEqual(link['target'], '_blank')
+                self.assertTrue({'noopener', 'noreferrer'} <= set(link['rel'].split()))
 
     def test_fauna_returns_to_directory_and_selected_map_node(self):
         hrefs = {a.get('href') for a in Links((ROOT / 'apps/bolsa-ajuda-fauna/index.html').read_text()).links}

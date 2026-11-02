@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v48`;
+const CACHE_NAME = `${CACHE_PREFIX}v49`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -42,9 +42,52 @@ const SHELL_ASSETS = [
   "./ecossistema/assets/painel.js",
   "./ecossistema/mapa.html",
   "./ecossistema/assets/mapa.css",
+  "./ecossistema/assets/previews/sereno-360x-v1/agentes-habilidades-2026.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/aldenirmed.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/antigravity.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/atlas-animais.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/atlas-phoenix.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/atlas-plantas.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/atlas-rochas.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/auditoria-evangelica-360.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/auditoria-uti.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/auditoria.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/bolsa-ajuda-fauna.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/comparativo-interreligioso-360x.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/dossie-igreja-mormon-360x.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/dragon-ball-github.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/dragon-ball.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/entre-dois-ceus.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/garagem-avaliacoes.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/garagem.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/guerreiros-fe.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/indole.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/intensivahub.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/intuicao.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/life-archive.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/nexus-brasil.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/nexus-care.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/nexus-propostas.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/paradoxos-inexoraveis.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/plano-d.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/ram-espelho-cerebro.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/respiracrit.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/respirasense.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/riqueza-e-vida.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/smd4.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/tempo.svg",
+  "./ecossistema/assets/previews/sereno-360x-v1/transparencia.svg",
+  "./ecossistema/assets/trilhas/cidadania-propostas.svg",
+  "./ecossistema/assets/trilhas/ciencia-natureza.svg",
+  "./ecossistema/assets/trilhas/clinica-uti.svg",
+  "./ecossistema/assets/trilhas/cultura-imaginacao.svg",
+  "./ecossistema/assets/trilhas/transparencia-escolhas.svg",
+  "./ecossistema/assets/trilhas/vida-memoria-decisoes.svg",
+
   "./ecossistema/assets/mapa.js",
   "./ecossistema/assets/mapa-theme.js",
   "./ecossistema/data/mapa-conexoes.json",
+  "./ecossistema/data/trilhas-360x.json",
   "./ecossistema/data/sites-360x.json",
   "./ecossistema/data/catalog.json",
   "./assets/site-analytics.css",
@@ -405,7 +448,8 @@ self.addEventListener("fetch", (event) => {
       url.pathname.endsWith("/18_Centro_Tripulacao/data/public-metrics.json") ||
       (url.pathname.endsWith("/ecossistema/data/catalog.json") ||
        url.pathname.endsWith("/ecossistema/data/sites-360x.json") ||
-       url.pathname.endsWith("/ecossistema/data/mapa-conexoes.json")) ||
+       url.pathname.endsWith("/ecossistema/data/mapa-conexoes.json") ||
+       url.pathname.endsWith("/ecossistema/data/trilhas-360x.json")) ||
       LIBRARY_MANIFEST_PATHS.has(url.pathname)) {
     event.respondWith(freshManifest(request));
     return;

@@ -84,6 +84,7 @@
   function siteCard(project) {
     const card = make("article", null, "site-card");
     card.id = `site-${project.id}`;
+    card.tabIndex = -1;
     const image = make("img", null, "site-card-image");
     image.src = project.image;
     image.alt = clean(project.imageAlt || project.title, 240);
@@ -149,15 +150,29 @@
       });
       renderSites();
       byId("sitesFallback").hidden = true;
-      if (window.location.hash === "#sites-publicos" || window.location.hash.startsWith("#site-")) {
-        const target = byId(window.location.hash.slice(1));
-        if (target) target.scrollIntoView({ behavior: "auto", block: "start" });
-      }
+      revealSite(window.location.hash);
     } catch (_error) {
       byId("sitesStatus").textContent = "As imagens e os filtros estão indisponíveis agora. Use os links abaixo para visitar os projetos.";
       byId("sitesGrid").setAttribute("aria-busy", "false");
     }
   }
+
+  function revealSite(hash) {
+    if (hash === "#sites-publicos") { byId("sites-publicos").scrollIntoView({block: "start", behavior: "auto"}); return; }
+    const id = hash.startsWith("#site-") ? hash.slice(6) : "";
+    if (!state.sites.some((project) => project.id === id)) return;
+    if (!byId(`site-${id}`)) {
+      state.siteQuery = ""; state.siteCategory = "all";
+      byId("sitesSearch").value = ""; byId("sitesCategory").value = "all"; renderSites();
+    }
+    const target = byId(`site-${id}`);
+    target.focus({preventScroll: true}); target.scrollIntoView({block: "start", behavior: "auto"});
+  }
+  window.addEventListener("hashchange", () => revealSite(window.location.hash));
+  document.addEventListener("click", (event) => {
+    const anchor = event.target.closest("a[href^='#site-']");
+    if (anchor && anchor.hash === location.hash) { event.preventDefault(); revealSite(anchor.hash); }
+  });
 
   function validateCatalog(payload) {
     if (!payload || payload.schemaVersion !== "1.0.0" || !Array.isArray(payload.roots) || !Array.isArray(payload.projects)) {
