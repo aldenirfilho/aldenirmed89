@@ -56,7 +56,7 @@ class DocumentThemeClassifierTests(unittest.TestCase):
         path = Path(__file__).resolve().parents[1] / "02_Biblioteca_IA_Engine/data/biblioteca_taxonomia_temas.json"
         for item in json.loads(path.read_text())["themes"]:
             self.assertEqual(THEMES[item["id"]], item["label"])
-        self.assertEqual(len(THEMES), 33)
+        self.assertEqual(len(THEMES), 37)
         self.assertEqual(CLASSIFIER_VERSION, "360x-document-topics-1.1")
 
     def test_result_has_only_the_agreed_fields(self):

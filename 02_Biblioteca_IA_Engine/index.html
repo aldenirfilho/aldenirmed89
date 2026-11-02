@@ -73,7 +73,7 @@
 
   .local-library{max-width:900px;margin:1rem auto;padding:1.1rem;border:1px solid var(--border);border-radius:14px;background:var(--card)}
   .local-library h2{font-size:1.05rem;margin-bottom:.4rem}.local-library p{font-size:.82rem;line-height:1.55;margin:.5rem 0}.local-library .local-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0}.local-library details{margin-top:.6rem}.local-library summary{cursor:pointer;min-height:44px;display:flex;align-items:center}.local-library button{min-height:44px}.local-library :focus-visible{outline:3px solid var(--accent);outline-offset:3px}.local-source-row{border-top:1px solid var(--border);padding:.6rem 0}.local-source-row strong{display:block}.local-library input[type=checkbox]{width:20px;height:20px;vertical-align:middle;margin-right:.4rem}
-  .local-document-preview{width:min(1100px,95vw);height:90vh;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);margin:auto;padding:1rem}.local-document-preview::backdrop{background:rgba(0,0,0,.8)}.local-document-preview .local-preview-head{display:flex;align-items:center;justify-content:space-between;gap:1rem}.local-document-preview h2{font-size:1rem;overflow-wrap:anywhere}.local-document-preview iframe{display:block;width:100%;height:calc(100% - 100px);border:0;background:#fff;margin-top:.7rem}.local-document-preview p{font-size:.8rem;margin:.5rem 0}
+  .local-document-preview{width:min(720px,95vw);max-height:80vh;overflow:auto;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);margin:auto;padding:1rem}.local-document-preview::backdrop{background:rgba(0,0,0,.8)}.local-document-preview .local-preview-head{display:flex;align-items:center;justify-content:space-between;gap:1rem}.local-document-preview h2{font-size:1rem;overflow-wrap:anywhere}.local-document-preview .local-preview-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin:1rem 0}.local-document-preview .local-preview-actions a{min-height:44px}.local-document-preview p{font-size:.8rem;margin:.5rem 0}.local-document-preview :focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
   /* ── FILTROS ── */
   .filtros{display:flex;gap:.5rem;flex-wrap:wrap;max-width:900px;margin:.5rem auto 1.5rem;padding:0 1rem}
@@ -547,12 +547,12 @@
       <div class="local-source-row"><strong>DOC · <span id="librarySourceCount-doc">0</span> documentos</strong><div class="local-actions"><button type="button" class="btn btn-secondary" id="libraryReconnect-doc" hidden>↩️ Reconectar DOC</button><button type="button" class="btn btn-secondary" id="libraryRefresh-doc" disabled>🔄 Atualizar DOC</button><button type="button" class="btn btn-secondary" id="libraryDisconnect-doc" disabled>⏏ Desconectar DOC</button></div></div>
       <label><input id="libraryLocalRemember" type="checkbox" checked> Lembrar as conexões ao conectar neste navegador, quando houver suporte. Ao retornar, toque em Reconectar; não há leitura automática dos documentos.</label>
       <p id="libraryLocalReport">PDF, DOC, DOCX, ODT, RTF, TXT, MD, CSV e Pages (arquivo). Até 10.000 documentos por pasta e 256 MB por arquivo.</p>
-      <p>PDF abre uma prévia local; DOC, DOCX e demais formatos são baixados para o aplicativo do dispositivo. O iCloud pode disponibilizar arquivos ao selecionar ou abrir. Desconectar mantém os originais. Temas por nome/pasta exigem conferência e não validam conteúdo clínico.</p>
+      <p>PDF abre no leitor do navegador ou pode ser baixado; DOC, DOCX e demais formatos são baixados para o aplicativo do dispositivo. O iCloud pode disponibilizar arquivos ao selecionar ou abrir. Desconectar mantém os originais. Temas por nome/pasta exigem conferência e não validam conteúdo clínico.</p>
     </details>
     <input id="libraryFolderInput-pdf" type="file" webkitdirectory directory multiple hidden>
     <input id="libraryFolderInput-doc" type="file" webkitdirectory directory multiple hidden>
   </div></section>
-  <dialog id="libraryLocalPreview" class="local-document-preview" aria-labelledby="libraryLocalPreviewTitle"><div class="local-preview-head"><h2 id="libraryLocalPreviewTitle">PDF privado</h2><button class="btn btn-secondary" id="libraryLocalPreviewClose" type="button">Fechar ✕</button></div><p>Prévia local em leitura. Se o PDF não aparecer, feche e use Baixar para abri-lo no leitor do dispositivo.</p><iframe id="libraryLocalFrame" title="PDF privado" sandbox="" referrerpolicy="no-referrer"></iframe></dialog>
+  <dialog id="libraryLocalPreview" class="local-document-preview" aria-labelledby="libraryLocalPreviewTitle"><div class="local-preview-head"><h2 id="libraryLocalPreviewTitle">PDF privado</h2><button class="btn btn-secondary" id="libraryLocalPreviewClose" type="button">Fechar ✕</button></div><p>Abra o PDF no leitor do navegador ou baixe para usar o aplicativo do dispositivo. O documento permanece local, sem envio à internet.</p><div class="local-preview-actions"><a id="libraryLocalOpen" class="btn btn-primary" target="_blank" rel="noopener noreferrer">↗ Abrir PDF em nova aba</a><a id="libraryLocalDownload" class="btn btn-secondary">⬇️ Baixar PDF</a></div><p>Ao terminar, feche este diálogo para liberar a referência temporária do arquivo.</p></dialog>
 
   <!-- BUSCA -->
   <div class="search-bar">
@@ -1032,6 +1032,107 @@ let taxonomy = { themes: [] };
 let catalog = { items: [] };
 let localFolderItems = [];
 let localDocumentThemes = [];
+const LOCAL_DOCUMENT_SUBJECT_ALIASES = Object.freeze([
+  {
+    "terms": [
+      "tuberculose",
+      "tuberculosis"
+    ],
+    "aliases": [
+      "TB",
+      "Tuberculose",
+      "Tuberculosis"
+    ]
+  },
+  {
+    "terms": [
+      "dpoc",
+      "copd",
+      "doenca pulmonar obstrutiva cronica"
+    ],
+    "aliases": [
+      "DPOC",
+      "COPD",
+      "Doença pulmonar obstrutiva crônica"
+    ]
+  },
+  {
+    "terms": [
+      "sdra",
+      "ards",
+      "sindrome do desconforto respiratorio agudo"
+    ],
+    "aliases": [
+      "SDRA",
+      "ARDS",
+      "Síndrome do desconforto respiratório agudo"
+    ]
+  },
+  {
+    "terms": [
+      "aki",
+      "lesao renal aguda",
+      "injuria renal aguda"
+    ],
+    "aliases": [
+      "AKI",
+      "LRA",
+      "Lesão renal aguda",
+      "Injúria renal aguda"
+    ]
+  },
+  {
+    "terms": [
+      "pocus",
+      "point of care ultrasound"
+    ],
+    "aliases": [
+      "POCUS",
+      "Point of care ultrasound",
+      "Ultrassonografia à beira leito",
+      "Ultrassom à beira leito"
+    ]
+  },
+  {
+    "terms": [
+      "doenca relacionada a igg4"
+    ],
+    "aliases": [
+      "IgG4",
+      "IgG 4",
+      "IgG4 related disease"
+    ]
+  },
+  {
+    "terms": [
+      "igg4"
+    ],
+    "aliases": [
+      "IgG 4"
+    ]
+  },
+  {
+    "terms": [
+      "pneumonia comunitaria",
+      "pneumonia adquirida na comunidade"
+    ],
+    "aliases": [
+      "PAC",
+      "Pneumonia comunitária",
+      "Pneumonia adquirida na comunidade"
+    ]
+  },
+  {
+    "terms": [
+      "sepse",
+      "sepsis"
+    ],
+    "aliases": [
+      "Sepse",
+      "Sepsis"
+    ]
+  }
+]);
 let brain = { nodes: [], edges: [] };
 let roadmap = [];
 let documentManifest = { files: [], partitions: [], origins: [] };
@@ -1456,8 +1557,26 @@ function localDocumentSubjects(item) {
   const terms = Array.isArray(item.classificationTerms) ? item.classificationTerms.slice(0, 100)
     .filter(term => typeof term === 'string' && term.length <= 120 && !/[\u0000-\u001f\u007f]/.test(term)) : [];
   const secondaryThemes = Array.isArray(item.classificationSecondaryThemes) ? item.classificationSecondaryThemes
-    .filter(id => localDocumentThemeById(id)).slice(0, 33) : [];
+    .filter(id => localDocumentThemeById(id)).slice(0, 37) : [];
   return { terms: Array.from(new Set(terms)), secondaryThemes: Array.from(new Set(secondaryThemes)) };
+}
+
+function localDocumentSearchAliases(item) {
+  const labels = localDocumentSubjects(item).terms.map(searchKey);
+  const aliases = new Set();
+  for (const rule of LOCAL_DOCUMENT_SUBJECT_ALIASES) {
+    if (labels.some(label => rule.terms.some(term => ` ${label} `.includes(` ${term} `)))) {
+      rule.aliases.forEach(alias => aliases.add(alias));
+    }
+  }
+  return Array.from(aliases);
+}
+
+function matchesLocalDocumentSearch(haystack, normalizedQuery) {
+  if (!normalizedQuery) return true;
+  const words = searchKey(haystack).split(' ').filter(Boolean);
+  const tokens = normalizedQuery.split(' ').filter(Boolean);
+  return tokens.every(token => words.some(word => token.length <= 2 ? word === token : word.startsWith(token)));
 }
 
 function libraryItems() {
@@ -1507,7 +1626,7 @@ function localLibraryCardHTML(item) {
     ? `<p class="card-desc">🧭 Assuntos: ${escapeHTML(subjects.terms.slice(0, 5).join(' · '))}${subjects.secondaryThemes.length ? ' · Também: ' + escapeHTML(subjects.secondaryThemes.slice(0, 3).map(id => localDocumentThemeById(id).label).join(' · ')) : ''}</p>`
     : '';
   const id = escapeHTML(item.id);
-  return `<article class="card ${escapeHTML(item.tipo)}"><span class="card-icon">${item.extension === 'pdf' ? '📕' : '📄'}</span><h3 class="card-title">${escapeHTML(item.title)}</h3><div class="meta-pills"><span class="meta-pill origin">🔒 iCloud local · ${escapeHTML(item.localSource.toUpperCase())}</span><span class="meta-pill format">${escapeHTML(item.formatoLabel)}</span></div><p class="card-desc">${theme ? '📂 ' + escapeHTML(theme.label) : '🔎 Sem tema confirmado'}<br>${escapeHTML(classification)}<br>Organização temática; revisão clínica pendente · conteúdo integral não indexado.</p>${subjectLine}<div class="card-actions">${item.extension === 'pdf' ? `<button type="button" class="btn btn-primary" data-local-document-action="preview" data-local-document-id="${id}">👁️ Ver PDF local</button>` : ''}<button type="button" class="btn btn-secondary" data-local-document-action="download" data-local-document-id="${id}">⬇️ Baixar ${escapeHTML(item.formatoLabel)}</button></div></article>`;
+  return `<article class="card ${escapeHTML(item.tipo)}"><span class="card-icon">${item.extension === 'pdf' ? '📕' : '📄'}</span><h3 class="card-title">${escapeHTML(item.title)}</h3><div class="meta-pills"><span class="meta-pill origin">🔒 iCloud local · ${escapeHTML(item.localSource.toUpperCase())}</span><span class="meta-pill format">${escapeHTML(item.formatoLabel)}</span></div><p class="card-desc">${theme ? '📂 ' + escapeHTML(theme.label) : '🔎 Sem tema confirmado'}<br>${escapeHTML(classification)}<br>Organização temática; revisão clínica pendente · conteúdo integral não indexado.</p>${subjectLine}<div class="card-actions">${item.extension === 'pdf' ? `<button type="button" class="btn btn-primary" data-local-document-action="preview" data-local-document-id="${id}">↗ Abrir PDF local</button>` : ''}<button type="button" class="btn btn-secondary" data-local-document-action="download" data-local-document-id="${id}">⬇️ Baixar ${escapeHTML(item.formatoLabel)}</button></div></article>`;
 }
 
 function popularFormatos() {
@@ -1625,6 +1744,7 @@ function renderGrid() {
       i.folderLinked ? i.relativePath : '',
       i.folderLinked ? localDocumentThemeById(i.theme)?.label : '',
       subjects.terms.join(' '),
+      i.folderLinked ? localDocumentSearchAliases(i).join(' ') : '',
       subjects.secondaryThemes.map(id => `${id} ${localDocumentThemeById(id).label}`).join(' '),
       i.theme,
       i.tipo,
@@ -1638,7 +1758,7 @@ function renderGrid() {
       i.resumo,
       ...(i.tags || [])
     ].filter(Boolean).join(' ');
-    const matchBusca = matchesSearch(haystack, busca);
+    const matchBusca = i.folderLinked ? matchesLocalDocumentSearch(haystack, busca) : matchesSearch(haystack, busca);
     return matchTheme && matchFormat && matchOrigin && matchBusca;
   });
 
@@ -3027,6 +3147,6 @@ window.LibraryLocalBridge = { ready: true, setItems: setLocalLibraryItems, setTh
 window.dispatchEvent(new CustomEvent('library:local-ready'));
 init();
 </script>
-<script type="module" src="assets/local-folders.mjs?v=ebad15b6011c1881"></script>
+<script type="module" src="assets/local-folders.mjs?v=9b3cc039b850e0f7"></script>
 </body>
 </html>
