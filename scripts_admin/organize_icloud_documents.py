@@ -78,6 +78,11 @@ def _web_eligible(value):
                 or re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", value))
 
 
+def _word_owner_file(value):
+    name = PurePosixPath(value).name
+    return name.startswith("~$") and PurePosixPath(name).suffix.lower() in {".doc", ".docx"}
+
+
 def _fingerprint(relative_path, size, modified_ns):
     material = json.dumps([unicodedata.normalize("NFC", relative_path), size, modified_ns],
                           ensure_ascii=False, separators=(",", ":"))
@@ -302,6 +307,7 @@ def _csv_text(entries):
 def _catalog_html(plan):
     items = [{**entry, "title": PurePosixPath(entry["path"]).name,
               "extension": PurePosixPath(entry["path"]).suffix.lower(),
+              "auxiliary": _word_owner_file(entry["path"]),
               "src": "./" + "/".join(quote(p, safe="") for p in link["link"].split("/"))}
              for entry, link in zip(plan["catalog"], plan["links"])]
     data = {"themes": THEMES, "items": items, "sourceName": plan["manifest"]["sourceName"], "complete": plan["complete"], "subjectAliases": DOCUMENT_SEARCH_ALIASES}
@@ -322,9 +328,9 @@ $('coverage').textContent=sourceName+' · '+(complete?'Inventário completo.':'�
 const norm=v=>String(v??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();for(const [id,label]of Object.entries(themes)){const o=document.createElement('option');o.value=id;o.textContent=label;$('theme').append(o);}
 const aliases=i=>{const labels=i.matchedTerms.map(norm),found=new Set();for(const rule of subjectAliases){if(labels.some(label=>rule.terms.some(term=>(' '+label+' ').includes(' '+term+' '))))rule.aliases.forEach(alias=>found.add(alias));}return [...found];};
 const matches=(haystack,q)=>{if(!q)return true;const words=norm(haystack).split(' ').filter(Boolean);return q.split(' ').filter(Boolean).every(token=>words.some(word=>token.length<=2?word===token:word.startsWith(token)));};
-const filtered=()=>{const q=norm($('search').value.trim());return items.filter(i=>(!$('theme').value||i.theme===$('theme').value||i.secondaryThemes.includes($('theme').value))&&(!$('review').checked||i.needsReview)&&matches([i.title,i.path,i.themeLabel,...i.matchedTerms,...aliases(i),...i.secondaryThemes.map(t=>themes[t]||t)].join(' '),q));};
+const filtered=()=>{const q=norm($('search').value.trim());return items.filter(i=>(!$('theme').value||i.theme===$('theme').value||i.secondaryThemes.includes($('theme').value))&&(!$('review').checked||i.needsReview)&&matches([i.title,i.path,i.themeLabel,...i.matchedTerms,...aliases(i),i.auxiliary?'Arquivo auxiliar de edição Word Office':'',...i.secondaryThemes.map(t=>themes[t]||t)].join(' '),q));};
 function el(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;}
-function render(){const list=filtered(),pages=Math.max(1,Math.ceil(list.length/pageSize));current=Math.min(current,pages);$('grid').replaceChildren();for(const i of list.slice((current-1)*pageSize,current*pageSize)){const card=el('article','card');card.append(el('span','badge',i.themeLabel));card.append(el('h2','',i.title));card.append(el('p','meta',i.extension.toUpperCase().slice(1)+' · '+Math.ceil(i.size/1024)+' KB · confiança '+i.confidence+' · '+i.method));if(i.needsReview)card.append(el('p','warning','⚑ Conferir classificação'));if(!i.webEligible)card.append(el('p','warning','Disponível pelo atalho local; caminho não compatível com a biblioteca web.'));if(i.secondaryThemes.length)card.append(el('p','meta','Também: '+i.secondaryThemes.map(t=>themes[t]||t).join(' · ')));card.append(el('p','meta',i.reason));const a=el('a','',i.extension==='.pdf'?'Abrir PDF original ↗':'Baixar documento original ↓');a.href=i.src;a.rel='noopener';if(i.extension==='.pdf')a.target='_blank';else a.download=i.title;card.append(a);$('grid').append(card);}$('count').textContent=list.length+' de '+items.length+' documentos · até 24 por página';$('page').textContent='Página '+current+' de '+pages;$('prev').disabled=current===1;$('next').disabled=current===pages;$('empty').hidden=list.length>0;}
+function render(){const list=filtered(),pages=Math.max(1,Math.ceil(list.length/pageSize));current=Math.min(current,pages);$('grid').replaceChildren();for(const i of list.slice((current-1)*pageSize,current*pageSize)){const card=el('article','card');card.append(el('span','badge',i.themeLabel));card.append(el('h2','',i.title));card.append(el('p','meta',i.extension.toUpperCase().slice(1)+' · '+Math.ceil(i.size/1024)+' KB · confiança '+i.confidence+' · '+i.method));if(i.needsReview)card.append(el('p','warning','⚑ Conferir classificação'));if(!i.webEligible)card.append(el('p','warning','Disponível pelo atalho local; caminho não compatível com a biblioteca web.'));if(i.secondaryThemes.length)card.append(el('p','meta','Também: '+i.secondaryThemes.map(t=>themes[t]||t).join(' · ')));card.append(el('p','meta',i.reason));if(i.auxiliary)card.append(el('p','warning','Arquivo auxiliar de edição do Word (prefixo ~$). Preservado no disco; não é um documento para leitura.'));else{const a=el('a','',i.extension==='.pdf'?'Abrir PDF original ↗':'Baixar documento original ↓');a.href=i.src;a.rel='noopener';if(i.extension==='.pdf')a.target='_blank';else a.download=i.title;card.append(a);}$('grid').append(card);}$('count').textContent=list.length+' de '+items.length+' documentos · até 24 por página';$('page').textContent='Página '+current+' de '+pages;$('prev').disabled=current===1;$('next').disabled=current===pages;$('empty').hidden=list.length>0;}
 for(const id of ['search','theme','review'])$(id).addEventListener(id==='search'?'input':'change',()=>{current=1;render();});$('prev').addEventListener('click',()=>{current--;render();$('results').focus();});$('next').addEventListener('click',()=>{current++;render();$('results').focus();});render();
 </script></body></html>'''
 

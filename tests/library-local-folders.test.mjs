@@ -196,3 +196,17 @@ test('reviewed manifest refresh keeps fingerprint IDs and manual public notes, u
   const portable=documentMetadataOnly(after);for(const field of ['classificationTerms','classificationSecondaryThemes','classificationSource','classificationNeedsReview','searchAliases','manifest','reason'])assert.equal(Object.hasOwn(portable,field),false);
   f.controller.dispose();
 });
+
+test('Word owner files are excluded by basename only, without opening metadata or creating blobs, in native and fallback modes',async()=>{
+  assert.equal(documentEligibility(file('~$a.docx'),'~$a.docx'),'auxiliary');assert.equal(documentEligibility(file('~$a.DOC'),'pasta/~$a.DOC'),'auxiliary');
+  for(const extension of ['pdf','txt','csv','md','pages'])assert.equal(documentEligibility(file('~$legitimo.'+extension),'~$legitimo.'+extension),'');
+  let auxiliaryReads=0;const blocked={kind:'file',getFile:async()=>{auxiliaryReads++;throw Error('Não abrir auxiliar');}};
+  const root=dir('DOC 2026',[['~$a.docx',blocked],['folder',dir('folder',[['~$b.DOC',blocked]])],['normal.docx',fh(file('normal.docx'))],['~$legitimo.txt',fh(file('~$legitimo.txt'))]]);
+  const native=await collectDocumentDirectory(root,{slot:'doc'});assert.equal(native.entries.length,2);assert.equal(native.report.ignored.auxiliary,2);assert.equal(native.report.ignored.unreadable,0);assert.equal(auxiliaryReads,0);
+  const fallback=collectDocumentFiles([file('~$a.docx',{webkitRelativePath:'DOC 2026/~$a.docx'}),file('normal.docx',{webkitRelativePath:'DOC 2026/normal.docx'}),file('~$legitimo.txt',{webkitRelativePath:'DOC 2026/~$legitimo.txt'})],{slot:'doc'});assert.equal(fallback.entries.length,2);assert.equal(fallback.report.ignored.auxiliary,1);
+  const f=fixture();await f.controller.connectHandle('doc',root);assert.equal(f.controller.getItems().length,2);assert.equal(f.urlAPI.created.length,0);assert.equal(auxiliaryReads,0);assert.ok(f.controller.getItems().every(item=>!/^~\$.*\.(doc|docx)$/i.test(item.filename)));
+});
+test('a manifest may retain Word auxiliary classifications without exposing those files as readable documents',async()=>{
+  const entries=[themeEntry({path:'normal.docx'}),themeEntry({path:'~$aux.docx',size:162})],json=themeFile(themeManifest(entries,'DOC 2026'),{webkitRelativePath:'DOC 2026/'+DOCUMENT_THEME_MANIFEST.name});
+  const f=fixture();const result=await f.controller.connectFiles('doc',[file('normal.docx',{webkitRelativePath:'DOC 2026/normal.docx'}),file('~$aux.docx',{size:162,webkitRelativePath:'DOC 2026/~$aux.docx'}),json]);assert.equal(result.connected,true);assert.equal(result.report.accepted,1);assert.equal(result.report.ignored.auxiliary,1);assert.equal(result.report.manifest.entries,2);assert.equal(result.report.manifest.matched,1);assert.equal(result.report.manifest.unmatched,0);assert.equal(result.report.manifest.unusedEntries,1);assert.equal(f.controller.getItems()[0].filename,'normal.docx');assert.equal(f.urlAPI.created.length,0);
+});

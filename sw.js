@@ -79,7 +79,7 @@ const WARM_ASSETS = [
   "./assets/site-navigation.css",
   "./assets/site-navigation.js",
   "./02_Biblioteca_IA_Engine/data/biblioteca_ingestao_20260911.json",
-  "./02_Biblioteca_IA_Engine/assets/local-folders.mjs?v=9b3cc039b850e0f7",
+  "./02_Biblioteca_IA_Engine/assets/local-folders.mjs?v=809b4377340246d7",
 
   "./24_Semiologia/index.html",
   "./24_Semiologia/assets/semio.css",

@@ -62,6 +62,21 @@ class DocumentOrganizationTests(unittest.TestCase):
     def apply(self, text_path=True, **kwargs):
         return organize.run(self.source, self.inventory, self.texts if text_path else None, self.plan, apply=True, **kwargs)
 
+    def test_word_owner_files_are_preserved_but_not_offered_as_readable_documents(self):
+        self.fixture(["~$draft.docx", "~$legacy.doc", "~$ordinary.pdf", "ordinary.docx"])
+        self.assertTrue(organize._word_owner_file("folder/~$draft.docx"))
+        self.assertTrue(organize._word_owner_file("~$legacy.DOC"))
+        self.assertFalse(organize._word_owner_file("~$ordinary.pdf"))
+        self.assertFalse(organize._word_owner_file("ordinary.docx"))
+        self.apply()
+        html = (self.source / organize.CATALOG_NAME / "index.html").read_text()
+        import re
+        data = json.loads(re.search(r'<script id="catalog-data" type="application/json">(.*?)</script>', html, re.S).group(1))
+        self.assertEqual(sum(item["auxiliary"] for item in data["items"]), 2)
+        links = [p for p in (self.source / organize.CATALOG_NAME).rglob("*") if p.is_symlink()]
+        self.assertEqual(len(links), 4)
+        self.assertTrue(all(p.exists() for p in links))
+
     def test_default_only_creates_private_plan_with_no_document_text(self):
         documents, _ = self.fixture()
         before = self.snapshot(documents)

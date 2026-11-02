@@ -547,7 +547,7 @@
       <div class="local-source-row"><strong>DOC · <span id="librarySourceCount-doc">0</span> documentos</strong><div class="local-actions"><button type="button" class="btn btn-secondary" id="libraryReconnect-doc" hidden>↩️ Reconectar DOC</button><button type="button" class="btn btn-secondary" id="libraryRefresh-doc" disabled>🔄 Atualizar DOC</button><button type="button" class="btn btn-secondary" id="libraryDisconnect-doc" disabled>⏏ Desconectar DOC</button></div></div>
       <label><input id="libraryLocalRemember" type="checkbox" checked> Lembrar as conexões ao conectar neste navegador, quando houver suporte. Ao retornar, toque em Reconectar; não há leitura automática dos documentos.</label>
       <p id="libraryLocalReport">PDF, DOC, DOCX, ODT, RTF, TXT, MD, CSV e Pages (arquivo). Até 10.000 documentos por pasta e 256 MB por arquivo.</p>
-      <p>PDF abre no leitor do navegador ou pode ser baixado; DOC, DOCX e demais formatos são baixados para o aplicativo do dispositivo. O iCloud pode disponibilizar arquivos ao selecionar ou abrir. Desconectar mantém os originais. Temas por nome/pasta exigem conferência e não validam conteúdo clínico.</p>
+      <p>PDF abre no leitor do navegador ou pode ser baixado; DOC, DOCX e demais formatos são baixados para o aplicativo do dispositivo. O iCloud pode disponibilizar arquivos ao selecionar ou abrir. Arquivos auxiliares do Word (~$DOC/DOCX) são ignorados, preservando os originais. Desconectar mantém os originais. Temas por nome/pasta exigem conferência e não validam conteúdo clínico.</p>
     </details>
     <input id="libraryFolderInput-pdf" type="file" webkitdirectory directory multiple hidden>
     <input id="libraryFolderInput-doc" type="file" webkitdirectory directory multiple hidden>
@@ -3147,6 +3147,6 @@ window.LibraryLocalBridge = { ready: true, setItems: setLocalLibraryItems, setTh
 window.dispatchEvent(new CustomEvent('library:local-ready'));
 init();
 </script>
-<script type="module" src="assets/local-folders.mjs?v=9b3cc039b850e0f7"></script>
+<script type="module" src="assets/local-folders.mjs?v=809b4377340246d7"></script>
 </body>
 </html>
