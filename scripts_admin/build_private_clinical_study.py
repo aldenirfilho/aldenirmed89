@@ -22,6 +22,7 @@ from organize_icloud_images import _rename_exclusive
 REPO = Path(__file__).resolve().parents[1]
 SCHEMA = "360x-private-clinical-study-v1"
 MAX_PACKAGE_BYTES = 25 * 1024 * 1024
+CONTROL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
 NONCLINICAL = {"juridico", "financas-patrimonio", "academico-projetos", "fe-historia-cultura", "gestao-ia-produtividade", "inbox-revisar"}
 IDENTIFIER = re.compile(r"\bCPF\s*[:#-]?\s*\d|\b(?:prontu[aá]rio|nome\s+do\s+paciente|paciente\s*:)\s*[:#-]?\s*[A-Za-zÀ-ÿ0-9]|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|\b\d{3}\.\d{3}\.\d{3}-\d{2}\b", re.I)
 META = re.compile(r"copyright|all rights reserved|direitos reservados|licensed to|licenciad[oa] para|doi\s*[:.]|isbn|issn|corresponding author|[a-z]+://|www\.|^\s*(?:autores?|authors?|editores?|editors?|refer[eê]ncias?|bibliograf|instru[cç][oõ]es)\b", re.I)
@@ -120,7 +121,7 @@ def select_facts(row, maximum=3, excluded_facts=()):
                     continue
                 if not 50 <= len(text) <= 600 or not 9 <= len(text.split()) <= 90:
                     continue
-                if not _balanced(text):
+                if CONTROL.search(text) or not _balanced(text):
                     continue
                 if META.search(text) or MARKETING.search(text) or AFFILIATION.search(text) or DOSE.search(text) or IDENTIFIER.search(text):
                     continue
@@ -218,7 +219,7 @@ def build_package(inventory, enrichments, package_id="library-study-clinical-202
                 # Names are labels only, never evidence for clinical claims.
                 labels = [row.get("titlePrivate", ""), Path(row["path"]).stem.replace("_", " "), *row.get("labels", [])]
                 label = next((normalized(s)[:155] for s in labels if 6 <= len(normalized(s)) <= 200
-                              and not IDENTIFIER.search(s) and not META.search(s)
+                              and not CONTROL.search(s) and not IDENTIFIER.search(s) and not META.search(s)
                               and not re.fullmatch(r"(?:untitled|document[o]?|[a-f0-9-]{20,})", normalized(s), re.I)), row["themeLabel"])
                 title = ("Síntese extrativa · " + label)[:190]
                 unit = {"id": uid, "title": title, "theme": row["theme"], "sourceIds": [source["id"]], "refIds": [], "particles": [], "cards": [], "questions": []}

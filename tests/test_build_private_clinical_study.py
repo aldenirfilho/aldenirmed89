@@ -171,7 +171,7 @@ class PrivateClinicalGenerationTests(unittest.TestCase):
 
     def test_generated_package_passes_public_exact_schema(self):
         node = shutil.which("node"); self.assertIsNotNone(node)
-        package, _ = build(row())
+        package, _ = build(row(titlePrivate="Metadado PDF com\x00controle"))
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "synthetic.json"; path.write_text(json.dumps(package))
             module = (ROOT / "02_Biblioteca_IA_Engine/assets/private-study-schema.mjs").as_uri()
