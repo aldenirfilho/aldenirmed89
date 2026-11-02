@@ -15,7 +15,7 @@ import re
 import unicodedata
 
 
-CLASSIFIER_VERSION = "360x-topics-1.0"
+CLASSIFIER_VERSION = "360x-topics-1.1"
 
 # Keep existing CardFeed IDs stable. The final ten entries extend the vocabulary
 # only for local organization; the module does not change a public manifest.
@@ -79,7 +79,7 @@ RULES = (
     _rule("vm-sdra", "Ajustes ventilatórios", 4.6, "peep", "auto peep", "pressao de plato", "driving pressure", "volume corrente", "hiperinsuflacao dinamica", "complacencia pulmonar", "baixa complacencia"),
     _rule("vm-sdra", "Sincronia e desmame", 4.7, "esforcos ineficazes", "assincronia", "desmame ventilatorio", "extubacao", "intubacao", "prona", "peep intrinseca"),
     _rule("sepse-choque", "Sepse", 5.1, "sepse", "sepsis", "choque septico", "choque distributivo", "schoque septico"),
-    _rule("sepse-choque", "Ressuscitação do choque", 4.6, "ressuscitacao hemodinamica", "ressuscitacao volemica", "fluid responsiveness", "choque refratario", "choque hipovolemico"),
+    _rule("sepse-choque", "Ressuscitação do choque", 4.6, "ressuscitacao hemodinamica", "ressuscitacao volemica", "fluid responsiveness", "choque refratario", "choque hipovolemico", "choque hemorragico"),
     _rule("nefro-aki-trs", "Lesão renal e diálise", 5.0, "lesao renal aguda", "injuria renal aguda", "aki", "dialise", "hemodialise", "terapia renal substitutiva", "trs", "crrt"),
     _rule("nefro-aki-trs", "Nefrologia", 4.8, "nefrologia", "glomerulonefrite", "sindrome nefrotica", "sindrome nefritica", "glomerulopatia", "uremia"),
     _rule("nefro-aki-trs", "Eletrólitos e equilíbrio ácido-base", 4.6, "hiponatremia", "hipernatremia", "hipercalemia", "hipocalemia", "disnatremia", "acidose metabolica", "alcalose metabolica"),
@@ -110,7 +110,7 @@ RULES = (
     _rule("gastro-hepato-nutricao", "Gastroenterologia e hepatologia", 5.1, "gastroenterologia", "hepatologia", "cirrose", "hepatite", "insuficiencia hepatica", "encefalopatia hepatica", "pancreatite", "hemorragia digestiva", "colangite", "colecistite", "sindrome hepatorrenal", "ascite"),
     _rule("gastro-hepato-nutricao", "Nutrição clínica", 5.0, "nutricao enteral", "nutricao parenteral", "terapia nutricional", "sindrome de realimentacao", "desnutricao", "avaliacao nutricional"),
     _rule("hematologia-trombose", "Trombose e anticoagulação", 5.1, "tvp", "tep", "trombose", "tromboembolismo", "embolia pulmonar", "anticoagulacao", "hemostasia", "coagulopatia", "coagulacao intravascular disseminada", "wells", "d dimero", "ddimero"),
-    _rule("hematologia-trombose", "Hematologia", 5.0, "hematologia", "anemia", "plaquetopenia", "trombocitopenia", "neutropenia", "leucemia", "linfoma", "mieloma", "hemolise", "transfusao", "hemocomponentes"),
+    _rule("hematologia-trombose", "Hematologia", 5.0, "hematologia", "anemia", "plaquetopenia", "trombocitopenia", "neutropenia", "leucemia", "linfoma", "mieloma", "hemolise", "transfusao", "hemocomponentes", "reacao transfusional", "reacoes transfusionais", "concentrado de hemacias", "concentrado de plaquetas"),
     _rule("dermato-feridas", "Pele e feridas", 5.0, "dermatologia", "feridas", "ferida", "lesao por pressao", "ulcera por pressao", "curativos", "desbridamento", "queimadura", "fasciite necrosante", "lesao cutanea"),
     _rule("tdah-neurodiversidade", "TDAH e neurodiversidade", 5.3, "tdah", "adhd", "neurodiversidade", "neurodivergencia", "deficit de atencao", "disfuncao executiva", "funcao executiva", "funcoes executivas", "autismo", "hiperfoco"),
     _rule("tdah-neurodiversidade", "Acessibilidade cognitiva", 4.9, "acessibilidade cognitiva", "cegueira temporal", "paralisia executiva", "sobrecarga sensorial", "time blindness"),
