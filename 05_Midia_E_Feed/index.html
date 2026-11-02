@@ -961,6 +961,7 @@
       <span class="eyebrow">☁️ Pasta conectada · somente leitura local</span>
       <h2 id="icloudFolderTitle">Conecte sua pasta de imagens do iCloud.</h2>
       <p>Escolha a pasta <b>IMAGENS</b> no seletor do dispositivo. As imagens aparecem neste navegador por referência, sem upload e sem copiar o acervo para o banco local. O próprio iCloud pode baixar arquivos ao disponibilizar a pasta ou exibir imagens.</p>
+      <p class="file-guidance">🗂️ O arquivo privado <b>cardfeed-temas-360x.json</b>, na raiz da pasta, organiza os temas pela versão exata de cada imagem. Use o filtro de temas ou a busca. Classificações locais servem à organização e podem exigir conferência; a revisão clínica permanece pendente.</p>
       <div class="actions">
         <button class="btn primary" id="btnIcloudConnect" type="button" disabled>☁️ Conectar pasta do iCloud</button>
         <button class="btn" id="btnIcloudReconnect" type="button" hidden>↩️ Reconectar pasta lembrada</button>
@@ -1587,12 +1588,17 @@
         }
       }
       // Campos de asset, autoria, licença e revisão clínica permanecem canônicos.
+      if (repoCard.folderLinked && Object.prototype.hasOwnProperty.call(localOverride, "theme") && localOverride.theme !== repoCard.theme) {
+        merged.classificationSource = "manual";
+        merged.classificationNeedsReview = false;
+      }
       merged.origin = "local";
       return merged;
     }
 
     function needsReview(card) {
       return card.clinicalReviewStatus === "pendente" ||
+        card.classificationNeedsReview === true ||
         ["revisar", "aprendendo", "pendente-imagem"].includes(card.status) ||
         Boolean(card.nextReview && new Date(card.nextReview) <= new Date());
     }
@@ -2336,6 +2342,9 @@
       const image = c.imageData || c.imageUrl || "";
       const connection = connectedHref(c, theme);
       const clinicalLabel = c.clinicalReviewStatus === "pendente" ? " • revisão clínica pendente" : "";
+      const localClassification = c.folderLinked
+        ? `<p class="file-guidance">🗂️ Tema local · ${esc(({ manifest: "catálogo privado", manual: "ajuste manual salvo", filename: "sugestão pelo nome" })[c.classificationSource] || "sugestão pelo nome")}${["alta", "media", "baixa"].includes(c.classificationConfidence) && c.classificationSource === "manifest" ? " · confiança " + esc(({ alta: "alta", media: "média", baixa: "baixa" })[c.classificationConfidence]) : ""}${c.classificationNeedsReview ? ' · <strong>⚠️ Conferir classificação</strong>' : ""}. Organização temática; revisão clínica pendente.</p>`
+        : "";
       const studyMode = options.study === true;
       const revealed = !studyMode || options.revealed === true;
       const priorityImage = options.priority === true || isFocusMode();
@@ -2347,6 +2356,7 @@
             <span class="theme-label">${theme.emoji} ${esc(theme.label)}</span>
           </div>
           <div class="tags">${tags}</div>
+          ${localClassification}
           <div class="explain">${esc(c.explanation || "Sem comentário ainda. Edite este card para adicionar explicação clínica ou nota TEMI.")}</div>
           ${studyMode ? `
             <div class="study-evaluation">
@@ -2931,6 +2941,6 @@
       alert("Erro ao iniciar Card Feed Médico: " + err.message);
     });
   </script>
-  <script type="module" src="assets/icloud-folder.mjs?v=84db11959d5407fd"></script>
+  <script type="module" src="assets/icloud-folder.mjs?v=748d15d7ed9f6989"></script>
 </body>
 </html>
