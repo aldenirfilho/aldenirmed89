@@ -961,6 +961,7 @@
       <span class="eyebrow">☁️ Pasta conectada · somente leitura local</span>
       <h2 id="icloudFolderTitle">Conecte sua pasta de imagens do iCloud.</h2>
       <p>Escolha a pasta <b>IMAGENS</b> no seletor do dispositivo. As imagens aparecem neste navegador por referência, sem upload e sem copiar o acervo para o banco local. O próprio iCloud pode baixar arquivos ao disponibilizar a pasta ou exibir imagens.</p>
+      <p class="file-guidance">🗂️ O arquivo privado <b>cardfeed-temas-360x.json</b>, na raiz da pasta, organiza os temas pela versão exata de cada imagem. Use o filtro de temas ou a busca. Classificações locais servem à organização e podem exigir conferência; a revisão clínica permanece pendente.</p>
       <div class="actions">
         <button class="btn primary" id="btnIcloudConnect" type="button" disabled>☁️ Conectar pasta do iCloud</button>
         <button class="btn" id="btnIcloudReconnect" type="button" hidden>↩️ Reconectar pasta lembrada</button>
@@ -1587,12 +1588,17 @@
         }
       }
       // Campos de asset, autoria, licença e revisão clínica permanecem canônicos.
+      if (repoCard.folderLinked && Object.prototype.hasOwnProperty.call(localOverride, "theme") && localOverride.theme !== repoCard.theme) {
+        merged.classificationSource = "manual";
+        merged.classificationNeedsReview = false;
+      }
       merged.origin = "local";
       return merged;
     }
 
     function needsReview(card) {
       return card.clinicalReviewStatus === "pendente" ||
+        card.classificationNeedsReview === true ||
         ["revisar", "aprendendo", "pendente-imagem"].includes(card.status) ||
         Boolean(card.nextReview && new Date(card.nextReview) <= new Date());
     }
@@ -1967,6 +1973,15 @@
       return themes.find(t => t.id === id) || { id, label: id || "Outros", emoji: "🗂️", folder: "" };
     }
 
+    function folderClassificationSubjects(card) {
+      if (!card.folderLinked) return { terms: [], secondaryThemes: [] };
+      const terms = Array.isArray(card.classificationTerms) ? card.classificationTerms.slice(0, 100)
+        .filter(term => typeof term === "string" && term.length <= 120 && !/[\u0000-\u001f\u007f]/.test(term)) : [];
+      const secondaryThemes = Array.isArray(card.classificationSecondaryThemes) ? card.classificationSecondaryThemes
+        .filter(id => themes.some(theme => theme.id === id)).slice(0, 24) : [];
+      return { terms: Array.from(new Set(terms)), secondaryThemes: Array.from(new Set(secondaryThemes)) };
+    }
+
     function connectedHref(card, theme) {
       const libraryTheme = FEED_TO_LIBRARY_THEME[card.theme] || card.theme || "uti-geral";
       const base = theme.href || `../02_Biblioteca_IA_Engine/index.html?theme=${encodeURIComponent(libraryTheme)}`;
@@ -2164,8 +2179,9 @@
         const isHidden = hiddenCards.includes(c.id);
         const hasImage = Boolean(c.imageData || c.imageUrl);
         const reviewDue = needsReview(c);
+        const subjects = folderClassificationSubjects(c);
         if (hiddenMode ? !isHidden : isHidden) return false;
-        if (theme && c.theme !== theme) return false;
+        if (theme && c.theme !== theme && !subjects.secondaryThemes.includes(theme)) return false;
         if (reviewOnly && !reviewDue) return false;
         if (assetFilter === "images" && !hasImage) return false;
         if (assetFilter === "missing" && hasImage) return false;
@@ -2182,6 +2198,8 @@
           (c.tags || []).join(" "),
           c.explanation,
           c.notes,
+          subjects.terms.join(" "),
+          subjects.secondaryThemes.map(id => `${id} ${themeById(id).label}`).join(" "),
           c.source,
           c.status,
           (c.related || []).join(" ")
@@ -2335,7 +2353,15 @@
       const sourceBadge = c.folderLinked ? "iCloud · só neste dispositivo" : c.origin === "repo" ? "GitHub Pages" : "Local";
       const image = c.imageData || c.imageUrl || "";
       const connection = connectedHref(c, theme);
+      const localThemeFilter = connection === `./index.html?theme=${encodeURIComponent(c.theme)}`;
+      const subjects = folderClassificationSubjects(c);
+      const localSubjects = subjects.terms.length || subjects.secondaryThemes.length
+        ? `<p class="file-guidance">🧭 Assuntos do catálogo: ${esc(subjects.terms.slice(0, 5).join(" · "))}${subjects.secondaryThemes.length ? " · Também: " + esc(subjects.secondaryThemes.slice(0, 3).map(id => themeById(id).label).join(" · ")) : ""}</p>`
+        : "";
       const clinicalLabel = c.clinicalReviewStatus === "pendente" ? " • revisão clínica pendente" : "";
+      const localClassification = c.folderLinked
+        ? `<p class="file-guidance">🗂️ Tema local · ${esc(({ manifest: "catálogo privado", manual: "ajuste manual salvo", filename: "sugestão pelo nome" })[c.classificationSource] || "sugestão pelo nome")}${["alta", "media", "baixa"].includes(c.classificationConfidence) && c.classificationSource === "manifest" ? " · confiança " + esc(({ alta: "alta", media: "média", baixa: "baixa" })[c.classificationConfidence]) : ""}${c.classificationNeedsReview ? ' · <strong>⚠️ Conferir classificação</strong>' : ""}. Organização temática; revisão clínica pendente.</p>`
+        : "";
       const studyMode = options.study === true;
       const revealed = !studyMode || options.revealed === true;
       const priorityImage = options.priority === true || isFocusMode();
@@ -2347,6 +2373,8 @@
             <span class="theme-label">${theme.emoji} ${esc(theme.label)}</span>
           </div>
           <div class="tags">${tags}</div>
+          ${localClassification}
+          ${localSubjects}
           <div class="explain">${esc(c.explanation || "Sem comentário ainda. Edite este card para adicionar explicação clínica ou nota TEMI.")}</div>
           ${studyMode ? `
             <div class="study-evaluation">
@@ -2371,7 +2399,7 @@
             ${hiddenCards.includes(c.id)
               ? `<button type="button" class="btn small restore-card" data-restore="${esc(c.id)}">♻️ Restaurar</button>`
               : `<button type="button" class="btn small hide-card" data-hide="${esc(c.id)}">🚫 Ocultar</button>`}
-            <a class="btn small" href="${esc(connection)}">🔗 Explorar tema</a>
+            ${localThemeFilter ? `<button type="button" class="btn small" data-local-theme="${esc(c.theme)}">🗂️ Explorar tema</button>` : `<a class="btn small" href="${esc(connection)}">🔗 Explorar tema</a>`}
           </div>
           <div class="meta"><span>${esc(c.status || "novo")}${esc(clinicalLabel)} • ${esc(sourceBadge)} • ${formatDate(c.createdAt)}</span><span>${c.nextReview ? "Próx.: " + formatDate(c.nextReview) : esc(c.source || "")}</span></div>
         </div>
@@ -2482,8 +2510,17 @@
     }
 
     async function handleFeedAction(event) {
-      const target = event.target instanceof Element ? event.target.closest("[data-edit], [data-view], [data-fav], [data-review], [data-copy], [data-download], [data-status], [data-study-rating], [data-classify], [data-hide], [data-restore]") : null;
+      const target = event.target instanceof Element ? event.target.closest("[data-edit], [data-view], [data-fav], [data-review], [data-copy], [data-download], [data-status], [data-study-rating], [data-classify], [data-hide], [data-restore], [data-local-theme]") : null;
       if (!target || !$("feed").contains(target)) return;
+      if (target.dataset.localTheme && themes.some(theme => theme.id === target.dataset.localTheme)) {
+        event.preventDefault();
+        resetFocusState();
+        activeTheme = target.dataset.localTheme;
+        $("themeFilter").value = activeTheme;
+        $("search").value = "";
+        render();
+        return;
+      }
       if (target.dataset.edit) return openEdit(target.dataset.edit);
       if (target.dataset.view) return openViewer(target.dataset.view);
       if (target.dataset.fav) return toggleFavorite(target.dataset.fav);
@@ -2931,6 +2968,6 @@
       alert("Erro ao iniciar Card Feed Médico: " + err.message);
     });
   </script>
-  <script type="module" src="assets/icloud-folder.mjs?v=84db11959d5407fd"></script>
+  <script type="module" src="assets/icloud-folder.mjs?v=f3ee6dbd538d4373"></script>
 </body>
 </html>

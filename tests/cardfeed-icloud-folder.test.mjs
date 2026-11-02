@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
-import {FOLDER_LIMITS,relativeImagePath,imageEligibility,fileIdentity,stableFolderCardId,collectDirectory,collectFiles,folderMetadataOnly,createHandleStore,createFolderController,attachFolderUI} from '../05_Midia_E_Feed/assets/icloud-folder.mjs';
+import {FOLDER_LIMITS,THEME_MANIFEST,LOCAL_THEME_IDS,parseThemeManifest,relativeImagePath,imageEligibility,fileIdentity,stableFolderCardId,collectDirectory,collectFiles,folderMetadataOnly,createHandleStore,createFolderController,attachFolderUI} from '../05_Midia_E_Feed/assets/icloud-folder.mjs';
 
 const file=(name='sepse.png',extra={})=>({name,type:'image/png',size:100,lastModified:1700000000000,...extra});
 const fileHandle=image=>({kind:'file',getFile:async()=>image});
@@ -20,6 +20,92 @@ function fixture(options={}){
   const controller=createFolderController({urlAPI,storage,onCards:(cards,settings)=>published.push({cards,settings}),onState:state=>states.push(state),...options});
   return {controller,urlAPI,storage,published,states};
 }
+function manifestEntry(extra={}){return {path:'sepse.png',size:100,modifiedMs:1700000000000,theme:'sepse-choque',themeLabel:'Sepse / Choque',confidence:'alta',method:'nome-pasta-ocr',matchedTerms:['sepse'],secondaryThemes:[],needsReview:false,reason:'Termo temático presente',...extra};}
+function manifest(entries=[manifestEntry()],extra={}){return {schema:THEME_MANIFEST.schema,sourceName:'IMAGENS',entries,...extra};}
+function manifestFile(value=manifest(),extra={}){const content=typeof value==='string'?value:JSON.stringify(value);return {name:THEME_MANIFEST.name,type:'application/json',size:Buffer.byteLength(content),lastModified:1700000000000,async text(){return content;},...extra};}
+
+test('private theme parser accepts only bounded metadata and the exact current theme allowlist',()=>{
+  const parsed=parseThemeManifest(JSON.stringify(manifest()));
+  assert.deepEqual(parsed.get('sepse.png'),{size:100,modifiedMs:1700000000000,theme:'sepse-choque',confidence:'alta',needsReview:false,classificationTerms:['sepse'],classificationSecondaryThemes:[]});
+  assert.deepEqual(LOCAL_THEME_IDS,[...JSON.parse(fs.readFileSync(new URL('../05_Midia_E_Feed/data/themes.json',import.meta.url))).themes].map(theme=>theme.id));
+  for(const field of ['themeLabel','reason','matchedTerms','method','secondaryThemes','path'])assert.equal(Object.hasOwn(parsed.get('sepse.png'),field),false,field);
+  assert.equal(parseThemeManifest(JSON.stringify(manifest([manifestEntry({path:'cafe\u0301.png',confidence:'baixa'})]))).get('café.png').needsReview,true);
+  assert.equal(parseThemeManifest(JSON.stringify(manifest([manifestEntry({theme:'a-classificar'})]))).get('sepse.png').needsReview,true);
+  for(const path of ['2026-11-02 17:30:01.png','guia www.example.png','guia https:exemplo.png','subpasta/guia www.example.png'])assert.ok(parseThemeManifest(JSON.stringify(manifest([manifestEntry({path})]))).has(path));
+});
+
+test('private parser rejects URLs, injected fields, unsafe paths, duplicates, unknown themes and excess entries',()=>{
+  const rejected=[
+    '{', JSON.stringify(manifest([],{href:'https://example.test'})),JSON.stringify(manifest([],{sourceName:'OUTRA'})),
+    ...[
+      {path:'../sepse.png'},{path:'/tmp/sepse.png'},{path:'https:exemplo.png'},{path:'file:exemplo.png'},{path:'//servidor/exemplo.png'},{path:'neuro\\sepse.png'},{path:'.oculto/a.png'},{path:'00_ORGANIZACAO_360X/a.png'},
+      {path:'x.svg'},{theme:'tema-inexistente'},{themeLabel:'https://example.test'},{reason:'dados https:\u002f\u002fexample.test'},
+      {matchedTerms:['blob:secret']},{reason:'mailto:private@example.test'},{reason:'smb://servidor/acervo'},{clinicalReviewStatus:'aprovado'},{href:'x'},{imageUrl:'local.png'},{notes:'nota substituída'},
+      {confidence:'aprovado'},{secondaryThemes:['outro']},{size:-1},{modifiedMs:1.5},{needsReview:'false'},
+    ].map(extra=>JSON.stringify(manifest([manifestEntry(extra)]))),
+    JSON.stringify(manifest([manifestEntry(),manifestEntry()])),
+    JSON.stringify(manifest(Array.from({length:THEME_MANIFEST.maxEntries+1},(_,i)=>manifestEntry({path:`${i}.png`})) )),
+    ' '.repeat(THEME_MANIFEST.maxBytes+1)
+  ];
+  for(const raw of rejected)assert.throws(()=>parseThemeManifest(raw));
+});
+
+test('directory applies local themes by exact relative path, size and mtime without touching image bytes',async()=>{
+  const image=file();image.text=()=>{throw Error('pixels não devem ser lidos');};
+  const dir=directory('IMAGENS',[[THEME_MANIFEST.name,fileHandle(manifestFile(manifest([manifestEntry({needsReview:true})])))],['sepse.png',fileHandle(image)]]);
+  const result=await collectDirectory(dir);
+  assert.deepEqual(result.entries[0].classification,{theme:'sepse-choque',classificationSource:'manifest',classificationConfidence:'alta',classificationNeedsReview:true,classificationTerms:['sepse'],classificationSecondaryThemes:[]});
+  assert.equal(result.report.manifest.matched,1);assert.equal(result.report.accepted,1);assert.equal(result.report.ignored.unsupported,0);
+  const f=fixture({pickDirectory:async()=>dir});await f.controller.connect();
+  const card=f.published.at(-1).cards[0];assert.equal(card.theme,'sepse-choque');assert.equal(card.clinicalReviewStatus,'pendente');
+  for(const key of ['path','manifest','reason','matchedTerms','method','secondaryThemes','themeLabel'])assert.equal(Object.hasOwn(card,key),false,key);
+  const exported=folderMetadataOnly(card);
+  for(const key of ['classificationSource','classificationConfidence','classificationNeedsReview','classificationTerms','classificationSecondaryThemes'])assert.equal(Object.hasOwn(exported,key),false,key);
+});
+
+test('same filename in a different folder or changed fingerprint never inherits a manifest classification',async()=>{
+  const result=await collectFiles([
+    file('sepse.png',{webkitRelativePath:'IMAGENS/sepse.png',size:101}),
+    file('sepse.png',{webkitRelativePath:'IMAGENS/neuro/sepse.png'}),
+    file('other.png',{webkitRelativePath:'IMAGENS/other.png',lastModified:1700000000001}),
+    manifestFile(manifest([manifestEntry(),manifestEntry({path:'other.png'})]),{webkitRelativePath:'IMAGENS/'+THEME_MANIFEST.name})
+  ]);
+  assert.ok(result.entries.every(entry=>!entry.classification));
+  assert.equal(result.report.manifest.fingerprintMismatch,2);assert.equal(result.report.manifest.unmatched,1);assert.equal(result.report.manifest.matched,0);
+});
+
+test('fallback and directory picker produce identical stable IDs, use only root manifest and ignore organization shortcuts',async()=>{
+  let nestedReads=0,shortcutReads=0;
+  const localManifest=manifestFile();
+  const dir=directory('IMAGENS',[
+    ['sepse.png',fileHandle(file())],[THEME_MANIFEST.name,fileHandle(localManifest)],
+    ['neuro',directory('neuro',[[THEME_MANIFEST.name,{kind:'file',getFile:async()=>{nestedReads++;return localManifest;}}]])],
+    ...['00_ORGANIZADAS_POR_TEMA','00_ORGANIZACAO_360X'].map(name=>[name,directory(name,[['sepse.png',{kind:'file',getFile:async()=>{shortcutReads++;return file();}}]])]),
+    ['symbolic.png',{kind:'symlink',getFile:async()=>{throw Error('não seguir');}}]
+  ]);
+  const collected=await collectDirectory(dir);assert.equal(nestedReads,0);assert.equal(shortcutReads,0);assert.equal(collected.report.ignored.generated,2);assert.equal(collected.report.ignored.unsafePath,1);
+  const f=fixture({pickDirectory:async()=>dir});await f.controller.connect();const first=f.published.at(-1).cards[0];
+  await f.controller.connectFiles([file('sepse.png',{webkitRelativePath:'IMAGENS/sepse.png'}),manifestFile(manifest(),{webkitRelativePath:'IMAGENS/'+THEME_MANIFEST.name}),file('sepse.png',{webkitRelativePath:'IMAGENS/00_ORGANIZACAO_360X/sepse.png'})]);
+  const second=f.published.at(-1).cards[0];assert.equal(second.id,first.id);assert.equal(second.theme,first.theme);assert.equal(f.controller.getState().count,1);assert.equal(f.controller.getState().report.ignored.generated,1);
+});
+
+test('invalid, oversized, mismatched MIME, duplicate or unreadable theme files leave safe filename inference available',async()=>{
+  const cases=[
+    [manifestFile('{'),'invalid'],
+    [manifestFile(manifest(),{size:THEME_MANIFEST.maxBytes+1,text(){throw Error('não ler');}}),'oversize'],
+    [manifestFile(manifest(),{type:'image/png'}),'mime'],
+    [manifestFile(manifest(),{isSymbolicLink:true}),'invalid'],
+    [manifestFile(manifest(),{text(){throw Error('sem leitura');}}),'unreadable']
+  ];
+  for(const [candidate,status] of cases){
+    const f=fixture();const outcome=await f.controller.connectFiles([file(),candidate]);
+    assert.equal(outcome.connected,true);assert.equal(outcome.report.manifest.status,status);const card=f.published.at(-1).cards[0];
+    assert.equal(card.theme,undefined);assert.equal(card.classificationSource,'filename');assert.equal(card.classificationNeedsReview,true);assert.equal(card.clinicalReviewStatus,'pendente');
+  }
+  const duplicate=await collectFiles([file(),manifestFile(),manifestFile()]);assert.equal(duplicate.report.manifest.status,'invalid');
+  const nested=await collectFiles([file('sepse.png',{webkitRelativePath:'IMAGENS/sepse.png'}),manifestFile(manifest(),{webkitRelativePath:'IMAGENS/sub/'+THEME_MANIFEST.name})]);assert.equal(nested.report.manifest.status,'absent');
+  const absent=collectFiles([file()]);assert.equal(absent instanceof Promise,false);assert.equal(absent.report.manifest.status,'absent');
+});
 
 test('path guard rejects traversal, absolute paths, controls and normalizes relative Unicode',()=>{
   for(const path of ['../foto.png','a/../foto.png','/tmp/a.png','C:\\a.png','a//b.png','x/\u0000.png',''])assert.equal(relativeImagePath(path),null,path);
@@ -165,8 +251,9 @@ function coreFunction(name){const start=inline.indexOf('    function '+name+'(')
 function coreFixture(){
   const fieldMatch=inline.match(/const LOCAL_MUTABLE_FIELDS = (\[[\s\S]*?\]);/),writes=[];
   const elements=Object.fromEntries(['search','themeFilter','assetFilter','sortMode','btnReview','editId','editDialog','viewerImg','viewerDialog'].map(id=>[id,{value:id==='assetFilter'?'all':id==='sortMode'?'newest':'',textContent:'',dataset:{},close(){},removeAttribute(){}}]));
-  const code=`const LOCAL_MUTABLE_FIELDS=${fieldMatch[1]};let repoCards=[],folderCards=[],localCards=[],hiddenCards=[],activeTheme='',reviewOnly=false,directCardId='',paginationContext='';const $=id=>elements[id];const searchTokens=()=>[];const needsReview=()=>false;const inferTheme=()=> 'uti-geral';const inferTags=()=>['uti-geral'];const resetFocusState=()=>{};const render=()=>{};function store(){return {put(card){writes.push(card);const req={};queueMicrotask(()=>req.onsuccess());return req;}};}\n`+
-    ['mergeLocalOverride','isFolderLinkedCard','localRecordForStorage','portableBackupCard','backupCards','putLocal','allCards','getCard','setFolderCards','getFiltered'].map(coreFunction).join('\n')+
+  const themeData=JSON.parse(fs.readFileSync(new URL('../05_Midia_E_Feed/data/themes.json',import.meta.url))).themes;
+  const code=`const LOCAL_MUTABLE_FIELDS=${fieldMatch[1]};const themes=${JSON.stringify(themeData)};let repoCards=[],folderCards=[],localCards=[],hiddenCards=[],activeTheme='',reviewOnly=false,directCardId='',paginationContext='';const $=id=>elements[id];const needsReview=()=>false;const inferTheme=()=> 'uti-geral';const inferTags=()=>['uti-geral'];const resetFocusState=()=>{};const render=()=>{};function store(){return {put(card){writes.push(card);const req={};queueMicrotask(()=>req.onsuccess());return req;}};}\n`+
+    ['mergeLocalOverride','searchKey','searchTokens','themeById','folderClassificationSubjects','isFolderLinkedCard','localRecordForStorage','portableBackupCard','backupCards','putLocal','allCards','getCard','setFolderCards','getFiltered'].map(coreFunction).join('\n')+
     `\n({allCards,putLocal,portableBackupCard,backupCards,getFiltered,setFolderCards,setRepo:x=>repoCards=x,setLocal:x=>localCards=x,filter:x=>elements.assetFilter.value=x})`;
   const core=vm.runInNewContext(code,{elements,writes,queueMicrotask,Date,CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail;}},window:{dispatchEvent(){}}});
   return {core,writes,elements};
@@ -180,6 +267,60 @@ test('actual core merges folder notes while protecting images and hides stale ov
   const linked=cards.find(x=>x.id==='icloud-a');assert.equal(linked.imageUrl,'blob:canonical');assert.equal(linked.notes,'rever');assert.equal(linked.origin,'icloud');assert.equal(linked.imageData,undefined);
   core.filter('icloud');assert.equal(core.getFiltered().length,1);
   core.setFolderCards([]);assert.equal(core.allCards().some(x=>x.id==='icloud-a'),false);assert.equal(core.allCards().length,2);
+});
+
+test('actual local manual theme overrides manifest without changing assets, private notes or clinical review',()=>{
+  const {core}=coreFixture();
+  core.setLocal([{id:'icloud-a',folderLinked:true,theme:'neuro-uti',notes:'minha nota',favorite:true,classificationSource:'unsafe',clinicalReviewStatus:'aprovado',imageUrl:'https://example.test'}]);
+  core.setFolderCards([{id:'icloud-a',folderLinked:true,imageUrl:'blob:canonical',theme:'sepse-choque',title:'a',classificationSource:'manifest',classificationNeedsReview:true,classificationConfidence:'baixa',clinicalReviewStatus:'pendente'}]);
+  const card=core.allCards()[0];assert.equal(card.theme,'neuro-uti');assert.equal(card.notes,'minha nota');assert.equal(card.favorite,true);
+  assert.equal(card.classificationSource,'manual');assert.equal(card.classificationNeedsReview,false);assert.equal(card.clinicalReviewStatus,'pendente');assert.equal(card.imageUrl,'blob:canonical');
+  const exported=core.portableBackupCard(card);
+  assert.equal(exported.notes,'minha nota');
+  for(const key of ['classificationSource','classificationConfidence','classificationNeedsReview','classificationTerms','classificationSecondaryThemes','manifest','path','matchedTerms','reason'])assert.equal(Object.hasOwn(exported,key),false,key);
+});
+
+test('actual search finds generic catalog subjects and secondary themes without altering tags or persisting the catalog',async()=>{
+  const {core,writes,elements}=coreFixture();
+  core.setRepo([{id:'repo-x',title:'a9a37e',theme:'uti-geral',classificationTerms:['Tuberculose'],classificationSecondaryThemes:['infectologia']}]);
+  core.setLocal([{id:'icloud-a',folderLinked:true,tags:['minha-tag'],notes:'minha nota'}]);
+  core.setFolderCards([{id:'icloud-a',folderLinked:true,imageUrl:'blob:canonical',title:'a9a37e',theme:'pneumologia',classificationSource:'manifest',classificationTerms:['Tuberculose','Pneumonia'],classificationSecondaryThemes:['infectologia','tema-inexistente'],clinicalReviewStatus:'pendente'}]);
+  elements.search.value='tuberculose';assert.equal(core.getFiltered().length,1);assert.equal(core.getFiltered()[0].id,'icloud-a');
+  elements.search.value='pneumonia';assert.equal(core.getFiltered().length,1);
+  elements.search.value='infectologia';assert.equal(core.getFiltered().length,1);
+  elements.search.value='';elements.themeFilter.value='infectologia';assert.equal(core.getFiltered().length,1);assert.equal(core.getFiltered()[0].id,'icloud-a');
+  elements.themeFilter.value='tema-inexistente';assert.equal(core.getFiltered().length,0);
+  const card=core.allCards().find(item=>item.id==='icloud-a');assert.deepEqual([...card.tags],['minha-tag']);assert.equal(card.notes,'minha nota');
+  await core.putLocal(card);const exported=core.portableBackupCard(card);
+  for(const data of [writes[0],exported,...core.backupCards().filter(item=>item.id==='icloud-a')]){
+    assert.equal(data.notes,'minha nota');
+    for(const key of ['classificationTerms','classificationSecondaryThemes','classificationSource','classificationConfidence','classificationNeedsReview'])assert.equal(Object.hasOwn(data,key),false,key);
+  }
+  core.setFolderCards([]);elements.themeFilter.value='';elements.search.value='tuberculose';assert.equal(core.getFiltered().length,0);
+});
+
+test('actual card UI identifies local organization and review with escaped, allowlisted classification labels',()=>{
+  const render=vm.runInNewContext(`${coreFunction('esc')}\n${coreFunction('cardHTML')}\ncardHTML`,{folderClassificationSubjects:card=>({terms:card.classificationTerms||[],secondaryThemes:[]}),themeById:()=>({emoji:'🗂️',label:'Tema local'}),connectedHref:()=>'?theme=sepse-choque',isFocusMode:()=>false,formatDate:()=>'',hiddenCards:[],encodeURIComponent});
+  const output=render({id:'icloud-a',folderLinked:true,title:'<script>privado</script>',theme:'sepse-choque',classificationSource:'manifest',classificationConfidence:'media',classificationNeedsReview:true,clinicalReviewStatus:'pendente'});
+  assert.match(output,/catálogo privado/);assert.match(output,/confiança média/);assert.match(output,/Conferir classificação/);assert.match(output,/Organização temática; revisão clínica pendente/);assert.ok(!output.includes('<script>privado'));
+  const untrusted=render({id:'icloud-a',folderLinked:true,classificationSource:'<script>x</script>',classificationConfidence:'<img onerror=x>',classificationTerms:['<script>privado</script>']});
+  assert.ok(!untrusted.includes('<script>'));assert.ok(!untrusted.includes('<img onerror'));assert.match(untrusted,/sugestão pelo nome/);assert.match(untrusted,/&lt;script&gt;privado/);
+});
+
+test('actual local theme shortcut filters in place and preserves the connected folder without navigation',async()=>{
+  const elements={themeFilter:{value:''},search:{value:'busca anterior'},assetFilter:{value:'icloud'},feed:{contains:()=>true}};
+  const calls={renders:0,resets:0,prevented:0,navigation:0};
+  class FakeElement{constructor(id){this.dataset={localTheme:id};}closest(){return this;}}
+  const start=inline.indexOf('    async function handleFeedAction('),end=inline.indexOf('\n    function handleCardImageError',start);
+  const handle=vm.runInNewContext(`let activeTheme='';const themes=[{id:'tdah-neurodiversidade'}];const $=id=>elements[id];const resetFocusState=()=>calls.resets++;const render=()=>calls.renders++;${inline.slice(start,end)}\n({run:handleFeedAction,theme:()=>activeTheme})`,{elements,calls,Element:FakeElement,window:{location:new Proxy({},{set(){calls.navigation++;throw Error('Não navegar');}})}});
+  await handle.run({target:new FakeElement('tdah-neurodiversidade'),preventDefault(){calls.prevented++;}});
+  assert.equal(handle.theme(),'tdah-neurodiversidade');assert.equal(elements.themeFilter.value,'tdah-neurodiversidade');assert.equal(elements.search.value,'');assert.equal(elements.assetFilter.value,'icloud');
+  assert.equal(calls.renders,1);assert.equal(calls.resets,1);assert.equal(calls.prevented,1);assert.equal(calls.navigation,0);
+  await handle.run({target:new FakeElement('tema-inválido'),preventDefault(){throw Error('Tema não permitido');}});
+  assert.equal(calls.renders,1);
+  const render=vm.runInNewContext(`${coreFunction('esc')}\n${coreFunction('cardHTML')}\ncardHTML`,{folderClassificationSubjects:()=>({terms:[],secondaryThemes:[]}),themeById:()=>({emoji:'🧩',label:'TDAH'}),connectedHref:card=>'./index.html?theme='+encodeURIComponent(card.theme),isFocusMode:()=>false,formatDate:()=>'',hiddenCards:[],encodeURIComponent});
+  const output=render({id:'icloud-a',theme:'tdah-neurodiversidade',folderLinked:true});
+  assert.match(output,/<button[^>]+data-local-theme="tdah-neurodiversidade"/);assert.ok(!output.includes('href="./index.html?theme='));
 });
 
 test('actual putLocal and JSON backup retain only folder metadata, never ephemeral image material',async()=>{
@@ -197,7 +338,7 @@ test('actual integration exposes picker fallback and keeps linked images read-on
   assert.ok(inline.includes('replacement && original.folderLinked'));
   assert.ok(inline.includes('image && !c.folderLinked'));
   assert.ok(inline.includes('cards: backupCards()'));
-  const sw=fs.readFileSync(new URL('../05_Midia_E_Feed/sw.js',import.meta.url),'utf8');assert.ok(sw.includes(moduleAsset));assert.ok(sw.includes('`${CACHE_PREFIX}v9`'));
+  const sw=fs.readFileSync(new URL('../05_Midia_E_Feed/sw.js',import.meta.url),'utf8');assert.ok(sw.includes(moduleAsset));assert.ok(sw.includes('`${CACHE_PREFIX}v10`'));
 });
 
 test('DOM adapter enables connect and drives the fallback file selection without upload APIs',async()=>{

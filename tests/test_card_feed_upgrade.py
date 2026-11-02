@@ -7,6 +7,7 @@ import json
 import re
 import unittest
 from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -165,8 +166,28 @@ class CardFeedBehaviorTests(unittest.TestCase):
 
         self.assertTrue(library_ids.issubset(forward))
         self.assertTrue(set(forward.values()).issubset(feed_ids))
-        self.assertEqual(set(reverse), feed_ids)
+        self.assertTrue(set(reverse).issubset(feed_ids))
         self.assertTrue(set(reverse.values()).issubset(library_ids))
+        library_linked = {
+            theme["id"] for theme in feed["themes"]
+            if "02_Biblioteca_IA_Engine" in theme["href"]
+        }
+        self.assertTrue(library_linked.issubset(reverse))
+        # Novos temas locais podem abrir seu próprio filtro ou uma página real;
+        # não precisam de um tema fictício na taxonomia clínica da Biblioteca.
+        for theme in feed["themes"]:
+            if theme["id"] in reverse:
+                continue
+            target = urlsplit(theme["href"])
+            self.assertFalse(target.scheme or target.netloc)
+            self.assertNotIn("02_Biblioteca_IA_Engine", target.path)
+            destination = (FEED / target.path).resolve()
+            self.assertTrue(destination.is_relative_to(ROOT))
+            if destination == FEED / "index.html":
+                self.assertEqual(parse_qs(target.query).get("theme"), [theme["id"]])
+            else:
+                self.assertFalse(target.query)
+                self.assertTrue(destination.is_file() or (destination / "index.html").is_file())
 
         for parameter in ("q", "theme", "view", "filter", "sort", "card"):
             self.assertIn(f'params.get("{parameter}")', source)
@@ -271,7 +292,7 @@ class CardFeedBehaviorTests(unittest.TestCase):
         self.assertIn("apenas esta combinação de busca, tema e filtro retornou zero resultados", source)
 
         service_worker = (FEED / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v9`', service_worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v10`', service_worker)
 
     def test_search_uses_independent_normalized_tokens(self) -> None:
         source = (FEED / "index.html").read_text(encoding="utf-8")
