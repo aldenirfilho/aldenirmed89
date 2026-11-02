@@ -280,11 +280,27 @@ test('actual local manual theme overrides manifest without changing assets, priv
 });
 
 test('actual card UI identifies local organization and review with escaped, allowlisted classification labels',()=>{
-  const render=vm.runInNewContext(`${coreFunction('esc')}\n${coreFunction('cardHTML')}\ncardHTML`,{themeById:()=>({emoji:'🗂️',label:'Tema local'}),connectedHref:()=>'?theme=sepse-choque',isFocusMode:()=>false,formatDate:()=>'',hiddenCards:[]});
+  const render=vm.runInNewContext(`${coreFunction('esc')}\n${coreFunction('cardHTML')}\ncardHTML`,{themeById:()=>({emoji:'🗂️',label:'Tema local'}),connectedHref:()=>'?theme=sepse-choque',isFocusMode:()=>false,formatDate:()=>'',hiddenCards:[],encodeURIComponent});
   const output=render({id:'icloud-a',folderLinked:true,title:'<script>privado</script>',theme:'sepse-choque',classificationSource:'manifest',classificationConfidence:'media',classificationNeedsReview:true,clinicalReviewStatus:'pendente'});
   assert.match(output,/catálogo privado/);assert.match(output,/confiança média/);assert.match(output,/Conferir classificação/);assert.match(output,/Organização temática; revisão clínica pendente/);assert.ok(!output.includes('<script>privado'));
   const untrusted=render({id:'icloud-a',folderLinked:true,classificationSource:'<script>x</script>',classificationConfidence:'<img onerror=x>'});
   assert.ok(!untrusted.includes('<script>'));assert.ok(!untrusted.includes('<img onerror'));assert.match(untrusted,/sugestão pelo nome/);
+});
+
+test('actual local theme shortcut filters in place and preserves the connected folder without navigation',async()=>{
+  const elements={themeFilter:{value:''},search:{value:'busca anterior'},assetFilter:{value:'icloud'},feed:{contains:()=>true}};
+  const calls={renders:0,resets:0,prevented:0,navigation:0};
+  class FakeElement{constructor(id){this.dataset={localTheme:id};}closest(){return this;}}
+  const start=inline.indexOf('    async function handleFeedAction('),end=inline.indexOf('\n    function handleCardImageError',start);
+  const handle=vm.runInNewContext(`let activeTheme='';const themes=[{id:'tdah-neurodiversidade'}];const $=id=>elements[id];const resetFocusState=()=>calls.resets++;const render=()=>calls.renders++;${inline.slice(start,end)}\n({run:handleFeedAction,theme:()=>activeTheme})`,{elements,calls,Element:FakeElement,window:{location:new Proxy({},{set(){calls.navigation++;throw Error('Não navegar');}})}});
+  await handle.run({target:new FakeElement('tdah-neurodiversidade'),preventDefault(){calls.prevented++;}});
+  assert.equal(handle.theme(),'tdah-neurodiversidade');assert.equal(elements.themeFilter.value,'tdah-neurodiversidade');assert.equal(elements.search.value,'');assert.equal(elements.assetFilter.value,'icloud');
+  assert.equal(calls.renders,1);assert.equal(calls.resets,1);assert.equal(calls.prevented,1);assert.equal(calls.navigation,0);
+  await handle.run({target:new FakeElement('tema-inválido'),preventDefault(){throw Error('Tema não permitido');}});
+  assert.equal(calls.renders,1);
+  const render=vm.runInNewContext(`${coreFunction('esc')}\n${coreFunction('cardHTML')}\ncardHTML`,{themeById:()=>({emoji:'🧩',label:'TDAH'}),connectedHref:card=>'./index.html?theme='+encodeURIComponent(card.theme),isFocusMode:()=>false,formatDate:()=>'',hiddenCards:[],encodeURIComponent});
+  const output=render({id:'icloud-a',theme:'tdah-neurodiversidade',folderLinked:true});
+  assert.match(output,/<button[^>]+data-local-theme="tdah-neurodiversidade"/);assert.ok(!output.includes('href="./index.html?theme='));
 });
 
 test('actual putLocal and JSON backup retain only folder metadata, never ephemeral image material',async()=>{
