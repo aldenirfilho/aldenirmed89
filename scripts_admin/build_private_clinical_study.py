@@ -155,8 +155,12 @@ def _source(row, facts):
         numbers = sorted({n for f in facts for n in f["locator"].get(field, [])}) if not quarantined else []
         if numbers or field != "lines":
             coverage[field] = numbers
+    # Quarantined filenames can themselves identify patients. Keep their exact
+    # location only in the restricted extraction inventory, outside study data.
+    private_path = ("quarentena/identificacao-restrita-" + source_id.removeprefix("library-study-source-") + ".bloqueado"
+                    if quarantined else unicodedata.normalize("NFC", row["path"]))
     source = {"id": source_id, "slot": "pdf" if row["sourceName"] == "PDF" else "doc",
-              "path": unicodedata.normalize("NFC", row["path"]), "size": row["size"], "modifiedMs": row["modifiedNs"] // 1_000_000,
+              "path": private_path, "size": row["size"], "modifiedMs": row["modifiedNs"] // 1_000_000,
               "privacy": "quarantined" if quarantined else "educational", "rights": "blocked" if quarantined else "private-reference", "coverage": coverage}
     if re.fullmatch(r"[a-f0-9]{64}", row.get("sha256") or ""):
         source["sha256"] = row["sha256"]

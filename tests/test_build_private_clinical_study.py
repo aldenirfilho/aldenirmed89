@@ -90,6 +90,8 @@ class PrivateClinicalGenerationTests(unittest.TestCase):
                 self.assertEqual(package["units"], [])
                 if r["status"] == "quarantinedPII" or r["privacyTriage"]["status"] == "quarantinedPII":
                     self.assertEqual(package["sources"][0]["rights"], "blocked")
+                    self.assertNotEqual(package["sources"][0]["path"], r["path"])
+                    self.assertTrue(package["sources"][0]["path"].startswith("quarentena/identificacao-restrita-"))
 
     def test_no_patient_identifier_metadata_dose_or_choice_as_fact(self):
         for text in ["A) " + FACT, "Nome do paciente: Exemplo Sintético. " + FACT,
