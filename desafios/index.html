@@ -182,6 +182,8 @@ h1.art-title{font-family:var(--font-head);font-size:clamp(1.9rem,4.6vw,2.9rem);f
   .article{padding:32px 0 90px}
   .prose{font-size:1.0rem}
 }
+
+.search-tools{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px;align-items:end}.search-tools label{display:grid;gap:6px;font-size:.9rem}.search-tools input,.search-tools select,.search-tools button{min-height:46px;max-width:100%;min-width:0;padding:10px;border:1px solid var(--line, #526782);border-radius:10px;color:var(--text,#eef5ff);background:var(--bg,#071422);font:inherit}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #ffcf65;outline-offset:3px}@media(max-width:800px){.search-tools{grid-template-columns:1fr 1fr}}@media(max-width:480px){.search-tools{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -283,6 +285,8 @@ const DIFF={basica:'Básica',media:'Média',alta:'Alta'};
 const BRANCH_LABEL={temi:'TEMI — Medicina Intensiva',r3:'R3 — Clínica Médica Avançada'};
 const BRANCH_COLOR={temi:'var(--cyan)',r3:'var(--green)'};
 let data={temi:[],r3:[]};
+let studyTools;
+
 
 function qp(name){return new URLSearchParams(location.search).get(name);}
 
@@ -293,14 +297,17 @@ function sortDesafios(list){
 function renderList(){
   let branch=qp('b')||'temi';
   if(!data[branch]) branch='temi';
-  let activeTag=null;
+  let activeTag=qp("tag")||"";
+  let query=qp("q")||"";
+  let topic=qp("topic")||"";
   const root=document.getElementById('root');
   document.getElementById('crumb').innerHTML='Desafios Clínicos';
 
   function draw(){
     const color=BRANCH_COLOR[branch];
     const list=sortDesafios(data[branch]||[]);
-    const items=activeTag?list.filter(d=>(d.tags||[]).includes(activeTag)):list;
+    const filtered=()=>list.filter(d=>(!activeTag||(d.tags||[]).includes(activeTag))&&(!topic||studyTools.topicIdsFor(d).includes(topic))&&studyTools.matchesQuery([d.title,d.excerpt,d.content,...(d.tags||[])].join(' '),query));
+    const items=filtered();
     const allTags=[...new Set((data[branch]||[]).flatMap(d=>d.tags||[]))];
 
     root.innerHTML=`
@@ -313,10 +320,15 @@ function renderList(){
         <button class="tab ${branch==='temi'?'active':''}" data-b="temi" style="--dsf-c:var(--cyan)">🏥 TEMI — Medicina Intensiva</button>
         <button class="tab ${branch==='r3'?'active':''}" data-b="r3" style="--dsf-c:var(--green)">🩺 R3 — Clínica Médica Avançada</button>
       </div>
-      <div class="filters" style="--dsf-c:${color}">${
-        allTags.map(t=>`<button class="chip ${activeTag===t?'active':''}" data-tag="${esc(t)}">${esc(t)}</button>`).join('')
-      }</div>
-      <div class="grid" style="--dsf-c:${color}">${
+      <p><a href="../questoes/explorar.html?type=desafio">🔎 Buscar desafios, questões e mnemônicos por tema →</a></p>
+      <div class="filters search-tools" style="--dsf-c:${color}">
+        <label>Buscar no desafio<input type="search" id="challenge-search" value="${esc(query)}" placeholder="Ex.: hipercalemia, lactato, desmame…"></label>
+        <label>Tema<select id="challenge-topic"><option value="">Todos os temas</option>${studyTools.TOPICS.map(t=>`<option value="${t.id}" ${topic===t.id?'selected':''}>${esc(t.label)}</option>`).join('')}</select></label>
+        <label>Tag<select id="challenge-tag"><option value="">Todas as tags</option>${allTags.sort().map(t=>`<option value="${esc(t)}" ${activeTag===t?'selected':''}>${esc(t)}</option>`).join('')}</select></label>
+        <button type="button" id="challenge-clear">Limpar filtros</button>
+      </div>
+      <p id="challenge-count" role="status" aria-live="polite">${items.length} de ${list.length} desafios</p>
+      <div class="grid" id="desafios-grid" style="--dsf-c:${color}">${
         items.length?items.map(d=>cardHtml(d,color)).join('')
         :`<div class="empty"><p>Nenhum desafio neste ramo ainda.</p>
             <a href="../admin/desafios.html">✎ Abrir editor e adicionar →</a></div>`
@@ -327,12 +339,21 @@ function renderList(){
       history.replaceState(null,'','?b='+branch);
       draw();
     }));
-    root.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
-      activeTag=activeTag===c.dataset.tag?null:c.dataset.tag;draw();
-    }));
-    root.querySelectorAll('.card').forEach(card=>card.addEventListener('click',()=>{
-      location.href='?b='+card.dataset.b+'&id='+encodeURIComponent(card.dataset.id);
-    }));
+    function refreshResults(){
+      const found=filtered();
+      document.getElementById('desafios-grid').innerHTML=found.length?found.map(d=>cardHtml(d,color)).join(''):'<p>Nenhum desafio corresponde à busca. Tente outro termo ou limpe os filtros.</p>';
+      document.getElementById('challenge-count').textContent=found.length+' de '+list.length+' desafios';
+      const params=new URLSearchParams({b:branch});if(query)params.set('q',query);if(topic)params.set('topic',topic);if(activeTag)params.set('tag',activeTag);history.replaceState(null,'','?'+params);
+    }
+    document.getElementById('challenge-search').addEventListener('input',event=>{query=event.target.value;refreshResults();});
+    document.getElementById('challenge-topic').addEventListener('change',event=>{topic=event.target.value;refreshResults();});
+    document.getElementById('challenge-tag').addEventListener('change',event=>{activeTag=event.target.value;refreshResults();});
+    document.getElementById('challenge-clear').onclick=()=>{query='';topic='';activeTag='';draw();document.getElementById('challenge-search').focus();};
+    document.getElementById('desafios-grid').addEventListener('click',event=>{
+      if(event.target.closest('a'))return;
+      const card=event.target.closest('.card');
+      if(card)location.href='?b='+encodeURIComponent(card.dataset.b)+'&id='+encodeURIComponent(card.dataset.id);
+    });
   }
   draw();
 }
@@ -346,7 +367,7 @@ function cardHtml(d,color){
       ${d.tema?`<span class="tag" style="background:var(--vio-d);color:var(--violet);border-color:rgba(169,140,255,.2)">◆ ${esc(d.tema)}</span>`:''}
       <span class="date">${esc(d.date||'')}</span>
     </div>
-    <h3>${esc(d.title||'Sem título')}</h3>
+    <h3><a href="?b=${esc(qp('b')||'temi')}&amp;id=${encodeURIComponent(d.id)}">${esc(d.title||'Sem título')}</a></h3>
     <p class="excerpt">${esc(d.excerpt||String(d.content||'').replace(/[#*>`_]/g,'').slice(0,180))}</p>
     <div class="tags">${(d.tags||[]).slice(0,6).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
     <div class="open-hint">Abrir leitura completa →</div>
@@ -398,6 +419,7 @@ function renderReader(branch,id){
 }
 
 async function init(){
+  studyTools = await import("../assets/js/study-search-core.mjs");
   try{
     const res=await fetch('../data/desafios.json?t='+Date.now());
     if(res.ok) data=await res.json();

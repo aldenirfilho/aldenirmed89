@@ -7,12 +7,13 @@
   <meta name="description" content="Acervo oficial de mnemônicos clínicos Antigravity para UTI, Clínica Médica e preparação TEMI.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self' https://gc.zgo.at; img-src 'self' data: https://aldenirrochadeoliveirafilho1989.goatcounter.com; connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>Mnemônicos Clínicos — Antigravity</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=82851d2d78f8434c">
 </head>
 <body>
   <a class="skip" href="#acervo">Pular para o acervo</a>
   <header>
     <a href="../index.html">← Portal Antigravity</a>
+    <a href="../questoes/explorar.html?type=mnemonico">🔎 Buscar por tema em todo o estudo</a>
     <button id="themeToggle" type="button" aria-pressed="false">☀️ Contraste</button>
   </header>
   <main id="acervo">
@@ -25,6 +26,7 @@
     <section>
       <div class="toolbar">
         <input id="search" type="search" placeholder="Buscar tema, letra ou tag…" aria-label="Buscar mnemônicos">
+        <select id="topic" aria-label="Filtrar mnemônicos por tema"><option value="">Todos os temas</option></select>
         <select id="category" aria-label="Filtrar por categoria"><option value="">Todas as categorias</option></select>
         <button id="trainMode" type="button" aria-pressed="false">🧠 Modo treino</button>
       </div>
@@ -33,11 +35,12 @@
       <div id="empty" class="empty" hidden>Nenhum mnemônico corresponde à busca.</div>
     </section>
   </main>
-  <dialog id="reader">
+  <dialog id="reader" aria-labelledby="readerTitle">
     <button id="closeReader" class="close" type="button" aria-label="Fechar">✕</button>
+    <h2 id="readerTitle"></h2>
     <div id="readerBody"></div>
   </dialog>
   <footer>🔒 Funciona localmente e não envia progresso ou conteúdo para servidores externos.</footer>
-  <script src="app.js"></script>
+  <script src="app.js?v=15c088af9f9bedc8"></script>
 </body>
 </html>

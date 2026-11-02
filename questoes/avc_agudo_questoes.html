@@ -128,6 +128,8 @@
     const $ = (id) => document.getElementById(id);
     const questionsContainer = $("questionsContainer");
     const searchInput = $("searchInput");
+      const requestedQuestion = new URLSearchParams(location.search).get("qid");
+      if (requestedQuestion) searchInput.value = requestedQuestion;
     const difficultyFilter = $("difficultyFilter");
     const domainFilter = $("domainFilter");
     const statusFilter = $("statusFilter");

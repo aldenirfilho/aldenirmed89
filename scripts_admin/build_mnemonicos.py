@@ -38,6 +38,9 @@ def normalize_pack_entry(entry, source, pack_editorial):
         "content": str(entry.get("content") or "").strip(),
         "source": source,
         "sourceRefs": [str(ref) for ref in entry.get("sourceRefs", [])],
+        "topicId": str(entry.get("topicId") or ""),
+        "topicLabel": str(entry.get("topicLabel") or ""),
+        "subtopic": str(entry.get("subtopic") or ""),
         "evidenceType": str(entry.get("evidenceType") or "conceito"),
         "reviewStatus": str(
             entry.get("reviewStatus") or "revisao-medica-pendente"

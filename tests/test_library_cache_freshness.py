@@ -93,6 +93,15 @@ async function run(scenario) {
         state.network('offline');
         await assert.rejects(state.get(path), /network offline/, filename);
       }
+    } else if (scenario === 'study') {
+      for (const path of ['data/mnemonicos.json','data/desafios.json','data/study-search.json','questoes/data/hub_qbanks.js']) {
+        const state=worker(scope),url=new URL(path,scope).href;
+        state.entries.set(url,Response.json({edition:'old'}));
+        assert.equal((await (await state.get(path)).json()).edition,'new',path);
+        assert.equal(state.requests[0].options.cache,'no-store',path);
+        state.network('offline');
+        assert.equal((await (await state.get(path)).json()).edition,'new',path);
+      }
     } else if (scenario === 'static') {
       const paths = [
         'assets/site-navigation.css',
@@ -144,6 +153,9 @@ class LibraryCacheFreshnessTests(unittest.TestCase):
 
     def test_canonical_manifests_keep_offline_json_and_reject_html_fallback(self):
         self.run_scenario('offline')
+
+    def test_study_catalogs_update_and_keep_offline_fallback(self):
+        self.run_scenario('study')
 
     def test_static_assets_and_unrelated_json_keep_cache_first(self):
         self.run_scenario('static')

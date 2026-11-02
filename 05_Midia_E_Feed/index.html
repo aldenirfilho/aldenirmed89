@@ -859,6 +859,8 @@
 <body>
   <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple class="hidden" />
   <input id="backupInput" type="file" accept=".json,application/json" class="hidden" />
+  <input id="icloudFolderInput" type="file" webkitdirectory directory multiple
+    accept=".png,.jpg,.jpeg,.webp,.gif,.bmp,.avif" class="hidden" aria-label="Selecionar pasta de imagens locais do iCloud" />
 
   <header class="topbar">
     <div class="topbar-inner">
@@ -910,6 +912,7 @@
           <div class="metric"><b id="statTotal">0</b><span>cards totais</span></div>
           <div class="metric"><b id="statRepo">0</b><span>cards do repo</span></div>
           <div class="metric"><b id="statLocal">0</b><span>cards locais</span></div>
+          <div class="metric"><b id="statIcloud">0</b><span>pasta conectada</span></div>
           <div class="metric"><b id="statFav">0</b><span>favoritos</span></div>
           <div class="metric"><b id="statReview">0</b><span>em revisão</span></div>
         </div>
@@ -952,6 +955,24 @@
         </span>
         <span class="studio-privacy">🔒 Fica apenas neste dispositivo. Nenhum upload.</span>
       </button>
+    </section>
+
+    <section class="glass icloud-folder-panel" id="icloudFolder" aria-labelledby="icloudFolderTitle" style="margin:20px 0;padding:24px">
+      <span class="eyebrow">☁️ Pasta conectada · somente leitura local</span>
+      <h2 id="icloudFolderTitle">Conecte sua pasta de imagens do iCloud.</h2>
+      <p>Escolha a pasta <b>IMAGENS</b> no seletor do dispositivo. As imagens aparecem neste navegador por referência, sem upload e sem copiar o acervo para o banco local. O próprio iCloud pode baixar arquivos ao disponibilizar a pasta ou exibir imagens.</p>
+      <div class="actions">
+        <button class="btn primary" id="btnIcloudConnect" type="button" disabled>☁️ Conectar pasta do iCloud</button>
+        <button class="btn" id="btnIcloudReconnect" type="button" hidden>↩️ Reconectar pasta lembrada</button>
+        <button class="btn" id="btnIcloudRefresh" type="button" disabled>🔄 Atualizar pasta</button>
+        <button class="btn" id="btnIcloudDisconnect" type="button" disabled>⏏ Desconectar pasta</button>
+      </div>
+      <label><input id="icloudRemember" type="checkbox" checked /> Lembrar a pasta ao conectar neste navegador, quando houver suporte e permissão de leitura.</label>
+      <p class="studio-status" id="icloudFolderStatus" role="status" aria-live="polite">A conexão depende da sua seleção da pasta neste dispositivo.</p>
+      <p class="file-guidance" id="icloudFallbackNote"></p>
+      <p class="file-guidance" id="icloudStorageWarning" role="status" aria-live="polite"></p>
+      <details><summary>Formatos, limites e arquivos ignorados</summary><p id="icloudFolderReport">PNG, JPG, JPEG, WebP, GIF, BMP e AVIF. Até 10.000 imagens, 50.000 entradas examinadas, 32 níveis de subpastas e 64 MB por imagem. SVG, documentos e nomes ocultos são ignorados.</p></details>
+      <p class="file-guidance">Notas, favoritos e revisão ficam neste navegador, por caminho relativo, tamanho e data de modificação. Se a imagem mudar, ela recebe outra identidade de versão. O backup preserva metadados; para ver essas imagens depois, reconecte a pasta. Os originais não são alterados.</p>
     </section>
 
     <section class="knowledge-forge" id="knowledgeForge" aria-labelledby="knowledgeForgeTitle">
@@ -1012,6 +1033,7 @@
         <option value="review">🔁 Para revisar</option>
         <option value="repo">☁️ Publicados</option>
         <option value="local">💾 Locais</option>
+        <option value="icloud">☁️ Pasta iCloud conectada</option>
       </select>
       <select id="sortMode" class="select" aria-label="Ordenar cards">
         <option value="newest">Mais recentes</option>
@@ -1294,7 +1316,7 @@
         <label>Fonte / origem <input id="editSource" class="field" /></label>
         <label>Substituir imagem
           <input id="editImageInput" class="field" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
-          <span class="file-guidance">Opcional. A imagem anterior permanece até você salvar uma substituta válida.</span>
+          <span class="file-guidance" id="editImageGuidance">Opcional. A imagem anterior permanece até você salvar uma substituta válida.</span>
         </label>
         <label>Status
           <select id="editStatus" class="select">
@@ -1355,7 +1377,7 @@
       <button type="button" class="btn small" id="btnCloseHelp" aria-label="Fechar ajuda">✕</button>
     </div>
     <div class="modal-body">
-      <div class="help-box"><b>1) Entrada pelo iCloud</b><br/>Crie no iCloud Drive uma pasta <code>GPT_Card_Feed_Medico</code>. Salve imagens do ChatGPT/Claude lá. Depois toque em <code>Importar imagens</code>.</div>
+      <div class="help-box"><b>1) Entrada pelo iCloud</b><br/>Use <code>Conectar pasta do iCloud</code> e escolha a pasta de imagens. A leitura é local, com atualização manual. Em navegadores sem acesso persistente à pasta, selecione-a novamente após recarregar. Para copiar poucas imagens ao banco do navegador, a oficina continua disponível separadamente.</div>
       <div class="help-box"><b>2) Organização automática</b><br/>O app sugere tema pelo nome do arquivo: <code>AKI</code>, <code>KDIGO</code>, <code>VM</code>, <code>sepse</code>. Depois edite manualmente.</div>
       <div class="help-box"><b>3) Comentários</b><br/>Em cada card, toque em <code>Editar</code>. Acrescente resumo, conduta, alerta TEMI, tags e status.</div>
       <div class="help-box"><b>4) Backup e migração</b><br/>O backup JSON preserva o fluxo legado. Na <code>Knowledge Forge</code>, use <code>Backup ZIP completo</code> para incluir cards, projetos, imagens editadas, OCR e missões produtivas.</div>
@@ -1363,7 +1385,7 @@
       <div class="help-box"><b>6) Estudo ativo</b><br/>No modo Estudo, observe primeiro a imagem, revele a explicação e avalie como <code>Difícil</code>, <code>Aprendendo</code> ou <code>Dominei</code>. A próxima revisão fica salva neste navegador em 1, 3 ou 14 dias.</div>
       <div class="help-box"><b>7) Revisão e conexões</b><br/>Use <code>🎲 Sortear card</code>, os filtros rápidos e <code>🔗 Explorar tema</code> para saltar à Biblioteca, POCUS, TEMI ou calculadoras.</div>
       <div class="help-box"><b>8) App Forjador de Conhecimento</b><br/>Inicie por um card ou por até 12 imagens PNG, JPG, WebP, GIF, BMP ou AVIF. Produza artefatos, vincule artigos, gere cards e desafios TEMI fundamentados, solicite revisão por pares e exporte para Anki, PDF, CSV, Markdown, HTML ou JSON.</div>
-      <div class="help-box help-warning"><b>⚠️ Limitação</b><br/>Cards locais ficam neste navegador (IndexedDB). Para sincronizar, exporte backup JSON ou envie imagens para <code>assets/cards/</code> + cadastre em <code>data/cards.json</code>.</div>
+      <div class="help-box help-warning"><b>⚠️ Limitação</b><br/>A pasta conectada não é uma sincronização pública com o iCloud. Outro dispositivo precisa selecionar sua própria pasta. Backups de cards da pasta contêm apenas metadados e precisam de reconexão para recuperar as imagens. A oficina e a Forja mantêm seu fluxo de cópias locais explícitas.</div>
     </div>
   </dialog>
 
@@ -1376,11 +1398,12 @@
     let db;
     let repoCards = [];
     let localCards = [];
+    let folderCards = [];
     let themes = [];
     let reviewOnly = false;
     let activeTheme = "";
     const VIEW_MODES = ["grid", "continuous", "compact", "carousel", "study"];
-    const ASSET_FILTERS = ["all", "images", "missing", "favorites", "review", "repo", "local"];
+    const ASSET_FILTERS = ["all", "images", "missing", "favorites", "review", "repo", "local", "icloud"];
     const SORT_MODES = ["newest", "oldest", "inbox", "theme", "title", "review"];
     const FEED_BATCH_SIZES = Object.freeze({ grid: 24, continuous: 10, compact: 20 });
     const IMAGE_PRIORITY_COUNT = 2;
@@ -1801,10 +1824,34 @@
         req.onerror = () => reject(req.error);
       });
     }
+    function isFolderLinkedCard(card) {
+      return card?.folderLinked === true || String(card?.id || "").startsWith("icloud-");
+    }
+    function localRecordForStorage(card) {
+      if (!isFolderLinkedCard(card)) return card;
+      const fields = ["id", ...LOCAL_MUTABLE_FIELDS];
+      const metadata = Object.fromEntries(fields.filter(field => Object.hasOwn(card, field)).map(field => [field, card[field]]));
+      // Nunca persistir imageUrl, imageData, blob, File ou handle dos cards conectados.
+      return { ...metadata, folderLinked: true, requiresFolderReconnect: true };
+    }
+    function portableBackupCard(card) {
+      const portable = { ...localRecordForStorage(card) };
+      for (const field of ["imageUrl", "imageData", "blob", "file", "fileHandle", "handle"]) {
+        if (isFolderLinkedCard(card) || (typeof portable[field] === "string" && portable[field].startsWith("blob:"))) delete portable[field];
+      }
+      return portable;
+    }
+    function backupCards() {
+      const visible = allCards();
+      const included = new Set(visible.map(card => card.id));
+      const detachedNotes = localCards.filter(card => isFolderLinkedCard(card) && !included.has(card.id));
+      return [...visible, ...detachedNotes].map(portableBackupCard);
+    }
     function putLocal(card) {
+      const stored = localRecordForStorage(card);
       return new Promise((resolve, reject) => {
-        const req = store("readwrite").put(card);
-        req.onsuccess = () => resolve(card);
+        const req = store("readwrite").put(stored);
+        req.onsuccess = () => resolve(stored);
         req.onerror = () => reject(req.error);
       });
     }
@@ -1874,8 +1921,46 @@
         const localOverride = localById.get(repoCard.id);
         return localOverride ? mergeLocalOverride(repoCard, localOverride) : repoCard;
       });
-      const localOnly = localCards.filter(c => !repoIds.has(c.id));
-      return [...mergedRepo, ...localOnly];
+      const linkedIds = new Set(folderCards.map(card => card.id));
+      const mergedFolder = folderCards.map(card => {
+        const override = localById.get(card.id);
+        return override ? { ...mergeLocalOverride(card, override), origin: "icloud", folderLinked: true } : card;
+      });
+      const localOnly = localCards.filter(c => !repoIds.has(c.id) && !linkedIds.has(c.id) && !isFolderLinkedCard(c));
+      return [...mergedRepo, ...mergedFolder, ...localOnly];
+    }
+
+    function setFolderCards(cards, { focus = false } = {}) {
+      folderCards = (Array.isArray(cards) ? cards : []).filter(card =>
+        isFolderLinkedCard(card) && String(card.id).startsWith("icloud-") &&
+        typeof card.imageUrl === "string" && card.imageUrl.startsWith("blob:")
+      ).map(card => {
+        const theme = card.theme || inferTheme(card.imageName || card.title || "");
+        return { ...card, theme, tags: Array.from(new Set([...(card.tags || []), ...inferTags(card.imageName || card.title || "", theme)])), origin: "icloud", folderLinked: true };
+      });
+      resetFocusState();
+      paginationContext = "";
+      if (focus) {
+        activeTheme = "";
+        reviewOnly = false;
+        $("btnReview").textContent = "🔁 Modo revisão";
+        $("themeFilter").value = "";
+        $("search").value = "";
+        $("assetFilter").value = "icloud";
+      } else if (!folderCards.length && $("assetFilter").value === "icloud") $("assetFilter").value = "all";
+      if (!folderCards.length && String($("editId").value).startsWith("icloud-")) $("editDialog").close();
+      const viewedFolderId = $("viewerImg").dataset.folderCardId;
+      if (viewedFolderId) {
+        const replacement = getCard(viewedFolderId);
+        if (replacement?.folderLinked) $("viewerImg").src = replacement.imageUrl;
+        else {
+          $("viewerDialog").close();
+          $("viewerImg").removeAttribute("src");
+          $("viewerImg").dataset.folderCardId = "";
+        }
+      }
+      render();
+      window.dispatchEvent(new CustomEvent("cardfeed:folderchanged", { detail: { connected: folderCards.length > 0, count: folderCards.length } }));
     }
 
     function themeById(id) {
@@ -2088,6 +2173,7 @@
         if (assetFilter === "review" && !reviewDue) return false;
         if (assetFilter === "repo" && c.origin !== "repo") return false;
         if (assetFilter === "local" && c.origin !== "local") return false;
+        if (assetFilter === "icloud" && !c.folderLinked) return false;
         if (!tokens.length) return true;
         const blob = searchKey([
           c.title,
@@ -2236,7 +2322,8 @@
       const list = allCards();
       $("statTotal").textContent = list.length;
       $("statRepo").textContent = repoCards.length;
-      $("statLocal").textContent = localCards.length;
+      $("statLocal").textContent = localCards.filter(card => !isFolderLinkedCard(card)).length;
+      $("statIcloud").textContent = folderCards.length;
       $("statFav").textContent = list.filter(c => c.favorite).length;
       const reviewCount = list.filter(needsReview).length;
       $("statReview").textContent = reviewCount;
@@ -2245,7 +2332,7 @@
     function cardHTML(c, options = {}) {
       const theme = themeById(c.theme);
       const tags = (c.tags || []).slice(0, 7).map(t => `<span class="tag">#${esc(t)}</span>`).join("");
-      const sourceBadge = c.origin === "repo" ? "GitHub Pages" : "Local";
+      const sourceBadge = c.folderLinked ? "iCloud · só neste dispositivo" : c.origin === "repo" ? "GitHub Pages" : "Local";
       const image = c.imageData || c.imageUrl || "";
       const connection = connectedHref(c, theme);
       const clinicalLabel = c.clinicalReviewStatus === "pendente" ? " • revisão clínica pendente" : "";
@@ -2278,7 +2365,8 @@
             <button type="button" class="btn small" data-review="${esc(c.id)}">🔁 Revisar</button>
             <button type="button" class="btn small" data-copy="${esc(c.id)}">📋 Copiar resumo</button>
             ${image ? `<button type="button" class="btn small" data-download="${esc(c.id)}">⬇️ Baixar imagem</button>` : ""}
-            ${image ? `<button type="button" class="btn small primary" data-forge="${esc(c.id)}">🧠 Forjar conhecimento</button>` : ""}
+            ${image && !c.folderLinked ? `<button type="button" class="btn small primary" data-forge="${esc(c.id)}">🧠 Forjar conhecimento</button>` : ""}
+            ${c.folderLinked ? '<span class="file-guidance">Para editar pixels ou usar a Forja, selecione uma cópia da imagem na oficina. Esta conexão mantém o arquivo original em leitura.</span>' : ""}
             ${studyMode ? "" : `<button type="button" class="btn small green" data-status="${esc(c.id)}" data-value="dominado">✅ Dominei</button>`}
             ${hiddenCards.includes(c.id)
               ? `<button type="button" class="btn small restore-card" data-restore="${esc(c.id)}">♻️ Restaurar</button>`
@@ -2417,7 +2505,10 @@
       image.remove();
       const fallback = document.createElement("div");
       fallback.className = "missing";
-      fallback.textContent = "🖼️ Imagem indisponível. Confira o caminho em data/cards.json.";
+      const linkedCard = getCard(image.dataset.cardImage);
+      fallback.textContent = linkedCard?.folderLinked
+        ? "🖼️ Imagem local indisponível. Disponibilize o arquivo no iCloud e atualize ou reconecte a pasta."
+        : "🖼️ Imagem indisponível. Confira o caminho em data/cards.json.";
       box.appendChild(fallback);
       box.removeAttribute("data-view");
       box.setAttribute("aria-label", "Imagem indisponível");
@@ -2581,6 +2672,7 @@
       }
       $("viewerTitle").textContent = c.title || "Imagem";
       $("viewerImg").src = imageSource;
+      $("viewerImg").dataset.folderCardId = c.folderLinked ? c.id : "";
       $("viewerImg").hidden = false;
       $("viewerDialog").showModal();
     }
@@ -2625,6 +2717,11 @@
       $("editSource").value = c.source || "";
       $("editStatus").value = c.status || "novo";
       $("editImageInput").value = "";
+      $("editImageInput").disabled = Boolean(c.folderLinked);
+      $("editImageGuidance").textContent = c.folderLinked
+        ? "Imagem vinculada à pasta em modo de leitura. Edite apenas as anotações; para outra imagem, reconecte ou atualize a pasta. O original não é alterado."
+        : "Opcional. A imagem anterior permanece até você salvar uma substituta válida.";
+      $("btnDelete").textContent = c.folderLinked ? "🗒️ Limpar anotações locais" : "🗑️ Apagar local";
       $("editDialog").showModal();
     }
 
@@ -2633,6 +2730,10 @@
       if (!original) return false;
       const replacement = $("editImageInput").files?.[0];
       let replacementData = {};
+      if (replacement && original.folderLinked) {
+        toast("A imagem conectada permanece somente leitura. Atualize ou reconecte a pasta.");
+        return false;
+      }
       if (replacement) {
         const invalidReason = await validateImageFile(replacement);
         if (invalidReason) {
@@ -2685,8 +2786,11 @@
     async function deleteCurrent() {
       const id = $("editId").value;
       const local = localCards.find(c => c.id === id);
-      if (!local) { toast("⚠️ Cards do repositório não são apagados pelo navegador. Edite data/cards.json no GitHub."); return; }
-      if (!confirm("Apagar este card local?")) return;
+      if (!local) {
+        toast(String(id).startsWith("icloud-") ? "Não há anotações locais salvas para limpar. O arquivo da pasta permanece intacto." : "⚠️ Cards do repositório não são apagados pelo navegador. Edite data/cards.json no GitHub.");
+        return;
+      }
+      if (!confirm(isFolderLinkedCard(local) ? "Limpar as anotações deste card? A imagem original da pasta será mantida." : "Apagar este card local?")) return;
       await deleteLocal(id);
       $("editDialog").close();
       await refresh();
@@ -2698,7 +2802,8 @@
         app: "GPT Card Feed Médico",
         version: "2.0",
         exportedAt: nowISO(),
-        cards: allCards()
+        folderImages: "As imagens da pasta conectada não são incorporadas. Reconecte a mesma pasta para visualizar esses cards.",
+        cards: backupCards()
       };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -2816,6 +2921,7 @@
       ready: false,
       getCard,
       getAllCards: allCards,
+      setFolderCards,
       refresh,
       toast
     };
@@ -2825,5 +2931,6 @@
       alert("Erro ao iniciar Card Feed Médico: " + err.message);
     });
   </script>
+  <script type="module" src="assets/icloud-folder.mjs?v=84db11959d5407fd"></script>
 </body>
 </html>

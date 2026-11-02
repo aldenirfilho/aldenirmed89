@@ -184,6 +184,7 @@
       </a>
       <nav class="nav">
         <a class="btn" href="index.html">← Bancos TEMI</a>
+        <a class="btn" href="explorar.html">🔎 Buscar por tema</a>
         <a class="btn" href="../index.html#temi">⌂ Início</a>
         <button class="btn" id="clarityToggle" type="button">☀️ Visualização clara</button>
         <button class="btn" type="button" onclick="window.print()">🖨️ Imprimir</button>
@@ -362,6 +363,8 @@
       const $ = id => document.getElementById(id);
       const questionsEl = $("questions");
       const searchInput = $("searchInput");
+      const requestedQuestion = new URLSearchParams(location.search).get("qid");
+      if (requestedQuestion) searchInput.value = requestedQuestion;
       const difficultyFilter = $("difficultyFilter");
       const statusFilter = $("statusFilter");
       const blockTabs = $("blockTabs");
@@ -727,6 +730,10 @@
       window.addEventListener("focus", refreshDay);
       document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshDay(); });
       render();
+      if (requestedQuestion) {
+        const target=document.getElementById(requestedQuestion);
+        if(target){target.setAttribute('tabindex','-1');target.focus({preventScroll:true});target.scrollIntoView({block:'start'});}
+      }
     })();
   </script>
 </body>

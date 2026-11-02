@@ -8,9 +8,12 @@
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   const stripTags = (value) => String(value ?? "").replace(/<[^>]+>/g, "");
 
+  const {matchesQuery,topicIdsFor,TOPICS} = await import("../assets/js/study-search-core.mjs");
+  const params = new URLSearchParams(location.search);
+  $("#search").value = params.get("q") || "";
   let items = [];
   try {
-    const response = await fetch("../data/mnemonicos.json");
+    const response = await fetch("../data/mnemonicos.json?v=20261102");
     if (response.ok) items = (await response.json()).mnemonicos || [];
   } catch (_) {}
 
@@ -19,6 +22,8 @@
     `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`
   ).join(""));
 
+  $("#topic").insertAdjacentHTML("beforeend", TOPICS.map(t=>`<option value="${t.id}">${t.icon} ${escapeHtml(t.label)}</option>`).join(''));
+  if (TOPICS.some(t=>t.id===params.get('topic'))) $('#topic').value=params.get('topic');
   let trainMode = false;
 
   function lettersText(item) {
@@ -31,6 +36,7 @@
       .replace(/^## (.+)$/gm, "<h2>$1</h2>")
       .replace(/^# (.+)$/gm, "<h1>$1</h1>")
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\[([^\]]+)\]\((https:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1 ↗</a>')
       .replace(/^[-*] (.+)$/gm, "<li>$1</li>")
       .replace(/\n\n/g, "</p><p>");
   }
@@ -49,11 +55,12 @@
   }
 
   function render() {
-    const query = $("#search").value.trim().toLowerCase();
+    const query = $("#search").value.trim();
+    const topic = $("#topic").value;
     const category = $("#category").value;
     const filtered = items.filter((item) => {
-      const haystack = [item.title, item.category, ...(item.tags || []), lettersText(item)].join(" ").toLowerCase();
-      return (!category || item.category === category) && (!query || haystack.includes(query));
+      const haystack = [item.title, item.category, item.subtopic, item.content, ...(item.tags || []), lettersText(item)].join(" ");
+      return (!category || item.category === category) && (!topic || topicIdsFor(item).includes(topic)) && matchesQuery(haystack,query);
     });
     $("#grid").innerHTML = filtered.map(card).join("");
     $("#count").textContent = `${filtered.length} de ${items.length} mnemônicos`;
@@ -61,6 +68,7 @@
   }
 
   $("#search").addEventListener("input", render);
+  $("#topic").addEventListener("change", render);
   $("#category").addEventListener("change", render);
   $("#trainMode").addEventListener("click", () => {
     trainMode = !trainMode;
@@ -78,8 +86,7 @@
     if (!cardElement || !event.target.closest(".open")) return;
     const item = items.find((candidate) => candidate.id === cardElement.dataset.id);
     if (!item) return;
-    $("#readerBody").innerHTML = markdown(item.content);
-    $("#reader").showModal();
+    openReader(item);
   });
   $("#grid").addEventListener("keydown", (event) => {
     if (!trainMode || !event.target.classList.contains("line") || !["Enter", " "].includes(event.key)) return;
@@ -87,7 +94,14 @@
     event.target.classList.toggle("revealed");
     event.target.setAttribute("aria-pressed", String(event.target.classList.contains("revealed")));
   });
+  function openReader(item) {
+    $('#readerTitle').textContent=item.title;
+    $('#readerBody').innerHTML=markdown(item.content);
+    $('#reader').showModal();
+    const url=new URL(location.href);url.searchParams.set('id',item.id);history.replaceState(null,'',url);
+  }
   $("#closeReader").addEventListener("click", () => $("#reader").close());
+  $('#reader').addEventListener('close',()=>{const url=new URL(location.href);url.searchParams.delete('id');history.replaceState(null,'',url);});
   $("#themeToggle").addEventListener("click", () => {
     const next = document.documentElement.dataset.theme === "light" ? "dark" : "light";
     document.documentElement.dataset.theme = next;
@@ -95,4 +109,6 @@
   });
 
   render();
+  const selected=items.find(item=>item.id===params.get('id'));
+  if(selected)openReader(selected);
 })();
