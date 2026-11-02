@@ -71,6 +71,10 @@
   .search-bar input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,212,255,.15)}
   .search-bar::before{content:'🔍';position:absolute;left:1.8rem;top:50%;transform:translateY(-50%);font-size:1rem}
 
+  .local-library{max-width:900px;margin:1rem auto;padding:1.1rem;border:1px solid var(--border);border-radius:14px;background:var(--card)}
+  .local-library h2{font-size:1.05rem;margin-bottom:.4rem}.local-library p{font-size:.82rem;line-height:1.55;margin:.5rem 0}.local-library .local-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0}.local-library details{margin-top:.6rem}.local-library summary{cursor:pointer;min-height:44px;display:flex;align-items:center}.local-library button{min-height:44px}.local-library :focus-visible{outline:3px solid var(--accent);outline-offset:3px}.local-source-row{border-top:1px solid var(--border);padding:.6rem 0}.local-source-row strong{display:block}.local-library input[type=checkbox]{width:20px;height:20px;vertical-align:middle;margin-right:.4rem}
+  .local-document-preview{width:min(1100px,95vw);height:90vh;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);margin:auto;padding:1rem}.local-document-preview::backdrop{background:rgba(0,0,0,.8)}.local-document-preview .local-preview-head{display:flex;align-items:center;justify-content:space-between;gap:1rem}.local-document-preview h2{font-size:1rem;overflow-wrap:anywhere}.local-document-preview iframe{display:block;width:100%;height:calc(100% - 100px);border:0;background:#fff;margin-top:.7rem}.local-document-preview p{font-size:.8rem;margin:.5rem 0}
+
   /* ── FILTROS ── */
   .filtros{display:flex;gap:.5rem;flex-wrap:wrap;max-width:900px;margin:.5rem auto 1.5rem;padding:0 1rem}
   .filtro{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:.35rem .9rem;font:inherit;font-size:.8rem;cursor:pointer;transition:.2s;color:var(--muted)}
@@ -527,6 +531,28 @@
       <div class="stat"><span id="stats-brain">0</span><small>🧠 Conexões</small></div>
     </div>
   </div>
+
+  <section id="localFolders" class="local-library" aria-labelledby="libraryLocalTitle"><div id="libraryLocalControls">
+    <h2 id="libraryLocalTitle">🔒 Seus documentos do iCloud · <span id="libraryLocalCount">0</span> conectados</h2>
+    <p>Conecte as pastas <b>PDF</b> e <b>DOC 2026</b> de 360X. Use a busca abaixo para localizar por nome, pasta ou tema sugerido. Os documentos continuam privados, sem upload; o conteúdo integral não é indexado nem enviado à IA.</p>
+    <div class="local-actions">
+      <button class="btn btn-primary" id="libraryConnect-pdf" type="button">📁 Conectar PDF</button>
+      <button class="btn btn-primary" id="libraryConnect-doc" type="button">📁 Conectar DOC</button>
+      <button class="btn btn-secondary" id="libraryLocalCancel" type="button" hidden>⏸ Parar listagem</button>
+    </div>
+    <p id="libraryLocalStatus" role="status" aria-live="polite">Selecione uma pasta para listar os documentos. Nenhum arquivo é aberto automaticamente.</p>
+    <p id="libraryLocalFallback"></p><p id="libraryLocalWarning" role="status" aria-live="polite"></p>
+    <details><summary>Conexões, atualização e limites</summary>
+      <div class="local-source-row"><strong>PDF · <span id="librarySourceCount-pdf">0</span> documentos</strong><div class="local-actions"><button type="button" class="btn btn-secondary" id="libraryReconnect-pdf" hidden>↩️ Reconectar PDF</button><button type="button" class="btn btn-secondary" id="libraryRefresh-pdf" disabled>🔄 Atualizar PDF</button><button type="button" class="btn btn-secondary" id="libraryDisconnect-pdf" disabled>⏏ Desconectar PDF</button></div></div>
+      <div class="local-source-row"><strong>DOC · <span id="librarySourceCount-doc">0</span> documentos</strong><div class="local-actions"><button type="button" class="btn btn-secondary" id="libraryReconnect-doc" hidden>↩️ Reconectar DOC</button><button type="button" class="btn btn-secondary" id="libraryRefresh-doc" disabled>🔄 Atualizar DOC</button><button type="button" class="btn btn-secondary" id="libraryDisconnect-doc" disabled>⏏ Desconectar DOC</button></div></div>
+      <label><input id="libraryLocalRemember" type="checkbox" checked> Lembrar as conexões ao conectar neste navegador, quando houver suporte. Ao retornar, toque em Reconectar; não há leitura automática dos documentos.</label>
+      <p id="libraryLocalReport">PDF, DOC, DOCX, ODT, RTF, TXT, MD, CSV e Pages (arquivo). Até 10.000 documentos por pasta e 256 MB por arquivo.</p>
+      <p>PDF abre uma prévia local; DOC, DOCX e demais formatos são baixados para o aplicativo do dispositivo. O iCloud pode disponibilizar arquivos ao selecionar ou abrir. Desconectar mantém os originais. Temas por nome/pasta exigem conferência e não validam conteúdo clínico.</p>
+    </details>
+    <input id="libraryFolderInput-pdf" type="file" webkitdirectory directory multiple hidden>
+    <input id="libraryFolderInput-doc" type="file" webkitdirectory directory multiple hidden>
+  </div></section>
+  <dialog id="libraryLocalPreview" class="local-document-preview" aria-labelledby="libraryLocalPreviewTitle"><div class="local-preview-head"><h2 id="libraryLocalPreviewTitle">PDF privado</h2><button class="btn btn-secondary" id="libraryLocalPreviewClose" type="button">Fechar ✕</button></div><p>Prévia local em leitura. Se o PDF não aparecer, feche e use Baixar para abri-lo no leitor do dispositivo.</p><iframe id="libraryLocalFrame" title="PDF privado" sandbox="" referrerpolicy="no-referrer"></iframe></dialog>
 
   <!-- BUSCA -->
   <div class="search-bar">
@@ -1004,6 +1030,7 @@
 // ============================================================
 let taxonomy = { themes: [] };
 let catalog = { items: [] };
+let localFolderItems = [];
 let brain = { nodes: [], edges: [] };
 let roadmap = [];
 let documentManifest = { files: [], partitions: [], origins: [] };
@@ -1406,19 +1433,71 @@ function popularFiltros() {
   sel.innerHTML = taxonomy.themes.map(t => `<option value="${escapeHTML(t.id)}">${escapeHTML(t.emoji || '📂')} ${escapeHTML(t.label)}</option>`).join('');
 }
 
+function libraryItems() {
+  return [...(catalog.items || []), ...localFolderItems];
+}
+
+function inferLocalDocumentTheme(path) {
+  const parts = String(path || '').normalize('NFC').split('/');
+  const known = (taxonomy.themes || []).find(theme => parts.includes(theme.id));
+  if (known) return known.id;
+  const name = searchKey(path).replace(/[^a-z0-9]+/g, ' ');
+  const rules = [
+    ['pocus-usg', /\b(pocus|ultrassom|ultrassonografia)\b/], ['vm-sdra', /\b(ventilacao|sdra|ards)\b/],
+    ['endocrino-metabolico', /\b(diabetes|cetoacidose|endocrino|endocrinologia|adrenal|cortisol|tireoide|tireotoxicose)\b/],
+    ['nefro-aki-trs', /\b(renal|renais|nefro|nefrologia|dialise|hemodialise|kdigo|aki|trs)\b/], ['sepse-choque', /\b(sepse|choque septico)\b/],
+    ['infectologia', /\b(infectologia|tuberculose|pneumonia|antimicrobiano|antimicrobianos|micose|micoses)\b/],
+    ['neuro-uti', /\b(neurointensivismo|neuro uti|avc|tce|delirium|convulsao|estado de mal epileptico)\b/],
+    ['cardio-hemodinamica', /\b(cardiologia|hemodinamica|arritmia|arritmias|infarto|insuficiencia cardiaca)\b/],
+    ['gastro-hepatologia', /\b(gastroenterologia|hepatologia|nutricao)\b/], ['hematologia', /\b(hematologia|trombose|anticoagulacao)\b/],
+    ['reumatologia', /\b(reumatologia|igg4|autoimune)\b/],
+    ['temi-prova', /\b(questoes|simulado|simulados)\b|\b(prova|revisao|preparacao) temi\b/],
+    ['gestao-ia-produtividade', /\b(obsidian|produtividade|inteligencia artificial)\b/]
+  ];
+  const found = rules.find(([id, pattern]) => pattern.test(name) && (taxonomy.themes || []).some(theme => theme.id === id));
+  return found ? found[0] : '';
+}
+
+function setLocalLibraryItems(items, { focus = false } = {}) {
+  localFolderItems = (Array.isArray(items) ? items : []).filter(item => item?.folderLinked === true && /^library-local-[a-f0-9]{16}$/.test(item.id));
+  if (focus) {
+    currentFilter = 'todos'; currentFormatFilter = 'todos'; currentOriginFilter = 'icloud-local';
+    document.getElementById('busca').value = '';
+    popularFiltros();
+    document.getElementById('filtro-formato').value = 'todos';
+  } else if (!localFolderItems.length && currentOriginFilter === 'icloud-local') currentOriginFilter = 'todos';
+  lastRenderState = '';
+  popularFormatos(); renderStats(); renderGrid();
+}
+
+function localLibraryCardHTML(item) {
+  const theme = (taxonomy.themes || []).find(theme => theme.id === item.theme);
+  const id = escapeHTML(item.id);
+  return `<article class="card ${escapeHTML(item.tipo)}"><span class="card-icon">${item.extension === 'pdf' ? '📕' : '📄'}</span><h3 class="card-title">${escapeHTML(item.title)}</h3><div class="meta-pills"><span class="meta-pill origin">🔒 iCloud local · ${escapeHTML(item.localSource.toUpperCase())}</span><span class="meta-pill format">${escapeHTML(item.formatoLabel)}</span></div><p class="card-desc">${theme ? '📂 ' + escapeHTML(theme.label) + ' · tema sugerido por nome/pasta.' : '🔎 Sem tema confirmado; busque pelo nome ou pela pasta.'}<br>Revisão clínica pendente · conteúdo integral não indexado.</p><div class="card-actions">${item.extension === 'pdf' ? `<button type="button" class="btn btn-primary" data-local-document-action="preview" data-local-document-id="${id}">👁️ Ver PDF local</button>` : ''}<button type="button" class="btn btn-secondary" data-local-document-action="download" data-local-document-id="${id}">⬇️ Baixar ${escapeHTML(item.formatoLabel)}</button></div></article>`;
+}
+
 function popularFormatos() {
   const formatoSelect = document.getElementById('filtro-formato');
   const origemSelect = document.getElementById('filtro-origem');
   if (!formatoSelect || !origemSelect) return;
 
-  const partitions = documentManifest.partitions || [];
-  const origins = documentManifest.origins || [];
+  const partitions = (documentManifest.partitions || []).map(partition => ({ ...partition }));
+  const origins = [...(documentManifest.origins || [])];
+  for (const format of new Set(localFolderItems.map(item => item.formato))) {
+    const count = localFolderItems.filter(item => item.formato === format).length;
+    const existing = partitions.find(partition => partition.id === format);
+    if (existing) existing.count = (Number(existing.count) || 0) + count;
+    else partitions.push({ id: format, label: format.toUpperCase(), count });
+  }
+  if (localFolderItems.length) origins.push({ id: 'icloud-local', emoji: '🔒', label: 'iCloud local · privado', count: localFolderItems.length });
 
   formatoSelect.innerHTML = '<option value="todos">Todos os formatos</option>' +
     partitions.map(p => `<option value="${escapeHTML(p.id)}">${escapeHTML(p.emoji || '📦')} ${escapeHTML(p.label)} (${Number(p.count) || 0})</option>`).join('');
 
   origemSelect.innerHTML = '<option value="todos">Todas as origens</option>' +
     origins.map(o => `<option value="${escapeHTML(o.id)}">${escapeHTML(o.emoji || '🔎')} ${escapeHTML(o.label)} (${Number(o.count) || 0})</option>`).join('');
+  formatoSelect.value = currentFormatFilter;
+  origemSelect.value = currentOriginFilter;
 }
 
 function renderParticoes() {
@@ -1469,10 +1548,10 @@ function limparFiltros() {
 // Renderizar Stats
 function renderStats() {
   if (!catalog.items) return;
-  document.getElementById('stats-total').textContent = catalog.items.length;
+  document.getElementById('stats-total').textContent = libraryItems().length;
   document.getElementById('stats-temas').textContent = (taxonomy.themes ? taxonomy.themes.length : 0) - 1;
-  const formatsCount = new Set((catalog.items || []).map(i => i.formato || i.format || i.tipo).filter(Boolean)).size;
-  const originsCount = new Set((catalog.items || []).map(i => i.origem || i.origin).filter(Boolean)).size;
+  const formatsCount = new Set(libraryItems().map(i => i.formato || i.format || i.tipo).filter(Boolean)).size;
+  const originsCount = new Set(libraryItems().map(i => i.origem || i.origin).filter(Boolean)).size;
   document.getElementById('stats-formatos').textContent = formatsCount;
   document.getElementById('stats-origens').textContent = originsCount;
   document.getElementById('stats-brain').textContent = brain.edges ? brain.edges.length : 0;
@@ -1498,7 +1577,7 @@ function renderGrid() {
   
   if (!catalog.items) return;
 
-  const items = catalog.items.filter(i => {
+  const items = libraryItems().filter(i => {
     // Mostra todos os documentos inclusive inbox-revisar
     const matchTheme = currentFilter === 'todos' || i.theme === currentFilter;
     const formatId = i.formato || i.format || i.tipo || 'outros';
@@ -1508,6 +1587,7 @@ function renderGrid() {
     const haystack = [
       i.title,
       i.filename,
+      i.folderLinked ? i.relativePath : '',
       i.theme,
       i.tipo,
       formatId,
@@ -1537,7 +1617,7 @@ function renderGrid() {
         <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔍</div>
         <h3>Nenhum resultado encontrado</h3>
         <p style="color: var(--soft); margin-top: 0.5rem; font-size: 0.9rem;">
-          Temos ${catalog.items.length} itens no total, mas nenhum corresponde aos filtros atuais.
+          Temos ${libraryItems().length} itens no total, mas nenhum corresponde aos filtros atuais.
         </p>
         <button class="btn btn-secondary" onclick="limparFiltros()" style="margin-top: 1.5rem; display: inline-flex;">
           Limpar Filtros e Busca
@@ -1549,6 +1629,7 @@ function renderGrid() {
   const visibleItems = items.slice(0, currentRenderLimit);
 
   grid.innerHTML = visibleItems.map(i => {
+    if (i.folderLinked) return localLibraryCardHTML(i);
     const theme = (taxonomy.themes || []).find(t => t.id === i.theme) || { emoji: '📄' };
     const formatId = i.formato || i.format || i.tipo || 'outros';
     const originId = i.origem || i.origin || 'gerada-por-ia';
@@ -2904,7 +2985,10 @@ window.addEventListener('beforeunload', event => {
 focusedReader = window.LibraryFocusedReader
   ? window.LibraryFocusedReader.create({ isTokenCurrent: token => token === previewLoadToken })
   : null;
+window.LibraryLocalBridge = { ready: true, setItems: setLocalLibraryItems, inferTheme: inferLocalDocumentTheme };
+window.dispatchEvent(new CustomEvent('library:local-ready'));
 init();
 </script>
+<script type="module" src="assets/local-folders.mjs?v=9e29a8f8193602aa"></script>
 </body>
 </html>

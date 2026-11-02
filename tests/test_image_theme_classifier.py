@@ -6,7 +6,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts_admin"))
-from image_theme_classifier import THEMES, classify_image, taxonomy_document
+from image_theme_classifier import CLASSIFIER_VERSION, THEMES, classify_image, taxonomy_document
 
 
 def line(text, y=0.85, confidence=0.95, height=0.06):
@@ -47,6 +47,32 @@ class ImageThemeClassifierTests(unittest.TestCase):
         ])
         self.assertEqual(result["theme"], "pocus")
         self.assertIn("sepse-choque", result["secondaryThemes"])
+
+    def test_hemorrhagic_shock_title_outranks_generic_hemodynamics_body(self):
+        result = classify_image("generica.png", [
+            line("Choque hemorrágico"), line("Hemodinâmica e débito cardíaco", y=0.25),
+        ])
+        self.assertEqual(result["theme"], "sepse-choque")
+        self.assertEqual(result["confidence"], "alta")
+        self.assertIn("cardio-hemodinamica", result["secondaryThemes"])
+
+    def test_specific_transfusion_headings_are_hematology(self):
+        for heading in ("Reação transfusional", "Reações transfusionais", "Concentrado de hemácias", "Concentrado de plaquetas"):
+            with self.subTest(heading=heading):
+                result = classify_image("generica.png", [line(heading)])
+                self.assertEqual(result["theme"], "hematologia-trombose")
+                self.assertEqual(result["confidence"], "alta")
+
+    def test_generic_blood_words_do_not_force_a_theme(self):
+        for heading in ("Hemácias", "Hemorrágico", "Plaquetas", "Concentrado"):
+            with self.subTest(heading=heading):
+                result = classify_image("generica.png", [line(heading)])
+                self.assertEqual(result["theme"], "a-classificar")
+                self.assertTrue(result["needsReview"])
+
+    def test_classifier_version_tracks_the_specific_phrase_update(self):
+        self.assertEqual(CLASSIFIER_VERSION, "360x-topics-1.1")
+        self.assertEqual(taxonomy_document()["classifierVersion"], CLASSIFIER_VERSION)
 
     def test_clinical_subject_beats_recurrent_branding(self):
         result = classify_image("ChatGPT Image 12 de setembro.png", [

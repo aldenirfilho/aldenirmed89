@@ -281,6 +281,12 @@
           "fullManuscriptsIncluded": false,
           "existingHistoricalReviewFieldsUnchanged": true,
           "appliesToOtherHistoricalPaths": false
+        },
+        {
+          "date": "2026-11-02",
+          "source": "explicit-human-user-request-in-current-chat",
+          "scope": "Conectar as pastas privadas PDF e DOC de 360X na Biblioteca IA por seleção local; preservar biblioteca pública, originais e revisão clínica existente. Sem novos documentos públicos ou recomendações clínicas.",
+          "claimsHumanClinicalReview": false
         }
       ]
     },
@@ -735,8 +741,7 @@
         "data/connections.json",
         "data/site_manifest.json",
         "index.html",
-        "public_site/data/site_manifest.json",
-        "sw.js"
+        "public_site/data/site_manifest.json"
       ],
       "publishTargets": [
         "github-pages"
@@ -10120,8 +10125,7 @@
       "id": "release-cardfeed-temas-locais-2026-11-02",
       "classification": "public-cited",
       "paths": [
-        "05_Midia_E_Feed/sw.js",
-        "docs_usuario/BUSCA_TEMI_ICLOUD/index.html"
+        "05_Midia_E_Feed/sw.js"
       ],
       "publishTargets": [
         "github-pages"
@@ -10147,6 +10151,50 @@
         "grantsClinicalHomologation": false
       },
       "note": "Metadados temáticos locais com correspondência estrita por caminho, tamanho e mtime; ajustes manuais preservados. Novos temas não introduzem recomendações médicas."
+    },
+    {
+      "id": "release-biblioteca-pastas-locais-360x-2026-11-02",
+      "classification": "public-cited",
+      "paths": [
+        "02_Biblioteca_IA_Engine/assets/local-folders.mjs",
+        "sw.js",
+        "docs_usuario/BUSCA_TEMI_ICLOUD/index.html"
+      ],
+      "publishTargets": [
+        "github-pages"
+      ],
+      "ownerApproval": true,
+      "reviewer": "Codex e agentes — revisão técnica de código, isolamento do acervo e testes; não equivale a revisão médica humana.",
+      "reviewedAt": "2026-11-02",
+      "rights": {
+        "basis": "owned",
+        "statement": "Código e instruções operacionais originais. Os documentos privados, seus nomes e conteúdos não integram o site ou repositório públicos."
+      },
+      "professionalClaims": [],
+      "personalData": {
+        "contains": false
+      },
+      "medical": false,
+      "sources": [
+        {
+          "title": "MDN — showDirectoryPicker: seleção explícita e acesso somente leitura",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/showDirectoryPicker",
+          "accessedAt": "2026-11-02"
+        },
+        {
+          "title": "MDN — webkitdirectory: seleção de pastas como alternativa do navegador",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory",
+          "accessedAt": "2026-11-02"
+        }
+      ],
+      "publicationAuthorization": {
+        "source": "explicit-human-user-request-in-current-chat",
+        "authorizedAt": "2026-11-02",
+        "scope": "Integrar a Biblioteca IA às pastas PDF e DOC de 360X e continuar a publicação autorizada do site. O código é público; arquivos privados permanecem locais, sem upload ou envio a IA.",
+        "claimsHumanClinicalReview": false,
+        "grantsClinicalHomologation": false
+      },
+      "note": "Busca local por nomes, pastas e temas sugeridos; não declara indexação integral ou análise automática dos documentos. Seleção e permissão do navegador são explícitas; reconexão não enumera ao carregar a página."
     }
   ],
   "exampleTemplates": [
@@ -10159,5 +10207,5 @@
       "note": "Modelo de estrutura, não é conteúdo real, aprovação ou autorização de publicação."
     }
   ],
-  "updatedAt": "2026-10-31"
+  "updatedAt": "2026-11-02"
 }
