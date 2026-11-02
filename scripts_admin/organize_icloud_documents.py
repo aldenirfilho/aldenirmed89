@@ -40,6 +40,22 @@ CLASSIFICATION_FIELDS = set(ENTRY_FIELDS) - {"path", "size", "modifiedMs"}
 REPO_ROOT = Path(__file__).resolve().parents[1]
 WEB_PATH_REASON = "Caminho original não suportado na biblioteca web; use o atalho local e confira a classificação."
 
+# Equivalências somente de rótulos genéricos; nomes e texto bruto não geram aliases.
+DOCUMENT_SEARCH_ALIASES = [{'terms': ['tuberculose', 'tuberculosis'], 'aliases': ['TB', 'Tuberculose', 'Tuberculosis']},
+ {'terms': ['dpoc', 'copd', 'doenca pulmonar obstrutiva cronica'],
+  'aliases': ['DPOC', 'COPD', 'Doença pulmonar obstrutiva crônica']},
+ {'terms': ['sdra', 'ards', 'sindrome do desconforto respiratorio agudo'],
+  'aliases': ['SDRA', 'ARDS', 'Síndrome do desconforto respiratório agudo']},
+ {'terms': ['aki', 'lesao renal aguda', 'injuria renal aguda'],
+  'aliases': ['AKI', 'LRA', 'Lesão renal aguda', 'Injúria renal aguda']},
+ {'terms': ['pocus', 'point of care ultrasound'],
+  'aliases': ['POCUS', 'Point of care ultrasound', 'Ultrassonografia à beira leito', 'Ultrassom à beira leito']},
+ {'terms': ['doenca relacionada a igg4'], 'aliases': ['IgG4', 'IgG 4', 'IgG4 related disease']},
+ {'terms': ['igg4'], 'aliases': ['IgG 4']},
+ {'terms': ['pneumonia comunitaria', 'pneumonia adquirida na comunidade'],
+  'aliases': ['PAC', 'Pneumonia comunitária', 'Pneumonia adquirida na comunidade']},
+ {'terms': ['sepse', 'sepsis'], 'aliases': ['Sepse', 'Sepsis']}]
+
 
 def _integer(value, label):
     if type(value) is not int or value < 0:
@@ -60,6 +76,11 @@ def _native_relative(value):
 def _web_eligible(value):
     return not ("\\" in value or any(ord(char) < 32 or ord(char) == 127 for char in value)
                 or re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", value))
+
+
+def _word_owner_file(value):
+    name = PurePosixPath(value).name
+    return name.startswith("~$") and PurePosixPath(name).suffix.lower() in {".doc", ".docx"}
 
 
 def _fingerprint(relative_path, size, modified_ns):
@@ -286,9 +307,10 @@ def _csv_text(entries):
 def _catalog_html(plan):
     items = [{**entry, "title": PurePosixPath(entry["path"]).name,
               "extension": PurePosixPath(entry["path"]).suffix.lower(),
+              "auxiliary": _word_owner_file(entry["path"]),
               "src": "./" + "/".join(quote(p, safe="") for p in link["link"].split("/"))}
              for entry, link in zip(plan["catalog"], plan["links"])]
-    data = {"themes": THEMES, "items": items, "sourceName": plan["manifest"]["sourceName"], "complete": plan["complete"]}
+    data = {"themes": THEMES, "items": items, "sourceName": plan["manifest"]["sourceName"], "complete": plan["complete"], "subjectAliases": DOCUMENT_SEARCH_ALIASES}
     return _HTML.replace("__CATALOG_DATA__", _safe_json(data))
 
 
@@ -301,12 +323,14 @@ _HTML = r'''<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta 
 <div class="toolbar"><p id="count" role="status" aria-live="polite"></p><a href="./revisao.csv">📋 Revisão (CSV)</a><a href="./catalogo.csv">📄 Catálogo completo (CSV)</a></div><main id="results" tabindex="-1"><div id="grid" class="grid"></div><p id="empty" hidden>Nenhum documento com esses filtros.</p></main><nav aria-label="Páginas"><button id="prev" type="button">← Anterior</button><span id="page" aria-live="polite"></span><button id="next" type="button">Próximos 24 →</button></nav>
 <footer class="muted">🔒 Catálogo local, sem envio de documentos. Originais e arquivos relacionados preservados. PDF abre pelo link; outros formatos são baixados para abrir no aplicativo escolhido. Não há texto integral ou visualizador embutido. A classificação temática exige conferência e não valida conteúdo clínico. O próprio macOS pode baixar um arquivo do iCloud ao abri-lo.</footer>
 <script id="catalog-data" type="application/json">__CATALOG_DATA__</script><script>
-'use strict';const {themes,items,sourceName,complete}=JSON.parse(document.getElementById('catalog-data').textContent);const $=id=>document.getElementById(id),pageSize=24;let current=1;
+'use strict';const {themes,items,sourceName,complete,subjectAliases=[]}=JSON.parse(document.getElementById('catalog-data').textContent);const $=id=>document.getElementById(id),pageSize=24;let current=1;
 $('coverage').textContent=sourceName+' · '+(complete?'Inventário completo.':'⚠️ Catálogo parcial: somente os documentos inventariados estão incluídos.');
-const norm=v=>String(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');for(const [id,label]of Object.entries(themes)){const o=document.createElement('option');o.value=id;o.textContent=label;$('theme').append(o);}
-const filtered=()=>{const q=norm($('search').value.trim());return items.filter(i=>(!$('theme').value||i.theme===$('theme').value||i.secondaryThemes.includes($('theme').value))&&(!$('review').checked||i.needsReview)&&(!q||norm([i.title,i.path,i.themeLabel,...i.matchedTerms,...i.secondaryThemes.map(t=>themes[t]||t)].join(' ')).includes(q)));};
+const norm=v=>String(v??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();for(const [id,label]of Object.entries(themes)){const o=document.createElement('option');o.value=id;o.textContent=label;$('theme').append(o);}
+const aliases=i=>{const labels=i.matchedTerms.map(norm),found=new Set();for(const rule of subjectAliases){if(labels.some(label=>rule.terms.some(term=>(' '+label+' ').includes(' '+term+' '))))rule.aliases.forEach(alias=>found.add(alias));}return [...found];};
+const matches=(haystack,q)=>{if(!q)return true;const words=norm(haystack).split(' ').filter(Boolean);return q.split(' ').filter(Boolean).every(token=>words.some(word=>token.length<=2?word===token:word.startsWith(token)));};
+const filtered=()=>{const q=norm($('search').value.trim());return items.filter(i=>(!$('theme').value||i.theme===$('theme').value||i.secondaryThemes.includes($('theme').value))&&(!$('review').checked||i.needsReview)&&matches([i.title,i.path,i.themeLabel,...i.matchedTerms,...aliases(i),i.auxiliary?'Arquivo auxiliar de edição Word Office':'',...i.secondaryThemes.map(t=>themes[t]||t)].join(' '),q));};
 function el(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;}
-function render(){const list=filtered(),pages=Math.max(1,Math.ceil(list.length/pageSize));current=Math.min(current,pages);$('grid').replaceChildren();for(const i of list.slice((current-1)*pageSize,current*pageSize)){const card=el('article','card');card.append(el('span','badge',i.themeLabel));card.append(el('h2','',i.title));card.append(el('p','meta',i.extension.toUpperCase().slice(1)+' · '+Math.ceil(i.size/1024)+' KB · confiança '+i.confidence+' · '+i.method));if(i.needsReview)card.append(el('p','warning','⚑ Conferir classificação'));if(!i.webEligible)card.append(el('p','warning','Disponível pelo atalho local; caminho não compatível com a biblioteca web.'));if(i.secondaryThemes.length)card.append(el('p','meta','Também: '+i.secondaryThemes.map(t=>themes[t]||t).join(' · ')));card.append(el('p','meta',i.reason));const a=el('a','',i.extension==='.pdf'?'Abrir PDF original ↗':'Baixar documento original ↓');a.href=i.src;a.rel='noopener';if(i.extension==='.pdf')a.target='_blank';else a.download=i.title;card.append(a);$('grid').append(card);}$('count').textContent=list.length+' de '+items.length+' documentos · até 24 por página';$('page').textContent='Página '+current+' de '+pages;$('prev').disabled=current===1;$('next').disabled=current===pages;$('empty').hidden=list.length>0;}
+function render(){const list=filtered(),pages=Math.max(1,Math.ceil(list.length/pageSize));current=Math.min(current,pages);$('grid').replaceChildren();for(const i of list.slice((current-1)*pageSize,current*pageSize)){const card=el('article','card');card.append(el('span','badge',i.themeLabel));card.append(el('h2','',i.title));card.append(el('p','meta',i.extension.toUpperCase().slice(1)+' · '+Math.ceil(i.size/1024)+' KB · confiança '+i.confidence+' · '+i.method));if(i.needsReview)card.append(el('p','warning','⚑ Conferir classificação'));if(!i.webEligible)card.append(el('p','warning','Disponível pelo atalho local; caminho não compatível com a biblioteca web.'));if(i.secondaryThemes.length)card.append(el('p','meta','Também: '+i.secondaryThemes.map(t=>themes[t]||t).join(' · ')));card.append(el('p','meta',i.reason));if(i.auxiliary)card.append(el('p','warning','Arquivo auxiliar de edição do Word (prefixo ~$). Preservado no disco; não é um documento para leitura.'));else{const a=el('a','',i.extension==='.pdf'?'Abrir PDF original ↗':'Baixar documento original ↓');a.href=i.src;a.rel='noopener';if(i.extension==='.pdf')a.target='_blank';else a.download=i.title;card.append(a);}$('grid').append(card);}$('count').textContent=list.length+' de '+items.length+' documentos · até 24 por página';$('page').textContent='Página '+current+' de '+pages;$('prev').disabled=current===1;$('next').disabled=current===pages;$('empty').hidden=list.length>0;}
 for(const id of ['search','theme','review'])$(id).addEventListener(id==='search'?'input':'change',()=>{current=1;render();});$('prev').addEventListener('click',()=>{current--;render();$('results').focus();});$('next').addEventListener('click',()=>{current++;render();$('results').focus();});render();
 </script></body></html>'''
 

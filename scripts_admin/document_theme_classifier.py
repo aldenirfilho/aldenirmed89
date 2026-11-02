@@ -55,6 +55,10 @@ THEMES = {
     "financas-patrimonio": "Finanças / Patrimônio",
     "academico-projetos": "Acadêmico / Projetos",
     "fe-historia-cultura": "Fé / História / Cultura",
+    "cirurgia-trauma": "Cirurgia / Trauma / Ortopedia",
+    "gineco-obstetricia": "Ginecologia / Obstetrícia",
+    "pediatria-neonatologia": "Pediatria / Neonatologia",
+    "saude-coletiva-epidemiologia": "Saúde Coletiva / Epidemiologia / Bioestatística",
     "inbox-revisar": "A revisar / Classificação pendente",
 }
 
