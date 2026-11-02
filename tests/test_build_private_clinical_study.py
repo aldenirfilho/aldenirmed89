@@ -104,6 +104,13 @@ class PrivateClinicalGenerationTests(unittest.TestCase):
                 self.assertEqual(package["units"], [])
         package, _ = build(row(didacticSegments=[{"kind": "pdf-page", "pageNumber": 8, "text": "Licensed to exemplo. " + FACT}]))
         self.assertEqual(package["units"][0]["particles"][0]["text"], FACT)
+        for unit in ["µg", "μg", "g", "unidades"]:
+            text = "A pneumonia é uma infecção para a qual o texto sugere 10 " + unit + " de um medicamento fictício."
+            self.assertEqual(study.select_facts(row(didacticSegments=[{"kind": "pdf-page", "pageNumber": 8, "text": text}])), [])
+        for text in ["A pneumonia é tratada com um medicamento cuja indicação exige avaliação clínica.",
+                     "A corticoterapia é uma intervenção que deve sempre ser prescrita neste cenário fictício.",
+                     "The treatment of pneumonia is recommended according to an unspecified old source."]:
+            self.assertEqual(study.select_facts(row(didacticSegments=[{"kind": "pdf-page", "pageNumber": 8, "text": text}])), [])
 
     def test_dedup_requires_whole_file_hash_and_same_passages(self):
         a = row()
@@ -135,6 +142,16 @@ class PrivateClinicalGenerationTests(unittest.TestCase):
         self.assertEqual(report["reviewExcludedFactSha256"], [denied])
         with self.assertRaisesRegex(ValueError, "invalid-review-exclusions"):
             study.build_package({"documents": [source]}, [], excluded_facts=["untrusted-text"])
+
+    def test_selected_passages_cannot_backfill_discarded_statements(self):
+        other = "A anemia é uma condição clínica caracterizada pela redução da concentração de hemoglobina no sangue."
+        source = row(didacticSegments=[{"kind": "pdf-page", "pageNumber": 8, "text": FACT + " " + other}])
+        selected = [hashlib.sha256(FACT.encode()).hexdigest()]
+        package, report = study.build_package({"documents": [source]}, [], selected_facts=selected)
+        self.assertEqual([p["text"] for u in package["units"] for p in u["particles"]], [FACT])
+        self.assertTrue(report["selectionRestricted"])
+        package, _ = study.build_package({"documents": [source]}, [], selected_facts=selected, excluded_facts=selected)
+        self.assertEqual(package["units"], [])
 
     def test_original_bytes_and_metadata_unchanged_private_outputs_exclusive(self):
         with tempfile.TemporaryDirectory() as tmp:

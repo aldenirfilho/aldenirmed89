@@ -28,7 +28,12 @@ IDENTIFIER = re.compile(r"\bCPF\s*[:#-]?\s*\d|\b(?:prontu[aá]rio|nome\s+do\s+pa
 META = re.compile(r"copyright|all rights reserved|direitos reservados|licensed to|licenciad[oa] para|doi\s*[:.]|isbn|issn|corresponding author|[a-z]+://|www\.|^\s*(?:autores?|authors?|editores?|editors?|refer[eê]ncias?|bibliograf|instru[cç][oõ]es)\b", re.I)
 MARKETING = re.compile(r"guia completo|uni[aã]o faz a for[cç]a|compreendendo|neste (?:cap[ií]tulo|livro)|this (?:chapter|paper)|ao final|n[aã]o substitui|consulte o|é proibid|e expressamente|assinale|alternativa correta|alternativa incorreta|escolha a resposta|gabarito", re.I)
 AFFILIATION = re.compile(r"\b(?:professor[ae]?s?|coordenador[ae]?s?|doutorad[oa]|mestrad[oa]|mestre em|graduad[oa] em|especialista em|universidade|university|faculdade|college|departamento de|department of|pós-graduação|residência médica|board.certified)\b", re.I)
-DOSE = re.compile(r"\b(?:\d+(?:[.,]\d+)?\s*(?:mg|mcg|µg|ug|UI|mEq|mmol|mL|ml|g/kg)|dose|posologia|dilui[cç][aã]o|infundir|prescrev|administrar\s+\d)", re.I)
+# Automatic recall is descriptive. Therapeutic decisions require the separate
+# source-verified clinical curation rather than unreviewed old passages.
+THERAPEUTIC = re.compile(r"tratament|treatment|terap|therap|conduta|manejo|management|interven[cç]|intervention|medicament|f[aá]rmac|cortico|esteroi|steroid|antibi|antimicrob|quimioter|chemotherap|anticoagul|trombol|thrombol|transfus|prescri|profilax|prophyla|preven[cç]|prevent|recomend|recommend|contraindic|\b(?:devem?|must|should|indica|indicad[oa]s?|utilizad[oa]s?|empregad[oa]s?|administrad[oa]s?|iniciad[oa]s?|suspender|repor|corrigir|sempre|nunca|obrigat[oó]ri[oa]s?|absolut[oa]s?)\b|padr[aã]o.?ouro|gold.standard", re.I)
+THERAPEUTIC_EXTRA = re.compile(r"\btreat|\btratad|suger|suggest|antiviral|antif[uú]ng|vasopress|inotr[oó]p|glucocortic|sedativ|analg[eé]s|opioid|insulin|diur[eé]t|terlipress|amiodar|propofol|dexmedetomid|dexamet|predniso|hidrocortis|fentan|noradrenal|norepinephr|epinephr|adrenalin|azul de metileno|\b(?:always|never|universal|rotina|routine)\b", re.I)
+EDITORIAL_LAYOUT = re.compile(r"\bautor(?:es)?\s*:|editores?\s+(?:de\s+)?se[cç][aã]o|ficha catalogr[aá]fica|tiragem|produced by|editor.in.chief|nejm\.org|/H\d+|\buni[0-9a-f]{4}\b", re.I)
+DOSE = re.compile(r"\b(?:\d+(?:[.,]\d+)?\s*(?:mg|mcg|µg|μg|ug|UI|U\b|unidades?|mEq|mmol|mL|g(?:/kg)?)|dose|posologia|dilui[cç][aã]o|infundir|prescrev|administrar\s+\d)", re.I)
 PREDICATE = re.compile(r"\b(?:é|são|consiste|definid[oa]s?|caracterizad[oa]s?|apresenta|associad[oa]s?|ocorre|causa|resulta|envolve|aumenta|reduz|inclui|incluem|indica|permite|depende|representa|afeta|is|are|defined|associated|characterized|causes|includes|occurs|results|requires|increases|reduces)\b", re.I)
 MEDICAL_WORDS = "sepse|sepsis|choque|shock|pneumonia|DPOC|COPD|SDRA|ARDS|asma|asthma|tuberculose|tuberculosis|candid|infec|infection|antimicrob|anemia|hemoglobina|tromb|hemorr|coagula|hemost|plaqueta|leucemia|linfoma|renal|kidney|creatinina|potássio|sódio|acidose|alcalose|diabetes|insulina|glicemia|tireo|adrenal|cortisol|hipófis|hepát|hepat|cirrose|pancreat|gastr|intestin|nutri|enteral|cardíac|cardiac|coronári|coronary|arritm|arrhythm|hipertens|hypertens|ventila|pulmon|respirat|pleural|oxig|hipox|delirium|sedaç|sedation|analges|neur|AVC|stroke|epilep|cefaleia|encefal|lupus|artrit|autoim|cortico|ferida|lesão|úlcera|útero|gestaç|gravidez|parto|obstétr|puerp|menstr|ovári|fetal|neonat|pediátr|infância|criança|aleitamento|vacina|imuniza|trauma|queimadura|hérnia|cirurg|cateter|ultrass|ultrasound|POCUS|diarreia|desidrata|epidemiol|coorte|bioestat|sensibilidade|especificidade|mortalidade|prevalência|incidência|TDAH|ADHD|paliativ|fisiolog|patolog|diagnóst|diagnos|prognóst"
 MEDICAL = re.compile(MEDICAL_WORDS + "|heart|hepatic|liver|oxygen|hypox|potassium|sodium|electrolyt|thyroid|pregnan|pediatric|diarrh|dehydrat|seizure|surgic|anaphylax", re.I)
@@ -102,7 +107,7 @@ def _balanced(text):
     return not stack
 
 
-def select_facts(row, maximum=3, excluded_facts=()):
+def select_facts(row, maximum=3, excluded_facts=(), selected_facts=None):
     """Only complete, qualitative, topical statements; never ungraded choices."""
     if _quarantined(row) or not row.get("factualEligible") or row.get("status") != "ready-candidate":
         return []
@@ -117,17 +122,20 @@ def select_facts(row, maximum=3, excluded_facts=()):
             block = re.sub(r"\n(?!\s*\n|\s*[•●▪]|\s*[A-E][.)]\s)", " ", block)
             for sentence in re.split(r"(?<=[.!?])\s+(?=[A-ZÀ-Ý])|\n+|[•●▪]", block):
                 text = normalized(re.sub(r"^[#>*\-\s]+", "", sentence))
-                if hashlib.sha256(text.encode()).hexdigest() in excluded_facts:
+                fact_hash = hashlib.sha256(text.encode()).hexdigest()
+                if fact_hash in excluded_facts or (selected_facts is not None and fact_hash not in selected_facts):
                     continue
                 if not 50 <= len(text) <= 600 or not 9 <= len(text.split()) <= 90:
                     continue
                 if CONTROL.search(text) or not _balanced(text):
                     continue
-                if META.search(text) or MARKETING.search(text) or AFFILIATION.search(text) or DOSE.search(text) or IDENTIFIER.search(text):
+                if META.search(text) or MARKETING.search(text) or AFFILIATION.search(text) or EDITORIAL_LAYOUT.search(text) or DOSE.search(text) or THERAPEUTIC.search(text) or THERAPEUTIC_EXTRA.search(text) or IDENTIFIER.search(text):
                     continue
                 if "?" in text or re.search(r"<(?:/?[a-z])|\[[a-z]+://|(?:^|\s)[A-Ea-e][.)]\s", text, re.I):
                     continue
                 if re.search(r"[,:;—–-]$", text) or re.match(r"(?:essa|esse|esta|este|isso|estes|esses|essas|estas|it|they|these|those|além disso|por isso|portanto|dessa forma|deste modo|assim sendo|no entanto|entretanto|qual|quais|como|por que|what|which|how|why)\b", text, re.I):
+                    continue
+                if re.match(r"(?:é|são|this|its|their)\b", text, re.I) or re.search(r"\b(?:em|e|ou|de|para|com|do|da|and|or|with|of|to|for)[.!]?$", text, re.I):
                     continue
                 terms = list(MEDICAL.finditer(text))
                 if not terms or not PREDICATE.search(text):
@@ -183,12 +191,16 @@ def _source(row, facts):
     return source
 
 
-def build_package(inventory, enrichments, package_id="library-study-clinical-20261102", version=1, excluded_facts=()):
+def build_package(inventory, enrichments, package_id="library-study-clinical-20261102", version=1, excluded_facts=(), selected_facts=None):
     if not re.fullmatch(r"library-study-[a-z0-9-]{1,106}", package_id) or type(version) is not int or not 1 <= version <= 1_000_000:
         raise ValueError("invalid-package-version")
     if not isinstance(excluded_facts, (list, tuple, set, frozenset)) or any(not isinstance(h, str) or not re.fullmatch(r"[a-f0-9]{64}", h) for h in excluded_facts):
         raise ValueError("invalid-review-exclusions")
     excluded_facts = frozenset(excluded_facts)
+    if selected_facts is not None:
+        if not isinstance(selected_facts, (list, tuple, set, frozenset)) or any(not isinstance(h, str) or not re.fullmatch(r"[a-f0-9]{64}", h) for h in selected_facts):
+            raise ValueError("invalid-review-selection")
+        selected_facts = frozenset(selected_facts)
     rows = inventory.get("documents")
     if not isinstance(rows, list) or not rows:
         raise ValueError("empty-inventory")
@@ -201,7 +213,7 @@ def build_package(inventory, enrichments, package_id="library-study-clinical-202
         if row.get("metadataCurrent") is False or row.get("manifestCurrent") is False or row.get("metadataStable") is False:
             raise ValueError("source-changed")
         quarantined = _quarantined(row)
-        facts = [] if quarantined else select_facts(row, excluded_facts=excluded_facts)
+        facts = [] if quarantined else select_facts(row, excluded_facts=excluded_facts, selected_facts=selected_facts)
         source = _source(row, facts); sources.append(source); source_rows[source["id"]] = row
         status = source["coverage"]["status"]
         evidence = {"id": row["id"], "sourceId": source["id"], "status": status, "particles": len(facts), "cards": 0,
@@ -255,6 +267,8 @@ def build_package(inventory, enrichments, package_id="library-study-clinical-202
     summary = {"schema": "360x-private-clinical-generation-report-v1", "sources": len(sources), "coverage": dict(Counter(s["coverage"]["status"] for s in sources)),
         "extractionStatusCounts": dict(Counter(row.get("status", "unknown") for row in rows)),
         "reviewExcludedFactSha256": sorted(excluded_facts),
+        "selectionRestricted": selected_facts is not None, "selectedCandidateCount": len(selected_facts) if selected_facts is not None else None,
+        "automaticRecallScope": "descriptive-passages-only; therapeutic-decisions-require-curation",
         "documentsWithGroundedSummary": sum(r.get("particles", 0) > 0 for r in report), "documentalUnits": len(duplicate_units),
         "clinicalApplicationUnits": len(units) - len(duplicate_units), "particles": sum(len(u["particles"]) for u in units),
         "cards": sum(len(u["cards"]) for u in units), "questions": sum(len(u["questions"]) for u in units), "packageBytes": len(raw),
@@ -275,7 +289,7 @@ def write_private(output, package, report):
             path = stage / name
             path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n")
             path.chmod(0o600)
-        (stage / "LEIA-ME.txt").write_text("ESTUDO CLÍNICO PRIVADO — TURBO TEMI 360X\n\nImporte estudo-clinico-360x.json em Biblioteca IA → Estudo privado.\nConecte PDF e DOC para abrir as fontes pela versão correspondente.\nResumos são extrativos e restritos às passagens indicadas. As questões autorais de aplicação temática usam referências próprias; não são questões oficiais AMIB nem transcrições das provas.\nConteúdo e progresso ficam privados no navegador. Use o backup privado de estudo para transferir conteúdo/progresso.\nFontes insuficientes e possíveis registros individuais ficam no inventário; não viram afirmações clínicas.\nRevisão médica formal pendente. Originais não foram movidos, renomeados ou editados.\n", encoding="utf-8")
+        (stage / "LEIA-ME.txt").write_text("ESTUDO CLÍNICO PRIVADO — TURBO TEMI 360X\n\nImporte estudo-clinico-360x.json em Biblioteca IA → Estudo privado.\nConecte PDF e DOC para abrir as fontes pela versão correspondente.\nResumos são extrativos e restritos às passagens indicadas. A extração automática conserva apenas conteúdo descritivo; condutas terapêuticas, doses e afirmações absolutas ficam retidas para curadoria. As questões autorais de aplicação temática usam referências próprias; não são questões oficiais AMIB nem transcrições das provas.\nConteúdo e progresso ficam privados no navegador. Use o backup privado de estudo para transferir conteúdo/progresso.\nFontes insuficientes e possíveis registros individuais ficam no inventário; não viram afirmações clínicas.\nRevisão médica formal pendente. Originais não foram movidos, renomeados ou editados.\n", encoding="utf-8")
         (stage / "LEIA-ME.txt").chmod(0o600)
         _rename_exclusive(stage, output)
     finally:
@@ -293,6 +307,7 @@ def main(argv=None):
     parser.add_argument("--package-id", default="library-study-clinical-20261102")
     parser.add_argument("--version", type=int, default=1)
     parser.add_argument("--review-exclusions", type=Path, help="Lista privada de SHA-256 de fragmentos recusados na revisão contextual.")
+    parser.add_argument("--selected-passages", type=Path, help="Conserva apenas trechos deste conjunto privado, sem repor descartes com frases novas.")
     args = parser.parse_args(argv)
     try:
         inventory = json.loads(args.inventory.read_text())
@@ -303,7 +318,13 @@ def main(argv=None):
             if not isinstance(review, dict) or set(review) != {"schema", "factSha256"} or review["schema"] != "360x-private-study-exclusions-v1":
                 raise ValueError("invalid-review-exclusions")
             exclusions = review["factSha256"]
-        package, report = build_package(inventory, enrichments, args.package_id, args.version, exclusions)
+        selected = None
+        if args.selected_passages:
+            selection = json.loads(args.selected_passages.read_text())
+            if not isinstance(selection, dict) or set(selection) != {"schema", "factSha256"} or selection["schema"] != "360x-private-study-selection-v1":
+                raise ValueError("invalid-review-selection")
+            selected = selection["factSha256"]
+        package, report = build_package(inventory, enrichments, args.package_id, args.version, exclusions, selected)
         write_private(args.output, package, report)
     except (OSError, ValueError, TypeError, KeyError):
         print(json.dumps({"ok": False, "message": "Geração recusada; confira inventário, âncoras e destino privado."}))
