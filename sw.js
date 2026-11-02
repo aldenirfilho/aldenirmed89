@@ -15,6 +15,10 @@ const LIBRARY_MANIFEST_PATHS = new Set([
   `./02_Biblioteca_IA_Engine/data/${filename}`,
   self.registration.scope
 ).pathname));
+const STUDY_CATALOG_PATHS = new Set([
+  "./data/mnemonicos.json", "./data/desafios.json", "./data/study-search.json",
+  "./questoes/data/hub_qbanks.js"
+].map(relative => new URL(relative, self.registration.scope).pathname));
 const SHELL_ASSETS = [
   "./assets/icons/aerospace-v2/favicon.ico",
   "./assets/icons/aerospace-v2/icon-32.png",
@@ -294,6 +298,9 @@ const WARM_ASSETS = [
   "./mnemonicos/index.html",
   "./mnemonicos/styles.css",
   "./mnemonicos/app.js",
+  "./mnemonicos/app.js?v=15c088af9f9bedc8",
+  "./mnemonicos/styles.css?v=82851d2d78f8434c",
+  "./data/mnemonicos.json?v=20261102",
   "./assets/js/study-search-core.mjs",
   "./data/study-search.json",
   "./questoes/explorar.html",
@@ -413,7 +420,8 @@ self.addEventListener("fetch", (event) => {
       (url.pathname.endsWith("/ecossistema/data/catalog.json") ||
        url.pathname.endsWith("/ecossistema/data/sites-360x.json") ||
        url.pathname.endsWith("/ecossistema/data/mapa-conexoes.json")) ||
-      LIBRARY_MANIFEST_PATHS.has(url.pathname)) {
+      LIBRARY_MANIFEST_PATHS.has(url.pathname) ||
+      STUDY_CATALOG_PATHS.has(url.pathname)) {
     event.respondWith(freshManifest(request));
     return;
   }

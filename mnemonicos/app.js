@@ -13,7 +13,7 @@
   $("#search").value = params.get("q") || "";
   let items = [];
   try {
-    const response = await fetch("../data/mnemonicos.json");
+    const response = await fetch("../data/mnemonicos.json?v=20261102");
     if (response.ok) items = (await response.json()).mnemonicos || [];
   } catch (_) {}
 
