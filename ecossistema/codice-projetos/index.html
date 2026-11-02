@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Códice dos Projetos 360X</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Códice tecno-medieval: obsidiana + ouro + ciano. Layout: resumo → radar → filtros → grade de cards → projetos Claude */
+  --obsidian:#0b0d12; --panel:#131720; --panel2:#181d28; --line:#272e3c;
+  --gold:#d8b45f; --cyan:#47d2e4; --ink:#ece6d6; --muted:#9ba1ad;
+  --ok:#5fcf8a; --warn:#e8b04a; --bad:#e3655c; --idea:#b18cf0;
+  --f-display:"Cinzel", "Trajan Pro", Georgia, serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--obsidian);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;
+  background-image:radial-gradient(1200px 500px at 50% -200px, rgba(216,180,95,.10), transparent 70%),
+  repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 28px);}
+a{color:var(--cyan)}
+.wrap{max-width:1280px;margin:0 auto;padding:22px 18px 60px}
+header.top{display:flex;gap:18px;align-items:center;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel2),var(--panel));border-radius:14px;padding:18px 20px;position:relative;overflow:hidden}
+header.top::after{content:"";position:absolute;inset:auto 0 0 0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--cyan),transparent)}
+.crest{flex:0 0 64px}
+h1{font-family:var(--f-display);font-weight:700;letter-spacing:.06em;margin:0;font-size:clamp(20px,3.2vw,30px);color:var(--gold);text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0;font-size:14px}
+.sub b{color:var(--ink)}
+h2{font-family:var(--f-display);color:var(--gold);letter-spacing:.05em;font-size:18px;margin:0;text-wrap:balance}
+.sec{margin-top:22px}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.hint{color:var(--muted);font-size:13px}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left;color:inherit;font:inherit}
+.kpi:hover,.kpi:focus-visible{border-color:var(--gold);outline:none}
+.kpi .n{font-family:var(--f-mono);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi .l{color:var(--muted);font-size:13px}
+.kpi.bad .n{color:var(--bad)} .kpi.warn .n{color:var(--warn)} .kpi.ok .n{color:var(--ok)} .kpi.cy .n{color:var(--cyan)} .kpi.gd .n{color:var(--gold)}
+
+/* Oracle + radar */
+.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px}
+@media (max-width:860px){.duo{grid-template-columns:1fr}}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.oracle{border-color:rgba(71,210,228,.35);background:linear-gradient(160deg,rgba(71,210,228,.07),var(--panel) 55%)}
+.oracle .pick{margin-top:10px;min-height:118px;border:1px dashed var(--line);border-radius:10px;padding:12px}
+.pick .pn{font-weight:700;font-size:17px}
+.pick .pd{color:var(--muted);font-size:13.5px;margin:4px 0}
+.pick .px{font-size:14px;margin-top:6px}
+.btn{appearance:none;border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:9px;padding:7px 11px;font:600 13.5px var(--f-body);cursor:pointer;display:inline-flex;gap:6px;align-items:center;text-decoration:none}
+.btn:hover{border-color:var(--gold)}
+.btn:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.btn.primary{background:linear-gradient(180deg,#e2c072,#b8913d);color:#1a1408;border-color:#b8913d}
+.btn.cy{border-color:rgba(71,210,228,.45);color:var(--cyan)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pq{margin:4px 0 0;padding-left:20px;display:grid;gap:5px;font-size:13.5px}
+.pq li::marker{color:var(--warn);font-family:var(--f-mono)}
+.pq button{all:unset;cursor:pointer;font-weight:700}
+.pq button:hover{color:var(--gold)}
+.pq button:focus-visible{outline:2px solid var(--cyan)}
+.pq span{color:var(--muted)}
+.radar ol{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.radar li{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;align-items:start;padding:8px 10px;border-radius:9px;background:var(--panel2);border-left:3px solid var(--bad)}
+.radar li.pend{border-left-color:var(--warn)}
+.radar .days{font-family:var(--f-mono);font-size:13px;color:var(--bad);font-variant-numeric:tabular-nums;padding-top:2px}
+.radar li.pend .days{color:var(--warn)}
+.radar .rn{font-weight:700}
+.radar .rx{color:var(--muted);font-size:13px}
+.radar button.lk{all:unset;cursor:pointer;font-weight:700;color:var(--ink)}
+.radar button.lk:hover{color:var(--gold)}
+.radar button.lk:focus-visible{outline:2px solid var(--cyan)}
+
+/* Timeline bars */
+.tl{display:grid;gap:6px;margin-top:6px}
+.tl .r{display:grid;grid-template-columns:76px minmax(0,1fr) 34px;gap:8px;align-items:center;font-size:13px}
+.tl .bar{height:12px;border-radius:6px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
+.tl .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--gold))}
+.tl .c{font-family:var(--f-mono);text-align:right;color:var(--muted)}
+
+/* Filters */
+.filters{position:sticky;top:0;z-index:5;background:rgba(11,13,18,.94);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:8px}
+.frow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:5px 11px;font:600 13px var(--f-body);cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--gold);background:rgba(216,180,95,.16);color:#f3dfa8}
+.chip .ct{font-family:var(--f-mono);color:var(--muted);font-weight:400;margin-left:4px}
+input[type=search],select{background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:7px 10px;font:14px var(--f-body)}
+input[type=search]{flex:1 1 220px;min-width:180px}
+label.tg{display:inline-flex;gap:6px;align-items:center;font-size:13.5px;color:var(--muted);cursor:pointer}
+
+/* Cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 14px 12px;display:flex;flex-direction:column;gap:7px;border-top:3px solid var(--dc,var(--gold));position:relative}
+.card.res{border-style:dashed}
+.card h3{margin:0;font-size:16px;line-height:1.25;display:flex;gap:8px;align-items:flex-start}
+.card h3 .em{font-size:19px;line-height:1}
+.card .desc{color:#cfcabd;font-size:14px;margin:0}
+.meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12.5px}
+.pill{border-radius:999px;padding:2px 8px;font-weight:700;font-size:12px;border:1px solid transparent;white-space:nowrap}
+.p-ativo{background:rgba(95,207,138,.13);color:var(--ok);border-color:rgba(95,207,138,.35)}
+.p-morno{background:rgba(232,176,74,.13);color:var(--warn);border-color:rgba(232,176,74,.35)}
+.p-esq{background:rgba(227,101,92,.14);color:var(--bad);border-color:rgba(227,101,92,.38)}
+.p-nd{background:rgba(155,161,173,.12);color:var(--muted);border-color:var(--line)}
+.p-pend{background:rgba(232,176,74,.18);color:#ffd27a;border-color:rgba(232,176,74,.5)}
+.p-pausa{background:rgba(155,161,173,.14);color:#c9ced8;border-color:var(--line)}
+.p-ideia{background:rgba(177,140,240,.14);color:var(--idea);border-color:rgba(177,140,240,.35)}
+.p-ok{background:rgba(71,210,228,.12);color:var(--cyan);border-color:rgba(71,210,228,.35)}
+.tag{color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:12px}
+.date{font-family:var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.next{font-size:13.5px;background:rgba(216,180,95,.07);border:1px solid rgba(216,180,95,.22);border-radius:8px;padding:6px 8px;margin:0}
+.links{display:flex;gap:6px;flex-wrap:wrap}
+.links a{font-size:12.5px;padding:4px 8px;border-radius:7px;border:1px solid rgba(71,210,228,.3);text-decoration:none;color:var(--cyan);background:rgba(71,210,228,.05)}
+.links a:hover{background:rgba(71,210,228,.14)}
+.acts{display:flex;gap:6px;margin-top:auto;padding-top:4px;border-top:1px solid var(--line)}
+.acts button{all:unset;cursor:pointer;font-size:12.5px;color:var(--muted);padding:4px 6px;border-radius:6px}
+.acts button:hover{color:var(--ink);background:var(--panel2)}
+.acts button:focus-visible{outline:2px solid var(--cyan)}
+.acts button.on{color:var(--gold)}
+.empty{color:var(--muted);padding:30px;text-align:center;border:1px dashed var(--line);border-radius:12px;margin-top:12px}
+.count{font-family:var(--f-mono);color:var(--muted);font-size:13px}
+
+/* Workspaces */
+.ws{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;margin-top:10px}
+.w{display:flex;justify-content:space-between;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13.5px}
+.w .wd{font-family:var(--f-mono);font-size:12px;white-space:nowrap}
+.w.old .wd{color:var(--bad)} .w.mid .wd{color:var(--warn)} .w.new .wd{color:var(--ok)}
+
+/* Master links */
+.master{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+footer{margin-top:28px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:grid;gap:6px}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--gold);color:var(--ink);padding:8px 14px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:520px){header.top{flex-direction:column;align-items:flex-start}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <svg class="crest" viewBox="0 0 64 72" width="64" height="72" aria-hidden="true">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6c776"/><stop offset="1" stop-color="#a9822f"/></linearGradient></defs>
+    <path d="M32 3 L59 12 V36 C59 53 46 64 32 69 C18 64 5 53 5 36 V12 Z" fill="#141821" stroke="url(#g)" stroke-width="2.5"/>
+    <path d="M32 11 L52 17.5 V36 C52 48 43 56.5 32 60.5 C21 56.5 12 48 12 36 V17.5 Z" fill="none" stroke="#47d2e4" stroke-opacity=".55" stroke-width="1"/>
+    <circle cx="32" cy="33" r="11" fill="none" stroke="url(#g)" stroke-width="1.6"/>
+    <path d="M32 22 V44 M21 33 H43" stroke="#47d2e4" stroke-width="1.2" stroke-opacity=".8"/>
+    <text x="32" y="56" text-anchor="middle" font-family="Cinzel, Georgia, serif" font-size="9" font-weight="700" fill="#d8b45f">360X</text>
+  </svg>
+  <div>
+    <h1>📜 Códice dos Projetos 360X</h1>
+    <p class="sub">Painel global de <b>Aldenir Rocha</b> 🏰 sites, apps, artefatos e projetos gerados no Claude, com radar de abandonados. Varredura em <b id="scanDate">02/11/2026</b> · o “há X dias” recalcula sozinho a cada visita ⏳</p>
+  </div>
+</header>
+
+<div class="kpis" id="kpis"></div>
+
+<section class="sec duo">
+  <div class="box oracle">
+    <div class="sechead"><h2>🔮 Oráculo do Resgate</h2><span class="hint">1 projeto por vez, sem culpa</span></div>
+    <div class="row">
+      <button class="btn primary" id="btnPick" type="button">🎲 Sortear um esquecido</button>
+      <button class="btn cy" id="btnPickAny" type="button">✨ Sortear qualquer um</button>
+    </div>
+    <div class="pick" id="pick" aria-live="polite"></div>
+    <div class="sechead" style="margin-top:14px;margin-bottom:4px"><h2 style="font-size:15px">⏳ Fila curta: só depende de você</h2><span class="hint">ações pequenas</span></div>
+    <ol class="pq" id="pendq"></ol>
+  </div>
+  <div class="box radar">
+    <div class="sechead"><h2>📡 Radar de abandonados</h2><span class="hint">mais tempo parado + pendências suas</span></div>
+    <ol id="radar"></ol>
+  </div>
+</section>
+
+<section class="sec box">
+  <div class="sechead"><h2>📅 Linha do tempo da última atividade</h2><span class="hint">quantos projetos tiveram o último movimento em cada mês</span></div>
+  <div class="tl" id="tl"></div>
+</section>
+
+<section class="sec">
+  <div class="filters" role="search">
+    <div class="frow">
+      <input type="search" id="q" placeholder="🔎 Buscar projeto, tema, link… (ex.: TEMI, Sobral, macOS)" aria-label="Buscar projetos">
+      <select id="sort" aria-label="Ordenar">
+        <option value="old">⏳ Mais esquecidos primeiro</option>
+        <option value="new">🆕 Mais recentes primeiro</option>
+        <option value="az">🔤 A → Z</option>
+      </select>
+      <select id="type" aria-label="Tipo">
+        <option value="">🧰 Todos os tipos</option>
+      </select>
+      <label class="tg"><input type="checkbox" id="favOnly"> ⭐ só favoritos</label>
+    </div>
+    <div class="frow" id="domChips" aria-label="Filtrar por área"></div>
+    <div class="frow" id="stChips" aria-label="Filtrar por situação"></div>
+  </div>
+  <div class="sechead" style="margin-top:12px"><h2>🗺️ Todos os projetos</h2><span class="count" id="count"></span></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="sec box">
+  <div class="sechead"><h2>🗂️ Projetos Claude (workspaces)</h2><span class="hint">data = última nota registrada na memória do projeto · abre a lista de Projetos do Claude</span></div>
+  <div class="ws" id="ws"></div>
+</section>
+
+<section class="sec box">
+  <div class="sechead"><h2>🧭 Portais mestres</h2><span class="hint">as portas de entrada de tudo</span></div>
+  <div class="master" id="master"></div>
+</section>
+
+<footer>
+  <div>🔍 <b>Varredura de 02/11/2026:</b> artefatos do Claude, repositórios GitHub de aldenirfilho (sites testados ao vivo; 404 = GitHub Pages desligado), projetos Claude e chats recentes.</div>
+  <div>🔐 <b>Versão pública:</b> assuntos pessoais ficam fora desta página. Links de artefatos, chats e projetos do Claude e de repositórios privados abrem só na conta do autor. Datas com ≈ são aproximadas.</div>
+  <div>💾 ⭐ Favoritos e 🔄 “revisitei” ficam salvos só neste navegador. · Parte do <a href="../">Ecossistema 360X</a> · <a href="../../">AldenirMed89</a></div>
+</footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+const A='https://claude.ai/artifact/', C='https://claude.ai/chat/', G='https://github.com/aldenirfilho/', P='https://aldenirfilho.github.io/', E=P+'aldenirmed89/ecossistema/', GPT='.aldenirmed.chatgpt.site/', PJ='https://claude.ai/projects';
+
+const DOM={
+ med:{n:'Medicina & UTI',e:'🩺',c:'#47d2e4'},
+ app:{n:'Apps & Produtividade',e:'🛠️',c:'#7aa7ff'},
+ m360:{n:'Negócios 360X',e:'💰',c:'#d8b45f'},
+ civ:{n:'Cidadania & Transparência',e:'🏛️',c:'#e88a5a'},
+ fe:{n:'Fé, Honra & Autoria',e:'✝️',c:'#c79bf2'},
+ sci:{n:'Ciência, Cultura & Lazer',e:'🌿',c:'#6fd08f'},
+ soc:{n:'Social & Inclusão',e:'🤝',c:'#f0c35a'},
+ vida:{n:'Vida & Decisões',e:'🧭',c:'#9fb4c8'},
+ org:{n:'Organização & Sistemas',e:'🗂️',c:'#8fd8d0'}
+};
+const TYP={site:'🌐 Site no ar',art:'🧩 Artefato',doc:'📄 Doc / Plano',app:'📱 App / Extensão',repo:'💾 Repositório',chat:'💬 Chat',proj:'🗂️ Projeto Claude'};
+const ST={pend:['⏳ Aguarda você','p-pend'],pausa:['⏸ Pausado','p-pausa'],ideia:['💡 Ideia','p-ideia'],ok:['✅ Concluído','p-ok']};
+
+/* d=área t=tipo s=descrição L=links dt=última atividade ax=data aproximada st=situação nx=próximo passo r=reservado */
+const I=[{"n": "AldenirMed89", "e": "🩺", "d": "med", "t": "site", "s": "Portal de Clínica Médica, UTI e TEMI: módulos, calculadoras, questões; identidade Laranja Mecânica.", "L": [["🌐 Site", "https://aldenirfilho.github.io/aldenirmed89/"], ["💻 Código", "https://github.com/aldenirfilho/aldenirmed89"], ["🕰️ Legado Antigravity", "https://aldenirfilho.github.io/antigravity-consultas/"]], "dt": "2026-11-02", "nx": "Pendências de 21/09: revisar o módulo CRASH e checar PDFs de terceiros na Biblioteca IA antes de divulgar."}, {"n": "IntensivaHub", "e": "📚", "d": "med", "t": "site", "s": "Acervo para estudo contínuo de medicina intensiva, emergência e Clínica Médica.", "L": [["🌐 Site", "https://aldenirfilho.github.io/intensivahub/"], ["💻 Código", "https://github.com/aldenirfilho/intensivahub"]], "dt": "2026-10-22"}, {"n": "RespiraSense ICU PRO V2", "e": "🫁", "d": "med", "t": "site", "s": "Protótipo educacional de suporte respiratório, gasometria e mecânica ventilatória.", "L": [["🌐 Site", "https://aldenirfilho.github.io/respirasense-icu/"], ["💻 Código", "https://github.com/aldenirfilho/respirasense-icu"]], "dt": "2026-10-22"}, {"n": "RespiraCrit (v1 + v2)", "e": "🌬️", "d": "med", "t": "site", "s": "Interface de gasometria, ventilação e assincronias; a v2 traz procedimentos torácicos.", "L": [["🌐 Site v1", "https://aldenirfilho.github.io/RESPIRACRIT/"], ["💻 Código v1", "https://github.com/aldenirfilho/RESPIRACRIT"], ["💻 Código v2", "https://github.com/aldenirfilho/Respiracrit2"]], "dt": "2026-10-22", "nx": "A v2 está sem GitHub Pages (404 em 02/11): ativar o Pages ou fundir com a v1."}, {"n": "Passagem de Plantão UTI · NEXUS CARE", "e": "📋", "d": "med", "t": "site", "s": "App de continuidade assistencial em UTI adulta com documentos estruturados.", "L": [["🌐 Site", "https://aldenirfilho.github.io/passagem-plantao-uti/"], ["▲ Vercel", "https://passagem-plantao-uti.vercel.app/"], ["💻 Código", "https://github.com/aldenirfilho/passagem-plantao-uti"]], "dt": "2026-10-22", "nx": "Uso assistencial depende de validação institucional."}, {"n": "CardFeed360X", "e": "🃏", "d": "med", "t": "site", "s": "Acervo visual de medicina em formato de cards.", "L": [["🌐 Site", "https://aldenirfilho.github.io/cardfeed360x/"], ["💻 Código", "https://github.com/aldenirfilho/cardfeed360x"]], "dt": "2026-10-31"}, {"n": "Auditoria UTI · Turbo TEMI 360X", "e": "🧮", "d": "med", "t": "site", "s": "Painel de custos de UTI: 140 itens, orçamento para 10/20/30 leitos, triagem de preços.", "L": [["🌐 Painel", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-uti/"]], "dt": "2026-10-22", "ax": 1, "nx": "Base parcial: 32 itens com preço elegível, sem sincronização com BPS/PNCP."}, {"n": "Módulo 13 · Dose Renal de Antimicrobianos", "e": "💊", "d": "med", "t": "chat", "s": "Auditoria e correção da calculadora de dose renal de antimicrobianos do AldenirMed89.", "L": [["💬 Chat", "https://claude.ai/chat/e7bb4a6b-a401-4e91-8e22-8e01834d3c60"]], "dt": "2026-09-26", "nx": "O push foi bloqueado (403) naquela sessão: confirmar se a correção chegou ao site."}, {"n": "Códice das Superbactérias", "e": "🦠", "d": "med", "t": "art", "s": "Catalogador MDR/XDR/pan-resistentes: sensibilidade, tratamento disponível no Brasil, custo e prevenção.", "L": [["🧩 Abrir", "https://claude.ai/artifact/6vijHTBVdQzzyrWy4dc5Lj"]], "dt": "2026-10-10"}, {"n": "Atlas de Drenos", "e": "🩻", "d": "med", "t": "art", "s": "Pigtail sem débito, sistema coletor torácico e 14 drenos cirúrgicos ilustrados.", "L": [["🧩 Abrir", "https://claude.ai/artifact/Jf1Kyt224rppgBNM9nxxQX"]], "dt": "2026-10-12"}, {"n": "Semiologia Topográfica Neurológica", "e": "🧠", "d": "med", "t": "art", "s": "Exame neurológico, topografia lesional, localizador interativo, quiz e flashcards.", "L": [["🧩 Abrir", "https://claude.ai/artifact/YbXWbPjPcbXiwvbuVf67Gs"]], "dt": "2026-09-05", "nx": "Feito para o AldenirMed89: confirmar se foi acoplado ao site."}, {"n": "AVC Agudo · Turbo TEMI 1.1", "e": "🫀", "d": "med", "t": "art", "s": "Módulo auditado: NIHSS, escalas, complicações, questões e flashcards.", "L": [["🧩 Módulo", "https://claude.ai/artifact/85um73e8V9UbwqiAduVGF2"], ["🔎 Auditoria", "https://claude.ai/artifact/MCPDg5D91ccso1qPaYvXFr"]], "dt": "2026-09-11", "nx": "Confirmar a publicação da seção AVC no AldenirMed89 (pacote ~/Projects/aldenirmed89-avc)."}, {"n": "Protocolo CRASH · TCE Grave", "e": "🚑", "d": "med", "t": "art", "s": "Conduta por janela de tempo, camadas de PIC, listas nunca/sempre e fontes.", "L": [["🧩 Abrir", "https://claude.ai/artifact/FjSQ7EXMZoeNxMLgGetVoh"]], "dt": "2026-09-04", "st": "pend", "nx": "Sua revisão médica (no site está como “em revisão médica”). ≈30 min."}, {"n": "Emergências Cardíacas e Pulmonares", "e": "💓", "d": "med", "t": "chat", "s": "Bloco HTML: IAMCSST, SCASSST, FA, EAP, 8 calculadoras e quiz TEMI de 12 questões.", "L": [["💬 Chat", "https://claude.ai/chat/e0dd09a4-154a-4756-867c-104dcaa519eb"]], "dt": "2026-08-21", "nx": "Verificar se o bloco foi integrado ao AldenirMed89."}, {"n": "Prompt Mestre v2.0 · Evolução UTI", "e": "📝", "d": "med", "t": "doc", "s": "Prompt de evolução de UTI adulto com checagem de identidade, fontes e plausibilidade (18 seções).", "L": [["📄 Doc", "https://claude.ai/artifact/66vdwuyy1H7zKdSUAX3FNN"], ["💬 Chat", "https://claude.ai/chat/b6c23ca3-cbe8-45c7-b11c-0b04c5e14fc1"]], "dt": "2026-10-04"}, {"n": "Biblioteca clínica Word/HTML", "e": "📚", "d": "med", "t": "doc", "s": "25+ temas (choque cardiogênico, SARA, CAD, tempestade tireoidiana, KDIGO IRA, neutropenia febril…), PAINEL_UTI_HRN e planilhas de antibióticos.", "L": [], "dt": "2026-09-21", "ax": 1}, {"n": "POCUS · Preceptor + ECOMURGEN", "e": "🔊", "d": "med", "t": "proj", "s": "Currículo em torno do aparelho Y-Med e transcrições do curso ECOMURGEN. Era o foco declarado em 21/09.", "L": [["🗂️ Projetos Claude", "https://claude.ai/projects"]], "dt": "2026-09-21", "ax": 1, "nx": "Sugestão guardada: apostila POCUS Turbo TEMI ou trilha de 21 dias com sessões de 12 min."}, {"n": "VG70 · Ventilação Mecânica", "e": "🌀", "d": "med", "t": "proj", "s": "Currículo hands-on do ventilador AEOMED VG70 orientado ao TEMI.", "L": [["🗂️ Projetos Claude", "https://claude.ai/projects"]], "dt": "2026-09-11", "ax": 1}, {"n": "Ecossistema TEMI (14 projetos)", "e": "🎓", "d": "med", "t": "proj", "s": "Turbo, Refinaria, Interativo, Apostilas, Transcrições, Rodada, Tutor, Light, UpToDate… Prova elegível em 2028.", "L": [["🗂️ Projetos Claude", "https://claude.ai/projects"]], "dt": "2026-09-11", "ax": 1, "nx": "Escolher um formato-mãe (Turbo ou Refinaria) e consolidar o resto nele."}, {"n": "Aldenir PinBoard (macOS)", "e": "📌", "d": "app", "t": "app", "s": "Notas e imagens fixadas sobre outras janelas; v4 com seletor de cor, modo compacto e export .aldenirpin.", "L": [["💬 Chat", "https://claude.ai/chat/bcfcc767-b754-48b4-a405-a2a9506a1ea0"]], "dt": "2026-11-02", "nx": "Compilar a v4 no Mac (assinatura ad hoc)."}, {"n": "MEDFILE TURBO (macOS)", "e": "🗃️", "d": "app", "t": "app", "s": "Monitora a caixa de entrada do iCloud, classifica, renomeia e arquiva documentos médicos; painel web local.", "L": [["💬 Chat", "https://claude.ai/chat/c0feef85-41b4-4ad6-b7ef-4c62ad2f4709"]], "dt": "2026-11-02", "nx": "Testar a versão nova no Mac."}, {"n": "Catálogo Inteligente de Imagens", "e": "🖼️", "d": "app", "t": "app", "s": "Cataloga imagens geradas por IA com OCR e classificação Apple Vision; saída HTML/JSON/CSV.", "L": [["💬 Chat", "https://claude.ai/chat/4f4d87b5-e5b4-4b50-a639-544fe43b83ed"]], "dt": "2026-11-02"}, {"n": "FocusAI Reader Universal (Chrome)", "e": "👁️", "d": "app", "t": "app", "s": "Leitura otimizada de chats de IA e sites científicos: leitura biônica, modo zen, régua de foco, pomodoro.", "L": [["💬 Chat", "https://claude.ai/chat/9d6c7cbb-4d65-4f84-876b-6726af963bca"]], "dt": "2026-11-02"}, {"n": "Command Notch 360X (macOS)", "e": "⌘", "d": "app", "t": "app", "s": "Notas, arquivos, voz, Spotify, timer e Pomodoro no notch; site em 8 idiomas; pré-lançamento.", "L": [["🌐 Site", "https://command-notch-360x.aldenirmed.chatgpt.site/"], ["💻 Código", "https://github.com/aldenirfilho/command-notch-360x"], ["🧩 Ecossistema", "https://claude.ai/artifact/CPqduXky1pP1RszzwdAf3S"], ["📄 Monetização", "https://claude.ai/artifact/Pbb8PgyNFoRdg5LvYpz3VV"]], "dt": "2026-10-28", "nx": "Para lançar: assinatura Developer ID, notarização e checkout."}, {"n": "Carimbo Digital v3", "e": "🔖", "d": "app", "t": "art", "s": "Molde de nome, endereço e contato para colar no WhatsApp, com “Meus dados” e datador.", "L": [["🧩 Abrir", "https://claude.ai/artifact/YHgjVApa98K5Pure2vyfjL"]], "dt": "2026-10-11", "st": "pend", "nx": "O repositório carimbo-digital não existe: a PWA ainda não está no GitHub Pages (≈10 min)."}, {"n": "NeuroStudy+ PRO · Nexus Ecosystem", "e": "🧩", "d": "app", "t": "app", "s": "Extensão Chrome v13.5.14: PDF, áudio, coleta de conversas, adaptadores UpToDate/PubMed/PMC.", "L": [], "dt": "2026-08-25", "st": "pend", "nx": "Manual do usuário ficou pendente."}, {"n": "Transcript Turbo PRO", "e": "🎙️", "d": "app", "t": "app", "s": "Extensão de transcrição, v3.2.0.", "L": [], "dt": "2026-09-14", "ax": 1}, {"n": "BLACKBLOK", "e": "🛡️", "d": "app", "t": "repo", "s": "Extensão de bloqueio local de anúncios e domínios (v0.1.1).", "L": [["💻 Código", "https://github.com/aldenirfilho/ORGANIZA-OCODIFICADATEOLOGICACRIST-"]], "dt": "2026-09-14", "nx": "Renomear o repositório: o nome técnico não corresponde ao projeto."}, {"n": "IA local · Ollama + Qwen", "e": "🖥️", "d": "app", "t": "proj", "s": "Modelos locais no MacBook Pro M5 Pro sem degradar a máquina (Ollama, Cherry Studio).", "L": [], "dt": "2026-09-14", "ax": 1}, {"n": "Turbo TEMI 360X · Kit de lançamento", "e": "🚀", "d": "m360", "t": "doc", "s": "Página de vendas, apresentação, kit Hotmart, termos de uso, divulgação e monetização.", "L": [["🎨 Vendas", "https://claude.ai/artifact/2Tq3ugL4bzXzRk7JdJd9jq"], ["📽️ Slides", "https://claude.ai/artifact/PC4R16sLYWK6CEBwjm5ond"], ["📄 Kit Hotmart", "https://claude.ai/artifact/G9YfXUUxqTg6Vj2BGXfVLA"], ["📄 Termos", "https://claude.ai/artifact/T1YoQ18UnLxfBhq7HzhDuf"], ["📄 Divulgação", "https://claude.ai/artifact/3bvLDNE6Z3Zy1yubBpuB8B"], ["📄 Monetização", "https://claude.ai/artifact/LyecgqY3FvjdQZRL7M9gck"]], "dt": "2026-10-27", "nx": "Termos de Uso ainda marcados como rascunho."}, {"n": "Plano 35K · Projeto 360X", "e": "🏰", "d": "m360", "t": "doc", "s": "Plano de receita do Projeto 360X.", "L": [["📄 Doc", "https://claude.ai/artifact/VJevHMViZxEnyrEFQNNwR1"]], "dt": "2026-10-27"}, {"n": "Catálogo 360X · Produtos e Assinaturas", "e": "📦", "d": "m360", "t": "doc", "s": "Produtos e assinaturas (Hotmart + Stripe).", "L": [["📄 Doc", "https://claude.ai/artifact/SrLMMx2BbB4TWLRARVQbtn"]], "dt": "2026-10-28"}, {"n": "Códice de Monetização", "e": "⚔️", "d": "m360", "t": "doc", "s": "Hotmart + Stripe + GPT.", "L": [["📄 Doc", "https://claude.ai/artifact/G54XfgyCjbo6XkEZEsX75A"]], "dt": "2026-10-27"}, {"n": "360X Global · Tradução e venda", "e": "🌍", "d": "m360", "t": "doc", "s": "Tradução e venda dos produtos em outros países.", "L": [["📄 Doc", "https://claude.ai/artifact/Q4245sfBevbB2rv9gM1Tcf"]], "dt": "2026-10-28"}, {"n": "Códice de Capitalização com IA", "e": "🪙", "d": "m360", "t": "doc", "s": "Plano de 90 dias para gerar renda com agentes, habilidades e sites.", "L": [["📄 Doc", "https://claude.ai/artifact/BwZsEaZ5dL8PMqYLWSKwWu"], ["💬 Estratégia", "https://claude.ai/chat/b276e90e-b944-4d07-bcc2-2a09e40ba96d"], ["💬 Agentes", "https://claude.ai/chat/b72ed30c-9450-460c-90cb-b1a9c63bb246"]], "dt": "2026-10-10"}, {"n": "Kit Capitalização · Refinaria Choque", "e": "💎", "d": "m360", "t": "doc", "s": "Kit comercial da Refinaria TEMI 360° sobre choque cardiogênico.", "L": [["📄 Doc", "https://claude.ai/artifact/ECuLwpZB1FUKnptUt6mF6r"]], "dt": "2026-10-10"}, {"n": "Conglomerado aldenirmed89 · 360xA", "e": "🏛️", "d": "m360", "t": "chat", "s": "Estratégia para unir todos os projetos numa empresa/marca com canal no YouTube.", "L": [["💬 Chat", "https://claude.ai/chat/85ca88ea-dfe5-43f7-9529-6d2184834723"]], "dt": "2026-10-18"}, {"n": "Agentes e Habilidades 2026", "e": "🤖", "d": "m360", "t": "site", "s": "Catálogo visual dos agentes e habilidades autorais, com funções e estágios.", "L": [["🌐 Catálogo", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/agentes-habilidades/"]], "dt": "2026-10-22", "ax": 1}, {"n": "Vídeos com IA", "e": "🎬", "d": "m360", "t": "proj", "s": "Produção de vídeos no ChatGPT iniciada em outubro.", "L": [], "dt": "2026-10-18", "st": "ideia"}, {"n": "NEXUS Brasil · Portal cívico", "e": "🇧🇷", "d": "civ", "t": "site", "s": "Pessoas, ideias e soluções, com foco inicial em Sobral.", "L": [["🌐 Site", "https://aldenirfilho.github.io/NEXUS-BRASIL/"], ["💻 Código", "https://github.com/aldenirfilho/NEXUS-BRASIL"]], "dt": "2026-10-22"}, {"n": "360X Brasil · Observatório", "e": "🔭", "d": "civ", "t": "site", "s": "Propostas, análises documentais e indicadores históricos.", "L": [["🌐 Site", "https://aldenirfilho.github.io/NEXUS-COSMOS-SITE/"], ["💻 Código", "https://github.com/aldenirfilho/NEXUS-COSMOS-SITE"], ["🔐 Privado", "https://github.com/aldenirfilho/NEXUS-COSMOS"]], "dt": "2026-10-31"}, {"n": "NEXUS MUNDO", "e": "⚛️", "d": "civ", "t": "art", "s": "Painel IA × urânio × nuclear × bélico, mapa de vínculo 2031/2036/2046 e Ementa Institucional v1.1.", "L": [["🧩 Painel", "https://claude.ai/artifact/R9iFWidVHjUudRm6p7VWhZ"], ["🗺️ Mapa", "https://claude.ai/artifact/C8hocbkXSPiMAeLEy1fse6"], ["📜 Ementa", "https://claude.ai/artifact/FL3XuskME3t2hP14EkU2XL"]], "dt": "2026-09-10", "st": "pausa", "nx": "Documentos previstos na ementa ainda não feitos (Manifesto, Código de Ética, Estatuto…)."}, {"n": "Auditoria Religiosa 360", "e": "🔎", "d": "civ", "t": "site", "s": "Portal documental (cenário 2026, agentes, dossiês, método) + site “Fé não é cheque em branco”.", "L": [["🌐 Portal", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/"], ["🌐 Site", "https://aldenirfilho.github.io/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-/"], ["🧩 Evangélica 360", "https://claude.ai/artifact/CPvsNKYhnnJgKw8RkDnqQJ"]], "dt": "2026-10-22"}, {"n": "Tesouro SUD · Dossiê Mórmon", "e": "🏦", "d": "civ", "t": "art", "s": "Patrimônio estimado × caridade declarada, comparativo inter-religioso e “Riqueza e Vida”.", "L": [["🧩 Tesouro", "https://claude.ai/artifact/7gBJtGCcHQi7dsghziMcQH"], ["🌐 Dossiê", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html"], ["🌐 Comparativo", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso/"], ["🌐 Riqueza e Vida", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/riqueza-e-vida.html"]], "dt": "2026-10-22"}, {"n": "Paradoxos Inexoráveis", "e": "⚖️", "d": "civ", "t": "site", "s": "Ensaios e painel sobre riqueza, desigualdade e benefício à vida.", "L": [["🌐 Site", "https://aldenirfilho.github.io/PARADOXOS-INEXORAVEIS/"], ["💻 Código", "https://github.com/aldenirfilho/PARADOXOS-INEXORAVEIS"]], "dt": "2026-10-22"}, {"n": "ÍNDOLE 360°", "e": "🧬", "d": "civ", "t": "site", "s": "Pesquisa documental de índole empresarial + habilidade “AUDITAR: X”.", "L": [["🌐 Site", "https://aldenirfilho.github.io/INDOLE-360/"], ["💻 Código", "https://github.com/aldenirfilho/INDOLE-360"]], "dt": "2026-09-27"}, {"n": "Auditoria das Coisas 360X", "e": "🧾", "d": "civ", "t": "site", "s": "Auditoria de objetos e serviços do dia a dia.", "L": [["🌐 Site", "https://auditoria-das-coisas-360x.aldenirmed.chatgpt.site/"], ["🔐 Privado", "https://github.com/aldenirfilho/auditoria-das-coisas-360x"]], "dt": "2026-10-21"}, {"n": "Plano D · Desenvolvimento de Sobral", "e": "🏙️", "d": "civ", "t": "site", "s": "Proposta de desenvolvimento cívico e social para Sobral.", "L": [["🌐 Demo", "https://plano-d-comunidade.aldenirmed.chatgpt.site/"], ["💻 Código", "https://github.com/aldenirfilho/PLANO-D-"]], "dt": "2026-10-31", "nx": "O GitHub Pages do repositório está desligado (404)."}, {"n": "SMD-4 · Sociedade e mobilidade", "e": "📘", "d": "civ", "t": "site", "s": "Livro de 23 capítulos, 31 painéis e simulador didático; proposta autoral em revisão.", "L": [["🌐 Módulo", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/smd4/"]], "dt": null}, {"n": "EUA em números + Saúde global", "e": "🇺🇸", "d": "civ", "t": "doc", "s": "Bolsa, crise da RAM, defesa e saúde; contraste com a rede de saúde global.", "L": [["📄 EUA", "https://claude.ai/artifact/TcMoxhCo7btbiAtfohnuZG"], ["📄 Saúde global", "https://claude.ai/artifact/U7cqw4X2n8nxLxHzy8GuBp"]], "dt": "2026-10-10"}, {"n": "Linha do Tempo ONU × China", "e": "🗺️", "d": "civ", "t": "art", "s": "2012–2026 em duas trilhas: registros da ONU × atos repressivos, com fontes.", "L": [["🧩 Abrir", "https://claude.ai/artifact/BEqByHQBhxkQKad1N12Arr"]], "dt": "2026-09-04"}, {"n": "Anatomia do Estado", "e": "🏛️", "d": "civ", "t": "art", "s": "Poderes, orçamento federal, salários de parlamentares, licitação e processo legislativo.", "L": [["🧩 Original", "https://claude.ai/artifact/BHq4c5M6eYELDq5tdsLpHb"], ["🧩 Cópia", "https://claude.ai/artifact/JzVsFMqufetdXCorLvZkVy"]], "dt": "2026-09-01", "nx": "Existe uma cópia duplicada: decidir qual manter."}, {"n": "Painel Dinheiro × Política 2026", "e": "💸", "d": "civ", "t": "doc", "s": "Fundo eleitoral, doações e transparência.", "L": [["📄 Doc", "https://claude.ai/artifact/VKS8oSHh6Z9WLpgie21Dgc"]], "dt": "2026-09-30", "nx": "3 conferências pendentes: DivulgaCandContas, Portal da Transparência e lista suja do MTE."}, {"n": "Carteira de Projetos Brasil", "e": "🎓", "d": "civ", "t": "doc", "s": "14 propostas: educação neuroinclusiva, SUS descentralizado, UBS miniestação hospitalar.", "L": [], "dt": "2026-09-30", "st": "ideia", "nx": "Primeiro passo sugerido: B1, nota técnica de 2 páginas sobre TDAH no SUS."}, {"n": "SOBRAL PROPÕE", "e": "📣", "d": "civ", "t": "proj", "s": "Site de propostas e debate para Sobral, sem apontar culpados.", "L": [["🗂️ Projetos Claude", "https://claude.ai/projects"]], "dt": "2026-09-14", "st": "ideia"}, {"n": "Projeto EXTERMÍNIO · OSINT DH", "e": "🕯️", "d": "civ", "t": "proj", "s": "Catálogo de violações de direitos humanos (China, Brasil–China, Ceará).", "L": [["🗂️ Projetos Claude", "https://claude.ai/projects"]], "dt": "2026-09-07", "st": "pausa"}, {"n": "Seis propostas próprias", "e": "🎲", "d": "civ", "t": "proj", "s": "Pontual, Receita Livre, Escrita Modulada e outras (projeto “Projetos ALEATÓRIOS”).", "L": [["🗂️ Projetos Claude", "https://claude.ai/projects"]], "dt": "2026-09-30", "st": "ideia"}, {"n": "Mensagens que Importam", "e": "🕊️", "d": "fe", "t": "art", "s": "Blog inter-religioso: judaísmo, cristianismo e islã.", "L": [["🧩 Abrir", "https://claude.ai/artifact/MZAFUYCuQEQy7oSHcEsCFE"]], "dt": "2026-10-29"}, {"n": "Mensagem de Hoje", "e": "📖", "d": "fe", "t": "art", "s": "Blog diário + central de envio por WhatsApp, Telegram e e-mail.", "L": [["🧩 Blog", "https://claude.ai/artifact/Gqjyk6SJ1NPQ2JKNWXsbpE"], ["📤 Central de envio", "https://claude.ai/artifact/CbDMhqmSpKFMoMYzCcdvDj"]], "dt": "2026-09-16"}, {"n": "Coragem e Honra", "e": "🛡️", "d": "fe", "t": "art", "s": "Uma mensagem bíblica por vez, escolhida pela situação do momento.", "L": [["🧩 Abrir", "https://claude.ai/artifact/DzeUBjFiaJLpMogyNXpBkq"]], "dt": "2026-09-18"}, {"n": "Códice Kairós · Bíblia de Samurai", "e": "⚡", "d": "fe", "t": "art", "s": "Neocristianismo de honra, livre-arbítrio e redenção.", "L": [["🧩 Abrir", "https://claude.ai/artifact/UzBPDFJd9SJ9sCo7sePCFG"]], "dt": "2026-09-22"}, {"n": "Bíblia Sem Jaula 365", "e": "🔥", "d": "fe", "t": "art", "s": "Plano bíblico de 365 dias.", "L": [["🧩 Abrir", "https://claude.ai/artifact/HK8zCabZbMyRH5GBaffS4m"]], "dt": "2026-08-29"}, {"n": "Bíblia Cristã p/ Guerreiros de Fé", "e": "⚔️", "d": "fe", "t": "site", "s": "Site bíblico para guerreiros de fé.", "L": [["🌐 Site", "https://biblia-crista-guerreiros-de-fe.aldenirmed.chatgpt.site/"], ["🔐 Privado", "https://github.com/aldenirfilho/biblia-crista-para-guerreiros-de-fe"]], "dt": "2026-10-31"}, {"n": "Bússola da Honra", "e": "🧭", "d": "fe", "t": "repo", "s": "Projeto de honra com repositório de site e repositório privado.", "L": [["💻 Site (código)", "https://github.com/aldenirfilho/bussola-da-honra-site"], ["🔐 Privado", "https://github.com/aldenirfilho/bussola-da-honra"]], "dt": "2026-10-31", "nx": "O GitHub Pages do bussola-da-honra-site está desligado (404)."}, {"n": "INTUIÇÃO · Guia Decisional", "e": "🧿", "d": "fe", "t": "site", "s": "Seis polaridades, protocolo H.O.N.R.A. e Motor Decisional interativo.", "L": [["🌐 Site", "https://aldenirfilho.github.io/INTUICAO-DECISIONAL/"], ["🧩 Artefato", "https://claude.ai/artifact/FYMAWfVxZy2fEXLhF5SiHx"]], "dt": "2026-09-16"}, {"n": "Códice do Dragão Espelhado", "e": "🐉", "d": "fe", "t": "proj", "s": "ARG bíblico-élfico em 7 fragmentos: “o código é a porta, a honra é a casa”.", "L": [], "dt": "2026-09-16", "st": "pend", "nx": "Camada 2 pendente (build_all.py: cifra, 42 linguagens, PDF, capa)."}, {"n": "Pacto de Honra", "e": "📜", "d": "fe", "t": "doc", "s": "Pacto entre parceiros e amigos, em doc e versão visual.", "L": [["📄 Doc", "https://claude.ai/artifact/DrWU95rdeKibRVoF8JgGBg"], ["🎨 Design", "https://claude.ai/artifact/MTdZTTjNPzdVs3uevG2LFt"]], "dt": "2026-10-22"}, {"n": "Maçonaria Aplicada · Mormonismo", "e": "📐", "d": "fe", "t": "art", "s": "Estudo maçônico diário microparticulado + comparativo Mormonismo e Maçonaria.", "L": [["🧩 Abrir", "https://claude.ai/artifact/PsNtueyVebDZVrRSPArNW5"], ["💬 Chat", "https://claude.ai/chat/4b5c21f4-30b7-4561-a338-a41d42546f25"]], "dt": "2026-10-27"}, {"n": "Código AR · Regras Principais", "e": "🥋", "d": "fe", "t": "chat", "s": "15 preceitos em 4 pilares, releitura do Dokkōdō de Musashi.", "L": [["💬 Chat", "https://claude.ai/chat/0a3ac979-29b3-454c-963d-d9e4f3a537ed"]], "dt": "2026-09-03", "st": "pend", "nx": "Pilar I expandido; pilares II a IV pendentes."}, {"n": "Teoria Novo Universo", "e": "🌌", "d": "fe", "t": "proj", "s": "Ideia própria em compilação para análise e proteção de autoria.", "L": [["🗂️ Projetos Claude", "https://claude.ai/projects"]], "dt": "2026-09-08", "st": "pausa"}, {"n": "Resgate da Princesa · 20 dimensões", "e": "🏯", "d": "fe", "t": "chat", "s": "História em universo de duas torres de nove níveis + dois Olimpos.", "L": [["💬 Chat", "https://claude.ai/chat/31e3df87-602a-45f5-b3c0-01b97e8b4e27"]], "dt": "2026-10-12"}, {"n": "Atlas Vivo · Plantas", "e": "🌿", "d": "sci", "t": "site", "s": "Atlas de botânica com perfis, módulos e exercícios (v0.6.0).", "L": [["🌐 Site", "https://aldenirfilho.github.io/atlas-vivo-360x-pages/"], ["💻 Código", "https://github.com/aldenirfilho/atlas-vivo-360x-pages"]], "dt": "2026-10-31"}, {"n": "Animalia 360X", "e": "🦉", "d": "sci", "t": "site", "s": "Zoologia, ecologia e conservação (v0.3.0).", "L": [["🌐 Site", "https://aldenirfilho.github.io/atlas-vivo-360x-animais/"], ["💻 Código", "https://github.com/aldenirfilho/atlas-vivo-360x-animais"]], "dt": "2026-10-20"}, {"n": "Geo 360X", "e": "🪨", "d": "sci", "t": "site", "s": "Rochas, minerais e geologia (v0.3.0).", "L": [["🌐 Site", "https://aldenirfilho.github.io/atlas-vivo-360x-rochas/"], ["💻 Código", "https://github.com/aldenirfilho/atlas-vivo-360x-rochas"]], "dt": "2026-10-20"}, {"n": "Atlas Phoenix & Piratas do Infinito", "e": "🏴‍☠️", "d": "sci", "t": "site", "s": "Biblioteca de estudos de obras, ética, música e ficção (cânone Armagedom XXX).", "L": [["🌐 Site", "https://aldenirfilho.github.io/atlas-phoenix-piratas/"], ["💻 Código", "https://github.com/aldenirfilho/atlas-phoenix-piratas"]], "dt": "2026-09-10"}, {"n": "Dragon Ball · Legado Eterno", "e": "🐲", "d": "sci", "t": "site", "s": "Enciclopédia de fãs em português (não oficial).", "L": [["🌐 Site", "https://aldenirfilho.github.io/dragonballlegadoeterno/"], ["🌐 Versão GPT", "https://dragonball-legado-eterno.aldenirmed.chatgpt.site/"]], "dt": "2026-10-20"}, {"n": "Tempo de Viver 360X", "e": "🌅", "d": "sci", "t": "site", "s": "Investimento de tempo em experiências e qualidade de vida.", "L": [["🌐 Site", "https://aldenirfilho.github.io/INVESTIMENTO-DE-TEMPO-PARA-CURTIR/"], ["💻 Código", "https://github.com/aldenirfilho/INVESTIMENTO-DE-TEMPO-PARA-CURTIR"]], "dt": "2026-10-19"}, {"n": "Garagem 2026 · Bruxo Piloto", "e": "🏎️", "d": "sci", "t": "site", "s": "Garagem dos sonhos 2026 com votação.", "L": [["🌐 Site", "https://bruxo-piloto-garagem-2026.aldenirmed.chatgpt.site/"], ["🗳️ Votação", "https://garagem-2026-votacao.aldenirmed.chatgpt.site/"], ["🔐 Privado", "https://github.com/aldenirfilho/garagem-2026-bruxo-piloto"]], "dt": "2026-10-25"}, {"n": "Entre Dois Céus · Jeri × Islândia", "e": "🌌", "d": "sci", "t": "site", "s": "Comparação visual entre os céus de Jericoacoara e da Islândia.", "L": [["🌐 Site", "https://entre-dois-ceus-jeri-islandia.aldenirmed.chatgpt.site/"]], "dt": null}, {"n": "RAM, espelho e cérebro", "e": "🪞", "d": "sci", "t": "site", "s": "Ensaio visual: silício e RAM × espelho × memória humana e IA.", "L": [["🌐 Ensaio", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/ram-espelho-cerebro/"]], "dt": null}, {"n": "Intuição · Laboratório de Probabilidade", "e": "🎲", "d": "sci", "t": "repo", "s": "App didático de probabilidade e simulação.", "L": [["💻 Código", "https://github.com/aldenirfilho/intuicao"]], "dt": "2026-09-15", "nx": "GitHub Pages desligado (404)."}, {"n": "Ajuda de Boa", "e": "💚", "d": "soc", "t": "art", "s": "Marketplace de causas reais de Sobral com PIX, comprovante e Carteira de Ajuda.", "L": [["🧩 Prévia", "https://claude.ai/artifact/XbXBnrmjDXzEYduyde8tZE"], ["🎨 Vitrine", "https://claude.ai/artifact/Ts6kQePaLfi2VRWKJANmuC"]], "dt": "2026-09-19", "st": "pend", "nx": "O repositório ajuda-de-boa não existe: o ZIP de 19/09 espera upload (≈15 min)."}, {"n": "Bolsa Ajuda de Boa", "e": "📈", "d": "soc", "t": "art", "s": "Home broker da ajuda: carteira, extrato, impacto e IR; inclui a Bolsa Ajuda Fauna.", "L": [["🧩 Painel", "https://claude.ai/artifact/MtkMzgWnQjqXMpjU8CkRo1"], ["🌐 Fauna", "https://aldenirfilho.github.io/aldenirmed89/apps/bolsa-ajuda-fauna/"], ["💬 Chat", "https://claude.ai/chat/44594bb9-032c-4726-aa3b-ecabe51d8f2f"]], "dt": "2026-10-22", "nx": "Enviar os próximos comprovantes."}, {"n": "DiversaMente", "e": "🧠", "d": "soc", "t": "site", "s": "Revista para adultos com TDAH: forças, travas para riscos, direitos e fé.", "L": [["🌐 Site", "https://aldenirfilho.github.io/neurodiversidade-brasil/"], ["🧩 Revista", "https://claude.ai/artifact/BJiSWpt24HhrHNNmAXrATC"], ["💻 Código", "https://github.com/aldenirfilho/neurodiversidade-brasil"]], "dt": "2026-10-31"}, {"n": "HUMUS", "e": "🌱", "d": "soc", "t": "repo", "s": "Revista sobre vínculo, inclusão, neurodiversidade e preconceito religioso.", "L": [["💻 Código", "https://github.com/aldenirfilho/humus"]], "dt": "2026-10-10", "nx": "GitHub Pages desligado (404)."}, {"n": "HUMANITAS 18+", "e": "🤝", "d": "soc", "t": "doc", "s": "Selo de certificação social que vai além da lei.", "L": [["📄 Doc", "https://claude.ai/artifact/A9YMpD2jvCrFoffkdTaozC"]], "dt": "2026-09-30", "st": "ideia", "nx": "Antes de procurar empresas: parecer jurídico e busca de marca."}, {"n": "Life Archive 360", "e": "🗄️", "d": "vida", "t": "site", "s": "Arquivo de vida (demonstração).", "L": [["🌐 Demo", "https://aldenir-life-archive-360-demo.aldenirmed.chatgpt.site/"]], "dt": null}, {"n": "Alavanca Motivacional", "e": "🎚️", "d": "vida", "t": "repo", "s": "Repositório privado (conteúdo não aberto nesta varredura).", "L": [["🔐 Privado", "https://github.com/aldenirfilho/alavanca-motivacional"]], "dt": "2026-10-31"}, {"n": "Painel integrado 360X (GitHub)", "e": "🧭", "d": "org", "t": "site", "s": "Painel do ecossistema no AldenirMed89 + quadro de projetos do GitHub.", "L": [["🌐 Painel", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html"], ["🌐 Ecossistema", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/"], ["📋 Quadro", "https://github.com/users/aldenirfilho/projects/2/views/1"]], "dt": "2026-10-22", "ax": 1}, {"n": "Perfil GitHub · Portfólio", "e": "🪪", "d": "org", "t": "site", "s": "README de perfil e catálogo dos repositórios públicos.", "L": [["🪪 Perfil", "https://github.com/aldenirfilho"], ["📚 Portfólio", "https://github.com/aldenirfilho/aldenirmed89/blob/main/docs_usuario/PORTFOLIO_GITHUB/README.md"]], "dt": "2026-10-28"}, {"n": "Jornal Diário 360 · Editorial", "e": "📰", "d": "org", "t": "repo", "s": "Jornal diário em PDF (habilidade agente-editorial-360).", "L": [["🔐 Privado", "https://github.com/aldenirfilho/editorial-360x"]], "dt": "2026-10-28"}, {"n": "Sincronização tripla", "e": "🔁", "d": "org", "t": "proj", "s": "Drive + Obsidian COMANDO CENTRAL + Notion (habilidade sync-comando-central).", "L": [], "dt": "2026-09-30", "nx": "O Obsidian fica pendente sempre que o Mac não está vinculado."}, {"n": "Rebrand NEXUS → Projeto 360X", "e": "🔄", "d": "org", "t": "proj", "s": "Troca gradual do nome NEXUS por Projeto 360X.", "L": [["🗂️ Projetos Claude", "https://claude.ai/projects"]], "dt": "2026-10-22", "nx": "Repositórios e sites ainda com nome NEXUS (NEXUS-BRASIL, NEXUS-COSMOS, NEXUS CARE)."}, {"n": "Catálogo Mestre & Agentes de Resgate", "e": "🛟", "d": "org", "t": "proj", "s": "Retomada de assuntos pausados (pacote A00–A10).", "L": [["🗂️ Projetos Claude", "https://claude.ai/projects"]], "dt": "2026-09-09", "st": "pausa"}];
+
+/* Projetos Claude: [nome, emoji, data da última nota, reservado] (* = nome inferido pelo conteúdo) */
+const WS=[["UPTODATE", "🩺", "2026-09-11"], ["EVOLUÇÕES MÉDICAS", "🩺", "2026-09-11"], ["Prescrição Médica", "🩺", "2026-09-11"], ["Dúvidas diretas", "🩺", "2026-09-11"], ["Parecer Clínica Médica", "🩺", "2026-09-11"], ["ENCICLOPÉDIA MÉDICA", "🩺", "2026-09-11"], ["ALDENIR MED 89", "🩺", "2026-09-11"], ["POCUS", "🔊", "2026-09-11"], ["VG70", "🌀", "2026-09-11"], ["ECOMURGEM #TRANSCRIÇÃO", "🔊", "2026-09-11"], ["Estudos Importantes ⭐⭐⭐", "🎓", "2026-09-11"], ["TEMI #P03", "🎓", "2026-09-11"], ["MODO LIGHT", "🎓", "2026-09-11"], ["# PROJETO · Rodada TEMI", "🎓", "2026-09-11"], ["# Estudo complementar R3", "🎓", "2026-09-11"], ["TRANSCRIÇÕES", "🎓", "2026-09-11"], ["PROJETO TEMI INTERATIVO", "🎓", "2026-09-11"], ["PROJETO REFINARIA TEMI", "🎓", "2026-09-11"], ["MODO TUTOR", "🎓", "2026-09-11"], ["APOSTILAS TEMI", "🎓", "2026-09-11"], ["MODO TURBO ATIVADO 🚀", "🎓", "2026-09-11"], ["Produtividade", "🗂️", "2026-09-11"], ["TDAH 360° · Central de Vida", "🧭", "2026-10-28"], ["Bíblia & Mensagens*", "✝️", "2026-10-27"], ["Catalogação automática*", "🗂️", "2026-09-07"], ["Projeto EXTERMÍNIO*", "🕯️", "2026-09-07"], ["NEXUS COSMOS*", "🌌", "2026-09-12"], ["Rotina 2026 · R3/TEMI*", "🧭", "2026-09-08"], ["Catálogo Mestre & Resgate*", "🛟", "2026-09-09"], ["CARIMBOS DIGITAIS*", "🔖", "2026-10-11"], ["SOBRAL PROPÕE*", "📣", "2026-09-14"], ["INTUIÇÃO*", "🧿", "2026-09-16"], ["KAIRÓS*", "⚡", "2026-09-22"], ["ÍNDOLE 360*", "🧬", "2026-09-16"], ["Bolsa Ajuda de Boa*", "📈", "2026-09-19"], ["Auditoria Evangélica*", "🔎", "2026-10-26"], ["DiversaMente*", "🧠", "2026-10-18"], ["Projeto 360X*", "🔄", "2026-10-22"], ["Turbo TEMI 360X*", "🚀", "2026-10-27"], ["MONETIZAÇÃO*", "💰", "2026-10-28"], ["MAÇONARIA APLICADA", "📐", "2026-10-26"], ["PROJETO EDUCAÇÃO INFANTIL", "🎓", "2026-09-30"], ["Projetos ALEATÓRIOS", "🎲", "2026-09-30"]];
+
+const MASTER=[["🩺 AldenirMed89", "https://aldenirfilho.github.io/aldenirmed89/"], ["🧭 Ecossistema 360X", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/"], ["🗺️ Painel integrado (GitHub)", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html"], ["🤖 Agentes & Habilidades", "https://aldenirfilho.github.io/aldenirmed89/ecossistema/agentes-habilidades/"], ["🪪 Perfil GitHub", "https://github.com/aldenirfilho"], ["📋 Quadro de projetos", "https://github.com/users/aldenirfilho/projects/2/views/1"], ["🗂️ Projetos Claude", "https://claude.ai/projects"], ["🧩 Meus artefatos", "https://claude.ai/artifacts"]];
+
+/* ---------- estado local (só neste navegador) ---------- */
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let favs=LS.get('c360.favs',{}), seen=LS.get('c360.seen',{});
+I.forEach((it,i)=>{it.id='p'+i});
+
+const DAY=86400000, now=new Date();
+const pd=s=>{if(!s)return null;const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const fmt=s=>{const [y,m,d]=s.split('-');return d+'/'+m+'/'+y};
+function eff(it){const a=it.dt, b=seen[it.id]; if(!a&&!b)return null; if(!a)return b; if(!b)return a; return b>a?b:a}
+function days(it){const e=eff(it); if(!e)return null; return Math.max(0,Math.floor((now-pd(e))/DAY))}
+function fresh(it){const d=days(it); if(d===null)return 'nd'; if(d<=14)return 'ativo'; if(d<=45)return 'morno'; return 'esq'}
+const FR={ativo:['🟢 Ativo','p-ativo'],morno:['🟡 Morno','p-morno'],esq:['🔴 Esquecido','p-esq'],nd:['⚪ Sem data','p-nd']};
+const ago=d=>d===null?'data desconhecida':d===0?'hoje':d===1?'ontem':'há '+d+' dias';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const $=id=>document.getElementById(id);
+const st={q:'',dom:'',sit:'',type:'',sort:'old',fav:false,res:false};
+
+function visibleBase(){return I.filter(it=>st.res||!it.r)}
+function radarScore(it){const d=days(it);if(it.st==='ok'||d===null)return -1;let s=d;if(it.st==='pend')s+=40;if(it.st==='pausa')s+=10;return s}
+function radarList(){return visibleBase().filter(it=>{const d=days(it);return it.st!=='ok'&&d!==null&&(d>21||it.st==='pend')}).sort((a,b)=>radarScore(b)-radarScore(a))}
+
+/* ---------- KPIs ---------- */
+function renderKPIs(){
+  const v=visibleBase();
+  const k=[
+    ['gd',v.length,'📜 projetos no códice','',''],
+    ['cy',v.filter(x=>x.t==='site').length,'🌐 sites e portais no ar','type','site'],
+    ['bad',v.filter(x=>fresh(x)==='esq'&&x.st!=='ok').length,'🔴 esquecidos (+45 dias)','sit','esq'],
+    ['warn',v.filter(x=>x.st==='pend').length,'⏳ aguardam uma ação sua','sit','pend'],
+    ['ok',v.filter(x=>fresh(x)==='ativo').length,'🟢 ativos (até 14 dias)','sit','ativo'],
+    ['',WS.filter(w=>st.res||!w[3]).length,'🗂️ projetos Claude','ws','']
+  ];
+  $('kpis').innerHTML=k.map(([c,n,l,f,val])=>`<button class="kpi ${c}" type="button" data-f="${f}" data-v="${val}"><div class="n">${n}</div><div class="l">${l}</div></button>`).join('');
+  $('kpis').querySelectorAll('.kpi').forEach(b=>b.onclick=()=>{
+    const f=b.dataset.f,v=b.dataset.v;
+    if(f==='ws'){$('ws').scrollIntoView({behavior:'smooth',block:'start'});return}
+    st.dom='';st.q='';$('q').value='';
+    if(f==='type'){st.type=v;st.sit='';$('type').value=v}else if(f==='sit'){st.sit=v;st.type='';$('type').value=''}else{st.sit='';st.type='';$('type').value=''}
+    renderAll();$('grid').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}
+
+/* ---------- Radar ---------- */
+function renderRadar(){
+  const r=radarList().slice(0,8);
+  $('radar').innerHTML=r.length?r.map(it=>{const d=days(it);return `<li class="${it.st==='pend'?'pend':''}"><span class="days">${d}d</span><div><button class="lk" type="button" data-id="${it.id}">${it.e} ${esc(it.n)}</button> <span class="pill ${(ST[it.st]||FR[fresh(it)])[1]}">${(ST[it.st]||FR[fresh(it)])[0]}</span><div class="rx">${esc(it.nx||it.s)}</div></div></li>`}).join(''):'<li class="pend"><span class="days">0</span><div>Nada parado há mais de 3 semanas. 🎉</div></li>';
+  $('radar').querySelectorAll('.lk').forEach(b=>b.onclick=()=>focusCard(b.dataset.id));
+  const pq=visibleBase().filter(x=>x.st==='pend').sort((a,b)=>(days(a)??0)-(days(b)??0));
+  $('pendq').innerHTML=pq.map(it=>`<li><button type="button" data-id="${it.id}">${it.e} ${esc(it.n)}</button> <span>· ${esc(it.nx)}</span></li>`).join('');
+  $('pendq').querySelectorAll('button').forEach(b=>b.onclick=()=>focusCard(b.dataset.id));
+}
+
+/* ---------- Oráculo ---------- */
+function pickFrom(list){
+  if(!list.length){$('pick').innerHTML='<div class="pd">Nada para sortear com esses critérios.</div>';return}
+  const it=list[Math.floor(Math.random()*list.length)], d=days(it), s=ST[it.st]||FR[fresh(it)];
+  $('pick').innerHTML=`<div class="pn">${it.e} ${esc(it.n)}</div>
+   <div class="meta"><span class="pill ${s[1]}">${s[0]}</span><span class="tag">${DOM[it.d].e} ${DOM[it.d].n}</span><span class="date">${ago(d)}</span></div>
+   <div class="pd">${esc(it.s)}</div>
+   <div class="px">➡️ <b>Próximo passo:</b> ${esc(it.nx||'Abrir, olhar 5 minutos e decidir: continuar, pausar ou arquivar.')}</div>
+   <div class="row" style="margin-top:8px">${it.L.slice(0,2).map(l=>`<a class="btn cy" href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join('')}
+   <button class="btn" type="button" id="pickCopy">📋 Copiar comando de retomada</button><button class="btn" type="button" id="pickGo">📍 Ver card</button></div>`;
+  $('pickCopy').onclick=()=>copyCmd(it);
+  $('pickGo').onclick=()=>focusCard(it.id);
+}
+$('btnPick').onclick=()=>{const l=radarList();pickFrom(l.length?l:visibleBase())};
+$('btnPickAny').onclick=()=>pickFrom(visibleBase().filter(x=>x.st!=='ok'));
+
+/* ---------- Linha do tempo ---------- */
+function renderTL(){
+  const M=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  const c={};let nd=0;visibleBase().forEach(it=>{const e=eff(it);if(!e){nd++;return}const k=e.slice(0,7);c[k]=(c[k]||0)+1});
+  const keys=Object.keys(c).sort();const max=Math.max(1,...Object.values(c));
+  let h=keys.map(k=>{const [y,m]=k.split('-');return `<div class="r"><span>${M[+m-1]}/${y.slice(2)}</span><span class="bar"><i style="width:${(c[k]/max*100).toFixed(1)}%"></i></span><span class="c">${c[k]}</span></div>`}).join('');
+  if(nd)h+=`<div class="r"><span>sem data</span><span class="bar"><i style="width:${(nd/max*100).toFixed(1)}%;background:var(--muted)"></i></span><span class="c">${nd}</span></div>`;
+  $('tl').innerHTML=h;
+}
+
+/* ---------- Filtros ---------- */
+function renderChips(){
+  const base=visibleBase();
+  const dc=[['','✨ Todas',base.length]].concat(Object.keys(DOM).map(k=>[k,DOM[k].e+' '+DOM[k].n,base.filter(x=>x.d===k).length]));
+  $('domChips').innerHTML=dc.map(([k,l,n])=>`<button class="chip" type="button" data-k="${k}" aria-pressed="${st.dom===k}">${l}<span class="ct">${n}</span></button>`).join('');
+  $('domChips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{st.dom=b.dataset.k;renderAll()});
+  const sc=[['','🧿 Qualquer situação'],['ativo','🟢 Ativo'],['morno','🟡 Morno'],['esq','🔴 Esquecido'],['pend','⏳ Aguarda você'],['pausa','⏸ Pausado'],['ideia','💡 Ideia'],['ok','✅ Concluído'],['nd','⚪ Sem data']];
+  $('stChips').innerHTML=sc.map(([k,l])=>`<button class="chip" type="button" data-k="${k}" aria-pressed="${st.sit===k}">${l}</button>`).join('');
+  $('stChips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{st.sit=b.dataset.k;renderAll()});
+}
+function matchSit(it){if(!st.sit)return true;if(['pend','pausa','ideia','ok'].includes(st.sit))return it.st===st.sit;if(st.sit==='esq')return fresh(it)==='esq'&&it.st!=='ok';return fresh(it)===st.sit}
+const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+
+/* ---------- Cards ---------- */
+function card(it){
+  const d=days(it), f=FR[fresh(it)], s=ST[it.st], dom=DOM[it.d], e=eff(it);
+  const dateTxt=e?`${it.ax&&!seen[it.id]?'≈ ':''}${fmt(e)} · ${ago(d)}${seen[it.id]?' 🔄':''}`:'data desconhecida';
+  return `<article class="card${it.r?' res':''}" id="${it.id}" style="--dc:${dom.c}">
+    <h3><span class="em">${it.e}</span><span>${esc(it.n)}${it.r?' 🔒':''}</span></h3>
+    <div class="meta">${it.st==='ok'?'':`<span class="pill ${f[1]}">${f[0]}</span>`}${s?`<span class="pill ${s[1]}">${s[0]}</span>`:''}<span class="tag">${TYP[it.t]}</span><span class="tag">${dom.e} ${dom.n}</span></div>
+    <p class="desc">${esc(it.s)}</p>
+    <div class="meta"><span class="date">📅 ${dateTxt}</span></div>
+    ${it.nx?`<p class="next">➡️ ${esc(it.nx)}</p>`:''}
+    ${it.L.length?`<div class="links">${it.L.map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join('')}</div>`:'<div class="links"><span class="tag">sem link (app local ou assunto de chat)</span></div>'}
+    <div class="acts">
+      <button type="button" data-a="fav" data-id="${it.id}" class="${favs[it.id]?'on':''}" aria-pressed="${!!favs[it.id]}">${favs[it.id]?'⭐ Favorito':'☆ Favoritar'}</button>
+      <button type="button" data-a="seen" data-id="${it.id}">🔄 Revisitei hoje</button>
+      <button type="button" data-a="copy" data-id="${it.id}">📋 Comando</button>
+    </div></article>`;
+}
+function renderGrid(){
+  const q=norm(st.q.trim());
+  let L=visibleBase().filter(it=>(!st.dom||it.d===st.dom)&&(!st.type||it.t===st.type)&&(!st.fav||favs[it.id])&&matchSit(it)&&
+    (!q||norm(it.n+' '+it.s+' '+(it.nx||'')+' '+DOM[it.d].n+' '+it.L.map(l=>l[0]+' '+l[1]).join(' ')).includes(q)));
+  const dv=it=>{const d=days(it);if(it.st==='ok')return -2;return d===null?-1:d};
+  if(st.sort==='old')L.sort((a,b)=>dv(b)-dv(a));else if(st.sort==='new')L.sort((a,b)=>{const x=dv(a),y=dv(b);return (x<0?1e9:x)-(y<0?1e9:y)});else L.sort((a,b)=>a.n.localeCompare(b.n,'pt'));
+  $('grid').innerHTML=L.length?L.map(card).join(''):'';
+  $('count').textContent=L.length+' de '+visibleBase().length+' projetos';
+  const em=document.querySelector('.empty');if(em)em.remove();
+  if(!L.length)$('grid').insertAdjacentHTML('beforebegin','<div class="empty">Nenhum projeto com esses filtros. Limpe a busca ou escolha ✨ Todas.</div>');
+}
+$('grid').addEventListener('click',ev=>{
+  const b=ev.target.closest('button[data-a]');if(!b)return;const it=I.find(x=>x.id===b.dataset.id);
+  if(b.dataset.a==='fav'){favs[it.id]?delete favs[it.id]:favs[it.id]=1;LS.set('c360.favs',favs);renderGrid()}
+  else if(b.dataset.a==='seen'){const t=new Date();seen[it.id]=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');LS.set('c360.seen',seen);toast('🔄 '+it.n+' marcado como revisitado hoje');renderAll()}
+  else if(b.dataset.a==='copy')copyCmd(it);
+});
+
+function copyCmd(it){
+  const txt=`RETOMAR PROJETO: ${it.n}\nÁrea: ${DOM[it.d].n} · Situação: ${(ST[it.st]||FR[fresh(it)])[0]} · Última atividade: ${ago(days(it))}\nResumo: ${it.s}\nPróximo passo: ${it.nx||'avaliar e decidir continuar, pausar ou arquivar'}\nLinks: ${it.L.map(l=>l[1]).join(' | ')||'—'}`;
+  const ok=()=>toast('📋 Comando copiado: cole no Claude para retomar');
+  try{navigator.clipboard.writeText(txt).then(ok,()=>fallbackCopy(txt,ok))}catch(e){fallbackCopy(txt,ok)}
+}
+function fallbackCopy(t,ok){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){toast('Não consegui copiar aqui')}a.remove()}
+let tt;function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2200)}
+
+function focusCard(id){
+  const it=I.find(x=>x.id===id);
+  
+  st.dom='';st.sit='';st.type='';st.q='';st.fav=false;$('q').value='';$('type').value='';$('favOnly').checked=false;renderAll();
+  const el=$(id);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.style.boxShadow='0 0 0 2px var(--gold)';setTimeout(()=>el.style.boxShadow='',1800)}
+}
+
+/* ---------- Workspaces + portais ---------- */
+function renderWS(){
+  $('ws').innerHTML=WS.filter(w=>st.res||!w[3]).map(w=>{const d=Math.floor((now-pd(w[2]))/DAY);const c=d>45?'old':d>14?'mid':'new';
+    return `<a class="w ${c}" href="${PJ}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit"><span>${w[1]} ${esc(w[0])}${w[3]?' 🔒':''}</span><span class="wd">${d}d</span></a>`}).join('');
+}
+$('master').innerHTML=MASTER.map(m=>`<a class="btn cy" href="${m[1]}" target="_blank" rel="noopener">${m[0]}</a>`).join('');
+
+/* ---------- controles ---------- */
+$('type').insertAdjacentHTML('beforeend',Object.keys(TYP).map(k=>`<option value="${k}">${TYP[k]}</option>`).join(''));
+$('q').oninput=e=>{st.q=e.target.value;renderGrid()};
+$('sort').onchange=e=>{st.sort=e.target.value;renderGrid()};
+$('type').onchange=e=>{st.type=e.target.value;renderGrid()};
+$('favOnly').onchange=e=>{st.fav=e.target.checked;renderGrid()};
+
+
+function renderAll(){renderKPIs();renderRadar();renderTL();renderChips();renderGrid();renderWS()}
+renderAll();
+pickFrom(radarList().slice(0,5));
+})();
+</script>
+</body>
+</html>
