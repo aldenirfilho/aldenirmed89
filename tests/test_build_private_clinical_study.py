@@ -56,6 +56,9 @@ class PrivateClinicalGenerationTests(unittest.TestCase):
         package, _ = build(row(didacticSegments=[{"kind": "pdf-page", "pageNumber": 4, "text": text}]))
         self.assertEqual(package["units"][0]["particles"][0]["text"], text)
         self.assertIn("[…]", package["units"][0]["cards"][0]["front"])
+        front, _ = study._card("A asma é uma condição inflamatória; plasma é outra palavra e deve permanecer intacta.")
+        self.assertIn("[…]", front)
+        self.assertIn("plasma", front)
 
     def test_no_fake_anchor_or_unknown_prefix_upper_bound(self):
         for segment in [

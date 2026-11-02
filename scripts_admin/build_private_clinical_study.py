@@ -137,7 +137,7 @@ def _card(fact):
     found = CLOZE.search(fact) or re.search(r"\b(?:acute kidney injury|respiratory failure|heart failure|mechanical ventilation|septic shock|diabetic ketoacidosis|pneumonia|asthma|tuberculosis|creatinine|potassium|sodium|hypoxemia|pregnancy|diarrhea|dehydration|anaphylaxis)\b", fact, re.I)
     if found:
         target = found.group()
-        front = "Complete a afirmação da fonte: " + re.sub(re.escape(target), "[…]", fact, flags=re.I)
+        front = "Complete a afirmação da fonte: " + re.sub(r"\b" + re.escape(target) + r"\b", "[…]", fact, flags=re.I)
         return front, target + ". " + fact
     found = re.match(r"^(.{4,90}?)\s+(?:é|são|consiste|refere-se|is|are)\s+", fact, re.I)
     if found and len(found[1].split()) <= 10:
