@@ -538,6 +538,7 @@
     <div class="local-actions">
       <button class="btn btn-primary" id="libraryConnect-pdf" type="button">📁 Conectar PDF</button>
       <button class="btn btn-primary" id="libraryConnect-doc" type="button">📁 Conectar DOC</button>
+      <a class="btn btn-secondary" href="#privateStudy">🧠 Estudar PDF e DOC · privado</a>
       <button class="btn btn-secondary" id="libraryLocalCancel" type="button" hidden>⏸ Parar listagem</button>
     </div>
     <p id="libraryLocalStatus" role="status" aria-live="polite">Selecione uma pasta para listar os documentos. Nenhum arquivo é aberto automaticamente.</p>
@@ -553,6 +554,8 @@
     <input id="libraryFolderInput-doc" type="file" webkitdirectory directory multiple hidden>
   </div></section>
   <dialog id="libraryLocalPreview" class="local-document-preview" aria-labelledby="libraryLocalPreviewTitle"><div class="local-preview-head"><h2 id="libraryLocalPreviewTitle">PDF privado</h2><button class="btn btn-secondary" id="libraryLocalPreviewClose" type="button">Fechar ✕</button></div><p>Abra o PDF no leitor do navegador ou baixe para usar o aplicativo do dispositivo. O documento permanece local, sem envio à internet.</p><div class="local-preview-actions"><a id="libraryLocalOpen" class="btn btn-primary" target="_blank" rel="noopener noreferrer">↗ Abrir PDF em nova aba</a><a id="libraryLocalDownload" class="btn btn-secondary">⬇️ Baixar PDF</a></div><p>Ao terminar, feche este diálogo para liberar a referência temporária do arquivo.</p></dialog>
+
+  <section id="privateStudy" class="local-library" aria-label="Estudo privado microparticulado"><div id="libraryPrivateStudyHost"></div></section>
 
   <!-- BUSCA -->
   <div class="search-bar">
@@ -3147,6 +3150,10 @@ window.LibraryLocalBridge = { ready: true, setItems: setLocalLibraryItems, setTh
 window.dispatchEvent(new CustomEvent('library:local-ready'));
 init();
 </script>
-<script type="module" src="assets/local-folders.mjs?v=809b4377340246d7"></script>
+<script type="module" src="assets/local-folders.mjs?v=7de1bbf2284d29e5"></script>
+<script type="module">
+import {mountPrivateStudyUI} from "./assets/private-study-ui.mjs?v=47ac50b0c02aaa47";
+mountPrivateStudyUI(document.getElementById("libraryPrivateStudyHost"),{sourceBridge:{open:source=>window.LibraryPrivateSourceBridge?.open(source)||Promise.resolve({status:"disconnected"})}}).catch(()=>{document.getElementById("libraryPrivateStudyHost").textContent="O estudo privado não pôde iniciar. Recarregue a página; seus documentos originais permanecem nas pastas.";});
+</script>
 </body>
 </html>

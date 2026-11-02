@@ -10,6 +10,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 import zipfile
+from types import SimpleNamespace
 
 SCRIPTS=Path(__file__).resolve().parents[1]/'scripts_admin'
 sys.path.insert(0,str(SCRIPTS))
@@ -17,6 +18,31 @@ import extract_local_document_text as extractor
 
 
 class LocalDocumentExtractionTests(unittest.TestCase):
+    def test_pdf_anchors_keep_actual_physical_page_numbers_and_selection(self):
+        pages=[SimpleNamespace(extract_text=lambda number=n:f'Clinical fixture page {number}')for n in(1,2,3)]
+        reader=SimpleNamespace(pages=pages,is_encrypted=False,metadata=SimpleNamespace(title='Fixture book'))
+        with patch.dict(sys.modules,{'pypdf':SimpleNamespace(PdfReader=lambda *a,**k:reader)}):
+            result=extractor.extract(Path('/tmp/fixture.pdf'),page_numbers=[3,1,9],include_anchors=True)
+        self.assertEqual([s['pageNumber']for s in result['sourceSegments']],[3,1])
+        self.assertEqual(result['sourceCoverage']['unavailableRequestedPageNumbers'],[9])
+        self.assertEqual(result['sourceCoverage']['pageUnit'],'physical-1-based')
+        self.assertFalse(result['sourceCoverage']['wholeWorkSummarySupported'])
+        self.assertEqual(result['text'],'Clinical fixture page 3\nClinical fixture page 1')
+
+    def test_page_segments_respect_global_character_limit_and_never_invent_text(self):
+        reader=SimpleNamespace(pages=[SimpleNamespace(extract_text=lambda:'A'*10),SimpleNamespace(extract_text=lambda:'B'*10)],
+                               is_encrypted=False,metadata=SimpleNamespace(title='Fixture'))
+        with patch.dict(sys.modules,{'pypdf':SimpleNamespace(PdfReader=lambda *a,**k:reader)}):
+            result=extractor.extract(Path('/tmp/fixture.pdf'),chars=15,include_anchors=True)
+        self.assertEqual(result['text'],'A'*10+'\n'+'B'*4)
+        self.assertEqual(result['text'],'\n'.join(s['text']for s in result['sourceSegments']))
+        self.assertTrue(result['sourceSegments'][-1]['truncated'])
+        self.assertTrue(result['sourceCoverage']['textTruncated'])
+
+    def test_invalid_page_selection_is_rejected_without_reading(self):
+        for values in ([0],[True],[1,1],[],list(range(1,10)),['1']):
+            with self.subTest(values=values),self.assertRaisesRegex(ValueError,'invalid-page-numbers'):
+                extractor.extract(Path('/not-read.pdf'),page_numbers=values,include_anchors=True)
     def test_native_guard_blocks_escape_symlinks_and_metadata_changes(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);file=root/'documento.txt';file.write_text('Conteúdo fictício');info=file.stat()
@@ -43,6 +69,18 @@ class LocalDocumentExtractionTests(unittest.TestCase):
                 z.writestr('word/media/image1.png',b'not-read-as-text')
             before=hashlib.sha256(file.read_bytes()).hexdigest();result=extractor.extract(file)
             self.assertIn('Assunto fictício',result['text']);self.assertNotIn('not-read-as-text',result['text']);self.assertEqual(hashlib.sha256(file.read_bytes()).hexdigest(),before)
+
+    def test_docx_anchors_are_xml_paragraphs_not_fabricated_pages(self):
+        with tempfile.TemporaryDirectory()as tmp:
+            file=Path(tmp)/'document.docx'
+            with zipfile.ZipFile(file,'w')as z:
+                z.writestr('word/document.xml','<document><p/><p>Clinical fixture one</p><p>Clinical fixture two</p></document>')
+            result=extractor.extract(file,chars=25,include_anchors=True)
+            self.assertEqual(result['sourceSegments'][0]['paragraphNumber'],2)
+            self.assertTrue(all('pageNumber'not in s for s in result['sourceSegments']))
+            self.assertFalse(result['sourceCoverage']['physicalPagesKnown'])
+            self.assertLessEqual(len(result['text']),25)
+            self.assertEqual(result['text'],'\n'.join(s['text']for s in result['sourceSegments']))
 
     def test_zip_xml_size_limit_prevents_unbounded_decompression(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -85,6 +123,8 @@ class LocalDocumentExtractionTests(unittest.TestCase):
         row={'schema':extractor.SCHEMA,'relativePath':'a.txt','size':10,'modifiedNs':123,'id':extractor.fingerprint('a.txt',10,123),'ok':False,'title':'','text':'','method':'unavailable'}
         self.assertTrue(extractor.valid_cache_record(row))
         for changed in [{'ok':'false'},{'text':{}},{'title':[]},{'partial':'true'},{'size':True}]:self.assertFalse(extractor.valid_cache_record({**row,**changed}))
+        for bad in [None,[{'kind':'pdf-page','pageNumber':True,'text':'x'}],[{'kind':'pdf-page','pageNumber':0,'text':'x'}]]:
+            self.assertFalse(extractor.valid_cache_record({**row,'sourceSegments':bad}))
 
 
     def test_invalid_controls_fail_before_any_source_or_output_access(self):

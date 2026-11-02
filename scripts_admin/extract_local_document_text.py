@@ -5,6 +5,8 @@ Use a Python runtime with pypdf installed for PDFs. DOCX/ODT use standard ZIP/XM
 plain text uses bounded reads. Legacy DOC/RTF may use macOS textutil. This does
 not edit originals or validate the medical content. Private JSONL must stay
 outside the repository and source folder. No document text is printed by batch.
+--include-anchors adds physical PDF pages or XML/line locators; --page-numbers
+selects up to eight 1-based physical PDF pages and implies anchors.
 """
 from __future__ import annotations
 import argparse
@@ -58,10 +60,15 @@ def clean_title(value):
     return title
 
 
-def extract(path,pages=2,chars=20000):
+def extract(path,pages=2,chars=20000,*,page_numbers=None,include_anchors=False):
     """Read only bounded text. The caller enforces path/fingerprint/time limits."""
+    if page_numbers is not None and (not isinstance(page_numbers,list) or not 1<=len(page_numbers)<=8 or
+        any(type(n) is not int or n<1 for n in page_numbers) or len(set(page_numbers))!=len(page_numbers)):
+        raise ValueError('invalid-page-numbers')
+    if type(include_anchors) is not bool:raise ValueError('invalid-anchor-flag')
     warnings.simplefilter('ignore');logging.disable(logging.CRITICAL)
     extension=path.suffix.lower();title='';text='';method='unsupported';partial=True
+    segments=[];coverage={'kind':'unavailable','wholeWorkSummarySupported':False}
     if extension=='.pdf':
         from pypdf import PdfReader
         reader=PdfReader(str(path),strict=False)
@@ -70,11 +77,24 @@ def extract(path,pages=2,chars=20000):
             except Exception:unlocked=False
             if not unlocked:raise ValueError('encrypted-pdf')
         title=clean_title(getattr(reader.metadata,'title',''))
-        chunks=[]
-        for page in reader.pages[:pages]:
-            chunks.append((page.extract_text() or '')[:chars])
-            if sum(map(len,chunks))>=chars:break
-        text='\n'.join(chunks)[:chars];method='pdf-first-pages'
+        total_pages=len(reader.pages)
+        requested=page_numbers if page_numbers is not None else list(range(1,min(pages,total_pages)+1))
+        chunks=[];truncated=False
+        for number in requested:
+            if number>total_pages:continue
+            raw=reader.pages[number-1].extract_text() or ''
+            remaining=chars-sum(map(len,chunks))-len(chunks)
+            if remaining<=0:truncated=True;break
+            chunk=raw[:remaining]if include_anchors else raw[:chars]
+            chunks.append(chunk)
+            segments.append({'kind':'pdf-page','pageNumber':number,'text':chunk,'truncated':len(chunk)<len(raw)})
+            truncated=truncated or len(chunk)<len(raw)
+            if sum(map(len,chunks))+max(0,len(chunks)-1)>=chars:break
+        text='\n'.join(chunks)[:chars];method='pdf-selected-pages'if page_numbers is not None else'pdf-first-pages'
+        coverage={'kind':'pdf-physical-pages','pageUnit':'physical-1-based','totalPages':total_pages,
+                  'requestedPageNumbers':requested,'extractedPageNumbers':[s['pageNumber']for s in segments],
+                  'unavailableRequestedPageNumbers':[n for n in requested if n>total_pages],
+                  'textTruncated':truncated,'wholeWorkSummarySupported':False}
     elif extension in {'.docx','.odt'}:
         member='word/document.xml' if extension=='.docx' else 'content.xml'
         with zipfile.ZipFile(path) as archive:
@@ -82,17 +102,27 @@ def extract(path,pages=2,chars=20000):
             if info.file_size>MAX_XML:raise ValueError('xml-size-limit')
             root=ET.fromstring(archive.read(info))
             paragraphs=[]
+            paragraph_number=0
             for node in root.iter():
                 if node.tag.split('}')[-1] in {'p','h'}:
+                    paragraph_number+=1
                     value=''.join(node.itertext()).strip()
-                    if value:paragraphs.append(value)
-                    if sum(map(len,paragraphs))>=chars:break
+                    if value:
+                        remaining=chars-sum(map(len,paragraphs))-len(paragraphs)
+                        if include_anchors and remaining<=0:break
+                        chunk=value[:max(0,remaining)]if include_anchors else value
+                        paragraphs.append(chunk)
+                        segments.append({'kind':'xml-paragraph','part':member,'paragraphNumber':paragraph_number,
+                                         'text':chunk,'truncated':len(chunk)<len(value)})
+                    if sum(map(len,paragraphs))+(max(0,len(paragraphs)-1)if include_anchors else 0)>=chars:break
             text='\n'.join(paragraphs)[:chars]
             core='docProps/core.xml' if extension=='.docx' else 'meta.xml'
             if core in archive.namelist() and archive.getinfo(core).file_size<=1024*1024:
                 meta=ET.fromstring(archive.read(core))
                 title=next((clean_title(n.text) for n in meta.iter() if n.tag.split('}')[-1]=='title' and n.text),'')
         method='zip-xml-first-paragraphs'
+        coverage={'kind':'xml-paragraphs','part':member,'physicalPagesKnown':False,
+                  'textTruncated':any(s['truncated']for s in segments),'wholeWorkSummarySupported':False}
     elif extension in {'.txt','.md','.markdown','.csv'}:
         with path.open('rb') as handle:raw=handle.read(chars*4)
         text=raw.decode('utf-8-sig',errors='replace')[:chars];method='plain-text-prefix'
@@ -106,13 +136,21 @@ def extract(path,pages=2,chars=20000):
         # Only a bounded leading heading; metadata lines and multiple lines are
         # still evaluated conservatively by the topic classifier.
         title='\n'.join(lines[:3])[:700]
-    return {'ok':True,'title':title,'text':text,'method':method,'partial':partial}
+    result={'ok':True,'title':title,'text':text,'method':method,'partial':partial}
+    if include_anchors:
+        if not segments and text:
+            segments=[{'kind':'converted-text-lines'if method=='local-textutil'else'text-lines',
+                       'startLine':1,'endLine':text.count('\n')+1,'text':text,'truncated':True}]
+            coverage={'kind':segments[0]['kind'],'physicalPagesKnown':False,'wholeWorkSummarySupported':False}
+        result.update(sourceSegments=segments,sourceCoverage=coverage)
+    return result
 
 
 def worker(request):
     path=Path(request['path'])
     if not path.is_absolute() or path.is_symlink() or not path.is_file() or path.stat().st_size>MAX_BYTES:raise ValueError('unsafe-worker-file')
-    return extract(path,int(request.get('pages',2)),int(request.get('chars',20000)))
+    return extract(path,int(request.get('pages',2)),int(request.get('chars',20000)),
+                   page_numbers=request.get('page_numbers'),include_anchors=request.get('include_anchors',False))
 
 
 def valid_cache_record(row):
@@ -123,6 +161,13 @@ def valid_cache_record(row):
     if any(not isinstance(row.get(k),str) for k in ['title','text','method']):return False
     if len(row['title'])>700 or len(row['text'])>50000 or len(row['method'])>120:return False
     if 'partial' in row and type(row['partial']) is not bool:return False
+    if 'sourceCoverage' in row and not isinstance(row['sourceCoverage'],dict):return False
+    if 'sourceSegments' in row:
+        if not isinstance(row['sourceSegments'],list) or len(row['sourceSegments'])>10000:return False
+        for segment in row['sourceSegments']:
+            if not isinstance(segment,dict)or not isinstance(segment.get('text'),str)or len(segment['text'])>50000:return False
+            if segment.get('kind')=='pdf-page'and(type(segment.get('pageNumber'))is not int or segment['pageNumber']<1):return False
+            if segment.get('kind')=='xml-paragraph'and(type(segment.get('paragraphNumber'))is not int or segment['paragraphNumber']<1):return False
     return row['id']==fingerprint(row['relativePath'],row['size'],row['modifiedNs'])
 
 
@@ -171,6 +216,8 @@ def validate_arguments(args):
     if args.limit is not None and (type(args.limit) is not int or args.limit<1):raise ValueError('invalid-limit')
     if type(args.pages) is not int or not 1<=args.pages<=5:raise ValueError('invalid-pages')
     if type(args.chars) is not int or not 1<=args.chars<=50000:raise ValueError('invalid-characters')
+    selected=getattr(args,'page_numbers',None)
+    if selected is not None and (not isinstance(selected,list)or not 1<=len(selected)<=8 or any(type(n)is not int or n<1 for n in selected)or len(set(selected))!=len(selected)):raise ValueError('invalid-page-numbers')
 
 
 def batch(args):
@@ -184,10 +231,18 @@ def batch(args):
     if inv['schema']!='360x-private-documents-inventory-v1' or inv['sourceName']!=source.name:raise ValueError('invalid-inventory')
     current_ids={fingerprint(r['relativePath'],r['size'],r['modifiedNs']) for r in rows}
     cached,repaired=normalize_cache(output,current_ids);pending=[]
+    selected=getattr(args,'page_numbers',None)
+    anchored=getattr(args,'include_anchors',False)or selected is not None
     for row in rows:
         row={**row,'id':fingerprint(row['relativePath'],row['size'],row['modifiedNs'])}
         if args.needed_only and not classify_document(row['relativePath'],original_folder=source.name)['needsReview']:continue
-        if row['id'] in cached and (cached[row['id']].get('ok') or not args.retry_errors):continue
+        saved=cached.get(row['id'])
+        refresh_anchors=anchored and saved is not None and 'sourceSegments'not in saved
+        if saved is not None and anchored and Path(row['relativePath']).suffix.lower()=='.pdf':
+            total=saved.get('sourceCoverage',{}).get('totalPages',args.pages)
+            desired=selected if selected is not None else list(range(1,min(args.pages,total)+1))
+            refresh_anchors=refresh_anchors or saved.get('sourceCoverage',{}).get('requestedPageNumbers')!=desired
+        if saved is not None and not refresh_anchors and (saved.get('ok') or not args.retry_errors):continue
         pending.append(row)
     if args.limit:pending=pending[:args.limit]
     output.parent.mkdir(parents=True,exist_ok=True,mode=0o700)
@@ -198,7 +253,8 @@ def batch(args):
         t=time.monotonic()
         try:
             path=native_path(source,row['relativePath'],row['size'],row['modifiedNs'])
-            request=json.dumps({'path':str(path),'pages':args.pages,'chars':args.chars},ensure_ascii=False)
+            request=json.dumps({'path':str(path),'pages':args.pages,'chars':args.chars,
+                                'page_numbers':selected,'include_anchors':anchored},ensure_ascii=False)
             completed=subprocess.run([str(args.python),str(Path(__file__).resolve()),'--worker'],input=request,capture_output=True,text=True,timeout=args.timeout)
             if completed.returncode:raise ValueError('worker-failed')
             extracted=json.loads(completed.stdout)
@@ -230,6 +286,8 @@ def main():
     parser.add_argument('--python',type=Path,default=Path(sys.executable));parser.add_argument('--workers',type=int,default=4);parser.add_argument('--timeout',type=float,default=45)
     parser.add_argument('--pages',type=int,default=2);parser.add_argument('--chars',type=int,default=20000);parser.add_argument('--needed-only',action='store_true');parser.add_argument('--retry-errors',action='store_true')
     parser.add_argument('--limit',type=int);parser.add_argument('--progress-every',type=int,default=25)
+    parser.add_argument('--include-anchors',action='store_true')
+    parser.add_argument('--page-numbers',type=lambda value:[int(n)for n in value.split(',')])
     args=parser.parse_args()
     try:batch(args)
     except Exception as error:print(json.dumps({'event':'error','type':type(error).__name__,'textPrinted':False}),file=sys.stderr);sys.exit(1)

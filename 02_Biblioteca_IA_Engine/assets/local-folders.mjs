@@ -145,6 +145,13 @@ export function createDocumentController({pickDirectory,urlAPI=globalThis.URL,st
   };
 }
 
+export function resolvePrivateStudySource(items,source){
+  if(!source||source.privacy!=='educational'||source.rights!=='private-reference')return {status:'blocked'};
+  const path=documentPath(source.path);if(!path||!['pdf','doc'].includes(source.slot))return {status:'invalid'};
+  const item=items.find(item=>item.localSource===source.slot&&item.relativePath===path);if(!item)return {status:'disconnected'};
+  return item.sizeBytes===source.size&&item.modifiedMs===source.modifiedMs?{status:'ready',id:item.id}:{status:'stale'};
+}
+
 export function attachLocalDocumentUI({document,window,bridge}){
   const el=id=>document.getElementById(id);if(!el('libraryLocalControls')||!bridge?.setItems)return null;
   bridge.setThemes?.(LOCAL_DOCUMENT_THEMES);
@@ -166,7 +173,14 @@ export function attachLocalDocumentUI({document,window,bridge}){
     el('libraryFolderInput-'+slot).addEventListener('change',()=>controller.connectFiles(slot,el('libraryFolderInput-'+slot).files).catch(failure));
     el('libraryFolderInput-'+slot).addEventListener('cancel',()=>{el('libraryLocalStatus').textContent='Seleção cancelada. A conexão anterior foi mantida.';});
   }
-  el('grid-arquivos').addEventListener('click',async event=>{const target=event.target?.closest?.('[data-local-document-action]');if(!target||!el('grid-arquivos').contains(target))return;event.preventDefault();event.stopPropagation();const id=target.dataset.localDocumentId,item=controller.getItems().find(item=>item.id===id);if(!item)return;try{if(target.dataset.localDocumentAction==='preview'&&item.extension==='pdf'){close();const token=previewVersion,opened=await controller.open(id,{pin:true});if(token!==previewVersion){if(previewId!==id)controller.release(id);return;}previewId=id;el('libraryLocalPreviewTitle').textContent=item.title;openLink.href=opened.url;downloadLink.href=opened.url;downloadLink.download=item.filename;preview.showModal();el('libraryLocalPreviewClose').focus();}else{const opened=await controller.open(id),link=document.createElement('a');link.href=opened.url;link.download=item.filename;link.rel='noopener';document.body.append(link);link.click();link.remove();}}catch{failure();}});
+  async function openLocalDocument(id,action='preview'){
+    const item=controller.getItems().find(item=>item.id===id);if(!item)throw Error('missing-source');
+    if(action==='preview'&&item.extension==='pdf'){close();const token=previewVersion,opened=await controller.open(id,{pin:true});if(token!==previewVersion){if(previewId!==id)controller.release(id);return {status:'cancelled'};}previewId=id;el('libraryLocalPreviewTitle').textContent=item.title;openLink.href=opened.url;downloadLink.href=opened.url;downloadLink.download=item.filename;preview.showModal();el('libraryLocalPreviewClose').focus();}
+    else{const opened=await controller.open(id),link=document.createElement('a');link.href=opened.url;link.download=item.filename;link.rel='noopener';document.body.append(link);link.click();link.remove();}
+    return {status:'opened'};
+  }
+  window.LibraryPrivateSourceBridge=Object.freeze({status:source=>resolvePrivateStudySource(controller.getItems(),source),async open(source){const found=resolvePrivateStudySource(controller.getItems(),source);if(found.status!=='ready')return found;try{return await openLocalDocument(found.id);}catch{failure();return {status:'unavailable'};}}});
+  el('grid-arquivos').addEventListener('click',async event=>{const target=event.target?.closest?.('[data-local-document-action]');if(!target||!el('grid-arquivos').contains(target))return;event.preventDefault();event.stopPropagation();try{await openLocalDocument(target.dataset.localDocumentId,target.dataset.localDocumentAction);}catch{failure();}});
   el('libraryLocalPreviewClose').addEventListener('click',close);preview.addEventListener('cancel',event=>{event.preventDefault();close();});preview.addEventListener('close',()=>{clearLinks();if(previewId)controller.release(previewId);previewId='';});
   if(typeof window.showDirectoryPicker!=='function'){el('libraryLocalRemember').checked=false;el('libraryLocalRemember').disabled=true;el('libraryLocalFallback').textContent='Neste navegador, selecione a pasta novamente para atualizar ou após recarregar. Não há upload.';}
   window.addEventListener('pagehide',event=>{if(!event.persisted){close();controller.dispose();}});changed(controller.getState());controller.restore().catch(failure);return controller;
