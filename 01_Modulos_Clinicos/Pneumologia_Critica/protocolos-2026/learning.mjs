@@ -1,3 +1,4 @@
+import { createPrivateStudyBridge } from './private-study-bridge.mjs?v=57d6e58b188f17cf';
 import { BANK, ALL_CASES, ALL_CARDS, ALL_PARTICLES, CARD_IDS, LEARNING_TOPICS, topicInfo, LEARNING_SOURCES as SOURCES } from './learning-registry.mjs?v=3d1714df5ef42633';
 import { EXAM_COUNTS, buildExam, remainingSeconds, scheduleReview, selectDueCards,
   loadProgress, serializeProgress, nextParticleIndex } from './learning-engine.mjs?v=0874f1cb41dcfbb2';
@@ -13,8 +14,8 @@ const clock = seconds => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:$
 const refs = keys => [...new Set(keys)].map(key => SOURCES[key] ? `<a href="${esc(SOURCES[key].url)}" target="_blank" rel="noopener noreferrer">${esc(SOURCES[key].title)} ↗</a>` : '').join(' · ');
 const action = (name, label, extra = '') => `<button type="button" data-learn="${name}" ${extra}>${label}</button>`;
 
-export function initLearning(root, { onTopicChange } = {}) {
-  let topic = 'dpoc', mode = 'flow', visible = false, notice = '', storageOK = true;
+export function initLearning(root, { onTopicChange, onStudyStateChange, privatePlayerLoader } = {}) {
+  let topic = 'dpoc', mode = 'flow', visible = false, notice = '', storageOK = true, origin = 'public';
   let raw = null;
   try { raw = localStorage.getItem(STORAGE_KEY); } catch { storageOK = false; }
   const progress = loadProgress(raw, CARD_IDS);
@@ -37,13 +38,23 @@ export function initLearning(root, { onTopicChange } = {}) {
   let exam = null;
   const examDraft = { topic: 'dpoc', count: 6, minutes: 10 };
 
-  root.innerHTML = `<div class="learn-intro"><div><p class="eyebrow">TURBO TEMI 360X · TREINO EM MICROPARTÍCULAS</p><h2 id="learn-heading">Uma decisão. Um comentário. O próximo passo.</h2><p>${ALL_CASES.length} casos autorais · ${ALL_CARDS.length} flashcards · ${ALL_PARTICLES.length} micropartículas. Escolha seu tema abaixo.</p><p>Base DPOC/PAC aprovada na etapa anterior. Todos os demais temas, incluindo TB, micoses, antifúngicos e IgG4: prévia educacional — revisão médica formal pendente.</p></div><span class="learn-badge">UM PASSO POR VEZ</span></div>
-    <div class="learn-topic-control"><label for="learning-topic">Tema do estudo<select id="learning-topic">${LEARNING_TOPICS.map(t=>`<option value="${esc(t.id)}">${esc(t.label)}${t.preview ? " · prévia" : ""}</option>`).join('')}</select></label><p>O tema vale para microfluxo, casos, flashcards e painel. O simulado permite combinar os ${LEARNING_TOPICS.length} temas; a cobertura depende do tamanho do bloco.</p></div>
+  root.innerHTML = `<div class="learn-intro"><div><p class="eyebrow">TURBO TEMI 360X · TREINO EM MICROPARTÍCULAS</p><h2 id="learn-heading">Uma decisão. Um comentário. O próximo passo.</h2><p>Protocolos públicos · ${ALL_CASES.length} casos autorais · ${ALL_CARDS.length} flashcards · ${ALL_PARTICLES.length} micropartículas. Escolha seu tema abaixo.</p><p>Nos protocolos públicos, a base DPOC/PAC foi aprovada na etapa anterior. Todos os demais temas, incluindo TB, micoses, antifúngicos e IgG4: prévia educacional — revisão médica formal pendente.</p></div><span class="learn-badge">UM PASSO POR VEZ</span></div>
+    <div class="learn-origin-control"><label for="learning-origin">Origem do treino<select id="learning-origin"><option value="public">🌐 Protocolos públicos</option><option value="private">🔒 Biblioteca privada</option></select></label><p>Use os mesmos formatos abaixo. A biblioteca lê o pacote privado salvo neste navegador, com progresso próprio.</p></div>
+    <div class="learn-topic-control" id="learning-public-topics"><label for="learning-topic">Tema do estudo<select id="learning-topic">${LEARNING_TOPICS.map(t=>`<option value="${esc(t.id)}">${esc(t.label)}${t.preview ? " · prévia" : ""}</option>`).join('')}</select></label><p>O tema vale para microfluxo, casos, flashcards e painel. O simulado permite combinar os ${LEARNING_TOPICS.length} temas; a cobertura depende do tamanho do bloco.</p></div>
     <nav class="learn-modes" aria-label="Formato de estudo">${MODES.map(([id, label]) => `<button type="button" data-learn-mode="${id}" aria-pressed="${id === mode}">${label}</button>`).join('')}</nav>
-    <p class="learn-notice" id="learn-notice" role="status"></p><div id="learn-body"></div>
-    <details class="learn-method"><summary>🔬 Como funciona o modelo microparticulado progressivo?</summary><div><p>O fluxo transforma um tópico em quatro partículas: contexto → mecanismo → decisão → transferência. Pense antes de revelar; confira o comentário e siga na mesma tela. Ao terminar, o percurso recomeça sem tela de bloqueio.</p><p>A citometria de fluxo inspira a metáfora visual: partículas passam por uma janela de atenção. É uma organização didática autoral, não um exame nem um método validado especificamente para TDAH.</p><p>O avanço automático é opcional. Os flashcards usam recuperação ativa e revisão espaçada; os intervalos de 5 minutos, 1 dia e progressão até 30 dias são escolhas desta plataforma, ajustáveis em versões futuras.</p><p>Base pedagógica: <a href="https://doi.org/10.1126/science.1152408" target="_blank" rel="noopener noreferrer">Karpicke e Roediger, 2008 ↗</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/39250798/" target="_blank" rel="noopener noreferrer">Estudo de repetição espaçada em médicos, 2024 ↗</a>.</p></div></details>
-    <p class="learn-footnote">Questões autorais para preparação TEMI; não são questões oficiais da AMIB. Casos inteiramente fictícios, derivados das referências do módulo. Neste navegador ficam a agenda dos flashcards e, em registro separado, IDs, contadores, datas e status de revisão. Enunciados, alternativas escolhidas e textos livres não são salvos no painel. Casos e simulados são fictícios; não informe dados de pacientes.</p>`;
+    <p class="learn-notice" id="learn-notice" role="status"></p><div class="learn-workspace"><div id="learn-body"></div><div id="learn-private-body" hidden></div></div>
+    <details class="learn-method"><summary>🔬 Como funciona o modelo microparticulado progressivo?</summary><div><p>Nos protocolos públicos, o fluxo transforma um tópico em quatro partículas: contexto → mecanismo → decisão → transferência. Pense antes de revelar; confira o comentário e siga na mesma tela. Ao terminar, o percurso recomeça sem tela de bloqueio. Na Biblioteca privada, a quantidade de partículas depende da cobertura das passagens; aplicações clínicas indicam sua diretriz externa.</p><p>A citometria de fluxo inspira a metáfora visual: partículas passam por uma janela de atenção. É uma organização didática autoral, não um exame nem um método validado especificamente para TDAH.</p><p>O avanço automático é opcional. Os flashcards dos protocolos públicos usam recuperação ativa e revisão espaçada; os intervalos de 5 minutos, 1 dia e progressão até 30 dias são escolhas dos bancos públicos, ajustáveis em versões futuras. Na biblioteca privada, o painel organiza retomadas por erro; esses registros não entram na agenda pública.</p><p>Base pedagógica: <a href="https://doi.org/10.1126/science.1152408" target="_blank" rel="noopener noreferrer">Karpicke e Roediger, 2008 ↗</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/39250798/" target="_blank" rel="noopener noreferrer">Estudo de repetição espaçada em médicos, 2024 ↗</a>.</p></div></details>
+    <p class="learn-footnote">Questões autorais para preparação TEMI; não são questões oficiais da AMIB. Casos inteiramente fictícios, derivados das referências do módulo. Nos bancos públicos, neste navegador ficam a agenda dos flashcards e, em registro separado, IDs, contadores, datas e status de revisão. Enunciados, alternativas escolhidas e textos livres não são salvos no painel. Na Biblioteca privada, o pacote de estudo e seu progresso ficam no IndexedDB deste navegador; o painel público não recebe esses registros. Questões clínicas geradas são rascunhos educacionais e exigem revisão médica. Não informe dados de pacientes.</p>`;
 
+  const privateBridge = createPrivateStudyBridge(root.querySelector('#learn-private-body'), {
+    ...(privatePlayerLoader ? { loadPlayer: privatePlayerLoader } : {}),
+    onModeChange(next) { if (origin === 'private') { mode = next; render(); onStudyStateChange?.(); } },
+  });
+  function changeOrigin(next) {
+    if (!['public', 'private'].includes(next)) return;
+    pause(); privateBridge.pause(); origin = next; notice = '';
+    render(); onStudyStateChange?.();
+  }
   function persist() {
     try { localStorage.setItem(STORAGE_KEY, serializeProgress(progress)); }
     catch { storageOK = false; }
@@ -155,7 +166,14 @@ export function initLearning(root, { onTopicChange } = {}) {
     const focusId = root.contains(active) && ['exam-topic','exam-count','exam-minutes','flow-cadence','case-select'].includes(active?.id) ? active.id : null;
     root.querySelectorAll('[data-learn-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.learnMode === mode));
     root.querySelector('#learn-notice').textContent = [notice, !storageOK ? 'Armazenamento local indisponível: a revisão funciona nesta sessão.' : ''].filter(Boolean).join(' ');
+    root.querySelector('#learning-origin').value = origin;
+    root.querySelector('#learning-public-topics').hidden = origin === 'private';
     root.querySelector('#learning-topic').value = topic;
+    root.querySelector('#learn-body').hidden = origin === 'private';
+    privateBridge.setMode(mode);
+    privateBridge.setVisible(visible);
+    privateBridge.setActive(origin === 'private');
+    if (origin === 'private') return;
     root.querySelector('#learn-body').innerHTML = clinicalStatusHTML() + directedHTML() + ({ flow: flowHTML, cases: casesHTML, cards: cardsHTML, exam: examHTML, review: reviewHTML })[mode]();
     if (focusId) root.querySelector(`#${focusId}`)?.focus({preventScroll:true});
     else if (focusAction) root.querySelector(`[data-learn="${focusAction}"]${focusAnswer !== undefined ? `[data-answer="${focusAnswer}"]` : ''}:not([disabled])`)?.focus({ preventScroll: true });
@@ -170,7 +188,7 @@ export function initLearning(root, { onTopicChange } = {}) {
     notice = reason === 'Tempo encerrado' ? 'Tempo encerrado. O simulado foi corrigido.' : 'Simulado corrigido. Confira os comentários.';
   }
   root.addEventListener('submit', event => {
-    if (event.target.id !== 'exam-config') return;
+    if (origin !== 'public' || event.target.id !== 'exam-config') return;
     event.preventDefault();
     const minutes = Number(root.querySelector('#exam-minutes').value);
     if (!Number.isInteger(minutes) || minutes < 1 || minutes > 60) { notice = 'Informe de 1 a 60 minutos inteiros.'; render(); return; }
@@ -184,6 +202,8 @@ export function initLearning(root, { onTopicChange } = {}) {
     notice = ''; render();
   });
   root.addEventListener('change', event => {
+    if (event.target.id === 'learning-origin') { changeOrigin(event.target.value); return; }
+    if (origin !== 'public') return;
     if (event.target.id === 'learning-topic') { changeTopic(event.target.value); return; }
     if (event.target.id === 'exam-topic' && (topicInfo(event.target.value)||event.target.value==='mixed')) { examDraft.topic = event.target.value; render(); }
     if (event.target.id === 'exam-count' && EXAM_COUNTS.includes(Number(event.target.value))) { examDraft.count = Number(event.target.value); render(); }
@@ -194,7 +214,8 @@ export function initLearning(root, { onTopicChange } = {}) {
   root.addEventListener('click', event => {
     const button = event.target.closest('button');
     if (!button || !root.contains(button)) return;
-    if (button.dataset.learnMode) { pause(); mode = button.dataset.learnMode; notice = ''; render(); return; }
+    if (button.dataset.learnMode) { pause(); privateBridge.pause(); mode = button.dataset.learnMode; notice = ''; render(); return; }
+    if (origin !== 'public') return;
     const cmd = button.dataset.learn;
     if (!cmd) return;
     notice = '';
@@ -240,7 +261,7 @@ export function initLearning(root, { onTopicChange } = {}) {
     render();
   });
   function tick() {
-    if (!visible || document.hidden) return;
+    if (!visible || document.hidden || origin !== 'public') return;
     const now = Date.now();
     if (mode === 'flow' && auto) {
       if (now >= flowDeadline) { if (flow[topic].revealed) nextParticle(); else flow[topic].revealed = true; flowDeadline = now + cadence * 1000; render(); }
@@ -254,12 +275,14 @@ export function initLearning(root, { onTopicChange } = {}) {
     }
   }
   let timer = setInterval(tick, 250);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { pause('Treino pausado ao sair da página. Retome quando quiser.'); render(); } });
-  window.addEventListener('pagehide', () => { pause(); clearInterval(timer); });
-  window.addEventListener('pageshow', event => { if (event.persisted) { timer = setInterval(tick, 250); notice = 'Treino pausado após voltar à página.'; render(); } });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { privateBridge.pause(); pause('Treino pausado ao sair da página. Retome quando quiser.'); render(); } });
+  window.addEventListener('pagehide', () => { pause(); privateBridge.pause(); privateBridge.setVisible(false); clearInterval(timer); });
+  window.addEventListener('pageshow', event => { if (event.persisted) { timer = setInterval(tick, 250); privateBridge.setVisible(visible); notice = 'Treino pausado após voltar à página.'; render(); } });
   render();
   function changeTopic(id) {
-    if (!Object.hasOwn(BANK,id) || topic===id) return;
+    if (!Object.hasOwn(BANK,id)) return;
+    if (origin !== 'public') changeOrigin('public');
+    if (topic===id) return;
     pause('Tema alterado; o treino em andamento foi pausado.');
     topic=id; directedConcepts=null; pinnedCard=null; confirmClear=false;
     if(examDraft.topic!=='mixed')examDraft.topic=id;
@@ -271,9 +294,12 @@ export function initLearning(root, { onTopicChange } = {}) {
   return {
     openReview() { pause(); mode = 'review'; confirmClear = false; render(); },
     openFlow() { pause(); mode = 'flow'; confirmClear = false; render(); },
+    openPrivate(next = 'review') { if (!MODES.some(([id]) => id === next)) return; pause(); mode = next; changeOrigin('private'); },
     setTopic: changeTopic,
     getTopic: () => topic,
     getMode: () => mode,
-    setVisible(value) { visible = value; if (!value) { pause('Treino pausado ao mudar de camada.'); render(); } },
+    getOrigin: () => origin,
+    setOrigin: changeOrigin,
+    setVisible(value) { visible = Boolean(value); privateBridge.setVisible(visible); if (!value) { privateBridge.pause(); pause('Treino pausado ao mudar de camada.'); render(); } },
   };
 }

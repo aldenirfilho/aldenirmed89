@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v52`;
+const CACHE_NAME = `${CACHE_PREFIX}v53`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -79,7 +79,11 @@ const WARM_ASSETS = [
   "./assets/site-navigation.css",
   "./assets/site-navigation.js",
   "./02_Biblioteca_IA_Engine/data/biblioteca_ingestao_20260911.json",
-  "./02_Biblioteca_IA_Engine/assets/local-folders.mjs?v=809b4377340246d7",
+  "./02_Biblioteca_IA_Engine/assets/local-folders.mjs?v=7de1bbf2284d29e5",
+  "./02_Biblioteca_IA_Engine/assets/private-study-schema.mjs?v=56324c4420b8ed2a",
+  "./02_Biblioteca_IA_Engine/assets/private-study-engine.mjs?v=6a8a4fc7a59f1fdc",
+  "./02_Biblioteca_IA_Engine/assets/private-study-ui.mjs?v=47ac50b0c02aaa47",
+  "./02_Biblioteca_IA_Engine/assets/private-study.css?v=360d5fb4c1c17fd4",
 
   "./24_Semiologia/index.html",
   "./24_Semiologia/assets/semio.css",
