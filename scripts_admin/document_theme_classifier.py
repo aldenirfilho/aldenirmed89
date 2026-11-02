@@ -197,6 +197,18 @@ def _unknown(secondary=(), reason="Sem assunto específico suficiente; classific
             "secondaryThemes": list(secondary)[:2], "needsReview": True, "reason": reason}
 
 
+def _candidate_chunk_indices(rule, word_chunks, chunk_count):
+    """Necessary-condition filter; matching and original chunk order stay exact."""
+    candidates = set()
+    for term in rule.terms:
+        first_word = term.partition(" ")[0]
+        if not first_word:
+            # Preserve exhaustive semantics even for a future empty term.
+            return range(chunk_count)
+        candidates.update(word_chunks.get(first_word, ()))
+    return sorted(candidates)
+
+
 def classify_document(relative_path, title="", text="", original_folder=""):
     """Return one written topic and at most two secondary Biblioteca theme IDs.
 
@@ -226,10 +238,17 @@ def classify_document(relative_path, title="", text="", original_folder=""):
     personal_text = " ".join(_normalize(value) for value in (relative_path, title, str(text or "")[:20000]))
     personal = any(_contains(personal_text, term) for term in _PERSONAL)
 
+    word_chunks = defaultdict(set)
+    for index, (content, _, _, _) in enumerate(chunks):
+        for word in set(content.split()):
+            word_chunks[word].add(index)
     evidence = defaultdict(list)
     for rule in RULES:
-        found = [(rule.weight * factor, method, header) for content, method, factor, header in chunks
-                 if any(_contains(content, term) for term in rule.terms)]
+        found = []
+        for index in _candidate_chunk_indices(rule, word_chunks, len(chunks)):
+            content, method, factor, header = chunks[index]
+            if any(_contains(content, term) for term in rule.terms):
+                found.append((rule.weight * factor, method, header))
         if found:
             best = max(found, key=lambda item: item[0])
             # Only the best occurrence of each concept counts. Long books and

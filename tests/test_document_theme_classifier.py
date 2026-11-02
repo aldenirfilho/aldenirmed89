@@ -2,14 +2,56 @@
 
 import json
 from pathlib import Path
+import random
 import sys
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts_admin"))
 from document_theme_classifier import CLASSIFIER_VERSION, THEMES, classify_document
+import document_theme_classifier as classifier
 
 
 class DocumentThemeClassifierTests(unittest.TestCase):
+    def assert_matches_exhaustive_reference(self, *args, **kwargs):
+        optimized = classify_document(*args, **kwargs)
+        # The reference checks every cleaned chunk with the original predicate,
+        # preserving the exact pre-index scoring and stable max/tie behavior.
+        with patch.object(classifier, "_candidate_chunk_indices", lambda rule, word_chunks, count: range(count)):
+            exhaustive = classify_document(*args, **kwargs)
+        self.assertEqual(optimized, exhaustive)
+
+    def test_word_index_matches_exhaustive_reference_on_varied_inputs(self):
+        fixtures = [
+            (("a.pdf",), {}),
+            (("DPOC.pdf",), {"title": "Mechanical ventilation", "text": "Authors: Renal\nReferences\nDiabetes"}),
+            (("PDF/TDAH/gerado.docx",), {"title": "Turbo TEMI 360X", "text": "TDAH-friendly\nGerado por IA"}),
+            (("Terapia Intensiva/a.pdf",), {"title": "Acute kidney\ninjury", "text": "Harrison Principles of Internal Medicine\n" * 30}),
+            (("a.docx",), {"title": "Planejamento financeiro", "text": "CPF: 123\nProjeto de pesquisa\nSepse", "original_folder": "Jurídico"}),
+            (("a.pdf",), {"title": "Cardiac\narrest", "text": "\n".join(["Um cabeçalho"] * 4 + ["DPOC", "Asma", "Sepse", "POCUS"] * 15)}),
+            (("a.pdf",), {"title": "Cardiac\nReferences\narrest", "original_folder": "PDD"}),
+            (("a.pdf",), {"title": "x" * 701, "text": "x " * 10001 + "\nDPOC"}),
+        ]
+        for args, kwargs in fixtures:
+            with self.subTest(args=args, kwargs=list(kwargs)):
+                self.assert_matches_exhaustive_reference(*args, **kwargs)
+
+    def test_word_index_matches_exhaustive_reference_for_deterministic_combinations(self):
+        rng = random.Random("360x-exact-word-index")
+        phrases = ["Acute kidney injury", "DPOC", "Sepse", "Pneumonia", "Ventrículo direito", "Reações transfusionais", "Direito de família", "Inteligência artificial", "Projeto de pesquisa", "Neurodiversidade", "Extrato bancário", "Harrison Principles of Internal Medicine", "renal", "adrenal", "Autores", "References", "Uma descrição sem assunto"]
+        for index in range(40):
+            body = "\n".join(rng.choice(phrases) for _ in range(rng.randrange(0, 60)))
+            title = "\n".join(rng.choice(phrases) for _ in range(rng.randrange(0, 5)))
+            filename = rng.choice(("a.pdf", "sepse.pdf", "POCUS.docx", "Harrison.pdf"))
+            folder = rng.choice(("PDF", "DOC 2026", "Nefrologia", "tdah-neurodiversidade", "PDD"))
+            with self.subTest(index=index):
+                self.assert_matches_exhaustive_reference(filename, title, body, folder)
+
+    def test_candidate_index_uses_whole_words_and_keeps_original_order(self):
+        rule = classifier._Rule("nefro-aki-trs", "Referência de teste", 1.0, ("renal failure", "deep vein thrombosis"))
+        index = {"adrenal": {0}, "renal": {5, 2}, "deep": {4, 2}}
+        self.assertEqual(classifier._candidate_chunk_indices(rule, index, 6), [2, 4, 5])
+
     def test_library_ids_and_labels_are_preserved(self):
         path = Path(__file__).resolve().parents[1] / "02_Biblioteca_IA_Engine/data/biblioteca_taxonomia_temas.json"
         for item in json.loads(path.read_text())["themes"]:
