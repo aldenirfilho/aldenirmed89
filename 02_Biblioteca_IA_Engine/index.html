@@ -534,7 +534,7 @@
 
   <section id="localFolders" class="local-library" aria-labelledby="libraryLocalTitle"><div id="libraryLocalControls">
     <h2 id="libraryLocalTitle">🔒 Seus documentos do iCloud · <span id="libraryLocalCount">0</span> conectados</h2>
-    <p>Conecte as pastas <b>PDF</b> e <b>DOC 2026</b> de 360X. Use a busca abaixo para localizar por nome, pasta ou tema sugerido. Os documentos continuam privados, sem upload; o conteúdo integral não é indexado nem enviado à IA.</p>
+    <p>Conecte as pastas <b>PDF</b> e <b>DOC 2026</b> de 360X. Use a busca abaixo para localizar por nome, pasta ou tema sugerido. O catálogo privado biblioteca-temas-360x.json, na raiz de cada pasta, acrescenta assuntos e temas pela versão exata do arquivo. Os documentos continuam privados, sem upload; o conteúdo integral não é indexado nem enviado à IA.</p>
     <div class="local-actions">
       <button class="btn btn-primary" id="libraryConnect-pdf" type="button">📁 Conectar PDF</button>
       <button class="btn btn-primary" id="libraryConnect-doc" type="button">📁 Conectar DOC</button>
@@ -1031,6 +1031,7 @@
 let taxonomy = { themes: [] };
 let catalog = { items: [] };
 let localFolderItems = [];
+let localDocumentThemes = [];
 let brain = { nodes: [], edges: [] };
 let roadmap = [];
 let documentManifest = { files: [], partitions: [], origins: [] };
@@ -1410,7 +1411,7 @@ function popularSelects() {
 // Renderizar Filtros
 function popularFiltros() {
   const container = document.getElementById('filtros-temas');
-  const items = taxonomy.themes || [];
+  const items = libraryFilterThemes();
   
   // Manter o botão 'Todos' e 'Novo Tema'
   container.innerHTML = `
@@ -1431,6 +1432,32 @@ function popularFiltros() {
   // Populate Select in Modal
   const sel = document.getElementById('clTheme');
   sel.innerHTML = taxonomy.themes.map(t => `<option value="${escapeHTML(t.id)}">${escapeHTML(t.emoji || '📂')} ${escapeHTML(t.label)}</option>`).join('');
+}
+
+function setLocalDocumentThemes(themes) {
+  localDocumentThemes = (Array.isArray(themes) ? themes : []).filter(theme =>
+    theme && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(theme.id) && theme.id.length <= 64 &&
+    typeof theme.label === 'string' && theme.label.length <= 120 && !/[\u0000-\u001f\u007f]/.test(theme.label)
+  ).map(theme => ({ id: theme.id, label: theme.label, emoji: typeof theme.emoji === 'string' ? theme.emoji.slice(0, 16) : '📂' }));
+}
+
+function libraryFilterThemes() {
+  const base = taxonomy.themes || [];
+  const localIds = new Set(localFolderItems.flatMap(item => [item.theme, ...(Array.isArray(item.classificationSecondaryThemes) ? item.classificationSecondaryThemes : [])]));
+  return [...base, ...localDocumentThemes.filter(theme => localIds.has(theme.id) && !base.some(existing => existing.id === theme.id))];
+}
+
+function localDocumentThemeById(id) {
+  return (taxonomy.themes || []).find(theme => theme.id === id) || localDocumentThemes.find(theme => theme.id === id);
+}
+
+function localDocumentSubjects(item) {
+  if (!item.folderLinked) return { terms: [], secondaryThemes: [] };
+  const terms = Array.isArray(item.classificationTerms) ? item.classificationTerms.slice(0, 100)
+    .filter(term => typeof term === 'string' && term.length <= 120 && !/[\u0000-\u001f\u007f]/.test(term)) : [];
+  const secondaryThemes = Array.isArray(item.classificationSecondaryThemes) ? item.classificationSecondaryThemes
+    .filter(id => localDocumentThemeById(id)).slice(0, 33) : [];
+  return { terms: Array.from(new Set(terms)), secondaryThemes: Array.from(new Set(secondaryThemes)) };
 }
 
 function libraryItems() {
@@ -1463,17 +1490,24 @@ function setLocalLibraryItems(items, { focus = false } = {}) {
   if (focus) {
     currentFilter = 'todos'; currentFormatFilter = 'todos'; currentOriginFilter = 'icloud-local';
     document.getElementById('busca').value = '';
-    popularFiltros();
     document.getElementById('filtro-formato').value = 'todos';
   } else if (!localFolderItems.length && currentOriginFilter === 'icloud-local') currentOriginFilter = 'todos';
+  if (currentFilter !== 'todos' && !libraryFilterThemes().some(theme => theme.id === currentFilter)) currentFilter = 'todos';
   lastRenderState = '';
-  popularFormatos(); renderStats(); renderGrid();
+  popularFiltros(); popularFormatos(); renderStats(); renderGrid();
 }
 
 function localLibraryCardHTML(item) {
-  const theme = (taxonomy.themes || []).find(theme => theme.id === item.theme);
+  const theme = localDocumentThemeById(item.theme);
+  const subjects = localDocumentSubjects(item);
+  const source = item.classificationSource === 'manifest' ? 'catálogo privado' : 'sugestão por nome/pasta';
+  const confidence = item.classificationSource === 'manifest' ? ({ alta: 'alta', media: 'média', baixa: 'baixa' })[item.classificationConfidence] : '';
+  const classification = `${source}${confidence ? ' · confiança ' + confidence : ''}${item.classificationNeedsReview ? ' · ⚠️ Conferir classificação' : ''}`;
+  const subjectLine = subjects.terms.length || subjects.secondaryThemes.length
+    ? `<p class="card-desc">🧭 Assuntos: ${escapeHTML(subjects.terms.slice(0, 5).join(' · '))}${subjects.secondaryThemes.length ? ' · Também: ' + escapeHTML(subjects.secondaryThemes.slice(0, 3).map(id => localDocumentThemeById(id).label).join(' · ')) : ''}</p>`
+    : '';
   const id = escapeHTML(item.id);
-  return `<article class="card ${escapeHTML(item.tipo)}"><span class="card-icon">${item.extension === 'pdf' ? '📕' : '📄'}</span><h3 class="card-title">${escapeHTML(item.title)}</h3><div class="meta-pills"><span class="meta-pill origin">🔒 iCloud local · ${escapeHTML(item.localSource.toUpperCase())}</span><span class="meta-pill format">${escapeHTML(item.formatoLabel)}</span></div><p class="card-desc">${theme ? '📂 ' + escapeHTML(theme.label) + ' · tema sugerido por nome/pasta.' : '🔎 Sem tema confirmado; busque pelo nome ou pela pasta.'}<br>Revisão clínica pendente · conteúdo integral não indexado.</p><div class="card-actions">${item.extension === 'pdf' ? `<button type="button" class="btn btn-primary" data-local-document-action="preview" data-local-document-id="${id}">👁️ Ver PDF local</button>` : ''}<button type="button" class="btn btn-secondary" data-local-document-action="download" data-local-document-id="${id}">⬇️ Baixar ${escapeHTML(item.formatoLabel)}</button></div></article>`;
+  return `<article class="card ${escapeHTML(item.tipo)}"><span class="card-icon">${item.extension === 'pdf' ? '📕' : '📄'}</span><h3 class="card-title">${escapeHTML(item.title)}</h3><div class="meta-pills"><span class="meta-pill origin">🔒 iCloud local · ${escapeHTML(item.localSource.toUpperCase())}</span><span class="meta-pill format">${escapeHTML(item.formatoLabel)}</span></div><p class="card-desc">${theme ? '📂 ' + escapeHTML(theme.label) : '🔎 Sem tema confirmado'}<br>${escapeHTML(classification)}<br>Organização temática; revisão clínica pendente · conteúdo integral não indexado.</p>${subjectLine}<div class="card-actions">${item.extension === 'pdf' ? `<button type="button" class="btn btn-primary" data-local-document-action="preview" data-local-document-id="${id}">👁️ Ver PDF local</button>` : ''}<button type="button" class="btn btn-secondary" data-local-document-action="download" data-local-document-id="${id}">⬇️ Baixar ${escapeHTML(item.formatoLabel)}</button></div></article>`;
 }
 
 function popularFormatos() {
@@ -1579,7 +1613,8 @@ function renderGrid() {
 
   const items = libraryItems().filter(i => {
     // Mostra todos os documentos inclusive inbox-revisar
-    const matchTheme = currentFilter === 'todos' || i.theme === currentFilter;
+    const subjects = localDocumentSubjects(i);
+    const matchTheme = currentFilter === 'todos' || i.theme === currentFilter || subjects.secondaryThemes.includes(currentFilter);
     const formatId = i.formato || i.format || i.tipo || 'outros';
     const originId = i.origem || i.origin || 'gerada-por-ia';
     const matchFormat = currentFormatFilter === 'todos' || formatId === currentFormatFilter;
@@ -1588,6 +1623,9 @@ function renderGrid() {
       i.title,
       i.filename,
       i.folderLinked ? i.relativePath : '',
+      i.folderLinked ? localDocumentThemeById(i.theme)?.label : '',
+      subjects.terms.join(' '),
+      subjects.secondaryThemes.map(id => `${id} ${localDocumentThemeById(id).label}`).join(' '),
       i.theme,
       i.tipo,
       formatId,
@@ -2985,10 +3023,10 @@ window.addEventListener('beforeunload', event => {
 focusedReader = window.LibraryFocusedReader
   ? window.LibraryFocusedReader.create({ isTokenCurrent: token => token === previewLoadToken })
   : null;
-window.LibraryLocalBridge = { ready: true, setItems: setLocalLibraryItems, inferTheme: inferLocalDocumentTheme };
+window.LibraryLocalBridge = { ready: true, setItems: setLocalLibraryItems, setThemes: setLocalDocumentThemes, inferTheme: inferLocalDocumentTheme };
 window.dispatchEvent(new CustomEvent('library:local-ready'));
 init();
 </script>
-<script type="module" src="assets/local-folders.mjs?v=9e29a8f8193602aa"></script>
+<script type="module" src="assets/local-folders.mjs?v=ebad15b6011c1881"></script>
 </body>
 </html>

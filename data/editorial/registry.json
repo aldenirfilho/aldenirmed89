@@ -287,6 +287,12 @@
           "source": "explicit-human-user-request-in-current-chat",
           "scope": "Conectar as pastas privadas PDF e DOC de 360X na Biblioteca IA por seleção local; preservar biblioteca pública, originais e revisão clínica existente. Sem novos documentos públicos ou recomendações clínicas.",
           "claimsHumanClinicalReview": false
+        },
+        {
+          "date": "2026-11-02",
+          "source": "explicit-human-user-request-in-current-chat",
+          "scope": "Aplicar temas privados de PDFs e documentos por fingerprint, busca por assuntos/temas secundários e rótulos organizacionais; sem publicação de documentos ou novas recomendações clínicas.",
+          "claimsHumanClinicalReview": false
         }
       ]
     },
@@ -10155,11 +10161,7 @@
     {
       "id": "release-biblioteca-pastas-locais-360x-2026-11-02",
       "classification": "public-cited",
-      "paths": [
-        "02_Biblioteca_IA_Engine/assets/local-folders.mjs",
-        "sw.js",
-        "docs_usuario/BUSCA_TEMI_ICLOUD/index.html"
-      ],
+      "paths": [],
       "publishTargets": [
         "github-pages"
       ],
@@ -10195,6 +10197,54 @@
         "grantsClinicalHomologation": false
       },
       "note": "Busca local por nomes, pastas e temas sugeridos; não declara indexação integral ou análise automática dos documentos. Seleção e permissão do navegador são explícitas; reconexão não enumera ao carregar a página."
+    },
+    {
+      "id": "release-organizacao-documentos-locais-360x-2026-11-02",
+      "classification": "public-cited",
+      "paths": [
+        "02_Biblioteca_IA_Engine/assets/local-folders.mjs",
+        "sw.js",
+        "docs_usuario/BUSCA_TEMI_ICLOUD/index.html"
+      ],
+      "publishTargets": [
+        "github-pages"
+      ],
+      "ownerApproval": true,
+      "reviewer": "Codex e agentes — revisão técnica, lexical e testes; não equivale a revisão médica humana.",
+      "reviewedAt": "2026-11-02",
+      "rights": {
+        "basis": "owned",
+        "statement": "Código e instruções operacionais originais. Nenhum documento privado, título de arquivo, inventário ou texto extraído é incluído no site ou no repositório públicos."
+      },
+      "professionalClaims": [],
+      "personalData": {
+        "contains": false
+      },
+      "medical": true,
+      "clinicalReviewer": "Taxonomia organizacional e código de acesso local. Revisão médica formal dos documentos e homologação clínica não foram realizadas por esta atualização.",
+      "clinicalReviewStatus": "public-preview-pending-formal-medical-review",
+      "claimsHumanClinicalReview": false,
+      "sources": [
+        {
+          "title": "Biblioteca IA — taxonomia pública de temas existente",
+          "url": "https://aldenirfilho.github.io/aldenirmed89/02_Biblioteca_IA_Engine/data/biblioteca_taxonomia_temas.json",
+          "accessedAt": "2026-11-02",
+          "note": "Vocabulário de organização preservado; não fornece recomendações de tratamento."
+        },
+        {
+          "title": "MDN — showDirectoryPicker: seleção local e permissão somente leitura",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/showDirectoryPicker",
+          "accessedAt": "2026-11-02"
+        }
+      ],
+      "publicationAuthorization": {
+        "source": "explicit-human-user-request-in-current-chat",
+        "authorizedAt": "2026-11-02",
+        "scope": "Organizar PDF e DOC de 360X e aplicar os temas na Biblioteca IA, dentro da continuidade da publicação do site já autorizada nesta conversa. Os documentos e seus textos permanecem privados.",
+        "claimsHumanClinicalReview": false,
+        "grantsClinicalHomologation": false
+      },
+      "note": "Taxonomia de organização e metadados locais; nenhuma regra de prescrição, diagnóstico individual ou novo conteúdo clínico foi acrescentada. O manifesto privado só aplica classificações à versão exata do arquivo."
     }
   ],
   "exampleTemplates": [
