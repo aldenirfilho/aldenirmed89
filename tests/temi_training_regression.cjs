@@ -147,7 +147,7 @@ function makeApp({storage = new Map(), denied = false, writesDenied = false, red
     clear() { throw new Error('Storage must never be globally cleared'); },
   };
   const context = vm.createContext({
-    document, Date:LocalDate, localStorage,
+    document, Date:LocalDate, localStorage, URLSearchParams, location:{search:""},
     matchMedia: () => ({matches:reduced}), navigator:{},
     window:{confirm: () => true, addEventListener: (event, callback) => windowListeners.set(event,callback)},
   });

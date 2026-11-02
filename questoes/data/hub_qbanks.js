@@ -21,6 +21,17 @@ const HUB_DATA = {
   },
   "qbanks": [
     {
+      "id": "qbank-temi-novembro-2026-80",
+      "title": "TEMI Novembro 2026 — 80 questões autorais",
+      "icon": "🧠", "status": "ativo", "domain": "multi",
+      "difficultyProfile": "Médio → Difícil", "questions": 80, "comments": 400,
+      "estimatedTime": "10 temas com 8 questões",
+      "url": "temi_novembro_2026_questoes.html",
+      "description": "80 casos fictícios com comentários A–E em dez temas de UTI e Clínica Médica. Revisão médica pendente; material não oficial da AMIB. Busca unificada com desafios e mnemônicos.",
+      "relatedTopics": ["sepse", "ventilacao-mecanica", "delirium-uti", "anticoagulacao"],
+      "keywords": ["novembro", "TEMI", "sepse", "SDRA", "renal", "eletrólitos", "neurocrítico", "metabólico", "cardiovascular", "antimicrobianos", "nutrição", "hematologia"]
+    },
+    {
       "id": "qbank-temi-avc-agudo",
       "title": "AVC Agudo",
       "icon": "🧠",

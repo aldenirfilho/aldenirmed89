@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v48`;
+const CACHE_NAME = `${CACHE_PREFIX}v49`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -294,6 +294,13 @@ const WARM_ASSETS = [
   "./mnemonicos/index.html",
   "./mnemonicos/styles.css",
   "./mnemonicos/app.js",
+  "./assets/js/study-search-core.mjs",
+  "./data/study-search.json",
+  "./questoes/explorar.html",
+  "./questoes/assets/study-search.css",
+  "./questoes/assets/study-search.mjs",
+  "./questoes/temi_novembro_2026_questoes.html",
+  "./questoes/data/qbank_temi_novembro_2026.js",
   "./docs_usuario/index.html",
   "./docs_usuario/guide-reader.css",
   "./docs_usuario/guide-reader.js",

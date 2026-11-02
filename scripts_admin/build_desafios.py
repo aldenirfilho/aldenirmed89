@@ -327,6 +327,9 @@ def load_json_packs(prev_by_id=None):
                     "parts": 1,
                     "featured": bool(raw.get("featured", False)),
                     "sourceRefs": [str(ref) for ref in raw.get("sourceRefs", [])],
+                    "topicId": str(raw.get("topicId") or ""),
+                    "topicLabel": str(raw.get("topicLabel") or ""),
+                    "subtopic": str(raw.get("subtopic") or ""),
                     "reviewStatus": str(
                         raw.get("reviewStatus") or "revisao-medica-pendente"
                     ),
