@@ -91,7 +91,17 @@ def _quarantined(row):
             or any(IDENTIFIER.search(str(s.get("text", ""))) for s in row.get("didacticSegments", [])))
 
 
-def select_facts(row, maximum=3):
+def _balanced(text):
+    stack = []
+    for char in text:
+        if char in "([":
+            stack.append(char)
+        elif char in ")]" and (not stack or stack.pop() != {")": "(", "]": "["}[char]):
+            return False
+    return not stack
+
+
+def select_facts(row, maximum=3, excluded_facts=()):
     """Only complete, qualitative, topical statements; never ungraded choices."""
     if _quarantined(row) or not row.get("factualEligible") or row.get("status") != "ready-candidate":
         return []
@@ -100,12 +110,17 @@ def select_facts(row, maximum=3):
         for block, locator in _blocks(segment):
             if not locator:
                 continue
+            block = re.sub(r"(?im)^\s*(?:introdu[cç][aã]o|resumo|introduction|abstract|background|objetivos?)\s*:?\s*$", "", block)
             # Reflow wrapped PDF lines before sentence selection. Blank lines,
             # bullets and lettered choices remain boundaries.
             block = re.sub(r"\n(?!\s*\n|\s*[•●▪]|\s*[A-E][.)]\s)", " ", block)
             for sentence in re.split(r"(?<=[.!?])\s+(?=[A-ZÀ-Ý])|\n+|[•●▪]", block):
                 text = normalized(re.sub(r"^[#>*\-\s]+", "", sentence))
+                if hashlib.sha256(text.encode()).hexdigest() in excluded_facts:
+                    continue
                 if not 50 <= len(text) <= 600 or not 9 <= len(text.split()) <= 90:
+                    continue
+                if not _balanced(text):
                     continue
                 if META.search(text) or MARKETING.search(text) or AFFILIATION.search(text) or DOSE.search(text) or IDENTIFIER.search(text):
                     continue
@@ -167,9 +182,12 @@ def _source(row, facts):
     return source
 
 
-def build_package(inventory, enrichments, package_id="library-study-clinical-20261102", version=1):
+def build_package(inventory, enrichments, package_id="library-study-clinical-20261102", version=1, excluded_facts=()):
     if not re.fullmatch(r"library-study-[a-z0-9-]{1,106}", package_id) or type(version) is not int or not 1 <= version <= 1_000_000:
         raise ValueError("invalid-package-version")
+    if not isinstance(excluded_facts, (list, tuple, set, frozenset)) or any(not isinstance(h, str) or not re.fullmatch(r"[a-f0-9]{64}", h) for h in excluded_facts):
+        raise ValueError("invalid-review-exclusions")
+    excluded_facts = frozenset(excluded_facts)
     rows = inventory.get("documents")
     if not isinstance(rows, list) or not rows:
         raise ValueError("empty-inventory")
@@ -182,11 +200,11 @@ def build_package(inventory, enrichments, package_id="library-study-clinical-202
         if row.get("metadataCurrent") is False or row.get("manifestCurrent") is False or row.get("metadataStable") is False:
             raise ValueError("source-changed")
         quarantined = _quarantined(row)
-        facts = [] if quarantined else select_facts(row)
+        facts = [] if quarantined else select_facts(row, excluded_facts=excluded_facts)
         source = _source(row, facts); sources.append(source); source_rows[source["id"]] = row
         status = source["coverage"]["status"]
         evidence = {"id": row["id"], "sourceId": source["id"], "status": status, "particles": len(facts), "cards": 0,
-                    "wholeWorkSummarized": False, "method": "extractive-selected-passages"}
+                    "extractionStatus": row.get("status", "unknown"), "wholeWorkSummarized": False, "method": "extractive-selected-passages"}
         if facts:
             # Deduplicate only byte-identical documents with identical passages/locators.
             duplicate_key = digest([source.get("sha256") or source["id"], row["theme"], [(f["text"], f["locator"]) for f in facts]])
@@ -234,6 +252,8 @@ def build_package(inventory, enrichments, package_id="library-study-clinical-202
     if len(raw) > MAX_PACKAGE_BYTES:
         raise ValueError("package-too-large")
     summary = {"schema": "360x-private-clinical-generation-report-v1", "sources": len(sources), "coverage": dict(Counter(s["coverage"]["status"] for s in sources)),
+        "extractionStatusCounts": dict(Counter(row.get("status", "unknown") for row in rows)),
+        "reviewExcludedFactSha256": sorted(excluded_facts),
         "documentsWithGroundedSummary": sum(r.get("particles", 0) > 0 for r in report), "documentalUnits": len(duplicate_units),
         "clinicalApplicationUnits": len(units) - len(duplicate_units), "particles": sum(len(u["particles"]) for u in units),
         "cards": sum(len(u["cards"]) for u in units), "questions": sum(len(u["questions"]) for u in units), "packageBytes": len(raw),
@@ -271,16 +291,23 @@ def main(argv=None):
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--package-id", default="library-study-clinical-20261102")
     parser.add_argument("--version", type=int, default=1)
+    parser.add_argument("--review-exclusions", type=Path, help="Lista privada de SHA-256 de fragmentos recusados na revisão contextual.")
     args = parser.parse_args(argv)
     try:
         inventory = json.loads(args.inventory.read_text())
         enrichments = [json.loads(p.read_text()) for p in args.enrichment]
-        package, report = build_package(inventory, enrichments, args.package_id, args.version)
+        exclusions = []
+        if args.review_exclusions:
+            review = json.loads(args.review_exclusions.read_text())
+            if not isinstance(review, dict) or set(review) != {"schema", "factSha256"} or review["schema"] != "360x-private-study-exclusions-v1":
+                raise ValueError("invalid-review-exclusions")
+            exclusions = review["factSha256"]
+        package, report = build_package(inventory, enrichments, args.package_id, args.version, exclusions)
         write_private(args.output, package, report)
     except (OSError, ValueError, TypeError, KeyError):
         print(json.dumps({"ok": False, "message": "Geração recusada; confira inventário, âncoras e destino privado."}))
         return 1
-    print(json.dumps({"ok": True, **{k: v for k, v in report.items() if k != "documents"}}, ensure_ascii=False))
+    print(json.dumps({"ok": True, **{k: v for k, v in report.items() if k not in {"documents", "reviewExcludedFactSha256"}}, "reviewExclusionCount": len(exclusions)}, ensure_ascii=False))
     return 0
 
 

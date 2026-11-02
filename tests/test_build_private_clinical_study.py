@@ -78,9 +78,12 @@ class PrivateClinicalGenerationTests(unittest.TestCase):
         package, _ = build(row(didacticSegments=[{"kind": "pdf-page", "pageNumber": 8, "text": wrapped}]))
         self.assertEqual(package["units"][0]["particles"][0]["text"], FACT)
         for text in [FACT[:-1] + ":", "Além disso, " + FACT, FACT[:-1] + " —", FACT[:-1] + "?",
+                     FACT[:-1] + " (definição interrompida", FACT[:-1] + " )", FACT[:-1] + " ([)]",
                      "Quais doenças são associadas à insuficiência cardíaca e ao risco renal",
                      "O professor da faculdade é especialista em sepse e choque com disfunção orgânica."]:
             self.assertEqual(study.select_facts(row(didacticSegments=[{"kind": "pdf-page", "pageNumber": 8, "text": text}])), [])
+        package, _ = build(row(didacticSegments=[{"kind": "pdf-page", "pageNumber": 8, "text": "INTRODUÇÃO\n" + FACT}]))
+        self.assertEqual(package["units"][0]["particles"][0]["text"], FACT)
 
     def test_exam_without_comment_quarantine_and_insufficient_never_become_facts(self):
         for r in [row(status="exam-only", factualEligible=False), row(status="insufficient-content", factualEligible=False),
@@ -122,6 +125,16 @@ class PrivateClinicalGenerationTests(unittest.TestCase):
         package, report = build(row(status="awaiting-extraction", factualEligible=False))
         self.assertEqual(report["coverage"], {"pending": 1})
         self.assertEqual(package["sources"][0]["coverage"]["pages"], [])
+
+    def test_private_context_review_excludes_without_changing_original_or_using_titles(self):
+        source = row(); before = json.dumps(source, sort_keys=True)
+        denied = hashlib.sha256(FACT.encode()).hexdigest()
+        package, report = study.build_package({"documents": [source]}, [], excluded_facts=[denied])
+        self.assertEqual(package["units"], [])
+        self.assertEqual(json.dumps(source, sort_keys=True), before)
+        self.assertEqual(report["reviewExcludedFactSha256"], [denied])
+        with self.assertRaisesRegex(ValueError, "invalid-review-exclusions"):
+            study.build_package({"documents": [source]}, [], excluded_facts=["untrusted-text"])
 
     def test_original_bytes_and_metadata_unchanged_private_outputs_exclusive(self):
         with tempfile.TemporaryDirectory() as tmp:
