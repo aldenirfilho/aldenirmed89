@@ -80,7 +80,7 @@ def render():
 <link rel="canonical" href="{BASE}ecossistema/painel.html"><link rel="icon" href="../favicon.ico">
 <link rel="stylesheet" href="./assets/painel.css"><script src="./assets/painel.js" defer></script></head>
 <body><a class="skip" href="#conteudo">Pular para o conteúdo</a>
-<header class="top"><a class="brand" href="../index.html">360X <span>AldenirMed89</span></a><nav aria-label="Acessos principais"><a href="./index.html">Catálogo</a><a href="./mapa.html">Mapa visual</a><a href="./agentes-habilidades/">Agentes e habilidades</a><a href="https://github.com/aldenirfilho/aldenirmed89">GitHub</a></nav></header>
+<header class="top"><a class="brand" href="../index.html">360X <span>AldenirMed89</span></a><nav aria-label="Acessos principais"><a href="./index.html">Catálogo</a><a href="./mapa.html">Mapa visual</a><a href="./mapa.html#trilhas">Trilhas</a><a href="./agentes-habilidades/">Agentes e habilidades</a><a href="https://github.com/aldenirfilho/aldenirmed89">GitHub</a></nav></header>
 <main id="conteudo"><section class="intro"><p class="eyebrow">ECOSSISTEMA 360X · PAINEL INTEGRADO</p>
 <h1>Todos os caminhos.<br><span>Uma visão conectada.</span></h1>
 <p class="lead">Encontre um projeto, abra sua entrega e veja o próximo passo. Medicina, aprendizagem, natureza, cultura e impacto social pertencem ao mesmo ecossistema.</p>

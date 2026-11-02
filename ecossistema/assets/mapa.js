@@ -6,7 +6,7 @@
   const HEIGHT = 920;
   const maxZoom = () => matchMedia("(max-width: 700px)").matches ? 5 : 2.5;
   const state = {
-    projects: [], categories: [], connections: [], selected: null,
+    projects: [], categories: [], connections: [], trails: [], trail: null, selected: null,
     query: "", category: "all", view: matchMedia("(max-width: 700px)").matches ? "list" : "map",
     affinities: true, ready: false, positions: new Map(), bounds: {x: 0, y: 0, w: WIDTH, h: HEIGHT},
     box: {x: 0, y: 0, w: WIDTH, h: HEIGHT}
@@ -64,6 +64,8 @@
       const label = metadata.labels?.[entry.id] || {};
       return {
         id: entry.id, url, category: entry.category, kind: entry.kind,
+        image: /^\.\/assets\/previews\/[a-z0-9/.-]+\.svg$/.test(entry.image) && !entry.image.includes("..") ? entry.image : null,
+        imageAlt: clean(entry.imageAlt, 240),
         title: clean(label.title || entry.title, 160), originalTitle: clean(entry.title, 160),
         short: clean(label.short || entry.title, 32), subtitle: clean(label.subtitle || entry.category, 46),
         description: clean(entry.description), accessNote: clean(entry.accessNote).replace(/NEXUS/gi, "360X"),
@@ -81,9 +83,60 @@
     });
   }
 
+  function loadTrails(payload) {
+    if (payload.schemaVersion !== 1 || !Array.isArray(payload.trails)) throw new Error("Trilhas indisponíveis.");
+    const ids = new Set();
+    const projectIds = new Set(state.projects.map((project) => project.id));
+    state.trails = payload.trails.map((trail) => {
+      if (!/^[a-z0-9-]+$/.test(trail.id) || ids.has(trail.id) || !trail.title || !trail.description ||
+          !Array.isArray(trail.steps) || !trail.steps.length ||
+          new Set(trail.steps.map((step) => step.projectId)).size !== trail.steps.length ||
+          trail.steps.some((step) => !projectIds.has(step.projectId) || !step.purpose)) throw new Error("Trilha inválida.");
+      ids.add(trail.id);
+      return {id: trail.id, title: clean(trail.title, 100), description: clean(trail.description),
+        steps: trail.steps.map((step) => ({projectId: step.projectId, purpose: clean(step.purpose)}))};
+    });
+  }
+
+  const activeTrail = () => state.trails.find((trail) => trail.id === state.trail);
+
+  function chooseTrail(id) {
+    const trail = state.trails.find((item) => item.id === id);
+    if (!trail) return;
+    state.trail = id; state.category = "all"; state.query = "";
+    state.selected = trail.steps[0].projectId; byId("mapSearch").value = "";
+    render(true); updateHash();
+    byId("trailJourneyTitle").focus({preventScroll: true});
+    byId("trailJourney").scrollIntoView({block: "start", behavior: "auto"});
+  }
+
+  function renderTrail() {
+    const trail = activeTrail();
+    document.querySelectorAll("[data-trail]").forEach((button) => {
+      button.disabled = !state.trails.some((item) => item.id === button.dataset.trail);
+      button.setAttribute("aria-pressed", String(state.trail === button.dataset.trail));
+    });
+    byId("trailJourney").hidden = !trail;
+    if (!trail) return;
+    byId("trailJourneyTitle").textContent = trail.title;
+    byId("trailJourneyDescription").textContent = trail.description;
+    const list = byId("trailSteps"); list.replaceChildren();
+    trail.steps.forEach((step, index) => {
+      const project = state.projects.find((item) => item.id === step.projectId);
+      const item = make("li");
+      const button = make("button", null, "trail-step"); button.type = "button";
+      button.dataset.trailProject = project.id;
+      if (state.selected === project.id) button.setAttribute("aria-current", "step");
+      button.append(make("span", String(index + 1).padStart(2, "0"), "trail-step-number"), make("strong", project.title), make("small", step.purpose));
+      button.addEventListener("click", () => selectProject(project.id, true));
+      item.append(button); list.append(item);
+    });
+  }
+
   function matchingProjects() {
     const query = fold(state.query);
     return state.projects.filter((project) =>
+      (!activeTrail() || activeTrail().steps.some((step) => step.projectId === project.id)) &&
       (state.category === "all" || categoryFor(project).id === state.category) &&
       (!query || fold([project.title, project.originalTitle, project.description, project.subtitle, project.category].join(" ")).includes(query))
     );
@@ -102,6 +155,7 @@
   function updateHash() {
     const params = new URLSearchParams();
     if (state.selected) params.set("projeto", state.selected);
+    if (state.trail) params.set("trilha", state.trail);
     if (state.category !== "all") params.set("area", state.category);
     if (state.query) params.set("busca", state.query);
     if (state.view === "list") params.set("vista", "lista");
@@ -112,18 +166,21 @@
 
   function readHash() {
     const params = new URLSearchParams(location.hash.slice(1));
+    state.trail = state.trails.some((trail) => trail.id === params.get("trilha")) ? params.get("trilha") : null;
     state.selected = state.projects.some((project) => project.id === params.get("projeto")) ? params.get("projeto") : null;
+    if (!state.selected && activeTrail() && !params.has("busca") && !params.has("area")) state.selected = activeTrail().steps[0].projectId;
     state.category = state.categories.some((category) => category.id === params.get("area")) ? params.get("area") : "all";
     state.query = clean(params.get("busca"), 150);
     if (params.has("vista")) state.view = params.get("vista") === "lista" ? "list" : "map";
     if (state.selected && !matchingProjects().some((project) => project.id === state.selected)) {
       state.category = "all"; state.query = "";
+      if (activeTrail() && !activeTrail().steps.some((step) => step.projectId === state.selected)) state.trail = null;
     }
     byId("mapSearch").value = state.query;
   }
 
   function filterCategory(id) {
-    state.category = id;
+    state.trail = null; state.category = id;
     state.selected = null;
     render(true);
     updateHash();
@@ -164,6 +221,7 @@
     state.selected = id;
     let refit = false;
     if (!matchingProjects().some((project) => project.id === id)) {
+      if (activeTrail() && !activeTrail().steps.some((step) => step.projectId === id)) state.trail = null;
       state.category = "all"; state.query = ""; byId("mapSearch").value = ""; refit = true;
     }
     render(refit);
@@ -172,7 +230,7 @@
   }
 
   function reset() {
-    state.selected = null; state.query = ""; state.category = "all";
+    state.trail = null; state.selected = null; state.query = ""; state.category = "all";
     byId("mapSearch").value = "";
     render(true); updateHash();
   }
@@ -221,6 +279,7 @@
         svg("text", {class: "node-subtitle", x: 14, y: 41}, subtitle));
     }
     group.addEventListener("click", action);
+    group.addEventListener("focus", () => ensureNodeVisible(key));
     group.addEventListener("keydown", (event) => {
       if (["Enter", " "].includes(event.key)) { event.preventDefault(); event.stopPropagation(); action(); }
       else if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
@@ -306,13 +365,19 @@
       if (primary * sign > 5 && candidate < score) { best = id; score = candidate; }
     });
     if (best) {
-      const position = state.positions.get(best);
       byId(`node-${best}`).focus({preventScroll: true});
-      if (position.x < state.box.x || position.x + position.w > state.box.x + state.box.w || position.y < state.box.y || position.y + position.h > state.box.y + state.box.h) {
-        state.box.x = position.x + position.w / 2 - state.box.w / 2;
-        state.box.y = position.y + position.h / 2 - state.box.h / 2;
-        applyBox();
-      }
+    }
+  }
+
+  function ensureNodeVisible(key) {
+    const position = state.positions.get(key);
+    if (!position) return;
+    const margin = 14;
+    if (position.x - margin < state.box.x || position.x + position.w + margin > state.box.x + state.box.w ||
+        position.y - margin < state.box.y || position.y + position.h + margin > state.box.y + state.box.h) {
+      state.box.x = position.x + position.w / 2 - state.box.w / 2;
+      state.box.y = position.y + position.h / 2 - state.box.h / 2;
+      applyBox();
     }
   }
 
@@ -339,6 +404,26 @@
       return;
     }
     holder.style.setProperty("--category-color", categoryColor(categoryFor(project)));
+    if (project.image) {
+      const cover = make("img", null, "detail-cover");
+      cover.src = project.image; cover.alt = project.imageAlt; cover.width = 1200; cover.height = 675;
+      cover.addEventListener("error", () => { cover.hidden = true; }, {once: true});
+      holder.append(cover);
+    }
+    const trail = activeTrail();
+    if (trail) {
+      const index = trail.steps.findIndex((step) => step.projectId === project.id);
+      holder.append(make("p", `ETAPA ${index + 1} DE ${trail.steps.length} · ${trail.title}`, "detail-meta"));
+      const navigation = make("div", null, "trail-navigation");
+      navigation.setAttribute("role", "group"); navigation.setAttribute("aria-label", "Percorrer a trilha");
+      [[-1, "← Anterior"], [1, "Próximo →"]].forEach(([direction, label]) => {
+        const button = make("button", label); button.type = "button";
+        button.disabled = !trail.steps[index + direction];
+        button.addEventListener("click", () => selectProject(trail.steps[index + direction].projectId, true));
+        navigation.append(button);
+      });
+      holder.append(navigation);
+    }
     holder.append(make("p", project.category.toLocaleUpperCase("pt-BR"), "detail-kicker"), heading,
       make("p", project.description, "detail-description"), externalLink(project, "detail-action"));
     const catalog = make("a", "Ver na vitrine de projetos →", "detail-secondary");
@@ -347,7 +432,10 @@
     const share = make("button", "Copiar link deste ponto", "detail-secondary share-button");
     share.type = "button";
     share.addEventListener("click", async () => {
-      const url = new URL(location.href); url.hash = new URLSearchParams({projeto: project.id}).toString();
+      const url = new URL(location.href); const params = new URLSearchParams({projeto: project.id});
+      if (state.trail) params.set("trilha", state.trail);
+      if (state.view === "list") params.set("vista", "lista");
+      url.hash = params.toString();
       try {
         if (!navigator.clipboard?.writeText) throw new Error("Clipboard indisponível");
         await navigator.clipboard.writeText(url.href);
@@ -392,10 +480,10 @@
     if (!state.ready) return;
     const projects = matchingProjects();
     if (state.selected && !projects.some((project) => project.id === state.selected)) state.selected = null;
-    renderFilters(); renderGraph(projects); renderList(projects); renderDetails(); syncView();
+    renderFilters(); renderGraph(projects); renderList(projects); renderDetails(); renderTrail(); syncView();
     const areas = new Set(projects.map((project) => project.category)).size;
-    byId("mapCount").textContent = `${projects.length} de ${state.projects.length} projetos · ${areas} ${areas === 1 ? "área" : "áreas"}${state.selected ? ` · ${selectedProject().title} selecionado` : ""}`;
-    byId("mapHelp").textContent = state.selected ? "Tracejadas: afinidades do projeto selecionado. Arraste para mover." : "Selecione um projeto. Arraste para mover; use +/− para ampliar.";
+    byId("mapCount").textContent = `${projects.length} de ${state.projects.length} projetos · ${areas} ${areas === 1 ? "área" : "áreas"}${activeTrail() ? ` · Trilha: ${activeTrail().title}` : ""}${state.selected ? ` · ${selectedProject().title} selecionado` : ""}`;
+    byId("mapHelp").textContent = "Tab percorre os pontos; setas mudam de ponto; Enter ou Espaço seleciona. +/− amplia; 0 enquadra. No fundo do mapa, setas movem a vista. Você também pode usar a lista.";
     if (refit) fit();
     syncThemeButton();
   }
@@ -404,6 +492,8 @@
     const next = document.documentElement.dataset.theme === "dark" ? "claro" : "escuro";
     byId("mapTheme").setAttribute("aria-label", `Usar tema ${next}`);
     byId("mapTheme").title = `Usar tema ${next}`;
+    byId("mapLargeText").setAttribute("aria-pressed", String(document.documentElement.dataset.largeText === "true"));
+    byId("mapHighContrast").setAttribute("aria-pressed", String(document.documentElement.dataset.highContrast === "true"));
   }
 
   function applyBox() {
@@ -494,6 +584,10 @@
     window.addEventListener("hashchange", () => {
       if (state.ready) { readHash(); render(true); if (state.selected) focusDetails(); }
     });
+    document.querySelectorAll("[data-trail]").forEach((button) => button.addEventListener("click", () => chooseTrail(button.dataset.trail)));
+    byId("trailExit").addEventListener("click", () => { reset(); byId("mapSearch").focus(); });
+    byId("mapLargeText").addEventListener("click", () => window.Map360Theme.setPreference("large", document.documentElement.dataset.largeText !== "true"));
+    byId("mapHighContrast").addEventListener("click", () => window.Map360Theme.setPreference("contrast", document.documentElement.dataset.highContrast !== "true"));
     bindMapMovement(); syncThemeButton();
   }
 
@@ -505,15 +599,21 @@
       if (responses.some((response) => !response.ok)) throw new Error("Catálogo indisponível.");
       const [directory, metadata] = await Promise.all(responses.map((response) => response.json()));
       loadData(directory, metadata);
+      try {
+        const response = await fetch("./data/trilhas-360x.json");
+        if (!response.ok) throw new Error("Trilhas indisponíveis.");
+        loadTrails(await response.json());
+      } catch (_) { byId("trailMessage").textContent = "As trilhas interativas não carregaram. Use as etapas nos cartões ou explore o mapa completo."; }
       state.ready = true; readHash(); render(true);
       byId("mapFallback").open = false;
       if (state.selected) focusDetails();
-    } catch (_) {
+    } catch (error) {
+      console.warn("Mapa 360X: falha ao carregar o diretório.", error);
       byId("mapError").textContent = "O mapa não carregou. Você pode abrir todos os projetos pelos links abaixo ou recarregar a página.";
       byId("mapError").hidden = false; byId("mapFallback").open = true;
       byId("graphPanel").hidden = true; byId("listPanel").hidden = true;
       byId("mapCount").textContent = "Links diretos disponíveis abaixo.";
-      ["mapSearch", "mapView", "listView", "mapReset", "mapRelatedToggle"].forEach((id) => { byId(id).disabled = true; });
+      ["mapSearch", "mapView", "listView", "mapReset", "mapRelatedToggle", "mapZoomIn", "mapZoomOut", "mapFit"].forEach((id) => { byId(id).disabled = true; });
     } finally {
       byId("mapLoading").hidden = true; byId("mapViewport").setAttribute("aria-busy", "false");
     }

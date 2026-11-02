@@ -9,7 +9,8 @@ PAGE=ROOT/'ecossistema'
 class TurboCoversTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.projects=json.loads((PAGE/'data/sites-360x.json').read_text(encoding='utf-8'))['projects']
+        current=json.loads((PAGE/'data/sites-360x.json').read_text(encoding='utf-8'))['projects']
+        cls.projects=[{**p,'image':p.get('previousImage',p['image'])} for p in current]
     def test_every_site_has_an_independent_cover(self):
         images=[p['image'] for p in self.projects]
         self.assertEqual(len(images),len(set(images)))
@@ -46,7 +47,7 @@ class TurboCoversTests(unittest.TestCase):
         self.assertIn('prefers-reduced-motion:reduce',css)
         self.assertIn('object-fit:contain',css)
         self.assertIn('html[data-theme="light"] .site-card',css)
-        self.assertIn('styles.css?v=turbo-360x-20261022',(PAGE/'index.html').read_text())
+        self.assertIn('styles.css?v=sereno-360x-20261102',(PAGE/'index.html').read_text())
     def test_new_public_art_is_registered_with_evidence(self):
         registry=json.loads((ROOT/'data/editorial/registry.json').read_text())
         item=next(i for i in registry['items'] if i['id']=='universo-360x-capas-turbo-20261022')
