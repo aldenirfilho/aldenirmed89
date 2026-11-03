@@ -110,3 +110,27 @@ test('resposta perdida do checkout reaproveita payload e chave persistidos',asyn
  await assert.rejects(f.service.checkout(f.user,'basico'));assert.ok(f.store.attempt(f.user.id));
  f.service.clock=()=>NOW+10;await f.service.checkout(f.user,'basico');assert.deepEqual(calls[0],calls[1]);assert.equal(f.store.attempt(f.user.id),undefined);f.store.close();
 });
+
+
+test('origens aceitam apenas Capacitor iOS exato e origens web canônicas',()=>{
+ const valid=['capacitor://localhost','https://localhost','https://example.org','http://127.0.0.1:8788'];
+ assert.deepEqual(configFromEnv({ALLOWED_ORIGINS:valid.join(',')}).origins,valid);
+ const invalid=[
+  'capacitor://another-host','capacitor://localhost/','capacitor://localhost/path',
+  'capacitor://localhost:1234','capacitor://user@localhost','capacitor://localhost?query=1',
+  'capacitor://localhost#fragment','ionic://localhost','file://localhost','null','*',
+  'https://example.org/path','https://example.org/','https://user:pass@example.org',
+  'https://example.org?query=1','https://example.org#fragment','https://*.example.org',
+  'https://*','https://example.org:443',
+ ];
+ for(const origin of invalid)assert.throws(()=>configFromEnv({ALLOWED_ORIGINS:origin}),/Origem precisa ser exata/,origin);
+});
+
+test('CORS libera iOS e Android configurados e rejeita outro host Capacitor',async()=>{
+ const f=fixture();f.config.origins=configFromEnv({ALLOWED_ORIGINS:'capacitor://localhost,https://localhost'}).origins;
+ const app=createApp(f.service);await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));const url='http://127.0.0.1:'+app.address().port;
+ try{
+  for(const origin of f.config.origins){const r=await fetch(url+'/api/catalog',{headers:{Origin:origin}});assert.equal(r.status,200);assert.equal(r.headers.get('Access-Control-Allow-Origin'),origin);}
+  const blocked=await fetch(url+'/api/catalog',{headers:{Origin:'capacitor://another-host'}});assert.equal(blocked.status,403);assert.equal(blocked.headers.get('Access-Control-Allow-Origin'),null);
+ }finally{await new Promise(resolve=>app.close(resolve));f.store.close();}
+});

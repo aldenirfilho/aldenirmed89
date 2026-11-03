@@ -19,7 +19,13 @@ export function configFromEnv(e=process.env) {
     hotmartProduct:e.HOTMART_PRODUCT_ID||'', hotmartPlans,
   };
   if(cfg.supabaseUrl && !/^https:\/\/[a-zA-Z0-9-]+\.supabase\.co$/.test(cfg.supabaseUrl))throw new Error('SUPABASE_URL inválida');
-  for(const origin of cfg.origins){const u=new URL(origin);if(!['https:','http:','capacitor:'].includes(u.protocol)||u.pathname!=='/'&&u.pathname!==''||u.search||u.hash||u.username||u.password)throw new Error('Origem precisa ser exata, sem caminho');}
+  for(const origin of cfg.origins){
+    // iOS Capacitor has an opaque WHATWG origin ('null'); authorize only its exact documented origin.
+    if(origin==='capacitor://localhost')continue;
+    let u;try{u=new URL(origin);}catch{throw new Error('Origem precisa ser exata, sem caminho');}
+    if(!['https:','http:'].includes(u.protocol)||u.origin!==origin||u.hostname.includes('*')||u.username||u.password)
+      throw new Error('Origem precisa ser exata, sem caminho');
+  }
   return cfg;
 }
 export function privateManifest(config) {
