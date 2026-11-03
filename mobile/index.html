@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101b2f">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src ACCOUNT_CONNECT_ORIGINS; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+  <title>Antigravity Consultas · Estudo</title>
+</head>
+<body>
+  <a class="skip" href="#main">Ir para o conteúdo</a>
+  <header>
+    <img class="logo" src="./icon.png" alt="" width="44" height="44">
+    <div><span class="eyebrow">ANTIGRAVITY CONSULTAS</span><h1>Uma peça de cada vez.</h1></div>
+    <span class="pill">Estudo offline</span>
+  </header>
+  <main id="main" tabindex="-1">
+    <section id="today" class="panel" aria-labelledby="today-title">
+      <div class="intro"><span class="eyebrow">SEU PRÓXIMO PASSO</span><h2 id="today-title">Comece pequeno. Continue de onde parou.</h2><p>Organize uma sessão de estudo e deixe uma pista para a próxima. Sem sequência obrigatória, sem dívida de estudo.</p></div>
+      <div class="card"><h3>🎯 Minha sessão</h3><p class="muted">Até três passos. Escreva apenas temas de estudo, sem dados de pacientes.</p><form id="task-form"><label for="task">Uma tarefa que cabe agora</label><div class="row"><input id="task" maxlength="120" placeholder="Ex.: revisar meu mapa de ventilação" required><button type="submit">Adicionar</button></div></form><ul id="tasks" class="tasks"></ul><p id="task-status" role="status"></p></div>
+      <div class="card accent"><h3>🧠 Pista de retomada</h3><label for="note">Qual foi a última peça? Qual será a próxima?</label><textarea id="note" rows="4" maxlength="1000" placeholder="Aprendi… Minha dúvida é… Na próxima sessão vou…"></textarea><p id="note-status" class="muted" role="status">Salvo somente neste aparelho.</p></div>
+      <div class="card"><h3>📌 Retomar um cartão</h3><p id="due-summary"></p><button id="go-review" class="secondary" type="button">Abrir revisão</button></div>
+    </section>
+    <section id="cards" class="panel" hidden aria-labelledby="cards-title">
+      <div class="intro"><span class="eyebrow">REVISÃO SEM PRESSÃO</span><h2 id="cards-title">Treine o jeito de aprender.</h2><p>Cartões originais sobre organização do estudo. Os lembretes ficam neste aparelho e só aparecem quando você abre o app.</p></div>
+      <div class="card review"><p id="card-count" class="eyebrow"></p><h3 id="card-question"></h3><button id="reveal" type="button" class="secondary">Mostrar resposta</button><p id="card-answer" hidden></p><div id="review-actions" hidden><p class="muted">Escolha quando quer reencontrar este cartão:</p><div class="wrap"><button type="button" data-days="1">Amanhã</button><button type="button" data-days="7">Em 7 dias</button><button type="button" data-days="14">Em 14 dias</button></div></div><div class="row spaced"><button id="previous-card" type="button" class="text-button">← Anterior</button><button id="favorite" type="button" class="text-button" aria-pressed="false">☆ Salvar</button><button id="next-card" type="button" class="text-button">Próximo →</button></div><p id="review-status" role="status"></p></div>
+    </section>
+    <section id="library" class="panel" hidden aria-labelledby="library-title">
+      <div class="intro"><span class="eyebrow">SUA BIBLIOTECA LOCAL</span><h2 id="library-title">O que vale reencontrar.</h2><p>Favoritos dos cartões incluídos no aplicativo. Conteúdos de assinatura exigem conta e conexão com o servidor quando a integração estiver disponível.</p></div><div id="favorites"></div>
+    </section>
+    <section id="account" class="panel" hidden aria-labelledby="account-title">
+      <div class="intro"><span class="eyebrow">SUA CONTA</span><h2 id="account-title">Acesso do assinante.</h2><p>O app não realiza compras. Entre com uma conta já existente para consultar o acesso confirmado pelo servidor.</p></div>
+      <div class="card"><p id="account-configuration" role="status">Verificando configuração…</p><form id="login-form" hidden><label for="email">E-mail da conta</label><input id="email" type="email" autocomplete="username" maxlength="254" required><label for="password">Senha</label><input id="password" type="password" autocomplete="current-password" minlength="6" maxlength="128" required><button type="submit">Entrar</button></form><div id="membership" hidden><h3>Acesso verificado</h3><p id="membership-details"></p><button id="refresh-account" type="button" class="secondary">Atualizar acesso</button><button id="logout" type="button" class="text-button">Sair</button></div><p id="account-status" role="status"></p></div>
+      <div class="card"><h3>🔒 Privacidade e controle</h3><p>Suas tarefas, notas e favoritos ficam no armazenamento local deste app, sem envio para a plataforma. Backups do aparelho seguem as configurações do sistema. Não inclua dados de pacientes, senhas ou informações pessoais sensíveis.</p><p>Quando o acesso estiver configurado, e-mail e senha serão enviados diretamente ao provedor de autenticação. O token fica apenas na memória desta sessão; o servidor receberá esse token para verificar a assinatura. Não há rastreadores, anúncios, notificações ou coleta clínica neste aplicativo.</p><p>Esta versão não cria contas nem processa cancelamentos ou exclusão da conta do serviço. Antes da distribuição nas lojas, o serviço deverá fornecer essas funções e publicar contato de suporte e política de privacidade completos.</p><button id="clear-local" type="button" class="danger">Apagar meus dados locais</button><p id="privacy-status" role="status"></p></div>
+      <p class="footnote">Suporte: aldenirmed@gmail.com<br>Versão de preparação 0.1.0 · Não publicado nas lojas.<br>Conteúdo de organização educacional. Sem diagnóstico, prescrição ou calculadoras clínicas.</p>
+    </section>
+  </main>
+  <nav aria-label="Seções do aplicativo"><button type="button" data-tab="today" aria-current="page">☀️<span>Hoje</span></button><button type="button" data-tab="cards">🧠<span>Cartões</span></button><button type="button" data-tab="library">📚<span>Biblioteca</span></button><button type="button" data-tab="account">👤<span>Conta</span></button></nav>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>

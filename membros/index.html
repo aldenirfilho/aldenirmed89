@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https: http://127.0.0.1:* http://localhost:*; object-src 'none'; base-uri 'self'; form-action 'none'; frame-src 'none'">
+  <meta name="robots" content="noindex"><meta name="referrer" content="no-referrer">
+  <title>Área de membros · Antigravity Consultas</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+<header><a href="../">✦ AldenirMed89</a><a href="../planos/">Ver planos</a></header>
+<main>
+  <p class="eyebrow">ANTIGRAVITY CONSULTAS · ÁREA DE MEMBROS</p>
+  <h1>Seu próximo passo de estudo,<br><span>em um só lugar.</span></h1>
+  <p class="intro">Acesso individual aos recursos da sua assinatura. A contratação dos planos está em preparação.</p>
+  <p id="status" class="notice" role="status" aria-live="polite">Verificando disponibilidade da área de membros…</p>
+  <section id="auth" aria-labelledby="auth-title">
+    <h2 id="auth-title">Acesse sua conta</h2>
+    <p>Use seu e-mail confirmado. Os campos serão liberados quando o serviço estiver conectado.</p>
+    <form id="login-form">
+      <label for="email">E-mail</label><input id="email" type="email" autocomplete="email" required maxlength="254" disabled>
+      <label for="password">Senha</label><input id="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" disabled>
+      <div class="actions"><button type="submit" id="login" disabled>Entrar</button><button type="button" id="signup" class="secondary" disabled>Criar conta</button></div>
+    </form>
+    <p class="small">O cadastro exige confirmação por e-mail. Não insira dados de pacientes. A sessão permanece somente na memória desta aba e termina ao recarregar a página.</p>
+  </section>
+  <section id="account" hidden aria-labelledby="account-title">
+    <div class="section-top"><h2 id="account-title">Minha assinatura</h2><button id="logout" class="secondary">Sair</button></div>
+    <p id="tier">Consultando plano…</p>
+    <ul id="features"></ul>
+    <div class="actions"><button id="refresh" class="secondary">Atualizar acesso</button><button id="portal" disabled>Gerenciar ou cancelar</button></div>
+    <p class="small">O retorno do checkout não libera acesso. A confirmação do provedor de pagamento é verificada pelo servidor.</p>
+  </section>
+  <section aria-labelledby="subscribe-title">
+    <h2 id="subscribe-title">Escolha seu nível de estudo</h2>
+    <p>Composição planejada, sujeita à homologação dos recursos. O acervo público continua acessível.</p>
+    <div class="plans"><button data-tier="basico" disabled>Básico <strong>R$ 49,90/mês</strong></button><button data-tier="pro" disabled>Pro <strong>R$ 99,90/mês</strong></button><button data-tier="ultra" disabled>Ultra <strong>R$ 149,90/mês</strong></button></div>
+    <p id="sales-state" class="small">Contratação indisponível durante a preparação do lançamento.</p>
+  </section>
+  <section aria-labelledby="content-title">
+    <h2 id="content-title">Abrir material da assinatura</h2>
+    <p>Somente materiais liberados pelo catálogo privado e pelo seu plano serão entregues.</p>
+    <ul id="content-catalog"></ul><p id="empty-catalog" class="small">Entre para consultar o catálogo disponível para sua conta.</p>
+    <form id="content-form"><label for="slug">Código do material</label><input id="slug" pattern="[a-z0-9-]+" placeholder="Código informado no catálogo" disabled required><button id="open-content" disabled>Abrir material</button></form>
+    <div id="content" hidden><h3 id="content-name">Material</h3><pre id="content-text"></pre><a id="content-download" hidden download>Baixar material autorizado</a></div>
+  </section>
+  <p class="small">⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.</p>
+</main>
+<footer><a href="../planos/condicoes.html">Condições em preparação</a><a href="../">Explorar o acervo público →</a></footer>
+</body></html>

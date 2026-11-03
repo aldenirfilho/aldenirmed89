@@ -71,6 +71,8 @@ REQUIRED = (
 )
 
 OPTIONAL = (
+    "planos",
+    "membros",
     ".nojekyll",
     "favicon.ico",
     "manifest.json",
@@ -126,6 +128,7 @@ EDITORIAL_PUBLIC_FILES = {
 }
 PUBLIC_BUILD_EXCLUSIONS = frozenset(
     {
+        "membros/README.md",
         "01_Modulos_Clinicos/Almanaque_ECG/module.manifest.json",
         "01_Modulos_Clinicos/Almanaque_ECG/data/visual-assets.json",
         "01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json",
@@ -194,6 +197,8 @@ PUBLIC_DOCUMENT_TRANSFORM_EXCLUSIONS = frozenset(
     }
 )
 ANALYTICS_EXCLUDED_PREFIXES = (
+    # Conta e assinatura: sem injeção de métricas nas telas autenticadas.
+    "membros/",
     "02_Biblioteca_IA_Engine/previews/",
     # Consulta educacional autossuficiente: preserva CSP local e ausência de telemetria.
     "01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/",
