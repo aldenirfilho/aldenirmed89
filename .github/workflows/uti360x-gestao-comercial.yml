@@ -1,0 +1,74 @@
+name: UTI 360X Gestao — prototipo comercial
+
+on:
+  push:
+    branches: [feat/uti360x-gestao-comercial-20261103]
+    paths:
+      - 'scripts_admin/uti360x_commercial/**'
+      - '.github/workflows/uti360x-gestao-comercial.yml'
+  pull_request:
+    paths:
+      - 'scripts_admin/uti360x_commercial/**'
+      - '.github/workflows/uti360x-gestao-comercial.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uti360x-commercial-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts_admin/uti360x_commercial
+            ecossistema/auditoria-uti
+      - name: Testar logica gerencial e bloqueio comercial
+        run: |
+          node --check scripts_admin/uti360x_commercial/src/app.js
+          node --test scripts_admin/uti360x_commercial/tests/core.test.cjs
+      - name: Gerar pacote sem publicar
+        run: |
+          python3 scripts_admin/uti360x_commercial/build.py --out scripts_admin/uti360x_commercial/package
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('scripts_admin/uti360x_commercial/package/versao.json')
+          r=json.loads(p.read_text())
+          assert r['billingEnabled'] is False
+          assert r['publicReleaseApproved'] is False
+          assert r['dataSha256']=='1bed1c198bfb21b3c8904160be7447dbe7101a843b184669e62fe74b7e07950d'
+          assert r['workbookBase64Sha256']=='88a47de5cf1a65c8a9e61bad83289c6994821d2b536701413cf73788e327acb5'
+          assert r['offlineSha256']=='93c058ce912121a7d1ceab965dcb5205c81563de3d4c802f9cf3cc062c206590', 'Artefato divergente da versao local testada'
+          print('Integridade: dados, Excel e aplicativo conferidos por SHA-256.')
+          PY
+      - name: Preparar Chromium de teste
+        run: |
+          python3 -m pip install playwright==1.57.0
+          python3 -m playwright install --with-deps chromium
+      - name: Verificar interface em memoria e exportacoes
+        run: python3 scripts_admin/uti360x_commercial/tests/browser.py
+      - name: Guardar pacote demonstravel e evidencias sinteticas
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: UTI360X-Gestao-0.2.0-demonstracao
+          path: |
+            scripts_admin/uti360x_commercial/package
+            scripts_admin/uti360x_commercial/test-results/browser-results.json
+            scripts_admin/uti360x_commercial/test-results/desktop.png
+            scripts_admin/uti360x_commercial/test-results/mobile-dark.png
+          retention-days: 7
+          if-no-files-found: error
+      - name: Resumo sem alegar publicacao ou vendas
+        run: |
+          echo '## UTI 360X Gestao 0.2.0' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Aplicativo demonstravel gerado; testes executados. Sem deploy, merge, cobranca, login ou licenciamento comercial implantado.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Base historica de 22/10/2026 preservada. Revisao editorial humana e homologacao comercial continuam pendentes.' >> "$GITHUB_STEP_SUMMARY"
