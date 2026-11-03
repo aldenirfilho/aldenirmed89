@@ -61,6 +61,7 @@ REQUIRED = (
     "21_Central_Ativacao",
     "22_Microparticulas_Ativas_ACRA",
     "24_Semiologia",
+    "25_Direitos_Humanos",
     "ecossistema",
     "01_Modulos_Clinicos",
     "en",
