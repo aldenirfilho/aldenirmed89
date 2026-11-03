@@ -37,7 +37,7 @@ async function check(name,fn){try{await fn();pass(name)}catch(e){report.failures
  page.on('console',msg=>{if(msg.type()==='error')report.consoleErrors.push(msg.text())});
  page.setDefaultTimeout(5000);await page.goto(URL,{waitUntil:'load'});
  await page.waitForSelector('#algorithm-result', {state:'attached'});
- async function shot(name){const file=path.join(OUTPUT,name+'.png');await page.evaluate(()=>{document.activeElement?.blur();window.scrollTo(0,0)});await page.screenshot({path:file,fullPage:true});report.screenshots.push(file)}
+ async function shot(name){const file=path.join(OUTPUT,name+'.png');await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>{document.activeElement?.blur();window.scrollTo(0,0);requestAnimationFrame(resolve)})));await page.screenshot({path:file,fullPage:true});report.screenshots.push(file)}
  async function chapter(id){await page.evaluate(id=>document.querySelector('#chapter-nav a[href="#'+id+'"]').click(),id);await page.waitForFunction(id=>!document.getElementById(id).hidden,id);}
  await check('14 capítulos e conteúdo carregado',async()=>{assert.equal(await page.locator('.chapter').count(),14);assert.equal(await page.locator('.chapter:visible').count(),1);assert.equal(await page.locator('#quiz-select option').count(),20)});
  await check('Todas as imagens possuem recurso local válido',async()=>{const a=await page.evaluate(async()=>{const imgs=[...document.querySelectorAll('img')].filter(i=>i.id!=='image-full');await Promise.all(imgs.map(i=>{i.loading='eager';return i.decode().catch(()=>{})}));return imgs.map(i=>({src:i.getAttribute('src'),w:i.naturalWidth,h:i.naturalHeight,alt:i.alt}))});assert.equal(a.length,10);assert.ok(a.every(i=>i.w>0&&i.h>0&&i.alt));report.images=a});
