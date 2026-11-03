@@ -1,0 +1,738 @@
+/* Catálogo gerado de learning.json; editar a fonte JSON. */
+window.RCP_LEARNING = {
+  "cases": [
+    {
+      "id": "c01-gasping",
+      "title": "Praça: inspirações agônicas",
+      "context": "Caso fictício • adulto, idade não informada • praça pública • hospital, leito e data: não informado.",
+      "question": "Após queda súbita, a pessoa não responde e apresenta inspirações espaçadas e ruidosas. Você é médico e não identifica pulso com segurança em até dez segundos. Qual é a próxima ação?",
+      "options": [
+        "Manter observação respiratória por mais sessenta segundos.",
+        "Concluir uma avaliação neurológica antes de intervir.",
+        "Acionar 192, pedir DEA e iniciar RCP.",
+        "Priorizar transporte em carro particular até a emergência."
+      ],
+      "correct": 2,
+      "explanations": [
+        "Incorreta. Gasping é respiração agônica e não exclui PCR; a observação prolonga o tempo sem fluxo.",
+        "Incorreta. A avaliação neurológica detalhada não precede a circulação nesse cenário.",
+        "Correta. Reconhecimento, acionamento, compressões/ventilação e DEA compõem a resposta inicial.",
+        "Incorreta. Transporte improvisado pode atrasar e impedir RCP eficaz; acione o sistema de emergência."
+      ],
+      "rule": "Gasping não é respiração normal. Sem pulso definido em até dez segundos, inicie RCP.",
+      "flashcard": "O gasping exclui PCR? Não; pode acompanhar a parada.",
+      "sourceIds": [
+        "r01"
+      ]
+    },
+    {
+      "id": "c02-adrenalina",
+      "title": "Emergência: ciclo após segundo choque",
+      "context": "Caso fictício • adulto de 58 anos • emergência • FV persistente • hospital, leito e data: não informado.",
+      "question": "A equipe segue o algoritmo convencional AHA 2025. Após o segundo choque, retoma RCP. Qual prescrição corresponde a esse ciclo?",
+      "options": [
+        "Epinefrina 1 mg IV/IO, repetida a cada 3–5 minutos.",
+        "Epinefrina 1 mg IV/IO a cada minuto, enquanto houver FV.",
+        "Amiodarona 150 mg como primeira dose de antiarrítmico.",
+        "Vasopressina em substituição obrigatória à epinefrina."
+      ],
+      "correct": 0,
+      "explanations": [
+        "Correta. Essa é a posição da epinefrina no algoritmo convencional AHA; ERC a posiciona após o terceiro choque.",
+        "Incorreta. O intervalo habitual é 3–5 minutos; frequência maior não deve ser improvisada.",
+        "Incorreta. A dose inicial na FV/TV sem pulso persistente é 300 mg; 150 mg é a dose subsequente.",
+        "Incorreta. Vasopressina não oferece vantagem como substituta rotineira da epinefrina."
+      ],
+      "rule": "Anuncie qual algoritmo a equipe segue; não misture sequências.",
+      "flashcard": "Quando entra epinefrina no ramo chocável convencional AHA? No ciclo após o segundo choque.",
+      "sourceIds": [
+        "r02",
+        "r03"
+      ]
+    },
+    {
+      "id": "c03-aesp",
+      "title": "Enfermaria: eletricidade sem circulação",
+      "context": "Caso fictício • adulto de 72 anos • enfermaria • atividade elétrica sem pulso • hospital, leito e data: não informado.",
+      "question": "Há atividade elétrica organizada no monitor, sem pulso ou sinais de circulação. Qual estratégia corresponde a AESP?",
+      "options": [
+        "Cardioversão sincronizada, seguida de avaliação prolongada.",
+        "Desfibrilação imediata apesar de não haver FV/TV sem pulso.",
+        "Atropina antes de retomar compressões.",
+        "RCP, epinefrina precoce e investigação de causa reversível."
+      ],
+      "correct": 3,
+      "explanations": [
+        "Incorreta. AESP não é uma taquiarritmia com pulso a ser cardiovertida.",
+        "Incorreta. O choque está indicado em FV/TV sem pulso; AESP é ramo não chocável.",
+        "Incorreta. Atropina não integra o algoritmo rotineiro de AESP e não deve atrasar RCP.",
+        "Correta. Compressões geram fluxo enquanto epinefrina e tratamento etiológico são organizados."
+      ],
+      "rule": "Ritmo organizado na tela não equivale a circulação.",
+      "flashcard": "AESP recebe desfibrilação? Não, salvo mudança para FV/TV sem pulso.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "c04-pausa",
+      "title": "Desfibrilador: o choque foi aplicado",
+      "context": "Caso fictício • adulto de 63 anos • emergência • FV tratada com choque • hospital, leito e data: não informado.",
+      "question": "O primeiro choque foi aplicado com segurança. Não há sinais inequívocos de circulação espontânea. O que fazer imediatamente?",
+      "options": [
+        "Avaliar pulso e ritmo demoradamente antes de decidir sobre compressões.",
+        "Retomar compressões e continuar o ciclo de RCP.",
+        "Aguardar o monitor estabilizar por trinta segundos.",
+        "Realizar intubação antes de reiniciar compressões."
+      ],
+      "correct": 1,
+      "explanations": [
+        "Incorreta. Não se procura pulso demoradamente após cada choque; isso aumenta a pausa.",
+        "Correta. Retome RCP imediatamente e faça a avaliação breve programada, salvo sinais de RCE.",
+        "Incorreta. O tempo de espera representa ausência de fluxo produzido por compressões.",
+        "Incorreta. Via aérea não deve atrasar compressões; ventile por meio eficaz disponível."
+      ],
+      "rule": "Choque aplicado: retome RCP.",
+      "flashcard": "Após desfibrilar, qual ação vem imediatamente? Retomar compressões.",
+      "sourceIds": [
+        "r01",
+        "r02"
+      ]
+    },
+    {
+      "id": "c05-seringa",
+      "title": "Medicação: conferir concentração",
+      "context": "Caso fictício • adulto em PCR • emergência • hospital, leito, idade e data: não informado.",
+      "question": "A prescrição é epinefrina 1 mg IV. A seringa rotulada contém 0,1 mg/mL. Qual volume corresponde à dose prescrita?",
+      "options": [
+        "1 mL, pois toda apresentação de adrenalina tem 1 mg/mL.",
+        "0,1 mL, pois a dose deve ser multiplicada pela concentração.",
+        "10 mL, conferindo rótulo, dose e via com a equipe.",
+        "100 mL, para garantir a administração de 1 mg."
+      ],
+      "correct": 2,
+      "explanations": [
+        "Incorreta. Concentrações variam; nessa seringa, 1 mL contém 0,1 mg.",
+        "Incorreta. Volume é dose dividida pela concentração: 1 mg ÷ 0,1 mg/mL.",
+        "Correta. Dez mililitros dessa solução contêm 1 mg; leia rótulo e confirme a via.",
+        "Incorreta. Cem mililitros conteriam 10 mg, dez vezes a dose prescrita."
+      ],
+      "rule": "Dose, concentração, volume e via devem ser conferidos juntos.",
+      "flashcard": "Epinefrina 0,1 mg/mL: quantos mL contêm 1 mg? Dez mililitros.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "c06-autopeep",
+      "title": "UTI: asma, pressão e AESP",
+      "context": "Caso fictício • adulto de 39 anos • UTI • AESP após ventilação por asma grave • hospital, leito e data: não informado.",
+      "question": "Antes da parada houve aumento de pressões e expiração incompleta. Além de manter RCP, qual avaliação causal é prioritária?",
+      "options": [
+        "Aumentar a frequência ventilatória para eliminar CO₂ rapidamente.",
+        "Presumir ventilação eficaz porque existe tubo traqueal.",
+        "Investigar hiperinsuflação dinâmica, falha do tubo e pneumotórax; aliviar aprisionamento quando presente.",
+        "Aguardar radiografia antes de abordar suspeita forte de pneumotórax hipertensivo."
+      ],
+      "correct": 2,
+      "explanations": [
+        "Incorreta. Menor tempo expiratório pode agravar auto-PEEP e reduzir retorno venoso.",
+        "Incorreta. O tubo pode estar obstruído, deslocado ou ligado a circuito defeituoso.",
+        "Correta. Hiperinsuflação e pneumotórax podem causar colapso obstrutivo; devem ser tratados no contexto.",
+        "Incorreta. Uma ameaça clínica imediata não deve aguardar radiografia para intervenção por equipe capacitada."
+      ],
+      "rule": "Asma ventilada com colapso exige lembrar aprisionamento aéreo e pneumotórax.",
+      "flashcard": "Por que auto-PEEP pode precipitar AESP? Pressão intratorácica excessiva reduz retorno venoso.",
+      "sourceIds": [
+        "r05"
+      ]
+    },
+    {
+      "id": "c07-etco2",
+      "title": "UTI: ETCO₂ de 8 mmHg",
+      "context": "Caso fictício • adulto de 64 anos • UTI • PCR com tubo e capnografia • hospital, leito e data: não informado.",
+      "question": "Durante RCP, ETCO₂ permanece em 8 mmHg. O que esse valor permite concluir isoladamente?",
+      "options": [
+        "Que há TEP confirmado e trombólise obrigatória.",
+        "Que é necessário revisar fluxo, ventilação, tubo e causas, sem definir término por esse número.",
+        "Que hiperventilar elevará o fluxo e deve ser iniciado.",
+        "Que a RCP é fútil, independentemente de duração ou contexto."
+      ],
+      "correct": 1,
+      "explanations": [
+        "Incorreta. ETCO₂ baixo é inespecífico e não confirma TEP.",
+        "Correta. Use tendências e contexto para otimizar atendimento e investigar a causa.",
+        "Incorreta. Hiperventilação pode reduzir retorno venoso e ainda diminuir ETCO₂.",
+        "Incorreta. ETCO₂ isolado não determina futilidade ou término da ressuscitação."
+      ],
+      "rule": "Capnografia orienta; não sentencia isoladamente.",
+      "flashcard": "Uma elevação abrupta e sustentada do ETCO₂ pode sugerir o quê? RCE, a confirmar por perfusão.",
+      "sourceIds": [
+        "r02",
+        "r03"
+      ]
+    },
+    {
+      "id": "c08-pocus",
+      "title": "POCUS: uma pergunta acionável",
+      "context": "Caso fictício • adulto de 47 anos • emergência • PCR sem causa definida • hospital, leito e data: não informado.",
+      "question": "Um operador experiente está disponível para ultrassom. Como integrar POCUS à RCP?",
+      "options": [
+        "Interromper compressões até obter todas as janelas cardíacas.",
+        "Usar ausência de movimento como único critério para encerrar.",
+        "Considerar dilatação do ventrículo direito suficiente para confirmar TEP.",
+        "Preparar janela, adquirir brevemente na pausa programada e interpretar sem prolongar interrupções."
+      ],
+      "correct": 3,
+      "explanations": [
+        "Incorreta. Exame prolongado compromete a intervenção que produz fluxo.",
+        "Incorreta. Ausência de movimento não deve definir término isoladamente.",
+        "Incorreta. Sobrecarga direita pode ocorrer em outros contextos e precisa de integração clínica.",
+        "Correta. POCUS deve responder a pergunta que muda intervenção, preservando qualidade da RCP."
+      ],
+      "rule": "Primeiro a pergunta; depois a janela, sem pausa adicional.",
+      "flashcard": "Qual é o principal risco operacional do POCUS na PCR? Prolongar pausas de compressão.",
+      "sourceIds": [
+        "r02",
+        "r03"
+      ]
+    },
+    {
+      "id": "c09-hipercalemia",
+      "title": "Diálise perdida: causa provável",
+      "context": "Caso fictício • adulto de 61 anos • emergência • PCR após QRS muito alargado e diálise perdida • hospital, leito e data: não informado.",
+      "question": "Qual afirmação descreve corretamente o tratamento dirigido à hipercalemia durante PCR?",
+      "options": [
+        "É preciso nomear o protocolo e reconhecer baixa certeza; ERC mantém tratamento dirigido e AHA considera eficácia intra-PCR não bem estabelecida.",
+        "Cloreto e gluconato de cálcio 10% são intercambiáveis no mesmo volume.",
+        "Insulina elimina potássio corporal e dispensa diálise quando indicada.",
+        "A dose de glicose é idêntica nas tabelas AHA e no esquema ERC."
+      ],
+      "correct": 0,
+      "explanations": [
+        "Correta. A divergência e a incerteza precisam ficar explícitas; tratar a causa não deve interromper RCP.",
+        "Incorreta. Os sais fornecem quantidades diferentes de cálcio; não são equivalentes em mL.",
+        "Incorreta. Insulina redistribui K para dentro da célula; não o remove do organismo.",
+        "Incorreta. A tabela AHA apresenta 50 g e o esquema ERC 25 g; não fundir sem explicação."
+      ],
+      "rule": "Trate a hipótese sustentada, sem transformar o resgate em medicação universal.",
+      "flashcard": "Cálcio reduz potássio sérico por eliminação? Não; estabiliza membrana.",
+      "sourceIds": [
+        "r04",
+        "r05",
+        "r10"
+      ]
+    },
+    {
+      "id": "c10-tep",
+      "title": "AESP e hipótese forte de TEP",
+      "context": "Caso fictício • adulto de 52 anos • emergência • AESP com contexto tromboembólico forte • hospital, leito e data: não informado.",
+      "question": "A equipe considera fibrinólise durante a PCR. Qual formulação é cientificamente adequada?",
+      "options": [
+        "Toda AESP deve receber alteplase, independentemente da hipótese.",
+        "AHA/ERC determinam 50 mg em bolus com repetição automática para todos.",
+        "Fibrinólise pode ser considerada na suspeita sustentada; dose e repetição exigem protocolo, pois não há regime universal.",
+        "A RCP deve ser encerrada cinco minutos após o fibrinolítico se não houver pulso."
+      ],
+      "correct": 2,
+      "explanations": [
+        "Incorreta. Muitas causas de AESP não se beneficiam e podem piorar com sangramento.",
+        "Incorreta. Bolus de 50 mg aparece em estudos/protocolos, mas não é esquema universal padronizado pelas diretrizes.",
+        "Correta. Integre probabilidade, recursos e risco hemorrágico; o regime pode diferir da bula usual.",
+        "Incorreta. A duração ideal é incerta; ERC admite RCP por 60–90 minutos em selecionados após trombólise."
+      ],
+      "rule": "Trombólise trata uma causa provável/confirmada, não o rótulo AESP.",
+      "flashcard": "Há regime universal AHA/ERC de alteplase na PCR por TEP? Não.",
+      "sourceIds": [
+        "r04",
+        "r05",
+        "r14"
+      ]
+    },
+    {
+      "id": "c11-last",
+      "title": "Anestésico local: protocolo diferente",
+      "context": "Caso fictício • adulto de 60 kg • ambiente de procedimento • convulsão e colapso após anestésico local • hospital, leito e data: não informado.",
+      "question": "A hipótese é toxicidade sistêmica por anestésico local. Qual estratégia corresponde ao checklist especializado?",
+      "options": [
+        "Usar propofol como substituto equivalente da emulsão lipídica.",
+        "Suspender anestésico, oxigenar, tratar convulsão e usar lipídio 20%, com modificações específicas da ressuscitação.",
+        "Acrescentar novo anestésico local para tratar a instabilidade elétrica.",
+        "Usar vasopressina e betabloqueador como primeira combinação obrigatória."
+      ],
+      "correct": 1,
+      "explanations": [
+        "Incorreta. Propofol não substitui lipídio de resgate e pode agravar colapso cardiovascular.",
+        "Correta. ASRA orienta lipídio 20%, doses menores de epinefrina e medidas específicas.",
+        "Incorreta. Novos anestésicos locais devem ser evitados nessa situação.",
+        "Incorreta. ASRA orienta evitar vasopressina e betabloqueadores na LAST."
+      ],
+      "rule": "LAST não é simplesmente o ACLS padrão com um medicamento adicional.",
+      "flashcard": "Qual concentração da emulsão lipídica é usada no resgate de LAST? 20%.",
+      "sourceIds": [
+        "r11",
+        "r12"
+      ]
+    },
+    {
+      "id": "c12-opioide",
+      "title": "Apneia com pulso após opioide",
+      "context": "Caso fictício • adulto de 44 anos • enfermaria • depressão respiratória após opioide, com pulso definido • hospital, leito e data: não informado.",
+      "question": "Qual conduta inicial atende ao risco imediato?",
+      "options": [
+        "Abrir via aérea, ventilar eficazmente e administrar naloxona conforme resposta.",
+        "Aguardar naloxona fazer efeito antes de oferecer ventilação.",
+        "Iniciar choque não sincronizado apesar de pulso presente.",
+        "Administrar flumazenil como antídoto específico do opioide."
+      ],
+      "correct": 0,
+      "explanations": [
+        "Correta. Ventilação trata imediatamente a ameaça hipóxica, enquanto o antagonista é administrado.",
+        "Incorreta. A espera mantém hipóxia e pode permitir progressão para PCR.",
+        "Incorreta. Desfibrilação não trata depressão respiratória com circulação.",
+        "Incorreta. Flumazenil antagoniza benzodiazepínicos, não opioides, e tem contraindicações relevantes."
+      ],
+      "rule": "Antídoto não substitui ventilação.",
+      "flashcard": "Após resposta à naloxona, qual risco requer observação? Recorrência de depressão respiratória.",
+      "sourceIds": [
+        "r04",
+        "r12"
+      ]
+    },
+    {
+      "id": "c13-gestacao",
+      "title": "Gestação: começar o preparo agora",
+      "context": "Caso fictício • gestante adulta, idade não informada • emergência • útero acima do umbigo e PCR • hospital, leito e data: não informado.",
+      "question": "Qual plano deve começar no reconhecimento da parada?",
+      "options": [
+        "Aguardar quatro minutos antes de chamar obstetrícia.",
+        "Reduzir a energia habitual do desfibrilador pela metade.",
+        "Transferir primeiro ao centro cirúrgico, mesmo que atrase a RCP.",
+        "RCP com deslocamento uterino manual e preparo imediato de parto ressuscitativo, visando conclusão até cinco minutos se não houver RCE."
+      ],
+      "correct": 3,
+      "explanations": [
+        "Incorreta. A preparação começa imediatamente; esperar pode inviabilizar a intervenção temporalmente adequada.",
+        "Incorreta. A gestação não exige redução da energia habitual de desfibrilação.",
+        "Incorreta. Na PCR hospitalar, equipe capacitada deve atuar no local, evitando atraso de transporte.",
+        "Correta. O objetivo primário do parto ressuscitativo é favorecer a ressuscitação materna quando indicado."
+      ],
+      "rule": "Não espere o minuto quatro para preparar a equipe.",
+      "flashcard": "Útero ao nível/acima do umbigo durante PCR: qual manobra associar? Deslocamento uterino manual à esquerda.",
+      "sourceIds": [
+        "r04",
+        "r05"
+      ]
+    },
+    {
+      "id": "c14-afogamento",
+      "title": "Afogamento: ventilação importa",
+      "context": "Caso fictício • adulto de 28 anos • retirado da água em segurança • inconsciente, sem respiração normal ou pulso • hospital, leito e data: não informado.",
+      "question": "Um socorrista treinado dispõe de meio para ventilar. Qual princípio deve orientar o atendimento?",
+      "options": [
+        "Fazer manobras abdominais para retirar água antes da RCP.",
+        "Aplicar DEA antes de iniciar qualquer compressão ou ventilação.",
+        "Iniciar RCP incluindo ventilações, sem atrasá-la pela busca de equipamento.",
+        "Omitir ventilação porque compressões isoladas são preferidas em toda PCR."
+      ],
+      "correct": 2,
+      "explanations": [
+        "Incorreta. Tentar expulsar água atrasa medidas eficazes e pode causar dano.",
+        "Incorreta. AHA enfatiza iniciar RCP com ventilações antes de gastar tempo aplicando o DEA.",
+        "Correta. A fisiologia hipóxica do afogamento exige atenção à ventilação e compressões.",
+        "Incorreta. A opção de compressões isoladas para alguns leigos não elimina o papel da ventilação no afogamento."
+      ],
+      "rule": "No afogamento, inclua ventilação desde o início por meio disponível e seguro.",
+      "flashcard": "Cinco ventilações iniciais são número universal AHA? Não; há diferença entre protocolos.",
+      "sourceIds": [
+        "r04",
+        "r05"
+      ]
+    },
+    {
+      "id": "c15-trauma",
+      "title": "Trauma: perfusão exige causa corrigida",
+      "context": "Caso fictício • adulto de 35 anos • sala de trauma • PCR após hemorragia importante • hospital, leito e data: não informado.",
+      "question": "Qual estratégia representa melhor a ressuscitação traumática?",
+      "options": [
+        "Corrigir rapidamente hemorragia, hipoxemia e causas obstrutivas, mantendo compressões quando não atrasarem essas medidas.",
+        "Aguardar três ciclos de adrenalina antes de controlar sangramento.",
+        "Tratar a ausência de pulso com desfibrilação, independentemente do ritmo.",
+        "Usar ultrassom completo antes de iniciar reposição ou controle hemorrágico."
+      ],
+      "correct": 0,
+      "explanations": [
+        "Correta. A correção causal imediata é central no trauma; equipe e protocolo precisam atuar em paralelo.",
+        "Incorreta. Adrenalina não corrige perda de sangue; atrasar hemostasia perpetua a causa.",
+        "Incorreta. Choque elétrico depende de ritmo chocável, inclusive no trauma.",
+        "Incorreta. Exame não deve atrasar intervenção causal já indicada."
+      ],
+      "rule": "Não comprima indefinidamente sem corrigir o problema que impede circulação.",
+      "flashcard": "Quais causas ganham prioridade na PCR traumática? Hemorragia, hipoxemia, pneumotórax hipertensivo e tamponamento.",
+      "sourceIds": [
+        "r05"
+      ]
+    },
+    {
+      "id": "c16-posrce",
+      "title": "Pós-RCE: proteger a recuperação",
+      "context": "Caso fictício • adulto de 55 anos • UTI • pós-PCR, sem obedecer comandos • hospital, leito e data: não informado.",
+      "question": "Com oxímetro e gasometria confiáveis, qual pacote está alinhado ao cuidado pós-RCE?",
+      "options": [
+        "Manter SpO₂ 100% indefinidamente, PaCO₂ 25 mmHg e PAM 50 mmHg.",
+        "Retirar suporte imediatamente porque o pulso retornou.",
+        "Usar apenas ETCO₂ para garantir PaCO₂ normal, apesar do choque.",
+        "Titular O₂, buscar PaCO₂ 35–45 mmHg e PAM ≥65 mmHg, controlar temperatura e investigar a causa."
+      ],
+      "correct": 3,
+      "explanations": [
+        "Incorreta. Evite hiperóxia desnecessária, hipocapnia e hipotensão.",
+        "Incorreta. Retorno do pulso inicia uma fase crítica de proteção cerebral e estabilização.",
+        "Incorreta. O gradiente ETCO₂–PaCO₂ pode estar aumentado; gasometria orienta o alvo.",
+        "Correta. O pacote integra ventilação, circulação, proteção cerebral e etiologia; individualize conforme resposta."
+      ],
+      "rule": "RCE é transição de fase, não fim da ressuscitação.",
+      "flashcard": "Alvo inicial de pressão arterial média pós-RCE? Pelo menos 65 mmHg, individualizando.",
+      "sourceIds": [
+        "r06",
+        "r07"
+      ]
+    },
+    {
+      "id": "c17-temperatura",
+      "title": "Temperatura e neuroprognóstico",
+      "context": "Caso fictício • adulto de 66 anos • UTI • após RCE, sedado e sem obedecer comandos • hospital, leito e data: não informado.",
+      "question": "Qual afirmação é correta sobre a fase neurológica inicial?",
+      "options": [
+        "Ausência de despertar imediato basta para definir prognóstico irreversível.",
+        "Planejar controle deliberado de temperatura e neuroprognóstico tardio, multimodal, após excluir confundidores.",
+        "Temperatura de 33 °C é obrigatória para todos, independentemente do protocolo.",
+        "Uma pupila isolada deve substituir a avaliação multimodal."
+      ],
+      "correct": 1,
+      "explanations": [
+        "Incorreta. Sedativos, temperatura e distúrbios metabólicos confundem o exame inicial.",
+        "Correta. Proteção cerebral e reavaliação estruturada evitam conclusões prematuras.",
+        "Incorreta. AHA permite uma faixa deliberada de 32–37,5 °C; estratégia deve ser definida e monitorizada.",
+        "Incorreta. Um achado isolado não substitui integração de exames e contexto."
+      ],
+      "rule": "Não transforme exame precoce sob confundidores em sentença.",
+      "flashcard": "Controle térmico é necessário apenas durante os primeiros minutos? Não; é uma estratégia continuada.",
+      "sourceIds": [
+        "r06",
+        "r07"
+      ]
+    },
+    {
+      "id": "c18-ped-dose",
+      "title": "Pediatria: dose e concentração",
+      "context": "Caso fictício • criança de 4 anos, 20 kg • emergência • PCR • hospital, leito e data: não informado.",
+      "question": "A dose IV/IO de epinefrina é 0,01 mg/kg e a solução rotulada contém 0,1 mg/mL. Qual dose/volume correspondem?",
+      "options": [
+        "2 mg em 20 mL.",
+        "0,02 mg em 0,2 mL.",
+        "0,2 mg em 2 mL.",
+        "1 mg em 10 mL, porque a dose adulta vale para qualquer peso."
+      ],
+      "correct": 2,
+      "explanations": [
+        "Incorreta. Esse cálculo multiplica por dez a dose de 0,2 mg e excede o máximo habitual por dose.",
+        "Incorreta. É um décimo da dose calculada para 20 kg.",
+        "Correta. 20 × 0,01 = 0,2 mg; dividindo por 0,1 mg/mL, obtêm-se 2 mL.",
+        "Incorreta. Dose pediátrica é ponderal, com máximo de 1 mg; o máximo não é a dose de todas as crianças."
+      ],
+      "rule": "Calcule mg antes de mL e confirme concentração.",
+      "flashcard": "Epinefrina pediátrica na PCR: 0,01 mg/kg usando 0,1 mg/mL corresponde a quanto? 0,1 mL/kg.",
+      "sourceIds": [
+        "r09"
+      ]
+    },
+    {
+      "id": "c19-ped-bradi",
+      "title": "Criança: bradicardia com má perfusão",
+      "context": "Caso fictício • criança de 6 anos • emergência • frequência 45/min, má perfusão persistente • hospital, leito e data: não informado.",
+      "question": "Após oxigenação e ventilação adequadas, persistem frequência <60/min e perfusão ruim. Qual conduta corresponde ao algoritmo pediátrico?",
+      "options": [
+        "Aguardar necessariamente ausência completa de pulso para comprimir.",
+        "Aplicar a mesma regra de bradicardia adulta, sem considerar perfusão.",
+        "Suspender ventilação para aumentar a fração de compressões.",
+        "Iniciar compressões e continuar suporte e tratamento conforme o algoritmo pediátrico."
+      ],
+      "correct": 3,
+      "explanations": [
+        "Incorreta. Essa combinação de bradicardia e perfusão ruim pode indicar compressões antes de perda completa de pulso.",
+        "Incorreta. Trata-se de critério pediátrico específico e dependente da resposta ao suporte respiratório.",
+        "Incorreta. Oxigenação e ventilação são centrais na fisiologia pediátrica.",
+        "Correta. Frequência <60/min com má perfusão apesar de suporte respiratório adequado exige escalonamento pediátrico."
+      ],
+      "rule": "Na criança, frequência deve ser interpretada junto da perfusão e do suporte respiratório.",
+      "flashcard": "FC <60/min com perfusão ruim apesar de ventilação/oxigenação adequadas na criança sugere o quê? Iniciar compressões.",
+      "sourceIds": [
+        "r08",
+        "r09"
+      ]
+    },
+    {
+      "id": "c20-refrataria",
+      "title": "FV refratária: antes do resgate",
+      "context": "Caso fictício • adulto de 57 anos • emergência • FV após três choques • hospital, leito e data: não informado.",
+      "question": "Qual estratégia evita extrapolação indevida da evidência sobre FV refratária?",
+      "options": [
+        "Acionar dois desfibriladores simultaneamente como nova rotina universal.",
+        "Rever qualidade, pás, contato, energia e causas, e discutir escalonamento apenas com protocolo e equipe preparados.",
+        "Substituir compressões por esmolol, pois seu benefício tardio está comprovado.",
+        "Acrescentar vasopressina e esteroide como pacote obrigatório por demonstrar melhora neurológica universal."
+      ],
+      "correct": 1,
+      "explanations": [
+        "Incorreta. DSED não é rotina universal; a utilidade e as recomendações têm limites e questões de segurança.",
+        "Correta. Otimize fundamentos e considere recursos de resgate de forma contextual, sem atrasar o algoritmo.",
+        "Incorreta. Betabloqueio tem benefício incerto nessa indicação e não substitui RCP/desfibrilação.",
+        "Incorreta. VAM-IHCA mostrou mais RCE, mas não melhora demonstrada de neurologia em longo prazo no ensaio multicêntrico."
+      ],
+      "rule": "Tecnologia de resgate só ajuda dentro de um sistema capaz de executá-la com segurança.",
+      "flashcard": "Um ensaio de resgate favorável transforma a técnica em padrão para toda PCR? Não; seleção e sistema importam.",
+      "sourceIds": [
+        "r02",
+        "r03",
+        "r13",
+        "r15",
+        "r16"
+      ]
+    }
+  ],
+  "flashcards": [
+    {
+      "id": "f01",
+      "q": "Gasping exclui PCR?",
+      "a": "Não. É respiração agônica e pode acompanhar a parada.",
+      "sourceIds": [
+        "r01"
+      ]
+    },
+    {
+      "id": "f02",
+      "q": "Por quanto tempo o profissional deve avaliar pulso no reconhecimento?",
+      "a": "Até dez segundos; sem pulso definido, iniciar RCP.",
+      "sourceIds": [
+        "r01"
+      ]
+    },
+    {
+      "id": "f03",
+      "q": "Qual a frequência de compressões no adulto?",
+      "a": "100–120 por minuto.",
+      "sourceIds": [
+        "r01"
+      ]
+    },
+    {
+      "id": "f04",
+      "q": "Qual a profundidade de compressões no adulto?",
+      "a": "5–6 cm, com retorno completo do tórax.",
+      "sourceIds": [
+        "r01"
+      ]
+    },
+    {
+      "id": "f05",
+      "q": "Qual a relação compressão/ventilação adulta sem via aérea avançada?",
+      "a": "30:2, com ventilações suficientes para elevar o tórax.",
+      "sourceIds": [
+        "r01"
+      ]
+    },
+    {
+      "id": "f06",
+      "q": "Qual a frequência ventilatória adulta com via aérea avançada na PCR?",
+      "a": "Dez ventilações por minuto, com compressões contínuas.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "f07",
+      "q": "Quais ritmos recebem desfibrilação na PCR?",
+      "a": "Fibrilação ventricular e taquicardia ventricular sem pulso.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "f08",
+      "q": "O que fazer imediatamente após aplicar um choque?",
+      "a": "Retomar compressões; não procurar pulso demoradamente após cada choque.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "f09",
+      "q": "Qual a dose convencional de epinefrina na PCR adulta?",
+      "a": "1 mg IV/IO a cada 3–5 minutos, respeitando o momento do ramo.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "f10",
+      "q": "Quando usar epinefrina na AESP/assistolia?",
+      "a": "O mais cedo possível, em paralelo à RCP e ao tratamento da causa.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "f11",
+      "q": "Qual a diferença AHA/ERC no momento da epinefrina no ramo chocável convencional?",
+      "a": "AHA: após o segundo choque. ERC: após o terceiro. Seguir protocolo treinado.",
+      "sourceIds": [
+        "r02",
+        "r03"
+      ]
+    },
+    {
+      "id": "f12",
+      "q": "Qual a primeira dose de amiodarona na FV/TVSP persistente adulta?",
+      "a": "300 mg IV/IO; dose subsequente de 150 mg quando indicada.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "f13",
+      "q": "Qual a dose inicial de lidocaína na FV/TVSP adulta?",
+      "a": "1–1,5 mg/kg IV/IO; doses subsequentes de 0,5–0,75 mg/kg, máximo 3 mg/kg.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "f14",
+      "q": "Atropina integra o tratamento rotineiro de AESP/assistolia?",
+      "a": "Não. Sua indicação em bradicardia com pulso não se transfere à PCR.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "f15",
+      "q": "Qual método deve confirmar e monitorizar o tubo traqueal na PCR?",
+      "a": "Capnografia contínua com onda, associada à avaliação clínica.",
+      "sourceIds": [
+        "r02"
+      ]
+    },
+    {
+      "id": "f16",
+      "q": "ETCO₂ baixo isolado define o término da RCP?",
+      "a": "Não. Interpretar tendência, qualidade, ventilação, causas e contexto.",
+      "sourceIds": [
+        "r02",
+        "r03"
+      ]
+    },
+    {
+      "id": "f17",
+      "q": "Cálcio elimina potássio do organismo?",
+      "a": "Não. Estabiliza a membrana; a remoção definitiva pode exigir diálise.",
+      "sourceIds": [
+        "r05",
+        "r10"
+      ]
+    },
+    {
+      "id": "f18",
+      "q": "CaCl₂ 10% e gluconato 10% são equivalentes no mesmo volume?",
+      "a": "Não. A quantidade de cálcio difere; confira sal, dose, concentração e via.",
+      "sourceIds": [
+        "r05"
+      ]
+    },
+    {
+      "id": "f19",
+      "q": "Qual o risco importante após insulina/glicose na hipercalemia?",
+      "a": "Hipoglicemia, inclusive tardia; manter monitorização após RCE.",
+      "sourceIds": [
+        "r04",
+        "r10"
+      ]
+    },
+    {
+      "id": "f20",
+      "q": "Existe dose universal AHA/ERC de alteplase para PCR por TEP?",
+      "a": "Não. Regimes de resgate exigem protocolo e avaliação de risco; não extrapolar para toda PCR.",
+      "sourceIds": [
+        "r04",
+        "r05",
+        "r14"
+      ]
+    },
+    {
+      "id": "f21",
+      "q": "Qual concentração da emulsão lipídica é usada no resgate de LAST?",
+      "a": "20%, em protocolo específico; propofol não a substitui.",
+      "sourceIds": [
+        "r11"
+      ]
+    },
+    {
+      "id": "f22",
+      "q": "Na PCR gestacional, quando preparar parto ressuscitativo quando indicado?",
+      "a": "Desde o reconhecimento; objetivo de concluir até cinco minutos se não houver RCE.",
+      "sourceIds": [
+        "r04"
+      ]
+    },
+    {
+      "id": "f23",
+      "q": "Após RCE, qual faixa de SpO₂ fica na interseção AHA/ERC, com medida confiável?",
+      "a": "94–98%, individualizando; antes de medida confiável, manter oxigenação apropriada.",
+      "sourceIds": [
+        "r06",
+        "r07"
+      ]
+    },
+    {
+      "id": "f24",
+      "q": "Qual alvo habitual de PaCO₂ após RCE?",
+      "a": "35–45 mmHg, com gasometria e individualização clínica.",
+      "sourceIds": [
+        "r06",
+        "r07"
+      ]
+    },
+    {
+      "id": "f25",
+      "q": "Qual o alvo inicial mínimo de PAM após RCE?",
+      "a": "Pelo menos 65 mmHg, avaliando perfusão e necessidade de individualização.",
+      "sourceIds": [
+        "r06"
+      ]
+    },
+    {
+      "id": "f26",
+      "q": "Qual dose IV/IO de epinefrina na PCR pediátrica?",
+      "a": "0,01 mg/kg, máximo 1 mg, a cada 3–5 minutos; 0,1 mL/kg se solução 0,1 mg/mL.",
+      "sourceIds": [
+        "r09"
+      ]
+    },
+    {
+      "id": "f27",
+      "q": "Qual a sequência inicial de energia da desfibrilação pediátrica manual?",
+      "a": "2 J/kg, depois 4 J/kg; seguintes ≥4 J/kg, sem exceder 10 J/kg ou energia máxima adulta.",
+      "sourceIds": [
+        "r09"
+      ]
+    },
+    {
+      "id": "f28",
+      "q": "A técnica de dois dedos no lactente permanece recomendada pela AHA 2025?",
+      "a": "Não. Usar dois polegares envolvendo o tórax ou uma mão, conforme circunstância e qualidade.",
+      "sourceIds": [
+        "r08"
+      ]
+    }
+  ]
+};

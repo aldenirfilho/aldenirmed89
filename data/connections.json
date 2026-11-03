@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-18T09:39:43",
+  "updatedAt": "2026-11-03",
   "version": "4.9-avc-turbo-temi",
   "description": "Mapa vivo organizado da Enciclopédia: Home, Central de Ativação, Portais da missão, Estações, canais de integridade e memória editorial, Biblioteca IA, Card Feed, Banco TEMI, Calculadoras, módulos críticos, Semiologia Neurológica Topográfica, Micropartículas Ativas ACRA e macrotemas de UTI.",
   "legend": {
@@ -2512,6 +2512,23 @@
       "type": "module",
       "url": "01_Modulos_Clinicos/Doencas_Geneticas/index.html",
       "status": "em_revisao"
+    },
+    {
+      "id": "rcp-turbo-temi-360",
+      "label": "🫀 RCP — Turbo TEMI 360°",
+      "body": "Reanimação cardiopulmonar por ambiente, algoritmos interativos, medicamentos, causas reversíveis, pós-parada e aprendizagem ativa. Prévia educacional em revisão médica.",
+      "type": "module",
+      "url": "01_Modulos_Clinicos/RCP_Turbo_TEMI/index.html",
+      "status": "em_revisao",
+      "tags": [
+        "RCP",
+        "PCR",
+        "FV",
+        "AESP",
+        "pós-parada",
+        "AHA 2025",
+        "ERC 2025"
+      ]
     }
   ],
   "edges": [
@@ -4417,6 +4434,31 @@
       "from": "home",
       "to": "doencas-geneticas",
       "relation": "modulo-clinico"
+    },
+    {
+      "from": "home",
+      "to": "rcp-turbo-temi-360",
+      "relation": "modulo-em-revisao"
+    },
+    {
+      "from": "cardio-hemodinamica",
+      "to": "rcp-turbo-temi-360",
+      "relation": "reanimação"
+    },
+    {
+      "from": "emergencias-clinicas",
+      "to": "rcp-turbo-temi-360",
+      "relation": "parada-cardiorrespiratoria"
+    },
+    {
+      "from": "temi-prova",
+      "to": "rcp-turbo-temi-360",
+      "relation": "aprendizagem-ativa"
+    },
+    {
+      "from": "estudos-markdown",
+      "to": "rcp-turbo-temi-360",
+      "relation": "fonte-canonica"
     }
   ],
   "links": []

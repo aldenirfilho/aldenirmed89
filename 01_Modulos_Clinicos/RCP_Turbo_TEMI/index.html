@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="RCP Turbo TEMI 360°: parada cardiorrespiratória do adulto no ambiente público, emergência, enfermaria e UTI. Algoritmos, doses, causas reversíveis, pós-RCE e treino com casos comentados.">
+  <meta name="theme-color" content="#09121c">
+  <meta name="color-scheme" content="dark light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://aldenirrochadeoliveirafilho1989.goatcounter.com; style-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://aldenirrochadeoliveirafilho1989.goatcounter.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>RCP · Turbo TEMI 360° | AldenirMed89</title>
+  <link rel="icon" href="../../favicon.ico">
+  <script src="assets/theme.js"></script>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="data/learning.js" defer></script>
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="masthead">
+    <a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true">↗</span><span>ALDENIR<span class="brand-accent">MED89</span><small>MEDICINA · EDUCAÇÃO · 360X</small></span></a>
+    <div class="header-controls">
+      <button class="icon-control" id="font-down" type="button" aria-label="Diminuir texto">A−</button>
+      <button class="icon-control" id="font-up" type="button" aria-label="Aumentar texto">A+</button>
+      <button class="icon-control" id="theme-toggle" type="button" aria-pressed="false" aria-label="Ativar visualização clara">☀️ Clara</button>
+      <button class="icon-control" id="print-module" type="button">Imprimir</button>
+    </div>
+  </header>
+  <div class="review-strip"><span class="review-dot" aria-hidden="true"></span><strong>Prévia educacional em revisão médica</strong><span>Fontes conferidas em 03/11/2026 · revisão médica humana pendente</span></div>
+  <div class="workspace">
+    <aside class="sidebar" aria-label="Navegação e busca do módulo">
+      <div class="module-label"><span class="module-number">RCP / 360</span><p>Reanimação<br>cardiopulmonar</p><span class="edition">ADULTO · EDIÇÃO 1.0</span></div>
+      <form id="module-search" role="search" autocomplete="off">
+        <label class="sr-only" for="search-input">Buscar no módulo de RCP</label>
+        <div class="search-field"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Buscar no módulo" aria-controls="search-results" aria-expanded="false"><kbd aria-hidden="true">/</kbd></div>
+      </form>
+      <div id="search-results" class="search-results" hidden><p class="search-count" role="status"></p><ul></ul></div>
+      <button class="chapter-toggle" id="chapter-toggle" type="button" aria-expanded="false" aria-controls="chapter-nav">Capítulos <span aria-hidden="true">⌄</span></button>
+      <nav id="chapter-nav" aria-label="Capítulos de RCP"><a href="#primeiros-minutos"><span>01</span>Reconhecer e agir</a>
+<a href="#qualidade"><span>02</span>RCP de qualidade</a>
+<a href="#algoritmos"><span>03</span>Algoritmos por ambiente</a>
+<a href="#desfibrilacao"><span>04</span>Desfibrilação</a>
+<a href="#farmacos"><span>05</span>Doses e segurança</a>
+<a href="#ambientes"><span>06</span>Público, emergência e UTI</a>
+<a href="#via-aerea"><span>07</span>Via aérea e fisiologia</a>
+<a href="#causas"><span>08</span>Causas reversíveis</a>
+<a href="#situacoes-especiais"><span>09</span>Situações especiais</a>
+<a href="#resgate"><span>10</span>Resgate e off-label</a>
+<a href="#pos-rce"><span>11</span>Cuidados pós-RCE</a>
+<a href="#pediatria"><span>12</span>Diferenças pediátricas</a>
+<a href="#treino"><span>13</span>Laboratório TEMI</a>
+<a href="#referencias"><span>14</span>Fontes e limites</a>
+</nav>
+      <div class="sidebar-bottom"><button id="reading-mode" class="text-button" type="button" aria-pressed="false">↕ Leitura contínua</button><a href="../../01_UpDown_Hub/viewer.html?doc=content/intensiva/rcp-turbo-temi-360.md">Texto canônico ↗</a><a href="../Emergencias_Cardiopulmonares/index.html">Emergências cardiopulmonares ↗</a></div>
+    </aside>
+    <main id="conteudo" tabindex="-1">
+      <div class="reading-topline"><span>CLÍNICA MÉDICA / EMERGÊNCIA / TERAPIA INTENSIVA</span><span id="chapter-position">14 capítulos</span></div>
+      <div class="hero" id="module-intro">
+        <div class="hero-copy"><p class="eyebrow">TURBO TEMI 360° · REANIMAÇÃO</p><h1>Reconhecer.<br>Reanimar.<br><em>Reavaliar.</em></h1><p class="hero-lead">Uma decisão por vez. Do primeiro socorro à proteção cerebral após o retorno da circulação.</p><div class="hero-actions"><a class="button primary" href="#algoritmos">Percorrer algoritmos <span aria-hidden="true">→</span></a><a class="button secondary" href="#farmacos">Doses e segurança</a></div><p class="hero-meta">AHA & ERC 2025 <span aria-hidden="true">/</span> 10 imagens <span aria-hidden="true">/</span> 20 questões comentadas</p></div>
+        <figure class="hero-figure"><a href="assets/images/01-reconhecer-pcr.webp" data-expand-image><img src="assets/images/01-reconhecer-pcr.webp" width="1672" height="941" fetchpriority="high" alt="Reconhecer PCR: pessoa inconsciente, sem respiração normal; acionar 192, iniciar RCP e usar DEA."></a><figcaption>O primeiro elo começa onde o paciente está.</figcaption></figure>
+      </div>
+      <div class="quick-strip" aria-label="Acessos prioritários"><a href="#primeiros-minutos"><b>01</b><span>O que fazer agora</span></a><a href="#ambientes"><b>02</b><span>Escolher o ambiente</span></a><a href="#pos-rce"><b>03</b><span>Voltou o pulso</span></a><a href="#treino"><b>04</b><span>Treinar uma decisão</span></a></div>
+      <p class="clinical-notice">⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual. <strong>Núcleo adulto; doses de PCR sem pulso.</strong> Não inserir dados identificáveis de pacientes.</p>
+      <section class="chapter" id="primeiros-minutos" data-title="Reconhecer e agir"><p class="chapter-kicker">01 / TURBO TEMI 360°</p><h2>🚨 Primeiros minutos: reconhecer e agir</h2><p><strong>Se há uma PCR acontecendo agora, acione a resposta de emergência e inicie o protocolo presencial.</strong> Este módulo foi preparado para estudo e apoio à organização do raciocínio; seus casos e controles interativos são simulações. Não use o tempo de navegação como motivo para esperar uma intervenção.</p>
+<blockquote>
+<p>⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.</p>
+</blockquote>
+<p><strong>Escopo:</strong> parada cardiorrespiratória (PCR) do <strong>adulto</strong>, salvo o anexo pediátrico. Versão editorial 1.0, com fontes consultadas até <strong>03/11/2026</strong>. <strong>Em revisão médica:</strong> publicação e conferência automatizada não equivalem a validação clínica humana. Diretrizes científicas não definem a bibliografia futura do TEMI 2028.</p>
+<h3>A decisão que abre toda a cadeia</h3>
+<p>Pessoa que não responde e não respira normalmente, incluindo <strong>gasping</strong>, deve ser tratada como possível PCR. Gasping são inspirações agônicas, espaçadas, às vezes ruidosas: não significam ventilação eficaz. Movimentos semelhantes a convulsão também podem acompanhar o início da parada.</p>
+<p><strong>Profissional de saúde:</strong> avalie respiração e pulso simultaneamente por <strong>até 10 segundos</strong>. Se não identifica pulso com segurança, comece compressões. <strong>Leigo:</strong> não deve perder tempo procurando pulso; siga reconhecimento, orientação do regulador e desfibrilador externo automático (DEA). <a href="#ref-r01">R01</a></p>
+<ol>
+<li><strong>Segurança:</strong> trânsito, eletricidade, água, violência e risco biológico.</li>
+<li><strong>Resposta:</strong> chame a pessoa e toque os ombros; peça ajuda com destinatário definido.</li>
+<li><strong>Acionamento:</strong> em ambiente público brasileiro, ligue <strong>192 — SAMU</strong>, preferencialmente em viva-voz; peça DEA. No hospital, ative o código de emergência local.</li>
+<li><strong>Compressões e ventilação:</strong> comece RCP de qualidade; distribua tarefas assim que houver equipe.</li>
+<li><strong>Choque cedo:</strong> conecte DEA/desfibrilador e siga o ritmo, sem interromper desnecessariamente as compressões.</li>
+</ol>
+<p><strong>Macete operacional:</strong> “Você liga. Você traz o DEA. Eu começo.” Uma ordem dirigida produz uma tarefa verificável; “alguém chama ajuda” deixa a responsabilidade difusa.</p>
+<h3>PCR não é sinônimo de apneia</h3>
+<p>Se existe <strong>pulso definido</strong>, mas a respiração está ausente ou ineficaz, abra a via aérea e ventile: no adulto, aproximadamente <strong>uma ventilação a cada 6 segundos</strong>, verificando expansão torácica e reavaliando pulso cerca de cada dois minutos. Trate a causa. Não comprima uma pessoa com circulação efetiva apenas porque está inconsciente. Na dúvida real sobre pulso em até dez segundos, a prioridade muda para RCP.</p>
+<p><strong>Objetivo aprendido:</strong> reconhecer rapidamente a falha de circulação. <strong>Lacuna para testar:</strong> distinguir gasping de respiração normal. <strong>Próxima peça:</strong> gerar fluxo sem criar longas pausas.</p>
+<div data-tool="checklist"></div></section>
+<section class="chapter" id="qualidade" data-title="RCP de qualidade"><p class="chapter-kicker">02 / TURBO TEMI 360°</p><h2>🫀 Qualidade: a circulação que suas mãos produzem</h2><h3>Números essenciais do adulto</h3>
+<div class="table-wrap" role="region" aria-label="Tabela; deslize horizontalmente se necessário" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">Componente</th>
+<th scope="col">Alvo operacional</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Frequência</td>
+<td><strong>100–120 compressões/minuto</strong></td>
+</tr>
+<tr>
+<td>Profundidade</td>
+<td><strong>5–6 cm</strong></td>
+</tr>
+<tr>
+<td>Local</td>
+<td>Metade inferior do esterno, centro do tórax</td>
+</tr>
+<tr>
+<td>Retorno</td>
+<td>Permitir retorno completo, sem apoiar peso entre compressões</td>
+</tr>
+<tr>
+<td>Pausas</td>
+<td>Minimizar; avaliação de ritmo/pulso em até dez segundos</td>
+</tr>
+<tr>
+<td>Sem via aérea avançada</td>
+<td><strong>30 compressões : 2 ventilações</strong></td>
+</tr>
+<tr>
+<td>Com via aérea avançada eficaz</td>
+<td>Compressões contínuas e <strong>10 ventilações/minuto</strong></td>
+</tr>
+<tr>
+<td>Troca do compressor</td>
+<td>Cerca de cada <strong>2 minutos</strong>, antes se houver fadiga</td>
+</tr>
+</tbody></table></div>
+<p>Cada ventilação dura aproximadamente um segundo, suficiente para <strong>elevação visível do tórax</strong>. Comprimir mais rápido que o alvo não significa perfundir melhor. A pessoa pode perder profundidade, retorno e tempo de enchimento. Use retorno audiovisual quando disponível, mantendo julgamento clínico. <a href="#ref-r01">R01</a></p>
+<h3>Por que uma pausa custa mais do que parece?</h3>
+<p>Uma sequência de compressões constrói pressão e fluxo; interromper desfaz parte desse efeito. Ao reiniciar, as primeiras compressões precisam reconstruir a pressão. A metáfora útil é <strong>uma bomba manual mantendo a coluna de água</strong>: parar repetidamente desperdiça parte do trabalho anterior. Isso explica por que acesso, intubação e ultrassom devem servir à ressuscitação sem sequestrar seu tempo.</p>
+<p>Compressões eficientes também dependem de ergonomia: ombros sobre as mãos, braços estendidos, altura adequada e superfície que não absorva toda a força. No leito hospitalar, use o modo de RCP do colchão e os recursos disponíveis. Não atrasar o início para uma transferência demorada ao chão.</p>
+<h3>Fração de compressões e pausas úteis</h3>
+<p>Fração de compressões é o tempo efetivamente comprimido dividido pelo tempo total de ressuscitação. Procure pelo menos <strong>60%</strong>, idealmente maior quando a equipe consegue manter ventilação e segurança. Não transforme a meta em licença para omitir ventilação necessária nem choque. A análise útil do atendimento pergunta <strong>por que</strong> houve pausas e quais poderiam ter sido evitadas.</p>
+<p><strong>Checklist de cada ciclo:</strong> profundidade, frequência, retorno, vedação/expansão, capnografia, próximo ritmo, medicamento devido e causa reversível. Um integrante pode anunciar “faltam vinte segundos”, preparar a troca e organizar a avaliação breve. O líder precisa enxergar a cena, não assumir todas as tarefas manuais.</p>
+<p><strong>Erro frequente:</strong> manter o mesmo compressor porque ele “ainda aguenta”. A qualidade pode cair antes de a pessoa perceber fadiga. A troca planejada preserva desempenho e reduz improviso.</p>
+<figure class="clinical-figure" id="figura-02"><a href="assets/images/02-compressao.webp" data-expand-image aria-label="Ampliar figura 02: Compressão que perfunde"><img src="assets/images/02-compressao.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Figura 02 — Compressão que perfunde. Recupere frequência, profundidade, retorno e redução das pausas. Ilustração educacional gerada por IA."></a><figcaption><b>Figura 02 — Compressão que perfunde.</b> Recupere frequência, profundidade, retorno e redução das pausas. <a href="#ref-r01">R01</a><a class="figure-open" href="assets/images/02-compressao.webp" target="_blank" rel="noopener">Abrir imagem ↗</a></figcaption></figure></section>
+<section class="chapter" id="algoritmos" data-title="Algoritmos por ambiente"><p class="chapter-kicker">03 / TURBO TEMI 360°</p><h2>🔀 Dois ramos, uma base: algoritmos</h2><p><strong>Fibrilação ventricular (FV)</strong> e <strong>taquicardia ventricular sem pulso (TVSP)</strong> são ritmos chocáveis. <strong>Atividade elétrica sem pulso (AESP)</strong> e <strong>assistolia</strong> não são. A base comum é compressão eficaz, ventilação, busca de causa e reavaliação em ciclos de aproximadamente dois minutos. <a href="#ref-r02">R02</a> <a href="#ref-r03">R03</a></p>
+<div data-tool="algorithm"></div>
+
+<h3>Ramo chocável: sequência convencional AHA</h3>
+<ol>
+<li>Identifique FV/TVSP e aplique <strong>choque não sincronizado</strong>.</li>
+<li>Retome RCP imediatamente por dois minutos; obtenha acesso e prepare a próxima avaliação.</li>
+<li>Persistiu ritmo chocável? <strong>Segundo choque</strong>, seguido de RCP. Nesse ciclo, administrar <strong>epinefrina 1 mg IV/IO</strong>, repetindo a cada 3–5 minutos.</li>
+<li>Persistiu? <strong>Terceiro choque</strong>, seguido de RCP e <strong>amiodarona 300 mg IV/IO</strong>, ou lidocaína como alternativa.</li>
+<li>Continue ciclos, trate causas e avalie possibilidades de escalonamento conforme sistema.</li>
+</ol>
+<p>Não procure pulso imediatamente após cada choque: retome compressões. Na avaliação programada, procure pulso quando surgir ritmo organizado ou sinais de circulação. Se a classificação do ritmo mudar, mude de ramo.</p>
+<h3>Ramo não chocável</h3>
+<p><strong>RCP + epinefrina o mais cedo possível + causa reversível.</strong> Reavalie ritmo cerca de cada dois minutos. Assistolia não recebe choque; confirme cabos, contato e ganho, sem alongar a pausa. AESP é um diagnóstico clínico: há organização elétrica, porém sem circulação palpável/efetiva.</p>
+<p>No paciente monitorizado, a curva arterial pode ajudar a distinguir compressões de circulação espontânea. Ritmo organizado na tela, sozinho, não autoriza suspender compressões. Ao contrário, um pulso arterial sustentado associado a sinais de perfusão pode revelar retorno antes que o oxímetro estabilize.</p>
+<h3>AHA e ERC: uma diferença que precisa ficar explícita</h3>
+<p>No algoritmo convencional, <strong>AHA posiciona epinefrina após o segundo choque; ERC após o terceiro</strong>, junto do primeiro antiarrítmico. Ambas priorizam desfibrilação inicial no ramo chocável e epinefrina precoce no não chocável. A diferença não justifica misturar sequências durante o mesmo atendimento: anuncie e siga o protocolo institucional treinado.</p>
+<p><strong>Atropina não integra o algoritmo de assistolia/AESP.</strong> Sua indicação em bradicardia com pulso não se transfere automaticamente à PCR. Também não há espaço para aguardar efeito de medicamento antes de retomar compressões ou desfibrilar.</p>
+<p><strong>Teste mental:</strong> se o monitor passar de FV para AESP, “mais choque” deixa de ser a resposta. Continue fluxo e procure a causa que impede o coração de ejetar.</p>
+<figure class="clinical-figure" id="figura-04"><a href="assets/images/04-dois-caminhos.webp" data-expand-image aria-label="Ampliar figura 04: Dois caminhos, um ciclo"><img src="assets/images/04-dois-caminhos.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Figura 04 — Dois caminhos, um ciclo. FV/TV sem pulso pede choque; AESP/assistolia pede RCP e adrenalina precoce. Em ambos, tratar a causa. Ilustração educacional gerada por IA."></a><figcaption><b>Figura 04 — Dois caminhos, um ciclo.</b> FV/TV sem pulso pede choque; AESP/assistolia pede RCP e adrenalina precoce. Em ambos, tratar a causa. <a href="#ref-r02">R02</a> · <a href="#ref-r03">R03</a><a class="figure-open" href="assets/images/04-dois-caminhos.webp" target="_blank" rel="noopener">Abrir imagem ↗</a></figcaption></figure></section>
+<section class="chapter" id="desfibrilacao" data-title="Desfibrilação"><p class="chapter-kicker">04 / TURBO TEMI 360°</p><h2>⚡ Desfibrilação: executar bem antes de sofisticar</h2><h3>Energia, posição e segurança</h3>
+<p>No desfibrilador <strong>bifásico</strong>, use energia inicial recomendada pelo fabricante, usualmente na faixa de <strong>120–200 J</strong>; se desconhecida, utilize a energia máxima disponível para esse equipamento. Choques seguintes podem usar energia igual ou maior, conforme dispositivo/protocolo. No <strong>monofásico</strong>, <strong>360 J</strong>. O DEA seleciona sua energia: siga os comandos. <a href="#ref-r02">R02</a></p>
+<p>Posicione uma pá adesiva na região superior direita do tórax e outra na região lateral esquerda, abaixo da axila, conforme desenho do fabricante. Na posição anterolateral, uma pá excessivamente anterior à esquerda pode produzir vetor inadequado. Se necessário, alternativa anteroposterior. Evite colocar diretamente sobre gerador implantado ou adesivo medicamentoso; prepare rapidamente a pele quando houver impedimento de contato.</p>
+<p><strong>Sequência da equipe:</strong> carregar durante compressões quando seguro, avisar, conferir afastamento visual e verbal, interromper brevemente, aplicar choque e <strong>retomar RCP</strong>. Não deixar oxigênio em fluxo livre sobre o tórax; respeitar segurança do circuito e do equipamento. <strong>Antes do choque, ninguém deve tocar o paciente; luvas clínicas comuns não tornam segura a desfibrilação durante compressões manuais.</strong></p>
+<h3>FV persistente não significa automaticamente “energia insuficiente”</h3>
+<p>Antes de intervenções excepcionais, revise contato das pás, localização, energia selecionada, impedimentos na pele, profundidade das compressões, ventilação e causas. Diferencie FV que nunca termina daquela que termina e recorre; esse detalhe pode mudar a interpretação de refratariedade.</p>
+<p>O estudo <strong>DOSE-VF</strong> avaliou mudança de vetor e desfibrilação externa dupla sequencial após choques convencionais em PCR extra-hospitalar. Encontrou sinal favorável, mas não resolve aplicação universal, segurança de todos os equipamentos ou desempenho de equipes sem treinamento. <strong>AHA 2025 considera utilidade não estabelecida; ERC admite considerar mudança de vetor após três choques e não recomenda uso rotineiro da dupla sequencial.</strong> Não ensine apertar dois desfibriladores ao mesmo tempo. <a href="#ref-r03">R03</a> <a href="#ref-r15">R15</a></p>
+<p><strong>Pesquisa de 2026:</strong> o piloto randomizado <strong>Double-D</strong>, publicado em <strong>30/06/2026</strong>, incluiu <strong>40 pacientes</strong> e avaliou viabilidade/segurança da dupla sequencial precoce. Não houve falha dos desfibriladores observada, mas a amostra pequena não estabelece eficácia nem segurança universal. O estudo prepara um ensaio maior; <strong>não modifica por si só a rotina clínica</strong>. <a href="#ref-r19">R19</a></p>
+<h3>Exceções de ambiente monitorizado</h3>
+<p>Até três choques consecutivos podem caber em situações muito específicas, como parada testemunhada e monitorizada em hemodinâmica ou pós-cirurgia cardíaca com desfibrilador imediatamente disponível. Essa exceção depende do protocolo especializado; não substitui a sequência de choque único seguido de RCP na praça, enfermaria ou emergência habitual. <a href="#ref-r05">R05</a></p>
+<p><strong>Regra de ouro:</strong> um choque oportuno e bem aplicado vale mais que uma discussão prolongada sobre a próxima tecnologia.</p>
+<figure class="clinical-figure" id="figura-03"><a href="assets/images/03-desfibrilacao.webp" data-expand-image aria-label="Ampliar figura 03: Choque sem demora"><img src="assets/images/03-desfibrilacao.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Figura 03 — Choque sem demora. Antes do choque, todos afastados; depois, compressões imediatamente. A pá lateral fica abaixo da axila esquerda, na linha axilar média. Ilustração educacional gerada por IA."></a><figcaption><b>Figura 03 — Choque sem demora.</b> Antes do choque, todos afastados; depois, compressões imediatamente. A pá lateral fica abaixo da axila esquerda, na linha axilar média. <a href="#ref-r02">R02</a> · <a href="#ref-r03">R03</a><a class="figure-open" href="assets/images/03-desfibrilacao.webp" target="_blank" rel="noopener">Abrir imagem ↗</a></figcaption></figure></section>
+<section class="chapter" id="farmacos" data-title="Doses e segurança"><p class="chapter-kicker">05 / TURBO TEMI 360°</p><h2>💉 Fármacos: indicação, dose e preparação</h2><p><strong>Todas as doses desta seção são para adulto em PCR</strong>, exceto quando a linha diz explicitamente outra situação. IV = intravenoso; IO = intraósseo. Tente IV primeiro quando viável; use IO se acesso IV não for obtido rapidamente. Não interrompa compressões para punção. Após medicação periférica, faça lavagem com solução compatível conforme protocolo do acesso. <a href="#ref-r02">R02</a></p>
+<div data-tool="dose"></div>
+
+<div class="table-wrap" role="region" aria-label="Tabela; deslize horizontalmente se necessário" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">Fármaco</th>
+<th scope="col">Indicação na PCR adulta</th>
+<th scope="col">Dose e preparação essencial</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Epinefrina/adrenalina</strong></td>
+<td>Todos os ritmos, respeitando momento do ramo</td>
+<td><strong>1 mg IV/IO a cada 3–5 min</strong>. Solução final habitual <strong>0,1 mg/mL: 10 mL = 1 mg</strong>. Se a apresentação é 1 mg/mL, 1 mL + 9 mL de diluente compatível produz 10 mL a 0,1 mg/mL; conferir rótulo e protocolo.</td>
+</tr>
+<tr>
+<td><strong>Amiodarona</strong></td>
+<td>FV/TVSP persistente após desfibrilações</td>
+<td><strong>300 mg IV/IO</strong>, depois <strong>150 mg</strong> se necessário. Exemplo conferido: Fresenius Kabi <strong>50 mg/mL</strong>, ampola <strong>3 mL = 150 mg</strong>; a bula orienta dose de PCR de <strong>300 mg diluída em 20 mL de glicose 5%</strong>, por via IV. Não confundir com infusão para arritmia com pulso; conferir a formulação disponível. <a href="#ref-r20">R20</a></td>
+</tr>
+<tr>
+<td><strong>Lidocaína</strong></td>
+<td>Alternativa à amiodarona na FV/TVSP</td>
+<td><strong>1–1,5 mg/kg IV/IO</strong>, depois <strong>0,5–0,75 mg/kg</strong>, máximo acumulado <strong>3 mg/kg</strong>. Solução 2% sem vasoconstritor contém <strong>20 mg/mL</strong>.</td>
+</tr>
+<tr>
+<td><strong>Sulfato de magnésio</strong></td>
+<td>Torsades de pointes associada a QT longo; não toda TV polimórfica</td>
+<td><strong>1–2 g IV/IO</strong> no contexto de PCR, conforme protocolo; conferir concentração e diluição. Não atrasar choque.</td>
+</tr>
+<tr>
+<td><strong>Bicarbonato de sódio</strong></td>
+<td>Causas específicas, como bloqueio de canal de sódio; protocolo de PCR hipercalêmica</td>
+<td>Não administrar em toda PCR por duração ou acidose presumida. Solução <strong>8,4% = 1 mEq/mL</strong>; concentração e dose dependem da indicação.</td>
+</tr>
+<tr>
+<td><strong>Cálcio</strong></td>
+<td>Contextos selecionados, como protocolo hipercalêmico, hipocalcemia ou intoxicação</td>
+<td>Não é rotina. <strong>CaCl₂ 10% e gluconato 10% não são equivalentes em mL</strong>; veja capítulo de causas especiais.</td>
+</tr>
+</tbody></table></div>
+<h3>Barreiras contra erros de ampola</h3>
+<p>Leia em voz alta <strong>nome, concentração, dose em mg ou g, volume e via</strong>. Prefira escrever concentração em mg/mL em vez de razões como “1:1.000”. Uma seringa de adrenalina destinada à PCR não deve circular sem identificação e ser usada em paciente com pulso como bolus de 1 mg.</p>
+<p>A via IO para amiodarona é contemplada no algoritmo de ressuscitação, enquanto a bula do produto exemplificado especifica <strong>via exclusivamente IV</strong>. Diretriz e bula têm escopos diferentes; verificar produto e protocolo institucional antes de classificar o uso regulatório ou extrapolar a preparação.</p>
+<p>Os bolus padronizados do algoritmo de PCR não são rotineiramente reduzidos por função renal; isso <strong>não significa que todo fármaco dispense ajuste</strong> em infusões após RCE. Lidocaína pode acumular em baixo fluxo/insuficiência hepática e exige cautela em manutenção. Magnésio, cálcio, glicose e eletrólitos requerem avaliação da indicação e monitorização.</p>
+<h3>O que as drogas conseguem demonstrar?</h3>
+<p>No <strong>PARAMEDIC2</strong>, epinefrina aumentou sobrevida em 30 dias, mas não demonstrou melhora estatisticamente significativa do desfecho neurológico favorável. Isso explica a prioridade das compressões e do choque sem retirar a epinefrina do protocolo. No <strong>ALPS</strong>, amiodarona/lidocaína não produziram melhora estatisticamente significativa de sobrevida à alta na população total; resultados não autorizam substituir desfibrilação por antiarrítmico. <a href="#ref-r17">R17</a> <a href="#ref-r18">R18</a></p>
+<p><strong>Macete:</strong> remédio circula melhor quando existe fluxo. O acesso venoso mais elegante não compensa compressões interrompidas.</p>
+<figure class="clinical-figure" id="figura-08"><a href="assets/images/08-dose-segura.webp" data-expand-image aria-label="Ampliar figura 08: Dose não é concentração"><img src="assets/images/08-dose-segura.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Figura 08 — Dose não é concentração. Algoritmo convencional adulto: 1 mg de adrenalina a cada 3–5 minutos. Confira concentração, volume e contexto; há exceções específicas. Ilustração educacional gerada por IA."></a><figcaption><b>Figura 08 — Dose não é concentração.</b> Algoritmo convencional adulto: 1 mg de adrenalina a cada 3–5 minutos. Confira concentração, volume e contexto; há exceções específicas. <a href="#ref-r02">R02</a><a class="figure-open" href="assets/images/08-dose-segura.webp" target="_blank" rel="noopener">Abrir imagem ↗</a></figcaption></figure></section>
+<section class="chapter" id="ambientes" data-title="Público, emergência e UTI"><p class="chapter-kicker">06 / TURBO TEMI 360°</p><h2>🏥 O mesmo algoritmo, ambientes diferentes</h2><h3>Meio público: reconhecer, chamar, comprimir, desfibrilar</h3>
+<p>O recurso que muda o primeiro minuto costuma ser uma pessoa que reconhece a parada. Distribua tarefas, use viva-voz e peça que alguém encontre e traga o DEA. Para leigo não treinado ou incapaz de ventilar, compressões isoladas são uma opção inicial orientada pelo serviço de emergência, especialmente na queda súbita do adulto. Socorristas treinados devem integrar ventilação; causas hipóxicas exigem atenção particular.</p>
+<p>Se estiver molhado, retire de situação aquática insegura e seque rapidamente a região das pás antes do DEA. Não transporte em carro particular como substituto da RCP. Transporte durante PCR é decisão do sistema, com condições que preservem atendimento e segurança. <a href="#ref-r01">R01</a></p>
+<h3>Emergência: velocidade com funções claras</h3>
+<p>Na chegada de uma PCR, uma pessoa recebe a história enquanto outras mantêm o tratamento. Peça: <strong>tempo de colapso, RCP inicial, primeiro ritmo, choques, drogas e suspeita causal</strong>. Faça transferência do compressor sem pausa longa. Não reinicie contagem de tudo como se o atendimento anterior não existisse.</p>
+<p>Organize posições para compressor, desfibrilador, via aérea, acesso/medicação, registro e liderança. Prepare pós-RCE antes do pulso voltar: monitorização, ventilador, vasopressor e exame etiológico não deveriam começar do zero depois da recuperação.</p>
+<h3>Enfermaria: prevenir a parada também é ressuscitar</h3>
+<p>Reconheça deterioração: nova alteração de consciência, esforço respiratório, hipoxemia, hipotensão, perfusão ruim ou ritmo ameaçador. Acione resposta rápida antes da PCR. Nem toda deterioração produz taquicardia intensa; betabloqueio, marca-passo e doença de base podem confundir a leitura.</p>
+<p>Na parada, comece com quem está presente. Leve o carrinho, chame o código e ofereça ventilação eficaz. Uma intubação demorada não deve substituir bolsa-máscara que já funciona. A prevenção inclui planejamento proporcional de cuidados e decisões previamente documentadas, acessíveis à equipe, sem presumir limites por idade isolada.</p>
+<h3>UTI: usar os monitores sem depender deles</h3>
+<p>Confirme o paciente, não apenas o alarme. Curva arterial achatada pode representar parada, desconexão ou falha do sistema; avalie rapidamente o conjunto. Tubo, drenos, bombas e cateteres oferecem pistas causais: deslocamento de tubo, obstrução, desconexão, pneumotórax, hemorragia, distúrbio eletrolítico e infusão indevida precisam entrar na avaliação.</p>
+<p>Com pressão invasiva/capnografia disponíveis, busque ressuscitação guiada por fisiologia. Recursos não justificam pausas extras para coleta. Separe funções: uma pessoa trata a ventilação, outra procura a causa, enquanto a compressão continua.</p>
+<p><strong>Roteiro de liderança:</strong> “Ritmo e tempo. Qualidade. Choque/medicação. Qual causa tratável. O que muda no próximo ciclo?” O registro deve capturar horários reais e resposta, sem preenchimento retrospectivo baseado em suposição.</p>
+<figure class="clinical-figure" id="figura-10"><a href="assets/images/10-equipe.webp" data-expand-image aria-label="Ampliar figura 10: Uma equipe, um ciclo"><img src="assets/images/10-equipe.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Figura 10 — Uma equipe, um ciclo. Distribua funções e comunique ordens, confirmação e execução em circuito fechado. Ilustração educacional gerada por IA."></a><figcaption><b>Figura 10 — Uma equipe, um ciclo.</b> Distribua funções e comunique ordens, confirmação e execução em circuito fechado. <a href="#ref-r03">R03</a><a class="figure-open" href="assets/images/10-equipe.webp" target="_blank" rel="noopener">Abrir imagem ↗</a></figcaption></figure></section>
+<section class="chapter" id="via-aerea" data-title="Via aérea e fisiologia"><p class="chapter-kicker">07 / TURBO TEMI 360°</p><h2>🫁 Via aérea, ventilação e fisiologia à beira-leito</h2><h3>Ventilar bem antes de intubar rápido</h3>
+<p>Bolsa-válvula-máscara com dois profissionais, cânula adequada, posicionamento e boa vedação pode ser a estratégia inicial mais eficiente. Se o tórax não expande, corrija técnica, obstrução e posição. Não aumente indefinidamente a força da bolsa: insuflação gástrica e pressão intratorácica excessiva trazem prejuízo.</p>
+<p>Escolha dispositivo supraglótico ou tubo traqueal de acordo com competência da equipe e contexto. A intubação não pode causar interrupção prolongada; se falhar, retome ventilação eficaz e reorganize. Confirme tubo por <strong>capnografia contínua com onda</strong>, associada à avaliação clínica; ausculta isolada e condensação não bastam. <a href="#ref-r02">R02</a></p>
+<p>Na PCR do adulto com via aérea avançada: compressões contínuas e cerca de dez ventilações por minuto. Ajustar ventilador durante RCP exige verificar volume entregue, expansão, alarmes e autoacionamento. O equipamento pode interpretar compressões como esforço e gerar frequência excessiva; ajuste gatilho conforme dispositivo e equipe. Use oxigênio em alta concentração durante a ressuscitação; depois do RCE, titule quando a medida for confiável.</p>
+<h3>O que o ETCO₂ conta?</h3>
+<p>ETCO₂ é o dióxido de carbono ao fim da expiração. Durante RCP, sua leitura depende de fluxo pulmonar, ventilação, metabolismo e funcionamento da via aérea. <strong>Valor baixo não é diagnóstico único:</strong> pode sinalizar baixo fluxo, hiperventilação, problema no tubo ou obstrução vascular.</p>
+<p>O ERC descreve metas fisiológicas pragmáticas, quando monitorizadas: <strong>ETCO₂ ≥25 mmHg</strong> e pressão arterial diastólica <strong>≥30 mmHg</strong> podem orientar esforço para melhorar qualidade. São metas de otimização, não critérios universais de sucesso, nem motivo para interromper medidas que tratam a causa. Subida abrupta e sustentada do ETCO₂ pode sugerir RCE: confira perfusão, evitando uma pausa precipitada a cada oscilação. <a href="#ref-r03">R03</a></p>
+<p><strong>Exceção especializada ERC 2025:</strong> com pressão intra-arterial contínua e equipe preparada, pode-se iniciar epinefrina em incrementos de <strong>50–100 microgramas IV</strong>, titulados à fisiologia. Se chegar a <strong>1 mg total sem resposta</strong>, confira extravasamento e considere retomar <strong>1 mg a cada 3–5 min</strong>. Essa estratégia monitorizada não substitui a dose convencional na praça ou em parada sem essa infraestrutura.</p>
+<p>Para ventilação mecânica durante RCP, o ERC descreve ponto de partida de <strong>6–8 mL/kg de peso predito</strong>, frequência <strong>10/min</strong>, oxigênio máximo e PEEP <strong>0–5 cmH₂O</strong>, com gatilho desativado conforme equipamento. Verifique entrega efetiva e alarmes. <strong>Limite de alarme de pressão não é meta de pressão aceitável</strong>; investigue pressão elevada, obstrução, pneumotórax e hiperinsuflação.</p>
+<p><strong>ETCO₂ isolado nunca determina término.</strong> Mesmo valores persistentemente baixos precisam de contexto: duração, qualidade, ritmo, reversibilidade, temperatura, fármacos e recursos. A decisão de encerrar não pode ser um botão baseado em um número.</p>
+<h3>POCUS: perguntar primeiro, sondar depois</h3>
+<p>Ultrassom à beira-leito deve responder a pergunta acionável: tamponamento? pneumotórax? hipovolemia contextual? Use operador preparado, janela antecipada e aquisição na pausa programada, sem prolongá-la; interprete o clipe durante compressões. Dilatação de ventrículo direito não confirma TEP, e ausência de movimento cardíaco não deve encerrar isoladamente a RCP. O melhor exame é aquele que muda uma intervenção sem comprometer fluxo.</p>
+<figure class="clinical-figure" id="figura-05"><a href="assets/images/05-ventilar.webp" data-expand-image aria-label="Ampliar figura 05: Ventilar sem exagero"><img src="assets/images/05-ventilar.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Figura 05 — Ventilar sem exagero. Vedação e abertura da via aérea, com expansão torácica visível. Evite hiperventilação. Ilustração educacional gerada por IA."></a><figcaption><b>Figura 05 — Ventilar sem exagero.</b> Vedação e abertura da via aérea, com expansão torácica visível. Evite hiperventilação. <a href="#ref-r01">R01</a> · <a href="#ref-r03">R03</a><a class="figure-open" href="assets/images/05-ventilar.webp" target="_blank" rel="noopener">Abrir imagem ↗</a></figcaption></figure>
+<figure class="clinical-figure" id="figura-07"><a href="assets/images/07-tubo.webp" data-expand-image aria-label="Ampliar figura 07: Tubo não é garantia"><img src="assets/images/07-tubo.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Figura 07 — Tubo não é garantia. Deslocamento, obstrução, pneumotórax, equipamento e auto-PEEP: confirme ventilação efetiva. Ilustração educacional gerada por IA."></a><figcaption><b>Figura 07 — Tubo não é garantia.</b> Deslocamento, obstrução, pneumotórax, equipamento e auto-PEEP: confirme ventilação efetiva. <a href="#ref-r03">R03</a> · <a href="#ref-r05">R05</a><a class="figure-open" href="assets/images/07-tubo.webp" target="_blank" rel="noopener">Abrir imagem ↗</a></figcaption></figure></section>
+<section class="chapter" id="causas" data-title="Causas reversíveis"><p class="chapter-kicker">08 / TURBO TEMI 360°</p><h2>🔎 Causas reversíveis: 5 Hs e 5 Ts com ação</h2><p>Lembrar a lista é insuficiente. Para cada hipótese, diga <strong>pista → intervenção → como verificar resposta</strong>. Não espere “fechar diagnóstico” para tratar uma causa fortemente sustentada que ameaça a vida. Da mesma forma, não transforme qualquer alteração encontrada durante a PCR na causa original.</p>
+<div data-tool="causes"></div>
+
+<div class="table-wrap" role="region" aria-label="Tabela; deslize horizontalmente se necessário" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">Causa</th>
+<th scope="col">Pistas contextuais</th>
+<th scope="col">Ação direcionada</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Hipovolemia</strong></td>
+<td>Hemorragia, perdas, procedimento recente, baixa pré-carga contextual</td>
+<td>Controlar sangramento, reposição apropriada, sangue/protocolo de transfusão quando indicado</td>
+</tr>
+<tr>
+<td><strong>Hipóxia</strong></td>
+<td>Falha ventilatória, obstrução, desconexão, afogamento</td>
+<td>Abrir via aérea, oxigenar/ventilar, confirmar dispositivo e expansão</td>
+</tr>
+<tr>
+<td><strong>Hidrogênio/acidemia</strong></td>
+<td>Choque prolongado, intoxicação ou distúrbio metabólico</td>
+<td>Melhorar fluxo/ventilação e tratar causa; bicarbonato não é resposta automática ao pH baixo</td>
+</tr>
+<tr>
+<td><strong>Hipo/hipercalemia e metabólicas</strong></td>
+<td>Diálise, fármacos, QRS alterado, perdas, laboratório contextual</td>
+<td>Tratamento específico, incluindo protocolo hipercalêmico quando indicado</td>
+</tr>
+<tr>
+<td><strong>Hipotermia</strong></td>
+<td>Exposição, temperatura central baixa</td>
+<td>Ressuscitação com reaquecimento; considerar centro com suporte extracorpóreo</td>
+</tr>
+<tr>
+<td><strong>Tensão no tórax</strong></td>
+<td>Trauma/procedimento, pressão ventilatória, colapso</td>
+<td>Descompressão de pneumotórax hipertensivo por equipe capacitada; não esperar radiografia</td>
+</tr>
+<tr>
+<td><strong>Tamponamento</strong></td>
+<td>Derrame, trauma, pós-operatório; contexto e ultrassom</td>
+<td>Drenagem/intervenção indicada segundo etiologia e recursos</td>
+</tr>
+<tr>
+<td><strong>Toxinas</strong></td>
+<td>Exposição, medicamentos, cenário clínico</td>
+<td>Suporte e antídoto apropriado; toxicologia e possível suporte extracorpóreo</td>
+</tr>
+<tr>
+<td><strong>Trombose pulmonar</strong></td>
+<td>Dispneia súbita, risco trombótico, AESP contextual</td>
+<td>Considerar reperfusão quando suspeita forte/TEP confirmado; não trombolisar toda AESP</td>
+</tr>
+<tr>
+<td><strong>Trombose coronariana</strong></td>
+<td>Isquemia, FV/TVSP, ECG e instabilidade após RCE</td>
+<td>Estratégia coronariana urgente conforme quadro, protocolo e acesso</td>
+</tr>
+</tbody></table></div>
+<p>Essa é uma organização didática da lista, não dez testes obrigatórios em sequência. Em asma ventilada, uma causa mecânica pode estar no topo; em sangramento após cirurgia, a equipe deve priorizar controle hemorrágico; em paciente dialítico, o contexto metabólico muda a urgência. <a href="#ref-r02">R02</a> <a href="#ref-r05">R05</a></p>
+<p><strong>Macete:</strong> “Qual hipótese explica este ritmo neste paciente, neste minuto?” Essa pergunta protege contra repetir adrenalina enquanto uma causa obstrutiva ou hemorrágica permanece sem tratamento.</p>
+<figure class="clinical-figure" id="figura-06"><a href="assets/images/06-causas.webp" data-expand-image aria-label="Ampliar figura 06: Qual é a causa?"><img src="assets/images/06-causas.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Figura 06 — Qual é a causa?. Transforme 5 H e 5 T em hipótese, intervenção e reavaliação. Ilustração educacional gerada por IA."></a><figcaption><b>Figura 06 — Qual é a causa?.</b> Transforme 5 H e 5 T em hipótese, intervenção e reavaliação. <a href="#ref-r02">R02</a> · <a href="#ref-r05">R05</a><a class="figure-open" href="assets/images/06-causas.webp" target="_blank" rel="noopener">Abrir imagem ↗</a></figcaption></figure></section>
+<section class="chapter" id="situacoes-especiais" data-title="Situações especiais"><p class="chapter-kicker">09 / TURBO TEMI 360°</p><h2>🧩 Situações especiais: mudar o foco com segurança</h2><h3>Hipercalemia: explicitar qual protocolo foi escolhido</h3>
+<p>História de diálise perdida, exposição a potássio e QRS muito alargado sustentam suspeita, mas eletrocardiograma não é perfeito. Acidemia da própria PCR pode elevar potássio: diferencie consequência de causa sempre que possível, sem atrasar resgate necessário.</p>
+<p><strong>Divergência importante:</strong> AHA 2025 considera não bem estabelecida a eficácia intra-PCR de cálcio, bicarbonato e insulina/glicose. O ILCOR sugere insulina com glicose com certeza muito baixa. ERC mantém esquema dirigido: <strong>CaCl₂ 10% 10 mL IV + bicarbonato 50 mmol IV</strong>, em linhas separadas ou com lavagem entre eles; insulina regular <strong>10 U + glicose 25 g IV</strong>. Se cloreto indisponível, a equivalência usual de cálcio é <strong>gluconato 10% 30 mL</strong>, com atenção à via e protocolo. <a href="#ref-r04">R04</a> <a href="#ref-r05">R05</a> <a href="#ref-r10">R10</a></p>
+<p>A tabela AHA apresenta <strong>10 U de insulina regular em 15–30 minutos + glicose 50% 50 g IV</strong>. Não fundir silenciosamente esse esquema ao europeu. Cálcio estabiliza membrana; <strong>não elimina K</strong>. Insulina redistribui; diálise pode remover. Monitorize glicose repetidamente, inclusive após RCE, sobretudo na insuficiência renal. Cálcio e bicarbonato podem precipitar se misturados. Salbutamol inalatório não deve desviar a equipe da RCP e não é recomendado pela AHA durante essa PCR.</p>
+<h3>TEP: reperfundir quando a hipótese tem sustentação</h3>
+<p>Na PCR por tromboembolismo pulmonar (TEP) confirmado, fibrinólise sistêmica, embolectomia cirúrgica ou intervenção percutânea podem caber; na suspeita, fibrinólise pode ser considerada. Baixo ETCO₂ e ventrículo direito dilatado isolados não fazem diagnóstico.</p>
+<p><strong>Não existe dose universal AHA/ERC de alteplase para PCR.</strong> O bolus de <strong>50 mg IV</strong> aparece em estudos observacionais/protocolos de resgate; repetição não deve ser automática. É diferente do esquema usual de bula para TEP instável e exige avaliação de risco hemorrágico, produto e protocolo institucional. O ERC permite considerar <strong>60–90 min de RCP após trombólise</strong> em selecionados; AHA considera incerta a duração ideal. Não extrapolar para toda parada. <a href="#ref-r04">R04</a> <a href="#ref-r05">R05</a> <a href="#ref-r14">R14</a></p>
+<h3>Gestação</h3>
+<p>Com útero ao nível/acima do umbigo, realize <strong>deslocamento uterino manual à esquerda</strong>, mantendo compressões em decúbito dorsal. Priorize oxigenação, acesso em membros superiores e equipe obstétrica/neonatal. Mesmas energias habituais de desfibrilação. Prepare parto ressuscitativo desde o reconhecimento, com objetivo de <strong>concluir até cinco minutos se não houver RCE</strong>, quando indicado. Na PCR hospitalar, equipe capacitada atua no local; não atrasar levando primeiro ao centro cirúrgico. Remova monitor fetal: a prioridade é restaurar circulação materna. <a href="#ref-r04">R04</a></p>
+<h3>Hipotermia grave e pós-cirurgia cardíaca</h3>
+<p><strong>Hipotermia grave:</strong> medir temperatura central quando possível e ressuscitar simultaneamente ao reaquecimento, com proteção contra novas perdas de calor. Temperaturas muito baixas modificam fármacos e estratégia de choques; seguir protocolo específico e considerar encaminhamento para reaquecimento extracorpóreo quando indicado. Não aplicar automaticamente regras usuais de término à PCR hipotérmica. <a href="#ref-r05">R05</a></p>
+<p><strong>Pós-cirurgia cardíaca:</strong> tamponamento, sangramento e falha de estimulação exigem equipe cirúrgica e protocolo próprio. Choques consecutivos e reabertura esternal precoce podem caber em casos selecionados, por pessoal treinado com material disponível. A oportunidade de uma intervenção especializada não autoriza atrasar compressões quando ela não está imediatamente disponível. <a href="#ref-r05">R05</a></p>
+<h3>Afogamento, trauma e asma</h3>
+<p><strong>Afogamento:</strong> ressuscitação inclui ventilações. Socorrista treinado pode começar por elas; iniciar RCP antes de gastar tempo aplicando DEA. ERC emprega cinco ventilações iniciais, enquanto AHA não estabelece isso como número universal. Nunca tente “esvaziar os pulmões” com manobras abdominais. Segurança de resgate vem antes de entrar na água.</p>
+<p><strong>Trauma:</strong> corrigir hemorragia, hipoxemia, pneumotórax hipertensivo e tamponamento exige prioridade. Compressões continuam, exceto quando atrasarem/impedirem correção causal imediata. Transfusão, toracotomia e procedimentos invasivos dependem de indicação, tempo, equipe e recursos.</p>
+<p><strong>Asma ventilada:</strong> pense em hiperinsuflação dinâmica e pneumotórax. Se aprisionamento aéreo estiver provocando colapso, desconexão breve e alívio da hiperinsuflação podem ser necessários, com ajuste subsequente e monitorização. Não corrija CO₂ com frequência cada vez maior. <a href="#ref-r05">R05</a></p>
+</section>
+<section class="chapter" id="resgate" data-title="Resgate e off-label"><p class="chapter-kicker">10 / TURBO TEMI 360°</p><h2>🧪 Resgate, off-label e fronteiras da evidência</h2><p><strong>Off-label</strong> descreve uso diferente da bula quanto a indicação, população, via ou regime. Não significa automaticamente boa ou má evidência. A bula brasileira vigente do produto e a decisão individual precisam ser conferidas; uma recomendação estrangeira não comprova aprovação da Anvisa.</p>
+<h3>LAST: toxicidade sistêmica por anestésico local</h3>
+<p>Suspender anestésico, chamar ajuda, assegurar oxigenação/ventilação e tratar convulsão com benzodiazepínico. Administrar <strong>emulsão lipídica IV 20%</strong> conforme checklist ASRA: abaixo de 70 kg, <strong>1,5 mL/kg em 2–3 min</strong>, seguida de <strong>0,25 mL/kg/min</strong>; acima de 70 kg, cerca de <strong>100 mL em bolus</strong> e <strong>250 mL em 15–20 min</strong>. Se persistir instabilidade, repetir bolus/dobrar infusão, respeitando <strong>máximo acumulado de 12 mL/kg</strong>. Continuar por mais de quinze minutos após estabilização. <a href="#ref-r11">R11</a></p>
+<p>ASRA prefere epinefrina em dose menor, iniciando com <strong>menos de 1 micrograma/kg</strong>, e orienta evitar vasopressina, betabloqueadores, bloqueadores de cálcio e novos anestésicos locais. <strong>Propofol não é substituto do lipídio de resgate.</strong> Trata-se de protocolo específico, diferente da PCR indiferenciada.</p>
+<h3>Opioides e outros tóxicos</h3>
+<p>Na apneia com pulso, ventile e use <strong>naloxona</strong>. Referência AHA adulta: <strong>0,2–2 mg IV/IO/IM</strong>, repetindo a cada 2–3 min conforme resposta; via intranasal <strong>2–4 mg</strong> conforme formulação. Na PCR, antídoto não pode atrasar compressões, ventilação ou choque. Após resposta, observe recorrência de depressão respiratória. <strong>Flumazenil não trata PCR</strong> e pode causar convulsões em intoxicação mista ou dependência. <a href="#ref-r12">R12</a></p>
+<p>Em choque por intoxicação por betabloqueador/bloqueador de cálcio, há protocolos com <strong>insulina regular 1 U/kg IV, depois 1–10 U/kg/h</strong>, glicose titulada e controle intensivo de glicemia, potássio e volume. Essa dose não é a da hipercalemia nem uma medicação genérica da PCR. Acione toxicologia e suporte especializado. Bicarbonato em bloqueio de canal de sódio é outra indicação dirigida, com monitorização de sódio, pH e ECG.</p>
+<h3>O que permanece fora da rotina</h3>
+<p><strong>Esmolol na FV refratária:</strong> benefício incerto, com evidência clínica limitada; não integra tabela principal nem justifica suspender o algoritmo. <strong>VSE</strong>, combinação de vasopressina, esteroide e epinefrina, teve sinal de maior RCE no VAM-IHCA, sem melhora demonstrada de sobrevida neurológica no ensaio multicêntrico. Não adotar rotineiramente. <a href="#ref-r13">R13</a></p>
+<p><strong>RCP mecânica:</strong> útil quando compressão manual de qualidade é difícil/insegura, como certos transportes e procedimentos, com equipe treinada; não é substituição universal. <strong>ECPR</strong>, RCP com circulação extracorpórea, depende de seleção, tempo e sistema experiente. O ARREST foi favorável em contexto muito selecionado; não prova benefício em qualquer PCR. <strong>RCP com cabeça elevada não é rotina</strong> fora de pesquisa. <a href="#ref-r02">R02</a> <a href="#ref-r16">R16</a></p>
+</section>
+<section class="chapter" id="pos-rce" data-title="Cuidados pós-RCE"><p class="chapter-kicker">11 / TURBO TEMI 360°</p><h2>🧠 Pós-RCE: o pulso voltou, a ressuscitação continua</h2><p>RCE significa <strong>retorno da circulação espontânea</strong>. Confirme circulação efetiva e organize proteção cerebral, estabilização e etiologia. O erro é tratar o retorno do pulso como encerramento do atendimento. <a href="#ref-r06">R06</a> <a href="#ref-r07">R07</a></p>
+<div class="table-wrap" role="region" aria-label="Tabela; deslize horizontalmente se necessário" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">Eixo</th>
+<th scope="col">Conduta e limites</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Oxigênio</strong></td>
+<td>Use 100% até medida confiável; depois titule. AHA: SpO₂ <strong>90–98%</strong>; ERC: <strong>94–98%</strong>. Faixa prática compartilhada <strong>94–98%</strong>, individualizando.</td>
+</tr>
+<tr>
+<td><strong>Ventilação</strong></td>
+<td>Buscar PaCO₂ <strong>35–45 mmHg</strong>, conferida por gasometria; ETCO₂ pode não equivaler a PaCO₂ no choque. Evitar hiperventilação.</td>
+</tr>
+<tr>
+<td><strong>Pressão</strong></td>
+<td>Evitar hipotensão; alvo inicial de pressão arterial média <strong>≥65 mmHg</strong>, com avaliação de perfusão e necessidade de individualizar.</td>
+</tr>
+<tr>
+<td><strong>Temperatura</strong></td>
+<td>Se não obedece comandos, estratégia deliberada de controle e prevenção de febre. AHA permite <strong>32–37,5 °C</strong>; não impor 33 °C a todos.</td>
+</tr>
+<tr>
+<td><strong>Causa</strong></td>
+<td>ECG de 12 derivações, laboratório direcionado, imagem e ecocardiografia conforme hipótese/estabilidade.</td>
+</tr>
+<tr>
+<td><strong>Cérebro</strong></td>
+<td>Avaliar convulsões e EEG quando indicado; tratar crises, sem anticonvulsivante profilático universal.</td>
+</tr>
+</tbody></table></div>
+<h3>Próximos dez minutos</h3>
+<p>Verifique tubo/capnografia e ventilação efetiva. Obtenha pressão confiável, prepare vasopressor se necessário e evite hipotensão durante mudanças de dispositivo ou sedação. Reavalie glicemia, potássio, cálcio e gasometria de acordo com o caso, sem interpretar isoladamente lactato ou pH como prognóstico irreversível.</p>
+<p>Uma prescrição pós-RCE precisa ser explícita: alvo de oxigenação, ventilação, pressão, temperatura, analgesia/sedação, frequência de reavaliação e investigação etiológica. Escrever somente “cuidados pós-parada” transfere decisões críticas para o improviso da equipe seguinte.</p>
+<h3>Coronária e cérebro: duas decisões diferentes</h3>
+<p>Elevação persistente de ST, choque cardiogênico, instabilidade elétrica ou suspeita de isquemia em curso favorecem avaliação invasiva urgente. Em paciente estável, sem elevação de ST e sem outros sinais de instabilidade/isquemia, coronariografia imediata indiscriminada não é recomendação universal.</p>
+<p>Controle térmico é uma estratégia continuada, não apenas uma medida inicial. AHA sugere controle por pelo menos <strong>36 horas</strong>; ERC enfatiza prevenir febre por <strong>36–72 horas</strong>, conforme protocolo. Não confundir essas durações com o momento do prognóstico.</p>
+<p><strong>Neuroprognóstico é tardio e multimodal</strong>, após exclusão de sedação residual, distúrbios metabólicos e efeito da temperatura. Uma pupila, mioclonia ou ausência de despertar imediata não deve, isoladamente, definir limitação. Integre exame, eletrofisiologia, biomarcadores e imagem segundo diretriz e disponibilidade. Comunicação com a família deve informar incertezas e o plano de reavaliação, sem prometer desfecho.</p>
+<p>Na AHA, a síntese prognóstica é habitualmente feita <strong>pelo menos 72 horas após normotermia</strong>, com sedativos/confundidores adequadamente afastados; após controle hipotérmico isso frequentemente corresponde a cinco dias ou mais desde o RCE. Exames individuais têm janelas próprias: não use uma contagem única para ignorar seus requisitos.</p>
+<figure class="clinical-figure" id="figura-09"><a href="assets/images/09-pos-rce.webp" data-expand-image aria-label="Ampliar figura 09: Voltou o pulso. E agora?"><img src="assets/images/09-pos-rce.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Figura 09 — Voltou o pulso. E agora?. Alvos práticos após medida confiável: SpO₂ 94–98%, PaCO₂ 35–45 mmHg e PAM ≥65 mmHg; prevenir febre e tratar a causa. Ilustração educacional gerada por IA."></a><figcaption><b>Figura 09 — Voltou o pulso. E agora?.</b> Alvos práticos após medida confiável: SpO₂ 94–98%, PaCO₂ 35–45 mmHg e PAM ≥65 mmHg; prevenir febre e tratar a causa. <a href="#ref-r06">R06</a> · <a href="#ref-r07">R07</a><a class="figure-open" href="assets/images/09-pos-rce.webp" target="_blank" rel="noopener">Abrir imagem ↗</a></figcaption></figure></section>
+<section class="chapter" id="pediatria" data-title="Diferenças pediátricas"><p class="chapter-kicker">12 / TURBO TEMI 360°</p><h2>👶 Anexo pediátrico: diferenças que impedem erros</h2><p><strong>Não use doses adultas em lactentes/crianças.</strong> Este é um anexo de diferenças essenciais, não substitui treinamento de suporte pediátrico. Reanimação do recém-nascido <strong>ao nascimento</strong> segue protocolo neonatal próprio. Para suporte básico, sinais de puberdade orientam a transição ao algoritmo adulto conforme treinamento. <a href="#ref-r08">R08</a> <a href="#ref-r09">R09</a></p>
+<div class="table-wrap" role="region" aria-label="Tabela; deslize horizontalmente se necessário" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">Elemento</th>
+<th scope="col">Lactente/criança, excluindo sala de parto</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mecanismo frequente</td>
+<td>Falência respiratória/choque: ventilação tem papel central</td>
+</tr>
+<tr>
+<td>Frequência de compressões</td>
+<td><strong>100–120/min</strong></td>
+</tr>
+<tr>
+<td>Profundidade</td>
+<td>Aproximadamente <strong>1/3 do diâmetro anteroposterior</strong>: cerca de 4 cm no lactente e 5 cm na criança</td>
+</tr>
+<tr>
+<td>Relação sem via aérea avançada</td>
+<td><strong>30:2</strong> com um socorrista; <strong>15:2</strong> com dois profissionais/socorristas treinados</td>
+</tr>
+<tr>
+<td>Via aérea avançada</td>
+<td>Compressões contínuas e <strong>20–30 ventilações/min</strong>; ajustar ao contexto</td>
+</tr>
+<tr>
+<td>Epinefrina IV/IO</td>
+<td><strong>0,01 mg/kg</strong>, máximo <strong>1 mg</strong>, a cada 3–5 min; usando <strong>0,1 mg/mL</strong>, volume <strong>0,1 mL/kg</strong></td>
+</tr>
+<tr>
+<td>Desfibrilação manual</td>
+<td>Primeiro <strong>2 J/kg</strong>, segundo <strong>4 J/kg</strong>; seguintes <strong>≥4 J/kg</strong>, sem exceder <strong>10 J/kg ou energia máxima adulta</strong></td>
+</tr>
+</tbody></table></div>
+<p><strong>Mudança relevante em 2025:</strong> a técnica de dois dedos no lactente deixa de ser a técnica recomendada pela AHA; usar <strong>dois polegares com mãos envolvendo tórax ou uma mão</strong>, conforme circunstância e capacidade de atingir profundidade. Na criança, uma ou duas mãos conforme tamanho e qualidade.</p>
+<p>Em criança com pulso, frequência cardíaca <strong>&lt;60/min com sinais de perfusão ruim apesar de oxigenação/ventilação adequadas</strong> é indicação de iniciar compressões no algoritmo pediátrico. Não extrapole essa regra diretamente para bradicardia adulta.</p>
+<p>Use DEA com atenuador/pás pediátricas quando disponíveis; sua ausência não deve impedir desfibrilação necessária. Evite contato entre pás, utilizando posição apropriada ao tamanho. Peso, concentração e máximo precisam ser conferidos juntos: <strong>0,01 mg/kg não é 0,1 mg/kg</strong>. O erro de uma casa decimal pode multiplicar a dose por dez.</p>
+<p><strong>O que não pode faltar:</strong> expansão torácica, frequência de ventilação correta, avaliação de perfusão, peso estimado confiável e comunicação fechada da dose. Peça repetição verbal antes da administração.</p>
+</section>
+<section class="chapter" id="treino" data-title="Laboratório TEMI"><p class="chapter-kicker">13 / TURBO TEMI 360°</p><h2>🎮 Treino Turbo TEMI: decidir, explicar, recuperar</h2><h3>Como usar sem gerar dívida de estudo</h3>
+<p>Escolha <strong>um caso por vez</strong>. Responda antes de abrir os comentários, leia todas as alternativas e diga qual detalhe mudaria sua decisão. Os cenários são fictícios, sem dados reais; a pontuação serve à aprendizagem, não à certificação de competência clínica.</p>
+<div data-tool="quiz"></div>
+
+<h3>Cartões atômicos</h3>
+<p>Um cartão testa uma decisão ou fato. Antes de revelar, formule a resposta em voz alta. Se errou, nomeie a lacuna: reconhecimento, técnica, momento da droga, concentração ou exceção. “Preciso estudar tudo” é pouco acionável; “confundo mg/mL da adrenalina” aponta um treino concreto.</p>
+<div data-tool="flashcards"></div>
+
+<h3>Revisão espaçada flexível</h3>
+<p>Sugestão educacional: <strong>D0</strong>, <strong>D1</strong>, <strong>D7</strong>, <strong>D14</strong> e <strong>D30</strong>. Se perder uma etapa, retome a próxima interação útil, sem acumular dívida. Refaça especialmente decisões erradas ou lentas, não apenas o que já está confortável.</p>
+<div data-tool="review"></div>
+
+<h3>Simulação de equipe em três blocos</h3>
+<ol>
+<li><strong>Dois minutos:</strong> um cenário, funções anunciadas e primeiro ciclo; foco em reconhecimento, compressão e choque.</li>
+<li><strong>Dois minutos:</strong> introduza uma mudança, como AESP após FV, falha ventilatória ou suspeita de hipercalemia; foco em adaptação.</li>
+<li><strong>Três minutos de debriefing:</strong> qual ação aconteceu bem, onde houve atraso e qual mudança concreta testar no próximo treino.</li>
+</ol>
+<p>Avalie execução observável: tempo até compressão, pausa para choque, vedação da máscara, confirmação da dose e clareza de funções. Evite transformar o debriefing em busca de culpados. É mais produtivo descobrir que ninguém sabia quem carregaria o desfibrilador do que concluir apenas que “faltou agilidade”.</p>
+<h3>Memorex de plantão</h3>
+<p><strong>Reconheça → chame → comprima/ventile → choque se indicado → trate a causa → proteja após RCE.</strong> Choque não trata assistolia. Adrenalina não substitui fluxo. Intubação não garante ventilação. Capnografia informa, mas não sentencia. Off-label precisa de justificativa, não de entusiasmo.</p>
+<p><strong>Erros a evitar:</strong> confundir gasping com respiração; pausar para todo procedimento; hiperventilar; usar seringa sem rótulo; misturar algoritmos AHA/ERC; administrar cálcio/bicarbonato em toda PCR; encerrar pelo ETCO₂ isolado; prever neurologia cedo demais.</p>
+<h3>🚀 Próximos passos sugeridos</h3>
+<ol>
+<li><strong>Melhor início:</strong> faça o caso sobre gasping e recite a primeira ordem de equipe.</li>
+<li><strong>Aprofundamento:</strong> compare um ciclo chocável AHA/ERC e confira as apresentações do carrinho do seu serviço.</li>
+<li><strong>Próxima sessão:</strong> simule AESP por falha ventilatória e organize os primeiros dez minutos pós-RCE.</li>
+</ol>
+</section>
+<section class="chapter" id="referencias" data-title="Fontes e limites"><p class="chapter-kicker">14 / TURBO TEMI 360°</p><h2>📚 Referências, função e limites</h2><p>As diretrizes sustentam recomendações; os estudos originais ajudam a compreender benefício, incerteza e generalização. Material autoral, sem reprodução dos algoritmos gráficos oficiais. Links e conteúdo científico foram conferidos para esta edição; revisão humana formal permanece pendente.</p>
+<p><span id="ref-r01"></span>
+<strong>R01 — AHA, 2025. Part 7: Adult Basic Life Support.</strong> Reconhecimento, compressões, ventilação e DEA. <a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-basic-life-support" target="_blank" rel="noopener noreferrer">Texto oficial</a>.</p>
+<p><span id="ref-r02"></span>
+<strong>R02 — AHA, 2025. Part 9: Adult Advanced Life Support.</strong> Ritmos, medicamentos, desfibrilação, via aérea e limites dos adjuntos. <a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-advanced-life-support/" target="_blank" rel="noopener noreferrer">Texto oficial</a>.</p>
+<p><span id="ref-r03"></span>
+<strong>R03 — ERC/Resuscitation Council UK, 2025. Adult Advanced Life Support.</strong> Sequência europeia, fisiologia e FV refratária. <a href="https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/adult-advanced-life-support-guidelines" target="_blank" rel="noopener noreferrer">Diretriz oficial</a>.</p>
+<p><span id="ref-r04"></span>
+<strong>R04 — Cao D et al., 2025. AHA Part 10: Adult and Pediatric Special Circumstances.</strong> Circulation; DOI 10.1161/CIR.0000000000001380. <a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-and-pediatric-special-circumstances-of-resuscitation/" target="_blank" rel="noopener noreferrer">Texto oficial</a>.</p>
+<p><span id="ref-r05"></span>
+<strong>R05 — ERC/RCUK, 2025. Special Circumstances.</strong> Hipercalemia, TEP, trauma, asma e ambientes especiais. <a href="https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/special-circumstances-guidelines" target="_blank" rel="noopener noreferrer">Texto oficial</a>.</p>
+<p><span id="ref-r06"></span>
+<strong>R06 — AHA, 2025. Part 11: Post–Cardiac Arrest Care.</strong> Oxigenação, circulação, temperatura, coronária e neurologia. <a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/post-cardiac-arrest-care" target="_blank" rel="noopener noreferrer">Texto oficial</a>.</p>
+<p><span id="ref-r07"></span>
+<strong>R07 — ERC/ESICM/RCUK, 2025. Post-resuscitation Care.</strong> Alvos e abordagem integrada após RCE. <a href="https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/post-resuscitation-care-guidelines" target="_blank" rel="noopener noreferrer">Texto oficial</a>.</p>
+<p><span id="ref-r08"></span>
+<strong>R08 — AHA/AAP, 2025. Part 6: Pediatric Basic Life Support.</strong> Compressões, ventilação e técnica do lactente. <a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/pediatric-basic-life-support" target="_blank" rel="noopener noreferrer">Texto oficial</a>.</p>
+<p><span id="ref-r09"></span>
+<strong>R09 — AHA/AAP, 2025. Part 8: Pediatric Advanced Life Support.</strong> Doses e energias pediátricas. <a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/pediatric-advanced-life-support" target="_blank" rel="noopener noreferrer">Texto oficial</a>.</p>
+<p><span id="ref-r10"></span>
+<strong>R10 — ILCOR. Pharmacological Interventions for Acute Hyperkalemia, ALS 3403.</strong> Insulina/glicose e limites da evidência intra-PCR. <a href="https://costr.ilcor.org/document/pharmacological-interventions-for-the-acute-treatment-of-hyperkalemia-als-3403-tf-sr" target="_blank" rel="noopener noreferrer">Consenso oficial</a>.</p>
+<p><span id="ref-r11"></span>
+<strong>R11 — Neal JM, Neal EJ, Weinberg GL; ASRA, 2020. LAST Checklist, v1.1.</strong> Esquema especializado de emulsão lipídica e modificações da ressuscitação. <a href="https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf" target="_blank" rel="noopener noreferrer">PDF oficial</a>. Página oficial informava atualização esperada para 2027, não uma nova versão já vigente.</p>
+<p><span id="ref-r12"></span>
+<strong>R12 — AHA, 2025. Table 4: Antidotes for Resuscitation in Critical Poisoning.</strong> Naloxona, insulina e outros antídotos; doses exigem contexto e toxicologia. <a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-and-pediatric-special-circumstances-of-resuscitation/content/guidelines-accordion/toxicology-nested-section/table-4" target="_blank" rel="noopener noreferrer">Tabela oficial</a>.</p>
+<p><span id="ref-r13"></span>
+<strong>R13 — Andersen LW et al., 2021. VAM-IHCA.</strong> JAMA 326:1586–1594; DOI 10.1001/jama.2021.16628. Ensaio de vasopressina/metilprednisolona: distinguir RCE de desfechos tardios. <a href="https://jamanetwork.com/journals/jama/fullarticle/2784625" target="_blank" rel="noopener noreferrer">Artigo original</a>.</p>
+<p><span id="ref-r14"></span>
+<strong>R14 — Characterization of alteplase therapy for presumed or confirmed PE during cardiac arrest, 2018.</strong> Estudo observacional de regimes; não estabelece dose universal nem aprovação brasileira. <a href="https://pubmed.ncbi.nlm.nih.gov/29880524/" target="_blank" rel="noopener noreferrer">PubMed, PMID 29880524</a>.</p>
+<p><span id="ref-r15"></span>
+<strong>R15 — Cheskes S et al., 2022. Defibrillation Strategies for Refractory Ventricular Fibrillation, DOSE-VF.</strong> NEJM; DOI 10.1056/NEJMoa2207304. Estratégias após falha convencional; interpretar com diretrizes e contexto. <a href="https://doi.org/10.1056/NEJMoa2207304" target="_blank" rel="noopener noreferrer">Artigo original</a>.</p>
+<p><span id="ref-r16"></span>
+<strong>R16 — Yannopoulos D et al., 2020. ARREST.</strong> Lancet; estudo randomizado pequeno, de centro e seleção especializados. <a href="https://pubmed.ncbi.nlm.nih.gov/33197396/" target="_blank" rel="noopener noreferrer">PubMed, PMID 33197396</a>.</p>
+<p><span id="ref-r17"></span>
+<strong>R17 — Perkins GD et al., 2018. PARAMEDIC2.</strong> NEJM; DOI 10.1056/NEJMoa1806842. Epinefrina versus placebo em PCR extra-hospitalar; diferenças entre sobrevida e função neurológica. <a href="https://doi.org/10.1056/NEJMoa1806842" target="_blank" rel="noopener noreferrer">Artigo original</a>.</p>
+<p><span id="ref-r18"></span>
+<strong>R18 — Kudenchuk PJ et al., 2016. ALPS.</strong> NEJM; DOI 10.1056/NEJMoa1514204. Amiodarona, lidocaína ou placebo. <a href="https://pubmed.ncbi.nlm.nih.gov/27043165/" target="_blank" rel="noopener noreferrer">PubMed, PMID 27043165</a>.</p>
+<p><span id="ref-r19"></span>
+<strong>R19 — Riva G et al., 2026. Double-D randomised pilot trial.</strong> Heart, publicação online em 30/06/2026; DOI 10.1136/heartjnl-2026-327905. Piloto de viabilidade/segurança com 40 pacientes; não prova eficácia para adoção rotineira. <a href="https://pubmed.ncbi.nlm.nih.gov/42379878/" target="_blank" rel="noopener noreferrer">PubMed, PMID 42379878</a>.</p>
+<p><span id="ref-r20"></span>
+<strong>R20 — Fresenius Kabi Brasil. Cloridrato de amiodarona, bula profissional.</strong> Apresentação 50 mg/mL, ampola de 3 mL; composição, via e preparo de PCR do produto exemplificado. Conferida em 03/11/2026; não generalizar para qualquer formulação. <a href="https://www.fresenius-kabi.com/content/dam/fresenius-kabi/br/documents/bulas/medicamentos/Cloridrato%20de%20Amiodarona%20-%20Bula%20Profissional%20de%20Sa%C3%BAde%20%28307%20KB%29.pdf.coredownload.inline.pdf" target="_blank" rel="noopener noreferrer">Bula do fabricante</a>.</p>
+</section>
+
+      <nav class="chapter-pagination" aria-label="Avançar na leitura"><a class="button secondary" id="previous-chapter" href="#primeiros-minutos">← Capítulo anterior</a><span id="chapter-current-name"></span><a class="button primary" id="next-chapter" href="#qualidade">Próximo capítulo →</a></nav>
+      <section class="print-training"><h2>Laboratório TEMI — questões comentadas</h2><article><h3>1. Praça: inspirações agônicas</h3><p>Caso fictício • adulto, idade não informada • praça pública • hospital, leito e data: não informado.</p><p>Após queda súbita, a pessoa não responde e apresenta inspirações espaçadas e ruidosas. Você é médico e não identifica pulso com segurança em até dez segundos. Qual é a próxima ação?</p><ol type="A"><li>Manter observação respiratória por mais sessenta segundos.</li><li>Concluir uma avaliação neurológica antes de intervir.</li><li>Acionar 192, pedir DEA e iniciar RCP.</li><li>Priorizar transporte em carro particular até a emergência.</li></ol><p><strong>Gabarito: C</strong></p><p><strong>A.</strong> Incorreta. Gasping é respiração agônica e não exclui PCR; a observação prolonga o tempo sem fluxo.</p><p><strong>B.</strong> Incorreta. A avaliação neurológica detalhada não precede a circulação nesse cenário.</p><p><strong>C.</strong> Correta. Reconhecimento, acionamento, compressões/ventilação e DEA compõem a resposta inicial.</p><p><strong>D.</strong> Incorreta. Transporte improvisado pode atrasar e impedir RCP eficaz; acione o sistema de emergência.</p><p><strong>Regra:</strong> Gasping não é respiração normal. Sem pulso definido em até dez segundos, inicie RCP.</p></article><article><h3>2. Emergência: ciclo após segundo choque</h3><p>Caso fictício • adulto de 58 anos • emergência • FV persistente • hospital, leito e data: não informado.</p><p>A equipe segue o algoritmo convencional AHA 2025. Após o segundo choque, retoma RCP. Qual prescrição corresponde a esse ciclo?</p><ol type="A"><li>Epinefrina 1 mg IV/IO, repetida a cada 3–5 minutos.</li><li>Epinefrina 1 mg IV/IO a cada minuto, enquanto houver FV.</li><li>Amiodarona 150 mg como primeira dose de antiarrítmico.</li><li>Vasopressina em substituição obrigatória à epinefrina.</li></ol><p><strong>Gabarito: A</strong></p><p><strong>A.</strong> Correta. Essa é a posição da epinefrina no algoritmo convencional AHA; ERC a posiciona após o terceiro choque.</p><p><strong>B.</strong> Incorreta. O intervalo habitual é 3–5 minutos; frequência maior não deve ser improvisada.</p><p><strong>C.</strong> Incorreta. A dose inicial na FV/TV sem pulso persistente é 300 mg; 150 mg é a dose subsequente.</p><p><strong>D.</strong> Incorreta. Vasopressina não oferece vantagem como substituta rotineira da epinefrina.</p><p><strong>Regra:</strong> Anuncie qual algoritmo a equipe segue; não misture sequências.</p></article><article><h3>3. Enfermaria: eletricidade sem circulação</h3><p>Caso fictício • adulto de 72 anos • enfermaria • atividade elétrica sem pulso • hospital, leito e data: não informado.</p><p>Há atividade elétrica organizada no monitor, sem pulso ou sinais de circulação. Qual estratégia corresponde a AESP?</p><ol type="A"><li>Cardioversão sincronizada, seguida de avaliação prolongada.</li><li>Desfibrilação imediata apesar de não haver FV/TV sem pulso.</li><li>Atropina antes de retomar compressões.</li><li>RCP, epinefrina precoce e investigação de causa reversível.</li></ol><p><strong>Gabarito: D</strong></p><p><strong>A.</strong> Incorreta. AESP não é uma taquiarritmia com pulso a ser cardiovertida.</p><p><strong>B.</strong> Incorreta. O choque está indicado em FV/TV sem pulso; AESP é ramo não chocável.</p><p><strong>C.</strong> Incorreta. Atropina não integra o algoritmo rotineiro de AESP e não deve atrasar RCP.</p><p><strong>D.</strong> Correta. Compressões geram fluxo enquanto epinefrina e tratamento etiológico são organizados.</p><p><strong>Regra:</strong> Ritmo organizado na tela não equivale a circulação.</p></article><article><h3>4. Desfibrilador: o choque foi aplicado</h3><p>Caso fictício • adulto de 63 anos • emergência • FV tratada com choque • hospital, leito e data: não informado.</p><p>O primeiro choque foi aplicado com segurança. Não há sinais inequívocos de circulação espontânea. O que fazer imediatamente?</p><ol type="A"><li>Avaliar pulso e ritmo demoradamente antes de decidir sobre compressões.</li><li>Retomar compressões e continuar o ciclo de RCP.</li><li>Aguardar o monitor estabilizar por trinta segundos.</li><li>Realizar intubação antes de reiniciar compressões.</li></ol><p><strong>Gabarito: B</strong></p><p><strong>A.</strong> Incorreta. Não se procura pulso demoradamente após cada choque; isso aumenta a pausa.</p><p><strong>B.</strong> Correta. Retome RCP imediatamente e faça a avaliação breve programada, salvo sinais de RCE.</p><p><strong>C.</strong> Incorreta. O tempo de espera representa ausência de fluxo produzido por compressões.</p><p><strong>D.</strong> Incorreta. Via aérea não deve atrasar compressões; ventile por meio eficaz disponível.</p><p><strong>Regra:</strong> Choque aplicado: retome RCP.</p></article><article><h3>5. Medicação: conferir concentração</h3><p>Caso fictício • adulto em PCR • emergência • hospital, leito, idade e data: não informado.</p><p>A prescrição é epinefrina 1 mg IV. A seringa rotulada contém 0,1 mg/mL. Qual volume corresponde à dose prescrita?</p><ol type="A"><li>1 mL, pois toda apresentação de adrenalina tem 1 mg/mL.</li><li>0,1 mL, pois a dose deve ser multiplicada pela concentração.</li><li>10 mL, conferindo rótulo, dose e via com a equipe.</li><li>100 mL, para garantir a administração de 1 mg.</li></ol><p><strong>Gabarito: C</strong></p><p><strong>A.</strong> Incorreta. Concentrações variam; nessa seringa, 1 mL contém 0,1 mg.</p><p><strong>B.</strong> Incorreta. Volume é dose dividida pela concentração: 1 mg ÷ 0,1 mg/mL.</p><p><strong>C.</strong> Correta. Dez mililitros dessa solução contêm 1 mg; leia rótulo e confirme a via.</p><p><strong>D.</strong> Incorreta. Cem mililitros conteriam 10 mg, dez vezes a dose prescrita.</p><p><strong>Regra:</strong> Dose, concentração, volume e via devem ser conferidos juntos.</p></article><article><h3>6. UTI: asma, pressão e AESP</h3><p>Caso fictício • adulto de 39 anos • UTI • AESP após ventilação por asma grave • hospital, leito e data: não informado.</p><p>Antes da parada houve aumento de pressões e expiração incompleta. Além de manter RCP, qual avaliação causal é prioritária?</p><ol type="A"><li>Aumentar a frequência ventilatória para eliminar CO₂ rapidamente.</li><li>Presumir ventilação eficaz porque existe tubo traqueal.</li><li>Investigar hiperinsuflação dinâmica, falha do tubo e pneumotórax; aliviar aprisionamento quando presente.</li><li>Aguardar radiografia antes de abordar suspeita forte de pneumotórax hipertensivo.</li></ol><p><strong>Gabarito: C</strong></p><p><strong>A.</strong> Incorreta. Menor tempo expiratório pode agravar auto-PEEP e reduzir retorno venoso.</p><p><strong>B.</strong> Incorreta. O tubo pode estar obstruído, deslocado ou ligado a circuito defeituoso.</p><p><strong>C.</strong> Correta. Hiperinsuflação e pneumotórax podem causar colapso obstrutivo; devem ser tratados no contexto.</p><p><strong>D.</strong> Incorreta. Uma ameaça clínica imediata não deve aguardar radiografia para intervenção por equipe capacitada.</p><p><strong>Regra:</strong> Asma ventilada com colapso exige lembrar aprisionamento aéreo e pneumotórax.</p></article><article><h3>7. UTI: ETCO₂ de 8 mmHg</h3><p>Caso fictício • adulto de 64 anos • UTI • PCR com tubo e capnografia • hospital, leito e data: não informado.</p><p>Durante RCP, ETCO₂ permanece em 8 mmHg. O que esse valor permite concluir isoladamente?</p><ol type="A"><li>Que há TEP confirmado e trombólise obrigatória.</li><li>Que é necessário revisar fluxo, ventilação, tubo e causas, sem definir término por esse número.</li><li>Que hiperventilar elevará o fluxo e deve ser iniciado.</li><li>Que a RCP é fútil, independentemente de duração ou contexto.</li></ol><p><strong>Gabarito: B</strong></p><p><strong>A.</strong> Incorreta. ETCO₂ baixo é inespecífico e não confirma TEP.</p><p><strong>B.</strong> Correta. Use tendências e contexto para otimizar atendimento e investigar a causa.</p><p><strong>C.</strong> Incorreta. Hiperventilação pode reduzir retorno venoso e ainda diminuir ETCO₂.</p><p><strong>D.</strong> Incorreta. ETCO₂ isolado não determina futilidade ou término da ressuscitação.</p><p><strong>Regra:</strong> Capnografia orienta; não sentencia isoladamente.</p></article><article><h3>8. POCUS: uma pergunta acionável</h3><p>Caso fictício • adulto de 47 anos • emergência • PCR sem causa definida • hospital, leito e data: não informado.</p><p>Um operador experiente está disponível para ultrassom. Como integrar POCUS à RCP?</p><ol type="A"><li>Interromper compressões até obter todas as janelas cardíacas.</li><li>Usar ausência de movimento como único critério para encerrar.</li><li>Considerar dilatação do ventrículo direito suficiente para confirmar TEP.</li><li>Preparar janela, adquirir brevemente na pausa programada e interpretar sem prolongar interrupções.</li></ol><p><strong>Gabarito: D</strong></p><p><strong>A.</strong> Incorreta. Exame prolongado compromete a intervenção que produz fluxo.</p><p><strong>B.</strong> Incorreta. Ausência de movimento não deve definir término isoladamente.</p><p><strong>C.</strong> Incorreta. Sobrecarga direita pode ocorrer em outros contextos e precisa de integração clínica.</p><p><strong>D.</strong> Correta. POCUS deve responder a pergunta que muda intervenção, preservando qualidade da RCP.</p><p><strong>Regra:</strong> Primeiro a pergunta; depois a janela, sem pausa adicional.</p></article><article><h3>9. Diálise perdida: causa provável</h3><p>Caso fictício • adulto de 61 anos • emergência • PCR após QRS muito alargado e diálise perdida • hospital, leito e data: não informado.</p><p>Qual afirmação descreve corretamente o tratamento dirigido à hipercalemia durante PCR?</p><ol type="A"><li>É preciso nomear o protocolo e reconhecer baixa certeza; ERC mantém tratamento dirigido e AHA considera eficácia intra-PCR não bem estabelecida.</li><li>Cloreto e gluconato de cálcio 10% são intercambiáveis no mesmo volume.</li><li>Insulina elimina potássio corporal e dispensa diálise quando indicada.</li><li>A dose de glicose é idêntica nas tabelas AHA e no esquema ERC.</li></ol><p><strong>Gabarito: A</strong></p><p><strong>A.</strong> Correta. A divergência e a incerteza precisam ficar explícitas; tratar a causa não deve interromper RCP.</p><p><strong>B.</strong> Incorreta. Os sais fornecem quantidades diferentes de cálcio; não são equivalentes em mL.</p><p><strong>C.</strong> Incorreta. Insulina redistribui K para dentro da célula; não o remove do organismo.</p><p><strong>D.</strong> Incorreta. A tabela AHA apresenta 50 g e o esquema ERC 25 g; não fundir sem explicação.</p><p><strong>Regra:</strong> Trate a hipótese sustentada, sem transformar o resgate em medicação universal.</p></article><article><h3>10. AESP e hipótese forte de TEP</h3><p>Caso fictício • adulto de 52 anos • emergência • AESP com contexto tromboembólico forte • hospital, leito e data: não informado.</p><p>A equipe considera fibrinólise durante a PCR. Qual formulação é cientificamente adequada?</p><ol type="A"><li>Toda AESP deve receber alteplase, independentemente da hipótese.</li><li>AHA/ERC determinam 50 mg em bolus com repetição automática para todos.</li><li>Fibrinólise pode ser considerada na suspeita sustentada; dose e repetição exigem protocolo, pois não há regime universal.</li><li>A RCP deve ser encerrada cinco minutos após o fibrinolítico se não houver pulso.</li></ol><p><strong>Gabarito: C</strong></p><p><strong>A.</strong> Incorreta. Muitas causas de AESP não se beneficiam e podem piorar com sangramento.</p><p><strong>B.</strong> Incorreta. Bolus de 50 mg aparece em estudos/protocolos, mas não é esquema universal padronizado pelas diretrizes.</p><p><strong>C.</strong> Correta. Integre probabilidade, recursos e risco hemorrágico; o regime pode diferir da bula usual.</p><p><strong>D.</strong> Incorreta. A duração ideal é incerta; ERC admite RCP por 60–90 minutos em selecionados após trombólise.</p><p><strong>Regra:</strong> Trombólise trata uma causa provável/confirmada, não o rótulo AESP.</p></article><article><h3>11. Anestésico local: protocolo diferente</h3><p>Caso fictício • adulto de 60 kg • ambiente de procedimento • convulsão e colapso após anestésico local • hospital, leito e data: não informado.</p><p>A hipótese é toxicidade sistêmica por anestésico local. Qual estratégia corresponde ao checklist especializado?</p><ol type="A"><li>Usar propofol como substituto equivalente da emulsão lipídica.</li><li>Suspender anestésico, oxigenar, tratar convulsão e usar lipídio 20%, com modificações específicas da ressuscitação.</li><li>Acrescentar novo anestésico local para tratar a instabilidade elétrica.</li><li>Usar vasopressina e betabloqueador como primeira combinação obrigatória.</li></ol><p><strong>Gabarito: B</strong></p><p><strong>A.</strong> Incorreta. Propofol não substitui lipídio de resgate e pode agravar colapso cardiovascular.</p><p><strong>B.</strong> Correta. ASRA orienta lipídio 20%, doses menores de epinefrina e medidas específicas.</p><p><strong>C.</strong> Incorreta. Novos anestésicos locais devem ser evitados nessa situação.</p><p><strong>D.</strong> Incorreta. ASRA orienta evitar vasopressina e betabloqueadores na LAST.</p><p><strong>Regra:</strong> LAST não é simplesmente o ACLS padrão com um medicamento adicional.</p></article><article><h3>12. Apneia com pulso após opioide</h3><p>Caso fictício • adulto de 44 anos • enfermaria • depressão respiratória após opioide, com pulso definido • hospital, leito e data: não informado.</p><p>Qual conduta inicial atende ao risco imediato?</p><ol type="A"><li>Abrir via aérea, ventilar eficazmente e administrar naloxona conforme resposta.</li><li>Aguardar naloxona fazer efeito antes de oferecer ventilação.</li><li>Iniciar choque não sincronizado apesar de pulso presente.</li><li>Administrar flumazenil como antídoto específico do opioide.</li></ol><p><strong>Gabarito: A</strong></p><p><strong>A.</strong> Correta. Ventilação trata imediatamente a ameaça hipóxica, enquanto o antagonista é administrado.</p><p><strong>B.</strong> Incorreta. A espera mantém hipóxia e pode permitir progressão para PCR.</p><p><strong>C.</strong> Incorreta. Desfibrilação não trata depressão respiratória com circulação.</p><p><strong>D.</strong> Incorreta. Flumazenil antagoniza benzodiazepínicos, não opioides, e tem contraindicações relevantes.</p><p><strong>Regra:</strong> Antídoto não substitui ventilação.</p></article><article><h3>13. Gestação: começar o preparo agora</h3><p>Caso fictício • gestante adulta, idade não informada • emergência • útero acima do umbigo e PCR • hospital, leito e data: não informado.</p><p>Qual plano deve começar no reconhecimento da parada?</p><ol type="A"><li>Aguardar quatro minutos antes de chamar obstetrícia.</li><li>Reduzir a energia habitual do desfibrilador pela metade.</li><li>Transferir primeiro ao centro cirúrgico, mesmo que atrase a RCP.</li><li>RCP com deslocamento uterino manual e preparo imediato de parto ressuscitativo, visando conclusão até cinco minutos se não houver RCE.</li></ol><p><strong>Gabarito: D</strong></p><p><strong>A.</strong> Incorreta. A preparação começa imediatamente; esperar pode inviabilizar a intervenção temporalmente adequada.</p><p><strong>B.</strong> Incorreta. A gestação não exige redução da energia habitual de desfibrilação.</p><p><strong>C.</strong> Incorreta. Na PCR hospitalar, equipe capacitada deve atuar no local, evitando atraso de transporte.</p><p><strong>D.</strong> Correta. O objetivo primário do parto ressuscitativo é favorecer a ressuscitação materna quando indicado.</p><p><strong>Regra:</strong> Não espere o minuto quatro para preparar a equipe.</p></article><article><h3>14. Afogamento: ventilação importa</h3><p>Caso fictício • adulto de 28 anos • retirado da água em segurança • inconsciente, sem respiração normal ou pulso • hospital, leito e data: não informado.</p><p>Um socorrista treinado dispõe de meio para ventilar. Qual princípio deve orientar o atendimento?</p><ol type="A"><li>Fazer manobras abdominais para retirar água antes da RCP.</li><li>Aplicar DEA antes de iniciar qualquer compressão ou ventilação.</li><li>Iniciar RCP incluindo ventilações, sem atrasá-la pela busca de equipamento.</li><li>Omitir ventilação porque compressões isoladas são preferidas em toda PCR.</li></ol><p><strong>Gabarito: C</strong></p><p><strong>A.</strong> Incorreta. Tentar expulsar água atrasa medidas eficazes e pode causar dano.</p><p><strong>B.</strong> Incorreta. AHA enfatiza iniciar RCP com ventilações antes de gastar tempo aplicando o DEA.</p><p><strong>C.</strong> Correta. A fisiologia hipóxica do afogamento exige atenção à ventilação e compressões.</p><p><strong>D.</strong> Incorreta. A opção de compressões isoladas para alguns leigos não elimina o papel da ventilação no afogamento.</p><p><strong>Regra:</strong> No afogamento, inclua ventilação desde o início por meio disponível e seguro.</p></article><article><h3>15. Trauma: perfusão exige causa corrigida</h3><p>Caso fictício • adulto de 35 anos • sala de trauma • PCR após hemorragia importante • hospital, leito e data: não informado.</p><p>Qual estratégia representa melhor a ressuscitação traumática?</p><ol type="A"><li>Corrigir rapidamente hemorragia, hipoxemia e causas obstrutivas, mantendo compressões quando não atrasarem essas medidas.</li><li>Aguardar três ciclos de adrenalina antes de controlar sangramento.</li><li>Tratar a ausência de pulso com desfibrilação, independentemente do ritmo.</li><li>Usar ultrassom completo antes de iniciar reposição ou controle hemorrágico.</li></ol><p><strong>Gabarito: A</strong></p><p><strong>A.</strong> Correta. A correção causal imediata é central no trauma; equipe e protocolo precisam atuar em paralelo.</p><p><strong>B.</strong> Incorreta. Adrenalina não corrige perda de sangue; atrasar hemostasia perpetua a causa.</p><p><strong>C.</strong> Incorreta. Choque elétrico depende de ritmo chocável, inclusive no trauma.</p><p><strong>D.</strong> Incorreta. Exame não deve atrasar intervenção causal já indicada.</p><p><strong>Regra:</strong> Não comprima indefinidamente sem corrigir o problema que impede circulação.</p></article><article><h3>16. Pós-RCE: proteger a recuperação</h3><p>Caso fictício • adulto de 55 anos • UTI • pós-PCR, sem obedecer comandos • hospital, leito e data: não informado.</p><p>Com oxímetro e gasometria confiáveis, qual pacote está alinhado ao cuidado pós-RCE?</p><ol type="A"><li>Manter SpO₂ 100% indefinidamente, PaCO₂ 25 mmHg e PAM 50 mmHg.</li><li>Retirar suporte imediatamente porque o pulso retornou.</li><li>Usar apenas ETCO₂ para garantir PaCO₂ normal, apesar do choque.</li><li>Titular O₂, buscar PaCO₂ 35–45 mmHg e PAM ≥65 mmHg, controlar temperatura e investigar a causa.</li></ol><p><strong>Gabarito: D</strong></p><p><strong>A.</strong> Incorreta. Evite hiperóxia desnecessária, hipocapnia e hipotensão.</p><p><strong>B.</strong> Incorreta. Retorno do pulso inicia uma fase crítica de proteção cerebral e estabilização.</p><p><strong>C.</strong> Incorreta. O gradiente ETCO₂–PaCO₂ pode estar aumentado; gasometria orienta o alvo.</p><p><strong>D.</strong> Correta. O pacote integra ventilação, circulação, proteção cerebral e etiologia; individualize conforme resposta.</p><p><strong>Regra:</strong> RCE é transição de fase, não fim da ressuscitação.</p></article><article><h3>17. Temperatura e neuroprognóstico</h3><p>Caso fictício • adulto de 66 anos • UTI • após RCE, sedado e sem obedecer comandos • hospital, leito e data: não informado.</p><p>Qual afirmação é correta sobre a fase neurológica inicial?</p><ol type="A"><li>Ausência de despertar imediato basta para definir prognóstico irreversível.</li><li>Planejar controle deliberado de temperatura e neuroprognóstico tardio, multimodal, após excluir confundidores.</li><li>Temperatura de 33 °C é obrigatória para todos, independentemente do protocolo.</li><li>Uma pupila isolada deve substituir a avaliação multimodal.</li></ol><p><strong>Gabarito: B</strong></p><p><strong>A.</strong> Incorreta. Sedativos, temperatura e distúrbios metabólicos confundem o exame inicial.</p><p><strong>B.</strong> Correta. Proteção cerebral e reavaliação estruturada evitam conclusões prematuras.</p><p><strong>C.</strong> Incorreta. AHA permite uma faixa deliberada de 32–37,5 °C; estratégia deve ser definida e monitorizada.</p><p><strong>D.</strong> Incorreta. Um achado isolado não substitui integração de exames e contexto.</p><p><strong>Regra:</strong> Não transforme exame precoce sob confundidores em sentença.</p></article><article><h3>18. Pediatria: dose e concentração</h3><p>Caso fictício • criança de 4 anos, 20 kg • emergência • PCR • hospital, leito e data: não informado.</p><p>A dose IV/IO de epinefrina é 0,01 mg/kg e a solução rotulada contém 0,1 mg/mL. Qual dose/volume correspondem?</p><ol type="A"><li>2 mg em 20 mL.</li><li>0,02 mg em 0,2 mL.</li><li>0,2 mg em 2 mL.</li><li>1 mg em 10 mL, porque a dose adulta vale para qualquer peso.</li></ol><p><strong>Gabarito: C</strong></p><p><strong>A.</strong> Incorreta. Esse cálculo multiplica por dez a dose de 0,2 mg e excede o máximo habitual por dose.</p><p><strong>B.</strong> Incorreta. É um décimo da dose calculada para 20 kg.</p><p><strong>C.</strong> Correta. 20 × 0,01 = 0,2 mg; dividindo por 0,1 mg/mL, obtêm-se 2 mL.</p><p><strong>D.</strong> Incorreta. Dose pediátrica é ponderal, com máximo de 1 mg; o máximo não é a dose de todas as crianças.</p><p><strong>Regra:</strong> Calcule mg antes de mL e confirme concentração.</p></article><article><h3>19. Criança: bradicardia com má perfusão</h3><p>Caso fictício • criança de 6 anos • emergência • frequência 45/min, má perfusão persistente • hospital, leito e data: não informado.</p><p>Após oxigenação e ventilação adequadas, persistem frequência &lt;60/min e perfusão ruim. Qual conduta corresponde ao algoritmo pediátrico?</p><ol type="A"><li>Aguardar necessariamente ausência completa de pulso para comprimir.</li><li>Aplicar a mesma regra de bradicardia adulta, sem considerar perfusão.</li><li>Suspender ventilação para aumentar a fração de compressões.</li><li>Iniciar compressões e continuar suporte e tratamento conforme o algoritmo pediátrico.</li></ol><p><strong>Gabarito: D</strong></p><p><strong>A.</strong> Incorreta. Essa combinação de bradicardia e perfusão ruim pode indicar compressões antes de perda completa de pulso.</p><p><strong>B.</strong> Incorreta. Trata-se de critério pediátrico específico e dependente da resposta ao suporte respiratório.</p><p><strong>C.</strong> Incorreta. Oxigenação e ventilação são centrais na fisiologia pediátrica.</p><p><strong>D.</strong> Correta. Frequência &lt;60/min com má perfusão apesar de suporte respiratório adequado exige escalonamento pediátrico.</p><p><strong>Regra:</strong> Na criança, frequência deve ser interpretada junto da perfusão e do suporte respiratório.</p></article><article><h3>20. FV refratária: antes do resgate</h3><p>Caso fictício • adulto de 57 anos • emergência • FV após três choques • hospital, leito e data: não informado.</p><p>Qual estratégia evita extrapolação indevida da evidência sobre FV refratária?</p><ol type="A"><li>Acionar dois desfibriladores simultaneamente como nova rotina universal.</li><li>Rever qualidade, pás, contato, energia e causas, e discutir escalonamento apenas com protocolo e equipe preparados.</li><li>Substituir compressões por esmolol, pois seu benefício tardio está comprovado.</li><li>Acrescentar vasopressina e esteroide como pacote obrigatório por demonstrar melhora neurológica universal.</li></ol><p><strong>Gabarito: B</strong></p><p><strong>A.</strong> Incorreta. DSED não é rotina universal; a utilidade e as recomendações têm limites e questões de segurança.</p><p><strong>B.</strong> Correta. Otimize fundamentos e considere recursos de resgate de forma contextual, sem atrasar o algoritmo.</p><p><strong>C.</strong> Incorreta. Betabloqueio tem benefício incerto nessa indicação e não substitui RCP/desfibrilação.</p><p><strong>D.</strong> Incorreta. VAM-IHCA mostrou mais RCE, mas não melhora demonstrada de neurologia em longo prazo no ensaio multicêntrico.</p><p><strong>Regra:</strong> Tecnologia de resgate só ajuda dentro de um sistema capaz de executá-la com segurança.</p></article><h2>Flashcards</h2><article><p><strong>1. Gasping exclui PCR?</strong><br>Não. É respiração agônica e pode acompanhar a parada.</p></article><article><p><strong>2. Por quanto tempo o profissional deve avaliar pulso no reconhecimento?</strong><br>Até dez segundos; sem pulso definido, iniciar RCP.</p></article><article><p><strong>3. Qual a frequência de compressões no adulto?</strong><br>100–120 por minuto.</p></article><article><p><strong>4. Qual a profundidade de compressões no adulto?</strong><br>5–6 cm, com retorno completo do tórax.</p></article><article><p><strong>5. Qual a relação compressão/ventilação adulta sem via aérea avançada?</strong><br>30:2, com ventilações suficientes para elevar o tórax.</p></article><article><p><strong>6. Qual a frequência ventilatória adulta com via aérea avançada na PCR?</strong><br>Dez ventilações por minuto, com compressões contínuas.</p></article><article><p><strong>7. Quais ritmos recebem desfibrilação na PCR?</strong><br>Fibrilação ventricular e taquicardia ventricular sem pulso.</p></article><article><p><strong>8. O que fazer imediatamente após aplicar um choque?</strong><br>Retomar compressões; não procurar pulso demoradamente após cada choque.</p></article><article><p><strong>9. Qual a dose convencional de epinefrina na PCR adulta?</strong><br>1 mg IV/IO a cada 3–5 minutos, respeitando o momento do ramo.</p></article><article><p><strong>10. Quando usar epinefrina na AESP/assistolia?</strong><br>O mais cedo possível, em paralelo à RCP e ao tratamento da causa.</p></article><article><p><strong>11. Qual a diferença AHA/ERC no momento da epinefrina no ramo chocável convencional?</strong><br>AHA: após o segundo choque. ERC: após o terceiro. Seguir protocolo treinado.</p></article><article><p><strong>12. Qual a primeira dose de amiodarona na FV/TVSP persistente adulta?</strong><br>300 mg IV/IO; dose subsequente de 150 mg quando indicada.</p></article><article><p><strong>13. Qual a dose inicial de lidocaína na FV/TVSP adulta?</strong><br>1–1,5 mg/kg IV/IO; doses subsequentes de 0,5–0,75 mg/kg, máximo 3 mg/kg.</p></article><article><p><strong>14. Atropina integra o tratamento rotineiro de AESP/assistolia?</strong><br>Não. Sua indicação em bradicardia com pulso não se transfere à PCR.</p></article><article><p><strong>15. Qual método deve confirmar e monitorizar o tubo traqueal na PCR?</strong><br>Capnografia contínua com onda, associada à avaliação clínica.</p></article><article><p><strong>16. ETCO₂ baixo isolado define o término da RCP?</strong><br>Não. Interpretar tendência, qualidade, ventilação, causas e contexto.</p></article><article><p><strong>17. Cálcio elimina potássio do organismo?</strong><br>Não. Estabiliza a membrana; a remoção definitiva pode exigir diálise.</p></article><article><p><strong>18. CaCl₂ 10% e gluconato 10% são equivalentes no mesmo volume?</strong><br>Não. A quantidade de cálcio difere; confira sal, dose, concentração e via.</p></article><article><p><strong>19. Qual o risco importante após insulina/glicose na hipercalemia?</strong><br>Hipoglicemia, inclusive tardia; manter monitorização após RCE.</p></article><article><p><strong>20. Existe dose universal AHA/ERC de alteplase para PCR por TEP?</strong><br>Não. Regimes de resgate exigem protocolo e avaliação de risco; não extrapolar para toda PCR.</p></article><article><p><strong>21. Qual concentração da emulsão lipídica é usada no resgate de LAST?</strong><br>20%, em protocolo específico; propofol não a substitui.</p></article><article><p><strong>22. Na PCR gestacional, quando preparar parto ressuscitativo quando indicado?</strong><br>Desde o reconhecimento; objetivo de concluir até cinco minutos se não houver RCE.</p></article><article><p><strong>23. Após RCE, qual faixa de SpO₂ fica na interseção AHA/ERC, com medida confiável?</strong><br>94–98%, individualizando; antes de medida confiável, manter oxigenação apropriada.</p></article><article><p><strong>24. Qual alvo habitual de PaCO₂ após RCE?</strong><br>35–45 mmHg, com gasometria e individualização clínica.</p></article><article><p><strong>25. Qual o alvo inicial mínimo de PAM após RCE?</strong><br>Pelo menos 65 mmHg, avaliando perfusão e necessidade de individualização.</p></article><article><p><strong>26. Qual dose IV/IO de epinefrina na PCR pediátrica?</strong><br>0,01 mg/kg, máximo 1 mg, a cada 3–5 minutos; 0,1 mL/kg se solução 0,1 mg/mL.</p></article><article><p><strong>27. Qual a sequência inicial de energia da desfibrilação pediátrica manual?</strong><br>2 J/kg, depois 4 J/kg; seguintes ≥4 J/kg, sem exceder 10 J/kg ou energia máxima adulta.</p></article><article><p><strong>28. A técnica de dois dedos no lactente permanece recomendada pela AHA 2025?</strong><br>Não. Usar dois polegares envolvendo o tórax ou uma mão, conforme circunstância e qualidade.</p></article></section>
+      <footer class="module-footer"><div><strong>RCP · TURBO TEMI 360°</strong><p>Síntese e ferramentas educacionais do AldenirMed89. Conferência documental assistida por IA; revisão médica humana e homologação institucional pendentes.</p></div><div><a href="#referencias">Fontes e limites</a><a href="../../index.html">Voltar ao AldenirMed89 ↗</a></div></footer>
+    </main>
+  </div>
+  <dialog id="image-dialog" aria-labelledby="image-caption"><button id="image-close" class="button secondary" type="button">Fechar imagem ×</button><img id="image-full" alt=""><p id="image-caption"></p></dialog>
+  <noscript><p class="noscript-note">O conteúdo completo está disponível abaixo. Ative JavaScript para algoritmos, busca, questões e flashcards. As figuras podem ser abertas pelos links.</p></noscript>
+</body>
+</html>
