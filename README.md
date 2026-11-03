@@ -39,6 +39,7 @@
 - [🧠 Abrir Delirium na UTI e Enfermaria](01_Modulos_Clinicos/Delirium_UTI/index.html)
 - [🧠 Abrir TCE grave — Protocolo CRASH](01_Modulos_Clinicos/TCE_Grave_CRASH/index.html)
 - [🧠 Abrir AVC agudo — Turbo TEMI (isquêmico, HIC e HSA, edição 1.1 auditada)](01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html)
+- [🫀 Abrir RCP — Turbo TEMI 360° (prévia educacional em revisão médica)](01_Modulos_Clinicos/RCP_Turbo_TEMI/index.html)
 - [🧾 Relatório da auditoria do módulo AVC (11/09/2026)](docs_usuario/AUDITORIA_AVC_TURBO_TEMI_2026-09-11.md)
 - [🧭 Semiologia Neurológica: visão geral](01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/index.html)
 - [📚 Semiologia Topográfica: 19 seções, 28 casos e 40 flashcards](01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/aprofundamento.html)
@@ -247,5 +248,16 @@ A fonte editável é o pacote auditado, fora do repositório; a pasta é regener
 ### Semiologia
 
 A seção `24_Semiologia/index.html` reúne Neurológica e Cardiovascular. O módulo cardiovascular traz exame clínico, 30 áudios identificados por origem, 20 casos, 49 flashcards e estudo offline. Documentação: [Semiologia](24_Semiologia/README.md) e [Cardiovascular](24_Semiologia/Cardiovascular/README.md). Conteúdo em prévia educacional, com revisão médica formal pendente.
+
+### RCP — Turbo TEMI 360°
+
+`01_Modulos_Clinicos/RCP_Turbo_TEMI/` reúne a sessão de reanimação cardiopulmonar
+por ambiente, algoritmos interativos, medicamentos, causas reversíveis, cuidados
+pós-parada, imagens e recuperação ativa. A base é AHA/ERC 2025, com corte
+documental em 03/11/2026 e distinção entre diretriz, divergência, uso de resgate e
+incerteza. A fonte canônica está em
+`01_UpDown_Hub/content/intensiva/rcp-turbo-temi-360.md`. Publicação como **prévia
+educacional em revisão médica**, sem declaração de revisão clínica humana ou
+homologação institucional; doses e diluições exigem conferência no protocolo local.
 
 
