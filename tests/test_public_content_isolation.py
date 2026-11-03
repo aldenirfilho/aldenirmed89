@@ -13,6 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ONLY_EXCLUDED = {
+    "membros/README.md",
     "01_Modulos_Clinicos/Almanaque_ECG/module.manifest.json",
     "01_Modulos_Clinicos/Almanaque_ECG/data/visual-assets.json",
     "01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json",
@@ -47,6 +48,8 @@ class PublicContentIsolationTests(unittest.TestCase):
             root = Path(directory)
             site = root / "site"
             fixtures = {
+                "membros/README.md": "Documentação técnica do servidor; somente código-fonte.",
+                "membros/index.html": "<h1>Minha conta</h1>",
                 "01_Modulos_Clinicos/Almanaque_ECG/module.manifest.json":
                     '{"status":"approved","visibility":"source-only"}',
                 "01_Modulos_Clinicos/Almanaque_ECG/data/visual-assets.json":
@@ -68,6 +71,7 @@ class PublicContentIsolationTests(unittest.TestCase):
                 source.write_text(payload, encoding="utf-8")
 
             for top_level in (
+                "membros",
                 "01_Modulos_Clinicos",
                 "01_UpDown_Hub",
                 "05_Midia_E_Feed",
@@ -78,6 +82,7 @@ class PublicContentIsolationTests(unittest.TestCase):
                 self.assertTrue((root / relative).is_file())
                 self.assertFalse((site / relative).exists())
             for relative in {
+                "membros/index.html",
                 "01_UpDown_Hub/content/reumatologia/les-manifestacoes/reader/metadata.json",
                 "05_Midia_E_Feed/data/public.json",
             }:

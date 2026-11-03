@@ -108,6 +108,7 @@ jobs:
         run: |
           set -e
           python3 scripts_admin/build_public_site.py . site
+          test ! -e site/membros/README.md
           python3 scripts_admin/publication_guard.py sanitize-site site
           python3 scripts_admin/publication_guard.py check-site site
           python3 scripts_admin/audit_public_links.py site
