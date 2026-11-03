@@ -12,14 +12,47 @@
   const clearSearch = document.querySelector('#clearSearch');
   let activeFilter = 'all';
 
-  const storedTheme = localStorage.getItem('direitos-humanos-theme');
-  if (storedTheme === 'light' || storedTheme === 'dark') root.dataset.theme = storedTheme;
+  const preferenceKey = 'antigravity:a11y:v1';
+  const systemTheme = window.matchMedia('(prefers-color-scheme: light)');
+  let a11yPrefs = { theme: 'dark' };
+
+  try {
+    const shared = JSON.parse(localStorage.getItem(preferenceKey) || 'null');
+    const legacyTheme = localStorage.getItem('direitos-humanos-theme');
+    if (shared && typeof shared === 'object' && ['system', 'light', 'dark'].includes(shared.theme)) {
+      a11yPrefs = { ...a11yPrefs, ...shared };
+    } else if (legacyTheme === 'light' || legacyTheme === 'dark') {
+      a11yPrefs.theme = legacyTheme;
+    }
+  } catch (_) {
+    a11yPrefs = { theme: 'dark' };
+  }
+
+  const resolveTheme = () => a11yPrefs.theme === 'system'
+    ? (systemTheme.matches ? 'light' : 'dark')
+    : a11yPrefs.theme;
+
+  const syncTheme = () => {
+    const resolvedTheme = resolveTheme();
+    root.dataset.theme = resolvedTheme;
+    themeToggle?.setAttribute('aria-pressed', String(resolvedTheme === 'light'));
+    themeToggle?.setAttribute(
+      'aria-label',
+      resolvedTheme === 'light' ? 'Ativar visualização escura' : 'Ativar visualização clara'
+    );
+  };
+
+  syncTheme();
 
   themeToggle?.addEventListener('click', () => {
-    const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    root.dataset.theme = nextTheme;
-    localStorage.setItem('direitos-humanos-theme', nextTheme);
+    a11yPrefs.theme = resolveTheme() === 'dark' ? 'light' : 'dark';
+    localStorage.setItem(preferenceKey, JSON.stringify(a11yPrefs));
+    localStorage.setItem('direitos-humanos-theme', a11yPrefs.theme);
+    syncTheme();
   });
+
+  systemTheme.addEventListener?.('change', syncTheme);
+  systemTheme.addListener?.(syncTheme);
 
   navToggle?.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('open');
