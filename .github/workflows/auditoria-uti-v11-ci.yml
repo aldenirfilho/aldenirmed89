@@ -1,0 +1,111 @@
+name: Auditoria UTI 360X — CI v1.1
+
+on:
+  push:
+    branches: [main, feat/auditoria-uti-v11-20261031]
+    paths:
+      - 'ecossistema/auditoria-uti/**'
+      - 'scripts_admin/upgrade_auditoria_uti_v11.py'
+      - 'tests/auditoria_uti_v11*'
+      - '.github/workflows/auditoria-uti-v11-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'ecossistema/auditoria-uti/**'
+      - 'scripts_admin/upgrade_auditoria_uti_v11.py'
+      - 'tests/auditoria_uti_v11*'
+      - '.github/workflows/auditoria-uti-v11-ci.yml'
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['Deploy GitHub Pages (Seguro v2)']
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: auditoria-uti-v11-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    if: github.event_name != 'workflow_run'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            ecossistema/auditoria-uti
+            scripts_admin
+            tests
+      - name: Integrar somente na branch de desenvolvimento
+        if: github.ref == 'refs/heads/feat/auditoria-uti-v11-20261031' && github.event_name == 'push'
+        run: python3 scripts_admin/upgrade_auditoria_uti_v11.py
+      - name: Verificar build idempotente e testes unitários
+        run: |
+          python3 scripts_admin/upgrade_auditoria_uti_v11.py --check
+          node --test tests/auditoria_uti_v11.test.cjs
+      - name: Preparar navegador de testes
+        run: |
+          python3 -m pip install playwright==1.57.0
+          python3 -m playwright install --with-deps chromium
+      - name: Validar fluxos, downloads, sessões e telas móveis
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/uti360x-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          python3 tests/auditoria_uti_v11_browser.py
+      - name: Registrar HTML gerado somente na branch de desenvolvimento
+        if: github.ref == 'refs/heads/feat/auditoria-uti-v11-20261031' && github.event_name == 'push'
+        run: |
+          git add ecossistema/auditoria-uti/index.html ecossistema/auditoria-uti/versao.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build: integrar Auditoria UTI v1.1 após testes'
+          git push origin HEAD:feat/auditoria-uti-v11-20261031
+      - name: Guardar evidências de teste (dados sintéticos)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: auditoria-uti-v11-testes
+          path: test-results/auditoria-uti-v11
+          retention-days: 7
+          if-no-files-found: warn
+
+  public-smoke:
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 1
+          sparse-checkout: |
+            tests
+      - name: Preparar navegador
+        run: |
+          python3 -m pip install playwright==1.57.0
+          python3 -m playwright install --with-deps chromium
+      - name: Verificar painel publicado sem alterar dados do servidor
+        run: python3 tests/auditoria_uti_v11_browser.py --url https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-uti/
+      - name: Guardar evidências da página pública
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: auditoria-uti-v11-publicado
+          path: test-results/auditoria-uti-v11
+          retention-days: 7
+          if-no-files-found: warn

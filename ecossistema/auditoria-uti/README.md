@@ -1,26 +1,50 @@
 # Auditoria UTI — Turbo TEMI 360X
 
-Seção do AldenirMed89: [https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-uti/](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-uti/).
+[Painel público](https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-uti/) · [AldenirMed89](../../#auditoria-uti)
 
-## Conteúdo
+## Versão 1.1 — 31/10/2026
 
-Painel autocontido com 140 itens de UTI adulto; catálogo, cenários para 10/20/30 leitos,
-comparação de preços, revisão e fontes. A planilha Excel original está incorporada
-no HTML e pode ser obtida pelo botão **Planilha Excel**.
+Extensão do painel original, sem substituir os seis módulos, as rotas, o catálogo ou o Excel incorporado.
+
+- Importação CSV local com prévia, validação transacional, conversão de embalagens e bloqueio de duplicidades.
+- Conferência individual de equivalência: registros importados começam pendentes, nunca automaticamente aprovados.
+- Relatório HTML estático de triagem, com parâmetros, fontes, inclusões/exclusões e ressalvas; imprimível pelo navegador.
+- Comparação de compra e locação por custo nominal total, incluindo manutenção, consumíveis e valor residual. Sem dupla contagem de depreciação.
+- Rascunho local opcional, mediante consentimento, e restauração sem reaproveitar confirmações de equivalência.
+- Exportação das lacunas da base incorporada. Correção do limite de data da compra: aceita datas até o dia atual em America/Fortaleza, sem alterar a data histórica dos preços.
+
+## Fluxo recomendado
+
+1. Abra **Fontes e arquivos → Baixar CSV-modelo**.
+2. Preencha `sku;data;instituicao;processo;preco_embalagem;unidades_base;url;marca;observacoes`. O SKU precisa existir no catálogo. Datas no formato AAAA-MM-DD; valores 1234,56 ou 1234.56. Um ponto isolado com três casas, como 1.234, é recusado por ambiguidade.
+3. Importe e revise a prévia. Uma linha inválida bloqueia toda a importação. Máximo de 300 referências locais e 2 MB por CSV. Arquivos nativos de BPS/PNCP precisam de normalização no modelo; não há conector direto.
+4. Em **Auditoria → Conferir referências locais**, abra os documentos e confirme cada equivalência. Depois confirme a equivalência da compra com a amostra elegível.
+5. Exporte o relatório e salve a sessão. Na restauração, confira novamente as referências e os cenários. A seção **Orçamento → Compra × locação** exige todos os valores; use zero explícito quando aplicável.
 
 ## Limites obrigatórios
 
-Base documental de 22/10/2026: 35 observações e 32 itens com preço elegível.
-Nenhum item tem três referências elegíveis na base inicial. A pesquisa não é
-completa nem se atualiza automaticamente pelo BPS/PNCP. Os alertas priorizam
-revisão, não comprovam superfaturamento. Não inserir dados de pacientes.
-As simulações rodam no navegador; usar Salvar sessão para conservar entradas.
+A base documental continua sendo a de **22/10/2026**: **140 itens, 35 observações e 32 itens com preço elegível**. Nenhum item tem três referências elegíveis na base incorporada. Esta versão **atualiza o software, não os preços de mercado**. Dados importados não reescrevem o catálogo nem a planilha histórica.
 
-## Rastreabilidade
+Sem atualização automática BPS/PNCP. Alertas gerenciais não comprovam sobrepreço, superfaturamento, regularidade, dano ou direito a restituição. Os limiares de 10%/25% são editáveis e não constituem limites legais. As fontes e condições comerciais exigem análise profissional independente.
 
-`integracao.json` registra os hashes SHA-256 do pacote, HTML e Excel.
-`data/` contém a base documental e o CSV de referências.
-`validacao/` preserva os testes da criação original; não são uma certificação.
-A integração preserva os dados, a planilha e o JavaScript funcional originais.
+Não inserir dados de pacientes. Processamento local, sem telemetria ou envio dos arquivos importados. O rascunho usa localStorage sem criptografia própria: não ativar em dispositivo compartilhado. Abrir o painel não restaura nem sobrescreve um rascunho anterior. Use **Salvar sessão** para manter uma cópia portátil.
 
-[Voltar ao AldenirMed89](../../#auditoria-uti)
+## Desenvolvimento e testes
+
+Fontes editáveis: `assets/auditoria-v11-core.js`, `assets/auditoria-v11.js`, `assets/auditoria-v11.css`. O integrador embute esses arquivos no HTML, mantendo-o autocontido e preservando a política de conteúdo sem conexões de rede.
+
+```sh
+python3 scripts_admin/upgrade_auditoria_uti_v11.py
+python3 scripts_admin/upgrade_auditoria_uti_v11.py --check
+node --test tests/auditoria_uti_v11.test.cjs
+# Com Playwright instalado e um servidor local na porta 8765:
+python3 tests/auditoria_uti_v11_browser.py
+```
+
+O CI verifica cálculos, unidades, limites, importação, sessões, navegação, responsividade e integridade dos dados/Excel. Fixtures são sintéticas e nunca entram na base publicada. Testes não equivalem a certificação de auditoria ou validação clínica.
+
+`integracao.json` registra a importação original v1. `versao.json` registra o HTML v1.1 e hashes. `data/` preserva os documentos originais. `validacao/` contém os registros históricos da criação inicial; resultados da nova suíte ficam nos artefatos do GitHub Actions.
+
+## Próxima etapa técnica
+
+Ampliar a base documental com registros primários comparáveis por CATMAT, apresentação, unidade, configuração, período e condições comerciais; registrar a revisão humana antes de habilitar preços. A importação CSV viabiliza esse trabalho sem simular atualização automática ou preencher lacunas por estimativa.
