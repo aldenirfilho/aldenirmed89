@@ -1,6 +1,6 @@
 # ETFs da Ensign Peak — Projeto 360X
 
-Edição 1.4 do dossiê, corte em **22/10/2026**. Página: `ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html#etfs`.
+Edição 1.5 do dossiê: pesquisa de base de **22/10/2026**, verificação adicional dos ETFs em **07/11/2026**. Página: `ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html#etfs`.
 
 ## O que foi observado
 
@@ -22,23 +22,32 @@ A confirmação é independente para **componentes** e **setores/categorias**. T
 
 | Situação temporal | Fundos | Valor das cotas USD | % dos ETFs |
 |---|---:|---:|---:|
-| Ambos os campos em 30/06/2026 | 22 | 897.165.598 | 73,660799 |
-| Um campo em junho: VEA/VWO componentes; AVEM setores | 3 | 21.241.285 | 1,743992 |
+| Ambos os campos com referência em 30/06/2026, inclusive leitura indexada de VEA/VWO | 24 | 914.637.308 | 75,095294 |
+| Um campo em junho: setores do AVEM | 1 | 3.769.575 | 0,309497 |
 | Nenhum dos dois campos confirmado em junho | 4 | 299.561.985 | 24,595209 |
 | Componentes de junho, incluindo VEA e VWO | 24 | 914.637.308 | 75,095294 |
-| Categorias de junho, incluindo AVEM | 23 | 900.935.173 | 73,970296 |
+| Categorias de junho, incluindo AVEM e a leitura indexada de VEA/VWO | 25 | 918.406.883 | 75,404791 |
 
-As duas últimas linhas são indicadores por campo, sobrepostos às situações temporais; não se somam novamente ao total. A edição 1.2 tinha 13 fundos com ambos os campos em junho. Foram pesquisados individualmente os 16 fundos restantes; o quadro estático `#etf-historical-search` preserva o resultado da primeira rodada (edição 1.3, 21/2/6). A segunda rodada de oito buscas está em `#etf-followup-search` e mostra o estado atual.
+As duas últimas linhas são indicadores por campo, sobrepostos às situações temporais; não se somam novamente ao total. A edição 1.2 tinha 13 fundos com ambos os campos em junho. Foram pesquisados individualmente os 16 fundos restantes; o quadro estático `#etf-historical-search` preserva o resultado da primeira rodada (edição 1.3, 21/2/6). A segunda rodada está preservada em `#etf-followup-search`. A verificação adicional está em `#etf-november-search`.
 
 - **12 iShares:** API histórica oficial com `asOfDate=20260630` e data conferida na resposta. Pesos de mercado e nocionais permanecem separados quando fornecidos.
 - **VOO:** tabela oficial Vanguard com cabeçalhos de 30/06/2026 recuperada pela extração indexada; não foi baixado CSV histórico. A ficha PDF de setembro não fundamenta os percentuais de junho.
 - **Oito confirmações da primeira rodada (edição 1.3):** SRLN, KRE, SPYG, SPYV, XLU e XLY, a partir dos relatórios financeiros oficiais State Street; VXF, a partir da API histórica e relatório oficial Vanguard; VTIP, a partir da API histórica, com agrupamento editorial explícito dos instrumentos públicos e de liquidez. Categorias e bases nativas são preservadas.
-- **VEA e VWO, confirmação parcial:** componentes da API histórica Vanguard em 30/06. Os setores amplos ICB continuam em 30/09. Os agrupamentos literais de 158 e 156 subindústrias da carteira de junho aparecem em quadros próprios e não substituem os setores amplos. Há, respectivamente, 8 e 59 linhas sem peso numérico; não foram estimadas nem confirmadas como zero.
+- **VEA e VWO:** componentes da API histórica Vanguard em 30/06 e pesos ICB da mesma data transcritos de fichas Vanguard espelhadas e indexadas. O PDF não pôde ser conferido diretamente. O quadro de 30/09 fica preservado no JSON. Os agrupamentos literais de 158 e 156 subindústrias da carteira de junho aparecem em quadros próprios e não substituem os setores amplos. Há, respectivamente, 8 e 59 linhas sem peso numérico; não foram estimadas nem confirmadas como zero.
 - **PBUS, BKLN, KBWB e HGER:** os campos principais de junho continuam não confirmados. Referências posteriores preservadas. Um parâmetro de junho na API ou uma busca sem resultado não comprova a composição histórica nem inexistência de documento. QQQM e AVEM receberam os achados específicos abaixo.
 
 Cada fundo no JSON inclui fontes primárias, datas, categorias nativas, natureza dos instrumentos, limitações e hashes SHA-256. O registro das 16 buscas conserva tentativas, evidências e arquivos localizados; um N-PORT apenas localizado não é apresentado como fonte de pesos extraídos. Não são publicados caminhos privados ou PDFs integrais.
 
-## Segunda rodada — edição 1.4
+## Verificação de novembro — edição 1.5
+
+- **VEA/VWO:** [ficha VEA](https://www.tanagerwealth.com/documents/investments/factsheet/vea.pdf) e [ficha VWO](https://www.tanagerwealth.com/documents/investments/factsheet/vwo.pdf), emitidas pela Vanguard e hospedadas pela Tanager, identificam internamente 30/06/2026 e os CUSIPs dos ETFs. As rubricas ICB somam **99,9%** no VEA e **100,0%** no VWO, sem renormalização. A tabela setorial não especifica o denominador; os pesos não foram tratados como porcentagens do patrimônio líquido. A leitura foi indexada; o download direto e a conferência visual não foram concluídos. Os hashes identificam os extratos, não os PDFs. O cálculo GICS continua separado.
+- **PBUS, BKLN, KBWB e QQQM:** não se confirmou carteira integral de 30/06. O [registro SEC do trust](https://data.sec.gov/submissions/CIK0001378872.json) e o [relatório anual encerrado em 31/08](https://www.sec.gov/Archives/edgar/data/1378872/000119312526450665/R2.htm) delimitam as datas e formulários disponíveis. O registro de votação de junho não é uma carteira. No QQQM, permanecem as dez posições da ficha; no BKLN, maio segue separado. O catálogo histórico comercial não comprova cobertura da data sem verificação do arquivo.
+- **AVEM:** a captura adicional de julho corrobora os setores de junho, mas data as posições em 16/07. A carteira integral de junho continua em aberto.
+- **HGER:** o relatório contábil vizinho é de 31/07. Os pesos diários de commodities e os dados do índice não documentam swaps, colaterais, nocional ou valor justo do ETF em 30/06.
+
+A atualização de 07/11 foi solicitada pelo proprietário. A busca não confirmou nenhuma das cinco carteiras completas pedidas nem o livro contábil do HGER na data-alvo. Não se alteraram as posições 13F, os denominadores ou o índice de transparência.
+
+## Segunda rodada — retrato da edição 1.4
 
 O quadro estático `#etf-followup-search` documenta oito fundos: PBUS, BKLN, QQQM, KBWB, AVEM, HGER, VEA e VWO. O registro anterior de 16 buscas é um retrato da edição 1.3; não foi reescrito como se os novos achados já existissem naquela rodada.
 
@@ -77,8 +86,8 @@ O quadro `#etf-bkln-maio` não confirma junho e **não foi multiplicado pelo val
 - `data/etfs-ensign-peak-2026-q2.json`: dados completos, fontes, datas e hashes.
 - `data/etfs-ensign-peak-2026-q2-resumo.csv`: 29 valores de cotas e metadados.
 - `etfs-ensign-peak.css` e `etfs-ensign-peak.js`: fontes da interface, sincronizadas com os blocos incorporados ao HTML. Não há consulta ao vivo, CDN ou dependência de rede para os dados incorporados.
-- `scripts_admin/build_ensign_peak_etfs.py --research-dir PATH --historical-dir HISTORICAL_PATH --followup-dir FOLLOWUP_PATH`: concilia as três notas originais e as três notas históricas, escreve JSON/CSV e atualiza o HTML com CSS e JavaScript incorporados. As duas rodadas são opcionais; a edição 1.4 usa as três pastas. `--followup-dir` exige `--historical-dir` para preservar a primeira rodada. Nenhuma pesquisa anterior é editada. A execução falha diante de CUSIP faltante/duplicado ou divergência dos valores imutáveis.
-- `tests/test_ensign_peak_etfs.py`: testa exaustividade, reconciliação financeira, datas, mandatos e limites entre ações, dívida pública, crédito e derivativos. As cinco regressões anteriores de setores devem continuar passando. O teste histórico confirma as 16 buscas, os totais atuais 22/3/4, o retrato anterior 21/2/6, a segunda rodada de oito buscas, os painéis separados e a separação de maio e junho e a distinção entre bases de peso.
+- `scripts_admin/build_ensign_peak_etfs.py --research-dir PATH --historical-dir HISTORICAL_PATH --followup-dir FOLLOWUP_PATH --november-dir NOVEMBER_PATH`: concilia as três notas originais e as três notas históricas, escreve JSON/CSV e atualiza o HTML com CSS e JavaScript incorporados. As rodadas adicionais são opcionais; a edição 1.5 usa as quatro pastas e verifica os hashes dos extratos ICB. `--followup-dir` exige `--historical-dir` para preservar a primeira rodada. Nenhuma pesquisa anterior é editada. A execução falha diante de CUSIP faltante/duplicado ou divergência dos valores imutáveis.
+- `tests/test_ensign_peak_etfs.py`: testa exaustividade, reconciliação financeira, datas, mandatos e limites entre ações, dívida pública, crédito e derivativos. As cinco regressões anteriores de setores devem continuar passando. O teste histórico confirma as 16 buscas, os totais atuais 24/1/4 e o retrato 22/3/4 da edição 1.4, o retrato anterior 21/2/6, a segunda rodada de oito buscas, os painéis separados e a separação de maio e junho e a distinção entre bases de peso.
 
 Números JSON de campos monetários podem usar notação exponencial equivalente (`e0`) para evitar falso positivo do scanner editorial. A leitura JSON mantém os mesmos valores numéricos. Não se alteraram os controles de segurança.
 

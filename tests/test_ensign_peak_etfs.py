@@ -52,21 +52,21 @@ class EnsignPeakETFTests(unittest.TestCase):
     def test_historical_and_proxy_dates_have_distinct_evidence(self):
         validate_dataset(self.data)
         historical = [fund for fund in self.funds.values() if fund["temporalStatus"] == "historical_same_date"]
-        self.assertEqual(len(historical), 22)
-        self.assertEqual(self.data["partialFundCount"], 3)
+        self.assertEqual(len(historical), 24)
+        self.assertEqual(self.data["partialFundCount"], 1)
         self.assertEqual(self.data["proxyFundCount"], 4)
         self.assertEqual(sum(fund["ensignPeakValueUSD"] for fund in historical), self.data["historicalValueUSD"])
-        self.assertEqual(self.data["historicalValueUSD"], 897_165_598)
-        self.assertEqual(self.data["partialValueUSD"], 21_241_285)
+        self.assertEqual(self.data["historicalValueUSD"], 914_637_308)
+        self.assertEqual(self.data["partialValueUSD"], 3_769_575)
         self.assertEqual(self.data["proxyValueUSD"], 299_561_985)
         self.assertEqual(self.data["historicalHoldingsFundCount"], 24)
         self.assertEqual(self.data["historicalHoldingsValueUSD"], 914_637_308)
         self.assertAlmostEqual(self.data["historicalHoldingsPercentOfETFs"],
                                914_637_308 / 1_217_968_868 * 100)
-        self.assertEqual(self.data["historicalSectorsFundCount"], 23)
-        self.assertEqual(self.data["historicalSectorsValueUSD"], 900_935_173)
+        self.assertEqual(self.data["historicalSectorsFundCount"], 25)
+        self.assertEqual(self.data["historicalSectorsValueUSD"], 918_406_883)
         self.assertAlmostEqual(self.data["historicalSectorsPercentOfETFs"],
-                               900_935_173 / 1_217_968_868 * 100)
+                               918_406_883 / 1_217_968_868 * 100)
         self.assertAlmostEqual(sum(self.data[key] for key in (
             "historicalPercentOfETFs", "partialPercentOfETFs", "proxyPercentOfETFs")), 100)
         for fund in self.funds.values():
@@ -106,14 +106,14 @@ class EnsignPeakETFTests(unittest.TestCase):
     def test_partial_confirmation_does_not_promote_later_sector_data(self):
         partial = {fund["ticker"] for fund in self.funds.values()
                    if fund["temporalStatus"] == "partial_same_date"}
-        self.assertEqual(partial, {"VEA", "VWO", "AVEM"})
+        self.assertEqual(partial, {"AVEM"})
         for ticker, groups, missing in (("VEA", 158, 8), ("VWO", 156, 59)):
             fund = self.funds[ticker]
             with self.subTest(fund=ticker):
                 self.assertEqual(fund["holdingsAsOf"], "2026-06-30")
-                self.assertEqual(fund["sectorAsOf"], "2026-09-30")
+                self.assertEqual(fund["sectorAsOf"], "2026-06-30")
                 self.assertEqual(fund["fieldDateStatus"], {
-                    "holdings": "same_date_documented", "sectors": "later_dated_proxy"})
+                    "holdings": "same_date_documented", "sectors": "same_date_documented"})
                 self.assertEqual(fund["sectorTaxonomy"], "ICB")
                 industries = fund["historicalIndustryBreakdown"]
                 self.assertEqual(industries["asOf"], "2026-06-30")
@@ -157,6 +157,10 @@ class EnsignPeakETFTests(unittest.TestCase):
                     self.assertEqual(record["result"], "later_proxy")
                     self.assertFalse(record["holdingsConfirmed"])
                     self.assertFalse(record["sectorsConfirmed"])
+                elif fund["ticker"] in {"VEA", "VWO"}:
+                    self.assertEqual(record["result"], "partial_same_date")
+                    self.assertTrue(record["holdingsConfirmed"])
+                    self.assertFalse(record["sectorsConfirmed"])
                 else:
                     self.assertEqual(record["result"], fund["temporalStatus"])
                     self.assertEqual(record["holdingsConfirmed"],
@@ -166,7 +170,7 @@ class EnsignPeakETFTests(unittest.TestCase):
                 self.assertTrue(record["gap"])
                 self.assertTrue(record["attempts"])
 
-    def test_the_eight_followup_searches_report_the_final_state_individually(self):
+    def test_the_eight_followup_searches_preserve_the_october_state(self):
         expected = {"PBUS", "BKLN", "QQQM", "KBWB", "VEA", "VWO", "AVEM", "HGER"}
         audit = self.data["followupSearchAudit"]
         self.assertEqual(len(audit), 8)
@@ -180,12 +184,17 @@ class EnsignPeakETFTests(unittest.TestCase):
             with self.subTest(fund=fund["ticker"]):
                 self.assertEqual(record["targetAsOf"], "2026-06-30")
                 self.assertEqual(record["holdingsAsOf"], fund["holdingsAsOf"])
-                self.assertEqual(record["sectorsAsOf"], fund["sectorAsOf"])
-                self.assertEqual(record["result"], fund["temporalStatus"])
+                if fund["ticker"] in {"VEA", "VWO"}:
+                    self.assertEqual(record["sectorsAsOf"], "2026-09-30")
+                    self.assertEqual(record["result"], "partial_same_date")
+                    self.assertFalse(record["sectorsConfirmed"])
+                else:
+                    self.assertEqual(record["sectorsAsOf"], fund["sectorAsOf"])
+                    self.assertEqual(record["result"], fund["temporalStatus"])
+                    self.assertEqual(record["sectorsConfirmed"],
+                                     fund["fieldDateStatus"]["sectors"] == "same_date_documented")
                 self.assertEqual(record["holdingsConfirmed"],
                                  fund["fieldDateStatus"]["holdings"] == "same_date_documented")
-                self.assertEqual(record["sectorsConfirmed"],
-                                 fund["fieldDateStatus"]["sectors"] == "same_date_documented")
                 self.assertTrue(record["gap"])
                 self.assertTrue(record["sources"])
                 self.assertTrue(record["evidenceFiles"])
@@ -272,8 +281,30 @@ class EnsignPeakETFTests(unittest.TestCase):
                 self.assertEqual(len(panel["subindustry_audit"]), labels)
                 self.assertEqual(len(panel["map_source_sha256"]), 64)
                 self.assertEqual(fund["sectorTaxonomy"], "ICB")
-                self.assertEqual(fund["sectorAsOf"], "2026-09-30")
-                self.assertEqual(fund["temporalStatus"], "partial_same_date")
+                self.assertEqual(fund["sectorAsOf"], "2026-06-30")
+                self.assertEqual(fund["temporalStatus"], "historical_same_date")
+
+    def test_november_preserves_lacunae_and_uses_documentary_icb_weights(self):
+        records = {record["ticker"]: record for record in self.data["novemberSearchAudit"]}
+        self.assertEqual(set(records), {"PBUS", "BKLN", "KBWB", "QQQM", "AVEM", "HGER", "VEA", "VWO"})
+        self.assertEqual(self.data["novemberSearchScope"]["accessedAt"], "2026-11-07")
+        for ticker in ("PBUS", "BKLN", "KBWB", "QQQM", "AVEM", "HGER"):
+            self.assertIsNone(records[ticker]["asOf"])
+            self.assertNotIn("officialICB", records[ticker])
+            self.assertTrue(records[ticker]["gap"])
+        for ticker, expected_total, sector, weight in (
+            ("VEA", 99.9, "Financials", 23.2), ("VWO", 100.0, "Technology", 36.1)):
+            fund = self.funds[ticker]
+            self.assertEqual(fund["sectorAsOf"], "2026-06-30")
+            self.assertEqual(fund["previousSectorSnapshot"]["asOf"], "2026-09-30")
+            self.assertEqual(len(fund["sectors"]), 12)
+            self.assertAlmostEqual(sum(row["weightPercent"] for row in fund["sectors"]), expected_total)
+            self.assertEqual(fund["sectors"][0], {"name": sector, "weightPercent": weight})
+            evidence = fund["officialICBEvidence"]
+            self.assertEqual(evidence["accessMode"], "indexed_pdf_text")
+            self.assertFalse(evidence["binaryVerified"])
+            self.assertRegex(evidence["extractionSha256"], r"^[a-f0-9]{64}$")
+            self.assertNotIn("sha256", evidence)
 
     def test_hger_manager_report_is_separate_from_etf_june_confirmation(self):
         fund = self.funds["HGER"]
@@ -389,6 +420,7 @@ class EnsignPeakETFTests(unittest.TestCase):
         self.assertNotIn("/Users/", json.dumps(self.data))
         self.assertIn('id="etfs"', page)
         self.assertIn('id="etf-followup-search"', page)
+        self.assertIn('id="etf-november-search"', page)
         self.assertIn('href="comparativo-interreligioso/"', page)
 
 

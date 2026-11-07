@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.1",
-  "edition": "1.4",
+  "edition": "1.5",
   "accessedAt": "2026-10-22",
   "ensignPeakHoldingsAsOf": "2026-06-30",
   "total13FValueUSD": 60816389385e0,
@@ -10,21 +10,21 @@
   "aggregationBasis": "Valor das cotas 13F por classe/mandato do veículo, não setores dos subjacentes.",
   "sectorAggregationPerformed": false,
   "indirectExposuresAddedToDirectPortfolio": false,
-  "historicalFundCount": 22,
-  "historicalValueUSD": 897165598e0,
-  "historicalPercentOfETFs": 73.66079885713467,
-  "partialFundCount": 3,
-  "partialValueUSD": 21241285e0,
-  "partialPercentOfETFs": 1.7439924416852992,
+  "historicalFundCount": 24,
+  "historicalValueUSD": 914637308e0,
+  "historicalPercentOfETFs": 75.09529447184524,
+  "partialFundCount": 1,
+  "partialValueUSD": 3769575e0,
+  "partialPercentOfETFs": 0.3094968269747269,
   "proxyFundCount": 4,
   "proxyValueUSD": 299561985e0,
   "proxyPercentOfETFs": 24.595208701180038,
   "historicalHoldingsFundCount": 24,
   "historicalHoldingsValueUSD": 914637308e0,
   "historicalHoldingsPercentOfETFs": 75.09529447184524,
-  "historicalSectorsFundCount": 23,
-  "historicalSectorsValueUSD": 900935173e0,
-  "historicalSectorsPercentOfETFs": 73.97029568410939,
+  "historicalSectorsFundCount": 25,
+  "historicalSectorsValueUSD": 918406883e0,
+  "historicalSectorsPercentOfETFs": 75.40479129881996,
   "groups": [
     {
       "id": "equity",
@@ -6599,54 +6599,54 @@
         }
       ],
       "holdingsAsOf": "2026-06-30",
-      "sectorAsOf": "2026-09-30",
-      "dateBasis": "confirmacao_parcial_holdings_junho_setores_amplos_posteriores",
+      "sectorAsOf": "2026-06-30",
+      "dateBasis": "Carteira histórica pela API Vanguard e setores ICB na ficha Vanguard de 30/06/2026.",
       "sectorTaxonomy": "ICB",
-      "sectorCoveragePercent": 100.0,
+      "sectorCoveragePercent": null,
       "sectors": [
         {
           "name": "Financials",
-          "weightPercent": 24.4
+          "weightPercent": 23.2
         },
         {
           "name": "Industrials",
-          "weightPercent": 17.5
+          "weightPercent": 17.4
         },
         {
           "name": "Technology",
-          "weightPercent": 12.5
+          "weightPercent": 13.8
         },
         {
           "name": "Consumer Discretionary",
-          "weightPercent": 9.0
+          "weightPercent": 9.1
         },
         {
           "name": "Health Care",
-          "weightPercent": 7.7
+          "weightPercent": 7.8
         },
         {
           "name": "Basic Materials",
-          "weightPercent": 7.3
+          "weightPercent": 6.9
         },
         {
           "name": "Telecommunications",
-          "weightPercent": 5.6
-        },
-        {
-          "name": "Energy",
-          "weightPercent": 5.5
+          "weightPercent": 5.9
         },
         {
           "name": "Consumer Staples",
-          "weightPercent": 5.0
+          "weightPercent": 5.1
+        },
+        {
+          "name": "Energy",
+          "weightPercent": 4.9
         },
         {
           "name": "Utilities",
-          "weightPercent": 3.3
+          "weightPercent": 3.4
         },
         {
           "name": "Real Estate",
-          "weightPercent": 2.2
+          "weightPercent": 2.4
         },
         {
           "name": "Other",
@@ -6774,8 +6774,8 @@
         "Os pesos das maiores posições preservam percentOfFunds, campo nativo da API. A soma dos blocos equity/fixedIncome, shortTermReserves e derivatives é próxima de 100%, mas esse denominador não deve ser equiparado automaticamente ao patrimônio líquido contábil do N-CSR. Não normalizamos os pesos nem os recalculamos como percentual do NAV.",
         "As tabelas são da carteira do fundo, compartilhada entre classes quando aplicável; não comprovam posições diretas da Ensign Peak em cada subjacente, continuidade das cotas após junho ou compras executadas naquele dia.",
         "A API apresenta shortTermReservesMoneyMarket e allocationToUnderlyingFunds com conteúdo sobreposto a outros blocos; esses campos não foram somados novamente. Derivativos não foram tratados como ações nem o seu marketValue automaticamente interpretado como valor líquido contábil.",
-        "A lista das maiores posições e o agrupamento literal de subindústrias são de 30/06/2026, mas os 11 setores ICB amplos recuperados permanecem em 30/09/2026. Não foi aplicado um mapeamento inventado de subindústrias para esses setores.",
-        "O serviço setorial oficial recebeu effectiveDate=2026-06-30, mas respondeu fundsEffectiveDate=2026-09-30. Esses percentuais não foram promovidos para junho. Há 8 linhas de ações sem peso numérico; o agrupamento não atribui zero como valor confirmado."
+        "O serviço setorial oficial recebeu effectiveDate=2026-06-30, mas respondeu fundsEffectiveDate=2026-09-30. Esses percentuais não foram promovidos para junho. Há 8 linhas de ações sem peso numérico; o agrupamento não atribui zero como valor confirmado.",
+        "Setores ICB transcritos da ficha Vanguard de 30/06/2026 hospedada por terceiro; o quadro GICS editorial usa outra classificação e outra base."
       ],
       "evidenceFiles": [
         {
@@ -6794,13 +6794,15 @@
           "fileName": "VEA-fact-sheet.pdf",
           "sha256": "ff2d6e3cc6ae914b49bfc324e1593afb94dc328b8a8f0b8ee68159c0b8388aeb",
           "bytes": 466961,
-          "preservedFromV1_2": true
+          "preservedFromV1_2": true,
+          "asOf": "2026-09-30"
         },
         {
           "fileName": "VEA-fact-sheet-pdfium.txt",
           "sha256": "6b00ed151544d9cb2094b52c0397a175f0337a996150918d8921391dc8f1de3a",
           "bytes": 10107,
-          "preservedFromV1_2": true
+          "preservedFromV1_2": true,
+          "asOf": "2026-09-30"
         },
         {
           "fileName": "VEA-sectors-june-request-api.json",
@@ -6812,7 +6814,7 @@
       "reportedTop10TotalPercent": 13.8,
       "ensignPeakValueUSD": 13268460e0,
       "ensignPeakHoldingsAsOf": "2026-06-30",
-      "reportedSectorWeightSumPercent": 100.0,
+      "reportedSectorWeightSumPercent": 99.9,
       "secLineNumber": 1631,
       "secIssuer": "VANGUARD TAX-MANAGED FDS",
       "secSecurityClass": "VAN FTSE DEV MKT",
@@ -6822,10 +6824,10 @@
       "mandateLabel": "Mandatos de ações",
       "fieldDateStatus": {
         "holdings": "same_date_documented",
-        "sectors": "later_dated_proxy"
+        "sectors": "same_date_documented"
       },
-      "temporalStatus": "partial_same_date",
-      "temporalLabel": "Confirmação parcial em 30/06",
+      "temporalStatus": "historical_same_date",
+      "temporalLabel": "Componentes em 30/06; ICB de junho em ficha indexada",
       "componentHeading": "Maiores posições do ETF; classes separadas do mesmo emissor",
       "holdingsWeightBasis": {
         "field": "percentOfFunds",
@@ -7834,6 +7836,147 @@
           }
         ],
         "coverageNote": "Soma de pesos disponíveis das ações; não é prova de cobertura contábil de 100% do NAV."
+      },
+      "previousSectorSnapshot": {
+        "asOf": "2026-09-30",
+        "taxonomy": "ICB",
+        "sectors": [
+          {
+            "name": "Financials",
+            "weightPercent": 24.4
+          },
+          {
+            "name": "Industrials",
+            "weightPercent": 17.5
+          },
+          {
+            "name": "Technology",
+            "weightPercent": 12.5
+          },
+          {
+            "name": "Consumer Discretionary",
+            "weightPercent": 9.0
+          },
+          {
+            "name": "Health Care",
+            "weightPercent": 7.7
+          },
+          {
+            "name": "Basic Materials",
+            "weightPercent": 7.3
+          },
+          {
+            "name": "Telecommunications",
+            "weightPercent": 5.6
+          },
+          {
+            "name": "Energy",
+            "weightPercent": 5.5
+          },
+          {
+            "name": "Consumer Staples",
+            "weightPercent": 5.0
+          },
+          {
+            "name": "Utilities",
+            "weightPercent": 3.3
+          },
+          {
+            "name": "Real Estate",
+            "weightPercent": 2.2
+          },
+          {
+            "name": "Other",
+            "weightPercent": 0.0
+          }
+        ]
+      },
+      "sectorWeightBasis": "Percentuais do quadro setorial ICB da carteira acionária do próprio ETF, conforme publicados na ficha. O cabeçalho da tabela de junho não explicita o denominador. O perfil Vanguard de outra data rotula o quadro análogo como % of Stocks. Conservar os pesos divulgados sem renormalização e sem interpretá-los como percentuais do patrimônio líquido total ou como pesos do índice.",
+      "sectorMethod": "Ficha Vanguard F0936_062026, P. 1: título, data e CUSIP. P. 2: data, quadro Sector Diversification, nota 3 ICB e código editorial. Pesos publicados, sem normalização. Leitura indexada da cópia hospedada por terceiro; PDF não validado diretamente.",
+      "sectorSources": [
+        {
+          "url": "https://www.tanagerwealth.com/documents/investments/factsheet/vea.pdf",
+          "title": "Vanguard FTSE Developed Markets ETF — ficha Vanguard de 30/06/2026 espelhada pela Tanager",
+          "accessedAt": "2026-11-07"
+        }
+      ],
+      "officialICBEvidence": {
+        "asOf": "2026-06-30",
+        "basis": "Percentuais do quadro setorial ICB da carteira acionária do próprio ETF, conforme publicados na ficha. O cabeçalho da tabela de junho não explicita o denominador. O perfil Vanguard de outra data rotula o quadro análogo como % of Stocks. Conservar os pesos divulgados sem renormalização e sem interpretá-los como percentuais do patrimônio líquido total ou como pesos do índice.",
+        "taxonomy": "Industry Classification Benchmark (ICB). Other cobre papéis sem classificação ICB na data.",
+        "fundScope": "ETF dos Estados Unidos, identificado pelo ticker e CUSIP da página 1.",
+        "cusip": "921943858",
+        "sourceURL": "https://www.tanagerwealth.com/documents/investments/factsheet/vea.pdf",
+        "documentId": "F0936_062026",
+        "locator": "P. 1: título, data e CUSIP. P. 2: data, quadro Sector Diversification, nota 3 ICB e código editorial.",
+        "issuer": "The Vanguard Group, Inc.",
+        "publisherDistributor": "Vanguard Marketing Corporation",
+        "host": "Tanager Wealth Management",
+        "evidenceStatus": "PDF lido por extração web de duas páginas. Sem binário, hash ou conferência visual.",
+        "totalPublishedWeightsPercent": 99.9,
+        "normalizationPerformed": false,
+        "sectors": [
+          {
+            "name": "Financials",
+            "weightPercent": 23.2
+          },
+          {
+            "name": "Industrials",
+            "weightPercent": 17.4
+          },
+          {
+            "name": "Technology",
+            "weightPercent": 13.8
+          },
+          {
+            "name": "Consumer Discretionary",
+            "weightPercent": 9.1
+          },
+          {
+            "name": "Health Care",
+            "weightPercent": 7.8
+          },
+          {
+            "name": "Basic Materials",
+            "weightPercent": 6.9
+          },
+          {
+            "name": "Telecommunications",
+            "weightPercent": 5.9
+          },
+          {
+            "name": "Consumer Staples",
+            "weightPercent": 5.1
+          },
+          {
+            "name": "Energy",
+            "weightPercent": 4.9
+          },
+          {
+            "name": "Utilities",
+            "weightPercent": 3.4
+          },
+          {
+            "name": "Real Estate",
+            "weightPercent": 2.4
+          },
+          {
+            "name": "Other",
+            "weightPercent": 0.0
+          }
+        ],
+        "accessMode": "indexed_pdf_text",
+        "binaryVerified": false,
+        "visualVerified": false,
+        "extractionFile": "vanguard_icb_nov_evidence/vea-indexed-factsheet-extract.txt",
+        "extractionSha256": "bb12f9e4b587c42d376a70adf08af25134bd0fa252eb15f0a0c04c2cc389ae8d",
+        "priorRoundComparison": {
+          "sourceURL": "https://advisors.vanguard.com/iippdf/pdfs/FS936R.pdf",
+          "sameDateAndDocumentId": true,
+          "matchingWeights": 12,
+          "comparedWeights": 12,
+          "differentWeights": []
+        }
       }
     },
     {
@@ -7848,50 +7991,50 @@
         }
       ],
       "holdingsAsOf": "2026-06-30",
-      "sectorAsOf": "2026-09-30",
-      "dateBasis": "confirmacao_parcial_holdings_junho_setores_amplos_posteriores",
+      "sectorAsOf": "2026-06-30",
+      "dateBasis": "Carteira histórica pela API Vanguard e setores ICB na ficha Vanguard de 30/06/2026.",
       "sectorTaxonomy": "ICB",
-      "sectorCoveragePercent": 100.0,
+      "sectorCoveragePercent": null,
       "sectors": [
         {
           "name": "Technology",
-          "weightPercent": 35.9
+          "weightPercent": 36.1
         },
         {
           "name": "Financials",
-          "weightPercent": 19.6
+          "weightPercent": 19.5
         },
         {
           "name": "Industrials",
-          "weightPercent": 8.8
+          "weightPercent": 9.2
         },
         {
           "name": "Consumer Discretionary",
-          "weightPercent": 8.6
+          "weightPercent": 8.5
         },
         {
           "name": "Basic Materials",
-          "weightPercent": 7.0
+          "weightPercent": 6.7
         },
         {
           "name": "Energy",
-          "weightPercent": 4.3
-        },
-        {
-          "name": "Health Care",
-          "weightPercent": 3.9
+          "weightPercent": 4.1
         },
         {
           "name": "Telecommunications",
-          "weightPercent": 3.7
+          "weightPercent": 4.0
+        },
+        {
+          "name": "Health Care",
+          "weightPercent": 3.5
         },
         {
           "name": "Consumer Staples",
-          "weightPercent": 3.3
+          "weightPercent": 3.4
         },
         {
           "name": "Utilities",
-          "weightPercent": 2.7
+          "weightPercent": 2.8
         },
         {
           "name": "Real Estate",
@@ -8023,8 +8166,8 @@
         "Os pesos das maiores posições preservam percentOfFunds, campo nativo da API. A soma dos blocos equity/fixedIncome, shortTermReserves e derivatives é próxima de 100%, mas esse denominador não deve ser equiparado automaticamente ao patrimônio líquido contábil do N-CSR. Não normalizamos os pesos nem os recalculamos como percentual do NAV.",
         "As tabelas são da carteira do fundo, compartilhada entre classes quando aplicável; não comprovam posições diretas da Ensign Peak em cada subjacente, continuidade das cotas após junho ou compras executadas naquele dia.",
         "A API apresenta shortTermReservesMoneyMarket e allocationToUnderlyingFunds com conteúdo sobreposto a outros blocos; esses campos não foram somados novamente. Derivativos não foram tratados como ações nem o seu marketValue automaticamente interpretado como valor líquido contábil.",
-        "A lista das maiores posições e o agrupamento literal de subindústrias são de 30/06/2026, mas os 11 setores ICB amplos recuperados permanecem em 30/09/2026. Não foi aplicado um mapeamento inventado de subindústrias para esses setores.",
-        "O serviço setorial oficial recebeu effectiveDate=2026-06-30, mas respondeu fundsEffectiveDate=2026-09-30. Esses percentuais não foram promovidos para junho. Há 59 linhas de ações sem peso numérico; o agrupamento não atribui zero como valor confirmado."
+        "O serviço setorial oficial recebeu effectiveDate=2026-06-30, mas respondeu fundsEffectiveDate=2026-09-30. Esses percentuais não foram promovidos para junho. Há 59 linhas de ações sem peso numérico; o agrupamento não atribui zero como valor confirmado.",
+        "Setores ICB transcritos da ficha Vanguard de 30/06/2026 hospedada por terceiro; o quadro GICS editorial usa outra classificação e outra base."
       ],
       "evidenceFiles": [
         {
@@ -8043,13 +8186,15 @@
           "fileName": "VWO-fact-sheet.pdf",
           "sha256": "c4df4181d74b9cfa348b6333ada67ae181d544dfa2f409138205ca702273ed1f",
           "bytes": 465956,
-          "preservedFromV1_2": true
+          "preservedFromV1_2": true,
+          "asOf": "2026-09-30"
         },
         {
           "fileName": "VWO-fact-sheet-pdfium.txt",
           "sha256": "796567000d5b5f85dbab563a6a4f5e429fc8ccf8178ec32ff63355af724d8e91",
           "bytes": 10404,
-          "preservedFromV1_2": true
+          "preservedFromV1_2": true,
+          "asOf": "2026-09-30"
         },
         {
           "fileName": "VWO-sectors-june-request-api.json",
@@ -8071,10 +8216,10 @@
       "mandateLabel": "Mandatos de ações",
       "fieldDateStatus": {
         "holdings": "same_date_documented",
-        "sectors": "later_dated_proxy"
+        "sectors": "same_date_documented"
       },
-      "temporalStatus": "partial_same_date",
-      "temporalLabel": "Confirmação parcial em 30/06",
+      "temporalStatus": "historical_same_date",
+      "temporalLabel": "Componentes em 30/06; ICB de junho em ficha indexada",
       "componentHeading": "Maiores posições do ETF; classes separadas do mesmo emissor",
       "holdingsWeightBasis": {
         "field": "percentOfFunds",
@@ -9071,6 +9216,140 @@
           }
         ],
         "coverageNote": "Soma de pesos disponíveis das ações; não é prova de cobertura contábil de 100% do NAV."
+      },
+      "previousSectorSnapshot": {
+        "asOf": "2026-09-30",
+        "taxonomy": "ICB",
+        "sectors": [
+          {
+            "name": "Technology",
+            "weightPercent": 35.9
+          },
+          {
+            "name": "Financials",
+            "weightPercent": 19.6
+          },
+          {
+            "name": "Industrials",
+            "weightPercent": 8.8
+          },
+          {
+            "name": "Consumer Discretionary",
+            "weightPercent": 8.6
+          },
+          {
+            "name": "Basic Materials",
+            "weightPercent": 7.0
+          },
+          {
+            "name": "Energy",
+            "weightPercent": 4.3
+          },
+          {
+            "name": "Health Care",
+            "weightPercent": 3.9
+          },
+          {
+            "name": "Telecommunications",
+            "weightPercent": 3.7
+          },
+          {
+            "name": "Consumer Staples",
+            "weightPercent": 3.3
+          },
+          {
+            "name": "Utilities",
+            "weightPercent": 2.7
+          },
+          {
+            "name": "Real Estate",
+            "weightPercent": 2.2
+          },
+          {
+            "name": "Other",
+            "weightPercent": 0.0
+          }
+        ]
+      },
+      "sectorWeightBasis": "Percentuais do quadro setorial ICB da carteira acionária do próprio ETF, conforme publicados na ficha. O cabeçalho da tabela de junho não explicita o denominador. O perfil Vanguard de outra data rotula o quadro análogo como % of Stocks. Conservar os pesos divulgados sem renormalização e sem interpretá-los como percentuais do patrimônio líquido total ou como pesos do índice.",
+      "sectorMethod": "Ficha Vanguard F0964_062026, P. 1: título, data e CUSIP. P. 2: data, quadro Sector Diversification, nota 3 ICB e código editorial. Pesos publicados, sem normalização. Leitura indexada da cópia hospedada por terceiro; PDF não validado diretamente.",
+      "sectorSources": [
+        {
+          "url": "https://www.tanagerwealth.com/documents/investments/factsheet/vwo.pdf",
+          "title": "Vanguard FTSE Emerging Markets ETF — ficha Vanguard de 30/06/2026 espelhada pela Tanager",
+          "accessedAt": "2026-11-07"
+        }
+      ],
+      "officialICBEvidence": {
+        "asOf": "2026-06-30",
+        "basis": "Percentuais do quadro setorial ICB da carteira acionária do próprio ETF, conforme publicados na ficha. O cabeçalho da tabela de junho não explicita o denominador. O perfil Vanguard de outra data rotula o quadro análogo como % of Stocks. Conservar os pesos divulgados sem renormalização e sem interpretá-los como percentuais do patrimônio líquido total ou como pesos do índice.",
+        "taxonomy": "Industry Classification Benchmark (ICB). Other cobre papéis sem classificação ICB na data.",
+        "fundScope": "ETF dos Estados Unidos, identificado pelo ticker e CUSIP da página 1.",
+        "cusip": "922042858",
+        "sourceURL": "https://www.tanagerwealth.com/documents/investments/factsheet/vwo.pdf",
+        "documentId": "F0964_062026",
+        "locator": "P. 1: título, data e CUSIP. P. 2: data, quadro Sector Diversification, nota 3 ICB e código editorial.",
+        "issuer": "The Vanguard Group, Inc.",
+        "publisherDistributor": "Vanguard Marketing Corporation",
+        "host": "Tanager Wealth Management",
+        "evidenceStatus": "PDF lido por extração web de duas páginas. Sem binário, hash ou conferência visual.",
+        "totalPublishedWeightsPercent": 100.0,
+        "normalizationPerformed": false,
+        "sectors": [
+          {
+            "name": "Technology",
+            "weightPercent": 36.1
+          },
+          {
+            "name": "Financials",
+            "weightPercent": 19.5
+          },
+          {
+            "name": "Industrials",
+            "weightPercent": 9.2
+          },
+          {
+            "name": "Consumer Discretionary",
+            "weightPercent": 8.5
+          },
+          {
+            "name": "Basic Materials",
+            "weightPercent": 6.7
+          },
+          {
+            "name": "Energy",
+            "weightPercent": 4.1
+          },
+          {
+            "name": "Telecommunications",
+            "weightPercent": 4.0
+          },
+          {
+            "name": "Health Care",
+            "weightPercent": 3.5
+          },
+          {
+            "name": "Consumer Staples",
+            "weightPercent": 3.4
+          },
+          {
+            "name": "Utilities",
+            "weightPercent": 2.8
+          },
+          {
+            "name": "Real Estate",
+            "weightPercent": 2.2
+          },
+          {
+            "name": "Other",
+            "weightPercent": 0.0
+          }
+        ],
+        "accessMode": "indexed_pdf_text",
+        "binaryVerified": false,
+        "visualVerified": false,
+        "extractionFile": "vanguard_icb_nov_evidence/vwo-indexed-factsheet-extract.txt",
+        "extractionSha256": "d0383a199bd39c6dccb1f336f66b940adb79439a7d934f61d6f026f9029e8ca8"
       }
     },
     {
@@ -19482,7 +19761,701 @@
       "HGER",
       "VEA",
       "VWO"
-    ]
+    ],
+    "auditIsHistoricalSnapshot": true
+  },
+  "novemberSearchAudit": [
+    {
+      "ticker": "PBUS",
+      "target": "Carteira completa",
+      "targetAsOf": "2026-06-30",
+      "outcome": "full_portfolio_unconfirmed",
+      "asOf": null,
+      "summary": "Nenhuma carteira completa de 30/06/2026 recuperada nesta rodada. A janela do catálogo da FinImpulse abrange nominalmente a data-alvo, mas a lista de datas efetivas e a carteira exigem credencial.",
+      "gap": "Sem documento de carteira completa verificável com identidade do ETF e data interna 30/06/2026.",
+      "sources": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1378872/000119312526450665/R2.htm",
+          "title": "SEC — relatórios anuais, com exercício fiscal de cada ETF",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://data.sec.gov/submissions/CIK0001378872.json",
+          "title": "SEC — submissões recentes do trust",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1378872/000119312526364348/0001193125-26-364348-index.html",
+          "title": "SEC — N-PX de junho e identidade das classes",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=www.invesco.com%2Fus%2Ffinancial-products%2Fetfs%2Fholdings%2Fmain%2Fholdings%2F0%3FaudienceType%3DInvestor%26action%3Ddownload%26ticker%3DPBUS&output=json&from=20260630&to=20260715&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest",
+          "title": "Internet Archive — CDX do CSV legado",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=dng-api.invesco.com%2Fcache%2Fv1%2Faccounts%2Fen_US%2Fshareclasses%2F46138E461%2Fholdings%2Ffund%3FidType%3Dcusip%26productType%3DETF&output=json&from=20260630&to=20260707&filter=statuscode%3A200&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest",
+          "title": "Internet Archive — CDX da API pública exata",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.prospectusdocs.com/eol/request?PAGE=DISPLAYPAGE&cid=963130&s=46138E461",
+          "title": "Portal documental — lista por CUSIP",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://developers.finimpulse.com/wp-content/uploads/2026/09/etf-holdings.txt",
+          "title": "FinImpulse — catálogo público de cobertura, não carteira",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://developers.finimpulse.com/v1/holdings/history/dates/",
+          "title": "FinImpulse — documentação da lista de datas",
+          "accessedAt": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "ticker": "BKLN",
+      "target": "Carteira completa",
+      "targetAsOf": "2026-06-30",
+      "outcome": "full_portfolio_unconfirmed",
+      "asOf": null,
+      "summary": "Nenhuma carteira completa de 30/06/2026 recuperada nesta rodada. O catálogo da FinImpulse termina em 22/06/2026 para BKLN, antes da data-alvo.",
+      "gap": "Sem documento de carteira completa verificável com identidade do ETF e data interna 30/06/2026.",
+      "sources": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1378872/000119312526450665/R2.htm",
+          "title": "SEC — relatórios anuais, com exercício fiscal de cada ETF",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://data.sec.gov/submissions/CIK0001378872.json",
+          "title": "SEC — submissões recentes do trust",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1378872/000119312526364348/0001193125-26-364348-index.html",
+          "title": "SEC — N-PX de junho e identidade das classes",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=www.invesco.com%2Fus%2Ffinancial-products%2Fetfs%2Fholdings%2Fmain%2Fholdings%2F0%3FaudienceType%3DInvestor%26action%3Ddownload%26ticker%3DBKLN&output=json&from=20260630&to=20260715&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest",
+          "title": "Internet Archive — CDX do CSV legado",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=dng-api.invesco.com%2Fcache%2Fv1%2Faccounts%2Fen_US%2Fshareclasses%2F46138G508%2Fholdings%2Ffund%3FidType%3Dcusip%26productType%3DETF&output=json&from=20260630&to=20260707&filter=statuscode%3A200&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest",
+          "title": "Internet Archive — CDX da API pública exata",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.prospectusdocs.com/eol/request?PAGE=DISPLAYPAGE&cid=963130&s=46138G508",
+          "title": "Portal documental — lista por CUSIP",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://developers.finimpulse.com/wp-content/uploads/2026/09/etf-holdings.txt",
+          "title": "FinImpulse — catálogo público de cobertura, não carteira",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://developers.finimpulse.com/v1/holdings/history/dates/",
+          "title": "FinImpulse — documentação da lista de datas",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1378872/000137887226001409/edgar.htm",
+          "title": "SEC — carteira de maio, anterior à data-alvo",
+          "accessedAt": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "ticker": "KBWB",
+      "target": "Carteira completa",
+      "targetAsOf": "2026-06-30",
+      "outcome": "full_portfolio_unconfirmed",
+      "asOf": null,
+      "summary": "Nenhuma carteira completa de 30/06/2026 recuperada nesta rodada. A janela do catálogo da FinImpulse abrange nominalmente a data-alvo, mas a lista de datas efetivas e a carteira exigem credencial.",
+      "gap": "Sem documento de carteira completa verificável com identidade do ETF e data interna 30/06/2026.",
+      "sources": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1378872/000119312526450665/R2.htm",
+          "title": "SEC — relatórios anuais, com exercício fiscal de cada ETF",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://data.sec.gov/submissions/CIK0001378872.json",
+          "title": "SEC — submissões recentes do trust",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1378872/000119312526364348/0001193125-26-364348-index.html",
+          "title": "SEC — N-PX de junho e identidade das classes",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=www.invesco.com%2Fus%2Ffinancial-products%2Fetfs%2Fholdings%2Fmain%2Fholdings%2F0%3FaudienceType%3DInvestor%26action%3Ddownload%26ticker%3DKBWB&output=json&from=20260630&to=20260715&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest",
+          "title": "Internet Archive — CDX do CSV legado",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=dng-api.invesco.com%2Fcache%2Fv1%2Faccounts%2Fen_US%2Fshareclasses%2F46138E628%2Fholdings%2Ffund%3FidType%3Dcusip%26productType%3DETF&output=json&from=20260630&to=20260707&filter=statuscode%3A200&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest",
+          "title": "Internet Archive — CDX da API pública exata",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.prospectusdocs.com/eol/request?PAGE=DISPLAYPAGE&cid=963130&s=46138E628",
+          "title": "Portal documental — lista por CUSIP",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://developers.finimpulse.com/wp-content/uploads/2026/09/etf-holdings.txt",
+          "title": "FinImpulse — catálogo público de cobertura, não carteira",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://developers.finimpulse.com/v1/holdings/history/dates/",
+          "title": "FinImpulse — documentação da lista de datas",
+          "accessedAt": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "ticker": "AVEM",
+      "target": "Carteira completa",
+      "targetAsOf": "2026-06-30",
+      "outcome": "partial",
+      "asOf": null,
+      "summary": "A captura oficial adicional de 19/07 (Common Crawl) corrobora 11 setores de junho, soma publicada de 99%, e 3.921 posições nas características de 30/06. A carteira nominal e o top 10 nessa captura são de 16/07. EDGAR confirma 31/05 e 31/08 como datas oficiais adjacentes.",
+      "gap": "Carteira completa e maiores posições com fonte primária em 30/06/2026 continuam sem recuperação. Uma versão web indexada secundária data 10 linhas em junho, mas o corpo direto agora traz 14/09, não reproduz o quadro e a procedência do histórico não está documentada.",
+      "sources": [
+        {
+          "url": "https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
+          "title": "Página AVEM do gestor",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://index.commoncrawl.org/CC-MAIN-2026-30-index?url=www.avantisinvestors.com%2Favantis-investments%2Favantis-emerging-markets-equity-etf%2F&output=json",
+          "title": "Common Crawl, índice da captura 19/07",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://data.commoncrawl.org/crawl-data/CC-MAIN-2026-30/segments/1783663952041.26/warc/CC-MAIN-20260718232558-20260719022558-00220.warc.gz",
+          "title": "Common Crawl, WARC com resposta do gestor",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/web/20260730170945id_/https://www.avantisinvestors.com/avantis-investments/avantis-emerging-markets-equity-etf/",
+          "title": "Wayback, captura anterior de 30/07",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1710607/000119312526323997/0001193125-26-323997-index.htm",
+          "title": "EDGAR, NPORT-P de 31/05",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1710607/000119312526323997/acxu_q3holdings118.htm",
+          "title": "EDGAR, Schedule of Investments de 31/05",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1710607/000119312526439066/0001193125-26-439066-index.htm",
+          "title": "EDGAR, NPORT-P de 31/08",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/files/rules/final/2025/ic-35538.pdf",
+          "title": "SEC, regra de adiamento N-PORT",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.govinfo.gov/content/pkg/FR-2026-02-23/html/2026-03460.htm",
+          "title": "SEC, comparação do regime de publicação",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://marketxls.com/etfs/avem/top10holdings",
+          "title": "MarketXLS, versão pública do top 10",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://marketxls.com/etfs/avem/holdings",
+          "title": "MarketXLS, All Holdings",
+          "accessedAt": "2026-11-07"
+        }
+      ],
+      "supportingFindings": {
+        "issuerArchivedPortfolio": {
+          "captureUTC": "2026-07-19T00:35:25Z",
+          "httpStatusInCapture": 200,
+          "portfolioAsOf": "2026-06-30",
+          "holdingsCountInJuneCharacteristics": 3921,
+          "etfHoldingsAsOf": "2026-07-16",
+          "topHoldingsAsOf": "2026-07-16",
+          "publishedSectorWeightsPercentOfAssets": {
+            "Information Technology": 41,
+            "Financials": 19,
+            "Industrials": 8,
+            "Consumer Discretionary": 7,
+            "Materials": 7,
+            "Communication Services": 5,
+            "Energy": 4,
+            "Consumer Staples": 3,
+            "Health Care": 2,
+            "Utilities": 2,
+            "Real Estate": 1
+          },
+          "sumSectorWeightsPercent": 99,
+          "normalized": false,
+          "warcPayloadSha1Base32": "JKCNTYCSDVEWC6EFJKE4EKX7APFMRCPY",
+          "htmlPayloadSha256": "c7d362752bffc98890dcb023bf6b8c00dc56e2acb6f7e803c994527daa220be5",
+          "warcRange": "bytes=555072927-555387507"
+        },
+        "adjacentSecPortfolios": [
+          {
+            "reportDate": "2026-05-31",
+            "filed": "2026-07-29",
+            "accession": "0001193125-26-323997",
+            "schedule": "acxu_q3holdings118.htm"
+          },
+          {
+            "reportDate": "2026-08-31",
+            "filed": "2026-10-30",
+            "accession": "0001193125-26-439066"
+          }
+        ]
+      }
+    },
+    {
+      "ticker": "QQQM",
+      "target": "Carteira completa",
+      "targetAsOf": "2026-06-30",
+      "outcome": "full_portfolio_unconfirmed",
+      "asOf": null,
+      "summary": "Nenhuma carteira completa de 30/06/2026 recuperada nesta rodada. A janela do catálogo da FinImpulse abrange nominalmente a data-alvo, mas a lista de datas efetivas e a carteira exigem credencial.",
+      "gap": "Sem documento de carteira completa verificável com identidade do ETF e data interna 30/06/2026.",
+      "sources": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1378872/000119312526450665/R2.htm",
+          "title": "SEC — relatórios anuais, com exercício fiscal de cada ETF",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://data.sec.gov/submissions/CIK0001378872.json",
+          "title": "SEC — submissões recentes do trust",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1378872/000119312526364348/0001193125-26-364348-index.html",
+          "title": "SEC — N-PX de junho e identidade das classes",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=www.invesco.com%2Fus%2Ffinancial-products%2Fetfs%2Fholdings%2Fmain%2Fholdings%2F0%3FaudienceType%3DInvestor%26action%3Ddownload%26ticker%3DQQQM&output=json&from=20260630&to=20260715&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest",
+          "title": "Internet Archive — CDX do CSV legado",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=dng-api.invesco.com%2Fcache%2Fv1%2Faccounts%2Fen_US%2Fshareclasses%2F46138G649%2Fholdings%2Ffund%3FidType%3Dcusip%26productType%3DETF&output=json&from=20260630&to=20260707&filter=statuscode%3A200&fl=timestamp%2Coriginal%2Cstatuscode%2Cmimetype%2Cdigest",
+          "title": "Internet Archive — CDX da API pública exata",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.prospectusdocs.com/eol/request?PAGE=DISPLAYPAGE&cid=963130&s=46138G649",
+          "title": "Portal documental — lista por CUSIP",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://developers.finimpulse.com/wp-content/uploads/2026/09/etf-holdings.txt",
+          "title": "FinImpulse — catálogo público de cobertura, não carteira",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://developers.finimpulse.com/v1/holdings/history/dates/",
+          "title": "FinImpulse — documentação da lista de datas",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/web/20260801031657id_/https://www.invesco.com/us-rest/contentdetail?contentId=5b4d8e58e0737710VgnVCM1000006e36b50aRCRD",
+          "title": "Invesco — ficha Q2, evidência parcial já conhecida",
+          "accessedAt": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "ticker": "HGER",
+      "target": "Swaps e colaterais",
+      "targetAsOf": "2026-06-30",
+      "outcome": "partial",
+      "asOf": null,
+      "summary": "O relatório de 30/06 preserva os 20 pesos de commodities do painel da gestora. O site oficial separa o painel do Quantix Commodity Index dos dados de Full Holdings. A carteira contábil oficial localizada é consolidada em 31/07 e é mantida como documento de outra data.",
+      "gap": "Continuam sem recuperação em 30/06 o livro consolidado de swaps, contrapartes, taxas, nocionais, prêmios, ganhos/perdas, valores justos e títulos ou caixa efetivamente entregues ou recebidos como garantia. A base patrimonial do quadro de commodities de junho não é explicitada.",
+      "sources": [
+        {
+          "url": "https://www.harborcapital.com/static/9bee31957691ab4953865b4bc227dd1d/Commodity_All-Weather_Strategy_ETF_Quarterly_Report.pdf#page=6",
+          "title": "Harbor, relatório de 30/06, página 6",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.harborcapital.com/etf/hger/",
+          "title": "Harbor, página do produto",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.harborcapital.com/page-data/etf/hger/page-data.json",
+          "title": "Harbor, dados públicos das seções",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.harborcapital.com/static/99a90616f3254974fb2f025f526f50a8/ETF_Fiscal_Q3_Schedule_of_Holdings.pdf#page=33",
+          "title": "Harbor, Schedule of Holdings de julho, página impressa 30",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1860434/000141036826067330/xslFormNPORT-P_X01/primary_doc.xml",
+          "title": "EDGAR, HGER NPORT-P de abril",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1860434/000113322826009369/0001133228-26-009369-index.htm",
+          "title": "EDGAR, HGER N-CSRS de abril",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1860434/000141036826099289/0001410368-26-099289-index.htm",
+          "title": "EDGAR, HGER NPORT-P e NPORT-EX de julho",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1860434/000119312526077937/d76828d485bpos.htm",
+          "title": "Harbor, prospecto arquivado",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.sec.gov/files/rules/final/2025/ic-35538.pdf",
+          "title": "SEC, regra de adiamento N-PORT",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.govinfo.gov/content/pkg/FR-2026-02-23/html/2026-03460.htm",
+          "title": "SEC, comparação do regime de publicação",
+          "accessedAt": "2026-11-07"
+        }
+      ],
+      "supportingFindings": {
+        "issuerDataTypes": {
+          "benchmarkQuery": "ETF_COMMODITY_INDEX_SECTORS",
+          "portfolioQuery": "FULL_HOLDINGS",
+          "currentSampleDate": "2026-11-05",
+          "currentSampleRows": 23
+        },
+        "adjacentSecPortfolios": [
+          {
+            "reportDate": "2026-04-30",
+            "filed": "2026-06-26",
+            "accession": "0001410368-26-067330"
+          },
+          {
+            "reportDate": "2026-07-31",
+            "filed": "2026-09-25",
+            "accession": "0001410368-26-099289"
+          }
+        ],
+        "adjacentIssuerSchedule": {
+          "reportDate": "2026-07-31",
+          "audit": "unaudited",
+          "printedPage": 30,
+          "pdfPage": 33,
+          "currency": "USD",
+          "scale": 1000,
+          "netAssets": 3679916,
+          "treasuryBills": 3240511,
+          "treasuryBillsPctNAV": 88.1,
+          "treasuryBillsAreConfirmedPledgedCollateral": false,
+          "cashAndOtherAssetsLessLiabilities": 439405,
+          "excessReturnSwaps": [
+            {
+              "counterparty": "Macquarie Bank Limited",
+              "notional": 1486289,
+              "fixedRatePercent": 0.12,
+              "fixedRateSide": "Pay",
+              "frequency": "Monthly",
+              "expiration": "2026-08-28",
+              "referenceIndex": "Quantix Commodity Index",
+              "valueAsPrinted": "—",
+              "premiumAsPrinted": "—",
+              "unrealizedAsPrinted": "—"
+            },
+            {
+              "counterparty": "JP Morgan Chase Bank NA",
+              "notional": 98258,
+              "fixedRatePercent": 0.12,
+              "fixedRateSide": "Pay",
+              "frequency": "Monthly",
+              "expiration": "2026-08-28",
+              "referenceIndex": "Quantix Commodity Index",
+              "valueAsPrinted": "—",
+              "premiumAsPrinted": "—",
+              "unrealizedAsPrinted": "—"
+            },
+            {
+              "counterparty": "Goldman Sachs International",
+              "notional": 1197062,
+              "fixedRatePercent": 0.12,
+              "fixedRateSide": "Pay",
+              "frequency": "Monthly",
+              "expiration": "2026-08-28",
+              "referenceIndex": "Quantix Commodity Index",
+              "valueAsPrinted": "—",
+              "premiumAsPrinted": "—",
+              "unrealizedAsPrinted": "—"
+            },
+            {
+              "counterparty": "Citibank NA",
+              "notional": 897445,
+              "fixedRatePercent": 0.12,
+              "fixedRateSide": "Pay",
+              "frequency": "Monthly",
+              "expiration": "2026-08-28",
+              "referenceIndex": "Quantix Commodity Index",
+              "valueAsPrinted": "—",
+              "premiumAsPrinted": "—",
+              "unrealizedAsPrinted": "—"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ticker": "VEA",
+      "target": "Setores ICB",
+      "targetAsOf": "2026-06-30",
+      "outcome": "CONFIRMADO_CONTEUDO_FICHA_VANGUARD_ESPELHADA",
+      "asOf": "2026-06-30",
+      "summary": "Ficha F0936_062026, CUSIP 921943858, com data interna de 30/06/2026 nas duas páginas. O quadro ICB do próprio ETF começa por Financials 23,2%, Industrials 17,4%, Technology 13,8%. Soma das rubricas publicadas: 99,9%, com uma casa decimal e sem renormalização. A ficha setorial não informa base de patrimônio líquido. Confirmação pelo conteúdo extraído do PDF emitido pela Vanguard e espelhado pela Tanager.",
+      "gap": "O download direto do espelho retornou HTTP 403 com desafio Cloudflare e o renderizador web retornou Cache miss. A consulta pública CDX do espelho não listou captura de 30/06 a 07/11. A verificação se baseia no conteúdo de ambas as páginas do PDF extraído pelo serviço web. Binário local, inspeção visual e SHA-256 do original continuam pendentes.",
+      "sources": [
+        {
+          "url": "https://www.tanagerwealth.com/documents/investments/factsheet/vea.pdf",
+          "title": "Vanguard FTSE Developed Markets ETF — ficha Vanguard de 30/06/2026 espelhada pela Tanager",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.tanagerwealth.com/key-information-documents-kids-and-fund-fact-sheets/",
+          "title": "Tanager — página pública de distribuição de documentos",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://workplace.vanguard.com/assets/corp/fund_communications/pdf_publish/us-products/investment-profiles/0936.pdf",
+          "title": "Vanguard Workplace — perfil do VEA de 31/12/2025, contexto do denominador",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://advisors.vanguard.com/iippdf/pdfs/FS936R.pdf",
+          "title": "Vanguard Advisors — URL mutável da ficha do VEA",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=www.tanagerwealth.com%2Fdocuments%2Finvestments%2Ffactsheet%2Fvea.pdf&output=json&from=20260630&to=20261107&filter=statuscode%3A200",
+          "title": "Internet Archive — consulta CDX da cópia Tanager do VEA",
+          "accessedAt": "2026-11-07"
+        }
+      ],
+      "officialICB": {
+        "asOf": "2026-06-30",
+        "basis": "Percentuais do quadro setorial ICB da carteira acionária do próprio ETF, conforme publicados na ficha. O cabeçalho da tabela de junho não explicita o denominador. O perfil Vanguard de outra data rotula o quadro análogo como % of Stocks. Conservar os pesos divulgados sem renormalização e sem interpretá-los como percentuais do patrimônio líquido total ou como pesos do índice.",
+        "taxonomy": "Industry Classification Benchmark (ICB). Other cobre papéis sem classificação ICB na data.",
+        "fundScope": "ETF dos Estados Unidos, identificado pelo ticker e CUSIP da página 1.",
+        "cusip": "921943858",
+        "sourceURL": "https://www.tanagerwealth.com/documents/investments/factsheet/vea.pdf",
+        "documentId": "F0936_062026",
+        "locator": "P. 1: título, data e CUSIP. P. 2: data, quadro Sector Diversification, nota 3 ICB e código editorial.",
+        "issuer": "The Vanguard Group, Inc.",
+        "publisherDistributor": "Vanguard Marketing Corporation",
+        "host": "Tanager Wealth Management",
+        "evidenceStatus": "PDF lido por extração web de duas páginas. Sem binário, hash ou conferência visual.",
+        "totalPublishedWeightsPercent": 99.9,
+        "normalizationPerformed": false,
+        "sectors": [
+          {
+            "name": "Financials",
+            "weightPercent": 23.2
+          },
+          {
+            "name": "Industrials",
+            "weightPercent": 17.4
+          },
+          {
+            "name": "Technology",
+            "weightPercent": 13.8
+          },
+          {
+            "name": "Consumer Discretionary",
+            "weightPercent": 9.1
+          },
+          {
+            "name": "Health Care",
+            "weightPercent": 7.8
+          },
+          {
+            "name": "Basic Materials",
+            "weightPercent": 6.9
+          },
+          {
+            "name": "Telecommunications",
+            "weightPercent": 5.9
+          },
+          {
+            "name": "Consumer Staples",
+            "weightPercent": 5.1
+          },
+          {
+            "name": "Energy",
+            "weightPercent": 4.9
+          },
+          {
+            "name": "Utilities",
+            "weightPercent": 3.4
+          },
+          {
+            "name": "Real Estate",
+            "weightPercent": 2.4
+          },
+          {
+            "name": "Other",
+            "weightPercent": 0.0
+          }
+        ],
+        "accessMode": "indexed_pdf_text",
+        "binaryVerified": false,
+        "visualVerified": false,
+        "extractionFile": "vanguard_icb_nov_evidence/vea-indexed-factsheet-extract.txt",
+        "extractionSha256": "bb12f9e4b587c42d376a70adf08af25134bd0fa252eb15f0a0c04c2cc389ae8d",
+        "priorRoundComparison": {
+          "sourceURL": "https://advisors.vanguard.com/iippdf/pdfs/FS936R.pdf",
+          "sameDateAndDocumentId": true,
+          "matchingWeights": 12,
+          "comparedWeights": 12,
+          "differentWeights": []
+        }
+      }
+    },
+    {
+      "ticker": "VWO",
+      "target": "Setores ICB",
+      "targetAsOf": "2026-06-30",
+      "outcome": "CONFIRMADO_CONTEUDO_FICHA_VANGUARD_ESPELHADA",
+      "asOf": "2026-06-30",
+      "summary": "Ficha F0964_062026, CUSIP 922042858, com data interna de 30/06/2026 nas duas páginas. O quadro ICB do próprio ETF começa por Technology 36,1%, Financials 19,5%, Industrials 9,2%. Soma das rubricas publicadas: 100,0%, com uma casa decimal e sem renormalização. A ficha setorial não informa base de patrimônio líquido. Confirmação pelo conteúdo extraído do PDF emitido pela Vanguard e espelhado pela Tanager.",
+      "gap": "O download direto do espelho retornou HTTP 403 com desafio Cloudflare e o renderizador web retornou Cache miss. A consulta pública CDX do espelho não listou captura de 30/06 a 07/11. A verificação se baseia no conteúdo de ambas as páginas do PDF extraído pelo serviço web. Binário local, inspeção visual e SHA-256 do original continuam pendentes.",
+      "sources": [
+        {
+          "url": "https://www.tanagerwealth.com/documents/investments/factsheet/vwo.pdf",
+          "title": "Vanguard FTSE Emerging Markets ETF — ficha Vanguard de 30/06/2026 espelhada pela Tanager",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://www.tanagerwealth.com/key-information-documents-kids-and-fund-fact-sheets/",
+          "title": "Tanager — página pública de distribuição de documentos",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://workplace.vanguard.com/assets/corp/fund_communications/pdf_publish/us-products/investment-profiles/0964.pdf",
+          "title": "Vanguard Workplace — perfil do VWO de 31/12/2025, contexto do denominador",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://advisors.vanguard.com/iippdf/pdfs/FS964R.pdf",
+          "title": "Vanguard Advisors — URL mutável da ficha do VWO",
+          "accessedAt": "2026-11-07"
+        },
+        {
+          "url": "https://web.archive.org/cdx/search/cdx?url=www.tanagerwealth.com%2Fdocuments%2Finvestments%2Ffactsheet%2Fvwo.pdf&output=json&from=20260630&to=20261107&filter=statuscode%3A200",
+          "title": "Internet Archive — consulta CDX da cópia Tanager do VWO",
+          "accessedAt": "2026-11-07"
+        }
+      ],
+      "officialICB": {
+        "asOf": "2026-06-30",
+        "basis": "Percentuais do quadro setorial ICB da carteira acionária do próprio ETF, conforme publicados na ficha. O cabeçalho da tabela de junho não explicita o denominador. O perfil Vanguard de outra data rotula o quadro análogo como % of Stocks. Conservar os pesos divulgados sem renormalização e sem interpretá-los como percentuais do patrimônio líquido total ou como pesos do índice.",
+        "taxonomy": "Industry Classification Benchmark (ICB). Other cobre papéis sem classificação ICB na data.",
+        "fundScope": "ETF dos Estados Unidos, identificado pelo ticker e CUSIP da página 1.",
+        "cusip": "922042858",
+        "sourceURL": "https://www.tanagerwealth.com/documents/investments/factsheet/vwo.pdf",
+        "documentId": "F0964_062026",
+        "locator": "P. 1: título, data e CUSIP. P. 2: data, quadro Sector Diversification, nota 3 ICB e código editorial.",
+        "issuer": "The Vanguard Group, Inc.",
+        "publisherDistributor": "Vanguard Marketing Corporation",
+        "host": "Tanager Wealth Management",
+        "evidenceStatus": "PDF lido por extração web de duas páginas. Sem binário, hash ou conferência visual.",
+        "totalPublishedWeightsPercent": 100.0,
+        "normalizationPerformed": false,
+        "sectors": [
+          {
+            "name": "Technology",
+            "weightPercent": 36.1
+          },
+          {
+            "name": "Financials",
+            "weightPercent": 19.5
+          },
+          {
+            "name": "Industrials",
+            "weightPercent": 9.2
+          },
+          {
+            "name": "Consumer Discretionary",
+            "weightPercent": 8.5
+          },
+          {
+            "name": "Basic Materials",
+            "weightPercent": 6.7
+          },
+          {
+            "name": "Energy",
+            "weightPercent": 4.1
+          },
+          {
+            "name": "Telecommunications",
+            "weightPercent": 4.0
+          },
+          {
+            "name": "Health Care",
+            "weightPercent": 3.5
+          },
+          {
+            "name": "Consumer Staples",
+            "weightPercent": 3.4
+          },
+          {
+            "name": "Utilities",
+            "weightPercent": 2.8
+          },
+          {
+            "name": "Real Estate",
+            "weightPercent": 2.2
+          },
+          {
+            "name": "Other",
+            "weightPercent": 0.0
+          }
+        ],
+        "accessMode": "indexed_pdf_text",
+        "binaryVerified": false,
+        "visualVerified": false,
+        "extractionFile": "vanguard_icb_nov_evidence/vwo-indexed-factsheet-extract.txt",
+        "extractionSha256": "d0383a199bd39c6dccb1f336f66b940adb79439a7d934f61d6f026f9029e8ca8"
+      }
+    }
+  ],
+  "novemberSearchScope": {
+    "targetAsOf": "2026-06-30",
+    "accessedAt": "2026-11-07",
+    "fundCount": 8
   },
   "sourceHashes": {
     "secCSV": "5b9bf7106a9b4cc0257693907918faf90811119ad061b6d571ea8ee5a732e341",
@@ -19526,6 +20499,20 @@
       {
         "fileName": "vea_vwo_sectors_round2.json",
         "sha256": "12c0a35bad7d7ff5cb4d24c0aee0f72767a93489fbded972c8407987e85182e0"
+      }
+    ],
+    "novemberResearchInputs": [
+      {
+        "fileName": "invesco_nov.json",
+        "sha256": "39b54aa3dfb05c38ffdc5bcacbf39f2d26509a901c8de77eea2e17e78bd7ac3c"
+      },
+      {
+        "fileName": "avem_hger_nov.json",
+        "sha256": "883e0872260cf0100e46353dabc4f81266c024e662795cc14070dcbf4c1cac8c"
+      },
+      {
+        "fileName": "vanguard_icb_nov.json",
+        "sha256": "052ac71e1e44cb9180db58464c9449de2fdc4babf423db4db702faa232731911"
       }
     ]
   }
