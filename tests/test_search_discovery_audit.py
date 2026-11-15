@@ -54,6 +54,13 @@ class SearchDiscoveryAuditTests(unittest.TestCase):
             (site / 'modulo/index.html').write_text('<head><link rel="canonical" href="index.html"></head>')
             self.assertTrue(builder.search_page_is_indexable(site, builder.PUBLIC_BASE_URL+'modulo/'))
 
+    def test_audit_documents_are_operational_and_not_published(self):
+        policy = json.loads((ROOT / 'data/editorial/policy.json').read_text())
+        prefix = 'docs_projeto/auditoria-indexacao-2026-11-15/'
+        self.assertIn(prefix, policy['scanning']['nonPublicSourcePrefixes'])
+        self.assertNotIn('docs_projeto', builder.REQUIRED + builder.OPTIONAL)
+        self.assertNotIn('01_Modulos_Clinicos/', policy['scanning']['nonPublicSourcePrefixes'])
+
     def test_new_routes_are_independent_existing_pages(self):
         manifest = json.loads((ROOT / 'data/site_manifest.json').read_text())
         for key in ('doencas_geneticas', 'protocolos_pneumologia_2026', 'antimicrobianos_farmacologia', 'agentes_habilidades', 'auditoria_uti'):

@@ -17,7 +17,7 @@ O sitemap é útil, mas incompleto. A proposta preserva o gerador e amplia sua s
 | Todas as entradas usam `updatedAt` do inventário como `lastmod` | Omitir `lastmod` | Alterar o inventário não comprova revisão de cada conteúdo; data por página exige fonte própria |
 | Sitemap não verifica elegibilidade declarada no HTML | Filtrar redirects, `noindex`, `googlebot: none` e canonicals que apontam para outra página | Evitar sugerir URLs contraditórias; testes cobrem esses cenários |
 | Parte da navegação depende de dados e JavaScript | Gerar `mapa-do-site.html` com os mesmos 70 destinos e link no rodapé da home | Links HTML acessíveis sem scripts; não depende de cliques para descobrir essas páginas |
-| 11 páginas selecionadas sem descrição | Acrescentar descrições específicas | RespiraCrit, Ebooks, Questões Comentadas, Transcrições, POCUS, Atlas, Apps, Galeria e três páginas da Tripulação |
+| 9 páginas selecionadas sem descrição | Acrescentar descrições específicas | Ebooks, Questões Comentadas, Transcrições, POCUS, Atlas, Apps e três páginas da Tripulação |
 
 ## Páginas e módulos internos
 
@@ -42,7 +42,7 @@ Não é necessário criar outro arquivo nesse projeto para permitir rastreamento
 - Links: **247 HTMLs e 6.929 referências locais**, sem referências locais quebradas; 75 prévias verificadas por SHA-256, sem divergências.
 - HTTP público: **70/70 destinos responderam 200**, sem `noindex` encontrado no cabeçalho HTML consultado.
 - `git diff --check`: aprovado.
-- Scripts inline dos **12 HTMLs alterados**: idênticos aos da base. Nenhum JS clínico, CSS de acessibilidade, fórmula ou fluxo médico foi alterado.
+- Scripts inline dos **10 HTMLs alterados**: idênticos aos da base. Nenhum JS clínico, CSS de acessibilidade, fórmula ou fluxo médico foi alterado.
 
 ## Limitações e pendências
 
@@ -68,3 +68,7 @@ Evitar: adicionar fragmentos ao sitemap; listar todo arquivo do repositório; co
 - Código: https://github.com/aldenirfilho/aldenirmed89/blob/86ccdc5b9fe2197f79d8715e351d96d5dfb0c558/scripts_admin/build_public_site.py
 
 Um sitemap ajuda a descoberta; sua presença não garante indexação ou posição nos resultados.
+
+## Complemento de publicação
+
+A primeira execução do CI bloqueou duas páginas legadas sem registro editorial e os documentos de auditoria. As alterações em RespiraCrit e Galeria foram retiradas desta proposta; elas permanecem como na base. A pasta exata desta auditoria foi declarada como fonte operacional não publicada, coerente com sua exclusão já existente do artefato. Nenhum gate clínico foi desativado. As descrições novas ficam em nove páginas já registradas.
