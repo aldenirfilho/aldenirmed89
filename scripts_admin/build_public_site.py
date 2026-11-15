@@ -1443,14 +1443,13 @@ def write_search_discovery(root: Path, site: Path) -> tuple[int, int]:
     )
     if PUBLIC_BASE_URL not in urls:
         raise ValueError("Homepage canônica ausente do artefato público.")
-    lastmod = manifest.get("updatedAt")
-    if not isinstance(lastmod, str) or re.fullmatch(r"\d{4}-\d{2}-\d{2}", lastmod) is None:
-        raise ValueError("Manifesto do site sem data editorial válida.")
+    # updatedAt descreve o inventário, não a revisão de cada página.
+    # Omitir lastmod é preferível a anunciar uma data editorial sem evidência.
+    urls = [url for url in urls if search_page_is_indexable(site, url)]
 
     entries = "\n".join(
         "  <url>\n"
         f"    <loc>{html_lib.escape(url)}</loc>\n"
-        f"    <lastmod>{lastmod}</lastmod>\n"
         "  </url>"
         for url in urls
     )
@@ -1467,7 +1466,70 @@ def write_search_discovery(root: Path, site: Path) -> tuple[int, int]:
         f"Sitemap: {PUBLIC_BASE_URL}sitemap.xml\n"
     )
     (site / "robots.txt").write_text(robots, encoding="utf-8")
+    # Em GitHub Pages de projeto este arquivo fica em /aldenirmed89/robots.txt.
+    # Ele não controla o host; enviar sitemap.xml diretamente ao Search Console.
+    write_html_search_index(site, urls)
     return len(urls), len(robots.splitlines())
+
+
+def search_page_is_indexable(site: Path, url: str) -> bool:
+    """Excluir redirects, noindex e canonicals de outra página do sitemap."""
+    from urllib.parse import unquote, urljoin
+
+    relative = unquote(url.removeprefix(PUBLIC_BASE_URL))
+    path = site / (relative + "index.html" if not relative or relative.endswith("/") else relative)
+
+    class Metadata(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.allowed = True
+
+        def handle_starttag(self, tag, attrs):
+            a = dict(attrs)
+            if tag == "meta":
+                if a.get("http-equiv", "").casefold() == "refresh":
+                    self.allowed = False
+                if a.get("name", "").casefold() in {"robots", "googlebot"}:
+                    if set(re.split(r"[\s,]+", a.get("content", "").casefold())) & {"noindex", "none"}:
+                        self.allowed = False
+            if tag == "link" and "canonical" in a.get("rel", "").casefold().split():
+                target = urljoin(url, a.get("href", ""))
+                # /index.html e / são a mesma página preferencial.
+                if target.endswith("/index.html"):
+                    target = target[:-len("index.html")]
+                if target != url:
+                    self.allowed = False
+
+    parser = Metadata()
+    parser.feed(path.read_text(encoding="utf-8"))
+    return parser.allowed
+
+
+def write_html_search_index(site: Path, urls: list[str]) -> None:
+    """Índice estático das mesmas páginas selecionadas para o sitemap XML."""
+    from urllib.parse import unquote
+
+    entries = []
+    for url in urls:
+        relative = unquote(url.removeprefix(PUBLIC_BASE_URL))
+        path = site / (relative + "index.html" if not relative or relative.endswith("/") else relative)
+        text = path.read_text(encoding="utf-8")
+        title = re.search(r"<title\b[^>]*>(.*?)</title\s*>", text, flags=re.I | re.S)
+        label = html_lib.unescape(re.sub(r"<[^>]+>", "", title.group(1))) if title else relative
+        entries.append(f'<li><a href="{html_lib.escape(url, quote=True)}">{html_lib.escape(label)}</a></li>')
+    html = '''<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mapa de páginas | AldenirMed89</title>
+<meta name="description" content="Índice de páginas educacionais, módulos médicos e projetos públicos do AldenirMed89.">
+<link rel="canonical" href="''' + PUBLIC_BASE_URL + '''mapa-do-site.html">
+<style>body{font:1.125rem/1.7 system-ui,sans-serif;max-width:64rem;margin:2rem auto;padding:0 1rem;color:#172b4d;background:#fff}li{margin:.7rem 0}a{color:#0645ad}a:focus-visible{outline:3px solid #9b4d00;outline-offset:4px}</style>
+</head><body><a href="#conteudo">Pular para o conteúdo</a>
+<header><a href="./">Página inicial</a></header>
+<main id="conteudo"><h1>Mapa de páginas</h1>
+<p>Explore os conteúdos públicos. Abas, filtros e seções internas permanecem dentro de seus módulos.</p>
+<ul>''' + "\n".join(entries) + '''</ul></main></body></html>\n'''
+    (site / "mapa-do-site.html").write_text(html, encoding="utf-8")
 
 
 def build(root: Path, site: Path) -> int:
