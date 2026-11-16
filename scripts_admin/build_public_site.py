@@ -97,6 +97,7 @@ OPTIONAL = (
     "les-autoanticorpos",
     "respirasense-icu",
     "radar-biblico-3min",
+    "jornal-360",
     "biblioteca",
     "updown",
     "calculadoras",
@@ -141,6 +142,9 @@ PUBLIC_DOWNLOADS = (
     "downloads/Antigravity-Consultas-Windows.zip",
     "downloads/Antigravity-Consultas-iPhone-Icones.zip",
     "downloads/AldenirMed89-Identidade-Multiplataforma.zip",
+    # Extensão Chrome FocusAI Reader 360X v8.0.0 (16/11/2026), SHA-256 conferido
+    # com o pacote catalogado no Notion; inclui companion opcional para Mac.
+    "downloads/FocusAI-Reader-360X-v8.0.0.zip",
     "downloads/SHA256SUMS.txt",
 )
 DOWNLOAD_ARCHIVE_LIMIT = 512

@@ -13,7 +13,10 @@
 
 | Quero… | Acesso |
 |---|---|
-| Explorar a plataforma médica | [🩺 Abrir AldenirMed89](https://aldenirfilho.github.io/aldenirmed89/) |
+| Explorar a plataforma médica | [🩺 Abrir AldenirMed 360X](https://aldenirfilho.github.io/aldenirmed89/) |
+| Ler o jornal do dia e as pílulas de estudo | [📰 Jornal Diário 360](https://aldenirfilho.github.io/aldenirmed89/jornal-360/) |
+| Usar os apps conectados (Códice 360X e FocusAI 360X) | [📱 Apps 360](https://aldenirfilho.github.io/aldenirmed89/#apps-360) · [📖 FocusAI Reader 360X](https://aldenirfilho.github.io/aldenirmed89/apps/focusai-360/) |
+| Baixar e instalar apps | [⬇️ Central de downloads](https://aldenirfilho.github.io/aldenirmed89/#downloads) |
 | Abrir o painel completo de projetos e conexões | [🔗 Painel integrado 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html) |
 | Conhecer os agentes e as habilidades autorais | [🤖 Catálogo visual 2026](https://aldenirfilho.github.io/aldenirmed89/ecossistema/agentes-habilidades/) |
 | Conhecer as iniciativas do ecossistema | [🌐 Abrir Ecossistema 360X](https://aldenirfilho.github.io/aldenirmed89/ecossistema/) |
@@ -23,6 +26,13 @@
 **🛠️ Escopo:** plataforma educacional em evolução. Cada módulo informa seu estado de revisão; a publicação de código ou conteúdo não equivale a validação clínica.
 
 ---
+
+## 📰 Jornal Diário 360 · como publicar uma nova edição
+
+1. Copie os três PDFs da edição para `jornal-360/edicoes/` (`Jornal_Diario_360_AAAA-MM-DD.pdf`, `Pilulas_do_Dia_360_AAAA-MM-DD.pdf`, `Arcanos_360_Sessao_Extra_AAAA-MM-DD.pdf`).
+2. Acrescente a edição no início de `jornal-360/data/edicoes.json` (manchetes, pílulas, Arcanos e correções).
+3. Rode `python3 scripts_admin/build_jornal_360.py` — gera `jornal-360/index.html` e atualiza o bloco do jornal na página inicial.
+4. O CI confere com `python3 scripts_admin/build_jornal_360.py --check`.
 
 ## ♿ Acesso rápido e manutenção
 

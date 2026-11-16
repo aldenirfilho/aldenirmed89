@@ -4,23 +4,23 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="google-site-verification" content="sXGGCZPe1ecJv7-PPePSFS2eGu-D2j0lSD8tRPAJceE"/>
-<title>AldenirMed89 — Medicina Intensiva, Plantão e TEMI</title>
+<title>AldenirMed 360X — Medicina Intensiva, Plantão e TEMI</title>
 <meta name="description" content="Plataforma médica interativa para Medicina Intensiva, UTI e emergência, com hepatite associada ao álcool, TCE grave CRASH, ventilação, módulos críticos e preparação TEMI/R3."/>
-<meta property="og:title" content="AldenirMed89 — Medicina Intensiva, Plantão e TEMI"/>
+<meta property="og:title" content="AldenirMed 360X — Medicina Intensiva, Plantão e TEMI"/>
 <meta property="og:description" content="Central clínica com hepatite associada ao álcool, TCE grave CRASH, módulos críticos, Calculadoras UTI, Banco TEMI, Biblioteca IA e Mapa Vivo."/>
 <meta property="og:url" content="https://aldenirfilho.github.io/aldenirmed89/"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/icons/aerospace-v2/social-card.png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
-<meta property="og:image:alt" content="AldenirMed89 · Medicina Intensiva, Plantão e TEMI · identidade aeroespacial"/>
+<meta property="og:image:alt" content="AldenirMed 360X · Medicina Intensiva, Plantão e TEMI · identidade aeroespacial"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/icons/aerospace-v2/social-card.png"/>
-<meta name="twitter:image:alt" content="AldenirMed89 · Medicina Intensiva, Plantão e TEMI · identidade aeroespacial"/>
+<meta name="twitter:image:alt" content="AldenirMed 360X · Medicina Intensiva, Plantão e TEMI · identidade aeroespacial"/>
 <meta name="theme-color" content="#071422"/>
 <meta name="color-scheme" content="dark light"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="AldenirMed89"/>
+<meta name="apple-mobile-web-app-title" content="AldenirMed 360X"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <script>
 /* Restaura tema e largura antes da primeira pintura para evitar saltos visuais. */
@@ -2552,6 +2552,8 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <link rel="stylesheet" href="assets/site-navigation.css"/>
 <script src="assets/site-navigation.js" defer></script>
 <link rel="stylesheet" href="./assets/brand-360x/identity.css"/>
+<link rel="stylesheet" href="./assets/home-360x.css"/>
+<script src="assets/home-360x.js" defer></script>
 
 <style id="auditoria-uti-360x-style">
 #auditoria-uti{max-width:var(--page-max,1400px);margin:0 auto;padding:clamp(32px,5vw,64px) var(--page-gutter,24px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;scroll-margin-top:160px}
@@ -2591,7 +2593,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         width="230" height="230"/>
     </div>
     <div class="mission-briefing">
-      <span class="mission-kicker">Portal de missão · AldenirMed89</span>
+      <span class="mission-kicker">Portal de missão · AldenirMed 360X</span>
       <h1 class="mission-title" id="missionTitle">A missão começa agora.</h1>
       <p class="mission-subtitle" id="missionSubtitle">
         Dez segundos para organizar o foco, entrar em ritmo e estudar com propósito.
@@ -2630,44 +2632,79 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <!-- ── NAVIGATION ─────────────────────────────────── -->
 <header>
   <nav class="nav">
-    <a class="brand" href="#top" aria-label="AldenirMed89 — início">
-      <div class="brand-icon" aria-hidden="true"><img src="./assets/icons/aldenirmed89-aerospace-orbital-192.png" alt="" width="38" height="38"/></div>
+    <a class="brand brand-360x" href="#top" aria-label="AldenirMed 360X — início">
+      <div class="brand-icon" aria-hidden="true"><img src="./assets/brand-360x/aldenirmed-360x-mark.svg" alt="" width="44" height="44"/></div>
       <div class="brand-text">
-        <strong><span class="brand-full">AldenirMed89</span><span class="brand-short">AldenirMed89</span></strong>
-        <span class="brand-subtitle">Intensiva &amp; Medicina Interna</span>
+        <strong><span class="brand-full">AldenirMed <b class="brand-360x-tag">360X</b></span><span class="brand-short">AldenirMed <b class="brand-360x-tag">360X</b></span></strong>
+        <span class="brand-subtitle">Intensiva · Clínica Médica · TEMI</span>
       </div>
     </a>
-    <div class="nav-links" role="navigation" aria-label="Navegação principal">
+    <button class="nav-menu-toggle" id="navMenuToggle" type="button" aria-expanded="false" aria-controls="siteNavMenu"><span aria-hidden="true">☰</span> Menu</button>
+    <div class="nav-links nav-menu" id="siteNavMenu" role="navigation" aria-label="Navegação principal">
+      <a href="#comece">🏠 Início</a>
+      <details class="nav-group">
+        <summary>🩺 Clínica</summary>
+        <div class="nav-panel" role="group" aria-label="Módulos clínicos">
+          <span class="nav-panel-title">Módulos clínicos</span>
+          <a href="#modulos" class="accent">🧭 Todos os módulos</a>
+          <a href="24_Semiologia/index.html" class="accent">🩺 Semiologia</a>
+          <a href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" class="accent">🧠 TCE CRASH</a>
+          <a href="01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html" class="accent">🧠 AVC Turbo TEMI</a>
+          <a href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html" class="accent">🟠 Hepatologia HAA</a>
+          <a href="01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/index.html">❤️‍🩹 SCA</a>
+          <a href="01_Modulos_Clinicos/Emergencias_Cardiopulmonares/index.html">🫀 FA · EAP</a>
+          <a href="01_Modulos_Clinicos/RCP_Turbo_TEMI/index.html">🫀 RCP · Turbo TEMI 360°</a>
+          <a href="01_Modulos_Clinicos/Almanaque_ECG/index.html">🫀 Almanaque ECG</a>
+          <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia</a>
+          <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Reumatologia</a>
+          <a href="01_Modulos_Clinicos/Sepse_Choque_Septico/index.html">🦠 Sepse</a>
+          <a href="#auditoria-uti" class="accent">🏥 Auditoria UTI</a>
+        </div>
+      </details>
+      <details class="nav-group">
+        <summary>🏆 Estudo &amp; TEMI</summary>
+        <div class="nav-panel" role="group" aria-label="Estudo e prova de título">
+          <span class="nav-panel-title">Estudo e prova</span>
+          <a href="questoes/index.html">🏆 Simulador TEMI</a>
+          <a href="#temi">🎯 Prova de título</a>
+          <a href="01_UpDown_Hub/index.html" class="accent">↕️ UpDown Hub</a>
+          <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca</a>
+          <a href="15_Radar_Cientifico/index.html" class="accent">📡 Estação Radar</a>
+          <a href="16_Diretorio_Medico/index.html">🌐 Estação Diretório</a>
+          <a href="05_Midia_E_Feed/index.html">🖼️ Card Feed</a>
+          <a href="#desafios">🏋️ Desafios clínicos</a>
+          <a href="#mnemonicos">🧩 Mnemônicos</a>
+        </div>
+      </details>
+      <details class="nav-group">
+        <summary>🧮 Ferramentas</summary>
+        <div class="nav-panel" role="group" aria-label="Calculadoras e ferramentas">
+          <span class="nav-panel-title">Calculadoras e ferramentas</span>
+          <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras</a>
+          <a href="13_RenalDose_Antimicrobianos/index.html">💊 RenalDose ICU</a>
+          <a href="14_SAPS3_Calculator/index.html">📊 SAPS 3</a>
+          <a href="apps/index.html">📱 Hub de apps clínicos</a>
+          <a href="#mapa">🕸️ Mapa vivo</a>
+        </div>
+      </details>
+      <a href="#apps-360" class="nav-highlight">📱 Apps 360</a>
+      <a href="#jornal-360" class="nav-highlight">📰 Jornal 360</a>
+      <details class="nav-group">
+        <summary>🌐 360X</summary>
+        <div class="nav-panel" role="group" aria-label="Universo 360X">
+          <span class="nav-panel-title">Universo 360X</span>
+          <a href="ecossistema/painel.html" class="accent">🔗 Painel 360X</a>
+          <a href="ecossistema/agentes-habilidades/" class="accent">🤖 Agentes e habilidades</a>
+          <a href="ecossistema/mapa.html" class="accent brand-360x-nav"><img src="./assets/brand-360x/logo-360x.webp" width="28" height="28" alt=""/> Mapa 360X</a>
+          <a href="17_Portal_Vivo/index.html" class="accent">🛰️ Portal UPGRADE</a>
+          <a href="#neurodiversidade-tdah" class="accent">🧠 Neurodiversidade e TDAH</a>
+          <a href="#campo-total">⚽ Campo Total</a>
+          <a href="18_Centro_Tripulacao/painel-visitas.html">📊 Visitas por dia</a>
+          <a href="18_Centro_Tripulacao/divulgacao.html">📣 Divulgar o site</a>
+        </div>
+      </details>
       <a href="planos/" class="accent">✦ Planos mensais</a>
-      <a href="membros/">Minha conta</a>
-      <a href="#neurodiversidade-tdah" class="accent">🧠 Neurodiversidade e TDAH</a>
-      <a href="#auditoria-uti" class="accent">Auditoria UTI</a>
-      <a href="ecossistema/painel.html" class="accent">🔗 Painel 360X</a>
-      <a href="ecossistema/agentes-habilidades/" class="accent">🤖 Agentes e habilidades</a>
-      <a href="ecossistema/mapa.html" class="accent brand-360x-nav"><img src="./assets/brand-360x/logo-360x.webp" width="28" height="28" alt=""/> Mapa 360X</a>
-      <a href="24_Semiologia/index.html" class="accent">🩺 Semiologia</a>
-      <a href="#modulos" class="accent">🧭 Módulos</a>
-      <a href="17_Portal_Vivo/index.html" class="accent">🛰️ Portal UPGRADE</a>
-      <a href="15_Radar_Cientifico/index.html" class="accent">📡 Estação Radar</a>
-      <a href="16_Diretorio_Medico/index.html">🌐 Estação Diretório</a>
-      <a href="01_UpDown_Hub/index.html" class="accent">↕️ UpDown Hub</a>
-      <a href="#campo-total">⚽ Campo Total</a>
-      <a href="03_Calculadoras_E_Apps/index.html">🧮 Calculadoras</a>
-      <a href="05_Midia_E_Feed/index.html">🖼️ Card Feed</a>
-      <a href="questoes/index.html">🏆 Simulador TEMI</a>
-      <a href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" class="accent">🧠 TCE CRASH</a>
-      <a href="01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html" class="accent">🧠 AVC Turbo TEMI</a>
-      <a href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html" class="accent">🟠 Hepatologia HAA</a>
-      <a href="01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/index.html">❤️‍🩹 SCA</a>
-      <a href="01_Modulos_Clinicos/Emergencias_Cardiopulmonares/index.html">🫀 FA · EAP</a>
-      <a href="01_Modulos_Clinicos/RCP_Turbo_TEMI/index.html">🫀 RCP · Turbo TEMI 360°</a>
-      <a href="01_Modulos_Clinicos/Almanaque_ECG/index.html">🫀 Almanaque ECG</a>
-      <a href="01_Modulos_Clinicos/Hematologia_Critica/index.html">🩸 Hematologia</a>
-      <a href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">🧬 Reumatologia</a>
-      <a href="01_Modulos_Clinicos/Sepse_Choque_Septico/index.html">🦠 Sepse</a>
-<a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca</a>
-      <a href="13_RenalDose_Antimicrobianos/index.html">💊 RenalDose ICU</a>
-      <a href="14_SAPS3_Calculator/index.html">📊 SAPS 3</a>
+      <a href="membros/">👤 Minha conta</a>
     </div>
     <div class="nav-tools">
       <a class="nav-download" href="#downloads" aria-label="Ir para downloads de macOS, Windows e iPhone">
@@ -2687,7 +2724,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     <img src="./assets/icons/aldenirmed89-aerospace-orbital-192.png" alt="" width="78" height="78"/>
   </button>
 
-  <aside class="sound-console" id="soundConsole" aria-label="Console sonoro AldenirMed89">
+  <aside class="sound-console" id="soundConsole" aria-label="Console sonoro AldenirMed 360X">
     <button class="sound-console-toggle" id="soundConsoleToggle" type="button"
       aria-label="Abrir console sonoro" aria-controls="soundConsolePanel"
       aria-expanded="false" title="Console sonoro">
@@ -2749,7 +2786,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     </section>
   </aside>
 
-  <aside class="settings-console" id="settingsConsole" aria-label="Configurações AldenirMed89">
+  <aside class="settings-console" id="settingsConsole" aria-label="Configurações AldenirMed 360X">
     <button class="quick-command" id="settingsConsoleToggle" type="button"
       aria-label="Abrir configurações" aria-controls="settingsConsolePanel"
       aria-expanded="false" title="Configurações">
@@ -2798,14 +2835,10 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 
     <div class="hero-left">
       <div class="hero-eyebrow" aria-hidden="true">Central clínica aeroespacial — plantão + prova + UTI</div>
-      <div class="launch-entry-panel" role="note">
+      <div class="launch-entry-panel is-compact" role="note">
         <div class="launch-entry-head">
           <span class="launch-entry-kicker">🚀 Controle de missão · padrão principal</span>
           <button class="launch-replay" id="heroReplayMission" type="button">Repetir decolagem</button>
-        </div>
-        <p>Uma entrada direta para decidir, revisar e estudar: prioridades visíveis, rotas clínicas preservadas e menos ruído na primeira tela.</p>
-        <div class="launch-entry-status" aria-hidden="true">
-          <span>● Sistemas online</span><span>Modo aeroespacial</span><span>Áudio local opcional</span>
         </div>
       </div>
       <h1 id="hero-heading">
@@ -2822,19 +2855,17 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <p id="quickSearchStatus" role="status" aria-live="polite">Busque módulos e os documentos recém-integrados. A busca fica neste navegador.</p>
         <ul id="quickResults" class="quick-results" hidden></ul>
         <nav class="quick-routes" aria-label="Atalhos principais">
-          <a href="ecossistema/index.html#sites-publicos">🌐 Projetos 360X</a>
+          <a href="#jornal-360">📰 Jornal de hoje</a>
+          <a href="#apps-360">📱 Apps 360</a>
           <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca IA</a>
           <a href="15_Radar_Cientifico/index.html">📡 Radar dos últimos dias</a>
-          <a href="18_Centro_Tripulacao/painel-visitas.html">📊 Visitas por dia</a>
-          <a href="18_Centro_Tripulacao/divulgacao.html">📣 Divulgar o site</a>
+          <a href="ecossistema/index.html#sites-publicos">🌐 Projetos 360X</a>
         </nav>
       </div>
       <div class="hero-btns">
-        <a class="btn btn-violet" href="ecossistema/index.html#sites-publicos">🌐 Explorar os projetos 360X</a>
-        <a class="btn btn-primary" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html">🧠 Abrir TCE grave CRASH</a>
-        <a class="btn btn-primary" href="15_Radar_Cientifico/index.html">📡 Estudar atualizações clínicas</a>
-        <a class="btn btn-ghost" href="#modulos">🧭 Ver todos os módulos</a>
-        <a class="btn btn-violet" href="17_Portal_Vivo/index.html">🛰️ Portal UPGRADE</a>
+        <a class="btn btn-primary" href="#modulos">🧭 Ver todos os módulos</a>
+        <a class="btn btn-violet" href="questoes/index.html">🏆 Treinar para o TEMI</a>
+        <a class="btn btn-ghost" href="#jornal-360">📰 Jornal de hoje</a>
       </div>
       <div class="view-controls" role="group" aria-label="Controles de visualização da página">
         <span class="view-controls-label" aria-hidden="true">👁️ Visualização</span>
@@ -2904,201 +2935,55 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   </section>
 </div><!-- /shell -->
 
-<!-- Conexão editorial 360X: vitrine pública, sem alterar as rotas clínicas. -->
-<section class="universe-360x" id="universo-360x" aria-labelledby="universe-360x-heading">
+<!-- ── COMECE POR AQUI (AldenirMed 360X) ───────────── -->
+<section class="start-360x" id="comece" aria-labelledby="comece-heading">
   <div class="shell">
-    <div class="universe-360x-surface">
-      <div class="universe-360x-identity">
-        <img src="./assets/brand-360x/logo-360x.webp" alt="Logotipo 360X" width="88" height="88" loading="lazy" decoding="async"/>
-        <span>UNIVERSO 360X<small>Ideias que se encontram.</small></span>
+    <div class="s360-head">
+      <div>
+        <div class="section-label">// navegação rápida</div>
+        <h2 class="section-title" id="comece-heading">Comece por aqui 🧭</h2>
+        <p class="section-sub">Oito portas para chegar ao que importa em um clique. Todo o acervo continua logo abaixo e no menu do topo.</p>
       </div>
-      <div class="universe-360x-copy">
-        <h2 id="universe-360x-heading">Conhecimento para cuidar.<br/>Curiosidade para ir além.</h2>
-        <p>Medicina, natureza, cultura e cidadania se conectam por uma mesma vontade de compreender e construir. Explore o mapa 360X, descubra afinidades entre os projetos e siga direto para cada site.</p>
-        <div class="universe-360x-routes" aria-label="Alguns caminhos do universo 360X">
-          <a href="ecossistema/index.html#site-atlas-plantas">Atlas Vivo <span>ciência e natureza ↗</span></a>
-          <a href="ecossistema/index.html#site-tempo">Tempo de Viver <span>vida e experiências ↗</span></a>
-          <a href="ecossistema/index.html#site-auditoria">Auditoria das Coisas <span>consumo e escolhas ↗</span></a>
-        </div>
-        <div class="universe-360x-actions">
-          <a class="universe-360x-explore" href="ecossistema/mapa.html">Explorar mapa visual <span aria-hidden="true">→</span></a>
-          <a class="universe-360x-directory" href="ecossistema/index.html#sites-publicos">Ver sites e projetos</a>
-        </div>
-      </div>
+    </div>
+    <div class="hub-tiles">
+      <a class="hub-tile" href="#modulos" style="--tile-accent:var(--red)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">🩺</span><strong>Módulos clínicos</strong><span>AVC, SCA, sepse, RCP, ECG, TCE, hematologia, reumatologia e mais.</span><em>abrir módulos →</em></a>
+      <a class="hub-tile" href="questoes/index.html" style="--tile-accent:var(--yellow)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">🏆</span><strong>Treino TEMI e R3</strong><span>Simulador, questões comentadas, desafios e mnemônicos.</span><em>treinar →</em></a>
+      <a class="hub-tile" href="03_Calculadoras_E_Apps/index.html" style="--tile-accent:var(--cyan)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">🧮</span><strong>Calculadoras de plantão</strong><span>Vasoativas, SAPS 3, RenalDose, ventilação e gasometria.</span><em>calcular →</em></a>
+      <a class="hub-tile" href="02_Biblioteca_IA_Engine/index.html" style="--tile-accent:var(--violet)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">📚</span><strong>Biblioteca e evidências</strong><span>Acervo, UpDown, Radar científico e diretório de fontes.</span><em>pesquisar →</em></a>
+      <a class="hub-tile is-new" href="#jornal-360" style="--tile-accent:var(--yellow)" data-search-route data-search-title="Jornal Diário 360" data-search-kind="Jornal diário" data-search-terms="jornal noticias manchetes pilulas arcanos pdf"><span class="hub-tile-icon" aria-hidden="true">📰</span><strong>Jornal Diário 360</strong><span>Manchetes, pílulas de estudo e Arcanos 360 em PDF.</span><em>ler a edição de hoje →</em></a>
+      <a class="hub-tile is-new" href="#apps-360" style="--tile-accent:var(--green)" data-search-route data-search-title="Apps 360: Códice 360X e FocusAI 360X" data-search-kind="Aplicativos" data-search-terms="apps aplicativos codice flashcards focusai leitor extensao chrome"><span class="hub-tile-icon" aria-hidden="true">📱</span><strong>Apps 360</strong><span>Códice 360X de flashcards e FocusAI Reader 360X.</span><em>abrir apps →</em></a>
+      <a class="hub-tile" href="#downloads" style="--tile-accent:var(--cyan)" data-search-route data-search-title="Central de downloads" data-search-kind="Downloads" data-search-terms="baixar download instalar mac windows iphone zip"><span class="hub-tile-icon" aria-hidden="true">⬇️</span><strong>Downloads</strong><span>Instale no Mac, Windows ou iPhone e baixe os apps 360X.</span><em>baixar →</em></a>
+      <a class="hub-tile" href="ecossistema/index.html#sites-publicos" style="--tile-accent:var(--violet)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">🌐</span><strong>Universo 360X</strong><span>Projetos, mapa visual, neurodiversidade e auditoria UTI.</span><em>explorar →</em></a>
     </div>
   </div>
 </section>
 
-<!-- ── CAMPO TOTAL 4–3–3 ─────────────────────────── -->
-<section class="total-football-section" id="campo-total" aria-labelledby="campo-total-heading">
+<!-- ── JORNAL DIÁRIO 360 (bloco gerado por scripts_admin/build_jornal_360.py) ── -->
+<section class="jornal-360x" id="jornal-360" aria-labelledby="jornal-heading">
   <div class="shell">
-    <div class="tf-surface">
-      <div class="tf-head">
-        <div>
-          <div class="section-label">// modelo operacional · responsabilidade + cobertura</div>
-          <h2 class="section-title" id="campo-total-heading">Campo Total 4–3–3 ⚽🔥</h2>
-          <p class="tf-head-copy">Onze rotas reais ocupam o campo inteiro. Cada unidade tem uma missão principal e cobre outras áreas, permitindo passar da fonte à decisão, da decisão ao estudo e do estudo à revisão sem criar silos.</p>
-        </div>
-        <span class="tf-badge">11 funções · 1 sistema</span>
+    <div class="s360-head">
+      <div>
+        <div class="section-label">// divulgação diária · radar 360 circunstancial</div>
+        <h2 class="section-title" id="jornal-heading">Jornal Diário 360 📰</h2>
+        <p class="section-sub">As notícias do dia em leitura TDAH-friendly, com pílulas de estudo para a UTI e a prova de título. Cada edição sai em PDF: jornal completo, Pílulas do Dia e Arcanos 360.</p>
       </div>
-
-      <div class="tf-controls" role="group" aria-label="Destacar momento de uso no Campo Total">
-        <button class="tf-filter" type="button" data-tf-filter="all" aria-controls="tfPitch tfStatus" aria-pressed="true">⚽ Todo o campo</button>
-        <button class="tf-filter" type="button" data-tf-filter="evidence" aria-controls="tfPitch tfStatus" aria-pressed="false">📚 Organizar evidência</button>
-        <button class="tf-filter" type="button" data-tf-filter="shift" aria-controls="tfPitch tfStatus" aria-pressed="false">🚑 Decidir no plantão</button>
-        <button class="tf-filter" type="button" data-tf-filter="study" aria-controls="tfPitch tfStatus" aria-pressed="false">🏆 Treinar para o TEMI</button>
-        <button class="tf-filter" type="button" data-tf-filter="review" aria-controls="tfPitch tfStatus" aria-pressed="false">🧠 Revisar e conectar</button>
-      </div>
-
-      <div class="tf-layout">
-        <div class="tf-pitch" id="tfPitch" role="group" aria-label="Onze funções móveis do ecossistema AldenirMed89">
-          <span class="tf-box top" aria-hidden="true"></span><span class="tf-box bottom" aria-hidden="true"></span>
-          <span class="tf-goal top" aria-hidden="true"></span><span class="tf-goal bottom" aria-hidden="true"></span>
-          <span class="tf-pass-lane one" aria-hidden="true"></span><span class="tf-pass-lane two" aria-hidden="true"></span>
-          <span class="tf-pass-lane three" aria-hidden="true"></span><span class="tf-pass-lane four" aria-hidden="true"></span>
-
-          <a class="tf-player" data-tf-player="library" data-phases="evidence review" data-primary="Base de evidências" data-cover="Diretório · Radar · UpDown" href="02_Biblioteca_IA_Engine/index.html" style="--x:50%;--y:89%;--player-accent:var(--violet)" aria-label="Biblioteca IA: base de evidências">
-            <span class="tf-number">01</span><span><strong>Biblioteca IA</strong><small>base · evidências</small></span>
-          </a>
-          <a class="tf-player" data-tf-player="directory" data-phases="evidence review" data-primary="Validação de fontes" data-cover="Biblioteca · Radar" href="16_Diretorio_Medico/index.html" style="--x:14%;--y:69%;--player-accent:var(--cyan)" aria-label="Diretório Médico: validação de fontes">
-            <span class="tf-number">02</span><span><strong>Diretório</strong><small>lateral · fontes</small></span>
-          </a>
-          <a class="tf-player" data-tf-player="radar" data-phases="evidence review" data-primary="Vigilância científica" data-cover="Biblioteca · UpDown" href="15_Radar_Cientifico/index.html" style="--x:38%;--y:69%;--player-accent:var(--cyan)" aria-label="Radar Científico: vigilância e atualização">
-            <span class="tf-number">03</span><span><strong>Radar</strong><small>zaga · atualização</small></span>
-          </a>
-          <a class="tf-player" data-tf-player="updown" data-phases="evidence study review" data-primary="Síntese autoral" data-cover="Biblioteca · ACRA · TEMI" href="01_UpDown_Hub/index.html" style="--x:62%;--y:69%;--player-accent:var(--green)" aria-label="UpDown Hub: síntese autoral">
-            <span class="tf-number">04</span><span><strong>UpDown Hub</strong><small>zaga · síntese</small></span>
-          </a>
-          <a class="tf-player" data-tf-player="feed" data-phases="study review" data-primary="Disseminação visual" data-cover="UpDown · ACRA" href="05_Midia_E_Feed/index.html" style="--x:86%;--y:69%;--player-accent:#6aa9ff;--player-ink:#170700" aria-label="Card Feed: disseminação visual">
-            <span class="tf-number">05</span><span><strong>Card Feed</strong><small>lateral · visual</small></span>
-          </a>
-          <a class="tf-player" data-tf-player="map" data-phases="evidence shift study review" data-primary="Integração do sistema" data-cover="Todas as linhas" href="#mapa" style="--x:50%;--y:49%;--player-accent:var(--yellow)" aria-label="Mapa Vivo: integração do sistema">
-            <span class="tf-number">06</span><span><strong>Mapa Vivo</strong><small>volante · conexão</small></span>
-          </a>
-          <a class="tf-player" data-tf-player="calculators" data-phases="shift review" data-primary="Decisão objetiva" data-cover="Módulos · RenalDose · SAPS 3" href="03_Calculadoras_E_Apps/index.html" style="--x:25%;--y:38%;--player-accent:var(--cyan)" aria-label="Calculadoras: decisão objetiva">
-            <span class="tf-number">07</span><span><strong>Calculadoras</strong><small>meio · decisão</small></span>
-          </a>
-          <a class="tf-player" data-tf-player="pocus" data-phases="shift study" data-primary="Imagem à beira-leito" data-cover="Decisão · módulos clínicos" href="09_POCUS_Hub/index.html" style="--x:75%;--y:38%;--player-accent:var(--green)" aria-label="POCUS Hub: imagem à beira-leito">
-            <span class="tf-number">08</span><span><strong>POCUS Hub</strong><small>meio · imagem</small></span>
-          </a>
-          <a class="tf-player" data-tf-player="clinical" data-phases="shift study" data-primary="Aplicação clínica" data-cover="Calculadoras · POCUS · TEMI" href="#modulos" style="--x:18%;--y:16%;--player-accent:var(--red)" aria-label="Módulos clínicos: aplicação prática">
-            <span class="tf-number">09</span><span><strong>Módulos clínicos</strong><small>ponta · aplicação</small></span>
-          </a>
-          <a class="tf-player" data-tf-player="acra" data-phases="study review" data-primary="Recuperação ativa" data-cover="UpDown · Feed · TEMI" href="22_Microparticulas_Ativas_ACRA/index.html" style="--x:50%;--y:16%;--player-accent:var(--violet)" aria-label="Micropartículas ACRA: recuperação ativa">
-            <span class="tf-number">10</span><span><strong>ACRA</strong><small>falso 9 · retenção</small></span>
-          </a>
-          <a class="tf-player" data-tf-player="temi" data-phases="study review" data-primary="Avaliação e finalização" data-cover="ACRA · UpDown · módulos" href="questoes/index.html" style="--x:82%;--y:16%;--player-accent:var(--yellow)" aria-label="Simulador TEMI: avaliação e finalização">
-            <span class="tf-number">11</span><span><strong>Simulador TEMI</strong><small>ataque · treino</small></span>
-          </a>
-        </div>
-
-        <aside class="tf-sidebar" aria-label="Leitura tática do Campo Total">
-          <div class="tf-readout">
-            <span class="tf-readout-label">Leitura do momento</span>
-            <strong id="tfReadoutTitle">Todo o campo conectado</strong>
-            <p class="tf-status" id="tfStatus" aria-live="polite" aria-atomic="true">11 rotas em destaque; as demais rotas continuam disponíveis em qualquer filtro.</p>
-          </div>
-          <div class="tf-principles" aria-label="Quatro princípios do modelo operacional">
-            <a class="tf-principle" href="16_Diretorio_Medico/index.html"><b>🛡️ Cobertura</b><span>Fontes e revisão protegem a decisão.</span></a>
-            <a class="tf-principle" href="#modulos"><b>🔄 Mobilidade</b><span>Cada módulo apoia o próximo passo.</span></a>
-            <a class="tf-principle" href="#mapa"><b>↔️ Amplitude</b><span>O mapa evita conhecimento isolado.</span></a>
-            <a class="tf-principle" href="questoes/index.html"><b>🎯 Finalização</b><span>Treino converte estudo em desempenho.</span></a>
-          </div>
-        </aside>
-      </div>
-
-      <p class="tf-rule"><strong>Regra do sistema:</strong> Futebol Total não significa “todo mundo fazendo tudo”. Significa mobilidade, trocas coordenadas, ocupação inteligente dos espaços e cobertura mútua. Esta é uma homenagem conceitual autoral, sem afiliação esportiva oficial; o conteúdo clínico permanece separado da metáfora visual.</p>
+      <a class="s360-link" href="jornal-360/index.html">🗂️ Todas as edições →</a>
     </div>
-  </div>
-</section>
-
-<!-- ── DOWNLOADS MULTIPLATAFORMA ─────────────────── -->
-<section class="downloads-section" id="downloads" aria-labelledby="downloads-heading">
-  <div class="shell">
-    <p class="hero-btns"><a class="btn btn-ghost" href="downloads/AldenirMed89-Identidade-Multiplataforma.zip" download>🎨 Logotipo aeroespacial · Mac, iPhone, Windows e Android</a></p>
-    <div class="download-showcase">
-      <div class="download-head">
-        <div>
-          <div class="section-label">// acesso fácil em qualquer dispositivo</div>
-          <h2 class="section-title" id="downloads-heading">Baixe ou instale o AldenirMed89 💻📱</h2>
-          <p class="section-sub">Três caminhos claros e diretos. O conteúdo continua vindo do mesmo site, sempre atualizado, sem telemetria e sem armazenar dados de pacientes.</p>
-        </div>
-        <span class="download-ready"><span aria-hidden="true">●</span> Links disponíveis agora</span>
-      </div>
-
-      <div class="download-grid" role="list" aria-label="Downloads por plataforma">
-        <article class="download-card" role="listitem" data-download-card="macos">
-          <div class="download-platform">
-            <span class="download-icon" aria-hidden="true">🍎</span>
-            <div><small>Computadores Apple</small><h3>macOS</h3></div>
-          </div>
-          <p>Web app criado localmente pelo Safari para abrir a plataforma direto pelo Dock no MacBook Pro ou Air.</p>
-          <div class="download-tags" aria-label="Características do pacote macOS">
-            <span class="download-tag">Safari · sem Gatekeeper</span>
-            <span class="download-tag">Sem executável</span>
-          </div>
-          <div class="download-actions">
-            <a class="download-action primary" href="docs_usuario/ACESSO_DOCK_MAC/">
-              <span>Instalar no Mac</span><span>GUIA →</span>
-            </a>
-            <a class="download-action secondary" href="downloads/Antigravity-Consultas-macOS.zip" download>
-              <span>Baixar atalho opcional</span><span>ZIP · 1,4 KB</span>
-            </a>
-          </div>
-          <p class="download-note">O ZIP atual contém somente um endereço .webloc e README; não contém .app, script ou instalador.</p>
-        </article>
-
-        <article class="download-card" role="listitem" data-download-card="windows">
-          <div class="download-platform">
-            <span class="download-icon" aria-hidden="true">🪟</span>
-            <div><small>PC e notebook</small><h3>Windows</h3></div>
-          </div>
-          <p>Instalador reversível que cria atalhos no Desktop e no menu Iniciar, sem exigir administrador.</p>
-          <div class="download-tags" aria-label="Características do pacote Windows">
-            <span class="download-tag">Windows 10/11</span>
-            <span class="download-tag">ZIP · 127 KB</span>
-          </div>
-          <div class="download-actions">
-            <a class="download-action primary" href="downloads/Antigravity-Consultas-Windows.zip" download>
-              <span>Baixar para Windows</span><span>ZIP ↓</span>
-            </a>
-            <a class="download-action secondary" href="docs_usuario/ACESSO_WINDOWS/">
-              <span>Ver instalação passo a passo</span><span>GUIA →</span>
-            </a>
-          </div>
-          <p class="download-note">Launcher transparente e sem assinatura Authenticode; o guia mostra como instalar e remover.</p>
-        </article>
-
-        <article class="download-card" role="listitem" data-download-card="ios">
-          <div class="download-platform">
-            <span class="download-icon" aria-hidden="true">📱</span>
-            <div><small>Celular e tablet Apple</small><h3>iPhone / iPad</h3></div>
-          </div>
-          <p>Instale o site como App Web pelo Safari e abra em tela cheia com ícone próprio na Tela de Início.</p>
-          <div class="download-tags" aria-label="Características do acesso iOS">
-            <span class="download-tag">App Web iOS</span>
-            <span class="download-tag">Tela de Início</span>
-          </div>
-          <div class="download-actions">
-            <a class="download-action primary" href="docs_usuario/ACESSO_IPHONE/">
-              <span>Instalar no iPhone / iPad</span><span>GUIA →</span>
-            </a>
-            <a class="download-action secondary" href="downloads/Antigravity-Consultas-iPhone-Icones.zip" download>
-              <span>Baixar pacote de ícones</span><span>ZIP · 713 KB</span>
-            </a>
-          </div>
-          <p class="download-note">É um App Web instalado pelo Safari, não um aplicativo publicado na App Store.</p>
-        </article>
-      </div>
-
-      <div class="download-trust" aria-label="Informações de segurança dos downloads">
-        <span>🔒 Sem telemetria</span>
-        <span>🧹 Instalações reversíveis</span>
-        <span>🌐 Conteúdo sempre atualizado pelo site</span>
-        <a href="downloads/SHA256SUMS.txt">Verificar checksums SHA-256</a>
-        <a href="docs_usuario/ALIMENTAR_CONTEUDO_SITE/">Como alimentar cada seção</a>
-        <a href="docs_usuario/OPERACAO_CONTINUA/">Manual de operação e expansão</a>
-      </div>
+    <div class="j360-home">
+      <!-- JORNAL360:INICIO (gerado por scripts_admin/build_jornal_360.py) -->
+      <article class="j360-home-latest" aria-labelledby="j360HomeLatest">
+        <span class="j360-home-kicker">📰 Edição nº 011 · segunda-feira, 16 de novembro de 2026</span>
+        <h3 id="j360HomeLatest">Tema do dia: O choque que não responde</h3>
+        <ul class="j360-home-headlines"><li>Enem: abstenção de 36% no 2º dia, a maior desde 2020; o MEC atribui o número à inscrição automática.</li><li>Lula discursa na Asean e combina com Singapura retomar o acordo Mercosul–Asean.</li><li>PIB do Japão recua 0,1% anualizado no 3º trimestre, a primeira queda em um ano.</li><li>Inter 1 × 0 Flamengo: título inédito da Copa do Brasil Feminina (agregado 4 × 1).</li></ul>
+        <ul class="j360-home-pills" aria-label="Pílulas de estudo da edição"><li><b>🏆 TEMI</b> Drogas vasoativas (SSC 2021, VASST, SOAP II, SEPSISPAM)</li><li><b>🩺 R3</b> Insuficiência adrenal e crise adrenal (Endocrine Society 2016; ADRENAL × APROCCHSS)</li><li><b>🔊 POCUS</b> Função de VE &quot;olhométrica&quot; (EPSS &gt; 7 mm)</li><li><b>🫀 ECG</b> FA × flutter (2:1 ≈ 150 bpm)</li><li><b>🫁 VM</b> Complacência e resistência</li></ul>
+        <div class="j360-files"><a class="j360-file j360-file-jornal" href="jornal-360/edicoes/Jornal_Diario_360_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">📄</span> Jornal completo<small>PDF · 1,4 MB</small></a><a class="j360-file j360-file-pilulas" href="jornal-360/edicoes/Pilulas_do_Dia_360_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">💊</span> Pílulas do Dia<small>PDF · 839 KB</small></a><a class="j360-file j360-file-arcanos" href="jornal-360/edicoes/Arcanos_360_Sessao_Extra_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">🔮</span> Arcanos 360<small>PDF · 746 KB</small></a></div>
+      </article>
+      <aside class="j360-home-archive" aria-label="Edições anteriores do Jornal Diário 360">
+        <h3>🗂️ Edições anteriores</h3>
+        <ul><li><a href="jornal-360/index.html#edicao-010"><b>15/11/2026</b><span>nº 010 · O ventrículo direito</span></a></li><li><a href="jornal-360/index.html#edicao-009"><b>14/11/2026</b><span>nº 009 · Sair do ventilador</span></a></li><li><a href="jornal-360/index.html#edicao-008"><b>13/11/2026</b><span>nº 008 · Hiperglicemia grave</span></a></li><li><a href="jornal-360/index.html#edicao-007"><b>12/11/2026</b><span>nº 007 · Ventilação protetora</span></a></li></ul>
+        <a class="j360-home-all" href="jornal-360/index.html">Ver todas as edições e o índice de pílulas →</a>
+      </aside>
+      <!-- JORNAL360:FIM -->
     </div>
   </div>
 </section>
@@ -3108,7 +2993,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   <div class="shell">
     <div class="reveal section-intro">
       <div class="section-label">// comissão técnica · comunicação e evolução</div>
-      <h2 class="section-title" id="portal-heading">Comissão técnica AldenirMed89 🛰️</h2>
+      <h2 class="section-title" id="portal-heading">Comissão técnica AldenirMed 360X 🛰️</h2>
       <p class="section-sub">O Portal Vivo registra a evolução do sistema. O Centro da Tripulação organiza preferências, métricas agregadas e comunicação protegida — coordenação fora do campo sem interferir no conteúdo clínico.</p>
     </div>
     <div class="portal-grid">
@@ -3116,7 +3001,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       <a class="module-card portal-card mod-violet reveal" href="17_Portal_Vivo/index.html" aria-label="Abrir Portal Vivo de UPGRADE da plataforma">
         <div class="module-icon">🛰️</div>
         <span class="card-state">Portal opcional</span>
-        <h3>UPGRADE contínuo do AldenirMed89</h3>
+        <h3>UPGRADE contínuo do AldenirMed 360X</h3>
         <p>Acompanhe novas ferramentas, correções, sessões atualizadas e marcos de evolução do sistema. O conteúdo clínico e de estudo recebido pelo chat segue para a Estação Radar Diário.</p>
         <div class="module-tag-row">
           <span class="module-tag">Evolução da plataforma</span>
@@ -3148,7 +3033,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   <div class="shell">
     <div class="reveal section-intro">
       <div class="section-label">// cobertura e leitura do jogo</div>
-      <h2 class="section-title" id="stations-heading">Estações AldenirMed89 — cobertura total 📡</h2>
+      <h2 class="section-title" id="stations-heading">Estações AldenirMed 360X — cobertura total 📡</h2>
       <p class="section-sub">Duas áreas independentes e coordenadas: o Radar acompanha o que mudou; o Diretório sustenta a checagem de fontes. Nenhuma decisão avança sem cobertura informacional.</p>
     </div>
     <div class="stations-grid">
@@ -3185,37 +3070,11 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 
 <!-- ── MÓDULOS E APPS ─────────────────────────────── -->
 
-<!-- Neurodiversidade e TDAH: apresentação e links, sem novas condutas clínicas. -->
-<section id="neurodiversidade-tdah" aria-labelledby="neurodiversidade-title"><div class="shell">
-  <div class="section-intro"><span class="section-tag">Ecossistema 360X · Aprendizagem acessível</span><h2 id="neurodiversidade-title" class="section-title">Neurodiversidade e TDAH</h2><p class="section-desc">Uma área própria para conectar o AldenirMed89 ao projeto DiversaMente e às iniciativas FOCO CLARO e TDAH 360.</p></div>
-  <div class="neuro-resource-grid">
-    <a class="neuro-resource-card" href="ecossistema/neurodiversidade-tdah/"><div class="neuro-resource-icon" aria-hidden="true">🧠</div><h3>Neurodiversidade e TDAH</h3><p>Conheça os recursos, encontre o projeto já elaborado e escolha o próximo caminho.</p><span class="neuro-resource-link">Abrir a nova seção →</span></a>
-    <a class="neuro-resource-card" href="ecossistema/neurodiversidade-tdah/#diversamente"><div class="neuro-resource-icon" aria-hidden="true">🌿</div><h3>DiversaMente</h3><p>Revista, direitos, acolhimento e recursos de neurodiversidade conectados em um portal.</p><span class="neuro-resource-link">Explorar o projeto →</span></a>
-    <a class="neuro-resource-card" href="ecossistema/neurodiversidade-tdah/#foco-claro"><div class="neuro-resource-icon" aria-hidden="true">◈</div><h3>FOCO CLARO e TDAH 360</h3><p>Avaliador editorial, guia de pesquisa e iniciativas de organização conectados ao ecossistema.</p><span class="neuro-resource-link">Ver os recursos →</span></a>
-  </div>
-</div></section>
-
-<!-- Auditoria UTI 360X: seção integrada, sem substituir módulos existentes. -->
-<section id="auditoria-uti" class="section" aria-labelledby="auditoria-uti-title">
-  <div class="uti360x-intro">
-    <span class="section-tag">Turbo TEMI 360X · Gestão e transparência</span>
-    <h2 id="auditoria-uti-title">Auditoria UTI</h2>
-    <p>Do preço do equipamento ao custo por paciente-dia. Consulte o catálogo, explore os cenários e revise as evidências de uma compra.</p>
-    <div class="uti360x-actions"><a class="uti360x-primary" href="ecossistema/auditoria-uti/">Abrir painel de Auditoria UTI →</a><a href="https://github.com/aldenirfilho/aldenirmed89/tree/main/ecossistema/auditoria-uti" target="_blank" rel="noopener noreferrer">Documentação no GitHub</a></div>
-    <p class="uti360x-notice"><strong>Base documental parcial:</strong> 32 dos 140 itens possuem preço elegível. Sem atualização automática BPS/PNCP. Alertas indicam revisão; não comprovam superfaturamento.</p>
-  </div>
-  <div class="uti360x-features" aria-label="Recursos do painel">
-    <div><strong>140 itens</strong><span>Equipamentos, medicamentos e materiais.</span></div>
-    <div><strong>10 / 20 / 30 leitos</strong><span>Cenários de orçamento e paciente-dia.</span></div>
-    <div><strong>Triagem de preços</strong><span>Fontes, equivalência e amostra mínima.</span></div>
-    <div><strong>Excel incorporado</strong><span>Planilha original disponível no painel.</span></div>
-  </div>
-</section>
 <section id="modulos" aria-labelledby="mod-heading">
   <div class="shell">
     <div class="reveal section-intro">
       <div class="section-label">// elenco móvel · função primária + coberturas</div>
-      <h2 class="section-title" id="mod-heading">Módulos e apps AldenirMed89 — elenco em rotação 🧬</h2>
+      <h2 class="section-title" id="mod-heading">Módulos e apps AldenirMed 360X — elenco em rotação 🧬</h2>
       <p class="section-sub">Todos os módulos continuam visíveis e com nomes clínicos claros. Cada ferramenta conserva sua função principal e se conecta às rotas de evidência, decisão, imagem, treino e revisão.</p>
     </div>
     <div class="modules-grid">
@@ -3823,68 +3682,6 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   </div>
 </section>
 
-<!-- ── MNEMÔNICOS UTI ──────────────────────────────── -->
-<section id="mnemonicos" class="mnem-section" aria-labelledby="mnem-heading">
-  <div class="shell">
-    <div class="reveal section-intro">
-      <div class="section-label">// técnicas cognitivas</div>
-      <h2 class="section-title" id="mnem-heading">Mnemônicos Clínicos Rápidos 🧩</h2>
-      <p class="section-sub">Uma prévia leve com <strong>3 mnemônicos por vez</strong>, alternados ao longo do dia. Clique no card para revisar ou abra a seção oficial para pesquisar, filtrar e treinar o acervo completo.</p>
-    </div>
-
-    <div class="mnem-controls reveal">
-      <button class="mnem-train-toggle" id="mnemPrev" type="button" aria-label="Mostrar trio anterior">← Trio anterior</button>
-      <button class="mnem-train-toggle" id="mnemNext" type="button" aria-label="Mostrar próximos três mnemônicos">Alternar 3 →</button>
-      <a class="dsf-admin-link" href="questoes/explorar.html">🔎 Buscar questões, desafios e mnemônicos por tema →</a>
-      <a class="dsf-admin-link" href="mnemonicos/">🧠 Abrir seção completa de mnemônicos →</a>
-    </div>
-    <div class="mnem-count" id="mnemCount" aria-live="polite"></div>
-
-    <div id="mnem-grid" class="mnem-grid" role="list"></div>
-    <div class="mnem-empty" id="mnemEmpty" style="display:none">Nenhum mnemônico encontrado para este filtro.</div>
-
-  </div>
-</section>
-
-<!-- ── DESAFIOS CLÍNICOS ──────────────────────────── -->
-<section id="desafios" class="dsf-section" aria-labelledby="dsf-heading">
-  <div class="shell">
-    <div class="reveal section-intro">
-      <div class="section-label">// banco de desafios</div>
-      <h2 class="section-title" id="dsf-heading">Desafios Clínicos 🏋️</h2>
-      <p class="section-sub">Uma prévia com <strong>3 desafios por vez</strong>, alternados ao longo do dia. Escolha TEMI ou R3; o banco completo permanece na seção oficial.</p>
-    </div>
-    <div style="margin-top:40px">
-      <div class="dsf-tabs" role="tablist" aria-label="Selecionar ramo clínico">
-        <button class="dsf-tab active" data-branch="temi"
-          style="--dsf-c:var(--cyan)" role="tab"
-          aria-selected="true" aria-controls="dsf-grid">
-          🏥 TEMI — Medicina Intensiva
-        </button>
-        <button class="dsf-tab" data-branch="r3"
-          style="--dsf-c:var(--green)" role="tab"
-          aria-selected="false" aria-controls="dsf-grid">
-          🩺 R3 — Clínica Médica Avançada
-        </button>
-      </div>
-      <div class="dsf-filters">
-        <button class="dsf-chip" id="dsfPrev" type="button">← Trio anterior</button>
-        <button class="dsf-chip" id="dsfNext" type="button">Alternar 3 →</button>
-        <span id="dsfPreviewCount" class="mnem-count" aria-live="polite"></span>
-      </div>
-      <div id="dsf-grid" class="dsf-grid" role="list"></div>
-      <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px">
-        <a class="dsf-admin-link" href="desafios/">
-          📖 Abrir desafios em tela cheia →
-        </a>
-        <a class="dsf-admin-link" href="admin/desafios.html">
-          ✎ Gerenciar desafios →
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── TEMI ────────────────────────────────────────── -->
 <section class="temi-section" id="temi" aria-labelledby="temi-heading">
   <div class="shell">
@@ -3933,6 +3730,427 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ── DESAFIOS CLÍNICOS ──────────────────────────── -->
+<section id="desafios" class="dsf-section" aria-labelledby="dsf-heading">
+  <div class="shell">
+    <div class="reveal section-intro">
+      <div class="section-label">// banco de desafios</div>
+      <h2 class="section-title" id="dsf-heading">Desafios Clínicos 🏋️</h2>
+      <p class="section-sub">Uma prévia com <strong>3 desafios por vez</strong>, alternados ao longo do dia. Escolha TEMI ou R3; o banco completo permanece na seção oficial.</p>
+    </div>
+    <div style="margin-top:40px">
+      <div class="dsf-tabs" role="tablist" aria-label="Selecionar ramo clínico">
+        <button class="dsf-tab active" data-branch="temi"
+          style="--dsf-c:var(--cyan)" role="tab"
+          aria-selected="true" aria-controls="dsf-grid">
+          🏥 TEMI — Medicina Intensiva
+        </button>
+        <button class="dsf-tab" data-branch="r3"
+          style="--dsf-c:var(--green)" role="tab"
+          aria-selected="false" aria-controls="dsf-grid">
+          🩺 R3 — Clínica Médica Avançada
+        </button>
+      </div>
+      <div class="dsf-filters">
+        <button class="dsf-chip" id="dsfPrev" type="button">← Trio anterior</button>
+        <button class="dsf-chip" id="dsfNext" type="button">Alternar 3 →</button>
+        <span id="dsfPreviewCount" class="mnem-count" aria-live="polite"></span>
+      </div>
+      <div id="dsf-grid" class="dsf-grid" role="list"></div>
+      <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px">
+        <a class="dsf-admin-link" href="desafios/">
+          📖 Abrir desafios em tela cheia →
+        </a>
+        <a class="dsf-admin-link" href="admin/desafios.html">
+          ✎ Gerenciar desafios →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MNEMÔNICOS UTI ──────────────────────────────── -->
+<section id="mnemonicos" class="mnem-section" aria-labelledby="mnem-heading">
+  <div class="shell">
+    <div class="reveal section-intro">
+      <div class="section-label">// técnicas cognitivas</div>
+      <h2 class="section-title" id="mnem-heading">Mnemônicos Clínicos Rápidos 🧩</h2>
+      <p class="section-sub">Uma prévia leve com <strong>3 mnemônicos por vez</strong>, alternados ao longo do dia. Clique no card para revisar ou abra a seção oficial para pesquisar, filtrar e treinar o acervo completo.</p>
+    </div>
+
+    <div class="mnem-controls reveal">
+      <button class="mnem-train-toggle" id="mnemPrev" type="button" aria-label="Mostrar trio anterior">← Trio anterior</button>
+      <button class="mnem-train-toggle" id="mnemNext" type="button" aria-label="Mostrar próximos três mnemônicos">Alternar 3 →</button>
+      <a class="dsf-admin-link" href="questoes/explorar.html">🔎 Buscar questões, desafios e mnemônicos por tema →</a>
+      <a class="dsf-admin-link" href="mnemonicos/">🧠 Abrir seção completa de mnemônicos →</a>
+    </div>
+    <div class="mnem-count" id="mnemCount" aria-live="polite"></div>
+
+    <div id="mnem-grid" class="mnem-grid" role="list"></div>
+    <div class="mnem-empty" id="mnemEmpty" style="display:none">Nenhum mnemônico encontrado para este filtro.</div>
+
+  </div>
+</section>
+
+<!-- ── APPS 360 ───────────────────────────────────── -->
+<section class="apps-360x" id="apps-360" aria-labelledby="apps-360-heading">
+  <div class="shell">
+    <div class="s360-head">
+      <div>
+        <div class="section-label">// aplicativos conectados</div>
+        <h2 class="section-title" id="apps-360-heading">Apps 360 📱</h2>
+        <p class="section-sub">Aplicativos do ecossistema 360X conectados à plataforma: estude com o Códice 360X, leia com o FocusAI e acompanhe o Jornal Diário 360.</p>
+      </div>
+      <a class="s360-link" href="apps/index.html">📱 Hub de apps clínicos →</a>
+    </div>
+    <div class="apps-360x-grid">
+      <article class="app360-card is-featured" style="--app-accent:var(--yellow)">
+        <div class="app360-top"><span class="app360-icon" aria-hidden="true">🎴</span><div><h3>Códice 360X · Flashcards</h3><small>App web instalável · TEMI e R3</small></div></div>
+        <p>Repetição espaçada com baralhos prontos de TEMI e R3 de Clínica Médica, importação de .apkg e JSON gerado por IA e uso offline depois de instalado.</p>
+        <ul class="app360-tags"><li>Repetição espaçada</li><li>.apkg</li><li>Offline</li></ul>
+        <div class="app360-actions">
+          <a class="is-primary" href="https://aldenirfilho.github.io/intensivahub/flashcards/" target="_blank" rel="noopener noreferrer" data-search-route data-search-title="Códice 360X · Flashcards TEMI e R3" data-search-kind="App 360" data-search-terms="codice flashcards anki apkg temi r3 repeticao espacada">Abrir Códice 360X ↗</a>
+          <a href="https://aldenirfilho.github.io/intensivahub/" target="_blank" rel="noopener noreferrer">IntensivaHub ↗</a>
+        </div>
+      </article>
+      <article class="app360-card is-featured" style="--app-accent:var(--violet)">
+        <div class="app360-top"><span class="app360-icon" aria-hidden="true">📖</span><div><h3>FocusAI Reader 360X</h3><small>Extensão do Chrome · v8.0.0</small></div></div>
+        <p>Transforma páginas, artigos e PDFs em leitura limpa com OpenDyslexic, marca-texto, anotações e transcrição de vídeos. Pensado para TDAH e dislexia.</p>
+        <ul class="app360-tags"><li>TDAH</li><li>Dislexia</li><li>PDF → texto</li></ul>
+        <div class="app360-actions">
+          <a class="is-primary" href="apps/focusai-360/index.html" data-search-route data-search-title="FocusAI Reader 360X · leitor TDAH e dislexia" data-search-kind="App 360" data-search-terms="focusai leitor extensao chrome tdah dislexia opendyslexic transcricao pdf">Conhecer e instalar</a>
+          <a href="downloads/FocusAI-Reader-360X-v8.0.0.zip" download>⬇️ ZIP · 1,2 MB</a>
+        </div>
+      </article>
+      <article class="app360-card is-featured" style="--app-accent:var(--cyan)">
+        <div class="app360-top"><span class="app360-icon" aria-hidden="true">📰</span><div><h3>Jornal Diário 360</h3><small>Edição diária em PDF</small></div></div>
+        <p>Manchetes do dia, pílulas TEMI, R3, POCUS, ECG e ventilação mecânica e a coluna Arcanos 360, com índice de estudo por edição.</p>
+        <ul class="app360-tags"><li>Diário</li><li>Pílulas</li><li>OpenDyslexic</li></ul>
+        <div class="app360-actions">
+          <a class="is-primary" href="jornal-360/index.html" data-search-route data-search-title="Jornal Diário 360 · edições em PDF" data-search-kind="Jornal diário" data-search-terms="jornal diario noticias pilulas arcanos pdf edicoes">Ler o jornal</a>
+          <a href="jornal-360/index.html#indice-pilulas">💊 Índice de pílulas</a>
+        </div>
+      </article>
+      <article class="app360-card" style="--app-accent:var(--green)">
+        <div class="app360-top"><span class="app360-icon" aria-hidden="true">🫁</span><div><h3>RespiraSense ICU</h3><small>App web instalável · UTI</small></div></div>
+        <p>Oxigenoterapia, CNAF, VNI, ventilação protetora, SDRA, gasometria e assincronias em um painel de plantão.</p>
+        <div class="app360-actions"><a class="is-primary" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html">Abrir RespiraSense</a></div>
+      </article>
+      <article class="app360-card" style="--app-accent:var(--cyan)">
+        <div class="app360-top"><span class="app360-icon" aria-hidden="true">🖼️</span><div><h3>Card Feed Médico</h3><small>App web instalável · revisão visual</small></div></div>
+        <p>Cards de estudo em fluxo contínuo para revisar conceitos em poucos minutos, no celular ou no computador.</p>
+        <div class="app360-actions"><a class="is-primary" href="05_Midia_E_Feed/index.html">Abrir Card Feed</a></div>
+      </article>
+      <article class="app360-card" style="--app-accent:var(--violet)">
+        <div class="app360-top"><span class="app360-icon" aria-hidden="true">🧮</span><div><h3>Hub de apps clínicos</h3><small>Calculadoras e dashboards</small></div></div>
+        <p>RespiraCrit, Calculadoras UTI PRO, Vasoativas e os apps 360X reunidos em uma única página.</p>
+        <div class="app360-actions"><a class="is-primary" href="apps/index.html">Abrir hub de apps</a></div>
+      </article>
+    </div>
+    <p class="section-sub" style="margin-top:14px">⚠️ <em>Ferramentas educacionais e de apoio à decisão. Não substituem o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.</em></p>
+  </div>
+</section>
+
+<!-- ── DOWNLOADS MULTIPLATAFORMA ─────────────────── -->
+<section class="downloads-section" id="downloads" aria-labelledby="downloads-heading">
+  <div class="shell">
+    <div class="download-showcase">
+      <div class="download-head">
+        <div>
+          <div class="section-label">// acesso fácil em qualquer dispositivo</div>
+          <h2 class="section-title" id="downloads-heading">Central de downloads 💻📱</h2>
+          <p class="section-sub">Instale a plataforma no seu aparelho e baixe os aplicativos 360X. O conteúdo continua vindo do mesmo site, sempre atualizado, sem telemetria e sem armazenar dados de pacientes.</p>
+        </div>
+        <span class="download-ready"><span aria-hidden="true">●</span> Links disponíveis agora</span>
+      </div>
+
+      <div class="download-grid" role="list" aria-label="Downloads por plataforma">
+        <article class="download-card" role="listitem" data-download-card="macos">
+          <div class="download-platform">
+            <span class="download-icon" aria-hidden="true">🍎</span>
+            <div><small>Computadores Apple</small><h3>macOS</h3></div>
+          </div>
+          <p>Web app criado localmente pelo Safari para abrir a plataforma direto pelo Dock no MacBook Pro ou Air.</p>
+          <div class="download-tags" aria-label="Características do pacote macOS">
+            <span class="download-tag">Safari · sem Gatekeeper</span>
+            <span class="download-tag">Sem executável</span>
+          </div>
+          <div class="download-actions">
+            <a class="download-action primary" href="docs_usuario/ACESSO_DOCK_MAC/">
+              <span>Instalar no Mac</span><span>GUIA →</span>
+            </a>
+            <a class="download-action secondary" href="downloads/Antigravity-Consultas-macOS.zip" download>
+              <span>Baixar atalho opcional</span><span>ZIP · 1,4 KB</span>
+            </a>
+          </div>
+          <p class="download-note">O ZIP atual contém somente um endereço .webloc e README; não contém .app, script ou instalador.</p>
+        </article>
+
+        <article class="download-card" role="listitem" data-download-card="windows">
+          <div class="download-platform">
+            <span class="download-icon" aria-hidden="true">🪟</span>
+            <div><small>PC e notebook</small><h3>Windows</h3></div>
+          </div>
+          <p>Instalador reversível que cria atalhos no Desktop e no menu Iniciar, sem exigir administrador.</p>
+          <div class="download-tags" aria-label="Características do pacote Windows">
+            <span class="download-tag">Windows 10/11</span>
+            <span class="download-tag">ZIP · 127 KB</span>
+          </div>
+          <div class="download-actions">
+            <a class="download-action primary" href="downloads/Antigravity-Consultas-Windows.zip" download>
+              <span>Baixar para Windows</span><span>ZIP ↓</span>
+            </a>
+            <a class="download-action secondary" href="docs_usuario/ACESSO_WINDOWS/">
+              <span>Ver instalação passo a passo</span><span>GUIA →</span>
+            </a>
+          </div>
+          <p class="download-note">Launcher transparente e sem assinatura Authenticode; o guia mostra como instalar e remover.</p>
+        </article>
+
+        <article class="download-card" role="listitem" data-download-card="ios">
+          <div class="download-platform">
+            <span class="download-icon" aria-hidden="true">📱</span>
+            <div><small>Celular e tablet Apple</small><h3>iPhone / iPad</h3></div>
+          </div>
+          <p>Instale o site como App Web pelo Safari e abra em tela cheia com ícone próprio na Tela de Início.</p>
+          <div class="download-tags" aria-label="Características do acesso iOS">
+            <span class="download-tag">App Web iOS</span>
+            <span class="download-tag">Tela de Início</span>
+          </div>
+          <div class="download-actions">
+            <a class="download-action primary" href="docs_usuario/ACESSO_IPHONE/">
+              <span>Instalar no iPhone / iPad</span><span>GUIA →</span>
+            </a>
+            <a class="download-action secondary" href="downloads/Antigravity-Consultas-iPhone-Icones.zip" download>
+              <span>Baixar pacote de ícones</span><span>ZIP · 713 KB</span>
+            </a>
+          </div>
+          <p class="download-note">É um App Web instalado pelo Safari, não um aplicativo publicado na App Store.</p>
+        </article>
+      </div>
+
+
+      <h3 class="download-apps-head">📦 Aplicativos e materiais 360X</h3>
+      <div class="download-apps-grid" role="list" aria-label="Aplicativos e materiais para baixar">
+        <article class="download-card" role="listitem" data-app-download="focusai">
+          <div class="download-platform">
+            <span class="download-icon" aria-hidden="true">📖</span>
+            <div><small>Extensão do Chrome · v8.0.0</small><h3>FocusAI Reader 360X</h3></div>
+          </div>
+          <p>Leitura limpa para TDAH e dislexia: OpenDyslexic, marca-texto, anotações, transcrição de vídeos e PDF em texto.</p>
+          <div class="download-actions">
+            <a class="download-action primary" href="downloads/FocusAI-Reader-360X-v8.0.0.zip" download>
+              <span>Baixar extensão</span><span>ZIP · 1,2 MB</span>
+            </a>
+            <a class="download-action secondary" href="apps/focusai-360/index.html#instalar">
+              <span>Instalar em 3 minutos</span><span>GUIA →</span>
+            </a>
+          </div>
+          <p class="download-hash">SHA-256 8252bc64…dfca5734 · inclui companion opcional para Mac</p>
+        </article>
+        <article class="download-card" role="listitem" data-app-download="codice">
+          <div class="download-platform">
+            <span class="download-icon" aria-hidden="true">🎴</span>
+            <div><small>App web · flashcards</small><h3>Códice 360X</h3></div>
+          </div>
+          <p>Repetição espaçada TEMI e R3. Instale pelo navegador e importe baralhos .apkg prontos.</p>
+          <div class="download-actions">
+            <a class="download-action primary" href="https://aldenirfilho.github.io/intensivahub/flashcards/" target="_blank" rel="noopener noreferrer">
+              <span>Abrir e instalar</span><span>APP ↗</span>
+            </a>
+            <a class="download-action secondary" href="https://github.com/aldenirfilho/intensivahub/tree/main/flashcards/downloads" target="_blank" rel="noopener noreferrer">
+              <span>Baralhos .apkg</span><span>GITHUB ↗</span>
+            </a>
+          </div>
+        </article>
+        <article class="download-card" role="listitem" data-app-download="jornal">
+          <div class="download-platform">
+            <span class="download-icon" aria-hidden="true">📰</span>
+            <div><small>PDF diário</small><h3>Jornal Diário 360</h3></div>
+          </div>
+          <p>Jornal completo, Pílulas do Dia e Arcanos 360 das últimas edições.</p>
+          <div class="download-actions">
+            <a class="download-action primary" href="jornal-360/index.html">
+              <span>Edições em PDF</span><span>ABRIR →</span>
+            </a>
+            <a class="download-action secondary" href="jornal-360/index.html#indice-pilulas">
+              <span>Índice de pílulas</span><span>ESTUDO →</span>
+            </a>
+          </div>
+        </article>
+        <article class="download-card" role="listitem" data-app-download="identidade">
+          <div class="download-platform">
+            <span class="download-icon" aria-hidden="true">🎨</span>
+            <div><small>Identidade visual</small><h3>Logotipo AldenirMed 360X</h3></div>
+          </div>
+          <p>Emblema e logotipo horizontal em SVG e PNG, mais o pacote de ícones aeroespaciais.</p>
+          <div class="download-actions">
+            <a class="download-action primary" href="assets/brand-360x/aldenirmed-360x-logo.svg" download>
+              <span>Logotipo SVG</span><span>VETOR ↓</span>
+            </a>
+            <a class="download-action secondary" href="downloads/AldenirMed89-Identidade-Multiplataforma.zip" download>
+              <span>Ícones Mac, iPhone, Windows e Android</span><span>ZIP ↓</span>
+            </a>
+          </div>
+          <p class="download-hash"><a href="assets/brand-360x/aldenirmed-360x-mark.svg" download>Emblema SVG</a> · <a href="assets/brand-360x/aldenirmed-360x-logo-claro.svg" download>Logotipo para fundo claro</a> · <a href="assets/brand-360x/icons/aldenirmed-360x-1024.png" download>PNG 1024</a></p>
+        </article>
+      </div>
+
+      <div class="download-trust" aria-label="Informações de segurança dos downloads">
+        <span>🔒 Sem telemetria</span>
+        <span>🧹 Instalações reversíveis</span>
+        <span>🌐 Conteúdo sempre atualizado pelo site</span>
+        <a href="downloads/SHA256SUMS.txt">Verificar checksums SHA-256</a>
+        <a href="docs_usuario/ALIMENTAR_CONTEUDO_SITE/">Como alimentar cada seção</a>
+        <a href="docs_usuario/OPERACAO_CONTINUA/">Manual de operação e expansão</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Conexão editorial 360X: vitrine pública, sem alterar as rotas clínicas. -->
+<section class="universe-360x" id="universo-360x" aria-labelledby="universe-360x-heading">
+  <div class="shell">
+    <div class="universe-360x-surface">
+      <div class="universe-360x-identity">
+        <img src="./assets/brand-360x/logo-360x.webp" alt="Logotipo 360X" width="88" height="88" loading="lazy" decoding="async"/>
+        <span>UNIVERSO 360X<small>Ideias que se encontram.</small></span>
+      </div>
+      <div class="universe-360x-copy">
+        <h2 id="universe-360x-heading">Conhecimento para cuidar.<br/>Curiosidade para ir além.</h2>
+        <p>Medicina, natureza, cultura e cidadania se conectam por uma mesma vontade de compreender e construir. Explore o mapa 360X, descubra afinidades entre os projetos e siga direto para cada site.</p>
+        <div class="universe-360x-routes" aria-label="Alguns caminhos do universo 360X">
+          <a href="ecossistema/index.html#site-atlas-plantas">Atlas Vivo <span>ciência e natureza ↗</span></a>
+          <a href="ecossistema/index.html#site-tempo">Tempo de Viver <span>vida e experiências ↗</span></a>
+          <a href="ecossistema/index.html#site-auditoria">Auditoria das Coisas <span>consumo e escolhas ↗</span></a>
+        </div>
+        <div class="universe-360x-actions">
+          <a class="universe-360x-explore" href="ecossistema/mapa.html">Explorar mapa visual <span aria-hidden="true">→</span></a>
+          <a class="universe-360x-directory" href="ecossistema/index.html#sites-publicos">Ver sites e projetos</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Neurodiversidade e TDAH: apresentação e links, sem novas condutas clínicas. -->
+<section id="neurodiversidade-tdah" aria-labelledby="neurodiversidade-title"><div class="shell">
+  <div class="section-intro"><span class="section-tag">Ecossistema 360X · Aprendizagem acessível</span><h2 id="neurodiversidade-title" class="section-title">Neurodiversidade e TDAH</h2><p class="section-desc">Uma área própria para conectar o AldenirMed 360X ao projeto DiversaMente e às iniciativas FOCO CLARO e TDAH 360.</p></div>
+  <div class="neuro-resource-grid">
+    <a class="neuro-resource-card" href="ecossistema/neurodiversidade-tdah/"><div class="neuro-resource-icon" aria-hidden="true">🧠</div><h3>Neurodiversidade e TDAH</h3><p>Conheça os recursos, encontre o projeto já elaborado e escolha o próximo caminho.</p><span class="neuro-resource-link">Abrir a nova seção →</span></a>
+    <a class="neuro-resource-card" href="ecossistema/neurodiversidade-tdah/#diversamente"><div class="neuro-resource-icon" aria-hidden="true">🌿</div><h3>DiversaMente</h3><p>Revista, direitos, acolhimento e recursos de neurodiversidade conectados em um portal.</p><span class="neuro-resource-link">Explorar o projeto →</span></a>
+    <a class="neuro-resource-card" href="ecossistema/neurodiversidade-tdah/#foco-claro"><div class="neuro-resource-icon" aria-hidden="true">◈</div><h3>FOCO CLARO e TDAH 360</h3><p>Avaliador editorial, guia de pesquisa e iniciativas de organização conectados ao ecossistema.</p><span class="neuro-resource-link">Ver os recursos →</span></a>
+  </div>
+</div></section>
+
+<!-- Auditoria UTI 360X: seção integrada, sem substituir módulos existentes. -->
+<section id="auditoria-uti" class="section" aria-labelledby="auditoria-uti-title">
+  <div class="uti360x-intro">
+    <span class="section-tag">Turbo TEMI 360X · Gestão e transparência</span>
+    <h2 id="auditoria-uti-title">Auditoria UTI</h2>
+    <p>Do preço do equipamento ao custo por paciente-dia. Consulte o catálogo, explore os cenários e revise as evidências de uma compra.</p>
+    <div class="uti360x-actions"><a class="uti360x-primary" href="ecossistema/auditoria-uti/">Abrir painel de Auditoria UTI →</a><a href="https://github.com/aldenirfilho/aldenirmed89/tree/main/ecossistema/auditoria-uti" target="_blank" rel="noopener noreferrer">Documentação no GitHub</a></div>
+    <p class="uti360x-notice"><strong>Base documental parcial:</strong> 32 dos 140 itens possuem preço elegível. Sem atualização automática BPS/PNCP. Alertas indicam revisão; não comprovam superfaturamento.</p>
+  </div>
+  <div class="uti360x-features" aria-label="Recursos do painel">
+    <div><strong>140 itens</strong><span>Equipamentos, medicamentos e materiais.</span></div>
+    <div><strong>10 / 20 / 30 leitos</strong><span>Cenários de orçamento e paciente-dia.</span></div>
+    <div><strong>Triagem de preços</strong><span>Fontes, equivalência e amostra mínima.</span></div>
+    <div><strong>Excel incorporado</strong><span>Planilha original disponível no painel.</span></div>
+  </div>
+</section>
+<!-- ── BASTIDORES DO SISTEMA (recolhível; conteúdo preservado) ── -->
+<section class="backstage-360x" id="bastidores" aria-labelledby="bastidores-heading">
+  <div class="shell">
+    <details class="backstage-details" id="bastidoresDetails">
+      <summary>
+        <span class="section-label">// bastidores do sistema</span>
+        <span class="backstage-title" id="bastidores-heading">⚙️ Como a plataforma funciona: Campo Total, circulação do conhecimento, roadmap e visitas</span>
+        <span class="backstage-hint">abrir ▾</span>
+      </summary>
+<!-- ── CAMPO TOTAL 4–3–3 ─────────────────────────── -->
+<section class="total-football-section" id="campo-total" aria-labelledby="campo-total-heading">
+  <div class="shell">
+    <div class="tf-surface">
+      <div class="tf-head">
+        <div>
+          <div class="section-label">// modelo operacional · responsabilidade + cobertura</div>
+          <h2 class="section-title" id="campo-total-heading">Campo Total 4–3–3 ⚽🔥</h2>
+          <p class="tf-head-copy">Onze rotas reais ocupam o campo inteiro. Cada unidade tem uma missão principal e cobre outras áreas, permitindo passar da fonte à decisão, da decisão ao estudo e do estudo à revisão sem criar silos.</p>
+        </div>
+        <span class="tf-badge">11 funções · 1 sistema</span>
+      </div>
+
+      <div class="tf-controls" role="group" aria-label="Destacar momento de uso no Campo Total">
+        <button class="tf-filter" type="button" data-tf-filter="all" aria-controls="tfPitch tfStatus" aria-pressed="true">⚽ Todo o campo</button>
+        <button class="tf-filter" type="button" data-tf-filter="evidence" aria-controls="tfPitch tfStatus" aria-pressed="false">📚 Organizar evidência</button>
+        <button class="tf-filter" type="button" data-tf-filter="shift" aria-controls="tfPitch tfStatus" aria-pressed="false">🚑 Decidir no plantão</button>
+        <button class="tf-filter" type="button" data-tf-filter="study" aria-controls="tfPitch tfStatus" aria-pressed="false">🏆 Treinar para o TEMI</button>
+        <button class="tf-filter" type="button" data-tf-filter="review" aria-controls="tfPitch tfStatus" aria-pressed="false">🧠 Revisar e conectar</button>
+      </div>
+
+      <div class="tf-layout">
+        <div class="tf-pitch" id="tfPitch" role="group" aria-label="Onze funções móveis do ecossistema AldenirMed 360X">
+          <span class="tf-box top" aria-hidden="true"></span><span class="tf-box bottom" aria-hidden="true"></span>
+          <span class="tf-goal top" aria-hidden="true"></span><span class="tf-goal bottom" aria-hidden="true"></span>
+          <span class="tf-pass-lane one" aria-hidden="true"></span><span class="tf-pass-lane two" aria-hidden="true"></span>
+          <span class="tf-pass-lane three" aria-hidden="true"></span><span class="tf-pass-lane four" aria-hidden="true"></span>
+
+          <a class="tf-player" data-tf-player="library" data-phases="evidence review" data-primary="Base de evidências" data-cover="Diretório · Radar · UpDown" href="02_Biblioteca_IA_Engine/index.html" style="--x:50%;--y:89%;--player-accent:var(--violet)" aria-label="Biblioteca IA: base de evidências">
+            <span class="tf-number">01</span><span><strong>Biblioteca IA</strong><small>base · evidências</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="directory" data-phases="evidence review" data-primary="Validação de fontes" data-cover="Biblioteca · Radar" href="16_Diretorio_Medico/index.html" style="--x:14%;--y:69%;--player-accent:var(--cyan)" aria-label="Diretório Médico: validação de fontes">
+            <span class="tf-number">02</span><span><strong>Diretório</strong><small>lateral · fontes</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="radar" data-phases="evidence review" data-primary="Vigilância científica" data-cover="Biblioteca · UpDown" href="15_Radar_Cientifico/index.html" style="--x:38%;--y:69%;--player-accent:var(--cyan)" aria-label="Radar Científico: vigilância e atualização">
+            <span class="tf-number">03</span><span><strong>Radar</strong><small>zaga · atualização</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="updown" data-phases="evidence study review" data-primary="Síntese autoral" data-cover="Biblioteca · ACRA · TEMI" href="01_UpDown_Hub/index.html" style="--x:62%;--y:69%;--player-accent:var(--green)" aria-label="UpDown Hub: síntese autoral">
+            <span class="tf-number">04</span><span><strong>UpDown Hub</strong><small>zaga · síntese</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="feed" data-phases="study review" data-primary="Disseminação visual" data-cover="UpDown · ACRA" href="05_Midia_E_Feed/index.html" style="--x:86%;--y:69%;--player-accent:#6aa9ff;--player-ink:#170700" aria-label="Card Feed: disseminação visual">
+            <span class="tf-number">05</span><span><strong>Card Feed</strong><small>lateral · visual</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="map" data-phases="evidence shift study review" data-primary="Integração do sistema" data-cover="Todas as linhas" href="#mapa" style="--x:50%;--y:49%;--player-accent:var(--yellow)" aria-label="Mapa Vivo: integração do sistema">
+            <span class="tf-number">06</span><span><strong>Mapa Vivo</strong><small>volante · conexão</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="calculators" data-phases="shift review" data-primary="Decisão objetiva" data-cover="Módulos · RenalDose · SAPS 3" href="03_Calculadoras_E_Apps/index.html" style="--x:25%;--y:38%;--player-accent:var(--cyan)" aria-label="Calculadoras: decisão objetiva">
+            <span class="tf-number">07</span><span><strong>Calculadoras</strong><small>meio · decisão</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="pocus" data-phases="shift study" data-primary="Imagem à beira-leito" data-cover="Decisão · módulos clínicos" href="09_POCUS_Hub/index.html" style="--x:75%;--y:38%;--player-accent:var(--green)" aria-label="POCUS Hub: imagem à beira-leito">
+            <span class="tf-number">08</span><span><strong>POCUS Hub</strong><small>meio · imagem</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="clinical" data-phases="shift study" data-primary="Aplicação clínica" data-cover="Calculadoras · POCUS · TEMI" href="#modulos" style="--x:18%;--y:16%;--player-accent:var(--red)" aria-label="Módulos clínicos: aplicação prática">
+            <span class="tf-number">09</span><span><strong>Módulos clínicos</strong><small>ponta · aplicação</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="acra" data-phases="study review" data-primary="Recuperação ativa" data-cover="UpDown · Feed · TEMI" href="22_Microparticulas_Ativas_ACRA/index.html" style="--x:50%;--y:16%;--player-accent:var(--violet)" aria-label="Micropartículas ACRA: recuperação ativa">
+            <span class="tf-number">10</span><span><strong>ACRA</strong><small>falso 9 · retenção</small></span>
+          </a>
+          <a class="tf-player" data-tf-player="temi" data-phases="study review" data-primary="Avaliação e finalização" data-cover="ACRA · UpDown · módulos" href="questoes/index.html" style="--x:82%;--y:16%;--player-accent:var(--yellow)" aria-label="Simulador TEMI: avaliação e finalização">
+            <span class="tf-number">11</span><span><strong>Simulador TEMI</strong><small>ataque · treino</small></span>
+          </a>
+        </div>
+
+        <aside class="tf-sidebar" aria-label="Leitura tática do Campo Total">
+          <div class="tf-readout">
+            <span class="tf-readout-label">Leitura do momento</span>
+            <strong id="tfReadoutTitle">Todo o campo conectado</strong>
+            <p class="tf-status" id="tfStatus" aria-live="polite" aria-atomic="true">11 rotas em destaque; as demais rotas continuam disponíveis em qualquer filtro.</p>
+          </div>
+          <div class="tf-principles" aria-label="Quatro princípios do modelo operacional">
+            <a class="tf-principle" href="16_Diretorio_Medico/index.html"><b>🛡️ Cobertura</b><span>Fontes e revisão protegem a decisão.</span></a>
+            <a class="tf-principle" href="#modulos"><b>🔄 Mobilidade</b><span>Cada módulo apoia o próximo passo.</span></a>
+            <a class="tf-principle" href="#mapa"><b>↔️ Amplitude</b><span>O mapa evita conhecimento isolado.</span></a>
+            <a class="tf-principle" href="questoes/index.html"><b>🎯 Finalização</b><span>Treino converte estudo em desempenho.</span></a>
+          </div>
+        </aside>
+      </div>
+
+      <p class="tf-rule"><strong>Regra do sistema:</strong> Futebol Total não significa “todo mundo fazendo tudo”. Significa mobilidade, trocas coordenadas, ocupação inteligente dos espaços e cobertura mútua. Esta é uma homenagem conceitual autoral, sem afiliação esportiva oficial; o conteúdo clínico permanece separado da metáfora visual.</p>
     </div>
   </div>
 </section>
@@ -4059,7 +4277,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   <div class="shell">
     <div class="section-intro">
       <p class="section-label">TRANSPARÊNCIA DE AUDIÊNCIA</p>
-      <h2 class="section-title" id="analytics-heading">Visitas registradas no AldenirMed89</h2>
+      <h2 class="section-title" id="analytics-heading">Visitas registradas no AldenirMed 360X</h2>
       <p class="section-sub">Indicadores públicos aproximados para acompanhar o alcance educacional e descobrir quais seções são mais úteis. <a href="18_Centro_Tripulacao/painel-visitas.html">Abrir painel diário de visitas e páginas →</a></p>
     </div>
     <div class="analytics-panel" data-analytics-panel>
@@ -4083,6 +4301,10 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   </div>
 </section>
 
+    </details>
+  </div>
+</section>
+
 </main><!-- /main -->
 
 <!-- ── FOOTER ──────────────────────────────────────── -->
@@ -4094,6 +4316,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <img src="./assets/brand-360x/logo-360x.webp" alt="360X" width="42" height="42" loading="lazy" decoding="async"/>
           <span>Parte do universo 360X</span>
         </a>
+        <div class="footer-logo-360x"><img src="./assets/brand-360x/aldenirmed-360x-mark.svg" alt="" width="52" height="52" loading="lazy" decoding="async"/><span><b class="footer-logo-name">AldenirMed <b class="brand-360x-tag">360X</b></b><small>Intensiva · Clínica Médica · TEMI</small></span></div>
         <strong>Enciclopédia Médica Intensiva &amp; Medicina Interna</strong>
         <p>Um projeto vivo para organizar, conectar e transformar conhecimento médico em apoio cognitivo, estudo e decisão clínica mais segura.</p>
       </div>
@@ -4151,7 +4374,11 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <a href="ecossistema/mapa.html">Mapa visual 360X</a>
         <a href="ecossistema/index.html">🌐 Universo 360X · sites e projetos</a>
         <a href="ecossistema/neurodiversidade-tdah/">🧠 Neurodiversidade e TDAH</a>
-        <a href="#downloads">⬇️ Apps para Mac, Windows e iPhone</a>
+        <a href="#downloads">⬇️ Central de downloads</a>
+        <a href="jornal-360/index.html">📰 Jornal Diário 360</a>
+        <a href="#apps-360">📱 Apps 360</a>
+        <a href="apps/focusai-360/index.html">📖 FocusAI Reader 360X</a>
+        <a href="https://aldenirfilho.github.io/intensivahub/flashcards/" target="_blank" rel="noopener noreferrer">🎴 Códice 360X ↗</a>
         <a href="https://github.com/aldenirfilho/aldenirmed89">Repositório no GitHub</a>
         <a href="https://github.com/aldenirfilho/aldenirmed89#readme">Documentação</a>
         <a href="19_Integridade_Editorial/index.html">🛡️ Integridade e responsabilidade editorial</a>
@@ -4162,14 +4389,14 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 AldenirMed89 · Enciclopédia Médica Intensiva</span>
+      <span>© 2026 AldenirMed 360X · Enciclopédia Médica Intensiva · 🙏 Grato desde já</span>
       <span style="font-family:var(--font-mono)">Conteúdo autoral · Uso educacional · Não substitui raciocínio clínico individual</span>
     </div>
     <p class="aldenirmed89-symbolic-note" role="note">
       ✦ A estética laranja arcano-orbital é uma homenagem conceitual autoral, sem afiliação esportiva oficial. O conteúdo clínico permanece separado desse universo visual e fundamentado em evidências, diretrizes e revisão médica.
     </p>
   </div>
-<p><a href="./mapa-do-site.html">Mapa de páginas do AldenirMed89</a></p>
+<p><a href="./mapa-do-site.html">Mapa de páginas do AldenirMed 360X</a></p>
 </footer>
 
 <!-- antigravity-editorial-attribution:v1 -->
@@ -6013,7 +6240,7 @@ installPwaBtn.addEventListener('click',async()=>{
 window.addEventListener('appinstalled',()=>{
   deferredInstallPrompt=null;
   installPwaBtn.hidden=true;
-  installPwaStatus.textContent='AldenirMed89 instalado neste dispositivo.';
+  installPwaStatus.textContent='AldenirMed 360X instalado neste dispositivo.';
 });
 
 

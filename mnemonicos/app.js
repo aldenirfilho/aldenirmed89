@@ -43,7 +43,8 @@
 
   function card(item) {
     const letters = Object.entries(item.letters || {}).filter(([letter]) => !["letterSep", "sepText"].includes(letter));
-    return `<article class="card${trainMode ? " train" : ""}" style="--card-color:${escapeHtml(item.color || "var(--accent)")}" data-id="${escapeHtml(item.id)}" role="listitem">
+    // A cor vai em data-color e é aplicada via CSSOM: a CSP (style-src 'self') bloqueia style="" no HTML.
+    return `<article class="card${trainMode ? " train" : ""}" data-color="${escapeHtml(item.color || "")}" data-id="${escapeHtml(item.id)}" role="listitem">
       <div class="category">${escapeHtml(item.category || "Clínica")}</div>
       <h2>${escapeHtml(item.emoji || "🧩")} ${escapeHtml(item.title)}</h2>
       <div class="letters">${letters.map(([letter, meaning]) =>
@@ -63,6 +64,10 @@
       return (!category || item.category === category) && (!topic || topicIdsFor(item).includes(topic)) && matchesQuery(haystack,query);
     });
     $("#grid").innerHTML = filtered.map(card).join("");
+    $("#grid").querySelectorAll(".card[data-color]").forEach((element) => {
+      const color = element.dataset.color;
+      if (color && CSS.supports("color", color)) element.style.setProperty("--card-color", color);
+    });
     $("#count").textContent = `${filtered.length} de ${items.length} mnemônicos`;
     $("#empty").hidden = filtered.length > 0;
   }

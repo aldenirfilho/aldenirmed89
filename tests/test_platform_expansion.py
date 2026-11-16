@@ -117,7 +117,8 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn("assets/icons/aerospace-v2/apple-touch-icon-152.png", home)
         self.assertIn("assets/icons/aerospace-v2/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
-        self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed89"', home)
+        # Marca visível atualizada para AldenirMed 360X em 16/11/2026 (pedido do autor).
+        self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed 360X"', home)
         self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v53`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
@@ -189,7 +190,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertEqual(int.from_bytes(favicon[4:6], "little"), 7)
         self.assertEqual(windows_icon, favicon)
         self.assertIn(
-            'aria-label="AldenirMed89 — início"',
+            'aria-label="AldenirMed 360X — início"',
             home,
         )
         self.assertIn(
@@ -228,7 +229,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn('class="nav-status-full">Sistema online</span>', home)
         self.assertIn('class="nav-status-short">Online</span>', home)
         self.assertIn('class="nav-download-short">Apps</span>', home)
-        self.assertIn('class="brand-short">AldenirMed89</span>', home)
+        self.assertIn('class="brand-short">AldenirMed <b class="brand-360x-tag">360X</b></span>', home)
         self.assertIn("não um aplicativo publicado na App Store", home)
         self.assertIn(".hero>*{min-width:0}", home)
 
@@ -339,12 +340,12 @@ class AccessiblePwaTests(unittest.TestCase):
 
         for marker in (
             "Portal Vivo · UPGRADE",
-            "UPGRADE contínuo do AldenirMed89",
+            "UPGRADE contínuo do AldenirMed 360X",
             "Centro da Tripulação",
-            "Estações AldenirMed89",
+            "Estações AldenirMed 360X",
             "Estação Radar Diário",
             "Estação Diretório Médico",
-            "Módulos e apps AldenirMed89",
+            "Módulos e apps AldenirMed 360X",
             "Conteúdo clínico do chat",
             'class="stations-grid"',
             'aria-label="Navegação principal"',

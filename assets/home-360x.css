@@ -1,0 +1,220 @@
+/* ══════════════════════════════════════════════════════════════
+   AldenirMed 360X · navegação agrupada e seções 360 (16/11/2026)
+   Camada aditiva sobre o design system da página inicial: usa as
+   mesmas variáveis (--surf, --brd, --cyan…) e funciona nos temas
+   escuro, claro e alto contraste. Sem dependências externas.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Marca AldenirMed 360X ─────────────────────────────────────── */
+.brand-360x .brand-icon,
+html[data-theme] .brand-360x .brand-icon,
+html[data-visual-profile] .brand-360x .brand-icon{
+  background:none;border:0;box-shadow:none;border-radius:12px;overflow:visible
+}
+.brand-360x .brand-icon img{object-fit:contain;filter:drop-shadow(0 4px 14px rgba(45,212,255,.18))}
+.brand-360x-tag{
+  display:inline-block;margin-left:2px;padding:1px 7px;border-radius:7px;
+  font:800 .8em/1.25 var(--font-body);letter-spacing:.02em;color:#06121f;
+  background:linear-gradient(90deg,#2dd4ff,#e3b04b)
+}
+html.a11y-contrast .brand-360x-tag{background:#ffe28a;color:#000}
+
+/* ── Navegação agrupada ────────────────────────────────────────── */
+.nav{position:relative}
+.nav-links.nav-menu{
+  overflow:visible;flex-wrap:wrap;gap:6px;align-items:center;padding-bottom:4px
+}
+.nav-menu>a,.nav-group>summary{
+  min-height:42px;display:inline-flex;align-items:center;gap:6px;
+  padding:7px 13px;border-radius:10px;border:1px solid transparent;
+  font-size:.86rem;font-weight:600;color:var(--soft);white-space:nowrap;
+  cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease
+}
+.nav-menu>a:hover,.nav-group>summary:hover,.nav-group[open]>summary{
+  color:var(--text);background:var(--surf);border-color:var(--brd)
+}
+.nav-menu>a.nav-highlight{color:var(--cyan);border-color:var(--cyan-d)}
+.nav-group{position:relative}
+.nav-group>summary{list-style:none}
+.nav-group>summary::-webkit-details-marker{display:none}
+.nav-group>summary::after{content:"▾";font-size:.72rem;opacity:.7;transition:transform .15s ease}
+.nav-group[open]>summary::after{transform:rotate(180deg)}
+.nav-panel{
+  position:absolute;top:calc(100% + 8px);left:0;z-index:120;
+  width:min(560px,calc(100vw - 32px));max-height:min(70vh,560px);overflow:auto;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:10px;
+  border:1px solid var(--brd-h);border-radius:16px;
+  background:var(--panel-head-bg);box-shadow:var(--shadow);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+}
+.nav-panel-title{
+  grid-column:1/-1;padding:4px 8px 6px;font:600 .7rem var(--font-mono);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted)
+}
+.nav-panel a{
+  display:flex;align-items:center;gap:8px;min-height:42px;padding:8px 10px;border-radius:10px;
+  color:var(--soft);font-size:.88rem;font-weight:500;line-height:1.25
+}
+.nav-panel a:hover,.nav-panel a:focus-visible{background:var(--surf-h);color:var(--text)}
+.nav-panel a.brand-360x-nav img{width:22px;height:22px}
+.nav-menu-toggle{display:none}
+@media(max-width:768px){
+  /* Celular: o menu completo fica atrás de um único botão, liberando a tela. */
+  .nav-menu-toggle{
+    display:inline-flex;align-items:center;gap:8px;grid-column:1;grid-row:2;justify-self:start;
+    min-height:44px;padding:8px 16px;border-radius:12px;border:1px solid var(--brd-h);
+    background:var(--surf);color:var(--text);font:700 .92rem var(--font-body);cursor:pointer
+  }
+  .nav-menu-toggle[aria-expanded="true"]{border-color:var(--cyan);color:var(--cyan)}
+  .nav .nav-links.nav-menu{
+    display:none;grid-column:1/-1;grid-row:3;width:100%;
+    grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:6px 0 10px;
+    max-height:calc(100dvh - 150px);overflow-y:auto;overscroll-behavior:contain
+  }
+  .nav.menu-open .nav-links.nav-menu{display:grid}
+  .nav-menu>a,.nav-group>summary{min-height:44px;padding:8px 12px;font-size:.88rem;border-color:var(--brd);background:var(--surf)}
+  .nav-group{position:static;grid-column:1/-1}
+  .nav-group>summary{display:flex;justify-content:space-between;width:100%}
+  .nav-panel{
+    position:static;width:auto;max-height:none;margin-top:6px;grid-template-columns:repeat(2,minmax(0,1fr));
+    box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--surf)
+  }
+}
+@media(max-width:420px){.nav-panel{grid-template-columns:1fr}}
+@media print{.nav-menu{display:none!important}}
+
+/* ── Hero mais limpo ───────────────────────────────────────────── */
+.launch-entry-panel.is-compact{padding:10px 14px}
+.launch-entry-panel.is-compact .launch-entry-head{margin:0}
+
+/* ── Títulos de seção 360 ──────────────────────────────────────── */
+.s360-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin-bottom:22px}
+.s360-head .section-sub{margin:0}
+.s360-link{
+  display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:9px 16px;border-radius:12px;
+  border:1px solid var(--brd-h);color:var(--text);font-weight:600;font-size:.9rem;white-space:nowrap
+}
+.s360-link:hover{background:var(--surf-h)}
+
+/* ── Comece por aqui ───────────────────────────────────────────── */
+.start-360x{padding-top:calc(var(--section-space) * .55)}
+.hub-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.hub-tile{
+  position:relative;display:flex;flex-direction:column;gap:6px;min-height:150px;padding:18px 18px 16px;
+  border:1px solid var(--brd);border-radius:var(--r-lg);background:var(--surf);
+  transition:transform .15s ease,border-color .15s ease,background .15s ease
+}
+.hub-tile:hover{transform:translateY(-2px);border-color:var(--tile-accent,var(--cyan));background:var(--surf-h)}
+.hub-tile-icon{font-size:1.7rem;line-height:1}
+.hub-tile strong{font:700 1.06rem/1.25 var(--font-head);color:var(--text)}
+.hub-tile span{color:var(--muted);font-size:.88rem;line-height:1.45}
+.hub-tile em{margin-top:auto;font:600 .78rem var(--font-mono);font-style:normal;color:var(--tile-accent,var(--cyan))}
+.hub-tile.is-new::after{
+  content:"novo";position:absolute;top:12px;right:12px;padding:2px 8px;border-radius:999px;
+  font:700 .66rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--on-accent);background:var(--tile-accent,var(--cyan))
+}
+
+/* ── Jornal Diário 360 (bloco da página inicial) ───────────────── */
+.jornal-360x .j360-home{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:18px}
+.j360-home-latest,.j360-home-archive{
+  border:1px solid var(--brd);border-radius:var(--r-lg);background:var(--surf);padding:22px
+}
+.j360-home-latest{border-color:color-mix(in srgb,var(--cyan) 38%,var(--brd))}
+.j360-home-kicker{font:600 .74rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--yellow)}
+.j360-home-latest h3{font:800 clamp(1.25rem,2.4vw,1.6rem)/1.2 var(--font-head);margin:8px 0 12px}
+.j360-home-headlines{list-style:none;display:grid;gap:8px;margin:0 0 14px}
+.j360-home-headlines li{padding-left:12px;border-left:3px solid var(--cyan-d);color:var(--soft);line-height:1.5}
+.j360-home-pills{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
+.j360-home-pills li{padding:5px 10px;border-radius:999px;border:1px solid var(--brd);background:var(--surf);font-size:.8rem;color:var(--soft)}
+.j360-home-pills b{color:var(--cyan);font-family:var(--font-mono);font-size:.74rem;margin-right:4px}
+.jornal-360x .j360-files{display:flex;flex-wrap:wrap;gap:8px}
+.jornal-360x .j360-file{
+  display:inline-flex;flex-direction:column;justify-content:center;min-height:52px;padding:8px 14px;
+  border-radius:12px;border:1px solid var(--brd-h);background:var(--surf-h);font-weight:700;line-height:1.2;color:var(--text)
+}
+.jornal-360x .j360-file small{font:500 .72rem var(--font-mono);color:var(--muted);margin-top:3px}
+.jornal-360x .j360-file-jornal{border-color:var(--cyan)}
+.jornal-360x .j360-file.is-pending{opacity:.6;cursor:not-allowed}
+.j360-home-archive h3{font:700 1.02rem var(--font-head);margin:0 0 10px}
+.j360-home-archive ul{list-style:none;display:grid;gap:6px;margin:0 0 14px}
+.j360-home-archive li a{
+  display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline;padding:10px 12px;border-radius:12px;
+  border:1px solid var(--brd);color:var(--soft)
+}
+.j360-home-archive li a:hover{background:var(--surf-h);color:var(--text)}
+.j360-home-archive li b{font:700 .9rem var(--font-mono);color:var(--text)}
+.j360-home-all{display:inline-flex;min-height:44px;align-items:center;color:var(--cyan);font-weight:700}
+
+/* ── Apps 360 ──────────────────────────────────────────────────── */
+.apps-360x-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.app360-card{
+  display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid var(--brd);
+  border-radius:var(--r-lg);background:var(--surf)
+}
+.app360-card.is-featured{border-color:color-mix(in srgb,var(--app-accent,var(--cyan)) 50%,var(--brd));
+  background:linear-gradient(160deg,color-mix(in srgb,var(--app-accent,var(--cyan)) 10%,transparent),var(--surf))}
+.app360-top{display:flex;align-items:center;gap:12px}
+.app360-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;font-size:1.5rem;
+  background:color-mix(in srgb,var(--app-accent,var(--cyan)) 16%,transparent);border:1px solid color-mix(in srgb,var(--app-accent,var(--cyan)) 35%,transparent)}
+.app360-card h3{font:700 1.1rem/1.25 var(--font-head);margin:0}
+.app360-card small{display:block;font:600 .72rem var(--font-mono);color:var(--muted);letter-spacing:.04em}
+.app360-card p{color:var(--soft);font-size:.92rem;line-height:1.55;margin:0}
+.app360-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.app360-tags li{padding:3px 9px;border-radius:999px;border:1px solid var(--brd);font-size:.74rem;color:var(--muted)}
+.app360-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+.app360-actions a{
+  display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:9px 14px;border-radius:12px;
+  border:1px solid var(--brd-h);font-weight:600;font-size:.88rem;color:var(--text)
+}
+.app360-actions a.is-primary{border:0;background:var(--app-accent,var(--cyan));color:var(--on-accent)}
+.app360-actions a:hover{filter:brightness(1.08)}
+
+/* ── Central de downloads: aplicativos e materiais ─────────────── */
+.download-apps-head{margin:28px 0 12px;font:700 1.15rem var(--font-head)}
+.download-apps-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.download-apps-grid .download-card p{font-size:.9rem}
+.download-hash{font:500 .68rem/1.4 var(--font-mono);color:var(--muted);word-break:break-all}
+
+/* ── Bastidores recolhíveis ────────────────────────────────────── */
+.backstage-360x{padding-top:calc(var(--section-space) * .5)}
+.backstage-details{border:1px solid var(--brd);border-radius:var(--r-lg);background:var(--surf)}
+.backstage-details>summary{
+  display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:center;
+  padding:20px 22px;cursor:pointer;list-style:none
+}
+.backstage-details>summary::-webkit-details-marker{display:none}
+.backstage-details>summary .section-label{grid-column:1/-1;margin:0}
+.backstage-title{font:700 clamp(1.05rem,2vw,1.3rem)/1.3 var(--font-head);color:var(--text)}
+.backstage-hint{font:600 .8rem var(--font-mono);color:var(--cyan);white-space:nowrap}
+.backstage-details[open]>summary .backstage-hint{color:var(--yellow)}
+.backstage-details[open]>summary{border-bottom:1px solid var(--brd)}
+.backstage-details .shell{padding-left:clamp(12px,2vw,24px);padding-right:clamp(12px,2vw,24px)}
+
+/* ── Responsivo ────────────────────────────────────────────────── */
+@media(max-width:1200px){
+  .hub-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .download-apps-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:980px){
+  .apps-360x-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .jornal-360x .j360-home{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .hub-tiles,.apps-360x-grid,.download-apps-grid{grid-template-columns:1fr}
+  .hub-tile{min-height:0}
+  .backstage-details>summary{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){.hub-tile,.nav-group>summary::after{transition:none}.hub-tile:hover{transform:none}}
+
+/* ── Ritmo vertical mais enxuto nas seções novas ───────────────── */
+.start-360x{padding-bottom:calc(var(--section-space) * .4)}
+.jornal-360x{padding-top:calc(var(--section-space) * .45)}
+.apps-360x{padding-bottom:calc(var(--section-space) * .5)}
+
+/* ── Logotipo do rodapé (acompanha o tema) ─────────────────────── */
+.footer-logo-360x{display:flex;align-items:center;gap:12px;margin:4px 0 14px}
+.footer-logo-360x img{width:52px;height:52px;border-radius:13px}
+.footer-logo-360x span{display:flex;flex-direction:column;gap:3px}
+.footer-logo-name{font:800 1.3rem/1.1 var(--font-head);color:var(--text)}
+.footer-logo-360x small{font:500 .7rem var(--font-mono);letter-spacing:.08em;color:var(--muted)}
