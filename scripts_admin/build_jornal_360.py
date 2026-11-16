@@ -43,6 +43,18 @@ FILE_LABELS = (
     ("honra", "🏛️", "Honra e Equilíbrio"),
 )
 LEITURA_DIR = ROOT / "jornal-360/leitura"
+# Cadernos do padrão de 30 páginas (16/11/2026). "arquivo" aponta a chave de
+# "arquivos" da edição; "leitura" usa a versão HTML para celular quando existir.
+CADERNOS = (
+    ("noticias", "🗞️", "Notícias", "Brasil, Ceará, Sobral e mundo, com gráficos próprios", "leitura"),
+    ("pilulas", "💊", "Pílulas do Dia", "TEMI, R3, POCUS, ECG e ventilação mecânica", "pilulas"),
+    ("esportes", "⚽", "Esportes 360", "futebol do Brasil com tabela, Sobral, Ceará e Nordeste, mundo e motor, feminino e quadras", "esportes"),
+    ("financas", "💰", "Educação financeira", "renda fixa, imóvel e veículo, e como não cair em golpe", "financas"),
+    ("humor", "😄", "Humor 360", "tirinhas e charge com personagens originais", "financas"),
+    ("honra", "🏛️", "Honra 360", "a honra em seis tradições, a palavra empenhada e a honra no plantão", "honra"),
+    ("equilibrio", "⚖️", "Equilíbrio 360", "ordem, gratidão, caráter, o céu do dia, plantas, animais e família", "honra"),
+    ("arcanos", "🔮", "Arcanos 360", "história da medicina e curiosidades do dia", "arcanos"),
+)
 APP_JSON = ROOT / "jornal-360/app/editions.json"
 MONTHS = (
     "janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
@@ -158,6 +170,32 @@ def render_app_json(data: dict) -> str:
             "highlights": e.get("manchetes", [])[:6],
         })
     return json.dumps({"updated": data.get("atualizadoEm", ""), "editions": eds}, ensure_ascii=False, indent=2) + "\n"
+
+
+def cadernos_list(edition: dict, prefix: str, css: str) -> str:
+    """Cadernos da edição; cada um abre o PDF (ou o HTML) da edição, se publicado."""
+
+    files = edition.get("arquivos", {})
+    leitura = LEITURA_DIR / edition["data"] / "index.html"
+    items = []
+    for key, icon, title, desc, source in CADERNOS:
+        href = ""
+        if source == "leitura" and leitura.is_file():
+            href = prefix + "leitura/" + edition["data"] + "/index.html"
+        elif source == "leitura" and files.get("jornal") and (EDITIONS_DIR / files["jornal"]).is_file():
+            href = prefix + "edicoes/" + files["jornal"]
+        elif files.get(source) and (EDITIONS_DIR / files[source]).is_file():
+            href = prefix + "edicoes/" + files[source]
+        body = (
+            f'<span class="{css}-icon" aria-hidden="true">{icon}</span>'
+            f'<span class="{css}-text"><b>{esc(title)}</b><small>{esc(desc)}</small></span>'
+        )
+        if href:
+            extra = '' if href.endswith(".html") else ' target="_blank" rel="noopener" type="application/pdf"'
+            items.append(f'<li><a class="{css}-item is-{key}" href="{esc(href)}"{extra}>{body}</a></li>')
+        else:
+            items.append(f'<li><span class="{css}-item is-{key}">{body}</span></li>')
+    return f'<ul class="{css}">' + "".join(items) + "</ul>"
 
 
 def pills_list(edition: dict) -> str:
@@ -323,6 +361,15 @@ background:var(--surf2);text-decoration:none;font-weight:700;line-height:1.2}
 .j360-summary-open{font:600 .78rem var(--mono);color:var(--cyan)}
 details[open]>summary .j360-summary-open{color:var(--gold)}
 .j360-edition-body{padding:0 18px 18px;display:grid;gap:12px}
+.j360-cadernos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.j360-cadernos-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;height:100%;padding:12px 14px;
+border:1px solid var(--brd);border-radius:14px;background:var(--surf);text-decoration:none}
+a.j360-cadernos-item:hover{border-color:var(--cyan);background:var(--surf2)}
+.j360-cadernos-icon{font-size:1.5rem;line-height:1.1}
+.j360-cadernos-text b{display:block;font:700 1rem/1.25 var(--head)}
+.j360-cadernos-text small{display:block;margin-top:3px;color:var(--muted);font-size:.84rem;line-height:1.4}
+@media(max-width:920px){.j360-cadernos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.j360-cadernos{grid-template-columns:1fr}}
 .j360-table-wrap{overflow:auto;border:1px solid var(--brd);border-radius:14px}
 .j360-table{width:100%;border-collapse:collapse;min-width:820px;font-size:.92rem}
 .j360-table th,.j360-table td{padding:10px 12px;border-bottom:1px solid var(--brd);text-align:left;vertical-align:top}
@@ -367,7 +414,7 @@ def render_page(data: dict) -> str:
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Jornal Diário 360 · AldenirMed 360X</title>
-<meta name="description" content="Jornal Diário 360: manchetes do dia, pílulas de estudo TEMI, R3, POCUS, ECG e ventilação mecânica e a coluna Arcanos 360, com as {count} edições mais recentes em PDF."/>
+<meta name="description" content="Jornal Diário 360: 30 páginas por dia com notícias, pílulas de estudo (TEMI, R3, POCUS, ECG e VM), Esportes 360, educação financeira, Humor 360, Honra 360, Equilíbrio 360 e Arcanos 360, com as {count} edições mais recentes em PDF."/>
 <meta name="theme-color" content="#020b1f"/>
 <meta name="color-scheme" content="dark light"/>
 <link rel="icon" type="image/x-icon" href="../assets/icons/360x-v1/favicon.ico" sizes="64x64"/>
@@ -388,6 +435,7 @@ def render_page(data: dict) -> str:
     </a>
     <nav aria-label="Seções do Jornal Diário 360">
       <a href="#{anchor(latest)}">📰 Hoje</a>
+      <a href="#cadernos">🧭 Cadernos</a>
       <a href="#anteriores">🗂️ Edições</a>
       <a href="#indice-pilulas">💊 Pílulas</a>
       <a href="#sobre">ℹ️ Sobre</a>
@@ -413,6 +461,13 @@ def render_page(data: dict) -> str:
   </section>
   <section class="band" aria-label="Edição mais recente">
     <div class="wrap">{featured}
+    </div>
+  </section>
+  <section class="band" id="cadernos" aria-labelledby="cadernos-title">
+    <div class="wrap">
+      <h2 class="band-title" id="cadernos-title">🧭 Cadernos da edição</h2>
+      <p class="lead">Cada edição de 30 páginas tem oito cadernos. Toque em um deles para abrir o da edição de {esc(short_date(latest))}.</p>
+      {cadernos_list(latest, "./", "j360-cadernos")}
     </div>
   </section>
   <section class="band" id="anteriores" aria-labelledby="anteriores-title">
@@ -477,6 +532,10 @@ def render_home_block(data: dict) -> str:
         <ul>{previous}</ul>
         <a class="j360-home-all" href="jornal-360/index.html">Ver todas as edições e o índice de pílulas →</a>
       </aside>
+      <section class="j360-home-cadernos-wrap" aria-labelledby="j360HomeCadernos">
+        <h3 id="j360HomeCadernos">🧭 Cadernos da edição de hoje · 30 páginas</h3>
+        {cadernos_list(latest, "jornal-360/", "j360-home-cadernos")}
+      </section>
       {HOME_END}"""
 
 

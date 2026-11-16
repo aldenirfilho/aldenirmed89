@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Jornal Diário 360 · AldenirMed 360X</title>
-<meta name="description" content="Jornal Diário 360: manchetes do dia, pílulas de estudo TEMI, R3, POCUS, ECG e ventilação mecânica e a coluna Arcanos 360, com as 5 edições mais recentes em PDF."/>
+<meta name="description" content="Jornal Diário 360: 30 páginas por dia com notícias, pílulas de estudo (TEMI, R3, POCUS, ECG e VM), Esportes 360, educação financeira, Humor 360, Honra 360, Equilíbrio 360 e Arcanos 360, com as 5 edições mais recentes em PDF."/>
 <meta name="theme-color" content="#020b1f"/>
 <meta name="color-scheme" content="dark light"/>
 <link rel="icon" type="image/x-icon" href="../assets/icons/360x-v1/favicon.ico" sizes="64x64"/>
@@ -87,6 +87,15 @@ background:var(--surf2);text-decoration:none;font-weight:700;line-height:1.2}
 .j360-summary-open{font:600 .78rem var(--mono);color:var(--cyan)}
 details[open]>summary .j360-summary-open{color:var(--gold)}
 .j360-edition-body{padding:0 18px 18px;display:grid;gap:12px}
+.j360-cadernos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.j360-cadernos-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;height:100%;padding:12px 14px;
+border:1px solid var(--brd);border-radius:14px;background:var(--surf);text-decoration:none}
+a.j360-cadernos-item:hover{border-color:var(--cyan);background:var(--surf2)}
+.j360-cadernos-icon{font-size:1.5rem;line-height:1.1}
+.j360-cadernos-text b{display:block;font:700 1rem/1.25 var(--head)}
+.j360-cadernos-text small{display:block;margin-top:3px;color:var(--muted);font-size:.84rem;line-height:1.4}
+@media(max-width:920px){.j360-cadernos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.j360-cadernos{grid-template-columns:1fr}}
 .j360-table-wrap{overflow:auto;border:1px solid var(--brd);border-radius:14px}
 .j360-table{width:100%;border-collapse:collapse;min-width:820px;font-size:.92rem}
 .j360-table th,.j360-table td{padding:10px 12px;border-bottom:1px solid var(--brd);text-align:left;vertical-align:top}
@@ -116,6 +125,7 @@ footer a{color:var(--cyan)}
     </a>
     <nav aria-label="Seções do Jornal Diário 360">
       <a href="#edicao-011">📰 Hoje</a>
+      <a href="#cadernos">🧭 Cadernos</a>
       <a href="#anteriores">🗂️ Edições</a>
       <a href="#indice-pilulas">💊 Pílulas</a>
       <a href="#sobre">ℹ️ Sobre</a>
@@ -166,6 +176,13 @@ footer a{color:var(--cyan)}
       </div>
       <details class="j360-corrections"><summary>✏️ Correções e atualizações publicadas (3)</summary><ul><li>Edição ampliada em 16/11 à noite: padrão de 30 páginas, com quatro páginas de esportes, duas de educação financeira, duas de humor e as sessões Honra 360 e Equilíbrio 360.</li><li>A nº 010 dizia que a fala de Lula na Asean não estava confirmada; ele discursou no domingo.</li><li>Resultado da final da Copa do Brasil Feminina publicado na p. 13.</li></ul></details>
     </article>
+    </div>
+  </section>
+  <section class="band" id="cadernos" aria-labelledby="cadernos-title">
+    <div class="wrap">
+      <h2 class="band-title" id="cadernos-title">🧭 Cadernos da edição</h2>
+      <p class="lead">Cada edição de 30 páginas tem oito cadernos. Toque em um deles para abrir o da edição de 16/11/2026.</p>
+      <ul class="j360-cadernos"><li><a class="j360-cadernos-item is-noticias" href="./leitura/2026-11-16/index.html"><span class="j360-cadernos-icon" aria-hidden="true">🗞️</span><span class="j360-cadernos-text"><b>Notícias</b><small>Brasil, Ceará, Sobral e mundo, com gráficos próprios</small></span></a></li><li><a class="j360-cadernos-item is-pilulas" href="./edicoes/Pilulas_do_Dia_360_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span class="j360-cadernos-icon" aria-hidden="true">💊</span><span class="j360-cadernos-text"><b>Pílulas do Dia</b><small>TEMI, R3, POCUS, ECG e ventilação mecânica</small></span></a></li><li><a class="j360-cadernos-item is-esportes" href="./edicoes/Esportes_360_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span class="j360-cadernos-icon" aria-hidden="true">⚽</span><span class="j360-cadernos-text"><b>Esportes 360</b><small>futebol do Brasil com tabela, Sobral, Ceará e Nordeste, mundo e motor, feminino e quadras</small></span></a></li><li><a class="j360-cadernos-item is-financas" href="./edicoes/Financas_e_Humor_360_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span class="j360-cadernos-icon" aria-hidden="true">💰</span><span class="j360-cadernos-text"><b>Educação financeira</b><small>renda fixa, imóvel e veículo, e como não cair em golpe</small></span></a></li><li><a class="j360-cadernos-item is-humor" href="./edicoes/Financas_e_Humor_360_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span class="j360-cadernos-icon" aria-hidden="true">😄</span><span class="j360-cadernos-text"><b>Humor 360</b><small>tirinhas e charge com personagens originais</small></span></a></li><li><a class="j360-cadernos-item is-honra" href="./edicoes/Honra_e_Equilibrio_360_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span class="j360-cadernos-icon" aria-hidden="true">🏛️</span><span class="j360-cadernos-text"><b>Honra 360</b><small>a honra em seis tradições, a palavra empenhada e a honra no plantão</small></span></a></li><li><a class="j360-cadernos-item is-equilibrio" href="./edicoes/Honra_e_Equilibrio_360_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span class="j360-cadernos-icon" aria-hidden="true">⚖️</span><span class="j360-cadernos-text"><b>Equilíbrio 360</b><small>ordem, gratidão, caráter, o céu do dia, plantas, animais e família</small></span></a></li><li><a class="j360-cadernos-item is-arcanos" href="./edicoes/Arcanos_360_Sessao_Extra_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span class="j360-cadernos-icon" aria-hidden="true">🔮</span><span class="j360-cadernos-text"><b>Arcanos 360</b><small>história da medicina e curiosidades do dia</small></span></a></li></ul>
     </div>
   </section>
   <section class="band" id="anteriores" aria-labelledby="anteriores-title">

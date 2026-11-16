@@ -40,7 +40,7 @@ class CreditosAutorTests(unittest.TestCase):
             self.assertTrue(axiom["comentario"].strip(), axiom["numero"])
 
     def test_ebooks_exist_match_their_hash_and_are_linked(self) -> None:
-        self.assertGreaterEqual(len(DATA["ebooks"]), 4)
+        self.assertGreaterEqual(len(DATA["ebooks"]), 3)
         for ebook in DATA["ebooks"]:
             path = ROOT / "creditos-autor/ebooks" / ebook["arquivo"]
             self.assertTrue(path.is_file(), ebook["arquivo"])
@@ -69,6 +69,26 @@ class CreditosAutorTests(unittest.TestCase):
         self.assertLess(axiomas, jornal)
         self.assertLess(jornal, language)
         self.assertIn("publicação diária", cluster[jornal:language])
+
+    def test_personal_xp_score_stays_off_the_public_site(self) -> None:
+        """O Placar XP é pontuação pessoal do autor: fica fora da página, do bloco e dos dados."""
+        raw = (ROOT / "creditos-autor/data/axiomas.json").read_text(encoding="utf-8")
+        self.assertNotIn("placarXP", raw)
+        self.assertNotIn("XP", raw)
+        self.assertNotIn("XP", PAGE)
+        block = HOME[HOME.index('id="creditos-autor"'):HOME.index('id="bastidores"')]
+        self.assertNotIn("XP", block)
+        self.assertFalse(any("Estudo_Estatistico" in e["arquivo"] for e in DATA["ebooks"]))
+        self.assertFalse((ROOT / "creditos-autor/ebooks/Axiomas_360X_Estudo_Estatistico_v2_2026-11-12.pdf").exists())
+
+    def test_jornal_lists_the_eight_cadernos(self) -> None:
+        jornal = HOME[HOME.index('id="jornal-360"'):HOME.index('id="portal-upgrade"')]
+        page = (ROOT / "jornal-360/index.html").read_text(encoding="utf-8")
+        for name in ("Notícias", "Pílulas do Dia", "Esportes 360", "Educação financeira",
+                     "Humor 360", "Honra 360", "Equilíbrio 360", "Arcanos 360"):
+            self.assertIn(f"<b>{name}</b>", jornal, name)
+            self.assertIn(f"<b>{name}</b>", page, name)
+        self.assertIn('id="cadernos"', page)
 
     def test_page_keeps_editorial_notices(self) -> None:
         self.assertIn('<html lang="pt-BR">', PAGE)
