@@ -93,6 +93,7 @@ jobs:
           fi
           python3 scripts_admin/build_360x_panel.py --check
           python3 scripts_admin/build_jornal_360.py --check
+          python3 scripts_admin/build_complexo_360x.py --check
           python3 scripts_admin/editorial_gate.py --check --json
           python3 scripts_admin/editorial_gate.py --check --changed-since "$BASE_SHA" --json
           python3 scripts_admin/validate_activation_roadmap.py --json
@@ -304,6 +305,14 @@ jobs:
           unzip -t site/downloads/Antigravity-Consultas-iPhone-Icones.zip
           (cd site/downloads && sha256sum -c SHA256SUMS.txt)
           test ! -e site/23_Cosmos_NEXUS
+          # Motor de Busca 360X: descoberta no Google, Bing e plataformas de IA.
+          test -s site/complexo-360x/index.html
+          test -s site/sitemap_index.xml
+          test -s site/sitemap-jornal-360.xml
+          test -s site/jornal-360/feed.xml
+          test -s site/llms.txt
+          grep -q '"@type": "WebSite"' site/index.html
+          python3 -c "import xml.etree.ElementTree as E; [E.parse('site/'+f) for f in ('sitemap.xml','sitemap_index.xml','sitemap-jornal-360.xml','jornal-360/feed.xml')]"
 
       - name: Upload Pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -414,3 +423,16 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+      # IndexNow avisa Bing, Yandex, Naver, Seznam e Yep (não o Google) só das
+      # páginas alteradas neste push. Falha aqui nunca desfaz o deploy.
+      - name: Checkout para o aviso aos buscadores
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          sparse-checkout: |
+            scripts_admin
+
+      - name: Avisar buscadores via IndexNow
+        continue-on-error: true
+        run: python3 scripts_admin/indexnow_submit.py --changed-since "${{ github.event.before }}"
