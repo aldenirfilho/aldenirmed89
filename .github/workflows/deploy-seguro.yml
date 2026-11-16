@@ -93,6 +93,7 @@ jobs:
           fi
           python3 scripts_admin/build_360x_panel.py --check
           python3 scripts_admin/build_jornal_360.py --check
+          python3 scripts_admin/build_creditos_autor.py --check
           python3 scripts_admin/editorial_gate.py --check --json
           python3 scripts_admin/editorial_gate.py --check --changed-since "$BASE_SHA" --json
           python3 scripts_admin/validate_activation_roadmap.py --json
@@ -119,6 +120,8 @@ jobs:
           test -f site/data/desafios.json
           test -f site/desafios/index.html
           test -f site/mnemonicos/index.html
+          test -s site/creditos-autor/index.html
+          test -s site/creditos-autor/ebooks/Axiomas_360X_Edicao_Comentada_A5.pdf
           test -f site/mnemonicos/styles.css
           test -f site/mnemonicos/app.js
           test -s site/favicon.ico
