@@ -113,13 +113,13 @@ class AccessiblePwaTests(unittest.TestCase):
                 png_size(f"assets/icons/ios/apple-touch-icon-{size}.png"),
                 (size, size),
             )
-        self.assertIn("assets/icons/aerospace-v2/apple-touch-icon-167.png", home)
-        self.assertIn("assets/icons/aerospace-v2/apple-touch-icon-152.png", home)
-        self.assertIn("assets/icons/aerospace-v2/apple-touch-icon-120.png", home)
+        self.assertIn("assets/icons/360x-v1/apple-touch-icon-167.png", home)
+        self.assertIn("assets/icons/360x-v1/apple-touch-icon-152.png", home)
+        self.assertIn("assets/icons/360x-v1/apple-touch-icon-120.png", home)
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         # Marca visível atualizada para AldenirMed 360X em 16/11/2026 (pedido do autor).
         self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed 360X"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v54`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v55`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'

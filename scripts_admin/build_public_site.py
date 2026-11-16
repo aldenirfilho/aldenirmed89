@@ -1293,13 +1293,17 @@ def restore_original_brand_metadata(html: str, relative: PurePosixPath, root_pre
     match = re.search(r'<head\b[^>]*>(.*?)</head\s*>', html, re.I | re.S)
     if not match:
         return html
-    folder = 'assets/icons/aerospace-v2/'
+    folder = 'assets/icons/360x-v1/'
     aliases = {
         'favicon.ico': 'favicon.ico',
         'assets/img/logo.png': 'icon-192.png',
         'assets/icons/apple-touch-icon.png': 'apple-touch-icon-180.png',
         **{f'assets/icons/antigravity-consultas-{n}.png': f'icon-{n}.png' for n in (32, 64, 192, 512, 1024)},
         **{f'assets/icons/ios/apple-touch-icon-{n}.png': f'apple-touch-icon-{n}.png' for n in (120, 152, 167, 180, 1024)},
+        # Pacote aeroespacial anterior: páginas que ainda o citam recebem o emblema 360X no site público.
+        'assets/icons/aerospace-v2/favicon.ico': 'favicon.ico',
+        **{f'assets/icons/aerospace-v2/icon-{n}.png': f'icon-{n}.png' for n in (32, 64, 192, 512, 1024)},
+        **{f'assets/icons/aerospace-v2/apple-touch-icon-{n}.png': f'apple-touch-icon-{n}.png' for n in (120, 152, 167, 180, 1024)},
     }
     seen = set()
 
