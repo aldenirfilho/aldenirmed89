@@ -1,0 +1,113 @@
+@font-face{font-family:"Fraktur";src:url("fonts/node_modules/@fontsource/unifrakturmaguntia/files/unifrakturmaguntia-latin-400-normal.woff2")}
+@font-face{font-family:"Cinzel";font-weight:900;src:url("fonts/node_modules/@fontsource/cinzel/files/cinzel-latin-900-normal.woff2")}
+@font-face{font-family:"OD";font-weight:400;src:url("fonts/node_modules/@fontsource/opendyslexic/files/opendyslexic-latin-400-normal.woff2")}
+@font-face{font-family:"OD";font-weight:700;src:url("fonts/node_modules/@fontsource/opendyslexic/files/opendyslexic-latin-700-normal.woff2")}
+@font-face{font-family:"OD";font-weight:400;font-style:italic;src:url("fonts/node_modules/@fontsource/opendyslexic/files/opendyslexic-latin-400-italic.woff2")}
+@font-face{font-family:"OD";font-weight:700;font-style:italic;src:url("fonts/node_modules/@fontsource/opendyslexic/files/opendyslexic-latin-700-italic.woff2")}
+
+:root{
+  --paper:#fbf7ee; --paper2:#f3ecdc; --ink:#1b1a17; --ink2:#4d4a43; --muted:#7a7468;
+  --obsidian:#111417; --gold:#a8750a; --gold2:#c99a2e; --goldlight:#e9d39a;
+  --cyan:#0087a3; --cyanlight:#d7eef3; --rule:#d6ccb6;
+  --f:"OD","Noto Color Emoji",sans-serif;
+}
+@page{size:A4;margin:0}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#777}
+body{font-family:var(--f);color:var(--ink);font-size:8.8pt;line-height:1.55;word-spacing:.04em;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:210mm;height:297mm;background:var(--paper);position:relative;overflow:hidden;padding:9mm 10mm 13mm 10mm;page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto}
+.page::before{content:"";position:absolute;inset:4mm;border:0.6pt solid var(--rule);pointer-events:none}
+.page::after{content:"";position:absolute;inset:4.8mm;border:0.3pt solid var(--goldlight);pointer-events:none}
+
+.runner{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:6.6pt;letter-spacing:.03em;color:var(--ink2);border-bottom:1.2pt solid var(--obsidian);padding-bottom:1.2mm;margin-bottom:2.2mm;text-transform:uppercase}
+.runner .sec{color:var(--gold)}
+.foot{position:absolute;left:10mm;right:10mm;bottom:6.2mm;display:flex;justify-content:space-between;gap:4mm;font-size:5.8pt;line-height:1.35;color:var(--muted);border-top:0.5pt solid var(--rule);padding-top:.9mm}
+.foot b{color:var(--gold)}
+
+.kicker{font-weight:700;font-size:6.9pt;letter-spacing:.03em;color:var(--gold);text-transform:uppercase;margin:0 0 .8mm}
+h1,h2,h3{font-family:var(--f);margin:0;line-height:1.16;color:var(--obsidian);font-weight:700}
+h1{font-size:19pt;letter-spacing:-.01em}
+h2{font-size:14.6pt;margin-bottom:1mm}
+h3{font-size:10pt;margin:0 0 .8mm}
+.dek{font-style:italic;font-size:9.2pt;color:var(--ink2);margin:1mm 0 2.2mm;line-height:1.42}
+p{margin:0 0 1.5mm;text-align:left;hyphens:none}
+.cols2{column-count:2;column-gap:5mm;column-rule:0.4pt solid var(--rule)}
+.cols2 > p:first-child::first-letter,.drop::first-letter{font-weight:700;float:left;font-size:21pt;line-height:.9;padding:.6mm 1.2mm 0 0;color:var(--gold)}
+.nodrop > p:first-child::first-letter{all:unset}
+.avoid{break-inside:avoid}
+b,strong{font-weight:700}
+.hr{height:0;border-top:1.2pt solid var(--obsidian);border-bottom:0.4pt solid var(--obsidian);padding-top:1pt;margin:2.2mm 0}
+.thin{border-top:0.5pt solid var(--rule);margin:1.8mm 0}
+
+.tag{display:inline-block;font-weight:700;font-size:5.8pt;letter-spacing:.02em;padding:.2mm 1.1mm;border-radius:1mm;vertical-align:middle;margin-right:1mm;text-transform:uppercase;line-height:1.5}
+.t24{background:#b3261e;color:#fff}
+.t72{background:#e2b648;color:#2a2210}
+.tctx{background:#e4ddce;color:#3f3b33}
+.tprev{background:var(--cyanlight);color:#004a59}
+
+.box{background:var(--paper2);border:0.6pt solid var(--rule);border-left:2mm solid var(--gold);padding:1.9mm 2.4mm;margin:0 0 2.1mm;break-inside:avoid}
+.box.cy{border-left-color:var(--cyan)}
+.box.ob{background:var(--obsidian);color:#efe8d6;border:0.6pt solid var(--gold);border-left:2mm solid var(--gold2)}
+.box.ob h3,.box.ob .kicker{color:var(--goldlight)}
+.box h3{font-size:9.3pt}
+.box ul,.box ol{margin:0;padding-left:3.6mm}
+.box li{margin:0 0 .7mm}
+.sans{font-size:7.9pt;line-height:1.5}
+.fig{margin:0 0 1.6mm;break-inside:avoid}
+.fig img{width:100%;display:block}
+.cap{font-size:6.5pt;color:var(--muted);margin-top:.6mm;line-height:1.38}
+table{border-collapse:collapse;width:100%;font-size:7.3pt;line-height:1.42}
+th{text-align:left;background:var(--obsidian);color:var(--goldlight);font-weight:700;padding:.8mm 1.2mm}
+td{padding:.75mm 1.2mm;border-bottom:0.4pt solid var(--rule);vertical-align:top}
+tr:nth-child(even) td{background:rgba(168,117,10,.05)}
+.box.ob td{border-bottom-color:#3a3a35}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1.8mm;margin:0 0 2.2mm}
+.kpi{background:var(--obsidian);color:#efe8d6;border-top:1mm solid var(--gold2);padding:1.5mm 2mm}
+.kpi .l{font-size:6.1pt;color:var(--goldlight);text-transform:uppercase}
+.kpi .v{font-weight:700;font-size:13pt;line-height:1.1;margin:.3mm 0}
+.kpi .s{font-size:6.1pt;color:#c8c0ad;line-height:1.3}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:4.5mm}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm}
+.g-7-5{display:grid;grid-template-columns:7fr 5fr;gap:4.5mm}
+.g-5-7{display:grid;grid-template-columns:5fr 7fr;gap:4.5mm}
+.g-6-4{display:grid;grid-template-columns:6fr 4fr;gap:4.5mm}
+.vr{border-left:0.4pt solid var(--rule);padding-left:4mm}
+
+.topbar{display:flex;justify-content:space-between;font-size:6pt;color:var(--ink2);text-transform:uppercase;padding-bottom:1mm}
+.mast{background:var(--obsidian);color:var(--goldlight);display:grid;grid-template-columns:22mm 1fr 26mm;align-items:center;padding:2.4mm 4mm;border-top:1.4mm solid var(--gold2);border-bottom:.8mm solid var(--cyan);margin-bottom:1.3mm}
+.mast .title{text-align:center;font-family:"Fraktur";font-size:44pt;line-height:1;color:#f1dda6}
+.mast .title span{font-family:"Cinzel";font-weight:900;font-size:34pt;margin-left:2mm;vertical-align:4pt;color:#3cc4dc}
+.mast .tag2{text-align:center;font-size:5.9pt;letter-spacing:.06em;color:#d8c48e;margin-top:1mm}
+.ear{font-size:5.6pt;color:#d8cfb8;line-height:1.38;text-align:center}
+.ear b{color:#3cc4dc;font-size:6.4pt;display:block}
+.edbar{display:flex;justify-content:space-between;font-weight:700;font-size:6pt;color:var(--obsidian);border-bottom:1.2pt solid var(--obsidian);padding:.5mm 0 1.1mm;margin-bottom:2.2mm}
+.sixty{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6mm 3.6mm;font-size:7.3pt;line-height:1.42}
+.index{display:grid;grid-template-columns:repeat(8,1fr);gap:1.3mm;font-size:6.2pt;line-height:1.3}
+.index div{background:var(--obsidian);color:#efe8d6;padding:1.1mm 1.4mm;border-bottom:.8mm solid var(--gold2)}
+.index b{color:var(--goldlight);font-size:6.6pt;display:block}
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{display:grid;grid-template-columns:13mm 1fr;gap:2.2mm;padding:1mm 0;border-bottom:0.4pt dashed var(--rule);break-inside:avoid}
+.timeline .y{font-weight:700;font-size:10pt;color:var(--gold);text-align:right;line-height:1.2}
+.tip{display:grid;grid-template-columns:8mm 1fr;gap:1.8mm;margin-bottom:1.9mm;break-inside:avoid}
+.tip .ic{font-size:13pt;line-height:1;text-align:center}
+.tip h3{font-size:9.4pt;margin:0 0 .4mm}
+.small{font-size:8.3pt}
+.fontes{column-count:2;column-gap:5mm;font-size:6.6pt;line-height:1.4;color:var(--ink2);margin:0;padding-left:3.5mm}
+.fontes li{margin-bottom:.6mm;break-inside:avoid}
+.flag{font-size:6.8pt;color:var(--ink2);line-height:1.45}
+.pull{font-style:italic;font-weight:700;font-size:9.6pt;color:var(--obsidian);border-top:1pt solid var(--gold);border-bottom:1pt solid var(--gold);padding:1.3mm 0;margin:1mm 0 1.8mm;text-align:center;break-inside:avoid}
+.how{background:#111417;color:#efe8d6;padding:1.2mm 2.2mm;border-left:2mm solid #c99a2e;margin-bottom:2mm}
+.how b{color:#e9d39a}
+.foot span:last-child{white-space:nowrap;flex-shrink:0}
+.page > *:not(.foot):not(.runner){zoom:var(--z,1)}
+/* Sessões extras Honra 360 e Equilíbrio 360 (16/11) */
+.qcard{background:#f3ecdc;border:0.6pt solid var(--gold);border-top:1.3mm solid var(--gold2);padding:1.5mm 2mm;break-inside:avoid}
+.qcard .src{font-size:6.3pt;letter-spacing:.04em;color:#7a6a45;text-transform:uppercase;margin:0}
+.qcard .q{font-style:italic;font-size:8.2pt;line-height:1.42;margin:.7mm 0}
+.qcard .r{font-size:7.5pt;line-height:1.45;margin:0}
+.signs{display:grid;grid-template-columns:1fr 1fr;gap:.6mm 3mm;font-size:7.2pt;line-height:1.38}
+.signs b{color:#5b5fa8}
+.hq{margin:1mm 0 1.4mm;break-inside:avoid}
+.hq h3{margin:0 0 .7mm;font-size:1.02em;font-family:"OD",sans-serif;font-weight:700;letter-spacing:.02em}
+.hq svg text{font-family:"OD",sans-serif;letter-spacing:0;word-spacing:0}
