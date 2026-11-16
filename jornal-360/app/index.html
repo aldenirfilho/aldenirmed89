@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jornal Diário 360 — o jornal acessível, em camadas</title>
+<meta name="description" content="Jornal diário em PDF com leitura acessível (fonte OpenDyslexic): Brasil, Ceará, mundo, economia, saúde, tecnologia, esportes e a sessão Arcanos 360. Grátis para ler.">
+<meta name="theme-color" content="#111417">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Jornal 360">
+<meta property="og:title" content="Jornal Diário 360">
+<meta property="og:description" content="Notícias em camadas, com fonte para dislexia e leitura amiga do TDAH. Grátis.">
+<meta property="og:image" content="icons/icon-512.png">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<a class="pular" href="#hoje">Pular para a edição de hoje</a>
+
+<header class="topo">
+  <img src="icons/icon-192.png" alt="" class="brasao" width="44" height="44">
+  <div class="marca">
+    <div class="logo">Jornal Diário<span>360</span></div>
+    <div class="slogan">Notícias em camadas · leitura acessível · grátis</div>
+  </div>
+  <button class="icone" id="btnAjustes" aria-label="Ajustes de leitura" aria-expanded="false">Aa</button>
+</header>
+
+<section id="ajustes" class="ajustes" hidden aria-label="Ajustes de leitura">
+  <label><input type="checkbox" id="optDislexia" checked> Fonte OpenDyslexic</label>
+  <div class="linha">Tamanho do texto
+    <button id="fonteMenos" aria-label="Diminuir texto">A−</button>
+    <button id="fonteMais" aria-label="Aumentar texto">A+</button>
+  </div>
+  <label><input type="checkbox" id="optClaro"> Tema claro (pergaminho)</label>
+</section>
+
+<main>
+  <section id="hoje" class="hoje" aria-live="polite">
+    <div class="carregando">Carregando a edição mais recente…</div>
+  </section>
+
+  <section class="bloco" id="sessenta" hidden>
+    <h2>⚡ Em 60 segundos</h2>
+    <ul id="listaDestaques"></ul>
+  </section>
+
+  <section class="bloco" id="acervo">
+    <h2>📚 Acervo de edições</h2>
+    <div id="gradeAcervo" class="grade"></div>
+  </section>
+
+  <section class="bloco apoio" id="apoie">
+    <h2>💛 Apoie o jornal</h2>
+    <p>O Jornal Diário 360 é <b>aberto a todos</b>. O apoio dos leitores paga a pesquisa e a produção de novas edições.</p>
+    <div class="planos">
+      <article class="plano">
+        <h3>Leitor Apoiador</h3>
+        <div class="preco">R$ 19,90<small>/mês</small></div>
+        <ul><li>Financia novas edições</li><li>Cancele quando quiser</li></ul>
+        <a class="botao" data-link="leitor" target="_blank" rel="noopener">Quero apoiar</a>
+      </article>
+      <article class="plano destaque">
+        <h3>Patrono 360</h3>
+        <div class="preco">R$ 49,90<small>/mês</small></div>
+        <ul><li>Nome no Expediente, se quiser</li><li>Financia a sessão Arcanos 360</li></ul>
+        <a class="botao" data-link="patrono" target="_blank" rel="noopener">Quero ser patrono</a>
+      </article>
+      <article class="plano">
+        <h3>Apoio avulso</h3>
+        <div class="preco">Você escolhe</div>
+        <ul><li>Uma vez só</li><li>A partir de R$ 5</li></ul>
+        <a class="botao" data-link="avulso" target="_blank" rel="noopener">Apoiar uma vez</a>
+      </article>
+    </div>
+    <p class="nota" id="notaPortal" hidden>Já apoia? <a id="linkPortal" target="_blank" rel="noopener">Gerencie ou cancele aqui</a>.</p>
+  </section>
+
+  <section class="bloco" id="instalar">
+    <h2>📲 Instale no celular</h2>
+    <button class="botao" id="btnInstalar" hidden>Instalar o app</button>
+    <div class="passos">
+      <div><b>Android (Chrome):</b> toque em ⋮ e depois em <i>Instalar app</i>.</div>
+      <div><b>iPhone (Safari):</b> toque em <i>Compartilhar</i> e depois em <i>Adicionar à Tela de Início</i>.</div>
+    </div>
+  </section>
+
+  <section class="bloco" id="sobre">
+    <h2>🛡️ Como o jornal é feito</h2>
+    <ul>
+      <li>Prioriza fatos das últimas 24 a 72 horas, com fontes e datas no rodapé de cada página.</li>
+      <li>Selos de frescor: <span class="selo s24">24 h</span> <span class="selo s72">72 h</span> <span class="selo sprev">Previsto</span> <span class="selo sctx">Contexto</span>.</li>
+      <li>Política sem tomar partido. Saúde é conteúdo educativo. Nada aqui é recomendação de investimento.</li>
+      <li>Ilustrações e gráficos próprios, sem fotos de terceiros. Produzido pelo Agente Editorial 360 com o Claude, da Anthropic.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="rodape">
+  <a href="privacidade.html">Privacidade</a> · <a href="termos.html">Termos</a> · <span id="contato"></span>
+  <div>Jornal Diário 360 · Projeto 360X · Sobral, Ceará</div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -37,8 +37,13 @@ PILL_ICONS = {"TEMI": "🏆", "R3": "🩺", "POCUS": "🔊", "ECG": "🫀", "VM"
 FILE_LABELS = (
     ("jornal", "📄", "Jornal completo"),
     ("pilulas", "💊", "Pílulas do Dia"),
+    ("esportes", "⚽", "Esportes 360"),
+    ("financas", "💰", "Finanças e Humor"),
     ("arcanos", "🔮", "Arcanos 360"),
+    ("honra", "🏛️", "Honra e Equilíbrio"),
 )
+LEITURA_DIR = ROOT / "jornal-360/leitura"
+APP_JSON = ROOT / "jornal-360/app/editions.json"
 MONTHS = (
     "janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
     "agosto", "setembro", "outubro", "novembro", "dezembro",
@@ -120,7 +125,39 @@ def file_buttons(edition: dict, prefix: str, compact: bool = False) -> str:
                 f'<span aria-hidden="true">{icon}</span> {esc(text)}'
                 f'<small>PDF em publicação</small></span>'
             )
+    leitura = LEITURA_DIR / edition["data"] / "index.html"
+    if leitura.is_file():
+        items.insert(1, (
+            f'<a class="j360-file j360-file-leitura" href="{esc(prefix + "leitura/" + edition["data"] + "/index.html")}">'
+            '<span aria-hidden="true">📱</span> Ler no celular<small>HTML · iPhone</small></a>'
+        ))
     return '<div class="j360-files">' + "".join(items) + "</div>"
+
+
+def render_app_json(data: dict) -> str:
+    """Lista de edições do app Jornal 360 (jornal-360/app/), gerada do mesmo JSON."""
+
+    eds = []
+    for e in data["edicoes"]:
+        files = e.get("arquivos", {})
+        jornal = files.get("jornal")
+        if not jornal or not (EDITIONS_DIR / jornal).is_file():
+            continue
+        cover = ROOT / "jornal-360/app/capas" / f'{e["data"]}.webp'
+        leitura = LEITURA_DIR / e["data"] / "index.html"
+        eds.append({
+            "date": e["data"],
+            "label": f'{e["diaSemana"].split("-")[0].capitalize()}, {short_date(e)}',
+            "number": e["numero"],
+            "pages": e["paginas"],
+            "title": e["temaDoDia"],
+            "pdf": "../edicoes/" + jornal,
+            "html": f'../leitura/{e["data"]}/index.html' if leitura.is_file() else "",
+            "cover": f'capas/{e["data"]}.webp' if cover.is_file() else "icons/icon-512.png",
+            "font": e.get("fonte", "OpenDyslexic"),
+            "highlights": e.get("manchetes", [])[:6],
+        })
+    return json.dumps({"updated": data.get("atualizadoEm", ""), "editions": eds}, ensure_ascii=False, indent=2) + "\n"
 
 
 def pills_list(edition: dict) -> str:
@@ -364,12 +401,13 @@ def render_page(data: dict) -> str:
     <div class="wrap">
       <span class="kicker">Radar 360 Circunstancial · modo 360X Turbo · TEMI</span>
       <h1>📰 Jornal <span>Diário 360</span></h1>
-      <p class="lead">As notícias do dia em leitura TDAH-friendly, com pílulas de estudo para a UTI e a prova de título e a coluna Arcanos 360. Cada edição traz o jornal completo, as Pílulas do Dia e a sessão extra dos Arcanos em PDF.</p>
+      <p class="lead">As notícias do dia em leitura TDAH-friendly, com pílulas de estudo para a UTI e a prova de título e a coluna Arcanos 360. Cada edição traz o jornal completo de 30 páginas, as Pílulas do Dia e os cadernos extras em PDF, além da versão em HTML para ler no celular. O <a href="app/index.html">app Jornal 360</a> guarda o acervo completo.</p>
       <ul class="chips" aria-label="Destaques">
         <li>🗓️ Última edição: {esc(short_date(latest))} · nº {latest['numero']:03d}</li>
         <li>🗂️ {count} edições no arquivo</li>
         <li>🔤 Leitura em OpenDyslexic</li>
         <li>🚫 Sem fotos de terceiros</li>
+        <li>📱 <a href="app/index.html">App e acervo</a></li>
       </ul>
     </div>
   </section>
@@ -457,8 +495,11 @@ def main() -> int:
     data = load()
     page = render_page(data)
     home = apply_home(HOME.read_text(encoding="utf-8"), render_home_block(data))
+    app_json = render_app_json(data) if APP_JSON.parent.is_dir() else None
     if args.check:
         stale = []
+        if app_json is not None and (not APP_JSON.is_file() or APP_JSON.read_text(encoding="utf-8") != app_json):
+            stale.append(str(APP_JSON.relative_to(ROOT)))
         if not PAGE.is_file() or PAGE.read_text(encoding="utf-8") != page:
             stale.append(str(PAGE.relative_to(ROOT)))
         if HOME.read_text(encoding="utf-8") != home:
@@ -471,6 +512,8 @@ def main() -> int:
         return 0
     PAGE.write_text(page, encoding="utf-8")
     HOME.write_text(home, encoding="utf-8")
+    if app_json is not None:
+        APP_JSON.write_text(app_json, encoding="utf-8")
     present = sum(
         1
         for edition in data["edicoes"]
