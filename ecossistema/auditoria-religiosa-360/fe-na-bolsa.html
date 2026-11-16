@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Fé Está na Bolsa de Valores · Auditoria Religiosa 360 · Projeto 360X</title>
+<meta name="description" content="Poder econômico das instituições religiosas, transparência, casos de 2026 e o Axioma da Fé com Honra.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=JetBrains+Mono:wght@400;700&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#0b0d10;--surface:#13171c;--surface2:#1b2027;--ink:#ece6d6;--soft:#a8a496;--rule:#2d343c;
+  --gold:#d6b160;--gold2:#f0d189;--cyan:#5fd3dc;--red:#ff8f80;--amber:#f2a65a;--green:#82d9a5;--violet:#b9a3ff;
+  --fd:"Cinzel",Georgia,serif;--fb:"Spectral",Georgia,serif;--fm:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#16202a 0,#0b0d10 55%);color:var(--ink);font-family:var(--fb);font-size:1.05rem;line-height:1.62}
+a{color:var(--cyan);text-underline-offset:.18em}a:hover{color:var(--gold2)}
+h1,h2,h3{margin:0;text-wrap:balance}p{margin:0}
+.top{position:sticky;top:0;z-index:5;background:rgba(11,13,16,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.top div{max-width:72rem;margin:0 auto;padding:0 1rem;display:flex;gap:1rem;align-items:center}
+.brand{font-family:var(--fd);font-weight:700;letter-spacing:.14em;font-size:.8rem;color:var(--gold);white-space:nowrap;padding:.7rem 0}
+nav{display:flex;overflow-x:auto;gap:.1rem;scrollbar-width:thin}
+nav a{font-family:var(--fm);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--soft);padding:.75rem .5rem;white-space:nowrap}
+nav a:hover{color:var(--cyan)}
+main{max-width:72rem;margin:0 auto;padding:2rem 1rem 4rem;display:flex;flex-direction:column;gap:3.4rem}
+.label{font-family:var(--fm);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 14rem;gap:2rem;align-items:center;padding-bottom:2rem;border-bottom:3px double var(--gold)}
+.hero h1{font-family:var(--fd);font-size:clamp(2rem,5.5vw,3.5rem);line-height:1.06;color:var(--gold2)}
+.hero h1 span{color:var(--cyan)}
+.lead{font-size:1.2rem;max-width:60ch;margin-top:1rem}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-top:1.4rem}
+.kpi{background:var(--surface);border:1px solid var(--rule);border-top:3px solid var(--gold);padding:.8rem .9rem}
+.kpi b{display:block;font-family:var(--fm);font-size:1.3rem;color:var(--gold2)}
+.kpi span{font-size:.85rem;color:var(--soft);line-height:1.35;display:block}
+.crest svg{width:100%;max-width:14rem;display:block;margin:0 auto}
+.motto{font-family:var(--fd);font-size:.74rem;letter-spacing:.28em;color:var(--gold);text-align:center;margin-top:.5rem}
+section{scroll-margin-top:4rem;display:flex;flex-direction:column;gap:1.2rem}
+.sec-h{display:flex;gap:1rem;align-items:baseline;border-top:1px solid var(--gold);padding-top:.6rem}
+.sec-h .n{font-family:var(--fd);font-weight:700;font-size:.8rem;letter-spacing:.18em;color:var(--gold)}
+.sec-h h2{font-family:var(--fd);font-size:clamp(1.35rem,3vw,1.8rem);color:var(--ink)}
+.prose{max-width:70ch}
+.note{font-size:.9rem;color:var(--soft);max-width:72ch}
+/* axioma */
+.axiom{background:linear-gradient(180deg,#1a1610,#13171c);border:1px solid var(--gold);padding:1.6rem 1.7rem;position:relative}
+.axiom::before{content:"✠";position:absolute;top:-.85rem;left:1.4rem;background:var(--bg);color:var(--gold2);padding:0 .5rem;font-size:1.2rem}
+.axiom h3{font-family:var(--fd);font-size:1.3rem;color:var(--gold2);margin-bottom:.3rem}
+.axiom .by{font-family:var(--fm);font-size:.72rem;color:var(--soft);letter-spacing:.06em;margin-bottom:1rem;display:block}
+.axiom ol{margin:0;padding:0;list-style:none;counter-reset:ax;display:flex;flex-direction:column;gap:.85rem}
+.axiom li{counter-increment:ax;display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:.8rem}
+.axiom li::before{content:counter(ax,upper-roman);font-family:var(--fd);font-weight:700;color:var(--cyan);font-size:1.05rem;text-align:right;padding-top:.05rem}
+.axiom .seal{margin-top:1.3rem;padding-top:1rem;border-top:1px dashed var(--rule);font-family:var(--fd);font-size:1.05rem;color:var(--gold2);text-align:center;letter-spacing:.04em}
+.paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.path{background:var(--surface);border:1px solid var(--rule);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.4rem}
+.path .ic{font-size:1.6rem}
+.path h3{font-size:1.05rem;font-weight:600}
+.path p{font-size:.94rem;color:var(--soft)}
+.path.good{border-top:3px solid var(--green)}.path.mid{border-top:3px solid var(--amber)}.path.bad{border-top:3px solid var(--red)}
+.counter{background:var(--surface);border:1px dashed var(--rule);padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.5rem}
+.counter h3{font-family:var(--fd);font-size:.95rem;letter-spacing:.06em;color:var(--violet)}
+.counter ul{margin:0;padding-left:1.1rem;font-size:.95rem;display:flex;flex-direction:column;gap:.3rem}
+/* gráfico */
+.viz{background:var(--surface);border:1px solid var(--rule);padding:1.2rem 1.3rem;display:flex;flex-direction:column;gap:1rem}
+.legend{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:.85rem}
+.legend span{display:inline-flex;gap:.4rem;align-items:center}
+.legend i{width:.85rem;height:.85rem;border-radius:2px;display:inline-block}
+.t-est{background:var(--violet)}.t-dec{background:var(--gold)}.t-aud{background:var(--cyan)}.t-flow{background:var(--amber)}.t-cli{background:#7f8b97}.t-per{background:var(--red)}
+.bars{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.85rem}
+.bars li{display:grid;grid-template-columns:minmax(0,17rem) minmax(0,1fr);gap:.2rem 1rem;align-items:center}
+.bars .who{font-size:.93rem;font-weight:600;line-height:1.25}
+.bars .who small{display:block;font-weight:400;font-size:.76rem;color:var(--soft)}
+.bars .track{display:flex;align-items:center;gap:.55rem;min-width:0}
+.bars .bar{height:1.2rem;min-width:3px;border-radius:0 4px 4px 0;width:calc(var(--p) * (100% - 8.5rem));flex:none}
+.bars .val{font-family:var(--fm);font-weight:700;font-size:.85rem;white-space:nowrap}
+.bars .val.q{color:var(--soft);font-weight:400}
+.scalebtn{display:flex;gap:.5rem;flex-wrap:wrap}
+.scalebtn button{font-family:var(--fm);font-size:.75rem;padding:.4rem .8rem;border:1px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer;border-radius:999px}
+.scalebtn button[aria-pressed=true]{background:var(--gold);color:#111;border-color:var(--gold)}
+/* tabela */
+.scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:52rem;font-size:.9rem}
+th,td{padding:.65rem .8rem;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+thead th{font-family:var(--fm);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:var(--surface2)}
+td.m{font-family:var(--fm);white-space:nowrap}
+.dot{display:inline-block;width:.65rem;height:.65rem;border-radius:50%;margin-right:.35rem;vertical-align:middle}
+.ok{background:var(--green)}.mid{background:var(--amber)}.no{background:var(--red)}
+/* casos */
+.cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.case{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--amber);padding:1rem 1.15rem;display:flex;flex-direction:column;gap:.5rem}
+.case.e4{border-left-color:var(--red)}.case.e5{border-left-color:#ff5c4d}.case.d{border-left-color:var(--green)}
+.case .tag{font-family:var(--fm);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+.case h3{font-size:1.08rem;font-weight:600;line-height:1.3}
+.case p{font-size:.93rem}
+.case .st{font-family:var(--fm);font-size:.78rem;color:var(--gold2)}
+.case .src{font-size:.8rem;color:var(--soft)}
+.seals{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem 1.5rem;font-size:.9rem}
+.seals b{font-family:var(--fm);color:var(--gold2)}
+/* diretório */
+.dir{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.dcard{background:var(--surface);border:1px solid var(--rule);padding:1rem;display:flex;flex-direction:column;gap:.35rem;text-decoration:none;color:var(--ink);transition:border-color .15s}
+.dcard:hover{border-color:var(--cyan);color:var(--ink)}
+.dcard .k{font-family:var(--fm);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.dcard b{font-size:1rem}
+.dcard span{font-size:.86rem;color:var(--soft)}
+.dcard .new{color:var(--green)}
+.br{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.br div{background:var(--surface);border:1px solid var(--rule);padding:.9rem 1rem}
+.br b{display:block;font-family:var(--fm);font-size:1.2rem;color:var(--amber)}
+.br span{font-size:.88rem;color:var(--soft)}
+.sources{margin:0;padding-left:1.2rem;font-size:.85rem;display:flex;flex-direction:column;gap:.35rem}
+.sources li{overflow-wrap:anywhere}
+.colophon{border-top:3px double var(--gold);padding-top:1.2rem;font-size:.88rem;color:var(--soft);display:flex;flex-direction:column;gap:.4rem}
+@media (max-width:860px){.hero{grid-template-columns:1fr}.crest{order:-1}.crest svg{max-width:8rem}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.paths,.cases,.dir,.br,.seals{grid-template-columns:1fr}.bars li{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top"><div>
+  <a class="brand" href="index.html" style="text-decoration:none">✠ AUDITORIA RELIGIOSA 360</a>
+  <nav aria-label="Seções">
+    <a href="index.html">← Portal</a><a href="#axioma">Axioma</a><a href="#poder">Poder econômico</a><a href="#transparencia">Transparência</a><a href="#casos">Casos 2026</a><a href="#brasil">Brasil</a><a href="#diretorio">Diretório</a><a href="#metodo">Método</a><a href="#fontes">Fontes</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero">
+  <div>
+    <span class="label">🛡️ Códice de auditoria · dados conferidos em 16 de novembro de 2026</span>
+    <h1>A Fé Está na <span>Bolsa de Valores</span></h1>
+    <p class="lead">Quanto dinheiro as instituições religiosas guardam, <strong>quem mostra as contas e quem esconde</strong>, que casos de enriquecimento suspeito estão na Justiça em 2026, e um axioma sobre o que a fé deveria fazer com a própria riqueza.</p>
+    <div class="kpis">
+      <div class="kpi"><b>US$ 321 bi</b><span>riqueza estimada da Igreja SUD no fim de 2025 (estimativa independente)</span></div>
+      <div class="kpi"><b>US$ 60,8 bi</b><span>só em ações declaradas à SEC (2º tri/2026)</span></div>
+      <div class="kpi"><b>€ 12,8 bi</b><span>imposto eclesiástico arrecadado na Alemanha em 2025</span></div>
+      <div class="kpi"><b>R$ 5,5–7 bi/ano</b><span>renúncia estimada da “PEC das igrejas”, parada no Senado</span></div>
+    </div>
+  </div>
+  <div class="crest">
+    <svg viewBox="0 0 240 280" role="img" aria-label="Brasão: escudo com balança, gráfico de bolsa e cruz">
+      <path d="M20 20H220V140C220 210 170 250 120 268C70 250 20 210 20 140Z" fill="#13171c" stroke="#d6b160" stroke-width="3"/>
+      <path d="M32 32H208V140C208 200 164 236 120 254C76 236 32 200 32 140Z" fill="none" stroke="#8a6f35"/>
+      <path d="M120 52V100M100 70H140" stroke="#f0d189" stroke-width="4" stroke-linecap="round"/>
+      <path d="M52 190L82 160L106 174L136 128L160 148L190 104" fill="none" stroke="#5fd3dc" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="190" cy="104" r="5" fill="#5fd3dc"/>
+      <path d="M70 120H170M70 120L58 146M70 120L82 146M170 120L158 146M170 120L182 146M54 146Q70 158 86 146M154 146Q170 158 186 146" fill="none" stroke="#d6b160" stroke-width="2"/>
+      <path d="M96 212H144" stroke="#d6b160" stroke-width="3"/>
+    </svg>
+    <p class="motto">FIDES · LUX · RATIO</p>
+  </div>
+</section>
+
+<section id="axioma">
+  <div class="sec-h"><span class="n">FÓLIO I</span><h2>📜 Axioma da Fé com Honra</h2></div>
+  <div class="axiom">
+    <h3>Axioma do Fluxo: a fé que prospera é a fé que ajuda</h3>
+    <span class="by">Autoria: Dr. Aldenir Rocha de Oliveira Filho · Projeto 360X · 16/11/2026 · opinião do autor</span>
+    <ol>
+      <li><p><strong>De duas, uma.</strong> Diante da desigualdade grotesca em que vivemos, todo dinheiro entregue à fé <strong>ou está guardado em cofres, ou foi gasto com o que não devia</strong>, ou nunca deveria ter sido cobrado, porque a fé não se paga.</p></li>
+      <li><p><strong>Deus transformaria o dinheiro da fé em ajuda.</strong> Se a oferta é sagrada, seu destino natural é quem precisa.</p></li>
+      <li><p><strong>A religião é uma empresa</strong>, e o lucro dela deve ser <strong>reinvestido no próprio propósito e na ajuda a quem precisa</strong>, não na vaidade de quem a dirige.</p></li>
+      <li><p><strong>Pelo fluxo de energia,</strong> a religião mais verdadeira deve ser a que mais prospera, logo a que mais ajuda, logo a que detém o maior poder econômico, ao menos guardado.</p></li>
+      <li><p><strong>Riqueza guardada ainda é oportunidade.</strong> Quem acumulou sem se corromper, esperando com fé e honra o momento oportuno de fazer justiça, ainda pode ajudar. A oportunidade existe.</p></li>
+      <li><p><strong>Quem não acumulou nem cobrou pela fé já tinha honra desde o início.</strong></p></li>
+      <li><p><strong>As mais perigosas</strong> são as que não mostraram transparência e <strong>exigiram dos fiéis mais do que eles podiam dar</strong>. Elas se julgam mais do que as demais, e por isso são a pior influência para a sociedade.</p></li>
+      <li><p><strong>Não existe religião verdadeira, mas a honra verdadeira pode estar em qualquer religião.</strong> O que não se pode é afirmar ser o único detentor da verdade sem ter essa certeza, e se orgulhar de ser superior aos outros não pela honra, mas pela vaidade de pertencer à “única igreja verdadeira”.</p></li>
+    </ol>
+    <p class="seal">⚖️ A medida de uma fé não é o tamanho do cofre. É a transparência dele e o tamanho da ajuda que sai dele.</p>
+  </div>
+
+  <div class="paths">
+    <div class="path good"><span class="ic">🤲</span><h3>Honra desde o início</h3><p>Não cobra pela fé nem acumula além do necessário. A ajuda é o próprio culto.</p></div>
+    <div class="path mid"><span class="ic">🏛️</span><h3>Cofre com contas abertas</h3><p>Acumula, mas publica balanço auditado e mostra quanto vira ajuda. Ainda tem a oportunidade de fazer justiça.</p></div>
+    <div class="path bad"><span class="ic">🕳️</span><h3>Cofre fechado</h3><p>Cobra além do que o fiel pode dar, esconde as contas e se proclama superior. É o perfil que o axioma considera mais perigoso.</p></div>
+  </div>
+
+  <div class="counter">
+    <h3>⚖️ CONTRAPONTOS HONESTOS (para testar o axioma)</h3>
+    <ul>
+      <li>Instituições grandes defendem a reserva como <strong>fundo perpétuo</strong>: o rendimento paga clero, templos históricos e obras por gerações, e gastar o principal hoje acabaria com a ajuda de amanhã. A Church of England diz que seu fundo cobre cerca de 20% dos custos anuais da igreja.</li>
+      <li>Muita ajuda religiosa passa por <strong>entidades separadas</strong> (hospitais, Caritas, Diakonie, escolas), que nem sempre aparecem no balanço da igreja-mãe.</li>
+      <li>O dízimo é, juridicamente, <strong>doação voluntária</strong>. O problema começa quando há coação, promessa de retorno financeiro ou falta de prestação de contas.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="poder">
+  <div class="sec-h"><span class="n">FÓLIO II</span><h2>📊 Quem detém mais poder econômico agora</h2></div>
+  <p class="prose">Os maiores números <strong>publicamente verificáveis</strong> ligados a instituições religiosas, convertidos para dólar. <strong>A cor diz o que o número é</strong>: estoque estimado, valor declarado, fundo auditado, arrecadação de um ano ou dinheiro de clientes. Esses números não se somam, e a Igreja Católica não aparece como um todo porque <strong>não publica balanço mundial consolidado</strong>.</p>
+  <div class="viz">
+    <div class="legend">
+      <span><i class="t-est"></i>Estimativa independente</span>
+      <span><i class="t-dec"></i>Declarado pela própria instituição</span>
+      <span><i class="t-aud"></i>Fundo auditado e publicado</span>
+      <span><i class="t-flow"></i>Arrecadação anual (fluxo)</span>
+      <span><i class="t-cli"></i>Dinheiro de clientes</span>
+      <span><i class="t-per"></i>Pessoa física (não é a igreja)</span>
+    </div>
+    <div class="scalebtn" role="group" aria-label="Escala do gráfico">
+      <button type="button" data-s="lin" aria-pressed="true">Escala real</button>
+      <button type="button" data-s="log" aria-pressed="false">Escala logarítmica (ver os menores)</button>
+    </div>
+    <ul class="bars" id="bars"></ul>
+    <p class="note">Câmbio de referência aproximado: £1 = US$ 1,34 (conversão publicada pela ai-CIO), €1 ≈ US$ 1,15. O valor do templo de Tirupati é o do “livro branco” de 2022, o mais recente consolidado. A riqueza da Igreja SUD é estimativa do grupo independente Widow’s Mite; a igreja não publica o total.</p>
+  </div>
+</section>
+
+<section id="transparencia">
+  <div class="sec-h"><span class="n">FÓLIO III</span><h2>🔍 Quem mostra as contas</h2></div>
+  <p class="prose">Pelo axioma, <strong>transparência vem antes do tamanho do cofre</strong>. A tabela mede só isso: se a instituição publica as contas e se alguém de fora confere.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Instituição</th><th>Valor de referência</th><th>Publica balanço?</th><th>Auditoria externa?</th><th>Ponto de atenção</th></tr></thead>
+    <tbody>
+      <tr><th>Church Commissioners (Igreja Anglicana)</th><td class="m">£ 11,6 bi (2025)</td><td><span class="dot ok"></span>Sim, anual</td><td><span class="dot ok"></span>Sim, apresentado ao Parlamento</td><td>Distribuiu £ 202,8 mi a dioceses e igrejas locais em 2025.</td></tr>
+      <tr><th>IOR, o “Banco do Vaticano”</th><td class="m">€ 5,9 bi de clientes · € 815 mi próprios</td><td><span class="dot ok"></span>Sim, anual</td><td><span class="dot ok"></span>Sim, único órgão financeiro do Vaticano sob inspeção externa</td><td>Lucro de € 51 mi em 2025 e dividendo de € 24,3 mi ao Papa. O restante das finanças da Santa Sé não tem consolidação mundial.</td></tr>
+      <tr><th>Igrejas da Alemanha (católica + evangélica)</th><td class="m">€ 12,84 bi/ano</td><td><span class="dot ok"></span>Estatística anual</td><td><span class="dot mid"></span>Por diocese, sem padrão único</td><td>Arrecadação recorde apesar da perda de 1,2 milhão de membros em 2025.</td></tr>
+      <tr><th>Tirumala Tirupati (templo hindu, Índia)</th><td class="m">₹ 2,26 lakh crore (2022)</td><td><span class="dot mid"></span>Livro branco em 2022</td><td><span class="dot mid"></span>Parcial</td><td>10,3 toneladas de ouro em bancos; primeira declaração de patrimônio desde 1933.</td></tr>
+      <tr><th>Igreja SUD (mórmon)</th><td class="m">US$ 60,8 bi declarados · ~US$ 321 bi estimados</td><td><span class="dot no"></span>Não publica o total</td><td><span class="dot mid"></span>Só a carteira de ações, por exigência da SEC</td><td>Multada pela SEC em 2023 por esconder investimentos atrás de 13 empresas de fachada.</td></tr>
+      <tr><th>Igrejas evangélicas no Brasil</th><td class="m">R$ 24,2 bi/ano (dado de 2013)</td><td><span class="dot no"></span>Não há dado agregado recente</td><td><span class="dot no"></span>A Receita não calcula a renúncia</td><td>O último total de receita veio por Lei de Acesso à Informação, com dados de 2013.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="casos">
+  <div class="sec-h"><span class="n">FÓLIO IV</span><h2>⚖️ Casos de enriquecimento sob suspeita, situação em 2026</h2></div>
+  <p class="prose"><strong>Regra de ouro:</strong> investigado não é condenado, e a pessoa investigada não é a igreja dela. Cada caso traz o estágio processual e a fonte. Os casos anteriores a 2026 estão no painel <a href="https://claude.ai/artifact/CPvsNKYhnnJgKw8RkDnqQJ">Auditoria Evangélica Brasil 360</a> e no <a href="index.html">portal da Auditoria Religiosa 360</a>.</p>
+  <div class="cases">
+    <article class="case e5"><span class="tag">🌎 EUA · Instituição</span><h3>Igreja SUD e Ensign Peak Advisors</h3><p>A SEC acusou o gestor de investimentos da igreja de, com conhecimento dela, criar 13 empresas de fachada para não declarar bilhões em ações. Os ativos não declarados chegaram a quase US$ 38 bi em 2020.</p><span class="st">🔏 E5 · Acordo com a SEC e multa de US$ 5 mi (2023). A igreja diz que seguiu orientação jurídica.</span><span class="src">Fontes: SAN, Quartz</span></article>
+    <article class="case e4"><span class="tag">🇻🇦 Vaticano · Pessoa</span><h3>Cardeal Angelo Becciu, imóvel de Londres</h3><p>Investimento de cerca de € 350 mi em um prédio em Londres, com perda estimada de até € 139 mi. Becciu foi condenado em 2023 a 5 anos e 6 meses por peculato.</p><span class="st">🔄 Em 17/03/2026 a Corte de Apelação declarou nulidade relativa por erros da acusação e mandou refazer o julgamento, com primeira audiência em 22/06/2026. Não houve absolvição.</span><span class="src">Fontes: AP, OSV News, 9colonne</span></article>
+    <article class="case"><span class="tag">🇧🇷 Brasil · Pessoa</span><h3>Pastor Fabiano Zettel (ligado à Igreja Batista da Lagoinha)</h3><p>Investigado na Operação Compliance Zero, da PF, sobre o Banco Master, controlado pelo cunhado dele, Daniel Vorcaro. Suspeita de lavagem e manipulação financeira.</p><span class="st">🔎 E3 · Entregou-se à PF em 04/03/2026. A igreja não é acusada.</span><span class="src">Fontes: Portal de Prefeitura, Diário do Pará</span></article>
+    <article class="case"><span class="tag">🇧🇷 Brasil · Pessoa</span><h3>Pastor Márcio Poncio (Igreja da Nuvem)</h3><p>Investigado na Operação Unha e Carne, da PF, por suspeita de lavagem de dinheiro ligada ao grupo de Adilsinho, a chamada “Máfia do Cigarro”.</p><span class="st">🔎 E3 · Preso em 02/07/2026, preso preventivamente de novo em 15/10/2026 e alvo de buscas em 29/10/2026. Sem condenação.</span><span class="src">Fontes: Diário do Nordeste, Congresso em Foco</span></article>
+    <article class="case"><span class="tag">🇧🇷 Brasil · Pessoa</span><h3>Pastor Roberto Vieira Soares (Igreja Apostólica Vida e Adoração, RJ)</h3><p>Suspeito de usar a influência religiosa para captar investidores com promessa de rendimento. Esposa e filho aparecem como sócios das empresas usadas, e houve saques grandes em dinheiro vivo.</p><span class="st">🔎 E3 · Alvo da Polícia Civil do RJ em agosto/2026.</span><span class="src">Fonte: Correio da Manhã</span></article>
+    <article class="case"><span class="tag">🇧🇷 Brasil · Caso político</span><h3>Deputado Sóstenes Cavalcante</h3><p>A PF, com autorização do STF, investiga a origem de mais de R$ 400 mil em espécie achados na casa do deputado, por suspeita de peculato e lavagem.</p><span class="st">🔎 E3 · Investigação em andamento (jul/2026). Cargo público gera caso político, não religioso.</span><span class="src">Fonte: Jornal do Brasil</span></article>
+  </div>
+  <ul class="seals">
+    <li><b>E5</b> decisão definitiva, acordo oficial ou auditoria conclusiva</li>
+    <li><b>E4</b> réu ou condenação ainda sujeita a recurso</li>
+    <li><b>E3</b> investigação oficial, prisão cautelar ou busca</li>
+  </ul>
+</section>
+
+<section id="brasil">
+  <div class="sec-h"><span class="n">FÓLIO V</span><h2>🇧🇷 O cofre brasileiro</h2></div>
+  <div class="br">
+    <div><b>R$ 5,5–7 bi/ano</b><span>renúncia estimada pelo governo para a PEC 5/2023 (O Globo). O relator falou em cerca de R$ 1 bi.</span></div>
+    <div><b>≥ R$ 10 bi/ano</b><span>custo mínimo só na arrecadação federal, segundo os ministérios da Fazenda e do Planejamento.</span></div>
+    <div><b>R$ 10,3 bi</b><span>patrimônio pessoal estimado de Edir Macedo (Forbes 2026), o líder religioso mais rico do país. Riqueza não é crime.</span></div>
+  </div>
+  <p class="prose">A <strong>“PEC das igrejas”</strong> foi aprovada pela Câmara em 28/05/2026 (385 a 93 no 1º turno) e <strong>aguarda o Senado</strong>. Ela estende a imunidade ao imposto sobre consumo e a creches, comunidades terapêuticas e outras entidades ligadas a igrejas. Pela lógica do axioma, a pergunta que falta no debate é <strong>quanto dessa renúncia vira ajuda comprovada</strong>, porque hoje nem a Receita mede o tamanho da renúncia atual.</p>
+</section>
+
+<section id="diretorio">
+  <div class="sec-h"><span class="n">FÓLIO VI</span><h2>🗂️ Diretório e Central de Auditorias 360X</h2></div>
+  <div class="dir">
+    <a class="dcard" href="index.html"><span class="k">Portal · AldenirMed89</span><b>Auditoria Religiosa 360</b><span>Portal documental, mapa de riscos, 14 agentes e método.</span></a>
+    <a class="dcard" href="riqueza-e-vida.html"><span class="k">Painel</span><b>Riqueza e Vida</b><span>Painel comparativo e cenários de conversão em ajuda.</span></a>
+    <a class="dcard" href="dossie-igreja-mormon.html"><span class="k">Dossiê · SUD</span><b>Dossiê Igreja Mórmon</b><span>Patrimônio, Ensign Peak e simulador.</span></a>
+    <a class="dcard" href="comparativo-interreligioso/"><span class="k">Estudo</span><b>Comparativo inter-religioso</b><span>Cristianismo × judaísmo × islamismo.</span></a>
+    <a class="dcard" href="https://claude.ai/artifact/CPvsNKYhnnJgKw8RkDnqQJ"><span class="k">Painel · Brasil</span><b>Auditoria Evangélica Brasil 360</b><span>Fraudes com uso da fé e casos com estágio judicial.</span></a>
+    <a class="dcard" href="https://github.com/aldenirfilho/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-"><span class="k">GitHub · acervo</span><b>Transparência de Igrejas Cristãs ao Longo das Eras</b><span>Acervo documental completo.</span></a>
+    <a class="dcard" href="../auditoria-uti/"><span class="k">Central de Auditorias · UTI</span><b>Auditoria UTI · Turbo TEMI 360X</b><span>140 itens de UTI adulto, cenários de 10/20/30 leitos e preços de referência.</span></a>
+    <a class="dcard" href="https://auditoria-das-coisas-360x.aldenirmed.chatgpt.site"><span class="k">Central de Auditorias · consumo</span><b>Auditoria das Coisas 360X</b><span>Produtos e empresas: legado, procedência, valor justo e impacto.</span></a>
+    <a class="dcard" href="https://aldenirfilho.github.io/intensivahub/flashcards/#auditoria"><span class="k">App · Códice 360X</span><b>Aba 🔍 Auditoria do Códice</b><span>As três auditorias reunidas dentro do app de estudo.</span></a>
+  </div>
+</section>
+
+<section id="metodo">
+  <div class="sec-h"><span class="n">FÓLIO VII</span><h2>🧭 Método</h2></div>
+  <ul class="sources" style="list-style:disc">
+    <li><strong>Estágio antes do adjetivo:</strong> ninguém é chamado de corrupto ou criminoso sem condenação definitiva.</li>
+    <li><strong>Pessoa não é igreja:</strong> ato de um dirigente não vira culpa da denominação sem prova de comando ou benefício institucional.</li>
+    <li><strong>Todo número tem natureza:</strong> estoque, fluxo anual, dinheiro de clientes e patrimônio pessoal nunca entram na mesma soma.</li>
+    <li><strong>A defesa entra no painel:</strong> nulidades, absolvições e arquivamentos aparecem com o mesmo destaque.</li>
+    <li><strong>Correção aberta:</strong> qualquer pessoa citada pode pedir correção, com documento.</li>
+  </ul>
+</section>
+
+<section id="fontes">
+  <div class="sec-h"><span class="n">FÓLIO VIII</span><h2>📚 Fontes</h2></div>
+  <ol class="sources">
+    <li><a href="https://www.sltrib.com/religion/2026/08/28/lds-stock-fund-nears-record-high/">Salt Lake Tribune, 28/08/2026: Ensign Peak perto do recorde (US$ 60,8 bi; riqueza estimada de US$ 321 bi)</a></li>
+    <li><a href="https://san.com/cc/lds-church-fined-over-sec-charge-it-used-shell-corporations-to-hide-billions/">SAN: Igreja SUD multada pela SEC por usar empresas de fachada</a></li>
+    <li><a href="https://qz.com/the-mormon-church-hid-32-billion-in-shell-companies-1850140376">Quartz: ativos não declarados de quase US$ 38 bi</a></li>
+    <li><a href="https://press.vatican.va/content/dam/salastampa/it/fuori-bollettino/CD_ComunicatoStampa_IORAnnualReport_2025_ENG_def.pdf">Sala de Imprensa da Santa Sé: relatório anual do IOR 2025</a></li>
+    <li><a href="https://www.pillarcatholic.com/p/ior-posts-best-returns-in-a-decade">The Pillar: IOR, único órgão financeiro do Vaticano sob inspeção externa</a></li>
+    <li><a href="https://www.ai-cio.com/news/public-equities-buoy-church-of-englands-8-return-in-2025/">ai-CIO: fundo da Church of England chega a £ 11,6 bi</a></li>
+    <li><a href="https://www.thinkinganglicans.org.uk/church-commissioners-annual-report-2025/">Thinking Anglicans: relatório anual 2025 dos Church Commissioners</a></li>
+    <li><a href="https://www.inside-digital.de/news/obwohl-niemand-muss-fast-18-millionen-deutsche-zahlen-freiwillig-60-euro-im-monat">inside-digital: imposto eclesiástico de € 12,84 bi em 2025</a></li>
+    <li><a href="https://www.businesstoday.in/amp/latest/trends/story/tirupati-temple-trust-reveals-103-ton-gold-fds-worth-rs-5300-cr-and-rs-15938-cr-cash-as-its-assets-351997-2022-11-06">Business Today: livro branco do templo de Tirupati</a></li>
+    <li><a href="https://religionnews.com/2026/03/17/vatican-appeals-court-declares-mistrial-in-the-trial-of-the-century-against-a-cardinal/">Religion News Service / AP: nulidade no julgamento de Becciu</a></li>
+    <li><a href="https://www.9colonne.it/600925/vatican-court-orders-new-trial-for-cardinal-becciu-over-procedural-errors">9colonne: novo julgamento e calendário</a></li>
+    <li><a href="https://diariodopara.com.br/noticias/brasil/pastor-da-igreja-lagoinha-cunhado-de-vorcaro-se-entrega-a-pf/">Diário do Pará: Fabiano Zettel se entrega à PF</a></li>
+    <li><a href="https://diariodonordeste.verdesmares.com.br/ultima-hora/pais/pastor-marcio-poncio-e-preso-pela-policia-federal-em-operacao-no-rio-de-janeiro-1.3774390">Diário do Nordeste: prisão de Márcio Poncio</a></li>
+    <li><a href="https://www.congressoemfoco.com.br/noticia/129672/pf-faz-buscas-em-imoveis-de-marcio-poncio-pastor-aliado-de-bacellar">Congresso em Foco: buscas de 29/10/2026</a></li>
+    <li><a href="https://www.correiodamanha.com.br/rio-de-janeiro/2026/08/311815-pastor-e-alvo-de-operacao-por-suspeita-de-usar-igreja-para-captar-dinheiro-e-aplicar-golpe-milionario-no-rio.html">Correio da Manhã: operação contra Roberto Vieira Soares</a></li>
+    <li><a href="https://www.jb.com.br/brasil/policia/2026/07/1060140-policia-federal-para-pra-cima-de-sostenes-cavalcante-deputado-da-igreja-do-malafaia-no-centrao.html">Jornal do Brasil: PF e o dinheiro na casa de Sóstenes Cavalcante</a></li>
+    <li><a href="https://diariodocomercio.com.br/mix/?p=47660">Diário do Comércio: PEC 5/2023 e renúncia de R$ 5,5–7 bi</a></li>
+    <li><a href="https://www.jornalopcao.com.br/ultimas-noticias/pl-que-preve-isencao-para-igrejas-pode-reduzir-arrecadacao-em-ate-r-50-bilhoes-e-aumentar-custos-para-fieis-835837/">Jornal Opção: custo mínimo de R$ 10 bi/ano na arrecadação federal</a></li>
+    <li><a href="https://www.maisgoias.com.br/brasil/receita-de-igrejas-quase-dobra-em-oito-anos-e-vai-a-r-242-bi/">Mais Goiás: receita das igrejas de R$ 24,2 bi (dados de 2013)</a></li>
+    <li><a href="https://www.opovo.com.br/trends/?p=25029">O Povo: patrimônio de Edir Macedo na Forbes 2026</a></li>
+  </ol>
+  <div class="colophon">
+    <p>✠ <strong>A Fé Está na Bolsa de Valores</strong> · Projeto 360X de Aldenir Rocha de Oliveira Filho · versão 1.0 · 16/11/2026.</p>
+    <p>Painel educativo e de transparência. Não acusa a fé nem os fiéis. Valores são estimativas públicas na data indicada e podem mudar. Pedidos de correção com documento são bem-vindos.</p>
+  </div>
+</section>
+</main>
+
+<script>
+const D=[
+ {n:"Igreja SUD (mórmon) — riqueza total",s:"estimativa Widow’s Mite, fim de 2025",v:321,t:"est"},
+ {n:"Igreja SUD — carteira de ações na SEC",s:"Ensign Peak, 2º tri/2026",v:60.8,t:"dec"},
+ {n:"Templo de Tirupati (Índia)",s:"livro branco, set/2022",v:27.6,t:"dec"},
+ {n:"Church of England — fundo",s:"Church Commissioners, fim de 2025",v:15.6,t:"aud"},
+ {n:"Igrejas da Alemanha — imposto",s:"arrecadação de 2025 (por ano)",v:14.8,t:"flow"},
+ {n:"IOR, “Banco do Vaticano” — clientes",s:"dinheiro de clientes, 2025",v:6.8,t:"cli"},
+ {n:"Edir Macedo (pessoa física)",s:"Forbes 2026, R$ 10,3 bi",v:1.9,t:"per"},
+ {n:"IOR — patrimônio próprio",s:"patrimônio líquido, 2025",v:0.94,t:"aud"},
+ {n:"Igreja Católica — total mundial",s:"sem balanço consolidado publicado",v:null,t:"aud"}
+];
+const C={est:"var(--violet)",dec:"var(--gold)",aud:"var(--cyan)",flow:"var(--amber)",cli:"#7f8b97",per:"var(--red)"};
+function draw(mode){
+  const max=321,ul=document.getElementById("bars");ul.innerHTML="";
+  D.forEach(d=>{
+    const li=document.createElement("li");
+    let p=0;if(d.v){p=mode==="log"?Math.log10(d.v*10)/Math.log10(max*10):d.v/max;}
+    const val=d.v?("US$ "+d.v.toLocaleString("pt-BR",{maximumFractionDigits:1})+" bi"):"não publicado";
+    li.innerHTML=`<div class="who">${d.n}<small>${d.s}</small></div><div class="track"><span class="bar" style="--p:${p};background:${C[d.t]}"></span><span class="val${d.v?"":" q"}">${val}</span></div>`;
+    ul.appendChild(li);
+  });
+}
+document.querySelectorAll(".scalebtn button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".scalebtn button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  draw(b.dataset.s);
+}));
+draw("lin");
+</script>
+</body>
+</html>
