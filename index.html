@@ -703,8 +703,11 @@ body.mission-locked{overflow:hidden}
   width:max-content;max-width:100%;padding:6px 8px;border:1px solid rgba(125,211,252,.3);
   border-radius:8px;background:rgba(1,7,20,.58);backdrop-filter:blur(8px);
 }
-.mission-flight-hud span:nth-child(2){justify-self:center;color:#ffd166}
-.mission-flight-hud span:last-child{justify-self:end;text-align:right}
+.mission-flight-hud span:nth-child(2){
+  position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  color:#ffd166;border-color:rgba(227,176,75,.45);
+}
+.mission-flight-hud span:last-child{grid-column:3;justify-self:end;text-align:right}
 .mission-card-shell::after{
   content:"";position:absolute;inset:-20%;pointer-events:none;
   background:linear-gradient(108deg,transparent 38%,rgba(255,255,255,.86) 50%,transparent 62%);
@@ -1034,6 +1037,10 @@ html[data-theme="light"] .sound-thunder{color:#4d3d15;background:#fff9e9;border-
 }
 .settings-link.primary{border-color:transparent;background:linear-gradient(135deg,var(--cyan),var(--violet));color:var(--on-accent)}
 .settings-note{margin:11px 2px 0;color:var(--muted);font:.62rem/1.45 var(--font-mono)}
+@media(max-width:560px){
+  .mission-flight-hud{inset:8px}
+  .mission-flight-hud span:first-child,.mission-flight-hud span:last-child{display:none}
+}
 @media(max-width:768px){
   .mission-intro{align-items:center}
   .mission-card-shell{width:min(96vw,760px)}
