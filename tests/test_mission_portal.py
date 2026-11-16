@@ -15,29 +15,53 @@ class MissionPortalTests(unittest.TestCase):
     def test_portal_uses_the_public_brand_card_and_emblem(self) -> None:
         for marker in (
             'id="missionIntro" role="dialog" aria-modal="true"',
-            'src="./assets/brand/aldenirmed89-aerospace-launch-card.png"',
+            'src="./assets/brand-360x/aldenirmed-360x-launch-card.png"',
             'rel="preload" as="image" '
-            'href="./assets/brand/aldenirmed89-aerospace-launch-card.png"',
+            'href="./assets/brand-360x/aldenirmed-360x-launch-card.png"',
             'id="missionCore"',
             'id="missionEmblem"',
-            'src="./assets/brand/aldenirmed89-aerospace-orbital-master.png"',
-            'src="./assets/icons/aldenirmed89-aerospace-orbital-192.png"',
+            'src="./assets/brand-360x/aldenirmed-360x-mark.svg"',
+            'src="./assets/brand-360x/icons/aldenirmed-360x-192.png"',
             'class="mission-flight-hud"',
+            "<span>AM 360X · Controle de missão</span>",
+            "Portal de missão · AldenirMed 360X",
             "A missão começa agora.",
         ):
             self.assertIn(marker, HOME)
+        intro = HOME.split('id="missionIntro"', 1)[1].split("</section>", 1)[0]
+        self.assertNotIn("aldenirmed89-aerospace", intro)
+        self.assertNotIn("AM89", intro)
         self.assertNotIn("com honra e vigor", HOME.casefold())
         self.assertNotIn("honra · vigor", HOME.casefold())
 
     def test_launch_assets_are_cached_for_offline_replay(self) -> None:
         worker = (ROOT / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v53`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v54`', worker)
         for asset in (
-            "./assets/brand/aldenirmed89-aerospace-launch-card.png",
-            "./assets/brand/aldenirmed89-aerospace-orbital-master.png",
+            "./assets/brand-360x/aldenirmed-360x-launch-card.png",
+            "./assets/brand-360x/aldenirmed-360x-mark.svg",
+            "./assets/brand-360x/icons/aldenirmed-360x-192.png",
             "./assets/icons/aldenirmed89-aerospace-orbital-192.png",
         ):
             self.assertIn(f'"{asset}"', worker)
+            self.assertTrue((ROOT / asset[2:]).is_file(), asset)
+
+    def test_launch_card_360x_is_clean_and_sized(self) -> None:
+        card = ROOT / "assets/brand-360x/aldenirmed-360x-launch-card.png"
+        data = card.read_bytes()
+        self.assertEqual(data[:8], b"\x89PNG\r\n\x1a\n")
+        width = int.from_bytes(data[16:20], "big")
+        height = int.from_bytes(data[20:24], "big")
+        self.assertEqual((width, height), (1200, 630))
+        chunks, offset = set(), 8
+        while offset < len(data):
+            length = int.from_bytes(data[offset:offset + 4], "big")
+            chunks.add(data[offset + 4:offset + 8])
+            offset += 12 + length
+        self.assertEqual(chunks, {b"IHDR", b"IDAT", b"IEND"})
+        source = (ROOT / "assets/brand-360x/aldenirmed-360x-launch-card.svg").read_text(encoding="utf-8")
+        self.assertIn("AldenirMed 360X", source)
+        self.assertIn("360X</text>", source)
 
     def test_sound_requires_an_explicit_choice_and_stays_local(self) -> None:
         for marker in (

@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v53`;
+const CACHE_NAME = `${CACHE_PREFIX}v54`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -53,8 +53,9 @@ const SHELL_ASSETS = [
   "./ecossistema/data/catalog.json",
   "./assets/site-analytics.css",
   "./assets/site-analytics.js",
-  "./assets/brand/aldenirmed89-aerospace-launch-card.png",
-  "./assets/brand/aldenirmed89-aerospace-orbital-master.png",
+  "./assets/brand-360x/aldenirmed-360x-launch-card.png",
+  "./assets/brand-360x/aldenirmed-360x-mark.svg",
+  "./assets/brand-360x/icons/aldenirmed-360x-192.png",
   "./assets/icons/aldenirmed89-aerospace-orbital-192.png",
   "./assets/icons/antigravity-consultas-192.png",
   "./assets/icons/antigravity-consultas-512.png",
