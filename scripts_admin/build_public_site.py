@@ -36,6 +36,11 @@ try:
 except ModuleNotFoundError:  # import via unittest/importlib a partir da raiz
     from scripts_admin.editorial_gate import scan_file as scan_editorial_file
 
+try:
+    import seo_360x
+except ModuleNotFoundError:  # import via unittest/importlib a partir da raiz
+    from scripts_admin import seo_360x
+
 
 REQUIRED = (
     "index.html",
@@ -98,6 +103,7 @@ OPTIONAL = (
     "respirasense-icu",
     "radar-biblico-3min",
     "jornal-360",
+    "complexo-360x",
     "biblioteca",
     "updown",
     "calculadoras",
@@ -1612,7 +1618,17 @@ def build(root: Path, site: Path) -> int:
     rebranded = migrate_public_identity(site)
     attributed = inject_editorial_attribution(site)
     enriched = inject_public_metadata(site, analytics_config)
+    # Motor de Busca 360X: antes do sitemap, que descarta páginas noindex.
+    seo_stats = seo_360x.apply_page_seo(
+        root,
+        site,
+        base_url=PUBLIC_BASE_URL,
+        canonical_for=canonical_url_for_html,
+        closing_tag=closing_document_tag,
+        exclusions=PUBLIC_DOCUMENT_TRANSFORM_EXCLUSIONS,
+    )
     indexed_urls, _ = write_search_discovery(root, site)
+    discovery = seo_360x.write_discovery_extras(root, site, base_url=PUBLIC_BASE_URL)
     normalize_permissions(site)
     total = sum(path.stat().st_size for path in site.rglob("*") if path.is_file())
     count = sum(1 for path in site.rglob("*") if path.is_file())
@@ -1621,6 +1637,12 @@ def build(root: Path, site: Path) -> int:
     print(f"🛡️ Atribuição editorial aplicada a {attributed} página(s) HTML.")
     print(f"🔎 Canonical e métricas preparados em {enriched} página(s) HTML.")
     print(f"🗺️ Sitemap público gerado com {indexed_urls} URL(s) canônicas.")
+    print(
+        f"🧭 Motor de Busca 360X: {seo_stats['jsonld']} página(s) com JSON-LD, "
+        f"{seo_stats['descriptions']} descrição(ões) e {seo_stats['opengraph']} prévia(s) completadas, "
+        f"{seo_stats['noindex']} fragmento(s) noindex; Jornal com {discovery['jornalUrls']} URL(s) e "
+        f"{discovery['feedItems']} item(ns) no feed; IndexNow {'pronto' if discovery['indexnow'] else 'sem chave'}."
+    )
     if analytics_config["enabled"]:
         print("📊 Métricas públicas habilitadas com contador de visitas registradas.")
     else:
