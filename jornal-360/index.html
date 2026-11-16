@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Jornal Diário 360 · AldenirMed 360X</title>
+<meta name="description" content="Jornal Diário 360: manchetes do dia, pílulas de estudo TEMI, R3, POCUS, ECG e ventilação mecânica e a coluna Arcanos 360, com as 5 edições mais recentes em PDF."/>
+<meta name="theme-color" content="#020b1f"/>
+<meta name="color-scheme" content="dark light"/>
+<link rel="icon" type="image/x-icon" href="../assets/icons/aerospace-v2/favicon.ico" sizes="64x64"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="apple-touch-icon" href="../assets/icons/aerospace-v2/apple-touch-icon-180.png" sizes="180x180"/>
+<script>(()=>{try{const p=JSON.parse(localStorage.getItem('antigravity:a11y:v1')||'{}');const c=p&&p.contrast===true;const t=p&&p.theme;
+const light=!c&&(t==='light'||(t==='system'&&matchMedia('(prefers-color-scheme: light)').matches)||(!['dark','light','system'].includes(t)&&p&&p.clarity===true));
+const r=document.documentElement;r.classList.toggle('a11y-contrast',c);r.classList.toggle('a11y-light',light);r.style.colorScheme=light?'light':'dark';
+if(localStorage.getItem('jornal360:dyslexic')==='1')r.classList.add('j360-dyslexic');}catch(_){}})();</script>
+<style>
+:root{color-scheme:dark;--bg:#020b1f;--bg2:#071831;--surf:rgba(255,255,255,.055);--surf2:rgba(255,255,255,.09);
+--brd:rgba(255,255,255,.11);--text:#f5f9ff;--muted:#a7bad4;--soft:#c7d7ea;--cyan:#2dd4ff;--gold:#e3b04b;
+--violet:#a98cff;--green:#4ef0a1;--red:#ff6060;--r:16px;--body:'Outfit',system-ui,-apple-system,'Segoe UI',sans-serif;
+--head:'Syne','Outfit',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+html.a11y-light{color-scheme:light;--bg:#fff;--bg2:#f4f8fc;--surf:rgba(16,38,59,.045);--surf2:rgba(16,38,59,.08);
+--brd:#d3e0ea;--text:#10263b;--muted:#536b7d;--soft:#334f67;--cyan:#006f7d;--gold:#865800;--violet:#6548b8;--green:#087a4e;--red:#b42335}
+html.a11y-contrast{--bg:#000;--bg2:#050505;--surf:rgba(255,255,255,.12);--brd:rgba(255,255,255,.5);--text:#fff;--muted:#d6e2ee;--soft:#eef5fb;--cyan:#63efff;--gold:#ffe28a}
+@font-face{font-family:'OpenDyslexic';src:url('../assets/fonts/opendyslexic/OpenDyslexic-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'OpenDyslexic';src:url('../assets/fonts/opendyslexic/OpenDyslexic-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+html.j360-dyslexic body,html.j360-dyslexic h1,html.j360-dyslexic h2,html.j360-dyslexic h3{font-family:'OpenDyslexic',var(--body);letter-spacing:.01em}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 12% -10%,rgba(45,212,255,.14),transparent 40rem),radial-gradient(circle at 100% 0,rgba(227,176,75,.1),transparent 34rem),var(--bg);
+color:var(--text);font:400 1.02rem/1.6 var(--body)}
+a{color:inherit}img{max-width:100%;display:block}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+.skip{position:fixed;left:12px;top:12px;z-index:50;background:#fff;color:#071422;padding:10px 14px;border-radius:10px;font-weight:800;transform:translateY(-180%)}
+.skip:focus{transform:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.wrap{width:min(1180px,100% - 32px);margin:0 auto}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--brd)}
+.top .wrap{display:flex;align-items:center;gap:14px;min-height:64px;flex-wrap:wrap;padding:8px 0}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:800 1.02rem/1.1 var(--head)}
+.brand img{width:40px;height:40px;border-radius:11px}
+.brand b{color:var(--cyan)}.brand small{display:block;font:500 .7rem var(--mono);color:var(--muted);letter-spacing:.06em}
+.top nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.top nav a,.top button{min-height:40px;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:10px;border:1px solid transparent;
+background:none;color:var(--soft);font:600 .86rem var(--body);text-decoration:none;cursor:pointer}
+.top nav a:hover,.top button:hover{background:var(--surf2);border-color:var(--brd);color:var(--text)}
+.top button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+.hero{padding:44px 0 18px}
+.kicker{font:600 .74rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
+h1{font:800 clamp(2rem,5vw,3.3rem)/1.05 var(--head);margin:10px 0 12px;letter-spacing:-.02em}
+h1 span{background:linear-gradient(90deg,var(--cyan),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--soft);max-width:70ch;margin:0 0 18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.chips li{padding:6px 11px;border:1px solid var(--brd);border-radius:999px;background:var(--surf);font-size:.84rem;color:var(--soft)}
+main section.band{padding:22px 0}
+h2.band-title{font:800 1.45rem/1.2 var(--head);margin:0 0 12px}
+.j360-edition{border:1px solid var(--brd);border-radius:var(--r);background:var(--surf);margin:0 0 12px;scroll-margin-top:84px}
+.j360-edition.is-featured{padding:22px;border-color:color-mix(in srgb,var(--cyan) 40%,var(--brd));background:linear-gradient(160deg,color-mix(in srgb,var(--cyan) 9%,transparent),var(--surf))}
+.j360-edition-head{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.j360-edition-head h2{font:800 clamp(1.3rem,3vw,1.9rem)/1.15 var(--head);margin:4px 0 6px}
+.j360-kicker{font:600 .72rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.j360-meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;color:var(--muted);font:500 .8rem var(--mono)}
+.j360-files{display:flex;flex-wrap:wrap;gap:8px}
+.j360-file{display:inline-flex;flex-direction:column;justify-content:center;min-height:52px;padding:8px 14px;border-radius:12px;border:1px solid var(--brd);
+background:var(--surf2);text-decoration:none;font-weight:700;line-height:1.2}
+.j360-file small{font:500 .72rem var(--mono);color:var(--muted);margin-top:3px}
+.j360-file-jornal{border-color:color-mix(in srgb,var(--cyan) 55%,var(--brd))}
+.j360-file:hover{border-color:var(--cyan)}
+.j360-file.is-pending{opacity:.62;cursor:not-allowed}
+.j360-grid{display:grid;grid-template-columns:1.25fr 1.15fr .9fr;gap:14px}
+.j360-block{border:1px solid var(--brd);border-radius:14px;padding:14px 16px;background:color-mix(in srgb,var(--bg) 55%,transparent)}
+.j360-block h3{font:700 1rem/1.3 var(--head);margin:0 0 10px}.j360-block h3 em{font-style:normal;color:var(--gold)}
+.j360-headlines,.j360-arcanos,.j360-pills{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.j360-headlines li{padding-left:14px;border-left:3px solid color-mix(in srgb,var(--cyan) 55%,transparent)}
+.j360-arcanos li b{display:block;font:600 .72rem var(--mono);color:var(--violet);letter-spacing:.1em;text-transform:uppercase}
+.j360-pills li{display:grid;grid-template-columns:86px 1fr;gap:8px;align-items:start}
+.j360-pills b{font:700 .8rem var(--mono);color:var(--cyan);white-space:nowrap}
+.j360-corrections{margin-top:12px;border:1px dashed var(--brd);border-radius:12px;padding:8px 14px}
+.j360-corrections summary{cursor:pointer;font-weight:700;color:var(--gold)}
+.j360-corrections ul{margin:8px 0 2px;padding-left:18px}
+.j360-edition>details>summary{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:14px 18px;cursor:pointer;list-style:none}
+.j360-edition>details>summary::-webkit-details-marker{display:none}
+.j360-summary-date b{font:800 1.08rem var(--head);margin-right:6px}
+.j360-summary-date{color:var(--muted)}
+.j360-summary-theme{color:var(--soft);font-weight:600}
+.j360-summary-open{font:600 .78rem var(--mono);color:var(--cyan)}
+details[open]>summary .j360-summary-open{color:var(--gold)}
+.j360-edition-body{padding:0 18px 18px;display:grid;gap:12px}
+.j360-table-wrap{overflow:auto;border:1px solid var(--brd);border-radius:14px}
+.j360-table{width:100%;border-collapse:collapse;min-width:820px;font-size:.92rem}
+.j360-table th,.j360-table td{padding:10px 12px;border-bottom:1px solid var(--brd);text-align:left;vertical-align:top}
+.j360-table thead th{font:700 .78rem var(--mono);color:var(--cyan);background:var(--surf2);position:sticky;top:0}
+.j360-table tbody th small{display:block;font:500 .72rem var(--mono);color:var(--muted)}
+.j360-table tbody th a{font-weight:800;text-decoration:none;color:var(--text)}
+.note{border:1px solid var(--brd);border-left:4px solid var(--gold);border-radius:12px;padding:12px 16px;background:var(--surf);color:var(--soft)}
+.note p{margin:4px 0}
+.steps{margin:0;padding-left:20px;color:var(--soft)}
+footer{border-top:1px solid var(--brd);margin-top:28px;padding:22px 0 40px;color:var(--muted);font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:space-between}
+footer a{color:var(--cyan)}
+@media(max-width:920px){.j360-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.j360-edition>details>summary{grid-template-columns:1fr}.j360-summary-open{display:none}.j360-pills li{grid-template-columns:1fr;gap:2px}.top nav{margin-left:0}}
+@media(max-width:640px){.top{position:static}.top nav{width:100%;margin-left:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}.top nav a{white-space:nowrap}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.top,.skip,footer,.j360-files{display:none}body{background:#fff;color:#000}.j360-edition{break-inside:avoid}details>*{display:block}}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../index.html" aria-label="AldenirMed 360X — voltar ao início">
+      <img src="../assets/brand-360x/aldenirmed-360x-mark.svg" alt="" width="40" height="40"/>
+      <span>AldenirMed <b>360X</b><small>JORNAL DIÁRIO 360</small></span>
+    </a>
+    <nav aria-label="Seções do Jornal Diário 360">
+      <a href="#edicao-011">📰 Hoje</a>
+      <a href="#anteriores">🗂️ Edições</a>
+      <a href="#indice-pilulas">💊 Pílulas</a>
+      <a href="#sobre">ℹ️ Sobre</a>
+      <a href="../index.html#jornal-360">↩ Início</a>
+    </nav>
+    <button id="j360Dyslexic" type="button" aria-pressed="false" title="Ler com a fonte OpenDyslexic">Aa OpenDyslexic</button>
+  </div>
+</header>
+<main id="conteudo" tabindex="-1">
+  <section class="hero">
+    <div class="wrap">
+      <span class="kicker">Radar 360 Circunstancial · modo 360X Turbo · TEMI</span>
+      <h1>📰 Jornal <span>Diário 360</span></h1>
+      <p class="lead">As notícias do dia em leitura TDAH-friendly, com pílulas de estudo para a UTI e a prova de título e a coluna Arcanos 360. Cada edição traz o jornal completo, as Pílulas do Dia e a sessão extra dos Arcanos em PDF.</p>
+      <ul class="chips" aria-label="Destaques">
+        <li>🗓️ Última edição: 16/11/2026 · nº 011</li>
+        <li>🗂️ 5 edições no arquivo</li>
+        <li>🔤 Leitura em OpenDyslexic</li>
+        <li>🚫 Sem fotos de terceiros</li>
+      </ul>
+    </div>
+  </section>
+  <section class="band" aria-label="Edição mais recente">
+    <div class="wrap">
+    <article class="j360-edition is-featured" id="edicao-011" aria-labelledby="edicao-011-title">
+      <header class="j360-edition-head">
+        <div>
+          <span class="j360-kicker">Edição mais recente</span>
+          <h2 id="edicao-011-title">Segunda-feira, 16 de novembro de 2026</h2>
+          <p class="j360-meta"><span>Ano I · nº 011</span><span>20 páginas</span><span>fechamento: início da manhã</span><span>fonte: OpenDyslexic</span></p>
+        </div>
+        <div class="j360-files"><a class="j360-file j360-file-jornal" href="./edicoes/Jornal_Diario_360_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">📄</span> Jornal completo<small>PDF · 1,4 MB</small></a><a class="j360-file j360-file-pilulas" href="./edicoes/Pilulas_do_Dia_360_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">💊</span> Pílulas do Dia<small>PDF · 839 KB</small></a><a class="j360-file j360-file-arcanos" href="./edicoes/Arcanos_360_Sessao_Extra_2026-11-16.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">🔮</span> Arcanos 360<small>PDF · 746 KB</small></a></div>
+      </header>
+      <div class="j360-grid">
+        <section class="j360-block" aria-label="Manchetes da edição nº 011">
+          <h3>🗞️ Manchetes</h3>
+          <ul class="j360-headlines"><li>Enem: abstenção de 36% no 2º dia, a maior desde 2020; o MEC atribui o número à inscrição automática.</li><li>Lula discursa na Asean e combina com Singapura retomar o acordo Mercosul–Asean.</li><li>PIB do Japão recua 0,1% anualizado no 3º trimestre, a primeira queda em um ano.</li><li>Inter 1 × 0 Flamengo: título inédito da Copa do Brasil Feminina (agregado 4 × 1).</li><li>Hoje: Dia Nacional de Atenção à Dislexia e Dia Internacional da Tolerância.</li></ul>
+        </section>
+        <section class="j360-block" aria-label="Pílulas de estudo da edição nº 011">
+          <h3>💊 Pílulas de estudo · <em>O choque que não responde</em></h3>
+          <ul class="j360-pills"><li><b><span aria-hidden="true">🏆</span> TEMI</b><span>Drogas vasoativas (SSC 2021, VASST, SOAP II, SEPSISPAM)</span></li><li><b><span aria-hidden="true">🩺</span> R3</b><span>Insuficiência adrenal e crise adrenal (Endocrine Society 2016; ADRENAL × APROCCHSS)</span></li><li><b><span aria-hidden="true">🔊</span> POCUS</b><span>Função de VE &quot;olhométrica&quot; (EPSS &gt; 7 mm)</span></li><li><b><span aria-hidden="true">🫀</span> ECG</b><span>FA × flutter (2:1 ≈ 150 bpm)</span></li><li><b><span aria-hidden="true">🫁</span> VM</b><span>Complacência e resistência</span></li></ul>
+        </section>
+        <section class="j360-block" aria-label="Arcanos 360 da edição nº 011">
+          <h3>🔮 Arcanos 360</h3>
+          <ul class="j360-arcanos"><li><b>Sessão I</b> Cosme e Damião, o &quot;milagre da perna&quot; e a tolerância imunológica (Medawar, Murray e o 1º transplante no Brasil, 1964).</li><li><b>Sessão II</b> LSD sintetizado em 16/11/1938, o programa MKUltra e o pedido de registro da psilocibina na FDA.</li></ul>
+        </section>
+      </div>
+      <details class="j360-corrections"><summary>✏️ Correções e atualizações publicadas (2)</summary><ul><li>A nº 010 dizia que a fala de Lula na Asean não estava confirmada; ele discursou no domingo.</li><li>Resultado da final da Copa do Brasil Feminina publicado na p. 13.</li></ul></details>
+    </article>
+    </div>
+  </section>
+  <section class="band" id="anteriores" aria-labelledby="anteriores-title">
+    <div class="wrap">
+      <h2 class="band-title" id="anteriores-title">🗂️ Edições anteriores</h2>
+    <article class="j360-edition" id="edicao-010" aria-labelledby="edicao-010-title">
+      <details>
+        <summary>
+          <span class="j360-summary-date"><b id="edicao-010-title">15/11/2026</b> domingo</span>
+          <span class="j360-summary-theme">nº 010 · O ventrículo direito</span>
+          <span class="j360-summary-open" aria-hidden="true">abrir ▾</span>
+        </summary>
+        <div class="j360-edition-body">
+          <p class="j360-meta"><span>Ano I · nº 010</span><span>20 páginas</span><span>fechamento: madrugada</span><span>fonte: OpenDyslexic</span></p>
+          <div class="j360-files"><a class="j360-file j360-file-jornal" href="./edicoes/Jornal_Diario_360_2026-11-15.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">📄</span> Jornal completo<small>PDF · 1,4 MB</small></a><a class="j360-file j360-file-pilulas" href="./edicoes/Pilulas_do_Dia_360_2026-11-15.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">💊</span> Pílulas do Dia<small>PDF · 769 KB</small></a><a class="j360-file j360-file-arcanos" href="./edicoes/Arcanos_360_Sessao_Extra_2026-11-15.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">🔮</span> Arcanos 360<small>PDF · 662 KB</small></a></div>
+      <div class="j360-grid">
+        <section class="j360-block" aria-label="Manchetes da edição nº 010">
+          <h3>🗞️ Manchetes</h3>
+          <ul class="j360-headlines"><li>Japão 3 × 2 Brasil em Singapura, com gol nos acréscimos; Vini Jr. marcou os dois gols brasileiros.</li><li>Ceará empata com o CRB e permanece na Série B; Fortaleza vence o Vila Nova e vai aos playoffs.</li><li>Lula, afônico, cancela discursos em Manila; acordos de agricultura e defesa com as Filipinas.</li><li>Mpox: 1.055 casos no Brasil em 2026; o clado 1b predomina no Rio desde setembro.</li><li>Flamengo completa 131 anos.</li></ul>
+        </section>
+        <section class="j360-block" aria-label="Pílulas de estudo da edição nº 010">
+          <h3>💊 Pílulas de estudo · <em>O ventrículo direito</em></h3>
+          <ul class="j360-pills"><li><b><span aria-hidden="true">🏆</span> TEMI</b><span>TEP de alto risco (ESC 2019; PEITHO)</span></li><li><b><span aria-hidden="true">🩺</span> R3</b><span>Fibrilação atrial (ESC 2024; EAST-AFNET 4)</span></li><li><b><span aria-hidden="true">🔊</span> POCUS</b><span>VD dilatado e TEP</span></li><li><b><span aria-hidden="true">🫀</span> ECG</b><span>TEP no eletrocardiograma</span></li><li><b><span aria-hidden="true">🫁</span> VM</b><span>PEEP: titulação básica</span></li></ul>
+        </section>
+        <section class="j360-block" aria-label="Arcanos 360 da edição nº 010">
+          <h3>🔮 Arcanos 360</h3>
+          <ul class="j360-arcanos"><li><b>Sessão I</b> Pedro II, a glicosúria, Charcot e a carta de Pasteur; Rodolfo Teófilo e a vacina em Fortaleza.</li><li><b>Sessão II</b> A religião que está na bandeira: positivismo, Decreto nº 4 e o Templo da Humanidade.</li></ul>
+        </section>
+      </div>
+      <details class="j360-corrections"><summary>✏️ Correções e atualizações publicadas (2)</summary><ul><li>A nº 009 fechou antes de Japão × Brasil; o placar está na p. 12.</li><li>A nº 009 dizia que Lula falaria na cúpula; afônico, ele cancelou os discursos de sábado.</li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article class="j360-edition" id="edicao-009" aria-labelledby="edicao-009-title">
+      <details>
+        <summary>
+          <span class="j360-summary-date"><b id="edicao-009-title">14/11/2026</b> sábado</span>
+          <span class="j360-summary-theme">nº 009 · Sair do ventilador</span>
+          <span class="j360-summary-open" aria-hidden="true">abrir ▾</span>
+        </summary>
+        <div class="j360-edition-body">
+          <p class="j360-meta"><span>Ano I · nº 009</span><span>20 páginas</span><span>fechamento: manhã</span><span>fonte: Archivo Black</span></p>
+          <div class="j360-files"><a class="j360-file j360-file-jornal" href="./edicoes/Jornal_Diario_360_2026-11-14.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">📄</span> Jornal completo<small>PDF · 799 KB</small></a><a class="j360-file j360-file-pilulas" href="./edicoes/Pilulas_do_Dia_360_2026-11-14.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">💊</span> Pílulas do Dia<small>PDF · 410 KB</small></a><a class="j360-file j360-file-arcanos" href="./edicoes/Arcanos_360_Sessao_Extra_2026-11-14.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">🔮</span> Arcanos 360<small>PDF · 347 KB</small></a></div>
+      <div class="j360-grid">
+        <section class="j360-block" aria-label="Manchetes da edição nº 009">
+          <h3>🗞️ Manchetes</h3>
+          <ul class="j360-headlines"><li>Lula faz em Manila a primeira visita de Estado de um presidente brasileiro às Filipinas.</li><li>Dólar fecha a semana em alta de 2,6%, a R$ 5,65; Ibovespa sobe 2,35%.</li><li>Dia Mundial do Diabetes; o Ministério da Saúde confirma a 1ª morte por mpox de 2026, no Rio.</li><li>Ceará joga pela permanência na Série B; Flamengo decide a Copa do Brasil Feminina no domingo.</li></ul>
+        </section>
+        <section class="j360-block" aria-label="Pílulas de estudo da edição nº 009">
+          <h3>💊 Pílulas de estudo · <em>Sair do ventilador</em></h3>
+          <ul class="j360-pills"><li><b><span aria-hidden="true">🏆</span> TEMI</b><span>Desmame e teste de respiração espontânea (ATS/CHEST 2017; Subirà 2019)</span></li><li><b><span aria-hidden="true">🩺</span> R3</b><span>Insuficiência cardíaca descompensada (STRONG-HF)</span></li><li><b><span aria-hidden="true">🔊</span> POCUS</b><span>Diafragma: excursão e espessamento</span></li><li><b><span aria-hidden="true">🫀</span> ECG</b><span>Sobrecarga de câmaras</span></li><li><b><span aria-hidden="true">🫁</span> VM</b><span>Auto-PEEP</span></li></ul>
+        </section>
+        <section class="j360-block" aria-label="Arcanos 360 da edição nº 009">
+          <h3>🔮 Arcanos 360</h3>
+          <ul class="j360-arcanos"><li><b>Sessão I</b> Do mel na urina à insulina: Areteu, Willis, Dobson, Banting e Best e Leonard Thompson.</li><li><b>Sessão II</b> Boatos que mudam a história: 14/11/1889, Coventry (1940) e Carter (1979).</li></ul>
+        </section>
+      </div>
+      <details class="j360-corrections"><summary>✏️ Correções e atualizações publicadas (1)</summary><ul><li>A nº 008 (p. 12) tratou os jogos em Singapura como os primeiros da Seleção depois da Copa; o amistoso com o Japão é o penúltimo de 2026.</li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article class="j360-edition" id="edicao-008" aria-labelledby="edicao-008-title">
+      <details>
+        <summary>
+          <span class="j360-summary-date"><b id="edicao-008-title">13/11/2026</b> sexta-feira</span>
+          <span class="j360-summary-theme">nº 008 · Hiperglicemia grave</span>
+          <span class="j360-summary-open" aria-hidden="true">abrir ▾</span>
+        </summary>
+        <div class="j360-edition-body">
+          <p class="j360-meta"><span>Ano I · nº 008</span><span>20 páginas</span><span>fechamento: tarde</span><span>fonte: OpenDyslexic</span></p>
+          <div class="j360-files"><a class="j360-file j360-file-jornal" href="./edicoes/Jornal_Diario_360_2026-11-13.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">📄</span> Jornal completo<small>PDF · 1,5 MB</small></a><a class="j360-file j360-file-pilulas" href="./edicoes/Pilulas_do_Dia_360_2026-11-13.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">💊</span> Pílulas do Dia<small>PDF · 849 KB</small></a><a class="j360-file j360-file-arcanos" href="./edicoes/Arcanos_360_Sessao_Extra_2026-11-13.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">🔮</span> Arcanos 360<small>PDF · 704 KB</small></a></div>
+      <div class="j360-grid">
+        <section class="j360-block" aria-label="Manchetes da edição nº 008">
+          <h3>🗞️ Manchetes</h3>
+          <ul class="j360-headlines"><li>Senado aprova o texto-base do pacote fiscal (PLP 299/2026) por 45 a 31; destaques na terça (17).</li><li>Dólar fecha a quinta a R$ 5,65, o maior valor em 17 meses.</li><li>Mpox: 1.023 casos no Brasil em 2026; Anvisa recolhe lote de bupivacaína com glicose.</li><li>Ceará prepara adutoras contra a estiagem que o El Niño pode trazer.</li></ul>
+        </section>
+        <section class="j360-block" aria-label="Pílulas de estudo da edição nº 008">
+          <h3>💊 Pílulas de estudo · <em>Hiperglicemia grave</em></h3>
+          <ul class="j360-pills"><li><b><span aria-hidden="true">🏆</span> TEMI</b><span>CAD e EHH (consenso 2024)</span></li><li><b><span aria-hidden="true">🩺</span> R3</b><span>Insulina no paciente internado</span></li><li><b><span aria-hidden="true">🔊</span> POCUS</b><span>Veia cava inferior</span></li><li><b><span aria-hidden="true">🫀</span> ECG</b><span>Hipocalemia e onda U</span></li><li><b><span aria-hidden="true">🫁</span> VM</b><span>Hipercapnia permissiva</span></li></ul>
+        </section>
+        <section class="j360-block" aria-label="Arcanos 360 da edição nº 008">
+          <h3>🔮 Arcanos 360</h3>
+          <ul class="j360-arcanos"><li><b>Sessão I</b> Sexta-feira 13 no hospital: BMJ 1993, Lo 2012, culturas e viés de disponibilidade.</li><li><b>Sessão II</b> Templários (1307, calendário juliano), São Brício (1002) e Armero (1985).</li></ul>
+        </section>
+      </div>
+      <details class="j360-corrections"><summary>✏️ Correções e atualizações publicadas (2)</summary><ul><li>Nº 007: o 2º dia do Enem é domingo (15/11), não sábado.</li><li>Atualização: o texto-base do pacote fiscal foi aprovado na noite de 12/11.</li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article class="j360-edition" id="edicao-007" aria-labelledby="edicao-007-title">
+      <details>
+        <summary>
+          <span class="j360-summary-date"><b id="edicao-007-title">12/11/2026</b> quinta-feira</span>
+          <span class="j360-summary-theme">nº 007 · Ventilação protetora</span>
+          <span class="j360-summary-open" aria-hidden="true">abrir ▾</span>
+        </summary>
+        <div class="j360-edition-body">
+          <p class="j360-meta"><span>Ano I · nº 007</span><span>20 páginas</span><span>fechamento: noite</span><span>fonte: OpenDyslexic</span></p>
+          <div class="j360-files"><a class="j360-file j360-file-jornal" href="./edicoes/Jornal_Diario_360_2026-11-12.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">📄</span> Jornal completo<small>PDF · 1,4 MB</small></a><a class="j360-file j360-file-pilulas" href="./edicoes/Pilulas_do_Dia_360_2026-11-12.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">💊</span> Pílulas do Dia<small>PDF · 795 KB</small></a><a class="j360-file j360-file-arcanos" href="./edicoes/Arcanos_360_Sessao_Extra_2026-11-12.pdf" target="_blank" rel="noopener" type="application/pdf"><span aria-hidden="true">🔮</span> Arcanos 360<small>PDF · 656 KB</small></a></div>
+      <div class="j360-grid">
+        <section class="j360-block" aria-label="Manchetes da edição nº 007">
+          <h3>🗞️ Manchetes</h3>
+          <ul class="j360-headlines"><li>IPCA de outubro fica em 0,14%, o menor do ano; em 12 meses, 4,63%, acima do teto da meta.</li><li>Congresso aprova o PLN 23/2026 (R$ 149,4 bi, regra de ouro).</li><li>Dia Mundial da Pneumonia; o SUS incorpora a eplerenona para ICFER.</li><li>Anvisa registra duas semaglutidas para DM2.</li><li>Sobral: Dia D de multivacinação no sábado, das 8h às 12h.</li></ul>
+        </section>
+        <section class="j360-block" aria-label="Pílulas de estudo da edição nº 007">
+          <h3>💊 Pílulas de estudo · <em>Ventilação protetora</em></h3>
+          <ul class="j360-pills"><li><b><span aria-hidden="true">🏆</span> TEMI</b><span>SDRA e ventilação protetora (ARMA, PROSEVA, ART, DEXA-ARDS, EOLIA)</span></li><li><b><span aria-hidden="true">🩺</span> R3</b><span>Pneumonia comunitária: CURB-65, critérios ATS/IDSA 2019 e CAPE COD 2023</span></li><li><b><span aria-hidden="true">🔊</span> POCUS</b><span>Consolidação, sinal do tecido, fragmento e broncograma dinâmico</span></li><li><b><span aria-hidden="true">🫀</span> ECG</b><span>Bloqueios de ramo; BRE × IAM (Sgarbossa, Smith)</span></li><li><b><span aria-hidden="true">🫁</span> VM</b><span>Driving pressure (Amato 2015)</span></li></ul>
+        </section>
+        <section class="j360-block" aria-label="Arcanos 360 da edição nº 007">
+          <h3>🔮 Arcanos 360</h3>
+          <ul class="j360-arcanos"><li><b>Sessão I</b> Percival Lowell, a &quot;foto&quot; do monstro do Ness e a WWW: pareidolia, viés de confirmação e nocebo.</li><li><b>Sessão II</b> Cometas como presságio até a Philae (2014); o ciclone de Bhola (1970); Trótski apagado das fotos e os deepfakes.</li></ul>
+        </section>
+      </div>
+      <details class="j360-corrections"><summary>✏️ Correções e atualizações publicadas (2)</summary><ul><li>O relator da LDO 2027 é o senador Eduardo Gomes (PL-TO), não o deputado Moretti.</li><li>O adversário do Ceará no sábado é o CRB (fora), não o Avaí.</li></ul></details>
+        </div>
+      </details>
+    </article>
+    </div>
+  </section>
+  <section class="band" id="indice-pilulas" aria-labelledby="indice-title">
+    <div class="wrap">
+      <h2 class="band-title" id="indice-title">💊 Índice de pílulas de estudo</h2>
+      <p class="lead">Revisão espaçada em uma tabela: escolha o eixo (TEMI, R3, POCUS, ECG ou VM) e percorra as edições.</p>
+      <div class="j360-table-wrap" tabindex="0" role="region" aria-label="Índice de pílulas por edição"><table class="j360-table"><caption class="sr-only">Pílulas de estudo por edição</caption><thead><tr><th scope="col">Edição</th><th scope="col">🏆 TEMI</th><th scope="col">🩺 R3</th><th scope="col">🔊 POCUS</th><th scope="col">🫀 ECG</th><th scope="col">🫁 VM</th></tr></thead><tbody><tr><th scope="row"><a href="#edicao-011">16/11/2026</a><small>nº 011</small></th><td>Drogas vasoativas (SSC 2021, VASST, SOAP II, SEPSISPAM)</td><td>Insuficiência adrenal e crise adrenal (Endocrine Society 2016; ADRENAL × APROCCHSS)</td><td>Função de VE &quot;olhométrica&quot; (EPSS &gt; 7 mm)</td><td>FA × flutter (2:1 ≈ 150 bpm)</td><td>Complacência e resistência</td></tr><tr><th scope="row"><a href="#edicao-010">15/11/2026</a><small>nº 010</small></th><td>TEP de alto risco (ESC 2019; PEITHO)</td><td>Fibrilação atrial (ESC 2024; EAST-AFNET 4)</td><td>VD dilatado e TEP</td><td>TEP no eletrocardiograma</td><td>PEEP: titulação básica</td></tr><tr><th scope="row"><a href="#edicao-009">14/11/2026</a><small>nº 009</small></th><td>Desmame e teste de respiração espontânea (ATS/CHEST 2017; Subirà 2019)</td><td>Insuficiência cardíaca descompensada (STRONG-HF)</td><td>Diafragma: excursão e espessamento</td><td>Sobrecarga de câmaras</td><td>Auto-PEEP</td></tr><tr><th scope="row"><a href="#edicao-008">13/11/2026</a><small>nº 008</small></th><td>CAD e EHH (consenso 2024)</td><td>Insulina no paciente internado</td><td>Veia cava inferior</td><td>Hipocalemia e onda U</td><td>Hipercapnia permissiva</td></tr><tr><th scope="row"><a href="#edicao-007">12/11/2026</a><small>nº 007</small></th><td>SDRA e ventilação protetora (ARMA, PROSEVA, ART, DEXA-ARDS, EOLIA)</td><td>Pneumonia comunitária: CURB-65, critérios ATS/IDSA 2019 e CAPE COD 2023</td><td>Consolidação, sinal do tecido, fragmento e broncograma dinâmico</td><td>Bloqueios de ramo; BRE × IAM (Sgarbossa, Smith)</td><td>Driving pressure (Amato 2015)</td></tr></tbody></table></div>
+    </div>
+  </section>
+  <section class="band" id="sobre" aria-labelledby="sobre-title">
+    <div class="wrap">
+      <h2 class="band-title" id="sobre-title">ℹ️ Sobre o jornal</h2>
+      <div class="note">
+        <p><strong>Jornal Diário 360</strong> · Radar 360 Circunstancial · modo 360X Turbo · TEMI</p>
+        <p>Agente Editorial 360 com o Claude (Anthropic) · curadoria de Aldenir Rocha de Oliveira Filho e Equipe 360X.</p>
+        <p>Gráficos e ilustrações originais; nenhuma foto de terceiros.</p><p>Em saúde, siga o protocolo institucional; as pílulas são material de estudo e não substituem o julgamento clínico.</p><p>Em finanças e compras, não há recomendação nem comissão.</p>
+        <p>⚠️ <em>Material educacional. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.</em></p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 AldenirMed 360X · Jornal Diário 360 · atualizado em 16/11/2026</span>
+    <span><a href="../index.html">Voltar ao início</a> · <a href="../index.html#apps-360">Apps 360</a> · <a href="../index.html#downloads">Downloads</a></span>
+  </div>
+</footer>
+<script>(()=>{const b=document.getElementById('j360Dyslexic');if(!b)return;const r=document.documentElement;
+const sync=()=>b.setAttribute('aria-pressed',r.classList.contains('j360-dyslexic')?'true':'false');sync();
+b.addEventListener('click',()=>{r.classList.toggle('j360-dyslexic');try{localStorage.setItem('jornal360:dyslexic',r.classList.contains('j360-dyslexic')?'1':'0')}catch(_){}sync();});
+const open=()=>{const id=decodeURIComponent(location.hash.slice(1));if(!id)return;const el=document.getElementById(id);const d=el&&el.querySelector('details');if(d)d.open=true;};
+window.addEventListener('hashchange',open);open();})();</script>
+</body>
+</html>

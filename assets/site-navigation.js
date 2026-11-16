@@ -6,10 +6,11 @@
   if (!input || !list || !status) return;
   const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const unique = new Map();
-  document.querySelectorAll('a.module-card').forEach(card => {
+  document.querySelectorAll('a.module-card, a[data-search-route]').forEach(card => {
     const href = card.getAttribute('href');
-    if (!href || /^(?:[a-z]+:|\/\/)/i.test(href)) return;
-    unique.set(href, {href, title:card.querySelector('h3')?.textContent.trim() || card.textContent.trim(), text:card.textContent, kind:'Módulo / estação'});
+    if (!href || /^(?:[a-z]+:|\/\/)/i.test(href) || unique.has(href)) return;
+    const title = card.dataset.searchTitle || card.querySelector('h3, strong')?.textContent.trim() || card.textContent.trim();
+    unique.set(href, {href, title, text:[title, card.textContent, card.dataset.searchTerms || ''].join(' '), kind:card.dataset.searchKind || 'Módulo / estação'});
   });
   const show = () => {
     const words = normalize(input.value).trim().split(/\s+/).filter(Boolean);

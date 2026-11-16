@@ -2,7 +2,8 @@
 
 (() => {
   const script = document.currentScript;
-  const source = script?.dataset.source || "";
+  // Aceita data-source no <script> ou a variável global usada por guias antigos.
+  const source = script?.dataset.source || window.ANTIGRAVITY_GUIDE_SOURCE || "";
   const guideTitle = script?.dataset.title || "Guia Antigravity";
   const article = document.getElementById("guide");
   const toc = document.getElementById("toc");
@@ -244,6 +245,7 @@
   function buildToc() {
     const selector = [...tocLevels].map((level) => `h${level}`).join(", ") || "h2";
     const headings = article.querySelectorAll(selector);
+    if (!toc) return;
     toc.replaceChildren();
     headings.forEach((heading) => {
       const link = document.createElement("a");
@@ -272,17 +274,17 @@
       document.documentElement.classList.toggle("reader-large", preferences.size === 1);
       document.documentElement.classList.toggle("reader-xlarge", preferences.size === 2);
       document.documentElement.classList.toggle("reader-contrast", preferences.contrast);
-      fontButton.textContent = ["Texto A", "Texto A+", "Texto A++"][preferences.size] || "Texto A";
-      contrastButton.setAttribute("aria-pressed", String(preferences.contrast));
+      if (fontButton) fontButton.textContent = ["Texto A", "Texto A+", "Texto A++"][preferences.size] || "Texto A";
+      contrastButton?.setAttribute("aria-pressed", String(preferences.contrast));
       try {
         localStorage.setItem(preferenceKey, JSON.stringify(preferences));
       } catch (_) {}
     };
-    fontButton.addEventListener("click", () => {
+    fontButton?.addEventListener("click", () => {
       preferences.size = (Number(preferences.size) + 1) % 3;
       apply();
     });
-    contrastButton.addEventListener("click", () => {
+    contrastButton?.addEventListener("click", () => {
       preferences.contrast = !preferences.contrast;
       apply();
     });
@@ -321,11 +323,11 @@
     () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-      progress.style.width = `${Math.round(ratio * 100)}%`;
+      if (progress) progress.style.width = `${Math.round(ratio * 100)}%`;
     },
     { passive: true }
   );
-  printButton.addEventListener("click", () => window.print());
+  printButton?.addEventListener("click", () => window.print());
   loadPreferences();
   loadGuide();
 })();
