@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v54`;
+const CACHE_NAME = `${CACHE_PREFIX}v55`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -20,16 +20,16 @@ const STUDY_CATALOG_PATHS = new Set([
   "./questoes/data/hub_qbanks.js"
 ].map(relative => new URL(relative, self.registration.scope).pathname));
 const SHELL_ASSETS = [
-  "./assets/icons/aerospace-v2/favicon.ico",
-  "./assets/icons/aerospace-v2/icon-32.png",
-  "./assets/icons/aerospace-v2/icon-64.png",
-  "./assets/icons/aerospace-v2/icon-192.png",
-  "./assets/icons/aerospace-v2/icon-512.png",
-  "./assets/icons/aerospace-v2/icon-1024.png",
-  "./assets/icons/aerospace-v2/apple-touch-icon-180.png",
-  "./assets/icons/aerospace-v2/apple-touch-icon-167.png",
-  "./assets/icons/aerospace-v2/apple-touch-icon-152.png",
-  "./assets/icons/aerospace-v2/apple-touch-icon-120.png",
+  "./assets/icons/360x-v1/favicon.ico",
+  "./assets/icons/360x-v1/icon-32.png",
+  "./assets/icons/360x-v1/icon-64.png",
+  "./assets/icons/360x-v1/icon-192.png",
+  "./assets/icons/360x-v1/icon-512.png",
+  "./assets/icons/360x-v1/icon-1024.png",
+  "./assets/icons/360x-v1/apple-touch-icon-180.png",
+  "./assets/icons/360x-v1/apple-touch-icon-167.png",
+  "./assets/icons/360x-v1/apple-touch-icon-152.png",
+  "./assets/icons/360x-v1/apple-touch-icon-120.png",
 
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-64.png",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-192.png",
@@ -56,7 +56,6 @@ const SHELL_ASSETS = [
   "./assets/brand-360x/aldenirmed-360x-launch-card.png",
   "./assets/brand-360x/aldenirmed-360x-mark.svg",
   "./assets/brand-360x/icons/aldenirmed-360x-192.png",
-  "./assets/icons/aldenirmed89-aerospace-orbital-192.png",
   "./assets/icons/antigravity-consultas-192.png",
   "./assets/icons/antigravity-consultas-512.png",
   "./assets/icons/apple-touch-icon.png",

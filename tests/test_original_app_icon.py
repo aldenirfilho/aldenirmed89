@@ -21,10 +21,47 @@ class OriginalAppIconTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256((folder / 'icon-1024.png').read_bytes()).hexdigest(), provenance['masterSha256'])
         manifest = json.loads((ROOT / 'manifest.webmanifest').read_text())
         self.assertEqual([manifest[k] for k in ('id', 'start_url', 'scope')], ['./'] * 3)
+        # O app instalado usa o pacote 360X desde 16/11/2026; o pacote aeroespacial segue preservado acima.
+        self.assertEqual(manifest['name'], 'AldenirMed 360X')
         for icon in manifest['icons'] + [i for shortcut in manifest['shortcuts'] for i in shortcut['icons']]:
-            self.assertIn('assets/icons/aerospace-v2/', icon['src'])
+            self.assertIn('assets/icons/360x-v1/', icon['src'])
             self.assertTrue((ROOT / icon['src']).is_file())
             self.assertNotIn('maskable', icon.get('purpose', 'any'))
+
+    def test_360x_release_matches_provenance_and_sources(self):
+        folder = ROOT / 'assets/icons/360x-v1'
+        provenance = json.loads((folder / 'provenance.json').read_text(encoding='utf-8'))
+        self.assertEqual(provenance['generator'], 'scripts_admin/build_360x_icon_release.py')
+        for path, digest in provenance['sources'].items():
+            self.assertEqual(hashlib.sha256((ROOT / path).read_bytes()).hexdigest(), digest, path)
+        expected = {
+            'favicon.ico', 'social-card.png', 'icon-32.png', 'icon-64.png', 'icon-192.png',
+            'icon-512.png', 'icon-1024.png', 'apple-touch-icon-120.png', 'apple-touch-icon-152.png',
+            'apple-touch-icon-167.png', 'apple-touch-icon-180.png', 'apple-touch-icon-1024.png',
+        }
+        self.assertEqual(set(provenance['files']), expected)
+        for name, record in provenance['files'].items():
+            content = (folder / name).read_bytes()
+            self.assertEqual(hashlib.sha256(content).hexdigest(), record['sha256'], name)
+            if name.endswith('.png'):
+                width = int.from_bytes(content[16:20], 'big')
+                height = int.from_bytes(content[20:24], 'big')
+                if name != 'social-card.png':
+                    self.assertEqual((width, height), (record['size'], record['size']), name)
+                chunks, offset = set(), 8
+                while offset < len(content):
+                    length = int.from_bytes(content[offset:offset + 4], 'big')
+                    chunks.add(content[offset + 4:offset + 8])
+                    offset += 12 + length
+                self.assertTrue(chunks <= {b'IHDR', b'PLTE', b'tRNS', b'IDAT', b'IEND'}, name)
+        ico = (folder / 'favicon.ico').read_bytes()
+        self.assertEqual(ico[:4], b'\x00\x00\x01\x00')
+        self.assertEqual(int.from_bytes(ico[4:6], 'little'), 7)
+        result = subprocess.run(
+            ['python3', 'scripts_admin/build_360x_icon_release.py', '--check'],
+            cwd=ROOT, text=True, capture_output=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_nested_metadata_preserves_code_custom_apps_and_previews(self):
         spec = importlib.util.spec_from_file_location('original_brand_builder', ROOT / 'scripts_admin/build_public_site.py')
@@ -36,7 +73,9 @@ class OriginalAppIconTests(unittest.TestCase):
         result = builder.restore_original_brand_metadata(html, relative, '../../')
         self.assertIn(code, result)
         self.assertIn('<body>../../favicon.ico</body>', result)
-        self.assertIn('href="../../assets/icons/aerospace-v2/favicon.ico"', result)
+        self.assertIn('href="../../assets/icons/360x-v1/favicon.ico"', result)
+        legacy = builder.restore_original_brand_metadata('<head><link rel="icon" href="../../assets/icons/aerospace-v2/icon-32.png"></head>', relative, '../../')
+        self.assertIn('href="../../assets/icons/360x-v1/icon-32.png"', legacy)
         self.assertIn('sizes="180x180"', result)
         self.assertIn('property="og:image"', result)
         own = builder.restore_original_brand_metadata('<head><link rel="icon" href="assets/neuro.png"><meta property="og:image" content="custom.png"></head>', relative, '../../')
@@ -51,7 +90,7 @@ class OriginalAppIconTests(unittest.TestCase):
             config = {'enabled': False, 'siteCode': '', 'visitorCounterEnabled': False}
             builder.inject_public_metadata(site, config)
             first = preview.read_text()
-            self.assertNotIn('aerospace-v2', first)
+            self.assertNotIn('360x-v1', first)
             builder.inject_public_metadata(site, config)
             self.assertEqual(first, preview.read_text())
 

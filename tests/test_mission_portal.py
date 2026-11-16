@@ -36,15 +36,17 @@ class MissionPortalTests(unittest.TestCase):
 
     def test_launch_assets_are_cached_for_offline_replay(self) -> None:
         worker = (ROOT / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v54`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v55`', worker)
         for asset in (
             "./assets/brand-360x/aldenirmed-360x-launch-card.png",
             "./assets/brand-360x/aldenirmed-360x-mark.svg",
             "./assets/brand-360x/icons/aldenirmed-360x-192.png",
-            "./assets/icons/aldenirmed89-aerospace-orbital-192.png",
         ):
             self.assertIn(f'"{asset}"', worker)
             self.assertTrue((ROOT / asset[2:]).is_file(), asset)
+        offline = (ROOT / "offline.html").read_text(encoding="utf-8")
+        self.assertIn('src="assets/brand-360x/aldenirmed-360x-mark.svg"', offline)
+        self.assertNotIn("aldenirmed89-aerospace-orbital", offline)
 
     def test_launch_card_360x_is_clean_and_sized(self) -> None:
         card = ROOT / "assets/brand-360x/aldenirmed-360x-launch-card.png"

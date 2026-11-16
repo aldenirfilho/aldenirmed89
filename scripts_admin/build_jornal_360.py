@@ -333,11 +333,11 @@ def render_page(data: dict) -> str:
 <meta name="description" content="Jornal Diário 360: manchetes do dia, pílulas de estudo TEMI, R3, POCUS, ECG e ventilação mecânica e a coluna Arcanos 360, com as {count} edições mais recentes em PDF."/>
 <meta name="theme-color" content="#020b1f"/>
 <meta name="color-scheme" content="dark light"/>
-<link rel="icon" type="image/x-icon" href="../assets/icons/aerospace-v2/favicon.ico" sizes="64x64"/>
+<link rel="icon" type="image/x-icon" href="../assets/icons/360x-v1/favicon.ico" sizes="64x64"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
-<link rel="apple-touch-icon" href="../assets/icons/aerospace-v2/apple-touch-icon-180.png" sizes="180x180"/>
+<link rel="apple-touch-icon" href="../assets/icons/360x-v1/apple-touch-icon-180.png" sizes="180x180"/>
 <script>{PREFS_SCRIPT}</script>
 <style>{PAGE_CSS}</style>
 </head>
