@@ -5,8 +5,7 @@ const CASCA = [
   "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png",
   "./icons/apple-touch-icon.png", "./fonts/opendyslexic-latin-400-normal.woff2",
   "./fonts/opendyslexic-latin-700-normal.woff2", "./fonts/unifrakturmaguntia-latin-400-normal.woff2",
-  "./fonts/cinzel-latin-900-normal.woff2", "./privacidade.html", "./termos.html", "./leitor.html",
-  "./js/pdfjs/pdf.min.js", "./js/pdfjs/pdf.worker.min.js"
+  "./fonts/cinzel-latin-900-normal.woff2", "./privacidade.html", "./termos.html"
 ];
 
 self.addEventListener("install", (e) => {

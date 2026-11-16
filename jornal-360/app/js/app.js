@@ -54,7 +54,7 @@
       '<div><div class="data">Edição nº ' + String(atual.number).padStart(3, "0") + " · " + esc(atual.label) + "</div>" +
       "<h1>" + esc(atual.title) + "</h1>" +
       '<div class="meta">' + atual.pages + " páginas · fonte " + esc(atual.font) + "</div>" +
-      '<div class="acoes">' + (atual.html ? '<a class="botao" href="' + esc(atual.html) + '">📱 Ler no celular</a>' : '') + '<a class="botao' + (atual.html ? ' sec' : '') + '" href="leitor.html?pdf=' + encodeURIComponent(atual.pdf) + '">📖 PDF</a>' +
+      '<div class="acoes">' + (atual.html ? '<a class="botao" href="' + esc(atual.html) + '">📱 Ler no celular</a>' : '') + '<a class="botao' + (atual.html ? ' sec' : '') + '" href="' + esc(atual.pdf) + '" target="_blank" rel="noopener">📖 PDF</a>' +
       (nativo ? "" : '<a class="botao sec" href="' + esc(atual.pdf) + '" download>⬇️ Baixar</a>') +
       '<button class="botao sec" id="btnComp">🔗 Compartilhar</button></div></div>';
     document.getElementById("btnComp").addEventListener("click", function () { compartilhar(atual); });
@@ -63,7 +63,7 @@
     document.getElementById("sessenta").hidden = !(atual.highlights || []).length;
     var g = document.getElementById("gradeAcervo"); g.innerHTML = "";
     eds.forEach(function (e) {
-      var a = document.createElement("a"); a.className = "ed"; a.href = e.html ? e.html : "leitor.html?pdf=" + encodeURIComponent(e.pdf);
+      var a = document.createElement("a"); a.className = "ed"; a.href = e.html ? e.html : e.pdf;
       a.innerHTML = '<img loading="lazy" src="' + esc(e.cover) + '" alt=""><b>' + e.date.split("-").reverse().join("/") + "</b>" + esc(e.title);
       g.appendChild(a);
     });
