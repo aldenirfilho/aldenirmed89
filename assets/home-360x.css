@@ -269,3 +269,17 @@ html.a11y-contrast .creditos-360x{--cr-gold:#ffe28a;--cr-gold2:#ffe28a}
 @media(max-width:620px){.cr360-author{grid-template-columns:1fr;padding:18px}.cr360-brasao{max-width:96px}
   .cr360-ebooks ul{grid-template-columns:1fr}
   .cr360-eixos{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}.cr360-eixos a{flex:0 0 auto}}
+
+/* ── Atalhos na linha de comando: Axiomas 360X e Jornal Diário 360X (ao lado de Configurações) ── */
+.command-shortcut{position:relative;text-decoration:none;flex:0 0 auto}
+.command-axiomas{color:#e3b04b}
+.command-axiomas svg{stroke-width:2}
+.command-axiomas:hover{border-color:#e3b04b;box-shadow:0 18px 48px rgba(0,0,0,.34),0 0 26px rgba(227,176,75,.28)}
+html[data-theme="light"] .command-axiomas{color:#7a5300}
+html.a11y-contrast .command-axiomas{color:#ffe28a}
+.command-jornal{color:var(--cyan)}
+.command-jornal::after{content:"";position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 8px var(--green)}
+.nav .command-jornal::after{top:5px;right:5px;width:6px;height:6px}
+@media(prefers-reduced-motion:no-preference){.command-jornal::after{animation:cmdDaily 2.4s ease-in-out infinite}}
+@keyframes cmdDaily{50%{opacity:.35}}

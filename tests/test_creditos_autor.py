@@ -59,6 +59,17 @@ class CreditosAutorTests(unittest.TestCase):
         self.assertIn(DATA["lema"], HOME)
         self.assertEqual(HOME.count('<a class="hub-tile'), 8)
 
+    def test_axiomas_and_jornal_shortcuts_sit_next_to_settings(self) -> None:
+        cluster = HOME[HOME.index('id="cornerCommandCluster"'):HOME.index("</header>")]
+        settings = cluster.index('id="settingsConsole"')
+        axiomas = cluster.index('class="quick-command command-shortcut command-axiomas" href="creditos-autor/index.html"')
+        jornal = cluster.index('class="quick-command command-shortcut command-jornal" href="jornal-360/index.html"')
+        language = cluster.index('class="command-language"')
+        self.assertLess(settings, axiomas)
+        self.assertLess(axiomas, jornal)
+        self.assertLess(jornal, language)
+        self.assertIn("publicação diária", cluster[jornal:language])
+
     def test_page_keeps_editorial_notices(self) -> None:
         self.assertIn('<html lang="pt-BR">', PAGE)
         self.assertIn("Não substituem o julgamento clínico", PAGE)

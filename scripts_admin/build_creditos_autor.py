@@ -390,6 +390,15 @@ def render_page(data: dict) -> str:
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Créditos do Autor · Axiomas 360X · AldenirMed 360X</title>
 <meta name="description" content="Créditos do autor do AldenirMed 360X: os {total} Axiomas 360X de {esc(data['autor'])}, com os comentários da edição, e os e-books em PDF gerados a partir deles."/>
+<meta property="og:title" content="Axiomas 360X · Créditos do Autor — AldenirMed 360X"/>
+<meta property="og:description" content="{total} axiomas de honra, humanidade e medicina, cada um com comentário, e os e-books em PDF da coleção."/>
+<meta property="og:url" content="https://aldenirfilho.github.io/aldenirmed89/creditos-autor/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="https://aldenirfilho.github.io/aldenirmed89/assets/icons/360x-v1/social-card.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="AldenirMed 360X · cartão com o emblema 360X"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#04060c"/>
 <meta name="color-scheme" content="dark light"/>
 <link rel="icon" type="image/x-icon" href="../assets/icons/360x-v1/favicon.ico" sizes="64x64"/>
