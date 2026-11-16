@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111417">
+<title>Leitor — Jornal Diário 360</title>
+<link rel="stylesheet" href="css/app.css">
+<style>
+  .barra{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;padding:calc(8px + env(safe-area-inset-top)) 10px 8px;background:var(--bg);border-bottom:2px solid var(--ouro)}
+  .barra .pag{flex:1;text-align:center;font-size:.85rem;color:var(--txt2)}
+  .barra button,.barra a{min-width:44px;min-height:44px;border-radius:10px;border:1px solid var(--linha);background:var(--bg2);color:var(--txt);font-family:var(--fonte);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+  #paginas{padding:10px 0 40px;overflow-x:auto}
+  .pg{margin:0 auto 12px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.4);display:block}
+  .aviso{text-align:center;color:var(--txt2);padding:30px 16px}
+</style>
+</head>
+<body>
+<div class="barra">
+  <a href="index.html" aria-label="Voltar">←</a>
+  <button id="menos" aria-label="Diminuir zoom">−</button>
+  <div class="pag" id="pag">carregando…</div>
+  <button id="mais" aria-label="Aumentar zoom">+</button>
+</div>
+<div id="paginas"><div class="aviso">Abrindo a edição…</div></div>
+<script type="module">
+import * as pdfjs from "./js/pdfjs/pdf.min.js";
+pdfjs.GlobalWorkerOptions.workerSrc = "./js/pdfjs/pdf.worker.min.js";
+const alvo = new URLSearchParams(location.search).get("pdf") || "";
+const caixa = document.getElementById("paginas"), rotulo = document.getElementById("pag");
+let zoom = 1, doc = null, total = 0;
+if (!/^(\.\.\/)?edicoes\/[\w.-]+\.pdf$/.test(alvo)) { caixa.innerHTML = '<div class="aviso">Edição não encontrada.</div>'; }
+else {
+  try {
+    doc = await pdfjs.getDocument({ url: alvo }).promise;
+    total = doc.numPages; desenhar();
+  } catch (e) { caixa.innerHTML = '<div class="aviso">Não foi possível abrir a edição. Verifique a conexão.</div>'; }
+}
+function desenhar() {
+  caixa.innerHTML = "";
+  const largura = Math.min(window.innerWidth - 16, 900) * zoom;
+  const obs = new IntersectionObserver((itens) => {
+    itens.forEach((it) => {
+      const c = it.target;
+      if (it.isIntersecting) { rotulo.textContent = "página " + c.dataset.n + " de " + total; if (!c.dataset.ok) { c.dataset.ok = 1; render(c); } }
+    });
+  }, { rootMargin: "600px 0px" });
+  for (let n = 1; n <= total; n++) {
+    const c = document.createElement("canvas"); c.className = "pg"; c.dataset.n = n;
+    c.style.width = largura + "px"; c.style.height = (largura * 1.4142) + "px";
+    c.setAttribute("role", "img"); c.setAttribute("aria-label", "Página " + n);
+    caixa.appendChild(c); obs.observe(c);
+  }
+}
+async function render(c) {
+  const p = await doc.getPage(+c.dataset.n);
+  const larguraCss = parseFloat(c.style.width);
+  const v1 = p.getViewport({ scale: 1 });
+  const escala = (larguraCss / v1.width) * (window.devicePixelRatio || 1);
+  const v = p.getViewport({ scale: escala });
+  c.width = v.width; c.height = v.height; c.style.height = (larguraCss * v.height / v.width) + "px";
+  await p.render({ canvasContext: c.getContext("2d"), viewport: v, canvas: c }).promise;
+}
+document.getElementById("mais").onclick = () => { zoom = Math.min(3, zoom + 0.25); if (doc) desenhar(); };
+document.getElementById("menos").onclick = () => { zoom = Math.max(1, zoom - 0.25); if (doc) desenhar(); };
+</script>
+</body>
+</html>
