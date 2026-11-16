@@ -98,6 +98,7 @@ OPTIONAL = (
     "respirasense-icu",
     "radar-biblico-3min",
     "jornal-360",
+    "creditos-autor",
     "biblioteca",
     "updown",
     "calculadoras",
