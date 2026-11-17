@@ -28,7 +28,7 @@ test('Pix e QR de todas as chaves: comprimento, checksum, tipos e limites',()=>{
  assert.throws(()=>C.pix(null,2500));assert.throws(()=>C.pix(D.find(c=>c.pix).pix,0));assert.throws(()=>C.pix(D.find(c=>c.pix).pix,1.2));assert.throws(()=>C.qrMatrix('a'.repeat(193)));
 });
 test('catálogo 2.0: instituições e tickers únicos, links HTTPS, datas, perspectiva e projetos com fonte',()=>{
- assert.equal(D.length,12);assert.equal(D.filter(x=>x.ceara).length,6);assert.equal(D.filter(x=>x.pix).length,4);assert.equal(new Set(D.map(x=>x.id)).size,D.length);assert.equal(new Set(D.map(x=>x.ticker)).size,D.length);
+ assert.equal(D.length,12);assert.equal(D.filter(x=>x.ceara).length,6);assert.equal(D.filter(x=>x.pix).length,3);assert.ok(!JSON.stringify(D).includes('@'));assert.equal(new Set(D.map(x=>x.id)).size,D.length);assert.equal(new Set(D.map(x=>x.ticker)).size,D.length);
  for(const d of D){for(const key of ['website','source','helpUrl'])assert.equal(new URL(d[key]).protocol,'https:');assert.match(d.checked,/^2026-(09-19|11-16)$/);assert.ok(d.proposal);assert.match(d.ticker,/^[A-Z]{4}(3|4|5|6|7|8|9|11)$/);assert.ok(d.perspective.length>20);assert.ok(d.projects.length>=2&&d.projects.every(p=>p.t&&p.d));assert.equal(new URL(d.projSource.url).protocol,'https:');assert.match(d.projSource.checked,/^2026-11-16$/);}
  assert.deepEqual(D.find(x=>x.id==='caatinga').pix.key,'02885544000103');assert.equal(D.find(x=>x.id==='hemoce-sobral').pix,null);
 });

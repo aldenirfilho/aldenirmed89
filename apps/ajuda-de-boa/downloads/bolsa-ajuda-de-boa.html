@@ -7,7 +7,7 @@
 <meta name="description" content="App offline da Bolsa Ajuda de Boa: carteira criptografada de ajudas, extrato, posições por instituição, Pix com QR Code e XP da Boa Ação.">
 <meta name="theme-color" content="#0b0f14">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xK/sSM/IpOGkj1olZrTbD1NIbKZUrH5WoWooy8KUwpI=' 'sha256-sSQXbMs22ZBqg32MZTQzA3+wdamd+/exnNAfPGuI2+k=' 'sha256-CKyuXRRxKwU1tV6PcSjn0UywrRqYNYmPHdyY1Hshgwo=' 'sha256-K0XNJ7kwa2oGKkk52cfxu8FQUJfmD2I+Yibbr6FNIwg=' 'sha256-j6mM+pTDa4vFIbZS4aUrrluVI1YkgA2sjhu6uEk4eEI='; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xK/sSM/IpOGkj1olZrTbD1NIbKZUrH5WoWooy8KUwpI=' 'sha256-UHSHnCSYqVibRIqfy/XzTtvKGRItenhejnu2xJBOgrY=' 'sha256-J0KB17EeIzf6v0WljlZpL9BDMv30L3d6dgBDr32acWs=' 'sha256-K0XNJ7kwa2oGKkk52cfxu8FQUJfmD2I+Yibbr6FNIwg=' 'sha256-wzLNWX2Boxs42k6o0YpZXOMzfqRBPkc8KG7xDG83YjM='; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0f14'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle'%3E%E2%9A%9C%3C/text%3E%3C/svg%3E">
 <style>/* Bolsa Ajuda de Boa · App 1.0 — códice tecno-medieval: obsidiana, ouro e ciano. Legibilidade acima do ornamento. */
 :root{--bg:#0b0f14;--bg2:#121923;--card:#151e2a;--line:#273445;--ink:#e9eef4;--mut:#9fb0c2;--gold:#d9b25a;--gold2:#f3d27e;--cyan:#38d3e6;--green:#4ad295;--red:#ff7a6b;--r:14px}
@@ -158,7 +158,7 @@ const causes=[
   perspective:'Recuperar populações ameaçadas do Ceará — do peixe-boi-marinho às aves da serra — protegendo seus habitats.',
   projects:[{t:'Projeto Manatí',d:'Reabilitação e soltura de peixes-bois em Icapuí, com estrutura flutuante pioneira de aclimatação.'},{t:'Mamíferos marinhos',d:'Atendimento a encalhes de peixes-bois e botos no litoral; censo de 2025 com a UFC contou ao menos 60 peixes-bois em Icapuí.'},{t:'Periquito-cara-suja',d:'Projeto cearense que reverteu a ameaça de extinção da espécie.'},{t:'Soldadinho-do-araripe',d:'Conservação da ave ameaçada da Chapada do Araripe.'}],
   projSource:{url:'https://diariodonordeste.verdesmares.com.br/regiao/projeto-cearense-reverte-ameaca-de-extincao-do-periquito-cara-suja-1.2965087',label:'Imprensa cearense (Diário do Nordeste, O Povo)',type:'imprensa',checked:today},
-  proposal:'Contribuir para cuidados com a fauna, caixas-ninho, mudas e conservação de habitats. A instituição pede que o doador informe o projeto pretendido; faça isso diretamente pelos canais oficiais. A seleção neste catálogo não comunica essa destinação.',methods:['dinheiro','divulgacao'],website:'https://www.aquasis.org/',helpUrl:'https://www.aquasis.org/doeaqui',source:'https://www.aquasis.org/doeaqui',checked,pix:{key:'aquasis@aquasis.org',name:'AQUASIS',city:'CAUCAIA',legalName:'Associação de Pesquisa e Preservação de Ecossistemas Aquáticos — Aquasis',cnpj:'00.129.688/0001-04'},extra:'As condições de participação e apoio são definidas pela Aquasis.'},
+  proposal:'Contribuir para cuidados com a fauna, caixas-ninho, mudas e conservação de habitats. A instituição pede que o doador informe o projeto pretendido; faça isso diretamente pelos canais oficiais. A seleção neste catálogo não comunica essa destinação.',methods:['dinheiro','divulgacao'],website:'https://www.aquasis.org/',helpUrl:'https://www.aquasis.org/doeaqui',source:'https://www.aquasis.org/doeaqui',checked,pix:null,extra:'A Aquasis publica sua chave Pix na página oficial de doação: copie-a de lá e confira o recebedor (CNPJ 00.129.688/0001-04) no banco. As condições de apoio são definidas pela instituição.'},
  {id:'lar-amigos',ticker:'LARA5',name:'Lar Amigos de Jesus',title:'Acolhimento para quem cuida.',category:'acolhimento',tags:['acolhimento','saude','infancia'],region:'Fortaleza · Ceará',ceara:true,icon:'🏡',art:'acolhimento',color:'peach',
   description:'Acolhimento e apoio a crianças e adolescentes com câncer e às suas famílias no Ceará.',
   perspective:'Acolher crianças e adolescentes em tratamento de câncer e suas famílias, vindas do interior, durante o tratamento em Fortaleza.',
@@ -239,7 +239,7 @@ function validEvaluation(x){
  if(!x||typeof x!=='object')return false;
  for(const c of CRITERIA)if(!validScore(x[c.id]))return false;
  if(typeof x.reserva!=='boolean')return false;
- if(x.recebidoCents!==null&&x.recebidoCents!==undefined&&!(Number.isSafeInteger(x.recebidoCents)&&x.recebidoCents>0&&x.recebidoCents<=99999999999))return false;
+ if(x.recebidoCents!==null&&x.recebidoCents!==undefined&&!(Number.isSafeInteger(x.recebidoCents)&&x.recebidoCents>0&&x.recebidoCents<1e11))return false;
  for(const k of Object.keys(x))if(!['reserva','recebidoCents',...CRITERIA.map(c=>c.id)].includes(k))return false;
  return true;
 }
@@ -386,7 +386,7 @@ function closeDialog(){const d=$('#dialog');if(d.open)d.close();$('#dialog-conte
 function fail(err){const t=err?.message||'Não foi possível concluir.';const box=document.querySelector('#dialog[open] .form-error')||document.querySelector('.form-error:not([hidden])')||null;if(box){box.textContent=t;box.hidden=false;}toast(t,true);}
 function download(content,type,name){const blob=content instanceof Blob?content:new Blob([content],{type});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
 function csvCell(v){let s=String(v??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
-function bigCents(value){const s=String(value??'').trim().replace(/^R\$\s*/,'');if(!s)return null;let t;if(/^\d{1,3}(\.\d{3})+(,\d{1,2})?$/.test(s))t=s.replace(/\./g,'').replace(',','.');else if(/^\d+(,\d{1,2})?$/.test(s))t=s.replace(',','.');else if(/^\d+(\.\d{1,2})?$/.test(s))t=s;else throw Error('Informe o valor recebido com até duas casas decimais.');const [a,b='']=t.split('.');const n=Number(a)*100+Number((b+'00').slice(0,2));if(!Number.isSafeInteger(n)||n<1||n>99999999999)throw Error('Valor recebido fora do limite.');return n;}
+function bigCents(value){const s=String(value??'').trim().replace(/^R\$\s*/,'');if(!s)return null;let t;if(/^\d{1,3}(\.\d{3})+(,\d{1,2})?$/.test(s))t=s.replace(/\./g,'').replace(',','.');else if(/^\d+(,\d{1,2})?$/.test(s))t=s.replace(',','.');else if(/^\d+(\.\d{1,2})?$/.test(s))t=s;else throw Error('Informe o valor recebido com até duas casas decimais.');const [a,b='']=t.split('.');const n=Number(a)*100+Number((b+'00').slice(0,2));if(!Number.isSafeInteger(n)||n<1||n>=1e11)throw Error('Valor recebido fora do limite.');return n;}
 const entries=()=>V&&!V.locked?V.data.entries:[];
 
 /* ---------- XP: campos de avaliação (mesma régua do Placar) ---------- */

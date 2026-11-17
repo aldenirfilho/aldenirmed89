@@ -37,7 +37,7 @@ function validEvaluation(x){
  if(!x||typeof x!=='object')return false;
  for(const c of CRITERIA)if(!validScore(x[c.id]))return false;
  if(typeof x.reserva!=='boolean')return false;
- if(x.recebidoCents!==null&&x.recebidoCents!==undefined&&!(Number.isSafeInteger(x.recebidoCents)&&x.recebidoCents>0&&x.recebidoCents<=99999999999))return false;
+ if(x.recebidoCents!==null&&x.recebidoCents!==undefined&&!(Number.isSafeInteger(x.recebidoCents)&&x.recebidoCents>0&&x.recebidoCents<1e11))return false;
  for(const k of Object.keys(x))if(!['reserva','recebidoCents',...CRITERIA.map(c=>c.id)].includes(k))return false;
  return true;
 }
