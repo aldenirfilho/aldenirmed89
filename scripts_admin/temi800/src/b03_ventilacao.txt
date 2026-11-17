@@ -1,0 +1,401 @@
+@BLOCO ventilacao | Ventilação mecânica e curvas | 🌬️ | #65baff | ARDS24,LIB17
+
+#M Peso predito e volume corrente | ARMA,ARDS24
+IMG card | Dados do paciente | Homem, 170 cm, 98 kg (peso atual) ; SDRA moderada ; Prescrição atual: VC 600 mL
+S: Paciente do cartão está em ventilação controlada a volume. Qual volume corrente inicial é o mais adequado para estratégia protetora?
++ Aproximadamente 400 mL (6 mL/kg do peso predito de ~66 kg) :: Peso predito masculino = 50 + 0,91 × (170 − 152,4) ≈ 66 kg.
+- 600 mL, pois corresponde a 6 mL/kg do peso atual :: O cálculo deve usar o peso predito pela altura, não o peso real.
+- 800 mL para evitar atelectasia :: Volumes altos aumentam a lesão induzida pelo ventilador.
+- 250 mL fixos para todo paciente :: Volume deve ser individualizado pelo peso predito.
+- 500 mL, pois obesos precisam de volume maior :: Obesidade não aumenta o tamanho pulmonar.
+K: VC protetor 4–8 mL/kg de peso predito (iniciar em 6). Homem: 50 + 0,91 × (altura − 152,4); mulher: 45,5 + 0,91 × (altura − 152,4).
+
+#M Pressão de platô | ARMA,ARDS24
+IMG vm | Modo=VCV ; VC=420 mL ; PEEP=10 ; FiO2=60% ; Ppico=39 ; Pplatô=34 ; FR=24 ; SpO2=93%
+S: Paciente com SDRA tem os parâmetros da figura (VC = 6,4 mL/kg de peso predito). Qual o ajuste prioritário?
++ Reduzir o volume corrente até Pplatô ≤ 30 cmH2O, tolerando hipercapnia :: A pressão de platô acima de 30 indica distensão alveolar excessiva.
+- Aumentar o fluxo inspiratório para reduzir o Ppico :: Mexer no fluxo não altera a Pplatô.
+- Reduzir a PEEP para zero :: Retirar PEEP favorece colapso e piora a oxigenação.
+- Manter, pois Ppico abaixo de 40 é seguro :: O alvo de segurança é a pressão de platô.
+- Aumentar o VC para melhorar a ventilação :: Agravaria a hiperdistensão.
+K: Na SDRA: Pplatô ≤ 30 cmH2O e VC 4–8 mL/kg de peso predito; reduzir VC até 4 mL/kg se necessário, aceitando hipercapnia permissiva.
+
+#D Driving pressure | ARDS24
+IMG curva | vcv_pausa | ppico=32 ; pplat=27 ; peep=8
+S: As curvas da figura, com pausa inspiratória, pertencem a paciente com SDRA em VCV. Qual é a driving pressure e sua interpretação?
++ 19 cmH2O, acima do alvo habitual de ≤ 15 cmH2O; buscar reduzi-la :: Driving pressure = Pplatô − PEEP = 27 − 8 = 19.
+- 24 cmH2O (Ppico − PEEP), dentro do alvo :: O cálculo usa a pressão de platô, não o pico.
+- 5 cmH2O (Ppico − Pplatô), indicando complacência normal :: Esse gradiente reflete a resistência.
+- 27 cmH2O, pois equivale à Pplatô :: A driving pressure desconta a PEEP.
+- 35 cmH2O, somando platô e PEEP :: A PEEP é subtraída, não somada.
+K: Driving pressure (Pplatô − PEEP) = VC/complacência; valores ≤ 15 cmH2O associam-se a menor mortalidade na SDRA.
+
+#M Aumento de resistência | ARDS24
+IMG curva | resistencia | ppico=46 ; pplat=20 ; peep=6
+S: Paciente asmático em VCV apresenta a curva da figura após pausa inspiratória. Qual a interpretação?
++ Aumento da resistência das vias aéreas (ex.: broncoespasmo, secreção, tubo dobrado) :: Ppico alto com Pplatô normal indica gradiente resistivo grande.
+- Queda de complacência por SDRA :: Na SDRA, Pplatô também sobe.
+- Pneumotórax hipertensivo :: Tipicamente eleva também a Pplatô.
+- Auto-PEEP isolada sem relação com resistência :: A curva mostra gradiente Ppico−Pplatô aumentado.
+- Hipervolemia com edema pulmonar :: Edema reduz complacência e eleva Pplatô.
+K: Ppico − Pplatô alto = resistência (broncoespasmo, secreção, tubo mordido/dobrado, tubo fino). Pplatô − PEEP alto = complacência baixa.
+
+#M Queda de complacência | ARDS24
+IMG curva | complacencia | ppico=40 ; pplat=36 ; peep=10
+S: Paciente em VCV com VC 420 mL tem piora súbita da oxigenação e a curva da figura, antes normal. Qual grupo de causas é o mais provável?
++ Queda de complacência: pneumotórax, intubação seletiva, atelectasia ou piora da SDRA :: Ppico e Pplatô sobem juntos com gradiente pequeno.
+- Broncoespasmo grave :: Aumentaria principalmente o Ppico.
+- Tubo mordido :: Aumenta resistência, com gradiente grande.
+- Vazamento do cuff :: Reduziria pressões e volume expirado.
+- Fluxo inspiratório excessivo :: Elevaria Ppico, não Pplatô.
+K: Complacência estática = VC/(Pplatô − PEEP) = 420/26 ≈ 16 mL/cmH2O. Queda súbita: pensar em pneumotórax, seletiva, atelectasia, distensão abdominal.
+
+#D Auto-PEEP
+IMG curva | autopeep
+S: Paciente com DPOC em VCV com FR 28 irpm apresenta hipotensão e a curva da figura. Qual medida corrige o problema principal?
++ Reduzir a FR e aumentar o tempo expiratório (reduzir Ti/aumentar fluxo), além de broncodilatador :: O fluxo expiratório não chega a zero: há aprisionamento aéreo.
+- Aumentar a FR para lavar CO2 :: Mais FR reduz o tempo expiratório e piora a auto-PEEP.
+- Aumentar o volume corrente :: Aumenta o volume aprisionado.
+- Aumentar a relação I:E para 1:1 :: Encurta a expiração.
+- Expandir com 3 L de cristaloide e manter os ajustes :: Não resolve a hiperinsuflação dinâmica.
+K: Auto-PEEP: fluxo expiratório não retorna a zero. Tratar com menor FR e VC, maior tempo expiratório, broncodilatador; em hipotensão grave, desconectar brevemente.
+
+#M Medida da auto-PEEP
+IMG vm | t=Pausa expiratória de 3 s | Modo=VCV ; PEEP ajustada=5 ; PEEP total=13 ; FR=24 ; VC=450 mL ; Ppico=42
+S: Durante pausa expiratória, o ventilador registra os valores da figura. Qual o valor da auto-PEEP e o significado?
++ 8 cmH2O, indicando aprisionamento aéreo relevante :: Auto-PEEP = PEEP total − PEEP ajustada = 13 − 5.
+- 13 cmH2O, pois a PEEP total é a auto-PEEP :: É preciso subtrair a PEEP externa.
+- 18 cmH2O, somando as PEEPs :: As pressões não se somam.
+- 0, pois só existe auto-PEEP em ventilação espontânea :: Ocorre também em ventilação controlada.
+- Não é possível medir auto-PEEP no ventilador :: A pausa expiratória mede a PEEP total.
+K: Auto-PEEP é medida por pausa expiratória em paciente relaxado: PEEPi = PEEP total − PEEP externa.
+
+#D Asma grave em ventilação | VNI17
+IMG gaso | pH=7,19 ; PaCO2=78 ; PaO2=92 ; HCO3=29 ; SatO2=96 ; Lac=1,8
+S: Jovem com asma quase fatal foi intubado e está em VCV com FR 12, VC 6 mL/kg e Pplatô 24 cmH2O. A gasometria é a da figura e não há sinais de hipertensão intracraniana. Qual conduta?
++ Manter estratégia de hipercapnia permissiva, priorizando evitar hiperinsuflação :: pH ≥ 7,15–7,20 costuma ser tolerado; aumentar FR pioraria a auto-PEEP.
+- Aumentar FR para 30 irpm para normalizar a PaCO2 :: Reduziria o tempo expiratório e agravaria o aprisionamento.
+- Infundir bicarbonato para pH normal :: Gera CO2 e não trata o mecanismo.
+- Aumentar VC para 10 mL/kg :: Aumenta hiperinsuflação e barotrauma.
+- Extubar para VNI imediatamente :: O paciente ainda está em fase aguda grave.
+K: Asma na VM: baixa FR, VC baixo, tempo expiratório longo, hipercapnia permissiva, broncodilatadores e sedação adequada; vigiar auto-PEEP e Pplatô.
+
+#D Esforços ineficazes
+IMG curva | disparo_ineficaz
+S: Paciente com DPOC em PSV apresenta esforços visíveis na musculatura cervical que nem sempre geram ciclos (figura). A auto-PEEP medida foi de 8 cmH2O. Qual ajuste reduz o problema?
++ Ajustar PEEP externa para cerca de 70–80% da auto-PEEP e reduzir hiperinsuflação :: A PEEP externa reduz o limiar de disparo imposto pela auto-PEEP.
+- Aumentar a pressão de suporte para 25 cmH2O :: Aumenta volume e aprisionamento, piorando esforços ineficazes.
+- Tornar o disparo menos sensível :: Pioraria o disparo.
+- Aumentar a sedação até abolir os esforços :: Não corrige a causa e prolonga a ventilação.
+- Ignorar, pois esforços ineficazes não têm impacto clínico :: Associam-se a pior desfecho e ventilação mais longa.
+K: Esforço ineficaz: esforço sem ciclo (queda de pressão e bump de fluxo na expiração). Causas: auto-PEEP, suporte excessivo, sensibilidade baixa, sedação.
+
+#D Duplo disparo
+IMG curva | duplo_disparo
+S: Paciente com SDRA em VCV com VC 6 mL/kg e Ti 0,8 s apresenta o padrão da figura repetidamente. Qual o mecanismo e o risco?
++ Tempo inspiratório neural maior que o do ventilador, com empilhamento de volume :: O esforço persiste após a ciclagem e dispara novo ciclo.
+- Auto-disparo por vazamento :: Auto-disparo ocorre sem esforço do paciente.
+- Ciclagem tardia por critério de fluxo alto :: Em VCV a ciclagem é por tempo/volume.
+- Obstrução do tubo :: Elevaria a resistência, não geraria ciclos duplos.
+- Fenômeno benigno sem impacto pulmonar :: O volume empilhado pode dobrar o VC efetivo.
+K: Duplo disparo: Ti neural > Ti do ventilador; empilha volume (VC efetivo até 2×). Ajustar Ti/fluxo, considerar modo a pressão, rever sedação e, na SDRA grave, BNM.
+
+#M Fome de fluxo
+IMG curva | fome_fluxo
+S: Paciente taquipneico em VCV com fluxo fixo de 40 L/min tem a curva de pressão da figura. Qual ajuste é o mais adequado?
++ Aumentar o fluxo inspiratório ou trocar para um modo a pressão :: Pressão côncava indica demanda maior que o fluxo ofertado.
+- Reduzir o fluxo inspiratório :: Agravaria o desconforto.
+- Reduzir a PEEP :: Não corrige a assincronia de fluxo.
+- Aumentar a pausa inspiratória :: Não resolve a demanda durante a inspiração.
+- Aumentar a sensibilidade de disparo :: O problema é a fase inspiratória, não o disparo.
+K: Fome de fluxo (curva de pressão escavada em VCV): aumentar fluxo, usar fluxo desacelerante ou modo controlado a pressão; avaliar a causa da demanda.
+
+#M Ciclagem precoce
+IMG curva | ciclagem_precoce
+S: Paciente em PSV de 8 cmH2O com critério de ciclagem a 40% do pico de fluxo tem a curva da figura. Qual ajuste é o mais adequado?
++ Reduzir o critério de ciclagem (por exemplo, para 15–25%) para prolongar a inspiração :: A ciclagem antes do fim do esforço neural gera novo esforço logo após.
+- Aumentar o critério de ciclagem para 60% :: Encurtaria ainda mais o tempo inspiratório.
+- Reduzir a pressão de suporte para 4 cmH2O :: Diminuiria ainda mais o tempo inspiratório.
+- Aumentar a PEEP para 18 cmH2O :: Não trata a ciclagem.
+- Trocar o tubo por número menor :: Aumentaria a resistência.
+K: PSV cicla por % do pico de fluxo. Ciclagem precoce: diminuir o %; ciclagem tardia (DPOC): aumentar o % (ex.: 40–50%).
+
+#M Ciclagem tardia
+IMG curva | ciclagem_tardia
+S: Paciente com DPOC em PSV com ciclagem a 15% do pico tem a curva da figura, com contração abdominal no fim da inspiração. Qual ajuste é o mais adequado?
++ Aumentar o critério de ciclagem (ex.: 40–50%) para encurtar a inspiração :: A constante de tempo longa da DPOC atrasa a queda do fluxo.
+- Diminuir o critério de ciclagem para 5% :: Prolongaria a inspiração e pioraria a assincronia.
+- Aumentar a pressão de suporte :: Prolonga o tempo para o fluxo cair.
+- Trocar para VCV com Ti de 1,5 s :: Ti longo agrava aprisionamento.
+- Reduzir a sensibilidade de disparo :: O problema é a ciclagem.
+K: Ciclagem tardia: pico de pressão no fim da inspiração; na DPOC, aumentar o % de ciclagem e evitar suporte excessivo.
+
+#M Vazamento
+IMG curva | vazamento
+S: Paciente intubado tem a curva de volume da figura, com volume expirado 30% menor que o inspirado e ruído na boca. Qual a causa mais provável?
++ Vazamento pelo cuff ou pelo circuito :: Volume expirado menor que o inspirado indica perda no sistema.
+- Auto-PEEP grave :: Não explica perda de volume expirado.
+- Broncoespasmo :: Aumenta resistência, sem perda de volume.
+- Aumento da complacência pulmonar :: Não cria discrepância de volumes.
+- Hiperinsuflação por PEEP alta :: Não gera vazamento.
+K: Volume não retorna à linha de base = vazamento (cuff, fístula broncopleural, circuito). Verificar pressão de cuff, posição do tubo e conexões.
+
+#M Secreção no circuito | VAPSHEA22
+IMG curva | secrecao
+S: Em paciente com pneumonia em VM, a curva da figura aparece com roncos à ausculta e queda da SpO2. Qual medida resolve a causa?
++ Aspiração traqueal e drenagem de condensado do circuito :: O serrilhado em fluxo e pressão indica secreção ou água no circuito.
+- Aumentar a FR :: Não trata o achado.
+- Reduzir a PEEP :: Não trata secreção.
+- Trocar para PSV sem avaliar :: A causa persistiria.
+- Administrar diurético :: Não resolve secreção.
+K: Serrilhado (sawtooth) em ambas as fases = secreção ou condensado; aspirar e drenar circuitos.
+
+#D Autodisparo
+IMG curva | autodisparo
+S: Paciente em morte encefálica suspeita apresenta FR de 32 irpm no ventilador, com a curva da figura, sem esforço visível. Antes de interpretar como drive respiratório, o que considerar?
++ Autodisparo por sensibilidade excessiva, vazamento ou oscilações cardiogênicas :: Ciclos sem esforço com oscilações cardíacas sugerem autodisparo.
+- Drive respiratório preservado, excluindo morte encefálica :: Autodisparo pode simular respiração espontânea.
+- Hipoxemia grave estimulando o centro respiratório :: Não explica a ausência de esforço.
+- Broncoespasmo :: Não gera ciclos extras.
+- Febre alta :: Não explica ciclos sem esforço.
+K: Autodisparo: reduzir a sensibilidade, corrigir vazamentos e drenar condensado. Na avaliação de morte encefálica, o teste de apneia é feito desconectado/com O2 passivo.
+
+#D Disparo reverso | PADIS18
+IMG curva | disparo_reverso
+S: Paciente com SDRA em PCV, sob sedação profunda, apresenta o padrão da figura em quase todos os ciclos. Qual a interpretação?
++ Disparo reverso: esforço muscular induzido pelo ciclo mandatório, associado à sedação profunda :: O esforço surge após o início do ciclo do ventilador.
+- Autodisparo por vazamento :: No autodisparo não há esforço do paciente.
+- Ciclagem precoce na PSV :: O modo é controlado.
+- Paciente acordado lutando contra o tubo :: Ocorre tipicamente em sedação profunda.
+- Fenômeno sem risco pulmonar :: Pode gerar empilhamento e aumento do estresse pulmonar.
+K: Disparo reverso (reverse triggering): contração diafragmática acoplada ao ciclo mandatório; comum em sedação profunda; pode causar duplo disparo e lesão.
+
+#M PCV e volume corrente | ARDS24
+IMG curva | pcv_normal
+S: Paciente em PCV com pressão inspiratória de 18 cmH2O acima da PEEP apresenta queda do volume corrente de 450 para 250 mL após uma hora. O que explica a mudança?
++ Redução da complacência ou aumento da resistência, pois no PCV o volume é variável :: Em PCV a pressão é fixa e o volume depende da mecânica.
+- Falha do ventilador, pois o volume em PCV é fixo :: O volume é fixo em VCV, não em PCV.
+- Melhora da complacência :: Melhora aumentaria o volume.
+- Redução de secreção :: Diminuiria a resistência e aumentaria o volume.
+- Erro do sensor de pressão, pois a pressão deve cair :: Em PCV a pressão é mantida.
+K: PCV: pressão quadrada e fluxo desacelerante; volume corrente varia com complacência/resistência — monitorar o VC expirado e alarmes de volume.
+
+#M PSV
+IMG curva | psv_normal
+S: Sobre a modalidade da figura, usada em paciente acordado no processo de desmame, qual afirmativa é correta?
++ Todos os ciclos são disparados pelo paciente e ciclam por queda percentual do fluxo :: PSV é modo espontâneo, disparado e ciclado pelo paciente.
+- Garante FR mínima mesmo em apneia, sem backup :: PSV exige drive; depende de ventilação de backup em apneia.
+- Cicla por tempo fixo programado :: A ciclagem é por fluxo.
+- O volume corrente é fixo :: O volume varia com esforço e mecânica.
+- É contraindicada no desmame :: É modo comum no desmame e no TRE.
+K: PSV: disparo e ciclagem pelo paciente; volume variável; requer drive respiratório e alarme/backup de apneia.
+
+#M Intubação seletiva | RSI23
+IMG rx | tot_seletivo
+S: Após intubação, a SpO2 cai para 88% e há murmúrio ausente à esquerda. A radiografia está na figura. Qual a conduta?
++ Tracionar o tubo até ponta 3–5 cm acima da carina e reavaliar :: A ponta no brônquio direito ventila só o pulmão direito.
+- Drenagem torácica esquerda imediata :: O problema é a posição do tubo.
+- Aumentar a PEEP para 20 cmH2O :: Não corrige a seletividade.
+- Broncoscopia para retirar corpo estranho :: A causa visível é o mau posicionamento.
+- Reintubar com tubo de menor calibre :: Basta reposicionar o tubo.
+K: Ponta do tubo ideal 3–5 cm acima da carina (aprox. 21–23 cm na rima labial em adultos). Seletividade → hipoxemia e atelectasia contralateral.
+
+#D Capnografia em broncoespasmo
+IMG capno | broncoespasmo
+S: Paciente em VM durante anestesia apresenta aumento de Ppico e a capnografia da figura. Qual a interpretação?
++ Obstrução ao fluxo expiratório, como broncoespasmo :: A fase ascendente inclinada em barbatana de tubarão indica esvaziamento heterogêneo.
+- Desconexão do circuito :: Levaria o EtCO2 a zero.
+- Hipertermia maligna :: Causaria aumento progressivo do EtCO2 com morfologia normal.
+- Embolia pulmonar :: Reduz o EtCO2 sem alterar tanto a morfologia.
+- Reinalação :: Elevaria a linha de base.
+K: Capnografia em barbatana de tubarão = obstrução expiratória (broncoespasmo, DPOC, tubo dobrado parcialmente).
+
+#M Desconexão
+IMG capno | desconexao
+S: Durante transporte de paciente intubado, a capnografia muda subitamente como na figura, com alarme de baixa pressão. Qual a primeira hipótese?
++ Desconexão do circuito ou extubação acidental :: Queda abrupta do EtCO2 a zero com baixa pressão indica perda da via.
+- Parada cardíaca com compressões eficazes :: Mesmo na PCR com RCP há algum EtCO2.
+- Broncoespasmo grave :: Produz barbatana de tubarão.
+- Hiperventilação :: Reduz gradualmente o EtCO2, sem zerar.
+- Febre :: Aumentaria o EtCO2.
+K: EtCO2 zerado subitamente: desconexão, extubação, obstrução total ou apneia; checar via aérea e conexões (DOPE).
+
+#M Reinalação
+IMG capno | reinalacao
+S: Em paciente ventilado com circuito com válvula expiratória defeituosa, a capnografia é a da figura. Qual a alteração característica?
++ Linha de base elevada por reinalação de CO2 :: O CO2 inspirado acima de zero indica reinalação.
+- Fenda de curare :: Seria um entalhe no platô.
+- Obstrução expiratória :: Alteraria a fase ascendente.
+- Hipoventilação pura :: Elevaria o platô, mas com linha de base zero.
+- Desconexão :: Levaria o traçado a zero.
+K: Linha de base que não retorna a zero = reinalação (válvula, absorvedor de CO2 esgotado, espaço morto do circuito).
+
+#M Fenda de curare
+IMG capno | curare
+S: Paciente em ventilação controlada após bloqueador neuromuscular apresenta a capnografia da figura. O que o achado indica?
++ Esforço respiratório espontâneo pela regressão do bloqueio neuromuscular :: O entalhe no platô corresponde a esforço diafragmático.
+- Hiperventilação :: Não gera entalhe.
+- Broncoespasmo :: Altera a fase ascendente.
+- Intubação esofágica :: Não haveria platô sustentado.
+- Desconexão :: Zeraria o traçado.
+K: Fenda de curare: entalhe no platô alveolar por esforço do paciente durante bloqueio parcial ou superficialização.
+
+#D Hipoventilação
+IMG capno | hipoventilacao
+S: Paciente em PSV após sedação com opioide apresenta FR de 7 irpm e a capnografia da figura. Qual a interpretação e conduta?
++ Hipoventilação com EtCO2 crescente; garantir ventilação de backup ou modo controlado e rever sedação :: A elevação progressiva indica retenção de CO2.
+- Hiperventilação; reduzir o suporte :: O EtCO2 está subindo, não caindo.
+- Broncoespasmo; nebulizar :: A morfologia é normal.
+- Reinalação; trocar válvula :: A linha de base permanece em zero.
+- Achado normal após opioide :: Hipoventilação deve ser corrigida.
+K: EtCO2 crescendo ciclo a ciclo = hipoventilação (sedação, falta de drive, fadiga). Em PSV, depende de backup de apneia.
+
+#D Espaço morto | BEREND
+IMG gaso | t=Gasometria arterial e EtCO₂ simultâneo | pH=7,30 ; PaCO2=56 ; HCO3=27 ; PaO2=70 ; SatO2=92 ; EtCO₂=28 mmHg
+S: Paciente com SDRA em VM tem os dados da figura. O que o gradiente entre PaCO2 e EtCO2 sugere?
++ Aumento do espaço morto fisiológico (gradiente de 28 mmHg) :: Normalmente o gradiente é de 2–5 mmHg; aumento indica áreas ventiladas mal perfundidas.
+- Shunt intrapulmonar puro :: Shunt afeta mais a oxigenação do que o gradiente PaCO2–EtCO2.
+- Erro do capnógrafo, pois EtCO2 sempre é maior que a PaCO2 :: Em adultos, o EtCO2 costuma ser menor que a PaCO2.
+- Hiperventilação alveolar :: PaCO2 elevada indica hipoventilação efetiva.
+- Alcalose metabólica primária :: pH ácido com PaCO2 alta indica acidose respiratória.
+K: Gradiente PaCO2–EtCO2 aumentado = espaço morto (SDRA, TEP, baixo débito, hiperdistensão). Na SDRA, espaço morto alto associa-se a maior mortalidade.
+
+#M Correção de hipercapnia | ARDS24
+IMG gaso | pH=7,22 ; PaCO2=64 ; HCO3=26 ; PaO2=84 ; SatO2=95
+S: Paciente com SDRA em VCV com VC 6 mL/kg, FR 18 irpm e Pplatô 27 cmH2O tem a gasometria da figura, sem auto-PEEP. Qual ajuste é o mais adequado?
++ Aumentar a FR (por exemplo, para 26–30 irpm), mantendo o VC protetor :: Aumentar a ventilação-minuto pela FR preserva a proteção pulmonar.
+- Aumentar o VC para 10 mL/kg :: Violaria a estratégia protetora.
+- Bicarbonato para corrigir o pH :: Não é primeira escolha e gera CO2.
+- Reduzir a PEEP para melhorar o CO2 :: Pode piorar recrutamento e oxigenação.
+- Manter tudo e aceitar qualquer pH :: pH < 7,20–7,15 justifica ajustes.
+K: Hipercapnia na SDRA: aumentar FR (até ~35 irpm, vigiando auto-PEEP), reduzir espaço morto do circuito; hipercapnia permissiva com pH ≥ 7,20.
+
+#M Ajuste de oxigenação | ARDS24
+IMG vm | Modo=VCV ; VC=400 mL ; PEEP=6 ; FiO2=90% ; Pplatô=22 ; SpO2=87% ; FR=24
+S: Paciente com SDRA moderada tem os parâmetros da figura. Qual o ajuste mais coerente?
++ Aumentar a PEEP de forma escalonada, vigiando Pplatô, driving pressure e hemodinâmica :: PEEP de 6 com FiO2 90% é baixa para SDRA moderada.
+- Aumentar FiO2 para 100% e manter PEEP 6 :: Aumentar só FiO2 não recruta alvéolos.
+- Aumentar o VC para 8 mL/kg :: Não é a forma preferida de melhorar a oxigenação.
+- Reduzir a PEEP para zero :: Agravaria o colapso.
+- Extubar para cateter nasal :: O paciente está grave e instável.
+K: Oxigenação na SDRA: ajustar PEEP (tabela ou titulação) e FiO2; considerar prona se P/F < 150. Vigiar Pplatô ≤ 30 e driving pressure.
+
+#M Alvo de saturação | ARDS24
+IMG vm | Modo=PCV ; Pinsp=14 ; PEEP=8 ; FiO2=70% ; SpO2=100% ; PaO2=210
+S: Paciente em VM tem os dados da figura há 12 horas. Qual o ajuste adequado?
++ Reduzir a FiO2 para evitar hiperóxia, buscando SpO2 em torno de 92–96% :: Hiperóxia não traz benefício e pode ser deletéria.
+- Manter, pois SpO2 de 100% é o ideal no paciente grave :: Saturação de 100% com PaO2 alta reflete excesso de O2.
+- Aumentar a PEEP para 16 :: Não há necessidade de mais recrutamento.
+- Aumentar a FiO2 para 100% por segurança :: Aumenta exposição sem benefício.
+- Suspender a PEEP :: Pode causar colapso e hipoxemia.
+K: Evitar hiperóxia em VM; alvos de SpO2 usuais 92–96% (88–92% em retentores crônicos de CO2).
+
+#M Critérios para teste de respiração espontânea | SBT24,LIB17
+IMG card | Avaliação matinal | Causa da IRpA em resolução ; PEEP 6, FiO2 35%, SpO2 95% ; Noradrenalina suspensa há 12 h ; Desperta e obedece a comandos ; Tosse eficaz
+S: Paciente intubado por pneumonia tem os achados do cartão. Qual a conduta?
++ Realizar teste de respiração espontânea hoje :: Todos os critérios de aptidão estão presentes.
+- Aguardar normalização completa da radiografia :: A imagem não precisa normalizar para o TRE.
+- Fazer traqueostomia antes de testar :: Não há indicação antes de tentar o desmame.
+- Manter VM por mais 72 h de rotina :: Atrasar o TRE prolonga a ventilação.
+- Exigir PEEP zero antes do TRE :: PEEP ≤ 8 com FiO2 ≤ 40–50% é suficiente.
+K: Triagem diária para TRE: causa revertendo, oxigenação adequada (PEEP ≤ 8, FiO2 ≤ 0,4–0,5), estabilidade hemodinâmica, drive e capacidade de tossir.
+
+#M Teste de respiração espontânea | SBT24,LIB17
+IMG card | Protocolo proposto | Modalidade: PSV 7 cmH₂O + PEEP 5 ; Duração: 30–120 min ; Critérios de falha: FR > 35, SpO2 < 90%, FC > 140, agitação, uso de musculatura acessória
+S: Sobre o protocolo de TRE do cartão, qual afirmativa é a mais correta?
++ TRE com pressão de suporte baixa é aceitável e associou-se a maior sucesso de extubação que tubo T :: Diretrizes sugerem TRE com suporte inspiratório de 5–8 cmH2O.
+- Só é válido em tubo T por 6 horas :: TRE prolongado não é necessário.
+- A falha deve ser declarada somente após 12 h de desconforto :: Sinais de falha devem interromper o teste.
+- Não exige observação durante o teste :: Monitorização contínua é obrigatória.
+- Sucesso no TRE dispensa avaliar via aérea e tosse :: Proteção de via aérea e tosse também decidem a extubação.
+K: TRE de 30–120 min com PSV 5–8 ou tubo T; falha: taquipneia, taquicardia, hipoxemia, arritmia, agitação, sudorese ou esforço excessivo.
+
+#M Índice de respiração rápida e superficial | LIB17
+IMG vm | t=TRE — 5 minutos | FR=32 irpm ; VC=250 mL ; SpO2=94% ; FC=104
+S: Com os dados da figura obtidos no início do TRE, qual o índice de respiração rápida e superficial (IRRS) e sua interpretação?
++ 128 respirações/min/L, sugerindo maior risco de falha do desmame :: IRRS = FR/VC em litros = 32/0,25 = 128; > 105 associa-se à falha.
+- 8 respirações/min/L, excelente :: Erro de unidade: o VC deve ser em litros.
+- 32, igual à FR :: O índice divide FR pelo VC.
+- 128, indicando extubação obrigatória :: Valor alto sugere falha, não sucesso.
+- 0,13, dentro do normal :: Inversão do cálculo.
+K: IRRS (Tobin) = FR/VC (L); < 105 sugere sucesso. É um dado auxiliar, não critério isolado.
+
+#D Teste de vazamento do cuff | LIB17
+IMG card | Avaliação pré-extubação | Intubação traumática há 6 dias ; Teste de vazamento do cuff: vazamento de 40 mL ; Mulher, tubo 8,0 ; TRE com sucesso
+S: Paciente com alto risco de estridor tem os dados do cartão. Qual conduta é recomendada?
++ Corticosteroide sistêmico pelo menos 4 horas antes da extubação :: Vazamento reduzido em alto risco indica corticoide antes da extubação.
+- Extubar imediatamente, pois o TRE foi bem-sucedido :: O teste sugere risco de edema laríngeo.
+- Traqueostomia imediata :: O corticoide é a medida inicial.
+- Adiar a extubação por 14 dias :: Atraso prolongado não é necessário.
+- Extubar e usar furosemida para reduzir edema :: Diurético não trata edema laríngeo.
+K: Pacientes de alto risco para estridor pós-extubação: teste de vazamento do cuff; se baixo/ausente, corticoide sistêmico ≥ 4 h antes de extubar.
+
+#M Suporte pós-extubação | LIB17,VNI17
+IMG card | Perfil do paciente | DPOC com hipercapnia ; 5 dias de VM ; Idade 74 anos ; TRE com sucesso
+S: Paciente do cartão será extubado. Qual estratégia reduz o risco de reintubação?
++ VNI preventiva imediatamente após a extubação :: Em alto risco, especialmente hipercápnicos, VNI preventiva reduz falha.
+- Cateter nasal de baixo fluxo apenas :: Insuficiente em alto risco.
+- Aguardar falha para iniciar VNI de resgate :: VNI de resgate tardia associa-se a pior desfecho.
+- Sedação leve contínua pós-extubação :: Aumenta risco de falha.
+- Manter intubado por mais 7 dias :: Prolongar a VM aumenta complicações.
+K: Alto risco de falha de extubação (DPOC/hipercapnia, IC, idade > 65, VM prolongada): extubar para VNI preventiva (ou CNAF conforme protocolo).
+
+#M Despertar e respiração espontânea | ABC,ABCDEF19
+IMG card | Protocolo da unidade | 08 h: interrupção diária da sedação ; Se acordado e seguro: TRE ; Registro de falha e motivo ; Retomar sedação em metade da dose
+S: Qual benefício o protocolo do cartão, pareando despertar diário e TRE, mostrou em ensaio clínico?
++ Menos dias de VM e menor mortalidade em 1 ano :: O ABC trial mostrou benefício com o pareamento.
+- Mais autoextubações com pior prognóstico :: Houve mais autoextubações, sem aumento de reintubação.
+- Nenhum benefício clínico :: Houve redução de VM e mortalidade.
+- Aumento de delirium :: Menos sedação tende a reduzir delirium.
+- Apenas menor custo, sem efeito clínico :: Os desfechos clínicos melhoraram.
+K: ABC trial: despertar diário + TRE pareado reduziu tempo de VM, permanência e mortalidade em 1 ano; parte do pacote ABCDEF.
+
+#M Momento da traqueostomia | TRACMAN
+IMG card | Pergunta da família | Paciente no 4º dia de VM por pneumonia ; Família pede traqueostomia já para "evitar complicações" ; Prognóstico de VM incerto
+S: Qual informação baseada em evidência ajuda a decisão do cartão?
++ Traqueostomia precoce (≤ 4 dias) não reduziu mortalidade em 30 dias em comparação à tardia :: TracMan não mostrou benefício de mortalidade.
+- Traqueostomia precoce reduz mortalidade pela metade :: Não demonstrado.
+- Traqueostomia nunca deve ser feita antes de 30 dias :: O momento deve ser individualizado.
+- Traqueostomia elimina o risco de PAV :: O risco persiste.
+- É obrigatória no 4º dia de VM :: Não há regra fixa.
+K: TracMan: traqueostomia precoce versus tardia sem diferença de mortalidade; decidir individualmente pela expectativa de VM prolongada e conforto.
+
+#M Prevenção de PAV | VAPSHEA22
+IMG card | Auditoria do leito | Cabeceira a 15° ; Pressão do cuff 12 cmH₂O ; Sedação profunda sem interrupção ; Troca de circuito a cada 48 h
+S: Diante da auditoria do cartão, qual conjunto de medidas reduz eventos associados à ventilação?
++ Cabeceira a 30–45°, minimizar sedação com TRE diário e não trocar circuitos sem sujidade :: São práticas essenciais recomendadas pelo compêndio SHEA.
+- Trocar o circuito a cada 24 h :: Trocas rotineiras não reduzem PAV.
+- Manter sedação profunda para evitar extubação :: Sedação profunda prolonga a VM.
+- Antibiótico profilático sistêmico prolongado :: Não é medida recomendada para todos.
+- Reduzir a pressão do cuff para 10 cmH2O :: Pressão baixa favorece microaspiração.
+K: Prevenção de PAV/eventos: evitar intubação quando possível, minimizar sedação, TRE diário, cabeceira 30–45°, mobilização precoce, não trocar circuito rotineiramente.
+
+#M Pressão do cuff | VAPSHEA22
+IMG card | Medida com cuffômetro | Pressão do cuff: 48 cmH₂O ; Intubado há 8 dias ; Sem vazamento audível
+S: Qual o risco principal do achado do cartão e a faixa recomendada?
++ Isquemia da mucosa traqueal; manter entre 20 e 30 cmH2O :: Pressões acima de 30 reduzem a perfusão da mucosa.
+- Microaspiração; aumentar para 60 cmH2O :: A pressão já está excessiva.
+- Nenhum risco, desde que não haja vazamento :: Hiperinsuflação do cuff lesa a traqueia.
+- Ruptura do pulmão :: O cuff não transmite pressão ao parênquima.
+- Hipercapnia; manter acima de 40 :: Não há relação com hipercapnia.
+K: Pressão do cuff: 20–30 cmH2O. Acima de 30: isquemia/estenose traqueal; abaixo de 20: microaspiração e PAV.
+
+#D DPOC exacerbado na VM | VNI17
+IMG vm | Modo=VCV ; VC=520 mL ; FR=26 ; Ti=1,2 s ; PEEP=5 ; Auto-PEEP=11 ; PaCO2=72
+S: Paciente com DPOC de 58 kg de peso predito tem os parâmetros da figura e hipotensão. Qual conjunto de ajustes é mais adequado?
++ Reduzir FR e VC, encurtar Ti para prolongar a expiração e tolerar PaCO2 compatível com o basal :: A auto-PEEP elevada exige mais tempo expiratório.
+- Aumentar FR para 35 para corrigir a PaCO2 :: Agravaria a auto-PEEP e a hipotensão.
+- Aumentar VC para 700 mL :: Aumentaria o aprisionamento.
+- Aumentar o Ti para 2 s :: Reduziria o tempo expiratório.
+- Suspender a PEEP externa e manter o resto :: Não aborda a causa da hiperinsuflação.
+K: DPOC na VM: VC ~6–8 mL/kg, FR baixa, Ti curto, fluxo alto, tempo expiratório longo; objetivo de PaCO2 próximo ao basal do paciente, não o normal.
+
+#M Pneumotórax em VM | BTS23
+IMG mon | PA=72/44 ; PAM=53 ; FC=136 ; SpO2=81 ; FR=24 ; T=36,8
+S: Paciente com SDRA em VM com PEEP 16 apresenta subitamente o monitor da figura, aumento de Ppico e Pplatô e abolição do murmúrio à direita, com traqueia desviada. Qual a conduta imediata?
++ Descompressão torácica imediata do lado direito, seguida de drenagem :: Pneumotórax hipertensivo é diagnóstico clínico e exige descompressão imediata.
+- Radiografia de tórax antes de qualquer medida :: Atrasar a descompressão pode levar à PCR.
+- Aumentar a PEEP para recrutar :: Agravaria o pneumotórax.
+- Broncoscopia de urgência :: Não trata a causa.
+- Aumentar o VC para compensar :: Aumenta a pressão intratorácica.
+K: Pneumotórax hipertensivo em VM: hipotensão, hipoxemia, aumento súbito de pressões e assimetria → descompressão imediata e drenagem torácica.
