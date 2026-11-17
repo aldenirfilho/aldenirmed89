@@ -71,6 +71,8 @@ def load() -> dict:
         if axiom["tema"] not in data["temas"]:
             raise SystemExit(f"axiomas.json: axioma {number} com tema desconhecido")
         dt.date.fromisoformat(axiom["data"])
+    if "placarXP" in data or "XP" in json.dumps(data, ensure_ascii=False).replace("XPTO", ""):
+        raise SystemExit("axiomas.json: o Placar XP é pessoal do autor e não vai para o site público")
     for number in data.get("destaques", []):
         if not 1 <= number <= len(axioms):
             raise SystemExit(f"axiomas.json: destaque {number} inexistente")
@@ -382,7 +384,6 @@ def render_page(data: dict) -> str:
     ebooks = "".join(ebook_card(ebook) for ebook in data["ebooks"])
     proposals = sum(1 for a in axioms if a["situacao"] == "Proposta do autor")
     lema = data["lema"]
-    xp = data["placarXP"]
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -438,7 +439,7 @@ Esta página reúne a coleção autoral de axiomas, com o comentário da ediçã
           <li>⚜️ {total} axiomas</li>
           <li>🏛️ {chapters} capítulos ({chapters - 1} eixos + Armorial)</li>
           <li>📚 {len(data['ebooks'])} e-books em PDF</li>
-          <li>🏅 Placar XP: {esc(xp['total'])} XP</li>
+          <li>🪶 Enunciados do autor, sem alteração</li>
           <li>🗓️ Atualizado em {esc(short_date(data['atualizadoEm']))}</li>
         </ul>
         <p class="lema">“{esc(lema)}”<small>Lema central da coleção · axioma {data['lemaNumero']} · confirmado pelo autor</small></p>
@@ -481,7 +482,7 @@ Esta página reúne a coleção autoral de axiomas, com o comentário da ediçã
         <li><b>Concepção e axiomas</b>{esc(data['autor'])}</li>
         <li><b>Comentários e diagramação</b>Claude (Anthropic), a pedido do autor, identificados como “Comentário da edição”</li>
         <li><b>Fonte dos enunciados</b>{esc(data['fonte'])}</li>
-        <li><b>Placar XP</b>{esc(xp['total'])} XP em {xp['axiomas']} axiomas. {esc(xp['nota'])}</li>
+        <li><b>Atualização</b>Coleção viva: novos axiomas entram aqui à medida que o autor os registra.</li>
       </ul>
       <div class="note">
         <p>📖 Os comentários são leitura da edição, não texto do autor. Ao citar um axioma, informe o autor e o número.</p>
@@ -543,7 +544,7 @@ def render_home_block(data: dict) -> str:
           <h3 id="cr360Author">{esc(data['autor'])}</h3>
           <p>Idealizador, autor, editor e mantenedor independente do AldenirMed 360X. Dos plantões e do estudo nasceram os seus Axiomas 360X.</p>
           <blockquote class="cr360-lema"><p>“{esc(data['lema'])}”</p><cite>Lema central · axioma {data['lemaNumero']}</cite></blockquote>
-          <ul class="cr360-stats" aria-label="Números da coleção"><li><b>{total}</b> axiomas</li><li><b>{chapters}</b> capítulos</li><li><b>{len(data['ebooks'])}</b> e-books</li><li><b>{esc(data['placarXP']['total'])}</b> XP</li></ul>
+          <ul class="cr360-stats" aria-label="Números da coleção"><li><b>{total}</b> axiomas</li><li><b>{chapters}</b> capítulos</li><li><b>{len(data['ebooks'])}</b> e-books</li></ul>
           <nav class="cr360-eixos" aria-label="Capítulos dos Axiomas 360X">{axes_nav(data, "creditos-autor/index.html#")}</nav>
         </div>
       </article>
