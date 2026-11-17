@@ -27,9 +27,10 @@ test('Pix e QR de todas as chaves: comprimento, checksum, tipos e limites',()=>{
  }
  assert.throws(()=>C.pix(null,2500));assert.throws(()=>C.pix(D.find(c=>c.pix).pix,0));assert.throws(()=>C.pix(D.find(c=>c.pix).pix,1.2));assert.throws(()=>C.qrMatrix('a'.repeat(193)));
 });
-test('catálogo recuperado: instituições únicas, links HTTPS e datas por fonte',()=>{
- assert.equal(D.length,11);assert.equal(D.filter(x=>x.ceara).length,5);assert.equal(D.filter(x=>x.pix).length,4);assert.equal(new Set(D.map(x=>x.id)).size,D.length);
- for(const d of D){for(const key of ['website','source','helpUrl'])assert.equal(new URL(d[key]).protocol,'https:');assert.match(d.checked,/^2026-(09-19|11-16)$/);assert.ok(d.proposal);}
+test('catálogo 2.0: instituições e tickers únicos, links HTTPS, datas, perspectiva e projetos com fonte',()=>{
+ assert.equal(D.length,12);assert.equal(D.filter(x=>x.ceara).length,6);assert.equal(D.filter(x=>x.pix).length,4);assert.equal(new Set(D.map(x=>x.id)).size,D.length);assert.equal(new Set(D.map(x=>x.ticker)).size,D.length);
+ for(const d of D){for(const key of ['website','source','helpUrl'])assert.equal(new URL(d[key]).protocol,'https:');assert.match(d.checked,/^2026-(09-19|11-16)$/);assert.ok(d.proposal);assert.match(d.ticker,/^[A-Z]{4}(3|4|5|6|7|8|9|11)$/);assert.ok(d.perspective.length>20);assert.ok(d.projects.length>=2&&d.projects.every(p=>p.t&&p.d));assert.equal(new URL(d.projSource.url).protocol,'https:');assert.match(d.projSource.checked,/^2026-11-16$/);}
+ assert.deepEqual(D.find(x=>x.id==='caatinga').pix.key,'02885544000103');assert.equal(D.find(x=>x.id==='hemoce-sobral').pix,null);
 });
 
 // In-memory IndexedDB-shaped adapter for isolated crypto/state tests only.
@@ -41,7 +42,7 @@ function storageAdapter(){
  return {indexedDB:{open(){const r={};queueMicrotask(()=>{r.result=db;r.onsuccess?.();});return r;}},read:()=>structuredClone(value)};
 }
 function vault(adapter){
- const ctx={BA360:C,BA360_CATALOG:D,crypto:crypto.webcrypto,indexedDB:adapter.indexedDB,TextEncoder,TextDecoder,Uint8Array,Date,JSON,structuredClone,Set,Error,console};
+ const ctx={BA360:C,BA360_CATALOG:D,BA360_XP:require('../dist/assets/xp'),crypto:crypto.webcrypto,indexedDB:adapter.indexedDB,TextEncoder,TextDecoder,Uint8Array,Date,JSON,structuredClone,Set,Error,console};
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../dist/assets/vault.js'),'utf8'),ctx);
  return ctx.BA360_VAULT;
 }
@@ -73,4 +74,14 @@ test('conflito entre duas instâncias não sobrescreve silenciosamente',async()=
 });
 test('bloqueio durante derivação não reabre o cofre',async()=>{
  const V=vault(storageAdapter());await V.create(password);V.lock();const opening=V.unlock(password);V.lock();await assert.rejects(opening,/bloqueada/);assert.equal(V.locked,true);assert.equal(V.data,null);
+});
+
+test('cofre 2.0 aceita sangue, divulgação e avaliação de XP; recusa avaliação inválida',async()=>{
+ const V=vault(storageAdapter());await V.create(password);
+ const ev={necessidade:3,gratidao:3,oportunidade:2,criatividade:1,seguranca:3,reserva:true,recebidoCents:600000};
+ await V.mutate(s=>{s.entries.push({...record(),xp:ev});s.entries.push({...record(),kind:'sangue',amountCents:0,detail:'Doação de sangue',xp:{...ev,recebidoCents:null}});s.entries.push({...record(),kind:'divulgacao',amountCents:0,detail:'Compartilhei a campanha'});});
+ assert.equal(V.data.entries.length,3);
+ await assert.rejects(V.mutate(s=>{s.entries[0].xp={...ev,necessidade:4};}),/XP inválida/);
+ await assert.rejects(V.mutate(s=>{s.entries[0].xp={...ev,extra:1};}),/XP inválida/);
+ await assert.rejects(V.mutate(s=>{s.entries.push({...record(),kind:'sangue',amountCents:100});}));
 });

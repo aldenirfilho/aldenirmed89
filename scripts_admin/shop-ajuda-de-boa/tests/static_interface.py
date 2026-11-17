@@ -21,11 +21,14 @@ assert page.titles==1 and 'viewport' in page.meta, 'Título ou viewport ausente'
 for asset in page.assets:
     assert not asset.startswith(('http:','https:','//')),f'Asset externo inesperado: {asset}'
     path=(DIST/asset).resolve();assert path.is_relative_to(DIST.resolve()) and path.is_file(),f'Asset ausente: {asset}'
-expected=['assets/core.js','assets/catalog.js','assets/vault.js','assets/plan.js','assets/app.js']
+expected=['assets/core.js','assets/catalog.js','assets/xp.js','assets/vault.js','assets/plan.js','assets/app.js']
 assert page.scripts==expected,'Ordem de scripts ou script não local inesperado'
-for element in ['cause-grid','search','category-list','selection-content','wallet-content','dialog','import-file','toast']:
+for element in ['cause-grid','search','category-list','selection-content','wallet-content','dialog','import-file','toast','quick-pix','app-view','xp-calculator']:
     assert element in page.ids,f'Elemento essencial ausente: {element}'
 csp=page.meta['Content-Security-Policy']
 assert "script-src 'self'" in csp and "object-src 'none'" in csp and "base-uri 'none'" in csp,'Política de conteúdo incompleta'
+app=DIST/'downloads'/'bolsa-ajuda-de-boa.html'
+assert app.is_file() and app.stat().st_size>20000,'App Bolsa Ajuda de Boa ausente em dist/downloads'
+assert 'APP_SHA256' not in (DIST/'index.html').read_text(),'Hash do app não injetado (rode build_app.py)'
 print(f'PASS: estrutura HTML, {len(page.ids)} IDs únicos, {len(page.assets)} assets locais e ordem de scripts.')
 print('ESCOPO: análise estática apenas; não substitui CUA, testes móveis ou IndexedDB real.')

@@ -1,6 +1,12 @@
 # Auditoria independente · Shop Ajuda de Boa
 
-Edição recuperada 1.2 · 16/11/2026. Auditoria solicitada pelo proprietário; auditoria externa ainda não realizada.
+Edição 2.0 · 16/11/2026 (sobre a edição recuperada 1.2). Auditoria solicitada pelo proprietário; auditoria externa ainda não realizada.
+
+## Edição 2.0 — o que mudou e como foi testado
+
+- Testado: `npm test` (22 testes, incluindo os 3 exemplos da planilha Placar XP), `npm run check:static`, `build_app.py --check`; navegador Chromium headless com dados sintéticos: Pix rápido, conferência anti-golpe, QR, criação do cofre, registro com XP, Placar CSV, backup; app em `file://` com IndexedDB real e em modo sessão; importação do backup do site no app.
+- Não testado: Safari/iOS, Android, leitores de tela, impressão; auditoria de segurança externa.
+- Pendência: revalidar nas páginas oficiais as chaves Pix de Aquasis, Lar Amigos de Jesus e SOS Mata Atlântica (consulta de 19/09/2026) e então atualizar `checked`.
 
 ## Abrir primeiro
 

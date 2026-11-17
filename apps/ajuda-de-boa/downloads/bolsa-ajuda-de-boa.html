@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bolsa Ajuda de Boa · 360X — home broker do bem</title>
+<meta name="description" content="App offline da Bolsa Ajuda de Boa: carteira criptografada de ajudas, extrato, posições por instituição, Pix com QR Code e XP da Boa Ação.">
+<meta name="theme-color" content="#0b0f14">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xK/sSM/IpOGkj1olZrTbD1NIbKZUrH5WoWooy8KUwpI=' 'sha256-sSQXbMs22ZBqg32MZTQzA3+wdamd+/exnNAfPGuI2+k=' 'sha256-CKyuXRRxKwU1tV6PcSjn0UywrRqYNYmPHdyY1Hshgwo=' 'sha256-K0XNJ7kwa2oGKkk52cfxu8FQUJfmD2I+Yibbr6FNIwg=' 'sha256-j6mM+pTDa4vFIbZS4aUrrluVI1YkgA2sjhu6uEk4eEI='; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0f14'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle'%3E%E2%9A%9C%3C/text%3E%3C/svg%3E">
+<style>/* Bolsa Ajuda de Boa · App 1.0 — códice tecno-medieval: obsidiana, ouro e ciano. Legibilidade acima do ornamento. */
+:root{--bg:#0b0f14;--bg2:#121923;--card:#151e2a;--line:#273445;--ink:#e9eef4;--mut:#9fb0c2;--gold:#d9b25a;--gold2:#f3d27e;--cyan:#38d3e6;--green:#4ad295;--red:#ff7a6b;--r:14px}
+*{box-sizing:border-box}html{color-scheme:dark}body{margin:0;background:radial-gradient(1200px 500px at 10% -10%,#1b2a3a 0%,transparent 60%),radial-gradient(900px 500px at 110% 0%,#2a2414 0%,transparent 55%),var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;min-height:100vh}
+a{color:var(--cyan)}h1,h2,h3{font-family:Georgia,'Times New Roman',serif;letter-spacing:.2px;line-height:1.25;margin:0 0 10px}h2{font-size:21px}h3{font-size:16px;margin-top:16px}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}:focus-visible{outline:3px solid var(--gold2);outline-offset:3px}[hidden]{display:none!important}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);padding:11px 16px;min-height:44px;font-weight:700;text-decoration:none;color:var(--ink)}.btn.gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1d1503;border-color:#b8913a}.btn.ghost{background:transparent}.btn.sm{min-height:36px;padding:7px 12px;font-size:13px}.btn.danger{color:var(--red);border-color:#5a2b26}.btn:disabled{opacity:.55}
+.lock{max-width:520px;margin:6vh auto;padding:0 18px;text-align:center}.crest{font-size:64px;filter:drop-shadow(0 0 18px #d9b25a55)}.lead{color:var(--mut)}.lock .card{text-align:left;margin-top:18px}
+.card{background:linear-gradient(180deg,#172231,#131b26);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:0 10px 30px #0006,inset 0 1px 0 #ffffff0d}.narrow{max-width:760px;margin:0 auto}
+.stack{display:flex;flex-direction:column;gap:12px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.row-wrap{display:flex;flex-wrap:wrap;gap:8px}.row-between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.field{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:700;color:var(--mut)}.field input,.field select,.field textarea{background:#0e141c;border:1px solid var(--line);border-radius:9px;padding:10px 12px;color:var(--ink);font-weight:500}.check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--mut)}.check input{margin-top:4px;width:18px;height:18px}
+.alert{background:#2a1f0c;border:1px solid #6b5420;color:#f6dfa5;border-radius:10px;padding:10px 12px;margin:12px 0;font-size:13.5px;text-align:left}.alert.slim{margin:8px 16px}.form-error{color:var(--red);font-size:13px}.fine{color:var(--mut);font-size:12px}.empty{color:var(--mut)}
+.top{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line);background:#0b0f14e6;position:sticky;top:0;z-index:5;backdrop-filter:blur(8px)}.brand{display:flex;align-items:center;gap:10px;flex:1}.brand b{font-family:Georgia,serif;font-size:18px;color:var(--gold2)}.brand small{display:block;color:var(--mut);font-size:11px}.crest-sm{font-size:28px}.top-xp{display:flex;gap:8px;align-items:center;background:#1c1608;border:1px solid #5d4a1b;border-radius:12px;padding:6px 12px}.top-xp span{font-size:22px}.top-xp b{color:var(--gold2);display:block;font-size:14px}.top-xp small{color:var(--mut);font-size:11px}
+.tape{overflow:hidden;border-bottom:1px solid var(--line);background:#080b10;white-space:nowrap}.tape-track{display:inline-flex;gap:28px;padding:7px 0;animation:tape 40s linear infinite;font:12px/1 ui-monospace,Menlo,Consolas,monospace;color:var(--mut)}.tape-track b{color:var(--cyan)}@keyframes tape{from{transform:translateX(0)}to{transform:translateX(-50%)}}@media(prefers-reduced-motion:reduce){.tape-track{animation:none}}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:10px 14px;border-bottom:1px solid var(--line)}.tabs a{display:flex;gap:6px;align-items:center;white-space:nowrap;text-decoration:none;color:var(--mut);padding:8px 12px;border-radius:9px;font-weight:700;font-size:14px}.tabs a.active{background:#1d2735;color:var(--gold2);box-shadow:inset 0 -2px 0 var(--gold)}
+main{padding:18px;max-width:1220px;margin:0 auto;display:flex;flex-direction:column;gap:18px}.foot{text-align:center;color:var(--mut);font-size:12px;padding:20px 16px 40px}
+.hero-xp{display:grid;grid-template-columns:1.1fr 1.4fr;gap:18px;background:linear-gradient(135deg,#1b1606,#0f1c22 60%,#0b2128);border:1px solid #4a3c17;border-radius:18px;padding:20px}.lvl{display:flex;gap:16px;align-items:center}.lvl-icon{font-size:64px}.lvl small{color:var(--mut);font-size:11px;letter-spacing:1px}.lvl h1{color:var(--gold2);font-size:28px;margin:2px 0 8px}.bar{height:10px;background:#ffffff1a;border-radius:99px;overflow:hidden;margin:4px 0}.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--cyan))}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.kpis div{background:#0b1118b3;border:1px solid var(--line);border-radius:12px;padding:10px 12px}.kpis small{display:block;color:var(--mut);font-size:11px}.kpis b{font-size:20px;color:var(--ink)}
+.grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}.pos{width:100%;border-collapse:collapse;font-size:13.5px}.pos th{text-align:left;color:var(--mut);font-size:11px;letter-spacing:.6px;text-transform:uppercase;border-bottom:1px solid var(--line);padding:6px}.pos td{border-bottom:1px solid #1f2a38;padding:8px 6px;vertical-align:middle}.tk{font:700 12px ui-monospace,Menlo,Consolas,monospace;color:var(--cyan);background:#0c2229;border:1px solid #1d4b55;border-radius:6px;padding:2px 6px}.mini{width:90px;height:7px;background:#ffffff14;border-radius:9px;overflow:hidden}.mini span{display:block;height:100%;background:var(--gold)}
+.chart{width:100%;height:auto}.chart text{fill:var(--mut);font-size:9px}.bar-on{fill:var(--gold)}.bar-off{fill:#223042}
+.badges{display:flex;flex-wrap:wrap;gap:7px}.badge{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:5px 10px;color:var(--mut);opacity:.6}.badge small{display:block;font-size:10px}.badge.on{opacity:1;color:#1d1503;background:var(--gold2);border-color:var(--gold)}
+.rec{display:grid;grid-template-columns:1fr auto;gap:8px 14px;border-bottom:1px solid #1f2a38;padding:12px 0}.rec-main{display:flex;gap:10px;align-items:flex-start}.rec h3{font-family:inherit;font-size:15px;margin:0}.rec p{margin:2px 0;color:var(--mut);font-size:13px}.rec-val{text-align:right;font-weight:800;display:flex;flex-direction:column;gap:4px;align-items:flex-end}.rec-act{grid-column:1/3;display:flex;gap:6px;flex-wrap:wrap}.xp-chip{font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px;background:#3a2c0b;color:var(--gold2)}.xp-chip.pending{background:#1d2735;color:var(--mut)}.xp-chip.lock{background:#3a1713;color:var(--red)}
+.orgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}.org-head{display:flex;gap:12px;align-items:center;margin-bottom:8px}.org-icon{font-size:36px}.org h3{font-family:inherit;font-size:16px;margin:4px 0 0}.org small{color:var(--mut)}.org ul{padding-left:18px;font-size:13.5px;color:#d3dbe4}.org li{margin:4px 0}
+.pix-orgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0}.pix-org{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-align:left}.pix-org b{color:var(--cyan);font-family:ui-monospace,Menlo,monospace}.pix-org small{color:var(--mut);font-size:12px}.pix-org i{font-style:normal;font-size:11px;color:var(--gold2)}.pix-org.active{border-color:var(--gold);box-shadow:0 0 0 3px #d9b25a33}
+.amounts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 14px}.chip{background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:8px 14px;min-height:42px;font-weight:700}.chip.active{background:var(--gold);color:#1d1503;border-color:var(--gold)}.other{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--mut)}.other input{width:110px;background:#0e141c;border:1px solid var(--line);border-radius:8px;padding:9px}
+.pix{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:20px;align-items:center}.qr{background:#fff;border-radius:12px;padding:8px;line-height:0}.qr svg{width:100%;height:auto}.pix-amount{font:800 30px Georgia,serif;color:var(--gold2)}.pix textarea{min-height:80px;font:12px ui-monospace,Menlo,monospace}.check-box{border:1px dashed #6b5420;background:#1e180a;border-radius:12px;padding:14px 16px}.key{font-family:ui-monospace,Menlo,monospace;word-break:break-all}
+.xp-eval{border:1px solid #3a3420;border-radius:12px;padding:10px 14px;background:#120f07}.xp-eval legend{color:var(--gold2);font-weight:800;padding:0 6px}.crit{display:grid;grid-template-columns:minmax(150px,1fr) auto;column-gap:12px;align-items:center;padding:6px 0;border-bottom:1px solid #2a2618}.crit-label{display:flex;flex-direction:column;font-size:13px}.crit-label small{color:var(--mut);font-size:11px}.crit-scale{grid-column:1/3;font-size:11px;color:var(--gold2)}.seg{display:inline-flex;gap:4px}.seg label{position:relative}.seg input{position:absolute;opacity:0;width:1px;height:1px}.seg span{display:grid;place-items:center;min-width:40px;min-height:38px;border:1px solid var(--line);border-radius:8px;background:var(--bg2);font-weight:800;padding:0 8px}.seg input:checked+span{background:var(--gold);color:#1d1503;border-color:var(--gold)}.seg input:focus-visible+span{outline:3px solid var(--cyan);outline-offset:2px}.xp-preview{display:block;margin-top:10px;padding:9px 12px;border-radius:9px;background:#0c2229;border:1px solid #1d4b55;color:#cdf6fb;font-size:13px}
+.levels{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 14px}.levels span{border:1px solid var(--line);border-radius:9px;padding:5px 9px;font-size:12px;color:var(--mut)}.levels span.on{border-color:var(--gold);color:var(--gold2)}.levels small{color:var(--mut)}.tips{padding-left:18px;font-size:14px}.tips li{margin:6px 0}
+dialog{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;max-width:640px;width:calc(100% - 24px);padding:20px;max-height:90vh;overflow:auto}dialog::backdrop{background:#000a}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0c2229;border:1px solid #1d4b55;color:#cdf6fb;padding:11px 16px;border-radius:10px;z-index:50;max-width:min(560px,calc(100% - 24px));font-size:14px}#toast.error{background:#3a1713;border-color:#7a2f26;color:#ffd7d1}
+.noscript{padding:30px;text-align:center}
+@media(max-width:900px){.hero-xp,.grid2,.pix{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.row2{grid-template-columns:1fr}.top{flex-wrap:wrap}.crit{grid-template-columns:1fr}.crit-scale{grid-column:1}.orgs{grid-template-columns:1fr}.pos th:nth-child(4),.pos td:nth-child(4){display:none}}
+@media print{.top,.tabs,.tape,.foot{display:none}}
+</style>
+</head>
+<body>
+<!-- Bolsa Ajuda de Boa · App 1.0 · gerado em 2026-11-16 a partir de scripts_admin/shop-ajuda-de-boa (aldenirfilho/aldenirmed89). Código MIT. -->
+<div id="app"><section class="lock"><div class="crest" aria-hidden="true">⚜️</div><h1>Bolsa Ajuda de Boa</h1><p class="lead">Carregando o cofre…</p></section></div>
+<dialog id="dialog" aria-label="Janela"><div id="dialog-content"></div></dialog>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<input id="import-file" type="file" accept=".json,application/json" hidden>
+<noscript><div class="noscript">Ative o JavaScript para usar o app. Nenhum dado é enviado a servidores.</div></noscript>
+<script>/* Bolsa de Ajuda 360. Implementação original. Nenhuma chamada de rede.
+   BR Code Pix estático + QR versão 8-L, máscara 0. Não envia nem confirma pagamentos. */
+(function(root){
+'use strict';
+const MAX_CENTS=9999999;
+function esc(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function cents(value){
+ let s=String(value??'').trim().replace(/^R\$\s*/,'');
+ if(/^\d{1,3}(\.\d{3})+(,\d{1,2})?$/.test(s))s=s.replace(/\./g,'').replace(',','.');
+ else if(/^\d+(,\d{1,2})?$/.test(s))s=s.replace(',','.');
+ else if(!/^\d+(\.\d{1,2})?$/.test(s))throw Error('Informe um valor com até duas casas decimais.');
+ const [a,b='']=s.split('.');const result=Number(a)*100+Number((b+'00').slice(0,2));
+ if(!Number.isSafeInteger(result)||result<1||result>MAX_CENTS)throw Error('O valor deve estar entre R$ 0,01 e R$ 99.999,99.');
+ return result;
+}
+function cash(n){return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n/100);}
+function crc16(s){let crc=0xffff;for(const c of new TextEncoder().encode(s)){crc^=c<<8;for(let i=0;i<8;i++)crc=(crc&0x8000)?((crc<<1)^0x1021):(crc<<1);crc&=0xffff;}return crc.toString(16).toUpperCase().padStart(4,'0');}
+function field(id,s){s=String(s);const l=new TextEncoder().encode(s).length;if(l>99)throw Error('Campo Pix extenso demais.');return id+String(l).padStart(2,'0')+s;}
+function ascii(s,max){return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9 $%*+\-./:]/g,'').slice(0,max).trim();}
+function pix(recipient,amount){
+ if(!recipient||!recipient.key||!recipient.name||!recipient.city)throw Error('Não há uma chave Pix publicada para esta causa.');
+ if(!Number.isSafeInteger(amount)||amount<1||amount>MAX_CENTS)throw Error('Valor inválido.');
+ if(!/^[\x20-\x7E]{1,77}$/.test(recipient.key))throw Error('Chave Pix inválida.');
+ const name=ascii(recipient.name,25),city=ascii(recipient.city,15);if(!name||!city)throw Error('Recebedor incompleto.');
+ const s=field('00','01')+field('01','11')+field('26',field('00','br.gov.bcb.pix')+field('01',recipient.key))+field('52','0000')+field('53','986')+field('54',(amount/100).toFixed(2))+field('58','BR')+field('59',name)+field('60',city)+field('62',field('05','***'))+'6304';
+ return s+crc16(s);
+}
+function qrMatrix(text){
+ const bytes=new TextEncoder().encode(text);if(bytes.length>192)throw Error('Código extenso demais para este gerador. Use o site oficial.');
+ const bits=[];const push=(v,len)=>{for(let i=len-1;i>=0;i--)bits.push((v>>>i)&1);};
+ push(4,4);push(bytes.length,8);for(const b of bytes)push(b,8);
+ const remaining=Math.min(4,1552-bits.length);for(let i=0;i<remaining;i++)bits.push(0);
+ while(bits.length%8)bits.push(0);
+ const data=[];for(let i=0;i<bits.length;i+=8){let b=0;for(let j=0;j<8;j++)b=(b<<1)|bits[i+j];data.push(b);}
+ let pad=0;while(data.length<194)data.push((pad++%2)?0x11:0xec);
+ const exp=new Uint8Array(512),log=new Uint8Array(256);let x=1;
+ for(let i=0;i<255;i++){exp[i]=x;log[x]=i;x<<=1;if(x&256)x^=0x11d;}for(let i=255;i<512;i++)exp[i]=exp[i-255];
+ const mul=(a,b)=>(a===0||b===0)?0:exp[log[a]+log[b]];
+ let gen=[1];for(let i=0;i<24;i++){const next=Array(gen.length+1).fill(0);for(let j=0;j<gen.length;j++){next[j]^=gen[j];next[j+1]^=mul(gen[j],exp[i]);}gen=next;}
+ const blocks=[data.slice(0,97),data.slice(97)];const ecc=blocks.map(b=>{const r=b.concat(Array(24).fill(0));for(let i=0;i<97;i++){const factor=r[i];if(factor)for(let j=0;j<gen.length;j++)r[i+j]^=mul(gen[j],factor);}return r.slice(97);});
+ const words=[];for(let i=0;i<97;i++)for(let b=0;b<2;b++)words.push(blocks[b][i]);for(let i=0;i<24;i++)for(let b=0;b<2;b++)words.push(ecc[b][i]);
+ const n=49,m=Array.from({length:n},()=>Array(n).fill(null));
+ const finder=(r,c)=>{for(let y=-1;y<=7;y++)for(let z=-1;z<=7;z++){const yy=r+y,xx=c+z;if(yy<0||xx<0||yy>=n||xx>=n)continue;m[yy][xx]=(y>=0&&y<=6&&z>=0&&z<=6&&(y===0||y===6||z===0||z===6||(y>=2&&y<=4&&z>=2&&z<=4)));}};
+ finder(0,0);finder(n-7,0);finder(0,n-7);
+ for(const r of [6,24,42])for(const c of [6,24,42]){if(m[r][c]!==null)continue;for(let y=-2;y<=2;y++)for(let z=-2;z<=2;z++)m[r+y][c+z]=(Math.abs(y)===2||Math.abs(z)===2||(y===0&&z===0));}
+ for(let i=8;i<n-8;i++){if(m[i][6]===null)m[i][6]=i%2===0;if(m[6][i]===null)m[6][i]=i%2===0;}
+ const bitLen=v=>{let k=0;while(v){v>>>=1;k++;}return k;};
+ const bch=(value,shift,poly)=>{let v=value<<shift;while(bitLen(v)>=bitLen(poly))v^=poly<<(bitLen(v)-bitLen(poly));return(value<<shift)|v;};
+ const format=bch(8,10,0x537)^0x5412;
+ for(let i=0;i<15;i++){const b=!!((format>>>i)&1);const r=i<6?i:i<8?i+1:n-15+i;m[r][8]=b;const c=i<8?n-i-1:i<9?15-i:15-i-1;m[8][c]=b;}
+ m[n-8][8]=true;
+ const version=bch(8,12,0x1f25);for(let i=0;i<18;i++){const b=!!((version>>>i)&1);m[Math.floor(i/3)][i%3+n-11]=b;m[i%3+n-11][Math.floor(i/3)]=b;}
+ let row=n-1,direction=-1,index=0;
+ for(let col=n-1;col>0;col-=2){if(col===6)col--;while(true){for(let c=col;c>=col-1;c--){if(m[row][c]!==null)continue;const bit=index<words.length*8?!!((words[index>>>3]>>>(7-(index&7)))&1):false;m[row][c]=((row+c)%2===0)?!bit:bit;index++;}row+=direction;if(row<0||row>=n){row-=direction;direction=-direction;break;}}}
+ return m;
+}
+function qrSvg(text){const m=qrMatrix(text);let d='';for(let r=0;r<m.length;r++)for(let c=0;c<m.length;c++)if(m[r][c])d+='M'+(c+4)+' '+(r+4)+'h1v1h-1z';return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 57 57" width="285" height="285" role="img" aria-label="QR Code Pix. Confira o recebedor no aplicativo do banco." shape-rendering="crispEdges"><rect width="57" height="57" fill="white"/><path d="'+d+'" fill="black"/></svg>';}
+function b64(bytes){let s='';for(let i=0;i<bytes.length;i+=8192)s+=String.fromCharCode(...bytes.subarray(i,i+8192));return btoa(s);}
+function unb64(s){return Uint8Array.from(atob(s),c=>c.charCodeAt(0));}
+const api={MAX_CENTS,esc,cents,cash,crc16,pix,qrMatrix,qrSvg,b64,unb64};root.BA360=Object.freeze(api);if(typeof module!=='undefined'&&module.exports)module.exports=api;
+})(globalThis);
+</script>
+<script>/* Catálogo editorial · Ajuda de Boa 2.0 (16/11/2026).
+ * Fontes oficiais de doação consultadas em 19/09/2026 ou 16/11/2026 (campo checked, por ficha).
+ * Perspectiva e projetos: síntese objetiva de relatórios, portais oficiais ou imprensa (campo projSource).
+ * Inclusão não representa parceria, auditoria, garantia de destinação nem confirmação de chave Pix.
+ * Ticker: 4 letras + sufixo da causa (3 social · 4 ambiental · 5 saúde · 7 animal · 11 humanitário). */
+(function(root){
+'use strict';
+const checked='2026-09-19';
+const today='2026-11-16';
+const causes=[
+ {id:'santa-casa-sobral',ticker:'SCSO5',name:'Santa Casa de Misericórdia de Sobral',title:'Cuidado perto de você.',category:'saude',tags:['saude','comunidades'],region:'Sobral · Ceará',ceara:true,icon:'🏥',art:'saúde em Sobral',color:'rose',
+  description:'Instituição filantrópica de saúde em Sobral. O site oficial disponibiliza acesso à campanha de doações.',
+  perspective:'Hospital filantrópico de referência para mais de 50 municípios do Norte do Ceará, com a maior parte dos atendimentos pelo SUS.',
+  projects:[{t:'Empresas que Cuidam',d:'Programa municipal criado por lei (2025) que incentiva doações voluntárias de empresas diretamente à Santa Casa.'},{t:'Agora Tem Especialistas',d:'Primeiro hospital do Ceará a aderir ao programa federal que converte dívidas em atendimentos especializados pelo SUS.'},{t:'Novo tomógrafo (Pronon)',d:'Equipamento de R$ 2,9 milhões anunciado para a unidade pelo programa nacional de oncologia.'}],
+  projSource:{url:'https://transparencia.sobral.ce.gov.br/arquivo/nome:34a40a6b3b3496cfa10ede07bf5c72d5.pdf',label:'Portal da Transparência de Sobral e imprensa (Diário do Nordeste)',type:'público',checked:today},
+  proposal:'Conheça a instituição e os meios de contribuição apresentados no site oficial. Confirme a necessidade e o destinatário diretamente com a Santa Casa.',methods:['dinheiro','divulgacao'],website:'https://stacasa.org.br/',helpUrl:'https://stacasa.org.br/',source:'https://stacasa.org.br/',checked:today,pix:null,extra:'Use a seção de doações do site oficial; nenhuma chave é presumida por esta plataforma.'},
+ {id:'hemoce-sobral',ticker:'HEMO5',name:'Hemoce · doação de sangue em Sobral',title:'Um gesto que corre nas veias.',category:'saude',tags:['saude','comunidades'],region:'Sobral e Região Norte · Ceará',ceara:true,icon:'🩸',art:'doação de sangue',color:'rose',
+  description:'Rede pública estadual de hemoterapia. Doar sangue não envolve dinheiro: basta agendar e comparecer a um posto de coleta.',
+  perspective:'Manter os estoques de sangue da Região Norte do Ceará, que atende hospitais como HRN e Santa Casa de Sobral.',
+  projects:[{t:'Recorde em 2025',d:'O Hemoce registrou em 2025 o maior número de doações desde 1990; a Região Norte somou 19.787 coletas.'},{t:'Campanhas com o HRN',d:'Campanhas de doação com o Hospital Regional Norte para colaboradores e comunidade (dez/2025).'},{t:'Medula óssea',d:'Cadastro de doadores de medula óssea e doação de plaquetas nos postos da rede.'}],
+  projSource:{url:'https://www.saude.ce.gov.br/2025/12/19/campanha-doacao-sangue-hrn/',label:'Secretaria da Saúde do Ceará e O Povo (08/01/2026)',type:'público',checked:today},
+  proposal:'Doe sangue, plaquetas ou faça o cadastro de medula. Confira requisitos, horários e agendamento nos canais oficiais do Hemoce e da Secretaria da Saúde.',methods:['sangue','divulgacao'],website:'https://www.saude.ce.gov.br/2025/12/19/campanha-doacao-sangue-hrn/',helpUrl:'https://www.saude.ce.gov.br/2025/12/19/campanha-doacao-sangue-hrn/',source:'https://www.saude.ce.gov.br/2025/12/19/campanha-doacao-sangue-hrn/',checked:today,pix:null,extra:'Requisitos de saúde para doação são definidos pelo Hemoce; siga a triagem no posto.'},
+ {id:'amigos-do-bem',ticker:'AMIG3',name:'Amigos do Bem',title:'O sertão também está na sua cesta.',category:'alimentacao',tags:['alimentacao','comunidades','infancia'],region:'Sertão nordestino · CE, PE e AL',ceara:true,icon:'🤝',art:'sertão e comunidade',color:'amber',
+  description:'Projetos sociais no sertão nordestino. A instituição apresenta formas de contribuir com dinheiro, materiais e voluntariado.',
+  perspective:'Missão declarada: transformar vidas por meio da educação e de projetos autossustentáveis, erradicando a fome e a miséria no sertão.',
+  projects:[{t:'Cidades do Bem',d:'Quatro cidades com infraestrutura completa em PE, AL e CE; famílias trocaram casas de taipa por alvenaria.'},{t:'Água no sertão',d:'Cerca de 1,3 bilhão de litros de água entregues em 2023 a 300 povoados atendidos regularmente.'},{t:'Educação',d:'Mais de 10 mil crianças e jovens em projetos educacionais nos Centros de Transformação.'},{t:'Atendimento regular',d:'Cerca de 150 mil pessoas por mês em povoados de Alagoas, Pernambuco e Ceará.'}],
+  projSource:{url:'https://arquivos.amigosdobem.org/Relatorio_de_atividades_2024.pdf',label:'Relatório de atividades 2024 e releases oficiais',type:'oficial',checked:today},
+  proposal:'Escolha a modalidade no canal oficial. Para materiais e trabalho voluntário, combine as condições e a disponibilidade diretamente com a equipe.',methods:['dinheiro','materiais','voluntariado','divulgacao'],website:'https://amigosdobem.org/',helpUrl:'https://amigosdobem.org/como-ajudar/',source:'https://amigosdobem.org/como-ajudar/',checked:today,pix:null,extra:'Doações financeiras e recorrência são definidas fora desta plataforma, no ambiente da instituição.'},
+ {id:'pastoral-crianca',ticker:'PAST3',name:'Pastoral da Criança',title:'Presença no começo da vida.',category:'infancia',tags:['infancia','saude','comunidades'],region:'Brasil · procure a coordenação local',ceara:false,icon:'🧸',art:'infância e cuidado',color:'sky',
+  description:'Apoio à saúde, nutrição e desenvolvimento infantil, com orientação às famílias e atuação de voluntários.',
+  perspective:'Desenvolvimento integral de gestantes e crianças até 6 anos, levado às comunidades por líderes voluntários.',
+  projects:[{t:'Acompanhamento mensal',d:'Visitas domiciliares de líderes voluntários a gestantes e famílias com crianças pequenas.'},{t:'Celebração da Vida',d:'Encontro comunitário com acompanhamento do peso e do desenvolvimento das crianças.'},{t:'Rede de voluntários',d:'Atuação capilar a partir das paróquias; procure a coordenação mais próxima.'}],
+  projSource:{url:'https://www.pastoraldacrianca.org.br/',label:'Síntese geral do portal oficial — confira as ações atuais',type:'síntese',checked:today},
+  proposal:'Conheça a contribuição institucional no canal oficial. Para voluntariado na sua cidade, procure a coordenação da paróquia próxima e confirme as atividades disponíveis.',methods:['dinheiro','materiais','voluntariado','divulgacao'],website:'https://www.pastoraldacrianca.org.br/',helpUrl:'https://www.pastoraldacrianca.org.br/doar',source:'https://www.pastoraldacrianca.org.br/doar',checked:today,pix:null,extra:'A ficha não confirma vaga ou campanha ativa em uma unidade específica de Sobral.'},
+ {id:'caatinga',ticker:'CAAT4',name:'Associação Caatinga',title:'Deixe o sertão florescer.',category:'plantas',tags:['plantas','animais','comunidades'],region:'Ceará e semiárido',ceara:true,icon:'🌵',art:'sertão',color:'sage',
+  description:'Conservação da Caatinga, proteção da fauna, restauração florestal e ações com comunidades do semiárido.',
+  perspective:'Missão declarada: conservar a Caatinga, difundir suas riquezas e inspirar as pessoas a cuidar da natureza (fundada em 1998).',
+  projects:[{t:'Reserva Natural Serra das Almas',d:'Unidade de conservação criada e gerida pela associação em Crateús (CE), com ações em cerca de 40 comunidades do entorno.'},{t:'No Clima da Caatinga',d:'Projeto na Reserva e nas comunidades vizinhas, patrocinado pelo Programa Petrobras Socioambiental.'},{t:'Ecoprotagonistas',d:'Capacita adolescentes das zonas rurais de Crateús para a preservação do bioma.'},{t:'Restaura Caatinga',d:'Concluído em 2024, com 20 hectares de Caatinga degradada restaurados.'},{t:'Cadeia da carnaúba',d:'Desde 2016, qualificação da cadeia produtiva da carnaúba com parceiros.'}],
+  projSource:{url:'https://www.acaatinga.org.br/wp-content/uploads/relatorio-anual-2024-associacao-caatinga.pdf',label:'Relatório anual 2024, portfólio e notícias oficiais',type:'oficial',checked:today},
+  proposal:'Apoiar a conservação de habitats, a educação ambiental e o desenvolvimento sustentável de comunidades. A doação é institucional: escolher esta ficha não reserva recursos para um animal ou uma árvore específica.',methods:['dinheiro','voluntariado','divulgacao'],website:'https://www.acaatinga.org.br/',helpUrl:'https://www.acaatinga.org.br/proteja-a-caatinga/',source:'https://www.acaatinga.org.br/proteja-a-caatinga/',checked:'2026-11-16',pix:{key:'02885544000103',name:'ASSOCIACAO CAATINGA',city:'FORTALEZA',legalName:'Associação Caatinga',cnpj:'02.885.544/0001-03'},extra:'Voluntariado: consulte as vagas e orientações no menu do site oficial.'},
+ {id:'aquasis',ticker:'AQUA7',name:'Aquasis',title:'Mais vida no litoral e na serra.',category:'oceanos',tags:['oceanos','animais','plantas'],region:'Caucaia e outros locais do Ceará',ceara:true,icon:'🐋',art:'oceanos',color:'ocean',
+  description:'Proteção de espécies ameaçadas e de seus habitats, incluindo mamíferos marinhos e aves do Ceará.',
+  perspective:'Recuperar populações ameaçadas do Ceará — do peixe-boi-marinho às aves da serra — protegendo seus habitats.',
+  projects:[{t:'Projeto Manatí',d:'Reabilitação e soltura de peixes-bois em Icapuí, com estrutura flutuante pioneira de aclimatação.'},{t:'Mamíferos marinhos',d:'Atendimento a encalhes de peixes-bois e botos no litoral; censo de 2025 com a UFC contou ao menos 60 peixes-bois em Icapuí.'},{t:'Periquito-cara-suja',d:'Projeto cearense que reverteu a ameaça de extinção da espécie.'},{t:'Soldadinho-do-araripe',d:'Conservação da ave ameaçada da Chapada do Araripe.'}],
+  projSource:{url:'https://diariodonordeste.verdesmares.com.br/regiao/projeto-cearense-reverte-ameaca-de-extincao-do-periquito-cara-suja-1.2965087',label:'Imprensa cearense (Diário do Nordeste, O Povo)',type:'imprensa',checked:today},
+  proposal:'Contribuir para cuidados com a fauna, caixas-ninho, mudas e conservação de habitats. A instituição pede que o doador informe o projeto pretendido; faça isso diretamente pelos canais oficiais. A seleção neste catálogo não comunica essa destinação.',methods:['dinheiro','divulgacao'],website:'https://www.aquasis.org/',helpUrl:'https://www.aquasis.org/doeaqui',source:'https://www.aquasis.org/doeaqui',checked,pix:{key:'aquasis@aquasis.org',name:'AQUASIS',city:'CAUCAIA',legalName:'Associação de Pesquisa e Preservação de Ecossistemas Aquáticos — Aquasis',cnpj:'00.129.688/0001-04'},extra:'As condições de participação e apoio são definidas pela Aquasis.'},
+ {id:'lar-amigos',ticker:'LARA5',name:'Lar Amigos de Jesus',title:'Acolhimento para quem cuida.',category:'acolhimento',tags:['acolhimento','saude','infancia'],region:'Fortaleza · Ceará',ceara:true,icon:'🏡',art:'acolhimento',color:'peach',
+  description:'Acolhimento e apoio a crianças e adolescentes com câncer e às suas famílias no Ceará.',
+  perspective:'Acolher crianças e adolescentes em tratamento de câncer e suas famílias, vindas do interior, durante o tratamento em Fortaleza.',
+  projects:[{t:'Casa de Travessia Solidária',d:'Casa de acolhimento para famílias de crianças com câncer, inaugurada em 2020 com recursos de bazares e campanhas.'},{t:'Bazares solidários',d:'Arrecadação para assistência social e saúde de mais de 80 crianças e adolescentes acompanhados (2025).'},{t:'Entidade credenciada no TJCE',d:'A mantenedora consta na lista de entidades credenciadas do Tribunal de Justiça do Ceará, com validade até 06/02/2027.'}],
+  projSource:{url:'https://portal.tjce.jus.br/uploads/2023/05/lista-11-08-2026-1786491680.pdf',label:'TJCE (lista de 11/08/2026) e O Povo',type:'público',checked:today},
+  proposal:'Apoiar os programas de assistência e acolhimento da Associação dos Missionários da Solidariedade. A contribuição é destinada à instituição, não a uma pessoa identificada por este site.',methods:['dinheiro','divulgacao'],website:'https://laramigosdejesus.org.br/',helpUrl:'https://laramigosdejesus.org.br/doacoes/',source:'https://laramigosdejesus.org.br/doacoes/',checked,pix:{key:'11368624000182',name:'ASSOC DOS MISSIONARIOS',city:'FORTALEZA',legalName:'Associação dos Missionários da Solidariedade',cnpj:'11.368.624/0001-82'},extra:'Confirme diretamente com a instituição a necessidade de outros tipos de apoio.'},
+ {id:'ampara',ticker:'AMPA7',name:'Instituto Ampara Animal',title:'Cuidado que chega aos animais.',category:'animais',tags:['animais'],region:'Atuação no Brasil',ceara:false,icon:'🐾',art:'animais',color:'sand',
+  description:'Apoio a abrigos e protetores, bem-estar animal, castração, educação e conservação de fauna.',
+  perspective:'Ir à raiz do abandono: prevenção (castração e educação), apoio a abrigos e proteção da fauna silvestre.',
+  projects:[{t:'Rede de abrigos',d:'Apoio a mais de 200 abrigos com alimentos, medicamentos, vacinas, atendimento veterinário e eventos de adoção.'},{t:'Ampara Silvestre',d:'Frente criada em 2016 para a fauna brasileira; mais de 700 animais silvestres beneficiados, incluindo resgates no Pantanal.'},{t:'Castração',d:'Mutirões e centro de controle populacional para cães e gatos.'},{t:'Cuidado Animal (2026)',d:'Parceria que oferece atendimento veterinário, vacinação e castração gratuitos a tutores.'}],
+  projSource:{url:'https://institutoamparanimal.org.br/wp-content/uploads/2024/07/Relatorio-de-atividades-2023-compactado.pdf',label:'Relatórios de atividades e cartilha oficiais',type:'oficial',checked:today},
+  proposal:'Fortalecer iniciativas de proteção de animais domésticos e silvestres. A Ampara informa que não possui abrigo próprio para cães e gatos. Adoção, voluntariado e apoio seguem a avaliação e as regras da instituição.',methods:['dinheiro','voluntariado','divulgacao'],website:'https://institutoamparanimal.org.br/',helpUrl:'https://institutoamparanimal.org.br/doacao/',source:'https://institutoamparanimal.org.br/doacao/',checked,pix:null,extra:'Doação única, formas de apoio e formulário de voluntariado estão no site oficial.'},
+ {id:'msf',ticker:'MSFB11',name:'Médicos Sem Fronteiras',title:'Saúde para além das fronteiras.',category:'saude',tags:['saude','comunidades'],region:'Atuação internacional',ceara:false,icon:'✚',art:'saúde',color:'rose',
+  description:'Assistência médica humanitária a pessoas afetadas por crises, conflitos e desastres.',
+  perspective:'Ajuda médico-humanitária independente, imparcial e neutra onde a saúde está ameaçada.',
+  projects:[{t:'Resposta a emergências',d:'Equipes médicas em conflitos, epidemias, desastres naturais e crises de deslocamento.'},{t:'Nobel da Paz (1999)',d:'Reconhecimento internacional ao trabalho humanitário da organização.'},{t:'Doação individual',d:'A organização divulga relatórios anuais sobre a origem e o uso dos recursos no site oficial.'}],
+  projSource:{url:'https://www.msf.org.br/',label:'Síntese geral do portal oficial — confira os projetos atuais',type:'síntese',checked:today},
+  proposal:'Apoiar a resposta médico-humanitária da organização. O próprio canal de doação informa as formas de pagamento e emite as confirmações aplicáveis. Não geramos uma chave Pix de MSF por suposição.',methods:['dinheiro','divulgacao'],website:'https://www.msf.org.br/',helpUrl:'https://www.msf.org.br/',source:'https://www.msf.org.br/',checked,pix:null,extra:'No site oficial, selecione “Como ajudar” e depois “Doação única” ou “Doação mensal”.'},
+ {id:'acao',ticker:'CIDA3',name:'Ação da Cidadania',title:'Solidariedade também alimenta.',category:'alimentacao',tags:['alimentacao','comunidades'],region:'Rede de atuação no Brasil',ceara:false,icon:'🥣',art:'alimentação',color:'amber',
+  description:'Combate à fome, apoio alimentar e mobilização de uma rede de solidariedade.',
+  perspective:'Mobilizar a sociedade contra a fome e a miséria, movimento iniciado por Betinho em 1993.',
+  projects:[{t:'Natal Sem Fome',d:'Campanha anual de arrecadação e distribuição de alimentos em todo o país.'},{t:'Rede de comitês',d:'Comitês locais e voluntariado, inclusive digital, para mobilização permanente.'},{t:'Doação em produtos',d:'Alimentos, roupas e outros itens conforme as condições de recebimento oficiais.'}],
+  projSource:{url:'https://www.acaodacidadania.org.br/como-apoiar',label:'Síntese geral do portal oficial — confira as campanhas atuais',type:'síntese',checked:today},
+  proposal:'Apoiar ações de segurança alimentar. A instituição disponibiliza doações financeiras e em produtos, além de voluntariado digital. Combine previamente a entrega e a necessidade de materiais com a organização.',methods:['dinheiro','materiais','voluntariado','divulgacao'],website:'https://www.acaodacidadania.org.br/',helpUrl:'https://www.acaodacidadania.org.br/como-apoiar',source:'https://www.acaodacidadania.org.br/como-apoiar',checked,pix:null,extra:'Alimentos, roupas e outros produtos: verifique os canais e condições de recebimento oficiais.'},
+ {id:'sos-mata',ticker:'MATA4',name:'SOS Mata Atlântica',title:'Florestas de pé. Rios vivos.',category:'plantas',tags:['plantas','oceanos','comunidades'],region:'Mata Atlântica · Brasil',ceara:false,icon:'🌳',art:'florestas',color:'forest',
+  description:'Defesa da Mata Atlântica, restauração florestal, água limpa e áreas protegidas.',
+  perspective:'Restaurar e proteger a Mata Atlântica: florestas em pé, rios vivos e áreas protegidas.',
+  projects:[{t:'Restauração florestal',d:'23 mil hectares de florestas plantadas pela Fundação em crescimento e monitoramento (relatório 2022), com mudas de cerca de 110 espécies nativas.'},{t:'Qualidade da água',d:'Monitoramento de rios do bioma; em 2022, só 7% de 146 pontos em 90 rios tinham água boa.'},{t:'Unidades de conservação',d:'Apoio ao fortalecimento de 27 unidades e estímulo à criação de novas (2022).'},{t:'Centro de Experimentos Florestais',d:'Espaço de pesquisa e visitação em Itu (SP).'}],
+  projSource:{url:'https://cms.sosma.org.br/wp-content/uploads/2023/07/DIG-PT-SOSMa-RA22.pdf',label:'Relatórios anuais oficiais (2022 e 2025)',type:'oficial',checked:today},
+  proposal:'Apoiar as atividades institucionais de conservação, educação ambiental e restauração. Para uma iniciativa específica, como Plante Mudas, use a modalidade correspondente no site oficial; o Pix institucional não garante essa vinculação.',methods:['dinheiro','voluntariado','divulgacao'],website:'https://www.sosma.org.br/',helpUrl:'https://www.sosma.org.br/formas-de-contribuicao',source:'https://www.sosma.org.br/formas-de-contribuicao',checked,pix:{key:'364b6ce7-0b52-490d-bddf-4342860b2b49',name:'SOS MATA ATLANTICA',city:'ITU',legalName:'Fundação SOS Pró-Mata Atlântica',cnpj:'57.354.540/0001-90'},extra:'O site oficial também apresenta participação em ações ambientais e mobilização comunitária.'},
+ {id:'unicef',ticker:'UNIC11',name:'UNICEF',title:'Cada infância merece cuidado.',category:'infancia',tags:['infancia','saude','comunidades'],region:'Brasil e mundo',ceara:false,icon:'🧸',art:'infância',color:'sky',
+  description:'Proteção de direitos, saúde, educação, água e bem-estar de crianças e adolescentes.',
+  perspective:'Garantir os direitos de cada criança e adolescente, com prioridade aos mais vulneráveis.',
+  projects:[{t:'Selo UNICEF',d:'Compromisso de municípios do Semiárido e da Amazônia, inclusive do Ceará, com indicadores da infância.'},{t:'Busca Ativa Escolar',d:'Ferramenta para municípios localizarem e rematricularem crianças fora da escola.'},{t:'Emergências',d:'Resposta humanitária com água, saúde e proteção a crianças em crises.'}],
+  projSource:{url:'https://www.unicef.org/brazil/',label:'Síntese geral do portal oficial — confira as iniciativas atuais',type:'síntese',checked:today},
+  proposal:'Contribuir para as ações do Fundo das Nações Unidas para a Infância. O UNICEF não é uma ONG; é um fundo das Nações Unidas. Use o botão de doação de sua página oficial para conhecer as modalidades disponíveis.',methods:['dinheiro','divulgacao'],website:'https://www.unicef.org/brazil/',helpUrl:'https://www.unicef.org/brazil/',source:'https://www.unicef.org/brazil/',checked,pix:null,extra:'No site oficial do UNICEF no Brasil, acesse “Doe agora”.'}
+];
+for(const c of causes){Object.freeze(c.tags);Object.freeze(c.methods);for(const p of c.projects)Object.freeze(p);Object.freeze(c.projects);Object.freeze(c.projSource);if(c.pix)Object.freeze(c.pix);Object.freeze(c);}
+root.BA360_CATALOG=Object.freeze(causes);if(typeof module!=='undefined'&&module.exports)module.exports=causes;
+})(globalThis);
+</script>
+<script>/* XP da Boa Ação · 360X — mesma régua do "Placar XP da Boa Ação" da Bolsa Ajuda de Boa.
+   XP é pontuação de honra e mérito, não de dinheiro: o valor doado só entra pela
+   proporção doado/recebido (a "medida"), e quem doa além da medida não ganha mais XP.
+   Travas: reserva comprometida ou destinatário não verificado = XP zero.
+   Funções puras, sem rede e sem armazenamento. Mesma fórmula no site e no app. */
+(function(root){
+'use strict';
+const PARAMS=Object.freeze({
+ ideal:0.05,      // proporção ideal doado/recebido (média da gaussiana)
+ sdLow:0.05,      // desvio padrão abaixo do ideal (tolerância para quem doa menos)
+ sdHigh:0.03,     // desvio padrão acima do ideal (sacrifício não rende mais XP)
+ weights:Object.freeze({necessidade:3,gratidao:3,oportunidade:2,criatividade:1,seguranca:2}),
+ xpMin:1000,      // ajuda válida com qualidade ou medida zero
+ xpMax:10000      // todos os critérios em 3 e proporção ideal
+});
+const CRITERIA=Object.freeze([
+ Object.freeze({id:'necessidade',icon:'🎯',label:'Necessidade',hint:'Quem recebe precisa mesmo?',scale:['Não precisa','Precisa pouco','Precisa','Urgente ou vital']}),
+ Object.freeze({id:'gratidao',icon:'🙏',label:'Gratidão',hint:'Doou de bom grado?',scale:['Por culpa, pressão ou obrigação','Sem vontade','De bom grado','Feliz e grato por retribuir']}),
+ Object.freeze({id:'oportunidade',icon:'⏱️',label:'Oportunidade',hint:'Chegou na hora em que fazia diferença?',scale:['Fora de hora','Tanto faz o momento','Em boa hora','Na hora exata da necessidade']}),
+ Object.freeze({id:'criatividade',icon:'💡',label:'Criatividade',hint:'Forma original de ajudar?',scale:['Nenhuma','Forma comum','Boa ideia','Forma nova que outros podem copiar']}),
+ Object.freeze({id:'seguranca',icon:'🛡️',label:'Segurança',hint:'Destinatário verificado e comprovante guardado?',scale:['Destinatário não verificado (XP zero)','Verificação fraca, sem comprovante','Verificado ou com comprovante','Verificado e com comprovante']})
+]);
+const LEVELS=Object.freeze([
+ Object.freeze({min:0,icon:'🌱',name:'Semente'}),
+ Object.freeze({min:10000,icon:'🌿',name:'Broto'}),
+ Object.freeze({min:50000,icon:'🛡️',name:'Escudeiro do Bem'}),
+ Object.freeze({min:150000,icon:'⚔️',name:'Guardião'}),
+ Object.freeze({min:400000,icon:'🏰',name:'Cavaleiro da Boa Ação'}),
+ Object.freeze({min:1000000,icon:'✨',name:'Paladino 360X'}),
+ Object.freeze({min:2500000,icon:'👑',name:'Lenda do Bem'})
+]);
+const INFINITE_STEP=2500000; // depois da Lenda, cada 2,5 mi de XP acrescenta uma estrela: o XP tende ao infinito
+const KINDS=Object.freeze(['dinheiro','materiais','tempo','sangue','divulgacao']);
+const round2=n=>Math.round(n*100)/100;
+function validScore(v){return Number.isInteger(v)&&v>=0&&v<=3;}
+function validEvaluation(x){
+ if(!x||typeof x!=='object')return false;
+ for(const c of CRITERIA)if(!validScore(x[c.id]))return false;
+ if(typeof x.reserva!=='boolean')return false;
+ if(x.recebidoCents!==null&&x.recebidoCents!==undefined&&!(Number.isSafeInteger(x.recebidoCents)&&x.recebidoCents>0&&x.recebidoCents<=99999999999))return false;
+ for(const k of Object.keys(x))if(!['reserva','recebidoCents',...CRITERIA.map(c=>c.id)].includes(k))return false;
+ return true;
+}
+function quality(x){const w=PARAMS.weights;let s=0,t=0;for(const c of CRITERIA){s+=x[c.id]*w[c.id];t+=w[c.id];}return s/(3*t);}
+function proportion(entry){const x=entry.xp;if(entry.kind!=='dinheiro'||!x||!x.recebidoCents||!entry.amountCents)return null;return entry.amountCents/x.recebidoCents;}
+function measure(p){if(p===null||p===undefined)return 1;const sd=p<PARAMS.ideal?PARAMS.sdLow:PARAMS.sdHigh;return Math.exp(-((p-PARAMS.ideal)**2)/(2*sd*sd));}
+/* Resultado detalhado de uma ajuda. evaluated=false: ainda sem avaliação (não pontua). */
+function score(entry){
+ const x=entry&&entry.xp;
+ if(!x||!validEvaluation(x))return{evaluated:false,xp:0,quality:null,measure:null,proportion:null,lock:null};
+ const q=quality(x),p=proportion(entry),m=measure(p);
+ let lock=null;if(!x.reserva)lock='reserva';else if(x.seguranca===0)lock='seguranca';
+ const xp=lock?0:round2(PARAMS.xpMin+(PARAMS.xpMax-PARAMS.xpMin)*q*m);
+ return{evaluated:true,xp,quality:q,measure:m,proportion:p,lock};
+}
+/* Sugestão automática da Segurança: instituição do catálogo (fonte oficial) = verificada; comprovante anexado soma 1. */
+function suggestSecurity(fromCatalog,hasEvidence){return Math.min(3,(fromCatalog?2:1)+(hasEvidence?1:0));}
+function level(total){
+ let i=0;for(let k=0;k<LEVELS.length;k++)if(total>=LEVELS[k].min)i=k;
+ const cur=LEVELS[i],next=LEVELS[i+1]||null;
+ const stars=next?0:Math.floor((total-cur.min)/INFINITE_STEP);
+ const floor=next?cur.min:cur.min+stars*INFINITE_STEP,ceil=next?next.min:floor+INFINITE_STEP;
+ return{index:i,icon:cur.icon,name:cur.name+(stars?' '+'★'.repeat(Math.min(stars,5))+(stars>5?'+'+(stars-5):''):''),stars,next:next?next.name:'Lenda '+'★'.repeat(Math.min(stars+1,5)),toNext:Math.max(0,round2(ceil-total)),progress:Math.max(0,Math.min(1,(total-floor)/(ceil-floor)))};
+}
+function summary(entries,causeOf){
+ const scored=entries.map(e=>({e,s:score(e)}));const ev=scored.filter(r=>r.s.evaluated);
+ const total=round2(ev.reduce((a,r)=>a+r.s.xp,0));const n=ev.length;const mean=n?total/n:0;
+ const sd=n>1?Math.sqrt(ev.reduce((a,r)=>a+(r.s.xp-mean)**2,0)/n):0;
+ const months=new Set(entries.map(e=>e.date.slice(0,7)));
+ const causeIds=new Set(entries.map(e=>e.causeId));
+ const cats=new Set();const cearaIds=new Set();
+ for(const id of causeIds){const c=causeOf?causeOf(id):null;if(c){cats.add(c.category);if(c.ceara)cearaIds.add(id);}}
+ const badges=[
+  {id:'primeiro',icon:'🔰',name:'Primeiro gesto',hint:'1 ajuda avaliada',ok:n>=1},
+  {id:'escudo',icon:'🛡️',name:'Escudo anti-golpe',hint:'5 ajudas verificadas e com comprovante',ok:ev.filter(r=>r.e.xp.seguranca===3).length>=5},
+  {id:'ceara',icon:'🌵',name:'Raiz cearense',hint:'3 instituições do Ceará',ok:cearaIds.size>=3},
+  {id:'sangue',icon:'🩸',name:'Sangue bom',hint:'1 doação de sangue registrada',ok:entries.some(e=>e.kind==='sangue')},
+  {id:'tempo',icon:'⏳',name:'Mãos à obra',hint:'1 ajuda com tempo ou voluntariado',ok:entries.some(e=>e.kind==='tempo')},
+  {id:'constancia',icon:'📅',name:'Constância',hint:'ajudas em 3 meses diferentes',ok:months.size>=3},
+  {id:'medida',icon:'⚖️',name:'Justa medida',hint:'3 ajudas com medida ≥ 0,8',ok:ev.filter(r=>r.s.proportion!==null&&r.s.measure>=0.8).length>=3},
+  {id:'causas',icon:'🌈',name:'Muitas causas',hint:'5 categorias diferentes',ok:cats.size>=5}
+ ];
+ return{total,count:entries.length,evaluated:n,pending:entries.length-n,mean:round2(mean),sd:round2(sd),locks:ev.filter(r=>r.s.lock).length,level:level(total),badges};
+}
+/* Linhas no formato da aba "Ajudas" do Placar XP (planilha), para colar ou importar. */
+function placarRows(entries,causeOf){
+ const head=['Data','Ajuda (o quê e a quem)','Doado (R$)','Recebido no período (R$)','Reserva preservada?','XP da boa ação','Necessidade (0-3)','Gratidão (0-3)','Oportunidade (0-3)','Criatividade (0-3)','Segurança (0-3)','Proporção doado/recebido','Medida (0-1)','Qualidade (0-1)','Observação'];
+ const kindLabel={dinheiro:'Doação financeira',materiais:'Materiais',tempo:'Tempo/voluntariado',sangue:'Doação de sangue',divulgacao:'Divulgação'};
+ const br=n=>n===null||n===undefined||n===''?'':String(n).replace('.',',');
+ const rows=[head];
+ for(const e of [...entries].sort((a,b)=>a.date.localeCompare(b.date))){
+  const c=causeOf?causeOf(e.causeId):null,s=score(e),x=e.xp;
+  rows.push([e.date,`${kindLabel[e.kind]||e.kind} · ${c?c.name:e.causeId}${e.detail?' · '+e.detail:''}`,e.kind==='dinheiro'?br((e.amountCents/100).toFixed(2)):'',x&&x.recebidoCents?br((x.recebidoCents/100).toFixed(2)):'',x?(x.reserva?'Sim':'Não'):'',s.evaluated?br(s.xp.toFixed(2)):'',x?x.necessidade:'',x?x.gratidao:'',x?x.oportunidade:'',x?x.criatividade:'',x?x.seguranca:'',s.proportion===null?'':br(s.proportion.toFixed(4)),s.evaluated?br(s.measure.toFixed(4)):'',s.evaluated?br(s.quality.toFixed(4)):'',s.evaluated?(s.lock==='reserva'?'Trava: reserva comprometida':s.lock==='seguranca'?'Trava: destinatário não verificado':'Registro autodeclarado'):'Pendente de avaliação']);
+ }
+ return rows;
+}
+const fmt=n=>new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0}).format(Math.round(n));
+const api=Object.freeze({PARAMS,CRITERIA,LEVELS,KINDS,validEvaluation,quality,measure,proportion,score,suggestSecurity,level,summary,placarRows,fmt});
+root.BA360_XP=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
+})(globalThis);
+</script>
+<script>/* Local-only vault (v2.0: aceita sangue/divulgação e a avaliação opcional do XP da Boa Ação). AES-256-GCM + PBKDF2-SHA256, 310000 iterations.
+   No browser password, card, CPF or server credential is requested.
+   No security audit is claimed. An unlocked/compromised browser can access its contents. */
+(function(root){
+'use strict';
+const C=root.BA360,ITERATIONS=310000,MAX_STATE=16*1024*1024,MAX_FILE=3*1024*1024;
+const AAD=new TextEncoder(),DB_NAME='bolsa360-private-v1';
+let dbPromise=null,key=null,salt=null,state=null,revision=null,busy=false,epoch=0;
+function supported(){return !!(root.crypto?.subtle&&root.indexedDB&&root.crypto?.getRandomValues);}
+function db(){if(!supported())return Promise.reject(Error('A carteira exige um navegador com Web Crypto e IndexedDB. Abra em HTTPS ou em localhost.'));
+ if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore('vault');r.onsuccess=()=>{r.result.onversionchange=()=>r.result.close();resolve(r.result);};r.onerror=()=>{dbPromise=null;reject(Error('O navegador não permitiu abrir o armazenamento local.'));};r.onblocked=()=>reject(Error('Feche outras abas desta carteira e tente de novo.'));});return dbPromise;}
+async function read(){const d=await db();return new Promise((resolve,reject)=>{const tx=d.transaction('vault','readonly'),r=tx.objectStore('vault').get('main');r.onsuccess=()=>resolve(r.result??null);r.onerror=()=>reject(Error('Não foi possível ler a carteira local.'));});}
+async function write(envelope,expected){const d=await db();return new Promise((resolve,reject)=>{const tx=d.transaction('vault','readwrite'),store=tx.objectStore('vault');let conflict=false;const r=store.get('main');r.onsuccess=()=>{if((r.result?.revision??null)!==expected){conflict=true;tx.abort();return;}store.put(envelope,'main');};tx.oncomplete=resolve;tx.onerror=()=>reject(Error('Não foi possível salvar. Verifique o espaço e as permissões do navegador.'));tx.onabort=()=>reject(Error(conflict?'A carteira mudou em outra aba. Bloqueie e abra novamente antes de continuar.':'A gravação foi cancelada. Nenhuma alteração foi confirmada.'));});}
+function passwordCheck(password){if(typeof password!=='string'||password.length<12||password.length>256)throw Error('Use uma senha local de 12 a 256 caracteres. Prefira uma frase longa e exclusiva.');}
+async function derive(password,s){const material=await crypto.subtle.importKey('raw',AAD.encode(password),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt:s,iterations:ITERATIONS,hash:'SHA-256'},material,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);}
+function signature(bytes){if(bytes.length>=5&&String.fromCharCode(...bytes.slice(0,5))==='%PDF-')return 'application/pdf';if(bytes.length>=8&&[137,80,78,71,13,10,26,10].every((n,i)=>bytes[i]===n))return 'image/png';if(bytes.length>=3&&bytes[0]===255&&bytes[1]===216&&bytes[2]===255)return 'image/jpeg';if(bytes.length>=12&&String.fromCharCode(...bytes.slice(0,4))==='RIFF'&&String.fromCharCode(...bytes.slice(8,12))==='WEBP')return 'image/webp';return null;}
+function validDate(s){if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const d=new Date(s+'T12:00:00Z');return !Number.isNaN(d.valueOf())&&d.toISOString().slice(0,10)===s;}
+function validateState(s){
+ if(!s||s.version!==1||!Array.isArray(s.entries)||s.entries.length>5000)throw Error('Estrutura de carteira inválida.');
+ const serialized=JSON.stringify(s);if(AAD.encode(serialized).length>MAX_STATE)throw Error('A carteira atingiu o limite local de 16 MB. Exporte o backup e reduza os anexos antes de continuar.');
+ const ids=new Set(),causes=new Set(root.BA360_CATALOG.map(c=>c.id));
+ for(const e of s.entries){
+  if(!e||typeof e.id!=='string'||!/^BA-[a-f0-9-]{36}$/i.test(e.id)||ids.has(e.id)||!causes.has(e.causeId))throw Error('Registro inválido ou duplicado.');ids.add(e.id);
+  if(!validDate(e.date)||!['dinheiro','tempo','materiais','sangue','divulgacao'].includes(e.kind)||typeof e.detail!=='string'||e.detail.length>240||typeof e.createdAt!=='string'||!Number.isFinite(Date.parse(e.createdAt)))throw Error('Campos de registro inválidos.');
+  if(e.kind==='dinheiro'&&(!Number.isSafeInteger(e.amountCents)||e.amountCents<1||e.amountCents>C.MAX_CENTS))throw Error('Valor de registro inválido.');
+  if(e.kind!=='dinheiro'&&e.amountCents!==0)throw Error('Tempo, materiais, sangue e divulgação não podem ser somados como dinheiro.');
+  if(e.xp!==undefined&&e.xp!==null&&!(root.BA360_XP&&root.BA360_XP.validEvaluation(e.xp)))throw Error('Avaliação de XP inválida.');
+  if(e.evidence){const f=e.evidence;if(typeof f.data!=='string'||f.data.length>MAX_FILE*1.34||!Number.isInteger(f.bytes)||f.bytes<1||f.bytes>MAX_FILE||typeof f.sha256!=='string'||!/^[a-f0-9]{64}$/.test(f.sha256)||!/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(f.data))throw Error('Anexo inválido.');const bytes=C.unb64(f.data);if(bytes.length!==f.bytes||signature(bytes)!==f.type)throw Error('O tipo ou tamanho de um anexo é inválido.');}
+ }
+ return s;
+}
+function validateEnvelope(e){if(!e||e.format!=='BA360-VAULT'||e.version!==1||e.kdf!=='PBKDF2-SHA256'||e.iterations!==ITERATIONS||e.cipher!=='AES-256-GCM'||typeof e.revision!=='string'||!/^[a-f0-9-]{36}$/i.test(e.revision)||typeof e.data!=='string'||e.data.length>24*1024*1024||typeof e.salt!=='string'||typeof e.iv!=='string'||e.salt.length>32||e.iv.length>24)throw Error('Este arquivo não é um backup compatível da Bolsa de Ajuda 360°.');if(C.unb64(e.salt).length!==16||C.unb64(e.iv).length!==12)throw Error('Backup inválido.');return e;}
+async function encrypt(s,k,sa){validateState(s);const iv=crypto.getRandomValues(new Uint8Array(12)),rev=crypto.randomUUID();const data=await crypto.subtle.encrypt({name:'AES-GCM',iv,additionalData:AAD.encode('BA360|1|'+rev)},k,AAD.encode(JSON.stringify(s)));return{format:'BA360-VAULT',version:1,cipher:'AES-256-GCM',kdf:'PBKDF2-SHA256',iterations:ITERATIONS,salt:C.b64(sa),iv:C.b64(iv),revision:rev,data:C.b64(new Uint8Array(data))};}
+async function decrypt(e,password){validateEnvelope(e);passwordCheck(password);const sa=C.unb64(e.salt),k=await derive(password,sa);let s;try{const bytes=await crypto.subtle.decrypt({name:'AES-GCM',iv:C.unb64(e.iv),additionalData:AAD.encode('BA360|1|'+e.revision)},k,C.unb64(e.data));s=validateState(JSON.parse(new TextDecoder().decode(bytes)));}catch{throw Error('Senha incorreta ou arquivo de carteira inválido.');}return{k,sa,s};}
+function lock(){epoch++;key=null;salt=null;state=null;revision=null;}
+function checkEpoch(start){if(start!==epoch)throw Error('A carteira foi bloqueada durante a operação. Abra novamente para conferir o estado salvo.');}
+async function exclusive(fn){if(busy)throw Error('Uma gravação está em andamento. Aguarde um instante.');busy=true;try{return await fn();}finally{busy=false;}}
+const api={supported,MAX_FILE,signature,validDate,validateState,validateEnvelope,
+ get locked(){return key===null;},get data(){return state?structuredClone(state):null;},
+ async exists(){return !!(await read());},
+ async create(password){return exclusive(async()=>{const start=epoch;passwordCheck(password);const sa=crypto.getRandomValues(new Uint8Array(16)),k=await derive(password,sa),s={version:1,entries:[]};const e=await encrypt(s,k,sa);await write(e,null);checkEpoch(start);key=k;salt=sa;state=s;revision=e.revision;return api.data;});},
+ async unlock(password){return exclusive(async()=>{const start=epoch,e=await read();if(!e)throw Error('Não há carteira salva neste navegador.');const d=await decrypt(e,password);checkEpoch(start);key=d.k;salt=d.sa;state=d.s;revision=e.revision;return api.data;});},
+ async mutate(fn){return exclusive(async()=>{if(!key)throw Error('Abra sua carteira antes de salvar.');const start=epoch,expected=revision,k=key,sa=salt,next=structuredClone(state);fn(next);validateState(next);const e=await encrypt(next,k,sa);await write(e,expected);checkEpoch(start);state=next;revision=e.revision;return api.data;});},
+ async backup(){const e=await read();if(!e)throw Error('Crie uma carteira antes de exportar.');return JSON.stringify(e,null,2);},
+ async importBackup(e,password,allowReplace=false){return exclusive(async()=>{const start=epoch,old=await read();if(old&&!allowReplace)throw Error('Autorize a substituição da carteira local antes de importar.');const d=await decrypt(e,password),fresh=await encrypt(d.s,d.k,d.sa);await write(fresh,old?.revision??null);checkEpoch(start);key=d.k;salt=d.sa;state=d.s;revision=fresh.revision;return api.data;});},
+ async erase(){return exclusive(async()=>{const d=await db();await new Promise((resolve,reject)=>{const tx=d.transaction('vault','readwrite');tx.objectStore('vault').delete('main');tx.oncomplete=resolve;tx.onerror=()=>reject(Error('Não foi possível apagar a carteira.'));});lock();});},
+ lock
+};root.BA360_VAULT=Object.freeze(api);
+})(globalThis);
+</script>
+<script>/* Bolsa Ajuda de Boa · App 1.0 · Projeto 360X
+   Home broker invertido: o "retorno" é impacto e honra (XP da Boa Ação), não lucro.
+   Arquivo único e offline. Mesmo cofre criptografado (BA360-VAULT) e mesma régua de XP do site Ajuda de Boa.
+   Nenhuma chamada de rede. Não recebe, guarda nem movimenta dinheiro. */
+(function(){
+'use strict';
+const C=window.BA360,DATA=window.BA360_CATALOG,X=window.BA360_XP;
+const $=s=>document.querySelector(s),e=C.esc;
+const kindLabel={dinheiro:'Ajuda financeira',materiais:'Materiais',tempo:'Tempo / voluntariado',sangue:'Doação de sangue',divulgacao:'Divulgação'};
+const catLabel={animais:'🐾 Animais',plantas:'🌱 Plantas e florestas',oceanos:'🌊 Oceanos',saude:'✚ Saúde',infancia:'🧸 Infância',alimentacao:'🥣 Alimentação',acolhimento:'🏡 Acolhimento',comunidades:'🤝 Comunidades'};
+const cause=id=>DATA.find(c=>c.id===id);
+const day=s=>s.split('-').reverse().join('/');
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+const moneyInput=n=>(n/100).toFixed(2).replace('.',',');
+const ext=(url,text,cls='')=>`<a class="${e(cls)}" href="${e(url)}" target="_blank" rel="noopener noreferrer">${e(text)} ↗</a>`;
+const SITE='https://aldenirfilho.github.io/aldenirmed89/apps/ajuda-de-boa/';
+let V=null,sessionMode=false,tab='painel',pendingImport=null,lastActivity=Date.now(),toastTimer;
+const quick={id:'',amount:2000};
+
+/* ---------- armazenamento: IndexedDB real ou memória (modo sessão) ---------- */
+function memoryIDB(){let value=null;const db={createObjectStore(){},close(){},transaction(){let pending;const store={get(){const r={};queueMicrotask(()=>{r.result=value?structuredClone(value):undefined;r.onsuccess&&r.onsuccess();});return r;},put(v){pending={v};},delete(){pending={v:null};}};const tx={aborted:false,objectStore(){return store;},abort(){tx.aborted=true;pending=undefined;queueMicrotask(()=>tx.onabort&&tx.onabort());}};setTimeout(()=>{if(tx.aborted)return;if(pending)value=pending.v?structuredClone(pending.v):null;tx.oncomplete&&tx.oncomplete();},0);return tx;}};return{open(){const r={};queueMicrotask(()=>{r.result=db;r.onsuccess&&r.onsuccess();});return r;}};}
+function probeIDB(){return new Promise(res=>{let done=false;try{if(!window.indexedDB)return res(false);const r=indexedDB.open('bolsa-ajuda-probe',1);r.onsuccess=()=>{done=true;try{r.result.close();}catch{}res(true);};r.onerror=()=>{done=true;res(false);};}catch{res(false);}setTimeout(()=>{if(!done)res(false);},1500);});}
+let checks={};function loadChecks(){try{checks=JSON.parse(localStorage.getItem('bolsa-ajuda.checks.v1')||'{}')||{};}catch{checks={};}}
+function saveCheck(c){checks[c.id]={key:c.pix.key,at:new Date().toISOString()};try{localStorage.setItem('bolsa-ajuda.checks.v1',JSON.stringify(checks));}catch{}}
+const fresh=c=>{const el=Date.now()-Date.parse(c.checked+'T00:00:00Z');return el>=-86400000&&el<=30*86400000;};
+const donorFresh=c=>{const d=checks[c.id];if(!c.pix||!d||d.key!==c.pix.key)return false;const el=Date.now()-Date.parse(d.at);return el>=0&&el<=30*86400000;};
+const pixReady=c=>!!c.pix&&(fresh(c)||donorFresh(c));
+
+/* ---------- utilidades de interface ---------- */
+function toast(text,error=false){clearTimeout(toastTimer);const el=$('#toast');el.textContent=text;el.classList.toggle('error',error);el.hidden=false;toastTimer=setTimeout(()=>el.hidden=true,error?8000:5000);}
+function openDialog(html){const d=$('#dialog');if(d.open)d.close();$('#dialog-content').innerHTML=html;d.showModal();}
+function closeDialog(){const d=$('#dialog');if(d.open)d.close();$('#dialog-content').innerHTML='';}
+function fail(err){const t=err?.message||'Não foi possível concluir.';const box=document.querySelector('#dialog[open] .form-error')||document.querySelector('.form-error:not([hidden])')||null;if(box){box.textContent=t;box.hidden=false;}toast(t,true);}
+function download(content,type,name){const blob=content instanceof Blob?content:new Blob([content],{type});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
+function csvCell(v){let s=String(v??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
+function bigCents(value){const s=String(value??'').trim().replace(/^R\$\s*/,'');if(!s)return null;let t;if(/^\d{1,3}(\.\d{3})+(,\d{1,2})?$/.test(s))t=s.replace(/\./g,'').replace(',','.');else if(/^\d+(,\d{1,2})?$/.test(s))t=s.replace(',','.');else if(/^\d+(\.\d{1,2})?$/.test(s))t=s;else throw Error('Informe o valor recebido com até duas casas decimais.');const [a,b='']=t.split('.');const n=Number(a)*100+Number((b+'00').slice(0,2));if(!Number.isSafeInteger(n)||n<1||n>99999999999)throw Error('Valor recebido fora do limite.');return n;}
+const entries=()=>V&&!V.locked?V.data.entries:[];
+
+/* ---------- XP: campos de avaliação (mesma régua do Placar) ---------- */
+function evalFields(ev,kind){const x=ev||{necessidade:2,gratidao:2,oportunidade:2,criatividade:1,seguranca:2,reserva:true,recebidoCents:null};
+ return `<fieldset class="xp-eval"><legend>⭐ XP da Boa Ação</legend>${X.CRITERIA.map(c=>`<div class="crit"><span class="crit-label">${c.icon} <b>${c.label}</b><small>${e(c.hint)}</small></span><span class="seg">${[0,1,2,3].map(v=>`<label title="${e(c.scale[v])}"><input type="radio" name="${c.id}" value="${v}" ${x[c.id]===v?'checked':''}><span>${v}</span></label>`).join('')}</span><small class="crit-scale" data-scale="${c.id}">${e(c.scale[x[c.id]])}</small></div>`).join('')}<div class="crit"><span class="crit-label">🏦 <b>Reserva preservada?</b><small>Seu sustento continua protegido?</small></span><span class="seg"><label><input type="radio" name="reserva" value="sim" ${x.reserva?'checked':''}><span>Sim</span></label><label><input type="radio" name="reserva" value="nao" ${x.reserva?'':'checked'}><span>Não</span></label></span><small class="crit-scale">Quem se prejudica não pontua.</small></div><label class="field xp-received" ${kind&&kind!=='dinheiro'?'hidden':''}>Recebido no período (R$, opcional)<input name="recebido" inputmode="decimal" maxlength="16" value="${x.recebidoCents?moneyInput(x.recebidoCents):''}" placeholder="opcional · medida ideal 5%"></label><output class="xp-preview"></output></fieldset>`;}
+function readEval(form){const d=new FormData(form),x={};for(const c of X.CRITERIA){const v=Number(d.get(c.id));if(!Number.isInteger(v)||v<0||v>3)throw Error('Avalie todos os critérios (0 a 3).');x[c.id]=v;}x.reserva=d.get('reserva')!=='nao';const k=form.querySelector('[name=kind]')?.value||form.dataset.kind||'dinheiro';x.recebidoCents=k==='dinheiro'?bigCents(d.get('recebido')):null;return x;}
+function previewXp(form){const out=form.querySelector('.xp-preview');if(!out)return;try{const x=readEval(form);const k=form.querySelector('[name=kind]')?.value||form.dataset.kind||'dinheiro';let amount=Number(form.dataset.amount||0);const am=form.querySelector('[name=amount]');if(am&&k==='dinheiro')try{amount=C.cents(am.value);}catch{amount=0;}const s=X.score({kind:k,amountCents:amount,xp:x});for(const el of form.querySelectorAll('[data-scale]')){const c=X.CRITERIA.find(q=>q.id===el.dataset.scale);el.textContent=c.scale[x[c.id]];}out.innerHTML=s.lock?'<b>XP previsto: 0</b> · trava ativa':`<b>XP previsto: ${X.fmt(s.xp)}</b> · qualidade ${s.quality.toFixed(2).replace('.',',')} · medida ${s.measure.toFixed(2).replace('.',',')}${s.proportion!==null?' · '+(s.proportion*100).toFixed(1).replace('.',',')+'% do recebido':''}`;}catch(err){out.textContent=err.message;}}
+
+/* ---------- telas ---------- */
+function renderLock(hasVault,error){$('#app').innerHTML=`<section class="lock"><div class="crest" aria-hidden="true">⚜️</div><h1>Bolsa Ajuda de Boa</h1><p class="lead">Seu home broker do bem: cada ajuda vira uma posição, cada gesto vira XP de honra.</p>${error?`<div class="alert">${e(error)}</div>`:''}${sessionMode?'<div class="alert">⚠️ Modo sessão: este navegador não permite guardar dados neste arquivo. O cofre fica só na memória — <b>exporte o backup antes de fechar</b>, ou abra o arquivo no Chrome, Edge ou Firefox do computador.</div>':''}<form id="${hasVault?'unlock-form':'create-form'}" class="card stack"><h2>${hasVault?'🔐 Abrir meu cofre':'🛡️ Criar meu cofre'}</h2><label class="field">Senha do cofre<input type="password" name="password" minlength="12" maxlength="256" autocomplete="${hasVault?'current-password':'new-password'}" placeholder="Uma frase longa que só você conhece" required></label>${hasVault?'':`<label class="field">Repita a senha<input type="password" name="confirmation" minlength="12" maxlength="256" autocomplete="new-password" required></label><label class="check"><input type="checkbox" required><span>Entendi: a senha não pode ser recuperada e preciso exportar backups.</span></label>`}<div class="form-error" hidden></div><button class="btn gold" type="submit">${hasVault?'Abrir cofre':'Criar cofre'}</button><button class="btn ghost" type="button" data-action="import">📥 Importar backup (site ou app)</button>${hasVault?'<button class="btn ghost danger" type="button" data-action="erase">Apagar cofre deste navegador</button>':''}</form><p class="fine">AES-256-GCM + PBKDF2 (310 mil iterações). Sem conta, sem servidor, sem rastreadores. Não use senha de banco. O app não recebe nem movimenta dinheiro e não confirma pagamentos.</p><p class="fine">🌐 Catálogo, Pix rápido e novidades: <a href="${SITE}" target="_blank" rel="noopener noreferrer">Ajuda de Boa 360X ↗</a></p></section>`;}
+function shell(inner){const t=[['painel','📊','Painel'],['registrar','➕','Registrar'],['extrato','📒','Extrato'],['orgs','🏛️','Organizações'],['pix','⚡','Pix rápido'],['xp','⭐','XP'],['cofre','🔐','Cofre']];
+ const xs=X.summary(entries(),cause);
+ return `<header class="top"><div class="brand"><span class="crest-sm" aria-hidden="true">⚜️</span><div><b>Bolsa Ajuda de Boa</b><small>360X · home broker do bem</small></div></div><div class="top-xp" title="XP da Boa Ação"><span>${xs.level.icon}</span><div><b>${X.fmt(xs.total)} XP</b><small>${e(xs.level.name)}</small></div></div><button class="btn ghost sm" data-action="lock">🔒 Bloquear</button></header>${tape()}${sessionMode?'<div class="alert slim">⚠️ Modo sessão: exporte o backup antes de fechar.</div>':''}<nav class="tabs" aria-label="Seções">${t.map(([id,i,l])=>`<a href="#${id}" class="${tab===id?'active':''}" ${tab===id?'aria-current="page"':''}><span aria-hidden="true">${i}</span>${l}</a>`).join('')}</nav><main id="main" tabindex="-1">${inner}</main><footer class="foot">Bolsa Ajuda de Boa 1.0 · Projeto 360X de Aldenir Rocha de Oliveira Filho · Equipe 360X · registros autodeclarados, não bancários · <a href="${SITE}" target="_blank" rel="noopener noreferrer">Ajuda de Boa ↗</a> · <a href="https://aldenirfilho.github.io/aldenirmed89/" target="_blank" rel="noopener noreferrer">AldenirMed 360X ↗</a> · <a href="https://aldenirfilho.github.io/intensivahub/flashcards/" target="_blank" rel="noopener noreferrer">Códice 360X ↗</a></footer>`;}
+function positions(list){const m=new Map();for(const r of list){const p=m.get(r.causeId)||{id:r.causeId,n:0,cents:0,xp:0,last:''};p.n++;if(r.kind==='dinheiro')p.cents+=r.amountCents;const s=X.score(r);p.xp+=s.xp;if(r.date>p.last)p.last=r.date;m.set(r.causeId,p);}return [...m.values()].sort((a,b)=>b.xp-a.xp||b.cents-a.cents);}
+function tape(){const pos=positions(entries());const items=(pos.length?pos.map(p=>{const c=cause(p.id);return `<span><b>${e(c.ticker)}</b> ${X.fmt(p.xp)} XP ▲ ${p.n}</span>`;}):DATA.map(c=>`<span><b>${e(c.ticker)}</b> ${pixReady(c)?'Pix ✓':c.pix?'Pix 🔄':'canal'}</span>`));return `<div class="tape" aria-hidden="true"><div class="tape-track">${items.join('')}${items.join('')}</div></div>`;}
+function monthChart(list){const now=new Date();const months=[];for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);}const vals=months.map(m=>list.filter(r=>r.date.startsWith(m)).reduce((a,r)=>a+X.score(r).xp,0));const max=Math.max(1,...vals);const w=24,g=8,h=110;
+ return `<svg class="chart" viewBox="0 0 ${months.length*(w+g)} ${h+26}" role="img" aria-label="XP por mês nos últimos 12 meses">${vals.map((v,i)=>{const bh=Math.round((v/max)*h);return `<rect x="${i*(w+g)}" y="${h-bh}" width="${w}" height="${Math.max(bh,2)}" rx="4" class="${v?'bar-on':'bar-off'}"><title>${months[i].slice(5)}/${months[i].slice(0,4)}: ${X.fmt(v)} XP</title></rect><text x="${i*(w+g)+w/2}" y="${h+16}" text-anchor="middle">${months[i].slice(5)}</text>`;}).join('')}</svg>`;}
+function viewPainel(){const list=entries(),xs=X.summary(list,cause),money=list.filter(r=>r.kind==='dinheiro'),total=money.reduce((a,r)=>a+r.amountCents,0),pos=positions(list),totXp=pos.reduce((a,p)=>a+p.xp,0)||1;
+ return `<section class="hero-xp"><div class="lvl"><span class="lvl-icon">${xs.level.icon}</span><div><small>NÍVEL ATUAL</small><h1>${e(xs.level.name)}</h1><div class="bar"><span style="width:${(xs.level.progress*100).toFixed(1)}%"></span></div><small>${X.fmt(xs.level.toNext)} XP para ${e(xs.level.next)} · o XP tende ao infinito</small></div></div><div class="kpis"><div><small>XP total</small><b>${X.fmt(xs.total)}</b></div><div><small>Ajudas</small><b>${list.length}</b></div><div><small>Doações informadas</small><b>${C.cash(total)}</b></div><div><small>Instituições</small><b>${pos.length}</b></div><div><small>Comprovantes</small><b>${list.filter(r=>r.evidence).length}</b></div><div><small>Pendentes de XP</small><b>${xs.pending}</b></div></div></section>
+ <section class="grid2"><article class="card"><h2>📈 Carteira de impacto · posições</h2>${pos.length?`<table class="pos"><thead><tr><th>Ticker</th><th>Instituição</th><th>Ajudas</th><th>R$ informado</th><th>XP</th><th>Peso</th></tr></thead><tbody>${pos.map(p=>{const c=cause(p.id);return `<tr><td><b class="tk">${e(c.ticker)}</b></td><td>${c.icon} ${e(c.name)}</td><td>${p.n}</td><td>${p.cents?C.cash(p.cents):'—'}</td><td>${X.fmt(p.xp)}</td><td><div class="mini"><span style="width:${(p.xp/totXp*100).toFixed(1)}%"></span></div></td></tr>`;}).join('')}</tbody></table>`:`<div class="empty"><p>Nenhuma posição ainda. Registre sua primeira ajuda para abrir a carteira.</p><a class="btn gold" href="#registrar">➕ Registrar ajuda</a></div>`}<p class="fine">Peso = participação no seu XP. Valores autodeclarados, sem confirmação bancária.</p></article><article class="card"><h2>⭐ XP por mês</h2>${monthChart(list)}<h3>🏅 Conquistas</h3><div class="badges">${xs.badges.map(b=>`<span class="badge ${b.ok?'on':''}" title="${e(b.hint)}">${b.icon} ${e(b.name)}</span>`).join('')}</div></article></section>`;}
+function viewRegistrar(pre={}){const c=cause(pre.id||'');const kind=pre.kind||(c&&!c.methods.includes('dinheiro')&&c.methods.includes('sangue')?'sangue':'dinheiro');
+ return `<section class="card narrow"><h2>➕ Registrar uma ajuda já realizada</h2><p class="fine">O registro é autodeclarado: não executa nem comprova pagamento. Comprovantes ficam só no seu cofre.</p><form id="record-form" class="stack"><label class="field">Instituição<select name="causeId" required><option value="">Selecione</option>${DATA.map(x=>`<option value="${x.id}" ${x.id===pre.id?'selected':''}>${e(x.ticker)} · ${e(x.name)}</option>`).join('')}</select></label><div class="row2"><label class="field">Data<input type="date" name="date" value="${today()}" max="${today()}" min="1900-01-01" required></label><label class="field">Tipo<select name="kind">${Object.entries(kindLabel).map(([k,l])=>`<option value="${k}" ${k===kind?'selected':''}>${l}</option>`).join('')}</select></label></div><label class="field amount-field" ${kind==='dinheiro'?'':'hidden'}>Valor (R$)<input name="amount" inputmode="decimal" maxlength="12" value="${moneyInput(pre.amount||2500)}"></label><label class="field">Descrição breve (obrigatória para materiais, tempo e divulgação)<textarea name="detail" maxlength="240" rows="2" placeholder="Sem nomes de beneficiários, CPF ou dados de saúde"></textarea></label><label class="field">Comprovante (opcional: PDF, PNG, JPG ou WebP até 3 MB)<input type="file" name="evidence" accept="application/pdf,image/png,image/jpeg,image/webp"></label>${evalFields(null,kind)}<label class="check"><input type="checkbox" required><span>Entendi que é autodeclarado e não é recibo bancário ou fiscal.</span></label><div class="form-error" hidden></div><button class="btn gold" type="submit">Salvar no cofre e somar XP</button></form></section>`;}
+function recordRow(r){const c=cause(r.causeId),s=X.score(r);return `<article class="rec"><div class="rec-main"><b class="tk">${e(c.ticker)}</b><div><h3>${c.icon} ${e(c.name)}</h3><p>${day(r.date)} · ${kindLabel[r.kind]}${r.detail?' · '+e(r.detail):''}</p></div></div><div class="rec-val">${r.kind==='dinheiro'?C.cash(r.amountCents):'—'}<span class="xp-chip ${s.evaluated?(s.lock?'lock':''):'pending'}">${s.evaluated?(s.lock?'🔒 0 XP':'⭐ +'+X.fmt(s.xp)):'⏳ avaliar'}</span></div><div class="rec-act"><button class="btn ghost sm" data-action="evaluate" data-id="${r.id}">${s.evaluated?'Revisar XP':'Avaliar XP'}</button>${r.evidence?`<button class="btn ghost sm" data-action="evidence" data-id="${r.id}">Comprovante</button>`:''}<button class="btn ghost sm danger" data-action="delete" data-id="${r.id}">Excluir</button></div></article>`;}
+function viewExtrato(){const list=entries();return `<section class="card"><div class="row-between"><h2>📒 Extrato</h2><a class="btn gold sm" href="#registrar">➕ Registrar</a></div>${list.length?list.map(recordRow).join(''):'<p class="empty">Sem lançamentos. O extrato começa vazio: nenhum pagamento foi simulado.</p>'}</section>`;}
+function viewOrgs(){return `<section class="orgs">${DATA.map(c=>`<article class="card org"><div class="org-head"><span class="org-icon">${c.icon}</span><div><b class="tk">${e(c.ticker)}</b><h3>${e(c.name)}</h3><small>${e(c.region)} · ${catLabel[c.category]||''}</small></div></div><p><b>🔭 Perspectiva:</b> ${e(c.perspective)}</p><ul>${c.projects.map(p=>`<li><b>${e(p.t)}</b> — ${e(p.d)}</li>`).join('')}</ul><p class="fine">Projetos: ${ext(c.projSource.url,c.projSource.label)} (${e(c.projSource.type)}, ${day(c.projSource.checked)}). Fonte de doação: ${day(c.checked)}. Não é auditoria.</p><div class="row-wrap">${c.pix?`<button class="btn gold sm" data-action="pix-org" data-id="${c.id}">⚡ Pix ${pixReady(c)?'pronto':'· conferir chave'}</button>`:''}${ext(c.helpUrl,'Canal oficial','btn ghost sm')}<button class="btn ghost sm" data-action="record-org" data-id="${c.id}">➕ Registrar ajuda</button></div></article>`).join('')}</section>`;}
+function viewPix(){const list=DATA.filter(c=>c.pix);const c=cause(quick.id)||list.find(pixReady)||list[0];quick.id=c.id;let panel;
+ if(pixReady(c)){const payload=C.pix(c.pix,quick.amount);panel=`<div class="pix"><div class="qr">${C.qrSvg(payload)}</div><div><div class="pix-amount">${C.cash(quick.amount)}</div><p><b>${e(c.name)}</b><br><small>${e(c.pix.legalName)} · CNPJ ${e(c.pix.cnpj)}</small></p><label class="field">Pix Copia e Cola<textarea id="pix-payload" readonly spellcheck="false">${e(payload)}</textarea></label><div class="row-wrap"><button class="btn gold" data-action="copy">📋 Copiar</button><button class="btn ghost" data-action="qr-svg">⬇️ QR (SVG)</button><button class="btn ghost" data-action="record-org" data-id="${c.id}" data-value="${quick.amount}">✅ Já doei · registrar</button></div><p class="fine">${fresh(c)?'Chave conferida na fonte oficial em '+day(c.checked):'Chave conferida por você no site oficial'}. Confira o recebedor no banco. Pague uma vez só. Gerar o código não é doar.</p></div></div>`;}
+ else panel=`<div class="check-box"><h3>🛡️ Conferência anti-golpe</h3><p>Chave consultada em ${day(c.checked)}. Abra a página oficial e confira se a chave é exatamente:</p><p class="key"><b>${e(c.pix.key)}</b><br><small>${e(c.pix.legalName)} · CNPJ ${e(c.pix.cnpj)}</small></p><p>${ext(c.source,'Abrir página oficial de doação','btn ghost')}</p><label class="check"><input type="checkbox" id="pix-confirm"><span>Conferi no site oficial: a chave é a mesma. Se o banco mostrar outro recebedor, não pago.</span></label><button class="btn gold" data-action="pix-check" data-id="${c.id}">Liberar Pix por 30 dias</button></div>`;
+ return `<section class="card"><h2>⚡ Pix rápido · direto à instituição</h2><p class="fine">1. Escolha a causa · 2. o valor · 3. leia o QR no app do banco. Nada passa por este app.</p><div class="pix-orgs">${list.map(x=>`<button class="pix-org ${x.id===c.id?'active':''}" data-action="pix-org" data-id="${x.id}" aria-pressed="${x.id===c.id}">${x.icon} <b>${e(x.ticker)}</b><small>${e(x.name)}</small><i>${pixReady(x)?'✓ pronto':'🔄 conferir'}</i></button>`).join('')}</div><div class="amounts">${[1000,2000,5000,10000].map(v=>`<button class="chip ${v===quick.amount?'active':''}" data-action="pix-amount" data-value="${v}">${C.cash(v)}</button>`).join('')}<label class="other">Outro <input id="pix-value" inputmode="decimal" maxlength="12" value="${moneyInput(quick.amount)}"></label></div>${panel}</section>`;}
+function viewXp(){const xs=X.summary(entries(),cause);return `<section class="grid2"><article class="card"><h2>⭐ XP da Boa Ação</h2><p>Honra e mérito, não dinheiro. Cada ajuda vale de <b>1.000 a 10.000 XP</b> pela qualidade do gesto; o valor só entra pela <b>medida</b> (doado ÷ recebido, ideal 5%). Doar além da medida não rende mais XP.</p><table class="pos"><tbody>${X.CRITERIA.map(c=>`<tr><td>${c.icon} ${c.label}</td><td>peso ${X.PARAMS.weights[c.id]}</td><td class="fine">${e(c.scale.join(' · '))}</td></tr>`).join('')}</tbody></table><p class="fine">Travas: reserva comprometida ou destinatário não verificado = 0 XP. Mesma régua do Placar XP da planilha: exporte o CSV e cole na aba “Ajudas”.</p><h3>🏰 Níveis</h3><div class="levels">${X.LEVELS.map(l=>`<span class="${xs.total>=l.min?'on':''}">${l.icon} ${e(l.name)} <small>${X.fmt(l.min)}</small></span>`).join('')}<span>∞ estrelas a cada 2,5 mi</span></div><button class="btn gold" data-action="placar">⬇️ Placar XP (CSV da planilha)</button></article><article class="card"><h2>🧮 Simulador</h2><form id="calc-form" class="stack"><div class="row2"><label class="field">Tipo<select name="kind">${Object.entries(kindLabel).map(([k,l])=>`<option value="${k}">${l}</option>`).join('')}</select></label><label class="field">Valor (R$)<input name="amount" inputmode="decimal" value="50,00"></label></div>${evalFields(null,'dinheiro')}</form><h3>🏅 Conquistas</h3><div class="badges">${xs.badges.map(b=>`<span class="badge ${b.ok?'on':''}" title="${e(b.hint)}">${b.icon} ${e(b.name)} <small>${e(b.hint)}</small></span>`).join('')}</div></article></section>`;}
+function viewCofre(){return `<section class="grid2"><article class="card"><h2>🔐 Cofre e backups</h2><div class="stack"><button class="btn gold" data-action="backup">⬇️ Exportar backup criptografado</button><button class="btn ghost" data-action="csv">⬇️ Exportar CSV do histórico</button><button class="btn ghost" data-action="placar">⬇️ Exportar Placar XP (CSV)</button><button class="btn ghost" data-action="lock">🔒 Bloquear agora</button></div><p class="fine">O backup é o mesmo formato do site Ajuda de Boa (BA360-VAULT, AES-256-GCM): exporte aqui e importe lá, ou o inverso. Para importar outro backup, bloqueie o cofre e use “Importar backup” na tela inicial.</p></article><article class="card"><h2>🛡️ Boas práticas anti-golpe</h2><ul class="tips"><li>Ninguém da Ajuda de Boa pede senha, código ou Pix por mensagem.</li><li>Confira sempre o nome do recebedor no app do banco antes de autorizar.</li><li>Chaves Pix só valem se coincidirem com a página oficial da instituição.</li><li>Desconfie de urgência, pressão ou “última chance”.</li><li>Guarde o comprovante: ele sobe a Segurança do seu XP.</li></ul><p class="fine">Bloqueio automático após 5 minutos sem uso.</p></article></section>`;}
+function render(){if(!V||V.locked)return;const map={painel:viewPainel,registrar:viewRegistrar,extrato:viewExtrato,orgs:viewOrgs,pix:viewPix,xp:viewXp,cofre:viewCofre};$('#app').innerHTML=shell((map[tab]||viewPainel)());for(const f of document.querySelectorAll('#app form'))previewXp(f);}
+async function showLock(error){let has=false;try{has=await V.exists();}catch(err){error=error||err.message;}renderLock(has,error);}
+function route(){const h=location.hash.slice(1);tab=['painel','registrar','extrato','orgs','pix','xp','cofre'].includes(h)?h:'painel';if(V&&!V.locked){render();window.scrollTo({top:0});}}
+function entry(id){return V.data?.entries.find(r=>r.id===id);}
+async function attachment(file){if(!file||!file.size)return null;if(file.size>V.MAX_FILE)throw Error('O anexo deve ter no máximo 3 MB.');const bytes=new Uint8Array(await file.arrayBuffer()),type=V.signature(bytes);if(!type)throw Error('Use PDF, PNG, JPG ou WebP válido.');const digest=await crypto.subtle.digest('SHA-256',bytes),hash=[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');if(V.data.entries.some(r=>r.evidence?.sha256===hash))throw Error('Este arquivo já está anexado a outro registro.');return{type,bytes:bytes.length,data:C.b64(bytes),sha256:hash};}
+function lock(){if(!V||V.locked)return;V.lock();closeDialog();showLock();toast('Cofre bloqueado.');}
+
+/* ---------- ações ---------- */
+async function act(name,b){const id=b.dataset.id;switch(name){
+ case'import':if(!V.locked)throw Error('Bloqueie o cofre antes de importar.');$('#import-file').value='';$('#import-file').click();break;
+ case'erase':{const a=prompt('Isto apaga o cofre deste navegador (backups externos continuam). Digite APAGAR:');if(a!=='APAGAR')return;await V.erase();await showLock();toast('Cofre apagado deste navegador.');}break;
+ case'lock':lock();break;
+ case'close':closeDialog();break;
+ case'pix-org':quick.id=id;tab='pix';if(location.hash!=='#pix')location.hash='pix';else render();break;
+ case'pix-amount':quick.amount=Number(b.dataset.value);render();break;
+ case'pix-check':{const c=cause(id);if(!$('#pix-confirm')?.checked)throw Error('Marque a confirmação depois de conferir a chave no site oficial.');saveCheck(c);render();toast('Conferência registrada por 30 dias. Confira também o recebedor no banco.');}break;
+ case'copy':{const t=$('#pix-payload');try{await navigator.clipboard.writeText(t.value);toast('Código copiado. Confira o recebedor no banco.');}catch{t.select();document.execCommand('copy');toast('Código selecionado/copiado.');}}break;
+ case'qr-svg':{const c=cause(quick.id);if(!pixReady(c))throw Error('Confira a chave primeiro.');download(C.qrSvg(C.pix(c.pix,quick.amount)),'image/svg+xml',`pix-${c.ticker}.svg`);}break;
+ case'record-org':tab='registrar';$('#app').innerHTML=shell(viewRegistrar({id,amount:Number(b.dataset.value)||2500}));previewXp($('#record-form'));if(location.hash!=='#registrar')history.replaceState(null,'','#registrar');break;
+ case'evaluate':{const r=entry(id),c=cause(r.causeId);openDialog(`<h2>${r.xp?'Revisar':'Avaliar'} XP · <span class="tk">${e(c.ticker)}</span></h2><p>${c.icon} ${e(c.name)} · ${day(r.date)} · ${kindLabel[r.kind]}${r.kind==='dinheiro'?' · '+C.cash(r.amountCents):''}</p><form id="eval-form" class="stack" data-id="${r.id}" data-kind="${r.kind}" data-amount="${r.amountCents}">${evalFields(r.xp||{necessidade:2,gratidao:2,oportunidade:2,criatividade:1,seguranca:X.suggestSecurity(true,!!r.evidence),reserva:true,recebidoCents:null},r.kind)}<div class="form-error" hidden></div><div class="row-wrap"><button class="btn gold" type="submit">Salvar avaliação</button><button class="btn ghost" type="button" data-action="close">Cancelar</button></div></form>`);previewXp($('#eval-form'));}break;
+ case'evidence':{const r=entry(id);if(!confirm('O comprovante será baixado sem criptografia. Continuar?'))return;const ex=({'application/pdf':'pdf','image/jpeg':'jpg','image/png':'png','image/webp':'webp'})[r.evidence.type];download(new Blob([C.unb64(r.evidence.data)],{type:r.evidence.type}),r.evidence.type,`comprovante-${r.id.slice(-6)}.${ex}`);}break;
+ case'delete':if(!confirm('Excluir este lançamento do cofre? Isso não estorna nenhuma doação.'))return;await V.mutate(s=>{s.entries=s.entries.filter(r=>r.id!==id);});render();toast('Lançamento excluído.');break;
+ case'backup':download(await V.backup(),'application/json',`bolsa360-backup-criptografado-${today()}.json`);toast('Backup criptografado exportado. Guarde a senha separadamente.');break;
+ case'csv':{if(!confirm('O CSV sai sem criptografia (sem anexos). Baixar?'))return;const rows=[['id_local','ticker','instituicao','data','tipo','valor_reais','xp_boa_acao','situacao','descricao'],...entries().map(r=>{const c=cause(r.causeId),s=X.score(r);return [r.id,c.ticker,c.name,r.date,r.kind,r.kind==='dinheiro'?(r.amountCents/100).toFixed(2).replace('.',','):'',s.evaluated?s.xp.toFixed(2).replace('.',','):'','AUTODECLARADO_NAO_CONFIRMADO',r.detail];})];download('﻿'+rows.map(r=>r.map(csvCell).join(';')).join('\r\n'),'text/csv;charset=utf-8',`bolsa-ajuda-historico-${today()}.csv`);}break;
+ case'placar':{if(!confirm('O Placar XP sai sem criptografia e pode conter valores recebidos. Baixar?'))return;download('﻿'+X.placarRows(entries(),cause).map(r=>r.map(csvCell).join(';')).join('\r\n'),'text/csv;charset=utf-8',`placar-xp-boa-acao-${today()}.csv`);toast('Placar exportado: cole na aba “Ajudas” da planilha para somar ao XP vigente.');}break;
+}}
+document.addEventListener('click',async ev=>{const b=ev.target.closest('[data-action]');if(!b||b.disabled)return;ev.preventDefault();b.disabled=true;try{await act(b.dataset.action,b);}catch(err){fail(err);}finally{if(b.isConnected)b.disabled=false;}});
+document.addEventListener('submit',async ev=>{const f=ev.target;ev.preventDefault();if(f.id==='calc-form')return;if(!f.checkValidity()){f.reportValidity();return;}const btn=f.querySelector('[type=submit]');if(btn)btn.disabled=true;const d=new FormData(f);try{switch(f.id){
+ case'create-form':{const p=String(d.get('password'));if(p!==String(d.get('confirmation')))throw Error('As senhas não coincidem.');await V.create(p);lastActivity=Date.now();route();render();toast('Cofre criado. Exporte backups com frequência.');}break;
+ case'unlock-form':await V.unlock(String(d.get('password')));lastActivity=Date.now();route();render();toast('Cofre aberto.');break;
+ case'import-form':{await V.importBackup(pendingImport,String(d.get('password')),!!d.get('replace'));pendingImport=null;closeDialog();route();render();toast('Backup importado e aberto.');}break;
+ case'eval-form':{const x=readEval(f),rid=f.dataset.id;await V.mutate(s=>{const r=s.entries.find(k=>k.id===rid);if(!r)throw Error('Lançamento não encontrado.');r.xp=x;});closeDialog();render();const s=X.score(entry(rid));toast(s.lock?'Avaliação salva: trava ativa, 0 XP.':`+${X.fmt(s.xp)} XP da Boa Ação.`);}break;
+ case'record-form':{const cid=String(d.get('causeId')),date=String(d.get('date')),kind=String(d.get('kind')),detail=String(d.get('detail')).trim();if(!cause(cid))throw Error('Escolha uma instituição.');if(!V.validDate(date)||date>today())throw Error('Data inválida ou futura.');if(!X.KINDS.includes(kind))throw Error('Tipo inválido.');if(['materiais','tempo','divulgacao'].includes(kind)&&!detail)throw Error('Descreva os materiais, o tempo ou a divulgação.');const amountCents=kind==='dinheiro'?C.cents(d.get('amount')):0;const xp=readEval(f);if(entries().some(r=>r.causeId===cid&&r.date===date&&r.kind===kind&&r.amountCents===amountCents)&&!confirm('Já existe lançamento igual nesta data. É outra ajuda?'))return;const evidence=await attachment(d.get('evidence'));const r={id:'BA-'+crypto.randomUUID(),causeId:cid,date,kind,amountCents,detail,createdAt:new Date().toISOString(),evidence,xp};await V.mutate(s=>s.entries.unshift(r));lastActivity=Date.now();location.hash='extrato';route();const s=X.score(r);toast(s.lock?'Lançamento salvo. Trava ativa: 0 XP.':`Lançamento salvo: +${X.fmt(s.xp)} XP da Boa Ação.`);}break;
+}}catch(err){fail(err);}finally{if(btn?.isConnected)btn.disabled=false;}});
+document.addEventListener('change',ev=>{const t=ev.target,f=t.form;if(t.id==='pix-value'){try{quick.amount=C.cents(t.value);render();}catch(err){t.value=moneyInput(quick.amount);fail(err);}return;}
+ if(f&&t.name==='kind'){const money=t.value==='dinheiro';const a=f.querySelector('.amount-field');if(a)a.hidden=!money;const r=f.querySelector('.xp-received');if(r)r.hidden=!money;}
+ if(f&&t.name==='evidence'){const target=f.querySelector(`input[name=seguranca][value="${X.suggestSecurity(true,!!t.files?.length)}"]`);if(target)target.checked=true;}
+ if(f)previewXp(f);});
+document.addEventListener('input',ev=>{const f=ev.target.form;if(f&&ev.target.type!=='file')previewXp(f);});
+$('#import-file').addEventListener('change',async ev=>{try{const file=ev.target.files?.[0];if(!file)return;if(file.size>25*1024*1024)throw Error('Backup acima de 25 MB.');let env;try{env=JSON.parse(await file.text());V.validateEnvelope(env);}catch{throw Error('Arquivo inválido: escolha um backup BA360 do site Ajuda de Boa ou deste app.');}pendingImport=env;const has=await V.exists();openDialog(`<h2>📥 Importar backup</h2><p>O arquivo é aberto só neste aparelho. Use a senha original.</p><form id="import-form" class="stack"><label class="field">Senha do backup<input type="password" name="password" minlength="12" maxlength="256" required></label>${has?'<label class="check"><input type="checkbox" name="replace" required><span>Substituir o cofre deste navegador por este backup (sem mesclagem).</span></label>':''}<div class="form-error" hidden></div><div class="row-wrap"><button class="btn gold" type="submit">Descriptografar e importar</button><button class="btn ghost" type="button" data-action="close">Cancelar</button></div></form>`);}catch(err){fail(err);}});
+window.addEventListener('hashchange',route);
+for(const evn of ['keydown','pointerdown','input'])document.addEventListener(evn,()=>lastActivity=Date.now(),{passive:true});
+setInterval(()=>{if(V&&!V.locked&&Date.now()-lastActivity>5*60*1000)lock();},15000);
+window.addEventListener('pagehide',()=>{if(V)V.lock();});
+
+/* ---------- partida ---------- */
+(async function start(){
+ loadChecks();
+ const host=location.hostname||'';
+ if(/\.github\.io$/i.test(host)){ // endereço compartilhado: não abre cofre aqui, oferece o download
+  $('#app').innerHTML=`<section class="lock"><div class="crest" aria-hidden="true">⚜️</div><h1>Bolsa Ajuda de Boa</h1><p class="lead">Este endereço é compartilhado com outros sites; por segurança o cofre não abre aqui.</p><div class="card stack"><a class="btn gold" href="${e(location.href.split('#')[0])}" download="bolsa-ajuda-de-boa.html">⬇️ Baixar o app (arquivo único)</a><p class="fine">Depois de baixar, abra o arquivo no navegador do computador. Ele funciona offline.</p><a class="btn ghost" href="${SITE}">← Voltar à Ajuda de Boa</a></div></section>`;return;}
+ if(!(await probeIDB())){Object.defineProperty(window,'indexedDB',{value:memoryIDB(),configurable:true});sessionMode=true;}
+ V=window.BA360_VAULT;
+ if(!V.supported()){$('#app').innerHTML='<section class="lock"><h1>Bolsa Ajuda de Boa</h1><div class="alert">Este navegador não oferece Web Crypto. Abra o arquivo no Chrome, Edge, Firefox ou Safari atualizados.</div></section>';return;}
+ await showLock();
+})();
+})();
+</script>
+</body>
+</html>

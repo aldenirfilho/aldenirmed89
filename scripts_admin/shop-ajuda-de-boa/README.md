@@ -1,6 +1,25 @@
-# Shop Ajuda de Boa · 360X
+# Ajuda de Boa 2.0 · Bolsa Ajuda de Boa · 360X
 
-Vitrine de causas sociais e ambientais, com busca, filtros, favoritos, cesta de planejamento e carteira local criptografada. Edição recuperada 1.2, autorizada para publicação em 16/11/2026.
+Vitrine de causas sociais e ambientais com **perspectiva e projetos** por instituição, **Pix rápido com QR Code** (com conferência anti-golpe da chave), **XP da Boa Ação** (mesma régua do Placar XP da planilha) e o **app Bolsa Ajuda de Boa** para baixar. Edição 2.0 de 16/11/2026, construída sobre a edição recuperada 1.2.
+
+| Onde | Endereço | Cofre |
+|---|---|---|
+| Vitrine pública (GitHub Pages) | https://aldenirfilho.github.io/aldenirmed89/apps/ajuda-de-boa/ | não (modo vitrine) |
+| Edição com carteira (origem exclusiva) | https://shop-ajuda-de-boa.aldenirmed.chatgpt.site/ | sim (republicar a pasta `dist` para atualizar) |
+| App Bolsa Ajuda de Boa (arquivo único, offline) | `dist/downloads/bolsa-ajuda-de-boa.html` | sim (IndexedDB ou modo sessão) |
+
+### Novidades da 2.0
+- 12 instituições (inclui Hemoce Sobral para doação de sangue) com ticker (ex.: CAAT4, AQUA7), perspectiva, 3–5 projetos e fonte datada.
+- Pix rápido: escolher causa → valor → QR. Chaves consultadas há mais de 30 dias exigem que o doador confira a chave na página oficial (vale 30 dias neste navegador).
+- XP da Boa Ação (`assets/xp.js`): 1.000–10.000 XP por ajuda, qualidade = Necessidade×3, Gratidão×3, Oportunidade×2, Criatividade×1, Segurança×2; medida gaussiana da proporção doado/recebido (ideal 5%, σ 5%/3%); travas de reserva e de destinatário. Níveis 🌱→👑 e estrelas sem fim. Export “Placar XP” com as 15 colunas da aba “Ajudas” da planilha.
+- Novos tipos de ajuda: doação de sangue e divulgação. Backups 2.0 com esses tipos não abrem na 1.2.
+- App Bolsa Ajuda de Boa: home broker do bem (painel, posições por ticker, XP por mês, extrato, organizações, Pix, cofre), mesmo formato de backup do site.
+
+### Gerar app e vitrine
+```sh
+python3 scripts_admin/shop-ajuda-de-boa/build_app.py          # gera dist/downloads, injeta SHA-256 e atualiza apps/ajuda-de-boa
+python3 scripts_admin/shop-ajuda-de-boa/build_app.py --check  # falha se algo estiver desatualizado
+```
 
 **Site:** https://shop-ajuda-de-boa.aldenirmed.chatgpt.site/
 
@@ -32,7 +51,7 @@ Não foram importadas contribuições, carteiras ou documentos pessoais antigos.
 
 ## Catálogo e fontes
 
-11 instituições; fichas datadas individualmente. Em 16/11/2026 foram consultados:
+12 instituições; fichas datadas individualmente. Perspectivas e projetos de 16/11/2026 têm fonte própria (`projSource`: oficial, público, imprensa ou síntese). Em 16/11/2026 foram consultados:
 
 - https://stacasa.org.br/
 - https://amigosdobem.org/como-ajudar/
