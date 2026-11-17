@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Códice das Eras Perdidas · Mistérios Antigos 360X</title>
+<meta name="description" content="Fósseis, extinções, sociedades anteriores à escrita, tecnologias da Antiguidade, escritas indecifradas e os segredos atribuídos a Salomão: 109 dossiês com selos de evidência. Subseção do setor Mistérios Antigos 360X.">
+<meta property="og:title" content="Códice das Eras Perdidas · Mistérios Antigos 360X">
+<meta property="og:description" content="109 dossiês, 11 livros, 7 trilhas e um laboratório de cálculo: ciência, história e fé com selos de evidência.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aldenirfilho.github.io/aldenirmed89/ecossistema/misterios-antigos/codice-eras-perdidas/">
+<link rel="canonical" href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/misterios-antigos/codice-eras-perdidas/">
+<link rel="icon" href="../../../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Códice tecno-medieval: obsidiana + ouro + ciano. Layout: instrumento do tempo no topo, régua de livros à esquerda, fólios com margem colorida pelo selo de evidência. */
+  --obsidiana:#0b1013; --basalto:#121a1f; --basalto-2:#18232a; --veio:#27353e;
+  --pergaminho:#ece3cc; --pedra:#a9b2ac; --ouro:#d9b45a; --ciano:#3ccfd0; --ambar:#f2a541;
+  --s-consenso:#6cc58f; --s-debate:#e6cb5c; --s-fronteira:#ee9a4a; --s-refutado:#93a0b8; --s-tradicao:#c79be0;
+  --f-display:"Luminari","Cinzel",Georgia,serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--obsidiana);color:var(--pergaminho);font-family:var(--f-body);font-size:17px;line-height:1.6;
+  background-image:radial-gradient(1100px 520px at 85% -8%,rgba(60,207,208,.09),transparent 60%),radial-gradient(900px 520px at -12% 6%,rgba(217,180,90,.08),transparent 60%);background-attachment:fixed}
+body.dys{--f-body:"OpenDyslexic","Atkinson Hyperlegible",sans-serif;font-size:16px;line-height:1.75}
+a{color:var(--ciano)}
+:focus-visible{outline:2px solid var(--ciano);outline-offset:2px;border-radius:4px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:1300px;margin:0 auto;padding:0 20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* migalha */
+.migalha{border-bottom:1px solid var(--veio);background:rgba(18,26,31,.85);font-size:.88rem}
+.migalha .wrap{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding-top:8px;padding-bottom:8px}
+.migalha a{color:var(--ciano);text-decoration:none}
+.migalha a:hover{text-decoration:underline}
+.migalha span{color:var(--pedra)}
+.migalha b{color:var(--ouro);font-weight:700}
+a.btn{display:inline-block;text-decoration:none;color:var(--pergaminho)}
+
+/* topo */
+.topo{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--veio);flex-wrap:wrap}
+.brasao{width:42px;height:48px;flex:none}
+.marca b{font-family:var(--f-display);color:var(--ouro);font-size:1.12rem;letter-spacing:.03em}
+.marca small{display:block;color:var(--pedra);font-size:.82rem}
+.topo .acoes{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:var(--basalto-2);border:1px solid var(--veio);border-radius:8px;padding:.42rem .8rem;font-size:.9rem;line-height:1.3}
+.btn:hover{border-color:var(--ouro)}
+.btn.ouro{background:var(--ouro);color:#1b1505;border-color:var(--ouro);font-weight:700}
+.btn.ouro:hover{filter:brightness(1.08)}
+.btn[aria-pressed="true"]{border-color:var(--ciano);background:rgba(60,207,208,.12)}
+
+/* hero */
+.hero{padding:40px 0 24px}
+.hero h1{font-family:var(--f-display);font-weight:700;color:var(--ouro);font-size:clamp(2.3rem,5.4vw,4.1rem);line-height:1.04;margin:0 0 14px;text-wrap:balance}
+.lede{max-width:64ch;font-size:1.1rem;margin:0 0 16px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;padding:0;list-style:none}
+.badges li{border:1px solid var(--veio);border-radius:999px;padding:.18rem .7rem;font-size:.86rem;color:var(--pedra)}
+.badges b{color:var(--pergaminho);font-variant-numeric:tabular-nums}
+.hero-acoes{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+
+.instrumento{background:linear-gradient(180deg,var(--basalto),#0e1519);border:1px solid var(--veio);border-radius:14px;padding:20px 20px 22px}
+.instrumento h2{font-family:var(--f-display);font-size:1.4rem;margin:0 0 4px;text-wrap:balance}
+.instrumento .sub{color:var(--pedra);margin:0 0 14px;font-size:.95rem;max-width:72ch}
+.faixa{position:relative;height:44px;border-radius:8px;overflow:hidden;display:flex;border:1px solid var(--veio)}
+.eon{height:100%;display:flex;align-items:center;justify-content:center;font-size:.76rem;color:#0b1013;font-weight:700;white-space:nowrap;overflow:hidden;padding:0 4px}
+.tick{position:absolute;top:0;bottom:0;width:2px;background:var(--pergaminho);opacity:.9}
+.tick.k{background:var(--ciano);width:3px}
+.horas{display:flex;justify-content:space-between;font-size:.75rem;color:var(--pedra);margin-top:4px;font-variant-numeric:tabular-nums}
+.zoomlbl{margin:16px 0 6px;font-size:.9rem;color:var(--pedra)}
+.eventos{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 20px;margin:16px 0 0;padding:0;list-style:none}
+.eventos li{display:grid;grid-template-columns:7.4em 1fr;gap:8px;font-size:.9rem;align-items:baseline;border-bottom:1px dashed var(--veio);padding:4px 0}
+.eventos time{font-variant-numeric:tabular-nums;color:var(--ciano);font-weight:700}
+.eventos li.ultimo time{color:var(--ouro)}
+.slider{margin-top:18px;display:grid;gap:6px;border-top:1px solid var(--veio);padding-top:14px}
+.slider label{font-weight:700;font-size:.95rem}
+.slider input{width:100%;accent-color:var(--ouro)}
+.leitura{font-size:1rem;min-height:3.2em}
+.leitura strong{color:var(--ouro);font-variant-numeric:tabular-nums}
+
+/* seções genéricas */
+.secao{padding:30px 0 6px}
+.secao > h2{font-family:var(--f-display);font-size:1.6rem;margin:0 0 6px;color:var(--pergaminho)}
+.secao > p.sub{color:var(--pedra);margin:0 0 16px;max-width:72ch}
+.selos-legenda{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:10px}
+.selo-item{border:1px solid var(--veio);border-top:3px solid var(--sc);border-radius:8px;padding:10px 12px;background:var(--basalto)}
+.selo-item b{display:block;color:var(--sc)}
+.selo-item span{font-size:.9rem;color:var(--pedra)}
+.s-consenso{--sc:var(--s-consenso)}.s-debate{--sc:var(--s-debate)}.s-fronteira{--sc:var(--s-fronteira)}.s-refutado{--sc:var(--s-refutado)}.s-tradicao{--sc:var(--s-tradicao)}
+
+.trilhas{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:12px}
+.trilha{background:var(--basalto);border:1px solid var(--veio);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.trilha h3{font-family:var(--f-display);font-size:1.08rem;margin:0}
+.trilha p{margin:0;font-size:.9rem;color:var(--pedra)}
+.trilha .pm{font-size:.82rem;color:var(--ciano)}
+.trilha .btn{margin-top:auto;align-self:flex-start}
+
+/* barra de ferramentas */
+.ferramentas{position:sticky;top:0;z-index:30;background:rgba(11,16,19,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--veio);border-top:1px solid var(--veio);margin-top:26px}
+.ferr-linha{display:flex;gap:8px;align-items:center;padding:10px 0;flex-wrap:wrap}
+.busca{flex:1 1 260px;display:flex;align-items:center;gap:8px;background:var(--basalto);border:1px solid var(--veio);border-radius:8px;padding:0 10px}
+.busca input{flex:1;background:transparent;border:0;padding:.5rem 0;outline:none;min-width:0}
+.busca:focus-within{border-color:var(--ciano)}
+.contagem{font-size:.88rem;color:var(--pedra);font-variant-numeric:tabular-nums}
+.chips-painel{display:grid;gap:6px;padding:0 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chips .rot{font-size:.82rem;color:var(--pedra);margin-right:2px}
+.chip{background:var(--basalto);border:1px solid var(--veio);border-radius:999px;padding:.16rem .62rem;font-size:.84rem}
+.chip[aria-pressed="true"]{background:rgba(217,180,90,.16);border-color:var(--ouro);color:var(--pergaminho)}
+.chip.sel[aria-pressed="true"]{background:color-mix(in srgb,var(--sc) 18%,transparent);border-color:var(--sc)}
+.so-mobile{display:none}
+
+/* corpo */
+.corpo{display:grid;grid-template-columns:250px 1fr;gap:30px;align-items:start}
+.trilho{position:sticky;top:122px;max-height:calc(100vh - 140px);overflow:auto;padding:18px 4px 18px 0}
+.trilho h2{font-family:var(--f-display);font-size:1rem;color:var(--ouro);margin:0 0 8px}
+.trilho ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.trilho a{display:grid;grid-template-columns:2.2em 1fr auto;gap:6px;align-items:baseline;text-decoration:none;color:var(--pergaminho);padding:5px 6px;border-radius:6px;font-size:.9rem}
+.trilho a:hover{background:var(--basalto-2)}
+.trilho .rn{font-family:var(--f-display);color:var(--ouro)}
+.trilho .pg{font-size:.76rem;color:var(--pedra);font-variant-numeric:tabular-nums}
+.trilho .extra{margin-top:12px;border-top:1px solid var(--veio);padding-top:10px}
+
+.livro{padding:34px 0 8px;scroll-margin-top:130px}
+.livro-cab{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:end;border-bottom:1px solid var(--veio);padding-bottom:12px;margin-bottom:18px}
+.numeral{font-family:var(--f-display);font-size:3.4rem;color:var(--ouro);line-height:.85;min-width:1.4em}
+.livro-cab h2{font-family:var(--f-display);font-size:1.75rem;margin:0;line-height:1.15;text-wrap:balance}
+.livro-cab .sub{margin:4px 0 0;color:var(--pedra);font-size:.95rem}
+.livro-intro{max-width:74ch;margin:0 0 16px}
+.vazio{color:var(--pedra);font-style:italic}
+.ornamento{display:flex;align-items:center;gap:12px;color:var(--ouro);margin:18px 0 0;opacity:.7}
+.ornamento::before,.ornamento::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--ouro),transparent)}
+
+.folios{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(350px,100%),1fr));gap:16px;align-items:start}
+.folio{--sc:var(--s-consenso);background:var(--basalto);border:1px solid var(--veio);border-left:4px solid var(--sc);border-radius:4px 12px 12px 4px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;scroll-margin-top:150px}
+.folio[data-selo="debate"]{--sc:var(--s-debate)}.folio[data-selo="fronteira"]{--sc:var(--s-fronteira)}.folio[data-selo="refutado"]{--sc:var(--s-refutado)}.folio[data-selo="tradicao"]{--sc:var(--s-tradicao)}
+.folio.foco{box-shadow:0 0 0 2px var(--ouro)}
+.folio.pulso{animation:pulso 1.6s ease-out}
+@keyframes pulso{0%{box-shadow:0 0 0 0 rgba(217,180,90,.85)}100%{box-shadow:0 0 0 16px rgba(217,180,90,0)}}
+.fcab{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.fe{font-size:1.9rem;line-height:1}
+.folio h3{font-family:var(--f-display);font-size:1.16rem;margin:0;line-height:1.25;text-wrap:balance}
+.folio.lido h3::after{content:" ✔";color:var(--s-consenso)}
+.meta{margin:3px 0 0;font-size:.84rem;color:var(--pedra)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.selo{font-size:.78rem;font-weight:700;padding:.1rem .55rem;border-radius:999px;border:1px solid var(--sc);color:var(--sc)}
+.disc{font-size:.76rem;padding:.1rem .5rem;border-radius:999px;background:var(--basalto-2);color:var(--pedra)}
+.folio .r{margin:0}
+.campos{display:grid;gap:8px;margin:0}
+.campo dt{font-weight:700;font-size:.86rem;color:var(--ouro)}
+.campo dd{margin:2px 0 0;font-size:.95rem}
+.campo.q dt,.campo.t dt{color:var(--ciano)}
+.folio details{border-top:1px dashed var(--veio);padding-top:8px}
+.folio summary{cursor:pointer;color:var(--pedra);font-size:.9rem}
+.folio details p{margin:8px 0 0;font-size:.93rem}
+.fio{font-size:.85rem;color:var(--pedra);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.fio a{text-decoration:none;border:1px solid var(--veio);border-radius:6px;padding:.04rem .45rem;color:var(--ciano)}
+.fio a:hover{border-color:var(--ciano)}
+.fpe{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+.fpe button{flex:1;background:var(--basalto-2);border:1px solid var(--veio);border-radius:8px;padding:.38rem .5rem;font-size:.86rem}
+.fpe button:hover{border-color:var(--ouro)}
+.fpe .b-lido[aria-pressed="true"]{background:rgba(108,197,143,.14);border-color:var(--s-consenso)}
+.fpe .b-star[aria-pressed="true"]{background:rgba(242,165,65,.14);border-color:var(--ambar)}
+
+/* laboratório */
+.lab{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(390px,100%),1fr));gap:16px}
+.ferr{background:var(--basalto);border:1px solid var(--veio);border-radius:12px;padding:16px 18px;display:grid;gap:10px;align-content:start;min-width:0}
+.ferr > *{min-width:0}
+.rolagem{overflow-x:auto}
+.ferr h3{font-family:var(--f-display);font-size:1.15rem;margin:0}
+.ferr p{margin:0;font-size:.93rem}
+.ferr .linha{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.ferr label{display:grid;gap:3px;font-size:.84rem;color:var(--pedra);flex:1 1 120px}
+.ferr input,.ferr select{background:var(--obsidiana);border:1px solid var(--veio);border-radius:6px;padding:.4rem .5rem;font-variant-numeric:tabular-nums;width:100%}
+.res{background:var(--obsidiana);border:1px solid var(--veio);border-radius:8px;padding:10px 12px;font-variant-numeric:tabular-nums;font-size:.95rem;overflow-x:auto}
+.res strong{color:var(--ouro)}
+.res .alerta{color:var(--ambar)}
+.formula{font-size:.86rem;color:var(--pedra)}
+table.mini{border-collapse:collapse;width:100%;font-size:.88rem;font-variant-numeric:tabular-nums}
+table.mini th,table.mini td{border-bottom:1px solid var(--veio);padding:4px 6px;text-align:left}
+table.mini th{color:var(--pedra);font-weight:700}
+.presets{display:flex;gap:6px;flex-wrap:wrap}
+
+/* fontes e rodapé */
+.fontes{columns:2 340px;column-gap:28px;margin:0;padding-left:18px;font-size:.92rem}
+.fontes li{break-inside:avoid;margin:0 0 6px}
+.rodape{border-top:1px solid var(--veio);margin-top:40px;padding:24px 0 90px;color:var(--pedra);font-size:.9rem}
+.rodape b{color:var(--pergaminho)}
+.rodape .grato{font-family:var(--f-display);color:var(--ouro);font-size:1.1rem}
+
+/* barra de trilha + diário + aviso */
+.barra-trilha{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;background:#0f171b;border:1px solid var(--ouro);border-radius:12px;padding:8px 10px;display:flex;gap:8px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.55);width:min(760px,calc(100% - 20px))}
+.barra-trilha[hidden]{display:none}
+.barra-trilha .info{flex:1;min-width:0;font-size:.88rem}
+.barra-trilha .info b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.diario{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);z-index:60;background:#0f171b;border-left:1px solid var(--ouro);padding:18px;overflow:auto;box-shadow:-10px 0 30px rgba(0,0,0,.5)}
+.diario[hidden]{display:none}
+.diario h2{font-family:var(--f-display);color:var(--ouro);margin:0 0 8px}
+.diario ul{padding-left:18px}
+.barra-prog{height:8px;border-radius:99px;background:var(--basalto-2);overflow:hidden;margin:8px 0 14px}
+.barra-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--ouro),var(--ciano));width:0}
+.aviso{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:70;background:var(--basalto-2);border:1px solid var(--ciano);border-radius:10px;padding:8px 14px;font-size:.92rem}
+.aviso[hidden]{display:none}
+
+@media (max-width:1000px){.corpo{grid-template-columns:1fr}.trilho{display:none}}
+@media (max-width:720px){body{font-size:16px}.chips-painel{display:none}.chips-painel.aberto{display:grid}.so-mobile{display:inline-block}.numeral{font-size:2.6rem}.livro-cab h2{font-size:1.4rem}.ferramentas{margin-top:18px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav class="migalha" aria-label="Você está em">
+  <div class="wrap">
+    <a href="../../../index.html">🩺 AldenirMed 360X</a><span aria-hidden="true">›</span>
+    <a href="../../">🌐 Universo 360X</a><span aria-hidden="true">›</span>
+    <a href="../">🗝️ Mistérios Antigos 360X</a><span aria-hidden="true">›</span>
+    <b aria-current="page">Códice das Eras Perdidas</b>
+  </div>
+</nav>
+<div class="wrap">
+  <header class="topo">
+    <svg class="brasao" viewBox="0 0 64 72" aria-hidden="true">
+      <path d="M32 2 L60 10 V34 C60 52 46 64 32 70 C18 64 4 52 4 34 V10 Z" fill="#121a1f" stroke="#d9b45a" stroke-width="2.2"/>
+      <circle cx="32" cy="34" r="17" fill="none" stroke="#3ccfd0" stroke-width="4" stroke-dasharray="3.2 3"/>
+      <path d="M32 34 m0 -1.5 a1.5 1.5 0 1 1 -1.5 1.5 a3 3 0 0 1 3 -3 a4.5 4.5 0 0 1 4.5 4.5 a6.5 6.5 0 0 1 -6.5 6.5 a9 9 0 0 1 -9 -9 a12 12 0 0 1 12 -12" fill="none" stroke="#d9b45a" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <div class="marca"><b>Códice das Eras Perdidas</b><small>Mistérios Antigos 360X · AldenirMed 360X</small></div>
+    <div class="acoes">
+      <button class="btn" id="b-dys" aria-pressed="false" title="Troca o texto para a fonte OpenDyslexic instalada no seu computador">🔤 Leitura OpenDyslexic</button>
+      <button class="btn" id="b-diario">📔 Diário <span id="diario-n">0</span></button>
+    </div>
+  </header>
+
+  <section class="hero" aria-labelledby="titulo">
+    <h1 id="titulo">Códice das Eras Perdidas</h1>
+    <p class="lede">Fósseis, extinções, sociedades anteriores à escrita, tecnologias da Antiguidade, códigos não decifrados e os segredos atribuídos a Salomão. Cada dossiê diz o que se sabe, o grau de certeza, a pergunta que continua aberta e o próximo fio a puxar. Leia em qualquer ordem ou siga uma trilha.</p>
+    <ul class="badges" id="badges"></ul>
+    <div class="hero-acoes">
+      <button class="btn ouro" data-trilha="0">🦖 Começar pela trilha Do fóssil ao DNA</button>
+      <button class="btn" id="b-aleatorio">🎲 Enigma aleatório</button>
+      <button class="btn" id="b-continuar" hidden>▶ Continuar</button>
+      <a class="btn" href="./pdf/Codice-Eras-Perdidas-360X_A4_Leitura-OpenDyslexic.pdf">📄 PDF de leitura (OpenDyslexic, 69 p.)</a>
+      <a class="btn" href="./pdf/Codice-Eras-Perdidas-360X_A4_Classica.pdf">🖨️ PDF para imprimir (59 p.)</a>
+    </div>
+
+    <div class="instrumento" aria-labelledby="dia-t">
+      <h2 id="dia-t">⏰ O Dia da Terra</h2>
+      <p class="sub">Comprima os 4,567 bilhões de anos do planeta em 24 horas. A faixa de cima é o dia inteiro; a de baixo amplia as últimas 2 h 50 min, desde a explosão cambriana. Toda a história escrita cabe no último décimo de segundo.</p>
+      <div class="faixa" id="faixa-dia" role="img" aria-label="Faixa de 24 horas com os éons Hadeano, Arqueano, Proterozoico e Fanerozoico"></div>
+      <div class="horas"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
+      <p class="zoomlbl">🔎 Ampliação: das 21:10 à meia-noite (últimos 538,8 milhões de anos)</p>
+      <div class="faixa" id="faixa-zoom" role="img" aria-label="Faixa ampliada do Fanerozoico com as eras Paleozoica, Mesozoica e Cenozoica"></div>
+      <div class="horas"><span>21:10</span><span>22:13</span><span>23:39</span><span>24:00</span></div>
+      <ul class="eventos" id="eventos"></ul>
+      <div class="slider">
+        <label for="s-tempo">🛰️ Viaje no tempo (escala logarítmica, de mil anos a 4,5 bilhões)</label>
+        <input type="range" id="s-tempo" min="0" max="1000" step="1" value="724">
+        <p class="leitura" id="s-leitura" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="selos" aria-labelledby="selos-t">
+    <h2 id="selos-t">🔏 Os cinco selos de evidência</h2>
+    <p class="sub">A cor na margem de cada fólio mostra quanto confiar no que está escrito. Mistério bom é mistério honesto.</p>
+    <div class="selos-legenda" id="selos-legenda"></div>
+  </section>
+
+  <section class="secao" id="trilhas-sec" aria-labelledby="trilhas-t">
+    <h2 id="trilhas-t">🧭 Trilhas de pesquisa</h2>
+    <p class="sub">Sequências curadas que atravessam livros e disciplinas. Ao começar, uma barra no rodapé leva você de dossiê em dossiê e marca cada um como desvendado.</p>
+    <div class="trilhas" id="trilhas"></div>
+  </section>
+</div>
+
+<div class="ferramentas" id="ferramentas">
+  <div class="wrap">
+    <div class="ferr-linha">
+      <div class="busca"><span aria-hidden="true">🔍</span><label for="q" class="sr">Buscar nos dossiês</label><input id="q" type="search" placeholder="Buscar: Salomão, cobre, π, asteroide, Ceará, câncer…"></div>
+      <button class="btn so-mobile" id="b-filtros" aria-expanded="false" aria-controls="chips-painel">🎛️ Filtros</button>
+      <button class="btn" id="b-star" aria-pressed="false">⭐ Só os marcados</button>
+      <button class="btn" id="b-limpar">✖ Limpar filtros</button>
+      <span class="contagem" id="contagem" aria-live="polite"></span>
+    </div>
+    <div class="chips-painel" id="chips-painel">
+      <div class="chips" id="chips-disc"><span class="rot">Disciplina</span></div>
+      <div class="chips" id="chips-selo"><span class="rot">Selo</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap corpo">
+  <nav class="trilho" aria-labelledby="trilho-t">
+    <h2 id="trilho-t">📖 Índice do códice</h2>
+    <ol id="trilho-lista"></ol>
+    <div class="extra">
+      <ol>
+        <li><a href="#laboratorio"><span class="rn">⚗</span><span>Laboratório do Explorador</span><span class="pg"></span></a></li>
+        <li><a href="#fontes"><span class="rn">✒</span><span>Fontes e créditos</span><span class="pg"></span></a></li>
+      </ol>
+    </div>
+  </nav>
+
+  <main id="livros">
+  </main>
+</div>
+
+<div class="wrap">
+  <section class="secao" id="laboratorio" aria-labelledby="lab-t">
+    <h2 id="lab-t">⚗️ Laboratório do Explorador</h2>
+    <p class="sub">Quatro instrumentos para transformar curiosidade em cálculo: física da datação, energia de impactos, o π do Templo e os ciclos do Mecanismo de Anticítera.</p>
+    <div class="lab">
+      <div class="ferr" id="lab-c14">
+        <h3>☢️ Relógio de carbono-14</h3>
+        <p>Informe quanto C-14 resta numa amostra orgânica (em % do original) ou a idade, e veja o outro lado da equação.</p>
+        <div class="linha">
+          <label for="c14-p">% de C-14 restante<input id="c14-p" type="number" min="0.01" max="100" step="0.01" value="25"></label>
+          <label for="c14-t">Idade (anos)<input id="c14-t" type="number" min="0" max="100000" step="10" value=""></label>
+        </div>
+        <div class="res" id="c14-res" aria-live="polite"></div>
+        <p class="formula">t = (5.730 / ln 2) × ln(100 / %) ≈ 8.267 × ln(100 / %). Laboratórios reais usam a meia-vida convencional de Libby (5.568 anos) e calibram com a curva IntCal. Acima de ~50 mil anos resta menos de 0,24%: o relógio para.</p>
+      </div>
+
+      <div class="ferr" id="lab-impacto">
+        <h3>☄️ Calculadora de impacto</h3>
+        <p>Energia cinética de um asteroide: E = ½ m v², com m = densidade × volume da esfera.</p>
+        <div class="presets">
+          <button class="btn" data-imp="10,3000,20">Chicxulub</button>
+          <button class="btn" data-imp="0.06,3000,15">Tunguska</button>
+          <button class="btn" data-imp="0.019,3300,19">Chelyabinsk</button>
+          <button class="btn" data-imp="0.37,3000,12.6">Apophis (hipotético)</button>
+        </div>
+        <div class="linha">
+          <label for="imp-d">Diâmetro (km)<input id="imp-d" type="number" min="0.001" step="0.001" value="10"></label>
+          <label for="imp-r">Densidade (kg/m³)<input id="imp-r" type="number" min="100" step="100" value="3000"></label>
+          <label for="imp-v">Velocidade (km/s)<input id="imp-v" type="number" min="1" max="75" step="0.1" value="20"></label>
+        </div>
+        <div class="res" id="imp-res" aria-live="polite"></div>
+        <p class="formula">1 megaton = 4,184 × 10¹⁵ J. Hiroshima ≈ 15 kt. Tsar Bomba ≈ 50 Mt. Rocha ≈ 3.000 kg/m³, ferro ≈ 7.800, cometa ≈ 600.</p>
+      </div>
+
+      <div class="ferr" id="lab-pi">
+        <h3>🥣 O π do Mar de Bronze</h3>
+        <p>1 Reis 7:23 dá 10 côvados de diâmetro e 30 de circunferência. Compare como cada civilização aproximava π.</p>
+        <div class="linha">
+          <label for="pi-d">Diâmetro de teste (côvados)<input id="pi-d" type="number" min="0.1" step="0.1" value="10"></label>
+        </div>
+        <div class="res" id="pi-res"></div>
+        <p class="formula">Gematria: קוה (qwh, escrito) = 100+6+5 = 111; קו (qw, lido) = 100+6 = 106. 3 × 111/106 = 3,14150… Coincidência numérica, não prova; mas é um ótimo exercício de razão e erro relativo.</p>
+      </div>
+
+      <div class="ferr" id="lab-ciclos">
+        <h3>⚙️ Ciclos do Mecanismo de Anticítera</h3>
+        <p>Quantos meses lunares cabem em N anos solares? Um bom ciclo é aquele em que a sobra quase desaparece.</p>
+        <div class="linha">
+          <label for="cic-n">Anos solares (N)<input id="cic-n" type="number" min="1" max="1000" step="1" value="19"></label>
+        </div>
+        <div class="res" id="cic-res" aria-live="polite"></div>
+        <div class="rolagem"><table class="mini" aria-label="Ciclos astronômicos gravados no mecanismo">
+          <thead><tr><th>Ciclo</th><th>Meses sinódicos</th><th>Dias</th><th>Uso no mecanismo</th></tr></thead>
+          <tbody id="cic-tab"></tbody>
+        </table></div>
+        <p class="formula">Ano trópico = 365,2422 d. Mês sinódico = 29,53059 d. O Saros deixa 8 h de sobra: o eclipse seguinte acontece ~120° de longitude a oeste. Três Saros (Exeligmos) devolvem o eclipse ao mesmo lugar, e o mecanismo tinha um mostrador para isso.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="fontes" aria-labelledby="fontes-t">
+    <h2 id="fontes-t">✒️ Fontes e verificação</h2>
+    <p class="sub">Descobertas recentes conferidas em 16/11/2026. Clássicos citados nos dossiês aparecem com autor e ano para você buscar no PubMed, Google Scholar ou na biblioteca.</p>
+    <ol class="fontes">
+      <li><a href="https://iucn.org/press-release/202607/desert-frog-deep-sea-molluscs-remarkable-species-risk-iucn-red-list">IUCN, atualização da Lista Vermelha (jul/2026)</a></li>
+      <li><a href="https://www.cms.int/news/slender-billed-curlew-officially-declared-extinct-wake-call-migratory-bird-conservation">CMS, extinção do maçarico-de-bico-fino (out/2025)</a></li>
+      <li><a href="https://sbtnews.sbt.com.br/noticia/brasil/ararinhas-azuis-que-voltaram-para-natureza-em-2022-testam-positivo-para-virus-letal">ICMBio via SBT News, ararinhas-azuis e circovírus (nov/2025)</a></li>
+      <li><a href="https://e-mc2.gr/en/node/31998">The Guardian (republicação), críticas à de-extinção da Colossal (jan/2026)</a></li>
+      <li><a href="https://www.biospace.com/press-releases/colossal-accelerates-the-full-dodo-de-extinction-pipeline">Colossal, programa do dodô (out/2026)</a></li>
+      <li><a href="https://www.nationalgeographic.com/history/article/worlds-oldest-rock-art-indonesia-hand-stencil">National Geographic, estêncil de 67.800 anos em Muna (Nature, jan/2026)</a></li>
+      <li><a href="https://archaeology.org/news/2026/09/25/intact-burials-excavated-at-gobekli-tepe/">Archaeology, enterramentos intactos em Göbekli Tepe (set/2026)</a></li>
+      <li><a href="https://thedebrief.org/11000-year-old-stone-sculpture-unearthed-at-gobekli-tepes-mysterious-sister-site-was-carved-millennia-before-the-first-human-societies/">The Debrief, escultura de Karahan Tepe (2026)</a></li>
+      <li><a href="https://retractionwatch.com/2024/03/20/controversial-pyramid-paper-retracted">Retraction Watch, retratação de Gunung Padang (2024)</a></li>
+      <li><a href="https://www.esrf.fr/home/news/general/content-news/general/the-day-the-herculaneum-scrolls-began-speaking-again.html">ESRF, papiros de Herculano (jun/2026)</a></li>
+      <li><a href="https://arxiv.org/abs/2504.00327">Szigety e Arenas, dentes triangulares de Anticítera (arXiv, 2025)</a></li>
+      <li><a href="https://business-standard.com/india-news/tamil-nadu-cm-announces-1-million-for-deciphering-indus-valley-script-nc-125020400475_1.html">Business Standard, prêmio de US$ 1 milhão pela escrita do Indo</a></li>
+      <li><a href="https://popular-archaeology.com/article/study-suggests-independent-invention-of-writing-on-rapa-nui-easter-island">Popular Archaeology, datação do rongorongo (Ferrara et al., 2024)</a></li>
+      <li><a href="https://english.cas.cn/newsroom/cas_media/202506/t20250619_1045847.shtml">Academia Chinesa de Ciências, crânio de Harbin denisovano (2025)</a></li>
+      <li><a href="https://andina.pe/ingles/noticia-perus-nazca-lines-303-new-geoglyphs-discovered-with-help-of-ai-1001507.aspx">Andina, 303 geoglifos de Nazca achados com IA (PNAS, 2024)</a></li>
+      <li><a href="https://www.nbcnews.com/sciencemain/reality-check-king-solomons-mines-right-era-wrong-kingdom-8c11073742">NBC News, minas de Timna: era certa, reino errado</a></li>
+      <li><a href="https://diariodonordeste.verdesmares.com.br/ceara/fossil-do-dinossauro-ubirajara-jubatus-descoberto-no-ceara-e-oficialmente-repatriado-da-alemanha-1.3380260">Diário do Nordeste, repatriação do Ubirajara (2023)</a></li>
+      <li>Clássicos: Alvarez et al. 1980 (irídio K-Pg); Schweitzer et al. 2005 (tecido mole); Reibold et al. 2006 (aço de Damasco); Thompson et al. 2013 (estudo HORUS, Lancet); Ekhtiari et al. 2020 (osteossarcoma, Lancet Oncology); Maloney et al. 2022 (amputação, Nature); Schmidt e Frank 2018 (hipótese siluriana); Hu et al. 2023 (gargalo, Science); Zhang et al. 2024 (Gigantopithecus, Nature).</li>
+    </ol>
+  </section>
+
+  <footer class="rodape">
+    <p><b>Idealização, geração, coordenação e direção:</b> Aldenir Rocha de Oliveira Filho, idealizador da Equipe 360X. Pesquisa, redação e programação assistidas por Claude.</p>
+    <p>Versão 1.0, 16 de novembro de 2026. Conteúdo educativo. Os dossiês de tradição e esoterismo tratam de história cultural e da religião; não são manuais nem afirmações de eficácia.</p>
+    <p>Subseção do setor <a href="../">Mistérios Antigos 360X</a>, no <a href="../../">Universo 360X</a> do <a href="../../../index.html">AldenirMed 360X</a>.</p>
+    <p class="grato">Grato desde já! 🙏</p>
+  </footer>
+</div>
+
+<div class="barra-trilha" id="barra-trilha" hidden role="region" aria-label="Navegação da trilha">
+  <button class="btn" id="t-ant" title="Dossiê anterior">⏮</button>
+  <div class="info"><span id="t-passo"></span><b id="t-titulo"></b></div>
+  <button class="btn ouro" id="t-prox" title="Marca este dossiê como desvendado e abre o próximo">Desvendei, próximo ⏭</button>
+  <button class="btn" id="t-sair" title="Sair da trilha">✕</button>
+</div>
+
+<aside class="diario" id="diario" hidden aria-labelledby="diario-t">
+  <h2 id="diario-t">📔 Diário do Explorador</h2>
+  <p id="d-resumo"></p>
+  <div class="barra-prog" aria-hidden="true"><i id="d-barra"></i></div>
+  <h3>⭐ Para investigar</h3>
+  <ul id="d-lista"></ul>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn" id="d-copiar">📋 Copiar lista</button>
+    <button class="btn" id="d-zerar">♻️ Zerar progresso</button>
+    <button class="btn ouro" id="d-fechar">Fechar</button>
+  </div>
+  <p style="font-size:.85rem;color:var(--pedra);margin-top:14px">O progresso fica guardado só neste navegador.</p>
+</aside>
+
+<div class="aviso" id="aviso" hidden role="status"></div>
+
+<script>
+/* ===================== DADOS ===================== */
+const DISC={med:["🩺","Medicina"],bio:["🧬","Biologia"],geo:["🪨","Geologia"],his:["📜","História"],gea:["🌍","Geografia"],mat:["➗","Matemática"],fis:["⚛️","Física"],teo:["✝️","Teologia"],tec:["🤖","Tecnologia"]};
+const SELOS={
+  consenso:["🟢","Consenso","Evidência robusta e replicada; a maioria dos especialistas concorda."],
+  debate:["🟡","Em debate","Evidência real com interpretações concorrentes publicadas."],
+  fronteira:["🟠","Fronteira","Hipótese minoritária ou experimento mental: vale pensar, não vale afirmar."],
+  refutado:["🚫","Refutado","A alegação não resistiu aos testes ou foi retratada. Fica como lição de método."],
+  tradicao:["📜","Tradição e fé","Narrativas religiosas e esotéricas, estudadas pelo que significam e pelo que moldaram na sociedade."]
+};
+const LIVROS=[
+  {id:"fosseis",n:"I",e:"🪨",t:"O Arquivo de Pedra",s:"Fósseis, tempo profundo e o Ceará paleontológico",i:"Como a Terra guarda a vida em pedra, como medimos idades de milhões de anos e por que a Chapada do Araripe é uma das janelas mais nítidas do Cretáceo."},
+  {id:"natureza",n:"II",e:"☄️",t:"Extintos pela Natureza",s:"Vulcões, gelo, falta de oxigênio e um asteroide",i:"Antes de nós, a própria Terra apagou a maior parte da vida, várias vezes. Ninguém teve culpa. Em cada dossiê, a pergunta prática: o que essa catástrofe ensina para o mundo de hoje?"},
+  {id:"humanos",n:"III",e:"🏹",t:"Extintos pela Mão Humana",s:"Caça, espécies invasoras, doenças levadas e habitat destruído",i:"Do moa à ararinha-azul, o padrão se repete: ilhas, animais que nunca viram predador, reprodução lenta e proteção que chega tarde. Os primeiros dossiês são a zona cinzenta, onde clima e humanos dividem a culpa."},
+  {id:"antidoto",n:"IV",e:"🛡️",t:"O Antídoto",s:"O que a ciência faz hoje para não repetir a história",i:"Defesa planetária, cofres de sementes, metas globais, biotecnologia e o argumento médico mais forte para proteger espécies."},
+  {id:"preistoria",n:"V",e:"🗿",t:"Antes da História",s:"Arte, monumentos e sociedades anteriores à escrita",i:"A mente simbólica é dezenas de milhares de anos mais velha do que a Mesopotâmia. Aqui estão as evidências sólidas, as hipóteses abertas e as alegações que caíram."},
+  {id:"tecnologia",n:"VI",e:"⚙️",t:"Tecnologias da Antiguidade",s:"Engenhos reais que parecem impossíveis, e a física por trás",i:"Computadores de bronze, nanotecnologia romana, aço lendário, concreto que se regenera. Nenhum exige alienígenas; quase todos exigem perguntar por que o conhecimento se perdeu."},
+  {id:"escritas",n:"VII",e:"🔐",t:"Escritas Indecifradas e Textos Perdidos",s:"Códigos que resistem e bibliotecas que voltam a falar",i:"Ler um texto exige saber a língua, ter textos suficientes e, de preferência, um bilíngue. Quando falta uma dessas peças, nasce um enigma."},
+  {id:"lacunas",n:"VIII",e:"🕳️",t:"Lacunas da História",s:"Colapsos, silêncios e perguntas sem resposta cabível",i:"Os buracos que os pesquisadores ainda não preencheram: civilizações que somem, povos que esquecem a escrita, ancestrais conhecidos só por DNA."},
+  {id:"salomao",n:"IX",e:"👑",t:"O Códice de Salomão",s:"Sabedoria, Templo, magia e tecnologia, entre fé, história e lenda",i:"Um rei, três camadas: o texto bíblico, o que a arqueologia consegue dizer e a imensa tradição posterior de anéis, demônios, grimórios e tesouros. Cada camada tem seu selo."},
+  {id:"paleomedicina",n:"X",e:"🩺",t:"Paleomedicina",s:"Doenças, cirurgias e genes através do tempo profundo",i:"Câncer em dinossauros, neurocirurgia neolítica, aterosclerose em múmias, genes neandertais na UTI. A medicina também tem fósseis."},
+  {id:"metodo",n:"XI",e:"⚖️",t:"Fé, Ciência e Método",s:"Como pensar como investigador, e por que teologia também se estuda",i:"Ferramentas para separar mistério de bobagem, e a lembrança de que boa parte da ciência nasceu dentro de mosteiros, catedrais e universidades religiosas."}
+];
+const CARDS=[];
+function C(id,livro,e,t,quando,onde,selo,disc,o){if(o.t!==undefined){o.td=o.t;delete o.t;}CARDS.push(Object.assign({id:id,livro:livro,e:e,t:t,quando:quando,onde:onde,selo:selo,disc:disc.split(" ")},o));}
+
+/* ---------- I. O Arquivo de Pedra ---------- */
+C("steno","fosseis","🦈","Nicolas Steno e as línguas de pedra","1667–1669","Florença","consenso","geo his teo bio",{
+r:"As glossopetrae, “línguas de pedra” vendidas como amuletos, eram dentes de tubarão. O anatomista dinamarquês Nicolas Steno dissecou uma cabeça de tubarão em 1666, percebeu a semelhança e, em 1669, formulou as leis da estratigrafia: camadas de baixo são mais antigas (superposição), nascem horizontais e se estendem lateralmente.",
+q:"Como um anatomista se tornou pai da geologia? O que se ganha quando alguém estuda fora da própria área?",
+n:"Steno converteu-se ao catolicismo, foi ordenado padre e virou bispo; o papa João Paulo II o beatificou em 1988. Um dos fundadores da geologia está a caminho dos altares.",
+a:"Alan Cutler, The Seashell on the Mountaintop (2003).",l:"fossilizacao datacao teologia-ciencia"});
+C("fossilizacao","fosseis","🦴","Como nasce um fóssil","—","Em toda a crosta","consenso","geo bio fis",{
+r:"Fossilizar é exceção: exige soterramento rápido, pouco oxigênio e água com minerais. Há permineralização (minerais preenchem os poros do osso), substituição, moldes, compressões carbonizadas, âmbar, congelamento no permafrost e icnofósseis como pegadas, ovos e coprólitos. A tafonomia estuda o caminho do cadáver até a rocha.",
+q:"Que seres vivos quase nunca aparecem no registro, e que história isso esconde de nós?",
+n:"O registro fóssil é enviesado: favorece quem tinha partes duras e vivia perto de rios, lagos e mares. Florestas tropicais secas e animais de corpo mole somem quase sem deixar rastro.",
+a:"Donald Prothero, Bringing Fossils to Life (3ª ed., 2013).",l:"araripe datacao tecidos-moles"});
+C("datacao","fosseis","⏳","Relógios atômicos da Terra","desde 1907","Laboratórios do mundo todo","consenso","fis mat geo med",{
+r:"Isótopos instáveis decaem a ritmo constante: N = N₀·e^(−λt). O carbono-14 (meia-vida de 5.730 anos) serve só para matéria orgânica até ~50 mil anos. Rochas antigas usam urânio-chumbo em zircões, argônio-argônio em lavas e a série do urânio em crostas de calcita. Fósseis costumam ser datados pelas camadas vulcânicas acima e abaixo deles.",
+q:"Se cada método tem um alcance, como se costura uma linha do tempo contínua de 4,5 bilhões de anos?",
+n:"Os testes nucleares das décadas de 1950 e 1960 quase dobraram o C-14 do ar. Esse “pulso da bomba” ficou gravado nas células e permitiu medir a renovação de neurônios no hipocampo humano (Spalding et al., Cell, 2013).",
+a:"Use o relógio de carbono-14 no Laboratório. Leitura: Brent Dalrymple, The Age of the Earth (1991).",l:"steno sulawesi oklo"});
+C("tecidos-moles","fosseis","🧪","Tecido mole num T. rex","2005","Montana, EUA","debate","bio med fis",{
+r:"Mary Schweitzer descreveu estruturas flexíveis semelhantes a vasos sanguíneos e células dentro de um fêmur de T. rex de ~68 milhões de anos. A explicação mais aceita: o ferro do sangue gera radicais livres que fazem ligações cruzadas nas proteínas, como um fixador. O debate é se há proteína original ou contaminação e biofilme bacteriano.",
+q:"Qual o limite de tempo para uma molécula biológica sobreviver?",
+n:"O DNA mais antigo já lido tem cerca de 2 milhões de anos (Kap København, Groenlândia, 2022). Proteínas do esmalte resistem bem mais. Para o médico: é a mesma química de ferro e estresse oxidativo que lesa tecidos na reperfusão.",
+a:"Schweitzer et al., Science (2005) e Proceedings B (2014), sobre o papel do ferro.",l:"penas-cor denisovanos colossal"});
+C("penas-cor","fosseis","🪶","Dinossauros com penas, e com cor","1996 em diante","Liaoning, China","consenso","bio fis",{
+r:"O Sinosauropteryx (1996) foi o primeiro dinossauro não-aviano achado com filamentos semelhantes a penas. Melanossomos fossilizados, as organelas do pigmento, revelaram cores: cauda listrada em tons ruivos e uma “máscara de bandido” nos olhos. As aves são dinossauros terópodes que sobreviveram.",
+q:"Se as penas surgiram antes do voo, para que serviam no começo: calor, exibição, ninhada?",
+n:"O T. rex viveu mais perto de você no tempo do que do Estegossauro: ~66 milhões de anos nos separam dele, e ~80 milhões o separam do Estegossauro.",
+a:"Steve Brusatte, Ascensão e Queda dos Dinossauros (2018).",l:"kpg ubirajara"});
+C("araripe","fosseis","🏜️","Chapada do Araripe, o Ceará fóssil","~115–110 milhões de anos","Sul do Ceará","consenso","geo gea bio his",{
+r:"As formações Crato e Romualdo guardam peixes em nódulos tridimensionais, insetos, plantas com flor primitivas, pterossauros como Tupandactylus e Anhanguera e o espinossaurídeo Irritator. O Geopark Araripe foi o primeiro geoparque da UNESCO nas Américas (2006). O Museu de Paleontologia Plácido Cidade Nuvens, da URCA, fica em Santana do Cariri.",
+q:"Quantos fósseis do Cariri ainda estão em museus estrangeiros, e com que direito?",
+n:"O Irritator challengeri ganhou esse nome porque os descritores ficaram irritados: traficantes alongaram o crânio com gesso para valorizar a peça. O exemplar está em Stuttgart, na Alemanha.",
+a:"Visite o Geopark Araripe e o museu de Santana do Cariri; busque o projeto “Mundo dos Fósseis” do jornal O Povo.",l:"ubirajara fossilizacao itapipoca"});
+C("ubirajara","fosseis","🦖","Ubirajara, o dinossauro que voltou para casa","viveu há ~110 milhões de anos; repatriado em 2023","Santana do Cariri, CE","consenso","his bio gea",{
+r:"Pequeno terópode com estruturas rígidas nos ombros, provavelmente para exibição. Saiu do Cariri nos anos 1990 e ficou exposto em Karlsruhe, na Alemanha. A campanha de paleontólogos brasileiros fez o artigo de 2020 ser retirado e o fóssil foi oficialmente repatriado em junho de 2023, indo para o museu de Santana do Cariri.",
+q:"De quem é um fóssil: da ciência global, do país de origem ou da comunidade que vive sobre ele?",
+n:"Com o artigo retirado, “Ubirajara jubatus” virou um nome informal, sem validade na nomenclatura zoológica. Um dinossauro famoso que, tecnicamente, ainda não tem nome.",
+a:"Reportagens do Diário do Nordeste e de O Povo sobre a repatriação (2023).",l:"araripe colossal"});
+C("itapipoca","fosseis","🦥","Os gigantes da Era do Gelo no Ceará","Pleistoceno, últimos ~100 mil anos","Região de Itapipoca, CE","consenso","bio gea geo",{
+r:"Tanques naturais escavados na rocha da região de Itapipoca acumularam ossos de preguiças-gigantes (Eremotherium, de até ~6 m), mastodontes (Notiomastodon), toxodontes e gliptodontes. São janelas para o Ceará de quando o semiárido era povoado por megafauna.",
+q:"Os primeiros humanos do Nordeste conviveram com esses animais? Que evidência resolveria isso?",
+a:"Busque artigos sobre tanques fossilíferos do Nordeste e o acervo do Museu Nacional (UFRJ).",l:"megafauna serra-capivara"});
+
+/* ---------- II. Extintos pela Natureza ---------- */
+C("goe","natureza","🫧","O Grande Evento de Oxidação","~2,4 bilhões de anos","Oceanos globais","consenso","geo bio fis",{
+r:"Cianobactérias liberaram oxigênio, um gás tóxico para os micróbios anaeróbios que dominavam a Terra. O ferro dissolvido oxidou e formou as formações ferríferas bandadas. A queda de metano pode ter disparado a glaciação Huroniana, uma “Terra bola de neve”.",
+c:"Poluição biológica: um novo metabolismo mudou a química do planeta.",
+p:"Ninguém poderia ter impedido. A lição é dura: uma única forma de vida pode alterar a atmosfera inteira. Nós somos a segunda.",
+q:"Quanto da vida anaeróbia antiga sumiu sem deixar fóssil?",
+n:"Boa parte do minério de ferro do mundo, inclusive o brasileiro, vem de formações ferríferas desse oceano antigo.",l:"permiano sexta"});
+C("ordoviciano","natureza","🧊","A primeira grande extinção","~445 milhões de anos","Mares de todo o planeta","consenso","geo fis gea",{
+r:"Cerca de 85% das espécies marinhas sumiram. O supercontinente Gondwana, que reunia a futura África e a América do Sul, derivou sobre o polo sul; geleiras cresceram, o nível do mar caiu e os mares rasos, onde estava quase toda a vida, secaram ou esfriaram.",
+c:"Glaciação rápida, queda do nível do mar e mudança na química oceânica.",
+p:"Nada a fazer. A lição: resfriar rápido também mata. O perigo está mais na velocidade da mudança do que na direção.",
+q:"Uma explosão de raios gama vinda de uma estrela próxima poderia ter ajudado? É hipótese de fronteira, sem evidência direta.",l:"devoniano permiano"});
+C("devoniano","natureza","🐟","Devoniano Tardio, quando as florestas mataram","~372–359 milhões de anos","Recifes e mares rasos","debate","geo bio",{
+r:"Uma sequência de pulsos de falta de oxigênio nos oceanos (eventos Kellwasser e Hangenberg) colapsou os recifes e eliminou os placodermos, peixes encouraçados como o Dunkleosteus. Também houve vulcanismo e oscilações climáticas.",
+c:"Hipótese elegante: as primeiras árvores com raízes profundas aceleraram a erosão; nutrientes chegaram ao mar, algas explodiram e consumiram o oxigênio.",
+p:"Nada a fazer então. Hoje acontece em miniatura: fertilizantes agrícolas criam “zonas mortas” sem oxigênio no Golfo do México e no Báltico.",
+q:"Uma inovação biológica, como as árvores, pode causar uma extinção em massa?",l:"ordoviciano permiano"});
+C("permiano","natureza","🌋","A Grande Mortandade","~252 milhões de anos","Sibéria e todo o planeta","consenso","geo fis bio",{
+r:"A pior extinção da história: ~80–90% das espécies marinhas e cerca de 70% dos vertebrados terrestres. As Trapas Siberianas despejaram lava sobre camadas de carvão, liberando CO₂ e metano. Oceanos tropicais podem ter chegado perto de 40 °C. É a única extinção em massa conhecida de insetos. A recuperação levou de 5 a 10 milhões de anos.",
+c:"Aquecimento extremo, acidificação e perda de oxigênio dos oceanos.",
+p:"Ninguém para agir. Mas o mecanismo, carbono rápido gerando calor, acidez e falta de oxigênio, é o “trio mortal” que oceanógrafos monitoram hoje.",
+q:"Quanto carbono, em quanto tempo, transforma uma crise em mortandade?",
+a:"Peter Brannen, The Ends of the World (2017).",l:"triassico trilobitas sexta"});
+C("triassico","natureza","🌍","Triássico-Jurássico e a abertura do Atlântico","~201 milhões de anos","Pangeia em ruptura","consenso","geo gea",{
+r:"A Província Magmática do Atlântico Central derramou basalto em quatro continentes enquanto a Pangeia se rasgava. Cerca de 75% das espécies sumiram, inclusive muitos rivais dos dinossauros, que então dominaram a Terra.",
+c:"Vulcanismo massivo, CO₂ e aquecimento.",
+p:"Nada a fazer. Para os dinossauros, a catástrofe foi oportunidade: extinções também abrem espaço.",
+q:"Os dinossauros venceram por superioridade ou por sorte?",
+n:"A Bacia do Parnaíba, cuja borda leste forma a Serra da Ibiapaba, vizinha de Sobral, guarda basaltos desse evento (Formação Mosquito, no Maranhão).",l:"kpg permiano"});
+C("kpg","natureza","☄️","O fim dos dinossauros não-avianos","66 milhões de anos","Chicxulub, Iucatã","consenso","fis geo bio mat",{
+r:"Um asteroide de ~10 km abriu uma cratera de ~180 km. A energia, da ordem de 10²³ joules, lançou fuligem e aerossóis de enxofre que bloquearam a fotossíntese por anos. A camada de irídio que denunciou o impacto foi descrita por Luis e Walter Alvarez em 1980. As Trapas do Decã, na Índia, já estavam ativas e o peso de cada fator ainda é discutido. Cerca de 75% das espécies sumiram.",
+c:"Impacto, inverno de impacto, incêndios e colapso da cadeia alimentar.",
+p:"Os dinossauros não tinham telescópios. Nós temos: rastreamos asteroides e já desviamos um (veja DART).",
+q:"Por que sobreviveram aves, pequenos mamíferos, crocodilos e tartarugas? Tamanho pequeno, tocas, água doce e dietas de sementes ou detritos parecem ter ajudado.",
+n:"Peixes fósseis do sítio de Tanis, em Dakota do Norte, sugerem que o impacto ocorreu na primavera do hemisfério norte (During et al., Nature, 2022).",
+a:"Calcule a energia de Chicxulub no Laboratório.",l:"dart penas-cor amonites"});
+C("trilobitas","natureza","🪲","Trilobitas, olhos de cristal","~521–252 milhões de anos","Mares paleozoicos","consenso","bio geo fis",{
+r:"Mais de 20 mil espécies de artrópodes marinhos que atravessaram quase 300 milhões de anos e várias crises, até desaparecerem na Grande Mortandade. Tinham olhos com lentes de calcita, um mineral.",
+c:"Declínio longo e golpe final na extinção do Permiano.",
+p:"Nada a fazer. Fica a humildade: um grupo que durou 270 milhões de anos também acabou.",
+q:"O que faz um grupo durar tanto e depois sumir?",
+n:"Algumas lentes tinham duas camadas que corrigiam a aberração esférica, solução que Descartes e Huygens descreveriam no século XVII (Clarkson e Levi-Setti, Nature, 1975).",l:"permiano amonites"});
+C("amonites","natureza","🐚","Amonites e a espiral do tempo","~400–66 milhões de anos","Oceanos","consenso","bio mat geo",{
+r:"Cefalópodes de concha espiral, tão abundantes e variados que servem como “fósseis-guia” para datar rochas. Morreram com os dinossauros, provavelmente porque suas larvas viviam no plâncton, que colapsou e acidificou. Os náutilos, com ovos grandes e metabolismo lento, sobreviveram.",
+c:"Colapso do plâncton e acidificação após o impacto de Chicxulub.",
+p:"Nada a fazer. A lição: a fase mais frágil da vida, a larval, decide o destino da espécie.",
+q:"A acidificação dos oceanos atuais ameaça de novo as larvas com concha?",
+n:"A concha segue uma espiral logarítmica, r = a·e^(bθ). O mito de que o náutilo segue a razão áurea é falso: a proporção real varia.",l:"kpg trilobitas"});
+C("megalodonte","natureza","🦈","Megalodonte","~23–3,6 milhões de anos","Oceanos quentes","debate","bio geo",{
+r:"O maior tubarão predador conhecido; estimativas de tamanho vão de ~15 a mais de 20 m. Isótopos indicam que mantinha o corpo mais quente que a água. Sumiu há ~3,6 milhões de anos.",
+c:"Resfriamento do Plioceno, mudança nas presas (baleias indo para águas frias) e concorrência com o tubarão-branco, que isótopos de zinco mostram disputar as mesmas presas (2022).",
+p:"Nada a fazer: foi o clima. Mas ele mostra que até o topo da cadeia alimentar é vulnerável.",
+q:"Por que um predador gigante perdeu para um menor?",l:"gigantopithecus"});
+C("gigantopithecus","natureza","🦍","Gigantopithecus, o maior primata","extinto entre ~295 e 215 mil anos","Sul da China","consenso","bio gea",{
+r:"Conhecido só por mandíbulas e cerca de dois mil dentes, pode ter chegado a 3 m e 200–300 kg. Um estudo na Nature (2024) mostrou que as florestas ficaram mais sazonais; ele manteve a dieta, ficou maior e menos móvel, enquanto o orangotango se adaptou.",
+c:"Inflexibilidade alimentar diante de uma mudança ambiental.",
+p:"Sem culpados. Lição de vida: adaptabilidade vale mais do que tamanho.",
+q:"Se ele tivesse mudado a dieta, teria sobrevivido até encontrar os humanos?",l:"megalodonte megafauna"});
+C("toba","natureza","🌋","Toba e o falso gargalo humano","~74 mil anos","Sumatra, Indonésia","debate","geo bio his",{
+r:"A maior erupção vulcânica dos últimos dois milhões de anos. Por décadas se disse que o inverno vulcânico quase extinguiu a humanidade. Sítios na África do Sul (Pinnacle Point) e na Etiópia (Shinfa-Metema, Nature, 2024) mostram humanos atravessando o evento sem colapso.",
+c:"Não causou extinção humana; a hipótese da catástrofe perdeu força.",
+p:"A lição é de método: uma boa história precisa de dados no local certo.",
+q:"Se Toba não foi o gargalo, o que reduziu a diversidade genética humana?",l:"gargalo"});
+
+/* ---------- III. Extintos pela Mão Humana ---------- */
+C("megafauna","humanos","🦣","A megafauna da Era do Gelo","~50 a 10 mil anos","Todos os continentes, menos a África","debate","bio gea his",{
+r:"Preguiças-gigantes, gliptodontes, dentes-de-sabre, mastodontes, mamutes. Na América do Sul, cerca de 80% dos gêneros de grandes mamíferos sumiram. O desaparecimento acompanha a chegada humana em cada continente, mas coincide também com mudanças climáticas.",
+c:"Hoje predomina a hipótese da sinergia: caça, clima instável e fragmentação de habitat. A África, onde a fauna coevoluiu com hominídeos, manteve seus gigantes.",
+p:"Animais que têm um filhote a cada vários anos não aguentam nem caça moderada. O princípio vale hoje para elefantes, rinocerontes e baleias.",
+q:"Qual a parcela da culpa humana? Que tipo de sítio arqueológico resolveria a questão?",l:"itapipoca mamute-wrangel moa"});
+C("mamute-wrangel","humanos","🦣","Os últimos mamutes","até ~4 mil anos atrás","Ilha Wrangel, Ártico","debate","bio his gea",{
+r:"Mamutes-lanudos sobreviveram isolados na Ilha Wrangel até cerca de 4 mil anos atrás, quando a Grande Pirâmide de Gizé já tinha uns 500 anos. Um estudo de genomas (Cell, 2024) indica que a pequena população era estável e que o fim foi provavelmente súbito.",
+c:"Desconhecida: evento climático, doença ou chegada humana. Não há evidência de caça na ilha.",
+p:"Populações pequenas e isoladas precisam de monitoramento: um único evento pode zerá-las.",
+q:"O que matou de vez os mamutes de Wrangel?",l:"megafauna colossal"});
+C("neandertais","humanos","🧔","Neandertais, extintos mas não ausentes","~40 mil anos","Europa e Ásia Ocidental","debate","bio med his",{
+r:"Desapareceram como população, mas cerca de 2% do genoma de quem descende de povos de fora da África vem deles. Causas debatidas: grupos pequenos e endogâmicos, concorrência com o Homo sapiens, clima instável e absorção genética.",
+c:"Provável combinação de demografia frágil, competição e clima.",
+p:"Pergunta ética aberta: qual foi o papel do nosso próprio ancestral?",
+q:"Os neandertais foram vencidos ou incorporados?",
+n:"Um trecho neandertal no cromossomo 3 aumenta o risco de COVID-19 grave (Zeberg e Pääbo, Nature, 2020); outros se associam à contratura de Dupuytren e à sensibilidade à dor. Svante Pääbo ganhou o Nobel de Medicina em 2022.",
+a:"Svante Pääbo, Neanderthal Man (2014).",l:"denisovanos lactase"});
+C("moa","humanos","🪶","Moas da Nova Zelândia","extintos por volta de 1400–1450","Nova Zelândia","consenso","bio his gea",{
+r:"Nove espécies de aves gigantes sem asas; a maior passava de 3,6 m com o pescoço erguido. Sumiram em 100 a 200 anos após a chegada dos polinésios, por volta de 1280. A águia-de-Haast, a maior águia conhecida, que caçava moas, sumiu junto.",
+c:"Caça e coleta de ovos por uma população humana pequena, diante de aves que nunca tinham visto um predador terrestre.",
+p:"Limites de caça, proteção de ninhos e áreas de refúgio. Poucos caçadores bastam contra animais ingênuos.",
+q:"A extinção em cascata, presa e predador juntos, é a regra ou a exceção?",
+n:"Em 2025 a Colossal anunciou um projeto de “de-extinção” do moa com o cineasta Peter Jackson e o Ngāi Tahu Research Centre.",l:"dodo colossal megafauna"});
+C("dodo","humanos","🦤","Dodô","último registro aceito ~1662","Ilhas Maurício","consenso","bio his",{
+r:"Um pombo gigante, parente do pombo-de-nicobar, que não voava e fazia ninho no chão. Os holandeses chegaram em 1598; em cerca de 60 a 80 anos a espécie acabou.",
+c:"Menos a caça e mais os porcos, macacos, ratos e cães trazidos nos navios, que comiam ovos e filhotes.",
+p:"Biossegurança: impedir espécies invasoras é a medida que mais salva fauna de ilha hoje, como na erradicação de ratos em ilhas oceânicas.",
+q:"Quantos dodôs anônimos sumiram em ilhas antes de alguém desenhá-los?",
+n:"Em outubro de 2026 a Colossal anunciou avanços no genoma do dodô e em células germinativas do pombo-de-nicobar.",l:"colossal steller"});
+C("steller","humanos","🐋","Vaca-marinha-de-Steller","descrita em 1741, extinta em 1768","Ilhas Comandante, Pacífico Norte","consenso","bio his gea",{
+r:"Um sirênio de 8 a 9 m que comia algas. Foi descrito pelo naturalista Georg Steller em 1741 e caçado até o fim por tripulações de caçadores de peles em apenas 27 anos.",
+c:"Caça direta e, possivelmente, cascata ecológica: matar lontras-marinhas deixou os ouriços se multiplicarem e devorarem as florestas de kelp.",
+p:"Proteção imediata após a descoberta e manejo do ecossistema inteiro, não só da espécie.",
+q:"Quanto tempo leva entre descobrir uma espécie e perdê-la?",l:"dodo alca"});
+C("alca","humanos","🐧","Alca-gigante, o pinguim original","3 de junho de 1844","Ilhota de Eldey, Islândia","consenso","bio his",{
+r:"Ave marinha sem voo do Atlântico Norte, a primeira a ser chamada de “pinguim”. Caçada por penas, óleo e carne. O último par foi morto em 1844 para abastecer colecionadores.",
+c:"Caça comercial e, no fim, coleta científica.",
+p:"Proteção legal das colônias. Paradoxo cruel: quanto mais rara, mais valiosa para colecionadores e mais rápido o fim.",
+q:"Museus que pagam por exemplares raros ajudam ou aceleram extinções?",l:"pombo steller"});
+C("pombo","humanos","🕊️","Pombo-passageiro","Martha, 1º de setembro de 1914","Zoológico de Cincinnati","consenso","bio his mat",{
+r:"Talvez a ave mais numerosa da América do Norte, com bilhões de indivíduos em bandos que escureciam o céu por horas. Em poucas décadas, sobrou só Martha.",
+c:"Caça industrial organizada por telégrafo e ferrovia, mais o desmatamento.",
+p:"Limites de caça a tempo e proteção dos ninhais.",
+q:"Por que uma espécie com bilhões de indivíduos é frágil?",
+n:"Efeito Allee: espécies que dependem de colônias gigantes param de se reproduzir abaixo de um certo tamanho. Ecologia não linear, um bom exercício de matemática.",l:"alca curlew"});
+C("tilacino","humanos","🐯","Tilacino, o tigre-da-tasmânia","Benjamin, 7 de setembro de 1936","Hobart, Tasmânia","consenso","bio his",{
+r:"O maior marsupial carnívoro dos tempos modernos. Entre 1888 e 1909 o governo pagou mais de duas mil recompensas por animais mortos. A proteção legal chegou 59 dias antes da morte do último indivíduo em cativeiro.",
+c:"Caça com recompensa, perda de habitat e doenças.",
+p:"Proteger antes, não depois. A lição: lei tardia é epitáfio.",
+q:"Os avistamentos relatados até hoje merecem investigação? Selo de fronteira para essa parte.",
+n:"A Colossal diz ter reconstruído o genoma do tilacino quase por completo e trabalha com o dunnart, um pequeno marsupial, como base.",l:"colossal quagga"});
+C("quagga","humanos","🦓","Quagga","12 de agosto de 1883","Zoológico de Amsterdã","consenso","bio",{
+r:"Uma subespécie da zebra-das-planícies listrada só na parte da frente do corpo, caçada na África do Sul.",
+c:"Caça e competição com o gado.",
+p:"Reservas e controle de caça.",
+q:"Recriar a aparência de um animal é o mesmo que recriar o animal?",
+n:"Foi o primeiro animal extinto a ter DNA sequenciado (1984). O Projeto Quagga cruza zebras para recuperar o padrão de listras, uma aparência, não a subespécie original.",l:"colossal auroque"});
+C("auroque","humanos","🐂","Auroque, o ancestral do boi","1627","Floresta de Jaktorów, Polônia","consenso","bio his",{
+r:"O boi selvagem pintado em Lascaux e ancestral do gado doméstico. A última fêmea morreu numa reserva real polonesa, talvez a primeira extinção registrada com data.",
+c:"Caça ilegal, perda de habitat e doenças passadas pelo gado doméstico, mesmo com proteção real.",
+p:"Corredores de habitat e quarentena sanitária entre rebanhos domésticos e selvagens.",
+q:"Por que a proteção do rei não bastou?",l:"quagga one-health"});
+C("baiji","humanos","🐬","Baiji, o golfinho do Yangtzé","declarado funcionalmente extinto em 2006","Rio Yangtzé, China","consenso","bio gea",{
+r:"Uma linhagem de cerca de 20 milhões de anos. É considerado o primeiro cetáceo levado à extinção por humanos.",
+c:"Redes e pesca com choque elétrico, tráfego de barcos (ruído que cega quem enxerga por ecolocalização), barragens e poluição.",
+p:"Zonas de exclusão de pesca, controle de ruído e de barragens. Hoje todos os golfinhos de rio do mundo estão ameaçados, inclusive o boto-cor-de-rosa da Amazônia.",
+q:"O que o baiji ensina para proteger o boto amazônico?",l:"sexta meta30"});
+C("sapo-dourado","humanos","🐸","Sapo-dourado de Monteverde","último registro em 1989","Costa Rica","consenso","bio med",{
+r:"Um sapo laranja-brilhante visto pela última vez em 1989 e declarado extinto em 2004.",
+c:"Quitridiomicose, causada pelo fungo Batrachochytrium dendrobatidis, espalhada pelo comércio global de anfíbios, somada a secas ligadas ao El Niño. O fungo contribuiu para o declínio de mais de 500 espécies e cerca de 90 extinções (Scheele et al., Science, 2019).",
+p:"Controle sanitário no comércio de animais e colônias de resgate. Uma pandemia fúngica tratada como problema de saúde pública.",
+q:"Que outras pandemias silenciosas estão acontecendo na fauna agora?",l:"one-health ararinha"});
+C("curlew","humanos","🐦","Maçarico-de-bico-fino","último registro em 1995; extinção declarada em out/2025","Da Sibéria ao Marrocos","consenso","bio gea",{
+r:"Ave migratória que se reproduzia na Sibéria e no Cazaquistão e invernava no Mediterrâneo e no Norte da África. A IUCN o declarou extinto em outubro de 2025, a primeira extinção global conhecida de uma ave migratória antes difundida nessa rota.",
+c:"Caça insustentável e perda de áreas úmidas ao longo da rota migratória.",
+p:"Cooperação entre os ~30 países da rota, que chegou tarde, quando restavam dezenas de aves.",
+q:"Como proteger um animal que depende de vários países ao longo do ano?",l:"pombo sexta"});
+C("ararinha","humanos","🦜","Ararinha-azul","extinta na natureza em 2000; solta em 2022; recolhida em 2025","Curaçá, Bahia","consenso","bio med gea",{
+r:"Ave da Caatinga baiana, extinta na natureza em 2000. Vinte aves foram soltas em Curaçá em 2022. Em novembro de 2025 as 11 que viviam livres foram recapturadas e testaram positivo para circovírus, a doença do bico e das penas, sem cura. O ICMBio passou a classificá-la como Criticamente em Perigo (Possivelmente Extinta) na natureza, em meio a uma disputa com o criadouro.",
+c:"Tráfico de animais e destruição da Caatinga; agora, risco sanitário no próprio programa de resgate.",
+p:"Biossegurança rigorosa, fiscalização do tráfico e recuperação da mata ciliar de caraibeiras onde ela vive.",
+q:"Um vírus pode desfazer décadas de conservação? Como evitar isso em outros programas?",l:"one-health sapo-dourado meta30"});
+C("melomys","humanos","🐭","Rato-de-Bramble-Cay","declarado extinto em 2016 e oficialmente em 2019","Estreito de Torres, Austrália","consenso","bio gea fis",{
+r:"Um pequeno roedor que vivia só numa ilhota de areia de poucos hectares. É considerado o primeiro mamífero extinto principalmente pela mudança climática.",
+c:"Marés de tempestade e elevação do mar inundaram a vegetação da ilha repetidas vezes.",
+p:"Uma colônia de resgate em cativeiro teria bastado; ela nunca foi criada.",
+q:"Quantas espécies de ilhas baixas estão na mesma situação?",l:"sexta"});
+
+/* ---------- IV. O Antídoto ---------- */
+C("sexta","antidoto","📉","A sexta extinção está em curso?","hoje","Planeta inteiro","debate","bio mat gea",{
+r:"A Lista Vermelha da IUCN (julho de 2026) avalia 175.909 espécies, das quais 49.505 estão ameaçadas. O Índice Planeta Vivo (2024) mostra queda média de 73% nas populações monitoradas de vertebrados desde 1970. Os motores, em ordem: uso da terra e do mar, exploração direta, clima, poluição e espécies invasoras.",
+c:"Atividade humana; o debate é sobre o nome, já que ainda não se perderam 75% das espécies, critério das cinco grandes.",
+p:"Áreas protegidas efetivas, combate ao tráfico, controle de invasoras e corte de emissões.",
+q:"A velocidade atual é comparável às grandes extinções? Que dado convenceria um cético?",
+a:"Elizabeth Kolbert, A Sexta Extinção (2014).",l:"meta30 permiano goe"});
+C("dart","antidoto","🛰️","Defesa planetária: DART","26 de setembro de 2022","Asteroide Dimorphos","consenso","fis mat tec",{
+r:"A NASA lançou a sonda DART contra o asteroide Dimorphos e encurtou sua órbita em ~33 minutos: a primeira vez que a humanidade mudou o movimento de um corpo celeste. A missão europeia Hera, lançada em 2024, deve chegar ao sistema no fim de 2026 para medir o resultado em detalhe.",
+c:"A resposta direta ao destino dos dinossauros.",
+p:"Catalogar asteroides próximos, sobretudo os de mais de 140 m, e ter tempo de reação de anos.",
+q:"Quanto tempo de aviso precisamos para desviar um asteroide de 1 km?",
+a:"Teste impactos no Laboratório.",l:"kpg"});
+C("svalbard","antidoto","🌱","Cofre Global de Sementes","desde 2008","Svalbard, Noruega","consenso","bio gea",{
+r:"Uma arca de sementes escavada no permafrost do Ártico, com mais de um milhão de amostras de cultivos do mundo todo. Em 2015 houve a primeira retirada, pelo centro ICARDA, cujo banco na Síria ficou inacessível na guerra.",
+c:"Seguro contra guerras, catástrofes e perda de variedades agrícolas.",
+p:"Bancos de germoplasma também existem no Brasil, como o da Embrapa Recursos Genéticos e Biotecnologia.",
+q:"E os animais? Biobancos de células congeladas são a arca equivalente?",l:"colossal meta30"});
+C("colossal","antidoto","🧬","De-extinção e os “lobos-terríveis”","abril de 2025 até hoje","Dallas, EUA","debate","bio med teo",{
+r:"A Colossal Biosciences apresentou em 2025 três filhotes, Romulus, Remus e Khaleesi: lobos-cinzentos com cerca de 20 edições em 14 genes para imitar o lobo-terrível extinto há mais de 10 mil anos. Especialistas da IUCN dizem que são lobos-cinzentos modificados, não lobos-terríveis. A empresa mira também mamute, tilacino, dodô e moa.",
+c:"Tecnologia de edição genética, clonagem e incubação artificial.",
+p:"Uso mais defensável: resgate genético de espécies vivas, como aumentar a diversidade de populações pequenas.",
+q:"Dinheiro para “ressuscitar” é dinheiro tirado de quem ainda vive? E o bem-estar de um animal sem bando nem ecossistema?",
+a:"Reportagem do The Guardian, “Extinction is still for ever” (jan/2026).",l:"tilacino dodo moa"});
+C("meta30","antidoto","🗺️","A meta 30x30","acordo de Kunming-Montreal, dezembro de 2022","Mundo","consenso","gea his",{
+r:"Os países da Convenção sobre Diversidade Biológica concordaram em proteger 30% das terras e dos mares até 2030. O Brasil tem papel decisivo: Amazônia, Cerrado e a Caatinga, bioma exclusivamente brasileiro e um dos menos protegidos.",
+c:"Proteger habitat é a medida com maior retorno contra extinções.",
+p:"Áreas protegidas com fiscalização real, não só no papel.",
+q:"Quanto da Caatinga do Ceará está protegido de fato?",l:"ararinha sexta"});
+C("captopril","antidoto","💊","A jararaca que salvou milhões","1965–1981","Ribeirão Preto, SP","consenso","med bio his",{
+r:"Sérgio Henrique Ferreira descobriu no veneno da jararaca (Bothrops jararaca) um fator que potencializa a bradicinina. Esse caminho levou ao captopril, aprovado em 1981, o primeiro inibidor da enzima conversora de angiotensina, base do tratamento da hipertensão e da insuficiência cardíaca.",
+c:"Biodiversidade como farmácia.",
+p:"Cada espécie extinta pode levar um remédio que nunca conheceremos.",
+q:"Que outros venenos e plantas da Caatinga ainda não foram estudados?",l:"one-health sexta"});
+
+/* ---------- V. Antes da História ---------- */
+C("sulawesi","preistoria","🖐️","A arte mais antiga do mundo","pelo menos 67.800 anos","Caverna Liang Metanduno, ilha de Muna","consenso","his fis gea",{
+r:"Um estêncil de mão com os dedos afinados como garras, datado pela série do urânio das crostas de calcita que o cobrem (Nature, janeiro de 2026). Supera em cerca de 1.100 anos um estêncil espanhol atribuído a neandertais. Em 2024 a mesma equipe datou uma cena com porco e figuras humanas em pelo menos 51.200 anos.",
+q:"Por que alongar os dedos? Fusão de humano e animal, mito, identidade de grupo?",
+t:"Encontrar o mesmo motivo de garra em outros sítios datados permitiria rastrear uma tradição cultural.",
+n:"A mente simbólica é dezenas de milhares de anos mais velha do que a escrita da Mesopotâmia, de ~5.200 anos.",l:"datacao gobekli serra-capivara"});
+C("gobekli","preistoria","🗿","Göbekli Tepe e as Colinas de Pedra","~9600–8200 a.C.","Şanlıurfa, Turquia","consenso","his teo geo",{
+r:"Pilares em forma de T, de até ~5,5 m, esculpidos com raposas, javalis e abutres, erguidos por caçadores-coletores cerca de 6 mil anos antes de Stonehenge e 7 mil antes das pirâmides. O escavador Klaus Schmidt resumiu: primeiro veio o templo, depois a cidade. O projeto Taş Tepeler, com Karahan Tepe a ~30 km, revelou pilares com rosto humano, uma estátua embutida numa parede, enterramentos intactos (2026) e possíveis casas.",
+q:"Foi um santuário puro ou um assentamento com rituais? As descobertas de 2025–2026 empurram para a segunda resposta.",
+t:"Escavar camadas domésticas com lixo, lareiras e restos de alimentos datados.",
+n:"Em agosto de 2026 a Turquia anunciou em Karahan Tepe uma escultura de humano montado num leopardo.",
+a:"Klaus Schmidt, Göbekli Tepe: A Stone Age Sanctuary (2006, trad. inglesa 2012).",l:"abutre catalhoyuk teologia-ciencia"});
+C("abutre","preistoria","🦅","A Pedra do Abutre registra um cometa?","Pilar 43, ~9.500 a.C.","Göbekli Tepe","fronteira","fis mat his",{
+r:"Martin Sweatman e Dimitrios Tsikritsis (2017) leram o Pilar 43 como um mapa celeste que marcaria um impacto de cometa por volta de 10.950 a.C., ligado ao Dryas Recente. A equipe de escavação rejeita a leitura: os animais seguem padrões simbólicos comuns no sítio.",
+q:"Uma imagem pode ser ao mesmo tempo mito e registro astronômico?",
+t:"Mostrar padrões estelares repetidos em vários pilares com significância estatística, e evidência física datada do impacto.",l:"younger-dryas gobekli"});
+C("younger-dryas","preistoria","🌠","Hipótese do impacto do Dryas Recente","~12.900 anos","Hemisfério Norte","fronteira","fis geo gea",{
+r:"No fim da Era do Gelo, o clima voltou abruptamente ao frio por cerca de 1.200 anos. Uma hipótese diz que fragmentos de cometa explodiram sobre o Hemisfério Norte, citando nanodiamantes, esférulas e platina. A explicação dominante é água doce do degelo travando a circulação do Atlântico. A maioria dos especialistas não aceita o impacto, e vários artigos foram contestados.",
+q:"Se houve impacto, por que não há cratera?",
+t:"Uma camada com marcadores de impacto, síncrona e bem datada em muitos sítios independentes.",l:"abutre doggerland atlantida"});
+C("doggerland","preistoria","🌊","Doggerland, a terra que o mar engoliu","~10.000–6.200 a.C.","Atual Mar do Norte","consenso","gea geo his",{
+r:"Uma planície habitada que ligava a Grã-Bretanha ao continente. O nível do mar subiu cerca de 120 m desde o auge da última glaciação, e o tsunami de Storegga, por volta de 6.200 a.C., atingiu o que restava. Redes de pesca ainda trazem arpões e ossos.",
+q:"Quantos sítios costeiros da pré-história estão debaixo d’água, inclusive no litoral do Ceará?",
+n:"Muitos mitos de dilúvio podem guardar memória real de costas perdidas. É uma lacuna legítima de pesquisa, sem precisar de civilizações fantásticas.",l:"atlantida younger-dryas"});
+C("catalhoyuk","preistoria","🏘️","Çatalhöyük, a cidade sem ruas","~7400–6000 a.C.","Anatólia, Turquia","consenso","his gea teo",{
+r:"Um aglomerado de casas coladas, sem ruas: entrava-se pelo telhado. Entre 3.500 e 8.000 pessoas, mortos enterrados sob o piso e pinturas murais. Ossos e dentes sugerem dietas semelhantes entre homens e mulheres, sinal de uma sociedade bastante igualitária.",
+q:"Uma pintura mostra um vulcão sobre casas. É o mapa mais antigo do mundo? O tema é debatido.",
+a:"Ian Hodder, The Leopard’s Tale (2006).",l:"gobekli"});
+C("nabta","preistoria","☀️","Nabta Playa, um calendário no Saara?","~7 mil anos (datação debatida)","Sul do Egito","debate","fis mat his gea",{
+r:"Um círculo de pedras e alinhamentos megalíticos feitos por pastores quando o Saara era verde, com sepultamentos de gado. Algumas pedras parecem alinhar-se ao nascer do sol no solstício de verão. É candidato a alinhamento astronômico mais antigo conhecido.",
+q:"Essa cultura de pastores influenciou as ideias religiosas do Egito faraônico?",
+t:"Datação mais precisa das pedras e teste estatístico dos alinhamentos.",l:"nebra piramides"});
+C("serra-capivara","preistoria","🎨","Serra da Capivara e a chegada humana às Américas","pinturas com mais de 10 mil anos; datas de ~50 mil anos em debate","Piauí","debate","his gea",{
+r:"A maior concentração de sítios com arte rupestre das Américas, Patrimônio Mundial da UNESCO desde 1991. A arqueóloga Niède Guidon defendeu presença humana há cerca de 50 mil anos no Boqueirão da Pedra Furada; críticos dizem que as supostas ferramentas e fogueiras podem ser naturais. Pegadas em White Sands, nos EUA, já confirmam humanos nas Américas há 21 a 23 mil anos.",
+q:"Quando os primeiros humanos chegaram ao Nordeste?",
+t:"Artefatos inquestionáveis em camada bem datada, ou DNA antigo em sedimentos.",l:"luzia sulawesi itapipoca"});
+C("luzia","preistoria","💀","Luzia","~11.500 anos","Lapa Vermelha, Minas Gerais","consenso","his med bio",{
+r:"Um dos esqueletos humanos mais antigos das Américas. Fragmentos do crânio foram resgatados dos escombros do incêndio do Museu Nacional em 2018. Pelo formato do crânio, propôs-se uma origem distinta dos indígenas atuais; o DNA de outros indivíduos de Lagoa Santa (2018) mostrou parentesco com os nativos americanos.",
+q:"Por que a forma do crânio enganou tanto tempo?",
+n:"Lição clínica e científica: morfologia sugere, genética confirma.",l:"serra-capivara"});
+C("gunung-padang","preistoria","⛰️","Gunung Padang, a “pirâmide de 25 mil anos”","artigo de 2023, retratado em 2024","Java Ocidental, Indonésia","refutado","geo his",{
+r:"Um sítio megalítico real, com provavelmente alguns milhares de anos. Um artigo de 2023 alegou construção humana há até ~27 mil anos. A revista o retratou em março de 2024: as datas de radiocarbono vinham de solo sem relação com artefatos ou estruturas.",
+q:"Por que a alegação se espalhou tão mais rápido do que a retratação?",
+n:"Lição de método: datar a terra não é datar a construção.",l:"atlantida metodo-investigador"});
+C("yonaguni","preistoria","🪨","O monumento submarino de Yonaguni","descoberto em 1986","Japão","fronteira","geo",{
+r:"Degraus e terraços de arenito sob o mar. O geólogo Masaaki Kimura defende obra humana; a maioria dos geólogos explica a forma por fraturas naturais em camadas paralelas da rocha.",
+q:"Faltam ferramentas, entulho e inscrições. O que convenceria os céticos?",
+t:"Marcas de ferramenta inequívocas ou material de construção trazido de fora.",l:"doggerland gunung-padang"});
+C("atlantida","preistoria","🏛️","Atlântida","Platão, por volta de 360 a.C.","Lugar nenhum, até prova em contrário","refutado","his teo gea",{
+r:"Aparece apenas em dois diálogos de Platão, Timeu e Crítias, como alegoria moral: uma potência arrogante, punida pelos deuses, contraposta a uma Atenas ideal. Nenhum texto anterior a Platão a menciona.",
+q:"Que fatos reais podem ter inspirado o mito? A erupção de Thera, em Santorini, por volta de 1600 a.C., e o declínio minoico são candidatos.",
+n:"Platão inventou Atlântida para ensinar; leitores a transformaram em geografia.",l:"doggerland linear-a"});
+C("silurian","preistoria","🏭","Hipótese siluriana: haveria rastro de uma civilização antiga?","proposta em 2018","Registro geológico","fronteira","geo fis mat",{
+r:"Gavin Schmidt (NASA) e Adam Frank perguntaram: se uma civilização industrial existisse há dezenas de milhões de anos, saberíamos? Cidades virariam pó; restariam sinais químicos como picos de carbono leve, moléculas sintéticas e nitrogênio. Eventos naturais, como o aquecimento de 56 milhões de anos atrás, deixam sinais parecidos.",
+q:"Que marca da nossa civilização sobreviverá 50 milhões de anos?",
+t:"Procurar moléculas sintéticas persistentes ou isótopos artificiais em sedimentos antigos. Até hoje, nada.",
+n:"Os autores deixam claro: não acreditam que houve tal civilização. O valor está em saber como procurar.",l:"oklo metodo-investigador"});
+C("oklo","preistoria","⚛️","Oklo, o reator nuclear de 2 bilhões de anos","descoberto em 1972","Gabão","consenso","fis geo mat",{
+r:"Técnicos franceses notaram urânio com ~0,717% de U-235 em vez dos ~0,720% esperados. A explicação: há 2 bilhões de anos, quando o U-235 era ~3% do urânio natural, água subterrânea moderou reações de fissão em cadeia naturais, ligando e desligando em ciclos por centenas de milhares de anos.",
+q:"Quantos “artefatos impossíveis” são, na verdade, física natural?",
+n:"Oklo serve até para testar se as constantes da física mudaram em 2 bilhões de anos. Não mudaram de forma mensurável.",l:"silurian datacao"});
+
+/* ---------- VI. Tecnologias da Antiguidade ---------- */
+C("anticitera","tecnologia","⚙️","Mecanismo de Anticítera","construído por volta do séc. II a.C.; naufrágio ~70–60 a.C.; achado em 1901","Ilha de Anticítera, Grécia","consenso","fis mat his tec",{
+r:"Um computador analógico de bronze com mais de 30 engrenagens sobreviventes. Mostrava posições do Sol e da Lua, fases lunares, o ciclo metônico de 19 anos, o ciclo de Saros para prever eclipses, o calendário dos jogos pan-helênicos e, provavelmente, os planetas. Estudos de 2024 apontam um anel de 354 furos, um calendário lunar grego.",
+q:"Por que esse conhecimento não gerou uma revolução mecânica? Nada parecido reaparece por mais de mil anos.",
+t:"Um estudo argentino (2025) simulou os dentes triangulares: ou o aparelho travava muito, ou foi feito com mais precisão do que os fragmentos corroídos permitem medir. Novas tomografias podem decidir.",
+a:"Jo Marchant, Decoding the Heavens (2008). Teste os ciclos no Laboratório.",l:"eolipila alexandria nebra"});
+C("eolipila","tecnologia","💨","A máquina a vapor de Heron","séc. I d.C.","Alexandria","consenso","fis his",{
+r:"Heron de Alexandria descreveu uma esfera que girava com jatos de vapor, portas de templo que abriam com fogo, autômatos e uma máquina que entregava água benta ao receber uma moeda.",
+q:"Por que não houve Revolução Industrial romana? Hipóteses: mão de obra escrava barata, metalurgia sem precisão para cilindros vedados, pouco carvão acessível e falta de capital e mercado.",
+n:"Uma das maiores lacunas da história econômica: a física estava lá; o contexto, não.",l:"anticitera alexandria"});
+C("licurgo","tecnologia","🍷","Taça de Licurgo, nanotecnologia romana","séc. IV d.C.","Museu Britânico, Londres","consenso","fis his",{
+r:"Um vidro que parece verde-jade com luz refletida e vermelho-rubi com luz atravessando. O efeito vem de nanopartículas de ouro e prata de ~70 nm que ressoam com a luz (ressonância plasmônica de superfície).",
+q:"Como os vidreiros controlavam um efeito em escala nanométrica sem saber que ele existia?",
+n:"A mesma física hoje é estudada para sensores biomédicos.",l:"damasco concreto"});
+C("damasco","tecnologia","⚔️","Aço de Damasco","de ~300 a.C. ao séc. XVIII","Índia, Sri Lanka e Oriente Médio","consenso","fis his gea",{
+r:"Lâminas feitas de aço wootz indiano, com padrão ondulado e fama lendária. Um estudo na Nature (2006) relatou nanotubos de carbono e nanofios de cementita numa lâmina do séc. XVII. A técnica se perdeu no séc. XVIII, talvez porque se esgotaram minérios com impurezas de vanádio.",
+q:"Como se perde uma tecnologia que funcionava? Mestre que não ensina, matéria-prima que acaba.",
+n:"O “aço damasco” vendido hoje costuma ser aço soldado em camadas, outra técnica.",l:"delhi fogo-grego"});
+C("concreto","tecnologia","🏛️","Concreto romano que se cura sozinho","Panteão, por volta de 125 d.C.","Roma","consenso","fis his",{
+r:"A cúpula do Panteão, de 43 m e sem armação de aço, está de pé há quase 1.900 anos. Pesquisadores do MIT (Science Advances, 2023) mostraram que a mistura a quente com cal viva deixava grumos que, quando a água entra numa rachadura, formam carbonato de cálcio e selam a fissura. No concreto marinho, a água do mar faz crescer cristais que o reforçam.",
+q:"Por que o concreto moderno dura décadas e o romano, milênios?",
+n:"Engenheiros hoje testam concretos “autorregenerativos” inspirados nos romanos.",l:"baalbek piramides"});
+C("delhi","tecnologia","🗼","O pilar de ferro de Délhi","séc. IV–V d.C.","Délhi, Índia","consenso","fis his",{
+r:"Com cerca de 7 m e 6 toneladas, enfrenta 1.600 anos quase sem ferrugem. O ferro forjado tem muito fósforo e pouco enxofre, o que forma uma película protetora de oxi-hidróxido de ferro, favorecida pelo clima.",
+q:"Que outras soluções empíricas antigas a ciência dos materiais ainda não estudou?",l:"damasco"});
+C("fogo-grego","tecnologia","🔥","Fogo grego","por volta de 672 d.C.","Constantinopla","debate","fis his",{
+r:"Um líquido incendiário lançado por sifões que continuava queimando sobre a água; ajudou a salvar Constantinopla dos cercos árabes. Era segredo de Estado guardado por poucas famílias, e a fórmula se perdeu. Provavelmente usava petróleo leve com resinas.",
+q:"Qual era a receita exata?",
+n:"Conhecimento guardado por poucos morre com eles. Argumento histórico a favor da ciência aberta.",l:"damasco alexandria"});
+C("bateria-bagda","tecnologia","🔋","A “bateria de Bagdá”","período parta ou sassânida (séc. III a.C.–VII d.C.)","Iraque","fronteira","fis his",{
+r:"Um jarro de barro com um cilindro de cobre e uma haste de ferro. Réplicas com vinagre geram de 0,5 a 2 volts. Mas não há fios, condutores nem objetos eletrodepositados da época; recipientes parecidos guardavam rolos sagrados.",
+q:"Gerar voltagem numa réplica prova que alguém a usou assim?",
+t:"Encontrar resíduos eletroquímicos dentro dos jarros ou objetos eletrodepositados do mesmo contexto.",l:"metodo-investigador astronautas"});
+C("piramides","tecnologia","🔺","Como se ergueram as pirâmides","Quéops, ~2560 a.C.","Gizé, Egito","consenso","fis mat his gea",{
+r:"O Papiro de Merer, achado em 2013 em Wadi al-Jarf, é o diário de um inspetor que levava blocos de calcário de Tura até Gizé por barco: estão entre os papiros escritos mais antigos conhecidos. Em 2024, um estudo identificou um braço extinto do Nilo, de 64 km, ao lado de 31 pirâmides. A vila dos trabalhadores tinha padarias e cervejarias, e esqueletos mostram fraturas tratadas.",
+q:"Quantas pessoas, em quanto tempo? Estimativas giram em torno de alguns milhares de trabalhadores qualificados em rodízio.",
+n:"A razão entre o perímetro da base e a altura da Grande Pirâmide é quase 2π. Pode ser consequência de medir distâncias rolando tambores; é curiosidade, não código secreto.",l:"concreto astronautas"});
+C("sacsayhuaman","tecnologia","🧱","Muros poligonais incas","séc. XV","Cusco, Peru","consenso","fis gea his",{
+r:"Blocos de mais de 100 toneladas encaixados sem argamassa. Nos anos 1980, Jean-Pierre Protzen reproduziu o encaixe com martelos de pedra mais dura, batendo, testando e ajustando repetidamente. As juntas ainda resistem a terremotos.",
+q:"Quanto tempo levava para encaixar um único bloco?",
+n:"Trabalho paciente, não laser. A explicação honra quem construiu.",l:"baalbek astronautas"});
+C("baalbek","tecnologia","🪨","Os megálitos de Baalbek","séc. I a.C.–I d.C.","Líbano","consenso","fis mat his",{
+r:"O trílito do templo de Júpiter tem blocos de ~800 toneladas. Na pedreira ficaram a “Pedra da Mulher Grávida” (~1.000 t) e um bloco achado em 2014 com ~1.650 t, os maiores monólitos talhados conhecidos. Foram abandonados ali, provável limite logístico ou defeito na rocha.",
+q:"Como os romanos moveram 800 t? Alavancas, rampas, cabrestantes e milhares de pessoas.",l:"sacsayhuaman piramides"});
+C("nazca","tecnologia","🐒","Linhas de Nazca e a inteligência artificial","~100 a.C.–700 d.C.","Deserto de Nazca, Peru","consenso","gea tec his mat",{
+r:"Geoglifos feitos ao retirar pedras escuras e expor o solo claro. Em 2024 (PNAS), a Universidade de Yamagata e a IBM usaram IA e encontraram 303 figuras novas em seis meses, quase dobrando as ~430 conhecidas. Figuras menores ficam junto a trilhas, visíveis a quem caminha; as grandes linhas serviam a procissões.",
+q:"Quantos geoglifos ainda estão escondidos?",
+n:"Ninguém precisava voar: em 1982, Joe Nickell reproduziu o condor com estacas, cordas e uma equipe pequena.",l:"astronautas metodo-investigador"});
+C("nebra","tecnologia","🌙","Disco celeste de Nebra","~1600 a.C. (datação contestada)","Saxônia-Anhalt, Alemanha","debate","fis his",{
+r:"Um disco de bronze com ouro mostrando Sol ou Lua, um aglomerado que parece as Plêiades e arcos nas bordas. Os arcos cobrem ~82°, o ângulo entre os nasceres do Sol nos solstícios naquela latitude. Pode ter servido para saber quando inserir um mês extra no calendário.",
+q:"Em 2020, pesquisadores propuseram que o disco é da Idade do Ferro, mais jovem. Quem está certo?",l:"anticitera nabta"});
+C("yakhchal","tecnologia","🧊","Yakhchāl, geladeiras do deserto","desde ~400 a.C.","Pérsia","consenso","fis gea",{
+r:"Cúpulas de uma argamassa isolante chamada sarooj (areia, argila, cal, clara de ovo, pelos de cabra e cinza) sobre poços profundos. Com água de aquedutos subterrâneos (qanats) e o frio da noite, produziam e guardavam gelo no deserto.",
+q:"Dá para usar o mesmo princípio para resfriar casas no sertão?",
+n:"À noite, o calor escapa como radiação infravermelha para o céu limpo. Telhados “frios” modernos usam essa mesma janela atmosférica.",l:"concreto"});
+
+/* ---------- VII. Escritas Indecifradas ---------- */
+C("linear-a","escritas","🏺","Linear A","~1800–1450 a.C.","Creta minoica","debate","his mat",{
+r:"Sabemos pronunciar muitos sinais porque o Linear B, derivado dele, foi decifrado em 1952 por Michael Ventris como grego micênico. Mas a língua minoica é desconhecida: lemos sem entender. São cerca de 1.400 inscrições curtas, muitas de contabilidade.",
+q:"A língua minoica tem parentes vivos?",
+t:"Um texto bilíngue ou um corpus muito maior.",
+n:"Ventris era arquiteto; a professora Alice Kober preparou o caminho com fichas e tabelas feitas à mão.",
+a:"Andrew Robinson, Lost Languages (2002).",l:"festo idade-trevas elamita"});
+C("indo","escritas","🐘","A escrita do Vale do Indo","~2600–1900 a.C.","Paquistão e noroeste da Índia","debate","his mat tec gea",{
+r:"Milhares de inscrições em selos, com média de cerca de cinco sinais cada, e nenhum bilíngue. Hipóteses: língua dravídica, indo-ariana ou até um sistema de símbolos não linguístico. Em janeiro de 2025, o governo de Tamil Nadu ofereceu US$ 1 milhão por uma decifração aceita por especialistas.",
+q:"Cinco sinais bastam para decifrar uma língua?",
+t:"Uma inscrição longa, um bilíngue com o acadiano da Mesopotâmia ou nomes próprios reconhecíveis.",l:"indo-fim rongorongo"});
+C("rongorongo","escritas","🗿","Rongorongo","tábua datada de 1493–1509","Rapa Nui (Ilha de Páscoa)","debate","his fis",{
+r:"Cerca de duas dezenas de objetos de madeira com glifos escritos em bustrofédon reverso: gira-se a tábua a cada linha. O radiocarbono (Ferrara et al., 2024) situou a madeira de uma tábua entre 1493 e 1509, antes do contato europeu em 1722, reforçando a ideia de uma invenção independente da escrita.",
+q:"Os ilhéus inventaram a escrita sozinhos?",
+t:"A madeira pode ser mais velha do que a inscrição. Datar a tinta ou o sulco resolveria.",l:"rapanui indo"});
+C("voynich","escritas","📕","Manuscrito Voynich","pergaminho de 1404–1438","Biblioteca Beinecke, Yale","debate","mat his tec med",{
+r:"Cerca de 240 páginas numa escrita desconhecida, com plantas que ninguém identifica, diagramas astrológicos e figuras em banhos. A estatística mostra padrões de língua natural, como a lei de Zipf, mas também repetições estranhas.",
+q:"Língua cifrada, sistema de abreviação, glossolalia ou embuste medieval?",
+t:"Uma única passagem traduzida de forma verificável, por exemplo o nome de uma planta que bata com a ilustração.",
+n:"Para o médico: a maior seção parece um herbário, talvez de remédios.",l:"grimorios ars-notoria"});
+C("festo","escritas","💿","Disco de Festo","~1850–1600 a.C.","Creta","debate","his",{
+r:"Um disco de argila com 241 sinais carimbados de 45 tipos diferentes, em espiral dos dois lados: talvez a primeira impressão com tipos móveis. É único, e um texto único é quase impossível de decifrar.",
+q:"Alguns suspeitam de falsificação da época da descoberta (1908). Como testar?",
+t:"Datação por termoluminescência da argila, que nunca foi autorizada.",l:"linear-a"});
+C("elamita","escritas","✅","Linear elamita, um enigma que caiu","~2300–1880 a.C.","Irã","debate","his mat",{
+r:"Em 2022, François Desset e colegas propuseram a decifração do elamita linear usando inscrições em vasos de prata e nomes de reis conhecidos de outras fontes. Ainda há críticas, mas o método é exemplar.",
+q:"Quais outros “indecifráveis” só precisam de mais textos?",
+n:"Indecifrável costuma significar “ainda não”.",l:"linear-a indo"});
+C("quipu","escritas","🪢","Quipus incas","séc. XV–XVI","Andes","debate","mat his",{
+r:"Cordões com nós em sistema decimal: a posição do nó indica unidade, dezena, centena. A parte numérica, de censo e tributos, está entendida. Se também guardavam narrativas e nomes é pergunta aberta; estudos com cores e fibras sugerem sílabas.",
+q:"Uma sociedade complexa pode funcionar sem escrita no papel?",l:"indo"});
+C("herculano","escritas","🔥","Os papiros de Herculano voltam a falar","carbonizados em 79 d.C.; lidos desde 2023","Herculano, Itália","consenso","tec fis his",{
+r:"O Vesúvio carbonizou a biblioteca da Vila dos Papiros. Com tomografia em síncrotron e inteligência artificial, o Vesuvius Challenge leu as primeiras palavras em 2023 e, em junho de 2026, anunciou a leitura completa e não invasiva de um rolo selado, um tratado de ética estoico. Outro rolo revelou o título “Filodemo, Sobre os Deuses, livro 8”. Mais de 600 rolos continuam fechados.",
+q:"Que obras perdidas da Antiguidade estão nesses rolos?",
+n:"A competição já pagou US$ 1,8 milhão em prêmios e publica os dados abertamente.",l:"alexandria nazca"});
+
+/* ---------- VIII. Lacunas da História ---------- */
+C("bronze","lacunas","🛡️","O colapso da Idade do Bronze","por volta de 1177 a.C.","Mediterrâneo Oriental","debate","his gea med",{
+r:"Em poucas décadas caíram os hititas, os micênicos, Ugarit e outros reinos interligados; o Egito resistiu enfraquecido e enfrentou os “Povos do Mar”.",
+c:"Tempestade perfeita: seca de cerca de 300 anos registrada em pólen e isótopos, terremotos, revoltas, rotas de estanho interrompidas, migrações e, talvez, epidemias.",
+q:"Um mundo globalizado é mais forte ou mais frágil diante de crises simultâneas?",
+a:"Eric Cline, 1177 B.C.: The Year Civilization Collapsed (2014).",l:"idade-trevas maia"});
+C("idade-trevas","lacunas","🕯️","Os séculos em que a Grécia esqueceu a escrita","~1100–750 a.C.","Grécia","consenso","his mat",{
+r:"Depois do colapso, os gregos simplesmente deixaram de usar o Linear B. Quando voltaram a escrever, foi com um alfabeto adaptado do fenício. A memória sobreviveu como poesia oral, que chegaria a Homero.",
+q:"O que nossa sociedade digital perderia se as redes caíssem por uma geração?",l:"bronze linear-a"});
+C("indo-fim","lacunas","🏜️","O fim da Civilização do Indo","por volta de 1900 a.C.","Vale do Indo","debate","gea geo his med",{
+r:"Cidades planejadas como Mohenjo-daro, com grade de ruas, poços, banheiros e esgoto coberto, se esvaziaram gradualmente. A antiga tese de invasão violenta caiu por falta de evidência.",
+c:"Enfraquecimento das monções, rios que mudaram de curso ou secaram e comércio com a Mesopotâmia em queda.",
+q:"Para onde foram essas pessoas e que língua falavam?",
+n:"Saúde pública há 4.500 anos: o saneamento do Indo superava o de muitas cidades europeias do séc. XVIII.",l:"indo maia"});
+C("maia","lacunas","🌽","O colapso maia clássico","~800–1000 d.C.","Guatemala, México e Belize","debate","gea geo his",{
+r:"As grandes cidades do sul, como Tikal e Copán, se esvaziaram, enquanto o norte prosperou por mais tempo. Em 2018, o LiDAR revelou mais de 60 mil estruturas sob a floresta da Guatemala: eram muito mais numerosos do que se pensava.",
+c:"Secas severas, com queda de 40% a 50% na chuva registrada em sedimentos de lago, desmatamento, guerras e crise dos reis divinos.",
+q:"Por que algumas cidades se adaptaram e outras não?",l:"bronze rapanui"});
+C("rapanui","lacunas","🗿","Rapa Nui: o colapso que talvez não houve","até ~1860","Ilha de Páscoa","debate","gea mat his",{
+r:"A narrativa clássica fala de superpopulação, desmatamento total e colapso antes dos europeus. Estudos de 2024 mapearam os jardins de pedra com satélite e IA e estimaram população de poucos milhares; genomas não mostram colapso antes do contato. O desastre veio depois: traficantes de escravos peruanos em 1862 e epidemias.",
+c:"Ratos polinésios comeram as sementes das palmeiras; o colapso demográfico foi colonial.",
+q:"Por que histórias de “ecocídio” culpando os nativos ficaram tão populares?",l:"rongorongo maia"});
+C("gargalo","lacunas","🧬","O gargalo humano de 900 mil anos","~930–813 mil anos","África","debate","bio mat med",{
+r:"Um modelo genômico (Hu et al., Science, 2023) sugeriu que nossos ancestrais caíram para cerca de 1.280 indivíduos reprodutores e ficaram assim por ~117 mil anos. Críticos apontam limitações do método.",
+q:"O registro fóssil africano dessa época é quase vazio. Coincidência ou a própria marca do gargalo?",
+t:"Fósseis africanos bem datados desse intervalo, ou o mesmo resultado com métodos genômicos independentes.",l:"toba denisovanos"});
+C("denisovanos","lacunas","🐉","Denisovanos ganham um rosto","crânio de Harbin com pelo menos 146 mil anos","Harbin, China","consenso","bio med his",{
+r:"Os denisovanos eram conhecidos quase só pelo DNA de um dedo achado em 2010. Em 2025, proteínas e DNA mitocondrial extraídos do crânio de Harbin, o “Homem-Dragão”, ligaram esse fóssil quase completo à linhagem denisovana (Science e Cell).",
+q:"Homo longi e denisovanos são o mesmo grupo? A discussão sobre o nome continua.",
+n:"Uma variante denisovana do gene EPAS1 ajuda tibetanos a viver em grandes altitudes sem policitemia excessiva. Fisiologia herdada de primos extintos.",l:"neandertais floresiensis tecidos-moles"});
+C("floresiensis","lacunas","🧚","Homo floresiensis, o “hobbit”","~100–50 mil anos","Ilha de Flores, Indonésia","consenso","bio med gea",{
+r:"Um humano de cerca de 1,1 m e cérebro de ~400 cm³ que fabricava ferramentas. A hipótese de microcefalia patológica foi superada por novos esqueletos e por fósseis de 700 mil anos em Mata Menge. É nanismo insular.",
+q:"Como um cérebro tão pequeno sustentava ferramentas complexas?",
+n:"Exercício de diagnóstico diferencial com fósseis: microcefalia, síndrome de Laron ou nova espécie?",l:"denisovanos"});
+C("alexandria","lacunas","📚","A Biblioteca de Alexandria","fundada ~285 a.C.; declínio do séc. I a.C. ao IV d.C.","Alexandria, Egito","debate","his",{
+r:"Não houve um único incêndio. Houve expurgo de intelectuais (145 a.C.), fogo parcial na guerra de César (48 a.C.), cortes de verba, guerras do séc. III e a destruição do Serapeu (391 d.C.). A história do califa que mandou queimar os livros (642) é tardia e provavelmente lenda.",
+q:"Quais obras perdidas mais fazem falta?",
+n:"Conhecimento costuma morrer mais por abandono do que por fogo.",l:"herculano anticitera eolipila"});
+
+/* ---------- IX. O Códice de Salomão ---------- */
+C("salomao-historico","salomao","👑","Salomão entre a Bíblia e a arqueologia","séc. X a.C.","Jerusalém","debate","his teo gea",{
+r:"As fontes principais são 1 Reis 1–11 e 2 Crônicas 1–9, escritos séculos depois. Nenhuma inscrição da época cita Salomão. A Estela de Tel Dan, do séc. IX a.C., menciona a “Casa de Davi”, prova de uma dinastia davídica. Maximalistas defendem um reino unido grandioso; minimalistas, uma chefatura modesta.",
+q:"Teologia e história fazem perguntas diferentes: o que aconteceu, e o que isso significa. Como estudar as duas sem confundir?",
+a:"Israel Finkelstein e Neil Silberman, The Bible Unearthed (2001).",l:"minas-salomao templo teologia-ciencia"});
+C("minas-salomao","salomao","⛏️","As “Minas do Rei Salomão”","séc. X a.C.","Vale de Timna, Israel","debate","his geo fis",{
+r:"Caroços de tâmara e azeitona datados em Oxford mostraram que as minas de cobre de Timna funcionavam a pleno no séc. X a.C., a época atribuída a Salomão (Ben-Yosef, Universidade de Tel Aviv, 2013). A cultura material indica operação edomita, não israelita: era certa, reino errado.",
+q:"Erez Ben-Yosef argumenta que povos nômades podiam ter estados complexos sem deixar palácios. Isso reabre o debate sobre o reino de Salomão?",
+n:"O nome vem do arqueólogo Nelson Glueck, nos anos 1930, e do romance de aventura de H. Rider Haggard (1885).",l:"salomao-historico saba-arca"});
+C("sabedoria-naturalista","salomao","🌿","Salomão, o primeiro naturalista","1 Reis 4:29–34","Texto bíblico","tradicao","teo bio his",{
+r:"O texto atribui a Salomão três mil provérbios e mil e cinco cânticos, e diz que ele falou sobre as plantas, do cedro do Líbano ao hissopo que nasce nos muros, e sobre animais, aves, répteis e peixes.",
+q:"Na tradição bíblica, sabedoria inclui observar a natureza. É a ponte entre este livro e o Arquivo de Pedra.",
+n:"Séculos depois, a fama de Lineu, pai da classificação dos seres vivos, virou o lema “Deus criou, Lineu organizou”. Dar nome aos seres é um gesto que atravessa Gênesis, Salomão e a biologia moderna.",l:"steno teologia-ciencia"});
+C("templo","salomao","🏛️","O Templo e o Mar de Bronze: a Bíblia calcula π?","1 Reis 6–7","Jerusalém","tradicao","mat teo his fis",{
+r:"O Templo media 60 × 20 × 30 côvados (1 Rs 6:2), cerca de 27 × 9 × 13,5 m. O Mar de Bronze tinha 10 côvados de diâmetro e 30 de circunferência (1 Rs 7:23), o que dá π = 3. Explicações: medida da borda externa contra a interna, já que a parede tinha um palmo de espessura (v. 26), ou simples arredondamento.",
+q:"1 Reis 7:26 fala em dois mil batos de capacidade; 2 Crônicas 4:5, em três mil. Erro de cópia ou outra unidade?",
+n:"Tradição rabínica atribuída ao Gaon de Vilna: a palavra “linha” é escrita com valor 111 e lida com valor 106; 3 × 111/106 = 3,1415. Teste no Laboratório.",l:"jaquim-boaz shamir newton-templo"});
+C("jaquim-boaz","salomao","🏛️","Jaquim e Boaz","1 Reis 7:13–22","Entrada do Templo","tradicao","teo his mat",{
+r:"Duas colunas de bronze de 18 côvados, com capitéis de romãs e lírios, fundidas por Hirão de Tiro, artífice fenício descrito como cheio de sabedoria e habilidade.",
+q:"Por que duas colunas sem função estrutural ganharam nomes?",
+n:"Viraram símbolos centrais da Maçonaria no séc. XVIII, que se narra como herdeira dos construtores do Templo. É narrativa simbólica, não linhagem histórica.",l:"templo newton-templo"});
+C("shamir","salomao","🪱","O shamir, a “tecnologia” que cortava pedra","Talmude, Gitin 68a–b e Sotá 48b; Mishná, Avot 5:6","Tradição rabínica","tradicao","teo fis his",{
+r:"Como 1 Reis 6:7 diz que não se ouviu ferro na obra do Templo, a tradição conta que Salomão usou o shamir, um ser minúsculo capaz de cortar qualquer pedra, cujo paradeiro arrancou de Asmodeu, rei dos demônios. A Mishná o lista entre as dez coisas criadas no crepúsculo da véspera do primeiro sábado.",
+q:"O próprio versículo diz que as pedras chegavam prontas da pedreira. A lenda nasce para explicar um detalhe do texto?",
+t:"Especulações modernas falam em abrasivos como esmeril ou diamante. Faltam ferramentas e marcas de corte para testar. Selo de fronteira para essa leitura.",l:"selo-salomao templo"});
+C("selo-salomao","salomao","✡️","O Selo de Salomão e o Testamento","Testamento de Salomão, séc. I–V d.C.","Tradições judaica, cristã e islâmica","tradicao","teo his med",{
+r:"No apócrifo grego Testamento de Salomão, o arcanjo Miguel entrega ao rei um anel que domina demônios, obrigados a trabalhar no Templo. Cada demônio confessa o anjo que o anula, e 36 deles causam doenças específicas. No Alcorão, Sulaymān comanda os jinn e o vento (21:81–82; 34:12–14), e sua morte só é percebida quando um verme rói o cajado em que se apoiava.",
+q:"O selo vira hexagrama em umas tradições e pentagrama em outras. Por quê?",
+n:"Para o médico: o Testamento é um tratado de etiologia mágica, uma lista de doenças com seus “agentes” e “antídotos”. História da medicina em forma de demonologia.",l:"grimorios shamir"});
+C("grimorios","salomao","📜","Clavículas e Goetia, os grimórios “de Salomão”","séc. XV–XVII","Europa e Bizâncio","tradicao","his teo",{
+r:"A Chave de Salomão (manuscritos gregos do séc. XV e latinos e italianos do XVI) e a Chave Menor ou Lemegeton (séc. XVII, com a Ars Goetia e seus 72 espíritos) foram atribuídas a Salomão séculos depois de sua época. Atribuir um texto a um sábio antigo era a forma de lhe dar autoridade.",
+q:"O que esses livros revelam sobre o Renascimento, que misturava astrologia, oração, geometria e protociência?",
+n:"S. L. MacGregor Mathers publicou edições em inglês em 1889 e 1904, que alimentaram o ocultismo moderno. Aqui são documentos de história cultural, não manuais.",
+a:"Owen Davies, Grimoires: A History of Magic Books (2009).",l:"ars-notoria selo-salomao voynich"});
+C("ars-notoria","salomao","🧠","Ars Notoria, o “atalho” medieval para aprender","séc. XII–XIII","Europa","tradicao","teo med his",{
+r:"Um tratado atribuído a Salomão prometia dominar as artes liberais e a teologia rapidamente, por meio de orações e da contemplação de figuras. Era popular entre estudantes e foi condenado por teólogos; Tomás de Aquino o classificou como prática ilícita (Suma Teológica, II-II, q. 96).",
+q:"A vontade de aprender sem esforço continua viva. O que funciona de verdade?",
+n:"A ciência cognitiva aponta: recuperação ativa, repetição espaçada, intercalar assuntos e dormir bem. É o que este códice tenta fazer com perguntas, trilhas e marcas de leitura.",l:"grimorios metodo-investigador"});
+C("saba-arca","salomao","🐪","A Rainha de Sabá e a Arca da Aliança","séc. X a.C. na narrativa","Iêmen, Etiópia e Jerusalém","tradicao","teo his gea",{
+r:"Sabá era o reino sabeu do Iêmen, rico em incenso. A visita da rainha está em 1 Reis 10. O Kebra Nagast etíope (séc. XIV) narra que o filho dela com Salomão, Menelik I, levou a Arca para Axum, onde a Igreja Ortodoxa Etíope diz guardá-la, vista apenas por um monge guardião. Na Bíblia, a Arca some do relato com a destruição babilônica de 586 a.C.; 2 Macabeus 2:4–8 diz que Jeremias a escondeu no monte Nebo.",
+q:"Onde está a Arca? É a lacuna mais famosa da arqueologia bíblica.",l:"pergaminho-cobre minas-salomao"});
+C("pergaminho-cobre","salomao","🗝️","O Pergaminho de Cobre, um mapa do tesouro","séc. I d.C.; achado em 1952","Qumran, Mar Morto","debate","his teo gea mat",{
+r:"O único dos Manuscritos do Mar Morto gravado em cobre. Lista cerca de 64 esconderijos de ouro, prata e objetos, em quantidades enormes, num hebraico atípico com letras gregas inexplicadas. Seria o tesouro do Templo escondido antes da destruição de 70 d.C.? Nada foi encontrado. Está no Museu da Jordânia, em Amã.",
+q:"Inventário real, lenda ou código?",
+t:"Encontrar um único esconderijo citado, com o conteúdo descrito.",l:"saba-arca alexandria"});
+C("newton-templo","salomao","🍎","Newton, “o último dos mágicos”","séc. XVII–XVIII","Cambridge e Londres","consenso","fis mat teo his",{
+r:"Newton escreveu mais sobre teologia e alquimia do que sobre física. Estudou as medidas do Templo de Salomão acreditando que guardavam conhecimento divino e cronologia profética; o tema aparece em The Chronology of Ancient Kingdoms Amended (1728). O economista Keynes, que comprou seus manuscritos em 1936, o chamou de “o último dos mágicos”.",
+q:"A mesma mente criou o cálculo e procurou segredos em Salomão. Onde passava a fronteira entre razão e mistério no séc. XVII?",
+a:"Rob Iliffe, Priest of Nature: The Religious Worlds of Isaac Newton (2017).",l:"templo jaquim-boaz teologia-ciencia"});
+
+/* ---------- X. Paleomedicina ---------- */
+C("centrosaurus","paleomedicina","🦴","Câncer em dinossauro","~76 milhões de anos","Alberta, Canadá","consenso","med bio",{
+r:"Em 2020 (Lancet Oncology), uma fíbula de Centrosaurus apertus foi diagnosticada com osteossarcoma avançado por tomografia e histologia: o primeiro câncer maligno confirmado num dinossauro.",
+q:"Por que animais enormes, com trilhões de células, não têm câncer em proporção ao tamanho? É o paradoxo de Peto.",
+a:"Siddhartha Mukherjee, O Imperador de Todas as Doenças (2010).",l:"tecidos-moles mumias-atero"});
+C("trepanacao","paleomedicina","🧠","Trepanação, a neurocirurgia neolítica","há pelo menos 7 mil anos","Europa, Andes, África","consenso","med his",{
+r:"Crânios com orifícios cirúrgicos e bordas remodeladas mostram que muitos pacientes sobreviveram por anos. Indicações prováveis: trauma craniano, convulsões, cefaleia ou ritual. Entre os incas, a sobrevida chegou a 75–80%, mais que na Guerra Civil Americana (~46–56%).",
+q:"Como controlavam infecção e sangramento sem antibióticos?",l:"amputacao-borneo edwin-smith"});
+C("amputacao-borneo","paleomedicina","🦵","A amputação de 31 mil anos","~31 mil anos","Caverna Liang Tebo, Bornéu","consenso","med his",{
+r:"Um jovem teve o pé e parte da perna esquerda amputados na infância e viveu mais 6 a 9 anos (Nature, 2022). Exige anatomia, controle de hemorragia e prevenção de infecção, talvez com plantas antissépticas da floresta.",
+q:"Quem cuidou dele durante a recuperação? A cirurgia mais antiga também é a prova mais antiga de cuidado comunitário.",l:"trepanacao"});
+C("edwin-smith","paleomedicina","📃","Papiro Edwin Smith","cópia de ~1600 a.C. de texto mais antigo","Egito","consenso","med his",{
+r:"Um tratado cirúrgico com 48 casos de trauma, da cabeça aos pés, cada um com exame, diagnóstico e prognóstico em três vereditos: doença que tratarei, com a qual lutarei, ou que não tratarei. Traz a primeira descrição escrita do cérebro, das meninges e da paralisia por lesão medular.",
+q:"Raciocínio clínico estruturado há 3.600 anos: o que mudou desde então?",l:"trepanacao mumias-atero"});
+C("mumias-atero","paleomedicina","❤️","Aterosclerose em múmias","estudo HORUS, Lancet, 2013","Egito, Peru, sudoeste dos EUA, Aleutas","consenso","med his",{
+r:"Tomografias de 137 múmias de quatro povos, incluindo caçadores-coletores, mostraram aterosclerose provável ou definida em cerca de um terço (34%).",
+q:"Se não havia fast-food, o que explica? Idade, inflamação crônica por infecções e fumaça de fogueiras em ambientes fechados são candidatos.",
+n:"Aterosclerose não é só doença moderna; é também doença de inflamação e envelhecimento.",l:"otzi centrosaurus"});
+C("otzi","paleomedicina","🧊","Ötzi, o Homem do Gelo","~3300 a.C.","Alpes de Ötztal","consenso","med bio his",{
+r:"Morreu por uma flecha que atingiu a artéria subclávia. Tinha 61 tatuagens em locais de dor articular e lombar, talvez tratamento. Carregava a bactéria da doença de Lyme, Helicobacter pylori, predisposição genética a doença cardiovascular e intolerância à lactose, e levava um fungo de bétula com possível ação antiparasitária.",
+q:"As tatuagens eram terapia? Coincidem com pontos de acupuntura, mas é hipótese.",l:"mumias-atero lactase"});
+C("lactase","paleomedicina","🥛","Persistência da lactase, evolução em tempo real","últimos ~7 mil anos","Europa e África Oriental","consenso","med bio his",{
+r:"A capacidade de digerir lactose na vida adulta se espalhou entre povos pastores por mutações diferentes na Europa e na África, um caso de evolução convergente. Um estudo de 2022 (Nature) sugere que a vantagem apareceu em tempos de fome e epidemias, quando o leite mal digerido piorava a diarreia.",
+q:"Que outras adaptações recentes ainda estão em curso na espécie humana?",l:"otzi neandertais"});
+C("one-health","paleomedicina","🌐","Saúde Única: extinção e epidemia são o mesmo assunto","hoje","Planeta inteiro","consenso","med bio",{
+r:"Fungo quitrídio em anfíbios, síndrome do nariz branco em morcegos, circovírus nas ararinhas-azuis, gripe aviária H5N1 matando dezenas de milhares de leões-marinhos e elefantes-marinhos na América do Sul em 2023. Patógenos atravessam espécies, e a destruição de habitats multiplica os contatos.",
+c:"Comércio de animais, invasão de habitats e mudanças climáticas.",
+p:"A abordagem One Health, de OMS, FAO, OMSA e PNUMA, junta medicina humana, veterinária e ecologia na vigilância.",
+q:"Como um plantonista de UTI percebe, na beira do leito, o primeiro sinal de uma zoonose nova?",
+a:"David Quammen, Spillover (2012).",l:"sapo-dourado ararinha captopril"});
+
+/* ---------- XI. Fé, Ciência e Método ---------- */
+C("teologia-ciencia","metodo","⛪","Teologia como ciência das ideias que moldam sociedades","—","Universidades desde Bolonha (1088)","consenso","teo his",{
+r:"A teologia estuda textos, tradições, ética e o sentido que os povos dão à vida, e foi berço das primeiras universidades. Clérigos-cientistas: Steno (geologia, bispo), Mendel (genética, abade agostiniano), Lemaître (padre, propôs o “átomo primordial”, base do Big Bang) e Teilhard de Chardin (jesuíta, paleontólogo do Homem de Pequim). Göbekli Tepe sugere que crenças coletivas podem ter impulsionado a própria civilização.",
+q:"Para entender uma sociedade, estude o que ela adora e por quê. Que valores movem a nossa?",l:"steno gobekli newton-templo"});
+C("metodo-investigador","metodo","⚖️","O kit do investigador","—","Qualquer lugar","consenso","mat his teo",{
+r:"Sete ferramentas: 1) afirmações extraordinárias exigem evidências extraordinárias (Sagan); 2) a navalha de Occam prefere a explicação com menos suposições; 3) “não sei como fizeram” não equivale a “alienígenas fizeram”; 4) desconfie de pareidolia e viés de confirmação; 5) pergunte que observação provaria que você está errado (Popper); 6) atualize a crença na proporção da evidência (Bayes); 7) respeite a inteligência dos antigos.",
+q:"Qual dossiê deste códice você classificaria com outro selo? Por quê?",
+a:"Carl Sagan, O Mundo Assombrado pelos Demônios (1995); Kenneth Feder, Frauds, Myths, and Mysteries.",l:"astronautas gunung-padang bateria-bagda"});
+C("astronautas","metodo","👽","Os “antigos astronautas”","desde os anos 1960","Livros e televisão","refutado","his mat",{
+r:"A ideia de que extraterrestres construíram pirâmides, Nazca ou os muros incas não tem nenhuma evidência física. Cada “mistério” citado tem explicação documentada: o diário de Merer, os experimentos de Protzen, a reprodução das linhas de Nazca.",
+c:"Viés recorrente: quase sempre se duvida da capacidade de egípcios, incas, polinésios e outros povos não europeus.",
+q:"Por que a hipótese alienígena quase nunca é aplicada às catedrais góticas?",
+n:"Respeitar os antigos é reconhecer que eram tão inteligentes quanto nós, com menos ferramentas e muito mais paciência.",l:"piramides sacsayhuaman nazca metodo-investigador"});
+
+const TRILHAS=[
+  {e:"🦖",t:"Do fóssil ao DNA",d:"Da pedra ao laboratório: como lemos vidas de milhões de anos e até onde chega a biologia molecular.",ids:"steno fossilizacao datacao tecidos-moles penas-cor araripe ubirajara kpg denisovanos colossal"},
+  {e:"🏹",t:"Como a humanidade extingue",d:"Dez casos, um padrão. E o que fazer para não repetir.",ids:"megafauna moa dodo steller alca pombo tilacino baiji ararinha curlew sexta"},
+  {e:"⚙️",t:"Tecnologias perdidas",d:"Engenhos reais da Antiguidade e por que o conhecimento sumiu.",ids:"anticitera eolipila licurgo damasco concreto delhi fogo-grego bateria-bagda oklo"},
+  {e:"🗿",t:"Antes da História",d:"Da arte de 67.800 anos às alegações que caíram, com o método no centro.",ids:"sulawesi gobekli abutre younger-dryas doggerland catalhoyuk serra-capivara gunung-padang atlantida silurian"},
+  {e:"🔐",t:"Códigos não quebrados",d:"Escritas que resistem e bibliotecas que a IA está fazendo falar.",ids:"linear-a indo rongorongo voynich festo elamita quipu herculano alexandria"},
+  {e:"👑",t:"Os segredos de Salomão",d:"Do texto bíblico às minas, ao π do Templo, aos anéis, demônios e grimórios.",ids:"salomao-historico minas-salomao sabedoria-naturalista templo jaquim-boaz shamir selo-salomao grimorios ars-notoria saba-arca pergaminho-cobre newton-templo"},
+  {e:"🩺",t:"Paleomedicina",d:"Câncer, cirurgia, genes e epidemias em escala de milhões de anos.",ids:"centrosaurus trepanacao amputacao-borneo edwin-smith mumias-atero otzi neandertais lactase sapo-dourado one-health captopril"}
+];
+
+/* ===================== ESTADO ===================== */
+const st={q:"",disc:new Set(),selo:new Set(),soStar:false,lidos:new Set(),star:new Set(),ultimo:null,trilha:-1,passo:0};
+const MAP={}; CARDS.forEach(c=>MAP[c.id]=c);
+const reduz=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function carregar(){try{const d=JSON.parse(localStorage.getItem("codice360x")||"{}");(d.lidos||[]).forEach(x=>{if(MAP[x])st.lidos.add(x)});(d.star||[]).forEach(x=>{if(MAP[x])st.star.add(x)});st.ultimo=MAP[d.ultimo]?d.ultimo:null;if(d.dys)document.body.classList.add("dys");}catch(e){}}
+function salvar(){try{localStorage.setItem("codice360x",JSON.stringify({lidos:[...st.lidos],star:[...st.star],ultimo:st.ultimo,dys:document.body.classList.contains("dys")}))}catch(e){}}
+const norm=s=>(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+const $=s=>document.querySelector(s);
+function aviso(t){const a=$("#aviso");a.textContent=t;a.hidden=false;clearTimeout(aviso._t);aviso._t=setTimeout(()=>a.hidden=true,2200);}
+
+/* ===================== DIA DA TERRA ===================== */
+const IDADE=4567;
+const EONS=[["Hadeano",4567,4031,"#7b5a3c"],["Arqueano",4031,2500,"#b0743a"],["Proterozoico",2500,538.8,"#c99a4a"],["Fanerozoico",538.8,0,"#3ccfd0"]];
+const ERAS=[["Paleozoico",538.8,251.9,"#6fa9a0"],["Mesozoico",251.9,66,"#8ccf9a"],["Cenozoico",66,0,"#e3d27a"]];
+const EVENTOS=[[4567,"Formação da Terra"],[4400,"Zircões mais antigos (Jack Hills)"],[3700,"Primeiros sinais de vida"],[2400,"Grande Evento de Oxidação","goe"],[538.8,"Explosão cambriana"],[445,"1ª grande extinção","ordoviciano"],[375,"Peixes rumo à terra firme"],[252,"Grande Mortandade","permiano"],[233,"Primeiros dinossauros"],[201,"Extinção do Triássico","triassico"],[112,"Araripe e o Ubirajara","araripe"],[66,"Asteroide de Chicxulub","kpg"],[6.5,"Linhagens humana e do chimpanzé se separam"],[3.6,"Fim do megalodonte","megalodonte"],[0.3,"Surge o Homo sapiens"],[0.0678,"Arte mais antiga (Muna)","sulawesi"],[0.0116,"Göbekli Tepe","gobekli"],[0.0052,"Invenção da escrita (Uruk)"],[0.00297,"Era atribuída a Salomão","salomao-historico"],[0.00036,"Steno lê os fósseis","steno"]];
+function hora(ma){const tot=86400*(1-ma/IDADE);const h=Math.floor(tot/3600),m=Math.floor((tot%3600)/60),s=tot%60;const p=n=>String(n).padStart(2,"0");if(ma<0.5){return p(h)+":"+p(m)+":"+(s<10?"0":"")+s.toFixed(2).replace(".",",");}return p(h)+":"+p(m)+":"+p(Math.floor(s));}
+function anos(ma){if(ma>=1000)return (ma/1000).toLocaleString("pt-BR",{maximumFractionDigits:2})+" bilhões de anos";if(ma>=1)return ma.toLocaleString("pt-BR",{maximumFractionDigits:1})+" milhões de anos";const a=ma*1e6;if(a>=1000)return Math.round(a/100)/10>=1?(a/1000).toLocaleString("pt-BR",{maximumFractionDigits:1})+" mil anos":Math.round(a)+" anos";return Math.round(a).toLocaleString("pt-BR")+" anos";}
+function montarDia(){
+  const f=$("#faixa-dia"),z=$("#faixa-zoom");
+  EONS.forEach(([n,a,b,c])=>{const d=document.createElement("div");d.className="eon";d.style.width=((a-b)/IDADE*100)+"%";d.style.background=c;d.textContent=n;d.title=n+": de "+anos(a)+" a "+(b?anos(b):"hoje");f.appendChild(d);});
+  ERAS.forEach(([n,a,b,c])=>{const d=document.createElement("div");d.className="eon";d.style.width=((a-b)/538.8*100)+"%";d.style.background=c;d.textContent=n;d.title=n;z.appendChild(d);});
+  EVENTOS.forEach(([ma,t])=>{const k=document.createElement("span");k.className="tick";k.style.left="calc("+((1-ma/IDADE)*100)+"% - 1px)";k.title=t+" ("+hora(ma)+")";f.appendChild(k);if(ma<=538.8){const k2=document.createElement("span");k2.className="tick k";k2.style.left="calc("+((1-ma/538.8)*100)+"% - 1.5px)";k2.title=t;z.appendChild(k2);}});
+  const ul=$("#eventos");
+  EVENTOS.forEach(([ma,t,id],i)=>{const li=document.createElement("li");if(ma<0.5)li.className="ultimo";li.innerHTML='<time>'+hora(ma)+'</time><span>'+(id?'<a href="#c-'+id+'" data-ir="'+id+'">'+t+'</a>':t)+' <small style="color:var(--pedra)">há '+anos(ma)+'</small></span>';ul.appendChild(li);});
+  const s=$("#s-tempo");const L=Math.log10(IDADE)+3;
+  const upd=()=>{const ma=Math.pow(10,-3+s.value/1000*L);let best=EVENTOS[0],bd=1e9;EVENTOS.forEach(e=>{const d=Math.abs(Math.log10(e[0])-Math.log10(ma));if(d<bd){bd=d;best=e;}});$("#s-leitura").innerHTML="Há <strong>"+anos(ma)+"</strong> o relógio marcava <strong>"+hora(ma)+"</strong>. Marco mais próximo: "+(best[2]?'<a href="#c-'+best[2]+'" data-ir="'+best[2]+'">'+best[1]+'</a>':best[1])+" (há "+anos(best[0])+").";};
+  s.addEventListener("input",upd);upd();
+}
+
+/* ===================== RENDER ===================== */
+function selo(s){return '<span class="selo s-'+s+'">'+SELOS[s][0]+" "+SELOS[s][1]+"</span>";}
+function cartao(c){
+  const disc=c.disc.map(d=>'<span class="disc">'+DISC[d][0]+" "+DISC[d][1]+"</span>").join("");
+  const extinto=["natureza","humanos"].includes(c.livro);
+  let campos="";
+  if(c.c)campos+='<div class="campo"><dt>'+(extinto?"⚰️ Por que sumiu":"🧩 Causa")+"</dt><dd>"+c.c+"</dd></div>";
+  if(c.p)campos+='<div class="campo"><dt>'+(extinto?"🛡️ O que poderia ter sido feito":"🛡️ Lição para hoje")+"</dt><dd>"+c.p+"</dd></div>";
+  if(c.q)campos+='<div class="campo q"><dt>❓ Pergunta aberta</dt><dd>'+c.q+"</dd></div>";
+  if(c.td)campos+='<div class="campo t"><dt>🧪 Teste decisivo</dt><dd>'+c.td+"</dd></div>";
+  let det="";
+  if(c.n||c.a)det='<details><summary>🔬 Aprofundar: curiosidade e leitura</summary>'+(c.n?"<p>🤓 "+c.n+"</p>":"")+(c.a?"<p>📚 "+c.a+"</p>":"")+"</details>";
+  const fio=(c.l||"").split(" ").filter(x=>MAP[x]).map(x=>'<a href="#c-'+x+'" data-ir="'+x+'">'+MAP[x].e+" "+MAP[x].t+"</a>").join("");
+  return '<article class="folio" id="c-'+c.id+'" data-selo="'+c.selo+'" data-id="'+c.id+'">'+
+    '<div class="fcab"><div class="fe" aria-hidden="true">'+c.e+'</div><div><h3>'+c.t+'</h3><p class="meta">⏳ '+c.quando+' &nbsp; 📍 '+c.onde+'</p></div></div>'+
+    '<div class="tags">'+selo(c.selo)+disc+'</div>'+
+    '<p class="r">'+c.r+'</p>'+(campos?'<dl class="campos">'+campos+"</dl>":"")+det+
+    (fio?'<div class="fio"><span>🧵 Fio de Ariadne</span>'+fio+"</div>":"")+
+    '<div class="fpe"><button class="b-lido" aria-pressed="false" data-lido="'+c.id+'">✔ Desvendado</button><button class="b-star" aria-pressed="false" data-star="'+c.id+'">⭐ Investigar</button></div></article>';
+}
+function montar(){
+  $("#badges").innerHTML='<li><b>'+CARDS.length+'</b> dossiês</li><li><b>'+LIVROS.length+'</b> livros</li><li><b>'+TRILHAS.length+'</b> trilhas</li><li><b>4</b> instrumentos de cálculo</li><li><b>9</b> disciplinas cruzadas</li>';
+  $("#selos-legenda").innerHTML=Object.entries(SELOS).map(([k,v])=>'<div class="selo-item s-'+k+'"><b>'+v[0]+" "+v[1]+"</b><span>"+v[2]+"</span></div>").join("");
+  $("#trilhas").innerHTML=TRILHAS.map((t,i)=>{const n=t.ids.split(" ").length;return '<article class="trilha"><h3>'+t.e+" "+t.t+'</h3><p>'+t.d+'</p><span class="pm">'+n+' dossiês</span><button class="btn ouro" data-trilha="'+i+'">Começar trilha</button></article>';}).join("");
+  const cd=$("#chips-disc"),cs=$("#chips-selo");
+  Object.entries(DISC).forEach(([k,v])=>{const b=document.createElement("button");b.className="chip";b.setAttribute("aria-pressed","false");b.dataset.disc=k;b.textContent=v[0]+" "+v[1];cd.appendChild(b);});
+  Object.entries(SELOS).forEach(([k,v])=>{const b=document.createElement("button");b.className="chip sel s-"+k;b.setAttribute("aria-pressed","false");b.dataset.selo=k;b.textContent=v[0]+" "+v[1];cs.appendChild(b);});
+  const main=$("#livros");let html="";
+  LIVROS.forEach((L,i)=>{
+    const cs2=CARDS.filter(c=>c.livro===L.id);
+    html+='<section class="livro" id="livro-'+L.id+'" aria-labelledby="h-'+L.id+'"><div class="livro-cab"><div class="numeral" aria-hidden="true">'+L.n+'</div><div><h2 id="h-'+L.id+'">'+L.e+" "+L.t+'</h2><p class="sub">'+L.s+'</p></div></div><p class="livro-intro">'+L.i+'</p><div class="folios">'+cs2.map(cartao).join("")+'</div><p class="vazio" hidden>Nenhum dossiê deste livro combina com os filtros.</p>'+(i<LIVROS.length-1?'<div class="ornamento" aria-hidden="true">◆</div>':"")+'</section>';
+  });
+  main.innerHTML=html;
+  $("#trilho-lista").innerHTML=LIVROS.map(L=>'<li><a href="#livro-'+L.id+'"><span class="rn">'+L.n+'</span><span>'+L.e+" "+L.t+'</span><span class="pg" data-pg="'+L.id+'"></span></a></li>').join("");
+  CARDS.forEach(c=>{c._txt=norm([c.t,c.quando,c.onde,c.r,c.c,c.p,c.q,c.td,c.n,c.a].join(" ")+" "+c.disc.map(d=>DISC[d][1]).join(" "));c._el=document.getElementById("c-"+c.id);});
+}
+function filtrar(){
+  const q=norm(st.q.trim());let vis=0;
+  CARDS.forEach(c=>{let ok=true;
+    if(q&&!q.split(/\s+/).every(w=>c._txt.includes(w)))ok=false;
+    if(ok&&st.disc.size&&!c.disc.some(d=>st.disc.has(d)))ok=false;
+    if(ok&&st.selo.size&&!st.selo.has(c.selo))ok=false;
+    if(ok&&st.soStar&&!st.star.has(c.id))ok=false;
+    c._el.hidden=!ok;if(ok)vis++;});
+  LIVROS.forEach(L=>{const sec=document.getElementById("livro-"+L.id);const any=CARDS.some(c=>c.livro===L.id&&!c._el.hidden);sec.querySelector(".vazio").hidden=any;});
+  $("#contagem").textContent=vis===CARDS.length?CARDS.length+" dossiês":vis+" de "+CARDS.length+" dossiês";
+}
+function limpar(){st.q="";$("#q").value="";st.disc.clear();st.selo.clear();st.soStar=false;document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed","false"));$("#b-star").setAttribute("aria-pressed","false");filtrar();}
+function progresso(){
+  CARDS.forEach(c=>{c._el.classList.toggle("lido",st.lidos.has(c.id));c._el.querySelector(".b-lido").setAttribute("aria-pressed",st.lidos.has(c.id));c._el.querySelector(".b-star").setAttribute("aria-pressed",st.star.has(c.id));});
+  LIVROS.forEach(L=>{const t=CARDS.filter(c=>c.livro===L.id);const l=t.filter(c=>st.lidos.has(c.id)).length;const el=document.querySelector('[data-pg="'+L.id+'"]');if(el)el.textContent=l+"/"+t.length;});
+  const n=st.lidos.size,tot=CARDS.length;
+  $("#diario-n").textContent=n+"/"+tot;
+  $("#d-resumo").innerHTML="<b>"+n+"</b> de "+tot+" dossiês desvendados. <b>"+st.star.size+"</b> marcados para investigar.";
+  $("#d-barra").style.width=(n/tot*100)+"%";
+  $("#d-lista").innerHTML=st.star.size?[...st.star].map(id=>'<li><a href="#c-'+id+'" data-ir="'+id+'">'+MAP[id].e+" "+MAP[id].t+"</a></li>").join(""):"<li>Nada marcado ainda. Use ⭐ Investigar nos dossiês.</li>";
+  const bc=$("#b-continuar");if(st.ultimo&&MAP[st.ultimo]){bc.hidden=false;bc.textContent="▶ Continuar: "+MAP[st.ultimo].t;}else bc.hidden=true;
+}
+function irPara(id,sem){
+  const c=MAP[id];if(!c)return;
+  if(c._el.hidden)limpar();
+  c._el.scrollIntoView({behavior:reduz?"auto":"smooth",block:"start"});
+  if(!reduz){c._el.classList.remove("pulso");void c._el.offsetWidth;c._el.classList.add("pulso");}
+  if(!sem){st.ultimo=id;salvar();progresso();}
+}
+
+/* ===================== TRILHAS ===================== */
+function trilhaIds(){return TRILHAS[st.trilha].ids.split(" ").filter(x=>MAP[x]);}
+function mostrarPasso(){
+  const ids=trilhaIds();const id=ids[st.passo];
+  document.querySelectorAll(".folio.foco").forEach(e=>e.classList.remove("foco"));
+  MAP[id]._el.classList.add("foco");
+  $("#t-passo").textContent=TRILHAS[st.trilha].e+" "+TRILHAS[st.trilha].t+": passo "+(st.passo+1)+" de "+ids.length;
+  $("#t-titulo").textContent=MAP[id].e+" "+MAP[id].t;
+  $("#t-ant").disabled=st.passo===0;
+  $("#t-prox").textContent=st.passo===ids.length-1?"Desvendei, concluir 🏁":"Desvendei, próximo ⏭";
+  irPara(id);
+}
+function iniciarTrilha(i){st.trilha=i;st.passo=0;limpar();$("#barra-trilha").hidden=false;mostrarPasso();}
+function sairTrilha(){st.trilha=-1;$("#barra-trilha").hidden=true;document.querySelectorAll(".folio.foco").forEach(e=>e.classList.remove("foco"));}
+
+/* ===================== EVENTOS ===================== */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-ir],[data-lido],[data-star],[data-trilha],[data-disc],[data-selo],[data-imp]");if(!t)return;
+  if(t.dataset.ir){e.preventDefault();irPara(t.dataset.ir);if(!$("#diario").hidden&&t.closest("#diario"))$("#diario").hidden=true;}
+  else if(t.dataset.lido){const id=t.dataset.lido;st.lidos.has(id)?st.lidos.delete(id):st.lidos.add(id);st.ultimo=id;salvar();progresso();}
+  else if(t.dataset.star){const id=t.dataset.star;st.star.has(id)?st.star.delete(id):st.star.add(id);salvar();progresso();if(st.soStar)filtrar();}
+  else if(t.dataset.trilha!==undefined&&t.classList.contains("btn")){iniciarTrilha(+t.dataset.trilha);}
+  else if(t.dataset.disc){const k=t.dataset.disc;st.disc.has(k)?st.disc.delete(k):st.disc.add(k);t.setAttribute("aria-pressed",st.disc.has(k));filtrar();}
+  else if(t.dataset.selo&&t.classList.contains("chip")){const k=t.dataset.selo;st.selo.has(k)?st.selo.delete(k):st.selo.add(k);t.setAttribute("aria-pressed",st.selo.has(k));filtrar();}
+  else if(t.dataset.imp){const [d,r,v]=t.dataset.imp.split(",");$("#imp-d").value=d;$("#imp-r").value=r;$("#imp-v").value=v;calcImpacto();}
+});
+$("#q").addEventListener("input",e=>{st.q=e.target.value;filtrar();});
+$("#b-star").addEventListener("click",e=>{st.soStar=!st.soStar;e.currentTarget.setAttribute("aria-pressed",st.soStar);filtrar();});
+$("#b-limpar").addEventListener("click",limpar);
+$("#b-filtros").addEventListener("click",e=>{const p=$("#chips-painel");p.classList.toggle("aberto");e.currentTarget.setAttribute("aria-expanded",p.classList.contains("aberto"));});
+$("#b-aleatorio").addEventListener("click",()=>{const pool=CARDS.filter(c=>!st.lidos.has(c.id)&&["preistoria","tecnologia","escritas","lacunas","salomao"].includes(c.livro));const arr=pool.length?pool:CARDS;const c=arr[Math.floor(Math.random()*arr.length)];aviso("🎲 Enigma sorteado: "+c.t);irPara(c.id);});
+$("#b-continuar").addEventListener("click",()=>{if(st.ultimo)irPara(st.ultimo);});
+$("#b-dys").addEventListener("click",e=>{document.body.classList.toggle("dys");e.currentTarget.setAttribute("aria-pressed",document.body.classList.contains("dys"));salvar();});
+$("#b-diario").addEventListener("click",()=>{$("#diario").hidden=false;$("#d-fechar").focus();});
+$("#d-fechar").addEventListener("click",()=>{$("#diario").hidden=true;});
+$("#d-zerar").addEventListener("click",e=>{const b=e.currentTarget;if(b.dataset.conf){st.lidos.clear();st.star.clear();st.ultimo=null;salvar();progresso();b.textContent="♻️ Zerar progresso";delete b.dataset.conf;aviso("Progresso zerado.");}else{b.dataset.conf="1";b.textContent="Clique de novo para confirmar";}});
+$("#d-copiar").addEventListener("click",()=>{const txt=[...st.star].map(id=>"- "+MAP[id].t+" ("+SELOS[MAP[id].selo][1]+")").join("\n")||"(nenhum dossiê marcado)";try{navigator.clipboard.writeText("Códice das Eras Perdidas: para investigar\n"+txt).then(()=>aviso("📋 Lista copiada."),()=>aviso("Não foi possível copiar aqui; selecione a lista e copie manualmente."));}catch(err){aviso("Não foi possível copiar aqui; selecione a lista e copie manualmente.");}});
+$("#t-ant").addEventListener("click",()=>{if(st.passo>0){st.passo--;mostrarPasso();}});
+$("#t-prox").addEventListener("click",()=>{const ids=trilhaIds();st.lidos.add(ids[st.passo]);salvar();progresso();if(st.passo<ids.length-1){st.passo++;mostrarPasso();}else{aviso("🏁 Trilha concluída: "+TRILHAS[st.trilha].t+"!");sairTrilha();}});
+$("#t-sair").addEventListener("click",sairTrilha);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!$("#diario").hidden)$("#diario").hidden=true;}});
+
+/* ===================== LABORATÓRIO ===================== */
+const TAU=5730/Math.LN2;
+function fmt(n,d){return n.toLocaleString("pt-BR",{maximumFractionDigits:d===undefined?2:d});}
+function calcC14(origem){
+  const pIn=$("#c14-p"),tIn=$("#c14-t");let p,t;
+  if(origem==="t"&&tIn.value!==""){t=+tIn.value;p=100*Math.exp(-t/TAU);pIn.value=+p.toFixed(4);}
+  else{p=+pIn.value;if(!(p>0&&p<=100)){$("#c14-res").innerHTML='<span class="alerta">Use um valor entre 0,01 e 100.</span>';return;}t=TAU*Math.log(100/p);tIn.value=Math.round(t);}
+  const meias=t/5730;
+  $("#c14-res").innerHTML="Idade ≈ <strong>"+fmt(Math.round(t),0)+" anos</strong> ("+fmt(meias,2)+" meias-vidas). Restam <strong>"+fmt(p,3)+"%</strong> do C-14 original."+(t>50000?'<br><span class="alerta">⚠️ Além de ~50 mil anos o sinal se perde no ruído: use série do urânio, potássio-argônio ou urânio-chumbo.</span>':"");
+}
+$("#c14-p").addEventListener("input",()=>calcC14("p"));$("#c14-t").addEventListener("input",()=>calcC14("t"));
+function calcImpacto(){
+  const d=+$("#imp-d").value*1000,r=+$("#imp-r").value,v=+$("#imp-v").value*1000;
+  if(!(d>0&&r>0&&v>0)){$("#imp-res").innerHTML='<span class="alerta">Preencha diâmetro, densidade e velocidade com números positivos.</span>';return;}
+  const m=r*(4/3)*Math.PI*Math.pow(d/2,3),E=0.5*m*v*v,mt=E/4.184e15,hir=mt/0.015;
+  const exp=Math.floor(Math.log10(E)),man=E/Math.pow(10,exp);
+  let comp=mt<1?fmt(mt*1000,1)+" quilotons":fmt(mt,mt<100?1:0)+" megatons";
+  let ref=mt>=1e6?"Escala de extinção em massa.":mt>=1000?"Devastação regional ou continental.":mt>=1?"Destruiria uma região metropolitana.":"Explosão aérea capaz de quebrar janelas a dezenas de km.";
+  $("#imp-res").innerHTML="Massa ≈ <strong>"+fmt(m,0)+" kg</strong><br>Energia ≈ <strong>"+fmt(man,2)+" × 10<sup>"+exp+"</sup> J</strong> = <strong>"+comp+"</strong> de TNT<br>≈ <strong>"+fmt(hir,0)+"</strong> bombas de Hiroshima, ou "+fmt(mt/50,mt/50<10?2:0)+" Tsar Bombas. "+ref;
+}
+["#imp-d","#imp-r","#imp-v"].forEach(s=>$(s).addEventListener("input",calcImpacto));
+function calcPi(){
+  const d=+$("#pi-d").value||10;
+  const linhas=[["Mar de Bronze (1 Rs 7:23)",3],["Gematria qwh/qw (3 × 111/106)",3*111/106],["Babilônia, tábua de Susa (25/8)",25/8],["Egito, papiro Rhind (256/81)",256/81],["Arquimedes, limite superior (22/7)",22/7],["Zu Chongzhi, China séc. V (355/113)",355/113],["π verdadeiro",Math.PI]];
+  $("#pi-res").innerHTML='<table class="mini"><thead><tr><th>Aproximação</th><th>Valor</th><th>Circunferência</th><th>Erro</th></tr></thead><tbody>'+linhas.map(([n,v])=>"<tr><td>"+n+"</td><td>"+v.toFixed(6).replace(".",",")+"</td><td>"+fmt(v*d,3)+"</td><td>"+(Math.abs(v-Math.PI)/Math.PI*100).toFixed(4).replace(".",",")+"%</td></tr>").join("")+"</tbody></table>";
+}
+$("#pi-d").addEventListener("input",calcPi);
+const ANO=365.2422,MES=29.53059;
+function calcCiclos(){
+  const n=Math.max(1,Math.round(+$("#cic-n").value||19));const meses=n*ANO/MES,int=Math.round(meses),sobra=(meses-int)*MES;
+  $("#cic-res").innerHTML=n+" anos = <strong>"+fmt(meses,3)+"</strong> meses lunares. Arredondando para <strong>"+int+"</strong> meses, sobram <strong>"+fmt(Math.abs(sobra),2)+" dias</strong> ("+fmt(Math.abs(sobra)*24,1)+" horas)."+(Math.abs(sobra)<0.2?" 🎯 Ciclo excelente.":Math.abs(sobra)<2?" Ciclo razoável.":" Ciclo ruim: o calendário escorrega.");
+}
+$("#cic-n").addEventListener("input",calcCiclos);
+function tabCiclos(){
+  const ciclos=[["Metônico (19 anos)",235,"Calendário lunissolar"],["Calípico (76 anos)",940,"Correção do metônico"],["Saros",223,"Previsão de eclipses"],["Exeligmos (3 Saros)",669,"Eclipse no mesmo lugar"]];
+  $("#cic-tab").innerHTML=ciclos.map(([n,m,u])=>"<tr><td>"+n+"</td><td>"+m+"</td><td>"+fmt(m*MES,2)+"</td><td>"+u+"</td></tr>").join("");
+}
+
+/* ===================== INÍCIO ===================== */
+carregar();montarDia();montar();filtrar();progresso();
+$("#b-dys").setAttribute("aria-pressed",document.body.classList.contains("dys"));
+calcC14("p");calcImpacto();calcPi();calcCiclos();tabCiclos();
+</script>
+</body>
+</html>

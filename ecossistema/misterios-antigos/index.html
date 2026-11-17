@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1013">
+<title>Mistérios Antigos 360X · Universo 360X</title>
+<meta name="description" content="Setor do Universo 360X dedicado a fósseis, extinções, civilizações anteriores à escrita, tecnologias da Antiguidade, escritas indecifradas e tradições como as de Salomão, com selos de evidência.">
+<meta property="og:title" content="Mistérios Antigos 360X">
+<meta property="og:description" content="Ciência, história e fé lado a lado, com selos de evidência. Primeira subseção: Códice das Eras Perdidas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aldenirfilho.github.io/aldenirmed89/ecossistema/misterios-antigos/">
+<link rel="canonical" href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/misterios-antigos/">
+<link rel="icon" href="../../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Setor tecno-medieval: obsidiana + ouro + ciano, igual ao Códice. Layout: migalha, abertura, subseção ativa em destaque, livros, próximas subseções, conexões. */
+  --obsidiana:#0b1013; --basalto:#121a1f; --basalto-2:#18232a; --veio:#27353e;
+  --pergaminho:#ece3cc; --pedra:#a9b2ac; --ouro:#d9b45a; --ciano:#3ccfd0; --ambar:#f2a541;
+  --f-display:"Luminari","Cinzel",Georgia,serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--obsidiana);color:var(--pergaminho);font-family:var(--f-body);font-size:17px;line-height:1.6;
+  background-image:radial-gradient(1000px 500px at 85% -10%,rgba(60,207,208,.10),transparent 60%),radial-gradient(900px 500px at -10% 8%,rgba(217,180,90,.09),transparent 60%);background-attachment:fixed}
+a{color:var(--ciano)}
+:focus-visible{outline:2px solid var(--ciano);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:12px;top:12px;background:var(--ouro);color:#1b1505;padding:6px 10px;z-index:9}
+.migalha{border-bottom:1px solid var(--veio);background:rgba(18,26,31,.85);font-size:.88rem}
+.migalha .wrap{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding-top:8px;padding-bottom:8px}
+.migalha a{text-decoration:none}
+.migalha span{color:var(--pedra)}
+.migalha b{color:var(--ouro)}
+.abertura{padding:44px 0 18px;display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center}
+.abertura h1{font-family:var(--f-display);color:var(--ouro);font-size:clamp(2.2rem,5vw,3.8rem);line-height:1.05;margin:0 0 14px;text-wrap:balance}
+.abertura p{max-width:64ch;margin:0 0 12px;font-size:1.08rem}
+.selo-setor{width:150px;height:170px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0;padding:0;list-style:none}
+.chips li{border:1px solid var(--veio);border-radius:999px;padding:.18rem .7rem;font-size:.86rem;color:var(--pedra)}
+h2{font-family:var(--f-display);font-size:1.55rem;margin:0 0 6px;text-wrap:balance}
+.sec{padding:26px 0 6px}
+.sec > p.sub{color:var(--pedra);margin:0 0 16px;max-width:72ch}
+.ativa{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;background:linear-gradient(180deg,var(--basalto),#0e1519);border:1px solid var(--ouro);border-radius:16px;padding:22px}
+.ativa .rotulo{display:inline-block;font-size:.8rem;font-weight:700;color:#0b1013;background:var(--ciano);border-radius:999px;padding:.12rem .6rem;margin-bottom:8px}
+.ativa h3{font-family:var(--f-display);font-size:1.6rem;color:var(--ouro);margin:0 0 8px}
+.ativa p{margin:0 0 10px}
+.numeros{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.numeros div{border:1px solid var(--veio);border-radius:10px;padding:8px 10px;text-align:center}
+.numeros b{display:block;font-size:1.5rem;color:var(--ouro);font-variant-numeric:tabular-nums}
+.numeros span{font-size:.84rem;color:var(--pedra)}
+.acoes{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{display:inline-block;text-decoration:none;border-radius:9px;padding:.5rem .9rem;font-size:.95rem;border:1px solid var(--veio);background:var(--basalto-2);color:var(--pergaminho)}
+.btn:hover{border-color:var(--ouro)}
+.btn.ouro{background:var(--ouro);border-color:var(--ouro);color:#1b1505;font-weight:700}
+.livros{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.livros a{display:grid;grid-template-columns:2.4em 1fr;gap:8px;align-items:baseline;text-decoration:none;color:var(--pergaminho);padding:6px 8px;border-radius:8px;border:1px solid transparent}
+.livros a:hover{border-color:var(--veio);background:var(--basalto-2)}
+.livros .rn{font-family:var(--f-display);color:var(--ouro)}
+.livros small{display:block;color:var(--pedra);font-size:.84rem}
+.selos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:10px}
+.selos div{border:1px solid var(--veio);border-top:3px solid var(--sc);border-radius:8px;padding:9px 11px;background:var(--basalto)}
+.selos b{display:block;color:var(--sc)}
+.selos span{font-size:.9rem;color:var(--pedra)}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:12px}
+.cartao{background:var(--basalto);border:1px solid var(--veio);border-radius:12px;padding:14px 16px}
+.cartao h3{font-family:var(--f-display);font-size:1.08rem;margin:0 0 6px}
+.cartao p{margin:0;font-size:.93rem;color:var(--pedra)}
+.cartao .estado{display:inline-block;margin-top:8px;font-size:.78rem;font-weight:700;color:var(--ambar);border:1px solid var(--ambar);border-radius:999px;padding:.05rem .55rem}
+.cartao a{text-decoration:none}
+.rodape{border-top:1px solid var(--veio);margin-top:36px;padding:22px 0 40px;color:var(--pedra);font-size:.9rem}
+.rodape b{color:var(--pergaminho)}
+.grato{font-family:var(--f-display);color:var(--ouro);font-size:1.1rem}
+@media (max-width:860px){.abertura{grid-template-columns:1fr}.selo-setor{display:none}.ativa{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<nav class="migalha" aria-label="Você está em">
+  <div class="wrap">
+    <a href="../../index.html">🩺 AldenirMed 360X</a><span aria-hidden="true">›</span>
+    <a href="../">🌐 Universo 360X</a><span aria-hidden="true">›</span>
+    <b aria-current="page">Mistérios Antigos 360X</b>
+  </div>
+</nav>
+
+<main id="conteudo" class="wrap">
+  <section class="abertura" aria-labelledby="titulo">
+    <div>
+      <h1 id="titulo">🗝️ Mistérios Antigos 360X</h1>
+      <p>Um setor do Universo 360X para estudar o passado profundo com curiosidade e honestidade: fósseis, extinções, sociedades anteriores à escrita, tecnologias da Antiguidade, escritas indecifradas e tradições religiosas como as atribuídas a Salomão.</p>
+      <p>Ciência, história, geografia, matemática, física, medicina e teologia lado a lado. Cada afirmação traz um selo dizendo quanto confiar nela.</p>
+      <ul class="chips">
+        <li>🦖 Paleontologia</li><li>🏹 Extinções</li><li>🗿 Pré-história</li><li>⚙️ Tecnologia antiga</li><li>🔐 Escritas</li><li>👑 Salomão</li><li>🩺 Paleomedicina</li>
+      </ul>
+    </div>
+    <svg class="selo-setor" viewBox="0 0 64 72" role="img" aria-label="Brasão do setor: escudo com espiral de amonite e anel de engrenagem">
+      <path d="M32 2 L60 10 V34 C60 52 46 64 32 70 C18 64 4 52 4 34 V10 Z" fill="#121a1f" stroke="#d9b45a" stroke-width="1.8"/>
+      <circle cx="32" cy="34" r="17" fill="none" stroke="#3ccfd0" stroke-width="3.6" stroke-dasharray="3.2 3"/>
+      <path d="M32 34 m0 -1.5 a1.5 1.5 0 1 1 -1.5 1.5 a3 3 0 0 1 3 -3 a4.5 4.5 0 0 1 4.5 4.5 a6.5 6.5 0 0 1 -6.5 6.5 a9 9 0 0 1 -9 -9 a12 12 0 0 1 12 -12" fill="none" stroke="#d9b45a" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </section>
+
+  <section class="sec" aria-labelledby="sub-t">
+    <h2 id="sub-t">📚 Subseções</h2>
+    <p class="sub">O setor cresce por subseções. A primeira já está no ar, com versão interativa e dois PDFs.</p>
+    <article class="ativa" aria-labelledby="codice-t">
+      <div>
+        <span class="rotulo">Subseção 1 · no ar</span>
+        <h3 id="codice-t">Códice das Eras Perdidas</h3>
+        <p>Do fóssil ao DNA, das cinco grandes extinções ao dodô e à ararinha-azul, de Göbekli Tepe ao Mecanismo de Anticítera, do Linear A ao Templo de Salomão. Cada dossiê traz o que se sabe, a pergunta aberta, o teste que resolveria o enigma e o próximo fio a puxar.</p>
+        <div class="numeros">
+          <div><b>109</b><span>dossiês</span></div>
+          <div><b>11</b><span>livros</span></div>
+          <div><b>7</b><span>trilhas</span></div>
+        </div>
+        <div class="acoes">
+          <a class="btn ouro" href="./codice-eras-perdidas/">🦖 Abrir o códice interativo</a>
+          <a class="btn" href="./codice-eras-perdidas/pdf/Codice-Eras-Perdidas-360X_A4_Leitura-OpenDyslexic.pdf">📄 PDF de leitura (69 p.)</a>
+          <a class="btn" href="./codice-eras-perdidas/pdf/Codice-Eras-Perdidas-360X_A4_Classica.pdf">🖨️ PDF para imprimir (59 p.)</a>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:1.1rem;color:var(--pergaminho)">Os onze livros</h3>
+        <ol class="livros">
+          <li><a href="./codice-eras-perdidas/#livro-fosseis"><span class="rn">I</span><span>🪨 O Arquivo de Pedra<small>Fósseis, datação, Araripe e Ubirajara</small></span></a></li>
+          <li><a href="./codice-eras-perdidas/#livro-natureza"><span class="rn">II</span><span>☄️ Extintos pela Natureza<small>As cinco grandes mortandades e Chicxulub</small></span></a></li>
+          <li><a href="./codice-eras-perdidas/#livro-humanos"><span class="rn">III</span><span>🏹 Extintos pela Mão Humana<small>Moa, dodô, tilacino, ararinha-azul</small></span></a></li>
+          <li><a href="./codice-eras-perdidas/#livro-antidoto"><span class="rn">IV</span><span>🛡️ O Antídoto<small>Sexta extinção, DART, de-extinção, captopril</small></span></a></li>
+          <li><a href="./codice-eras-perdidas/#livro-preistoria"><span class="rn">V</span><span>🗿 Antes da História<small>Sulawesi, Göbekli Tepe, Doggerland</small></span></a></li>
+          <li><a href="./codice-eras-perdidas/#livro-tecnologia"><span class="rn">VI</span><span>⚙️ Tecnologias da Antiguidade<small>Anticítera, concreto romano, aço de Damasco</small></span></a></li>
+          <li><a href="./codice-eras-perdidas/#livro-escritas"><span class="rn">VII</span><span>🔐 Escritas Indecifradas<small>Linear A, Indo, Rongorongo, Voynich, Herculano</small></span></a></li>
+          <li><a href="./codice-eras-perdidas/#livro-lacunas"><span class="rn">VIII</span><span>🕳️ Lacunas da História<small>Colapso do Bronze, maias, Rapa Nui</small></span></a></li>
+          <li><a href="./codice-eras-perdidas/#livro-salomao"><span class="rn">IX</span><span>👑 O Códice de Salomão<small>Templo, π, shamir, selo, grimórios, Arca</small></span></a></li>
+          <li><a href="./codice-eras-perdidas/#livro-paleomedicina"><span class="rn">X</span><span>🩺 Paleomedicina<small>Câncer em dinossauro, trepanação, Ötzi</small></span></a></li>
+          <li><a href="./codice-eras-perdidas/#livro-metodo"><span class="rn">XI</span><span>⚖️ Fé, Ciência e Método<small>Teologia, kit do investigador</small></span></a></li>
+        </ol>
+      </div>
+    </article>
+  </section>
+
+  <section class="sec" aria-labelledby="selos-t">
+    <h2 id="selos-t">🔏 Selos de evidência</h2>
+    <p class="sub">Mistério bom é mistério honesto. Todas as subseções usam os mesmos cinco selos.</p>
+    <div class="selos">
+      <div style="--sc:#6cc58f"><b>🟢 Consenso</b><span>Evidência robusta e replicada.</span></div>
+      <div style="--sc:#e6cb5c"><b>🟡 Em debate</b><span>Evidência real, interpretações concorrentes.</span></div>
+      <div style="--sc:#ee9a4a"><b>🟠 Fronteira</b><span>Hipótese minoritária ou experimento mental.</span></div>
+      <div style="--sc:#93a0b8"><b>🚫 Refutado</b><span>Não resistiu aos testes ou foi retratado.</span></div>
+      <div style="--sc:#c79be0"><b>📜 Tradição e fé</b><span>Estudado pelo que significa e pelo que moldou.</span></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="prox-t">
+    <h2 id="prox-t">🧭 Próximas subseções propostas</h2>
+    <p class="sub">Ideias de ramos deste setor. Ainda não estão publicadas.</p>
+    <div class="grade">
+      <article class="cartao"><h3>🗺️ Mapa-múndi dos mistérios</h3><p>Os sítios dos dossiês num mapa: Araripe, Göbekli Tepe, Anticítera, Nazca, Rapa Nui, Timna.</p><span class="estado">Em preparação</span></article>
+      <article class="cartao"><h3>🔐 Atlas das escritas indecifradas</h3><p>Sinais, corpus, hipóteses e o que falta para cada código ser lido.</p><span class="estado">Em preparação</span></article>
+      <article class="cartao"><h3>👑 Salomão: Templo, tradição e símbolos</h3><p>Aprofundamento do Livro IX, separando texto bíblico, arqueologia e tradição posterior.</p><span class="estado">Em preparação</span></article>
+      <article class="cartao"><h3>🩺 Paleomedicina ilustrada</h3><p>Casos clínicos do passado profundo para estudo médico e de história da medicina.</p><span class="estado">Em preparação</span></article>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="con-t">
+    <h2 id="con-t">🔗 Conexões no Universo 360X</h2>
+    <p class="sub">Setores vizinhos que conversam com os mistérios antigos.</p>
+    <div class="grade">
+      <a class="cartao" href="https://aldenirfilho.github.io/atlas-vivo-360x-animais/"><h3>🐾 Animalia 360X</h3><p>Atlas de animais: o presente das espécies cujo passado está no códice.</p></a>
+      <a class="cartao" href="https://aldenirfilho.github.io/atlas-vivo-360x-rochas/"><h3>🪨 Geo 360X</h3><p>Rochas e minerais, a matéria do Arquivo de Pedra.</p></a>
+      <a class="cartao" href="https://aldenirfilho.github.io/atlas-vivo-360x-pages/"><h3>🌿 Atlas Vivo 360X</h3><p>Plantas, biodiversidade e conservação.</p></a>
+      <a class="cartao" href="../auditoria-religiosa-360/comparativo-interreligioso/"><h3>⚖️ Comparativo inter-religioso</h3><p>Fé, ética comparada e transparência religiosa.</p></a>
+      <a class="cartao" href="../"><h3>🌐 Universo 360X</h3><p>Todos os sites e projetos do ecossistema.</p></a>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap rodape">
+  <p><b>Idealização, geração, coordenação e direção:</b> Aldenir Rocha de Oliveira Filho, idealizador da Equipe 360X. Pesquisa, redação e programação assistidas por Claude.</p>
+  <p>Conteúdo educativo. As seções de tradição e esoterismo tratam de história cultural e da religião; não são manuais nem afirmações de eficácia.</p>
+  <p class="grato">Grato desde já! 🙏</p>
+</footer>
+</body>
+</html>
