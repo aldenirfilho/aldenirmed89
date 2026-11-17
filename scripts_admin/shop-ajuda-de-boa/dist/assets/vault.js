@@ -1,4 +1,4 @@
-/* Local-only vault. AES-256-GCM + PBKDF2-SHA256, 310000 iterations.
+/* Local-only vault (v2.0: aceita sangue/divulgação e a avaliação opcional do XP da Boa Ação). AES-256-GCM + PBKDF2-SHA256, 310000 iterations.
    No browser password, card, CPF or server credential is requested.
    No security audit is claimed. An unlocked/compromised browser can access its contents. */
 (function(root){
@@ -21,9 +21,10 @@ function validateState(s){
  const ids=new Set(),causes=new Set(root.BA360_CATALOG.map(c=>c.id));
  for(const e of s.entries){
   if(!e||typeof e.id!=='string'||!/^BA-[a-f0-9-]{36}$/i.test(e.id)||ids.has(e.id)||!causes.has(e.causeId))throw Error('Registro inválido ou duplicado.');ids.add(e.id);
-  if(!validDate(e.date)||!['dinheiro','tempo','materiais'].includes(e.kind)||typeof e.detail!=='string'||e.detail.length>240||typeof e.createdAt!=='string'||!Number.isFinite(Date.parse(e.createdAt)))throw Error('Campos de registro inválidos.');
+  if(!validDate(e.date)||!['dinheiro','tempo','materiais','sangue','divulgacao'].includes(e.kind)||typeof e.detail!=='string'||e.detail.length>240||typeof e.createdAt!=='string'||!Number.isFinite(Date.parse(e.createdAt)))throw Error('Campos de registro inválidos.');
   if(e.kind==='dinheiro'&&(!Number.isSafeInteger(e.amountCents)||e.amountCents<1||e.amountCents>C.MAX_CENTS))throw Error('Valor de registro inválido.');
-  if(e.kind!=='dinheiro'&&e.amountCents!==0)throw Error('Tempo e materiais não podem ser somados como dinheiro.');
+  if(e.kind!=='dinheiro'&&e.amountCents!==0)throw Error('Tempo, materiais, sangue e divulgação não podem ser somados como dinheiro.');
+  if(e.xp!==undefined&&e.xp!==null&&!(root.BA360_XP&&root.BA360_XP.validEvaluation(e.xp)))throw Error('Avaliação de XP inválida.');
   if(e.evidence){const f=e.evidence;if(typeof f.data!=='string'||f.data.length>MAX_FILE*1.34||!Number.isInteger(f.bytes)||f.bytes<1||f.bytes>MAX_FILE||typeof f.sha256!=='string'||!/^[a-f0-9]{64}$/.test(f.sha256)||!/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(f.data))throw Error('Anexo inválido.');const bytes=C.unb64(f.data);if(bytes.length!==f.bytes||signature(bytes)!==f.type)throw Error('O tipo ou tamanho de um anexo é inválido.');}
  }
  return s;

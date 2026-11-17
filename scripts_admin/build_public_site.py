@@ -199,6 +199,9 @@ PUBLIC_DOCUMENT_TRANSFORM_EXCLUSIONS = frozenset(
     {
         "ecossistema/agentes-habilidades/index.html",
         "ecossistema/agentes-habilidades/downloads/Catalogo_Agentes_Habilidades_360X_2026.html",
+        # App Bolsa Ajuda de Boa: arquivo único offline com CSP por hash dos scripts;
+        # qualquer transformação quebraria os hashes e o SHA-256 publicado na página.
+        "apps/ajuda-de-boa/downloads/bolsa-ajuda-de-boa.html",
     }
 )
 ANALYTICS_EXCLUDED_PREFIXES = (
@@ -209,6 +212,9 @@ ANALYTICS_EXCLUDED_PREFIXES = (
     "01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/",
     "ecossistema/auditoria-uti/",
     "ecossistema/auditoria-religiosa-360/riqueza-e-vida.html",
+    # Ajuda de Boa e app Bolsa Ajuda de Boa: páginas de doação com CSP local e
+    # compromisso público de não usar analytics (connect-src 'none').
+    "apps/ajuda-de-boa/",
 )
 PUBLIC_IDENTITY_TEXT_REPLACEMENTS = (
     ("ANTIGRAVITY CONSULTAS", "ALDENIRMED89"),
