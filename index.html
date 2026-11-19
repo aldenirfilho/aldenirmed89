@@ -37,12 +37,6 @@
     'comic-hero':'dark','modern-serious':'light'
   };
   try{
-    if(window.location?.hash||sessionStorage.getItem('antigravity:mission-intro:v2')==='seen'||
-      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){
-      document.documentElement.classList.add('mission-returning');
-    }
-  }catch(_){}
-  try{
     const saved=JSON.parse(localStorage.getItem('antigravity:a11y:v1')||'{}');
     const previousBrandDefault=(
       !saved.visualProfile||
@@ -95,7 +89,6 @@
 <link rel="apple-touch-icon" href="./assets/icons/360x-v1/apple-touch-icon-120.png" sizes="120x120"/>
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="stylesheet" href="./assets/editorial-attribution.css"/>
-<link rel="preload" as="image" href="./assets/brand-360x/aldenirmed-360x-launch-card.png" fetchpriority="high"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -655,7 +648,7 @@ body.mission-locked{overflow:hidden}
     radial-gradient(circle at 50% 42%,rgba(62,232,255,.09),transparent 42%),
     #010714;color:#fff;
 }
-.mission-intro[hidden],html.mission-returning .mission-intro{display:none}
+.mission-intro[hidden]{display:none}
 .mission-intro::before{
   content:"";position:absolute;inset:-15%;pointer-events:none;opacity:.62;
   background-image:
@@ -823,8 +816,7 @@ body.mission-locked{overflow:hidden}
   border-radius:50%;background:#ffd166;border:2px solid #041126;
   box-shadow:0 0 12px rgba(255,209,102,.9);
 }
-.mission-emblem.is-visible,
-html.mission-returning .mission-emblem{
+.mission-emblem.is-visible{
   opacity:1;transform:none;pointer-events:auto;
 }
 .mission-emblem:hover,.mission-emblem:focus-visible{
@@ -2562,6 +2554,10 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <link rel="stylesheet" href="./assets/brand-360x/identity.css"/>
 <link rel="stylesheet" href="./assets/home-360x.css"/>
 <script src="assets/home-360x.js" defer></script>
+<noscript><style>
+.home-preferences .view-controls,.quick-finder{display:none}
+@media(max-width:1100px){.nav .nav-menu-toggle{display:none}.nav .nav-links.nav-menu{display:grid;max-height:none}.nav{position:static}body>header{position:static}}
+</style></noscript>
 
 <style id="auditoria-uti-360x-style">
 #auditoria-uti{max-width:var(--page-max,1400px);margin:0 auto;padding:clamp(32px,5vw,64px) var(--page-gutter,24px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;scroll-margin-top:160px}
@@ -2587,14 +2583,14 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <body>
 <a class="skip-link" href="#top">Pular para o conteúdo principal</a>
 
-<!-- Portal de Missão: a trilha só começa após consentimento explícito. -->
+<!-- Portal de Missão opcional, acessível por um botão na página inicial. -->
 <section class="mission-intro" id="missionIntro" role="dialog" aria-modal="true"
-  aria-labelledby="missionTitle" aria-describedby="missionSubtitle">
+  aria-labelledby="missionTitle" aria-describedby="missionSubtitle" hidden>
   <button class="mission-skip" id="missionSkip" type="button">Pular abertura · Esc</button>
   <div class="mission-stage">
     <div class="mission-card-shell" aria-hidden="true">
       <img class="mission-card" src="./assets/brand-360x/aldenirmed-360x-launch-card.png" alt=""
-        width="1200" height="630" fetchpriority="high" decoding="async"/>
+        width="1200" height="630" loading="lazy" decoding="async"/>
       <div class="mission-flight-hud">
         <span>AM 360X · Controle de missão</span>
         <span>Decolagem autorizada</span>
@@ -2607,7 +2603,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     </div>
     <div class="mission-briefing">
       <span class="mission-kicker">Portal de missão · AldenirMed 360X</span>
-      <h1 class="mission-title" id="missionTitle">A missão começa agora.</h1>
+      <h2 class="mission-title" id="missionTitle">A missão começa agora.</h2>
       <p class="mission-subtitle" id="missionSubtitle">
         Dez segundos para organizar o foco, entrar em ritmo e estudar com propósito.
       </p>
@@ -2629,7 +2625,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     <div class="mission-telemetry" aria-live="polite">
       <div class="mission-status">
         <span id="missionStatus">SISTEMAS EM ESPERA</span>
-        <span id="missionCountdown">T−10,0</span>
+        <span id="missionCountdown" aria-hidden="true">T−10,0</span>
       </div>
       <div class="mission-progress" aria-hidden="true">
         <span class="mission-progress-bar"></span>
@@ -2644,7 +2640,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 
 <!-- ── NAVIGATION ─────────────────────────────────── -->
 <header>
-  <nav class="nav">
+  <div class="nav">
     <a class="brand brand-360x" href="#top" aria-label="AldenirMed 360X Intensiva · Clínica Médica · TEMI — início">
       <div class="brand-icon" aria-hidden="true"><img src="./assets/brand-360x/aldenirmed-360x-mark.svg" alt="" width="44" height="44"/></div>
       <div class="brand-text">
@@ -2680,6 +2676,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <div class="nav-panel" role="group" aria-label="Estudo e prova de título">
           <span class="nav-panel-title">Estudo e prova</span>
           <a href="questoes/index.html">🏆 Simulador TEMI</a>
+          <a href="questoes/temi_800_imagens_questoes.html">🖼️ TEMI 800 com imagens</a>
           <a href="#temi">🎯 Prova de título</a>
           <a href="01_UpDown_Hub/index.html" class="accent">↕️ UpDown Hub</a>
           <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca</a>
@@ -2698,6 +2695,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <a href="13_RenalDose_Antimicrobianos/index.html">💊 RenalDose ICU</a>
           <a href="14_SAPS3_Calculator/index.html">📊 SAPS 3</a>
           <a href="apps/index.html">📱 Hub de apps clínicos</a>
+          <a href="#downloads">⬇️ Baixar apps</a>
           <a href="#mapa">🕸️ Mapa vivo</a>
         </div>
       </details>
@@ -2734,8 +2732,8 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <div class="corner-command-cluster" id="cornerCommandCluster"
   aria-label="Comandos rápidos da plataforma">
   <button class="mission-emblem" id="missionEmblem" type="button"
-    aria-label="Repetir abertura da missão e escolher o som"
-    title="Repetir abertura da missão" aria-hidden="true" tabindex="-1">
+    aria-label="Abrir a experiência de missão e escolher o som"
+    title="Repetir abertura da missão" hidden>
     <img src="./assets/brand-360x/icons/aldenirmed-360x-192.png" alt="" width="78" height="78"/>
   </button>
 
@@ -2857,7 +2855,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   <a class="command-language" href="en/index.html" hreflang="en" lang="en"
     aria-label="EN — open the English version" title="English version">EN</a>
 </div>
-  </nav>
+  </div>
 </header>
 
 <main id="top" tabindex="-1">
@@ -2868,83 +2866,49 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   <section class="hero" aria-labelledby="hero-heading">
 
     <div class="hero-left">
-      <div class="hero-eyebrow" aria-hidden="true">Central clínica aeroespacial — plantão + prova + UTI</div>
-      <h1 id="hero-heading">
-        <span class="hl">Sua central clínica</span><br/>
-        entra em órbita.
-      </h1>
-      <div class="quick-finder" role="search" aria-label="Buscar rotas do site">
-        <label for="quickSearch">🔎 O que você precisa encontrar?</label>
-        <input id="quickSearch" type="search" placeholder="Ex.: AVC, POCUS, gasometria, biblioteca…" autocomplete="off" aria-controls="quickResults" aria-describedby="quickSearchStatus"/>
-        <p id="quickSearchStatus" role="status" aria-live="polite">Busque módulos e os documentos recém-integrados. A busca fica neste navegador.</p>
+      <h1 id="hero-heading"><span class="hl">Medicina Intensiva</span> e Clínica Médica</h1>
+      <p class="hero-lead">Estude para a prova de título em Medicina Intensiva e encontre ferramentas para o plantão.</p>
+      <div class="quick-finder" role="search" aria-label="Busca do AldenirMed">
+        <label for="quickSearch">Buscar no AldenirMed</label>
+        <input id="quickSearch" type="search" placeholder="Ex.: sepse, POCUS ou TEMI" autocomplete="off" aria-controls="quickResults" aria-describedby="quickSearchStatus"/>
+        <p id="quickSearchStatus" role="status" aria-live="polite">Busque por tema, módulo ou documento.</p>
         <ul id="quickResults" class="quick-results" hidden></ul>
-        <nav class="quick-routes" aria-label="Atalhos principais">
-          <a href="#jornal-360">📰 Jornal de hoje</a>
-          <a href="#apps-360">📱 Apps 360</a>
-          <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca IA</a>
-          <a href="15_Radar_Cientifico/index.html">📡 Radar dos últimos dias</a>
-          <a href="ecossistema/index.html#sites-publicos">🌐 Projetos 360X</a>
-        </nav>
-      </div>
-      <nav class="quick-doors" aria-labelledby="quickDoorsTitle">
-        <h2 class="quick-doors-title" id="quickDoorsTitle">⚡ Acesso rápido</h2>
-        <ul class="quick-doors-grid">
-          <li><a class="quick-door is-new" href="questoes/temi_800_imagens_questoes.html" style="--door:var(--yellow)"><span class="quick-door-icon" aria-hidden="true">🖼️</span><strong>TEMI 800</strong><small>questões com imagens</small><em class="quick-door-badge">Novo</em></a></li>
-          <li><a class="quick-door" href="questoes/index.html" style="--door:var(--violet)"><span class="quick-door-icon" aria-hidden="true">🏆</span><strong>Banco de questões</strong><small>TEMI e R3 comentadas</small></a></li>
-          <li><a class="quick-door" href="#modulos" style="--door:var(--red)"><span class="quick-door-icon" aria-hidden="true">🩺</span><strong>Módulos clínicos</strong><small>AVC, sepse, RCP, ECG…</small></a></li>
-          <li><a class="quick-door" href="03_Calculadoras_E_Apps/index.html" style="--door:var(--cyan)"><span class="quick-door-icon" aria-hidden="true">🧮</span><strong>Calculadoras</strong><small>vasoativas, SAPS 3, VM</small></a></li>
-          <li><a class="quick-door" href="#jornal-360" style="--door:var(--yellow)"><span class="quick-door-icon" aria-hidden="true">📰</span><strong>Jornal de hoje</strong><small>notícias e pílulas</small></a></li>
-          <li><a class="quick-door" href="02_Biblioteca_IA_Engine/index.html" style="--door:var(--green)"><span class="quick-door-icon" aria-hidden="true">📚</span><strong>Biblioteca</strong><small>acervo e evidências</small></a></li>
-        </ul>
-      </nav>
-      <p class="hero-lead">
-        Evidência, protocolos, calculadoras e treino TEMI reunidos em um painel operacional para encontrar a rota certa com rapidez e responsabilidade clínica.
-      </p>
-      <p class="access-free">🔓 Acesso gratuito · sem previsão de cobrança · cadastro opcional</p>
-      <div class="launch-entry-panel is-compact" role="note">
-        <div class="launch-entry-head">
-          <span class="launch-entry-kicker">🚀 Controle de missão · padrão principal</span>
-          <button class="launch-replay" id="heroReplayMission" type="button">Repetir decolagem</button>
-        </div>
-      </div>
-      <div class="view-controls" role="group" aria-label="Controles de visualização da página">
-        <span class="view-controls-label" aria-hidden="true">👁️ Visualização</span>
-        <select class="view-select" id="themeModeSelect" data-theme-select aria-label="Escolher tema visual">
-          <option value="dark">🚀 Aeroespacial</option>
-          <option value="light">☀️ Visualização clara</option>
-          <option value="system">💻 Sistema</option>
-        </select>
-        <button class="view-toggle" id="wideViewBtn" type="button" data-layout-wide aria-pressed="true" title="Alternar entre vista expandida e vista de foco">
-          ↔ Vista expandida
-        </button>
       </div>
     </div>
 
-    <aside class="hero-panel card" aria-label="Painel operacional do projeto">
-      <div class="panel-header">
-        <div class="panel-title">// painel operacional</div>
-        <div class="panel-badge"><span>●</span> Em órbita</div>
+    <aside class="hero-panel card" aria-labelledby="temiFeatureHeading">
+      <img class="hero-temi-mark" src="./assets/brand-360x/logo-360x.webp" alt="" width="360" height="360" decoding="async"/>
+      <p class="hero-temi-label">Preparação TEMI</p>
+      <h2 id="temiFeatureHeading">800 questões ilustradas</h2>
+      <p class="hero-temi-summary">Casos de UTI em 20 temas. Cada alternativa tem uma explicação.</p>
+      <a class="btn btn-primary hero-temi-action" href="questoes/temi_800_imagens_questoes.html" data-search-route data-search-title="TEMI 800 com imagens" data-search-terms="prova título simulados questões comentadas ECG POCUS" data-search-kind="Banco de questões">Praticar no TEMI 800 <span aria-hidden="true">→</span></a>
+      <p class="hero-temi-note">Material educacional independente, com revisão médica formal pendente.</p>
+    </aside>
+
+    <nav class="quick-doors" aria-labelledby="quickDoorsTitle">
+      <h2 class="quick-doors-title" id="quickDoorsTitle">Acesso rápido</h2>
+      <ul class="quick-doors-grid">
+        <li><a class="quick-door" href="#modulos" style="--door:var(--red)"><span class="quick-door-icon" aria-hidden="true">🩺</span><strong>Módulos clínicos</strong><small>AVC, sepse, RCP e ECG</small></a></li>
+        <li><a class="quick-door" href="03_Calculadoras_E_Apps/index.html" style="--door:var(--cyan)"><span class="quick-door-icon" aria-hidden="true">🧮</span><strong>Calculadoras UTI</strong><small>Vasoativas, SAPS 3 e VM</small></a></li>
+        <li><a class="quick-door" href="questoes/index.html" style="--door:var(--violet)"><span class="quick-door-icon" aria-hidden="true">🏆</span><strong>Banco de questões</strong><small>Simulados e treinos TEMI</small></a></li>
+        <li><a class="quick-door" href="02_Biblioteca_IA_Engine/index.html" style="--door:var(--green)"><span class="quick-door-icon" aria-hidden="true">📚</span><strong>Biblioteca</strong><small>Acervo e evidências</small></a></li>
+      </ul>
+    </nav>
+
+    <div class="home-preferences">
+      <div class="view-controls" role="group" aria-label="Controles de visualização da página">
+        <label class="view-controls-label" for="themeModeSelect">Tema</label>
+        <select class="view-select" id="themeModeSelect" data-theme-select>
+          <option value="dark">Aeroespacial escuro</option>
+          <option value="light">Visualização clara</option>
+          <option value="system">💻 Sistema</option>
+        </select>
+        <button class="view-toggle" id="wideViewBtn" type="button" data-layout-wide aria-pressed="true" title="Alternar entre vista expandida e vista de foco">↔ Vista expandida</button>
+        <button class="view-toggle home-a11y-trigger" id="homeA11yBtn" type="button" aria-controls="a11yPanel" aria-expanded="false">Acessibilidade</button>
+        <button class="launch-replay" id="heroReplayMission" type="button">Abrir experiência de missão</button>
       </div>
-      <div class="metrics-grid">
-        <div class="metric-cell">
-          <div class="val" data-count="10">10</div>
-          <div class="lbl">UpDowns ativos</div>
-        </div>
-        <div class="metric-cell">
-          <div class="val" data-count="10">10</div>
-          <div class="lbl">Temas clínicos</div>
-        </div>
-        <div class="metric-cell">
-          <div class="val" data-count="22">22</div>
-          <div class="lbl">Módulos centrais</div>
-        </div>
-        <div class="metric-cell">
-          <div class="val" data-count="18">18</div>
-          <div class="lbl">Acervos biblioteca</div>
-        </div>
-      </div>
-      <div class="panel-topics">
-        <div class="panel-topics-title">// rotas clínicas prioritárias</div>
+      <details class="home-clinical-links">
+        <summary>Atalhos clínicos por tema</summary>
         <div class="topic-pills">
           <a class="topic-pill cyan" href="01_Modulos_Clinicos/AVC_Agudo/avc.html">🧠 AVC Agudo</a>
           <a class="topic-pill red" href="01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html">🧠 AVC Turbo TEMI · NIHSS · HIC · HSA</a>
@@ -2963,14 +2927,8 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <a class="topic-pill green" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html">🫁 VM · SDRA · assincronias</a>
           <a class="topic-pill yellow" href="01_Modulos_Clinicos/Sepse_Choque_Septico/index.html">🦠 Sepse · choque séptico</a>
         </div>
-      </div>
-      <div class="panel-ecg" aria-hidden="true">
-        <svg class="ecg-svg" viewBox="0 0 460 52" preserveAspectRatio="none">
-          <path class="ecg-path" d="M0 30 L50 30 L70 30 L80 5 L90 48 L100 5 L110 30 L160 30 L180 24 L200 36 L220 24 L240 30 L320 30 L340 10 L360 48 L370 10 L380 30 L460 30"/>
-          <path class="ecg-path2" d="M0 40 L60 40 L80 34 L110 44 L140 40 L200 38 L240 42 L300 40 L320 36 L350 44 L380 40 L460 40"/>
-        </svg>
-      </div>
-    </aside>
+      </details>
+    </div>
 
   </section>
 </div><!-- /shell -->
@@ -2982,7 +2940,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       <div>
         <div class="section-label">// navegação rápida</div>
         <h2 class="section-title" id="comece-heading">Comece por aqui 🧭</h2>
-        <p class="section-sub">Oito portas para chegar ao que importa em um clique. Todo o acervo continua logo abaixo e no menu do topo.</p>
+        <p class="section-sub">Explore o acervo, os apps, o jornal e os projetos 360X.</p>
       </div>
     </div>
     <div class="hub-tiles">
@@ -3042,7 +3000,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     </div>
     <div class="portal-grid">
 
-      <a class="module-card portal-card mod-violet reveal" href="17_Portal_Vivo/index.html" aria-label="Abrir Portal Vivo de UPGRADE da plataforma">
+      <a class="module-card portal-card mod-violet reveal" href="17_Portal_Vivo/index.html">
         <div class="module-icon">🛰️</div>
         <span class="card-state">Portal opcional</span>
         <h3>UPGRADE contínuo do AldenirMed 360X</h3>
@@ -3055,7 +3013,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--violet)">Ver upgrades</span>
       </a>
 
-      <a class="module-card portal-card mod-cyan reveal" href="18_Centro_Tripulacao/index.html" aria-label="Abrir Centro da Tripulação">
+      <a class="module-card portal-card mod-cyan reveal" href="18_Centro_Tripulacao/index.html">
         <div class="module-icon">🧑‍🚀</div>
         <span class="card-state">Portal da tripulação</span>
         <h3>Centro da Tripulação</h3>
@@ -3082,7 +3040,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     </div>
     <div class="stations-grid">
 
-      <a class="module-card station-card mod-cyan reveal" href="15_Radar_Cientifico/index.html" aria-label="Abrir Estação Radar Diário">
+      <a class="module-card station-card mod-cyan reveal" href="15_Radar_Cientifico/index.html">
         <div class="module-icon">📡</div>
         <span class="card-state">Estação clínica</span>
         <h3>Estação Radar Diário</h3>
@@ -3095,7 +3053,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--cyan)">Entrar na estação</span>
       </a>
 
-      <a class="module-card station-card mod-violet reveal" href="16_Diretorio_Medico/index.html" aria-label="Abrir Estação Diretório Médico">
+      <a class="module-card station-card mod-violet reveal" href="16_Diretorio_Medico/index.html">
         <div class="module-icon">🌐</div>
         <span class="card-state">Estação de fontes</span>
         <h3>Estação Diretório Médico</h3>
@@ -3123,7 +3081,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     </div>
     <div class="modules-grid">
 
-      <a class="module-card mod-green reveal" href="01_UpDown_Hub/index.html" aria-label="Abrir UpDown Hub">
+      <a class="module-card mod-green reveal" href="01_UpDown_Hub/index.html">
         <div class="module-icon">↕️</div>
         <h3>UpDown Hub</h3>
         <p>O coração do sistema. Artigos e diretrizes transformados em hipertexto médico com flashcards, mnemônicos e questões TEMI.</p>
@@ -3135,7 +3093,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--green)">Abrir hub</span>
       </a>
 
-      <a class="module-card mod-violet reveal" href="02_Biblioteca_IA_Engine/index.html" aria-label="Abrir Biblioteca IA">
+      <a class="module-card mod-violet reveal" href="02_Biblioteca_IA_Engine/index.html">
         <div class="module-icon">📚</div>
         <h3>Biblioteca IA</h3>
         <p>Acervo de referências (PDF, DOCX) com busca por especialidade — o insumo bruto para produção de conteúdo.</p>
@@ -3147,7 +3105,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--violet)">Explorar acervo</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="03_Calculadoras_E_Apps/index.html" aria-label="Abrir Calculadoras UTI">
+      <a class="module-card mod-cyan reveal" href="03_Calculadoras_E_Apps/index.html">
         <div class="module-icon">🧮</div>
         <h3>Calculadoras UTI</h3>
         <p>Ferramentas de decisão rápida para plantão: SOFA, Glasgow, Ânion Gap, Osmolaridade, Drogas vasoativas e mais.</p>
@@ -3159,7 +3117,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--cyan)">Usar calculadoras</span>
       </a>
 
-      <a class="module-card mod-green reveal" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html" aria-label="Abrir RespiraSense ICU">
+      <a class="module-card mod-green reveal" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html">
         <div class="module-icon">🫁</div>
         <h3>RespiraSense ICU</h3>
         <p>Dashboard PWA para oxigenoterapia, CBAF/HFNC, VNI, VM protetora, SARA/ARDS, gasometria e assincronias.</p>
@@ -3171,7 +3129,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--green)">Abrir RespiraSense</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html" aria-label="Abrir RespiraCrit">
+      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html">
         <div class="module-icon">📟</div>
         <h3>RespiraCrit</h3>
         <p>Calculadora avançada para ventilação protetora, mecânica respiratória, gasometria e estratificação de SARA/ARDS.</p>
@@ -3183,7 +3141,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--cyan)">Abrir RespiraCrit</span>
       </a>
 
-      <a id="hepatite-alcool" class="module-card mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html" aria-label="Abrir Hepatite associada ao álcool — Turbo TEMI 360 X">
+      <a id="hepatite-alcool" class="module-card mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html">
         <div class="module-icon">🟠</div>
         <h3>Hepatite associada ao álcool</h3>
         <p>Critérios NIAAA, mecanismo, abordagem inicial, prednisolona, suporte e Atlas visual com os principais escores.</p>
@@ -3195,7 +3153,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--yellow)">Abrir hepatologia</span>
       </a>
 
-      <a id="doencas-geneticas" class="module-card mod-violet reveal" data-genetics-home-card href="01_Modulos_Clinicos/Doencas_Geneticas/index.html" aria-label="Abrir Doenças genéticas — Noonan, Costello e facomatoses — Turbo TEMI 360X">
+      <a id="doencas-geneticas" class="module-card mod-violet reveal" data-genetics-home-card href="01_Modulos_Clinicos/Doencas_Geneticas/index.html">
         <div class="module-icon">🧬</div>
         <h3>Doenças genéticas</h3>
         <p>Noonan, Costello e facomatoses: mecanismos genéticos, reconhecimento clínico e alertas na UTI. Atlas com 10 imagens didáticas.</p>
@@ -3207,7 +3165,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--violet)">Explorar doenças genéticas</span>
       </a>
 
-      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" aria-label="Abrir TCE grave — Protocolo CRASH">
+      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html">
         <div class="module-icon">🧠</div>
         <h3>TCE grave · CRASH</h3>
         <p>Ressuscitação neuroprotetora, PIC e herniação, sedação/despertar, oito assincronias, resgate respiratório e toxicologia.</p>
@@ -3219,7 +3177,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--red)">Abrir protocolo</span>
       </a>
 
-      <a id="avc-turbo-temi" class="module-card mod-red reveal" href="01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html" aria-label="Abrir AVC agudo — Turbo TEMI">
+      <a id="avc-turbo-temi" class="module-card mod-red reveal" href="01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html">
         <div class="module-icon">🧠</div>
         <h3>AVC agudo · Turbo TEMI</h3>
         <p>Isquêmico, HIC e HSA: primeiros minutos, reperfusão, NIHSS item a item, Fisher/Hunt–Hess/WFNS, 16 roteiros de deterioração, 17 fichas e laboratório TEMI. Edição 1.1 auditada.</p>
@@ -3231,14 +3189,14 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--red)">Abrir módulo</span>
       </a>
 
-      <a id="semiologia-neurologica" class="module-card mod-cyan reveal" href="24_Semiologia/index.html" aria-label="Abrir a seção de Semiologia">
+      <a id="semiologia-neurologica" class="module-card mod-cyan reveal" href="24_Semiologia/index.html">
         <div class="module-icon">🩺</div><h3>Semiologia</h3>
         <p>Aprenda a examinar, reconhecer padrões e integrar os achados. Semiologia Neurológica, Cardiovascular e Abdominal com atlas humano, auscultas, casos e revisão contínua.</p>
         <div class="module-tag-row"><span class="module-tag">Neurológica</span><span class="module-tag">Cardiovascular · auscultas</span><span class="module-tag">Abdominal · abdome agudo</span></div>
         <span class="module-link" style="color:var(--cyan)">Explorar Semiologia</span>
       </a>
 
-      <a class="module-card mod-violet reveal" href="01_Modulos_Clinicos/Delirium_UTI/index.html" aria-label="Abrir Delirium na UTI e Enfermaria">
+      <a class="module-card mod-violet reveal" href="01_Modulos_Clinicos/Delirium_UTI/index.html">
         <div class="module-icon">🧠</div>
         <h3>Delirium UTI/Enfermaria</h3>
         <p>Identificação prática, RASS, CAM-ICU, ICDSC, 4AT, prevenção ABCDEF e escalonamento seguro da agitação refratária.</p>
@@ -3250,7 +3208,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--violet)">Abrir módulo</span>
       </a>
 
-      <a class="module-card mod-yellow reveal" href="questoes/index.html" aria-label="Abrir Simulador TEMI">
+      <a class="module-card mod-yellow reveal" href="questoes/index.html">
         <div class="module-icon">🏆</div>
         <h3>Simulador TEMI</h3>
         <p>Banco de questões comentadas estilo TEMI/R3. Pegadinhas, diferenciais, condutas de prova e correlação com a prática.</p>
@@ -3262,7 +3220,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:var(--yellow)">Iniciar simulado</span>
       </a>
 
-      <a class="module-card mod-blue reveal" href="05_Midia_E_Feed/index.html" aria-label="Abrir Card Feed">
+      <a class="module-card mod-blue reveal" href="05_Midia_E_Feed/index.html">
         <div class="module-icon">🖼️</div>
         <h3>Card Feed Médico</h3>
         <p>Feed visual de cards 1080×1920, infográficos, algoritmos e resumos para celular. PWA — funciona offline.</p>
@@ -3274,7 +3232,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link" style="color:#6aa9ff">Ver cards</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="04_Ebooks_Intensiva_Clinica/index.html" aria-label="Abrir Ebooks Intensiva e Clínica Médica">
+      <a class="module-card mod-cyan reveal" href="04_Ebooks_Intensiva_Clinica/index.html">
         <div class="module-icon">📘</div>
         <h3>Ebooks Intensiva &amp; Clínica</h3>
         <p>Diretório para ebooks, manuais, guias longos e compêndios de Terapia Intensiva e Clínica Médica Interna.</p>
@@ -3286,7 +3244,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir ebooks</span>
       </a>
 
-      <a class="module-card mod-yellow reveal" href="07_Questoes_Comentadas/index.html" aria-label="Abrir Questões Comentadas">
+      <a class="module-card mod-yellow reveal" href="07_Questoes_Comentadas/index.html">
         <div class="module-icon">🧠</div>
         <h3>Questões Comentadas</h3>
         <p>Espaço para simulados, casos clínicos, bancos de questões, respostas comentadas e treino direcionado TEMI/R3.</p>
@@ -3298,7 +3256,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Treinar questões</span>
       </a>
 
-      <a class="module-card mod-green reveal" href="08_Transcricoes/index.html" aria-label="Abrir Transcrições">
+      <a class="module-card mod-green reveal" href="08_Transcricoes/index.html">
         <div class="module-icon">🎙️</div>
         <h3>Transcrições</h3>
         <p>Biblioteca para transcrições de aulas, vídeos, podcasts, reuniões, discussões clínicas e notas longas pesquisáveis.</p>
@@ -3310,7 +3268,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Ver transcrições</span>
       </a>
 
-      <a class="module-card mod-violet reveal" href="09_POCUS_Hub/index.html" aria-label="Abrir POCUS Hub">
+      <a class="module-card mod-violet reveal" href="09_POCUS_Hub/index.html">
         <div class="module-icon">🔊</div>
         <h3>POCUS Hub</h3>
         <p>Central de POCUS com aulas, vídeos, artigos, imagens, modelos de USG, dicas práticas e links interativos de estudo.</p>
@@ -3322,7 +3280,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir POCUS</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="22_Microparticulas_Ativas_ACRA/index.html" aria-label="Abrir Micropartículas de Aprendizagem Ativa ACRA">
+      <a class="module-card mod-cyan reveal" href="22_Microparticulas_Ativas_ACRA/index.html">
         <div class="module-icon">🧬</div>
         <h3>Micropartículas Ativas ACRA</h3>
         <p>Pilotos clínicos em unidades curtas e interativas: essência, mecanismo, decisão, caso, armadilhas, recuperação ativa e retomada espaçada.</p>
@@ -3334,7 +3292,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Iniciar aprendizagem ativa</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Dermatologia_Critica/index.html" aria-label="Abrir Dermatologia Crítica">
+      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Dermatologia_Critica/index.html">
         <div class="module-icon">🧴</div>
         <h3>Dermatologia Crítica</h3>
         <p>Reconhecimento precoce e manejo hospitalar de SJS/TEN, DRESS, AGEP e eritrodermia, com relógio de ação e critérios de UTI.</p>
@@ -3346,7 +3304,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Identificar e agir</span>
       </a>
 
-      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/RCP_Turbo_TEMI/index.html" aria-label="Abrir RCP — Turbo TEMI 360 graus, prévia educacional em revisão médica">
+      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/RCP_Turbo_TEMI/index.html">
         <div class="module-icon">🫀</div>
         <h3>RCP — Turbo TEMI 360°</h3>
         <p>Reanimação cardiopulmonar e parada cardiorrespiratória no meio público, emergência, enfermaria e UTI: algoritmos interativos, doses, causas reversíveis, pós-parada e treino. Prévia educacional em revisão médica.</p>
@@ -3358,7 +3316,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Percorrer a reanimação</span>
       </a>
 
-      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/Emergencias_Cardiopulmonares/index.html" aria-label="Abrir Emergências Cardiopulmonares — Turbo TEMI">
+      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/Emergencias_Cardiopulmonares/index.html">
         <div class="module-icon">🫀</div>
         <h3>Emergências Cardiopulmonares</h3>
         <p>FA de alta resposta, edema agudo de pulmão por fenótipo, 11 calculadoras de beira-leito, pós-alta e treino TEMI. Prévia em revisão médica.</p>
@@ -3370,7 +3328,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Fenotipar e agir</span>
       </a>
 
-      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/index.html" aria-label="Abrir Síndrome Coronariana Aguda — Turbo TEMI">
+      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/Sindrome_Coronariana_Aguda/index.html">
         <div class="module-icon">❤️‍🩹</div>
         <h3>Síndrome Coronariana Aguda</h3>
         <p>STEMI e NSTEMI em sequência operacional: primeiros 10 minutos, ECG, troponina, reperfusão, internação, complicações e SYNTAX.</p>
@@ -3382,7 +3340,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Reconhecer e decidir</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Almanaque_ECG/index.html" aria-label="Abrir Almanaque ECG 360 — Turbo TEMI">
+      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Almanaque_ECG/index.html">
         <div class="module-icon">🫀</div>
         <h3>Almanaque ECG 360 × Turbo TEMI</h3>
         <p>Sessenta modelos visuais pesquisáveis para comparar parada, isquemia, bloqueios, dispositivos, toxicologia, arritmias e distúrbios sistêmicos.</p>
@@ -3394,7 +3352,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Buscar e comparar ECG</span>
       </a>
 
-      <a class="module-card mod-red reveal" href="13_RenalDose_Antimicrobianos/index.html" aria-label="Abrir RenalDose ICU — Ajuste de Antimicrobianos para Função Renal">
+      <a class="module-card mod-red reveal" href="13_RenalDose_Antimicrobianos/index.html">
         <div class="module-icon">💊</div>
         <h3>RenalDose ICU</h3>
         <p>Tutorial e calculadora para <strong>ajuste de antimicrobianos em função renal</strong> (UTI adulto). CKD-EPI 2021, Cockcroft-Gault, KDIGO CKD 2024. Sanford 55ª + UpToDate.</p>
@@ -3406,7 +3364,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir RenalDose ICU</span>
       </a>
 
-      <a class="module-card mod-violet reveal" href="14_SAPS3_Calculator/index.html" aria-label="Abrir SAPS 3 — Calculadora de Mortalidade na Admissão UTI">
+      <a class="module-card mod-violet reveal" href="14_SAPS3_Calculator/index.html">
         <div class="module-icon">📊</div>
         <h3>SAPS 3 Calculator</h3>
         <p>Estimativa de <strong>mortalidade hospitalar na admissão UTI</strong> com 20 variáveis em 3 caixas. Equação <strong>global + customizada CSA</strong> (Brasil/Am. Sul). Base: Metnitz/Moreno 2005.</p>
@@ -3418,7 +3376,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir SAPS 3</span>
       </a>
 
-      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/Hematologia_Critica/index.html" aria-label="Abrir Hematologia Crítica">
+      <a class="module-card mod-red reveal" href="01_Modulos_Clinicos/Hematologia_Critica/index.html">
         <div class="module-icon">🩸</div>
         <h3>Hematologia Crítica</h3>
         <p>PTT/MAT, HLH/MAS, LPA/CIVD e diagnósticos raros com trilha Plantão 60 s, casos e revisão Turbo TEMI.</p>
@@ -3430,7 +3388,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir plataforma</span>
       </a>
 
-      <a class="module-card mod-green reveal" href="01_Modulos_Clinicos/Reumatologia_Critica/index.html" aria-label="Abrir Reumatologia Crítica">
+      <a class="module-card mod-green reveal" href="01_Modulos_Clinicos/Reumatologia_Critica/index.html">
         <div class="module-icon">🧬</div>
         <h3>Reumatologia Crítica</h3>
         <p>Pulmão–rim, SAF catastrófica, crise renal esclerodérmica, MAS/HLH, LES grave, DPI-RP e via aérea.</p>
@@ -3442,7 +3400,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir plataforma</span>
       </a>
 
-      <a class="module-card mod-yellow reveal" href="01_Modulos_Clinicos/Sepse_Choque_Septico/index.html" aria-label="Abrir Sepse e Choque Séptico">
+      <a class="module-card mod-yellow reveal" href="01_Modulos_Clinicos/Sepse_Choque_Septico/index.html">
         <div class="module-icon">🦠</div>
         <h3>Sepse e Choque Séptico</h3>
         <p>Reconhecimento, relógio terapêutico, antimicrobianos, controle do foco, hemodinâmica, suporte orgânico e recuperação em 60 pranchas clínicas.</p>
@@ -3454,7 +3412,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir módulo</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Infectologia_Critica/index.html" aria-label="Abrir Infectologia Crítica">
+      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Infectologia_Critica/index.html">
         <div class="module-icon">🦠</div>
         <h3>Infectologia Crítica</h3>
         <p>Sepse, controle do foco, PAV, meningite, imunossupressão, Gram-negativos resistentes e stewardship em decisões práticas.</p>
@@ -3466,7 +3424,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir módulo interativo</span>
       </a>
 
-      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/index.html" aria-label="Abrir patógenos e antimicrobianos na UTI">
+      <a class="module-card mod-cyan reveal" href="01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/index.html">
         <div class="module-icon">🧬</div>
         <h3>Patógenos &amp; Antimicrobianos na UTI</h3>
         <p>Bactérias, fungos, vírus e príons; farmacologia, ajustes renais, prevenção, referências e custos no Brasil com datas explícitas.</p>
@@ -3474,7 +3432,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir catálogo e leituras</span>
       </a>
 
-      <a class="module-card mod-yellow reveal" href="01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html" aria-label="Abrir Bactérias Super Resistentes, seção independente">
+      <a class="module-card mod-yellow reveal" href="01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html">
         <div class="module-icon">🧫</div>
         <h3>Bactérias Super Resistentes</h3>
         <p>MDR, XDR e PDR: mecanismos, abordagem terapêutica, escalonamento, descalonamento e doses de referência para adultos.</p>
@@ -3482,7 +3440,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir seção independente</span>
       </a>
 
-      <a class="module-card mod-blue reveal" href="01_Modulos_Clinicos/Pneumologia_Critica/index.html" aria-label="Abrir Pneumologia Crítica">
+      <a class="module-card mod-blue reveal" href="01_Modulos_Clinicos/Pneumologia_Critica/index.html">
         <div class="module-icon">🫁</div>
         <h3>Pneumologia Crítica</h3>
         <p>Hipoxemia, SDRA, ventilação protetora, DPOC, asma, hemoptise, TEP, pleura e desmame com fisiologia aplicada.</p>
@@ -3494,7 +3452,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="module-link">Abrir módulo interativo</span>
       </a>
 
-      <a class="module-card mod-violet reveal" href="radar-biblico-3min/index.html" aria-label="Abrir Formação Humana — Radar Bíblico 3 Minutos">
+      <a class="module-card mod-violet reveal" href="radar-biblico-3min/index.html">
         <div class="module-icon">❤️</div>
         <h3>Formação Humana</h3>
         <p>📖 <b>Radar Bíblico 3 Minutos</b> — Reflexões bíblicas breves sobre justiça, honra, amor, perdão, responsabilidade e humanidade aplicadas à medicina e à vida.</p>
@@ -3715,8 +3673,8 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       <div class="map-filters" id="mapFilters" role="group" aria-label="Filtrar ramos do mapa"></div>
     </div>
 
-    <p class="map-scroll-hint">↔ No celular, deslize o mapa para o lado.</p>
-    <div class="map-scroll">
+    <p class="map-scroll-hint">Deslize para o lado ou use as setas do teclado com o mapa em foco.</p>
+    <div class="map-scroll" role="region" aria-label="Mapa de conexões com rolagem horizontal" tabindex="0">
     <div id="mapa-graph" class="map-container" role="region" aria-label="Mapa visual de conexões do conhecimento médico">
       <svg class="map-lines" id="mapLines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
       <div class="map-nodes" id="mapNodes"></div>
@@ -3749,31 +3707,12 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         </a>
       </div>
 
-      <div class="temi-card reveal" aria-label="Estatísticas do banco TEMI">
-        <div class="temi-stat-big" data-count="130">130+</div>
-        <div class="temi-stat-lbl">// questões comentadas</div>
-        <div class="temi-topics">
-          <div class="temi-topic-row">
-            <span>🩻 POCUS · 10 novas</span>
-            <div class="temi-topic-bar"><div class="temi-topic-fill" style="width:100%"></div></div>
-          </div>
-          <div class="temi-topic-row">
-            <span>🫁 VM · 10 novas</span>
-            <div class="temi-topic-bar"><div class="temi-topic-fill" style="width:100%"></div></div>
-          </div>
-          <div class="temi-topic-row">
-            <span>🛟 IOT · 10 novas</span>
-            <div class="temi-topic-bar"><div class="temi-topic-fill" style="width:100%"></div></div>
-          </div>
-          <div class="temi-topic-row">
-            <span>💉 DVA · 10 novas</span>
-            <div class="temi-topic-bar"><div class="temi-topic-fill" style="width:100%"></div></div>
-          </div>
-          <div class="temi-topic-row">
-            <span>🦠 Sepse · 10 novas</span>
-            <div class="temi-topic-bar"><div class="temi-topic-fill" style="width:100%"></div></div>
-          </div>
-        </div>
+      <div class="temi-card reveal" aria-labelledby="temi-collection-heading">
+        <h3 id="temi-collection-heading">TEMI 800 com imagens</h3>
+        <div class="temi-stat-big" data-count="800">800</div>
+        <div class="temi-stat-lbl">questões ilustradas em 20 temas</div>
+        <p>O banco inclui traçados de ECG, curvas de ventilação mecânica, esquemas de POCUS e outros recursos para interpretar casos de UTI.</p>
+        <a class="temi-collection-link" href="questoes/temi_800_imagens_questoes.html">Ver questões ilustradas <span aria-hidden="true">→</span></a>
       </div>
 
     </div>
@@ -4520,7 +4459,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 </footer>
 
 <!-- antigravity-editorial-attribution:v1 -->
-<footer class="antigravity-editorial-attribution" data-editorial-attribution="ATV-ALD-360">
+<section class="antigravity-editorial-attribution" aria-label="Créditos editoriais" data-editorial-attribution="ATV-ALD-360">
   <p class="antigravity-editorial-attribution__mark">ATV · TURBO TEMI · ALD 360</p>
   <p>
     Idealização da plataforma e responsabilidade editorial:
@@ -4535,7 +4474,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     A atribuição refere-se à plataforma e à curadoria original; fontes,
     marcas e obras de terceiros permanecem creditadas aos respectivos titulares.
   </p>
-</footer>
+</section>
 
 <!-- ── DRAWER ──────────────────────────────────────── -->
 <div id="overlay" class="overlay" aria-hidden="true"></div>
@@ -4998,7 +4937,6 @@ async function startSelectedSound(){
 }
 
 /* ── PORTAL DE MISSÃO · 10 SEGUNDOS ────────────── */
-const MISSION_INTRO_KEY='antigravity:mission-intro:v2';
 const MISSION_SOUND_KEY='antigravity:mission-sound-theme:v1';
 const MISSION_DURATION=10000;
 const missionIntro=document.getElementById('missionIntro');
@@ -5012,6 +4950,7 @@ const missionStatus=document.getElementById('missionStatus');
 const missionCountdown=document.getElementById('missionCountdown');
 const missionSoundThemes=[...document.querySelectorAll('[data-mission-sound]')];
 let missionRunning=false;
+let missionReturnFocus=missionEmblem;
 let missionTimers=[];
 let missionAnimations=[];
 let missionAudioContext=null;
@@ -5234,13 +5173,10 @@ async function playMissionSound({compact=false,theme='honra'}={}){
     }
   }
 }
-function finishMission({immediate=false,remember=true,focus=true}={}){
+function finishMission({immediate=false,focus=true}={}){
   if(!missionIntro||!missionEmblem)return;
   clearMissionTimers();
   missionRunning=false;
-  if(remember){
-    try{sessionStorage.setItem(MISSION_INTRO_KEY,'seen')}catch(_){}
-  }
   setMissionStatus('MISSÃO INICIADA','T+0,0');
   missionEmblem.classList.add('is-visible');
   missionEmblem.setAttribute('aria-hidden','false');
@@ -5251,7 +5187,7 @@ function finishMission({immediate=false,remember=true,focus=true}={}){
     stopMissionAudio();
     missionIntro.hidden=true;
     missionIntro.classList.remove('is-launching','is-finishing');
-    if(focus)missionEmblem.focus();
+    if(focus)missionReturnFocus.focus();
     return;
   }
   missionIntro.classList.add('is-finishing');
@@ -5260,16 +5196,16 @@ function finishMission({immediate=false,remember=true,focus=true}={}){
     missionIntro.classList.remove('is-launching','is-finishing');
     clearMissionAnimations();
     stopMissionAudio();
-    if(focus)missionEmblem.focus();
+    if(focus)missionReturnFocus.focus();
   },390);
 }
-function openMissionPortal(){
+function openMissionPortal(event){
   if(!missionIntro||!missionEmblem)return;
   clearMissionTimers();
   clearMissionAnimations();
   stopMissionAudio();
   missionRunning=false;
-  document.documentElement.classList.remove('mission-returning');
+  missionReturnFocus=event.currentTarget;
   missionIntro.hidden=false;
   missionIntro.classList.remove('is-launching','is-finishing');
   missionEmblem.classList.remove('is-visible');
@@ -5343,18 +5279,8 @@ function launchMission(withSound){
 }
 
 if(missionIntro&&missionEmblem){
-  let missionSeen=document.documentElement.classList.contains('mission-returning')||Boolean(window.location.hash)||missionHasReducedMotion();
-  try{missionSeen=missionSeen||sessionStorage.getItem(MISSION_INTRO_KEY)==='seen'}catch(_){}
-  if(missionSeen){
-    missionIntro.hidden=true;
-    missionEmblem.classList.add('is-visible');
-    missionEmblem.setAttribute('aria-hidden','false');
-    missionEmblem.removeAttribute('tabindex');
-  }else{
-    document.documentElement.classList.remove('mission-returning');
-    document.body.classList.add('mission-locked');
-    window.requestAnimationFrame(()=>{if(!missionIntro.hidden)missionStartSound.focus()});
-  }
+  missionEmblem.hidden=false;
+  missionEmblem.classList.add('is-visible');
   missionStartSound.addEventListener('click',()=>launchMission(true));
   missionStartSilent.addEventListener('click',()=>finishMission({immediate:true}));
   missionSoundThemes.forEach(button=>{
@@ -5584,8 +5510,7 @@ const cntObserver='IntersectionObserver' in window?new IntersectionObserver(entr
   });
 },{threshold:.5}):null;
 document.querySelectorAll('[data-count]').forEach(el=>{
-  if(cntObserver)cntObserver.observe(el);
-  else el.textContent=el.dataset.count||el.textContent;
+  if(cntObserver&&!missionHasReducedMotion())cntObserver.observe(el);
 });
 
 /* ── MARKDOWN RENDERER (drawer de desafios) ──────── */
@@ -6095,6 +6020,7 @@ const TOTAL_FOOTBALL_PHASES={
 
 /* ── ACESSIBILIDADE + INSTALAÇÃO LOCAL ───────────── */
 const a11yBtn=document.getElementById('a11yBtn');
+const homeA11yBtn=document.getElementById('homeA11yBtn');
 const a11yPanel=document.getElementById('a11yPanel');
 const a11yClose=document.getElementById('a11yClose');
 const a11yAnnouncement=document.getElementById('a11yAnnouncement');
@@ -6204,9 +6130,12 @@ function applyA11y({persist=true}={}){
     try{localStorage.setItem(a11yKey,JSON.stringify(a11yPrefs))}catch(_){}
   }
 }
-function setA11yPanel(open){
+let a11yReturnFocus=a11yBtn;
+function setA11yPanel(open,trigger=a11yBtn){
+  if(open)a11yReturnFocus=trigger;
   a11yPanel.hidden=!open;
   a11yBtn.setAttribute('aria-expanded',String(open));
+  homeA11yBtn?.setAttribute('aria-expanded',String(open));
   if(a11yAnnouncement){
     a11yAnnouncement.textContent=open
       ?'Painel de acessibilidade aberto. Use Tab para navegar pelas opções.'
@@ -6216,9 +6145,10 @@ function setA11yPanel(open){
     a11yPanel.scrollTop=0;
     a11yClose.focus();
   }
-  else a11yBtn.focus();
+  else a11yReturnFocus.focus();
 }
 a11yBtn.addEventListener('click',()=>setA11yPanel(a11yPanel.hidden));
+homeA11yBtn?.addEventListener('click',()=>setA11yPanel(a11yPanel.hidden,homeA11yBtn));
 a11yClose.addEventListener('click',()=>setA11yPanel(false));
 document.querySelectorAll('[data-a11y]').forEach(btn=>{
   btn.addEventListener('click',()=>{

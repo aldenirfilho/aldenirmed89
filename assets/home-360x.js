@@ -4,45 +4,59 @@
    Sem dependências e sem armazenamento: tudo acontece nesta página. */
 (() => {
   'use strict';
-  const groups = [...document.querySelectorAll('.nav-group')];
   const nav = document.querySelector('.nav');
+  if (!nav) return;
+  const groups = [...nav.querySelectorAll('.nav-group')];
   const toggle = document.getElementById('navMenuToggle');
   const menu = document.getElementById('siteNavMenu');
+  const compactNav = window.matchMedia('(max-width: 1100px)');
 
   /* Celular: um botão "Menu" mostra e esconde a navegação completa. */
   const setMenu = (open) => {
-    if (!nav || !toggle) return;
     nav.classList.toggle('menu-open', open);
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle?.setAttribute('aria-expanded', String(open));
+    if (!open) closeGroups(null);
   };
-  toggle?.addEventListener('click', () => setMenu(!nav.classList.contains('menu-open')));
-  menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
 
   const closeGroups = (except) => {
     groups.forEach((group) => { if (group !== except) group.open = false; });
   };
 
+  toggle?.addEventListener('click', () => setMenu(!nav.classList.contains('menu-open')));
+  compactNav.addEventListener('change', () => setMenu(false));
+  menu?.addEventListener('click', (event) => {
+    const link = event.target.closest('a');
+    if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (compactNav.matches) setMenu(false);
+    else closeGroups(null);
+    const href = link.getAttribute('href');
+    if (!href?.startsWith('#')) return;
+    const target = revealTarget(href.slice(1));
+    if (!target) return;
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  });
+
   groups.forEach((group) => {
     group.addEventListener('toggle', () => { if (group.open) closeGroups(group); });
-    group.querySelectorAll('.nav-panel a').forEach((link) => {
-      link.addEventListener('click', () => { group.open = false; });
-    });
   });
 
   document.addEventListener('click', (event) => {
-    if (!groups.some((group) => group.open)) return;
+    if (!nav.contains(event.target) && nav.classList.contains('menu-open')) setMenu(false);
     if (!event.target.closest('.nav-group')) closeGroups(null);
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape') return;
+    if (event.defaultPrevented || event.key !== 'Escape') return;
     const open = groups.find((group) => group.open);
     if (open) {
+      event.preventDefault();
       open.open = false;
       open.querySelector('summary')?.focus();
       return;
     }
     if (nav?.classList.contains('menu-open')) {
+      event.preventDefault();
       setMenu(false);
       toggle?.focus();
     }

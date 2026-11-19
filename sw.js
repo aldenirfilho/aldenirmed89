@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v56`;
+const CACHE_NAME = `${CACHE_PREFIX}v57`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -19,6 +19,7 @@ const STUDY_CATALOG_PATHS = new Set([
   "./data/mnemonicos.json", "./data/desafios.json", "./data/study-search.json",
   "./questoes/data/hub_qbanks.js"
 ].map(relative => new URL(relative, self.registration.scope).pathname));
+const TEMI_800_PAGE = "./questoes/temi_800_imagens_questoes.html";
 const SHELL_ASSETS = [
   "./assets/icons/360x-v1/favicon.ico",
   "./assets/icons/360x-v1/icon-32.png",
@@ -39,6 +40,8 @@ const SHELL_ASSETS = [
   "./offline.html",
   "./manifest.webmanifest",
   "./assets/aldenirmed89-mystic.css",
+  "./assets/home-360x.css",
+  "./assets/home-360x.js",
   "./assets/brand-360x/identity.css",
   "./assets/brand-360x/logo-360x.webp",
   "./ecossistema/painel.html",
@@ -317,7 +320,7 @@ const WARM_ASSETS = [
   "./questoes/assets/study-search.mjs",
   "./questoes/temi_novembro_2026_questoes.html",
   "./questoes/data/qbank_temi_novembro_2026.js",
-  "./questoes/temi_800_imagens_questoes.html",
+  TEMI_800_PAGE,
   "./questoes/assets/temi800-figuras.js",
   "./questoes/data/qbank_temi_800_2026.js",
   "./docs_usuario/index.html",
@@ -372,7 +375,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-async function networkFirst(request) {
+async function networkFirst(request, cachedPage) {
   try {
     const response = await fetch(request);
     if (response.ok) {
@@ -383,6 +386,7 @@ async function networkFirst(request) {
   } catch (_) {
     return (
       (await caches.match(request)) ||
+      (cachedPage && await caches.match(cachedPage)) ||
       (await caches.match("./offline.html"))
     );
   }
@@ -445,7 +449,11 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (request.mode === "navigate") {
-    event.respondWith(networkFirst(request));
+    const temiPage = new URL(TEMI_800_PAGE, self.registration.scope);
+    // A busca abre a questão pela query, mas só a página canônica vem no pré-cache.
+    const cachedPage = url.pathname === temiPage.pathname && url.searchParams.has("qid")
+      ? temiPage.href : undefined;
+    event.respondWith(networkFirst(request, cachedPage));
     return;
   }
 

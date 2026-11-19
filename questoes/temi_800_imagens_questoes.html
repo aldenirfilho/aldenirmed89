@@ -94,8 +94,8 @@
     .progress{height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
     .progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));transition:.2s}
     .progress-text{color:var(--muted);font-size:.9rem}
-    .controls{display:grid;grid-template-columns:1.35fr .7fr .7fr auto;gap:10px;margin:18px 0 12px}
-    .control{width:100%;padding:12px 13px;border:1px solid var(--border);border-radius:15px;
+    .controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0 12px}
+    .control{width:100%;min-width:0;padding:12px 13px;border:1px solid var(--border);border-radius:15px;
       color:var(--text);background:rgba(0,0,0,.23)}
     .block-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
     .block-tab{padding:9px 12px;border:1px solid var(--border);border-radius:999px;
@@ -104,7 +104,7 @@
       background:color-mix(in srgb,var(--tab-color,var(--cyan)) 14%,transparent)}
     .result{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:12px 0;color:var(--muted)}
     .questions{display:grid;gap:14px}
-    .q-card{overflow:hidden;border:1px solid var(--border);border-radius:22px;background:var(--panel);box-shadow:0 15px 45px rgba(0,0,0,.22)}
+    .q-card{overflow:hidden;border:1px solid var(--border);border-radius:22px;background:var(--panel);box-shadow:0 15px 45px rgba(0,0,0,.22);scroll-margin-block-start:112px}
     .q-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:16px 18px;
       border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
     .badges{display:flex;gap:7px;flex-wrap:wrap}
@@ -157,14 +157,19 @@
     .badge.study{color:var(--soft)}
     .q-fig{margin:0 0 14px;padding:8px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(0,0,0,.22)}
     .q-fig svg{display:block;width:100%;height:auto;border-radius:12px}
-    .q-fig figcaption{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:7px;color:var(--muted);font-size:.82rem}
-    .q-fig .zoom{cursor:zoom-in}
+    .q-fig figcaption{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:7px;color:var(--muted);font-size:.9rem}
+    .q-fig [data-figure-preview],.q-fig [data-zoom]{cursor:zoom-in}
     .reading{margin-top:12px;padding:11px 12px;border-radius:13px;line-height:1.55;background:rgba(255,209,102,.08);border-left:3px solid var(--yellow)}
     .more{display:flex;justify-content:center;margin:16px 0}
-    .zoom-layer{position:fixed;inset:0;z-index:200;display:none;place-items:center;padding:18px;background:rgba(2,6,12,.92)}
-    .zoom-layer.open{display:grid}
-    .zoom-layer svg{width:min(1200px,96vw);height:auto;border-radius:14px}
-    .controls{grid-template-columns:1.25fr .6fr .65fr .65fr auto!important}
+    .more .btn[hidden]{display:none}
+    .zoom-layer{width:min(1200px,calc(100% - 20px));max-height:calc(100% - 20px);padding:clamp(10px,2vw,18px);
+      border:1px solid var(--border);border-radius:18px;background:var(--bg2);color:var(--text)}
+    .zoom-layer::backdrop{background:rgba(2,6,12,.92)}
+    .zoom-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+    .zoom-head h2{margin:0;font-size:1.12rem}
+    .zoom-content{overflow:auto;max-height:72vh;border-radius:12px}
+    .zoom-content svg{display:block;width:max(100%,640px);height:auto}
+    .notice a{text-decoration:underline;text-underline-offset:.18em}
     html.a11y-light .q-fig{background:#f3f6fa}
     html.a11y-light{
       color-scheme:light;--bg:#f5f8fc;--bg2:#edf3f9;--panel:#fff;--panel2:#f5f8fc;
@@ -173,6 +178,15 @@
     html.a11y-light body{background:linear-gradient(145deg,#fff,var(--bg2))}
     html.a11y-light body::before{opacity:.08}
     html.a11y-light .topbar{background:rgba(255,255,255,.93)}
+    html.a11y-light :focus-visible{outline-color:#005f78}
+    html.a11y-light .gradient{background:none;color:#005f78}
+    html.a11y-light .eyebrow,html.a11y-light .source{color:#005f78;background:#edf7fa;border-color:#a6cbd7}
+    html.a11y-light .stat b,html.a11y-light .source-row a{color:#005f78}
+    html.a11y-light .badge.block{color:#243956;background:#edf3fa;border-color:#bbcce0}
+    html.a11y-light .notice{color:#5d400d;background:#fff6de}
+    html.a11y-light .btn.warn{color:#654809;background:#fff9e9;border-color:#cbb374}
+    html.a11y-light .letter{color:#114860}
+    html.a11y-light .answer h3{color:#184c36}
     html.a11y-light .control,html.a11y-light .option,html.a11y-light .rationale,
     html.a11y-light .stat,html.a11y-light .source-row{background:#fff}
     html.a11y-light .training-summary div,html.a11y-light .training-day{background:#fff}
@@ -180,8 +194,9 @@
     @media(max-width:620px){.training-summary,.training-days{grid-template-columns:1fr}.training{padding:16px}.training-settings{align-items:stretch;flex-direction:column}.training-settings .control{width:100%}}
     @media(max-width:920px){.hero{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.topbar{position:relative;top:0}}
     @media(max-width:620px){.page{padding:10px 10px 60px}.topbar{align-items:flex-start;flex-direction:column}.nav{justify-content:flex-start}
-      .controls,.stat-grid,.source-grid{grid-template-columns:1fr}.hero-main{padding:22px}.q-head{display:block}.q-head .btn{margin-top:10px;width:100%}}
-    @media print{body{background:#fff;color:#000}.topbar,.controls,.block-tabs,.q-actions,.training-settings{display:none!important}
+      .controls,.stat-grid,.source-grid{grid-template-columns:1fr}.hero-main{padding:22px}.q-head{display:block}.q-head .btn{margin-top:10px;width:100%}
+      .q-card{scroll-margin-block-start:12px}}
+    @media print{body{background:#fff;color:#000}.topbar,.controls,.block-tabs,.q-actions,.training-settings,.zoom-layer,[data-zoom]{display:none!important}
       .page{max-width:none;padding:0}.glass,.q-card,.source-panel{box-shadow:none;background:#fff;color:#000}.answer{display:block!important}
       .stem,.rationale,.synthesis,.pearl,.footer{color:#111}.q-card{break-inside:avoid}}
   </style>
@@ -193,7 +208,7 @@
         <span class="logo">🖼️</span>
         <span><strong>TEMI 800 com imagens</strong><small>800 questões · 20 temas · figura + comentário A–E</small></span>
       </a>
-      <nav class="nav">
+      <nav class="nav" aria-label="Navegação do banco TEMI">
         <a class="btn" href="index.html">← Bancos TEMI</a>
         <a class="btn" href="explorar.html">🔎 Buscar por tema</a>
         <a class="btn" href="../index.html#temi">⌂ Início</a>
@@ -209,7 +224,9 @@
         <span class="eyebrow">🖼️ Turbo TEMI · imagem em todas as questões · TDAH-friendly</span>
         <h1><span class="gradient">800 questões</span><br />com imagens · revisão A–E</h1>
         <p class="lead">Quarenta questões por tema, cada uma com figura para interpretar — ECG, curvas do ventilador, capnografia, POCUS, TC, radiografia, ROTEM, gasometria e monitor. Resolva, revele a leitura da imagem e o comentário de cada alternativa, e marque o que já revisou neste navegador.</p>
-        <div class="notice review-strip"><strong>🛡️ Segurança:</strong> questões autorais para estudo, sem vínculo com prova oficial AMIB; revisão médica humana formal pendente. Figuras são esquemas e traçados sintéticos gerados por código, não imagens de pacientes. ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.</div>
+        <div class="notice review-strip"><strong>🛡️ Segurança:</strong> questões autorais para estudo, sem vínculo com prova oficial AMIB; revisão médica humana formal pendente. Figuras são esquemas e traçados sintéticos gerados por código, não imagens de pacientes. ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.
+          <p>Este banco usa cinco alternativas (A–E) e oferece treino aleatório de 60 questões. A prova objetiva do <a href="https://amib.org.br/titulo-de-especialista/">Concurso para Obtenção do Título de Especialista em Medicina Intensiva da AMIB 2026</a> tem 90 questões de quatro alternativas (A–D) em quatro horas.</p>
+        </div>
       </article>
       <aside class="glass stats" aria-label="Progresso do banco">
         <div class="stat-grid">
@@ -276,15 +293,21 @@
           <option value="card">📋 Achados e tendências</option>
         </select>
         <button class="btn" id="showAll" type="button">👁️ Mostrar comentários</button>
-        <button class="btn primary" id="simulado" type="button">🎲 Simulado 60</button>
+        <button class="btn primary" id="simulado" type="button">🎲 Treino aleatório · 60 questões</button>
       </div>
       <div class="block-tabs" id="blockTabs" role="group" aria-label="Blocos temáticos"></div>
-      <div class="result"><span id="resultText">800 questões</span><span>Atalho mental: escolha → justifique → revele → revise.</span></div>
+      <div class="result"><span id="resultText" role="status" tabindex="-1">800 questões</span><span>Atalho mental: escolha → justifique → revele → revise.</span></div>
     </section>
 
-    <section class="questions" id="questions" aria-live="polite"></section>
+    <div class="questions" id="questions"></div>
     <div class="more"><button class="btn" id="moreBtn" type="button" hidden>⬇️ Mostrar mais 20</button></div>
-    <div class="zoom-layer" id="zoomLayer" role="dialog" aria-modal="true" aria-label="Figura ampliada"></div>
+    <dialog class="zoom-layer" id="zoomLayer" aria-labelledby="zoomTitle">
+      <div class="zoom-head">
+        <h2 id="zoomTitle">Figura ampliada</h2>
+        <button class="btn" id="closeZoom" type="button" autofocus>Fechar figura</button>
+      </div>
+      <div class="zoom-content" id="zoomContent" tabindex="0" role="region" aria-label="Área rolável da figura"></div>
+    </dialog>
 
     <section class="glass source-panel" id="fontes">
       <h2>📚 Diretrizes e consensos consultados</h2>
@@ -388,6 +411,8 @@
       // END TEMI TRAINING CORE
       const $ = id => document.getElementById(id);
       const questionsEl = $("questions");
+      const zoomLayer = $("zoomLayer");
+      const zoomContent = $("zoomContent");
       const searchInput = $("searchInput");
       const requestedQuestion = new URLSearchParams(location.search).get("qid");
       if (requestedQuestion) searchInput.value = requestedQuestion;
@@ -405,6 +430,7 @@
       let showAllAnswers = false;
       let trainingOnly = false;
       let lastRenderDay = trainingCore.localDay();
+      let zoomTrigger = null;
       let storageAvailable = true;
       let storageCorrupt = false;
       function readStored(key, fallback) {
@@ -448,20 +474,19 @@
       }
 
       function filteredQuestions() {
-        const term = normalize(searchInput.value);
+        const term = normalize(searchInput.value.trim());
         const today = trainingCore.localDay();
         const todayPlan = trainingOnly ? planForToday() : null;
         const todayIds = todayPlan?.ids;
         const list = bank.questions.filter(question => {
           if (todayIds && !todayIds.has(question.id)) return false;
-          const haystack = normalize([
+          if (term && !normalize([
             question.id, question.block, question.difficulty, question.stem,
             ...question.tags, ...Object.values(question.options),
             ...Object.values(question.rationales), question.synthesis, question.pearl,
             question.subtopic, question.image?.caption, question.image?.reading,
             ...question.sourceRefs
-          ].join(" "));
-          if (term && !haystack.includes(term)) return false;
+          ].join(" ")).includes(term)) return false;
           if (activeBlock && question.block !== activeBlock) return false;
           if (simuladoIds && !simuladoIds.has(question.id)) return false;
           if (imageFilter.value && !(IMAGE_GROUPS[imageFilter.value] || []).includes(question.image?.kind)) return false;
@@ -482,11 +507,21 @@
         return list;
       }
 
-      function figure(question) {
+      function figureContent(question) {
         const img = question.image;
         if (!img || !window.Temi800Figuras) return "";
-        const svg = Temi800Figuras.render(img, question.id);
-        return `<figure class="q-fig" aria-label="${esc(img.alt)}"><div class="zoom" data-zoom="${esc(question.id)}" title="Toque para ampliar">${svg}</div><figcaption><span>🖼️ ${esc(img.caption)}</span><span>Toque para ampliar · esquema didático</span></figcaption></figure>`;
+        const image = Temi800Figuras.render(img, question.id);
+        return `<div role="img" aria-label="${esc(img.alt)}"><div aria-hidden="true">${image}</div></div>`;
+      }
+      function figure(question) {
+        const content = figureContent(question);
+        if (!content) return "";
+        return `<figure class="q-fig">
+          <div data-figure-preview="${esc(question.id)}">${content}</div>
+          <figcaption><span>🖼️ ${esc(question.image.caption)}</span>
+            <button class="btn" type="button" data-zoom="${esc(question.id)}" aria-label="Ampliar figura da questão ${esc(question.id)}" aria-haspopup="dialog">Ampliar figura</button>
+          </figcaption>
+        </figure>`;
       }
       function sourceLinks(question) {
         return question.sourceRefs.map(ref => {
@@ -610,19 +645,14 @@
         lastRenderDay = trainingCore.localDay();
         const list = filteredQuestions();
         $("visibleQ").textContent = list.length;
-        $("resultText").textContent = `${trainingOnly ? "Treino de hoje · " : ""}${list.length} de ${bank.questions.length} questões`;
+        const mode = trainingOnly ? "Treino de hoje · " : simuladoIds ? "Treino aleatório · " : "";
+        $("resultText").textContent = `${mode}${list.length} de ${bank.questions.length} questões`;
         const shown = list.slice(0, visibleCount);
         questionsEl.innerHTML = shown.length
           ? shown.map(card).join("")
           : `<div class="empty">Nenhuma questão encontrada. Limpe os filtros e tente novamente.</div>`;
         $("moreBtn").hidden = list.length <= visibleCount;
         $("moreBtn").textContent = `⬇️ Mostrar mais ${Math.min(PAGE, Math.max(0, list.length - visibleCount))} (${shown.length} de ${list.length})`;
-        questionsEl.querySelectorAll("[data-zoom]").forEach(box => box.addEventListener("click", () => {
-          const layer = $("zoomLayer");
-          layer.innerHTML = box.innerHTML + '<p style="color:#dbe6f5;text-align:center">Toque em qualquer lugar para fechar</p>';
-          layer.classList.add("open");
-        }));
-
         questionsEl.querySelectorAll("[data-toggle]").forEach(button => {
           button.addEventListener("click", () => {
             const box = $("answer-" + button.dataset.toggle);
@@ -727,7 +757,6 @@
         showAllAnswers = false;
         $("showAll").textContent = "👁️ Mostrar comentários";
         render();
-        $("resultText").setAttribute("tabindex", "-1");
         $("resultText").focus({preventScroll:true});
         $("resultText").scrollIntoView({block:"center", behavior:matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"});
       }
@@ -753,9 +782,39 @@
       [searchInput, difficultyFilter, statusFilter, imageFilter].forEach(control => {
         control.addEventListener(control === searchInput ? "input" : "change", () => { visibleCount = PAGE; render(); });
       });
-      $("moreBtn").addEventListener("click", () => { visibleCount += PAGE; render(); });
-      $("zoomLayer").addEventListener("click", () => { $("zoomLayer").classList.remove("open"); $("zoomLayer").innerHTML = ""; });
-      document.addEventListener("keydown", event => { if (event.key === "Escape") $("zoomLayer").click(); });
+      $("moreBtn").addEventListener("click", () => {
+        const firstNewQuestion = filteredQuestions()[visibleCount];
+        visibleCount += PAGE;
+        render();
+        if (firstNewQuestion) {
+          const card = $(firstNewQuestion.id);
+          card.setAttribute("tabindex", "-1");
+          card.focus();
+        }
+      });
+      questionsEl.addEventListener("click", event => {
+        const trigger = event.target.closest("[data-zoom]") ||
+          event.target.closest("[data-figure-preview]")?.parentElement.querySelector("[data-zoom]");
+        if (!trigger) return;
+        const question = bank.questions.find(item => item.id === trigger.dataset.zoom);
+        zoomTrigger = trigger;
+        zoomContent.innerHTML = figureContent(question);
+        zoomContent.scrollLeft = 0;
+        zoomContent.scrollTop = 0;
+        zoomLayer.showModal();
+      });
+      $("closeZoom").addEventListener("click", () => zoomLayer.close());
+      zoomLayer.addEventListener("click", event => {
+        if (event.target !== zoomLayer) return;
+        const bounds = zoomLayer.getBoundingClientRect();
+        if (event.clientX < bounds.left || event.clientX > bounds.right ||
+            event.clientY < bounds.top || event.clientY > bounds.bottom) zoomLayer.close();
+      });
+      zoomLayer.addEventListener("close", () => {
+        zoomContent.innerHTML = "";
+        (zoomTrigger?.isConnected ? zoomTrigger : $("resultText")).focus({preventScroll:true});
+        zoomTrigger = null;
+      });
       $("simulado").addEventListener("click", () => {
         const pool = [...bank.questions];
         for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
@@ -765,7 +824,7 @@
         selectBlock("");
         $("showAll").textContent = "👁️ Mostrar comentários";
         render();
-        $("resultText").textContent = `🎲 Simulado aleatório · 60 de ${bank.questions.length} questões · ~3 min por questão`;
+        $("resultText").focus({preventScroll:true});
         $("resultText").scrollIntoView({block:"center"});
       });
       $("showAll").addEventListener("click", () => {
@@ -787,6 +846,7 @@
       ).join("");
 
       const clarityToggle = $("clarityToggle");
+      if (document.documentElement.classList.contains("a11y-light")) clarityToggle.textContent = "🌙 Modo espacial";
       clarityToggle.addEventListener("click", () => {
         const root = document.documentElement;
         const light = !root.classList.contains("a11y-light");

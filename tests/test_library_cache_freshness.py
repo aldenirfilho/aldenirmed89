@@ -55,7 +55,8 @@ function worker(scope) {
     network: state => { network = state; },
     get: (path, init) => {
       let response;
-      const request = new Request(new URL(path, scope), init);
+      const request = new Request(new URL(path, scope), init?.mode === 'navigate' ? undefined : init);
+      if (init?.mode === 'navigate') Object.defineProperty(request, 'mode', {value:'navigate'});
       events.fetch({request, respondWith: value => { response = value; }});
       return response;
     }
@@ -102,6 +103,21 @@ async function run(scenario) {
         state.network('offline');
         assert.equal((await (await state.get(path)).json()).edition,'new',path);
       }
+    } else if (scenario === 'temi-navigation') {
+      const state = worker(scope);
+      const path = 'questoes/temi_800_imagens_questoes.html';
+      const canonical = new URL(path, scope).href;
+      const linked = path + '?qid=TEMI-800-008';
+      state.entries.set(canonical, new Response('TEMI bank'));
+      state.entries.set('./offline.html', new Response('Offline fallback'));
+      const navigation = {mode: 'navigate'};
+      assert.equal((await (await state.get(linked, navigation)).json()).edition, 'new');
+      state.entries.delete(new URL(linked, scope).href);
+      state.network('offline');
+      assert.equal(await (await state.get(linked, navigation)).text(), 'TEMI bank');
+      assert.equal(await (await state.get('other/' + linked, navigation)).text(), 'Offline fallback');
+      state.entries.delete(canonical);
+      assert.equal(await (await state.get(linked, navigation)).text(), 'Offline fallback');
     } else if (scenario === 'static') {
       const paths = [
         'assets/site-navigation.css',
@@ -156,6 +172,9 @@ class LibraryCacheFreshnessTests(unittest.TestCase):
 
     def test_study_catalogs_update_and_keep_offline_fallback(self):
         self.run_scenario('study')
+
+    def test_offline_temi_question_links_reuse_canonical_page(self):
+        self.run_scenario('temi-navigation')
 
     def test_static_assets_and_unrelated_json_keep_cache_first(self):
         self.run_scenario('static')

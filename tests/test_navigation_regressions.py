@@ -79,7 +79,7 @@ const button=()=>({classList:classes(),setAttribute(){},removeAttribute(){},focu
   getBoundingClientRect:()=>({left:0,top:0,width:44,height:44})});
 const intro={hidden:false,classList:classes()};let unlocked=false;const timers=[];
 const context={missionIntro:intro,missionEmblem:button(),missionStartSound:button(),
-  missionStartSilent:button(),missionSkip:button(),missionCountdown:{},missionRunning:false,
+  missionStartSilent:button(),missionSkip:button(),missionCountdown:{},missionRunning:false,missionReturnFocus:button(),
   missionCore:{...button(),offsetWidth:200,animate(){throw Error('Animation unavailable')}},
   missionAnimations:[],missionTimers:[],MISSION_DURATION:10000,MISSION_INTRO_KEY:'test',
   missionLater:(fn,delay)=>timers.push({fn,delay}),clearMissionTimers(){},clearMissionAnimations(){},

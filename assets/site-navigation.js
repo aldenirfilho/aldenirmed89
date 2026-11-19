@@ -4,6 +4,7 @@
   const list = document.getElementById('quickResults');
   const status = document.getElementById('quickSearchStatus');
   if (!input || !list || !status) return;
+  const initialStatus = status.textContent;
   const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const unique = new Map();
   document.querySelectorAll('a.module-card, a[data-search-route]').forEach(card => {
@@ -17,7 +18,7 @@
     list.replaceChildren();
     list.hidden = !words.length;
     if (!words.length) {
-      status.textContent = 'Busque módulos e os documentos recém-integrados. A busca fica neste navegador.';
+      status.textContent = initialStatus;
       return;
     }
     const results = [...unique.values()].filter(item => words.every(word => normalize(item.text).includes(word)));

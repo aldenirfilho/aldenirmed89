@@ -16,8 +16,7 @@ class MissionPortalTests(unittest.TestCase):
         for marker in (
             'id="missionIntro" role="dialog" aria-modal="true"',
             'src="./assets/brand-360x/aldenirmed-360x-launch-card.png"',
-            'rel="preload" as="image" '
-            'href="./assets/brand-360x/aldenirmed-360x-launch-card.png"',
+            'width="1200" height="630" loading="lazy"',
             'id="missionCore"',
             'id="missionEmblem"',
             'src="./assets/brand-360x/aldenirmed-360x-mark.svg"',
@@ -36,7 +35,7 @@ class MissionPortalTests(unittest.TestCase):
 
     def test_launch_assets_are_cached_for_offline_replay(self) -> None:
         worker = (ROOT / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v56`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v57`', worker)
         for asset in (
             "./assets/brand-360x/aldenirmed-360x-launch-card.png",
             "./assets/brand-360x/aldenirmed-360x-mark.svg",
@@ -121,17 +120,15 @@ class MissionPortalTests(unittest.TestCase):
         ):
             self.assertIn(marker, HOME)
 
-    def test_intro_is_once_per_session_and_can_be_replayed(self) -> None:
+    def test_intro_is_hidden_by_default_and_opened_by_explicit_action(self) -> None:
         for marker in (
-            "const MISSION_INTRO_KEY='antigravity:mission-intro:v2'",
-            "sessionStorage.setItem(MISSION_INTRO_KEY,'seen')",
-            "sessionStorage.getItem(MISSION_INTRO_KEY)==='seen'",
+            'aria-labelledby="missionTitle" aria-describedby="missionSubtitle" hidden',
             "missionEmblem.addEventListener('click',openMissionPortal)",
             "heroReplayMission?.addEventListener('click',openMissionPortal)",
-            "Repetir abertura da missão",
+            "missionReturnFocus=event.currentTarget",
         ):
             self.assertIn(marker, HOME)
-        self.assertNotIn("localStorage.setItem(MISSION_INTRO_KEY", HOME)
+        self.assertNotIn("MISSION_INTRO_KEY", HOME)
 
     def test_keyboard_skip_focus_trap_and_live_status_are_present(self) -> None:
         for marker in (
