@@ -1,0 +1,131 @@
+:root {
+  color-scheme: dark;
+  --background: #071321;
+  --surface: #102136;
+  --field: #0a192a;
+  --text: #f4f8fc;
+  --muted: #becbda;
+  --border: #5b6e85;
+  --accent: #78e5f3;
+  --accent-text: #092331;
+  --selected: #1b3c4a;
+  --warning: #ffdb94;
+  --focus: #f8de91;
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.55;
+}
+:root.light {
+  color-scheme: light;
+  --background: #edf4f8;
+  --surface: #fff;
+  --field: #f4f7fa;
+  --text: #11243a;
+  --muted: #3d5368;
+  --border: #6a7d8b;
+  --accent: #006278;
+  --accent-text: #fff;
+  --selected: #d7eff4;
+  --warning: #80520c;
+  --focus: #7e4f06;
+}
+:root.contrast {
+  --background: #000;
+  --surface: #000;
+  --field: #000;
+  --text: #fff;
+  --muted: #fff;
+  --border: #fff;
+  --accent: #fff;
+  --accent-text: #000;
+  --selected: #262626;
+  --warning: #fff;
+  --focus: #ffe14d;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--background); color: var(--text); }
+a { color: var(--accent); text-underline-offset: .18em; }
+button, input { font: inherit; }
+button, .topbar a, summary { min-block-size: 44px; }
+button {
+  padding: .5rem .9rem;
+  color: var(--text);
+  background: var(--field);
+  border: 1px solid var(--border);
+  border-radius: .5rem;
+  cursor: pointer;
+}
+button:enabled:hover, button[aria-pressed="true"] { background: var(--selected); }
+button:disabled { opacity: .7; cursor: default; }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 750; }
+button.primary:enabled:hover { text-decoration: underline; }
+:focus-visible, #question-title:focus, #result-title:focus { outline: 3px solid var(--focus); outline-offset: 3px; }
+.shell { max-inline-size: 59rem; margin-inline: auto; padding-inline: clamp(.75rem, 3vw, 1.6rem); }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: .25rem 1rem; flex-wrap: wrap; padding-block: .6rem; }
+.topbar a { display: inline-flex; align-items: center; }
+.topbar nav { display: flex; flex-wrap: wrap; gap: 1rem; }
+.brand { gap: .45rem; text-decoration: none; font-weight: 760; }
+.brand span { font-size: 1.4rem; }
+main { padding-block-end: 3rem; }
+.intro { margin-block: clamp(1rem, 4vw, 2.5rem) 1.25rem; }
+.category { margin: 0; color: var(--accent); font-weight: 700; }
+h1 { margin: .15em 0 .4em; font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.12; letter-spacing: -.025em; }
+h2, h3 { margin-block: 0 .45em; line-height: 1.2; }
+h2 { font-size: clamp(1.35rem, 3.25vw, 1.7rem); }
+.specs { display: flex; flex-wrap: wrap; gap: .35rem 1.2rem; margin-block: .4rem; padding: 0; list-style: none; color: var(--muted); }
+.specs strong, .status-bar strong { color: var(--text); font-variant-numeric: tabular-nums; }
+.editorial { max-inline-size: 72ch; margin-block: .6rem 0; color: var(--muted); }
+.notice, .card { border: 1px solid var(--border); border-radius: .85rem; padding: clamp(.85rem, 3vw, 1.35rem); background: var(--surface); }
+.notice { color: var(--warning); }
+#welcome p { max-inline-size: 70ch; }
+.status-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem clamp(.8rem, 3vw, 1.75rem); margin-block-end: .8rem; }
+.status-bar > div { display: grid; }
+.status-bar button { margin-inline-start: auto; }
+.status-bar strong { font-size: 1.18rem; }
+#timer[data-ending="true"] { color: var(--warning); }
+#results p { margin: 0; }
+#score { font-weight: 750; }
+.subtle { color: var(--muted); }
+.answer-sheet { margin-block-end: .8rem; padding-block: .25rem; }
+.answer-sheet summary { display: list-item; align-content: center; font-weight: 700; cursor: pointer; }
+.sheet-legend { display: flex; gap: .3rem 1rem; flex-wrap: wrap; margin-block: .25rem; color: var(--muted); font-size: .95rem; }
+.positions { display: grid; grid-template-columns: repeat(auto-fit, minmax(3.15rem, 1fr)); gap: .4rem; margin-block: .5rem 1rem; }
+.positions button { display: grid; place-content: center; padding: .2rem; line-height: 1.1; min-width: 0; }
+.positions button[aria-current="step"] { border: 2px solid var(--accent); font-weight: 750; }
+.positions button[data-answered="true"] { background: var(--selected); }
+.positions button span { min-block-size: .9rem; font-size: .78rem; }
+.question { scroll-margin-block-start: 1rem; }
+#stem { max-inline-size: 78ch; margin: .8rem 0 1.1rem; }
+figure { margin: 0 0 1rem; padding: .6rem; background: #081728; color: #e2edf7; border-radius: .55rem; }
+figure figcaption { margin-block-start: .4rem; font-size: .9rem; }
+#visual svg { display: block; width: 100%; max-width: 100%; height: auto; }
+fieldset { min-inline-size: 0; margin: 0; padding: 0; border: 0; }
+legend { margin-block-end: .5rem; font-weight: 700; }
+#options { display: grid; gap: .5rem; }
+.choice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: .7rem;
+  min-block-size: 44px;
+  padding: .7rem;
+  border: 1px solid var(--border);
+  border-radius: .55rem;
+  background: var(--field);
+  cursor: pointer;
+}
+.choice:has(input:checked) { border-color: var(--accent); background: var(--selected); }
+.choice input { margin: .3em 0 0; inline-size: 1.15em; block-size: 1.15em; accent-color: var(--accent); }
+.choice strong { margin-inline-end: .2em; }
+.question-tools, .question-nav { display: flex; flex-wrap: wrap; gap: .5rem; margin-block-start: 1rem; }
+.question-nav { justify-content: space-between; }
+.correction { padding: .95rem; border: 1px solid var(--border); border-inline-start: 4px solid var(--accent); border-radius: .5rem; background: var(--field); }
+#rationales { padding-inline-start: 1.5rem; }
+#rationales li { margin-block: .55rem; }
+#sources { padding-inline-start: 1.05rem; margin-block-end: 0; overflow-wrap: anywhere; }
+#sources a { display: inline-block; padding-block: .25rem; }
+dialog { max-inline-size: min(33rem, calc(100% - 1.5rem)); padding: 1.2rem; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: .75rem; }
+dialog::backdrop { background: #000a; }
+.visually-hidden, .skip:not(:focus) { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip:focus { position: fixed; inset-block-start: .5rem; inset-inline-start: .5rem; z-index: 2; padding: .6rem; background: var(--surface); }
+@media (max-width: 23rem) { .status-bar button { margin-inline-start: 0; } }

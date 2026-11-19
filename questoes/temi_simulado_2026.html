@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Simulado independente TEMI Adulto com 90 questões de quatro alternativas e cronômetro de quatro horas.">
+  <title>Simulado TEMI Adulto 2026 | AldenirMed 360X</title>
+  <link rel="stylesheet" href="./assets/temi-simulado-2026.css">
+  <script src="./data/qbank_temi_800_2026.js" defer></script>
+  <script src="./assets/temi800-figuras.js" defer></script>
+  <script src="./assets/temi-simulado-2026.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topbar shell">
+    <a class="brand" href="../index.html"><span aria-hidden="true">✦</span> AldenirMed 360X</a>
+    <nav aria-label="Navegação do simulado">
+      <a href="./index.html">Questões</a>
+      <a href="./temi_800_imagens_questoes.html">TEMI 800</a>
+    </nav>
+  </header>
+  <main class="shell" id="conteudo">
+    <header class="intro">
+      <p class="category">Preparação em Medicina Intensiva</p>
+      <h1>Simulado TEMI Adulto 2026</h1>
+      <ul class="specs" aria-label="Formato teórico do simulado">
+        <li><strong>90</strong> questões</li>
+        <li><strong>4</strong> alternativas</li>
+        <li><strong>4 h</strong> de duração</li>
+      </ul>
+      <p class="editorial">Simulado independente com casos fictícios do TEMI 800. Material educacional com revisão médica humana pendente. O cronômetro e o número de alternativas seguem a etapa teórica do <a href="https://d1xe7tfg0uwul9.cloudfront.net/amib-portal/wp-content/uploads/2026/03/18144931/Edital-TEMI-2026-Atualizado.pdf#page=13">edital de 2026, item 9.6</a>.</p>
+    </header>
+    <noscript><p class="notice">Ative o JavaScript para abrir o simulado e corrigir as respostas.</p></noscript>
+    <p id="app-error" class="notice" role="alert" hidden></p>
+    <section id="welcome" aria-labelledby="welcome-title" class="card" hidden>
+      <h2 id="welcome-title">Iniciar tentativa</h2>
+      <p>O tempo começa ao iniciar e continua correndo mesmo se você fechar a página. As respostas e a posição ficam neste navegador. O gabarito comentado aparece ao entregar ou ao atingir o limite de tempo.</p>
+      <button class="primary" id="start" type="button">Iniciar simulado</button>
+    </section>
+    <p id="storage-notice" class="notice" role="status" hidden></p>
+    <p id="announcement" class="visually-hidden" role="status"></p>
+    <section id="exam" aria-label="Caderno de questões" hidden>
+      <section id="attempt-summary" class="status-bar card" aria-label="Andamento da tentativa">
+        <div><span class="subtle">Tempo restante</span><strong id="timer" role="timer" aria-live="off">04:00:00</strong></div>
+        <div><span class="subtle">Respondidas</span><strong id="progress">0 de 90</strong></div>
+        <button id="submit" type="button">Entregar prova</button>
+      </section>
+      <section id="results" class="status-bar card" aria-labelledby="result-title" hidden>
+        <div><h2 id="result-title" tabindex="-1">Resultado</h2><p id="score"></p><p class="subtle" id="result-detail"></p></div>
+        <button id="restart" type="button">Nova tentativa</button>
+      </section>
+      <details class="card answer-sheet" id="answer-sheet">
+        <summary id="sheet-summary">Cartão-resposta</summary>
+        <div class="sheet-legend" id="sheet-legend">✓ Respondida <span>• Marcada para revisar</span></div>
+        <nav class="positions" aria-label="Ir para uma questão" id="positions"></nav>
+      </details>
+      <article class="card question" id="question" aria-labelledby="question-title">
+        <h2 id="question-title" tabindex="-1"></h2>
+        <p id="stem"></p>
+        <figure id="figure" hidden><div id="visual"></div><figcaption>Figura esquemática do caso</figcaption></figure>
+        <fieldset id="answer-fields">
+          <legend>Escolha a melhor resposta</legend>
+          <div id="options"></div>
+        </fieldset>
+        <div class="question-tools" id="question-tools">
+          <button id="clear-answer" type="button">Limpar resposta</button>
+          <button id="flag" type="button" aria-pressed="false">Marcar para revisar</button>
+        </div>
+        <section class="correction" id="correction" aria-labelledby="correction-title" hidden>
+          <h3 id="correction-title">Gabarito comentado</h3>
+          <p id="correct-answer"></p>
+          <ol id="rationales" type="A"></ol>
+          <p id="synthesis"></p>
+          <ul id="sources" aria-label="Fontes da questão"></ul>
+        </section>
+        <nav class="question-nav" aria-label="Navegação entre questões">
+          <button id="previous" type="button">← Anterior</button>
+          <button id="next" class="primary" type="button">Próxima →</button>
+        </nav>
+      </article>
+    </section>
+    <dialog id="confirm-submit" aria-labelledby="confirm-title" aria-describedby="confirm-detail">
+      <h2 id="confirm-title">Entregar o simulado?</h2>
+      <p id="confirm-detail"></p>
+      <form method="dialog" class="question-tools">
+        <button value="cancel" autofocus>Voltar à prova</button>
+        <button class="primary" value="confirmed">Entregar e corrigir</button>
+      </form>
+    </dialog>
+  </main>
+</body>
+</html>

@@ -3,6 +3,7 @@ import collections
 import json
 from pathlib import Path
 import re
+import subprocess
 import unittest
 import unicodedata
 from urllib.parse import urlparse
@@ -14,6 +15,7 @@ RENDERER = ROOT / 'questoes/assets/temi800-figuras.js'
 HUB = ROOT / 'questoes/data/hub_qbanks.js'
 TEMPLATE_KINDS = {'ecg', 'ecg12', 'curva', 'capno', 'pic', 'art', 'pvc', 'pocus', 'tc', 'rx', 'rotem'}
 DATA_KINDS = {'mon', 'gaso', 'lab', 'vm', 'card', 'trend'}
+DESCRIBED_KINDS = {'ecg', 'ecg12', 'curva', 'pocus'}
 
 
 def normalize(text):
@@ -68,6 +70,43 @@ class Temi800ContentTests(unittest.TestCase):
                 if image['kind'] in TEMPLATE_KINDS:
                     self.assertTrue(image['reading'].strip())
                 self.assertIn('imagem-' + image['kind'], q['tags'])
+
+    def test_pre_answer_descriptions_cover_ecg_ventilation_and_pocus(self):
+        input_images = {q['id']: q['image'] for q in self.questions}
+        script = '''
+            const {readFileSync} = require('node:fs');
+            const {describe} = require(process.argv[1]);
+            const images = JSON.parse(readFileSync(0, 'utf8'));
+            console.log(JSON.stringify(Object.fromEntries(
+              Object.entries(images).map(([id, image]) => [id, describe(image)])
+            )));
+        '''
+        result = subprocess.run(
+            ['node', '-e', script, str(RENDERER)],
+            input=json.dumps(input_images), text=True, capture_output=True, check=True,
+        )
+        descriptions = json.loads(result.stdout)
+        for q in self.questions:
+            description = descriptions[q['id']]
+            with self.subTest(q=q['id']):
+                if q['image']['kind'] in DESCRIBED_KINDS:
+                    self.assertGreater(len(description), 80)
+                    self.assertNotIn(normalize(q['image']['reading']), normalize(description))
+                    self.assertNotIn('descrita no comentario', normalize(description))
+                else:
+                    self.assertEqual(description, '')
+
+        for id_suffix, expected in {
+            '083': ('Pressão de pico 32', 'Pressão de platô 27', 'PEEP 8'),
+            '157': ('linhas horizontais paralelas', 'o padrão passa a granular'),
+            '201': ('Ondulações rápidas, irregulares', 'QRS'),
+            '241': ('DII, DIII e aVF', 'em DI e aVL'),
+            '354': ('6,8 milímetros',),
+            '765': ('textura é granular',),
+            '767': ('2,6 centímetros', 'menor que 10 por cento'),
+        }.items():
+            for text in expected:
+                self.assertIn(text, descriptions[f'TEMI-800-{id_suffix}'])
 
     def test_case_context_is_self_contained_and_unique(self):
         seen = set()

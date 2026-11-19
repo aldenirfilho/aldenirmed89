@@ -119,7 +119,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertIn('name="apple-mobile-web-app-capable" content="yes"', home)
         # Marca visível atualizada para AldenirMed 360X em 16/11/2026 (pedido do autor).
         self.assertIn('name="apple-mobile-web-app-title" content="AldenirMed 360X"', home)
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v59`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v60`', worker)
         self.assertIn("await self.skipWaiting()", worker)
         self.assertIn("await self.clients.claim()", worker)
         range_guard = 'if (request.headers.has("range")) return fetch(request);'
