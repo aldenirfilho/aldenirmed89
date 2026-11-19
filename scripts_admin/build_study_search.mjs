@@ -16,13 +16,13 @@ function add(raw) {
 for(const m of json('data/mnemonicos.json').mnemonicos) add({id:'mnemonico:'+m.id,itemId:m.id,type:'mnemonico',title:m.title,excerpt:plain(Object.entries(m.letters||{}).map(([a,b])=>a+': '+b).join(' · ')),category:m.category||'',topicId:m.topicId,topicLabel:m.topicLabel,subtopic:m.subtopic||'',tags:m.tags||[],content:m.content,href:'mnemonicos/?id='+encodeURIComponent(m.id),reviewStatus:m.reviewStatus||'conferir-no-item'});
 const challenges=json('data/desafios.json');
 for(const branch of ['temi','r3'])for(const d of challenges[branch]||[])add({id:'desafio:'+d.id,itemId:d.id,type:'desafio',title:d.title,excerpt:plain(d.excerpt),category:branch.toUpperCase(),topicId:d.topicId,topicLabel:d.topicLabel,subtopic:d.subtopic||'',tags:d.tags||[],content:d.content,href:'desafios/?b='+branch+'&id='+encodeURIComponent(d.id),reviewStatus:d.reviewStatus||'conferir-no-item'});
-const banks=[['qbank_avc_agudo.js','QBANK_DATA','avc_agudo_questoes.html'],['qbank_temi_abcde.js','TEMI_ABCDE_QBANK','temi_abcde_questoes.html'],['qbank_temi_integrado_2026.js','TEMI_INTEGRADO_2026_QBANK','temi_integrado_2026_questoes.html'],['qbank_temi_novembro_2026.js','TEMI_NOVEMBRO_2026_QBANK','temi_novembro_2026_questoes.html']];
+const banks=[['qbank_avc_agudo.js','QBANK_DATA','avc_agudo_questoes.html'],['qbank_temi_abcde.js','TEMI_ABCDE_QBANK','temi_abcde_questoes.html'],['qbank_temi_integrado_2026.js','TEMI_INTEGRADO_2026_QBANK','temi_integrado_2026_questoes.html'],['qbank_temi_novembro_2026.js','TEMI_NOVEMBRO_2026_QBANK','temi_novembro_2026_questoes.html'],['qbank_temi_800_2026.js','TEMI_800_2026_QBANK','temi_800_imagens_questoes.html']];
 for(const [file,constant,page]of banks){
  const source=fs.readFileSync(path.join(ROOT,'questoes/data',file),'utf8');
  const bank=vm.runInNewContext(source+';'+constant,{}, {timeout:3000});
  for(const q of bank.questions){
   const block=(bank.blocks||[]).find(b=>b.id===q.block);
-  add({id:'questao:'+q.id,itemId:q.id,type:'questao',title:(q.subtopic||block?.label||q.domain||'Questão TEMI')+' · '+q.id,excerpt:plain(q.stem),category:block?.label||q.domain||'',blockLabel:block?.label||'',topicId:q.topicId,topicLabel:q.topicLabel,subtopic:q.subtopic||'',tags:q.tags||[],href:'questoes/'+page+'?qid='+encodeURIComponent(q.id)+'#'+encodeURIComponent(q.id),reviewStatus:q.reviewStatus||bank.meta.status||'conferir-no-item'});
+  add({id:'questao:'+q.id,itemId:q.id,type:'questao',title:(q.subtopic||block?.label||q.domain||'Questão TEMI')+' · '+q.id,excerpt:plain(q.stem+(constant==='TEMI_800_2026_QBANK'&&q.image&&q.image.alt?' · Figura: '+q.image.alt:'')),category:block?.label||q.domain||'',blockLabel:block?.label||'',topicId:q.topicId,topicLabel:q.topicLabel,subtopic:q.subtopic||'',tags:q.tags||[],href:'questoes/'+page+'?qid='+encodeURIComponent(q.id)+'#'+encodeURIComponent(q.id),reviewStatus:q.reviewStatus||bank.meta.status||'conferir-no-item'});
  }
 }
 if(new Set(items.map(i=>i.id)).size!==items.length)throw new Error('IDs duplicados na busca');

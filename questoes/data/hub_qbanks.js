@@ -21,6 +21,17 @@ const HUB_DATA = {
   },
   "qbanks": [
     {
+      "id": "qbank-temi-800-imagens-2026",
+      "title": "TEMI 800 — questões com imagens e comentários",
+      "icon": "🖼️", "status": "ativo", "domain": "multi",
+      "difficultyProfile": "Médio → Difícil", "questions": 800, "comments": 4000,
+      "estimatedTime": "20 blocos de 40 questões",
+      "url": "temi_800_imagens_questoes.html",
+      "description": "800 casos fictícios estilo TEMI, cada um com figura (ECG, curvas de VM, capnografia, POCUS, TC, RX, ROTEM, monitor, gasometria) e comentários A–E. Figuras esquemáticas sintéticas; revisão médica pendente; material não oficial da AMIB.",
+      "relatedTopics": ["sepse", "choque", "ventilacao-mecanica", "drogas-vasoativas", "pocus", "intubacao-orotraqueal", "delirium-uti", "anticoagulacao", "hemorragia-intracraniana", "fibrilacao-atrial"],
+      "keywords": ["TEMI", "800", "imagens", "ECG", "POCUS", "ventilação mecânica", "capnografia", "ROTEM", "gasometria", "trauma", "toxicologia", "infecção", "hematologia", "nutrição", "ética"]
+    },
+    {
       "id": "qbank-temi-novembro-2026-80",
       "title": "TEMI Novembro 2026 — 80 questões autorais",
       "icon": "🧠", "status": "ativo", "domain": "multi",

@@ -296,3 +296,91 @@ a.j360-home-cadernos-item:hover{border-color:var(--cyan);background:var(--surf-h
 .j360-home-cadernos-text small{display:block;margin-top:2px;font-size:.8rem;line-height:1.4;color:var(--muted)}
 @media(max-width:1200px){.j360-home-cadernos{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.j360-home-cadernos{grid-template-columns:1fr}}
+
+/* ══════════════════════════════════════════════════════════════
+   Abertura prática e acessível (18/11/2026)
+   Busca logo após o título, seis portas de acesso rápido, painel
+   enxuto no celular e mapa com rolagem lateral (sem nós sobrepostos).
+   ══════════════════════════════════════════════════════════════ */
+.hero h1{margin-bottom:18px}
+.hero .quick-finder{margin:0 0 18px}
+.quick-doors{margin:0 0 22px;max-width:760px}
+.quick-doors-title{
+  margin:0 0 10px;color:var(--cyan);
+  font:700 .78rem/1.3 var(--font-mono);letter-spacing:.14em;text-transform:uppercase
+}
+.quick-doors-grid{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px
+}
+.quick-door{
+  position:relative;display:flex;flex-direction:column;justify-content:center;gap:3px;
+  min-height:76px;padding:12px 14px 12px 52px;
+  border:1px solid var(--brd-h);border-left:4px solid var(--door,var(--cyan));border-radius:14px;
+  background:var(--surf);color:var(--text);text-decoration:none;
+  transition:border-color .15s ease,background .15s ease,transform .15s ease
+}
+.quick-door:hover{background:var(--surf-h);border-color:var(--door,var(--cyan));transform:translateY(-1px)}
+.quick-door:focus-visible{outline:3px solid var(--door,var(--cyan));outline-offset:3px}
+.quick-door-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:1.4rem;line-height:1}
+.quick-door strong{font:800 .98rem/1.2 var(--font-body);color:var(--text)}
+.quick-door small{font-size:.8rem;line-height:1.3;color:var(--soft)}
+.quick-door-badge{
+  position:absolute;top:7px;right:9px;padding:2px 7px;border-radius:999px;
+  font:800 .62rem/1.3 var(--font-mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--yellow);color:#14110a
+}
+.hero .hero-lead{font-size:1rem;margin-bottom:10px}
+.hero .access-free{margin-bottom:16px}
+.hero .launch-entry-panel{margin-bottom:14px}
+.map-scroll-hint{display:none;margin:16px 0 0;color:var(--soft);font-size:.85rem}
+
+@media (max-width:760px){
+  .hero{padding-top:24px}
+  .hero-eyebrow{display:none}
+  .hero h1{font-size:clamp(2rem,9vw,2.6rem);margin-bottom:14px}
+  .quick-doors-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .quick-door{min-height:70px;padding:10px 10px 10px 44px}
+  .quick-door-icon{left:12px;font-size:1.2rem}
+  .quick-door strong{font-size:.92rem}
+  .quick-door small{font-size:.74rem}
+  .quick-door-badge{top:5px;right:6px}
+  .hero-panel .metrics-grid,.hero-panel .panel-ecg{display:none}
+  .hero-panel .topic-pills{flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
+  .hero-panel .topic-pill{flex:0 0 auto;scroll-snap-align:start}
+  .map-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px;border-radius:var(--r-xl)}
+  .map-scroll .map-container{min-width:1000px;height:520px;margin-top:0}
+  .map-scroll-hint{display:block}
+}
+
+/* Links do rodapé editorial distinguíveis sem depender só da cor */
+.antigravity-editorial-attribution a{text-decoration:underline;text-underline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){.quick-door{transition:none}.quick-door:hover{transform:none}}
+html.a11y-reduce-motion .quick-door{transition:none}
+html.a11y-reduce-motion .quick-door:hover{transform:none}
+html.a11y-contrast .quick-door{background:#000;color:#fff;border-color:#fff;border-left-color:#ffe28a}
+html.a11y-contrast .quick-door small{color:#fff}
+
+/* Celular: atalhos da busca em uma linha e “Comece por aqui” em duas colunas */
+@media (max-width:760px){
+  .quick-finder .quick-routes{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x proximity}
+  .quick-finder .quick-routes a{flex:0 0 auto;scroll-snap-align:start;white-space:nowrap}
+  .hub-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .hub-tile{min-height:0;padding:14px 12px 12px;gap:5px}
+  .hub-tile-icon{font-size:1.35rem}
+  .hub-tile strong{font-size:.95rem}
+  .hub-tile span{font-size:.78rem;line-height:1.35}
+  .hub-tile.is-new::after{top:8px;right:8px}
+}
+@media (max-width:360px){.hub-tiles{grid-template-columns:1fr}}
+
+/* Alvos de toque mínimos nos links de verificação dos downloads */
+.download-trust a{display:inline-block;min-height:24px;padding:4px 0;line-height:1.3}
+
+/* Selo "Novo" sobre a borda (não cobre o título) e tablets sem estouro do painel */
+.quick-door-badge{top:-9px;right:10px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+@media (min-width:901px) and (max-width:1180px){
+  .quick-doors-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-panel .metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
