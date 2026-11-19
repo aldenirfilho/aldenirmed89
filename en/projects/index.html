@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Explore Project 360X in English. Browse Team 360X projects, medical education resources, and the relationships between them.">
+<title>Project 360X | English project directory and map</title>
+<style>
+:root {
+  color-scheme: light;
+  --paper: #f4f5f0;
+  --surface: #fff;
+  --text: #182720;
+  --muted: #4d6056;
+  --forest: #12392d;
+  --green: #135c47;
+  --mint: #ddede4;
+  --border: #c9d4cc;
+  --accent: #eed595;
+  --content: 72rem;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: 1rem; }
+body { margin: 0; color: var(--text); background: var(--paper); font: 1rem/1.58 system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
+a { color: var(--green); text-underline-offset: .17em; }
+a:hover { text-decoration-thickness: .14em; }
+:focus-visible { outline: .18rem solid #a85714; outline-offset: .18rem; }
+h1, h2, h3, p { margin-top: 0; }
+h1, h2 { line-height: 1.08; letter-spacing: -.033em; }
+h1 { font-size: clamp(2.75rem, 7vw, 5.6rem); max-width: 16ch; margin-bottom: 1rem; }
+h2 { font-size: clamp(1.9rem, 4vw, 3rem); margin-bottom: .7rem; }
+h3 { font-size: 1.15rem; line-height: 1.28; margin-bottom: .45rem; }
+.wrap { width: min(calc(100% - 2rem), var(--content)); margin-inline: auto; }
+.skip { position: fixed; top: .5rem; left: .5rem; z-index: 2; padding: .55rem; background: var(--surface); transform: translateY(-200%); }
+.skip:focus { transform: none; }
+.mast { color: #fff; background: var(--forest); }
+.mast a { color: #fff; }
+.topline { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #699180; }
+.topline nav, .actions { display: flex; flex-wrap: wrap; gap: .65rem 1.25rem; align-items: center; }
+.wordmark { font-weight: 760; text-decoration: none; }
+.hero { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; padding: clamp(2.3rem, 6vw, 4.9rem) 0; align-items: end; }
+.hero .intro { max-width: 61ch; color: #e6f1e9; font-size: 1.13rem; }
+.kicker { color: var(--green); font-size: .8rem; text-transform: uppercase; letter-spacing: .11em; font-weight: 750; margin-bottom: .5rem; }
+.hero .kicker { color: var(--accent); }
+.hero .button { color: var(--forest); background: var(--accent); }
+.button { display: inline-block; padding: .55rem .8rem; min-height: 2.7rem; border-radius: .5rem; font-weight: 700; background: var(--mint); }
+.stats { display: grid; gap: .6rem; margin: 0; padding: .8rem 0 .25rem 1.2rem; border-left: 1px solid #699180; }
+.stats div { display: grid; grid-template-columns: 3rem 1fr; gap: .7rem; align-items: baseline; }
+.stats dt { order: 2; color: #e6f1e9; }
+.stats dd { order: 1; color: var(--accent); font-size: 1.5rem; font-weight: 750; margin: 0; }
+main { padding-block: 2rem 3.7rem; }
+section { margin-bottom: 3.5rem; }
+.section-intro { color: var(--muted); max-width: 73ch; }
+.notice { border-left: .24rem solid var(--green); background: var(--mint); padding: .8rem 1rem; margin: 1.1rem 0; }
+.controls { display: flex; flex-wrap: wrap; gap: .65rem 1rem; align-items: end; padding: .8rem 0 .25rem; }
+.controls label { display: grid; gap: .22rem; font-weight: 700; }
+.controls label:first-child { flex: 1 1 18rem; }
+.controls input, .controls select, .controls button { font: inherit; color: var(--text); background: var(--surface); min-height: 2.8rem; border: 1px solid #71877a; border-radius: .45rem; padding: .38rem .6rem; max-width: 100%; }
+.controls button { cursor: pointer; }
+.result { min-height: 1.6rem; margin: .35rem 0 .75rem; color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17.5rem), 1fr)); gap: .85rem; align-items: start; }
+.card, .cluster, .map-box { background: var(--surface); border: 1px solid var(--border); border-radius: .7rem; padding: 1rem; overflow-wrap: anywhere; }
+.card:target, .cluster:target { border-color: var(--green); box-shadow: 0 0 0 .17rem var(--mint); }
+.tag { display: inline-block; color: var(--forest); background: var(--mint); padding: .14rem .45rem; border-radius: .3rem; font-size: .76rem; font-weight: 720; margin: 0 .25rem .4rem 0; }
+.card summary, .map-box summary { cursor: pointer; color: var(--green); font-weight: 700; padding: .3rem 0; }
+.card p { margin-bottom: .7rem; }
+ul { padding-left: 1.2rem; }
+.links { list-style: none; padding: 0; margin: .45rem 0 0; }
+.links li { margin-bottom: .35rem; }
+.map-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .85rem; margin-bottom: .9rem; }
+.map-grid a { font-weight: 650; }
+.map-box { margin-bottom: .8rem; }
+.routes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); list-style: none; padding: 0; gap: .65rem; }
+.routes li { padding: .6rem .65rem; background: var(--paper); border-radius: .35rem; }
+.routes small { display: block; margin-top: .25rem; color: var(--muted); }
+footer { padding-block: 1.2rem; background: var(--forest); color: #fff; }
+footer a { color: #fff; }
+[hidden] { display: none !important; }
+@media (max-width: 42rem) {
+  .hero { grid-template-columns: 1fr; gap: 1rem; }
+  .stats { border-left: 0; border-top: 1px solid #699180; padding-left: 0; }
+  .topline { align-items: start; }
+  .controls label, .controls select { width: 100%; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="mast">
+  <div class="wrap">
+    <div class="topline">
+      <a class="wordmark" href="#top">Team 360X</a>
+      <nav aria-label="Main navigation">
+        <a href="#directory">Directory</a>
+        <a href="#project-map">Map</a>
+        <a href="#portfolio">Initiatives</a>
+        <a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/" lang="pt-BR">Português</a>
+      </nav>
+    </div>
+    <div class="hero" id="top">
+      <div>
+        <p class="kicker">Team 360X / English edition</p>
+        <h1>Explore Project 360X.</h1>
+        <p class="intro">Find educational websites, study resources, and interactive tools from Team 360X. Start with a topic, follow a connection on the map, or open the original project.</p>
+        <div class="actions">
+          <a class="button" href="#directory">Explore the directory</a>
+          <a href="https://aldenirfilho.github.io/aldenirmed89/en/" hreflang="en">AldenirMed89 in English</a>
+        </div>
+      </div>
+      <dl class="stats">
+        <div><dt>project and resource overviews</dt><dd>57</dd></div>
+        <div><dt>catalogued initiatives</dt><dd>55</dd></div>
+        <div><dt>connections to explore</dt><dd>42</dd></div>
+      </dl>
+    </div>
+  </div>
+</header>
+<main class="wrap" id="main">
+  <section id="directory" aria-labelledby="directory-heading">
+    <p class="kicker">01 / Public resources</p>
+    <h2 id="directory-heading">Find a project</h2>
+    <p class="section-intro">Browse English descriptions of the sites, tools, and modules included in the public outreach kit.</p>
+    <p class="notice"><strong>Language of linked pages.</strong> English links open a verified English page or a localized section. Portuguese links open the original. The AldenirMed89 English edition is partial. Medical resources are for education and have separate review statuses.</p>
+    <form class="controls" id="directory-filter" role="search" aria-label="Find a project" hidden>
+      <label>Search projects <input type="search" name="query" placeholder="Try ultrasound, botany, accessibility…"></label>
+      <label>Topic <select name="category"><option value="">All topics</option><option value="project-360x-and-aldenirmed89">Project 360X and AldenirMed89</option><option value="medicine-and-critical-care">Medicine and critical care</option><option value="learning-neurodiversity-and-ai">Learning, neurodiversity and AI</option><option value="science-and-conservation">Science and conservation</option><option value="everyday-life-travel-and-culture">Everyday life, travel and culture</option><option value="consumer-research-and-civic-initiatives">Consumer research and civic initiatives</option><option value="faith-ethics-and-transparency">Faith, ethics and transparency</option></select></label>
+      <button type="reset">Clear filters</button>
+    </form>
+    <p class="result" id="directory-count" aria-live="polite"></p>
+    <div class="grid" id="directory-results">
+      <article class="card" id="project-360x" data-category="project-360x-and-aldenirmed89">
+  <span class="tag">Project 360X and AldenirMed89</span>
+  <h3>Project 360X</h3>
+  <p>Team 360X develops websites, study materials, and interactive tools in education, artificial intelligence, accessibility, science, culture, and community initiatives. This showcase organizes that work by topic.</p>
+  <details><summary>What you can explore</summary><ul><li>Explore the public resources and tools.</li><li>See which projects are available and which are in development.</li><li>Choose an area you would like to explore or contribute to.</li></ul><p>Public project showcase</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/" hreflang="pt-BR">Project 360X · Portuguese original</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/en/" hreflang="en">AldenirMed89 · English home (partial edition)</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/" hreflang="pt-BR">AldenirMed89 · Portuguese original</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/mapa.html" hreflang="pt-BR">360X Project Map · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="aldenirmed89" data-category="project-360x-and-aldenirmed89">
+  <span class="tag">Project 360X and AldenirMed89</span>
+  <h3>AldenirMed89</h3>
+  <p>A free educational portal for internal medicine, emergency medicine, and critical care. Resources range from case-based questions to topic modules and reading lists.</p>
+  <details><summary>What you can explore</summary><ul><li>Browse study modules, question banks, and reference materials.</li><li>Explore point-of-care ultrasound and educational calculators.</li><li>Check the review status shown on each module.</li></ul><p>Public medical education portal</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/en/" hreflang="en">AldenirMed89 · English home (partial edition)</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/" hreflang="pt-BR">Open AldenirMed89 · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="360x-integrated-project-dashboard" data-category="project-360x-and-aldenirmed89">
+  <span class="tag">Project 360X and AldenirMed89</span>
+  <h3>360X Integrated Project Dashboard</h3>
+  <p>A searchable index of 360X initiatives, websites, and repositories, with a separate map showing how the work connects.</p>
+  <details><summary>What you can explore</summary><ul><li>Filter the catalog by topic to find related projects.</li><li>Open a listing to see its documented stage and available links.</li><li>Switch to the visual map to follow connections across the project.</li></ul><p>Public dashboard and map</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html" hreflang="pt-BR">Project dashboard · Portuguese original</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/mapa.html" hreflang="pt-BR">Visual map · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="temi-question-bank-and-clinical-challenges" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>TEMI Question Bank and Clinical Challenges</h3>
+  <p>A practice space for physicians preparing for Brazil’s intensive care specialty certification exam (TEMI) and for learners reviewing internal medicine.</p>
+  <details><summary>What you can explore</summary><p>Start by answering a question, compare the options, and use the explanation to revisit the reasoning. The clinical challenges are a separate route for case-based practice.</p><p>English overview. The linked question bank and challenges are in Portuguese.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/questoes/" hreflang="pt-BR">TEMI Question Bank · Portuguese original</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/desafios/" hreflang="pt-BR">Clinical challenges · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="intensivahub" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>IntensivaHub</h3>
+  <p>A developing learning library for intensive care, emergency medicine, and internal medicine.</p>
+  <details><summary>What you can explore</summary><p>Explore topic-based summaries and study materials organized for returning to a topic and following it in greater depth.</p><p>English overview. The linked library is in Portuguese.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/intensivahub/" hreflang="pt-BR">Open IntensivaHub · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="pocus-hub-and-acra-learning-modules" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>POCUS Hub and ACRA Learning Modules</h3>
+  <p>A learning hub for point-of-care ultrasound (POCUS), with lessons, images, references, and a short active-learning pathway on POCUS in shock.</p>
+  <details><summary>What you can explore</summary><p>Explore the hub for background reading or choose the ACRA pathway for short units and questions that practice clinical reasoning.</p><p>English overview. The linked learning materials are in Portuguese.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/09_POCUS_Hub/" hreflang="pt-BR">POCUS Hub · Portuguese original</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/22_Microparticulas_Ativas_ACRA/" hreflang="pt-BR">ACRA short modules on POCUS in shock · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="respiracrit" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>RespiraCrit</h3>
+  <p>An educational interface for studying mechanical ventilation and respiratory support.</p>
+  <details><summary>What you can explore</summary><p>Explore respiratory mechanics, lung-protective ventilation, and blood gas interpretation with fictional learning examples.</p><p>English overview. The linked interface is in Portuguese. Educational use.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/RESPIRACRIT/" hreflang="pt-BR">Open RespiraCrit · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="respirasense-icu" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>RespiraSense ICU</h3>
+  <p>An educational prototype that explores how oxygenation, blood gases, and ventilatory-support information can be organized.</p>
+  <details><summary>What you can explore</summary><p>Open the web module to explore the interface, or read the separate prototype documentation to understand its scope.</p><p>English overview. The web module is in Portuguese. The separate link is documentation.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/01_Modulos_Clinicos/Ventilacao_Mecanica/respirasense/index.html" hreflang="pt-BR">Web module · Portuguese original</a></li><li><a href="https://aldenirfilho.github.io/respirasense-icu/" hreflang="pt-BR">Prototype documentation · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="infectoplantao" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>InfectoPlantão</h3>
+  <p>An educational preview for exploring an intensive care collection of antimicrobials and pathogens.</p>
+  <details><summary>What you can explore</summary><p>The interface brings search and comparison into one place for learning and feedback. The preview is awaiting medical review.</p><p>English overview. The linked preview is in Portuguese and awaiting medical review.</p></details>
+  <ul class="links"><li><a href="https://infectoplantao-aldenirmed89.aldenirmed.chatgpt.site/app/" hreflang="pt-BR">Open InfectoPlantão · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="nexus-care-icu-handover-360x" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>NEXUS CARE · ICU Handover 360X</h3>
+  <p>A prototype for exploring how ICU teams can organize priorities, outstanding tasks, and communication across shifts.</p>
+  <details><summary>What you can explore</summary><p>Try the structured templates and checklists with fictional cases for teaching or demonstration.</p><p>English overview. The linked prototype is in Portuguese. Use fictional data.</p></details>
+  <ul class="links"><li><a href="https://passagem-plantao-uti.vercel.app/" hreflang="pt-BR">Open NEXUS CARE · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="icu-audit-360x" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>ICU Audit 360X</h3>
+  <p>An exploratory dashboard for ICU cost planning, with a 140-item catalog and 10-, 20-, and 30-bed scenarios.</p>
+  <details><summary>What you can explore</summary><p>The price dataset is partial. The flags identify items for documentary follow-up and source verification.</p><p>English overview. The linked dashboard is in Portuguese. The price dataset is partial.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-uti/" hreflang="pt-BR">Open ICU Audit 360X · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="cardfeed360x" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>CardFeed360X</h3>
+  <p>A mobile-friendly collection of visual study cards, diagrams, and short summaries in internal medicine and intensive care.</p>
+  <details><summary>What you can explore</summary><p>Use the collection to review one subject at a time. The main card collection and the version within AldenirMed89 are available as separate links.</p><p>English overview. The linked card collections are in Portuguese.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/cardfeed360x/" hreflang="pt-BR">CardFeed360X collection · Portuguese original</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/05_Midia_E_Feed/" hreflang="pt-BR">Medical portal edition · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="daily-scientific-radar-and-medical-directory" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>Daily Scientific Radar and Medical Directory</h3>
+  <p>Two routes for following and finding medical literature. The Radar organizes reading notes and articles. The Directory helps users discover sources by topic or region.</p>
+  <details><summary>What you can explore</summary><p>An English Radar edition is available, based on the July 25, 2026 edition. The educational images remain in Portuguese and include English transcripts below them. The Medical Directory is available in Portuguese.</p><p>English Radar edition available. The English edition is a dated snapshot. The Medical Directory is in Portuguese.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/en/radar/" hreflang="en">Daily Radar · English archive (25 July 2026)</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/15_Radar_Cientifico/" hreflang="pt-BR">Science Radar · Portuguese original</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/16_Diretorio_Medico/" hreflang="pt-BR">Medical Directory · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="medical-library-and-updown-hub" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>Medical Library and UpDown Hub</h3>
+  <p>Two routes through the AldenirMed89 study collection, with references organized by subject and linked learning pages.</p>
+  <details><summary>What you can explore</summary><p>Use the library for reading and references. Use the UpDown Hub to explore connections among subjects and find review materials.</p><p>English overview. The linked library and study hub are in Portuguese.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/02_Biblioteca_IA_Engine/" hreflang="pt-BR">Medical Library · Portuguese original</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/01_UpDown_Hub/" hreflang="pt-BR">UpDown Hub · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="icu-calculators" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>ICU Calculators</h3>
+  <p>A teaching resource for exploring how ICU scores and clinical calculations are structured.</p>
+  <details><summary>What you can explore</summary><p>The hub includes educational resources on SAPS 3 and kidney function. Use fictional examples for practice and review the references listed with each tool.</p><p>English overview. The linked calculators and modules are in Portuguese. Educational use.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/03_Calculadoras_E_Apps/" hreflang="pt-BR">Open ICU Calculators · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="clinical-examination" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>Clinical Examination</h3>
+  <p>An AldenirMed89 study section that connects physical examination findings to clinical reasoning.</p>
+  <details><summary>What you can explore</summary><p>Explore educational pathways on neurological, cardiovascular, and abdominal examination, designed for medical students and clinical teachers.</p><p>English overview. The linked learning materials are in Portuguese.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/24_Semiologia/" hreflang="pt-BR">Open Physical Examination · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="ecg-almanac-360" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <h3>ECG Almanac 360</h3>
+  <p>An educational collection for practicing electrocardiogram interpretation by comparing tracings and patterns.</p>
+  <details><summary>What you can explore</summary><p>Find a tracing and discuss your interpretation before opening the accompanying explanation. The collection can support individual review or a group teaching session.</p><p>English overview. The linked ECG collection is in Portuguese.</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/01_Modulos_Clinicos/Almanaque_ECG/" hreflang="pt-BR">Open ECG Almanac 360 · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="study-360x-beta" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>Study 360X Beta</h3>
+  <p>Plan the next study session around the lectures and notes you already have. Study 360X breaks that work into a manageable next action and a focused block.</p>
+  <details><summary>What you can explore</summary><ul><li>Choose a lecture or other source material from your own collection.</li><li>Use a 25-minute study block to turn that material into active practice.</li><li>Keep track of what to do next on your device.</li></ul><p>Public beta</p></details>
+  <ul class="links"><li><a href="https://estudo360x-beta-20261103.aldenirmed.chatgpt.site/" hreflang="pt-BR">Try Estudo 360X Beta · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="organizador-de-estudo360x" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>Organizador de Estudo360X</h3>
+  <p>An active-learning organizer that turns a set of notes into one question at a time and makes it easier to pick up where you left off.</p>
+  <details><summary>What you can explore</summary><ul><li>Try a short demonstration of the study workflow.</li><li>Work through a single prompt before deciding what to revisit.</li><li>Record a clear next step for the following session.</li></ul><p>Public product preview</p></details>
+  <ul class="links"><li><a href="https://organizador-estudo360x.aldenirmed.chatgpt.site/en/" hreflang="en">Study Organizer · English showcase</a></li><li><a href="https://organizador-estudo360x.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open the demonstration · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="diversamente" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>DiversaMente</h3>
+  <p>A Brazilian digital magazine about adult ADHD and neurodiversity, with accessible reading, references, and practical starting points for everyday questions.</p>
+  <details><summary>What you can explore</summary><ul><li>Browse topics about work, study, organization, and daily life.</li><li>Follow the cited references when you want to read further.</li><li>Explore related accessibility and support resources.</li></ul><p>Public digital magazine</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/neurodiversidade-brasil/" hreflang="pt-BR">Open DiversaMente · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="foco-claro" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>FOCO CLARO</h3>
+  <p>An editorial accessibility tool for examining how easily a reader can use a course, PDF, or website, with attention to ADHD and dyslexia.</p>
+  <details><summary>What you can explore</summary><ul><li>Check whether headings and navigation make a page easy to scan.</li><li>Look at paragraph length, visual hierarchy, and the effort needed to resume reading.</li><li>Use the observations to inform an editorial review.</li></ul><p>Public assessment tool</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/neurodiversidade-brasil/public/neurovinculos/foco-app/" hreflang="pt-BR">Try FOCO CLARO · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="neurovinculos-brasil" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>NeuroVínculos Brasil</h3>
+  <p>A Brazilian resource hub that brings together starting points for exploring neurodiversity, support, accessibility, and rights.</p>
+  <details><summary>What you can explore</summary><ul><li>Choose a path based on the question you are trying to answer.</li><li>Find links to related resources and reading guides.</li><li>The rights and services discussed are grounded in the Brazilian context.</li></ul><p>Public resource directory</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/neurodiversidade-brasil/public/neurovinculos/" hreflang="pt-BR">Open NeuroVínculos Brasil · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="adhd-research-guide" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>ADHD Research Guide</h3>
+  <p>A guide from DiversaMente for turning a question about ADHD into a manageable search and keeping track of where each answer came from.</p>
+  <details><summary>What you can explore</summary><ul><li>Start with a focused question about a topic you want to understand.</li><li>Follow the suggested reading paths and examine the underlying sources.</li><li>Keep separate notes for findings, open questions, and topics to revisit.</li></ul><p>Public reading guide</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/neurodiversidade-brasil/public/neurovinculos/pesquisa-tdah/" hreflang="pt-BR">Open the ADHD Research Guide · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="360x-agent-and-skill-catalog" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>360X Agent and Skill Catalog</h3>
+  <p>A searchable catalog of AI agents, prompts, methods, and workflows developed across the 360X projects.</p>
+  <details><summary>What you can explore</summary><ul><li>Browse examples from research, learning, organization, and creative work.</li><li>Open an entry to see the purpose and documented stage of the workflow.</li><li>Use the catalog to locate a project before exploring its details.</li></ul><p>Public catalog</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/agentes-habilidades/" hreflang="pt-BR">Explore the catalog · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="command-notch" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>Command Notch</h3>
+  <p>A Mac concept that puts frequently used actions near the top of the screen. The preview illustrates how notes, files, voice, and music could be brought together.</p>
+  <details><summary>What you can explore</summary><ul><li>See how the proposed interface organizes quick actions.</li><li>Try the timer in the web demonstration.</li><li>The public page presents an interface concept.</li></ul><p>Public concept preview</p></details>
+  <ul class="links"><li><a href="https://command-notch-360x.aldenirmed.chatgpt.site/?lang=en" hreflang="en">Command Notch · English showcase</a></li><li><a href="https://command-notch-360x.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open the Command Notch preview · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="fluxo-360" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>Fluxo 360</h3>
+  <p>A personal organizer for recording tasks, study sessions, routines, and monthly expenses. It is designed to make completed work and upcoming actions easy to see.</p>
+  <details><summary>What you can explore</summary><ul><li>Use it to review practical commitments across different parts of your day.</li><li>Record expenses alongside the rest of your personal planning.</li><li>Records are stored on the device.</li></ul><p>Public tool</p></details>
+  <ul class="links"><li><a href="https://project25129.websitepublisher.ai/" hreflang="pt-BR">Open Fluxo 360 · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="life-archive-360" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>Life Archive 360</h3>
+  <p>A demonstration of how a personal archive might connect readings, projects, notes, and memories through search.</p>
+  <details><summary>What you can explore</summary><ul><li>Browse a fictional archive to see how its items are organized.</li><li>Explore how related material can be found again through contextual clues.</li><li>The demonstration uses fictional data.</li></ul><p>Public demonstration</p></details>
+  <ul class="links"><li><a href="https://aldenir-life-archive-360-demo.aldenirmed.chatgpt.site/" hreflang="pt-BR">Try the Life Archive 360 demonstration · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="ram-mirrors-and-the-brain" data-category="learning-neurodiversity-and-ai">
+  <span class="tag">Learning, neurodiversity and AI</span>
+  <h3>RAM, Mirrors, and the Brain</h3>
+  <p>A visual essay connecting the manufacture of computer memory with reflections in mirrors and the workings of human memory.</p>
+  <details><summary>What you can explore</summary><ul><li>Follow the sections on hardware, light, and vision.</li><li>Explore associative memory as a separate topic.</li><li>Use the connections as prompts for further inquiry.</li></ul><p>Public interactive essay</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/ram-espelho-cerebro/" hreflang="pt-BR">Open the interactive essay · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="atlas-vivo-360x-plants" data-category="science-and-conservation">
+  <span class="tag">Science and conservation</span>
+  <h3>Atlas Vivo 360X · Plants</h3>
+  <p>A digital botany notebook for exploring how plants are classified, how they reproduce, and how they interact with their environment.</p>
+  <details><summary>What you can explore</summary><ul><li>Browse plant groups and the features used to distinguish them.</li><li>Connect reproduction and plant structure to ecological questions.</li><li>Use the atlas as a starting point for a class, review session, or field observation.</li></ul><p>Public learning atlas</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/atlas-vivo-360x-pages/" hreflang="pt-BR">Open the plant atlas · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="animalia-360x" data-category="science-and-conservation">
+  <span class="tag">Science and conservation</span>
+  <h3>Animalia 360X</h3>
+  <p>A zoology resource that connects animal diversity, evolution, reproduction, and conservation.</p>
+  <details><summary>What you can explore</summary><ul><li>Explore how different animal groups are related.</li><li>Compare topics in reproduction, adaptation, and conservation.</li><li>Review the material using the included questions and explanations.</li></ul><p>Public learning atlas</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/atlas-vivo-360x-animais/" hreflang="pt-BR">Open Animalia 360X · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="fauna-360" data-category="science-and-conservation">
+  <span class="tag">Science and conservation</span>
+  <h3>Fauna 360°</h3>
+  <p>A public educational resource on threatened animals, their habitats, and the pressures they face, with paths to conservation organizations.</p>
+  <details><summary>What you can explore</summary><ul><li>Explore species profiles and photographs.</li><li>Follow the listed official channels of conservation organizations.</li><li>Contact the organization itself if you want to support its work.</li></ul><p>Public conservation directory</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/apps/bolsa-ajuda-fauna/" hreflang="pt-BR">Open Fauna 360° · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="geo-360x" data-category="science-and-conservation">
+  <span class="tag">Science and conservation</span>
+  <h3>Geo 360X</h3>
+  <p>An earth science resource about rocks, minerals, soils, and the processes that shape landscapes.</p>
+  <details><summary>What you can explore</summary><ul><li>Connect mineral characteristics and rock types to larger geological processes.</li><li>Explore readings and sources on the topics that interest you.</li><li>Use the review questions to revisit key ideas.</li></ul><p>Public learning atlas</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/atlas-vivo-360x-rochas/" hreflang="pt-BR">Open Geo 360X · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="ritmo60" data-category="everyday-life-travel-and-culture">
+  <span class="tag">Everyday life, travel and culture</span>
+  <h3>Ritmo60</h3>
+  <p>A workout planner demonstration for people who want to organize an exercise session around the time they have.</p>
+  <details><summary>What you can explore</summary><ul><li>Plan sessions of up to 60 minutes.</li><li>Follow sets as you work through a routine.</li><li>Record progress to make it easier to review earlier sessions.</li></ul><p>Public demonstration</p></details>
+  <ul class="links"><li><a href="https://ritmo60-fitness-beta.aldenirmed.chatgpt.site/" hreflang="pt-BR">Try Ritmo60 · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="treino-360-pro" data-category="everyday-life-travel-and-culture">
+  <span class="tag">Everyday life, travel and culture</span>
+  <h3>Treino 360 Pro</h3>
+  <p>A mobile-oriented organizer for strength training, walking, and recovery.</p>
+  <details><summary>What you can explore</summary><ul><li>Choose a 30-, 45-, or 60-minute routine.</li><li>See the planned activities and record what you complete.</li><li>Workout records are stored on the device.</li></ul><p>Public tool</p></details>
+  <ul class="links"><li><a href="https://treino360-pro-mobile.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open Treino 360 Pro · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="namoro360x" data-category="everyday-life-travel-and-culture">
+  <span class="tag">Everyday life, travel and culture</span>
+  <h3>Namoro360X</h3>
+  <p>A guide for adults who want to start conversations and make invitations with more confidence, including resources for people navigating shyness or ADHD.</p>
+  <details><summary>What you can explore</summary><ul><li>Browse conversation starters and activity ideas.</li><li>Adapt invitations and messages to the person and setting.</li><li>Explore separate guidance on shyness and ADHD.</li></ul><p>Public interactive guide</p></details>
+  <ul class="links"><li><a href="https://namoro360x.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open Namoro360X · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="tempo-de-viver-360x" data-category="everyday-life-travel-and-culture">
+  <span class="tag">Everyday life, travel and culture</span>
+  <h3>Tempo de Viver 360X</h3>
+  <p>A project about how people make room for health, relationships, leisure, and meaningful experiences alongside work and other commitments.</p>
+  <details><summary>What you can explore</summary><ul><li>Explore reflections on where your time goes.</li><li>Consider trade-offs among work, rest, and relationships.</li><li>Use the tools and prompts to examine your own routine.</li></ul><p>Public concept site</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/INVESTIMENTO-DE-TEMPO-PARA-CURTIR/" hreflang="pt-BR">Open Tempo de Viver 360X · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="between-two-skies" data-category="everyday-life-travel-and-culture">
+  <span class="tag">Everyday life, travel and culture</span>
+  <h3>Between Two Skies</h3>
+  <p>An editorial feature connecting sunset in Jericoacoara, Brazil, and the northern lights in Iceland through photography and reflections on light and landscape.</p>
+  <details><summary>What you can explore</summary><ul><li>Explore two places through their contrasting patterns of light.</li><li>Read the accompanying cultural material, which includes a section on cannabis and the Rastafari tradition.</li><li>Use the feature as a starting point for reflection on travel, place, and attention.</li></ul><p>Public editorial feature</p></details>
+  <ul class="links"><li><a href="https://entre-dois-ceus-jeri-islandia.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open Between Two Skies · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="dragon-ball-eternal-legacy" data-category="everyday-life-travel-and-culture">
+  <span class="tag">Everyday life, travel and culture</span>
+  <h3>Dragon Ball · Eternal Legacy</h3>
+  <p>An independent Portuguese-language fan encyclopedia exploring the characters, family connections, techniques, and stories of Dragon Ball.</p>
+  <details><summary>What you can explore</summary><ul><li>Browse the people and relationships that connect different parts of the story.</li><li>Explore techniques and notable moments from the franchise.</li><li>A separate edition is maintained on GitHub.</li></ul><p>Public fan encyclopedia</p></details>
+  <ul class="links"><li><a href="https://dragonball-legado-eterno.aldenirmed.chatgpt.site/" hreflang="pt-BR">Main edition · Portuguese original</a></li><li><a href="https://aldenirfilho.github.io/dragonballlegadoeterno/" hreflang="pt-BR">GitHub edition · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="atlas-phoenix-and-the-pirates-of-infinity" data-category="everyday-life-travel-and-culture">
+  <span class="tag">Everyday life, travel and culture</span>
+  <h3>Atlas Phoenix and the Pirates of Infinity</h3>
+  <p>A fiction atlas for readers interested in worldbuilding, maps, and ethical questions within an imagined setting.</p>
+  <details><summary>What you can explore</summary><ul><li>Explore maps and connections across the fictional universe.</li><li>Follow suggested reading paths through the material.</li><li>Use the comparisons as prompts for creative work or discussion.</li></ul><p>Public fiction atlas</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/atlas-phoenix-piratas/" hreflang="pt-BR">Open Phoenix Atlas · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="garagem-2026" data-category="consumer-research-and-civic-initiatives">
+  <span class="tag">Consumer research and civic initiatives</span>
+  <h3>Garagem 2026</h3>
+  <p>A digital automotive magazine for comparing vehicles, including cars, SUVs, and pickup trucks.</p>
+  <details><summary>What you can explore</summary><ul><li>Review technical specifications, fuel use, and cost estimates.</li><li>Compare up to three models side by side.</li><li>Use the magazine to prepare questions for further research or a test drive.</li></ul><p>Public automotive magazine</p></details>
+  <ul class="links"><li><a href="https://bruxo-piloto-garagem-2026.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open Garage 2026 · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="paddock-de-opinioes" data-category="consumer-research-and-civic-initiatives">
+  <span class="tag">Consumer research and civic initiatives</span>
+  <h3>Paddock de Opiniões</h3>
+  <p>A Garagem 2026 survey that collects perspectives from vehicle owners, people who have test-driven a model, and enthusiasts.</p>
+  <details><summary>What you can explore</summary><ul><li>Choose a vehicle and identify how you know it.</li><li>Rate topics such as design, useful innovation, and value.</li><li>The project separates responses by the participant’s experience with the vehicle.</li></ul><p>Public survey</p></details>
+  <ul class="links"><li><a href="https://garagem-2026-votacao.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open the Opinion Paddock · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="auditoria-das-coisas-360x" data-category="consumer-research-and-civic-initiatives">
+  <span class="tag">Consumer research and civic initiatives</span>
+  <h3>Auditoria das Coisas 360X</h3>
+  <p>A consumer research project that organizes information by product and version, with dates, sources, and comparison criteria visible to readers.</p>
+  <details><summary>What you can explore</summary><ul><li>Look at what changed between versions of a product.</li><li>Follow the sources behind prices, specifications, and other claims.</li><li>Use the entries to identify questions to check before deciding.</li></ul><p>Public catalog concept</p></details>
+  <ul class="links"><li><a href="https://auditoria-das-coisas-360x.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open 360X Product Audit · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="indole-360" data-category="consumer-research-and-civic-initiatives">
+  <span class="tag">Consumer research and civic initiatives</span>
+  <h3>Índole 360°</h3>
+  <p>An experimental catalog for documenting what public sources say about companies, products, and where resources go.</p>
+  <details><summary>What you can explore</summary><ul><li>Explore the documents and references behind an entry.</li><li>See which details can be checked and which remain open.</li><li>Use the catalog as a starting point for your own research.</li></ul><p>Public research catalog</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/INDOLE-360/" hreflang="pt-BR">Open Índole 360° · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="plan-d-community" data-category="consumer-research-and-civic-initiatives">
+  <span class="tag">Consumer research and civic initiatives</span>
+  <h3>Plan D · Community</h3>
+  <p>A community initiative based in Sobral, Ceará, that brings together readings, ideas about mutual care, and paths to local support organizations.</p>
+  <details><summary>What you can explore</summary><ul><li>Explore ideas for responding to needs in the community.</li><li>Find channels for learning about support initiatives.</li><li>Contact the relevant organization to learn how it operates.</li></ul><p>Public community proposal</p></details>
+  <ul class="links"><li><a href="https://plano-d-comunidade.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open Plan D · Community · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="360x-brazil-community" data-category="consumer-research-and-civic-initiatives">
+  <span class="tag">Consumer research and civic initiatives</span>
+  <h3>360X Brazil · Community</h3>
+  <p>A civic project starting in Sobral that brings people, knowledge, and ideas for addressing local problems into the same space.</p>
+  <details><summary>What you can explore</summary><ul><li>Explore community ideas and local questions.</li><li>Consider how proposals might work in different neighborhoods and settings.</li><li>Use the project as a starting point for constructive discussion.</li></ul><p>Public civic project</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/NEXUS-BRASIL/" hreflang="pt-BR">Open 360X Brazil · Community · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="360x-brazil-proposals" data-category="consumer-research-and-civic-initiatives">
+  <span class="tag">Consumer research and civic initiatives</span>
+  <h3>360X Brazil · Proposals</h3>
+  <p>A collection of civic proposals, evidence, and indicators for people interested in public policy and community problem-solving.</p>
+  <details><summary>What you can explore</summary><ul><li>Read the proposals and the evidence cited alongside them.</li><li>Examine the assumptions and indicators that would inform an evaluation.</li><li>Bring questions about feasibility and trade-offs to the discussion.</li></ul><p>Public proposal collection</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/NEXUS-COSMOS-SITE/" hreflang="pt-BR">Open 360X Brazil · Proposals · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="smd-4" data-category="consumer-research-and-civic-initiatives">
+  <span class="tag">Consumer research and civic initiatives</span>
+  <h3>SMD-4</h3>
+  <p>An author-led proposal exploring economic mobility, human dignity, and limits on concentrated power. The public edition includes a book, explanatory panels, and a simulator.</p>
+  <details><summary>What you can explore</summary><ul><li>Read the model’s assumptions and the questions they raise.</li><li>Explore the simulator’s illustrative scenarios.</li><li>Examine the proposed safeguards and where further review is needed.</li></ul><p>Public proposal in development</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/smd4/" hreflang="pt-BR">Open SMD-4 · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="inescapable-paradoxes" data-category="consumer-research-and-civic-initiatives">
+  <span class="tag">Consumer research and civic initiatives</span>
+  <h3>Inescapable Paradoxes</h3>
+  <p>An interactive essay about trade-offs involving health, resources, defense, and technology.</p>
+  <details><summary>What you can explore</summary><ul><li>Read the assumptions behind each comparison.</li><li>Change a scenario to see how the result responds.</li><li>Use the output to examine the model’s limits and questions for further study.</li></ul><p>Public interactive essay</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/PARADOXOS-INEXORAVEIS/" hreflang="pt-BR">Open Inexorable Paradoxes · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="christian-bible-for-warriors-of-faith" data-category="faith-ethics-and-transparency">
+  <span class="tag">Faith, ethics and transparency</span>
+  <h3>Christian Bible for Warriors of Faith</h3>
+  <p>A collection of 33 Christian readings about courage, forgiveness, integrity, and care for others.</p>
+  <details><summary>What you can explore</summary><ul><li>Choose a reading or work through one of the suggested sequences.</li><li>Use the questions to reflect individually or with a group.</li><li>Consider a practical action connected to the reading.</li></ul><p>Public devotional collection</p></details>
+  <ul class="links"><li><a href="https://biblia-crista-guerreiros-de-fe.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open Christian Bible Readings · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="three-minute-bible-radar" data-category="faith-ethics-and-transparency">
+  <span class="tag">Faith, ethics and transparency</span>
+  <h3>Three-Minute Bible Radar</h3>
+  <p>A collection of short readings for a pause to reflect on justice, forgiveness, and responsibility.</p>
+  <details><summary>What you can explore</summary><ul><li>Choose a short passage and reflect on its theme.</li><li>Use the prompts for personal reading or group discussion.</li><li>Consider one small action to take into the rest of your day.</li></ul><p>Public devotional resource</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/radar-biblico-3min/" hreflang="pt-BR">Open Three-Minute Bible Radar · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="compass-of-honor" data-category="faith-ethics-and-transparency">
+  <span class="tag">Faith, ethics and transparency</span>
+  <h3>Compass of Honor</h3>
+  <p>A decision reflection guide grounded in themes of courage, faith, responsibility, and care for the people affected by a choice.</p>
+  <details><summary>What you can explore</summary><ul><li>Write down what you know about the decision.</li><li>Consider who may be affected and which responsibilities matter.</li><li>Identify one practical next step using the interactive guide.</li></ul><p>Public reflection guide</p></details>
+  <ul class="links"><li><a href="https://bussola-da-honra.aldenirmed.chatgpt.site/" hreflang="pt-BR">Open Compass of Honor · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="intuition-a-decision-guide" data-category="faith-ethics-and-transparency">
+  <span class="tag">Faith, ethics and transparency</span>
+  <h3>Intuition · A Decision Guide</h3>
+  <p>An author-led guide for examining difficult decisions and reflecting on what an initial impression can tell you.</p>
+  <details><summary>What you can explore</summary><ul><li>Separate impressions from facts you can verify.</li><li>Consider the values and consequences involved.</li><li>Use the exercises to clarify what you still need to know.</li></ul><p>Public reflection guide</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/INTUICAO-DECISIONAL/" hreflang="pt-BR">Open Intuition · A Decision Guide · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="transparency-360x-churches" data-category="faith-ethics-and-transparency">
+  <span class="tag">Faith, ethics and transparency</span>
+  <h3>Transparency 360X · Churches</h3>
+  <p>A research hub on financial resources, accountability, and social impact in religious institutions.</p>
+  <details><summary>What you can explore</summary><ul><li>Follow the sources and criteria behind the published entries.</li><li>Consider dates, definitions, and differences between institutions.</li><li>Explore related studies and comparisons from the central directory.</li></ul><p>Public documentary research</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/" hreflang="pt-BR">Open Transparency 360X · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="evangelical-transparency-review-brazil-360" data-category="faith-ethics-and-transparency">
+  <span class="tag">Faith, ethics and transparency</span>
+  <h3>Evangelical Transparency Review · Brazil 360</h3>
+  <p>A Brazilian documentary dashboard about accountability, public records, and financial transparency.</p>
+  <details><summary>What you can explore</summary><ul><li>See the source and reported procedural status for each case.</li><li>Read the context before drawing conclusions from an entry.</li><li>Use the source documents to examine what is established and what remains open.</li></ul><p>Public documentary dashboard</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/AUDITORIA-E-TRANSPAR-NCIA-DE-IGREJAS-CRISTAS-AO-LONGO-DAS-ERAS-/auditoria-evangelica-360/" hreflang="pt-BR">Open Evangelical Church Audit · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="institutional-transparency-dossier-latter-day-saints" data-category="faith-ethics-and-transparency">
+  <span class="tag">Faith, ethics and transparency</span>
+  <h3>Institutional Transparency Dossier · Latter-day Saints</h3>
+  <p>A dossier on assets, investments, and financial disclosure concerning The Church of Jesus Christ of Latter-day Saints.</p>
+  <details><summary>What you can explore</summary><ul><li>Check the dates and sources behind the financial figures.</li><li>Review what the estimates cover and where their scope differs.</li><li>Follow the cited documents for further examination.</li></ul><p>Public documentary dossier</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/dossie-igreja-mormon.html" hreflang="pt-BR">Open the dossier · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="interfaith-comparison" data-category="faith-ethics-and-transparency">
+  <span class="tag">Faith, ethics and transparency</span>
+  <h3>Interfaith Comparison</h3>
+  <p>A dashboard for examining public information about assets and institutional transparency across religious organizations.</p>
+  <details><summary>What you can explore</summary><ul><li>Compare how different sources define what they measure.</li><li>Check whether dates and institutional scope align before comparing figures.</li><li>Use the methodological notes to identify limitations in the available data.</li></ul><p>Public comparative dashboard</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso.html" hreflang="pt-BR">Open Interfaith Comparison · Portuguese original</a></li></ul>
+</article>
+<article class="card" id="wealth-and-life" data-category="faith-ethics-and-transparency">
+  <span class="tag">Faith, ethics and transparency</span>
+  <h3>Wealth and Life</h3>
+  <p>A dashboard exploring what illustrative allocations of resources could represent for social initiatives.</p>
+  <details><summary>What you can explore</summary><ul><li>Review the dates and assumptions behind the financial inputs.</li><li>Explore illustrative allocations of 1%, 3%, and 5%.</li><li>Use the scenarios to discuss what additional evidence would be needed to assess real-world impact.</li></ul><p>Public scenario dashboard</p></details>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/riqueza-e-vida.html" hreflang="pt-BR">Open Wealth and Life · Portuguese original</a></li></ul>
+</article>
+    </div>
+  </section>
+
+  <section id="project-map" aria-labelledby="map-heading">
+    <p class="kicker">02 / Editorial map</p>
+    <h2 id="map-heading">See how projects connect</h2>
+    <p class="section-intro">The map groups public destinations by subject. Each connection is a suggested reading path between projects with a shared topic.</p>
+    <div class="map-grid"><div class="cluster"><h3>Medicine and learning</h3>
+<p>Knowledge for care and education.</p><ul class="links"><li><a href="#project-360x">AldenirMed89</a></li><li><a href="#nexus-care-icu-handover-360x">NEXUS CARE · ICU handoff</a></li><li><a href="#respiracrit">RespiraCrit</a></li><li><a href="#respirasense-icu">RespiraSense ICU</a></li><li><a href="#intensivahub">IntensivaHub</a></li><li><a href="#icu-audit-360x">ICU Cost Audit</a></li><li><a href="https://aldenirfilho.github.io/antigravity-consultas/" hreflang="pt-BR">Antigravity · Portuguese original</a></li><li><a href="#360x-agent-and-skill-catalog">Agents and Skills</a></li></ul></div>
+<div class="cluster"><h3>Science and nature</h3>
+<p>Explore life and the natural world.</p><ul class="links"><li><a href="#atlas-vivo-360x-plants">Atlas Vivo · Plants</a></li><li><a href="#animalia-360x">Animalia 360X</a></li><li><a href="#fauna-360">Fauna 360°</a></li><li><a href="#geo-360x">Geo 360X</a></li><li><a href="#ram-mirrors-and-the-brain">RAM, Mirrors, and the Brain</a></li></ul></div>
+<div class="cluster"><h3>Life and culture</h3>
+<p>Time, imagination, and meaning.</p><ul class="links"><li><a href="#tempo-de-viver-360x">Tempo de Viver</a></li><li><a href="#between-two-skies">Between Two Skies</a></li><li><a href="#christian-bible-for-warriors-of-faith">Guerreiros de Fé</a></li><li><a href="#dragon-ball-eternal-legacy">Dragon Ball</a></li><li><a href="#atlas-phoenix-and-the-pirates-of-infinity">Atlas Phoenix</a></li><li><a href="#intuition-a-decision-guide">Intuição</a></li><li><a href="#life-archive-360">Life Archive 360</a></li><li><a href="#dragon-ball-eternal-legacy">Dragon Ball · GitHub</a></li></ul></div>
+<div class="cluster"><h3>Civic life and consumer choices</h3>
+<p>Community, choices, and transparency.</p><ul class="links"><li><a href="#plan-d-community">Plano D</a></li><li><a href="#auditoria-das-coisas-360x">Auditoria das Coisas</a></li><li><a href="#garagem-2026">Garagem · Magazine</a></li><li><a href="#paddock-de-opinioes">Garagem · Reviews</a></li><li><a href="#360x-brazil-community">360X Brazil · Community</a></li><li><a href="#360x-brazil-proposals">360X Brazil · Proposals</a></li><li><a href="#indole-360">Índole 360°</a></li><li><a href="#transparency-360x-churches">Transparency · Churches</a></li><li><a href="#evangelical-transparency-review-brazil-360">Auditoria Evangélica 360</a></li><li><a href="#institutional-transparency-dossier-latter-day-saints">Church of Jesus Christ of Latter-day Saints · Dossier</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso/" hreflang="pt-BR">Interfaith comparison · Portuguese original</a></li><li><a href="#smd-4">SMD-4</a></li><li><a href="#wealth-and-life">Riqueza e Vida</a></li><li><a href="#inescapable-paradoxes">Paradoxos Inexoráveis</a></li></ul></div></div>
+    <details class="map-box">
+      <summary>Explore all 42 connections</summary>
+      <ul class="routes"><li><a href="#project-360x">AldenirMed89</a> <span aria-hidden="true">↔</span> <a href="#intensivahub">IntensivaHub</a><small>Medical education and intensive care</small></li>
+<li><a href="#project-360x">AldenirMed89</a> <span aria-hidden="true">↔</span> <a href="#nexus-care-icu-handover-360x">NEXUS CARE · ICU handoff</a><small>Knowledge and organization of care</small></li>
+<li><a href="#project-360x">AldenirMed89</a> <span aria-hidden="true">↔</span> <a href="#respiracrit">RespiraCrit</a><small>Learning about intensive care and ventilation</small></li>
+<li><a href="#respiracrit">RespiraCrit</a> <span aria-hidden="true">↔</span> <a href="#respirasense-icu">RespiraSense ICU</a><small>Learning about respiratory support</small></li>
+<li><a href="#atlas-vivo-360x-plants">Atlas Vivo · Plants</a> <span aria-hidden="true">↔</span> <a href="#animalia-360x">Animalia 360X</a><small>Biodiversity and conservation</small></li>
+<li><a href="#atlas-vivo-360x-plants">Atlas Vivo · Plants</a> <span aria-hidden="true">↔</span> <a href="#geo-360x">Geo 360X</a><small>Soil, ecology, and the natural world</small></li>
+<li><a href="#animalia-360x">Animalia 360X</a> <span aria-hidden="true">↔</span> <a href="#plan-d-community">Plano D</a><small>Conservation and support for causes</small></li>
+<li><a href="#tempo-de-viver-360x">Tempo de Viver</a> <span aria-hidden="true">↔</span> <a href="#between-two-skies">Between Two Skies</a><small>Experiences, contemplation, and how we spend time</small></li>
+<li><a href="#tempo-de-viver-360x">Tempo de Viver</a> <span aria-hidden="true">↔</span> <a href="#intuition-a-decision-guide">Intuição</a><small>Life choices and priorities</small></li>
+<li><a href="#tempo-de-viver-360x">Tempo de Viver</a> <span aria-hidden="true">↔</span> <a href="#life-archive-360">Life Archive 360</a><small>Memory, continuity, and organization</small></li>
+<li><a href="#christian-bible-for-warriors-of-faith">Guerreiros de Fé</a> <span aria-hidden="true">↔</span> <a href="#intuition-a-decision-guide">Intuição</a><small>Ethical reflection and discernment</small></li>
+<li><a href="#christian-bible-for-warriors-of-faith">Guerreiros de Fé</a> <span aria-hidden="true">↔</span> <a href="#transparency-360x-churches">Transparency · Churches</a><small>Faith and accountability</small></li>
+<li><a href="#dragon-ball-eternal-legacy">Dragon Ball</a> <span aria-hidden="true">↔</span> <a href="#atlas-phoenix-and-the-pirates-of-infinity">Atlas Phoenix</a><small>Fiction, culture, and learning</small></li>
+<li><a href="#atlas-phoenix-and-the-pirates-of-infinity">Atlas Phoenix</a> <span aria-hidden="true">↔</span> <a href="#intuition-a-decision-guide">Intuição</a><small>Ethics and reflection on choices</small></li>
+<li><a href="#plan-d-community">Plano D</a> <span aria-hidden="true">↔</span> <a href="#360x-brazil-community">360X Brazil · Community</a><small>Civic participation and community care</small></li>
+<li><a href="#360x-brazil-community">360X Brazil · Community</a> <span aria-hidden="true">↔</span> <a href="#360x-brazil-proposals">360X Brazil · Proposals</a><small>Community and civic proposals</small></li>
+<li><a href="#garagem-2026">Garagem · Magazine</a> <span aria-hidden="true">↔</span> <a href="#paddock-de-opinioes">Garagem · Reviews</a><small>Car specifications and consumer opinions</small></li>
+<li><a href="#auditoria-das-coisas-360x">Auditoria das Coisas</a> <span aria-hidden="true">↔</span> <a href="#garagem-2026">Garagem · Magazine</a><small>Research, comparison, and consumer choices</small></li>
+<li><a href="#auditoria-das-coisas-360x">Auditoria das Coisas</a> <span aria-hidden="true">↔</span> <a href="#indole-360">Índole 360°</a><small>Products, companies, and documentation</small></li>
+<li><a href="#indole-360">Índole 360°</a> <span aria-hidden="true">↔</span> <a href="#transparency-360x-churches">Transparency · Churches</a><small>Sources and how resources are used</small></li>
+<li><a href="#fauna-360">Fauna 360°</a> <span aria-hidden="true">↔</span> <a href="#animalia-360x">Animalia 360X</a><small>From zoology to endangered species conservation</small></li>
+<li><a href="#fauna-360">Fauna 360°</a> <span aria-hidden="true">↔</span> <a href="#atlas-vivo-360x-plants">Atlas Vivo · Plants</a><small>Habitats, biodiversity, and protecting wildlife</small></li>
+<li><a href="#fauna-360">Fauna 360°</a> <span aria-hidden="true">↔</span> <a href="#plan-d-community">Plano D</a><small>Solidarity and responsible ways to help</small></li>
+<li><a href="#fauna-360">Fauna 360°</a> <span aria-hidden="true">↔</span> <a href="#project-360x">AldenirMed89</a><small>AldenirMed89 social and environmental module</small></li>
+<li><a href="#transparency-360x-churches">Transparency · Churches</a> <span aria-hidden="true">↔</span> <a href="#evangelical-transparency-review-brazil-360">Auditoria Evangélica 360</a><small>Documentary research and an interactive dashboard</small></li>
+<li><a href="#transparency-360x-churches">Transparency · Churches</a> <span aria-hidden="true">↔</span> <a href="#institutional-transparency-dossier-latter-day-saints">Church of Jesus Christ of Latter-day Saints · Dossier</a><small>Institutional research and documented assets</small></li>
+<li><a href="#institutional-transparency-dossier-latter-day-saints">Church of Jesus Christ of Latter-day Saints · Dossier</a> <span aria-hidden="true">↔</span> <a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso/" hreflang="pt-BR">Interfaith comparison · Portuguese original</a><small>Asset definitions and comparisons across institutions</small></li>
+<li><a href="#institutional-transparency-dossier-latter-day-saints">Church of Jesus Christ of Latter-day Saints · Dossier</a> <span aria-hidden="true">↔</span> <a href="#wealth-and-life">Riqueza e Vida</a><small>From the dossier to scenarios for social benefit</small></li>
+<li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/comparativo-interreligioso/" hreflang="pt-BR">Interfaith comparison · Portuguese original</a> <span aria-hidden="true">↔</span> <a href="#wealth-and-life">Riqueza e Vida</a><small>Comparison methods, dates, and resource limits</small></li>
+<li><a href="#wealth-and-life">Riqueza e Vida</a> <span aria-hidden="true">↔</span> <a href="#fauna-360">Fauna 360°</a><small>Financial scenarios and conservation options</small></li>
+<li><a href="#icu-audit-360x">ICU Cost Audit</a> <span aria-hidden="true">↔</span> <a href="#project-360x">AldenirMed89</a><small>Cost dashboard for the medical education portal</small></li>
+<li><a href="#icu-audit-360x">ICU Cost Audit</a> <span aria-hidden="true">↔</span> <a href="#inescapable-paradoxes">Paradoxos Inexoráveis</a><small>Care costs and illustrative allocation scenarios</small></li>
+<li><a href="#smd-4">SMD-4</a> <span aria-hidden="true">↔</span> <a href="#360x-brazil-proposals">360X Brazil · Proposals</a><small>Proposals for organizing society and civic debate</small></li>
+<li><a href="#smd-4">SMD-4</a> <span aria-hidden="true">↔</span> <a href="#inescapable-paradoxes">Paradoxos Inexoráveis</a><small>Original models of society and resource allocation</small></li>
+<li><a href="#smd-4">SMD-4</a> <span aria-hidden="true">↔</span> <a href="#indole-360">Índole 360°</a><small>Governance, criteria, and institutional responsibility</small></li>
+<li><a href="#inescapable-paradoxes">Paradoxos Inexoráveis</a> <span aria-hidden="true">↔</span> <a href="#wealth-and-life">Riqueza e Vida</a><small>Financial resources, methodological limits, and social benefit</small></li>
+<li><a href="https://aldenirfilho.github.io/antigravity-consultas/" hreflang="pt-BR">Antigravity · Portuguese original</a> <span aria-hidden="true">↔</span> <a href="#project-360x">AldenirMed89</a><small>Related collections with separate repositories</small></li>
+<li><a href="#dragon-ball-eternal-legacy">Dragon Ball · GitHub</a> <span aria-hidden="true">↔</span> <a href="#dragon-ball-eternal-legacy">Dragon Ball</a><small>Two editions of the independent fan project</small></li>
+<li><a href="#project-360x">AldenirMed89</a> <span aria-hidden="true">↔</span> <a href="#tempo-de-viver-360x">Tempo de Viver</a><small>Learning and time for living</small></li>
+<li><a href="#tempo-de-viver-360x">Tempo de Viver</a> <span aria-hidden="true">↔</span> <a href="#plan-d-community">Plano D</a><small>Quality of life and community care</small></li>
+<li><a href="#360x-agent-and-skill-catalog">Agents and Skills</a> <span aria-hidden="true">↔</span> <a href="#project-360x">AldenirMed89</a><small>Original methods, education, and knowledge organization</small></li>
+<li><a href="#360x-agent-and-skill-catalog">Agents and Skills</a> <span aria-hidden="true">↔</span> <a href="https://aldenirfilho.github.io/antigravity-consultas/" hreflang="pt-BR">Antigravity · Portuguese original</a><small>Publishing skills and collection integration</small></li></ul>
+    </details>
+    <a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/mapa.html" hreflang="pt-BR">Open the original visual map in Portuguese</a>
+  </section>
+
+  <section id="portfolio" aria-labelledby="portfolio-heading">
+    <p class="kicker">03 / Canonical catalog</p>
+    <h2 id="portfolio-heading">Initiatives in the ecosystem</h2>
+    <p class="section-intro">These are the public records in the Project 360X catalog. Some describe initiatives that are still being planned, prototyped, or reviewed. Where available, links identify the catalog record or a related public resource.</p>
+    <form class="controls" id="portfolio-filter" role="search" aria-label="Find an initiative" hidden>
+      <label>Search initiatives <input type="search" name="query" placeholder="Try civic participation or learning…"></label>
+      <label>Area <select name="category"><option value="">All areas</option><option value="bite-sized-learning">Bite-sized learning</option><option value="medicine-and-critical-care">Medicine and critical care</option><option value="ai-agents-and-productivity">AI, agents, and productivity</option><option value="neurodiversity-and-accessible-learning">Neurodiversity and accessible learning</option><option value="human-centered-technology">Human-centered technology</option><option value="community-support-and-social-impact">Community support and social impact</option><option value="biodiversity-and-the-environment">Biodiversity and the environment</option><option value="civic-life-and-public-policy">Civic life and public policy</option><option value="faith-ethics-and-transparency">Faith, ethics, and transparency</option><option value="reaverso-stories-and-entertainment">Reaverso, stories, and entertainment</option></select></label>
+      <button type="reset">Clear filters</button>
+    </form>
+    <p class="result" id="portfolio-count" aria-live="polite"></p>
+    <div class="grid" id="portfolio-results"><article class="card" id="initiative-p001-projeto-360xa" data-category="bite-sized-learning">
+  <span class="tag">Bite-sized learning</span>
+  <span class="tag">Available</span>
+  <h3>Project 360X · Almanac and master map</h3>
+  <p>A living index of the portfolio. See how initiatives are connected, what stage each has reached, and what its next milestone could be.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/index.html" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p001-projeto-360xa" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p002-turbo-temi" data-category="bite-sized-learning">
+  <span class="tag">Bite-sized learning</span>
+  <span class="tag">Prototype</span>
+  <h3>Turbo TEMI · Intensive-care exam preparation</h3>
+  <p>A preparation pathway for Brazil’s intensive care specialty examination, built around short rounds of study, practice, review, and demonstrated mastery.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/desafios/index.html" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p002-turbo-temi" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p003-banco-questoes-temi" data-category="bite-sized-learning">
+  <span class="tag">Bite-sized learning</span>
+  <span class="tag">In development</span>
+  <h3>TEMI Question Bank</h3>
+  <p>Turns intensive-care topics into practice questions with trackable sources, competencies, and difficulty levels.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/questoes/index.html" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p003-banco-questoes-temi" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p004-educacao-360" data-category="bite-sized-learning">
+  <span class="tag">Bite-sized learning</span>
+  <span class="tag">In development</span>
+  <h3>Education 360 · Bite-sized learning method</h3>
+  <p>A framework for breaking complex subjects into small, understandable steps that learners can put into practice.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/22_Microparticulas_Ativas_ACRA/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p004-educacao-360" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p005-cursos-ia-aplicada" data-category="bite-sized-learning">
+  <span class="tag">Bite-sized learning</span>
+  <span class="tag">In development</span>
+  <h3>Applied AI courses</h3>
+  <p>A planned learning track on responsible uses of artificial intelligence for study, content creation, organization, and professional projects.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/ram-espelho-cerebro/" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p005-cursos-ia-aplicada" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p006-cientifico-atletico" data-category="bite-sized-learning">
+  <span class="tag">Bite-sized learning</span>
+  <span class="tag">In development</span>
+  <h3>Science, athletics, and the 360 Olympics</h3>
+  <p>An initiative to combine science, physical activity, cooperation, and imagination in educational challenges that build in difficulty.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p006-cientifico-atletico" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p007-portal-aldenirmed89" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">Available</span>
+  <h3>AldenirMed89 · Medical education portal</h3>
+  <p>The entry point for the ecosystem’s critical care teaching, medical education, and educational tools.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/index.html" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p007-portal-aldenirmed89" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p008-intensivahub" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">In development</span>
+  <h3>IntensivaHub</h3>
+  <p>A project to connect critical care learning resources, classes, tools, and study maps in a single structure.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/intensivahub/" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p008-intensivahub" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p009-vm-vg70-scout" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">Under review</span>
+  <h3>Mechanical ventilation · VG70 and Scout</h3>
+  <p>An educational initiative covering the principles of mechanical ventilation and familiarization with the associated equipment.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/01_Modulos_Clinicos/Ventilacao_Mecanica/respiracrit.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p009-vm-vg70-scout" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p010-pocus-ecomurgen" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">Under review</span>
+  <h3>POCUS, ECOMURGEN, and an introduction to shock</h3>
+  <p>A concise teaching pathway for point-of-care ultrasound and the first steps in reasoning through shock.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/09_POCUS_Hub/index.html" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p010-pocus-ecomurgen" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p011-neuroemergencia-avc-tce" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">Under review</span>
+  <h3>Neurological emergencies · Acute stroke, thrombus, and brain injury</h3>
+  <p>Organizes educational resources on time-sensitive topics, including stroke, anticoagulation, ventricular thrombus, and traumatic brain injury.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/01_Modulos_Clinicos/AVC_Turbo_TEMI/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p011-neuroemergencia-avc-tce" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p012-calculadoras-clinicas" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">Under review</span>
+  <h3>AldenirMed89 Clinical Calculators</h3>
+  <p>Collects clinical calculations with the underlying formulas, units, sources, limitations, and examples that can be checked.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/03_Calculadoras_UTI/index.html" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p012-calculadoras-clinicas" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p013-card-feed-medico" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">In development</span>
+  <h3>Card Feed Médico · Medical learning cards</h3>
+  <p>Builds short, progressive clinical reviews in a card format, with sources that readers can follow.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/05_Midia_E_Feed/index.html" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p013-card-feed-medico" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p014-biblioteca-plantao-uti" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">Under review</span>
+  <h3>ICU handoff and template library</h3>
+  <p>Develops training templates for communication, organizing work by bed, and maintaining continuity of care across ICU shifts.</p>
+  <ul class="links"><li><a href="https://passagem-plantao-uti.vercel.app/" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p014-biblioteca-plantao-uti" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p015-respiracrit" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">In development</span>
+  <h3>RespiraCrit</h3>
+  <p>Brings together educational material and tools for learning about critical respiratory care.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/RESPIRACRIT/" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p015-respiracrit" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p016-respirasense-icu" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">In development</span>
+  <h3>RespiraSense ICU</h3>
+  <p>Explores ways to present respiratory trends with enough context to make them understandable for learners.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/respirasense-icu/" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p016-respirasense-icu" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p017-acra" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">Prototype</span>
+  <h3>ACRA · Reviewable clinical learning resources</h3>
+  <p>Structures educational clinical material around sources, scope, and dates so reviewers can trace changes and document their decisions.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/22_Microparticulas_Ativas_ACRA/index.html" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p017-acra" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p018-diagnostico-diferencial-critico" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">Under review</span>
+  <h3>Differential diagnosis in critical care</h3>
+  <p>Teaches learners to organize and weigh competing explanations in high-acuity cases while preserving the role of clinical judgment.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/01_UpDown_Hub/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p018-diagnostico-diferencial-critico" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p019-scalts-monitor-temi" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">In development</span>
+  <h3>SCALTS · TEMI mastery tracker</h3>
+  <p>A proposed way to record what a learner has mastered in intensive care, identify knowledge gaps, and plan what to revisit.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p019-scalts-monitor-temi" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p020-formacao-clinica-e-protocolos" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">In development</span>
+  <h3>Clinical training, residency, and protocol handbook</h3>
+  <p>Develops educational material from research and professional training, with review and removal of identifying details.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/04_Ebooks_Intensiva_Clinica/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p020-formacao-clinica-e-protocolos" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p021-comunicacao-clinica-preventiva" data-category="medicine-and-critical-care">
+  <span class="tag">Medicine and critical care</span>
+  <span class="tag">In development</span>
+  <h3>Sem Pressão and Pontual · Preventive health communication</h3>
+  <p>Aims to communicate selected health topics in accessible language, including prevention and how people follow a care plan.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p021-comunicacao-clinica-preventiva" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p022-aldenir-nexus-ecosystem" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">Prototype</span>
+  <h3>Aldenir 360X Ecosystem</h3>
+  <p>Connects how projects are captured, organized, resumed, developed, and published across the portfolio.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/mapa.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p022-aldenir-nexus-ecosystem" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p023-motor-conversao-conteudo" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">Prototype</span>
+  <h3>Transcription, accessible reading, and export tools</h3>
+  <p>Explores ways to turn authorized material into transcripts, accessible reading formats, and exportable documents while preserving the source record.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/08_Transcricoes/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p023-motor-conversao-conteudo" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p024-apple-notes-bridge" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">In development</span>
+  <h3>Apple Notes Studio Bridge</h3>
+  <p>A proposed, permission-controlled connection between personal notes and the 360X organization workflow.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p024-apple-notes-bridge" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p025-focusai-workspace" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">In development</span>
+  <h3>FocusAI Workspace</h3>
+  <p>A proposed interface that keeps tasks, relevant context, and the next action together to make it easier to focus.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p025-focusai-workspace" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p026-central-comandos" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">Prototype</span>
+  <h3>Command and shortcut hub</h3>
+  <p>Uses documented commands, shortcuts, and focus modes to reduce repetitive steps.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/docs_usuario/ACESSO_DOCK_MAC/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p026-central-comandos" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p027-arquivos-e-conhecimento" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">In development</span>
+  <h3>Files and knowledge workspace</h3>
+  <p>Aims to make files and notes searchable while keeping the publication of private material under explicit control.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/02_Biblioteca_IA_Engine/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p027-arquivos-e-conhecimento" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p028-nexus-cosmos-mapa-vivo" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">In development</span>
+  <h3>360X COSMOS · Living knowledge map</h3>
+  <p>Maps relationships between projects, sources, public figures, concepts, and deliverables while keeping track of where each connection came from.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/mapa.html" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p028-nexus-cosmos-mapa-vivo" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p029-radar-tecnologia" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">In development</span>
+  <h3>Technology and AI Release Radar</h3>
+  <p>Tracks changes in AI tools and explains what they could mean for the ecosystem’s workflows.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p029-radar-tecnologia" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p030-central-agentes" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">Prototype</span>
+  <h3>Agent Coordination Center</h3>
+  <p>A prototype for coordinating specialist agents and plugins with explicit responsibilities, inputs, and outputs.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p030-central-agentes" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p031-catalogo-sync" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">Prototype</span>
+  <h3>Catalog and cross-platform synchronization</h3>
+  <p>Maintains a source-of-truth project register and coordinates versions with safeguards against duplicate, overwritten, or accidentally published material.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p031-catalogo-sync" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p032-checklist-cumulativo" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">Prototype</span>
+  <h3>Cumulative daily checklist</h3>
+  <p>Uses short daily checks to track progress, maintain continuity, and catch problems early.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/docs_usuario/ROTINA_DIARIA_30_MIN/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p032-checklist-cumulativo" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p033-capitalizar" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">In development</span>
+  <h3>CAPITALIZAR · Ethical offer development</h3>
+  <p>Helps select mature assets and shape them into small, useful offers that can be tested without overstating demand or results.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p033-capitalizar" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p034-youtube-proxy" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">In development</span>
+  <h3>YouTube 360X and bilingual PROXY</h3>
+  <p>A proposed path from priority projects to clear videos, recurring series, and links to related content, communities, and offers.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p034-youtube-proxy" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-command-notch-360x" data-category="ai-agents-and-productivity">
+  <span class="tag">AI, agents, and productivity</span>
+  <span class="tag">Prototype</span>
+  <h3>Command Notch · 360X</h3>
+  <p>A prototype that brings focus tools, notes, files, shortcuts, voice, and music into a compact interface at the top of a Mac display.</p>
+  <ul class="links"><li><a href="https://command-notch-360x.aldenirmed.chatgpt.site" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#command-notch-360x" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p035-tdah-360" data-category="neurodiversity-and-accessible-learning">
+  <span class="tag">Neurodiversity and accessible learning</span>
+  <span class="tag">Prototype</span>
+  <h3>ADHD 360 · Study, calendar, and guiding principles</h3>
+  <p>Develops short cycles for planning, studying, and getting back on track with input from people who have different attention profiles. The project makes no treatment or clinical efficacy claims.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/neurodiversidade-tdah/#tdah-360" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p035-tdah-360" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p036-foco-claro" data-category="neurodiversity-and-accessible-learning">
+  <span class="tag">Neurodiversity and accessible learning</span>
+  <span class="tag">Prototype</span>
+  <h3>FOCO CLARO · Editorial accessibility</h3>
+  <p>Examines clarity, navigation, information hierarchy, and mental effort across products and content to identify practical accessibility improvements.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/neurodiversidade-tdah/#foco-claro" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p036-foco-claro" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p037-diversamente" data-category="neurodiversity-and-accessible-learning">
+  <span class="tag">Neurodiversity and accessible learning</span>
+  <span class="tag">In development</span>
+  <h3>DiversaMente / Perspicácia</h3>
+  <p>Brings education, tools, and community resources together to support autonomy and participation for neurodivergent people.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/neurodiversidade-tdah/#diversamente" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p037-diversamente" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p038-retomada-mnemosyne" data-category="neurodiversity-and-accessible-learning">
+  <span class="tag">Neurodiversity and accessible learning</span>
+  <span class="tag">Prototype</span>
+  <h3>Retomada and Mnemosyne · Project recovery</h3>
+  <p>Helps someone find a previous project, recover its current state, and identify the next action without having to rebuild its history.</p>
+  <ul class="links"><li><a href="https://aldenir-life-archive-360-demo.aldenirmed.chatgpt.site/" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p038-retomada-mnemosyne" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p043-gamer-x" data-category="neurodiversity-and-accessible-learning">
+  <span class="tag">Neurodiversity and accessible learning</span>
+  <span class="tag">In development</span>
+  <h3>Gamer X</h3>
+  <p>Explores how games, making things, and participation in a community can support learning, belonging, and skill development.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p043-gamer-x" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p039-humanitas-restauracao" data-category="human-centered-technology">
+  <span class="tag">Human-centered technology</span>
+  <span class="tag">In development</span>
+  <h3>Humanitas · Restoration and Tempo de Viver</h3>
+  <p>Develops practices and stories about restoring dignity, connection, presence, and meaning in high-pressure settings.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/INVESTIMENTO-DE-TEMPO-PARA-CURTIR/" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p039-humanitas-restauracao" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p040-humanizacao-tecnologica" data-category="human-centered-technology">
+  <span class="tag">Human-centered technology</span>
+  <span class="tag">In development</span>
+  <h3>360 Human-Centered Technology</h3>
+  <p>Applies human-centered criteria to the ecosystem’s tools and processes in AI, healthcare, teaching, and service.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/19_Integridade_Editorial/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p040-humanizacao-tecnologica" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p041-selo-a-indole" data-category="human-centered-technology">
+  <span class="tag">Human-centered technology</span>
+  <span class="tag">In development</span>
+  <h3>Selo A · Índole 360 and EQUALIZAR</h3>
+  <p>Develops criteria people can check when assessing whether a practice is accessible, ethical, and respectful.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/INDOLE-360/" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p041-selo-a-indole" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p042-bolsa-ajuda-atracao" data-category="community-support-and-social-impact">
+  <span class="tag">Community support and social impact</span>
+  <span class="tag">In development</span>
+  <h3>Community Assistance and Pathways to Work</h3>
+  <p>Explores how transparent support could connect people to education, employment, productive activity, and greater independence.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/apps/bolsa-ajuda-fauna/#instituicoes" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p042-bolsa-ajuda-atracao" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p044-panda-x-fauna" data-category="biodiversity-and-the-environment">
+  <span class="tag">Biodiversity and the environment</span>
+  <span class="tag">Available</span>
+  <h3>Fauna 360° · Wildlife conservation</h3>
+  <p>Introduces endangered animals, their habitats, and the threats they face, with links to conservation organizations and ways to support their work.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/apps/bolsa-ajuda-fauna/" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p044-panda-x-fauna" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p045-preservacao-flora-app" data-category="biodiversity-and-the-environment">
+  <span class="tag">Biodiversity and the environment</span>
+  <span class="tag">In development</span>
+  <h3>Preservation 360 · Bromeliads, bryophytes, and habitat conservation</h3>
+  <p>Connects education, community participation, and efforts to preserve plant life and habitats, with a proposed environmental application.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/atlas-vivo-360x-pages/" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p045-preservacao-flora-app" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p046-nexus-civico" data-category="civic-life-and-public-policy">
+  <span class="tag">Civic life and public policy</span>
+  <span class="tag">In development</span>
+  <h3>360X Civic · Brazil 360 and Sobral</h3>
+  <p>Develops comparable public-policy documents that describe local problems and proposals, with sources, costs, and risks in view.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/NEXUS-BRASIL/" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p046-nexus-civico" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p047-radar-jornal-360" data-category="civic-life-and-public-policy">
+  <span class="tag">Civic life and public policy</span>
+  <span class="tag">In development</span>
+  <h3>Radar 360 and the Daily Journal</h3>
+  <p>Selects developments worth following and explains why they matter, with distinctions between news, analysis, hypotheses, and opinion.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/15_Radar_Cientifico/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p047-radar-jornal-360" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p048-integridade-politicas" data-category="civic-life-and-public-policy">
+  <span class="tag">Civic life and public policy</span>
+  <span class="tag">Under review</span>
+  <h3>Public integrity and proposals for society</h3>
+  <p>Explores ideas for a democratic, cosmopolitan society in which people and businesses can prosper, taking into account the conditions behind individual achievement and legal limits on the concentration of economic power.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/smd4/index.html" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p048-integridade-politicas" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p049-fe-etica-transparencia" data-category="faith-ethics-and-transparency">
+  <span class="tag">Faith, ethics, and transparency</span>
+  <span class="tag">In development</span>
+  <h3>Faith, comparative ethics, and religious transparency</h3>
+  <p>Distinguishes three areas of work: faith and comparative ethics study, documentary research on transparency in religious organizations, and an informational directory of professional support.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/auditoria-religiosa-360/index.html" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p049-fe-etica-transparencia" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p050-reaverso" data-category="reaverso-stories-and-entertainment">
+  <span class="tag">Reaverso, stories, and entertainment</span>
+  <span class="tag">In development</span>
+  <h3>Reaverso</h3>
+  <p>An original story universe that uses fantasy and human dilemmas as settings for exploration and learning.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p050-reaverso" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p051-dragon-ball-legado" data-category="reaverso-stories-and-entertainment">
+  <span class="tag">Reaverso, stories, and entertainment</span>
+  <span class="tag">In development</span>
+  <h3>Dragon Ball · Legado Eterno fan archive</h3>
+  <p>Preserves a noncommercial, unofficial creative archive made by fans of Dragon Ball.</p>
+  <ul class="links"><li><a href="https://dragonball-legado-eterno.aldenirmed.chatgpt.site/" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p051-dragon-ball-legado" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p052-atlas-phoenix" data-category="reaverso-stories-and-entertainment">
+  <span class="tag">Reaverso, stories, and entertainment</span>
+  <span class="tag">In development</span>
+  <h3>Atlas Phoenix, Pirates, and 360 Stories</h3>
+  <p>Brings adventure stories and an ongoing saga together in an original setting, with its own canon and starting points for new readers.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/atlas-phoenix-piratas/" hreflang="pt-BR">Linked public resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p052-atlas-phoenix" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p053-plantao-off-cultura" data-category="reaverso-stories-and-entertainment">
+  <span class="tag">Reaverso, stories, and entertainment</span>
+  <span class="tag">In development</span>
+  <h3>Plantão OFF · Culture and time off</h3>
+  <p>A planned space for rest, humor, and cultural discoveries, with an editorial scope separate from clinical material.</p>
+  <ul class="links"><li><a href="https://entre-dois-ceus-jeri-islandia.aldenirmed.chatgpt.site/" hreflang="pt-BR">Related resource · Portuguese</a></li><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p053-plantao-off-cultura" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article>
+<article class="card" id="initiative-p054-futebol-360" data-category="reaverso-stories-and-entertainment">
+  <span class="tag">Reaverso, stories, and entertainment</span>
+  <span class="tag">In development</span>
+  <h3>Football 360 and the World Football Dashboard</h3>
+  <p>An initiative to organize independent reporting, historical material, analysis, and visualizations about clubs and football around the world.</p>
+  <ul class="links"><li><a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/painel.html#p054-futebol-360" hreflang="pt-BR">Original catalog record · Portuguese</a></li></ul>
+</article></div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <strong>Team 360X</strong> · English edition.
+    <a href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/#top" hreflang="pt-BR">Original Project 360X site and authorship information</a>.
+  </div>
+</footer>
+<script>
+for (const name of ['directory', 'portfolio']) {
+  const form = document.getElementById(name + '-filter');
+  const counter = document.getElementById(name + '-count');
+  const cards = [...document.getElementById(name + '-results').children];
+  const update = () => {
+    const words = form.elements.query.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const category = form.elements.category.value;
+    let visible = 0;
+    for (const card of cards) {
+      const content = card.textContent.toLowerCase();
+      const match = (!category || category === card.dataset.category) && words.every(word => content.includes(word));
+      card.hidden = !match;
+      visible += Number(match);
+    }
+    counter.textContent = visible ? visible + ' of ' + cards.length + ' shown' : 'No matches. Try another search or clear the filters.';
+  };
+  form.addEventListener('input', update);
+  form.addEventListener('submit', event => event.preventDefault());
+  form.addEventListener('reset', () => setTimeout(update, 0));
+  form.hidden = false;
+  update();
+}
+window.addEventListener('hashchange', () => {
+  const card = document.getElementById(location.hash.slice(1));
+  if (card?.hidden) {
+    const form = document.getElementById(card.parentElement.id.replace('-results', '-filter'));
+    form.reset();
+    setTimeout(() => card.scrollIntoView(), 0);
+  }
+});
+</script>
+</body>
+</html>
