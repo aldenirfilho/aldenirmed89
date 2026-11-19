@@ -1,3 +1,17 @@
+# Logotipo AldenirMed 360X · Códice aeroespacial v2 (19/11/2026)
+
+Refinamento sutil da marca, em estilo Apple: placa de obsidiana com filete dourado, órbita fina de 360° com arco e nó dourados (o "X" do 360X), e a letra **A** aeroespacial cujo travessão é uma **cruz clínica** em ciano. Nome **AldenirMed** convertido em contorno (renderiza igual em qualquer aparelho) e selo **360X** em filete dourado.
+
+| Item | Valor |
+|---|---|
+| Paleta | Obsidiana `#0B1016` · Marfim `#EDE9E1` · Ouro de códice `#C9A962` · Ciano orbital `#8CCFDD` · Porcelana `#F5F5F7` · Grafite `#1D1D1F` |
+| Tipografia do site | SF Pro (texto e interface) e New York / Iowan Old Style (títulos), com equivalentes no Windows e Android; sem fonte nova baixada |
+| Camada de layout | `codice-aeroespacial.css`, carregada por último na página inicial; age só nos perfis `aerospace` e `aerospace-light`; alto contraste e perfis alternativos ficam como estavam |
+| Versão anterior | preservada em `legado-v1/` (SVG, PNG e ícones), sem exclusão |
+| Ícones do app | `assets/icons/360x-v1/` regenerado com `python3 scripts_admin/build_360x_icon_release.py` (conferência: `--check`) |
+
+---
+
 # Logotipo AldenirMed 360X (16/11/2026)
 
 Evolução do emblema orbital original (A branco, órbita ciano e ponto âmbar) para a marca **AldenirMed 360X**: a órbita fecha os 360°, o núcleo ganha uma cruz clínica e a placa obsidiana recebe filete dourado.
