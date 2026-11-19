@@ -190,7 +190,7 @@ class AccessiblePwaTests(unittest.TestCase):
         self.assertEqual(int.from_bytes(favicon[4:6], "little"), 7)
         self.assertEqual(windows_icon, favicon)
         self.assertIn(
-            'aria-label="AldenirMed 360X — início"',
+            'aria-label="AldenirMed 360X Intensiva · Clínica Médica · TEMI — início"',
             home,
         )
         self.assertIn(

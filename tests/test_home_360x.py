@@ -26,7 +26,7 @@ class Home360xTests(unittest.TestCase):
             "assets/brand-360x/icons/aldenirmed-360x-1024.png",
         ):
             self.assertTrue((ROOT / relative).is_file(), relative)
-        self.assertIn('class="brand brand-360x" href="#top" aria-label="AldenirMed 360X — início"', HOME)
+        self.assertIn('class="brand brand-360x" href="#top" aria-label="AldenirMed 360X Intensiva · Clínica Médica · TEMI — início"', HOME)
         self.assertIn('src="./assets/brand-360x/aldenirmed-360x-mark.svg"', HOME)
         self.assertIn("<title>AldenirMed 360X — Medicina Intensiva, Plantão e TEMI</title>", HOME)
         svg = (ROOT / "assets/brand-360x/aldenirmed-360x-mark.svg").read_text(encoding="utf-8")

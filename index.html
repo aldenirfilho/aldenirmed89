@@ -37,7 +37,8 @@
     'comic-hero':'dark','modern-serious':'light'
   };
   try{
-    if(window.location?.hash||sessionStorage.getItem('antigravity:mission-intro:v2')==='seen'){
+    if(window.location?.hash||sessionStorage.getItem('antigravity:mission-intro:v2')==='seen'||
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){
       document.documentElement.classList.add('mission-returning');
     }
   }catch(_){}
@@ -2620,7 +2621,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           🎧 Iniciar missão com som
         </button>
         <button class="mission-choice" id="missionStartSilent" type="button">
-          Entrar em silêncio
+          ⚡ Entrar direto
         </button>
       </div>
 
@@ -2644,7 +2645,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <!-- ── NAVIGATION ─────────────────────────────────── -->
 <header>
   <nav class="nav">
-    <a class="brand brand-360x" href="#top" aria-label="AldenirMed 360X — início">
+    <a class="brand brand-360x" href="#top" aria-label="AldenirMed 360X Intensiva · Clínica Médica · TEMI — início">
       <div class="brand-icon" aria-hidden="true"><img src="./assets/brand-360x/aldenirmed-360x-mark.svg" alt="" width="44" height="44"/></div>
       <div class="brand-text">
         <strong><span class="brand-full">AldenirMed <b class="brand-360x-tag">360X</b></span><span class="brand-short">AldenirMed <b class="brand-360x-tag">360X</b></span></strong>
@@ -2721,7 +2722,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       <a href="membros/">👤 Minha conta</a>
     </div>
     <div class="nav-tools">
-      <a class="nav-download" href="#downloads" aria-label="Ir para downloads de macOS, Windows e iPhone">
+      <a class="nav-download" href="#downloads" aria-label="Baixar apps: downloads para macOS, Windows e iPhone">
         <span aria-hidden="true">⬇️</span><span class="nav-download-full">Baixar apps</span><span class="nav-download-short">Apps</span>
       </a>
       <div class="nav-status" aria-label="Sistema online">
@@ -2854,7 +2855,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   </a>
 
   <a class="command-language" href="en/index.html" hreflang="en" lang="en"
-    aria-label="Open the English version" title="English version">EN</a>
+    aria-label="EN — open the English version" title="English version">EN</a>
 </div>
   </nav>
 </header>
@@ -2868,20 +2869,10 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 
     <div class="hero-left">
       <div class="hero-eyebrow" aria-hidden="true">Central clínica aeroespacial — plantão + prova + UTI</div>
-      <div class="launch-entry-panel is-compact" role="note">
-        <div class="launch-entry-head">
-          <span class="launch-entry-kicker">🚀 Controle de missão · padrão principal</span>
-          <button class="launch-replay" id="heroReplayMission" type="button">Repetir decolagem</button>
-        </div>
-      </div>
       <h1 id="hero-heading">
         <span class="hl">Sua central clínica</span><br/>
         entra em órbita.
       </h1>
-      <p class="hero-lead">
-        Evidência, protocolos, calculadoras e treino TEMI reunidos em um painel operacional para encontrar a rota certa com rapidez e responsabilidade clínica.
-      </p>
-      <p class="access-free">🔓 Acesso gratuito · sem previsão de cobrança · cadastro opcional</p>
       <div class="quick-finder" role="search" aria-label="Buscar rotas do site">
         <label for="quickSearch">🔎 O que você precisa encontrar?</label>
         <input id="quickSearch" type="search" placeholder="Ex.: AVC, POCUS, gasometria, biblioteca…" autocomplete="off" aria-controls="quickResults" aria-describedby="quickSearchStatus"/>
@@ -2895,10 +2886,26 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <a href="ecossistema/index.html#sites-publicos">🌐 Projetos 360X</a>
         </nav>
       </div>
-      <div class="hero-btns">
-        <a class="btn btn-primary" href="#modulos">🧭 Ver todos os módulos</a>
-        <a class="btn btn-violet" href="questoes/index.html">🏆 Treinar para o TEMI</a>
-        <a class="btn btn-ghost" href="#jornal-360">📰 Jornal de hoje</a>
+      <nav class="quick-doors" aria-labelledby="quickDoorsTitle">
+        <h2 class="quick-doors-title" id="quickDoorsTitle">⚡ Acesso rápido</h2>
+        <ul class="quick-doors-grid">
+          <li><a class="quick-door is-new" href="questoes/temi_800_imagens_questoes.html" style="--door:var(--yellow)"><span class="quick-door-icon" aria-hidden="true">🖼️</span><strong>TEMI 800</strong><small>questões com imagens</small><em class="quick-door-badge">Novo</em></a></li>
+          <li><a class="quick-door" href="questoes/index.html" style="--door:var(--violet)"><span class="quick-door-icon" aria-hidden="true">🏆</span><strong>Banco de questões</strong><small>TEMI e R3 comentadas</small></a></li>
+          <li><a class="quick-door" href="#modulos" style="--door:var(--red)"><span class="quick-door-icon" aria-hidden="true">🩺</span><strong>Módulos clínicos</strong><small>AVC, sepse, RCP, ECG…</small></a></li>
+          <li><a class="quick-door" href="03_Calculadoras_E_Apps/index.html" style="--door:var(--cyan)"><span class="quick-door-icon" aria-hidden="true">🧮</span><strong>Calculadoras</strong><small>vasoativas, SAPS 3, VM</small></a></li>
+          <li><a class="quick-door" href="#jornal-360" style="--door:var(--yellow)"><span class="quick-door-icon" aria-hidden="true">📰</span><strong>Jornal de hoje</strong><small>notícias e pílulas</small></a></li>
+          <li><a class="quick-door" href="02_Biblioteca_IA_Engine/index.html" style="--door:var(--green)"><span class="quick-door-icon" aria-hidden="true">📚</span><strong>Biblioteca</strong><small>acervo e evidências</small></a></li>
+        </ul>
+      </nav>
+      <p class="hero-lead">
+        Evidência, protocolos, calculadoras e treino TEMI reunidos em um painel operacional para encontrar a rota certa com rapidez e responsabilidade clínica.
+      </p>
+      <p class="access-free">🔓 Acesso gratuito · sem previsão de cobrança · cadastro opcional</p>
+      <div class="launch-entry-panel is-compact" role="note">
+        <div class="launch-entry-head">
+          <span class="launch-entry-kicker">🚀 Controle de missão · padrão principal</span>
+          <button class="launch-replay" id="heroReplayMission" type="button">Repetir decolagem</button>
+        </div>
       </div>
       <div class="view-controls" role="group" aria-label="Controles de visualização da página">
         <span class="view-controls-label" aria-hidden="true">👁️ Visualização</span>
@@ -2980,7 +2987,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     </div>
     <div class="hub-tiles">
       <a class="hub-tile" href="#modulos" style="--tile-accent:var(--red)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">🩺</span><strong>Módulos clínicos</strong><span>AVC, SCA, sepse, RCP, ECG, TCE, hematologia, reumatologia e mais.</span><em>abrir módulos →</em></a>
-      <a class="hub-tile" href="questoes/index.html" style="--tile-accent:var(--yellow)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">🏆</span><strong>Treino TEMI e R3</strong><span>Simulador, questões comentadas, desafios e mnemônicos.</span><em>treinar →</em></a>
+      <a class="hub-tile" href="questoes/index.html" style="--tile-accent:var(--yellow)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">🏆</span><strong>Treino TEMI e R3</strong><span>Simulador, 800 questões com imagens, desafios e mnemônicos.</span><em>treinar →</em></a>
       <a class="hub-tile" href="03_Calculadoras_E_Apps/index.html" style="--tile-accent:var(--cyan)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">🧮</span><strong>Calculadoras de plantão</strong><span>Vasoativas, SAPS 3, RenalDose, ventilação e gasometria.</span><em>calcular →</em></a>
       <a class="hub-tile" href="02_Biblioteca_IA_Engine/index.html" style="--tile-accent:var(--violet)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">📚</span><strong>Biblioteca e evidências</strong><span>Acervo, UpDown, Radar científico e diretório de fontes.</span><em>pesquisar →</em></a>
       <a class="hub-tile is-new" href="#jornal-360" style="--tile-accent:var(--yellow)" data-search-route data-search-title="Jornal Diário 360" data-search-kind="Jornal diário" data-search-terms="jornal noticias manchetes pilulas arcanos esportes futebol financas educacao financeira humor tirinhas honra equilibrio pdf"><span class="hub-tile-icon" aria-hidden="true">📰</span><strong>Jornal Diário 360</strong><span>30 páginas por dia: notícias, pílulas, esportes, finanças, humor, honra e equilíbrio.</span><em>ler a edição de hoje →</em></a>
@@ -3708,12 +3715,14 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       <div class="map-filters" id="mapFilters" role="group" aria-label="Filtrar ramos do mapa"></div>
     </div>
 
+    <p class="map-scroll-hint">↔ No celular, deslize o mapa para o lado.</p>
+    <div class="map-scroll">
     <div id="mapa-graph" class="map-container" role="region" aria-label="Mapa visual de conexões do conhecimento médico">
       <svg class="map-lines" id="mapLines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
       <div class="map-nodes" id="mapNodes"></div>
       <div class="graph-loading" id="mapLoading">🧠 Carregando Mapa Vivo…</div>
     </div>
-
+    </div><!-- /map-scroll -->
     <div class="map-legend" id="mapLegend"></div>
     <div class="map-howto">⚽ A abertura mostra a estrutura essencial. Ative Tópicos, Temas, Desafios, Mnemônicos ou Arquivos para ampliar o campo; a busca consulta todo o mapa.</div>
   </div>
@@ -3797,7 +3806,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <button class="dsf-chip" id="dsfNext" type="button">Alternar 3 →</button>
         <span id="dsfPreviewCount" class="mnem-count" aria-live="polite"></span>
       </div>
-      <div id="dsf-grid" class="dsf-grid" role="list"></div>
+      <div id="dsf-grid" class="dsf-grid"></div>
       <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px">
         <a class="dsf-admin-link" href="desafios/">
           📖 Abrir desafios em tela cheia →
@@ -3827,7 +3836,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
     </div>
     <div class="mnem-count" id="mnemCount" aria-live="polite"></div>
 
-    <div id="mnem-grid" class="mnem-grid" role="list"></div>
+    <div id="mnem-grid" class="mnem-grid"></div>
     <div class="mnem-empty" id="mnemEmpty" style="display:none">Nenhum mnemônico encontrado para este filtro.</div>
 
   </div>
@@ -3905,8 +3914,8 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <span class="download-ready"><span aria-hidden="true">●</span> Links disponíveis agora</span>
       </div>
 
-      <div class="download-grid" role="list" aria-label="Downloads por plataforma">
-        <article class="download-card" role="listitem" data-download-card="macos">
+      <div class="download-grid" role="group" aria-label="Downloads por plataforma">
+        <article class="download-card" data-download-card="macos">
           <div class="download-platform">
             <span class="download-icon" aria-hidden="true">🍎</span>
             <div><small>Computadores Apple</small><h3>macOS</h3></div>
@@ -3927,7 +3936,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <p class="download-note">O ZIP atual contém somente um endereço .webloc e README; não contém .app, script ou instalador.</p>
         </article>
 
-        <article class="download-card" role="listitem" data-download-card="windows">
+        <article class="download-card" data-download-card="windows">
           <div class="download-platform">
             <span class="download-icon" aria-hidden="true">🪟</span>
             <div><small>PC e notebook</small><h3>Windows</h3></div>
@@ -3948,7 +3957,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <p class="download-note">Launcher transparente e sem assinatura Authenticode; o guia mostra como instalar e remover.</p>
         </article>
 
-        <article class="download-card" role="listitem" data-download-card="ios">
+        <article class="download-card" data-download-card="ios">
           <div class="download-platform">
             <span class="download-icon" aria-hidden="true">📱</span>
             <div><small>Celular e tablet Apple</small><h3>iPhone / iPad</h3></div>
@@ -3972,8 +3981,8 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 
 
       <h3 class="download-apps-head">📦 Aplicativos e materiais 360X</h3>
-      <div class="download-apps-grid" role="list" aria-label="Aplicativos e materiais para baixar">
-        <article class="download-card" role="listitem" data-app-download="focusai">
+      <div class="download-apps-grid" role="group" aria-label="Aplicativos e materiais para baixar">
+        <article class="download-card" data-app-download="focusai">
           <div class="download-platform">
             <span class="download-icon" aria-hidden="true">📖</span>
             <div><small>Extensão do Chrome · v8.0.0</small><h3>FocusAI Reader 360X</h3></div>
@@ -3989,7 +3998,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           </div>
           <p class="download-hash">SHA-256 8252bc64…dfca5734 · inclui companion opcional para Mac</p>
         </article>
-        <article class="download-card" role="listitem" data-app-download="codice">
+        <article class="download-card" data-app-download="codice">
           <div class="download-platform">
             <span class="download-icon" aria-hidden="true">🎴</span>
             <div><small>App web · flashcards</small><h3>Códice 360X</h3></div>
@@ -4004,7 +4013,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
             </a>
           </div>
         </article>
-        <article class="download-card" role="listitem" data-app-download="jornal">
+        <article class="download-card" data-app-download="jornal">
           <div class="download-platform">
             <span class="download-icon" aria-hidden="true">📰</span>
             <div><small>PDF diário</small><h3>Jornal Diário 360</h3></div>
@@ -4019,7 +4028,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
             </a>
           </div>
         </article>
-        <article class="download-card" role="listitem" data-app-download="identidade">
+        <article class="download-card" data-app-download="identidade">
           <div class="download-platform">
             <span class="download-icon" aria-hidden="true">🎨</span>
             <div><small>Identidade visual</small><h3>Logotipo AldenirMed 360X</h3></div>
@@ -4421,8 +4430,8 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
   <div class="shell">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a class="brand-360x-footer" href="ecossistema/index.html#sites-publicos" aria-label="Conhecer os sites e projetos do universo 360X">
-          <img src="./assets/brand-360x/logo-360x.webp" alt="360X" width="42" height="42" loading="lazy" decoding="async"/>
+        <a class="brand-360x-footer" href="ecossistema/index.html#sites-publicos" aria-label="Parte do universo 360X: conhecer os sites e projetos">
+          <img src="./assets/brand-360x/logo-360x.webp" alt="" width="42" height="42" loading="lazy" decoding="async"/>
           <span>Parte do universo 360X</span>
         </a>
         <div class="footer-logo-360x"><img src="./assets/brand-360x/aldenirmed-360x-mark.svg" alt="" width="52" height="52" loading="lazy" decoding="async"/><span><b class="footer-logo-name">AldenirMed <b class="brand-360x-tag">360X</b></b><small>Intensiva · Clínica Médica · TEMI</small></span></div>
@@ -4530,7 +4539,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 
 <!-- ── DRAWER ──────────────────────────────────────── -->
 <div id="overlay" class="overlay" aria-hidden="true"></div>
-<aside id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true" tabindex="-1">
+<aside id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true" tabindex="-1" inert>
   <div class="drawer-head">
     <h3 id="drawerTitle">Tema</h3>
     <button class="drawer-close" id="drawerClose" aria-label="Fechar painel">✕</button>
@@ -5334,7 +5343,7 @@ function launchMission(withSound){
 }
 
 if(missionIntro&&missionEmblem){
-  let missionSeen=document.documentElement.classList.contains('mission-returning')||Boolean(window.location.hash);
+  let missionSeen=document.documentElement.classList.contains('mission-returning')||Boolean(window.location.hash)||missionHasReducedMotion();
   try{missionSeen=missionSeen||sessionStorage.getItem(MISSION_INTRO_KEY)==='seen'}catch(_){}
   if(missionSeen){
     missionIntro.hidden=true;
@@ -5347,7 +5356,7 @@ if(missionIntro&&missionEmblem){
     window.requestAnimationFrame(()=>{if(!missionIntro.hidden)missionStartSound.focus()});
   }
   missionStartSound.addEventListener('click',()=>launchMission(true));
-  missionStartSilent.addEventListener('click',()=>launchMission(false));
+  missionStartSilent.addEventListener('click',()=>finishMission({immediate:true}));
   missionSoundThemes.forEach(button=>{
     button.addEventListener('click',()=>selectMissionSound(button.dataset.missionSound));
   });
@@ -5498,6 +5507,7 @@ function openDrawer(key, isMnem = false){
 
   const tags=document.getElementById('drawerTags');
   tags.innerHTML=(d.tags||[]).map(t=>`<span class="dtag">${escHtml(t)}</span>`).join('');
+  drawer.inert=false;
   drawer.classList.add('open');
   drawer.setAttribute('aria-hidden','false');
   overlay.classList.add('show');
@@ -5509,6 +5519,7 @@ function closeDrawer(){
   if(!drawer.classList.contains('open'))return;
   drawer.classList.remove('open');
   drawer.setAttribute('aria-hidden','true');
+  drawer.inert=true;
   overlay.classList.remove('show');
   overlay.setAttribute('aria-hidden','true');
   document.body.style.overflow='';
@@ -5804,7 +5815,7 @@ function escHtml(s){
 
     grid.innerHTML = visible.map(m => `
       <article class="mnem-card reveal" data-mnem="${escH(m.id)}"
-        style="--mc:${m.color || 'var(--cyan)'}" role="listitem" tabindex="0"
+        style="--mc:${m.color || 'var(--cyan)'}" tabindex="0"
         aria-label="${escH(m.title)}">
         <div class="mnem-card-header">
           <span class="mnem-emoji">${escH(m.emoji || '🏥')}</span>
