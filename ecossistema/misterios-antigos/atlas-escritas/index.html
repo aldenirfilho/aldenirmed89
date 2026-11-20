@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1013">
+<title>Atlas das escritas indecifradas · Mistérios Antigos 360X</title>
+<meta name="description" content="Dezessete escritas que resistem à leitura ou foram decifradas há pouco: Linear A, Disco de Festo, escrita do Indo, rongorongo, Voynich, elamita linear e outras, com hipóteses e testes decisivos.">
+<meta name="author" content="ALDENIR ROCHA DE OLIVEIRA FILHO · PROJETO 360X">
+<meta property="og:title" content="Atlas das escritas indecifradas · Mistérios Antigos 360X">
+<meta property="og:description" content="Dezessete escritas que resistem à leitura ou foram decifradas há pouco: Linear A, Disco de Festo, escrita do Indo, rongorongo, Voynich, elamita linear e outras, com hipóteses e testes decisivos.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aldenirfilho.github.io/aldenirmed89/ecossistema/misterios-antigos/atlas-escritas/">
+<link rel="canonical" href="https://aldenirfilho.github.io/aldenirmed89/ecossistema/misterios-antigos/atlas-escritas/">
+<link rel="icon" href="../../../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --obsidiana:#0b1013; --basalto:#121a1f; --basalto-2:#18232a; --veio:#27353e;
+  --pergaminho:#ece3cc; --pedra:#a9b2ac; --ouro:#d9b45a; --ciano:#3ccfd0; --ambar:#f2a541; --verde:#6cc58f;
+  --f-display:"Luminari","Cinzel",Georgia,serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--obsidiana);color:var(--pergaminho);font-family:var(--f-body);font-size:17px;line-height:1.6;
+  background-image:radial-gradient(1000px 500px at 85% -10%,rgba(60,207,208,.10),transparent 60%),radial-gradient(900px 500px at -10% 8%,rgba(217,180,90,.09),transparent 60%);background-attachment:fixed}
+a{color:var(--ciano)}
+:focus-visible{outline:2px solid var(--ciano);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:12px;top:12px;background:var(--ouro);color:#1b1505;padding:6px 10px;z-index:9}
+.migalha{border-bottom:1px solid var(--veio);background:rgba(18,26,31,.85);font-size:.88rem}
+.migalha .wrap{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding-top:8px;padding-bottom:8px}
+.migalha a{text-decoration:none}
+.migalha span{color:var(--pedra)}
+.migalha b{color:var(--ouro)}
+.abertura{padding:40px 0 14px}
+.abertura h1{font-family:var(--f-display);color:var(--ouro);font-size:clamp(2rem,4.6vw,3.4rem);line-height:1.08;margin:0 0 12px;text-wrap:balance}
+.abertura p{max-width:68ch;margin:0 0 10px;font-size:1.06rem}
+.numeros{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 0;padding:0;list-style:none}
+.numeros li{border:1px solid var(--veio);border-radius:10px;padding:6px 12px;background:var(--basalto)}
+.numeros b{color:var(--ouro);font-size:1.25rem;font-variant-numeric:tabular-nums;margin-right:4px}
+.numeros span{color:var(--pedra);font-size:.9rem}
+h2{font-family:var(--f-display);font-size:1.5rem;margin:0 0 6px;text-wrap:balance;color:var(--pergaminho)}
+h3{text-wrap:balance}
+.sec{padding:26px 0 6px}
+.sec > p.sub{color:var(--pedra);margin:0 0 16px;max-width:72ch}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(270px,100%),1fr));gap:12px}
+.cartao{background:var(--basalto);border:1px solid var(--veio);border-radius:12px;padding:14px 16px}
+.cartao h3{font-family:var(--f-display);font-size:1.08rem;margin:0 0 6px;color:var(--ouro)}
+.cartao p{margin:0 0 6px;font-size:.95rem}
+.cartao .mudo{color:var(--pedra)}
+.selo{display:inline-block;font-size:.78rem;font-weight:700;border:1px solid var(--sc);color:var(--sc);border-radius:999px;padding:.02rem .55rem;white-space:nowrap}
+.btn{display:inline-block;text-decoration:none;border-radius:9px;padding:.5rem .9rem;font-size:.95rem;border:1px solid var(--veio);background:var(--basalto-2);color:var(--pergaminho);font-family:inherit;cursor:pointer}
+.btn:hover{border-color:var(--ouro)}
+.btn.ouro{background:var(--ouro);border-color:var(--ouro);color:#1b1505;font-weight:700}
+.btn[aria-pressed="true"]{background:var(--ciano);border-color:var(--ciano);color:#0b1013;font-weight:700}
+.acoes{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 0}
+.tabela{width:100%;border-collapse:collapse;font-size:.94rem}
+.tabela th{text-align:left;color:var(--ouro);font-weight:700;border-bottom:1px solid var(--ouro);padding:6px 8px}
+.tabela td{border-bottom:1px solid var(--veio);padding:6px 8px;vertical-align:top}
+.tabela td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.rolagem{overflow-x:auto}
+.linha{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--veio)}
+.linha li{position:relative;padding:0 0 12px 10px}
+.linha li::before{content:"";position:absolute;left:-25px;top:.5em;width:10px;height:10px;border-radius:50%;background:var(--ouro);border:2px solid var(--obsidiana)}
+.linha b{color:var(--ouro);display:block;font-variant-numeric:tabular-nums}
+.js-so{display:none}
+.js .js-so{display:revert}
+.rodape{border-top:1px solid var(--veio);margin-top:36px;padding:22px 0 40px;color:var(--pedra);font-size:.9rem}
+.rodape b{color:var(--pergaminho)}
+.grato{font-family:var(--f-display);color:var(--ouro);font-size:1.1rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.filtros{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.filtros .btn{font-size:.86rem;padding:.3rem .7rem}
+.atlas{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));gap:14px}
+.escrita{background:var(--basalto);border:1px solid var(--veio);border-top:3px solid var(--sc);border-radius:12px;padding:14px 16px}
+.escrita[hidden]{display:none}
+.escrita header{display:flex;gap:10px;align-items:center}
+.escrita .ic{font-size:1.8rem;line-height:1}
+.escrita h3{font-family:var(--f-display);color:var(--ouro);margin:0;font-size:1.15rem}
+.escrita header p{margin:0}
+.escrita dl{margin:8px 0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.93rem}
+.escrita dt{color:var(--ouro);font-weight:700}
+.escrita dd{margin:0}
+.nerd{background:var(--basalto-2);border-left:3px solid var(--ciano);border-radius:6px;padding:6px 10px;font-size:.92rem}
+.mudo{color:var(--pedra);font-size:.9rem}
+.linha .tit{color:var(--pergaminho);font-weight:700;margin-right:4px}
+.lab{background:var(--basalto);border:1px solid var(--veio);border-radius:12px;padding:14px 16px}
+.lab label{display:block;font-weight:700;margin-bottom:6px}
+.lab textarea{width:100%;background:var(--obsidiana);color:var(--pergaminho);border:1px solid var(--veio);border-radius:8px;padding:10px;font:inherit}
+#saida{display:block;margin-top:12px}
+#saida .barras{display:grid;grid-template-columns:auto 1fr auto;gap:3px 8px;align-items:center;font-variant-numeric:tabular-nums;font-size:.92rem;max-width:520px}
+#saida .barra{height:10px;background:var(--ciano);border-radius:4px}
+#saida .veredito{font-size:1.05rem;margin:0 0 8px}
+@media (max-width:520px){.escrita dl{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<nav class="migalha" aria-label="Você está em">
+  <div class="wrap">
+    <a href="../../../index.html">🩺 AldenirMed 360X</a><span aria-hidden="true">›</span>
+    <a href="../../">🌐 Universo 360X</a><span aria-hidden="true">›</span>
+    <a href="../">🗝️ Mistérios Antigos 360X</a><span aria-hidden="true">›</span>
+    <b aria-current="page">Atlas das escritas</b>
+  </div>
+</nav>
+<main id="conteudo" class="wrap">
+
+<section class="abertura" aria-labelledby="titulo">
+  <h1 id="titulo">🔐 Atlas das escritas indecifradas</h1>
+  <p>Dezessete sistemas de escrita que ainda resistem, que lemos sem entender ou que foram destravados há pouco. Para cada um: o que existe, o que impede a leitura, as hipóteses em jogo e o teste que resolveria o enigma.</p>
+  <ul class="numeros"><li><b>10</b><span>não decifradas</span></li><li><b>5</b><span>lidas em parte</span></li><li><b>1</b><span>decifrada recentemente</span></li><li><b>1</b><span>proto-escrita em debate</span></li></ul>
+</section>
+
+<section class="sec" aria-labelledby="ing-h">
+  <h2 id="ing-h">🧪 Os quatro ingredientes de uma decifração</h2>
+  <p class="sub">Toda escrita lida até hoje contou com pelo menos dois destes. As que resistem costumam ter só um.</p>
+  <div class="grade"><article class="cartao"><h3>📚 Corpus grande</h3><p>Quanto mais texto, mais padrões testáveis. Um único disco quase não tem como ser lido.</p></article><article class="cartao"><h3>🗣️ Língua conhecida ou parente</h3><p>Ler sons sem entender a língua é o drama do Linear A e do etrusco.</p></article><article class="cartao"><h3>🔗 Bilíngue ou nomes próprios</h3><p>Roseta, Behistun, Pyrgi: o mesmo texto em duas escritas é a chave mestra. Nomes de reis e cidades servem de atalho.</p></article><article class="cartao"><h3>🔢 Contar os sinais</h3><p>20 a 40 sinais sugerem alfabeto; 50 a 100, silabário; centenas, sistema logossilábico.</p></article></div>
+</section>
+
+<section class="sec" aria-labelledby="atlas-h">
+  <h2 id="atlas-h">📜 O atlas</h2>
+  <div role="group" aria-label="Filtrar por estado da decifração" class="filtros js-so"><button type="button" class="btn" data-estado="todas" aria-pressed="true">Todas (17)</button><button type="button" class="btn" data-estado="nao" aria-pressed="false">🔒 Não decifrada (10)</button><button type="button" class="btn" data-estado="parcial" aria-pressed="false">🔓 Lida em parte (5)</button><button type="button" class="btn" data-estado="decifrada" aria-pressed="false">✅ Decifrada (1)</button><button type="button" class="btn" data-estado="proto" aria-pressed="false">❔ Proto-escrita em debate (1)</button></div>
+  <div class="atlas"><article class="escrita" data-estado="nao" id="e-hieroglifos-cretenses" style="--sc:#f2a541">
+  <header><span class="ic" aria-hidden="true">🌿</span><div><h3>Hieróglifos cretenses</h3><p class="mudo">c. 2100–1700 a.C. · Creta</p></div></header>
+  <p><span class="selo">🔒 Não decifrada</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Provável logossilábica</dd>
+    <dt>Corpus</dt><dd>Cerca de 300 inscrições curtas, a maioria em selos</dd>
+    <dt>🧱 Obstáculo</dt><dd>Textos curtíssimos e repetitivos, quase todos gravados em selos de pedra.</dd>
+    <dt>💡 Hipóteses</dt><dd>Pode registrar a mesma língua minoica do Linear A, com o qual divide sinais.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Uma inscrição longa ou um texto que apareça também em Linear A.</dd>
+  </dl>
+  <p class="nerd">🤓 É a escrita mais antiga da Europa; ninguém sabe se nasceu sozinha ou inspirada no Egito.</p>
+  <p><a href="../codice-eras-perdidas/#c-linear-a">Dossiê relacionado no Códice: 🏺 Linear A</a></p>
+</article><article class="escrita" data-estado="nao" id="e-linear-a" style="--sc:#f2a541">
+  <header><span class="ic" aria-hidden="true">🏺</span><div><h3>Linear A</h3><p class="mudo">c. 1800–1450 a.C. · Creta e ilhas do Egeu</p></div></header>
+  <p><span class="selo">🔒 Não decifrada</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Silabário com logogramas</dd>
+    <dt>Corpus</dt><dd>~1.400 inscrições, ~90 silabogramas</dd>
+    <dt>🧱 Obstáculo</dt><dd>Lemos os sons de muitos sinais graças ao Linear B, mas a língua minoica é isolada: não tem parente conhecido.</dd>
+    <dt>💡 Hipóteses</dt><dd>Luvita, semita, pré-grega ou isolada. Nenhuma proposta conseguiu ler textos novos de forma consistente.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Um texto bilíngue (egípcio, acadiano ou grego) ou um corpus muito maior.</dd>
+  </dl>
+  <p class="nerd">🤓 Em Linear A já se identificou o sinal de “total” (KU-RO) nas contas: matemática minoica legível antes da língua.</p>
+  <p><a href="../codice-eras-perdidas/#c-linear-a">Dossiê relacionado no Códice: 🏺 Linear A</a></p>
+</article><article class="escrita" data-estado="nao" id="e-festo" style="--sc:#f2a541">
+  <header><span class="ic" aria-hidden="true">💿</span><div><h3>Disco de Festo</h3><p class="mudo">c. 1850–1600 a.C. · Festo, Creta</p></div></header>
+  <p><span class="selo">🔒 Não decifrada</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Silabário provável (45 sinais)</dd>
+    <dt>Corpus</dt><dd>Um único disco, 241 sinais carimbados</dd>
+    <dt>🧱 Obstáculo</dt><dd>Texto único: sem repetição em outros documentos, a estatística não tem chão.</dd>
+    <dt>💡 Hipóteses</dt><dd>Hino, calendário, lista de soldados; dezenas de “decifrações” amadoras incompatíveis entre si.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Achar outro objeto com os mesmos carimbos.</dd>
+  </dl>
+  <p class="nerd">🤓 Os sinais foram estampados com punções: seria o mais antigo uso de “tipos móveis”.</p>
+  <p><a href="../codice-eras-perdidas/#c-festo">Dossiê relacionado no Códice: 💿 Disco de Festo</a></p>
+</article><article class="escrita" data-estado="nao" id="e-cipro-minoico" style="--sc:#f2a541">
+  <header><span class="ic" aria-hidden="true">🏝️</span><div><h3>Cipro-minoico</h3><p class="mudo">c. 1550–1050 a.C. · Chipre e Ugarit</p></div></header>
+  <p><span class="selo">🔒 Não decifrada</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Silabário derivado do Linear A</dd>
+    <dt>Corpus</dt><dd>Cerca de 250 inscrições</dd>
+    <dt>🧱 Obstáculo</dt><dd>Corpus disperso e talvez mais de uma língua escrita com o mesmo sistema.</dd>
+    <dt>💡 Hipóteses</dt><dd>Língua local de Chipre, hurrita em alguns textos; o silabário cipriota clássico, que descende dele, registra grego e já é lido.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Usar o silabário cipriota clássico como ponte para fixar valores sonoros.</dd>
+  </dl>
+  <p class="nerd">🤓 É o elo entre a escrita minoica e um silabário usado até o séc. III a.C.</p>
+  <p><a href="../codice-eras-perdidas/#c-bronze">Dossiê relacionado no Códice: 🛡️ O colapso da Idade do Bronze</a></p>
+</article><article class="escrita" data-estado="nao" id="e-indo" style="--sc:#f2a541">
+  <header><span class="ic" aria-hidden="true">🐘</span><div><h3>Escrita do Indo</h3><p class="mudo">c. 2600–1900 a.C. · Paquistão e noroeste da Índia</p></div></header>
+  <p><span class="selo">🔒 Não decifrada</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Provável logossilábica (~400 sinais)</dd>
+    <dt>Corpus</dt><dd>~4.000 a 5.000 inscrições, média de 5 sinais</dd>
+    <dt>🧱 Obstáculo</dt><dd>Textos curtos demais, nenhum bilíngue e língua desconhecida.</dd>
+    <dt>💡 Hipóteses</dt><dd>Dravídica, indo-ariana, munda ou um sistema de símbolos não linguístico (hipótese contestada).</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Um selo bilíngue com o acadiano da Mesopotâmia, parceira comercial do Indo.</dd>
+  </dl>
+  <p class="nerd">🤓 Tamil Nadu oferece US$ 1 milhão (2025) por uma decifração aceita.</p>
+  <p><a href="../codice-eras-perdidas/#c-indo">Dossiê relacionado no Códice: 🐘 A escrita do Vale do Indo</a></p>
+</article><article class="escrita" data-estado="nao" id="e-proto-elamita" style="--sc:#f2a541">
+  <header><span class="ic" aria-hidden="true">📊</span><div><h3>Proto-elamita</h3><p class="mudo">c. 3100–2900 a.C. · Susa e planalto iraniano</p></div></header>
+  <p><span class="selo">🔒 Não decifrada</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Contábil e logográfica</dd>
+    <dt>Corpus</dt><dd>~1.600 tabuletas administrativas</dd>
+    <dt>🧱 Obstáculo</dt><dd>Os números já são entendidos; os signos de palavras, não. Escribas parecem ter tido pouca padronização.</dd>
+    <dt>💡 Hipóteses</dt><dd>Registro de rações, trabalhadores e animais; talvez sem ligação direta com a língua elamita.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Padrões estatísticos que liguem signos a produtos e pessoas em contas que fecham.</dd>
+  </dl>
+  <p class="nerd">🤓 Não confundir com o elamita linear, que foi decifrado em 2022.</p>
+  <p><a href="../codice-eras-perdidas/#c-elamita">Dossiê relacionado no Códice: ✅ Linear elamita, um enigma que caiu</a></p>
+</article><article class="escrita" data-estado="decifrada" id="e-elamita-linear" style="--sc:#6cc58f">
+  <header><span class="ic" aria-hidden="true">✅</span><div><h3>Elamita linear</h3><p class="mudo">c. 2300–1880 a.C. · Irã</p></div></header>
+  <p><span class="selo">✅ Decifrada (proposta aceita por muitos)</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Fonográfica (silabário com alfabeto)</dd>
+    <dt>Corpus</dt><dd>~40 inscrições</dd>
+    <dt>🧱 Obstáculo</dt><dd>Superado em boa parte: nomes de reis conhecidos em cuneiforme destravaram os valores.</dd>
+    <dt>💡 Hipóteses</dt><dd>Decifração proposta por François Desset e colegas (2022); a maioria aceita a base, alguns contestam detalhes.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Leituras coerentes em textos novos, sem ajustes ad hoc.</dd>
+  </dl>
+  <p class="nerd">🤓 Prova de que “indecifrável” muitas vezes significa “ainda não”.</p>
+  <p><a href="../codice-eras-perdidas/#c-elamita">Dossiê relacionado no Códice: ✅ Linear elamita, um enigma que caiu</a></p>
+</article><article class="escrita" data-estado="nao" id="e-biblos" style="--sc:#f2a541">
+  <header><span class="ic" aria-hidden="true">🪶</span><div><h3>Silabário de Biblos</h3><p class="mudo">II milênio a.C. · Biblos, Líbano</p></div></header>
+  <p><span class="selo">🔒 Não decifrada</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Silabário (~100 sinais)</dd>
+    <dt>Corpus</dt><dd>Cerca de 10 inscrições em bronze e pedra</dd>
+    <dt>🧱 Obstáculo</dt><dd>Corpus minúsculo.</dd>
+    <dt>💡 Hipóteses</dt><dd>Língua semita; propostas de 1946 e 1985 não foram aceitas.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Novas placas com nomes de lugares ou reis conhecidos.</dd>
+  </dl>
+  <p class="nerd">🤓 Vem da cidade que deu nome à palavra “bíblia” (do grego byblos, papiro).</p>
+  <p><a href="../codice-eras-perdidas/#c-bronze">Dossiê relacionado no Códice: 🛡️ O colapso da Idade do Bronze</a></p>
+</article><article class="escrita" data-estado="parcial" id="e-meroitico" style="--sc:#3ccfd0">
+  <header><span class="ic" aria-hidden="true">🏜️</span><div><h3>Meroítico</h3><p class="mudo">séc. III a.C.–IV d.C. · Núbia (Sudão)</p></div></header>
+  <p><span class="selo">🔓 Lida em parte</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Alfassilabário de 23 sinais</dd>
+    <dt>Corpus</dt><dd>Mais de 1.000 inscrições</dd>
+    <dt>🧱 Obstáculo</dt><dd>Lido desde 1909 (Griffith), mas a língua é pouco compreendida.</dd>
+    <dt>💡 Hipóteses</dt><dd>Língua nilo-saariana, aparentada a línguas do Sudão atual.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Bilíngues mais longos com o egípcio ou o grego.</dd>
+  </dl>
+  <p class="nerd">🤓 Tem duas formas: uma em hieróglifos para monumentos e uma cursiva para o dia a dia.</p>
+  <p><a href="../codice-eras-perdidas/#c-piramides">Dossiê relacionado no Códice: 🔺 Como se ergueram as pirâmides</a></p>
+</article><article class="escrita" data-estado="parcial" id="e-etrusco" style="--sc:#3ccfd0">
+  <header><span class="ic" aria-hidden="true">🏛️</span><div><h3>Etrusco</h3><p class="mudo">séc. VIII–I a.C. · Itália central</p></div></header>
+  <p><span class="selo">🔓 Lida em parte</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Alfabeto (derivado do grego)</dd>
+    <dt>Corpus</dt><dd>~13.000 inscrições</dd>
+    <dt>🧱 Obstáculo</dt><dd>Lemos tudo, mas entendemos pouco: a língua é isolada e quase só sobrou epitáfio.</dd>
+    <dt>💡 Hipóteses</dt><dd>Família tirrênica, aparentada à inscrição de Lemnos.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Novos bilíngues como as lâminas de ouro de Pyrgi (etrusco e fenício, 1964).</dd>
+  </dl>
+  <p class="nerd">🤓 O maior texto, o Liber Linteus, sobreviveu como faixa de linho enrolada numa múmia egípcia, hoje em Zagreb.</p>
+  <p><a href="../codice-eras-perdidas/#c-idade-trevas">Dossiê relacionado no Códice: 🕯️ Os séculos em que a Grécia esqueceu a escrita</a></p>
+</article><article class="escrita" data-estado="parcial" id="e-zapoteca" style="--sc:#3ccfd0">
+  <header><span class="ic" aria-hidden="true">🌽</span><div><h3>Zapoteca</h3><p class="mudo">c. 500 a.C.–900 d.C. · Oaxaca, México</p></div></header>
+  <p><span class="selo">🔓 Lida em parte</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Logossilábica provável</dd>
+    <dt>Corpus</dt><dd>Centenas de inscrições em pedra e cerâmica</dd>
+    <dt>🧱 Obstáculo</dt><dd>Datas e o calendário são entendidos; o resto, pouco.</dd>
+    <dt>💡 Hipóteses</dt><dd>Registra uma forma antiga das línguas zapotecas, ainda faladas hoje.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Comparação sistemática com o zapoteco vivo e textos coloniais.</dd>
+  </dl>
+  <p class="nerd">🤓 Está entre as escritas mais antigas da Mesoamérica, com Monte Albán como centro.</p>
+  <p><a href="../codice-eras-perdidas/#c-maia">Dossiê relacionado no Códice: 🌽 O colapso maia clássico</a></p>
+</article><article class="escrita" data-estado="nao" id="e-istmica" style="--sc:#f2a541">
+  <header><span class="ic" aria-hidden="true">🗿</span><div><h3>Ístmica (epi-olmeca)</h3><p class="mudo">c. 500 a.C.–500 d.C. · Istmo de Tehuantepec, México</p></div></header>
+  <p><span class="selo">🔒 Não decifrada</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Logossilábica</dd>
+    <dt>Corpus</dt><dd>Pouco mais de uma dúzia de textos</dd>
+    <dt>🧱 Obstáculo</dt><dd>Decifração proposta em 1993 (Justeson e Kaufman, língua mixe-zoque) não passou num teste com texto novo.</dd>
+    <dt>💡 Hipóteses</dt><dd>Mixe-zoque continua sendo a candidata principal.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Prever corretamente a leitura de uma inscrição recém-achada.</dd>
+  </dl>
+  <p class="nerd">🤓 A Estela de La Mojarra (1986) traz mais de 500 sinais e datas de longa contagem.</p>
+  <p><a href="../codice-eras-perdidas/#c-maia">Dossiê relacionado no Códice: 🌽 O colapso maia clássico</a></p>
+</article><article class="escrita" data-estado="nao" id="e-rongorongo" style="--sc:#f2a541">
+  <header><span class="ic" aria-hidden="true">🗿</span><div><h3>Rongorongo</h3><p class="mudo">séc. XV–XIX · Rapa Nui</p></div></header>
+  <p><span class="selo">🔒 Não decifrada</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Desconhecido (talvez logográfico)</dd>
+    <dt>Corpus</dt><dd>~25 objetos de madeira</dd>
+    <dt>🧱 Obstáculo</dt><dd>Corpus pequeno e tradição oral interrompida pela escravidão e pelas epidemias do séc. XIX.</dd>
+    <dt>💡 Hipóteses</dt><dd>Escrita plena, mnemônica para genealogias e cantos; a datação de 1493–1509 (2024) sugere invenção independente.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Datar os sulcos da inscrição, não só a madeira.</dd>
+  </dl>
+  <p class="nerd">🤓 Um trecho da tábua Mamari parece ser um calendário lunar.</p>
+  <p><a href="../codice-eras-perdidas/#c-rongorongo">Dossiê relacionado no Códice: 🗿 Rongorongo</a></p>
+</article><article class="escrita" data-estado="parcial" id="e-quipu" style="--sc:#3ccfd0">
+  <header><span class="ic" aria-hidden="true">🪢</span><div><h3>Quipus</h3><p class="mudo">séc. XV–XVI (e antes) · Andes</p></div></header>
+  <p><span class="selo">🔓 Lida em parte</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Cordões com nós (sistema decimal)</dd>
+    <dt>Corpus</dt><dd>Centenas em museus</dd>
+    <dt>🧱 Obstáculo</dt><dd>A contabilidade foi decifrada; se havia narrativa, ninguém sabe ler.</dd>
+    <dt>💡 Hipóteses</dt><dd>Cores, fibras e direção do nó podem codificar sílabas ou nomes.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Um quipu ligado a um documento colonial que transcreva o mesmo conteúdo.</dd>
+  </dl>
+  <p class="nerd">🤓 Um império de milhões governado sem papel, com fios e nós.</p>
+  <p><a href="../codice-eras-perdidas/#c-quipu">Dossiê relacionado no Códice: 🪢 Quipus incas</a></p>
+</article><article class="escrita" data-estado="parcial" id="e-khitan" style="--sc:#3ccfd0">
+  <header><span class="ic" aria-hidden="true">🐎</span><div><h3>Escritas khitan</h3><p class="mudo">séc. X–XII · China e Mongólia (dinastia Liao)</p></div></header>
+  <p><span class="selo">🔓 Lida em parte</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Duas escritas: grande (logográfica) e pequena (fonética)</dd>
+    <dt>Corpus</dt><dd>Dezenas de textos longos em lápides</dd>
+    <dt>🧱 Obstáculo</dt><dd>A língua khitan morreu; leitura parcial graças a bilíngues com o chinês.</dd>
+    <dt>💡 Hipóteses</dt><dd>Língua mongólica, aparentada ao mongol.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Mais bilíngues e dicionários comparativos com línguas mongólicas.</dd>
+  </dl>
+  <p class="nerd">🤓 Prova de que uma escrita pode morrer com o império que a criou em apenas 300 anos.</p>
+  <p><a href="../codice-eras-perdidas/#c-idade-trevas">Dossiê relacionado no Códice: 🕯️ Os séculos em que a Grécia esqueceu a escrita</a></p>
+</article><article class="escrita" data-estado="nao" id="e-voynich" style="--sc:#f2a541">
+  <header><span class="ic" aria-hidden="true">📕</span><div><h3>Manuscrito Voynich</h3><p class="mudo">1404–1438 (pergaminho) · Europa Central (provável)</p></div></header>
+  <p><span class="selo">🔒 Não decifrada</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Desconhecido</dd>
+    <dt>Corpus</dt><dd>~240 páginas, ~170 mil caracteres</dd>
+    <dt>🧱 Obstáculo</dt><dd>Não se sabe se é língua natural, cifra, código ou embuste.</dd>
+    <dt>💡 Hipóteses</dt><dd>Língua natural cifrada, sistema de abreviação, glossolalia ou falsificação medieval.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Uma passagem que bata de forma verificável com a ilustração ao lado.</dd>
+  </dl>
+  <p class="nerd">🤓 Segue a lei de Zipf como as línguas reais, mas repete palavras como nenhuma.</p>
+  <p><a href="../codice-eras-perdidas/#c-voynich">Dossiê relacionado no Códice: 📕 Manuscrito Voynich</a></p>
+</article><article class="escrita" data-estado="proto" id="e-vinca" style="--sc:#a7b1c4">
+  <header><span class="ic" aria-hidden="true">🔶</span><div><h3>Símbolos de Vinča</h3><p class="mudo">c. 5500–4500 a.C. · Bálcãs</p></div></header>
+  <p><span class="selo">❔ Proto-escrita em debate</span></p>
+  <dl>
+    <dt>Tipo</dt><dd>Proto-escrita?</dd>
+    <dt>Corpus</dt><dd>Centenas de marcas em cerâmica e as tabuletas de Tărtăria</dd>
+    <dt>🧱 Obstáculo</dt><dd>Talvez não registre língua alguma: podem ser marcas de propriedade ou símbolos rituais.</dd>
+    <dt>💡 Hipóteses</dt><dd>Sistema simbólico pré-escrita; alegações de “escrita mais antiga do mundo” não são aceitas.</dd>
+    <dt>🔑 Teste decisivo</dt><dd>Sequências que se repitam com regras gramaticais.</dd>
+  </dl>
+  <p class="nerd">🤓 Mostra que entre o desenho e a escrita existe um degrau difícil de medir.</p>
+  <p><a href="../codice-eras-perdidas/#c-catalhoyuk">Dossiê relacionado no Códice: 🏘️ Çatalhöyük, a cidade sem ruas</a></p>
+</article></div>
+</section>
+
+<section class="sec" aria-labelledby="res-h">
+  <h2 id="res-h">📋 Quadro-resumo</h2>
+  <div class="rolagem"><table class="tabela"><thead><tr><th scope="col">Escrita</th><th scope="col">Período</th><th scope="col">Região</th><th scope="col">Estado</th></tr></thead><tbody><tr><td><a href="#e-hieroglifos-cretenses">🌿 Hieróglifos cretenses</a></td><td>c. 2100–1700 a.C.</td><td>Creta</td><td>🔒 Não decifrada</td></tr><tr><td><a href="#e-linear-a">🏺 Linear A</a></td><td>c. 1800–1450 a.C.</td><td>Creta e ilhas do Egeu</td><td>🔒 Não decifrada</td></tr><tr><td><a href="#e-festo">💿 Disco de Festo</a></td><td>c. 1850–1600 a.C.</td><td>Festo, Creta</td><td>🔒 Não decifrada</td></tr><tr><td><a href="#e-cipro-minoico">🏝️ Cipro-minoico</a></td><td>c. 1550–1050 a.C.</td><td>Chipre e Ugarit</td><td>🔒 Não decifrada</td></tr><tr><td><a href="#e-indo">🐘 Escrita do Indo</a></td><td>c. 2600–1900 a.C.</td><td>Paquistão e noroeste da Índia</td><td>🔒 Não decifrada</td></tr><tr><td><a href="#e-proto-elamita">📊 Proto-elamita</a></td><td>c. 3100–2900 a.C.</td><td>Susa e planalto iraniano</td><td>🔒 Não decifrada</td></tr><tr><td><a href="#e-elamita-linear">✅ Elamita linear</a></td><td>c. 2300–1880 a.C.</td><td>Irã</td><td>✅ Decifrada</td></tr><tr><td><a href="#e-biblos">🪶 Silabário de Biblos</a></td><td>II milênio a.C.</td><td>Biblos, Líbano</td><td>🔒 Não decifrada</td></tr><tr><td><a href="#e-meroitico">🏜️ Meroítico</a></td><td>séc. III a.C.–IV d.C.</td><td>Núbia (Sudão)</td><td>🔓 Lida em parte</td></tr><tr><td><a href="#e-etrusco">🏛️ Etrusco</a></td><td>séc. VIII–I a.C.</td><td>Itália central</td><td>🔓 Lida em parte</td></tr><tr><td><a href="#e-zapoteca">🌽 Zapoteca</a></td><td>c. 500 a.C.–900 d.C.</td><td>Oaxaca, México</td><td>🔓 Lida em parte</td></tr><tr><td><a href="#e-istmica">🗿 Ístmica (epi-olmeca)</a></td><td>c. 500 a.C.–500 d.C.</td><td>Istmo de Tehuantepec, México</td><td>🔒 Não decifrada</td></tr><tr><td><a href="#e-rongorongo">🗿 Rongorongo</a></td><td>séc. XV–XIX</td><td>Rapa Nui</td><td>🔒 Não decifrada</td></tr><tr><td><a href="#e-quipu">🪢 Quipus</a></td><td>séc. XV–XVI (e antes)</td><td>Andes</td><td>🔓 Lida em parte</td></tr><tr><td><a href="#e-khitan">🐎 Escritas khitan</a></td><td>séc. X–XII</td><td>China e Mongólia (dinastia Liao)</td><td>🔓 Lida em parte</td></tr><tr><td><a href="#e-voynich">📕 Manuscrito Voynich</a></td><td>1404–1438 (pergaminho)</td><td>Europa Central (provável)</td><td>🔒 Não decifrada</td></tr><tr><td><a href="#e-vinca">🔶 Símbolos de Vinča</a></td><td>c. 5500–4500 a.C.</td><td>Bálcãs</td><td>❔ Proto-escrita em debate</td></tr></tbody></table></div>
+</section>
+
+<section class="sec" aria-labelledby="lin-h">
+  <h2 id="lin-h">⏳ Como as grandes decifrações aconteceram</h2>
+  <p class="sub">Oito vitórias, em ordem. Repare como bilíngues, nomes próprios e estatística aparecem de novo e de novo.</p>
+  <ol class="linha"><li><b>1799–1822</b><span class="tit">Hieróglifos egípcios</span> A Pedra de Roseta (1799) trazia o mesmo decreto em hieróglifos, demótico e grego; Champollion anunciou a decifração em 1822.</li><li><b>1857</b><span class="tit">Cuneiforme acadiano</span> A Royal Asiatic Society enviou o mesmo texto a quatro estudiosos; as traduções independentes coincidiram, prova pública da decifração.</li><li><b>1909</b><span class="tit">Meroítico (leitura)</span> Francis Llewellyn Griffith fixou os valores sonoros; a língua continua pouco entendida.</li><li><b>1915</b><span class="tit">Hitita</span> Bedřich Hrozný mostrou que era uma língua indo-europeia, a mais antiga documentada.</li><li><b>1929–1932</b><span class="tit">Ugarítico</span> Um alfabeto cuneiforme de 30 sinais, decifrado em poucos anos com a ajuda de nomes semitas.</li><li><b>1952</b><span class="tit">Linear B</span> Michael Ventris, arquiteto, provou que era grego micênico, com base nas grades de Alice Kober.</li><li><b>1952 em diante</b><span class="tit">Escrita maia</span> Yuri Knorozov propôs a leitura fonética; aceita nas décadas de 1970 e 1980, mudou a história maia.</li><li><b>2022</b><span class="tit">Elamita linear</span> François Desset e colegas usaram vasos de prata e nomes de reis para propor a decifração.</li></ol>
+</section>
+
+<section class="sec" aria-labelledby="lab-h">
+  <h2 id="lab-h">🔢 Laboratório: conte os sinais</h2>
+  <p class="sub">Cole um texto em qualquer escrita. O laboratório conta quantos sinais diferentes aparecem e sugere o tipo de sistema. É o primeiro passo de todo decifrador: Alice Kober fez isso à mão, com fichas, para o Linear B.</p>
+  <div class="lab js-so">
+    <label for="texto">Texto para analisar</label>
+    <textarea id="texto" rows="4">Um pequeno jabuti xereta viu dez cegonhas felizes. A ciência começa quando alguém conta os sinais e pergunta por que se repetem.</textarea>
+    <div class="acoes"><button type="button" class="btn" data-amostra="pt">Português</button><button type="button" class="btn" data-amostra="iroha">Japonês: poema Iroha (kana)</button></div>
+    <output id="saida" for="texto" aria-live="polite"></output>
+  </div>
+  <noscript><p class="mudo">O laboratório precisa de JavaScript. Regra prática: 20 a 40 sinais diferentes sugerem alfabeto; 50 a 100, silabário; centenas, um sistema logossilábico.</p></noscript>
+  <p class="mudo">⚠️ Textos curtos subestimam o total: o Iroha usa cada sinal do silabário uma única vez, por isso basta ele para mostrar um silabário inteiro.</p>
+</section>
+
+</main>
+<footer class="wrap rodape">
+  <p>🧭 Outras subseções: <a href="../codice-eras-perdidas/">🦖 Códice das Eras Perdidas</a> · <a href="../mapa-mundi/">🗺️ Mapa-múndi</a> · <a href="../atlas-escritas/">🔐 Atlas das escritas</a> · <a href="../salomao/">👑 Salomão</a> · <a href="../flashcards-quiz/">🧠 Flashcards e quiz</a> · <a href="../eras-esquecidas/">🕯️ Eras Esquecidas</a></p>
+  <p><b>ALDENIR ROCHA DE OLIVEIRA FILHO · PROJETO 360X</b> · idealização, geração, coordenação e direção. Pesquisa, redação e programação assistidas por Claude.</p>
+  <p>Conteúdo educativo. Datas e coordenadas são aproximadas. As seções de tradição e esoterismo tratam de história cultural e da religião; não são manuais nem afirmações de eficácia.</p>
+  <p class="grato">Grato desde já! 🙏</p>
+</footer>
+<script>document.documentElement.classList.add('js');</script>
+<script>
+(function(){
+  var cards=[].slice.call(document.querySelectorAll('.escrita'));
+  document.querySelectorAll('[data-estado].btn').forEach(function(b){b.addEventListener('click',function(){
+    document.querySelectorAll('[data-estado].btn').forEach(function(x){x.setAttribute('aria-pressed',x===b);});
+    cards.forEach(function(c){c.hidden=!(b.dataset.estado==='todas'||c.dataset.estado===b.dataset.estado);});
+  });});
+  var AM={pt:"Um pequeno jabuti xereta viu dez cegonhas felizes. A ciência começa quando alguém conta os sinais e pergunta por que se repetem.",iroha:"いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせす"};
+  var ta=document.getElementById('texto'),out=document.getElementById('saida');
+  function conta(){
+    var cs=Array.from(ta.value).filter(function(c){return !/[\s.,;:!?¡¿"'()\-–—0-9]/.test(c);});
+    var f={};cs.forEach(function(c){var k=c.toLowerCase();f[k]=(f[k]||0)+1;});
+    var ks=Object.keys(f).sort(function(a,b){return f[b]-f[a];});
+    var n=ks.length,tipo;
+    if(!cs.length){out.textContent='Cole um texto para começar.';return;}
+    if(n<=45)tipo='alfabeto ou abjad (20 a 40 sinais)';else if(n<=110)tipo='silabário (50 a 100 sinais)';else tipo='sistema logossilábico (centenas de sinais)';
+    var mx=f[ks[0]];
+    out.innerHTML='<p class="veredito"><b>'+n+'</b> sinais diferentes em '+cs.length+' ocorrências. Perfil compatível com <b>'+tipo+'</b>.</p><div class="barras">'+
+      ks.slice(0,10).map(function(k){return '<span>'+k.replace(/[&<>]/g,'')+'</span><span class="barra" style="width:'+Math.max(4,100*f[k]/mx)+'%"></span><span>'+f[k]+'</span>';}).join('')+'</div>';
+  }
+  ta.addEventListener('input',conta);
+  document.querySelectorAll('[data-amostra]').forEach(function(b){b.addEventListener('click',function(){ta.value=AM[b.dataset.amostra];conta();});});
+  conta();
+})();
+</script>
+</body>
+</html>
