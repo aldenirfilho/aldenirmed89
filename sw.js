@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v58`;
+const CACHE_NAME = `${CACHE_PREFIX}v59`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -42,6 +42,8 @@ const SHELL_ASSETS = [
   "./assets/aldenirmed89-mystic.css",
   "./assets/home-360x.css",
   "./assets/home-360x.js",
+  "./assets/digital-focus.css",
+  "./assets/digital-focus.js",
   "./assets/brand-360x/identity.css",
   "./assets/brand-360x/codice-aeroespacial.css",
   "./assets/brand-360x/logo-360x.webp",

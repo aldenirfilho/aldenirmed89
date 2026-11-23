@@ -150,9 +150,9 @@ button,input,select,textarea{font:inherit}
   position:fixed;top:12px;left:12px;z-index:1000;
   padding:11px 16px;border-radius:10px;
   background:#fff;color:#071422;font-weight:800;
-  transform:translateY(-180%);transition:transform .18s ease;
+  clip-path:inset(50%);
 }
-.skip-link:focus{transform:translateY(0)}
+.skip-link:focus{clip-path:none}
 .sr-only{
   position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
@@ -2242,6 +2242,7 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
   transition:.18s;color:var(--soft);
 }
 .float-btn:hover{background:var(--surf-h);border-color:var(--cyan);color:var(--cyan)}
+.float-btn.is-unavailable{visibility:hidden;transition:none}
 .a11y-panel{
   position:fixed;right:82px;bottom:24px;z-index:220;
   width:min(380px,calc(100vw - 36px));padding:0;
@@ -2554,6 +2555,8 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <link rel="stylesheet" href="./assets/brand-360x/identity.css"/>
 <link rel="stylesheet" href="./assets/home-360x.css"/>
 <script src="assets/home-360x.js" defer></script>
+<link rel="stylesheet" href="assets/digital-focus.css"/>
+<script src="assets/digital-focus.js" defer></script>
 <link rel="stylesheet" href="./assets/brand-360x/codice-aeroespacial.css"/>
 <noscript><style>
 .home-preferences .view-controls,.quick-finder{display:none}
@@ -2679,6 +2682,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <a href="questoes/index.html">🏆 Simulador TEMI</a>
           <a href="questoes/temi_800_imagens_questoes.html">🖼️ TEMI 800 com imagens</a>
           <a href="#temi">🎯 Prova de título</a>
+          <a href="#saude-digital" class="accent">🌿 Saúde digital e foco</a>
           <a href="01_UpDown_Hub/index.html" class="accent">↕️ UpDown Hub</a>
           <a href="02_Biblioteca_IA_Engine/index.html">📚 Biblioteca</a>
           <a href="15_Radar_Cientifico/index.html" class="accent">📡 Estação Radar</a>
@@ -2906,6 +2910,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         </select>
         <button class="view-toggle" id="wideViewBtn" type="button" data-layout-wide aria-pressed="true" title="Alternar entre vista expandida e vista de foco">↔ Vista expandida</button>
         <button class="view-toggle home-a11y-trigger" id="homeA11yBtn" type="button" aria-controls="a11yPanel" aria-expanded="false">Acessibilidade</button>
+        <a class="view-toggle" href="#saude-digital" data-search-route data-search-title="Saúde Digital, Harmonia e Foco" data-search-kind="Bem-estar digital" data-search-terms="atenção concentração estudo pausa temporizador cronômetro reduzir animações distrações">🌿 Saúde digital e foco</a>
         <button class="launch-replay" id="heroReplayMission" type="button">Abrir experiência de missão</button>
       </div>
       <details class="home-clinical-links">
@@ -2953,6 +2958,48 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
       <a class="hub-tile is-new" href="#apps-360" style="--tile-accent:var(--green)" data-search-route data-search-title="Apps 360: Códice 360X e FocusAI 360X" data-search-kind="Aplicativos" data-search-terms="apps aplicativos codice flashcards focusai leitor extensao chrome"><span class="hub-tile-icon" aria-hidden="true">📱</span><strong>Apps 360</strong><span>Códice 360X de flashcards e FocusAI Reader 360X.</span><em>abrir apps →</em></a>
       <a class="hub-tile" href="#downloads" style="--tile-accent:var(--cyan)" data-search-route data-search-title="Central de downloads" data-search-kind="Downloads" data-search-terms="baixar download instalar mac windows iphone zip"><span class="hub-tile-icon" aria-hidden="true">⬇️</span><strong>Downloads</strong><span>Instale no Mac, Windows ou iPhone e baixe os apps 360X.</span><em>baixar →</em></a>
       <a class="hub-tile" href="ecossistema/index.html#sites-publicos" style="--tile-accent:var(--violet)" data-search-route data-search-kind="Navegação rápida"><span class="hub-tile-icon" aria-hidden="true">🌐</span><strong>Universo 360X</strong><span>Projetos, mapa visual, neurodiversidade e auditoria UTI.</span><em>explorar →</em></a>
+    </div>
+  </div>
+</section>
+
+<section id="saude-digital" class="digital-focus" aria-labelledby="digital-focus-heading">
+  <div class="shell">
+    <div class="digital-focus-panel">
+      <div class="digital-focus-guide">
+        <h2 id="digital-focus-heading" class="section-title">Saúde Digital, Harmonia e Foco</h2>
+        <p class="digital-focus-lead">Escolha uma tarefa, reduza as interrupções e reserve um momento para fazer uma pausa.</p>
+        <ol class="digital-focus-steps" role="list">
+          <li><div><strong>Escolha um objetivo pequeno</strong><p>Leia um tópico, confira uma referência ou resolva uma questão.</p></div></li>
+          <li><div><strong>Reduza as interrupções</strong><p>Silencie os avisos que podem esperar e mantenha ativos os alertas importantes.</p></div></li>
+          <li><div><strong>Faça uma pausa e marque a retomada</strong><p>Anote de onde quer continuar e faça uma pausa breve longe da tela.</p></div></li>
+        </ol>
+        <div class="digital-focus-tools">
+          <button class="view-toggle" type="button" data-a11y="motion" aria-pressed="false" hidden>Reduzir animações<span class="digital-focus-motion-active" aria-hidden="true"> · Ativado</span></button>
+          <a href="ecossistema/neurodiversidade-tdah/">Recursos de neurodiversidade <span aria-hidden="true">→</span></a>
+        </div>
+        <details class="digital-focus-source">
+          <summary>Por que silenciar avisos?</summary>
+          <p>Em um experimento, receber notificações de celular prejudicou o desempenho em uma tarefa de atenção, mesmo sem usar o aparelho. <a href="https://pubmed.ncbi.nlm.nih.gov/26121498/">Stothart e cols., 2015</a>.</p>
+        </details>
+      </div>
+      <div class="digital-focus-session" data-focus-session hidden>
+        <h3>Temporizador de foco</h3>
+        <p>Escolha o tempo que cabe agora. A contagem é silenciosa.</p>
+        <div class="digital-focus-duration">
+          <label for="digital-focus-duration">Duração</label>
+          <select id="digital-focus-duration" class="view-select">
+            <option value="5">5 minutos</option>
+            <option value="15" selected>15 minutos</option>
+            <option value="25">25 minutos</option>
+          </select>
+        </div>
+        <div class="digital-focus-clock" role="timer" aria-label="Tempo restante" aria-live="off">15:00</div>
+        <div class="digital-focus-actions">
+          <button type="button" class="digital-focus-start" data-focus-start>Iniciar</button>
+          <button type="button" class="view-toggle" data-focus-reset disabled>Reiniciar</button>
+        </div>
+        <p class="digital-focus-status" role="status"></p>
+      </div>
     </div>
   </div>
 </section>
@@ -4580,7 +4627,7 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <p class="sr-only" id="a11yAnnouncement" role="status" aria-live="polite"></p>
 <div class="floaters" role="complementary" aria-label="Atalhos rápidos">
   <button class="float-btn" id="a11yBtn" title="Acessibilidade e aplicativos" aria-label="Abrir acessibilidade e aplicativos para Mac, Windows e iPhone" aria-controls="a11yPanel" aria-expanded="false">♿</button>
-  <button class="float-btn" id="topBtn" title="Voltar ao topo" aria-label="Voltar ao topo">⬆</button>
+  <button class="float-btn is-unavailable" id="topBtn" type="button" title="Voltar ao topo" aria-label="Voltar ao topo">⬆</button>
 </div>
 
 <!-- ── JAVASCRIPT ─────────────────────────────────── -->
@@ -6263,7 +6310,7 @@ soundConsoleToggle?.addEventListener('click',()=>{
 });
 settingsAccessibility?.addEventListener('click',()=>{
   setSettingsPanel(false,{focus:false});
-  setA11yPanel(true);
+  setA11yPanel(true,settingsConsoleToggle);
 });
 document.addEventListener('keydown',event=>{
   if(event.key==='Escape'&&settingsConsolePanel&&!settingsConsolePanel.hidden){
@@ -6335,15 +6382,14 @@ else window.addEventListener('resize',updateHeaderOffset,{passive:true});
 
 /* ── TOP BUTTON ──────────────────────────────────── */
 const topBtn=document.getElementById('topBtn');
-window.addEventListener('scroll',()=>{
-  topBtn.style.opacity=window.scrollY>400?'1':'0';
-  topBtn.style.pointerEvents=window.scrollY>400?'auto':'none';
-},{ passive:true });
-topBtn.style.opacity='0';topBtn.style.transition='opacity .3s';
-topBtn.addEventListener('click',()=>window.scrollTo({
-  top:0,
-  behavior:missionHasReducedMotion()?'auto':'smooth'
-}));
+const updateTopButton=()=>topBtn.classList.toggle('is-unavailable',window.scrollY<=400);
+window.addEventListener('scroll',updateTopButton,{passive:true});
+window.addEventListener('pageshow',updateTopButton);
+updateTopButton();
+topBtn.addEventListener('click',()=>{
+  document.getElementById('top').focus({preventScroll:true});
+  window.scrollTo({top:0,behavior:missionHasReducedMotion()?'auto':'smooth'});
+});
 
 /* ── ORBS PARALLAX (subtle) ──────────────────────── */
 let raf;

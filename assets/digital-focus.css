@@ -1,0 +1,156 @@
+.digital-focus {
+  scroll-margin-top: 0;
+}
+
+.digital-focus-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+  padding: clamp(1.25rem, 4vw, 3.5rem);
+  border: 1px solid var(--brd-h);
+  border-radius: var(--r-xl);
+  background: linear-gradient(125deg, var(--surf-h), transparent 72%), var(--surf);
+  color: var(--text);
+}
+
+.digital-focus-guide {
+  flex: 2 1 30rem;
+  min-width: 0;
+}
+
+.digital-focus .section-title {
+  max-width: 22ch;
+  margin: 0 0 .65rem;
+}
+
+.digital-focus-lead,
+.digital-focus-steps p,
+.digital-focus-session p,
+.digital-focus-source p {
+  color: var(--soft);
+  line-height: 1.55;
+}
+
+.digital-focus-steps {
+  list-style: none;
+  counter-reset: focus-step;
+  display: grid;
+  gap: .9rem;
+  padding: 0;
+  margin: 1.25rem 0;
+}
+
+.digital-focus-steps li {
+  display: flex;
+  align-items: start;
+  gap: .8rem;
+  counter-increment: focus-step;
+}
+
+.digital-focus-steps li::before {
+  content: counter(focus-step) / '';
+  display: grid;
+  place-items: center;
+  flex: 0 0 1.8rem;
+  min-height: 1.8rem;
+  background: var(--surf-h);
+  color: var(--text);
+  border: 1px solid var(--brd);
+  border-radius: 50%;
+  font: 600 .8rem var(--font-mono);
+}
+
+.digital-focus-steps p { margin: .15rem 0 0; }
+
+.digital-focus-tools,
+.digital-focus-actions,
+.digital-focus-duration {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .65rem;
+}
+
+.digital-focus-tools :is(a, button),
+.digital-focus-session :is(button, select) {
+  min-height: 44px;
+}
+
+.digital-focus-tools a {
+  display: inline-flex;
+  align-items: center;
+  gap: .3em;
+}
+
+.digital-focus-motion-active { display: none; }
+.digital-focus-tools [aria-pressed="true"] .digital-focus-motion-active { display: inline; }
+
+.digital-focus :is(.digital-focus-tools, .digital-focus-source) a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.digital-focus-source {
+  margin-top: .5rem;
+  color: var(--soft);
+  font-size: .9rem;
+}
+
+.digital-focus-source summary {
+  cursor: pointer;
+  padding: .65rem 0;
+}
+
+.digital-focus-source p { max-width: 58ch; }
+
+.digital-focus-session {
+  flex: 1 1 19rem;
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 1.75rem);
+  background: var(--panel-head-bg);
+  border: 1px solid var(--brd-h);
+  border-radius: var(--r-lg);
+}
+
+.digital-focus-session h3 {
+  font: 700 clamp(1.15rem, 2.2vw, 1.55rem)/1.2 var(--font-head);
+  margin: 0 0 .45rem;
+}
+
+.digital-focus-duration { margin-top: 1.15rem; }
+.digital-focus-duration select {
+  flex: 0 1 auto;
+  min-inline-size: min(100%, 9.5rem);
+  max-inline-size: 100%;
+  font-size: 1rem;
+}
+
+.digital-focus-clock {
+  margin: .75rem 0 1rem;
+  font: 600 clamp(2.4rem, 9vw, 4rem)/1.15 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.digital-focus-start {
+  padding: .55rem 1.1rem;
+  color: var(--panel-head-bg);
+  background: var(--text);
+  border: 1px solid var(--text);
+  border-radius: var(--r);
+  font: 600 1rem var(--font-body);
+  cursor: pointer;
+}
+
+.digital-focus-status {
+  min-height: 1.55em;
+  margin: .65rem 0 0;
+}
+
+.digital-focus :disabled {
+  cursor: default;
+  opacity: .65;
+}
+
+.digital-focus [hidden] { display: none; }

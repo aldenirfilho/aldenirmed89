@@ -40,11 +40,19 @@
     }
     status.textContent = results.length ? `${results.length} rota(s) encontrada(s)${results.length>12 ? '; mostrando as primeiras 12' : ''}. Use Tab para escolher.` : 'Nenhuma rota rápida encontrada. Continue a busca na Biblioteca IA.';
   };
+  const clearOnEscape = event => {
+    if (event.key !== 'Escape' || (!input.value && list.hidden)) return;
+    event.preventDefault();
+    input.value = '';
+    input.focus();
+    show();
+  };
   input.addEventListener('input',show);
   input.addEventListener('keydown',event => {
-    if(event.key==='Escape'){input.value='';show();}
+    clearOnEscape(event);
     if(event.key==='ArrowDown'&&!list.hidden){event.preventDefault();list.querySelector('a')?.focus();}
   });
+  list.addEventListener('keydown',clearOnEscape);
   fetch('02_Biblioteca_IA_Engine/data/biblioteca_ingestao_20260911.json', {credentials:'same-origin'})
     .then(response => {if(!response.ok) throw Error('library-unavailable');return response.json();})
     .then(data => {
@@ -56,6 +64,11 @@
         const href = '02_Biblioteca_IA_Engine/index.html?doc=' + encodeURIComponent(item.id);
         unique.set(href,{href,title:item.title,text:[item.title,item.theme,...(Array.isArray(item.tags)?item.tags:[])].join(' '),kind:'Word IA · prévia educacional em revisão médica'});
       });
+      const focusedLink = list.contains(document.activeElement) ? document.activeElement : null;
       show();
+      if (focusedLink) {
+        const replacement = [...list.querySelectorAll('a')].find(link => link.href === focusedLink.href);
+        (replacement || input).focus();
+      }
     }).catch(() => { /* Os módulos e a busca no acervo continuam disponíveis. */ });
 })();
