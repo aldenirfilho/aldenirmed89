@@ -81,6 +81,7 @@
     .btn:hover,button:hover{transform:translateY(-2px);background:rgba(255,255,255,.12)}
     .btn.primary,button.primary{background:linear-gradient(135deg,var(--cyan),var(--green));color:#04131f;border:0}.btn.ghost{background:transparent}
     .status-card{padding:24px}.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:18px 0}.metric-grid div{padding:16px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}.metric-grid strong{display:block;font-size:1.7rem}.metric-grid span{color:var(--muted);font-size:.88rem}
+    .module-editorial-image{display:block;width:min(100%,28rem);height:auto;aspect-ratio:16/9;border:1px solid var(--border);border-radius:18px;margin-top:16px}
     .notice{border:1px solid rgba(255,209,102,.3);background:linear-gradient(145deg,rgba(255,209,102,.12),rgba(255,255,255,.04));border-radius:22px;padding:16px;margin-top:16px;color:#fff4cf}
     .section{padding-top:32px;padding-bottom:32px}
     .tabs{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin:14px 0 22px}
@@ -148,7 +149,7 @@
       html,html.a11y-light,html.a11y-contrast{color-scheme:light;--bg:#fff;--bg2:#fff;--panel:#fff;--border:#71869a;--control-border:#71869a;--text:#102a43;--muted:#455f73;--cyan:#006b7d;--green:#087a55;--red:#b4233f;--yellow:#855400;--violet:#5946c7;--shadow:none}
       body{background:#fff!important;color:var(--text)!important}
       .topbar{position:static;background:#fff!important;border-color:#71869a;box-shadow:none}
-      .nav,.clarity-toggle{display:none!important}
+      .nav,.clarity-toggle,.module-editorial-image{display:none!important}
       h1{background:none!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important}
       .glass,.card,.result,.formula,.notice,.metric-grid div,.link-grid a{background:#fff!important;color:var(--text)!important;border-color:#71869a!important;box-shadow:none!important}
       .card,.result,.formula{break-inside:avoid}
@@ -206,6 +207,10 @@
           <div><strong>UTI</strong><span>Plantão/round</span></div>
         </div>
         <p class="muted">Projetado para iPhone/iPad/Mac, GitHub Pages e Antigravity. Tudo roda localmente no navegador.</p>
+        <img class="module-editorial-image" src="../assets/module-visuals/uti-area-intensiva-480.webp"
+             srcset="../assets/module-visuals/uti-area-intensiva-480.webp 480w, ../assets/module-visuals/uti-area-intensiva-960.webp 960w"
+             sizes="auto, (max-width: 520px) calc(100vw - 94px), 448px" width="960" height="540"
+             loading="lazy" decoding="async" alt="Ilustração de uma UTI com corredor iluminado e leito vazio atrás de uma divisória de vidro."/>
       </aside>
     </section>
 
