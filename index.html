@@ -1516,6 +1516,23 @@ html[data-visual-profile="total-orange"] .mission-intro::after{
   gap:18px;
   margin-top:34px;
 }
+.home-editorial-image{
+  display:block;width:100%;height:auto;aspect-ratio:16/9;
+  border-radius:var(--r-lg);border:1px solid var(--brd);
+  object-fit:cover;background:var(--surf);
+}
+.stations-visual-intro{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0, min(36%, 430px));
+  align-items:center;gap:clamp(20px,4vw,60px);
+}
+.stations-visual-intro .section-sub{margin-top:12px}
+.digital-focus-side{flex:1 1 19rem;min-width:0}
+.digital-focus-side [data-focus-session]:not([hidden]) + .home-editorial-image{margin-top:14px}
+.temi-card .home-editorial-image{margin:14px auto 0;max-width:440px}
+@media(max-width:760px){
+  .stations-visual-intro{grid-template-columns:1fr}
+  .stations-visual-intro .home-editorial-image{max-width:540px}
+}
 .modules-grid{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -2982,23 +2999,29 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
           <p>Em um experimento, receber notificações de celular prejudicou o desempenho em uma tarefa de atenção, mesmo sem usar o aparelho. <a href="https://pubmed.ncbi.nlm.nih.gov/26121498/">Stothart e cols., 2015</a>.</p>
         </details>
       </div>
-      <div class="digital-focus-session" data-focus-session hidden>
-        <h3>Temporizador de foco</h3>
-        <p>Escolha o tempo que cabe agora. A contagem é silenciosa.</p>
-        <div class="digital-focus-duration">
-          <label for="digital-focus-duration">Duração</label>
-          <select id="digital-focus-duration" class="view-select">
-            <option value="5">5 minutos</option>
-            <option value="15" selected>15 minutos</option>
-            <option value="25">25 minutos</option>
-          </select>
+      <div class="digital-focus-side">
+        <div class="digital-focus-session" data-focus-session hidden>
+          <h3>Temporizador de foco</h3>
+          <p>Escolha o tempo que cabe agora. A contagem é silenciosa.</p>
+          <div class="digital-focus-duration">
+            <label for="digital-focus-duration">Duração</label>
+            <select id="digital-focus-duration" class="view-select">
+              <option value="5">5 minutos</option>
+              <option value="15" selected>15 minutos</option>
+              <option value="25">25 minutos</option>
+            </select>
+          </div>
+          <div class="digital-focus-clock" role="timer" aria-label="Tempo restante" aria-live="off">15:00</div>
+          <div class="digital-focus-actions">
+            <button type="button" class="digital-focus-start" data-focus-start>Iniciar</button>
+            <button type="button" class="view-toggle" data-focus-reset disabled>Reiniciar</button>
+          </div>
+          <p class="digital-focus-status" role="status"></p>
         </div>
-        <div class="digital-focus-clock" role="timer" aria-label="Tempo restante" aria-live="off">15:00</div>
-        <div class="digital-focus-actions">
-          <button type="button" class="digital-focus-start" data-focus-start>Iniciar</button>
-          <button type="button" class="view-toggle" data-focus-reset disabled>Reiniciar</button>
-        </div>
-        <p class="digital-focus-status" role="status"></p>
+        <img class="home-editorial-image" src="assets/home-visuals/foco-mesa-de-estudo-480.webp"
+             srcset="assets/home-visuals/foco-mesa-de-estudo-480.webp 480w, assets/home-visuals/foco-mesa-de-estudo-960.webp 960w"
+             sizes="auto, (max-width: 940px) calc(100vw - 80px), 480px" width="960" height="540"
+             loading="lazy" decoding="async" alt="Mesa de estudo iluminada, com caderno aberto e celular virado para baixo."/>
       </div>
     </div>
   </div>
@@ -3081,10 +3104,16 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
 <!-- ── ESTAÇÕES ALDENIRMED89 ───────────────────────── -->
 <section id="estacoes" class="stations-section" aria-labelledby="stations-heading">
   <div class="shell">
-    <div class="reveal section-intro">
-      <div class="section-label">// cobertura e leitura do jogo</div>
-      <h2 class="section-title" id="stations-heading">Estações AldenirMed 360X — cobertura total 📡</h2>
-      <p class="section-sub">Duas áreas independentes e coordenadas: o Radar acompanha o que mudou; o Diretório sustenta a checagem de fontes. Nenhuma decisão avança sem cobertura informacional.</p>
+    <div class="stations-visual-intro reveal">
+      <div>
+        <div class="section-label">// cobertura e leitura do jogo</div>
+        <h2 class="section-title" id="stations-heading">Estações AldenirMed 360X — cobertura total 📡</h2>
+        <p class="section-sub">Duas áreas independentes e coordenadas: o Radar acompanha o que mudou; o Diretório sustenta a checagem de fontes. Nenhuma decisão avança sem cobertura informacional.</p>
+      </div>
+      <img class="home-editorial-image" src="assets/home-visuals/estacoes-biblioteca-medica-480.webp"
+           srcset="assets/home-visuals/estacoes-biblioteca-medica-480.webp 480w, assets/home-visuals/estacoes-biblioteca-medica-960.webp 960w"
+           sizes="auto, (max-width: 760px) calc(100vw - 36px), 430px" width="960" height="540"
+           loading="lazy" decoding="async" alt="Livro aberto em uma mesa de pesquisa numa biblioteca médica iluminada pela janela."/>
     </div>
     <div class="stations-grid">
 
@@ -3761,6 +3790,10 @@ html.a11y-reduce-motion :is(.reveal,.reveal-l,.phase,.pipeline-step){opacity:1!i
         <div class="temi-stat-lbl">questões ilustradas em 20 temas</div>
         <p>O banco inclui traçados de ECG, curvas de ventilação mecânica, esquemas de POCUS e outros recursos para interpretar casos de UTI.</p>
         <a class="temi-collection-link" href="questoes/temi_800_imagens_questoes.html">Ver questões ilustradas <span aria-hidden="true">→</span></a>
+        <img class="home-editorial-image" src="assets/home-visuals/temi-simulacao-clinica-480.webp"
+             srcset="assets/home-visuals/temi-simulacao-clinica-480.webp 480w, assets/home-visuals/temi-simulacao-clinica-960.webp 960w"
+             sizes="auto, (max-width: 1024px) min(calc(100vw - 94px), 440px), 264px" width="960" height="540"
+             loading="lazy" decoding="async" alt="Ilustração de uma sala de simulação clínica, com leito vazio e estetoscópio em primeiro plano."/>
       </div>
 
     </div>
