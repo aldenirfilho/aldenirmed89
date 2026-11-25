@@ -225,7 +225,8 @@
         <h1><span class="gradient">800 questões</span><br />com imagens · revisão A–E</h1>
         <p class="lead">Quarenta questões por tema, cada uma com figura para interpretar — ECG, curvas do ventilador, capnografia, POCUS, TC, radiografia, ROTEM, gasometria e monitor. Resolva, revele a leitura da imagem e o comentário de cada alternativa, e marque o que já revisou neste navegador.</p>
         <div class="notice review-strip"><strong>🛡️ Segurança:</strong> questões autorais para estudo, sem vínculo com prova oficial AMIB; revisão médica humana formal pendente. Figuras são esquemas e traçados sintéticos gerados por código, não imagens de pacientes. ⚠️ Ferramenta educacional/de apoio à decisão. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.
-          <p>Este banco usa cinco alternativas (A–E) e oferece treino aleatório de 60 questões. A prova objetiva do <a href="https://amib.org.br/titulo-de-especialista/">Concurso para Obtenção do Título de Especialista em Medicina Intensiva da AMIB 2026</a> tem 90 questões de quatro alternativas (A–D) em quatro horas.</p>
+          <p>Este banco usa cinco alternativas (A–E) e oferece treino aleatório de 60 questões. O simulado separado segue o formato com 90 questões, quatro alternativas (A–D) e quatro horas. <a href="https://amib.org.br/titulo-de-especialista/">Consulte o edital TEMI Adulto 2026</a>.</p>
+          <a class="btn primary" href="temi_simulado_2026.html">Abrir simulado TEMI de 90 questões</a>
         </div>
       </article>
       <aside class="glass stats" aria-label="Progresso do banco">
@@ -507,11 +508,16 @@
         return list;
       }
 
+      function describeFigure(img) {
+        if (!img) return "";
+        return window.Temi800Figuras?.describe?.(img) || img.alt || "";
+      }
+
       function figureContent(question) {
         const img = question.image;
         if (!img || !window.Temi800Figuras) return "";
         const image = Temi800Figuras.render(img, question.id);
-        return `<div role="img" aria-label="${esc(img.alt)}"><div aria-hidden="true">${image}</div></div>`;
+        return `<div role="img" aria-label="${esc(describeFigure(img))}"><div aria-hidden="true">${image}</div></div>`;
       }
       function figure(question) {
         const content = figureContent(question);
@@ -702,7 +708,7 @@
             const question = bank.questions.find(item => item.id === button.dataset.copy);
             const text = [
               `${question.id} — ${question.stem}`,
-              `[Figura] ${question.image?.alt || ""}`,
+              `[Figura] ${describeFigure(question.image)}`,
               ...Object.entries(question.options).map(([letter, option]) => `${letter}) ${option}`),
               `Gabarito: ${question.answer}`,
               ...Object.entries(question.rationales).map(([letter, rationale]) => `${letter}: ${rationale}`),

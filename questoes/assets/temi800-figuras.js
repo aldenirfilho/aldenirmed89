@@ -147,6 +147,10 @@
   }
 
   /* ───────────────────────── Curvas do ventilador ───────────────────────── */
+  const VENT_MODES = {
+    pcv_normal: "PCV", psv_normal: "PSV", ciclagem_precoce: "PSV",
+    ciclagem_tardia: "PSV", disparo_reverso: "PCV", autodisparo: "PCV"
+  };
   function ventSeries(key, p) {
     const dt = 0.01, T = 9, n = Math.round(T / dt);
     const P = new Float64Array(n), F = new Float64Array(n), V = new Float64Array(n);
@@ -205,7 +209,7 @@
   function curva(spec) {
     const p = spec.params || {}, d = ventSeries(spec.key, p), h = 400;
     let s = svgOpen(h, "#02080e") + label(16, 22, spec.title || "Curvas do ventilador", "#e5f3ff", 14, 800);
-    const mode = {pcv_normal: "PCV", psv_normal: "PSV", ciclagem_precoce: "PSV", ciclagem_tardia: "PSV", disparo_reverso: "PCV", autodisparo: "PCV"}[spec.key] || "VCV";
+    const mode = VENT_MODES[spec.key] || "VCV";
     s += label(784, 22, `Modo ${mode}`, "#ffd166", 12, 700, "end");
     const pMax = Math.max(40, Math.ceil((Math.max(...d.P) + 5) / 10) * 10);
     s += chart(10, 32, 780, 118, d.P, d.dt, "#ffd166", 0, pMax, "Pressão", "cmH₂O", false);
@@ -529,7 +533,110 @@
       default: return "";
     }
   }
-  const api = {render};
+  // Transcreve morfologia e anotações antes da resposta. As chaves internas,
+  // o diagnóstico e a interpretação comentada nunca entram no texto.
+  const ECG_FINDINGS = {
+    fa_rvr: "Complexos QRS estreitos, frequentes e com intervalos entre batimentos que variam sem padrão fixo. A linha entre os complexos oscila discretamente, sem ondas P definidas.",
+    fv: "Ondulações rápidas, irregulares e de amplitude variável ocupam toda a tira. Não se distinguem ondas P, complexos QRS ou ondas T organizados.",
+    tv: "Sequência rápida e regular de complexos QRS largos e muito semelhantes entre si. Não se distinguem ondas P antes dos complexos.",
+    assistolia: "Linha quase plana ao longo da tira, com pequenas oscilações. Não se distinguem ondas P nem complexos QRS.",
+    aesp: "Complexos QRS largos, regulares e bem espaçados. O traçado eletrocardiográfico não informa se há pulso.",
+    torsades: "Oscilações rápidas e largas agrupadas em fusos. A amplitude cresce e diminui ciclicamente em torno da linha de base; as ondas P, QRS e T não se separam com nitidez.",
+    hiperk_grave: "Ondas contínuas, amplas e arredondadas, em formato senoidal. Não se distinguem ondas P, complexos QRS e ondas T separados.",
+    osborn: "Complexos regulares e espaçados, cada um precedido por uma onda P. Há um ressalto positivo logo após o QRS e pequenas oscilações na linha de base.",
+    tsv: "Complexos QRS estreitos, muito próximos entre si e com intervalos regulares. Não se distinguem ondas P isoladas.",
+    fa_preexcitada: "Sequência muito rápida de complexos largos, com diferenças de largura, amplitude e espaçamento entre batimentos. Não se identificam ondas P regulares.",
+    flutter: "Complexos QRS estreitos e regulares. Entre eles há deflexões repetidas com formato de dentes de serra, em frequência maior que a dos QRS.",
+    bradi_sinusal: "Complexos QRS estreitos e regulares, bem espaçados. Uma onda P precede cada QRS, com intervalo constante.",
+    bavt: "Ondas P regulares e mais frequentes que os QRS. Os QRS são largos e lentos, sem relação fixa com as ondas P.",
+    mobitz2: "As ondas P mantêm espaçamento regular. O intervalo PR dos batimentos conduzidos permanece semelhante, e periodicamente há uma onda P sem QRS em seguida. Os QRS conduzidos são alargados.",
+    mobitz1: "Em cada grupo de batimentos, o intervalo PR aumenta progressivamente até uma onda P não ser seguida por QRS. Em seguida, o intervalo PR volta a encurtar.",
+    bav1: "Cada onda P é seguida por um QRS. O intervalo entre a onda P e o início do QRS é prolongado e semelhante de um batimento ao outro.",
+    marcapasso_falha: "Espículas verticais finas aparecem a intervalos regulares. Algumas são seguidas de complexo QRS largo e outras não são seguidas de complexo.",
+    hiperk: "Ondas P pequenas, complexos QRS alargados e ondas T altas, estreitas e pontiagudas.",
+    hipok: "Segmento ST abaixo da linha de base e onda T de baixa amplitude. Uma segunda onda positiva aparece após a onda T.",
+    qt_longo: "As ondas T estão mais afastadas dos seus complexos QRS. O intervalo do início do QRS ao final da onda T ocupa parte prolongada de cada ciclo.",
+    wpw: "O intervalo da onda P ao QRS é curto. O início do QRS sobe de forma mais lenta e arredondada antes da deflexão mais rápida.",
+    taqui_sinusal: "Complexos QRS estreitos, frequentes e regulares. Cada QRS é precedido por onda P semelhante, com intervalo PR aproximadamente constante.",
+    fa: "Complexos QRS estreitos, com espaçamento variável sem padrão fixo. Entre os complexos há oscilações discretas e nenhuma onda P se destaca."
+  };
+  const ECG12_FINDINGS = {
+    iam_inferior: "Segmento ST acima da linha de base em DII, DIII e aVF, mais elevado em DIII que em DII. Deslocamento abaixo da linha de base em DI e aVL.",
+    iam_anterior: "Segmento ST acima da linha de base em V1 a V4, mais evidente em V2 e V3. Em DII, DIII e aVF, o segmento ST está discretamente abaixo da linha de base.",
+    normal: "Complexos QRS regulares, precedidos por ondas P. Não se destaca deslocamento persistente do segmento ST nas derivações mostradas.",
+    iam_posterior: "Segmento ST abaixo da linha de base em V1 a V3. As ondas R em V1 e V2 são relativamente altas neste traçado.",
+    wellens: "Ondas T negativas e profundas em V2 e V3, com inversão menor em V4. O segmento ST em V2 e V3 fica próximo da linha de base.",
+    de_winter: "Ponto J e trecho inicial do segmento ST abaixo da linha de base em V1 a V6, seguidos por ondas T altas e positivas, sobretudo em V2 a V4. Em aVR o ST está discretamente elevado.",
+    tronco: "Segmento ST abaixo da linha de base em várias derivações, incluindo DI, DII, aVF e V3 a V6. Em aVR há elevação e em V1 há elevação menor.",
+    pericardite: "Segmento ST acima da linha de base em várias derivações dos membros e precordiais, incluindo DI, DII e V2 a V6. Em aVR o ST está abaixo da linha de base.",
+    brugada: "Em V1 e V2 há deflexão positiva terminal do QRS, seguida de segmento ST acima da linha de base e onda T negativa.",
+    triciclico: "Batimentos frequentes e regulares, com QRS alargados. Existe uma deflexão positiva tardia do QRS em aVR e uma onda S evidente em DI.",
+    brd: "O complexo QRS em V1 tem duas deflexões positivas separadas por uma negativa. A segunda positiva é maior que a primeira. A onda S é mais evidente em DI, V5 e V6."
+  };
+  const VENT_FINDINGS = {
+    vcv_pausa: "Durante a inspiração, o fluxo mantém um nível positivo constante e o volume sobe em rampa. Quando o fluxo chega a zero na pausa, a pressão cai do pico para um platô, com o volume mantido antes da expiração.",
+    resistencia: "Durante a inspiração, o fluxo mantém um nível positivo constante. Na pausa de fluxo zero há uma queda acentuada da pressão entre o pico e o platô. O volume se mantém durante a pausa.",
+    complacencia: "Durante a inspiração, o fluxo mantém um nível positivo constante. Na pausa de fluxo zero, a pressão permanece próxima do pico, em um platô alto. O volume se mantém durante a pausa.",
+    autopeep: "O fluxo expiratório está abaixo de zero e ainda não volta a zero quando começa a inspiração seguinte. A curva de volume também não retorna à linha de base entre os ciclos.",
+    disparo_ineficaz: "Durante a expiração há uma elevação breve do fluxo em direção a zero, junto com uma pequena queda na pressão. A deflexão não é seguida de nova subida do volume.",
+    duplo_disparo: "Em ciclos alternados, o volume já começa elevado e, no trecho de fluxo inspiratório positivo, sobe até quase o dobro dos demais ciclos antes de decair. O volume não retorna à linha de base nesse trecho.",
+    fome_fluxo: "O fluxo se mantém num patamar positivo na inspiração. Durante a subida da pressão há uma depressão no meio do traçado, enquanto o volume cresce em rampa.",
+    ciclagem_precoce: "A pressão inspiratória retorna à linha de base após trecho breve de fluxo positivo. Pouco depois há uma pequena queda adicional da pressão, acompanhada de uma deflexão do fluxo expiratório em direção a zero.",
+    ciclagem_tardia: "O fluxo inspiratório cai progressivamente. Perto da transição para a expiração aparece um ressalto breve de pressão, antes que ela retorne à linha de base.",
+    vazamento: "O volume sobe na inspiração e desce na expiração, mas termina o ciclo ainda acima da linha de base. Na inspiração seguinte, o traçado de volume recomeça na linha de base.",
+    secrecao: "Há pequenas oscilações rápidas sobrepostas aos traçados de pressão e de fluxo, tanto na inspiração como na expiração. A curva do volume não tem o mesmo serrilhado.",
+    autodisparo: "A pressão sobe em ciclos regulares e próximos, sem queda imediatamente antes da subida. Há pequenas oscilações repetidas sobre o fluxo expiratório. O gráfico não registra esforço muscular.",
+    disparo_reverso: "Já durante o trecho de pressurização, aparece uma concavidade na curva de pressão ao mesmo tempo que o fluxo inspiratório volta a subir.",
+    pcv_normal: "A pressão sobe rapidamente e fica quase horizontal na inspiração. O fluxo começa alto e decai progressivamente enquanto o volume sobe; na expiração, pressão, fluxo e volume retornam à linha de base.",
+    psv_normal: "A pressão sobe rapidamente para um platô. O fluxo inspiratório começa alto e decai; na transição para a expiração ele cruza zero e fica negativo. O volume volta à linha de base."
+  };
+  const POCUS_FINDINGS = {
+    vh_s_reverso: "Doppler pulsado da veia hepática. Em cada ciclo, a deflexão S fica acima do centro da escala e a deflexão D fica abaixo.",
+    linhas_b: "Na imagem pulmonar, quatro faixas verticais brilhantes partem da linha pleural e se estendem até a borda profunda do quadro.",
+    fe_reduzida: "O esquema cardíaco mostra uma cavidade ventricular ampla. A anotação da distância E-septo é de 18 milímetros. É um quadro estático, sem registro do movimento das paredes.",
+    tamponamento: "Há um halo escuro em torno do contorno cardíaco. Uma das cavidades internas tem contorno estreito e achatado. A figura é estática e não mostra a fase do ciclo cardíaco.",
+    vd_dilatado: "No esquema cardíaco, o ventrículo direito é maior que o esquerdo e o septo entre as cavidades tem contorno quase reto. Não há medida da espessura da parede nesta figura.",
+    vci_colapsavel: "Corte longitudinal subcostal da veia cava inferior, com lúmen escuro e estreito. A anotação informa diâmetro de 1,1 centímetro e variação maior que 50 por cento.",
+    consolidacao: "Na base pulmonar há uma área cinza de textura semelhante à de um órgão sólido, com pequenos traços brancos em seu interior. É um quadro estático.",
+    ponto_pulmonar: "Modo M pulmonar. Acima da linha pleural há linhas horizontais. Abaixo dela, a metade esquerda tem linhas horizontais paralelas e, à direita de uma marca vertical, o padrão passa a granular.",
+    bainha_optico: "No esquema ocular, uma linha de medida cruza a bainha do nervo atrás do globo. O diâmetro anotado é de 6,8 milímetros.",
+    derrame_pleural: "No corte da base pulmonar há uma área escura acima da linha curva do diafragma, com uma estrutura cinza que se projeta para dentro dessa área.",
+    tvp: "No corte inguinal, durante a compressão indicada no quadro, a veia femoral aparece circular e aberta, com ecos no interior. Ao lado há um vaso identificado como artéria.",
+    fast_morison: "Na janela do quadrante superior direito, há uma faixa escura em forma de crescente entre a superfície inferior do fígado e a região do rim direito.",
+    linhas_a: "Na imagem pulmonar, duas linhas horizontais brilhantes se repetem em profundidade, paralelas à linha pleural, entre as sombras das costelas. O quadro é estático.",
+    praia: "Modo M pulmonar. Acima da linha pleural há linhas horizontais paralelas e, abaixo, a textura é granular de um lado ao outro.",
+    codigo_barras: "Modo M pulmonar. Linhas horizontais paralelas se repetem tanto acima como abaixo da linha pleural, sem faixa granular abaixo dela.",
+    vci_pletorica: "Corte longitudinal subcostal da veia cava inferior, com lúmen escuro e largo. A anotação informa diâmetro de 2,6 centímetros e variação menor que 10 por cento.",
+    vp_pulsatil: "Doppler pulsado da veia porta. O traçado permanece acima do centro da escala, com quedas profundas e repetidas da velocidade, sem inversão de direção no trecho mostrado.",
+    vh_normal: "Doppler pulsado da veia hepática. As duas deflexões principais, S e D, ficam abaixo do centro da escala. A deflexão S tem amplitude maior que a D.",
+    aorta_aneurisma: "Corte transversal da aorta abdominal. Uma linha tracejada cruza a estrutura circular de uma borda externa à outra. O diâmetro externo anotado é de 6,1 centímetros."
+  };
+
+  function describe(spec) {
+    const {kind, key, params} = spec || {};
+    const hasFinding = (findings) => Object.prototype.hasOwnProperty.call(findings, key);
+    if (kind === "ecg" && hasFinding(ECG_FINDINGS)) {
+      return `Traçado sintético de ECG na derivação DII. ${ECG_FINDINGS[key]}`;
+    }
+    if (kind === "ecg12" && hasFinding(ECG12_FINDINGS)) {
+      return `Traçado sintético de ECG de 12 derivações, com tira longa de DII. ${ECG12_FINDINGS[key]}`;
+    }
+    if (kind === "curva" && hasFinding(VENT_FINDINGS)) {
+      let text = `Curvas sintéticas do ventilador em modo ${VENT_MODES[key] || "VCV"}. De cima para baixo, pressão, fluxo e volume ao longo do tempo. ${VENT_FINDINGS[key]}`;
+      if (["vcv_pausa", "resistencia", "complacencia"].includes(key)) {
+        const measurements = [["Pressão de pico", params?.ppico], ["Pressão de platô", params?.pplat], ["PEEP", params?.peep]];
+        const displayed = measurements.filter(([, value]) => value != null && value !== "");
+        if (displayed.length) text += ` Valores anotados em centímetros de água. ${displayed.map(([name, value]) => `${name} ${value}`).join(". ")}.`;
+      }
+      return text;
+    }
+    if (kind === "pocus" && hasFinding(POCUS_FINDINGS)) {
+      return `Ultrassom esquemático. ${POCUS_FINDINGS[key]}`;
+    }
+    return "";
+  }
+
+  const api = {render, describe};
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   root.Temi800Figuras = api;
 })(typeof window !== "undefined" ? window : globalThis);
