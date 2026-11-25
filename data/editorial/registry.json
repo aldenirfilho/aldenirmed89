@@ -293,6 +293,15 @@
           "source": "explicit-human-user-request-in-current-chat",
           "scope": "Aplicar temas privados de PDFs e documentos por fingerprint, busca por assuntos/temas secundários e rótulos organizacionais; sem publicação de documentos ou novas recomendações clínicas.",
           "claimsHumanClinicalReview": false
+        },
+        {
+          "date": "2026-11-25",
+          "source": "explicit-human-user-request-in-current-chat",
+          "humanAuthorization": "gere as sessoes respectivas no site com imagens estilo turbo temi 360x",
+          "scope": "Seis seções visuais por tema com capas conceituais geradas por IA e atalhos para o player privado existente. Filtragem por afinidade editorial, contagens somente locais e preservação do histórico. Nenhum PDF, DOC, inventário, texto-fonte ou pacote privado é publicado.",
+          "claimsHumanClinicalReview": false,
+          "grantsClinicalHomologation": false,
+          "clinicalRecommendationsChanged": false
         }
       ],
       "note": " Atualização técnica de 2026-11-02: acesso ao player privado compartilhado com Biblioteca IA, usando o mesmo armazenamento local e origem separada dos bancos públicos; não publica os documentos ou conteúdo de estudo privado e não altera a homologação clínica dos materiais anteriores.",
@@ -10573,7 +10582,18 @@
         "claimsHumanClinicalReview": false,
         "grantsClinicalHomologation": false
       },
-      "note": "Taxonomia de organização e metadados locais; nenhuma regra de prescrição, diagnóstico individual ou novo conteúdo clínico foi acrescentada. O manifesto privado só aplica classificações à versão exata do arquivo. Atualiza a mesma entrada de integração das pastas locais publicada anteriormente, preservando o histórico no Git. Revisão seletiva apenas de classificações pendentes, com cópias anteriores dos artefatos gerados. Busca local com equivalências controladas e tokens sem falsos positivos de siglas curtas. Nenhum texto privado ou decisão individual entra no repositório. Acrescenta quatro temas locais apoiados no acervo (Cirurgia/Trauma/Ortopedia, Ginecologia/Obstetrícia, Pediatria/Neonatologia e Saúde Coletiva/Epidemiologia/Bioestatística), mantendo os 25 temas públicos. PDF local abre no leitor do navegador em nova aba sem vínculo com a janela de origem; download continua disponível. Arquivos auxiliares do Word com prefixo ~$ e extensão DOC/DOCX permanecem preservados, mas não recebem ações de abrir ou baixar como documentos de estudo. Acrescenta player de estudo privado com importação explícita validada, sínteses extrativas ancoradas, aplicação temática identificada, IndexedDB separado, filtros por tema, flashcards, simulado com pausa, retomada e revisão dirigida de erros. O player é compartilhado pela Biblioteca e Pneumologia, com acesso no módulo ACRA. Não inclui resumos reais, nomes de arquivos, inventários ou questões privadas no repositório. A cobertura parcial não é apresentada como resumo integral; fontes bloqueadas não fornecem itens."
+      "note": "Taxonomia de organização e metadados locais; nenhuma regra de prescrição, diagnóstico individual ou novo conteúdo clínico foi acrescentada. O manifesto privado só aplica classificações à versão exata do arquivo. Atualiza a mesma entrada de integração das pastas locais publicada anteriormente, preservando o histórico no Git. Revisão seletiva apenas de classificações pendentes, com cópias anteriores dos artefatos gerados. Busca local com equivalências controladas e tokens sem falsos positivos de siglas curtas. Nenhum texto privado ou decisão individual entra no repositório. Acrescenta quatro temas locais apoiados no acervo (Cirurgia/Trauma/Ortopedia, Ginecologia/Obstetrícia, Pediatria/Neonatologia e Saúde Coletiva/Epidemiologia/Bioestatística), mantendo os 25 temas públicos. PDF local abre no leitor do navegador em nova aba sem vínculo com a janela de origem; download continua disponível. Arquivos auxiliares do Word com prefixo ~$ e extensão DOC/DOCX permanecem preservados, mas não recebem ações de abrir ou baixar como documentos de estudo. Acrescenta player de estudo privado com importação explícita validada, sínteses extrativas ancoradas, aplicação temática identificada, IndexedDB separado, filtros por tema, flashcards, simulado com pausa, retomada e revisão dirigida de erros. O player é compartilhado pela Biblioteca e Pneumologia, com acesso no módulo ACRA. Não inclui resumos reais, nomes de arquivos, inventários ou questões privadas no repositório. A cobertura parcial não é apresentada como resumo integral; fontes bloqueadas não fornecem itens.",
+      "technicalUpdates": [
+        {
+          "date": "2026-11-25",
+          "source": "explicit-human-user-request-in-current-chat",
+          "humanAuthorization": "gere as sessoes respectivas no site com imagens estilo turbo temi 360x",
+          "scope": "Seis seções visuais por tema com capas conceituais geradas por IA e atalhos para o player privado existente. Filtragem por afinidade editorial, contagens somente locais e preservação do histórico. Nenhum PDF, DOC, inventário, texto-fonte ou pacote privado é publicado.",
+          "claimsHumanClinicalReview": false,
+          "grantsClinicalHomologation": false,
+          "clinicalRecommendationsChanged": false
+        }
+      ]
     },
     {
       "id": "codice-projetos-360x-2026-11-02",
@@ -15243,6 +15263,65 @@
         "userRequest": "GERE MECANISMO DE ATUALIZACAO CONTINUA DIARIA E LANCAMENTO DIARIO DO JORNAL AS 05:30 ... E PUBLIQUE TAL JORNAL NO SITE ALDENIRMED89",
         "authorizationSummary": "Instrução permanente do proprietário (16/11/2026) para gerar, publicar e enviar a edição diária; desde 25/11/2026 com 31 páginas (página final Serviço Humanitário 360, padrão pedido em 24/11/2026)."
       }
+    },
+    {
+      "id": "release-biblioteca-secoes-visuais-2026-11-25",
+      "classification": "public-cited",
+      "paths": [
+        "02_Biblioteca_IA_Engine/assets/clinical-study-topics.mjs",
+        "02_Biblioteca_IA_Engine/assets/clinical-study-sections.mjs",
+        "02_Biblioteca_IA_Engine/assets/clinical-study-sections.css",
+        "02_Biblioteca_IA_Engine/assets/trilhas-clinicas/manifest.json",
+        "02_Biblioteca_IA_Engine/assets/trilhas-clinicas/tb-turbo-360x.webp",
+        "02_Biblioteca_IA_Engine/assets/trilhas-clinicas/igg4-turbo-360x.webp",
+        "02_Biblioteca_IA_Engine/assets/trilhas-clinicas/micoses-turbo-360x.webp",
+        "02_Biblioteca_IA_Engine/assets/trilhas-clinicas/sepse-turbo-360x.webp",
+        "02_Biblioteca_IA_Engine/assets/trilhas-clinicas/ventilacao-turbo-360x.webp",
+        "02_Biblioteca_IA_Engine/assets/trilhas-clinicas/renal-turbo-360x.webp"
+      ],
+      "publishTargets": [
+        "github-pages"
+      ],
+      "ownerApproval": true,
+      "reviewer": "Codex e agentes — inspeção visual, revisão técnica e testes; sem homologação médica humana.",
+      "reviewedAt": "2026-11-25",
+      "rights": {
+        "basis": "owned",
+        "statement": "Código de navegação e objetivos editoriais originais; capas geradas pelo image_gen built-in a pedido do proprietário. Proveniência, prompts e identificação de IA acompanham as seis imagens. Nenhum documento privado ou texto-fonte é incluído."
+      },
+      "professionalClaims": [],
+      "personalData": {
+        "contains": false
+      },
+      "medical": true,
+      "clinicalReviewer": "Seções de organização do estudo e imagens conceituais educacionais. Não acrescentam recomendações de diagnóstico ou tratamento. Revisão médica formal dos materiais de estudo permanece pendente.",
+      "clinicalReviewStatus": "public-preview-pending-formal-medical-review",
+      "claimsHumanClinicalReview": false,
+      "sources": [
+        {
+          "title": "Biblioteca IA — taxonomia pública de temas existente",
+          "url": "https://aldenirfilho.github.io/aldenirmed89/02_Biblioteca_IA_Engine/data/biblioteca_taxonomia_temas.json",
+          "accessedAt": "2026-11-25"
+        },
+        {
+          "title": "Pneumologia Crítica — protocolos e treino educacional",
+          "url": "https://aldenirfilho.github.io/aldenirmed89/01_Modulos_Clinicos/Pneumologia_Critica/protocolos-2026/",
+          "accessedAt": "2026-11-25"
+        },
+        {
+          "title": "MDN — IndexedDB para armazenamento local",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API",
+          "accessedAt": "2026-11-25"
+        }
+      ],
+      "publicationAuthorization": {
+        "source": "explicit-human-user-request-in-current-chat",
+        "authorizedAt": "2026-11-25",
+        "scope": "gere as sessoes respectivas no site com imagens estilo turbo temi 360x — criação de seções no site e publicação técnica em continuidade da autorização de publicação desta conversa; preservação dos originais privados.",
+        "claimsHumanClinicalReview": false,
+        "grantsClinicalHomologation": false
+      },
+      "note": "As seis capas são ilustrações conceituais geradas por IA, não imagens diagnósticas. Correspondência de termos organiza a navegação e não infere recomendações clínicas ou competência profissional. Somente arte, código e objetivos editoriais são públicos."
     }
   ],
   "exampleTemplates": [

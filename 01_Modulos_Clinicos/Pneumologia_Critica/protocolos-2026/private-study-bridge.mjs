@@ -2,7 +2,7 @@
 export const PRIVATE_STUDY_MODES = Object.freeze(['flow', 'cases', 'cards', 'exam', 'review']);
 
 const defaultLoader = async () => {
-  const module = await import('../../../02_Biblioteca_IA_Engine/assets/private-study-ui.mjs?v=47ac50b0c02aaa47');
+  const module = await import('../../../02_Biblioteca_IA_Engine/assets/private-study-ui.mjs?v=90f86f65a178b569');
   return module.mountPrivateStudyUI;
 };
 

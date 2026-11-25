@@ -30,6 +30,7 @@
 </script>
 <link rel="icon" href="../favicon.ico" sizes="64x64"/>
 <link rel="stylesheet" href="assets/livros-360x.css?v=20261019-1"/>
+<link rel="stylesheet" href="assets/clinical-study-sections.css?v=4207c6d6b4f2f03a"/>
 <script src="assets/livros-360x.js?v=20261019-1" defer></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap');
@@ -408,6 +409,7 @@
       <span aria-hidden="true">☀️</span><span class="clarity-label">Visualização clara</span>
     </button>
     <a href="recovery-review-dashboard.html" class="back">🩺 Revisão clínica</a>
+    <a href="#privateStudy" class="back" onclick="switchView('catalogo')">🧭 Seções clínicas</a>
     <a href="GUIA_BIBLIOTECA_E_PUBLICACAO.md" target="_blank" rel="noopener noreferrer" class="back">➕ Como adicionar</a>
     <a href="../index.html" class="back">← Voltar</a>
   </div>
@@ -555,7 +557,13 @@
   </div></section>
   <dialog id="libraryLocalPreview" class="local-document-preview" aria-labelledby="libraryLocalPreviewTitle"><div class="local-preview-head"><h2 id="libraryLocalPreviewTitle">PDF privado</h2><button class="btn btn-secondary" id="libraryLocalPreviewClose" type="button">Fechar ✕</button></div><p>Abra o PDF no leitor do navegador ou baixe para usar o aplicativo do dispositivo. O documento permanece local, sem envio à internet.</p><div class="local-preview-actions"><a id="libraryLocalOpen" class="btn btn-primary" target="_blank" rel="noopener noreferrer">↗ Abrir PDF em nova aba</a><a id="libraryLocalDownload" class="btn btn-secondary">⬇️ Baixar PDF</a></div><p>Ao terminar, feche este diálogo para liberar a referência temporária do arquivo.</p></dialog>
 
-  <section id="privateStudy" class="local-library" aria-label="Estudo privado microparticulado"><div id="libraryPrivateStudyHost"></div></section>
+  <section id="privateStudy" class="private-study-area" aria-label="Seções clínicas e estudo privado microparticulado">
+    <div id="clinicalStudySections">
+      <h2>Seções clínicas Turbo TEMI 360X</h2>
+      <p>TB, IgG4, micoses, sepse, ventilação e renal/eletrólitos. O conteúdo do seu acervo abre no espaço de estudo privado abaixo.</p>
+    </div>
+    <div id="libraryPrivateStudyHost"></div>
+  </section>
 
   <!-- BUSCA -->
   <div class="search-bar">
@@ -3152,8 +3160,14 @@ init();
 </script>
 <script type="module" src="assets/local-folders.mjs?v=7de1bbf2284d29e5"></script>
 <script type="module">
-import {mountPrivateStudyUI} from "./assets/private-study-ui.mjs?v=47ac50b0c02aaa47";
-mountPrivateStudyUI(document.getElementById("libraryPrivateStudyHost"),{sourceBridge:{open:source=>window.LibraryPrivateSourceBridge?.open(source)||Promise.resolve({status:"disconnected"})}}).catch(()=>{document.getElementById("libraryPrivateStudyHost").textContent="O estudo privado não pôde iniciar. Recarregue a página; seus documentos originais permanecem nas pastas.";});
+import {mountPrivateStudyUI} from "./assets/private-study-ui.mjs?v=90f86f65a178b569";
+import {getPrivateStudyEngine} from "./assets/private-study-engine.mjs?v=1a98da03f270c5fd";
+import {mountClinicalStudySections} from "./assets/clinical-study-sections.mjs?v=81301204b5e92a88";
+(async()=>{
+  const engine=await getPrivateStudyEngine();let sections;
+  const player=await mountPrivateStudyUI(document.getElementById("libraryPrivateStudyHost"),{engine,onSectionScopeChange:id=>sections?.select(id),sourceBridge:{open:source=>window.LibraryPrivateSourceBridge?.open(source)||Promise.resolve({status:"disconnected"})}});
+  sections=mountClinicalStudySections(document.getElementById("clinicalStudySections"),{engine,player});
+})().catch(()=>{document.getElementById("libraryPrivateStudyHost").textContent="O estudo privado não pôde iniciar. Recarregue a página; seus documentos originais permanecem nas pastas.";});
 </script>
 </body>
 </html>
