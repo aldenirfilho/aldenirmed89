@@ -1,0 +1,30 @@
+name: Validar monetização e aplicativo
+on:
+  pull_request:
+    paths: ['commerce/**', 'mobile/**', 'planos/**', 'membros/**', 'tests/test_monetization.py', '.github/workflows/monetizacao.yml']
+  push:
+    branches: [main]
+    paths: ['commerce/**', 'mobile/**', 'planos/**', 'membros/**', 'tests/test_monetization.py', '.github/workflows/monetizacao.yml']
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validar catálogo e publicação
+        run: python3 -m unittest tests.test_monetization -v
+      - name: Validar servidor de assinaturas
+        working-directory: commerce
+        run: |
+          npm ci
+          npm test
+      - name: Validar aplicativo
+        working-directory: mobile
+        run: |
+          npm ci
+          npm test
+          npm run build

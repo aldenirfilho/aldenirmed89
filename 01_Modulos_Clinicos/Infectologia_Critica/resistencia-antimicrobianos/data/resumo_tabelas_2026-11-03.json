@@ -1,0 +1,635 @@
+{
+  "meta": {
+    "title": "Resumo em tabelas - antimicrobianos adultos na UTI",
+    "version": "1.0",
+    "editionDate": "2026-11-03",
+    "clinicalReviewStatus": "pending",
+    "population": "Adultos; dose basal com função renal preservada, salvo indicação expressa.",
+    "groupCounts": {
+      "Antibióticos": 16,
+      "Antifúngicos": 6,
+      "Antivirais": 4
+    },
+    "sourceData": "data/guia_bolso_2026-11-03.json",
+    "sourceDataSha256": "140d7668623547cfa638956321adcf9eec79f5c86609599bebcaaccb7aa654f9",
+    "editorialNotes": [
+      "Versão condensada do guia A6; não substitui a revisão da indicação, interações, monitorização e bulas.",
+      "Esquema-base, via, formulação e variável renal fazem parte do ajuste.",
+      "HD, CRRT e lesão renal aguda não devem ser tratados como simples faixas de DRC estável.",
+      "Conferência documental assistida por IA em 03/11/2026; revisão médica humana formal pendente.",
+      "Alertas selecionados não esgotam contraindicações e interações. Consultar o guia completo."
+    ]
+  },
+  "secoes": [
+    {
+      "id": "antibioticos-1",
+      "titulo": "Antibióticos - parte 1",
+      "grupo": "Antibióticos",
+      "ids": [
+        "ceftriaxona",
+        "cefepima",
+        "piperacilina-tazobactam",
+        "meropenem",
+        "oxacilina",
+        "cefazolina",
+        "ampicilina-sulbactam",
+        "metronidazol"
+      ]
+    },
+    {
+      "id": "antibioticos-2",
+      "titulo": "Antibióticos - parte 2",
+      "grupo": "Antibióticos",
+      "ids": [
+        "vancomicina-iv",
+        "linezolida",
+        "daptomicina",
+        "tmp-smx",
+        "clindamicina",
+        "azitromicina",
+        "levofloxacino",
+        "ceftazidima-avibactam"
+      ]
+    },
+    {
+      "id": "antifungicos",
+      "titulo": "Antifúngicos - esquemas selecionados",
+      "grupo": "Antifúngicos",
+      "ids": [
+        "fluconazol",
+        "anidulafungina",
+        "caspofungina",
+        "anfotericina_lipossomal",
+        "voriconazol",
+        "isavuconazol"
+      ]
+    },
+    {
+      "id": "antivirais",
+      "titulo": "Antivirais - tratamento selecionado",
+      "grupo": "Antivirais",
+      "ids": [
+        "aciclovir",
+        "ganciclovir",
+        "oseltamivir",
+        "remdesivir"
+      ]
+    }
+  ],
+  "farmacos": [
+    {
+      "id": "ceftriaxona",
+      "nome": "Ceftriaxona",
+      "dose": "2 g IV a cada 24 h. Meningite: 2 g IV a cada 12 h.",
+      "renal": "Sem ajuste renal isolado ou por HD. Se disfunção renal E hepática graves: individualizar; não exceder 2 g/dia sem avaliação adicional. CRRT: avaliar contexto.",
+      "alerta": "Não misturar com cálcio IV na mesma linha; vigiar bile/INR. Não cobre Pseudomonas.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - ceftriaxone",
+          "url": "https://idmp.ucsf.edu/content/ceftriaxone",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "DailyMed - Ceftriaxone",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=befd73ff-cb3b-4543-8a8e-bdb9b7fc1ff0&type=display",
+          "consultado_em": "2026-11-03",
+          "secao": "Advertências: cálcio IV e disfunção hepatorrenal concomitante"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "cefepima",
+      "nome": "Cefepima",
+      "dose": "Infecção grave: 2 g IV a cada 8 h (esquema-base). Infusão prolongada: protocolo próprio.",
+      "renal": "ClCr (mL/min): >60: 2 g a cada 8 h; 30-60: 2 g a cada 12 h; 10-29: 2 g a cada 24 h; <10: 1 g a cada 24 h. HD/CRRT: regimes próprios.",
+      "alerta": "Monitorar rim e estado mental; confusão/mioclonia podem indicar neurotoxicidade.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - cefepime",
+          "url": "https://idmp.ucsf.edu/content/cefepime",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "IDSA AMR 2026",
+          "url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+          "consultado_em": "2026-11-03",
+          "secao": "Escolha por patógeno/mecanismo; não é antibiograma individual"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "piperacilina-tazobactam",
+      "nome": "Piperacilina-tazobactam",
+      "dose": "3,375 g IV a cada 6 h. Pneumonia hospitalar (PH): 4,5 g a cada 6 h. Infusão de 30 min. 4,5 g = 4 g + 0,5 g.",
+      "renal": "ClCr >40 mL/min: sem redução; 20-40: 2,25 g a cada 6 h (PH: 3,375 g a cada 6 h); <20: 2,25 g a cada 8 h (PH: a cada 6 h). Tabela SÓ para infusão de 30 min. HD/CRRT: tabela própria.",
+      "alerta": "Não aplicar à infusão prolongada. Com vancomicina: maior risco renal; vigiar K.",
+      "fontes": [
+        {
+          "titulo": "DailyMed/FDA - Zosyn",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8db6bd91-2106-4bfd-8cc8-38aaf1e18d17",
+          "consultado_em": "2026-11-03",
+          "secao": "Bula: posologia, advertências e interações"
+        },
+        {
+          "titulo": "IDSA AMR 2026",
+          "url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+          "consultado_em": "2026-11-03",
+          "secao": "Escolha por patógeno/mecanismo; não é antibiograma individual"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "meropenem",
+      "nome": "Meropenem",
+      "dose": "Habitual: 1 g IV a cada 8 h. Meningite: 2 g a cada 8 h. Infusão otimizada de 3 h: protocolo próprio.",
+      "renal": "Base 1 g, ClCr (mL/min): >50: a cada 8 h; 26-50: 1 g a cada 12 h; 10-25: 500 mg a cada 12 h; <10: 500 mg a cada 24 h. Base 2 g: doses duplicadas. HD/CRRT: esquema por foco/modalidade.",
+      "alerta": "Evitar valproato/divalproato; vigiar rim e convulsões. Não cobre MRSA.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - meropenem",
+          "url": "https://idmp.ucsf.edu/content/meropenem",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "IDSA AMR 2026 - Tabela 1",
+          "url": "https://www.idsociety.org/globalassets/idsa/practice-guidelines/amr-guidance/5.0/table-1.pdf",
+          "consultado_em": "2026-11-03",
+          "secao": "Doses adultas com funções renal e hepática preservadas; possíveis regimes fora de bula"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "oxacilina",
+      "nome": "Oxacilina",
+      "dose": "MSSA grave: 2 g IV a cada 4 h (regime institucional).",
+      "renal": "Sem tabela universal por ClCr. Em disfunção renal importante, sobretudo com hepatopatia, individualizar por exposição/toxicidade. HD/CRRT: validar protocolo específico.",
+      "alerta": "MSSA, não MRSA. Monitorar rim, K, fígado/hemograma e carga de sódio.",
+      "fontes": [
+        {
+          "titulo": "Nebraska Medicine - S. aureus bacteremia",
+          "url": "https://www.unmc.edu/intmed/_documents/id/asp/news/clinicpath-staph-aureus-treatment.pdf",
+          "consultado_em": "2026-11-03",
+          "secao": "Oxacilina 2 g IV a cada 4 h para MSSA"
+        },
+        {
+          "titulo": "DailyMed/FDA - Oxacillin",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=81e90279-9889-47bd-974b-334c181f295c",
+          "consultado_em": "2026-11-03",
+          "secao": "Bula: posologia, advertências e interações"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "cefazolina",
+      "nome": "Cefazolina",
+      "dose": "Infecção complicada/MSSA: 2 g IV a cada 8 h.",
+      "renal": "ClCr (mL/min): >30: 2 g a cada 8 h; 10-29: 2 g a cada 12 h; <10: 1 g a cada 24 h. Exatamente 30: limite não coberto pela tabela UCSF; confirmar protocolo/farmácia. HD/CRRT: esquemas próprios.",
+      "alerta": "Não cobre MRSA/Pseudomonas; vigiar rim, estado mental e INR se risco.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - cefazolin",
+          "url": "https://idmp.ucsf.edu/content/cefazolin",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "ampicilina-sulbactam",
+      "nome": "Ampicilina-sulbactam",
+      "dose": "CONVENCIONAL: 3 g IV a cada 6 h = 2 g de ampicilina + 1 g de sulbactam por dose.",
+      "renal": "Convencional, ClCr (mL/min): >30: 3 g a cada 6 h; 15-30: 3 g a cada 12 h; <15: 3 g a cada 24 h. HD/CRRT: tabela própria. Não extrapolar para alta dose de sulbactam.",
+      "alerta": "CRAB/alta dose não está nesta tabela: consultar guia completo. Vigiar rim, Na/K e fígado.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - ampicillin-sulbactam-unasyn",
+          "url": "https://idmp.ucsf.edu/content/ampicillin-sulbactam-unasyn",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "IDSA AMR 2026",
+          "url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+          "consultado_em": "2026-11-03",
+          "secao": "Escolha por patógeno/mecanismo; não é antibiograma individual"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "metronidazol",
+      "nome": "Metronidazol",
+      "dose": "500 mg IV/VO a cada 8 h. Foco intra-abdominal selecionado: 500 mg a cada 12 h (UCSF).",
+      "renal": "ClCr <10 mL/min: 500 mg a cada 12 h (UCSF). HD: programar após sessão; eventual reposição depende do horário. CRRT: protocolo próprio. Hepatopatia grave: individualizar/reduzir.",
+      "alerta": "Varfarina: INR; lítio: toxicidade. Evitar duplicação anaeróbia; vigiar neurotoxicidade.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - metronidazole",
+          "url": "https://idmp.ucsf.edu/content/metronidazole",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "DailyMed/FDA - Metronidazole",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5cf3cc1f-601e-4997-bfb2-a573c31c8189",
+          "consultado_em": "2026-11-03",
+          "secao": "Bula: posologia, advertências e interações"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "vancomicina-iv",
+      "nome": "Vancomicina IV",
+      "dose": "Crítico: ataque 20-35 mg/kg de peso real IV, máx. 3 g. Manutenção inicial, rim normal: 15-20 mg/kg a cada 8-12 h; ajustar por AUC.",
+      "renal": "Sem tabela fixa de manutenção por ClCr isolada. MRSA invasivo: alvo AUC24 400-600 mg.h/L se CIM presumida 1 mg/L. Recalcular com níveis/rim; HD e CRRT exigem regimes próprios.",
+      "alerta": "AUC/TDM + creatinina/diurese. Infundir lentamente; maior risco com outros nefrotóxicos.",
+      "fontes": [
+        {
+          "titulo": "ASHP/IDSA/PIDS/SIDP - Vancomicina 2020",
+          "url": "https://www.idsociety.org/practice-guideline/vancomycin/",
+          "consultado_em": "2026-11-03",
+          "secao": "AUC, ataque, manutenção e populações especiais"
+        },
+        {
+          "titulo": "Consenso vancomicina2020 - texto primário completo",
+          "url": "https://doi.org/10.1093/cid/ciaa303",
+          "consultado_em": "2026-11-03",
+          "secao": "Adultos: doses de ataque/manutenção e AUC; obesidade"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "linezolida",
+      "nome": "Linezolida",
+      "dose": "600 mg IV/VO a cada 12 h. Infusão IV em 30-120 min.",
+      "renal": "Sem redução renal de bula. HD: após sessão quando coincidir. Maior risco de trombocitopenia na disfunção renal; TDM/ajuste especializado no uso prolongado, sem redução empírica automática.",
+      "alerta": "Hemograma/plaquetas; serotoninérgicos: vigiar clônus, agitação e hipertermia. Não cobre G-.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - linezolid",
+          "url": "https://idmp.ucsf.edu/content/linezolid",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "Pfizer/FDA - Zyvox",
+          "url": "https://labeling.pfizer.com/ShowLabeling.aspx?id=649",
+          "consultado_em": "2026-11-03",
+          "secao": "Bula revista06/2026: seções2,5.1-5.3,7"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "daptomicina",
+      "nome": "Daptomicina",
+      "dose": "Infecção invasiva: 8-10 mg/kg IV a cada 24 h (UCSF). Peso ajustado se >120% do ideal, conforme protocolo.",
+      "renal": "ClCr >=30 mL/min: a cada 24 h; <30: mesma dose a cada 48 h. HD/CRRT: esquemas próprios por sessão/fluxo; não transportar o intervalo da HD para CRRT.",
+      "alerta": "NÃO trata pneumonia. CPK basal/semanal; estatinas aumentam risco de miopatia.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - daptomycin",
+          "url": "https://idmp.ucsf.edu/content/daptomycin",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "DailyMed/FDA - Daptomycin",
+          "url": "https://www.dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e6fef9de-e357-4fa3-8839-f483edf1b4d0",
+          "consultado_em": "2026-11-03",
+          "secao": "5.2: miopatia/rabdomiólise, CPK e estatinas"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "tmp-smx",
+      "nome": "Sulfametoxazol-trimetoprima (TMP-SMX)",
+      "dose": "Dose em TMP: pneumocistose 15 mg/kg/DIA; infecção sistêmica G- sensível 10 mg/kg/DIA, IV/VO divididos a cada 8-12 h (UCSF).",
+      "renal": "ClCr 15-30 mL/min: metade da dose diária acima, dividida a cada 12-24 h (UCSF). <15: pneumocistose TMP 5 mg/kg a cada 24 h; sistêmica TMP 2,5 mg/kg a cada 24 h (UCSF). HD/CRRT: usar tabela própria; não extrapolar.",
+      "alerta": "Dose em TMP/DIA, não por tomada. Monitorar K/hemograma; IECA/BRA, varfarina e metotrexato.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - tmp-smx-trimethoprim-sulfamethoxazole",
+          "url": "https://idmp.ucsf.edu/content/tmp-smx-trimethoprim-sulfamethoxazole",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "DailyMed/FDA - Bactrim",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=f59d0c04-9c66-4d53-a0e1-cb55570deb62",
+          "consultado_em": "2026-11-03",
+          "secao": "Bula: posologia, advertências e interações"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "clindamicina",
+      "nome": "Clindamicina",
+      "dose": "Necrosante/estreptococo A: 900 mg IV a cada 8 h, como adjuvante. Outras selecionadas: 600 mg IV a cada 8 h.",
+      "renal": "Não requer ajuste renal ou por HD. Hepatopatia grave/uso prolongado: individualizar e monitorar fígado; CRRT não exige redução renal rotineira.",
+      "alerta": "Não substitui cirurgia/betalactâmico; vigiar C. difficile. Potencializa bloqueio neuromuscular.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - clindamycin",
+          "url": "https://idmp.ucsf.edu/content/clindamycin",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "DailyMed/FDA - Clindamycin phosphate",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=44fa506b-90ac-42de-831b-5f3f1a500fc0",
+          "consultado_em": "2026-11-03",
+          "secao": "Bula: posologia, advertências e interações"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "azitromicina",
+      "nome": "Azitromicina",
+      "dose": "Pneumonia comunitária na UTI: 500 mg IV/VO a cada 24 h, geralmente com betalactâmico. IV: nunca em bolus; respeitar bula.",
+      "renal": "Sem ajuste renal rotineiro ou por HD/CRRT. Disfunção renal extrema/hepatopatia: avaliação individual e monitorização.",
+      "alerta": "QTc/K/Mg; evitar múltiplos prolongadores de QT. Revisar digoxina e varfarina.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - azithromycin",
+          "url": "https://idmp.ucsf.edu/content/azithromycin",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "DailyMed/FDA - Azithromycin IV",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c8d012c4-f411-4484-a618-7597599ea621",
+          "consultado_em": "2026-11-03",
+          "secao": "2,5.4,7: infusão, QT e varfarina"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "levofloxacino",
+      "nome": "Levofloxacino",
+      "dose": "Esquema-base: 750 mg IV/VO a cada 24 h. IV 750 mg em pelo menos 90 min.",
+      "renal": "ClCr (mL/min): >=50: 750 mg a cada 24 h; 20-49: 750 mg a cada 48 h; <20 ou HD: 750 mg inicial, depois 500 mg a cada 48 h. CRRT: tabela própria. Não aplicar ao esquema-base de 500 mg.",
+      "alerta": "QT/glicemia; AINE: SNC, corticoide: tendão, varfarina: INR. VO: separar de cátions >=2 h.",
+      "fontes": [
+        {
+          "titulo": "UCSF IDMP - levofloxacin",
+          "url": "https://idmp.ucsf.edu/content/levofloxacin",
+          "consultado_em": "2026-11-03",
+          "secao": "Dose adulta, ajuste renal e diálise"
+        },
+        {
+          "titulo": "DailyMed/FDA - Levofloxacin",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=710c0c10-89a5-4954-8f74-acc187c5cf0f",
+          "consultado_em": "2026-11-03",
+          "secao": "Bula: posologia, advertências e interações"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "ceftazidima-avibactam",
+      "nome": "Ceftazidima-avibactam",
+      "dose": "2,5 g IV (2 g + 0,5 g) a cada 8 h em 3 h: exposição otimizada IDSA, que pode diferir da bula local.",
+      "renal": "ClCr (mL/min): >50: 2,5 g a cada 8 h; 31-50: 1,25 g a cada 8 h; 16-30: 0,94 g a cada 12 h; 6-15: 0,94 g a cada 24 h; <=5: 0,94 g a cada 48 h. HD/CRRT: regimes próprios. Reajustar se rim melhorar.",
+      "alerta": "KPC/OXA-48 sensíveis; MBL não coberta isoladamente. Vigiar rim, SNC e culturas.",
+      "fontes": [
+        {
+          "titulo": "IDSA AMR 2026 - Tabela 1",
+          "url": "https://www.idsociety.org/globalassets/idsa/practice-guidelines/amr-guidance/5.0/table-1.pdf",
+          "consultado_em": "2026-11-03",
+          "secao": "Doses adultas com funções renal e hepática preservadas; possíveis regimes fora de bula"
+        },
+        {
+          "titulo": "DailyMed/FDA - Avycaz",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d9c2803f-dc9c-4b19-b4a3-8303bc8c15fd",
+          "consultado_em": "2026-11-03",
+          "secao": "Bula: posologia, advertências e interações"
+        }
+      ],
+      "grupo": "Antibióticos"
+    },
+    {
+      "id": "fluconazol",
+      "grupo": "Antifúngicos",
+      "nome": "Fluconazol IV/VO",
+      "dose": "Candidemia suscetível: ataque 800 mg (12 mg/kg) uma vez; depois 400 mg (6 mg/kg) a cada 24 h.",
+      "renal": "ClCr mL/min: >50, manutenção integral; ≤50 sem HD, 50% da manutenção. Ataque integral. HD: dose integral após sessão; dias sem HD, ajustar à função residual. CRRT: dose individual por modalidade/efluente; ver guia completo.",
+      "alerta": "Choque/alto risco de azol-R: equinocandina inicial. Não cobre Aspergillus/Mucorales. Rever QT, hepatograma e interações CYP.",
+      "fontes": [
+        {
+          "titulo": "DailyMed - fluconazol IV",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=02f74fe7-0649-46c5-a06a-0700cd265773",
+          "consultado_em": "2026-11-03",
+          "secao": "Posologia, insuficiência renal, interações e advertências"
+        },
+        {
+          "titulo": "IDSA - candidíase",
+          "url": "https://www.idsociety.org/practice-guideline/candidiasis/",
+          "consultado_em": "2026-11-03",
+          "secao": "Recomendações 1-6"
+        },
+        {
+          "titulo": "UCSF - fluconazol",
+          "url": "https://idmp.ucsf.edu/content/fluconazole",
+          "consultado_em": "2026-11-03",
+          "secao": "Doses adultas, HD e notas"
+        }
+      ]
+    },
+    {
+      "id": "anidulafungina",
+      "grupo": "Antifúngicos",
+      "nome": "Anidulafungina IV",
+      "dose": "Candidemia/invasiva: ataque 200 mg no dia 1; depois 100 mg a cada 24 h. Infundir 200 mg em ≥180 min; 100 mg em ≥90 min.",
+      "renal": "Sem ajuste renal ou HD; sem suplemento pós-HD. CRRT: geralmente dose usual; rever exposição se peso/MIC/foco especiais.",
+      "alerta": "Baixa exposição em urina/SNC/olho. ERAXIS contém frutose: contraindicado na intolerância hereditária à frutose. Vigiar fígado e infusão.",
+      "fontes": [
+        {
+          "titulo": "DailyMed - ERAXIS",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d138ab10-1ed9-44be-8d81-49dda1e434ac",
+          "consultado_em": "2026-11-03",
+          "secao": "Posologia, insuficiência renal, interações e advertências"
+        }
+      ]
+    },
+    {
+      "id": "caspofungina",
+      "grupo": "Antifúngicos",
+      "nome": "Caspofungina IV",
+      "dose": "Candidemia/invasiva: ataque 70 mg no dia 1; depois 50 mg a cada 24 h, em cerca de 1 h. Rifampicina: manutenção 70 mg/dia segundo bula.",
+      "renal": "Sem ajuste renal/HD; sem suplemento pós-HD. CRRT: geralmente sem redução; não confundir ajuste renal com ajuste hepático.",
+      "alerta": "Não diluir em glicose. Child-Pugh 7-9: bula usa 35 mg/dia na manutenção, ataque 70 mg; validar aplicação no crítico sem cirrose.",
+      "fontes": [
+        {
+          "titulo": "DailyMed - caspofungina",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=722facc6-d4ea-4975-b83e-3ae63df69ed2",
+          "consultado_em": "2026-11-03",
+          "secao": "Posologia, insuficiência renal, interações e advertências"
+        }
+      ]
+    },
+    {
+      "id": "anfotericina_lipossomal",
+      "grupo": "Antifúngicos",
+      "nome": "Anfotericina B LIPOSSOMAL IV",
+      "dose": "Candida invasiva: 3-5 mg/kg a cada 24 h. Mucormicose: 5-10 mg/kg/dia; SNC geralmente 10 mg/kg/dia, sob especialista.",
+      "renal": "Sem redução renal fixa ou suplemento pós-HD; CRRT habitualmente dose usual. Nefrotoxicidade exige reavaliar terapia. Documentar peso de cálculo, especialmente em obesidade.",
+      "alerta": "Não intercambiar formulações mg por mg. AmBisome: glicose 5%, infusão usual 120 min. Monitorar creatinina, K/Mg e reação de infusão.",
+      "fontes": [
+        {
+          "titulo": "UCSF - AmBisome",
+          "url": "https://idmp.ucsf.edu/content/ambisome-liposomal-amphotericin-b",
+          "consultado_em": "2026-11-03",
+          "secao": "Doses adultas, HD e notas"
+        },
+        {
+          "titulo": "DailyMed - AmBisome",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=f7be6506-4d20-401e-a0ff-02ad7c33158a",
+          "consultado_em": "2026-11-03",
+          "secao": "Posologia, insuficiência renal, interações e advertências"
+        },
+        {
+          "titulo": "NIH - tabelas de infecções oportunistas",
+          "url": "https://clinicalinfo.hiv.gov/sites/default/files/guidelines/documents/adult-adolescent-oi/tables-adult-adolescent-oi.pdf",
+          "consultado_em": "2026-11-03",
+          "secao": "Tabela 2, criptococose; páginas B-11/B-12"
+        }
+      ]
+    },
+    {
+      "id": "voriconazol",
+      "grupo": "Antifúngicos",
+      "nome": "Voriconazol IV/VO",
+      "dose": "Aspergilose: ataque 6 mg/kg IV a cada 12 h por 2 doses; depois 4 mg/kg IV a cada 12 h. VO ≥40 kg: bula usa 200 mg a cada 12 h; ajustar por resposta/TDM.",
+      "renal": "VO: sem ajuste renal. IV: evitar se ClCr <50 mL/min (SBECD), salvo benefício-risco favorável. HD: sem ajuste do ativo. CRRT: avaliar veículo/modalidade e TDM; não reduzir automaticamente o ativo.",
+      "alerta": "Não cobre Mucorales. Rever CYP/QT e hepatograma. Child-Pugh A/B: manter ataque e reduzir manutenção à metade (bula). Peso/troca IV-VO exigem revisão.",
+      "fontes": [
+        {
+          "titulo": "DailyMed - VFEND",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ce3ef5cf-3087-4d92-9d94-9eb8287228db",
+          "consultado_em": "2026-11-03",
+          "secao": "Posologia, insuficiência renal, interações e advertências"
+        },
+        {
+          "titulo": "UCSF - voriconazol",
+          "url": "https://idmp.ucsf.edu/content/voriconazole",
+          "consultado_em": "2026-11-03",
+          "secao": "Doses adultas, HD e notas"
+        }
+      ]
+    },
+    {
+      "id": "isavuconazol",
+      "grupo": "Antifúngicos",
+      "nome": "Isavuconazol (ativo) IV/VO",
+      "dose": "Aspergilose/mucormicose: 200 mg a cada 8 h por 6 doses; depois 200 mg a cada 24 h. Brasil: 200 mg de ativo = 372,6 mg de sulfato de isavuconazônio.",
+      "renal": "Sem ajuste renal/HD; IV sem SBECD. CRRT habitualmente dose usual, com revisão de exposição e interações.",
+      "alerta": "Manutenção 12-24 h após último ataque. IV ≥1 h. Encurta QT; contraindicado no QT curto familiar. Rever CYP3A4 e hepatograma.",
+      "fontes": [
+        {
+          "titulo": "Knight/United Medical - Cresemba, bula profissional brasileira",
+          "url": "https://knighttx.com.br/bulas/Cresemba-po-200mg_HCP.pdf",
+          "consultado_em": "2026-11-03",
+          "secao": "Composição, posologia, insuficiência renal e interações"
+        }
+      ]
+    },
+    {
+      "id": "aciclovir",
+      "grupo": "Antivirais",
+      "nome": "Aciclovir IV",
+      "dose": "Encefalite HSV / VZV disseminado: dose-base 10 mg/kg a cada 8 h, cada dose em ≥1 h. Outros focos têm doses próprias.",
+      "renal": "ClCr INDEXADA (mL/min/1,73 m²): >50, dose-base 8/8 h; >25-50, dose-base 12/12 h; >10-25, dose-base 24/24 h; ≤10, 50% da dose-base 24/24 h. HD encefalite/VZV (UCSF): 5 mg/kg IV 24/24 h, após sessão nos dias de HD. CRRT: ver guia.",
+      "alerta": "Hidratação conforme tolerância. Vigiar creatinina/diurese e neurotoxicidade. Obesidade: documentar peso de dose; bula/UCSF diferem.",
+      "fontes": [
+        {
+          "titulo": "DailyMed - aciclovir IV",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=889bccd1-3793-40ce-bca2-c8c9cf6b7488",
+          "consultado_em": "2026-11-03",
+          "secao": "Tabela 5 e administração"
+        },
+        {
+          "titulo": "UCSF - aciclovir IV",
+          "url": "https://idmp.ucsf.edu/content/acyclovir-iv",
+          "consultado_em": "2026-11-03",
+          "secao": "Doses adultas, HD e notas"
+        }
+      ]
+    },
+    {
+      "id": "ganciclovir",
+      "grupo": "Antivirais",
+      "nome": "Ganciclovir IV - INDUÇÃO",
+      "dose": "Doença por CMV: indução 5 mg/kg a cada 12 h, em 1 h. Não usar esta tabela para manutenção/profilaxia.",
+      "renal": "INDUÇÃO, ClCr mL/min: ≥70, 5 mg/kg 12/12 h; 50-69, 2,5 mg/kg 12/12 h; 25-49, 2,5 mg/kg 24/24 h; 10-24, 1,25 mg/kg 24/24 h. HD convencional: 1,25 mg/kg pós-sessão, 3 vezes/semana. <10 sem HD: especialista. CRRT/outro calendário de HD: ver guia.",
+      "alerta": "Vigiar hemograma/plaquetas, rim e CMV-DNA. Não associar maribavir; cautela com imipenem (convulsões). Documentar peso de cálculo.",
+      "fontes": [
+        {
+          "titulo": "DailyMed - ganciclovir IV",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=993151ed-cea7-49a7-a967-fac3e9b3c85f",
+          "consultado_em": "2026-11-03",
+          "secao": "Tabela 1 e administração"
+        },
+        {
+          "titulo": "UCSF - ganciclovir",
+          "url": "https://idmp.ucsf.edu/content/ganciclovir",
+          "consultado_em": "2026-11-03",
+          "secao": "Doses adultas, HD e notas"
+        }
+      ]
+    },
+    {
+      "id": "oseltamivir",
+      "grupo": "Antivirais",
+      "nome": "Oseltamivir VO/sonda",
+      "dose": "Influenza no hospitalizado/grave: 75 mg a cada 12 h; curso usual 5 dias, duração maior conforme evolução/persistência viral.",
+      "renal": "TRATAMENTO, ClCr mL/min: >60, 75 mg 12/12 h; >30-60, 30 mg 12/12 h; >10-30, 30 mg 24/24 h. ≤10 sem diálise: não recomendado. HD: 30 mg imediatamente e após cada sessão no curso de 5 dias. CRRT: individualizar; ver guia.",
+      "alerta": "Não aguardar confirmação para iniciar no grave suspeito. Não dobrar dose rotineiramente. Estas faixas não são de profilaxia.",
+      "fontes": [
+        {
+          "titulo": "CDC - influenza, antivirais para clínicos",
+          "url": "https://www.cdc.gov/flu/hcp/antivirals/summary-clinicians.html",
+          "consultado_em": "2026-11-03",
+          "secao": "Hospitalizados e tabela 3 de dose renal"
+        }
+      ]
+    },
+    {
+      "id": "remdesivir",
+      "grupo": "Antivirais",
+      "nome": "Remdesivir IV",
+      "dose": "Adulto ≥40 kg com COVID-19 elegível: 200 mg no dia 1; depois 100 mg a cada 24 h. Hospitalar usual 5 dias; extensão conforme resposta/bula. Infusão em 30-120 min.",
+      "renal": "Sem ajuste em qualquer grau de insuficiência renal, inclusive HD; sem vínculo obrigatório ao horário da HD. CRRT: dose usual do ativo; acompanhar resposta e função hepática.",
+      "alerta": "IDSA desaconselha início rotineiro já em VM invasiva/ECMO. Vigiar ALT/AST e reações de infusão; evitar cloroquina/hidroxicloroquina.",
+      "fontes": [
+        {
+          "titulo": "FDA - Veklury, bula",
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/214787s030lbl.pdf",
+          "consultado_em": "2026-11-03",
+          "secao": "Itens 2.3-2.4, 5 e 7"
+        },
+        {
+          "titulo": "IDSA - tratamento da COVID-19",
+          "url": "https://www.idsociety.org/practice-guideline/covid-19-guideline-treatment-and-management/",
+          "consultado_em": "2026-11-03",
+          "secao": "Remdesivir em doença grave/crítica"
+        }
+      ]
+    }
+  ]
+}

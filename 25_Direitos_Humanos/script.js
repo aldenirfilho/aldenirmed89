@@ -11,6 +11,7 @@
   const emptyState = document.querySelector('#emptyState');
   const clearSearch = document.querySelector('#clearSearch');
   let activeFilter = 'all';
+  const explorer = document.querySelector('.explorer');
 
   const preferenceKey = 'antigravity:a11y:v1';
   const systemTheme = window.matchMedia('(prefers-color-scheme: light)');
@@ -46,24 +47,33 @@
 
   themeToggle?.addEventListener('click', () => {
     a11yPrefs.theme = resolveTheme() === 'dark' ? 'light' : 'dark';
-    localStorage.setItem(preferenceKey, JSON.stringify(a11yPrefs));
-    localStorage.setItem('direitos-humanos-theme', a11yPrefs.theme);
+    try {
+      localStorage.setItem(preferenceKey, JSON.stringify(a11yPrefs));
+    } catch {
+      // O tema continua aplicável quando o navegador bloqueia o armazenamento.
+    }
     syncTheme();
   });
 
-  systemTheme.addEventListener?.('change', syncTheme);
-  systemTheme.addListener?.(syncTheme);
+  if (systemTheme.addEventListener) systemTheme.addEventListener('change', syncTheme);
+  else systemTheme.addListener?.(syncTheme);
 
-  navToggle?.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('open');
+  const setMenuOpen = (isOpen) => {
+    nav.classList.toggle('open', isOpen);
     navToggle.setAttribute('aria-expanded', String(isOpen));
+    navToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+  };
+  navToggle.addEventListener('click', () => {
+    setMenuOpen(!nav.classList.contains('open'));
   });
-
-  nav?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('open');
-      navToggle?.setAttribute('aria-expanded', 'false');
-    });
+  nav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => setMenuOpen(false));
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && nav.classList.contains('open')) {
+      setMenuOpen(false);
+      navToggle.focus();
+    }
   });
 
   const normalize = (value) => value
@@ -73,14 +83,14 @@
     .trim();
 
   const applyFilters = () => {
-    const query = normalize(searchInput.value);
+    const terms = normalize(searchInput.value).split(/\s+/).filter(Boolean);
     let visibleCount = 0;
 
     cards.forEach((card) => {
       const contexts = card.dataset.context.split(' ');
       const haystack = normalize(`${card.dataset.search} ${card.textContent}`);
       const matchesContext = activeFilter === 'all' || contexts.includes(activeFilter);
-      const matchesSearch = !query || haystack.includes(query);
+      const matchesSearch = terms.every((term) => haystack.includes(term));
       const visible = matchesContext && matchesSearch;
       card.hidden = !visible;
       if (visible) visibleCount += 1;
@@ -114,6 +124,8 @@
     applyFilters();
     searchInput.focus();
   });
+  explorer.hidden = false;
+  applyFilters();
 
   const updateProgress = () => {
     const total = document.documentElement.scrollHeight - window.innerHeight;
@@ -124,18 +136,5 @@
   window.addEventListener('resize', updateProgress);
   updateProgress();
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if ('IntersectionObserver' in window && !reduceMotion) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -35px' });
-    document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
-  } else {
-    document.querySelectorAll('.reveal').forEach((element) => element.classList.add('visible'));
-  }
+  root.classList.add('js');
 })();

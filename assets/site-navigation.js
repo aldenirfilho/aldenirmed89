@@ -4,19 +4,21 @@
   const list = document.getElementById('quickResults');
   const status = document.getElementById('quickSearchStatus');
   if (!input || !list || !status) return;
+  const initialStatus = status.textContent;
   const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const unique = new Map();
-  document.querySelectorAll('a.module-card').forEach(card => {
+  document.querySelectorAll('a.module-card, a[data-search-route]').forEach(card => {
     const href = card.getAttribute('href');
-    if (!href || /^(?:[a-z]+:|\/\/)/i.test(href)) return;
-    unique.set(href, {href, title:card.querySelector('h3')?.textContent.trim() || card.textContent.trim(), text:card.textContent, kind:'Módulo / estação'});
+    if (!href || /^(?:[a-z]+:|\/\/)/i.test(href) || unique.has(href)) return;
+    const title = card.dataset.searchTitle || card.querySelector('h3, strong')?.textContent.trim() || card.textContent.trim();
+    unique.set(href, {href, title, text:[title, card.textContent, card.dataset.searchTerms || ''].join(' '), kind:card.dataset.searchKind || 'Módulo / estação'});
   });
   const show = () => {
     const words = normalize(input.value).trim().split(/\s+/).filter(Boolean);
     list.replaceChildren();
     list.hidden = !words.length;
     if (!words.length) {
-      status.textContent = 'Busque módulos e os documentos recém-integrados. A busca fica neste navegador.';
+      status.textContent = initialStatus;
       return;
     }
     const results = [...unique.values()].filter(item => words.every(word => normalize(item.text).includes(word)));
@@ -38,11 +40,19 @@
     }
     status.textContent = results.length ? `${results.length} rota(s) encontrada(s)${results.length>12 ? '; mostrando as primeiras 12' : ''}. Use Tab para escolher.` : 'Nenhuma rota rápida encontrada. Continue a busca na Biblioteca IA.';
   };
+  const clearOnEscape = event => {
+    if (event.key !== 'Escape' || (!input.value && list.hidden)) return;
+    event.preventDefault();
+    input.value = '';
+    input.focus();
+    show();
+  };
   input.addEventListener('input',show);
   input.addEventListener('keydown',event => {
-    if(event.key==='Escape'){input.value='';show();}
+    clearOnEscape(event);
     if(event.key==='ArrowDown'&&!list.hidden){event.preventDefault();list.querySelector('a')?.focus();}
   });
+  list.addEventListener('keydown',clearOnEscape);
   fetch('02_Biblioteca_IA_Engine/data/biblioteca_ingestao_20260911.json', {credentials:'same-origin'})
     .then(response => {if(!response.ok) throw Error('library-unavailable');return response.json();})
     .then(data => {
@@ -54,6 +64,11 @@
         const href = '02_Biblioteca_IA_Engine/index.html?doc=' + encodeURIComponent(item.id);
         unique.set(href,{href,title:item.title,text:[item.title,item.theme,...(Array.isArray(item.tags)?item.tags:[])].join(' '),kind:'Word IA · prévia educacional em revisão médica'});
       });
+      const focusedLink = list.contains(document.activeElement) ? document.activeElement : null;
       show();
+      if (focusedLink) {
+        const replacement = [...list.querySelectorAll('a')].find(link => link.href === focusedLink.href);
+        (replacement || input).focus();
+      }
     }).catch(() => { /* Os módulos e a busca no acervo continuam disponíveis. */ });
 })();

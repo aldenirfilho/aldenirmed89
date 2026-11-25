@@ -2,7 +2,7 @@
 
 No network requests. Native taxonomies and dates remain separate by fund.
 Usage: python3 scripts_admin/build_ensign_peak_etfs.py --research-dir PATH
-       [--historical-dir PATH] [--followup-dir PATH]
+       [--historical-dir PATH] [--followup-dir PATH] [--november-dir PATH]
 """
 from __future__ import annotations
 
@@ -11,10 +11,12 @@ import csv
 import hashlib
 import html
 import json
+import math
 import re
 from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 PORTAL = ROOT / "ecossistema/auditoria-religiosa-360"
@@ -26,6 +28,13 @@ CUTOFF = "2026-10-22"
 RESEARCH_FILES = ("invesco_ssga.json", "ishares.json", "vanguard_avantis.json")
 HISTORICAL_FILES = ("invesco_historical.json", "ssga_historical.json", "vanguard_avantis_historical.json")
 FOLLOWUP_FILES = ("invesco_round2.json", "avem_hger_round2.json", "vea_vwo_sectors_round2.json")
+NOVEMBER_DATE = "2026-11-07"
+NOVEMBER_FILES = ("invesco_nov.json", "avem_hger_nov.json", "vanguard_icb_nov.json")
+NOVEMBER_TARGETS = {
+    "PBUS": "Carteira completa", "BKLN": "Carteira completa", "KBWB": "Carteira completa",
+    "AVEM": "Carteira completa", "QQQM": "Carteira completa",
+    "HGER": "Swaps e colaterais", "VEA": "Setores ICB", "VWO": "Setores ICB",
+}
 GROUPS = {
     "equity": "Mandatos de ações",
     "loan_credit": "Crédito com empréstimos sêniores",
@@ -61,6 +70,8 @@ def set_temporal_fields(fund: dict) -> None:
     fund["temporalStatus"] = ("historical_same_date" if count == 2 else
                                "partial_same_date" if count == 1 else "later_proxy")
     fund["temporalLabel"] = TEMPORAL_LABELS[fund["temporalStatus"]]
+    if status["sectors"] == "same_date_documented" and fund.get("officialICBEvidence", {}).get("accessMode") == "indexed_pdf_text":
+        fund["temporalLabel"] = "Componentes em 30/06; ICB de junho em ficha indexada"
 
 
 def temporal_summary(funds: list[dict]) -> dict:
@@ -333,6 +344,95 @@ def mandate(ticker: str) -> str:
     return "equity"
 
 
+def merge_november_research(data: dict, directory: Path) -> dict:
+    """Add the new audit without treating a report from a nearby date as June data."""
+    result = deepcopy(data)
+    funds = {fund["ticker"]: fund for fund in result["funds"]}
+    inputs = {}
+    for filename in NOVEMBER_FILES:
+        for row in json.loads((directory / filename).read_text())["funds"]:
+            ticker = row["ticker"]
+            if ticker not in NOVEMBER_TARGETS or ticker in inputs:
+                raise ValueError(f"Invalid November research ticker: {ticker}")
+            inputs[ticker] = row
+    if set(inputs) != set(NOVEMBER_TARGETS):
+        raise ValueError("November research must cover all eight targets")
+
+    audit = []
+    for ticker, target in NOVEMBER_TARGETS.items():
+        row = inputs[ticker]
+        sources = [{"url": source["url"], "title": source["title"], "accessedAt": NOVEMBER_DATE}
+                   for source in row["sources"]]
+        if not sources or any(urlsplit(source["url"]).scheme != "https"
+                              or not urlsplit(source["url"]).hostname for source in sources):
+            raise ValueError(f"Missing or unsafe source for {ticker}")
+        findings = row.get("findings") or {}
+        icb = findings.get("officialICB")
+        fund = funds[ticker]
+        if icb:
+            if (ticker not in {"VEA", "VWO"} or icb["asOf"] != AS_OF or icb["cusip"] != fund["cusip"]
+                    or not any(source["url"] == icb["sourceURL"] for source in sources)
+                    or (icb.get("binaryVerified") is True
+                        and not re.fullmatch(r"[0-9a-f]{64}", icb.get("sha256", "")))
+                    or (icb.get("binaryVerified") is not True
+                        and (icb.get("accessMode") != "indexed_pdf_text"
+                             or not re.fullmatch(r"[0-9a-f]{64}", icb.get("extractionSha256", ""))))):
+                raise ValueError(f"ICB evidence not suitable for historical promotion: {ticker}")
+            if icb.get("accessMode") == "indexed_pdf_text":
+                extract = (directory / icb["extractionFile"]).resolve()
+                if (not extract.is_relative_to(directory.resolve())
+                        or hashlib.sha256(extract.read_bytes()).hexdigest() != icb["extractionSha256"]):
+                    raise ValueError(f"ICB extraction hash mismatch: {ticker}")
+            sectors = icb["sectors"]
+            if (not sectors or len({entry["name"] for entry in sectors}) != len(sectors)
+                    or any(not math.isfinite(entry["weightPercent"]) for entry in sectors)
+                    or abs(sum(entry["weightPercent"] for entry in sectors) - 100) > 1):
+                raise ValueError(f"Invalid published ICB distribution: {ticker}")
+            fund["previousSectorSnapshot"] = {
+                "asOf": fund["sectorAsOf"], "taxonomy": fund["sectorTaxonomy"],
+                "sectors": fund["sectors"],
+            }
+            for evidence in fund.get("evidenceFiles", []):
+                if evidence["fileName"] in {f"{ticker}-fact-sheet.pdf", f"{ticker}-fact-sheet-pdfium.txt"}:
+                    evidence["asOf"] = fund["previousSectorSnapshot"]["asOf"]
+            fund.update({
+                "sectorAsOf": AS_OF, "sectorTaxonomy": "ICB",
+                "sectors": sectors, "sectorCoveragePercent": None,
+                "reportedSectorWeightSumPercent": sum(entry["weightPercent"] for entry in sectors),
+                "sectorWeightBasis": icb["basis"],
+                "sectorMethod": (f"Ficha Vanguard {icb['documentId']}, {icb['locator'].rstrip('.')}. Pesos publicados, sem normalização. "
+                                 + ("PDF original da cópia conferido." if icb.get("binaryVerified") else
+                                    "Leitura indexada da cópia hospedada por terceiro; PDF não validado diretamente.")),
+                "sectorSources": [source for source in sources if source["url"] == icb["sourceURL"]],
+                "officialICBEvidence": icb,
+                "dateBasis": "Carteira histórica pela API Vanguard e setores ICB na ficha Vanguard de 30/06/2026.",
+            })
+            fund["limitations"] = [note for note in fund["limitations"]
+                                   if not note.startswith("A lista das maiores posições e o agrupamento literal")]
+            fund["limitations"].append("Setores ICB transcritos da ficha Vanguard de 30/06/2026 hospedada por terceiro; o quadro GICS editorial usa outra classificação e outra base.")
+            set_temporal_fields(fund)
+        record = {"ticker": ticker, "target": target, "targetAsOf": AS_OF,
+                  "outcome": row["outcome"], "asOf": icb["asOf"] if icb else None,
+                  "summary": row["summary"], "gap": row["gap"], "sources": sources}
+        if icb:
+            record["officialICB"] = icb
+        if row.get("context"):
+            record["context"] = row["context"]
+        if ticker in {"AVEM", "HGER"}:
+            keys = ("issuerArchivedPortfolio", "adjacentSecPortfolios") if ticker == "AVEM" else (
+                "issuerDataTypes", "adjacentSecPortfolios", "adjacentIssuerSchedule")
+            record["supportingFindings"] = {key: findings[key] for key in keys if key in findings}
+        audit.append(record)
+    result.update(temporal_summary(result["funds"]))
+    result["followupSearchScope"]["auditIsHistoricalSnapshot"] = True
+    result.update({"edition": "1.5", "novemberSearchAudit": audit,
+                   "novemberSearchScope": {"targetAsOf": AS_OF, "accessedAt": NOVEMBER_DATE,
+                                           "fundCount": len(audit)}})
+    sanitize_evidence(result)
+    validate_dataset(result)
+    return result
+
+
 def reconcile(research: list[dict], positions: list[dict]) -> dict:
     expected = {row["cusip"]: row for row in positions if row["status"] == "etf"}
     if len(expected) != 29 or sum(row["valueUSD"] for row in expected.values()) != TOTAL_ETF:
@@ -463,11 +563,42 @@ def render_historical_search(data: dict, *, followup: bool = False) -> str:
         rows.append(f'<tr><th scope="row">{esc(record["ticker"])}</th>{"".join(fields)}<td class="small">{source_links}</td><td class="small">{esc(record["gap"])}</td></tr>')
     identifier = "etf-followup-search" if followup else "etf-historical-search"
     title = "Segunda rodada: oito buscas e seus limites — edição 1.4" if followup else "Primeira rodada: auditoria das 16 buscas — estado da edição 1.3"
-    context = ("Esta segunda rodada revisita oito fundos. QQQM recebeu componentes e setores de junho; AVEM recebeu somente setores de junho. Os painéis GICS de VEA/VWO e os pesos do relatório HGER são separados e não promovem os campos oficiais de junho." if followup else
-               "Este quadro preserva o resultado ao encerrar a primeira rodada, na edição 1.3: 21 fundos com ambos os campos, dois parciais e seis sem campo de junho. Ele é um registro histórico; a tabela dos 29 fundos e a segunda rodada mostram o estado atual.")
+    context = ("Este registro preserva o estado ao fim da segunda rodada. QQQM recebeu componentes e setores de junho; AVEM recebeu somente setores de junho. Os painéis GICS de VEA/VWO e os pesos do relatório HGER foram mantidos separados." if followup else
+               "Este quadro preserva o resultado ao encerrar a primeira rodada, na edição 1.3: 21 fundos com ambos os campos, dois parciais e seis sem campo de junho. Ele é um registro histórico; consulte a tabela dos 29 fundos para o estado mais recente.")
     return f'''<details id="{identifier}" open><summary>{title}</summary>
 <p>{context} A data-alvo é <strong>30/06/2026</strong>. Componentes e categorias são avaliados separadamente. “Confirmado” não significa cobertura de todos os ativos ou padronização entre taxonomias.</p>
 <div class="etf-table-region" role="region" aria-label="Resultado por campo de {len(records)} buscas históricas" tabindex="0"><table><caption>Resultados com fontes e lacunas; consulta em 22/10/2026. Quadro disponível sem JavaScript.</caption><thead><tr><th scope="col">Fundo</th><th scope="col">Componentes</th><th scope="col">Setores / categorias</th><th scope="col">Fontes / relatório</th><th scope="col">Limite remanescente</th></tr></thead><tbody>{"".join(rows)}</tbody></table></div></details>'''
+
+
+def render_november_search(data: dict) -> str:
+    records = data.get("novemberSearchAudit", [])
+    if not records:
+        return ""
+    esc = html.escape
+    rows = []
+    for record in records:
+        links = "<br>".join(
+            f'<a href="{esc(source["url"], quote=True)}" target="_blank" rel="noopener noreferrer">{esc(source["title"])}</a>'
+            for source in record["sources"])
+        rows.append(f'<tr><th scope="row">{esc(record["ticker"])}</th><td>{esc(record["target"])}</td>'
+                    f'<td>{esc(record["summary"])}</td><td>{esc(record["gap"])}</td><td>{links}</td></tr>')
+    hger = next(record for record in records if record["ticker"] == "HGER")
+    july = hger.get("supportingFindings", {}).get("adjacentIssuerSchedule")
+    hger_context = ""
+    if july and july.get("reportDate") == "2026-07-31":
+        hger_context = (
+            '<p class="small muted"><strong>HGER · documento de outra data:</strong> '
+            'em 31/07, o demonstrativo registra quatro swaps de retorno excedente e letras do Tesouro dos EUA '
+            f'equivalentes a {pct(july["treasuryBillsPctNAV"], 1)} do patrimônio líquido. '
+            'O estoque de letras não demonstra quanto foi efetivamente dado em garantia. '
+            'Consulte o relatório de julho na linha HGER; não transfira esses dados para 30/06.</p>')
+    return f'''<details id="etf-november-search" open>
+<summary>Verificação de 07/11/2026: carteiras completas, swaps, colaterais e ICB</summary>
+<p>A data-alvo é <strong>30/06/2026</strong>. As cinco carteiras completas e os swaps e colaterais do HGER permanecem sem confirmação nessa data. Os setores ICB (Industry Classification Benchmark) de VEA e VWO foram transcritos de fichas Vanguard indexadas; a validação direta dos PDFs está pendente. Os quadros anteriores preservam o resultado de cada rodada.</p>
+<div class="etf-table-region" role="region" aria-label="Verificação documental de novembro para oito fundos" tabindex="0">
+<table><caption>Fontes consultadas em 07/11/2026; quadro disponível sem JavaScript.</caption>
+<thead><tr><th scope="col">Fundo</th><th scope="col">Item buscado</th><th scope="col">Resultado documentado</th><th scope="col">Limite remanescente</th><th scope="col">Fontes</th></tr></thead>
+<tbody>{"".join(rows)}</tbody></table></div>{hger_context}</details>'''
 
 
 def render_bkln_may(data: dict) -> str:
@@ -497,6 +628,8 @@ def render_section(data: dict) -> str:
         f'<td class="num">{money(fund["ensignPeakValueUSD"])}</td><td class="num">{pct(fund["percentOfETFs"])}</td><td class="num">{pct(fund["percentOf13F"])}</td><td>{esc(fund["mandateLabel"])}</td><td>{esc(fund["temporalLabel"])}</td></tr>' for fund in data["funds"])
     options = "".join(f'<option value="{esc(fund["ticker"])}">{esc(fund["ticker"] + " · " + fund["name"])}</option>' for fund in data["funds"])
     categories = "".join(f'<option value="{key}">{esc(label)}</option>' for key, label in GROUPS.items())
+    november_link = ('<a class="button" href="#etf-november-search">Verificação de novembro ↓</a>'
+                     if data.get("novemberSearchAudit") else '')
     return f'''<section class="section alt" id="etfs"><div class="wrap">
 <span class="number">02B / DENTRO DOS FUNDOS · EDIÇÃO {data["edition"]}</span><h2>Os 2% em ETFs.<br>O que existe dentro deles?</h2>
 <p class="lead etf-intro">As 29 cotas declaradas pela Ensign Peak somam <strong>{money(TOTAL_ETF)}</strong>: <strong>{pct(data["percentOf13F"])} do total 13F</strong>. Aqui se distingue o veículo comprado dos seus componentes, com a data e a fonte de cada fundo.</p>
@@ -505,14 +638,15 @@ def render_section(data: dict) -> str:
 <h3 style="margin-top:32px">Como se distribui o valor das cotas</h3><p class="muted">Agrupamento editorial por classe/mandato do veículo. Não é uma soma dos setores das empresas: as taxonomias de ações, indústrias, crédito e commodities permanecem separadas por fundo.</p>
 <div class="etf-table-region etf-mandates" role="region" aria-label="Valor das cotas por classe ou mandato" tabindex="0"><table><caption>Denominadores: ETFs = {money(TOTAL_ETF)}; 13F = {money(TOTAL_13F)}. Valores em 30/06/2026.</caption><thead><tr><th scope="col">Classe / mandato</th><th scope="col" class="num">Cotas no 13F</th><th scope="col" class="num">% dos ETFs</th><th scope="col" class="num">% do 13F</th></tr></thead><tbody>{group_rows}</tbody></table></div>
 <p class="small muted">BKLN e SRLN são veículos de crédito com empréstimos sêniores; isso não significa 100% em empréstimos. HYG e IGSB possuem dívida corporativa. VTIP possui principalmente títulos públicos dos EUA ligados à inflação. HGER usa exposições a commodities e derivativos; não é uma carteira de mineradoras ou petroleiras.</p>
-<div class="actions"><a class="button" href="data/etfs-ensign-peak-2026-q2.json" download>Dados completos e fontes · JSON</a><a class="button" href="data/etfs-ensign-peak-2026-q2-resumo.csv" download>Resumo dos 29 fundos · CSV</a>{'<a class="button" href="#etf-followup-search">Segunda rodada: oito buscas ↓</a>' if data.get("followupSearchAudit") else ''}<a class="button" href="#etf-historical-search">Primeira rodada: 16 buscas ↓</a><a class="button" href="#etf-bkln-maio">BKLN em maio ↓</a><a class="button" href="#etf-method">Método e lacunas ↓</a></div>
+<div class="actions"><a class="button" href="data/etfs-ensign-peak-2026-q2.json" download>Dados e fontes · JSON</a><a class="button" href="data/etfs-ensign-peak-2026-q2-resumo.csv" download>Resumo dos 29 fundos · CSV</a>{november_link}{'<a class="button" href="#etf-followup-search">Segunda rodada: oito buscas ↓</a>' if data.get("followupSearchAudit") else ''}<a class="button" href="#etf-historical-search">Primeira rodada: 16 buscas ↓</a><a class="button" href="#etf-bkln-maio">BKLN em maio ↓</a><a class="button" href="#etf-method">Método e lacunas ↓</a></div>
+{render_november_search(data)}
 {render_historical_search(data, followup=True)}
 {render_historical_search(data)}
 {render_bkln_may(data)}
 <h3 style="margin-top:32px">Explore os 29 fundos</h3><div class="etf-tools"><div><label for="etf-search">Buscar nome, ticker ou CUSIP</label><input type="search" id="etf-search" placeholder="Ex.: IWM, empréstimos, 46138E461" autocomplete="off"></div><div><label for="etf-group">Classe / mandato</label><select id="etf-group"><option value="">Todos os mandatos</option>{categories}</select></div><div><label for="etf-timing">Data da composição</label><select id="etf-timing"><option value="">Todas as datas</option><option value="historical_same_date">Ambos os campos em junho</option><option value="partial_same_date">Confirmação parcial em junho</option><option value="later_proxy">Referências posteriores</option></select></div></div>
 <p id="etf-count" class="small muted" role="status" aria-live="polite">29 fundos · {money(TOTAL_ETF)} em cotas.</p><div class="etf-table-region" role="region" aria-label="Os 29 ETFs da Ensign Peak" tabindex="0"><table><caption>Toque no ticker para abrir setores, componentes, datas, fontes e limitações. Pesos das cotas em 30/06/2026.</caption><thead><tr><th scope="col">Fundo</th><th scope="col" class="num">Cotas no 13F</th><th scope="col" class="num">% dos ETFs</th><th scope="col" class="num">% do 13F</th><th scope="col">Classe / mandato</th><th scope="col">Composição</th></tr></thead><tbody id="etf-fund-rows">{fund_rows}</tbody></table></div>
 <div id="etf-selected" class="etf-selected"><div class="etf-picker"><label for="etf-picker">Fundo em detalhe</label><select id="etf-picker">{options}</select></div><div id="etf-detail"></div><noscript><p class="notice">A tabela de cotas está disponível acima. Para explorar cada composição nesta página, ative JavaScript; as fontes e todos os componentes também constam do JSON para download.</p></noscript></div>
-<details id="etf-method"><summary>Método, cobertura e principais lacunas</summary><ol><li><strong>Perímetro imutável:</strong> 29 linhas classificadas como ETF no 13F, conciliadas por CUSIP e valor, somam {money(TOTAL_ETF)}. Nenhum valor ou setor do mapa de posições diretas foi alterado.</li><li><strong>Confirmação por campo:</strong> a data interna da fonte decide se componentes e categorias correspondem a 30/06. Há APIs históricas, relatórios financeiros oficiais e, no caso de VOO, tabela oficial recuperada pela extração indexada. A fonte exata aparece em cada fundo; não se atribuem todos os dados à mesma API.</li><li><strong>Taxonomias e bases:</strong> setores, indústrias, tipos de emissor e categorias de futuros permanecem separados. Pesos publicados e cálculos editoriais valor/NAV são identificados. NAV significa patrimônio líquido do fundo. Percentuais de outra base, como percentOfFunds, não são renomeados como percentuais do NAV.</li><li><strong>BKLN:</strong> a distribuição de devedores em junho permanece não confirmada. O quadro separado de 31/05 traz 30 categorias de empréstimos e 17 de bonds, sem converter maio em junho. “Corporate 100%” da API posterior continua sendo categoria ampla de crédito, sem setor econômico.</li><li><strong>Valor bruto e passivos:</strong> alguns relatórios têm investimentos acima de 100% do NAV e ajustes negativos de outros ativos/passivos. Esses pesos são preservados, sem normalização nem interpretação como uma carteira líquida de 100% em empresas.</li><li><strong>IJH e IJR:</strong> pesos de mercado e medidas nocionais são separados; há linhas sem peso de mercado. Soma próxima de 100% não demonstra cobertura total.</li><li><strong>Commodities e governo:</strong> HGER não é uma carteira de empresas; swaps, exposições e caução não são somados como alocação simples de capital. VTIP contém dívida pública ligada à inflação; a lista de títulos, quando confirmada, conserva sua própria data e base de peso.</li><li><strong>Limites:</strong> listas de dez maiores linhas são parciais e podem repetir emissores por classe ou título. Não há ranking global feito com listas truncadas, adição dos subjacentes às cotas ou mudança da nota de transparência de 31/100.</li><li><strong>Rastreabilidade:</strong> o quadro das 16 buscas e o JSON registram fontes, datas, resultados, lacunas e hashes. Corte em 22/10/2026, sem atualização ao vivo; PDFs integrais e caminhos privados não são republicados.</li></ol></details>
+<details id="etf-method"><summary>Método, cobertura e principais lacunas</summary><ol><li><strong>Perímetro imutável:</strong> 29 linhas classificadas como ETF no 13F, conciliadas por CUSIP e valor, somam {money(TOTAL_ETF)}. Nenhum valor ou setor do mapa de posições diretas foi alterado.</li><li><strong>Confirmação por campo:</strong> a data interna da fonte decide se componentes e categorias correspondem a 30/06. Há APIs históricas, relatórios financeiros oficiais e tabelas oficiais recuperadas pela leitura indexada (VOO, VEA e VWO). A fonte exata aparece em cada fundo; não se atribuem todos os dados à mesma API.</li><li><strong>Taxonomias e bases:</strong> setores, indústrias, tipos de emissor e categorias de futuros permanecem separados. Pesos publicados e cálculos editoriais valor/NAV são identificados. NAV significa patrimônio líquido do fundo. Percentuais de outra base, como percentOfFunds, não são renomeados como percentuais do NAV.</li><li><strong>BKLN:</strong> a distribuição de devedores em junho permanece não confirmada. O quadro separado de 31/05 traz 30 categorias de empréstimos e 17 de bonds, sem converter maio em junho. “Corporate 100%” da API posterior continua sendo categoria ampla de crédito, sem setor econômico.</li><li><strong>Valor bruto e passivos:</strong> alguns relatórios têm investimentos acima de 100% do NAV e ajustes negativos de outros ativos/passivos. Esses pesos são preservados, sem normalização nem interpretação como uma carteira líquida de 100% em empresas.</li><li><strong>IJH e IJR:</strong> pesos de mercado e medidas nocionais são separados; há linhas sem peso de mercado. Soma próxima de 100% não demonstra cobertura total.</li><li><strong>Commodities e governo:</strong> HGER não é uma carteira de empresas; swaps, exposições e caução não são somados como alocação simples de capital. VTIP contém dívida pública ligada à inflação; a lista de títulos, quando confirmada, conserva sua própria data e base de peso.</li><li><strong>Limites:</strong> listas de dez maiores linhas são parciais e podem repetir emissores por classe ou título. Não há ranking global feito com listas truncadas, adição dos subjacentes às cotas ou mudança da nota de transparência de 31/100.</li><li><strong>Rastreabilidade:</strong> os quadros de pesquisa e o JSON registram fontes, datas, resultados, lacunas e hashes. A revisão de 07/11/2026 complementa a pesquisa de 22/10/2026; PDFs integrais e caminhos privados não são republicados.</li></ol></details>
 </div></section>'''
 
 
@@ -539,7 +673,7 @@ def install_view(data: dict) -> None:
             text = text.replace(marker, markup + '\n' + marker, 1)
     if '<a href="#etfs">ETFs</a>' not in text:
         text = text.replace('<a href="#carteira">Investimentos</a>', '<a href="#carteira">Investimentos</a><a href="#etfs">ETFs</a>', 1)
-    text = re.sub(r'pesquisa documental pública · edição 1\.[1-4]', 'pesquisa documental pública · edição ' + data["edition"], text, count=1)
+    text = re.sub(r'pesquisa documental pública · edição 1\.[1-5]', 'pesquisa documental pública · edição ' + data["edition"], text, count=1)
     # Update visible descriptions, never the legacy compact holdings dataset.
     prefix, holdings = text.split('<script id="holdings-data"', 1)
     prefix = prefix.replace('Agrupamento editorial por instrumento, sem abrir os ativos de cada fundo.', 'Agrupamento editorial por instrumento. <a href="#etfs">Veja a composição pesquisada dos 29 ETFs ↓</a>')
@@ -553,6 +687,12 @@ def install_view(data: dict) -> None:
     prefix = prefix.replace('Edição 1.1 · classificação ampliada em 22/10/2026.', 'Edição 1.2 · análise dos 29 ETFs em 22/10/2026. A classificação de posições diretas da edição 1.1 foi preservada. <a href="#etfs">ETFs: fontes, datas e limites ↓</a>')
     prefix = prefix.replace('Edição 1.2 · análise dos 29 ETFs em 22/10/2026.', 'Edição 1.3 · revisão histórica dos 29 ETFs em 22/10/2026.')
     prefix = re.sub(r'Edição 1\.[234] · revisão histórica dos 29 ETFs em 22/10/2026\.', 'Edição ' + data["edition"] + ' · revisão histórica dos 29 ETFs em 22/10/2026.', prefix)
+    if data.get("novemberSearchAudit"):
+        prefix = prefix.replace("Edição 1.5 · revisão histórica dos 29 ETFs em 22/10/2026.",
+                                "Edição 1.5 · verificação adicional dos ETFs em 07/11/2026; base histórica de 30/06/2026.")
+        if "Verificação dos ETFs: 07/11/2026" not in prefix:
+            prefix = prefix.replace('<span class="tag">Corte de pesquisa: 22/10/2026</span>',
+                                    '<span class="tag">Pesquisa de base: 22/10/2026</span><span class="tag">Verificação dos ETFs: 07/11/2026</span>')
     page.write_text(prefix + '<script id="holdings-data"' + holdings)
 
 
@@ -561,6 +701,7 @@ def main():
     parser.add_argument("--research-dir", required=True, type=Path)
     parser.add_argument("--historical-dir", type=Path, help="Notas estruturadas das 16 buscas por 30/06/2026")
     parser.add_argument("--followup-dir", type=Path, help="Segunda rodada das oito lacunas; requer --historical-dir")
+    parser.add_argument("--november-dir", type=Path, help="Verificação de novembro; requer --followup-dir")
     args = parser.parse_args()
     paths = [args.research_dir / filename for filename in RESEARCH_FILES]
     research = [json.loads(path.read_text()) for path in paths]
@@ -577,10 +718,16 @@ def main():
             parser.error("--followup-dir requer --historical-dir para preservar a primeira rodada")
         data = merge_followup_research(data, args.followup_dir, positions)
     followup_paths = [args.followup_dir / filename for filename in FOLLOWUP_FILES] if args.followup_dir else []
+    november_paths = [args.november_dir / filename for filename in NOVEMBER_FILES] if args.november_dir else []
+    if args.november_dir:
+        if not args.followup_dir:
+            parser.error("--november-dir requer --followup-dir para preservar as rodadas anteriores")
+        data = merge_november_research(data, args.november_dir)
     data["sourceHashes"] = {"secCSV": hashlib.sha256((DATA / "ensign-peak-2026-q2.csv").read_bytes()).hexdigest(),
         "researchInputs": [{"fileName": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in paths],
         "historicalResearchInputs": [{"fileName": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in historical_paths],
-        "followupResearchInputs": [{"fileName": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in followup_paths]}
+        "followupResearchInputs": [{"fileName": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in followup_paths],
+        "novemberResearchInputs": [{"fileName": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in november_paths]}
     (DATA / "etfs-ensign-peak-2026-q2.json").write_text(numeric_json(data) + "\n")
     columns = ["ticker", "name", "cusip", "ensignPeakValueUSD", "percentOfETFs", "percentOf13F", "mandateCategory", "holdingsAsOf", "sectorAsOf", "temporalStatus", "sectorTaxonomy"]
     with (DATA / "etfs-ensign-peak-2026-q2-resumo.csv").open("w", newline="") as output:

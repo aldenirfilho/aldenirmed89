@@ -17,12 +17,11 @@ HAA_ROUTE = "01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html"
 GENETICS_ROUTE = "01_Modulos_Clinicos/Doencas_Geneticas/index.html"
 TCE_MARKER = (
     '      <a class="module-card mod-red reveal" '
-    'href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html" '
-    'aria-label="Abrir TCE grave — Protocolo CRASH">'
+    'href="01_Modulos_Clinicos/TCE_Grave_CRASH/index.html"'
 )
 
 HOME_MODULE_CARD = r'''
-      <a id="hepatite-alcool" class="module-card mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html" aria-label="Abrir Hepatite associada ao álcool — Turbo TEMI 360 X">
+      <a id="hepatite-alcool" class="module-card mod-yellow reveal" data-haa-home-card href="01_Modulos_Clinicos/Hepatite_Alcool_Associada/index.html">
         <div class="module-icon">🟠</div>
         <h3>Hepatite associada ao álcool</h3>
         <p>Critérios NIAAA, mecanismo, abordagem inicial, prednisolona, suporte e Atlas visual com os principais escores.</p>
@@ -36,7 +35,7 @@ HOME_MODULE_CARD = r'''
 '''.strip("\n")
 
 GENETICS_MODULE_CARD = r'''
-      <a id="doencas-geneticas" class="module-card mod-violet reveal" data-genetics-home-card href="01_Modulos_Clinicos/Doencas_Geneticas/index.html" aria-label="Abrir Doenças genéticas — Noonan, Costello e facomatoses — Turbo TEMI 360X">
+      <a id="doencas-geneticas" class="module-card mod-violet reveal" data-genetics-home-card href="01_Modulos_Clinicos/Doencas_Geneticas/index.html">
         <div class="module-icon">🧬</div>
         <h3>Doenças genéticas</h3>
         <p>Noonan, Costello e facomatoses: mecanismos genéticos, reconhecimento clínico e alertas na UTI. Atlas com 10 imagens didáticas.</p>

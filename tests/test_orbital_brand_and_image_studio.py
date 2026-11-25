@@ -66,10 +66,18 @@ class OrbitalBrandTests(unittest.TestCase):
         self.assertEqual(png_header(card)[:2], (1200, 630))
 
         home = (ROOT / "index.html").read_text(encoding="utf-8")
+        # Prévia de compartilhamento = cartão de lançamento 360X (pedido do autor, 16/11/2026).
         public_url = (
             "https://aldenirfilho.github.io/aldenirmed89/"
-            "assets/icons/aerospace-v2/social-card.png"
+            "assets/icons/360x-v1/social-card.png"
         )
+        social = ROOT / "assets/icons/360x-v1/social-card.png"
+        self.assertEqual(png_header(social)[:2], (1200, 630))
+        self.assertEqual(
+            social.read_bytes(),
+            (ROOT / "assets/brand-360x/aldenirmed-360x-launch-card.png").read_bytes(),
+        )
+        self.assertLess(social.stat().st_size, 300_000)
         self.assertIn(f'<meta property="og:image" content="{public_url}"/>', home)
         self.assertIn('<meta property="og:image:width" content="1200"/>', home)
         self.assertIn('<meta property="og:image:height" content="630"/>', home)

@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>POCUS Hub | Antigravity</title>
+<meta name="description" content="Hub educacional de ultrassonografia à beira do leito (POCUS), com materiais de estudo para clínica médica e terapia intensiva.">
   <meta name="theme-color" content="#071422"/>
   <meta name="color-scheme" content="dark light"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -69,6 +70,8 @@
     html.a11y-light .preview-bar{background:#eef4f8}
     html.a11y-light .preview-body{background:#fff;color:#102a43}
     .clarity-toggle{min-height:44px}
+    .catalog-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,min(42%,19rem));align-items:center}
+    .module-editorial-image{display:block;width:100%;height:auto;aspect-ratio:16/9;border:1px solid var(--border);border-radius:18px}
     :where(a,button,input,select,[tabindex]):focus-visible{outline:3px solid var(--gold);outline-offset:3px}
     html.a11y-light :where(a,button,input,select,[tabindex]):focus-visible{outline-color:#855400}
     @media(max-width:520px){.clarity-label{display:none}.clarity-toggle{flex:0 0 48px}}
@@ -85,6 +88,7 @@
       body{background:#fff!important;color:#102a43!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
       .topbar{position:static;background:#fff!important;border-color:#71869a!important}
       .nav-actions,.controls,.format-tabs,.preview{display:none!important}
+      .module-editorial-image{display:none}
       .hero{grid-template-columns:1fr}
       .panel,.stat,.card,.empty{background:#fff!important;color:#102a43!important;border-color:#71869a!important;break-inside:avoid;page-break-inside:avoid}
       .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -109,7 +113,13 @@
     <details class="panel instructions"><summary>Informações para curadoria</summary><p><strong>Publicação segura:</strong> revise no staging privado e promova apenas arquivos aprovados para <code>09_POCUS_Hub/public/</code>; depois rode o scanner.</p></details>
     <section class="controls"><input id="search" class="control" aria-label="Buscar no acervo POCUS" placeholder="Buscar POCUS, protocolo, imagem, vídeo, artigo ou tag..." oninput="setQuery(this.value)"/><select id="format-filter" class="control" aria-label="Filtrar itens POCUS por formato" onchange="setFormat(this.value)"></select><select id="source-filter" class="control" aria-label="Filtrar itens POCUS por origem" onchange="setSource(this.value)"></select><button class="btn" onclick="clearFilters()">Limpar</button></section>
     <div id="format-tabs" class="format-tabs"></div>
-    <section class="section-title"><div><h2>Acervo</h2><p id="result-count">0 item(ns)</p></div></section>
+    <section class="section-title catalog-intro">
+      <div><h2>Acervo</h2><p id="result-count">0 item(ns)</p></div>
+      <img class="module-editorial-image" src="../assets/module-visuals/pocus-ultrassom-portatil-480.webp"
+           srcset="../assets/module-visuals/pocus-ultrassom-portatil-480.webp 480w, ../assets/module-visuals/pocus-ultrassom-portatil-960.webp 960w"
+           sizes="auto, (max-width: 760px) 40vw, 304px" width="960" height="540"
+           loading="lazy" decoding="async" alt="Ilustração de um aparelho portátil de ultrassom com transdutor no suporte e tela desligada."/>
+    </section>
     <div id="empty-state" class="empty" style="display:none">Nenhum item público aprovado neste módulo. <a href="../02_Biblioteca_IA_Engine/index.html">Explorar os documentos relacionados na Biblioteca IA →</a></div>
     <div id="items-grid" class="grid"></div>
   </main>

@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v53`;
+const CACHE_NAME = `${CACHE_PREFIX}v59`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -19,17 +19,18 @@ const STUDY_CATALOG_PATHS = new Set([
   "./data/mnemonicos.json", "./data/desafios.json", "./data/study-search.json",
   "./questoes/data/hub_qbanks.js"
 ].map(relative => new URL(relative, self.registration.scope).pathname));
+const TEMI_800_PAGE = "./questoes/temi_800_imagens_questoes.html";
 const SHELL_ASSETS = [
-  "./assets/icons/aerospace-v2/favicon.ico",
-  "./assets/icons/aerospace-v2/icon-32.png",
-  "./assets/icons/aerospace-v2/icon-64.png",
-  "./assets/icons/aerospace-v2/icon-192.png",
-  "./assets/icons/aerospace-v2/icon-512.png",
-  "./assets/icons/aerospace-v2/icon-1024.png",
-  "./assets/icons/aerospace-v2/apple-touch-icon-180.png",
-  "./assets/icons/aerospace-v2/apple-touch-icon-167.png",
-  "./assets/icons/aerospace-v2/apple-touch-icon-152.png",
-  "./assets/icons/aerospace-v2/apple-touch-icon-120.png",
+  "./assets/icons/360x-v1/favicon.ico",
+  "./assets/icons/360x-v1/icon-32.png",
+  "./assets/icons/360x-v1/icon-64.png",
+  "./assets/icons/360x-v1/icon-192.png",
+  "./assets/icons/360x-v1/icon-512.png",
+  "./assets/icons/360x-v1/icon-1024.png",
+  "./assets/icons/360x-v1/apple-touch-icon-180.png",
+  "./assets/icons/360x-v1/apple-touch-icon-167.png",
+  "./assets/icons/360x-v1/apple-touch-icon-152.png",
+  "./assets/icons/360x-v1/apple-touch-icon-120.png",
 
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-64.png",
   "./01_Modulos_Clinicos/Semiologia_Neurologica_Topografica/assets/icons/neuro-192.png",
@@ -39,7 +40,12 @@ const SHELL_ASSETS = [
   "./offline.html",
   "./manifest.webmanifest",
   "./assets/aldenirmed89-mystic.css",
+  "./assets/home-360x.css",
+  "./assets/home-360x.js",
+  "./assets/digital-focus.css",
+  "./assets/digital-focus.js",
   "./assets/brand-360x/identity.css",
+  "./assets/brand-360x/codice-aeroespacial.css",
   "./assets/brand-360x/logo-360x.webp",
   "./ecossistema/painel.html",
   "./ecossistema/assets/painel.css",
@@ -53,9 +59,9 @@ const SHELL_ASSETS = [
   "./ecossistema/data/catalog.json",
   "./assets/site-analytics.css",
   "./assets/site-analytics.js",
-  "./assets/brand/aldenirmed89-aerospace-launch-card.png",
-  "./assets/brand/aldenirmed89-aerospace-orbital-master.png",
-  "./assets/icons/aldenirmed89-aerospace-orbital-192.png",
+  "./assets/brand-360x/aldenirmed-360x-launch-card.png",
+  "./assets/brand-360x/aldenirmed-360x-mark.svg",
+  "./assets/brand-360x/icons/aldenirmed-360x-192.png",
   "./assets/icons/antigravity-consultas-192.png",
   "./assets/icons/antigravity-consultas-512.png",
   "./assets/icons/apple-touch-icon.png",
@@ -65,7 +71,6 @@ const WARM_ASSETS = [
   "./25_Direitos_Humanos/index.html",
   "./25_Direitos_Humanos/styles.css",
   "./25_Direitos_Humanos/script.js",
-
   "./01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html",
   "./01_Modulos_Clinicos/Bacterias_Super_Resistentes/assets/styles.css",
   "./01_Modulos_Clinicos/Bacterias_Super_Resistentes/assets/app.js",
@@ -321,6 +326,9 @@ const WARM_ASSETS = [
   "./questoes/assets/study-search.mjs",
   "./questoes/temi_novembro_2026_questoes.html",
   "./questoes/data/qbank_temi_novembro_2026.js",
+  TEMI_800_PAGE,
+  "./questoes/assets/temi800-figuras.js",
+  "./questoes/data/qbank_temi_800_2026.js",
   "./docs_usuario/index.html",
   "./docs_usuario/guide-reader.css",
   "./docs_usuario/guide-reader.js",
@@ -373,7 +381,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-async function networkFirst(request) {
+async function networkFirst(request, cachedPage) {
   try {
     const response = await fetch(request);
     if (response.ok) {
@@ -384,6 +392,7 @@ async function networkFirst(request) {
   } catch (_) {
     return (
       (await caches.match(request)) ||
+      (cachedPage && await caches.match(cachedPage)) ||
       (await caches.match("./offline.html"))
     );
   }
@@ -446,7 +455,11 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (request.mode === "navigate") {
-    event.respondWith(networkFirst(request));
+    const temiPage = new URL(TEMI_800_PAGE, self.registration.scope);
+    // A busca abre a questão pela query, mas só a página canônica vem no pré-cache.
+    const cachedPage = url.pathname === temiPage.pathname && url.searchParams.has("qid")
+      ? temiPage.href : undefined;
+    event.respondWith(networkFirst(request, cachedPage));
     return;
   }
 

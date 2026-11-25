@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FocusAI Reader 360X · Leitor TDAH e dislexia · AldenirMed 360X</title>
+<meta name="description" content="FocusAI Reader 360X v8.0.0: extensão do Chrome que transforma páginas, artigos e PDFs em leitura limpa para TDAH e dislexia, com OpenDyslexic, marca-texto, anotações e transcrição de vídeos."/>
+<meta name="theme-color" content="#020b1f"/>
+<meta name="color-scheme" content="dark light"/>
+<link rel="icon" type="image/x-icon" href="../../assets/icons/360x-v1/favicon.ico" sizes="64x64"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="apple-touch-icon" href="../../assets/icons/360x-v1/apple-touch-icon-180.png" sizes="180x180"/>
+<script>
+/* Segue a preferência global de tema e o modo OpenDyslexic antes da primeira pintura. */
+(()=>{try{const p=JSON.parse(localStorage.getItem('antigravity:a11y:v1')||'{}');const c=p&&p.contrast===true;const t=p&&p.theme;
+const light=!c&&(t==='light'||(t==='system'&&matchMedia('(prefers-color-scheme: light)').matches)||(!['dark','light','system'].includes(t)&&p&&p.clarity===true));
+const r=document.documentElement;r.classList.toggle('a11y-contrast',c);r.classList.toggle('a11y-light',light);r.style.colorScheme=light?'light':'dark';
+if(localStorage.getItem('jornal360:dyslexic')==='1')r.classList.add('j360-dyslexic');}catch(_){}})();
+</script>
+<style>
+:root{color-scheme:dark;--bg:#020b1f;--surf:rgba(255,255,255,.055);--surf2:rgba(255,255,255,.09);--brd:rgba(255,255,255,.11);
+--text:#f5f9ff;--muted:#a7bad4;--soft:#c7d7ea;--cyan:#2dd4ff;--gold:#e3b04b;--violet:#a98cff;--green:#4ef0a1;--on:#04131f;
+--body:'Outfit',system-ui,-apple-system,'Segoe UI',sans-serif;--head:'Syne','Outfit',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+html.a11y-light{color-scheme:light;--bg:#fff;--surf:rgba(16,38,59,.045);--surf2:rgba(16,38,59,.08);--brd:#d3e0ea;--text:#10263b;--muted:#536b7d;--soft:#334f67;--cyan:#006f7d;--gold:#865800;--violet:#6548b8;--green:#087a4e;--on:#fff}
+html.a11y-contrast{--bg:#000;--surf:rgba(255,255,255,.12);--brd:rgba(255,255,255,.5);--text:#fff;--muted:#d6e2ee;--soft:#eef5fb;--cyan:#63efff;--gold:#ffe28a}
+@font-face{font-family:'OpenDyslexic';src:url('../../assets/fonts/opendyslexic/OpenDyslexic-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'OpenDyslexic';src:url('../../assets/fonts/opendyslexic/OpenDyslexic-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+html.j360-dyslexic body,html.j360-dyslexic h1,html.j360-dyslexic h2,html.j360-dyslexic h3{font-family:'OpenDyslexic',var(--body)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 10% -10%,rgba(45,212,255,.15),transparent 38rem),radial-gradient(circle at 100% 0,rgba(169,140,255,.12),transparent 32rem),var(--bg);color:var(--text);font:400 1.02rem/1.62 var(--body)}
+a{color:inherit}:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+.skip{position:fixed;left:12px;top:12px;z-index:50;background:#fff;color:#071422;padding:10px 14px;border-radius:10px;font-weight:800;transform:translateY(-180%)}.skip:focus{transform:none}
+.wrap{width:min(1100px,100% - 32px);margin:0 auto}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--brd)}
+.top .wrap{display:flex;align-items:center;gap:12px;min-height:64px;flex-wrap:wrap;padding:8px 0}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:800 1.02rem/1.1 var(--head)}
+.brand img{width:40px;height:40px;border-radius:11px}.brand b{color:var(--cyan)}
+.brand small{display:block;font:500 .7rem var(--mono);color:var(--muted);letter-spacing:.06em}
+.top nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.top nav a,.top button{min-height:40px;display:inline-flex;align-items:center;padding:7px 12px;border-radius:10px;border:1px solid transparent;background:none;color:var(--soft);font:600 .86rem var(--body);text-decoration:none;cursor:pointer}
+.top nav a:hover,.top button:hover{background:var(--surf2);border-color:var(--brd);color:var(--text)}
+.top button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+.hero{padding:46px 0 16px;display:grid;grid-template-columns:1.4fr .9fr;gap:22px;align-items:start}
+.kicker{font:600 .74rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
+h1{font:800 clamp(2rem,5vw,3.2rem)/1.05 var(--head);margin:10px 0 12px}
+h1 span{background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--soft);max-width:66ch;margin:0 0 16px}
+.card{border:1px solid var(--brd);border-radius:18px;background:var(--surf);padding:18px 20px}
+.dl{display:grid;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 16px;border-radius:13px;border:1px solid var(--brd);background:var(--surf2);font-weight:800;text-decoration:none}
+.btn.primary{background:linear-gradient(135deg,var(--cyan),var(--green));color:var(--on);border:0}
+.mono{font:500 .76rem/1.5 var(--mono);color:var(--muted);word-break:break-all}
+h2{font:800 1.4rem/1.2 var(--head);margin:0 0 12px}
+section.band{padding:20px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grid3 .card h3{margin:0 0 6px;font:700 1.02rem var(--head)}.grid3 .card p{margin:0;color:var(--soft)}
+ol.steps{margin:0;padding-left:22px;display:grid;gap:8px;color:var(--soft)}
+ol.steps b{color:var(--text)}
+code,kbd{font:500 .86em var(--mono);background:var(--surf2);border:1px solid var(--brd);border-radius:6px;padding:1px 6px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--brd);vertical-align:top}
+th{font:700 .78rem var(--mono);color:var(--cyan)}
+.note{border-left:4px solid var(--gold)}
+.note p{margin:6px 0;color:var(--soft)}
+footer{border-top:1px solid var(--brd);margin-top:26px;padding:22px 0 40px;color:var(--muted);font-size:.88rem}
+footer a{color:var(--cyan)}
+@media(max-width:860px){.hero,.grid3{grid-template-columns:1fr}}
+@media(max-width:640px){.top{position:static}.top nav{width:100%;margin-left:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}.top nav a{white-space:nowrap}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../../index.html" aria-label="AldenirMed 360X — voltar ao início">
+      <img src="../../assets/brand-360x/aldenirmed-360x-mark.svg" alt="" width="40" height="40"/>
+      <span>AldenirMed <b>360X</b><small>APPS 360 · FOCUSAI</small></span>
+    </a>
+    <nav aria-label="Seções da página FocusAI">
+      <a href="#instalar">⬇️ Instalar</a>
+      <a href="#recursos">✨ Recursos</a>
+      <a href="#privacidade">🔒 Privacidade</a>
+      <a href="../../index.html#apps-360">↩ Apps 360</a>
+    </nav>
+    <button id="fDyslexic" type="button" aria-pressed="false" title="Ler esta página com a fonte OpenDyslexic">Aa OpenDyslexic</button>
+  </div>
+</header>
+<main id="conteudo" tabindex="-1">
+  <div class="wrap hero">
+    <div>
+      <span class="kicker">Extensão do Chrome · versão 8.0.0 · 16/11/2026</span>
+      <h1>📖 FocusAI <span>Reader 360X</span></h1>
+      <p class="lead">Um clique transforma qualquer página, artigo científico, chat de IA ou PDF em leitura calma: sem propaganda e sem menus, com OpenDyslexic, marca-texto, sublinhado, anotações e transcrição de vídeos. Pensado para TDAH e dislexia.</p>
+      <p class="lead">Combina com o <a href="../../jornal-360/index.html">Jornal Diário 360</a>, a <a href="../../02_Biblioteca_IA_Engine/index.html">Biblioteca IA</a> e os módulos clínicos do site.</p>
+    </div>
+    <aside class="card dl" aria-label="Download do FocusAI Reader 360X">
+      <a class="btn primary" href="../../downloads/FocusAI-Reader-360X-v8.0.0.zip" download>⬇️ Baixar FocusAI 360X · ZIP 1,2 MB</a>
+      <a class="btn" href="#instalar">🧭 Ver instalação em 3 minutos</a>
+      <p class="mono">SHA-256 8252bc649cfcd6a400b6f007a1a1d1afa25c13f92c5309c89fc48813dfca5734</p>
+      <p class="mono">Chrome 116 ou superior · Manifest V3 · ID fixo legpmejabkphjdmkemblaeoccdcmpkak</p>
+    </aside>
+  </div>
+
+  <section class="band" id="instalar" aria-labelledby="instalar-title">
+    <div class="wrap card">
+      <h2 id="instalar-title">⬇️ Instalar em 3 minutos</h2>
+      <ol class="steps">
+        <li><b>Descompacte o ZIP</b> e guarde a pasta <code>FocusAI_360X_v8_0_0</code> num lugar fixo (não apague depois).</li>
+        <li>No Chrome, abra <code>chrome://extensions</code> e ligue o <b>Modo do desenvolvedor</b>.</li>
+        <li>Se tiver a versão antiga (v7.x), <b>remova-a</b> para os atalhos não brigarem.</li>
+        <li>Clique em <b>Carregar sem compactação</b> e escolha a pasta que contém o <code>manifest.json</code>.</li>
+        <li><b>Fixe o ícone</b> na barra (🧩 → 📌). Atalho: <kbd>Control</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd> no Mac.</li>
+        <li>Para ler PDFs do computador: em <b>Detalhes</b>, ligue <b>Permitir acesso a URLs de arquivo</b>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" id="recursos" aria-labelledby="recursos-title">
+    <div class="wrap">
+      <h2 id="recursos-title">✨ O que ele faz</h2>
+      <div class="grid3">
+        <article class="card"><h3>🔤 Leitura limpa</h3><p>OpenDyslexic, Lexend ou Atkinson; 6 temas; holofote de parágrafo, régua, leitura biônica e quebra de parágrafos longos. Perfis prontos “TDAH” e “Dislexia”.</p></article>
+        <article class="card"><h3>🖍️ Marcação inteligente</h3><p>Até 9 estilos de caneta editáveis, caneta travada, borracha e anotações por marcação, que sobrevivem à troca de fonte e de tema.</p></article>
+        <article class="card"><h3>🎬 Transcrição</h3><p>Extrai legendas do YouTube e de vídeos com faixa VTT; importa 8 formatos e exporta TXT, MD, SRT, VTT, JSON e pacote Nexus.</p></article>
+        <article class="card"><h3>📄 PDF em texto</h3><p>Abra um PDF ou arraste o arquivo: ele vira texto limpo no mesmo leitor, com as mesmas marcações.</p></article>
+        <article class="card"><h3>📚 Biblioteca local</h3><p>Guarda leituras e marcações no próprio Chrome, com busca.</p></article>
+        <article class="card"><h3>🛰️ Ponte Nexus Capture</h3><p>Envia a leitura ao Nexus Capture ou gera o pacote .json no formato de backup do Nexus.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="atalhos-title">
+    <div class="wrap card">
+      <h2 id="atalhos-title">⌨️ Uso em 30 segundos</h2>
+      <table>
+        <thead><tr><th scope="col">Quero…</th><th scope="col">Faço…</th></tr></thead>
+        <tbody>
+          <tr><td>Ler limpo</td><td>Clique no ícone ou <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd></td></tr>
+          <tr><td>Marcar rápido</td><td>Escolha a cor → <kbd>P</kbd> (trava a caneta) → arraste no texto</td></tr>
+          <tr><td>Mudar fonte e espaços</td><td><kbd>T</kbd></td></tr>
+          <tr><td>Transcrever vídeo</td><td>Abra o leitor na aba do vídeo → <kbd>V</kbd> → ⚡ Extrair</td></tr>
+          <tr><td>Mandar ao Nexus</td><td><kbd>N</kbd> → Enviar (ou baixar o pacote .json)</td></tr>
+          <tr><td>Ver todos os atalhos</td><td><kbd>?</kbd> dentro do leitor</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="band" id="privacidade" aria-labelledby="privacidade-title">
+    <div class="wrap card note">
+      <h2 id="privacidade-title">🔒 Privacidade e segurança</h2>
+      <p>Leituras e marcações ficam no seu Chrome (<code>chrome.storage.local</code>). A extensão só busca a própria página ou o vídeo aberto e, se você ativar, o Whisper local em <code>127.0.0.1</code>.</p>
+      <p><b>Companion opcional (Mac):</b> a pasta <code>companion/</code> traz scripts para instalar e iniciar o Whisper local (Homebrew, ffmpeg e Python). Leia o <code>README-WHISPER-LOCAL.md</code> antes de executar; a extensão funciona sem ele.</p>
+      <p><b>Instalação de desenvolvedor:</b> a extensão não está na Chrome Web Store; por isso o Chrome pede o Modo do desenvolvedor. Confira o SHA-256 acima antes de instalar.</p>
+      <p>⚠️ <em>Ferramenta de leitura e estudo. Não substitui o julgamento clínico, os protocolos institucionais ou a avaliação médica individual.</em></p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="limites-title">
+    <div class="wrap card">
+      <h2 id="limites-title">🧩 Versão 8.0.0 · Edição Limpa</h2>
+      <p class="lead">Reconstruída a partir da v7.1.1 com código modular e cerca de 60% menor. Para simplificar, saíram da v7 as calculadoras, os flashcards, a tradução, os sons ambientes, o pomodoro e o visualizador paginado de PDF. Os flashcards continuam no <a href="https://aldenirfilho.github.io/intensivahub/flashcards/" target="_blank" rel="noopener noreferrer">Códice 360X ↗</a>.</p>
+      <p class="mono">Licenças de terceiros no pacote: OpenDyslexic, Lexend e Atkinson Hyperlegible (SIL OFL 1.1), Mozilla Readability e PDF.js (Apache 2.0).</p>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">© 2026 AldenirMed 360X · Aldenir Rocha de Oliveira Filho e Equipe 360X · <a href="../../index.html#downloads">Central de downloads</a> · <a href="../../index.html">Início</a></div>
+</footer>
+<script>
+(()=>{const b=document.getElementById('fDyslexic');if(!b)return;const r=document.documentElement;
+const sync=()=>b.setAttribute('aria-pressed',r.classList.contains('j360-dyslexic')?'true':'false');sync();
+b.addEventListener('click',()=>{r.classList.toggle('j360-dyslexic');try{localStorage.setItem('jornal360:dyslexic',r.classList.contains('j360-dyslexic')?'1':'0')}catch(_){}sync();});})();
+</script>
+</body>
+</html>

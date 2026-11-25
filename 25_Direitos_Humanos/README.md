@@ -8,9 +8,11 @@ Preparado como seção educacional independente do portal AldenirMed89, com nave
 
 - distinções jurídicas essenciais;
 - 12 exemplos de condutas graves;
+- quatro casos fictícios com raciocínio comentado;
 - filtros por contexto e pesquisa textual;
-- sete contextos internacionais documentados;
-- critérios para leitura responsável de denúncias;
+- sete contextos internacionais com fonte, período e tipo de documento;
+- comparação entre denúncia, relatório, mandado, confirmação de acusações e condenação;
+- canais oficiais do Disque 100 no Brasil;
 - links para fontes primárias.
 
 ## Executar localmente
@@ -32,4 +34,4 @@ Depois acesse `http://localhost:8080`.
 
 ## Nota editorial
 
-Material educacional consolidado em 3 de novembro de 2026. Situações em curso podem mudar. Alegação, investigação, mandado, decisão de comissão e condenação judicial são etapas diferentes.
+Revisão educacional de 25 de novembro de 2026. Os exemplos internacionais são recortes das fontes indicadas. Os casos comentados são fictícios.

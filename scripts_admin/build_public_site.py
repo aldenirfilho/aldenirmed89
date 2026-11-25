@@ -72,6 +72,8 @@ REQUIRED = (
 )
 
 OPTIONAL = (
+    "planos",
+    "membros",
     ".nojekyll",
     "favicon.ico",
     "manifest.json",
@@ -96,6 +98,8 @@ OPTIONAL = (
     "les-autoanticorpos",
     "respirasense-icu",
     "radar-biblico-3min",
+    "jornal-360",
+    "creditos-autor",
     "biblioteca",
     "updown",
     "calculadoras",
@@ -127,6 +131,7 @@ EDITORIAL_PUBLIC_FILES = {
 }
 PUBLIC_BUILD_EXCLUSIONS = frozenset(
     {
+        "membros/README.md",
         "01_Modulos_Clinicos/Almanaque_ECG/module.manifest.json",
         "01_Modulos_Clinicos/Almanaque_ECG/data/visual-assets.json",
         "01_Modulos_Clinicos/Dermatologia_Critica/module.manifest.json",
@@ -139,6 +144,9 @@ PUBLIC_DOWNLOADS = (
     "downloads/Antigravity-Consultas-Windows.zip",
     "downloads/Antigravity-Consultas-iPhone-Icones.zip",
     "downloads/AldenirMed89-Identidade-Multiplataforma.zip",
+    # Extensão Chrome FocusAI Reader 360X v8.0.0 (16/11/2026), SHA-256 conferido
+    # com o pacote catalogado no Notion; inclui companion opcional para Mac.
+    "downloads/FocusAI-Reader-360X-v8.0.0.zip",
     "downloads/SHA256SUMS.txt",
 )
 DOWNLOAD_ARCHIVE_LIMIT = 512
@@ -195,9 +203,12 @@ PUBLIC_DOCUMENT_TRANSFORM_EXCLUSIONS = frozenset(
     }
 )
 ANALYTICS_EXCLUDED_PREFIXES = (
+    # Conta e assinatura: sem injeção de métricas nas telas autenticadas.
+    "membros/",
     "02_Biblioteca_IA_Engine/previews/",
     # Consulta educacional autossuficiente: preserva CSP local e ausência de telemetria.
     "01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/",
+    "25_Direitos_Humanos/",
     "ecossistema/auditoria-uti/",
     "ecossistema/auditoria-religiosa-360/riqueza-e-vida.html",
 )
@@ -1285,13 +1296,17 @@ def restore_original_brand_metadata(html: str, relative: PurePosixPath, root_pre
     match = re.search(r'<head\b[^>]*>(.*?)</head\s*>', html, re.I | re.S)
     if not match:
         return html
-    folder = 'assets/icons/aerospace-v2/'
+    folder = 'assets/icons/360x-v1/'
     aliases = {
         'favicon.ico': 'favicon.ico',
         'assets/img/logo.png': 'icon-192.png',
         'assets/icons/apple-touch-icon.png': 'apple-touch-icon-180.png',
         **{f'assets/icons/antigravity-consultas-{n}.png': f'icon-{n}.png' for n in (32, 64, 192, 512, 1024)},
         **{f'assets/icons/ios/apple-touch-icon-{n}.png': f'apple-touch-icon-{n}.png' for n in (120, 152, 167, 180, 1024)},
+        # Pacote aeroespacial anterior: páginas que ainda o citam recebem o emblema 360X no site público.
+        'assets/icons/aerospace-v2/favicon.ico': 'favicon.ico',
+        **{f'assets/icons/aerospace-v2/icon-{n}.png': f'icon-{n}.png' for n in (32, 64, 192, 512, 1024)},
+        **{f'assets/icons/aerospace-v2/apple-touch-icon-{n}.png': f'apple-touch-icon-{n}.png' for n in (120, 152, 167, 180, 1024)},
     }
     seen = set()
 
@@ -1439,14 +1454,13 @@ def write_search_discovery(root: Path, site: Path) -> tuple[int, int]:
     )
     if PUBLIC_BASE_URL not in urls:
         raise ValueError("Homepage canônica ausente do artefato público.")
-    lastmod = manifest.get("updatedAt")
-    if not isinstance(lastmod, str) or re.fullmatch(r"\d{4}-\d{2}-\d{2}", lastmod) is None:
-        raise ValueError("Manifesto do site sem data editorial válida.")
+    # updatedAt descreve o inventário, não a revisão de cada página.
+    # Omitir lastmod é preferível a anunciar uma data editorial sem evidência.
+    urls = [url for url in urls if search_page_is_indexable(site, url)]
 
     entries = "\n".join(
         "  <url>\n"
         f"    <loc>{html_lib.escape(url)}</loc>\n"
-        f"    <lastmod>{lastmod}</lastmod>\n"
         "  </url>"
         for url in urls
     )
@@ -1463,7 +1477,70 @@ def write_search_discovery(root: Path, site: Path) -> tuple[int, int]:
         f"Sitemap: {PUBLIC_BASE_URL}sitemap.xml\n"
     )
     (site / "robots.txt").write_text(robots, encoding="utf-8")
+    # Em GitHub Pages de projeto este arquivo fica em /aldenirmed89/robots.txt.
+    # Ele não controla o host; enviar sitemap.xml diretamente ao Search Console.
+    write_html_search_index(site, urls)
     return len(urls), len(robots.splitlines())
+
+
+def search_page_is_indexable(site: Path, url: str) -> bool:
+    """Excluir redirects, noindex e canonicals de outra página do sitemap."""
+    from urllib.parse import unquote, urljoin
+
+    relative = unquote(url.removeprefix(PUBLIC_BASE_URL))
+    path = site / (relative + "index.html" if not relative or relative.endswith("/") else relative)
+
+    class Metadata(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.allowed = True
+
+        def handle_starttag(self, tag, attrs):
+            a = dict(attrs)
+            if tag == "meta":
+                if a.get("http-equiv", "").casefold() == "refresh":
+                    self.allowed = False
+                if a.get("name", "").casefold() in {"robots", "googlebot"}:
+                    if set(re.split(r"[\s,]+", a.get("content", "").casefold())) & {"noindex", "none"}:
+                        self.allowed = False
+            if tag == "link" and "canonical" in a.get("rel", "").casefold().split():
+                target = urljoin(url, a.get("href", ""))
+                # /index.html e / são a mesma página preferencial.
+                if target.endswith("/index.html"):
+                    target = target[:-len("index.html")]
+                if target != url:
+                    self.allowed = False
+
+    parser = Metadata()
+    parser.feed(path.read_text(encoding="utf-8"))
+    return parser.allowed
+
+
+def write_html_search_index(site: Path, urls: list[str]) -> None:
+    """Índice estático das mesmas páginas selecionadas para o sitemap XML."""
+    from urllib.parse import unquote
+
+    entries = []
+    for url in urls:
+        relative = unquote(url.removeprefix(PUBLIC_BASE_URL))
+        path = site / (relative + "index.html" if not relative or relative.endswith("/") else relative)
+        text = path.read_text(encoding="utf-8")
+        title = re.search(r"<title\b[^>]*>(.*?)</title\s*>", text, flags=re.I | re.S)
+        label = html_lib.unescape(re.sub(r"<[^>]+>", "", title.group(1))) if title else relative
+        entries.append(f'<li><a href="{html_lib.escape(url, quote=True)}">{html_lib.escape(label)}</a></li>')
+    html = '''<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mapa de páginas | AldenirMed89</title>
+<meta name="description" content="Índice de páginas educacionais, módulos médicos e projetos públicos do AldenirMed89.">
+<link rel="canonical" href="''' + PUBLIC_BASE_URL + '''mapa-do-site.html">
+<style>body{font:1.125rem/1.7 system-ui,sans-serif;max-width:64rem;margin:2rem auto;padding:0 1rem;color:#172b4d;background:#fff}li{margin:.7rem 0}a{color:#0645ad}a:focus-visible{outline:3px solid #9b4d00;outline-offset:4px}</style>
+</head><body><a href="#conteudo">Pular para o conteúdo</a>
+<header><a href="./">Página inicial</a></header>
+<main id="conteudo"><h1>Mapa de páginas</h1>
+<p>Explore os conteúdos públicos. Abas, filtros e seções internas permanecem dentro de seus módulos.</p>
+<ul>''' + "\n".join(entries) + '''</ul></main></body></html>\n'''
+    (site / "mapa-do-site.html").write_text(html, encoding="utf-8")
 
 
 def build(root: Path, site: Path) -> int:

@@ -92,6 +92,8 @@ jobs:
             BASE_SHA="$(git rev-parse HEAD^ 2>/dev/null || git rev-parse HEAD)"
           fi
           python3 scripts_admin/build_360x_panel.py --check
+          python3 scripts_admin/build_jornal_360.py --check
+          python3 scripts_admin/build_creditos_autor.py --check
           python3 scripts_admin/editorial_gate.py --check --json
           python3 scripts_admin/editorial_gate.py --check --changed-since "$BASE_SHA" --json
           python3 scripts_admin/validate_activation_roadmap.py --json
@@ -108,6 +110,7 @@ jobs:
         run: |
           set -e
           python3 scripts_admin/build_public_site.py . site
+          test ! -e site/membros/README.md
           python3 scripts_admin/publication_guard.py sanitize-site site
           python3 scripts_admin/publication_guard.py check-site site
           python3 scripts_admin/audit_public_links.py site
@@ -117,6 +120,8 @@ jobs:
           test -f site/data/desafios.json
           test -f site/desafios/index.html
           test -f site/mnemonicos/index.html
+          test -s site/creditos-autor/index.html
+          test -s site/creditos-autor/ebooks/Axiomas_360X_Edicao_Comentada_A5.pdf
           test -f site/mnemonicos/styles.css
           test -f site/mnemonicos/app.js
           test -s site/favicon.ico

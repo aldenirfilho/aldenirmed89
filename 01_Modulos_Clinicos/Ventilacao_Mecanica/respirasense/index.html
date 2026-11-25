@@ -29,6 +29,10 @@
     } catch (_) {}
   </script>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .module-editorial-image{display:block;width:min(100%,28rem);height:auto;aspect-ratio:16/9;border:1px solid var(--line);border-radius:18px;margin-top:1rem}
+    @media print{.module-editorial-image{display:none}}
+  </style>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="./icons/icon-192.png" />
   <link rel="apple-touch-icon" href="./icons/icon-192.png" />
@@ -230,6 +234,10 @@
           <canvas id="pressureChart" height="180" role="img" aria-label="Curva pressão por tempo; valores atualizados conforme a simulação.">Curva pressão por tempo da simulação ventilatória.</canvas>
           <canvas id="flowChart" height="180" role="img" aria-label="Curva fluxo por tempo; valores atualizados conforme a simulação.">Curva fluxo por tempo da simulação ventilatória.</canvas>
           <canvas id="volumeChart" height="180" role="img" aria-label="Curva volume por tempo; valores atualizados conforme a simulação.">Curva volume por tempo da simulação ventilatória.</canvas>
+          <img class="module-editorial-image" src="./assets/illustrations/ventilacao-mecanica-simulacao-480.webp"
+               srcset="./assets/illustrations/ventilacao-mecanica-simulacao-480.webp 480w, ./assets/illustrations/ventilacao-mecanica-simulacao-960.webp 960w"
+               sizes="auto, (max-width: 520px) calc(100vw - 64px), 448px" width="960" height="540"
+               loading="lazy" decoding="async" alt="Ilustração de um ventilador mecânico desligado, com tubo corrugado separado, em uma sala de simulação."/>
         </section>
 
         <section class="tabpage" id="tab-async" role="tabpanel" aria-labelledby="tab-button-async" tabindex="0" hidden>
