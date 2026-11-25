@@ -6,9 +6,11 @@ Ensaio visual interativo do Projeto 360X, de Aldenir Rocha de Oliveira Filho.
 
 ## Conteúdo
 
-- Silício e fabricação da RAM: estrutura dos materiais, transistor, capacitor e refresh.
+- Mercado de DRAM e HBM, com quatro preços de varejo no Brasil, modelos e lojas na consulta de 25 de novembro de 2026.
+
+- Silício e fabricação da RAM: estrutura dos materiais, transistor, capacitor, refresh, etapas de fabricação e empilhamento HBM.
 - RAM e espelho: silício e sílica, armazenamento elétrico e reflexão óptica.
-- Cérebro e IA: visão, memória associativa, parâmetros, contexto, recuperação de documentos e criatividade.
+- Cérebro e IA: visão humana e computacional, memória associativa, parâmetros, contexto, recuperação de documentos e criatividade.
 - Três ilustrações widescreen, seis conexões, comparação entre sistemas, estimativa de GB dos pesos e perguntas com respostas.
 
 As fontes técnicas e científicas estão vinculadas na página. As imagens foram geradas por IA para o material e são conceituais, sem pretensão de anatomia ou desenho industrial em escala. A estimativa dos pesos não mede o consumo total de memória nem a memória humana.
@@ -28,4 +30,4 @@ Fortalece as iniciativas existentes Cursos de IA aplicada e Humanização tecnol
 
 [Edição original com acesso pela conta do ChatGPT](https://ram-espelho-cerebro-360x.aldenirmed.chatgpt.site). A versão original conserva suas próprias permissões; esta pasta publica uma versão estática independente.
 
-Base de pesquisa: 22 de outubro de 2026. Finalidade educacional, com distinção entre mecanismo físico, metáfora e experiência subjetiva.
+Última atualização: 25 de novembro de 2026. Finalidade educacional, com distinção entre mecanismo físico, metáfora e experiência subjetiva.
