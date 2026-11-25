@@ -61,6 +61,7 @@ REQUIRED = (
     "21_Central_Ativacao",
     "22_Microparticulas_Ativas_ACRA",
     "24_Semiologia",
+    "25_Direitos_Humanos",
     "ecossistema",
     "01_Modulos_Clinicos",
     "en",
@@ -207,6 +208,7 @@ ANALYTICS_EXCLUDED_PREFIXES = (
     "02_Biblioteca_IA_Engine/previews/",
     # Consulta educacional autossuficiente: preserva CSP local e ausência de telemetria.
     "01_Modulos_Clinicos/Infectologia_Critica/resistencia-antimicrobianos/",
+    "25_Direitos_Humanos/",
     "ecossistema/auditoria-uti/",
     "ecossistema/auditoria-religiosa-360/riqueza-e-vida.html",
 )

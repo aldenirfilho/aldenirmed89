@@ -335,7 +335,7 @@ class AccessiblePwaTests(unittest.TestCase):
             home[modules_start:home.index("<!-- ── DECK DE MISSÕES CRÍTICAS")].count(
                 'class="module-card'
             ),
-            34,  # 32 módulos/apps (inclui Emergências Cardiopulmonares e RCP) + Formação Humana + Mapa Vivo
+            35,  # 33 módulos/apps + Formação Humana + Mapa Vivo
         )
 
         for marker in (
