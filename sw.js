@@ -69,6 +69,7 @@ const SHELL_ASSETS = [
 ];
 const WARM_ASSETS = [
   "./25_Direitos_Humanos/index.html",
+  "./25_Direitos_Humanos/protecao.html",
   "./25_Direitos_Humanos/styles.css",
   "./25_Direitos_Humanos/script.js",
   "./01_Modulos_Clinicos/Bacterias_Super_Resistentes/index.html",

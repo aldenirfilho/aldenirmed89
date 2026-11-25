@@ -13,6 +13,7 @@ Preparado como seção educacional independente do portal AldenirMed89, com nave
 - sete contextos internacionais com fonte, período e tipo de documento;
 - comparação entre denúncia, relatório, mandado, confirmação de acusações e condenação;
 - canais oficiais do Disque 100 no Brasil;
+- página Proteção sem barreiras com plano-piloto Nexus 360X, orientações sobre golpes, leis brasileiras e minuta ficcional do Realmetaverso;
 - links para fontes primárias.
 
 ## Executar localmente
