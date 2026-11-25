@@ -35,7 +35,7 @@ class MissionPortalTests(unittest.TestCase):
 
     def test_launch_assets_are_cached_for_offline_replay(self) -> None:
         worker = (ROOT / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v60`', worker)
+        self.assertIn('const CACHE_NAME = `${CACHE_PREFIX}v61`', worker)
         for asset in (
             "./assets/brand-360x/aldenirmed-360x-launch-card.png",
             "./assets/brand-360x/aldenirmed-360x-mark.svg",
