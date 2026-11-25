@@ -1,7 +1,7 @@
 "use strict";
 
 const CACHE_PREFIX = "antigravity-root-";
-const CACHE_NAME = `${CACHE_PREFIX}v59`;
+const CACHE_NAME = `${CACHE_PREFIX}v60`;
 // Índices mutáveis precisam refletir o último acervo, mantendo fallback offline.
 const LIBRARY_MANIFEST_PATHS = new Set([
   "biblioteca_catalogo.json",
@@ -87,9 +87,23 @@ const WARM_ASSETS = [
   "./02_Biblioteca_IA_Engine/data/biblioteca_ingestao_20260911.json",
   "./02_Biblioteca_IA_Engine/assets/local-folders.mjs?v=7de1bbf2284d29e5",
   "./02_Biblioteca_IA_Engine/assets/private-study-schema.mjs?v=56324c4420b8ed2a",
-  "./02_Biblioteca_IA_Engine/assets/private-study-engine.mjs?v=6a8a4fc7a59f1fdc",
-  "./02_Biblioteca_IA_Engine/assets/private-study-ui.mjs?v=47ac50b0c02aaa47",
+  "./02_Biblioteca_IA_Engine/assets/private-study-engine.mjs?v=1a98da03f270c5fd",
+  "./02_Biblioteca_IA_Engine/assets/private-study-ui.mjs?v=90f86f65a178b569",
   "./02_Biblioteca_IA_Engine/assets/private-study.css?v=360d5fb4c1c17fd4",
+  "./01_Modulos_Clinicos/Pneumologia_Critica/protocolos-2026/app.mjs?v=9ab7b28347a122c1",
+  "./01_Modulos_Clinicos/Pneumologia_Critica/protocolos-2026/learning.mjs?v=1d8f5c49faf603b5",
+  "./01_Modulos_Clinicos/Pneumologia_Critica/protocolos-2026/private-study-bridge.mjs?v=8aa33cebb3d4054f",
+  "./02_Biblioteca_IA_Engine/assets/trilhas-clinicas/manifest.json",
+  "./02_Biblioteca_IA_Engine/assets/trilhas-clinicas/renal-turbo-360x.webp",
+  "./02_Biblioteca_IA_Engine/assets/trilhas-clinicas/ventilacao-turbo-360x.webp",
+  "./02_Biblioteca_IA_Engine/assets/trilhas-clinicas/sepse-turbo-360x.webp",
+  "./02_Biblioteca_IA_Engine/assets/trilhas-clinicas/micoses-turbo-360x.webp",
+  "./02_Biblioteca_IA_Engine/assets/trilhas-clinicas/igg4-turbo-360x.webp",
+  "./02_Biblioteca_IA_Engine/assets/trilhas-clinicas/tb-turbo-360x.webp",
+  "./02_Biblioteca_IA_Engine/assets/clinical-study-sections.css?v=4207c6d6b4f2f03a",
+  "./02_Biblioteca_IA_Engine/assets/clinical-study-sections.mjs?v=81301204b5e92a88",
+  "./02_Biblioteca_IA_Engine/assets/clinical-study-topics.mjs?v=d54403641ae6b147",
+  "./02_Biblioteca_IA_Engine/index.html",
 
   "./24_Semiologia/index.html",
   "./24_Semiologia/assets/semio.css",

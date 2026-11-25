@@ -1,4 +1,4 @@
-import { createPrivateStudyBridge } from './private-study-bridge.mjs?v=57d6e58b188f17cf';
+import { createPrivateStudyBridge } from './private-study-bridge.mjs?v=8aa33cebb3d4054f';
 import { BANK, ALL_CASES, ALL_CARDS, ALL_PARTICLES, CARD_IDS, LEARNING_TOPICS, topicInfo, LEARNING_SOURCES as SOURCES } from './learning-registry.mjs?v=3d1714df5ef42633';
 import { EXAM_COUNTS, buildExam, remainingSeconds, scheduleReview, selectDueCards,
   loadProgress, serializeProgress, nextParticleIndex } from './learning-engine.mjs?v=0874f1cb41dcfbb2';

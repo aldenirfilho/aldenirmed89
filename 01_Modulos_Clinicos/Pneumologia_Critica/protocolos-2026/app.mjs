@@ -1,7 +1,7 @@
 import { ENGINES, SOURCES } from './clinical-engine.mjs?v=73a92287e43bc300';
 import { FORMS, MODULES, IMAGES } from './content.mjs?v=afbd8a7b50530707';
 import { LEARNING_TOPIC_IDS } from './learning-registry.mjs?v=3d1714df5ef42633';
-import { initLearning } from './learning.mjs?v=a312d3d6a520d6c0';
+import { initLearning } from './learning.mjs?v=1d8f5c49faf603b5';
 import { initSpecialtySections } from './specialty-sections.mjs?v=5f70f13967571019';
 import { initPulmonaryExpansion } from './pulmonary-expansion.mjs?v=ea008360944cb233';
 const $=id=>document.getElementById(id);
