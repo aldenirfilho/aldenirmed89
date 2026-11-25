@@ -3,7 +3,7 @@
 
 Uso: python3 publish.py PASTA_DA_EDICAO RAIZ_ALDENIRMED89 [RAIZ_INTENSIVAHUB]
 
-A PASTA_DA_EDICAO precisa ter: jornal.pdf (30 págs., já renderizado), jornal.html, jornal.css, img/,
+A PASTA_DA_EDICAO precisa ter: jornal.pdf (31 págs. desde 25/11/2026; 30 nas edições antigas, já renderizado), jornal.html, jornal.css, img/,
 e edicao.json com:
   {"data": "AAAA-MM-DD", "numero": 12, "diaSemana": "terça-feira", "fechamento": "madrugada",
    "temaDoDia": "...", "manchetes": [5 frases], "pilulas": {"TEMI": "...", "R3": "...", "POCUS": "...", "ECG": "...", "VM": "..."},
@@ -28,21 +28,25 @@ dbr = "/".join(reversed(D.split("-")))
 # 1) PDFs com metadados + cadernos (índices 0-based no padrão de 30 páginas)
 from pypdf import PdfReader, PdfWriter
 src = PdfReader(str(ed_dir / "jornal.pdf"))
-assert len(src.pages) == 30, f"a edição padrão tem 30 páginas, veio {len(src.pages)}"
+NP = len(src.pages)
+assert NP in (30, 31), f"a edição padrão tem 31 páginas (30 + Serviço Humanitário 360, desde 25/11/2026), veio {NP}"
+AUTOR = "ALDENIR ROCHA DE OLIVEIRA FILHO · PROJETO 360X"  # crédito obrigatório (pedido do proprietário em 20/11/2026)
 CADERNOS = {
-    "jornal": (f"Jornal_Diario_360_{D}.pdf", range(30), f"Jornal Diário 360 — Radar 360 Circunstancial — {dbr} (nº {N:03d}, 30 págs.)"),
+    "jornal": (f"Jornal_Diario_360_{D}.pdf", range(NP), f"Jornal Diário 360 — Radar 360 Circunstancial — {dbr} (nº {N:03d}, {NP} págs.)"),
     "pilulas": (f"Pilulas_do_Dia_360_{D}.pdf", range(7, 10), f"Pílulas do Dia 360 — {dbr}"),
     "esportes": (f"Esportes_360_{D}.pdf", range(11, 15), f"Esportes 360 — {dbr}"),
     "financas": (f"Financas_e_Humor_360_{D}.pdf", range(19, 23), f"Educação Financeira e Humor 360 — {dbr}"),
     "arcanos": (f"Arcanos_360_Sessao_Extra_{D}.pdf", range(23, 25), f"Arcanos 360 — {dbr}"),
     "honra": (f"Honra_e_Equilibrio_360_{D}.pdf", range(25, 29), f"Honra 360 e Equilíbrio 360 — {dbr}"),
 }
+if NP == 31:
+    CADERNOS["humanitario"] = (f"Servico_Humanitario_360_{D}.pdf", range(30, 31), f"Serviço Humanitário 360 — {dbr}")
 out_dir = site / "jornal-360/edicoes"
 for key, (name, idx, title) in CADERNOS.items():
     w = PdfWriter()
     for i in idx:
         w.add_page(src.pages[i])
-    w.add_metadata({"/Title": title, "/Author": "Agente Editorial 360", "/Creator": "Jornal Diário 360 · Claude (Anthropic)"})
+    w.add_metadata({"/Title": title, "/Author": AUTOR, "/Creator": "Jornal Diário 360 · Agente Editorial 360 · Claude (Anthropic)"})
     with open(out_dir / name, "wb") as f:
         w.write(f)
     shutil.copy(out_dir / name, ed_dir / name)
@@ -61,7 +65,7 @@ data = json.loads(dj.read_text())
 data["edicoes"] = [e for e in data["edicoes"] if e["data"] != D]
 data["edicoes"].insert(0, {
     "numero": N, "data": D, "diaSemana": ed["diaSemana"], "fechamento": ed.get("fechamento", "madrugada"),
-    "paginas": 30, "fonte": "OpenDyslexic", "temaDoDia": ed["temaDoDia"],
+    "paginas": NP, "fonte": "OpenDyslexic", "temaDoDia": ed["temaDoDia"],
     "arquivos": {k: v[0] for k, v in CADERNOS.items()},
     "manchetes": ed["manchetes"], "pilulas": ed["pilulas"], "arcanos": ed["arcanos"], "correcoes": ed.get("correcoes", []),
 })
@@ -87,7 +91,7 @@ reg["items"].append({
     "sources": ed["sources"],
     "publicationAuthorization": {"source": "standing-owner-instruction", "authorizedAt": "2026-11-16",
         "userRequest": "GERE MECANISMO DE ATUALIZACAO CONTINUA DIARIA E LANCAMENTO DIARIO DO JORNAL AS 05:30 ... E PUBLIQUE TAL JORNAL NO SITE ALDENIRMED89",
-        "authorizationSummary": "Instrução permanente do proprietário (16/11/2026) para gerar, publicar e enviar a edição diária de 30 páginas."},
+        "authorizationSummary": "Instrução permanente do proprietário (16/11/2026) para gerar, publicar e enviar a edição diária; desde 25/11/2026 com 31 páginas (página final Serviço Humanitário 360, padrão pedido em 24/11/2026)."},
 })
 reg["updatedAt"] = D
 reg_p.write_text(json.dumps(reg, ensure_ascii=False, indent=2) + ("\n" if raw.endswith("\n") else ""))

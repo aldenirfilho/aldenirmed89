@@ -41,6 +41,7 @@ FILE_LABELS = (
     ("financas", "💰", "Finanças e Humor"),
     ("arcanos", "🔮", "Arcanos 360"),
     ("honra", "🏛️", "Honra e Equilíbrio"),
+    ("humanitario", "🤝", "Serviço Humanitário 360"),
 )
 LEITURA_DIR = ROOT / "jornal-360/leitura"
 # Cadernos do padrão de 30 páginas (16/11/2026). "arquivo" aponta a chave de
