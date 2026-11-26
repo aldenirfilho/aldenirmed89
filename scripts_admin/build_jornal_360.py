@@ -169,6 +169,8 @@ def render_app_json(data: dict) -> str:
             "cover": f'capas/{e["data"]}.webp' if cover.is_file() else "icons/icon-512.png",
             "font": e.get("fonte", "OpenDyslexic"),
             "highlights": e.get("manchetes", [])[:6],
+            "pills": [{"area": k, "icon": PILL_ICONS[k], "text": e["pilulas"][k]} for k in PILL_ORDER if e.get("pilulas", {}).get(k)],
+            "humanitarian": ("../edicoes/" + files["humanitario"]) if files.get("humanitario") and (EDITIONS_DIR / files["humanitario"]).is_file() else "",
         })
     return json.dumps({"updated": data.get("atualizadoEm", ""), "editions": eds}, ensure_ascii=False, indent=2) + "\n"
 

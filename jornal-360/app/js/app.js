@@ -43,6 +43,55 @@
     if (navigator.share) { navigator.share(dados).catch(function () {}); }
     else { try { navigator.clipboard.writeText(dados.url); alert("Link copiado."); } catch (e) { prompt("Copie o link:", dados.url); } }
   }
+  // ---------- ⭐ meus destaques (guardados só no aparelho) ----------
+  function meus() { try { return JSON.parse(ler("j360_destaques", "[]")) || []; } catch (e) { return []; } }
+  function salvarMeus(l) { gravar("j360_destaques", JSON.stringify(l.slice(0, 300))); }
+  function chave(ed, item) { return ed.date + "|" + item.texto; }
+  function marcado(k) { return meus().some(function (m) { return m.k === k; }); }
+  function alternar(ed, item, btn) {
+    var k = chave(ed, item), l = meus(), i = -1;
+    l.forEach(function (m, n) { if (m.k === k) i = n; });
+    if (i >= 0) { l.splice(i, 1); } else { l.unshift({ k: k, data: ed.date, label: ed.label, tipo: item.tipo, texto: item.texto, link: ed.html || ed.pdf }); }
+    salvarMeus(l); estrela(btn, i < 0); mostrarMeus();
+  }
+  function estrela(btn, on) { btn.textContent = on ? "⭐" : "☆"; btn.setAttribute("aria-pressed", String(on)); btn.setAttribute("aria-label", on ? "Remover dos meus destaques" : "Guardar nos meus destaques"); }
+  function preencher(id, itens, ed) {
+    var ul = document.getElementById(id); ul.innerHTML = "";
+    itens.forEach(function (item) {
+      var li = document.createElement("li"), b = document.createElement("button"), sp = document.createElement("span");
+      b.type = "button"; b.className = "estrela"; estrela(b, marcado(chave(ed, item)));
+      b.addEventListener("click", function () { alternar(ed, item, b); });
+      sp.innerHTML = (item.tipo !== "📰" ? "<b>" + esc(item.tipo) + "</b> " : "") + esc(item.texto);
+      li.appendChild(b); li.appendChild(sp); ul.appendChild(li);
+    });
+  }
+  function mostrarMeus() {
+    var l = meus(), ul = document.getElementById("listaMeus"); ul.innerHTML = "";
+    l.forEach(function (m) {
+      var li = document.createElement("li"), b = document.createElement("button");
+      b.type = "button"; b.className = "estrela"; estrela(b, true);
+      b.addEventListener("click", function () {
+        salvarMeus(meus().filter(function (x) { return x.k !== m.k; })); mostrarMeus();
+        document.querySelectorAll(".marcaveis .estrela").forEach(function (e) { if (e.parentNode.textContent.indexOf(m.texto) >= 0) estrela(e, false); });
+      });
+      var sp = document.createElement("span");
+      sp.innerHTML = '<small>' + esc(m.data.split("-").reverse().join("/")) + " · " + esc(m.tipo) + '</small><br>' + esc(m.texto) +
+        (m.link ? ' <a href="' + esc(m.link) + '">abrir edição</a>' : "");
+      li.appendChild(b); li.appendChild(sp); ul.appendChild(li);
+    });
+    document.getElementById("meusVazio").hidden = l.length > 0;
+    document.getElementById("acoesMeus").hidden = l.length === 0;
+    document.getElementById("contaMeus").textContent = l.length ? "(" + l.length + ")" : "";
+  }
+  document.getElementById("btnCopiarMeus").addEventListener("click", function () {
+    var txt = "⭐ Meus destaques · Jornal Diário 360\n\n" + meus().map(function (m) { return "• " + m.data.split("-").reverse().join("/") + " · " + m.tipo + ": " + m.texto; }).join("\n");
+    try { navigator.clipboard.writeText(txt).then(function () { alert("Destaques copiados."); }); } catch (e) { prompt("Copie:", txt); }
+  });
+  document.getElementById("btnLimparMeus").addEventListener("click", function () {
+    if (confirm("Apagar todos os seus destaques deste aparelho?")) { salvarMeus([]); mostrarMeus(); document.querySelectorAll(".marcaveis .estrela").forEach(function (e) { estrela(e, false); }); }
+  });
+  mostrarMeus();
+
   fetch("editions.json", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
     var eds = d.editions || [];
     if (!eds.length) return;
@@ -58,9 +107,12 @@
       (nativo ? "" : '<a class="botao sec" href="' + esc(atual.pdf) + '" download>⬇️ Baixar</a>') +
       '<button class="botao sec" id="btnComp">🔗 Compartilhar</button></div></div>';
     document.getElementById("btnComp").addEventListener("click", function () { compartilhar(atual); });
-    var ul = document.getElementById("listaDestaques"); ul.innerHTML = "";
-    (atual.highlights || []).forEach(function (t) { var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+    preencher("listaDestaques", (atual.highlights || []).map(function (t) { return { tipo: "📰", texto: t }; }), atual);
     document.getElementById("sessenta").hidden = !(atual.highlights || []).length;
+    preencher("listaPilulas", (atual.pills || []).map(function (p) { return { tipo: p.icon + " " + p.area, texto: p.text }; }), atual);
+    document.getElementById("pilulas").hidden = !(atual.pills || []).length;
+    if (atual.humanitarian) { document.getElementById("linkHumanitario").href = atual.humanitarian; }
+    document.getElementById("humanitario").hidden = !atual.humanitarian;
     var g = document.getElementById("gradeAcervo"); g.innerHTML = "";
     eds.forEach(function (e) {
       var a = document.createElement("a"); a.className = "ed"; a.href = e.html ? e.html : e.pdf;

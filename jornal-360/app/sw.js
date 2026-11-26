@@ -1,5 +1,5 @@
 /* Service worker do Jornal Diário 360: app abre offline e guarda as edições já lidas. */
-const VERSAO = "j360-site-v1-2026-11-16";
+const VERSAO = "j360-site-v2-2026-11-26-destaques";
 const CASCA = [
   "./", "./index.html", "./css/app.css", "./js/app.js", "./js/config.js",
   "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png",
