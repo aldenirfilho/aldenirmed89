@@ -41,6 +41,7 @@ FILE_LABELS = (
     ("financas", "💰", "Finanças e Humor"),
     ("arcanos", "🔮", "Arcanos 360"),
     ("honra", "🏛️", "Honra e Equilíbrio"),
+    ("neuro", "🧠", "Neurodiversidade 360"),
     ("humanitario", "🤝", "Serviço Humanitário 360"),
 )
 LEITURA_DIR = ROOT / "jornal-360/leitura"
