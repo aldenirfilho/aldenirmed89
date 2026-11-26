@@ -57,3 +57,14 @@ main{max-width:860px;margin:0 auto;padding:14px}
 .carregando{grid-column:1/-1;color:var(--txt2)}
 @media (max-width:420px){.hoje{grid-template-columns:1fr}.hoje img{max-width:220px;margin:0 auto}}
 :focus-visible{outline:3px solid var(--ciano);outline-offset:2px}
+
+/* ⭐ destaques */
+.marcaveis,#listaMeus{list-style:none;padding-left:0 !important}
+.marcaveis li,#listaMeus li{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--linha)}
+.estrela{flex:0 0 auto;min-width:44px;min-height:44px;border-radius:10px;border:1px solid var(--linha);background:var(--bg);color:var(--ouro);font-size:1.15rem;cursor:pointer}
+.estrela[aria-pressed="true"]{border-color:var(--ouro);background:rgba(201,154,46,.15)}
+#listaMeus small{color:var(--ouro2)}
+.contador{font-size:.8rem;color:var(--ciano)}
+.dica{font-size:.8rem;color:var(--txt2);margin:-.3rem 0 .4rem}
+.humanitario{border-left:6px solid var(--ciano)}
+.meus{border-left:6px solid var(--ouro)}

@@ -19,6 +19,7 @@
 </head>
 <body>
 <a class="pular" href="#hoje">Pular para a edição de hoje</a>
+<a class="pular" href="#meus">Ir para Meus destaques</a>
 
 <header class="topo">
   <img src="icons/icon-192.png" alt="" class="brasao" width="44" height="44">
@@ -45,7 +46,35 @@
 
   <section class="bloco" id="sessenta" hidden>
     <h2>⚡ Em 60 segundos</h2>
-    <ul id="listaDestaques"></ul>
+    <p class="dica">Toque na ☆ para guardar um destaque em <b>⭐ Meus destaques</b>.</p>
+    <ul id="listaDestaques" class="marcaveis"></ul>
+  </section>
+
+  <section class="bloco" id="pilulas" hidden>
+    <h2>💊 Pílulas do dia</h2>
+    <ul id="listaPilulas" class="marcaveis"></ul>
+  </section>
+
+  <section class="bloco humanitario" id="humanitario" hidden>
+    <h2>🤝 Serviço Humanitário 360</h2>
+    <p>Quem mais precisa de ajuda hoje, com o motivo, QR codes de doação e o que as empresas divulgam sobre seus serviços comunitários.</p>
+    <div class="acoes">
+      <a class="botao" id="linkHumanitario" target="_blank" rel="noopener">🤝 Abrir a página de hoje</a>
+      <a class="botao sec" href="https://shop-ajuda-de-boa.aldenirmed.chatgpt.site" target="_blank" rel="noopener">💚 Ajuda de Boa</a>
+      <a class="botao sec" href="https://auditoria-das-coisas-360x.aldenirmed.chatgpt.site/" target="_blank" rel="noopener">🔎 Auditoria das Coisas</a>
+    </div>
+    <p class="nota">🛡️ Antes de doar, confira no app do banco o nome e o CNPJ do recebedor. Nunca faça PIX para pessoa física nem por WhatsApp.</p>
+  </section>
+
+  <section class="bloco meus" id="meus">
+    <h2>⭐ Meus destaques <span class="contador" id="contaMeus"></span></h2>
+    <p class="nota" id="meusVazio">Nenhum destaque guardado ainda. Toque na ☆ ao lado de uma manchete ou pílula.</p>
+    <ul id="listaMeus"></ul>
+    <div class="acoes" id="acoesMeus" hidden>
+      <button class="botao sec" id="btnCopiarMeus">📋 Copiar todos</button>
+      <button class="botao sec" id="btnLimparMeus">🗑️ Limpar</button>
+    </div>
+    <p class="nota">Os destaques ficam guardados só neste aparelho.</p>
   </section>
 
   <section class="bloco" id="acervo">
