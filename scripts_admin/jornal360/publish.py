@@ -3,7 +3,7 @@
 
 Uso: python3 publish.py PASTA_DA_EDICAO RAIZ_ALDENIRMED89 [RAIZ_INTENSIVAHUB]
 
-A PASTA_DA_EDICAO precisa ter: jornal.pdf (31 págs. desde 25/11/2026; 30 nas edições antigas, já renderizado), jornal.html, jornal.css, img/,
+A PASTA_DA_EDICAO precisa ter: jornal.pdf (32 págs. desde 27/11/2026: p. 31 Neurodiversidade 360 e p. 32 Serviço Humanitário 360; 31 ou 30 nas edições antigas), jornal.html, jornal.css, img/,
 e edicao.json com:
   {"data": "AAAA-MM-DD", "numero": 12, "diaSemana": "terça-feira", "fechamento": "madrugada",
    "temaDoDia": "...", "manchetes": [5 frases], "pilulas": {"TEMI": "...", "R3": "...", "POCUS": "...", "ECG": "...", "VM": "..."},
@@ -29,7 +29,7 @@ dbr = "/".join(reversed(D.split("-")))
 from pypdf import PdfReader, PdfWriter
 src = PdfReader(str(ed_dir / "jornal.pdf"))
 NP = len(src.pages)
-assert NP in (30, 31), f"a edição padrão tem 31 páginas (30 + Serviço Humanitário 360, desde 25/11/2026), veio {NP}"
+assert NP in (30, 31, 32), f"a edição padrão tem 32 páginas (30 + Neurodiversidade 360 + Serviço Humanitário 360, desde 27/11/2026), veio {NP}"
 AUTOR = "ALDENIR ROCHA DE OLIVEIRA FILHO · PROJETO 360X"  # crédito obrigatório (pedido do proprietário em 20/11/2026)
 CADERNOS = {
     "jornal": (f"Jornal_Diario_360_{D}.pdf", range(NP), f"Jornal Diário 360 — Radar 360 Circunstancial — {dbr} (nº {N:03d}, {NP} págs.)"),
@@ -39,8 +39,10 @@ CADERNOS = {
     "arcanos": (f"Arcanos_360_Sessao_Extra_{D}.pdf", range(23, 25), f"Arcanos 360 — {dbr}"),
     "honra": (f"Honra_e_Equilibrio_360_{D}.pdf", range(25, 29), f"Honra 360 e Equilíbrio 360 — {dbr}"),
 }
-if NP == 31:
-    CADERNOS["humanitario"] = (f"Servico_Humanitario_360_{D}.pdf", range(30, 31), f"Serviço Humanitário 360 — {dbr}")
+if NP == 32:
+    CADERNOS["neuro"] = (f"Neurodiversidade_360_{D}.pdf", range(30, 31), f"Neurodiversidade 360 — TDAH, autismo e neurodiversidade — {dbr}")
+if NP >= 31:  # o Serviço Humanitário 360 é sempre a última página
+    CADERNOS["humanitario"] = (f"Servico_Humanitario_360_{D}.pdf", range(NP - 1, NP), f"Serviço Humanitário 360 — {dbr}")
 out_dir = site / "jornal-360/edicoes"
 for key, (name, idx, title) in CADERNOS.items():
     w = PdfWriter()

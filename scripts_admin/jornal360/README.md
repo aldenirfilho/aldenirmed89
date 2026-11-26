@@ -5,7 +5,7 @@ publicar e entregar a edição do dia, pedida pelo proprietário em 16/11/2026: 
 **05:30 (Sobral, America/Fortaleza)**, publicação no site e no Códice 360X, app com acervo e leitura em HTML
 para iPhone.
 
-## Ordem das 31 páginas (fixa; a 31 entrou em 25/11/2026)
+## Ordem das 32 páginas (fixa; Serviço Humanitário desde 25/11/2026, Neurodiversidade desde 27/11/2026)
 
 | Pág. | Seção | Pág. | Seção |
 |---|---|---|---|
@@ -24,7 +24,8 @@ para iPhone.
 | 13 | 🌵 Esportes II — Sobral, Ceará, Nordeste (municipal → regional) | 28 | ⚖️ Equilíbrio 360 I |
 | 14 | 🏁 Esportes III — mundo, F1/motor, tênis, finais continentais | 29 | ⚖️ Equilíbrio 360 II |
 | 15 | ♀️ Esportes IV — feminino, vôlei, basquete, outros | 30 | Dicas · para aprofundar · fontes · expediente |
-|  |  | 31 | 🤝 Serviço Humanitário 360 — antigolpe, 4 causas com canal oficial conferido (QR), empresas que ajudam, Conecte-se (padrão desde 25/11/2026) |
+|  |  | 31 | 🧠 Neurodiversidade 360 — TDAH, autismo, dislexia e neurodiversidade: ciência da semana, Brasil em números, direitos e projetos (federal e Ceará), escola, mito × fato, ferramenta do dia, QR para ADDitude e Ministério da Saúde (padrão desde 27/11/2026; modelo em `modelo/pages/31_neurodiversidade.html`) |
+|  |  | 32 | 🤝 Serviço Humanitário 360 — antigolpe, 4 causas com canal oficial conferido (QR), empresas que ajudam, Conecte-se (sempre a ÚLTIMA página; padrão desde 25/11/2026) |
 
 O modelo completo da edição nº 011 (16/11/2026) está em `modelo/pages/01..30.html`: copie a estrutura de
 cada página (classes CSS, caixas, rodapé com fontes) e troque o conteúdo. **Nunca** reaproveite notícia
@@ -39,7 +40,7 @@ antiga sem fato novo.
    Diário do Nordeste; esportes: CBF, ge, Lance!, O Povo, Diário do Nordeste; finanças: BC, Tesouro, CVM,
    FGC). Esportes cobre **todos os times** e vai do municipal (Sobral: Guarany, Vila Real, Junco) ao
    internacional, com seção feminina. Re-cheque eventos agendados para o próprio dia.
-3. **Escrever** as 31 páginas em `pages/NN.html` (uma `<section class="page">` por arquivo).
+3. **Escrever** as 32 páginas em `pages/NN.html` (uma `<section class="page">` por arquivo).
    - Pílulas: siga a rotação de `pilulas-log.md` (sem repetir por 30 dias) e atualize o log no fim.
    - Finanças: conteúdo educativo; **sem** recomendar nem induzir renda variável; doutrina Bastter
      apresentada com fidelidade (acúmulo, trabalho como renda, renda fixa preserva poder de compra, não
@@ -81,4 +82,5 @@ antiga sem fato novo.
 - Quando cobrir a Anthropic, informar que o jornal é produzido com o Claude.
 
 - Crédito obrigatório (pedido de 20/11/2026): "ALDENIR ROCHA DE OLIVEIRA FILHO · PROJETO 360X" na capa, no rodapé de todas as páginas e no metadado /Author de todos os PDFs (publish.py aplica o /Author).
-- Página 31: PIX só com chave aberta no site oficial no próprio dia; sem conferência, QR para o site oficial. Conferir os QR decodificando a página renderizada (OpenCV).
+- Página 31 (Neurodiversidade 360): fatos das últimas 1–2 semanas com data; estudo é estudo (não conduta); projeto de lei marcado "em tramitação"; nada de dose; fontes prioritárias: ADDitude, CHADD, The Transmitter, Society for Neuroscience, Ministério da Saúde, ABDA, Agência Senado/Câmara, ALECE; sem dados pessoais de ninguém.
+- Página 32 (Serviço Humanitário): PIX só com chave aberta no site oficial no próprio dia; sem conferência, QR para o site oficial. Conferir os QR decodificando a página renderizada (OpenCV).
