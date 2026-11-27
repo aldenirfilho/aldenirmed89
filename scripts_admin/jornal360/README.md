@@ -84,3 +84,10 @@ antiga sem fato novo.
 - Crédito obrigatório (pedido de 20/11/2026): "ALDENIR ROCHA DE OLIVEIRA FILHO · PROJETO 360X" na capa, no rodapé de todas as páginas e no metadado /Author de todos os PDFs (publish.py aplica o /Author).
 - Página 31 (Neurodiversidade 360): fatos das últimas 1–2 semanas com data; estudo é estudo (não conduta); projeto de lei marcado "em tramitação"; nada de dose; fontes prioritárias: ADDitude, CHADD, The Transmitter, Society for Neuroscience, Ministério da Saúde, ABDA, Agência Senado/Câmara, ALECE; sem dados pessoais de ninguém.
 - Página 32 (Serviço Humanitário): PIX só com chave aberta no site oficial no próprio dia; sem conferência, QR para o site oficial. Conferir os QR decodificando a página renderizada (OpenCV).
+
+- **Limite do artefato (27/11/2026):** o portão `publication_guard` do CI barra o site acima de 900 MiB. Na nº 021 o artefato
+  chegou a 901,5 MiB; os PDFs da edição foram refeitos sem perdas: cada caderno renderizado à parte a partir das seções de
+  `jornal.html` (fontes subconjunto próprias, mesmo zoom) + `qpdf --object-streams=generate --recompress-flate --compression-level=9`,
+  de 7,9 MB para 3,8 MB por edição, e o artefato ficou em 897,6 MiB. **Sobram ~2,4 MiB, menos que uma edição**: a próxima
+  edição vai ultrapassar o limite e o proprietário precisa decidir (ex.: tirar os cadernos antigos do Pages, mover PDFs
+  para outro destino ou ajustar o limite). Até lá, não apague edições nem conteúdo de outras seções por conta própria.
